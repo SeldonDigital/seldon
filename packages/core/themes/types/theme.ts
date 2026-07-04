@@ -10,6 +10,7 @@ import {
   ThemeBorder,
   ThemeBorderWidth,
   ThemeColorHarmony,
+  ThemeDisplayMode,
   ThemeExact,
   ThemeFont,
   ThemeFontFamilyGroup,
@@ -105,6 +106,7 @@ type BaseTheme<
   metadata: ThemeMetadata<TId>
   modulation: ThemeModulationGroup
   colorHarmony: ThemeColorHarmony
+  displayMode: ThemeDisplayMode
   matchColor: ThemeMatchColor
   highContrast: ThemeHighContrast
   opticalPadding: ThemeOpticalPadding

@@ -44,12 +44,15 @@ export function usePropertyValidation(
     property.key === "colorHarmony.angle" ||
     property.key === "colorHarmony.step"
 
-  // Color point properties and bleed should use percentage units
+  // Color point properties and bleed, plus the display-mode chroma/lightness
+  // shifts, use percentage units.
   const shouldUsePercentOnly =
     property.key === "colorHarmony.whitePoint" ||
     property.key === "colorHarmony.grayPoint" ||
     property.key === "colorHarmony.blackPoint" ||
-    property.key === "colorHarmony.bleed"
+    property.key === "colorHarmony.bleed" ||
+    property.key === "displayMode.chromaChange" ||
+    property.key === "displayMode.lightnessChange"
 
   const units = shouldExcludeUnits
     ? []

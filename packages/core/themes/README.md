@@ -117,9 +117,14 @@ The Computed section holds the inputs that drive the compute engines and the col
 | `colorHarmony.parameters.grayPoint` | number | Lightness anchor, gray |
 | `colorHarmony.parameters.blackPoint` | number | Lightness anchor, black |
 | `colorHarmony.parameters.bleed` | number | Hue bleed into neutrals |
-| `colorHarmony.parameters.mode` | `ThemeMode` | `option: light, dark` (`themes/constants/enums.ts`) |
-| `colorHarmony.parameters.chromaChange` | number | Chroma shift in percent, -100 through 100 |
-| `colorHarmony.parameters.lightnessChange` | number | Lightness shift in percent, -100 through 100 |
+
+`displayMode` controls the light and dark appearance of the derived swatches.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `displayMode.parameters.mode` | `ThemeMode` | `option: light, dark` (`themes/constants/enums.ts`) |
+| `displayMode.parameters.chromaChange` | number | Chroma shift in percent, -100 through 100 |
+| `displayMode.parameters.lightnessChange` | number | Lightness shift in percent, -100 through 100 |
 
 `mode` names the mode the theme's authored colored swatches represent. `chromaChange` shifts the chroma of derived opposite-mode colors. `lightnessChange` shifts the lightness of derived opposite-mode colors. Neither changes how theme colors compute. Factory export builds each mode's swatch table through `getModeSwatches` in `compute/get-mode-swatches.ts`.
 

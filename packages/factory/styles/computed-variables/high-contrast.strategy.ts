@@ -85,7 +85,7 @@ export function emitHighContrastVariables(
   theme: Theme,
   targetMode?: ThemeMode,
 ): string {
-  const authoredMode = theme.colorHarmony.parameters.mode ?? "light"
+  const authoredMode = theme.displayMode.parameters.mode ?? "light"
   const mode = targetMode ?? authoredMode
   const modeSwatches = getModeSwatches(theme, mode)
 

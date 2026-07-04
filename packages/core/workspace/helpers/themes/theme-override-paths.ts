@@ -4,6 +4,7 @@ import { isLookSection } from "../../../themes/looks/look-facets"
 const COMPUTED_GROUP_SECTIONS = new Set([
   "modulation",
   "colorHarmony",
+  "displayMode",
   "fontFamily",
   "matchColor",
   "highContrast",

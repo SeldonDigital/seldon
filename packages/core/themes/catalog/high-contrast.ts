@@ -33,6 +33,11 @@ export const theme: StockTheme = {
       grayPoint: 50,
       blackPoint: 0,
       bleed: 0,
+    },
+  },
+  displayMode: {
+    type: TokenType.COMPUTED,
+    parameters: {
       mode: "light",
       chromaChange: -5,
       lightnessChange: 4,

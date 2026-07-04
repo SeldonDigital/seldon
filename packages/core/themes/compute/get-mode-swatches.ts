@@ -152,9 +152,9 @@ export function getModeSwatches(
   theme: Theme,
   targetMode: ThemeMode,
 ): Record<string, HSL> {
-  const authoredMode = theme.colorHarmony.parameters.mode ?? "light"
-  const chromaChange = theme.colorHarmony.parameters.chromaChange ?? 0
-  const lightnessChange = theme.colorHarmony.parameters.lightnessChange ?? 0
+  const authoredMode = theme.displayMode.parameters.mode ?? "light"
+  const chromaChange = theme.displayMode.parameters.chromaChange ?? 0
+  const lightnessChange = theme.displayMode.parameters.lightnessChange ?? 0
   const result: Record<string, HSL> = {}
 
   const swapPartner = new Map<string, string>()

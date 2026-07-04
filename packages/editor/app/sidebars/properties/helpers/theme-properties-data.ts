@@ -22,6 +22,7 @@ const VALUE_TYPES = new Set<unknown>(Object.values(ValueType))
 const COMPUTED_GROUP_KEYS = new Set([
   "modulation",
   "colorHarmony",
+  "displayMode",
   "fontFamily",
   "matchColor",
   "highContrast",
@@ -342,6 +343,14 @@ function createFlatPropertyFromSchema(
 
   if (typeof value === "boolean") {
     actualValue = value ? "On" : "Off"
+  }
+
+  // Percentage facets fold their `%` unit into the value so the row displays and
+  // edits as `10%`, matching how dimension values render. The commit path strips
+  // the suffix back to a bare number.
+  if (schema.unit?.type === "%" && typeof value === "number") {
+    formattedValue = { unit: "%", value }
+    actualValue = `${value}%`
   }
 
   // Color-filled icons for swatches and color points. Color-point swatches

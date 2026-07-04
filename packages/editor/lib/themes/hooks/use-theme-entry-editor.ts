@@ -130,7 +130,7 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
   )
 
   const setColorMode = useCallback(
-    (value: ThemeMode) => setOverride("colorHarmony.parameters.mode", value),
+    (value: ThemeMode) => setOverride("displayMode.parameters.mode", value),
     [setOverride],
   )
 
@@ -147,7 +147,13 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
         | "lightnessChange",
       value: number,
     ) => {
-      mergeOverride("colorHarmony.parameters", { [key]: value })
+      // Chroma and lightness shifts live in the `displayMode` group; the rest
+      // are color-harmony inputs.
+      const section =
+        key === "chromaChange" || key === "lightnessChange"
+          ? "displayMode.parameters"
+          : "colorHarmony.parameters"
+      mergeOverride(section, { [key]: value })
     },
     [mergeOverride],
   )

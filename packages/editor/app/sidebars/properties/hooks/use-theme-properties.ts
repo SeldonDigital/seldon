@@ -148,10 +148,6 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         setHarmony(Number(newValue) as Harmony)
         return
       }
-      if (key === "colorHarmony.mode") {
-        setColorMode(newValue === "dark" ? "dark" : "light")
-        return
-      }
       if (key.startsWith("colorHarmony.")) {
         const colorKey = key.split(".")[1] as
           | "angle"
@@ -160,8 +156,23 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
           | "grayPoint"
           | "blackPoint"
           | "bleed"
-          | "chromaChange"
-          | "lightnessChange"
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) {
+          console.warn(`Invalid numeric value for ${key}: ${newValue}`)
+          return
+        }
+        setColorValue(colorKey, numericValue)
+        return
+      }
+
+      // Display Mode group: mode plus the chroma/lightness shifts applied to the
+      // derived opposite-mode swatches.
+      if (key === "displayMode.mode") {
+        setColorMode(newValue === "dark" ? "dark" : "light")
+        return
+      }
+      if (key.startsWith("displayMode.")) {
+        const colorKey = key.split(".")[1] as "chromaChange" | "lightnessChange"
         const numericValue = parseNumericInput(newValue)
         if (numericValue === null) {
           console.warn(`Invalid numeric value for ${key}: ${newValue}`)

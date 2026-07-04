@@ -87,17 +87,9 @@ export function normalizeThemeInput(
         grayPoint: normalizeThemeNumber(colorHarmony.parameters.grayPoint),
         blackPoint: normalizeThemeNumber(colorHarmony.parameters.blackPoint),
         bleed: normalizeThemeNumber(colorHarmony.parameters.bleed),
-        // Files saved before mode, chromaChange, and lightnessChange existed
-        // omit them.
-        mode: colorHarmony.parameters.mode === "dark" ? "dark" : "light",
-        chromaChange: normalizeThemeNumber(
-          colorHarmony.parameters.chromaChange ?? 0,
-        ),
-        lightnessChange: normalizeThemeNumber(
-          colorHarmony.parameters.lightnessChange ?? 0,
-        ),
       },
     },
+    displayMode: normalizeDisplayMode(theme),
     matchColor: normalizeComputedGroup(
       theme.matchColor as StockTheme["matchColor"],
     ),
@@ -249,6 +241,32 @@ function normalizeComputedGroup<T extends { parameters: unknown }>(
   return {
     ...group,
     type: TokenType.COMPUTED,
+  }
+}
+
+/**
+ * Normalizes the `displayMode` group. Reads the group when present, and falls
+ * back to the legacy `colorHarmony.parameters` fields for input saved before
+ * `displayMode` existed, so an unmigrated theme still resolves a full group.
+ */
+function normalizeDisplayMode(
+  theme: ThemePipelineInput | { [key: string]: unknown },
+): StockTheme["displayMode"] {
+  const displayMode = (theme as { displayMode?: { parameters?: unknown } })
+    .displayMode
+  const legacy =
+    (theme.colorHarmony as { parameters?: Record<string, unknown> })
+      ?.parameters ?? {}
+  const source =
+    (displayMode?.parameters as Record<string, unknown> | undefined) ?? legacy
+
+  return {
+    type: TokenType.COMPUTED,
+    parameters: {
+      mode: source.mode === "dark" ? "dark" : "light",
+      chromaChange: normalizeThemeNumber(source.chromaChange ?? 0),
+      lightnessChange: normalizeThemeNumber(source.lightnessChange ?? 0),
+    },
   }
 }
 
