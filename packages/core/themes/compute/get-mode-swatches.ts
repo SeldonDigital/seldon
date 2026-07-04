@@ -67,6 +67,25 @@ function swatchToChroma(swatch: ThemeSwatch): chroma.Color {
   }
 }
 
+/**
+ * Largest chroma the sRGB gamut can hold at a lightness and hue. Requesting
+ * more than this makes the RGB conversion clip channels, which silently
+ * desaturates the color and drifts its hue.
+ */
+function getMaxChromaInGamut(lightness: number, hue: number): number {
+  let low = 0
+  let high = 150
+  while (high - low > 0.5) {
+    const mid = (low + high) / 2
+    if (chroma.lch(lightness, mid, hue).clipped()) {
+      high = mid
+    } else {
+      low = mid
+    }
+  }
+  return low
+}
+
 function chromaToHsl(color: chroma.Color): HSL {
   const [rawHue, sa, li] = color.hsl()
   const hu = Number.isFinite(rawHue) ? rawHue : 0
@@ -82,31 +101,31 @@ function chromaToHsl(color: chroma.Color): HSL {
 }
 
 /**
- * Derives the opposite-mode color for one swatch. The color moves through LCH:
- * lightness inverts, and non-neutral swatches scale chroma by `chromaChange`
- * percent. Non-neutral swatches whose authored lightness already contrasts
- * with the target mode's surfaces keep it instead of inverting: brighter than
- * mid-tone when deriving dark mode, darker than mid-tone when deriving light
- * mode. The result comes back as HSL for stylesheet output.
+ * Derives the opposite-mode color for one swatch. Neutral swatches invert
+ * their LCH lightness to serve the opposite surface. Every other swatch is an
+ * identity color: it keeps its authored lightness and hue in both directions,
+ * and only scales chroma by `chromaChange` percent, capped at the sRGB gamut
+ * for its lightness so the conversion cannot clip channels and drift the hue.
+ * The result comes back as HSL for stylesheet output.
  */
 export function getOppositeModeSwatchColor(
   swatch: ThemeSwatch,
   swatchId: string,
   chromaChange: number,
-  targetMode: ThemeMode,
 ): HSL {
   const [lightness, chromaValue, rawHue] = swatchToChroma(swatch).lch()
   const hue = Number.isFinite(rawHue) ? rawHue : 0
 
   const isNeutral = MODE_NEUTRAL_SWATCH_IDS.has(swatchId)
-  const keepsAuthoredLightness =
-    !isNeutral && (targetMode === "dark" ? lightness > 50 : lightness < 50)
-  const targetLightness = keepsAuthoredLightness
-    ? lightness
-    : Math.max(0, Math.min(100, 100 - lightness))
+  const targetLightness = isNeutral
+    ? Math.max(0, Math.min(100, 100 - lightness))
+    : lightness
   const adjustedChroma = isNeutral
     ? chromaValue
-    : Math.max(0, chromaValue * (1 + chromaChange / 100))
+    : Math.min(
+        Math.max(0, chromaValue * (1 + chromaChange / 100)),
+        getMaxChromaInGamut(lightness, hue),
+      )
 
   return chromaToHsl(chroma.lch(targetLightness, adjustedChroma, hue))
 }
@@ -157,7 +176,7 @@ export function getModeSwatches(
     result[swatchId] =
       targetMode === authoredMode
         ? swatchToHsl(swatch)
-        : getOppositeModeSwatchColor(swatch, swatchId, chromaChange, targetMode)
+        : getOppositeModeSwatchColor(swatch, swatchId, chromaChange)
   }
 
   return result

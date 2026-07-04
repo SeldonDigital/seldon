@@ -581,7 +581,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 180, saturation: 91, lightness: 38 },
+        value: { hue: 180, saturation: 87, lightness: 46 },
       },
     },
     punch: {
@@ -590,7 +590,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 150, saturation: 86, lightness: 40 },
+        value: { hue: 151, saturation: 92, lightness: 42 },
       },
     },
     positive: {
@@ -599,7 +599,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 151, saturation: 66, lightness: 48 },
+        value: { hue: 155, saturation: 99, lightness: 36 },
       },
     },
     negative: {
@@ -608,7 +608,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 359, saturation: 93, lightness: 59 },
+        value: { hue: 356, saturation: 80, lightness: 51 },
       },
     },
     warning: {
@@ -617,7 +617,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 46, saturation: 100, lightness: 41 },
+        value: { hue: 46, saturation: 98, lightness: 44 },
       },
     },
     accent: {
@@ -626,7 +626,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 200, saturation: 95, lightness: 61 },
+        value: { hue: 197, saturation: 87, lightness: 48 },
       },
     },
     offBlack: {

@@ -124,7 +124,7 @@ The Computed section holds the inputs that drive the compute engines and the col
 
 Every theme authors its neutral pairs literally: `offWhite` holds a light color and `offBlack` a dark one. The pairs `white`/`black`, `foreground`/`background`, and `offBlack`/`offWhite` never derive. The light table serves them as authored. The dark table serves each slot its partner's authored value. This assignment does not depend on the theme's `mode`.
 
-Every other swatch stays authored in the theme's own `mode` and derives for the opposite mode: the color converts to LCH, lightness inverts, and chroma scales by `chromaChange` percent. `gray` inverts without a chroma shift.
+Every other swatch stays authored in the theme's own `mode` and derives for the opposite mode. `gray` converts to LCH and inverts its lightness without a chroma shift. Colored swatches are identity colors: they keep their authored lightness and hue in both modes, and only scale chroma by `chromaChange` percent, capped at the sRGB gamut so the conversion cannot drift the hue.
 
 `fontFamily` holds the primary and secondary font stacks. Each slot is a `TokenType.FONT_FAMILY` cell, referenced through `@fontFamily.primary` and `@fontFamily.secondary`.
 
