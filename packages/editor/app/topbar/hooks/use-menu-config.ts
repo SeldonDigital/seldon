@@ -243,6 +243,14 @@ export function useMenuConfig(): MenuConfig {
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
       {
+        id: "open-ai-chat",
+        label: "AI Chat",
+        action: () => openDialog("ai-chat"),
+        shortcut: "⌘ J",
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
         id: "show-playground",
         label: "Show Playgrounds",
         action: toggleShowPlayground,
@@ -330,6 +338,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     addToast,
+    openDialog,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     showPlayground,

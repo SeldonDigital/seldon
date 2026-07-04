@@ -14,6 +14,7 @@ import { AddFontCollectionPanel } from "../panels/catalog-panel/AddFontCollectio
 import { AddIconSetPanel } from "../panels/catalog-panel/AddIconSetPanel"
 import { AddThemePanel } from "../panels/catalog-panel/AddThemePanel"
 import { InsertVariantPanel } from "../panels/catalog-panel/InsertVariantPanel"
+import { AiChatPanel } from "../panels/ai-chat-panel/AiChatPanel"
 import { ImageUploadPanel } from "../panels/image-upload-panel/ImageUploadPanel"
 import { VMObjectsSidebar } from "../sidebars/objects/VMObjectsSidebar"
 import { VMPropertiesSidebar } from "../sidebars/properties/VMPropertiesSidebar"
@@ -68,6 +69,7 @@ export default function Editor() {
       <AddThemePanel.Controller />
       <AddFontCollectionPanel.Controller />
       <AddIconSetPanel.Controller />
+      <AiChatPanel.Controller />
       <FocusRingOverlay />
       <EditorShortcuts />
     </main>

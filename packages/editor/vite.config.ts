@@ -2,16 +2,18 @@ import react from "@vitejs/plugin-react"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { defineConfig } from "vite"
+import { agentApiPlugin } from "./vite/agent-api-plugin"
 import { exportApiPlugin } from "./vite/export-api-plugin"
 
 const editorRoot = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.join(editorRoot, "../..")
 const corePackageRoot = path.join(editorRoot, "../core")
 const factoryPackageRoot = path.join(editorRoot, "../factory")
+const aiPackageEntry = path.join(editorRoot, "../ai/src/index.ts")
 
 export default defineConfig(({ mode }) => ({
   root: editorRoot,
-  plugins: [react(), exportApiPlugin()],
+  plugins: [react(), exportApiPlugin(), agentApiPlugin()],
   define: {
     // @seldon/core reads process.env in browser code. Statically replace
     // NODE_ENV so prod/dev branches and dead-code elimination work. A minimal
@@ -30,6 +32,7 @@ export default defineConfig(({ mode }) => ({
       },
       { find: "@seldon/core", replacement: corePackageRoot },
       { find: "@seldon/factory", replacement: factoryPackageRoot },
+      { find: "@seldon/ai", replacement: aiPackageEntry },
     ],
     dedupe: ["react", "react-dom"],
   },
