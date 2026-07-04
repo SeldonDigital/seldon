@@ -11,6 +11,7 @@ import {
   resolveNodeRepeat,
 } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
+import { EMPTY_VALUE } from "@seldon/core/properties"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
@@ -24,8 +25,6 @@ import { FlatProperty } from "./properties-data"
 /** Synthetic compound key for the editor-only Repeat row. */
 export const REPEAT_ROW_KEY = "repeat"
 
-const EMPTY_VALUE = { type: ValueType.EMPTY, value: null }
-
 /** A text/icon descendant that can carry per-echo prototyping values. */
 interface RepeatDataDescendant {
   id: string
@@ -38,7 +37,7 @@ interface RepeatDataDescendant {
  * Repeat is an instance-only (child) capability. Default and user variant roots
  * are the component itself and never repeat.
  */
-export function isRepeatEligible(
+function isRepeatEligible(
   node: Variant | Instance | Board,
 ): node is Instance {
   if (isBoard(node)) return false
@@ -46,7 +45,7 @@ export function isRepeatEligible(
 }
 
 /** Text/icon descendants of a node, in tree order, as repeat data slots. */
-export function getRepeatDataDescendants(
+function getRepeatDataDescendants(
   node: Variant | Instance,
   workspace: Workspace,
 ): RepeatDataDescendant[] {
@@ -75,7 +74,7 @@ export function getRepeatDataDescendants(
 }
 
 /** Key for a per-echo data row. Uses "#" so the key stays a single child segment. */
-export function repeatDataRowKey(
+function repeatDataRowKey(
   descendantId: string,
   echoIndex: number,
 ): string {
@@ -125,7 +124,7 @@ export function getRepeatSymbolDescendant(
  * the count is above 1, one text row per echo for every text/icon descendant.
  * Returns an empty list for nodes that cannot repeat.
  */
-export function buildRepeatRows(
+function buildRepeatRows(
   node: Variant | Instance | Board,
   workspace: Workspace,
 ): FlatProperty[] {

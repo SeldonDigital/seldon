@@ -6,7 +6,7 @@ import { Properties, Value } from "@seldon/core"
 import { FlatProperty } from "./properties-data"
 import {
   getSubPropertyKeys,
-  shouldUseShorthandMainPropertyBehavior,
+  isShorthandProperty,
 } from "./property-types"
 
 interface UpdatePropertyOptions {
@@ -53,7 +53,7 @@ export function updateProperty({
       return
     }
   } else {
-    if (shouldUseShorthandMainPropertyBehavior(property.key)) {
+    if (isShorthandProperty(property.key)) {
       const subPropertyKeys = getSubPropertyKeys(property.key)
       const compoundProperty: Record<string, unknown> = {}
       subPropertyKeys.forEach((subKey) => {

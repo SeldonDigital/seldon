@@ -5,8 +5,8 @@ import {
 import { Theme, ValueType, Workspace } from "@seldon/core"
 import { applyCompoundPreset as coreApplyCompoundPreset } from "@seldon/core/helpers/properties/properties-bridge"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
+import { getParentPathForPreset } from "@lib/properties/property-paths"
 import { getPropertiesSubjectId } from "./properties-data"
-import { getParentPropertyKey } from "./property-types"
 
 /**
  * Creates a preset property update with theme token handling
@@ -24,7 +24,7 @@ export function createPresetPropertyUpdate(
   node: Variant | Instance | Board,
   theme?: Theme,
 ): Record<string, unknown> {
-  const parentKey = getParentPropertyKey(presetPropertyKey)
+  const parentKey = getParentPathForPreset(presetPropertyKey)
   let presetForCore: string = presetValue
   let tokenForPreset: string | null = null
 

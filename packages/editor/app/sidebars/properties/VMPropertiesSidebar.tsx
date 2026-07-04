@@ -1,12 +1,6 @@
 import { MenuEntry } from "@lib/menus"
 import { LayoutGroup } from "framer-motion"
-import {
-  Fragment,
-  RefObject,
-  useCallback,
-  useDeferredValue,
-  useMemo,
-} from "react"
+import { Fragment, useCallback, useDeferredValue, useMemo } from "react"
 import {
   Board,
   Instance,
@@ -54,16 +48,12 @@ import {
 import { PROPERTIES_TREE_GAP } from "./properties.bespoke"
 
 export interface PropertyTreeProps {
-  properties: FlatProperty[]
   workspace: Workspace
   node: Variant | Instance | Board
   theme?: Theme
-  scrollerRef?: RefObject<HTMLDivElement | null>
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
-  /** Read-only Metadata rows rendered as the first section, when provided. */
-  metadataProperties?: FlatProperty[]
   /**
    * Families rows for the Families section, when provided. Holds parent family
    * rows and their child variant and license rows in one flat list.
@@ -146,15 +136,12 @@ export function VMPropertiesSidebar() {
  * structure. Groups properties into sections and handles expansion state.
  */
 function PropertiesTree({
-  properties,
   workspace,
   node,
   theme,
-  scrollerRef,
   themeEditingContext,
   fontCollectionEditingContext,
   iconSetEditingContext,
-  metadataProperties,
   familyProperties,
   iconProperties,
   sections,
@@ -183,7 +170,7 @@ function PropertiesTree({
   ))
 
   return (
-    <Box ref={scrollerRef} style={styles.scroller}>
+    <Box style={styles.scroller}>
       <Box style={styles.tree}>
         <PropertyEditNavigationProvider>
           <LayoutGroup>{sectionNodes}</LayoutGroup>

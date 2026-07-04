@@ -15,13 +15,11 @@ export const LAYER_DRAG_ACTION = "properties-reorder-layer"
  * and renders the same pill preview used by the objects sidebar.
  */
 export function useLayerDraggable({
-  enable = true,
   property,
   layerIndex,
   label,
   icon,
 }: {
-  enable?: boolean
   property: LayeredPaintKey
   layerIndex: number
   label: string
@@ -32,7 +30,7 @@ export function useLayerDraggable({
 
   useEffect(() => {
     const el = ref.current
-    if (!el || !enable) return
+    if (!el) return
 
     return draggable({
       element: el,
@@ -60,7 +58,7 @@ export function useLayerDraggable({
         })
       },
     })
-  }, [property, layerIndex, label, icon, enable])
+  }, [property, layerIndex, label, icon])
 
   return { ref, dragging }
 }

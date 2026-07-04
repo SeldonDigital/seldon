@@ -82,15 +82,15 @@ export function getThemePropertySections(
   // Get all sections from schema system, sorted by order
   const sectionSchemas = getAllThemeTokenSectionSchemas()
 
-  // Build a map of all schemas (static + dynamic) if theme is provided
-  const allSchemasMap = new Map<
+  // Dynamic schemas (theme-derived tokens such as custom slots) resolve section
+  // and order for keys the static registry does not know.
+  const dynamicSchemas = new Map<
     string,
     { section: ThemePropertyCategoryType; order: number }
   >()
   if (theme) {
-    const allSchemas = getAllThemeTokenSchemas(theme)
-    for (const schema of allSchemas) {
-      allSchemasMap.set(schema.key, {
+    for (const schema of getAllThemeTokenSchemas(theme)) {
+      dynamicSchemas.set(schema.key, {
         section: schema.section as ThemePropertyCategoryType,
         order: schema.order,
       })
@@ -110,41 +110,23 @@ export function getThemePropertySections(
   )
 
   for (const property of topLevelProperties) {
-    // Try to get schema from static registry first
-    let schema = getThemeTokenSchema(property.key)
-    let sectionId: ThemePropertyCategoryType | null = null
-    let order = 0
+    const schema =
+      getThemeTokenSchema(property.key) ?? dynamicSchemas.get(property.key)
+    const sectionId = schema
+      ? (schema.section as ThemePropertyCategoryType)
+      : getSectionFromPropertyKey(property.key)
+    if (!sectionId) continue
 
-    if (schema) {
-      // Found in static registry
-      sectionId = schema.section as ThemePropertyCategoryType
-      order = schema.order
-    } else if (theme) {
-      // Try dynamic schemas map
-      const dynamicSchema = allSchemasMap.get(property.key)
-      if (dynamicSchema) {
-        sectionId = dynamicSchema.section
-        order = dynamicSchema.order
-      } else {
-        // Fallback: extract section from key
-        sectionId = getSectionFromPropertyKey(property.key)
-      }
+    const bucket = propertiesBySection.get(sectionId)
+    if (bucket) {
+      bucket.push(property)
     } else {
-      // Fallback: extract section from key
-      sectionId = getSectionFromPropertyKey(property.key)
-    }
-
-    if (sectionId) {
-      if (!propertiesBySection.has(sectionId)) {
-        propertiesBySection.set(sectionId, [])
-      }
-      // Store order with property for sorting
-      const propertyWithOrder = { ...property, _order: order }
-      propertiesBySection
-        .get(sectionId)!
-        .push(propertyWithOrder as FlatProperty & { _order: number })
+      propertiesBySection.set(sectionId, [property])
     }
   }
+
+  const schemaOrder = (key: string): number =>
+    (getThemeTokenSchema(key) ?? dynamicSchemas.get(key))?.order ?? 0
 
   // Convert to sections array in schema order
   const sections: ThemePropertySection[] = []
@@ -152,35 +134,15 @@ export function getThemePropertySections(
     const sectionProperties = propertiesBySection.get(
       sectionSchema.id as ThemePropertyCategoryType,
     )
+    if (!sectionProperties || sectionProperties.length === 0) continue
 
-    if (sectionProperties && sectionProperties.length > 0) {
-      // Sort properties by schema order
-      const sortedProperties = sectionProperties
-        .map((prop) => {
-          // Remove temporary _order property
-          const { _order, ...rest } = prop as FlatProperty & { _order?: number }
-          return rest
-        })
-        .sort((a, b) => {
-          const aSchema = getThemeTokenSchema(a.key) || allSchemasMap.get(a.key)
-          const bSchema = getThemeTokenSchema(b.key) || allSchemasMap.get(b.key)
-          const aOrder =
-            aSchema?.order ??
-            (aSchema as { order?: number } | undefined)?.order ??
-            0
-          const bOrder =
-            bSchema?.order ??
-            (bSchema as { order?: number } | undefined)?.order ??
-            0
-          return aOrder - bOrder
-        })
-
-      sections.push({
-        label: sectionSchema.label,
-        category: sectionSchema.id as ThemePropertyCategoryType,
-        properties: sortedProperties,
-      })
-    }
+    sections.push({
+      label: sectionSchema.label,
+      category: sectionSchema.id as ThemePropertyCategoryType,
+      properties: sectionProperties.sort(
+        (a, b) => schemaOrder(a.key) - schemaOrder(b.key),
+      ),
+    })
   }
 
   return sections

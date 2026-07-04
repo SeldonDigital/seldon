@@ -1,11 +1,9 @@
-import { Theme, Value, ValueType } from "@seldon/core"
+import { Value, ValueType } from "@seldon/core"
 import { FlatProperty } from "../helpers/properties-data"
-import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
+import { isPresetProperty } from "../helpers/property-types"
 
 interface UsePropertyControlDataOptions {
   property: FlatProperty
-  theme?: Theme
-  // theme is kept for future use but currently unused
 }
 
 /**
@@ -40,7 +38,7 @@ export function usePropertyControlData({
       return { type: ValueType.EXACT, value: property.actualValue }
     }
 
-    if (shouldUsePresetPropertyBehavior(property.key)) {
+    if (isPresetProperty(property.key)) {
       if (property.actualValue && property.actualValue !== "unset") {
         return { type: ValueType.EXACT, value: property.actualValue }
       } else {
@@ -50,7 +48,7 @@ export function usePropertyControlData({
 
     if (property.isSubProperty && property.key.includes(".")) {
       const [parentKey] = property.key.split(".")
-      if (shouldUsePresetPropertyBehavior(parentKey)) {
+      if (isPresetProperty(parentKey)) {
         if (property.actualValue && property.actualValue !== "unset") {
           return { type: ValueType.EXACT, value: property.actualValue }
         } else {
@@ -96,18 +94,10 @@ export function usePropertyControlData({
       : { type: ValueType.EMPTY, value: null }
   }
 
-  // Determine if menu icon (icon3) should be displayed
-  // Returns false for properties with options (menu/combo) - they don't need a chevron
-  // Returns true for properties without options (text/number) - chevron will be transparent
+  // Determine if menu icon (icon3) should be displayed. Only text/number
+  // controls render the (transparent) chevron. Menu/combo controls render
+  // their own indicator.
   const shouldShowMenuIcon = (): boolean => {
-    // Don't show chevron for properties with options (menu/combo)
-    if (property.controlType === "menu" || property.controlType === "combo") {
-      return false
-    }
-    if (property.isCompound && !property.controlType) {
-      return false
-    }
-    // Show chevron (transparent) for properties without options (text/number)
     return property.controlType === "text" || property.controlType === "number"
   }
 

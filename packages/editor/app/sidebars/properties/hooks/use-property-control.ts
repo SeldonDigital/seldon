@@ -116,7 +116,6 @@ export function usePropertyControl({
 
   const { getPropertyValueForDisplay } = usePropertyControlData({
     property,
-    theme,
   })
   const { validationFunction } = usePropertyValidation(property)
 

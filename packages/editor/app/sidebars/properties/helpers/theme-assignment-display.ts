@@ -38,7 +38,7 @@ function getThemeDisplayName(themeId: string, workspace: Workspace): string {
 /**
  * Display label for the synthetic Theme property row on nodes and boards.
  */
-export function getThemeAssignmentDisplayValue(
+function getThemeAssignmentDisplayValue(
   node: Variant | Instance | Board,
   workspace: Workspace,
 ): string {

@@ -174,13 +174,7 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
   return "Has value"
 }
 
-export function formatValue(
-  _path: string,
-  value: unknown,
-  _nodeId: string,
-  _workspace: Workspace,
-  theme?: Theme,
-): string {
+export function formatValue(value: unknown, theme?: Theme): string {
   return formatDisplayValue(value, theme)
 }
 

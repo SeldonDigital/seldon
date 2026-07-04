@@ -5,10 +5,7 @@ import {
 import { MenuEntry } from "@lib/menus"
 import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
 import { ICONIC_BUTTON_SELECTOR } from "@lib/menus/iconic-button"
-import {
-  childPathsUnderCompoundParent,
-  parsePropertyPath,
-} from "@lib/properties/property-paths"
+import { parsePropertyPath } from "@lib/properties/property-paths"
 import {
   buildActivatedRefProps,
   buildDisabledRefProps,
@@ -20,7 +17,6 @@ import {
   Instance,
   type LayeredPaintKey,
   PropertyKey,
-  SubPropertyKey,
   Theme,
   type ThemeCustomTokenSection,
   ValueType,
@@ -39,13 +35,13 @@ import {
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useRenameInput } from "../../hooks/use-rename-input"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,
 } from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildPropertyOptions } from "../helpers/build-property-options"
+import { dispatchPropertyReset } from "../helpers/commit-helpers"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
@@ -58,7 +54,10 @@ import {
   IconSetEditingContext,
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
-import { FlatProperty } from "../helpers/properties-data"
+import {
+  FlatProperty,
+  getCompoundChildRows,
+} from "../helpers/properties-data"
 import { getPropertyDebugColor } from "../helpers/property-styling"
 import { resolveThemeSwatchColors } from "../helpers/resolve-theme-swatch-colors"
 import {
@@ -143,7 +142,7 @@ export function useRowProperty({
   const { resetProperty, removeNodeLayer } = useObjectProperties()
   const { toggleProperty } = usePropertyExpansion()
   const { getPropertyValueForDisplay, shouldShowMenuIcon } =
-    usePropertyControlData({ property, theme })
+    usePropertyControlData({ property })
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const frameRef = useRef<HTMLDivElement>(null)
@@ -274,10 +273,7 @@ export function useRowProperty({
   // Sub-properties for this compound/shorthand property.
   const children = useMemo(() => {
     if (!property.isCompound && !property.isShorthand) return []
-    return allProperties.filter(
-      (p) =>
-        p.isSubProperty && childPathsUnderCompoundParent(property.key, p.key),
-    )
+    return getCompoundChildRows(property.key, allProperties)
   }, [allProperties, property.key, property.isCompound, property.isShorthand])
 
   const hasChildren = children.length > 0
@@ -335,22 +331,13 @@ export function useRowProperty({
     [displaySkipsOptions, property, theme, node, workspace],
   )
 
-  const nodeId = isBoard(node) ? getComponentKey(node) : node.id
-
   // The unit is folded into the display string (e.g. "24px") and shown in the
   // single combobox value field. There is no separate unit element. A look-parent
   // row (theme look groups and computed groups like Modulation) owns no value, so
   // it shows nothing rather than formatting EMPTY into a "Default" placeholder.
   const value = property.isLookParent
     ? ""
-    : getDisplayValue(
-        propertyValue,
-        property.key,
-        nodeId,
-        workspace,
-        theme,
-        options,
-      )
+    : getDisplayValue(propertyValue, theme, options)
 
   // Outside debug mode, property status maps to a generated leaf state
   // (activated, invalid, disabled) applied on the row's refs, so the label
@@ -435,30 +422,7 @@ export function useRowProperty({
       themeEditingContext.resetThemeProperty(property)
       return
     }
-    if (property.isSubProperty) {
-      const parsed = parsePropertyPath(property.key)
-      if (parsed.kind === "layered-facet") {
-        resetProperty(
-          parsed.root as PropertyKey,
-          parsed.facet as SubPropertyKey,
-          parsed.index,
-        )
-      } else if (parsed.kind === "facet") {
-        resetProperty(
-          parsed.root as PropertyKey,
-          parsed.facet as SubPropertyKey,
-        )
-      } else {
-        resetProperty(property.key as PropertyKey)
-      }
-    } else {
-      const parsed = parsePropertyPath(property.key)
-      if (parsed.kind === "layered-parent") {
-        resetProperty(parsed.root as PropertyKey, undefined, parsed.index)
-      } else {
-        resetProperty(property.key as PropertyKey)
-      }
-    }
+    dispatchPropertyReset(property.key, property.isSubProperty, resetProperty)
   }
 
   // Single click on the combobox-field value frame flips the row into edit mode.

@@ -1,7 +1,6 @@
 import { useMemo } from "react"
 import { Board, Instance, Theme, Value, Variant, Workspace } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import { getComboboxStoredValue } from "../helpers/combobox-stored-value"
 import { getDisplayValue } from "../helpers/display-value-utils"
@@ -59,18 +58,7 @@ export function usePropertyDisplay({
     return getComboboxStoredValue(property.value)
   }, [property.key, property.value, subject])
 
-  const displayValue = getDisplayValue(
-    propertyValue,
-    property.key,
-    subject && !isBoard(subject)
-      ? subject.id
-      : subject && isBoard(subject)
-        ? getComponentKey(subject)
-        : "",
-    workspace,
-    theme,
-    options,
-  )
+  const displayValue = getDisplayValue(propertyValue, theme, options)
 
   return {
     options,

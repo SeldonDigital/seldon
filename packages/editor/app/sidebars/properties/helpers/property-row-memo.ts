@@ -1,14 +1,9 @@
-import { childPathsUnderCompoundParent } from "@lib/properties/property-paths"
-import { Board, Instance, Variant } from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { RowPropertyProps } from "../hooks/use-row-property"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { FlatProperty } from "./properties-data"
-
-/** The subject id a row renders against: the board key, or the node id. */
-function rowSubjectId(node: Variant | Instance | Board): string {
-  return isBoard(node) ? getComponentKey(node) : node.id
-}
+import {
+  FlatProperty,
+  getCompoundChildRows,
+  getPropertiesSubjectId,
+} from "./properties-data"
 
 /** Structural equality for plain JSON-like values (FlatProperty fields). */
 function deepEqual(a: unknown, b: unknown): boolean {
@@ -37,11 +32,7 @@ function deepEqual(a: unknown, b: unknown): boolean {
 /** The sub-property rows a compound or shorthand parent recurses into. */
 function rowChildren(props: RowPropertyProps): FlatProperty[] {
   if (!props.property.isCompound && !props.property.isShorthand) return []
-  return props.allProperties.filter(
-    (candidate) =>
-      candidate.isSubProperty &&
-      childPathsUnderCompoundParent(props.property.key, candidate.key),
-  )
+  return getCompoundChildRows(props.property.key, props.allProperties)
 }
 
 /**
@@ -63,7 +54,9 @@ export function arePropertyRowPropsEqual(
     return false
   }
   if (prev.iconSetEditingContext !== next.iconSetEditingContext) return false
-  if (rowSubjectId(prev.node) !== rowSubjectId(next.node)) return false
+  if (getPropertiesSubjectId(prev.node) !== getPropertiesSubjectId(next.node)) {
+    return false
+  }
   if (!deepEqual(prev.property, next.property)) return false
   if (prev.property.isCompound || prev.property.isShorthand) {
     if (!deepEqual(rowChildren(prev), rowChildren(next))) return false

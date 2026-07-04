@@ -11,44 +11,12 @@ import {
 } from "@seldon/core/helpers/utils/font-variant"
 import { ValueType } from "@seldon/core/properties"
 import { FlatProperty } from "./properties-data"
-
-const PRESET_OPTIONS = [
-  { name: "All", value: "All" },
-  { name: "None", value: "None" },
-  { name: "Custom", value: "Custom" },
-]
-
-const TOGGLE_OPTIONS = [
-  { name: "On", value: "On" },
-  { name: "Off", value: "Off" },
-]
-
-/** Builds an editable menu row (preset on a family or on/off on a variant). */
-function createMenuRow(
-  key: string,
-  label: string,
-  value: string,
-  options: Array<{ name: string; value: string }>,
-  isSubProperty: boolean,
-  isCompound: boolean,
-  status: FlatProperty["status"],
-): FlatProperty {
-  return {
-    key,
-    propertyType: isCompound ? "compound" : "atomic",
-    label,
-    icon: "seldon-text",
-    value: { type: ValueType.EXACT, value },
-    actualValue: value,
-    valueType: ValueType.EXACT,
-    controlType: "menu",
-    isCompound,
-    isShorthand: false,
-    isSubProperty,
-    status,
-    options,
-  }
-}
+import {
+  RESOURCE_PRESET_OPTIONS,
+  RESOURCE_TOGGLE_OPTIONS,
+  createResourceMenuRow,
+  resourcePresetDisplayValue,
+} from "./resource-menu-rows"
 
 /** Builds a read-only license link row. */
 function createLicenseRow(slot: string): FlatProperty {
@@ -127,16 +95,13 @@ export function flattenFontCollectionFamilies(
       continue
     }
 
-    const presetValue =
-      preset === "all" ? "All" : preset === "none" ? "None" : "Custom"
-
     // None is the baseline; an enabled family (any weight on) is an override.
     rows.push(
-      createMenuRow(
+      createResourceMenuRow(
         `family.${slot}`,
         family.name,
-        presetValue,
-        PRESET_OPTIONS,
+        resourcePresetDisplayValue(preset),
+        RESOURCE_PRESET_OPTIONS,
         false,
         true,
         preset === "none" ? "set" : "override",
@@ -146,11 +111,11 @@ export function flattenFontCollectionFamilies(
     for (const variant of sortFontVariants(variants)) {
       const enabled = isVariantEnabled(slotSelection, variant)
       rows.push(
-        createMenuRow(
+        createResourceMenuRow(
           `family.${slot}.${variant}`,
           fontVariantDisplayLabel(variant),
           enabled ? "On" : "Off",
-          TOGGLE_OPTIONS,
+          RESOURCE_TOGGLE_OPTIONS,
           true,
           false,
           enabled ? "override" : "set",

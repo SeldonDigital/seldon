@@ -11,10 +11,6 @@ import {
 } from "@seldon/core"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { getCompoundSelectorFacet } from "@seldon/core/properties/constants/shared/compound-properties"
-import type {
-  PropertyKey,
-  SubPropertyKey,
-} from "@seldon/core/properties/types/property-keys"
 import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
 import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
@@ -28,6 +24,7 @@ import {
 import {
   cleanCompoundValue,
   compoundPresetPropertyKey,
+  dispatchPropertyReset,
 } from "../helpers/commit-helpers"
 import { createPresetPropertyUpdate } from "../helpers/compound-properties"
 import { handleComputedValueChange } from "../helpers/computed-property-handler"
@@ -41,7 +38,7 @@ import type { PropertyPickerResult } from "../helpers/options-utils"
 import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { FlatProperty } from "../helpers/properties-data"
 import { RESET_VALUES } from "../helpers/property-control-constants"
-import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
+import { isPresetProperty } from "../helpers/property-types"
 import { updateProperty } from "../helpers/property-update-handler"
 import {
   REPEAT_ROW_KEY,
@@ -95,30 +92,7 @@ export function useCommitPropertyValue({
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const reset = useCallback(() => {
-    if (property.isSubProperty) {
-      const parsed = parsePropertyPath(property.key)
-      if (parsed.kind === "layered-facet") {
-        resetProperty(
-          parsed.root as PropertyKey,
-          parsed.facet as SubPropertyKey,
-          parsed.index,
-        )
-      } else if (parsed.kind === "facet") {
-        resetProperty(
-          parsed.root as PropertyKey,
-          parsed.facet as SubPropertyKey,
-        )
-      } else {
-        resetProperty(property.key as PropertyKey)
-      }
-    } else {
-      const parsed = parsePropertyPath(property.key)
-      if (parsed.kind === "layered-parent") {
-        resetProperty(parsed.root as PropertyKey, undefined, parsed.index)
-      } else {
-        resetProperty(property.key as PropertyKey)
-      }
-    }
+    dispatchPropertyReset(property.key, property.isSubProperty, resetProperty)
     onDone()
   }, [property.isSubProperty, property.key, resetProperty, onDone])
 
@@ -203,8 +177,26 @@ export function useCommitPropertyValue({
         )
       }
 
+      // Applies a preset update for the given key. Returns false without
+      // writing when core produced no update, so callers can fall through.
+      const writePresetUpdate = (
+        presetKey: string,
+        nextValue: string,
+      ): boolean => {
+        const update = createPresetPropertyUpdate(
+          presetKey,
+          nextValue,
+          workspace,
+          selection!,
+          theme,
+        )
+        if (Object.keys(update).length === 0) return false
+        setProperties(update, { mergeSubProperties: false })
+        return true
+      }
+
       const applyPresetPropertyUpdate = (nextValue: string): boolean => {
-        if (!shouldUsePresetPropertyBehavior(property.key)) {
+        if (!isPresetProperty(property.key)) {
           return false
         }
         // A layered-paint facet preset (e.g. `background.<n>.preset`) is a plain
@@ -214,16 +206,7 @@ export function useCommitPropertyValue({
         if (parsePropertyPath(property.key).kind === "layered-facet") {
           return false
         }
-        const update = createPresetPropertyUpdate(
-          property.key,
-          nextValue,
-          workspace,
-          selection!,
-          theme,
-        )
-        if (Object.keys(update).length > 0) {
-          setProperties(update, { mergeSubProperties: false })
-        }
+        writePresetUpdate(property.key, nextValue)
         onDone()
         return true
       }
@@ -317,20 +300,12 @@ export function useCommitPropertyValue({
           return
         }
         // Check if this is a compound property with a preset sub-property
-        if (property.isCompound) {
-          const presetPropertyKey = compoundPresetPropertyKey(property.key)
-          const update = createPresetPropertyUpdate(
-            presetPropertyKey,
-            newValue,
-            workspace,
-            selection!,
-            theme,
-          )
-          if (Object.keys(update).length > 0) {
-            setProperties(update, { mergeSubProperties: false })
-            onDone()
-            return
-          }
+        if (
+          property.isCompound &&
+          writePresetUpdate(compoundPresetPropertyKey(property.key), newValue)
+        ) {
+          onDone()
+          return
         }
 
         if (applyPresetPropertyUpdate(newValue)) {
@@ -357,20 +332,12 @@ export function useCommitPropertyValue({
         const flatOptions = options.flat()
         const isPresetValue = flatOptions.some((opt) => opt.value === newValue)
 
-        if (isPresetValue) {
-          const presetPropertyKey = compoundPresetPropertyKey(property.key)
-          const update = createPresetPropertyUpdate(
-            presetPropertyKey,
-            newValue,
-            workspace,
-            selection!,
-            theme,
-          )
-          if (Object.keys(update).length > 0) {
-            setProperties(update, { mergeSubProperties: false })
-            onDone()
-            return
-          }
+        if (
+          isPresetValue &&
+          writePresetUpdate(compoundPresetPropertyKey(property.key), newValue)
+        ) {
+          onDone()
+          return
         }
       }
 

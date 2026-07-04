@@ -108,10 +108,6 @@ export function usePropertyValidation(
       }
     }
 
-    if (property.controlType === "text") {
-      return undefined
-    }
-
     return undefined
   }
 
