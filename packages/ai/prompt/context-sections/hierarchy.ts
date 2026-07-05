@@ -1,4 +1,5 @@
 import { rules } from "@seldon/core/rules/config/rules.config"
+
 import { section } from "./section"
 
 const TITLE = "Hierarchy (level -> may contain):"

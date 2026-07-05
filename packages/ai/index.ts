@@ -1,9 +1,5 @@
 export { chatToActions, warmModel } from "./orchestrate"
-export {
-  getLoadedModelInfo,
-  ollamaChat,
-  resolveModel,
-} from "./ollama-client"
+export { getLoadedModelInfo, ollamaChat, resolveModel } from "./ollama-client"
 export type {
   OllamaChatMetrics,
   OllamaChatResult,

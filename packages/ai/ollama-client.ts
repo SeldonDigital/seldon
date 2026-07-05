@@ -9,13 +9,13 @@ export interface OllamaChatMessage {
 export interface OllamaChatOptions {
   model?: string
   messages: OllamaChatMessage[]
-  
+
   /** JSON Schema that constrains the decode. Passed straight to Ollama `format`. */
   format?: unknown
-  
+
   /** Overrides the Ollama base URL. Defaults to `OLLAMA_HOST` env or localhost. */
   host?: string
-  
+
   /**
    * Whether the model may emit a reasoning pass. Defaults to `false`: on hybrid
    * reasoning models such as qwen3 the thinking pass adds a large hidden decode
@@ -23,7 +23,7 @@ export interface OllamaChatOptions {
    * opt back in per call.
    */
   think?: boolean
-  
+
   /**
    * How long Ollama keeps the model resident after the call. Defaults to
    * `SELDON_AI_KEEP_ALIVE` or "30m". Keeping the model warm avoids the per-call
@@ -156,12 +156,18 @@ export async function getLoadedModelInfo(
     const response = await fetch(`${baseUrl}/api/ps`)
     if (!response.ok) return undefined
     const data = (await response.json()) as {
-      models?: { name?: string; model?: string; size?: number; size_vram?: number }[]
+      models?: {
+        name?: string
+        model?: string
+        size?: number
+        size_vram?: number
+      }[]
     }
     const models = data.models ?? []
     const match =
       models.find(
-        (entry) => entry.model === resolvedModel || entry.name === resolvedModel,
+        (entry) =>
+          entry.model === resolvedModel || entry.name === resolvedModel,
       ) ?? models[0]
     if (!match) return undefined
     return {

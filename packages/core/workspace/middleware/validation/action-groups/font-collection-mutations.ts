@@ -75,7 +75,10 @@ function assertFamilyVariantPayload(action: Action): void {
     enabled?: unknown
   }
   if (typeof payload.slot !== "string" || payload.slot.length === 0) {
-    throw new WorkspaceValidationError("Family slot must be a non-empty string", action)
+    throw new WorkspaceValidationError(
+      "Family slot must be a non-empty string",
+      action,
+    )
   }
   if (typeof payload.variant !== "string" || payload.variant.length === 0) {
     throw new WorkspaceValidationError(
@@ -84,7 +87,10 @@ function assertFamilyVariantPayload(action: Action): void {
     )
   }
   if (typeof payload.enabled !== "boolean") {
-    throw new WorkspaceValidationError("Family variant enabled must be a boolean", action)
+    throw new WorkspaceValidationError(
+      "Family variant enabled must be a boolean",
+      action,
+    )
   }
 }
 
@@ -92,9 +98,15 @@ function assertFamilyVariantPayload(action: Action): void {
 function assertFamilyPresetPayload(action: Action): void {
   const payload = action.payload as { slot?: unknown; preset?: unknown }
   if (typeof payload.slot !== "string" || payload.slot.length === 0) {
-    throw new WorkspaceValidationError("Family slot must be a non-empty string", action)
+    throw new WorkspaceValidationError(
+      "Family slot must be a non-empty string",
+      action,
+    )
   }
-  if (typeof payload.preset !== "string" || !FAMILY_PRESETS.has(payload.preset)) {
+  if (
+    typeof payload.preset !== "string" ||
+    !FAMILY_PRESETS.has(payload.preset)
+  ) {
     throw new WorkspaceValidationError(
       'Family preset must be "all" or "none"',
       action,

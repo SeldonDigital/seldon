@@ -12,12 +12,20 @@ const swatch = (value: string) => ({
 describe("collectPropertyValueErrors", () => {
   it("returns no errors for a well-formed atomic theme ref", () => {
     expect(
-      collectPropertyValueErrors("color", swatch("@swatch.primary"), defaultTheme),
+      collectPropertyValueErrors(
+        "color",
+        swatch("@swatch.primary"),
+        defaultTheme,
+      ),
     ).toEqual([])
   })
 
   it("rejects a bare (non-@) theme id on an atomic property", () => {
-    const errors = collectPropertyValueErrors("color", swatch("primary"), defaultTheme)
+    const errors = collectPropertyValueErrors(
+      "color",
+      swatch("primary"),
+      defaultTheme,
+    )
     expect(errors.length).toBeGreaterThan(0)
   })
 
@@ -52,7 +60,11 @@ describe("collectPropertyValueErrors", () => {
         defaultTheme,
       ),
     ).toEqual([])
-    const errors = collectPropertyValueErrors("background.0.color", 42, defaultTheme)
+    const errors = collectPropertyValueErrors(
+      "background.0.color",
+      42,
+      defaultTheme,
+    )
     expect(errors.length).toBeGreaterThan(0)
   })
 

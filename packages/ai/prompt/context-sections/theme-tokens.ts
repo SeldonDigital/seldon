@@ -1,8 +1,10 @@
 import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"
 import type { Workspace } from "@seldon/core/workspace/types"
+
 import { section } from "./section"
 
-const TITLE = "Theme tokens (reference as @scope.key, for example @swatch.primary):"
+const TITLE =
+  "Theme tokens (reference as @scope.key, for example @swatch.primary):"
 
 /**
  * Seldon prefers theme references over literals for color, spacing, corners, and

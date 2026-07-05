@@ -1,8 +1,8 @@
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/components/get-node-parent-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import { getEffectiveProperties } from "@seldon/core/workspace/helpers/properties/shared"
 import { getPropertyStatus } from "@seldon/core/workspace/helpers/properties/property-status"
+import { getEffectiveProperties } from "@seldon/core/workspace/helpers/properties/shared"
 import type { Board, Workspace } from "@seldon/core/workspace/types"
 
 /**

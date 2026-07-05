@@ -1,3 +1,5 @@
+import { runAgentChat, warmAgent } from "@lib/ai/run-agent-chat"
+import type { AgentDebug, AgentMetrics } from "@seldon/ai"
 import { useCallback } from "react"
 import { create } from "zustand"
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
@@ -6,13 +8,11 @@ import type {
   Workspace,
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
-import type { AgentDebug, AgentMetrics } from "@seldon/ai"
-import { runAgentChat, warmAgent } from "@lib/ai/run-agent-chat"
-import { useDebugStore } from "@lib/hooks/use-debug-mode"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useDispatch } from "@lib/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace } from "@lib/workspace/hooks/use-history"
 import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
+import { useDebugStore } from "@lib/hooks/use-debug-mode"
 import { useDialog } from "./use-dialog"
 
 export type AiChatRole = "user" | "assistant"
@@ -131,10 +131,7 @@ function targetIdOf(payload: unknown): string | undefined {
 }
 
 /** Human-readable label/level for a target id, resolved as a node then a board. */
-function describeTarget(
-  workspace: Workspace,
-  id: string | undefined,
-): string {
+function describeTarget(workspace: Workspace, id: string | undefined): string {
   if (!id) return "(no target id)"
   const node = workspace.nodes?.[id]
   if (node) {
@@ -196,9 +193,7 @@ function logChanges(
     aiLog(`${action.type} → ${describeTarget(after, id)}`)
     for (const [key, nextValue] of changedProperties(action)) {
       const overrides = id
-        ? (before.nodes?.[id]?.overrides as
-            | Record<string, unknown>
-            | undefined)
+        ? (before.nodes?.[id]?.overrides as Record<string, unknown> | undefined)
         : undefined
       const previous = overrides?.[key]
       aiLog(

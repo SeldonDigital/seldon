@@ -1,23 +1,25 @@
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
 import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
+
 import {
-  getLoadedModelInfo,
-  ollamaChat,
   type OllamaChatMessage,
   type OllamaChatMetrics,
+  getLoadedModelInfo,
+  ollamaChat,
 } from "./ollama-client"
 import { buildContext } from "./prompt/context-builder"
 import { buildSystemPrompt } from "./prompt/system-prompt"
-import {
-  normalizeActions,
-  type ActionRepair,
-} from "./repair/normalize-actions"
+import { type ActionRepair, normalizeActions } from "./repair/normalize-actions"
 import {
   ALL_ACTION_TYPES,
-  buildActionPayloadSpecs,
   RESPONSE_FORMAT,
+  buildActionPayloadSpecs,
 } from "./schema/action-schema"
-import type { AgentMetrics, ChatToActionsInput, ChatToActionsResult } from "./types"
+import type {
+  AgentMetrics,
+  ChatToActionsInput,
+  ChatToActionsResult,
+} from "./types"
 
 const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
 
@@ -183,15 +185,17 @@ export async function chatToActions(
 
   let correction: ChatToActionsResult["debug"]["correction"]
   if (rejections.length > 0) {
-    const { content: correctiveRaw, metrics: secondMetrics } = await ollamaChat({
-      model: input.model,
-      messages: [
-        ...messages,
-        { role: "assistant", content: raw },
-        { role: "user", content: correctionPrompt(rejections) },
-      ],
-      format: RESPONSE_FORMAT,
-    })
+    const { content: correctiveRaw, metrics: secondMetrics } = await ollamaChat(
+      {
+        model: input.model,
+        messages: [
+          ...messages,
+          { role: "assistant", content: raw },
+          { role: "user", content: correctionPrompt(rejections) },
+        ],
+        format: RESPONSE_FORMAT,
+      },
+    )
 
     const second = actionsFromRaw(correctiveRaw)
     if (second.reply) reply = second.reply
@@ -199,7 +203,9 @@ export async function chatToActions(
     repairs.push(...second.repairs)
     callMetrics.push(secondMetrics)
     correction = {
-      reasons: rejections.map((rejection) => `${rejection.type}: ${rejection.reason}`),
+      reasons: rejections.map(
+        (rejection) => `${rejection.type}: ${rejection.reason}`,
+      ),
       rawResponse: correctiveRaw,
     }
   }

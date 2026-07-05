@@ -142,7 +142,9 @@ export function buildActionPayloadSpecs(types: Iterable<string>): string[] {
     const optional = meta.payloadKeys.filter(
       (key) => !meta.requiredKeys.includes(key),
     )
-    const parts = [`required: ${required.length > 0 ? required.join(", ") : "(none)"}`]
+    const parts = [
+      `required: ${required.length > 0 ? required.join(", ") : "(none)"}`,
+    ]
     if (optional.length > 0) parts.push(`optional: ${optional.join(", ")}`)
     lines.push(`- ${meta.type} payload { ${parts.join("; ")} }`)
   }

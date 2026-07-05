@@ -1,4 +1,5 @@
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
+
 import { activeBoardSection } from "./context-sections/active-board"
 import { catalogComponentsSection } from "./context-sections/catalog-components"
 import { hierarchySection } from "./context-sections/hierarchy"
@@ -39,7 +40,9 @@ export function buildContext(
   options: BuildContextOptions = {},
 ): string {
   const { activeBoardKey, selectedNodeId, selectedNodeRootId } = options
-  const lines: string[] = [`Workspace: "${workspace.metadata.label ?? "Untitled"}"`]
+  const lines: string[] = [
+    `Workspace: "${workspace.metadata.label ?? "Untitled"}"`,
+  ]
 
   const componentBoards = Object.entries(workspace.boards).filter(
     ([, board]) => board.type === "component",
@@ -52,7 +55,11 @@ export function buildContext(
     resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
 
   let treeCatalogIds = new Set<string>()
-  if (!activeBoard || activeBoard.type !== "component" || resolvedKey === undefined) {
+  if (
+    !activeBoard ||
+    activeBoard.type !== "component" ||
+    resolvedKey === undefined
+  ) {
     lines.push(
       "",
       "No active board is selected. Ask the user to open or select a board, and do not edit anything until one is active.",
@@ -63,7 +70,14 @@ export function buildContext(
     treeCatalogIds = board.treeCatalogIds
   }
 
-  lines.push(...selectionSection(workspace, activeBoard, selectedNodeId, selectedNodeRootId))
+  lines.push(
+    ...selectionSection(
+      workspace,
+      activeBoard,
+      selectedNodeId,
+      selectedNodeRootId,
+    ),
+  )
   lines.push(...propertyVocabularySection(treeCatalogIds))
   lines.push(...propertyShapeSection(treeCatalogIds))
   lines.push(...hierarchySection())

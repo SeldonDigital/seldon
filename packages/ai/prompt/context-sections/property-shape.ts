@@ -1,7 +1,8 @@
 import { findComponentSchema } from "@seldon/core/components/catalog"
 import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants/shared/compound-properties"
 import { BACKGROUND_KIND_VALUES } from "@seldon/core/properties/values/appearance/background/background-kind"
-import { propertyShape, SHORTHAND_SIDES } from "../property-taxonomy"
+
+import { SHORTHAND_SIDES, propertyShape } from "../property-taxonomy"
 import { section } from "./section"
 
 const TITLE =
@@ -36,7 +37,9 @@ export function propertyShapeSection(catalogIds: Set<string>): string[] {
       )
     } else if (shape === "layered") {
       const facets = COMPOUND_FACET_DISPLAY_ORDER[key] ?? []
-      body.push(`- ${key}: array of layers. Each layer { ${facets.join(", ")} }`)
+      body.push(
+        `- ${key}: array of layers. Each layer { ${facets.join(", ")} }`,
+      )
     } else if (shape === "compound") {
       const facets = COMPOUND_FACET_DISPLAY_ORDER[key] ?? []
       body.push(`- ${key}: facet object { ${facets.join(", ")} }`)

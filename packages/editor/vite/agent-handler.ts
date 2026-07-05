@@ -1,9 +1,9 @@
 import {
-  chatToActions,
-  warmModel,
   type AgentDebug,
   type AgentMetrics,
   type ChatMessage,
+  chatToActions,
+  warmModel,
 } from "@seldon/ai"
 import type {
   BoardKey,
@@ -64,7 +64,9 @@ export type WarmResult = {
  * turn, so the first real request skips the cold load and reuses the cached
  * system-prompt prefix. Called when the AI chat panel opens.
  */
-export async function warmAgent(body?: { model?: string }): Promise<WarmResult> {
+export async function warmAgent(body?: {
+  model?: string
+}): Promise<WarmResult> {
   const metrics = await warmModel({ model: body?.model })
   return { ok: true, metrics }
 }

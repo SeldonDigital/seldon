@@ -1,4 +1,5 @@
 import { catalog } from "@seldon/core/components/catalog"
+
 import { section } from "./section"
 
 const TITLE =

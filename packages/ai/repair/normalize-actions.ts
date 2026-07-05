@@ -1,4 +1,5 @@
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
+
 import { isTaggedValue, propertyShape } from "../prompt/property-taxonomy"
 
 /** One deterministic shape fix applied to a model action before validation. */

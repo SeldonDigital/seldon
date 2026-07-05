@@ -9,15 +9,15 @@ import {
 
 describe("themeTokenRefIsValid", () => {
   it("accepts an @-form ref that resolves in the named section", () => {
-    expect(themeTokenRefIsValid("@swatch.primary", defaultTheme, "swatch")).toBe(
-      true,
-    )
+    expect(
+      themeTokenRefIsValid("@swatch.primary", defaultTheme, "swatch"),
+    ).toBe(true)
   })
 
   it("rejects a ref whose section differs from the expected section", () => {
-    expect(themeTokenRefIsValid("@margin.compact", defaultTheme, "swatch")).toBe(
-      false,
-    )
+    expect(
+      themeTokenRefIsValid("@margin.compact", defaultTheme, "swatch"),
+    ).toBe(false)
   })
 
   it("rejects a bare id without the @section prefix", () => {

@@ -7,7 +7,10 @@ import { isShorthandCatalogProperty } from "../../constants/shared/shorthand-pro
 import { ValueType } from "../../constants/shared/value-types"
 import type { PropertyValueType } from "../../types/schema"
 import { getPropertySchema } from "./get-property-schema"
-import { getCatalogKeyForPropertyPath, joinCompoundFacetKey } from "./property-path"
+import {
+  getCatalogKeyForPropertyPath,
+  joinCompoundFacetKey,
+} from "./property-path"
 
 /** True when a compound parent stores its node value as an ordered layer array. */
 function isLayeredCompound(propertyKey: string): boolean {
@@ -38,7 +41,9 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value)
 }
 
-function isTaggedValue(value: unknown): value is { type: unknown; value?: unknown } {
+function isTaggedValue(
+  value: unknown,
+): value is { type: unknown; value?: unknown } {
   return isPlainObject(value) && "type" in value
 }
 
@@ -177,7 +182,11 @@ export function collectPropertyValueErrors(
   }
 
   // A shorthand stores an object of sides that all share the parent schema.
-  if (isShorthandCatalogProperty(propertyKey) && isPlainObject(value) && !isTaggedValue(value)) {
+  if (
+    isShorthandCatalogProperty(propertyKey) &&
+    isPlainObject(value) &&
+    !isTaggedValue(value)
+  ) {
     const errors: PropertyValueError[] = []
     for (const [side, sideValue] of Object.entries(value)) {
       errors.push(

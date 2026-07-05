@@ -1,4 +1,5 @@
 import { findComponentSchema } from "@seldon/core/components/catalog"
+
 import { section } from "./section"
 
 const TITLE =
@@ -19,7 +20,9 @@ export function propertyVocabularySection(catalogIds: Set<string>): string[] {
     const schema = findComponentSchema(catalogId)
     if (!schema) continue
     const keys = schema.properties ? Object.keys(schema.properties) : []
-    body.push(`- ${catalogId} [${schema.level}]: ${keys.join(", ") || "(none)"}`)
+    body.push(
+      `- ${catalogId} [${schema.level}]: ${keys.join(", ") || "(none)"}`,
+    )
   }
   return section(TITLE, body)
 }

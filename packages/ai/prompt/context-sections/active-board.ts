@@ -66,12 +66,16 @@ export function activeBoardSection(
   const lines: string[] = []
   const treeCatalogIds = new Set<string>()
 
-  const catalogId = "catalogId" in activeBoard ? activeBoard.catalogId : "(unknown)"
+  const catalogId =
+    "catalogId" in activeBoard ? activeBoard.catalogId : "(unknown)"
   lines.push(
     "",
     "The context is scoped to the active board the user is viewing. Only its nodes, states, and variants below are in scope. Refuse targets outside it.",
   )
-  lines.push("", `Active board: ${resolvedKey} -> ${catalogId} -> "${activeBoard.label}"`)
+  lines.push(
+    "",
+    `Active board: ${resolvedKey} -> ${catalogId} -> "${activeBoard.label}"`,
+  )
 
   const customStates = workspace.metadata.customStates ?? []
   if (customStates.length > 0) {
