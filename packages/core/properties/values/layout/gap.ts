@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeGapKey } from "../../../themes/types"
 import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -62,10 +63,8 @@ export const gapSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Gap) as string[]).includes(value),
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme) return false
-      return typeof value === "string" && value in theme.gap
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "gap"),
   },
   presetOptions: () => Object.values(Gap),
   themeOrdinalKeys: (theme: Theme) =>

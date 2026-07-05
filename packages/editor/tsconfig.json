@@ -18,7 +18,9 @@
       "@lib/*": ["./lib/*"],
       "@seldon/components/*": ["./seldon/*"],
       "@seldon/core/*": ["../../packages/core/*"],
-      "@seldon/factory/*": ["../../packages/factory/*"]
+      "@seldon/factory/*": ["../../packages/factory/*"],
+      "@seldon/ai": ["../../packages/ai/index.ts"],
+      "@seldon/ai/*": ["../../packages/ai/*"]
     },
     "downlevelIteration": true, // allow looping over HTMLCollection for example
     "target": "ES2017"

@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { isValidColor } from "../../../helpers/validation/color"
 import { Theme } from "../../../themes/types"
 import { ComputedFunction } from "../../constants"
@@ -35,10 +36,8 @@ export const accentColorSchema: PropertySchema = {
     computed: (value: unknown) =>
       value === ComputedFunction.HIGH_CONTRAST_COLOR ||
       value === ComputedFunction.MATCH_COLOR,
-    themeCategorical: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.swatch
-    },
+    themeCategorical: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "swatch"),
   },
   presetOptions: () => Object.values(Color),
   themeCategoricalKeys: (theme: Theme) => Object.keys(theme.swatch),

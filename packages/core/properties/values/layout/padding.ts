@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemePaddingKey } from "../../../themes/types"
 import { ComputedFunction, Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -79,10 +80,8 @@ export const paddingSchema: PropertySchema = {
       typeof value === "string" &&
       (Object.values(Padding) as string[]).includes(value),
     computed: (value: unknown) => value === ComputedFunction.OPTICAL_PADDING,
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme) return false
-      return typeof value === "string" && value in theme.padding
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "padding"),
   },
   presetOptions: () => Object.values(Padding),
   themeOrdinalKeys: (theme: Theme) =>

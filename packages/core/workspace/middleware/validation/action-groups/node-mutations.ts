@@ -429,8 +429,11 @@ export function validateThemeMutation(
     case "reset_theme_override":
     case "set_theme_label":
     case "set_theme_editor_data":
+      themeEntryValidators.exists(workspace, themeIdOf(action))
+      break
     case "set_theme_override":
       themeEntryValidators.exists(workspace, themeIdOf(action))
+      assertThemeOverridePathValid(action)
       break
     case "delete_theme":
       themeEntryValidators.exists(workspace, action.payload.themeId)
@@ -444,6 +447,22 @@ export function validateThemeMutation(
 
 function themeIdOf(action: Action): string {
   return (action.payload as { themeId: string }).themeId
+}
+
+/**
+ * Rejects a `set_theme_override` whose path is empty or not a string. The theme
+ * override tree accepts authoring roots such as `color` and `core` that are not
+ * literal keys on a materialized theme, so this guard stays at the structural
+ * level and does not restrict the section.
+ */
+function assertThemeOverridePathValid(action: Action): void {
+  const path = (action.payload as { path?: unknown }).path
+  if (typeof path !== "string" || path.length === 0) {
+    throw new WorkspaceValidationError(
+      "Theme override path must be a non-empty string",
+      action,
+    )
+  }
 }
 
 /** Loads an instance node, throwing when the id is missing or not an instance. */

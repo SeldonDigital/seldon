@@ -24,9 +24,9 @@ describe("colorSchema validation", () => {
     expect(v.option!("nope")).toBe(false)
     expect(v.computed!(ComputedFunction.HIGH_CONTRAST_COLOR)).toBe(true)
     expect(v.computed!("not-a-fn")).toBe(false)
-    expect(v.themeCategorical!("primary", defaultTheme)).toBe(true)
-    expect(v.themeCategorical!("missing", defaultTheme)).toBe(false)
-    expect(v.themeCategorical!("primary", undefined)).toBe(false)
+    expect(v.themeCategorical!("@swatch.primary", defaultTheme)).toBe(true)
+    expect(v.themeCategorical!("@swatch.missing", defaultTheme)).toBe(false)
+    expect(v.themeCategorical!("@swatch.primary", undefined)).toBe(false)
   })
 })
 

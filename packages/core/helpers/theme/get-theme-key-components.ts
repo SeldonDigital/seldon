@@ -1,4 +1,5 @@
 import {
+  Theme,
   ThemeOptionId,
   ThemeTokenNamespace,
   ThemeValueKey,
@@ -22,6 +23,27 @@ export function parseThemeRef(
     return null
   }
   return { section: path.slice(0, dot), optionId: path.slice(dot + 1) }
+}
+
+/**
+ * Validates a stored `@section.optionId` theme reference against one theme
+ * section. The reference must parse, name the expected `section`, and resolve to
+ * a token id present in that section. Flat token sections such as `swatch`,
+ * `dimension`, `size`, `margin`, `fontSize`, and `borderWidth` key their tokens
+ * directly, so a plain `optionId in theme[section]` check is correct. Nested
+ * sections such as `fontFamily` and the look sections validate elsewhere.
+ */
+export function themeTokenRefIsValid(
+  value: unknown,
+  theme: Theme | undefined,
+  section: string,
+): boolean {
+  if (!theme) return false
+  const ref = parseThemeRef(value)
+  if (!ref || ref.section !== section) return false
+  const table = (theme as Record<string, unknown>)[section]
+  if (!table || typeof table !== "object") return false
+  return ref.optionId in (table as Record<string, unknown>)
 }
 
 /**

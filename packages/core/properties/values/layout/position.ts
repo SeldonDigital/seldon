@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeDimensionKey } from "../../../themes/types"
 import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -54,10 +55,8 @@ export const positionSchema: PropertySchema = {
       if (typeof value === "number") return true
       return false
     },
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme) return false
-      return typeof value === "string" && value in theme.dimension
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "dimension"),
   },
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.dimension).map((id) => `@dimension.${id}`),

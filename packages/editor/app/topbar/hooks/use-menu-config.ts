@@ -65,6 +65,8 @@ export function useMenuConfig(): MenuConfig {
     toggleShowUnusedIcons,
     showPlayground,
     toggleShowPlayground,
+    showCodeNames,
+    toggleShowCodeNames,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const {
@@ -82,6 +84,8 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    aiLogging,
+    toggleAiLogging,
   } = useDebugMode()
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
@@ -243,6 +247,14 @@ export function useMenuConfig(): MenuConfig {
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
       {
+        id: "open-ai-chat",
+        label: "AI Chat",
+        action: () => openDialog("ai-chat"),
+        shortcut: "⌘ J",
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
         id: "show-playground",
         label: "Show Playgrounds",
         action: toggleShowPlayground,
@@ -314,6 +326,13 @@ export function useMenuConfig(): MenuConfig {
         active: workspaceLogging,
         visibleIn: ["edit", "preview"],
       },
+      {
+        id: "ai-logging",
+        label: "AI Logging",
+        action: toggleAiLogging,
+        active: aiLogging,
+        visibleIn: ["edit", "preview"],
+      },
     ]
 
     if (process.env.NODE_ENV === "development") {
@@ -330,6 +349,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     addToast,
+    openDialog,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     showPlayground,
@@ -348,6 +368,8 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    aiLogging,
+    toggleAiLogging,
   ])
 
   const editMenuItems = useMemo(() => {
@@ -648,6 +670,13 @@ export function useMenuConfig(): MenuConfig {
           },
           "separator",
           {
+            id: "show-code-names",
+            label: "Show Code Names",
+            action: toggleShowCodeNames,
+            active: showCodeNames,
+          },
+          "separator",
+          {
             id: "show-unused-properties",
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
@@ -725,6 +754,8 @@ export function useMenuConfig(): MenuConfig {
       toggleShowUnusedFonts,
       showUnusedIcons,
       toggleShowUnusedIcons,
+      showCodeNames,
+      toggleShowCodeNames,
     ],
   )
 

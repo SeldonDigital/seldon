@@ -10,6 +10,7 @@ export type DialogType =
   | "add-icon-set"
   | "component"
   | "image-upload"
+  | "ai-chat"
   | null
 
 type OpenDialogArgs =
@@ -19,6 +20,7 @@ type OpenDialogArgs =
   | [activeDialog: "add-icon-set", options?: undefined]
   | [activeDialog: "component", options?: Target]
   | [activeDialog: "image-upload", options?: undefined]
+  | [activeDialog: "ai-chat", options?: undefined]
   | [activeDialog: null, options?: undefined]
 
 type DialogState = {
@@ -49,6 +51,7 @@ const useStore = create<DialogState>((set) => ({
       case "add-font-collection":
       case "add-icon-set":
       case "image-upload":
+      case "ai-chat":
         set({
           activeDialog: args[0],
           target: undefined,
@@ -74,6 +77,7 @@ export function useDialog() {
     closeDialog: () => {
       if (
         store.activeDialog !== "image-upload" &&
+        store.activeDialog !== "ai-chat" &&
         store.activeDialog !== null
       ) {
         setActiveTool("select")

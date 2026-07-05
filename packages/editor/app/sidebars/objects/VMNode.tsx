@@ -84,6 +84,7 @@ const VMNodeInner = function VMNodeInner({
     properties,
     isExcluded,
     isHidden,
+    nodeTypeColor,
     dataNodeType,
   } = useRowNode(node, {
     rootId,
@@ -100,8 +101,11 @@ const VMNodeInner = function VMNodeInner({
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTracking(node)
 
+  // Display shows the row label (which may be a transformed code name), but
+  // inline rename always edits and commits the underlying node label.
   const nameInput = useRenameInput({
     label: String(baseLabel.children),
+    editLabel: node.label,
     isEditing: isEditingName,
     setEditing: setEditingName,
     onSubmit: setNodeLabel,
@@ -202,14 +206,21 @@ const VMNodeInner = function VMNodeInner({
   // own `[aria-disabled]` styles dim the row.
   const disabledRef = buildDisabledRefProps(isDimmed)
 
+  // Show Node Types debug tint. Applied inline to the icon and label refs only,
+  // so it wins over the field's selection and state cascade there while leaving
+  // the disclosure arrow, buttons, border, and background untinted.
+  const nodeTypeStyle = nodeTypeColor
+    ? { style: { color: nodeTypeColor } }
+    : undefined
+
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
   // the actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
-    nodeIcon: mergeStateProps(icon2, disabledRef),
-    nodeLabel: mergeStateProps(nodeLabel, disabledRef),
+    nodeIcon: mergeStateProps(icon2, disabledRef, nodeTypeStyle),
+    nodeLabel: mergeStateProps(nodeLabel, disabledRef, nodeTypeStyle),
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 

@@ -228,6 +228,10 @@ import {
   schema as legendSchema,
 } from "./primitives/controls/Legend.schema"
 import {
+  exportConfig as textareaExportConfig,
+  schema as textareaSchema,
+} from "./primitives/controls/Textarea.schema"
+import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
 } from "./primitives/texts/Blockquote.schema"
@@ -292,6 +296,7 @@ const primitives: ComponentSchema[] = [
   imageSchema,
   inputSchema,
   legendSchema,
+  textareaSchema,
   listItemSchema,
   blockquoteSchema,
   citeSchema,
@@ -441,6 +446,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.IMAGE]: imageExportConfig,
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
+  [ComponentId.TEXTAREA]: textareaExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
   [ComponentId.LIST_ITEM]: listItemExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,

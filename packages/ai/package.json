@@ -1,0 +1,26 @@
+{
+  "name": "@seldon/ai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local AI orchestration that turns chat into Seldon workspace actions.",
+  "exports": {
+    ".": {
+      "node": {
+        "development": "./index.ts",
+        "default": "./index.ts"
+      },
+      "default": "./index.ts"
+    }
+  },
+  "scripts": {
+    "quality": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@seldon/core": "file:../core"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "typescript": "^5.8.3"
+  }
+}

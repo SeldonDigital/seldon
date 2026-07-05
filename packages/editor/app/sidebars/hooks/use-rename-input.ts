@@ -14,6 +14,12 @@ import { useRenameValue } from "./use-rename-value"
 
 interface UseRenameInputOptions {
   label: string
+  /**
+   * Seed value for edit mode. Defaults to {@link label}. Lets a row display a
+   * transformed label (for example export code names) while inline rename still
+   * edits and commits the underlying name.
+   */
+  editLabel?: string
   isEditing: boolean
   setEditing: (editing: boolean) => void
   onSubmit: (value: string) => void
@@ -31,12 +37,13 @@ interface UseRenameInputOptions {
  */
 export function useRenameInput({
   label,
+  editLabel,
   isEditing,
   setEditing,
   onSubmit,
 }: UseRenameInputOptions): InputProps & { ref?: Ref<HTMLInputElement> } {
   const { value, setValue, cancel } = useRenameValue({
-    label,
+    label: editLabel ?? label,
     isEditing,
     setEditing,
   })
@@ -67,8 +74,10 @@ export function useRenameInput({
       }
       return
     }
-    // Leaving edit mode: clear both selections so the readOnly display input does
-    // not stay highlighted after the field blurs.
+    // Leaving edit mode: drop focus so the readOnly display input sheds its
+    // focus-state border (the generated `.sdn-input:focus-visible` border keeps
+    // matching a still-focused input after commit), then clear both selections.
+    if (input) input.blur()
     clearSelection()
     // Focus once when entering edit mode; label changes mid-edit must not refocus.
     // eslint-disable-next-line react-hooks/exhaustive-deps

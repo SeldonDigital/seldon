@@ -17,6 +17,8 @@ export {
   getPropertyCategory,
 } from "./property-category"
 export { validatePropertyValue } from "./validate-property-value"
+export { collectPropertyValueErrors } from "./validate-property-entry"
+export type { PropertyValueError } from "./validate-property-entry"
 export {
   isThemeTokenBoolean,
   isThemeTokenColor,

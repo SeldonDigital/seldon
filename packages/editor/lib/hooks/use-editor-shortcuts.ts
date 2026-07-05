@@ -99,6 +99,12 @@ export function useEditorShortcuts() {
     { preventDefault: true },
   )
   useHotkeys("shift+a", addVariant, { preventDefault: true })
+
+  // Open the AI chat palette
+  useHotkeys("mod+j", () => openDialog("ai-chat"), {
+    preventDefault: true,
+    enableOnFormTags: true,
+  })
   useHotkeys("[", moveSelectionForward, {
     preventDefault: true,
   })
