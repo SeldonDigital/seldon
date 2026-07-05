@@ -6,7 +6,7 @@ import type {
   Workspace,
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
-import type { AgentDebug } from "@seldon/ai"
+import type { AgentDebug, AgentMetrics } from "@seldon/ai"
 import { runAgentChat } from "@lib/ai/run-agent-chat"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
@@ -165,6 +165,20 @@ function changedProperties(action: WorkspaceAction): [string, unknown][] {
   return Object.entries(properties as Record<string, unknown>)
 }
 
+/** Purple badge that prefixes every seldon/ai console row, matching seldon/core. */
+const AI_TAG = "%c[seldon/ai]%c"
+const AI_TAG_STYLE = "color:#a855f7;font-weight:bold"
+
+/** Opens a collapsed group whose header carries the purple [seldon/ai] badge. */
+function aiGroup(title: string): void {
+  console.groupCollapsed(`${AI_TAG} ${title}`, AI_TAG_STYLE, "")
+}
+
+/** Logs a row prefixed with the purple [seldon/ai] badge, plus any extra args. */
+function aiLog(message: string, ...args: unknown[]): void {
+  console.log(`${AI_TAG} ${message}`, AI_TAG_STYLE, "", ...args)
+}
+
 /**
  * Logs a focused "what changed" subsection: each applied action's target id,
  * label, and level so the object is identifiable in the editor, plus the
@@ -176,10 +190,10 @@ function logChanges(
   appliedActions: WorkspaceAction[],
 ): void {
   if (appliedActions.length === 0) return
-  console.groupCollapsed("🎯 Changed")
+  aiGroup("🎯 Changed")
   for (const action of appliedActions) {
     const id = targetIdOf(action.payload)
-    console.log(`${action.type} → ${describeTarget(after, id)}`)
+    aiLog(`${action.type} → ${describeTarget(after, id)}`)
     for (const [key, nextValue] of changedProperties(action)) {
       const overrides = id
         ? (before.nodes?.[id]?.overrides as
@@ -187,7 +201,7 @@ function logChanges(
             | undefined)
         : undefined
       const previous = overrides?.[key]
-      console.log(
+      aiLog(
         `    ${key}: ${summarizeValue(previous)} → ${summarizeValue(nextValue)}`,
       )
     }
@@ -231,6 +245,44 @@ function scopeToBoard(
   return { nodes }
 }
 
+/** Formats a byte count as GB or MB, or undefined when the count is missing. */
+function formatBytes(bytes: number | undefined): string | undefined {
+  if (!bytes || bytes <= 0) return undefined
+  const gb = bytes / 1e9
+  return gb >= 1 ? `${gb.toFixed(2)} GB` : `${(bytes / 1e6).toFixed(0)} MB`
+}
+
+/** Formats an integer with thousands separators, e.g. 6024 -> "6,024". */
+function formatCount(value: number): string {
+  return value.toLocaleString("en-US")
+}
+
+/**
+ * Logs a one-line Ollama performance summary for the turn: wall time, load time,
+ * input/output tokens, generation speed, model memory, and call count. Times are
+ * shown in seconds. Metrics are absent only when the agent could not read them,
+ * so the line is skipped.
+ */
+function logMetricsSummary(metrics: AgentMetrics | undefined): void {
+  if (!metrics) return
+  const parts: string[] = [`${(metrics.totalMs / 1000).toFixed(2)} s total`]
+  if (metrics.loadMs > 0) {
+    parts.push(`${(metrics.loadMs / 1000).toFixed(2)} s load`)
+  }
+  parts.push(
+    `${formatCount(metrics.promptTokens)} tokens input / ${formatCount(metrics.outputTokens)} tokens output`,
+  )
+  if (metrics.outputTokensPerSecond) {
+    parts.push(`${metrics.outputTokensPerSecond.toFixed(1)} tokens/second`)
+  }
+  const vram = formatBytes(metrics.modelVramBytes)
+  const size = formatBytes(metrics.modelSizeBytes)
+  if (vram) parts.push(`${vram} VRAM`)
+  else if (size) parts.push(`${size} loaded`)
+  if (metrics.calls > 1) parts.push(`${metrics.calls} calls`)
+  aiLog(`⏱ ${metrics.model} · ${parts.join(" · ")}`, metrics)
+}
+
 /**
  * Emits one collapsed console group per turn when AI Logging is enabled in the
  * Dev menu. Groups keep the console tidy: the summary line shows collapsed, and
@@ -256,42 +308,53 @@ function logAiTurn(
           ? "✅"
           : "➖"
 
-  console.groupCollapsed(
-    `%c[seldon/ai]%c 💬 ${message}`,
-    "color:#a855f7;font-weight:bold",
-    "",
-  )
-  if (debug) {
-    console.groupCollapsed("🧭 Grounding context")
-    console.log(debug.context)
-    console.groupEnd()
-    console.groupCollapsed("📥 Raw model response")
-    console.log(debug.rawResponse)
-    console.groupEnd()
-  }
-  console.log(
-    "⚙️ Parsed actions",
-    actions.map((action) => action.type),
-    actions,
-  )
-  logChanges(before, report.workspace, report.appliedActions)
-  console.groupCollapsed("🗂 Workspace before")
+  console.groupCollapsed(`${AI_TAG} 💬 ${message}`, AI_TAG_STYLE, "")
+  aiGroup("🗂 Workspace before")
   console.log(scopeToBoard(before, activeBoardKey))
   console.groupCollapsed("Full workspace")
   console.log(before)
   console.groupEnd()
   console.groupEnd()
-  console.log(`${outcomeIcon} Outcome`, {
+  if (debug) {
+    aiGroup("🧭 Context")
+    console.log(debug.context)
+    console.groupEnd()
+    aiGroup("📥 Raw model response")
+    console.log(debug.rawResponse)
+    console.groupEnd()
+    const repairs = debug.repairs ?? []
+    if (repairs.length > 0) {
+      aiGroup(`🔧 Shape repairs (${repairs.length})`)
+      for (const repair of repairs) {
+        aiLog(`${repair.actionType}.${repair.propertyKey}: ${repair.reason}`)
+      }
+      console.groupEnd()
+    }
+    if (debug.correction) {
+      aiGroup("🔁 Corrective round-trip")
+      aiLog("Rejections fed back:", debug.correction.reasons)
+      aiLog("Corrected response:", debug.correction.rawResponse)
+      console.groupEnd()
+    }
+  }
+  aiLog(
+    "⚙️ Parsed actions",
+    actions.map((action) => action.type),
+    actions,
+  )
+  logChanges(before, report.workspace, report.appliedActions)
+  aiLog(`${outcomeIcon} Outcome`, {
     applied: report.applied,
     ineffective: report.ineffective,
     rejected: report.rejected,
   })
-  console.groupCollapsed("🗂 Workspace after")
+  aiGroup("🗂 Workspace after")
   console.log(scopeToBoard(report.workspace, activeBoardKey))
   console.groupCollapsed("Full workspace")
   console.log(report.workspace)
   console.groupEnd()
   console.groupEnd()
+  if (debug) logMetricsSummary(debug.metrics)
   console.groupEnd()
 }
 

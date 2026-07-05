@@ -1,5 +1,8 @@
 import { catalog, findComponentSchema } from "@seldon/core/components/catalog"
+import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants/shared/compound-properties"
+import { BACKGROUND_KIND_VALUES } from "@seldon/core/properties/values/appearance/background/background-kind"
 import { rules } from "@seldon/core/rules/config/rules.config"
+import { propertyShape, SHORTHAND_SIDES } from "./property-shapes"
 import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/components/get-node-parent-id"
@@ -70,7 +73,8 @@ function catalogComponentIds(): string[] {
 /**
  * Lists the settable property keys for each component that appears in the
  * active tree. Reads live from `findComponentSchema`, so the vocabulary always
- * matches core. The model must only set keys listed here.
+ * matches core. Non-atomic keys carry a shape tag that maps to the shapes
+ * legend below. The model must only set keys listed here.
  */
 function propertyVocabularyLines(catalogIds: Set<string>): string[] {
   const lines: string[] = []
@@ -78,7 +82,48 @@ function propertyVocabularyLines(catalogIds: Set<string>): string[] {
     const schema = findComponentSchema(catalogId)
     if (!schema) continue
     const keys = schema.properties ? Object.keys(schema.properties) : []
-    lines.push(`- ${catalogId} [${schema.level}]: ${keys.join(", ") || "(none)"}`)
+    const annotated = keys.map((key) => {
+      const shape = propertyShape(key)
+      return shape === "atomic" ? key : `${key} [${shape}]`
+    })
+    lines.push(
+      `- ${catalogId} [${schema.level}]: ${annotated.join(", ") || "(none)"}`,
+    )
+  }
+  return lines
+}
+
+/**
+ * Describes the value shape of every non-atomic property that appears in the
+ * active tree. Facet and side names come from core so the legend stays in sync.
+ */
+function propertyShapesLegend(catalogIds: Set<string>): string[] {
+  const present = new Set<string>()
+  for (const catalogId of catalogIds) {
+    const schema = findComponentSchema(catalogId)
+    if (!schema?.properties) continue
+    for (const key of Object.keys(schema.properties)) {
+      if (propertyShape(key) !== "atomic") present.add(key)
+    }
+  }
+  if (present.size === 0) return []
+  const lines: string[] = []
+  for (const key of [...present].sort()) {
+    const shape = propertyShape(key)
+    if (shape === "layered" && key === "background") {
+      lines.push(
+        `- background: array of layers. Each layer picks a kind (${BACKGROUND_KIND_VALUES.join(", ")}), then that kind's facets. A color layer: [{ "kind": { "type": "option", "value": "color" }, "color": <theme.categorical or exact> }]`,
+      )
+    } else if (shape === "layered") {
+      const facets = COMPOUND_FACET_DISPLAY_ORDER[key] ?? []
+      lines.push(`- ${key}: array of layers. Each layer { ${facets.join(", ")} }`)
+    } else if (shape === "compound") {
+      const facets = COMPOUND_FACET_DISPLAY_ORDER[key] ?? []
+      lines.push(`- ${key}: facet object { ${facets.join(", ")} }`)
+    } else if (shape === "shorthand") {
+      const sides = SHORTHAND_SIDES[key] ?? []
+      lines.push(`- ${key}: side object { ${sides.join(", ")} }`)
+    }
   }
   return lines
 }
@@ -290,6 +335,14 @@ export function buildContext(
       "Property vocabulary (component -> settable property keys; only set keys listed here):",
     )
     lines.push(...propertyVocabularyLines(treeCatalogIds))
+    const shapeLines = propertyShapesLegend(treeCatalogIds)
+    if (shapeLines.length > 0) {
+      lines.push(
+        "",
+        "Property value shapes (set the facet or layer shown, never a flat value on the parent):",
+      )
+      lines.push(...shapeLines)
+    }
   }
 
   lines.push("", "Hierarchy (level -> may contain):")

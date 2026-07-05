@@ -1,5 +1,14 @@
 export { chatToActions } from "./orchestrate"
-export { ollamaChat, resolveModel } from "./ollama-client"
+export {
+  getLoadedModelInfo,
+  ollamaChat,
+  resolveModel,
+} from "./ollama-client"
+export type {
+  OllamaChatMetrics,
+  OllamaChatResult,
+  OllamaModelInfo,
+} from "./ollama-client"
 export {
   ALL_ACTION_TYPES,
   RESPONSE_FORMAT,
@@ -8,8 +17,11 @@ export {
 export { buildContext } from "./prompt/build-context"
 export { buildSystemPrompt } from "./prompt/system-prompt"
 export type {
+  AgentCorrection,
   AgentDebug,
+  AgentMetrics,
   ChatMessage,
   ChatToActionsInput,
   ChatToActionsResult,
 } from "./types"
+export type { ActionRepair } from "./repair/normalize-actions"

@@ -37,6 +37,13 @@ Property values are tagged objects. Use these value types:
 - Inherit from parent:  { "type": "inherit", "value": null }
 - Unset:                { "type": "empty", "value": null }
 
+A property's value shape depends on the key. The context tags each non-atomic key and lists its shape:
+- Atomic keys take one tagged value, e.g. "color": { "type": "theme.categorical", "value": "@swatch.primary" }.
+- Compound keys such as border and font take an object of the named facets, e.g. "border": { "color": <tagged value>, "width": <tagged value> }.
+- Shorthand keys such as margin, padding, corners, and position take an object of named sides or corners, e.g. "margin": { "top": <tagged value>, "left": <tagged value> }.
+- Layered keys, background and shadow, take an array of layer objects. Never set a color or spacing as a flat value on the parent. For a background color, use a color layer:
+  "background": [ { "kind": { "type": "option", "value": "color" }, "color": { "type": "theme.categorical", "value": "@swatch.primary" } } ]
+
 Common action payloads (use these shapes exactly):
 - set_node_properties: { "nodeId": "<existing node id>", "properties": { "<propertyKey>": <tagged value>, ... } }
 - set_component_properties: { "boardKey": "<board key>", "properties": { "<propertyKey>": <tagged value>, ... } }
