@@ -195,6 +195,42 @@ function logChanges(
   console.groupEnd()
 }
 
+/** Collects the node ids reachable from a component board's variant trees. */
+function collectBoardNodeIds(
+  refs: { id: string; children?: unknown[] }[] | undefined,
+  ids: Set<string>,
+): void {
+  if (!refs) return
+  for (const ref of refs) {
+    ids.add(ref.id)
+    collectBoardNodeIds(
+      ref.children as { id: string; children?: unknown[] }[] | undefined,
+      ids,
+    )
+  }
+}
+
+/**
+ * Narrows a workspace to the node entries the AI was grounded on: those reachable
+ * from the active board's variant trees. Returns the full workspace unchanged
+ * when no active board resolves, since the turn's scope is then the whole file.
+ */
+function scopeToBoard(
+  workspace: Workspace,
+  activeBoardKey: BoardKey | undefined,
+): Pick<Workspace, "nodes"> | Workspace {
+  const board = activeBoardKey ? workspace.boards[activeBoardKey] : undefined
+  if (!board || board.type !== "component") return workspace
+  const ids = new Set<string>()
+  collectBoardNodeIds(board.variants, ids)
+  const nodes: Workspace["nodes"] = {}
+  for (const id of ids) {
+    const node = workspace.nodes[id]
+    if (node) nodes[id] = node
+  }
+  return { nodes }
+}
+
 /**
  * Emits one collapsed console group per turn when AI Logging is enabled in the
  * Dev menu. Groups keep the console tidy: the summary line shows collapsed, and
@@ -207,6 +243,7 @@ function logAiTurn(
   actions: WorkspaceAction[],
   report: ApplyReport,
   before: Workspace,
+  activeBoardKey: BoardKey | undefined,
 ): void {
   if (!useDebugStore.getState().aiLogging) return
 
@@ -239,16 +276,22 @@ function logAiTurn(
   )
   logChanges(before, report.workspace, report.appliedActions)
   console.groupCollapsed("🗂 Workspace before")
+  console.log(scopeToBoard(before, activeBoardKey))
+  console.groupCollapsed("Full workspace")
   console.log(before)
   console.groupEnd()
-  console.groupCollapsed("🗂 Workspace after")
-  console.log(report.workspace)
   console.groupEnd()
   console.log(`${outcomeIcon} Outcome`, {
     applied: report.applied,
     ineffective: report.ineffective,
     rejected: report.rejected,
   })
+  console.groupCollapsed("🗂 Workspace after")
+  console.log(scopeToBoard(report.workspace, activeBoardKey))
+  console.groupCollapsed("Full workspace")
+  console.log(report.workspace)
+  console.groupEnd()
+  console.groupEnd()
   console.groupEnd()
 }
 
@@ -315,7 +358,7 @@ export function useAiChat() {
         })
 
         const outcome = applyActionsWithReport(current, actions)
-        logAiTurn(message, debug, actions, outcome, current)
+        logAiTurn(message, debug, actions, outcome, current, activeBoardKey)
 
         if (outcome.applied.length > 0) {
           dispatch({
