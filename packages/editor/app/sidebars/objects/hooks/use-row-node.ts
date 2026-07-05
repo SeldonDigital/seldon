@@ -6,6 +6,7 @@ import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { removeNewLines } from "@lib/helpers/new-lines"
 import { MenuEntry } from "@lib/menus"
 import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
+import { getComponentName } from "@seldon/factory/export/react/discovery/get-component-name"
 import { CSSProperties } from "react"
 import { Display, InstanceId, Properties, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
@@ -33,6 +34,7 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useTool } from "@lib/hooks/use-tool"
 import {
   getNodeCatalogComponentId,
@@ -81,6 +83,7 @@ export function useRowNode(
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
     useSelectionActions()
   const { showNodeIds, showNodeTypes } = useDebugMode()
+  const { showCodeNames } = useEditorConfig()
   const addToast = useAddToast()
   const hasClipboardProperties = usePropertiesClipboard(
     (state) => state.properties !== null,
@@ -183,6 +186,13 @@ export function useRowNode(
   function getNodeLabel() {
     if (showNodeIds) {
       return `${node.id} | ${node.template}`
+    }
+
+    // Show Code Names swaps the friendly label for the export component name,
+    // e.g. a "Simple" Button variant reads "ButtonSimple". Display only; the
+    // node label and rename behavior are unchanged.
+    if (showCodeNames && nodeExistsInWorkspace) {
+      return getComponentName(node, workspace)
     }
 
     if (

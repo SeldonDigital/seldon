@@ -65,6 +65,8 @@ export function useMenuConfig(): MenuConfig {
     toggleShowUnusedIcons,
     showPlayground,
     toggleShowPlayground,
+    showCodeNames,
+    toggleShowCodeNames,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const {
@@ -668,6 +670,13 @@ export function useMenuConfig(): MenuConfig {
           },
           "separator",
           {
+            id: "show-code-names",
+            label: "Show Code Names",
+            action: toggleShowCodeNames,
+            active: showCodeNames,
+          },
+          "separator",
+          {
             id: "show-unused-properties",
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
@@ -745,6 +754,8 @@ export function useMenuConfig(): MenuConfig {
       toggleShowUnusedFonts,
       showUnusedIcons,
       toggleShowUnusedIcons,
+      showCodeNames,
+      toggleShowCodeNames,
     ],
   )
 

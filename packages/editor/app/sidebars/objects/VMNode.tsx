@@ -101,8 +101,11 @@ const VMNodeInner = function VMNodeInner({
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTracking(node)
 
+  // Display shows the row label (which may be a transformed code name), but
+  // inline rename always edits and commits the underlying node label.
   const nameInput = useRenameInput({
     label: String(baseLabel.children),
+    editLabel: node.label,
     isEditing: isEditingName,
     setEditing: setEditingName,
     onSubmit: setNodeLabel,

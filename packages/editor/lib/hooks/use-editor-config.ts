@@ -63,6 +63,10 @@ interface EditorConfigState {
   showPlayground: boolean
   setShowPlayground: (enabled: boolean) => void
 
+  // Objects sidebar: show export component (code) names instead of labels
+  showCodeNames: boolean
+  setShowCodeNames: (enabled: boolean) => void
+
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
   setUseRefactoredSidebars: (enabled: boolean) => void
@@ -141,6 +145,11 @@ const useStore = create<EditorConfigState>()(
       setShowPlayground: (enabled) =>
         set((state) => ({ ...state, showPlayground: enabled })),
 
+      // Objects sidebar code names (off by default)
+      showCodeNames: false,
+      setShowCodeNames: (enabled) =>
+        set((state) => ({ ...state, showCodeNames: enabled })),
+
       // Sidebar refactor settings
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
@@ -170,6 +179,7 @@ const useStore = create<EditorConfigState>()(
         showUnusedFonts: state.showUnusedFonts,
         showUnusedIcons: state.showUnusedIcons,
         showPlayground: state.showPlayground,
+        showCodeNames: state.showCodeNames,
         useRefactoredSidebars: state.useRefactoredSidebars,
         chromeTheme: state.chromeTheme,
         interfaceMode: state.interfaceMode,
@@ -202,6 +212,8 @@ export function useEditorConfig() {
     setShowUnusedIcons,
     showPlayground,
     setShowPlayground,
+    showCodeNames,
+    setShowCodeNames,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
     chromeTheme,
@@ -232,6 +244,8 @@ export function useEditorConfig() {
       setShowUnusedIcons: state.setShowUnusedIcons,
       showPlayground: state.showPlayground,
       setShowPlayground: state.setShowPlayground,
+      showCodeNames: state.showCodeNames,
+      setShowCodeNames: state.setShowCodeNames,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
       chromeTheme: state.chromeTheme,
@@ -276,6 +290,10 @@ export function useEditorConfig() {
   const toggleShowPlayground = useCallback(() => {
     setShowPlayground(!showPlayground)
   }, [setShowPlayground, showPlayground])
+
+  const toggleShowCodeNames = useCallback(() => {
+    setShowCodeNames(!showCodeNames)
+  }, [setShowCodeNames, showCodeNames])
 
   const toggleRefactoredSidebars = useCallback(() => {
     setUseRefactoredSidebars(!useRefactoredSidebars)
@@ -333,6 +351,11 @@ export function useEditorConfig() {
     showPlayground,
     setShowPlayground,
     toggleShowPlayground,
+
+    // Objects sidebar code names methods
+    showCodeNames,
+    setShowCodeNames,
+    toggleShowCodeNames,
 
     // Sidebar refactor methods
     useRefactoredSidebars,

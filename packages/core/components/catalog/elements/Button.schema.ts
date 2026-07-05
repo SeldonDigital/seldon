@@ -223,7 +223,7 @@ export const schema = {
   variants: [
     {
       id: "label",
-      label: "Simple Button",
+      label: "Simple",
       intent: "Text-only button with a single label and no icon.",
       overrides: {
         padding: {
@@ -274,8 +274,8 @@ export const schema = {
     },
     {
       id: "iconic",
-      label: "Iconic Button",
-      intent: "Icnic button with a single icon and no label.",
+      label: "Iconic",
+      intent: "Iconic button with a single icon and no label.",
       overrides: {
         padding: {
           top: {
@@ -318,7 +318,7 @@ export const schema = {
     },
     {
       id: "tools",
-      label: "Tool Buttons",
+      label: "Tools",
       intent: "Vertical group of tool buttons.",
       overrides: {
         orientation: {
