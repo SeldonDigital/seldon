@@ -14,7 +14,6 @@ import type {
   BoardKey,
   ComponentTreeRef,
   EntryNode,
-  EntryNodeId,
   Workspace,
 } from "@seldon/core/workspace/types"
 
@@ -29,31 +28,35 @@ export interface BuildContextOptions {
 }
 
 /**
- * Walks a component tree, emitting one indented line per node with its id,
- * level, and template, and collecting the nodes it visits so the caller can
- * resolve their catalog ids for the property vocabulary.
+ * Walks a component tree, emitting one indented line per node with its id, its
+ * level and resolved catalog id (so the model can map the node to its property
+ * vocabulary), its label, and its state keys. Collects the nodes it visits so
+ * the caller can gather the catalog ids present in the tree.
  */
 function walkTree(
   refs: ComponentTreeRef[],
-  nodes: Record<EntryNodeId, EntryNode>,
+  workspace: Workspace,
   depth: number,
   lines: string[],
   visited: EntryNode[],
 ): void {
   for (const ref of refs) {
-    const node = nodes[ref.id]
+    const node = workspace.nodes[ref.id]
     const indent = "  ".repeat(depth)
     if (node) {
       visited.push(node)
+      const catalogId = getNodeCatalogId(node, workspace)
+      const kind = catalogId ? `${node.level} ${catalogId}` : node.level
       const label = node.label ? ` label="${node.label}"` : ""
-      lines.push(
-        `${indent}- ${ref.id} [${node.level}] template=${node.template}${label}`,
-      )
+      const stateKeys = node.states ? Object.keys(node.states) : []
+      const states =
+        stateKeys.length > 0 ? ` states=[${stateKeys.join(", ")}]` : ""
+      lines.push(`${indent}- ${ref.id} [${kind}]${label}${states}`)
     } else {
       lines.push(`${indent}- ${ref.id} (no node entry)`)
     }
     if (ref.children && ref.children.length > 0) {
-      walkTree(ref.children, nodes, depth + 1, lines, visited)
+      walkTree(ref.children, workspace, depth + 1, lines, visited)
     }
   }
 }
@@ -247,12 +250,14 @@ function selectionLines(
 }
 
 /**
- * Builds a compact grounding summary for the model. It deliberately omits raw
- * property overrides and the full node map: the model needs identity and
- * structure, not the entire file. Emits the component boards, the active board's
- * node tree with ids to target, the selected node with its current properties,
- * the property vocabulary for components in that tree, the hierarchy rules, the
- * theme ids and token ids, and the catalog component ids.
+ * Builds a compact grounding summary for the model, scoped to the active board
+ * the user is viewing. It deliberately omits other boards and the full node map:
+ * the model needs identity and structure for what is on the canvas, not the
+ * entire file. Emits the active board identity, its custom states, its per
+ * variant node trees with state annotations and ids to target, the selected node
+ * with its current properties, the property vocabulary for components in that
+ * tree, the hierarchy rules, the theme ids and token ids, and the catalog
+ * component ids.
  */
 export function buildContext(
   workspace: Workspace,
@@ -267,30 +272,6 @@ export function buildContext(
     ([, board]) => board.type === "component",
   )
 
-  lines.push("", "Component boards (boardKey -> catalogId -> label):")
-  if (componentBoards.length === 0) {
-    lines.push("- (none yet)")
-  }
-  for (const [key, board] of componentBoards) {
-    const catalogId =
-      "catalogId" in board ? board.catalogId : "(unknown)"
-    lines.push(`- ${key} -> ${catalogId} -> "${board.label}"`)
-  }
-
-  lines.push(
-    "",
-    "Board variants (boardKey -> variant ids and labels; target a variant by its id):",
-  )
-  for (const [key, board] of componentBoards) {
-    if (board.type !== "component") continue
-    const entries = board.variants.map((ref, index) => {
-      const node = workspace.nodes[ref.id]
-      const label = node?.label ? ` "${node.label}"` : ""
-      return `${ref.id}${label}${index === 0 ? " (default)" : ""}`
-    })
-    lines.push(`- ${key}: ${entries.join(", ")}`)
-  }
-
   const resolvedKey =
     activeBoardKey && workspace.boards[activeBoardKey]
       ? activeBoardKey
@@ -298,8 +279,29 @@ export function buildContext(
 
   const activeBoard = resolvedKey ? workspace.boards[resolvedKey] : undefined
   const treeCatalogIds = new Set<string>()
-  if (activeBoard && activeBoard.type === "component") {
-    lines.push("", `Active board: ${resolvedKey}`)
+  if (!activeBoard || activeBoard.type !== "component") {
+    lines.push(
+      "",
+      "No active board is selected. Ask the user to open or select a board, and do not edit anything until one is active.",
+    )
+  } else {
+    const catalogId = "catalogId" in activeBoard ? activeBoard.catalogId : "(unknown)"
+    lines.push(
+      "",
+      "The context is scoped to the active board the user is viewing. Only its nodes, states, and variants below are in scope. Refuse targets outside it.",
+    )
+    lines.push(
+      "",
+      `Active board: ${resolvedKey} -> ${catalogId} -> "${activeBoard.label}"`,
+    )
+    const customStates = workspace.metadata.customStates ?? []
+    if (customStates.length > 0) {
+      lines.push(
+        `Custom states (state keys usable in a node's states map): ${customStates
+          .map((state) => `${state.key} "${state.label}"`)
+          .join(", ")}`,
+      )
+    }
     lines.push(
       "Node trees per variant (use these ids for nodeId / parentId / instanceId / variantId):",
     )
@@ -309,7 +311,7 @@ export function buildContext(
       const variantLabel = variantNode?.label ? ` "${variantNode.label}"` : ""
       const defaultTag = index === 0 ? " (default)" : ""
       lines.push(`Variant ${variantRef.id}${variantLabel}${defaultTag}:`)
-      walkTree([variantRef], workspace.nodes, 1, lines, visited)
+      walkTree([variantRef], workspace, 1, lines, visited)
     })
     for (const node of visited) {
       const catalogId = getNodeCatalogId(node, workspace)

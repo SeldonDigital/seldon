@@ -12,7 +12,11 @@ import {
   normalizeActions,
   type ActionRepair,
 } from "./repair/normalize-actions"
-import { ALL_ACTION_TYPES, RESPONSE_FORMAT } from "./schema/action-schema"
+import {
+  ALL_ACTION_TYPES,
+  buildActionPayloadSpecs,
+  RESPONSE_FORMAT,
+} from "./schema/action-schema"
 import type { AgentMetrics, ChatToActionsInput, ChatToActionsResult } from "./types"
 
 const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
@@ -53,27 +57,34 @@ function actionsFromRaw(raw: string): {
   }
 }
 
+/** One action the reducer rejected, with its type and the failure reason. */
+interface Rejection {
+  type: string
+  reason: string
+}
+
 /**
  * Dry-runs each action through the reducer against a working copy so later
- * actions that depend on earlier ones still validate. Returns one reason string
- * per action the reducer rejected. No-op actions are not rejections.
+ * actions that depend on earlier ones still validate. Returns one entry per
+ * action the reducer rejected. No-op actions are not rejections.
  */
 function collectRejections(
   workspace: Workspace,
   actions: readonly WorkspaceAction[],
-): string[] {
+): Rejection[] {
   let current = workspace
-  const reasons: string[] = []
+  const rejections: Rejection[] = []
   for (const action of actions) {
     try {
       current = applyActions(current, [action])
     } catch (caught) {
-      reasons.push(
-        `${action.type}: ${caught instanceof Error ? caught.message : "invalid action"}`,
-      )
+      rejections.push({
+        type: action.type,
+        reason: caught instanceof Error ? caught.message : "invalid action",
+      })
     }
   }
-  return reasons
+  return rejections
 }
 
 const NS_PER_MS = 1_000_000
@@ -104,11 +115,24 @@ function summarizeMetrics(
   }
 }
 
-/** Prompt for the single corrective call, listing the reducer's rejections. */
-function correctionPrompt(reasons: string[]): string {
-  return `The editor validated your actions against the workspace and rejected some of them. Return the full corrected JSON envelope with the same shape. Fix only the rejected actions and keep the rest unchanged. Use the property value shapes from the context. Rejections:\n${reasons
-    .map((reason) => `- ${reason}`)
-    .join("\n")}`
+/**
+ * Prompt for the single corrective call. Lists each rejection reason and, for
+ * the rejected action types, injects the exact payload spec from the schema so
+ * the model can fix the shape. This expands payload detail only for the actions
+ * actually chosen, keeping the first-pass prompt small.
+ */
+function correctionPrompt(rejections: Rejection[]): string {
+  const reasonLines = rejections
+    .map((rejection) => `- ${rejection.type}: ${rejection.reason}`)
+    .join("\n")
+  const specLines = buildActionPayloadSpecs(
+    rejections.map((rejection) => rejection.type),
+  )
+  const specBlock =
+    specLines.length > 0
+      ? `\n\nPayload specs for the rejected actions:\n${specLines.join("\n")}`
+      : ""
+  return `The editor validated your actions against the workspace and rejected some of them. Return the full corrected JSON envelope with the same shape. Fix only the rejected actions and keep the rest unchanged. Use the property value shapes from the context. Rejections:\n${reasonLines}${specBlock}`
 }
 
 /**
@@ -174,7 +198,10 @@ export async function chatToActions(
     actions = second.actions
     repairs.push(...second.repairs)
     callMetrics.push(secondMetrics)
-    correction = { reasons: rejections, rawResponse: correctiveRaw }
+    correction = {
+      reasons: rejections.map((rejection) => `${rejection.type}: ${rejection.reason}`),
+      rawResponse: correctiveRaw,
+    }
   }
 
   const modelInfo = await getLoadedModelInfo(input.model)

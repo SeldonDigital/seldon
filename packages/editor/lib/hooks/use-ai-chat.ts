@@ -284,6 +284,55 @@ function logMetricsSummary(metrics: AgentMetrics | undefined): void {
 }
 
 /**
+ * Ordered section anchors in the grounding context. Each entry labels a section
+ * by the line that starts it. Lines are attributed to the current section until
+ * the next anchor, so multi-line blocks like the node trees roll up correctly.
+ */
+const CONTEXT_SECTION_ANCHORS: { label: string; startsWith: string }[] = [
+  { label: "Active board + states", startsWith: "Active board:" },
+  { label: "Node trees", startsWith: "Node trees per variant" },
+  { label: "Selection", startsWith: "Selected node:" },
+  { label: "Property vocabulary", startsWith: "Property vocabulary" },
+  { label: "Property value shapes", startsWith: "Property value shapes" },
+  { label: "Hierarchy", startsWith: "Hierarchy (level" },
+  { label: "Theme ids", startsWith: "Theme ids" },
+  { label: "Theme tokens", startsWith: "Theme tokens" },
+  { label: "Catalog ids", startsWith: "Component catalog ids" },
+]
+
+/**
+ * Attributes the grounding context's characters to its sections and logs a size
+ * breakdown, so trimming targets the heaviest dynamic parts by measured weight
+ * on the real board. Token counts are a rough chars/4 estimate.
+ */
+function logContextSizes(context: string): void {
+  const buckets = new Map<string, number>()
+  let current = "Header"
+  for (const line of context.split("\n")) {
+    const trimmed = line.trimStart()
+    const anchor = CONTEXT_SECTION_ANCHORS.find((entry) =>
+      trimmed.startsWith(entry.startsWith),
+    )
+    if (anchor) current = anchor.label
+    buckets.set(current, (buckets.get(current) ?? 0) + line.length + 1)
+  }
+  const rows = [...buckets.entries()]
+    .map(([label, chars]) => ({
+      section: label,
+      chars,
+      approxTokens: Math.round(chars / 4),
+    }))
+    .sort((a, b) => b.chars - a.chars)
+  aiGroup(
+    `📏 Context size · ${formatCount(context.length)} chars (~${formatCount(
+      Math.round(context.length / 4),
+    )} tokens)`,
+  )
+  console.table(rows)
+  console.groupEnd()
+}
+
+/**
  * Emits one collapsed console group per turn when AI Logging is enabled in the
  * Dev menu. Groups keep the console tidy: the summary line shows collapsed, and
  * the grounding context and raw model response are nested groups the user can
@@ -319,6 +368,7 @@ function logAiTurn(
     aiGroup("🧭 Context")
     console.log(debug.context)
     console.groupEnd()
+    logContextSizes(debug.context)
     aiGroup("📥 Raw model response")
     console.log(debug.rawResponse)
     console.groupEnd()

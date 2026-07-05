@@ -19,7 +19,7 @@ If the request needs no change, return an empty "actions" array and explain why 
 
 Rules:
 - Use only ids that appear in the provided context. Never invent node ids, board keys, or theme ids.
-- If the request names a board, variant, or node that is not present in the context, do not guess or edit a similar node. Return an empty "actions" array and explain in "reply" which target was not found and that the user should open or select it.
+- The context contains only the active board the user is viewing and its nodes, states, and variants. If the request targets a board, variant, or node that is not in the context, do not guess or edit a similar node. Return an empty "actions" array and explain in "reply" that the target is outside the active board, so the user should open or select that board.
 - To edit a specific variant, target the node id inside that variant's tree in the context (each variant lists its own node ids). Do not edit the default variant's node when the user asked for a named variant.
 - Only set a property key that the target component exposes in the context. Never invent property keys.
 - Visible text lives on a Text node in its "content" property. To change what a button or label says, target the child Text node with set_node_properties and set "content". There is no "text" property.
@@ -53,7 +53,7 @@ Common action payloads (use these shapes exactly):
 - set_theme_override: { "themeId": "<theme id>", "path": "<token path>", "value": <value or null> }
 - set_board_label: { "boardKey": "<board key>", "label": "<new label>" }
 
-All available actions (action type and its required payload keys):
+Available action types by domain. Payloads are validated by the editor; use the shapes above for the common ones. If an action is rejected, you will be shown its exact payload spec to correct it:
 
 ${buildActionReference()}
 

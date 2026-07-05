@@ -94,32 +94,59 @@ const DOMAIN_ORDER = [
 ]
 
 /**
- * Builds a compact catalog of every allowed action for the system prompt. Each
- * line is `type(requiredKeys)` so the model learns the vocabulary and the
- * required payload shape without inlining the full JSON schema. Grouped by
- * domain to keep it scannable.
+ * Builds a compact keyword catalog of every allowed action for the system
+ * prompt. Each domain lists only the action type names, comma joined, so the
+ * model learns the vocabulary cheaply. Payload shapes are not inlined here: the
+ * common ones live in the system prompt, and the corrective round-trip injects
+ * the exact spec for any action the reducer rejects. Kept static across turns so
+ * the KV prefix cache reuses its prefill.
  */
 export function buildActionReference(): string {
   const byDomain = new Map<string, string[]>()
   for (const meta of ACTION_META) {
     const domain = actionDomain(meta.type)
-    const keys =
-      meta.requiredKeys.length > 0
-        ? meta.requiredKeys.join(", ")
-        : meta.payloadKeys.join(", ")
-    const line = `- ${meta.type}(${keys})`
     const list = byDomain.get(domain) ?? []
-    list.push(line)
+    list.push(meta.type)
     byDomain.set(domain, list)
   }
 
   const sections: string[] = []
   for (const domain of DOMAIN_ORDER) {
-    const lines = byDomain.get(domain)
-    if (!lines || lines.length === 0) continue
-    sections.push(`${domain}:`, ...lines, "")
+    const names = byDomain.get(domain)
+    if (!names || names.length === 0) continue
+    sections.push(`${domain}: ${names.join(", ")}`)
   }
-  return sections.join("\n").trimEnd()
+  return sections.join("\n")
+}
+
+/** Lookup of action metadata by type, for on-demand payload specs. */
+const ACTION_META_BY_TYPE = new Map<string, ActionMeta>(
+  ACTION_META.map((meta) => [meta.type, meta]),
+)
+
+/**
+ * Returns a payload spec line for each given action type, listing required keys
+ * and any remaining optional keys. Used by the corrective round-trip to show the
+ * model the exact shape of an action the reducer rejected, expanding detail only
+ * for the actions actually chosen. Unknown types are skipped.
+ */
+export function buildActionPayloadSpecs(types: Iterable<string>): string[] {
+  const seen = new Set<string>()
+  const lines: string[] = []
+  for (const type of types) {
+    if (seen.has(type)) continue
+    seen.add(type)
+    const meta = ACTION_META_BY_TYPE.get(type)
+    if (!meta) continue
+    const required = meta.requiredKeys
+    const optional = meta.payloadKeys.filter(
+      (key) => !meta.requiredKeys.includes(key),
+    )
+    const parts = [`required: ${required.length > 0 ? required.join(", ") : "(none)"}`]
+    if (optional.length > 0) parts.push(`optional: ${optional.join(", ")}`)
+    lines.push(`- ${meta.type} payload { ${parts.join("; ")} }`)
+  }
+  return lines
 }
 
 /**

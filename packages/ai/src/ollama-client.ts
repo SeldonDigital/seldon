@@ -13,6 +13,19 @@ export interface OllamaChatOptions {
   format?: unknown
   /** Overrides the Ollama base URL. Defaults to `OLLAMA_HOST` env or localhost. */
   host?: string
+  /**
+   * Whether the model may emit a reasoning pass. Defaults to `false`: on hybrid
+   * reasoning models such as qwen3 the thinking pass adds a large hidden decode
+   * that the constrained JSON output does not need. A future planning step can
+   * opt back in per call.
+   */
+  think?: boolean
+  /**
+   * How long Ollama keeps the model resident after the call. Defaults to
+   * `SELDON_AI_KEEP_ALIVE` or "30m". Keeping the model warm avoids the per-call
+   * reload and lets llama.cpp reuse the KV prefix across turns.
+   */
+  keepAlive?: string
 }
 
 /** Timing and token counts Ollama reports for one `/api/chat` call. Durations are nanoseconds. */
@@ -59,6 +72,8 @@ export async function ollamaChat({
   messages,
   format,
   host,
+  think,
+  keepAlive,
 }: OllamaChatOptions): Promise<OllamaChatResult> {
   const baseUrl = resolveHost(host)
   const resolvedModel = resolveModel(model)
@@ -73,6 +88,8 @@ export async function ollamaChat({
         messages,
         stream: false,
         format,
+        think: think ?? false,
+        keep_alive: keepAlive ?? process.env.SELDON_AI_KEEP_ALIVE ?? "30m",
         options: { temperature: 0 },
       }),
     })
