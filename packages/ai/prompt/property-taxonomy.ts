@@ -4,7 +4,7 @@ import { PROPERTY_SHORTHAND_KEYS } from "@seldon/core/properties/constants/share
 /**
  * Property shape taxonomy, derived live from core catalogs. See
  * `packages/core/properties/README.md` for the shape definitions. Shared by the
- * grounding builder and the action repair pass so both classify keys the same.
+ * context builder and the action repair pass so both classify keys the same.
  */
 export const LAYERED_KEYS = new Set<string>(
   PROPERTY_COMPOUND_CATALOG.filter(

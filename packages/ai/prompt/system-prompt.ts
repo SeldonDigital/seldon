@@ -3,7 +3,7 @@ import { buildActionReference } from "../schema/action-schema"
 /**
  * System prompt for the single-shot chat-to-actions translator. It documents the
  * property value shapes, the common action payloads in full, and a generated
- * catalog of every allowed action. The model receives the grounding context and
+ * catalog of every allowed action. The model receives the context and
  * the user request as the final user message, and must reply with the JSON
  * envelope enforced by the response format schema.
  */

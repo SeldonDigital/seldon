@@ -7,10 +7,10 @@
   "exports": {
     ".": {
       "node": {
-        "development": "./src/index.ts",
-        "default": "./src/index.ts"
+        "development": "./index.ts",
+        "default": "./index.ts"
       },
-      "default": "./src/index.ts"
+      "default": "./index.ts"
     }
   },
   "scripts": {

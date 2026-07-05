@@ -14,7 +14,7 @@ export {
   RESPONSE_FORMAT,
   buildActionReference,
 } from "./schema/action-schema"
-export { buildContext } from "./prompt/build-context"
+export { buildContext } from "./prompt/context-builder"
 export { buildSystemPrompt } from "./prompt/system-prompt"
 export type {
   AgentCorrection,

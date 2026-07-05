@@ -16,6 +16,6 @@
       "@seldon/core/*": ["../core/*"]
     }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

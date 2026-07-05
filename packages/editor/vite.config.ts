@@ -9,7 +9,7 @@ const editorRoot = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.join(editorRoot, "../..")
 const corePackageRoot = path.join(editorRoot, "../core")
 const factoryPackageRoot = path.join(editorRoot, "../factory")
-const aiPackageEntry = path.join(editorRoot, "../ai/src/index.ts")
+const aiPackageEntry = path.join(editorRoot, "../ai/index.ts")
 
 export default defineConfig(({ mode }) => ({
   root: editorRoot,

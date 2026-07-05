@@ -6,7 +6,7 @@ import {
   type OllamaChatMessage,
   type OllamaChatMetrics,
 } from "./ollama-client"
-import { buildContext } from "./prompt/build-context"
+import { buildContext } from "./prompt/context-builder"
 import { buildSystemPrompt } from "./prompt/system-prompt"
 import {
   normalizeActions,
@@ -138,7 +138,7 @@ function correctionPrompt(rejections: Rejection[]): string {
 /**
  * Single-shot translation of a chat message into workspace actions, with a
  * deterministic repair pass and at most one corrective round-trip. Builds a
- * compact grounding context, calls the local model with a schema-constrained
+ * compact context, calls the local model with a schema-constrained
  * response format, repairs common shape mistakes, then dry-runs the actions
  * through the reducer. If core rejects any, it makes one corrective call (as a
  * chat continuation, so the shared prefix stays in the KV cache) with the

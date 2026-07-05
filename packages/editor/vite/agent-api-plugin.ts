@@ -13,7 +13,7 @@ const pluginDir = path.dirname(fileURLToPath(import.meta.url))
 const handlerEntry = path.join(pluginDir, "agent-handler.ts")
 const coreRoot = path.join(pluginDir, "../../core")
 const factoryRoot = path.join(pluginDir, "../../factory")
-const aiEntry = path.join(pluginDir, "../../ai/src/index.ts")
+const aiEntry = path.join(pluginDir, "../../ai/index.ts")
 
 type RunAgent = typeof runAgent
 type WarmAgent = typeof warmAgent

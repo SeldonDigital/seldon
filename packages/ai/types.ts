@@ -11,12 +11,12 @@ export interface ChatMessage {
   content: string
 }
 
-/** Input to {@link chatToActions}. The workspace is read for grounding only; it is never mutated here. */
+/** Input to {@link chatToActions}. The workspace is read for context only; it is never mutated here. */
 export interface ChatToActionsInput {
   workspace: Workspace
   message: string
   history?: ChatMessage[]
-  /** Board the user is looking at. Its node tree is summarized for grounding. */
+  /** Board the user is looking at. Its node tree is summarized in the context. */
   activeBoardKey?: BoardKey
   /** Node the user has selected on the canvas, surfaced as the primary target. */
   selectedNodeId?: string
@@ -26,9 +26,9 @@ export interface ChatToActionsInput {
   model?: string
 }
 
-/** Grounding and model output captured for debugging. Logged by the editor console. */
+/** Context and model output captured for debugging. Logged by the editor console. */
 export interface AgentDebug {
-  /** The compact grounding summary sent to the model. */
+  /** The compact context sent to the model. */
   context: string
   /** The raw JSON string the model returned before parsing. */
   rawResponse: string
