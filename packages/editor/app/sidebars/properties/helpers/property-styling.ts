@@ -3,13 +3,13 @@ import { isCompoundProperty, isShorthandProperty } from "./property-types"
 // Debug palette for the "Show Property Types" visualization. Outside debug
 // mode, property status maps to generated leaf states (activated, invalid,
 // disabled) on the row's refs, so no inline status colors apply.
-const COLOR_SET = "var(--sdn-swatch-white)"
+const COLOR_SET = "var(--sdn-swatch-offBlack)"
 const COLOR_NOT_USED =
-  "color-mix(in srgb, var(--sdn-swatch-white) 45%, var(--sdn-swatch-offBlack))"
+  "color-mix(in srgb, var(--sdn-swatch-offWhite) 45%, var(--sdn-swatch-offBlack))"
 const COLOR_ERROR = "var(--sdn-swatch-negative)"
 const COLOR_OVERRIDE = "var(--sdn-swatch-primary)"
 const COLOR_DEBUG_COMPOUND = "var(--sdn-swatch-accent)"
-const COLOR_DEBUG_SHORTHAND = "var(--sdn-swatch-warning)"
+const COLOR_DEBUG_SHORTHAND = "var(--sdn-swatch-punch)"
 const COLOR_DEBUG_DEFAULT = "var(--sdn-swatch-positive)"
 
 /**

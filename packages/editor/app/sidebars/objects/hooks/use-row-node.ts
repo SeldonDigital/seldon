@@ -80,7 +80,7 @@ export function useRowNode(
   const { activeTool } = useTool()
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
     useSelectionActions()
-  const { showNodeIds } = useDebugMode()
+  const { showNodeIds, showNodeTypes } = useDebugMode()
   const addToast = useAddToast()
   const hasClipboardProperties = usePropertiesClipboard(
     (state) => state.properties !== null,
@@ -182,7 +182,7 @@ export function useRowNode(
 
   function getNodeLabel() {
     if (showNodeIds) {
-      return `ID: ${node.id} / TEMPLATE: ${node.template}`
+      return `${node.id} | ${node.template}`
     }
 
     if (
@@ -223,6 +223,23 @@ export function useRowNode(
   const icon2: IconProps = {
     icon: getComponentTypeIcon(),
   }
+
+  // Show Node Types debug mode tints the row's icon and label by node type:
+  // user variants use the Punch swatch and instances a lighter tint. Boards and
+  // default variants keep the default color. VMNode applies this onto the icon
+  // and label refs only, so borders, buttons, and the disclosure arrow are
+  // unaffected.
+  function getNodeTypeColor(): string | undefined {
+    if (!showNodeTypes) return undefined
+    if (typeCheckingService.isInstance(node)) {
+      return "color-mix(in srgb, var(--sdn-swatch-punch) 80%, var(--sdn-swatch-white))"
+    }
+    if (typeCheckingService.isUserVariant(node)) {
+      return "var(--sdn-swatch-punch)"
+    }
+    return undefined
+  }
+  const nodeTypeColor = getNodeTypeColor()
 
   const catalogComponentId = nodeExistsInWorkspace
     ? getNodeCatalogComponentId(node, workspace)
@@ -639,6 +656,7 @@ export function useRowNode(
     properties,
     isExcluded,
     isHidden,
+    nodeTypeColor,
     dataNodeType: typeCheckingService.getEntityType(node),
   }
 }
