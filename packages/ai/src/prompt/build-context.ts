@@ -76,8 +76,8 @@ function catalogComponentIds(): string[] {
 /**
  * Lists the settable property keys for each component that appears in the
  * active tree. Reads live from `findComponentSchema`, so the vocabulary always
- * matches core. Non-atomic keys carry a shape tag that maps to the shapes
- * legend below. The model must only set keys listed here.
+ * matches core. Keys are plain names; the shapes legend below gives the value
+ * shape for any non-atomic key. The model must only set keys listed here.
  */
 function propertyVocabularyLines(catalogIds: Set<string>): string[] {
   const lines: string[] = []
@@ -85,13 +85,7 @@ function propertyVocabularyLines(catalogIds: Set<string>): string[] {
     const schema = findComponentSchema(catalogId)
     if (!schema) continue
     const keys = schema.properties ? Object.keys(schema.properties) : []
-    const annotated = keys.map((key) => {
-      const shape = propertyShape(key)
-      return shape === "atomic" ? key : `${key} [${shape}]`
-    })
-    lines.push(
-      `- ${catalogId} [${schema.level}]: ${annotated.join(", ") || "(none)"}`,
-    )
+    lines.push(`- ${catalogId} [${schema.level}]: ${keys.join(", ") || "(none)"}`)
   }
   return lines
 }
@@ -334,7 +328,7 @@ export function buildContext(
   if (treeCatalogIds.size > 0) {
     lines.push(
       "",
-      "Property vocabulary (component -> settable property keys; only set keys listed here):",
+      "Property vocabulary (component -> settable property keys; only set keys listed here; for any key in the shapes legend below, use that value shape):",
     )
     lines.push(...propertyVocabularyLines(treeCatalogIds))
     const shapeLines = propertyShapesLegend(treeCatalogIds)
