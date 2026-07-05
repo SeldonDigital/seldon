@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeBorderWidthKey } from "../../../../themes/types"
 import { Unit, ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
@@ -58,10 +59,8 @@ export const borderWidthSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(BorderWidth) as string[]).includes(value),
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.borderWidth
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "borderWidth"),
   },
   presetOptions: () => Object.values(BorderWidth),
   themeOrdinalKeys: (theme: Theme) =>

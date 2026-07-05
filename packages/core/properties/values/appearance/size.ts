@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeSizeKey } from "../../../themes/types"
 import { ComputedFunction, Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -48,10 +49,8 @@ export const sizeSchema: PropertySchema = {
       return false
     },
     computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.size
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "size"),
   },
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.size).map((id) => `@size.${id}`),

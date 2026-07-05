@@ -2,6 +2,7 @@ import {
   type LayeredPaintKey,
   isLayeredPaintProperty,
 } from "../../../../properties"
+import { BACKGROUND_KIND_VALUES } from "../../../../properties/values/appearance/background/background-kind"
 import { getEffectiveNodeProperties } from "../../../compute/compute-node-properties"
 import type { Action, InstanceId, VariantId, Workspace } from "../../../types"
 import { check } from "../check"
@@ -44,6 +45,12 @@ export function validateSetNodeLayerKind(
       (Number.isInteger(layerIndex) && layerIndex >= 0),
     `set_node_layer_kind layerIndex must be a non-negative integer, got ${layerIndex}`,
   )
+  if (action.payload.property === "background") {
+    check(
+      (BACKGROUND_KIND_VALUES as string[]).includes(action.payload.kind),
+      `set_node_layer_kind kind must be one of ${BACKGROUND_KIND_VALUES.join(", ")}, got "${action.payload.kind}"`,
+    )
+  }
 }
 
 export function validateRemoveNodeLayer(

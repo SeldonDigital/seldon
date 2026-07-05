@@ -135,7 +135,11 @@ describe("representative schema behaviors", () => {
   it("validates theme ordinal margin keys against the theme", () => {
     const schema = PROPERTY_SCHEMAS.margin
     const firstKey = Object.keys(defaultTheme.margin)[0]!
-    expect(schema.validation.themeOrdinal!(firstKey, defaultTheme)).toBe(true)
+    expect(
+      schema.validation.themeOrdinal!(`@margin.${firstKey}`, defaultTheme),
+    ).toBe(true)
+    // The bare id without the `@margin.` prefix is not a valid stored ref.
+    expect(schema.validation.themeOrdinal!(firstKey, defaultTheme)).toBe(false)
     expect(schema.validation.themeOrdinal!("not-a-step", defaultTheme)).toBe(
       false,
     )
@@ -160,7 +164,7 @@ describe("representative schema behaviors", () => {
     expect(v.exact!("#ff0000")).toBe(true)
     expect(v.exact!({ red: 1, green: 2, blue: 3 })).toBe(true)
     expect(v.exact!(5)).toBe(false)
-    expect(v.themeCategorical!("primary", defaultTheme)).toBe(true)
-    expect(v.themeCategorical!("missing", defaultTheme)).toBe(false)
+    expect(v.themeCategorical!("@swatch.primary", defaultTheme)).toBe(true)
+    expect(v.themeCategorical!("@swatch.missing", defaultTheme)).toBe(false)
   })
 })

@@ -13,12 +13,18 @@ export function validateIconSetMutation(
 ): void {
   switch (action.type) {
     case "set_icon_set_label":
-    case "set_icon_set_override":
     case "reset_icon_set_override":
     case "reset_icon_set":
-    case "set_icon_set_subcategory_preset":
     case "duplicate_icon_set":
       iconSetEntryValidators.exists(workspace, iconSetIdOf(action))
+      break
+    case "set_icon_set_override":
+      iconSetEntryValidators.exists(workspace, iconSetIdOf(action))
+      assertNonEmptyOverridePath(action)
+      break
+    case "set_icon_set_subcategory_preset":
+      iconSetEntryValidators.exists(workspace, iconSetIdOf(action))
+      assertSubcategoryPresetPayload(action)
       break
     case "delete_icon_set": {
       const id = iconSetIdOf(action)
@@ -26,6 +32,42 @@ export function validateIconSetMutation(
       assertIconSetDeletable(workspace, id, action)
       break
     }
+  }
+}
+
+const SUBCATEGORY_PRESETS = new Set<string>(["all", "none"])
+
+/** Rejects a `set_icon_set_override` whose path is empty or not a string. */
+function assertNonEmptyOverridePath(action: Action): void {
+  const path = (action.payload as { path?: unknown }).path
+  if (typeof path !== "string" || path.length === 0) {
+    throw new WorkspaceValidationError(
+      "Icon set override path must be a non-empty string",
+      action,
+    )
+  }
+}
+
+/** Validates the subcategory and preset fields on a subcategory-preset edit. */
+function assertSubcategoryPresetPayload(action: Action): void {
+  const payload = action.payload as { subcategory?: unknown; preset?: unknown }
+  if (
+    typeof payload.subcategory !== "string" ||
+    payload.subcategory.length === 0
+  ) {
+    throw new WorkspaceValidationError(
+      "Icon set subcategory must be a non-empty string",
+      action,
+    )
+  }
+  if (
+    typeof payload.preset !== "string" ||
+    !SUBCATEGORY_PRESETS.has(payload.preset)
+  ) {
+    throw new WorkspaceValidationError(
+      'Icon set subcategory preset must be "all" or "none"',
+      action,
+    )
   }
 }
 

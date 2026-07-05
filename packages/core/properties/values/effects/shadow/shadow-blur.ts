@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeBlurKey } from "../../../../themes/types"
 import { Unit, ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
@@ -43,10 +44,8 @@ export const shadowBlurSchema: PropertySchema = {
         return false
       return m.unit === Unit.PX || m.unit === Unit.REM
     },
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.blur
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "blur"),
   },
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.blur).map((id) => `@blur.${id}`),
