@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, KeyboardEvent, useCallback } from "react"
+import { CSSProperties, KeyboardEvent, useCallback, useEffect } from "react"
 import { useAiChat } from "@lib/hooks/use-ai-chat"
 import { FloatingPanel } from "@app/panels/FloatingPanel"
 
@@ -26,7 +26,11 @@ const styles: Record<string, CSSProperties> = {
  * inserts a newline. Rendering the transcript and replies is deferred.
  */
 export function AiChatPanel({ handleClose }: { handleClose: () => void }) {
-  const { send, status } = useAiChat()
+  const { send, status, warm } = useAiChat()
+
+  useEffect(() => {
+    void warm()
+  }, [warm])
 
   const isPending = status === "pending"
   const placeholder = isPending

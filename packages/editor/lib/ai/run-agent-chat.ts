@@ -1,4 +1,4 @@
-import type { AgentDebug, ChatMessage } from "@seldon/ai"
+import type { AgentDebug, AgentMetrics, ChatMessage } from "@seldon/ai"
 import type {
   BoardKey,
   Workspace,
@@ -46,4 +46,26 @@ export async function runAgentChat(
   }
 
   return (await response.json()) as AgentChatResponse
+}
+
+export type WarmResponse = {
+  ok: true
+  metrics: AgentMetrics
+}
+
+/**
+ * Asks the local agent to load the model and prefill the system prompt via
+ * `/api/agent/warm`, so the first real turn skips the cold load. Fire and forget
+ * from the UI; the returned metrics are logged when AI Logging is on.
+ */
+export async function warmAgent(): Promise<WarmResponse> {
+  const response = await fetch("/api/agent/warm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: "{}",
+  })
+  if (!response.ok) {
+    throw new Error("Agent warm-up failed.")
+  }
+  return (await response.json()) as WarmResponse
 }

@@ -5,7 +5,7 @@ import os from "node:os"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import type { Connect, Plugin } from "vite"
-import type { AgentRequestBody, runAgent } from "./agent-handler"
+import type { AgentRequestBody, runAgent, warmAgent } from "./agent-handler"
 
 const ROUTE = "/api/agent"
 
@@ -16,8 +16,10 @@ const factoryRoot = path.join(pluginDir, "../../factory")
 const aiEntry = path.join(pluginDir, "../../ai/src/index.ts")
 
 type RunAgent = typeof runAgent
+type WarmAgent = typeof warmAgent
+type AgentModule = { runAgent: RunAgent; warmAgent: WarmAgent }
 
-let cachedRunAgent: Promise<RunAgent> | null = null
+let cachedAgent: Promise<AgentModule> | null = null
 
 /**
  * Bundles the agent handler and its core/ai graph into a single Node module with
@@ -25,7 +27,7 @@ let cachedRunAgent: Promise<RunAgent> | null = null
  * `@seldon/ai` resolve to source instead of built output, mirroring the editor's
  * source-first setup. Works the same under `vite dev` and `vite preview`.
  */
-async function loadRunAgent(): Promise<RunAgent> {
+async function loadAgent(): Promise<AgentModule> {
   const result = await build({
     entryPoints: [handlerEntry],
     bundle: true,
@@ -47,25 +49,23 @@ async function loadRunAgent(): Promise<RunAgent> {
     `seldon-agent-handler-${process.pid}.mjs`,
   )
   await fs.writeFile(outputFile, result.outputFiles[0].text)
-  const mod = (await import(pathToFileURL(outputFile).href)) as {
-    runAgent: RunAgent
-  }
-  return mod.runAgent
+  return (await import(pathToFileURL(outputFile).href)) as AgentModule
 }
 
-function getRunAgent(): Promise<RunAgent> {
-  if (!cachedRunAgent) {
-    cachedRunAgent = loadRunAgent()
+function getAgent(): Promise<AgentModule> {
+  if (!cachedAgent) {
+    cachedAgent = loadAgent()
   }
-  return cachedRunAgent
+  return cachedAgent
 }
 
-async function readJsonBody(req: IncomingMessage): Promise<AgentRequestBody> {
+async function readJsonBody<T>(req: IncomingMessage): Promise<T> {
   const chunks: Buffer[] = []
   for await (const chunk of req) {
     chunks.push(chunk as Buffer)
   }
-  return JSON.parse(Buffer.concat(chunks).toString("utf8")) as AgentRequestBody
+  const text = Buffer.concat(chunks).toString("utf8").trim()
+  return (text ? JSON.parse(text) : {}) as T
 }
 
 function sendJson(res: ServerResponse, status: number, payload: unknown): void {
@@ -79,12 +79,18 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
     next()
     return
   }
+  // Mounted at `/api/agent`, so `req.url` is the remainder: `/warm` or `/`.
+  const isWarm = (req.url ?? "").startsWith("/warm")
   void (async () => {
     try {
-      const body = await readJsonBody(req)
-      const run = await getRunAgent()
-      const result = await run(body)
-      sendJson(res, 200, result)
+      const agent = await getAgent()
+      if (isWarm) {
+        const body = await readJsonBody<{ model?: string }>(req)
+        sendJson(res, 200, await agent.warmAgent(body))
+        return
+      }
+      const body = await readJsonBody<AgentRequestBody>(req)
+      sendJson(res, 200, await agent.runAgent(body))
     } catch (error) {
       sendJson(res, 500, {
         error: error instanceof Error ? error.message : "Agent request failed.",

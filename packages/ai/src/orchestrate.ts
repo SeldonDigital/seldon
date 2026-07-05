@@ -213,3 +213,29 @@ export async function chatToActions(
     debug: { context, rawResponse: raw, repairs, correction, metrics },
   }
 }
+
+/**
+ * Loads the model and prefills the stable system prompt without running a turn.
+ * Sends the system prompt plus a trivial user message through the same
+ * constrained-decode path, so Ollama loads the model, compiles the JSON grammar,
+ * and caches the system-prompt KV prefix. Real turns then reuse that prefix and
+ * skip the cold load. Grounding context is intentionally omitted since it is not
+ * stable across turns. Returns the call's metrics for logging.
+ */
+export async function warmModel(options?: {
+  model?: string
+  host?: string
+}): Promise<AgentMetrics> {
+  const messages: OllamaChatMessage[] = [
+    { role: "system", content: buildSystemPrompt() },
+    { role: "user", content: "warm" },
+  ]
+  const { metrics } = await ollamaChat({
+    model: options?.model,
+    host: options?.host,
+    messages,
+    format: RESPONSE_FORMAT,
+  })
+  const modelInfo = await getLoadedModelInfo(options?.model)
+  return summarizeMetrics([metrics], modelInfo)
+}

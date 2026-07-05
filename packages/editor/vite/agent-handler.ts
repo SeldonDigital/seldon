@@ -1,4 +1,10 @@
-import { chatToActions, type AgentDebug, type ChatMessage } from "@seldon/ai"
+import {
+  chatToActions,
+  warmModel,
+  type AgentDebug,
+  type AgentMetrics,
+  type ChatMessage,
+} from "@seldon/ai"
 import type {
   BoardKey,
   Workspace,
@@ -46,4 +52,19 @@ export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
   })
 
   return { actions, reply, debug }
+}
+
+export type WarmResult = {
+  ok: true
+  metrics: AgentMetrics
+}
+
+/**
+ * Loads the local model and prefills the stable system prompt without running a
+ * turn, so the first real request skips the cold load and reuses the cached
+ * system-prompt prefix. Called when the AI chat panel opens.
+ */
+export async function warmAgent(body?: { model?: string }): Promise<WarmResult> {
+  const metrics = await warmModel({ model: body?.model })
+  return { ok: true, metrics }
 }

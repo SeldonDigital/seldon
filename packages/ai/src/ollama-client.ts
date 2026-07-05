@@ -1,5 +1,5 @@
 const DEFAULT_HOST = "http://127.0.0.1:11434"
-const DEFAULT_MODEL = "qwen3"
+const DEFAULT_MODEL = "qwen3:4b"
 
 export interface OllamaChatMessage {
   role: "system" | "user" | "assistant"
@@ -95,7 +95,7 @@ export async function ollamaChat({
     })
   } catch {
     throw new Error(
-      `Could not reach Ollama at ${baseUrl}. Is it running? Start it with "ollama serve" and pull a model, for example "ollama pull qwen3".`,
+      `Could not reach Ollama at ${baseUrl}. Is it running? Start it with "ollama serve" and pull a model, for example "ollama pull qwen3:4b".`,
     )
   }
 

@@ -7,7 +7,7 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 import type { AgentDebug, AgentMetrics } from "@seldon/ai"
-import { runAgentChat } from "@lib/ai/run-agent-chat"
+import { runAgentChat, warmAgent } from "@lib/ai/run-agent-chat"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useDispatch } from "@lib/workspace/hooks/use-dispatch"
@@ -333,6 +333,28 @@ function logContextSizes(context: string): void {
 }
 
 /**
+ * Coalesces concurrent warm-up requests so overlapping callers share one
+ * request and one log. Cleared on completion, so reopening the panel later
+ * re-warms if the model has since been evicted. Also absorbs StrictMode's
+ * double effect invocation in dev.
+ */
+let warmInFlight: Promise<void> | null = null
+
+/**
+ * Logs a one-line warm-up summary when the panel loads the model ahead of the
+ * first turn: model load time, tokens prefilled, and memory. Gated by AI Logging.
+ */
+function logWarm(metrics: AgentMetrics): void {
+  const parts = [
+    `${(metrics.loadMs / 1000).toFixed(2)} s load`,
+    `${formatCount(metrics.promptTokens)} tokens prefilled`,
+  ]
+  const vram = formatBytes(metrics.modelVramBytes)
+  if (vram) parts.push(`${vram} VRAM`)
+  aiLog(`🔥 Warmed ${metrics.model} · ${parts.join(" · ")}`, metrics)
+}
+
+/**
  * Emits one collapsed console group per turn when AI Logging is enabled in the
  * Dev menu. Groups keep the console tidy: the summary line shows collapsed, and
  * the grounding context and raw model response are nested groups the user can
@@ -505,6 +527,21 @@ export function useAiChat() {
     [activeBoard, dispatch],
   )
 
+  const warm = useCallback(() => {
+    if (warmInFlight) return warmInFlight
+    warmInFlight = (async () => {
+      try {
+        const { metrics } = await warmAgent()
+        if (useDebugStore.getState().aiLogging) logWarm(metrics)
+      } catch {
+        // Warm-up is best-effort; a failure just means the first turn loads cold.
+      } finally {
+        warmInFlight = null
+      }
+    })()
+    return warmInFlight
+  }, [])
+
   const reset = useStore((state) => state.reset)
 
   return {
@@ -515,6 +552,7 @@ export function useAiChat() {
     status,
     error,
     send,
+    warm,
     reset,
   }
 }

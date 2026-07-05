@@ -1,4 +1,4 @@
-export { chatToActions } from "./orchestrate"
+export { chatToActions, warmModel } from "./orchestrate"
 export {
   getLoadedModelInfo,
   ollamaChat,

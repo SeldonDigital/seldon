@@ -35,7 +35,7 @@ every property override.
 The client calls `http://127.0.0.1:11434/api/chat` with `stream: false` and a
 `format` JSON Schema that constrains the decode.
 
-- Install Ollama and pull a tool or JSON capable model, for example `qwen3`.
+- Install Ollama and pull a tool or JSON capable model. The default is `qwen3:4b`.
 - Override the model with the `SELDON_AI_MODEL` env var.
 - Override the host with the `OLLAMA_HOST` env var.
 
