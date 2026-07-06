@@ -95,7 +95,7 @@ export const PROPERTY_ICONS: Record<string, string> = {
   backgroundPositionY: "material-height",
   backgroundShape: "material-circle",
   backgroundRadialSize: "material-aspectRatio",
-  backgroundConicRepeat: "material-repeat",
+  backgroundConicRepeat: "material-autorenew",
   backgroundStartColor: "seldon-backgroundColor",
   backgroundStartBrightness: "material-brightnessMedium",
   backgroundStartOpacity: "material-opacity",

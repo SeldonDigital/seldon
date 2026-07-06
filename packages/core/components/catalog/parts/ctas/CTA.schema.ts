@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "CTA",
@@ -693,6 +697,24 @@ export const schema = {
             },
           },
         ],
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.comfortable",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.comfortable",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.comfortable",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.comfortable",
+          },
+        },
       },
       children: [
         {
