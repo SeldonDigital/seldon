@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Type Specimen",
@@ -62,6 +66,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: true,
     },
+    columnStart: { type: Sdn.ValueType.EMPTY, value: null },
+    columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
+    rowStart: { type: Sdn.ValueType.EMPTY, value: null },
+    rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
