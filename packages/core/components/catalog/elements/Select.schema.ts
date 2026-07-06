@@ -150,11 +150,11 @@ export const schema = {
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,
     },
+    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {

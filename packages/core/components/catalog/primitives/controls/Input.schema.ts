@@ -23,11 +23,11 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.InputType.TEXT,
     },
-    checked: { type: Sdn.ValueType.EMPTY, value: null },
     placeholder: {
       type: Sdn.ValueType.EXACT,
       value: "Placeholder text",
     },
+    checked: { type: Sdn.ValueType.EMPTY, value: null },
     buttonSize: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
@@ -163,7 +163,6 @@ export const schema = {
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
-
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,
@@ -213,16 +212,16 @@ export const schema = {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@fontSize.medium",
         },
-        accentColor: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
-        },
         width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
         padding: {
           top: { type: Sdn.ValueType.EMPTY, value: null },
           right: { type: Sdn.ValueType.EMPTY, value: null },
           bottom: { type: Sdn.ValueType.EMPTY, value: null },
           left: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        accentColor: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@swatch.primary",
         },
         background: [
           {
@@ -272,16 +271,16 @@ export const schema = {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@fontSize.medium",
         },
-        accentColor: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
-        },
         width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
         padding: {
           top: { type: Sdn.ValueType.EMPTY, value: null },
           right: { type: Sdn.ValueType.EMPTY, value: null },
           bottom: { type: Sdn.ValueType.EMPTY, value: null },
           left: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        accentColor: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@swatch.primary",
         },
         background: [
           {

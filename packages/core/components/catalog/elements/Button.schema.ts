@@ -353,24 +353,6 @@ export const schema = {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@gap.compact",
         },
-        corners: {
-          topLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          topRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-        },
         background: [
           {
             kind: {
@@ -395,6 +377,24 @@ export const schema = {
           preset: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
             value: "@border.none",
+          },
+        },
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
           },
         },
       },

@@ -180,24 +180,6 @@ export const schema = {
         "A day rendered as a bordered grid square that fills its column, for calendars that show gridlines.",
       overrides: {
         width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-        corners: {
-          topLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          topRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-        },
         background: [
           {
             kind: {
@@ -223,6 +205,24 @@ export const schema = {
           brightness: { type: Sdn.ValueType.EMPTY, value: null },
           opacity: { type: Sdn.ValueType.EMPTY, value: null },
         },
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+        },
       },
     },
     {
@@ -231,11 +231,11 @@ export const schema = {
       intent:
         "A day outside the active month or otherwise disabled, dimmed to recede from selectable days.",
       overrides: {
-        ariaDisabled: { type: Sdn.ValueType.EXACT, value: true },
         opacity: {
           type: Sdn.ValueType.EXACT,
           value: { unit: Sdn.Unit.PERCENT, value: 35 },
         },
+        ariaDisabled: { type: Sdn.ValueType.EXACT, value: true },
       },
     },
     {
@@ -244,7 +244,6 @@ export const schema = {
       intent:
         "The chosen day, filled with the primary swatch so its number reads in high contrast.",
       overrides: {
-        ariaSelected: { type: Sdn.ValueType.EXACT, value: true },
         background: [
           {
             kind: {
@@ -262,6 +261,7 @@ export const schema = {
             },
           },
         ],
+        ariaSelected: { type: Sdn.ValueType.EXACT, value: true },
       },
     },
     {
@@ -270,10 +270,6 @@ export const schema = {
       intent:
         "The current day, outlined with a primary ring while keeping the surface clear.",
       overrides: {
-        ariaCurrent: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.AriaCurrent.DATE,
-        },
         background: [
           {
             kind: {
@@ -301,6 +297,10 @@ export const schema = {
           width: { type: Sdn.ValueType.EMPTY, value: null },
           brightness: { type: Sdn.ValueType.EMPTY, value: null },
           opacity: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        ariaCurrent: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.AriaCurrent.DATE,
         },
       },
     },

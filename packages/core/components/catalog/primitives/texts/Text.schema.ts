@@ -72,11 +72,11 @@ export const schema = {
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    textAlign: { type: Sdn.ValueType.OPTION, value: Sdn.TextAlign.LEFT },
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,
     },
+    textAlign: { type: Sdn.ValueType.OPTION, value: Sdn.TextAlign.LEFT },
     wrapText: {
       type: Sdn.ValueType.EXACT,
       value: true,

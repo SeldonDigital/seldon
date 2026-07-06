@@ -1602,6 +1602,7 @@ export const schema = {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Align.CENTER_LEFT,
         },
+        gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
         background: [
           {
             kind: {
@@ -1619,7 +1620,6 @@ export const schema = {
             },
           },
         ],
-        gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
       },
       children: [
         {

@@ -215,14 +215,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.tight",
-          },
-          clip: {
-            type: Sdn.ValueType.EXACT,
-            value: true,
-          },
           margin: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -240,6 +232,14 @@ export const schema = {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@margin.cozy",
             },
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.tight",
+          },
+          clip: {
+            type: Sdn.ValueType.EXACT,
+            value: true,
           },
           border: {
             preset: {
@@ -533,10 +533,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
-            },
             margin: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -554,6 +550,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@margin.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.tight",
             },
           },
           children: [

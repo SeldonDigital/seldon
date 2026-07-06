@@ -192,12 +192,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Font weights",
           },
-          font: {
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
-            },
-          },
           margin: {
             bottom: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -218,6 +212,12 @@ export const schema = {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@border.hairline",
+            },
+          },
+          font: {
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.xsmall",
             },
           },
         },

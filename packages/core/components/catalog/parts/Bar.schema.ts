@@ -286,22 +286,18 @@ export const schema = {
       label: "Menu Bar",
       intent: "Horizontal bar of menu triggers that open dropdown menus.",
       overrides: {
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.MENUBAR },
         align: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Align.CENTER_LEFT,
         },
         gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.MENUBAR },
       },
       children: [
         {
           component: Seldon.ComponentId.BUTTON,
           variant: "label",
           overrides: {
-            ariaHasPopup: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.AriaHasPopup.MENU,
-            },
             corners: {
               topLeft: {
                 type: Sdn.ValueType.OPTION,
@@ -319,6 +315,10 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,
               },
+            },
+            ariaHasPopup: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.AriaHasPopup.MENU,
             },
           },
           children: [
@@ -338,10 +338,6 @@ export const schema = {
           component: Seldon.ComponentId.BUTTON,
           variant: "label",
           overrides: {
-            ariaHasPopup: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.AriaHasPopup.MENU,
-            },
             corners: {
               topLeft: {
                 type: Sdn.ValueType.OPTION,
@@ -359,6 +355,10 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,
               },
+            },
+            ariaHasPopup: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.AriaHasPopup.MENU,
             },
           },
           children: [
@@ -378,10 +378,6 @@ export const schema = {
           component: Seldon.ComponentId.BUTTON,
           variant: "label",
           overrides: {
-            ariaHasPopup: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.AriaHasPopup.MENU,
-            },
             corners: {
               topLeft: {
                 type: Sdn.ValueType.OPTION,
@@ -399,6 +395,10 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,
               },
+            },
+            ariaHasPopup: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.AriaHasPopup.MENU,
             },
           },
           children: [
@@ -418,10 +418,6 @@ export const schema = {
           component: Seldon.ComponentId.BUTTON,
           variant: "label",
           overrides: {
-            ariaHasPopup: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.AriaHasPopup.MENU,
-            },
             corners: {
               topLeft: {
                 type: Sdn.ValueType.OPTION,
@@ -439,6 +435,10 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,
               },
+            },
+            ariaHasPopup: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.AriaHasPopup.MENU,
             },
           },
           children: [
@@ -462,7 +462,6 @@ export const schema = {
       intent:
         "Provides a horizontal tab bar for organizing content into selectable sections.",
       overrides: {
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.TABLIST },
         align: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Align.CENTER_LEFT,
@@ -481,6 +480,10 @@ export const schema = {
             type: Sdn.ValueType.THEME_ORDINAL,
             value: "@padding.cozy",
           },
+        },
+        gap: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@gap.tight",
         },
         wrapChildren: {
           type: Sdn.ValueType.EXACT,
@@ -512,10 +515,7 @@ export const schema = {
           bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
           bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
         },
-        gap: {
-          type: Sdn.ValueType.THEME_ORDINAL,
-          value: "@gap.tight",
-        },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.TABLIST },
       },
       children: [
         {
@@ -633,7 +633,6 @@ export const schema = {
       label: "Breadcrumbs Bar",
       intent: "Shows the path of pages leading to the current view.",
       overrides: {
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
         align: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Align.CENTER_LEFT,
@@ -659,6 +658,7 @@ export const schema = {
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         ],
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
       },
       children: [
         {
@@ -783,10 +783,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "Settings",
             },
-            ariaCurrent: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.AriaCurrent.PAGE,
-            },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
@@ -801,6 +797,10 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.TextDecoration.NONE,
             },
+            ariaCurrent: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.AriaCurrent.PAGE,
+            },
           },
         },
       ],
@@ -811,11 +811,6 @@ export const schema = {
       intent:
         "Provides primary navigation controls for traversing sections or views.",
       overrides: {
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
-        align: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER,
-        },
         position: {
           bottom: {
             type: Sdn.ValueType.EXACT,
@@ -824,6 +819,10 @@ export const schema = {
               unit: Sdn.Unit.PX,
             },
           },
+        },
+        align: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.CENTER,
         },
         padding: {
           right: {
@@ -860,12 +859,6 @@ export const schema = {
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         ],
-        corners: {
-          topLeft: { type: Sdn.ValueType.EMPTY, value: null },
-          topRight: { type: Sdn.ValueType.EMPTY, value: null },
-          bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
-          bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
-        },
         borderTop: {
           preset: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -876,6 +869,13 @@ export const schema = {
             value: "@swatch.primary",
           },
         },
+        corners: {
+          topLeft: { type: Sdn.ValueType.EMPTY, value: null },
+          topRight: { type: Sdn.ValueType.EMPTY, value: null },
+          bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
+          bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
       },
       children: [
         {

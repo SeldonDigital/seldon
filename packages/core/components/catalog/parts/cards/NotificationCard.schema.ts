@@ -385,11 +385,11 @@ export const schema = {
       intent:
         "Warning alert with a status icon, message, and two actions for dismiss or act.",
       overrides: {
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.ALERT },
         orientation: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Orientation.VERTICAL,
         },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.ALERT },
       },
       children: [
         {
@@ -398,6 +398,10 @@ export const schema = {
             orientation: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Orientation.HORIZONTAL,
+            },
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER,
             },
             width: {
               type: Sdn.ValueType.OPTION,
@@ -410,10 +414,6 @@ export const schema = {
             gap: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@gap.cozy",
-            },
-            align: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Align.CENTER,
             },
           },
           children: [
@@ -455,10 +455,6 @@ export const schema = {
                       type: Sdn.ValueType.EXACT,
                       value: "You are using 95% of your available space.",
                     },
-                    lines: {
-                      type: Sdn.ValueType.EXACT,
-                      value: 2,
-                    },
                     font: {
                       family: {
                         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -490,6 +486,10 @@ export const schema = {
                         value: "@font.callout",
                       },
                     },
+                    lines: {
+                      type: Sdn.ValueType.EXACT,
+                      value: 2,
+                    },
                   },
                 },
               ],
@@ -500,14 +500,6 @@ export const schema = {
           component: Seldon.ComponentId.BAR,
           variant: "buttonBar",
           overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
-            },
             orientation: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Orientation.HORIZONTAL,
@@ -516,11 +508,19 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_RIGHT,
             },
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FILL,
+            },
             margin: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@margin.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.tight",
             },
           },
           children: [

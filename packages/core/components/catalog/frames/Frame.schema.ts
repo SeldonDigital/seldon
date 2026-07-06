@@ -25,19 +25,19 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.WrapperElement.DIV,
     },
-    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.VERTICAL,
     },
     align: { type: Sdn.ValueType.EMPTY, value: null },
-    placement: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,

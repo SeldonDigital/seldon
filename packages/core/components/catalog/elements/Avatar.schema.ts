@@ -1,11 +1,7 @@
-import * as Sdn from "../../../properties";
-import { ComputedFunction } from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import { ComputedFunction } from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Avatar",
@@ -30,13 +26,13 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.DEFAULT,
     },
-    direction: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.HORIZONTAL,
@@ -455,12 +451,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "/avatar-user.png",
             },
-            margin: {
-              left: {
-                type: Sdn.ValueType.EXACT,
-                value: { value: -1.75, unit: Sdn.Unit.REM },
-              },
-            },
             width: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@dimension.large",
@@ -468,6 +458,12 @@ export const schema = {
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
+            },
+            margin: {
+              left: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: -1.75, unit: Sdn.Unit.REM },
+              },
             },
             border: {
               preset: {
@@ -534,12 +530,6 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "/avatar-user.png",
             },
-            margin: {
-              left: {
-                type: Sdn.ValueType.EXACT,
-                value: { value: -1.75, unit: Sdn.Unit.REM },
-              },
-            },
             width: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@dimension.large",
@@ -547,6 +537,12 @@ export const schema = {
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
+            },
+            margin: {
+              left: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: -1.75, unit: Sdn.Unit.REM },
+              },
             },
             border: {
               preset: {
