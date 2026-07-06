@@ -32,6 +32,10 @@ import {
   schema as chipSchema,
 } from "./elements/Chip.schema"
 import {
+  exportConfig as colorChipExportConfig,
+  schema as colorChipSchema,
+} from "./elements/ColorChip.schema"
+import {
   exportConfig as comboboxFieldExportConfig,
   schema as comboboxFieldSchema,
 } from "./elements/ComboboxField.schema"
@@ -171,6 +175,10 @@ import {
   schema as menuSchema,
 } from "./parts/Menu.schema"
 import {
+  exportConfig as colorSpecimenExportConfig,
+  schema as colorSpecimenSchema,
+} from "./parts/specimens/ColorSpecimen.schema"
+import {
   exportConfig as typeSpecimenExportConfig,
   schema as typeSpecimenSchema,
 } from "./parts/specimens/TypeSpecimen.schema"
@@ -290,6 +298,7 @@ const elements: ComponentSchema[] = [
   buttonSchema,
   calendarDaySchema,
   chipSchema,
+  colorChipSchema,
   formControlSchema,
   optionGroupSchema,
   headerSchema,
@@ -347,6 +356,7 @@ const parts: ComponentSchema[] = [
   boldCtaSchema,
   joinCtaSchema,
   typeSpecimenSchema,
+  colorSpecimenSchema,
 ]
 
 const modules: ComponentSchema[] = [
@@ -417,6 +427,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.BUTTON]: buttonExportConfig,
   [ComponentId.CALENDAR_DAY]: calendarDayExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
+  [ComponentId.COLOR_CHIP]: colorChipExportConfig,
   [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
   [ComponentId.HEADER]: headerExportConfig,
@@ -469,6 +480,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.BOLD_CTA]: boldCtaExportConfig,
   [ComponentId.JOIN_CTA]: joinCtaExportConfig,
   [ComponentId.TYPE_SPECIMEN]: typeSpecimenExportConfig,
+  [ComponentId.COLOR_SPECIMEN]: colorSpecimenExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,

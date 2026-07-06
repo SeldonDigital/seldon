@@ -18,6 +18,8 @@ export enum ComponentId {
   CALENDAR_DAY = "calendarDay",
   CARD_STACKED = "cardStacked",
   CHIP = "chip",
+  COLOR_CHIP = "colorChip",
+  COLOR_SPECIMEN = "colorSpecimen",
   COMBOBOX = "combobox",
   COMBOBOX_FIELD = "comboboxField",
   CONTAINER = "container",
