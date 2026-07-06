@@ -150,6 +150,7 @@ const UI_OVERRIDES: PropertyRegistry = {
   },
   orientation: { control: "menu" },
   align: { control: "menu" },
+  placement: { control: "menu" },
   cellAlign: { control: "menu" },
   width: { control: "combo" },
   height: { control: "combo" },

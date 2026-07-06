@@ -166,9 +166,9 @@ const PROPERTY_SCHEMAS_RAW = {
   cursor: cursorSchema,
 
   // 2. LAYOUT (properties README table order; then auxiliary layout schemas)
-  direction: directionSchema,
   placement: placementSchema,
   position: positionSchema,
+  direction: directionSchema,
   orientation: orientationSchema,
   align: alignSchema,
   width: widthSchema,

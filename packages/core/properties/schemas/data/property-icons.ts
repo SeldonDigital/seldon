@@ -52,6 +52,7 @@ export const PROPERTY_ICONS: Record<string, string> = {
   orientation: "material-desktopLandscape",
   align: "seldon-positionCenter",
   cellAlign: "seldon-align",
+  placement: "material-openWith",
   position: "seldon-positionTopLeft",
   "position.top": "seldon-positionTop",
   "position.right": "seldon-positionRight",

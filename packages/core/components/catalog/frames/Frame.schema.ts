@@ -37,6 +37,7 @@ export const schema = {
       value: Sdn.Orientation.VERTICAL,
     },
     align: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,

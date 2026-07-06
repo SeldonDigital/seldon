@@ -265,13 +265,13 @@ Properties that control the positioning, sizing, and spatial relationships of co
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `direction` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl` |
 | `placement` | `atomic` | `empty` \| `inherit` \| `option: static, relative, absolute, fixed, sticky` |
 | `position` | `shorthand` | `position.top, position.right, position.bottom, position.left` |
 | └ `position.top` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.right` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.left` | `atomic` | `empty` \| `inherit` \| `<length%>` |
+| `direction` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl` |
 | `orientation` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: horizontal, vertical` |
 | `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
 | `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
