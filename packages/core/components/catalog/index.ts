@@ -227,6 +227,10 @@ import {
   schema as joinCtaSchema,
 } from "./parts/ctas/JoinCTA.schema"
 import {
+  exportConfig as socialProofCtaExportConfig,
+  schema as socialProofCtaSchema,
+} from "./parts/ctas/SocialProofCTA.schema"
+import {
   exportConfig as subscribeCtaExportConfig,
   schema as subscribeCtaSchema,
 } from "./parts/ctas/SubscribeCTA.schema"
@@ -355,6 +359,7 @@ const parts: ComponentSchema[] = [
   subscribeCtaSchema,
   boldCtaSchema,
   joinCtaSchema,
+  socialProofCtaSchema,
   typeSpecimenSchema,
   colorSpecimenSchema,
 ]
@@ -479,6 +484,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.SUBSCRIBE_CTA]: subscribeCtaExportConfig,
   [ComponentId.BOLD_CTA]: boldCtaExportConfig,
   [ComponentId.JOIN_CTA]: joinCtaExportConfig,
+  [ComponentId.SOCIAL_PROOF_CTA]: socialProofCtaExportConfig,
   [ComponentId.TYPE_SPECIMEN]: typeSpecimenExportConfig,
   [ComponentId.COLOR_SPECIMEN]: colorSpecimenExportConfig,
 
