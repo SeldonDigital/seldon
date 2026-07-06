@@ -133,10 +133,6 @@ import {
   schema as tableSchema,
 } from "./modules/Table.schema"
 import {
-  exportConfig as typeSpecimenExportConfig,
-  schema as typeSpecimenSchema,
-} from "./modules/TypeSpecimen.schema"
-import {
   exportConfig as widgetTodoExportConfig,
   schema as widgetTodoSchema,
 } from "./modules/WidgetTodo.schema"
@@ -174,6 +170,10 @@ import {
   exportConfig as menuExportConfig,
   schema as menuSchema,
 } from "./parts/Menu.schema"
+import {
+  exportConfig as typeSpecimenExportConfig,
+  schema as typeSpecimenSchema,
+} from "./parts/specimens/TypeSpecimen.schema"
 import {
   exportConfig as articleCardExportConfig,
   schema as articleCardSchema,
@@ -346,13 +346,13 @@ const parts: ComponentSchema[] = [
   subscribeCtaSchema,
   boldCtaSchema,
   joinCtaSchema,
+  typeSpecimenSchema,
 ]
 
 const modules: ComponentSchema[] = [
   linksFooterSchema,
   calendarSchema,
   dialogSchema,
-  typeSpecimenSchema,
   footerSchema,
   sidebarSchema,
   tableSchema,
@@ -445,7 +445,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CALENDAR]: calendarExportConfig,
   [ComponentId.FOOTER]: footerExportConfig,
   [ComponentId.DIALOG]: dialogExportConfig,
-  [ComponentId.TYPE_SPECIMEN]: typeSpecimenExportConfig,
   [ComponentId.SIDEBAR]: sidebarExportConfig,
   [ComponentId.TABLE]: tableExportConfig,
   [ComponentId.WIDGET_TODO]: widgetTodoExportConfig,
@@ -469,6 +468,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.SUBSCRIBE_CTA]: subscribeCtaExportConfig,
   [ComponentId.BOLD_CTA]: boldCtaExportConfig,
   [ComponentId.JOIN_CTA]: joinCtaExportConfig,
+  [ComponentId.TYPE_SPECIMEN]: typeSpecimenExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,

@@ -1,6 +1,6 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Type Specimen",
@@ -8,7 +8,7 @@ export const schema = {
   intent:
     "Schema for a type specimen panel that shows typography for a specific font.",
   tags: ["typography", "type", "specimen", "font", "ui", "panel", "text"],
-  level: Seldon.ComponentLevel.MODULE,
+  level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
