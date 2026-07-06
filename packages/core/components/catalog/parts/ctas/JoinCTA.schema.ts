@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Join CTA",
@@ -46,14 +50,14 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
-      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
+      top: { type: Sdn.ValueType.EMPTY, value: null },
       right: {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.comfortable",
       },
       bottom: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@padding.comfortable",
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       left: {
         type: Sdn.ValueType.THEME_ORDINAL,
@@ -317,12 +321,11 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
+                component: Seldon.ComponentId.ICON,
                 overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Become an affiliate",
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-arrowForward",
                   },
                   color: {
                     type: Sdn.ValueType.COMPUTED,
@@ -331,11 +334,12 @@ export const schema = {
                 },
               },
               {
-                component: Seldon.ComponentId.ICON,
+                component: Seldon.ComponentId.TEXT,
+                variant: "label",
                 overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "material-arrowForward",
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "Become an affiliate",
                   },
                   color: {
                     type: Sdn.ValueType.COMPUTED,
@@ -621,11 +625,11 @@ export const schema = {
               position: {
                 top: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 44, unit: Sdn.Unit.PX },
+                  value: { value: 60, unit: Sdn.Unit.PX },
                 },
                 left: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 118, unit: Sdn.Unit.PX },
+                  value: { value: 100, unit: Sdn.Unit.PX },
                 },
               },
             },
@@ -651,11 +655,11 @@ export const schema = {
               position: {
                 top: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 80, unit: Sdn.Unit.PX },
+                  value: { value: 100, unit: Sdn.Unit.PX },
                 },
                 left: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 232, unit: Sdn.Unit.PX },
+                  value: { value: 190, unit: Sdn.Unit.PX },
                 },
               },
             },
@@ -663,6 +667,10 @@ export const schema = {
               {
                 component: Seldon.ComponentId.IMAGE,
                 overrides: {
+                  source: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "/avatar-bentley.png",
+                  },
                   width: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@dimension.medium",
@@ -681,11 +689,11 @@ export const schema = {
               position: {
                 top: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 150, unit: Sdn.Unit.PX },
+                  value: { value: 70, unit: Sdn.Unit.PX },
                 },
                 left: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 284, unit: Sdn.Unit.PX },
+                  value: { value: 275, unit: Sdn.Unit.PX },
                 },
               },
             },
@@ -715,7 +723,7 @@ export const schema = {
                 },
                 left: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 244, unit: Sdn.Unit.PX },
+                  value: { value: 250, unit: Sdn.Unit.PX },
                 },
               },
             },
@@ -723,6 +731,10 @@ export const schema = {
               {
                 component: Seldon.ComponentId.IMAGE,
                 overrides: {
+                  source: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "/avatar-bentley.png",
+                  },
                   width: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@dimension.medium",
@@ -745,7 +757,7 @@ export const schema = {
                 },
                 left: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 54, unit: Sdn.Unit.PX },
+                  value: { value: 50, unit: Sdn.Unit.PX },
                 },
               },
             },
@@ -753,6 +765,10 @@ export const schema = {
               {
                 component: Seldon.ComponentId.IMAGE,
                 overrides: {
+                  source: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "/avatar-bentley.png",
+                  },
                   width: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@dimension.medium",
@@ -771,11 +787,11 @@ export const schema = {
               position: {
                 top: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 288, unit: Sdn.Unit.PX },
+                  value: { value: 290, unit: Sdn.Unit.PX },
                 },
                 left: {
                   type: Sdn.ValueType.EXACT,
-                  value: { value: 150, unit: Sdn.Unit.PX },
+                  value: { value: 100, unit: Sdn.Unit.PX },
                 },
               },
             },
