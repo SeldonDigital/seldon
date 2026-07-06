@@ -140,15 +140,15 @@ import {
   exportConfig as widgetTodoExportConfig,
   schema as widgetTodoSchema,
 } from "./modules/WidgetTodo.schema"
+import {
+  exportConfig as footerExportConfig,
+  schema as footerSchema,
+} from "./modules/footers/Footer.schema"
 // Modules
 import {
   exportConfig as linksFooterExportConfig,
   schema as linksFooterSchema,
 } from "./modules/footers/LinksFooter.schema"
-import {
-  exportConfig as footerExportConfig,
-  schema as footerSchema,
-} from "./modules/footers/Footer.schema"
 // Parts
 import {
   exportConfig as barExportConfig,

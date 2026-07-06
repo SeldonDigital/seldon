@@ -44,22 +44,13 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
-      top: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
-      right: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
       bottom: {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.open",
       },
-      left: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     gap: {
       type: Sdn.ValueType.THEME_ORDINAL,
