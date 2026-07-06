@@ -633,16 +633,28 @@ export const schema = {
           {
             kind: {
               type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.offBlack",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
               value: Sdn.BackgroundKind.RADIAL_GRADIENT,
             },
             preset: { type: Sdn.ValueType.EMPTY, value: null },
             positionX: {
-              type: Sdn.ValueType.EXACT,
-              value: { unit: Sdn.Unit.PERCENT, value: 10 },
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.GradientPositionX.LEFT,
             },
             positionY: {
-              type: Sdn.ValueType.EXACT,
-              value: { unit: Sdn.Unit.PERCENT, value: 90 },
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.GradientPositionY.BOTTOM,
             },
             shape: {
               type: Sdn.ValueType.OPTION,
@@ -650,7 +662,7 @@ export const schema = {
             },
             radialSize: {
               type: Sdn.ValueType.OPTION,
-              value: Sdn.GradientSize.FARTHEST_CORNER,
+              value: Sdn.GradientSize.FARTHEST_SIDE,
             },
             startColor: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -663,33 +675,21 @@ export const schema = {
             startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
             startOpacity: {
               type: Sdn.ValueType.EXACT,
-              value: { unit: Sdn.Unit.PERCENT, value: 55 },
+              value: { unit: Sdn.Unit.PERCENT, value: 45 },
             },
             endColor: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.offBlack",
+              value: "@swatch.accent",
             },
             endPosition: {
               type: Sdn.ValueType.EXACT,
-              value: { unit: Sdn.Unit.PERCENT, value: 90 },
+              value: { unit: Sdn.Unit.PERCENT, value: 55 },
             },
             endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
             endOpacity: {
               type: Sdn.ValueType.EXACT,
               value: { unit: Sdn.Unit.PERCENT, value: 0 },
             },
-          },
-          {
-            kind: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.BackgroundKind.COLOR,
-            },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.offBlack",
-            },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         ],
       },

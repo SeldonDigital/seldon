@@ -325,7 +325,7 @@ Properties that control the visual appearance and styling of components.
 | `accentColor` | `atomic` | `empty` \| `inherit` \| `<color>` |
 | `brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
 | `opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| `background` | `array` | Ordered layers, `background[0]` topmost. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
+| `background` | `array` | Ordered layers. `background[0]` is the back layer and the last layer paints on top. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
 | `border` | `compound` | `preset, style, color, width, brightness, opacity` |
 | └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
@@ -436,7 +436,7 @@ Properties that control visual effects and interactions.
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `shadow` | `array` | Ordered layers, `shadow[0]` topmost. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
+| `shadow` | `array` | Ordered layers. `shadow[0]` is the back layer and the last layer paints on top. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
 | └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`) |
 | └ `shadow[].style` | `atomic` | `empty` \| `inherit` \| `option: outer, inner` |
 | └ `shadow[].offsetX` | `atomic` | `empty` \| `inherit` \| `<length>` |

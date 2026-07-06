@@ -195,7 +195,7 @@ A schema's defaults sit on top of the same four property shapes the rest of the 
 | **Atomic** | `color`, `display`, `opacity` | Single tagged value. |
 | **Compound** | `font`, `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` | Object whose keys are the compound's facets. Each facet is itself an atomic tagged value. |
 | **Shorthand** | `margin`, `padding`, `corners`, `position` | Object keyed by side or corner. Each side is an atomic tagged value. |
-| **Layered paint** | `background`, `gradient`, `shadow` | An **array** of layer objects. The schema default is always a single layer. Additional layers are added per instance by the workspace. Index `0` is topmost. |
+| **Layered paint** | `background`, `gradient`, `shadow` | An **array** of layer objects. The schema default is always a single layer. Additional layers are added per instance by the workspace. Index `0` is the back layer and the last index paints on top. |
 
 ---
 
