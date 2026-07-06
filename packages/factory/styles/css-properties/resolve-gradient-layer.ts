@@ -219,7 +219,10 @@ function resolveAngle(
   )
 }
 
-/** Resolves a radial center axis to a CSS length, keeping its px/rem/% unit. */
+/**
+ * Resolves a radial center axis to a CSS position: a named anchor keyword such
+ * as `left` or `top` passes through, a measured value keeps its px/rem/% unit.
+ */
 function resolveLength(
   propertiesValue: GradientPositionValue | EmptyValue | undefined,
   themeValue: GradientPositionValue | EmptyValue | undefined,
@@ -227,6 +230,7 @@ function resolveLength(
 ): string {
   const resolved =
     resolveValue(propertiesValue)?.value ?? resolveValue(themeValue)?.value
+  if (typeof resolved === "string") return resolved
   if (resolved && typeof resolved === "object") {
     const measure = resolved as { value?: unknown; unit?: unknown }
     if (typeof measure.value === "number" && typeof measure.unit === "string") {

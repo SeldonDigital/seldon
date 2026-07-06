@@ -8,6 +8,8 @@ export interface LayerAddOption {
   label: string
   /** Initial facets for the new layer, or undefined for an empty layer. */
   seed?: Record<string, unknown>
+  /** Render a divider before this choice to group it apart from the prior ones. */
+  separatorBefore?: boolean
 }
 
 const LAYERED_PAINT_LABELS: Record<LayeredPaintKey, string> = {
@@ -45,6 +47,7 @@ export function getLayerAddOptions(
       {
         id: "add-layer-background-linear-gradient",
         label: "Add Linear Gradient",
+        separatorBefore: true,
         seed: {
           ...BACKGROUND_KIND_SEEDS[BackgroundKind.LINEAR_GRADIENT],
         } as Record<string, unknown>,

@@ -337,6 +337,9 @@ function TreeSection({
     const entries: MenuEntry[] = []
     for (const key of exposedKeys) {
       for (const option of getLayerAddOptions(key)) {
+        if (option.separatorBefore && entries.length > 0) {
+          entries.push("separator")
+        }
         entries.push({
           id: option.id,
           label: option.label,

@@ -62,7 +62,10 @@ import { symbolSchema } from "../../values/attributes/symbol"
 import { wrapperElementSchema } from "../../values/attributes/wrapper-element"
 import { gradientPresetSchema } from "../../values/effects/gradients/gradient"
 import { gradientAngleSchema } from "../../values/effects/gradients/gradient-angle"
-import { gradientPositionSchema } from "../../values/effects/gradients/gradient-position"
+import {
+  gradientPositionXSchema,
+  gradientPositionYSchema,
+} from "../../values/effects/gradients/gradient-position"
 import { gradientRepeatSchema } from "../../values/effects/gradients/gradient-repeat"
 import { gradientShapeSchema } from "../../values/effects/gradients/gradient-shape"
 import { gradientSizeSchema } from "../../values/effects/gradients/gradient-size"
@@ -210,8 +213,8 @@ const PROPERTY_SCHEMAS_RAW = {
   // which of these apply, so there is no per-layer gradient type facet.
   backgroundPreset: gradientPresetSchema,
   backgroundAngle: gradientAngleSchema,
-  backgroundPositionX: gradientPositionSchema,
-  backgroundPositionY: gradientPositionSchema,
+  backgroundPositionX: gradientPositionXSchema,
+  backgroundPositionY: gradientPositionYSchema,
   backgroundShape: gradientShapeSchema,
   backgroundRadialSize: gradientSizeSchema,
   backgroundConicRepeat: gradientRepeatSchema,
@@ -280,8 +283,8 @@ const PROPERTY_SCHEMAS_RAW = {
   gradientGradientType: gradientTypeSchema,
   gradientType: gradientTypeSchema,
   gradientAngle: gradientAngleSchema,
-  gradientPositionX: gradientPositionSchema,
-  gradientPositionY: gradientPositionSchema,
+  gradientPositionX: gradientPositionXSchema,
+  gradientPositionY: gradientPositionYSchema,
   gradientShape: gradientShapeSchema,
   gradientRadialSize: gradientSizeSchema,
   gradientConicRepeat: gradientRepeatSchema,
