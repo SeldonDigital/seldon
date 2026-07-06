@@ -195,11 +195,11 @@ export const schema = {
             overrides: {
               source: {
                 type: Sdn.ValueType.EXACT,
-                value: "/word-mark.svg",
+                value: "/wordmark-light.svg",
               },
               width: {
                 type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@dimension.medium",
+                value: "@dimension.huge",
               },
               height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             },
@@ -285,7 +285,7 @@ export const schema = {
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
-                value: "Product Manager,",
+                value: "Designer,",
               },
               brightness: {
                 type: Sdn.ValueType.EXACT,

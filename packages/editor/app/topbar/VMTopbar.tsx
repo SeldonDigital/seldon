@@ -286,7 +286,7 @@ const logoProps: ImageProps = {
 }
 
 const wordmarkProps: ImageProps = {
-  src: "/word-mark.svg",
+  src: "/wordmark-light.svg",
   alt: "Seldon",
 }
 

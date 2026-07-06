@@ -64,9 +64,9 @@ body {
  * light pill in dark mode. object-position pushes the img's own pixels out of
  * the content box so only the painted mask shows.
  */
-[data-seldon-ref="logo"] img[src="/word-mark.svg"] {
-  -webkit-mask: url("/word-mark.svg") no-repeat left center / contain;
-  mask: url("/word-mark.svg") no-repeat left center / contain;
+[data-seldon-ref="logo"] img[src="/wordmark-light.svg"] {
+  -webkit-mask: url("/wordmark-light.svg") no-repeat left center / contain;
+  mask: url("/wordmark-light.svg") no-repeat left center / contain;
   background-color: var(--sdn-swatch-offWhite);
   object-position: -10000px 0;
 }
