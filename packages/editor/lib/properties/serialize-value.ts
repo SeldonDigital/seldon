@@ -16,6 +16,8 @@ import {
   Display,
   FontStyle,
   Gap,
+  GradientShape,
+  GradientSize,
   GradientType,
   HtmlElement,
   ImageFit,
@@ -193,6 +195,16 @@ function initializePresetMappings() {
   // Gradient presets
   Object.entries(GradientType).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(value, GradientType[key as keyof typeof GradientType])
+  })
+
+  // Radial gradient shape presets
+  Object.entries(GradientShape).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, GradientShape[key as keyof typeof GradientShape])
+  })
+
+  // Radial gradient size presets
+  Object.entries(GradientSize).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, GradientSize[key as keyof typeof GradientSize])
   })
 
   // Image fit presets

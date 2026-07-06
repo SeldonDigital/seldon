@@ -1,6 +1,6 @@
 import type { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
-import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
+import { isGradientBackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 
 import { getComputedCssValue } from "../computed-variables"
 import { StyleGenerationContext } from "../types"
@@ -13,7 +13,7 @@ function hasGradientBackground(properties: Properties): boolean {
   return getLayeredPaintLayers(properties, "background").some((layer) => {
     const kind = resolveValue(layer.kind)
     if (kind && typeof kind.value === "string") {
-      return kind.value === BackgroundKind.GRADIENT
+      return isGradientBackgroundKind(kind.value)
     }
     return !!resolveValue(layer.preset) || !!resolveValue(layer.startColor)
   })

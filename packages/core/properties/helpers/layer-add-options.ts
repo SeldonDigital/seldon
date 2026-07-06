@@ -17,8 +17,9 @@ const LAYERED_PAINT_LABELS: Record<LayeredPaintKey, string> = {
 
 /**
  * The add-layer choices a layered paint property offers. Background splits into
- * typed Color, Image, and Gradient seeds; other stacks add a single empty
- * layer. The editor renders these without knowing any property specifics.
+ * typed Color, Image, and the three explicit gradient seeds; other stacks add a
+ * single empty layer. The editor renders these without knowing any property
+ * specifics.
  */
 export function getLayerAddOptions(
   property: LayeredPaintKey,
@@ -42,12 +43,25 @@ export function getLayerAddOptions(
         >,
       },
       {
-        id: "add-layer-background-gradient",
-        label: "Add Gradient Background",
-        seed: { ...BACKGROUND_KIND_SEEDS[BackgroundKind.GRADIENT] } as Record<
-          string,
-          unknown
-        >,
+        id: "add-layer-background-linear-gradient",
+        label: "Add Linear Gradient",
+        seed: {
+          ...BACKGROUND_KIND_SEEDS[BackgroundKind.LINEAR_GRADIENT],
+        } as Record<string, unknown>,
+      },
+      {
+        id: "add-layer-background-radial-gradient",
+        label: "Add Radial Gradient",
+        seed: {
+          ...BACKGROUND_KIND_SEEDS[BackgroundKind.RADIAL_GRADIENT],
+        } as Record<string, unknown>,
+      },
+      {
+        id: "add-layer-background-conic-gradient",
+        label: "Add Conic Gradient",
+        seed: {
+          ...BACKGROUND_KIND_SEEDS[BackgroundKind.CONIC_GRADIENT],
+        } as Record<string, unknown>,
       },
     ]
   }

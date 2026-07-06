@@ -184,13 +184,9 @@ export const schema = {
             {
               kind: {
                 type: Sdn.ValueType.OPTION,
-                value: Sdn.BackgroundKind.GRADIENT,
+                value: Sdn.BackgroundKind.LINEAR_GRADIENT,
               },
               preset: { type: Sdn.ValueType.EMPTY, value: null },
-              gradientType: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.GradientType.LINEAR,
-              },
               angle: {
                 type: Sdn.ValueType.EXACT,
                 value: { unit: Sdn.Unit.DEGREES, value: 135 },
@@ -637,14 +633,25 @@ export const schema = {
           {
             kind: {
               type: Sdn.ValueType.OPTION,
-              value: Sdn.BackgroundKind.GRADIENT,
+              value: Sdn.BackgroundKind.RADIAL_GRADIENT,
             },
             preset: { type: Sdn.ValueType.EMPTY, value: null },
-            gradientType: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.GradientType.RADIAL,
+            positionX: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PERCENT, value: 10 },
             },
-            angle: { type: Sdn.ValueType.EMPTY, value: null },
+            positionY: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PERCENT, value: 90 },
+            },
+            shape: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.GradientShape.ELLIPSE,
+            },
+            radialSize: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.GradientSize.FARTHEST_CORNER,
+            },
             startColor: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@swatch.accent",

@@ -47,27 +47,64 @@ function imageSeed(): BackgroundLayer {
   }
 }
 
+const EMPTY = { type: ValueType.EMPTY, value: null } as const
+
+/** Stop facets shared by every gradient kind, seeded EMPTY so each stays editable. */
+function gradientStopSeed(): BackgroundLayer {
+  return {
+    startColor: EMPTY,
+    startPosition: EMPTY,
+    startBrightness: EMPTY,
+    startOpacity: EMPTY,
+    endColor: EMPTY,
+    endPosition: EMPTY,
+    endBrightness: EMPTY,
+    endOpacity: EMPTY,
+  }
+}
+
 /**
- * Gradient background: the theme's primary gradient recipe. Every stop facet is
- * seeded (as EMPTY when it has no explicit default) so each one renders as an
+ * Linear gradient: the theme's primary linear recipe plus an angle facet. Every
+ * facet is seeded (EMPTY when it has no explicit default) so each renders as an
  * editable row; the preset supplies the effective colors. This mirrors how the
  * color and image seeds populate all of their kind's facets.
  */
-function gradientSeed(): BackgroundLayer {
-  const empty = { type: ValueType.EMPTY, value: null } as const
+function linearGradientSeed(): BackgroundLayer {
   return {
-    kind: { type: ValueType.OPTION, value: BackgroundKind.GRADIENT },
+    kind: { type: ValueType.OPTION, value: BackgroundKind.LINEAR_GRADIENT },
     preset: { type: ValueType.THEME_CATEGORICAL, value: "@gradient.primary" },
-    gradientType: empty,
-    angle: empty,
-    startColor: empty,
-    startPosition: empty,
-    startBrightness: empty,
-    startOpacity: empty,
-    endColor: empty,
-    endPosition: empty,
-    endBrightness: empty,
-    endOpacity: empty,
+    angle: EMPTY,
+    ...gradientStopSeed(),
+  }
+}
+
+/**
+ * Radial gradient: the theme's radial recipe plus center position, shape, and
+ * size facets. No angle facet applies to a radial spread.
+ */
+function radialGradientSeed(): BackgroundLayer {
+  return {
+    kind: { type: ValueType.OPTION, value: BackgroundKind.RADIAL_GRADIENT },
+    preset: { type: ValueType.THEME_CATEGORICAL, value: "@gradient.gradient2" },
+    positionX: EMPTY,
+    positionY: EMPTY,
+    shape: EMPTY,
+    radialSize: EMPTY,
+    ...gradientStopSeed(),
+  }
+}
+
+/**
+ * Conic gradient: an angle facet and a repeat toggle plus the shared stops. No
+ * stock theme ships a conic recipe, so the preset seeds EMPTY.
+ */
+function conicGradientSeed(): BackgroundLayer {
+  return {
+    kind: { type: ValueType.OPTION, value: BackgroundKind.CONIC_GRADIENT },
+    preset: EMPTY,
+    angle: EMPTY,
+    conicRepeat: EMPTY,
+    ...gradientStopSeed(),
   }
 }
 
@@ -76,7 +113,9 @@ export const BACKGROUND_KIND_SEEDS: Record<BackgroundKind, BackgroundLayer> = {
   [BackgroundKind.NONE]: noneSeed(),
   [BackgroundKind.COLOR]: colorSeed(),
   [BackgroundKind.IMAGE]: imageSeed(),
-  [BackgroundKind.GRADIENT]: gradientSeed(),
+  [BackgroundKind.LINEAR_GRADIENT]: linearGradientSeed(),
+  [BackgroundKind.RADIAL_GRADIENT]: radialGradientSeed(),
+  [BackgroundKind.CONIC_GRADIENT]: conicGradientSeed(),
 }
 
 /**

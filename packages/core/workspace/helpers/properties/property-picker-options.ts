@@ -36,9 +36,12 @@ import {
   isLayeredPaintProperty,
 } from "../../../properties/types/property-keys"
 import type { PropertySchema } from "../../../properties/types/schema"
+import { BackgroundKind } from "../../../properties/values/appearance/background/background-kind"
+import { GradientType } from "../../../properties/values/effects/gradients/gradient-type"
 import { Resize } from "../../../properties/values/layout/resize"
 import { Harmony } from "../../../themes/constants/enums"
 import { workspaceFontCollectionService } from "../../services/font-collection/font-collection.service"
+import { getCompoundLayerValue, getEffectiveProperties } from "./shared"
 
 export type PropertyPickerOption = { value: string; name: string }
 
@@ -543,6 +546,60 @@ function buildPropertyOptionsFromSchema(
   }
 }
 
+/** Maps a gradient background kind to the gradient type its presets must match. */
+const GRADIENT_KIND_TO_TYPE: Partial<Record<BackgroundKind, GradientType>> = {
+  [BackgroundKind.LINEAR_GRADIENT]: GradientType.LINEAR,
+  [BackgroundKind.RADIAL_GRADIENT]: GradientType.RADIAL,
+  [BackgroundKind.CONIC_GRADIENT]: GradientType.CONIC,
+}
+
+/**
+ * The gradient type a background gradient layer requires, read from the layer's
+ * `kind`. Returns undefined when the path is not a background gradient layer, so
+ * the standalone gradient look picker is left unfiltered.
+ */
+function targetGradientTypeForPath(
+  input: PropertyPickerInput,
+): GradientType | undefined {
+  const segments = input.path.split(".").filter(Boolean)
+  if (segments[0] !== "background" || segments.length < 3) return undefined
+  const layerIndex = Number(segments[1])
+  if (!Number.isInteger(layerIndex)) return undefined
+  let background: unknown
+  try {
+    background = (
+      getEffectiveProperties(input.subjectId, input.workspace) as Record<
+        string,
+        unknown
+      >
+    ).background
+  } catch {
+    return undefined
+  }
+  const layer = getCompoundLayerValue(background, layerIndex)
+  const kind = (layer?.["kind"] as { value?: unknown } | undefined)?.value
+  if (typeof kind !== "string") return undefined
+  return GRADIENT_KIND_TO_TYPE[kind as BackgroundKind]
+}
+
+/** The gradient type a theme gradient look paints, defaulting to linear. */
+function gradientLookType(
+  sectionRecord: Record<string, unknown>,
+  id: string,
+): GradientType {
+  const entry = sectionRecord[id] as
+    | { parameters?: { gradientType?: { value?: unknown } } }
+    | undefined
+  const value = entry?.parameters?.gradientType?.value
+  if (
+    typeof value === "string" &&
+    (Object.values(GradientType) as string[]).includes(value)
+  ) {
+    return value as GradientType
+  }
+  return GradientType.LINEAR
+}
+
 /**
  * Maps one theme look id to a picker option, or null when the section entry has
  * no usable name.
@@ -614,8 +671,13 @@ function buildCompoundPresetPickerOptions(
 
   if (lookSection === "gradient") {
     // Gradient looks split into a reserved group (Ramp, Fade Out, Burst) and a
-    // separate custom group so the menu renders a divider between them.
-    const ids = listThemeLookIds(theme, lookSection)
+    // separate custom group so the menu renders a divider between them. When the
+    // path is a background gradient layer, presets are scoped to looks whose
+    // type matches the layer kind (linear/radial/conic).
+    const targetType = targetGradientTypeForPath(input)
+    const ids = listThemeLookIds(theme, lookSection).filter(
+      (id) => !targetType || gradientLookType(sectionRecord, id) === targetType,
+    )
     const reservedIds = RESERVED_LOOK_IDS.gradient
     const reservedGroup = reservedIds
       .filter((id) => ids.includes(id))
@@ -725,7 +787,8 @@ function buildThemeTokenPickerOptions(
 /**
  * Builds picker options for the background parent combo. Background layers are
  * typed by an explicit `kind` rather than theme presets, so the menu reads
- * Default / Inherit / --- / None / --- / Color / Image / Gradient.
+ * Default / Inherit / --- / None / --- / Color / Image / Linear Gradient /
+ * Radial Gradient / Conic Gradient.
  */
 function buildBackgroundKindPickerOptions(): PropertyPickerResult {
   const schema = getPropertySchema("backgroundKind")
@@ -740,9 +803,11 @@ function buildBackgroundKindPickerOptions(): PropertyPickerResult {
   )
   groups.push([{ value: "none", name: "None" }])
   groups.push([
-    { value: "color", name: "Color" },
-    { value: "image", name: "Image" },
-    { value: "gradient", name: "Gradient" },
+    { value: BackgroundKind.COLOR, name: "Color" },
+    { value: BackgroundKind.IMAGE, name: "Image" },
+    { value: BackgroundKind.LINEAR_GRADIENT, name: "Linear Gradient" },
+    { value: BackgroundKind.RADIAL_GRADIENT, name: "Radial Gradient" },
+    { value: BackgroundKind.CONIC_GRADIENT, name: "Conic Gradient" },
   ])
   return { options: groups, hasCurrentValue: false }
 }

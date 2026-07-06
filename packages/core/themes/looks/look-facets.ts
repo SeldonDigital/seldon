@@ -68,6 +68,36 @@ const GRADIENT_LOOK_FACETS = [
     icon: "material-rotateRight",
   },
   {
+    facet: "positionX",
+    label: "Position X",
+    propertyKey: "gradientPositionX",
+    icon: "material-width",
+  },
+  {
+    facet: "positionY",
+    label: "Position Y",
+    propertyKey: "gradientPositionY",
+    icon: "material-height",
+  },
+  {
+    facet: "shape",
+    label: "Shape",
+    propertyKey: "gradientShape",
+    icon: "material-circle",
+  },
+  {
+    facet: "radialSize",
+    label: "Size",
+    propertyKey: "gradientRadialSize",
+    icon: "material-aspectRatio",
+  },
+  {
+    facet: "conicRepeat",
+    label: "Repeat",
+    propertyKey: "gradientConicRepeat",
+    icon: "material-repeat",
+  },
+  {
     facet: "startPosition",
     label: "Start Position",
     propertyKey: "gradientStartPosition",
