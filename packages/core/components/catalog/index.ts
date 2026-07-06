@@ -116,7 +116,6 @@ import {
   exportConfig as sandboxExportConfig,
   schema as sandboxSchema,
 } from "./frames/Sandbox.schema"
-// Modules
 import {
   exportConfig as calendarExportConfig,
   schema as calendarSchema,
@@ -125,10 +124,6 @@ import {
   exportConfig as dialogExportConfig,
   schema as dialogSchema,
 } from "./modules/Dialog.schema"
-import {
-  exportConfig as footerExportConfig,
-  schema as footerSchema,
-} from "./modules/Footer.schema"
 import {
   exportConfig as sidebarExportConfig,
   schema as sidebarSchema,
@@ -145,6 +140,15 @@ import {
   exportConfig as widgetTodoExportConfig,
   schema as widgetTodoSchema,
 } from "./modules/WidgetTodo.schema"
+// Modules
+import {
+  exportConfig as linksFooterExportConfig,
+  schema as linksFooterSchema,
+} from "./modules/footers/LinksFooter.schema"
+import {
+  exportConfig as footerExportConfig,
+  schema as footerSchema,
+} from "./modules/footers/Footer.schema"
 // Parts
 import {
   exportConfig as barExportConfig,
@@ -202,6 +206,10 @@ import {
   exportConfig as statCardExportConfig,
   schema as statCardSchema,
 } from "./parts/cards/StatCard.schema"
+import {
+  exportConfig as ctaExportConfig,
+  schema as ctaSchema,
+} from "./parts/ctas/CTA.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
@@ -322,9 +330,11 @@ const parts: ComponentSchema[] = [
   productCardSchema,
   profileCardSchema,
   statCardSchema,
+  ctaSchema,
 ]
 
 const modules: ComponentSchema[] = [
+  linksFooterSchema,
   calendarSchema,
   dialogSchema,
   typeSpecimenSchema,
@@ -416,6 +426,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.SANDBOX]: sandboxExportConfig,
 
   // Modules
+  [ComponentId.LINKS_FOOTER]: linksFooterExportConfig,
   [ComponentId.CALENDAR]: calendarExportConfig,
   [ComponentId.FOOTER]: footerExportConfig,
   [ComponentId.DIALOG]: dialogExportConfig,
@@ -439,6 +450,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.PRODUCT_CARD]: productCardExportConfig,
   [ComponentId.PROFILE_CARD]: profileCardExportConfig,
   [ComponentId.STAT_CARD]: statCardExportConfig,
+  [ComponentId.CTA]: ctaExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,

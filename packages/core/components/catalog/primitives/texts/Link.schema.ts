@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Link",
@@ -137,6 +141,42 @@ export const schema = {
     ariaCurrent: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHasPopup: { type: Sdn.ValueType.EMPTY, value: null },
   },
+  variants: [
+    {
+      id: "plain",
+      label: "Plain",
+      intent: "A plain link with no additional styling.",
+      overrides: {
+        font: {
+          size: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@fontSize.small",
+          },
+        },
+        textDecoration: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.TextDecoration.NONE,
+        },
+      },
+    },
+    {
+      id: "footer",
+      label: "Footer",
+      intent: "Small links used in footers.",
+      overrides: {
+        font: {
+          size: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@fontSize.xsmall",
+          },
+        },
+        textDecoration: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.TextDecoration.NONE,
+        },
+      },
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

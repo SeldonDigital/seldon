@@ -1,7 +1,11 @@
-import * as Sdn from "../../../properties"
-import { ComputedFunction } from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import { ComputedFunction } from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Avatar",
@@ -415,8 +419,8 @@ export const schema = {
               value: "@dimension.large",
             },
             height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
             },
             border: {
               preset: {
@@ -451,10 +455,10 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "/avatar-user.png",
             },
-            position: {
-              right: {
+            margin: {
+              left: {
                 type: Sdn.ValueType.EXACT,
-                value: { value: -2.5, unit: Sdn.Unit.REM },
+                value: { value: -1.75, unit: Sdn.Unit.REM },
               },
             },
             width: {
@@ -462,8 +466,8 @@ export const schema = {
               value: "@dimension.large",
             },
             height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
             },
             border: {
               preset: {
@@ -530,10 +534,10 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "/avatar-user.png",
             },
-            position: {
-              right: {
+            margin: {
+              left: {
                 type: Sdn.ValueType.EXACT,
-                value: { value: -5, unit: Sdn.Unit.REM },
+                value: { value: -1.75, unit: Sdn.Unit.REM },
               },
             },
             width: {
@@ -541,8 +545,8 @@ export const schema = {
               value: "@dimension.large",
             },
             height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
             },
             border: {
               preset: {
