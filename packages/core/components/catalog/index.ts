@@ -207,9 +207,21 @@ import {
   schema as statCardSchema,
 } from "./parts/cards/StatCard.schema"
 import {
+  exportConfig as boldCtaExportConfig,
+  schema as boldCtaSchema,
+} from "./parts/ctas/BoldCTA.schema"
+import {
   exportConfig as ctaExportConfig,
   schema as ctaSchema,
 } from "./parts/ctas/CTA.schema"
+import {
+  exportConfig as joinCtaExportConfig,
+  schema as joinCtaSchema,
+} from "./parts/ctas/JoinCTA.schema"
+import {
+  exportConfig as subscribeCtaExportConfig,
+  schema as subscribeCtaSchema,
+} from "./parts/ctas/SubscribeCTA.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
@@ -331,6 +343,9 @@ const parts: ComponentSchema[] = [
   profileCardSchema,
   statCardSchema,
   ctaSchema,
+  subscribeCtaSchema,
+  boldCtaSchema,
+  joinCtaSchema,
 ]
 
 const modules: ComponentSchema[] = [
@@ -451,6 +466,9 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.PROFILE_CARD]: profileCardExportConfig,
   [ComponentId.STAT_CARD]: statCardExportConfig,
   [ComponentId.CTA]: ctaExportConfig,
+  [ComponentId.SUBSCRIBE_CTA]: subscribeCtaExportConfig,
+  [ComponentId.BOLD_CTA]: boldCtaExportConfig,
+  [ComponentId.JOIN_CTA]: joinCtaExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,
