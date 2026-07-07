@@ -1,31 +1,22 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
 
-const legendLabel = {
-  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+
+
+
+
+const legendButtonChevron = {
+  symbol: { type: Sdn.ValueType.OPTION, value: "material-chevronDown" },
+  size: {
+    type: Sdn.ValueType.COMPUTED,
+    value: Sdn.ComputedFunction.AUTO_FIT,
+  },
   color: {
     type: Sdn.ValueType.COMPUTED,
     value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
   },
-  font: {
-    preset: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@font.label",
-    },
-    size: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@fontSize.xsmall",
-    },
-  },
-} as const
-
-const legendIcon = {
-  size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-  color: {
-    type: Sdn.ValueType.COMPUTED,
-    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-  },
+  cursor: { type: Sdn.ValueType.OPTION, value: Sdn.Cursor.POINTER },
 } as const
 
 const container = {
@@ -189,7 +180,7 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Orientation.HORIZONTAL,
           },
-          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
+          gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.EVENLY_SPACED },
           margin: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.cozy" },
             right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.cozy" },
@@ -201,12 +192,18 @@ export const schema = {
           },
           padding: {
             top: { type: Sdn.ValueType.EMPTY, value: null },
-            right: { type: Sdn.ValueType.EMPTY, value: null },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.tight",
+            },
             bottom: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@padding.cozy",
             },
-            left: { type: Sdn.ValueType.EMPTY, value: null },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.tight",
+            },
           },
           borderBottom: {
             preset: {
@@ -222,10 +219,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.MENU_ITEM,
-            overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            },
+            component: Seldon.ComponentId.BUTTON,
+            variant: "menu",
             children: [
               {
                 component: Seldon.ComponentId.ICON,
@@ -234,24 +229,23 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-margin",
                   },
-                  ...legendIcon,
                 },
               },
               {
                 component: Seldon.ComponentId.TEXT,
-                variant: "label",
                 overrides: {
                   content: { type: Sdn.ValueType.EXACT, value: "Margin" },
-                  ...legendLabel,
                 },
+              },
+              {
+                component: Seldon.ComponentId.ICON,
+                overrides: legendButtonChevron,
               },
             ],
           },
           {
-            component: Seldon.ComponentId.MENU_ITEM,
-            overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            },
+            component: Seldon.ComponentId.BUTTON,
+            variant: "menu",
             children: [
               {
                 component: Seldon.ComponentId.ICON,
@@ -260,24 +254,23 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-padding",
                   },
-                  ...legendIcon,
                 },
               },
               {
                 component: Seldon.ComponentId.TEXT,
-                variant: "label",
                 overrides: {
                   content: { type: Sdn.ValueType.EXACT, value: "Padding" },
-                  ...legendLabel,
                 },
+              },
+              {
+                component: Seldon.ComponentId.ICON,
+                overrides: legendButtonChevron,
               },
             ],
           },
           {
-            component: Seldon.ComponentId.MENU_ITEM,
-            overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            },
+            component: Seldon.ComponentId.BUTTON,
+            variant: "menu",
             children: [
               {
                 component: Seldon.ComponentId.ICON,
@@ -286,24 +279,23 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "seldon-gap",
                   },
-                  ...legendIcon,
                 },
               },
               {
                 component: Seldon.ComponentId.TEXT,
-                variant: "label",
                 overrides: {
                   content: { type: Sdn.ValueType.EXACT, value: "Gap" },
-                  ...legendLabel,
                 },
+              },
+              {
+                component: Seldon.ComponentId.ICON,
+                overrides: legendButtonChevron,
               },
             ],
           },
           {
-            component: Seldon.ComponentId.MENU_ITEM,
-            overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            },
+            component: Seldon.ComponentId.BUTTON,
+            variant: "menu",
             children: [
               {
                 component: Seldon.ComponentId.ICON,
@@ -312,24 +304,23 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-borderStyle",
                   },
-                  ...legendIcon,
                 },
               },
               {
                 component: Seldon.ComponentId.TEXT,
-                variant: "label",
                 overrides: {
                   content: { type: Sdn.ValueType.EXACT, value: "Border" },
-                  ...legendLabel,
                 },
+              },
+              {
+                component: Seldon.ComponentId.ICON,
+                overrides: legendButtonChevron,
               },
             ],
           },
           {
-            component: Seldon.ComponentId.MENU_ITEM,
-            overrides: {
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            },
+            component: Seldon.ComponentId.BUTTON,
+            variant: "menu",
             children: [
               {
                 component: Seldon.ComponentId.ICON,
@@ -338,16 +329,17 @@ export const schema = {
                     type: Sdn.ValueType.OPTION,
                     value: "material-roundedCorner",
                   },
-                  ...legendIcon,
                 },
               },
               {
                 component: Seldon.ComponentId.TEXT,
-                variant: "label",
                 overrides: {
                   content: { type: Sdn.ValueType.EXACT, value: "Corners" },
-                  ...legendLabel,
                 },
+              },
+              {
+                component: Seldon.ComponentId.ICON,
+                overrides: legendButtonChevron,
               },
             ],
           },

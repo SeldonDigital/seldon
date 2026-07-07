@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   id: Seldon.ComponentId.THEME_SPEC,
@@ -57,7 +61,11 @@ export const schema = {
     children: [
       { component: Seldon.ComponentId.TOPBAR },
       { component: Seldon.ComponentId.COLOR_SPECIMEN },
-      { component: Seldon.ComponentId.LINKS_FOOTER },
+      { component: Seldon.ComponentId.ORDINAL_SPECIMEN },
+      { 
+        component: Seldon.ComponentId.FOOTER,
+        variant: "standard",
+       },
     ],
   },
 } as const satisfies ComponentSchema
