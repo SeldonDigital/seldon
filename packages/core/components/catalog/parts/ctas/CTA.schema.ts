@@ -181,16 +181,104 @@ export const schema = {
             type: Sdn.ValueType.THEME_ORDINAL,
             value: "@dimension.xxlarge",
           },
+          padding: {
+            top: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.25 },
+            },
+            right: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.25 },
+            },
+            bottom: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.25 },
+            },
+            left: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.25 },
+            },
+          },
           background: [
             {
               kind: {
                 type: Sdn.ValueType.OPTION,
-                value: Sdn.BackgroundKind.LINEAR_GRADIENT,
+                value: Sdn.BackgroundKind.COLOR,
               },
-              preset: { type: Sdn.ValueType.EMPTY, value: null },
-              angle: {
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              brightness: {
                 type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.DEGREES, value: 135 },
+                value: { unit: Sdn.Unit.PERCENT, value: 0 },
+              },
+              opacity: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 100 },
+              },
+            },
+            {
+              kind: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BackgroundKind.RADIAL_GRADIENT,
+              },
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@gradient.gradient2",
+              },
+              positionX: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.GradientPositionX.CENTER,
+              },
+              positionY: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.GradientPositionY.BOTTOM,
+              },
+              shape: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.GradientShape.CIRCLE,
+              },
+              radialSize: { type: Sdn.ValueType.EMPTY, value: null },
+              startColor: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.offBlack",
+              },
+              startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+              startOpacity: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 40 },
+              },
+              endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+              endColor: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Color.TRANSPARENT,
+              },
+              endPosition: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 50 },
+              },
+            },
+            {
+              kind: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BackgroundKind.RADIAL_GRADIENT,
+              },
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@gradient.gradient2",
+              },
+              positionX: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.GradientPositionX.CENTER,
+              },
+              positionY: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.GradientPositionY.TOP,
+              },
+              shape: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.GradientShape.CIRCLE,
               },
               startColor: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -200,53 +288,47 @@ export const schema = {
               startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
               startOpacity: {
                 type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PERCENT, value: 100 },
+                value: { unit: Sdn.Unit.PERCENT, value: 40 },
               },
               endColor: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.offWhite",
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Color.TRANSPARENT,
               },
-              endPosition: { type: Sdn.ValueType.EMPTY, value: null },
-              endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-              endOpacity: {
+              endPosition: {
                 type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PERCENT, value: 100 },
+                value: { unit: Sdn.Unit.PERCENT, value: 80 },
               },
+              endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+              endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
           ],
           border: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.normal",
+              value: "@border.none",
             },
             style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.primary",
-            },
-            width: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@borderWidth.medium",
-            },
+            color: { type: Sdn.ValueType.EMPTY, value: null },
+            width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: {
-              type: Sdn.ValueType.EXACT,
-              value: { unit: Sdn.Unit.PERCENT, value: 30 },
-            },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
           corners: {
-            topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+            topLeft: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.5 },
+            },
             topRight: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@corners.cozy",
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.5 },
             },
             bottomLeft: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@corners.cozy",
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.5 },
             },
             bottomRight: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Corner.SQUARED,
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.REM, value: 0.5 },
             },
           },
           shadow: [
@@ -259,49 +341,172 @@ export const schema = {
               offsetX: { type: Sdn.ValueType.EMPTY, value: null },
               offsetY: {
                 type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PX, value: 4 },
+                value: { unit: Sdn.Unit.PX, value: 2 },
               },
               blur: {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@blur.medium",
               },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.offBlack",
-              },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
               opacity: {
                 type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PERCENT, value: 10 },
+                value: { unit: Sdn.Unit.PERCENT, value: 20 },
               },
               spread: {
                 type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@spread.xxsmall",
+                value: "@spread.xsmall",
               },
             },
           ],
         },
         children: [
           {
-            component: Seldon.ComponentId.IMAGE,
+            component: Seldon.ComponentId.FRAME,
             overrides: {
-              source: {
-                type: Sdn.ValueType.EXACT,
-                value: "/logo.svg",
+              align: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Align.CENTER,
               },
-              altText: {
-                type: Sdn.ValueType.EXACT,
-                value: "Company Logo",
+              background: [
+                {
+                  kind: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.BackgroundKind.COLOR,
+                  },
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.white",
+                  },
+                  brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                  opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                },
+              ],
+              border: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@border.thin",
+                },
+                style: { type: Sdn.ValueType.EMPTY, value: null },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.offBlack",
+                },
+                width: { type: Sdn.ValueType.EMPTY, value: null },
+                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                opacity: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 30 },
+                },
               },
-              width: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@dimension.large",
+              corners: {
+                topLeft: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.REM, value: 0.35 },
+                },
+                topRight: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.REM, value: 0.35 },
+                },
+                bottomLeft: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.REM, value: 0.35 },
+                },
+                bottomRight: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.REM, value: 0.35 },
+                },
               },
-              height: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@dimension.large",
-              },
+              shadow: [
+                {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@shadow.xlight",
+                  },
+                  style: { type: Sdn.ValueType.EMPTY, value: null },
+                  offsetX: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.PX, value: 0 },
+                  },
+                  offsetY: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.PX, value: 1 },
+                  },
+                  blur: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@blur.xxsmall",
+                  },
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.offBlack",
+                  },
+                  brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                  opacity: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.PERCENT, value: 25 },
+                  },
+                  spread: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@spread.tiny",
+                  },
+                },
+                {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@shadow.xlight",
+                  },
+                  style: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.ShadowStyle.INNER,
+                  },
+                  offsetX: { type: Sdn.ValueType.EMPTY, value: null },
+                  offsetY: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.PX, value: 1 },
+                  },
+                  blur: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@blur.xsmall",
+                  },
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.offBlack",
+                  },
+                  brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                  opacity: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.PERCENT, value: 15 },
+                  },
+                  spread: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@spread.xxsmall",
+                  },
+                },
+              ],
             },
+            children: [
+              {
+                component: Seldon.ComponentId.IMAGE,
+                overrides: {
+                  source: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "/logo.svg",
+                  },
+                  altText: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "Company Logo",
+                  },
+                  width: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@dimension.large",
+                  },
+                  height: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@dimension.large",
+                  },
+                },
+              },
+            ],
           },
         ],
       },
