@@ -684,7 +684,7 @@ export const schema = {
     },
     {
       id: "centered",
-      label: "Centered Brand",
+      label: "Centered",
       intent:
         "Navigation on the left, brand centered, and a text action on the right.",
       children: [
