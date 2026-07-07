@@ -2,53 +2,6 @@ import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
-const ordinalRowFrame = {
-  orientation: {
-    type: Sdn.ValueType.OPTION,
-    value: Sdn.Orientation.HORIZONTAL,
-  },
-  gap: {
-    type: Sdn.ValueType.THEME_ORDINAL,
-    value: "@gap.compact",
-  },
-  margin: {
-    top: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
-    right: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
-    bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
-    left: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
-  },
-  padding: {
-    top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
-    right: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
-    bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
-    left: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
-  },
-} as const
-
-const ordinalRowText = {
-  content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
-  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-  font: {
-    preset: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@font.callout",
-    },
-    weight: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@fontWeight.light",
-    },
-    size: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@fontSize.xsmall",
-    },
-    lineHeight: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@lineHeight.compact",
-    },
-  },
-  wrapText: { type: Sdn.ValueType.EXACT, value: false },
-} as const
-
 export const schema = {
   name: "Ordinal Chip",
   id: Seldon.ComponentId.ORDINAL_CHIP,
@@ -106,7 +59,10 @@ export const schema = {
     rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
-    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    opacity: { 
+      type: Sdn.ValueType.EXACT,
+      value: { unit: Sdn.Unit.PERCENT, value: 35 },
+     },
     background: [
       {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
@@ -215,7 +171,28 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.FRAME,
-        overrides: ordinalRowFrame,
+        overrides: {
+          orientation: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Orientation.HORIZONTAL,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
+          },
+          margin: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+          },
+          padding: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.ICON,
@@ -225,13 +202,56 @@ export const schema = {
           },
           {
             component: Seldon.ComponentId.TEXT,
-            overrides: ordinalRowText,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              font: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@font.callout",
+                },
+                weight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontWeight.light",
+                },
+                size: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.xsmall",
+                },
+                lineHeight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@lineHeight.compact",
+                },
+              },
+              wrapText: { type: Sdn.ValueType.EXACT, value: false },
+            },
           },
         ],
       },
       {
         component: Seldon.ComponentId.FRAME,
-        overrides: ordinalRowFrame,
+        overrides: {
+          orientation: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Orientation.HORIZONTAL,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
+          },
+          margin: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+          },
+          padding: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.ICON,
@@ -241,13 +261,56 @@ export const schema = {
           },
           {
             component: Seldon.ComponentId.TEXT,
-            overrides: ordinalRowText,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              font: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@font.callout",
+                },
+                weight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontWeight.light",
+                },
+                size: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.xsmall",
+                },
+                lineHeight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@lineHeight.compact",
+                },
+              },
+              wrapText: { type: Sdn.ValueType.EXACT, value: false },
+            },
           },
         ],
       },
       {
         component: Seldon.ComponentId.FRAME,
-        overrides: ordinalRowFrame,
+        overrides: {
+          orientation: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Orientation.HORIZONTAL,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
+          },
+          margin: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+          },
+          padding: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.ICON,
@@ -257,13 +320,56 @@ export const schema = {
           },
           {
             component: Seldon.ComponentId.TEXT,
-            overrides: ordinalRowText,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              font: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@font.callout",
+                },
+                weight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontWeight.light",
+                },
+                size: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.xsmall",
+                },
+                lineHeight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@lineHeight.compact",
+                },
+              },
+              wrapText: { type: Sdn.ValueType.EXACT, value: false },
+            },
           },
         ],
       },
       {
         component: Seldon.ComponentId.FRAME,
-        overrides: ordinalRowFrame,
+        overrides: {
+          orientation: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Orientation.HORIZONTAL,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
+          },
+          margin: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+          },
+          padding: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.ICON,
@@ -276,13 +382,56 @@ export const schema = {
           },
           {
             component: Seldon.ComponentId.TEXT,
-            overrides: ordinalRowText,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              font: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@font.callout",
+                },
+                weight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontWeight.light",
+                },
+                size: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.xsmall",
+                },
+                lineHeight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@lineHeight.compact",
+                },
+              },
+              wrapText: { type: Sdn.ValueType.EXACT, value: false },
+            },
           },
         ],
       },
       {
         component: Seldon.ComponentId.FRAME,
-        overrides: ordinalRowFrame,
+        overrides: {
+          orientation: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Orientation.HORIZONTAL,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
+          },
+          margin: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Margin.NONE },
+          },
+          padding: {
+            top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            right: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+            left: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.ICON,
@@ -295,7 +444,29 @@ export const schema = {
           },
           {
             component: Seldon.ComponentId.TEXT,
-            overrides: ordinalRowText,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              font: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@font.callout",
+                },
+                weight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontWeight.light",
+                },
+                size: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.xsmall",
+                },
+                lineHeight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@lineHeight.compact",
+                },
+              },
+              wrapText: { type: Sdn.ValueType.EXACT, value: false },
+            },
           },
         ],
       },

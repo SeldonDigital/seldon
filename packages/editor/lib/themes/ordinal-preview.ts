@@ -101,6 +101,33 @@ function findFirstTextNodeId(
 }
 
 /**
+ * Finds the first descendant node id of the given component, breadth first,
+ * starting from a root node id. Traverses the board tree so it resolves the
+ * instance embedded in this board rather than a same-typed node on another
+ * board in the shared nodes map.
+ */
+function findDescendantByComponent(
+  rootNodeId: string,
+  componentId: ComponentId,
+  workspace: Workspace,
+): string | null {
+  const root = workspace.nodes[rootNodeId]
+  if (!root) return null
+
+  const queue = [...getNodeChildIds(root, workspace)]
+  while (queue.length > 0) {
+    const id = queue.shift() as string
+    const node = workspace.nodes[id]
+    if (!node) continue
+    if (getNodeCatalogComponentId(node, workspace) === componentId) {
+      return id
+    }
+    queue.push(...getNodeChildIds(node, workspace))
+  }
+  return null
+}
+
+/**
  * Resolves the ordinal specimen's legend button nodes and chip row text nodes
  * from the cached Theme Spec preview base, mapping each to its scale by authored
  * order. Cached because the preview base is stable for the session.
@@ -108,15 +135,18 @@ function findFirstTextNodeId(
 export function getOrdinalPreviewLayout(): OrdinalPreviewLayout {
   if (cachedLayout) return cachedLayout
 
-  const { workspace } = getThemeSpecPreviewBase()
+  const { workspace, rootId } = getThemeSpecPreviewBase()
   const legendButtons: OrdinalLegendButton[] = []
   const chipRows: OrdinalChipRow[] = []
 
-  const specimen = Object.values(workspace.nodes).find(
-    (node) =>
-      getNodeCatalogComponentId(node, workspace) ===
-      ComponentId.ORDINAL_SPECIMEN,
-  )
+  const specimenId = rootId
+    ? findDescendantByComponent(
+        rootId,
+        ComponentId.ORDINAL_SPECIMEN,
+        workspace,
+      )
+    : null
+  const specimen = specimenId ? workspace.nodes[specimenId] : undefined
 
   if (specimen) {
     const [legendFrameId, ...containerIds] = getNodeChildIds(

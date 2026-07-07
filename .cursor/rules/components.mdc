@@ -116,6 +116,8 @@ variants: [
 
 Use `overrides` in component schemas. Overrides must use full typed property values and are matched against the target child schema. Unknown override keys are dropped by merge logic. Do not invent child properties that the referenced schema does not expose.
 
+Inline every `overrides` object literal at its child. Do not hoist an `overrides` block into a module `const` and reference it from children. Repeat the literal for each child even when several children share the same values. Schema files read as flat, self-contained data, and a shared const both hides the per-child values and makes every child point at the same object reference. This applies to child `overrides`, variant root `overrides`, and any nested property object inside them. The only module-level values a schema file declares are the `schema` export and its `exportConfig`.
+
 When a child uses a family variant, set `variant: "<variantId>"` to point at it. After consolidating or removing a schema, update every reference to the new family id and variant, and remove the old `ComponentId` entries. Renaming a schema does not rename its `ComponentId`. Change the id only when you intend to update all references.
 
 Use `@token.id` for theme references, e.g. `@swatch.primary`, `@size.medium`, `@font.body`. 

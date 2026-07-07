@@ -1,6 +1,15 @@
 "use client"
 
+import { type MenuEntry, VMMenu } from "@lib/menus"
 import { getThemeSpecPreviewBase } from "@lib/themes/build-theme-spec-preview"
+import {
+  ORDINAL_SCALES,
+  type OrdinalScale,
+  getOrdinalPreviewLayout,
+  ordinalStepName,
+  ordinalStepRef,
+  ordinalStepValueText,
+} from "@lib/themes/ordinal-preview"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import {
   type CSSProperties,
@@ -21,14 +30,6 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
-import { VMMenu, type MenuEntry } from "@lib/menus"
-import {
-  getOrdinalPreviewLayout,
-  ordinalStepName,
-  ordinalStepValueText,
-  ORDINAL_SCALES,
-  type OrdinalScale,
-} from "@lib/themes/ordinal-preview"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
 import {
@@ -201,6 +202,71 @@ function buildChipTextContent(
   return content
 }
 
+/** A THEME_ORDINAL property value pointing at a scale step token. */
+function themeOrdinalValue(ref: string) {
+  return { type: ValueType.THEME_ORDINAL as const, value: ref }
+}
+
+/**
+ * Builds the box-style overrides each Ordinal Chip takes from the selected
+ * steps, so the rendered chip's spacing, border width, and corner radius follow
+ * the previewed theme's tokens. Every chip shares the same overrides, keyed by
+ * node id. Border only overrides `width`, so the schema's preset and color stay.
+ */
+function buildChipStyleOverrides(
+  previewBase: Workspace,
+  stepByScale: Record<OrdinalScale, string>,
+): Record<string, Properties> {
+  const marginValue = themeOrdinalValue(
+    ordinalStepRef("margin", stepByScale.margin),
+  )
+  const paddingValue = themeOrdinalValue(
+    ordinalStepRef("padding", stepByScale.padding),
+  )
+  const gapValue = themeOrdinalValue(ordinalStepRef("gap", stepByScale.gap))
+  const borderValue = themeOrdinalValue(
+    ordinalStepRef("border", stepByScale.border),
+  )
+  const cornersValue = themeOrdinalValue(
+    ordinalStepRef("corners", stepByScale.corners),
+  )
+
+  // Token refs are resolved at runtime by the previewed theme, so the dynamic
+  // string values cannot satisfy the per-scale literal unions. Cast once here.
+  const overrides = {
+    margin: {
+      top: marginValue,
+      right: marginValue,
+      bottom: marginValue,
+      left: marginValue,
+    },
+    padding: {
+      top: paddingValue,
+      right: paddingValue,
+      bottom: paddingValue,
+      left: paddingValue,
+    },
+    gap: gapValue,
+    corners: {
+      topLeft: cornersValue,
+      topRight: cornersValue,
+      bottomLeft: cornersValue,
+      bottomRight: cornersValue,
+    },
+    border: { width: borderValue },
+  } as unknown as Properties
+
+  const styleById: Record<string, Properties> = {}
+  for (const node of Object.values(previewBase.nodes)) {
+    if (
+      getNodeCatalogComponentId(node, previewBase) === ComponentId.ORDINAL_CHIP
+    ) {
+      styleById[node.id] = overrides
+    }
+  }
+  return styleById
+}
+
 /**
  * Renders a single Theme Spec Sheet preview themed by one workspace theme entry.
  */
@@ -259,6 +325,11 @@ function ThemeVariantPreview({
     return content
   }, [previewBase, theme, layout, stepByScale])
 
+  const chipStyleById = useMemo(
+    () => buildChipStyleOverrides(previewBase, stepByScale),
+    [previewBase, stepByScale],
+  )
+
   const previewWorkspace = useMemo(() => {
     if (!rootId) {
       return null
@@ -266,12 +337,14 @@ function ThemeVariantPreview({
     const nodes = Object.fromEntries(
       Object.entries(previewBase.nodes).map(([id, node]) => {
         const injected = contentById[id]
+        const chipStyle = chipStyleById[id]
         return [
           id,
           {
             ...node,
             overrides: {
               ...node.overrides,
+              ...(chipStyle ?? {}),
               ...(injected !== undefined
                 ? { content: { type: ValueType.EXACT, value: injected } }
                 : {}),
@@ -286,7 +359,7 @@ function ThemeVariantPreview({
       themes,
       nodes,
     } as Workspace
-  }, [previewBase, rootId, themes, variantEntryId, contentById])
+  }, [previewBase, rootId, themes, variantEntryId, contentById, chipStyleById])
 
   const scaleByButtonId = useMemo(() => {
     const map = new Map<string, OrdinalScale>()
@@ -315,9 +388,10 @@ function ThemeVariantPreview({
           setOpenScale((current) => (current === scale ? null : scale))
           return
         }
-        element = element.parentElement?.closest<HTMLElement>(
-          "[data-preview-node-id]",
-        ) ?? null
+        element =
+          element.parentElement?.closest<HTMLElement>(
+            "[data-preview-node-id]",
+          ) ?? null
       }
     },
     [scaleByButtonId],

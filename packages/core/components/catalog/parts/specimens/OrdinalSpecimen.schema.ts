@@ -1,28 +1,6 @@
-import * as Sdn from "../../../../properties";
-import * as Seldon from "../../../constants";
-import { ComponentExport, ComponentSchema } from "../../../types";
-
-
-
-
-
-const legendButtonChevron = {
-  symbol: { type: Sdn.ValueType.OPTION, value: "material-chevronDown" },
-  size: {
-    type: Sdn.ValueType.COMPUTED,
-    value: Sdn.ComputedFunction.AUTO_FIT,
-  },
-  color: {
-    type: Sdn.ValueType.COMPUTED,
-    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-  },
-  cursor: { type: Sdn.ValueType.OPTION, value: Sdn.Cursor.POINTER },
-} as const
-
-const container = {
-  gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
-  columns: { type: Sdn.ValueType.EXACT, value: 6 },
-} as const
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Ordinal Specimen",
@@ -239,7 +217,24 @@ export const schema = {
               },
               {
                 component: Seldon.ComponentId.ICON,
-                overrides: legendButtonChevron,
+                overrides: {
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-chevronDown",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.AUTO_FIT,
+                  },
+                  color: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  },
+                  cursor: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Cursor.POINTER,
+                  },
+                },
               },
             ],
           },
@@ -264,7 +259,24 @@ export const schema = {
               },
               {
                 component: Seldon.ComponentId.ICON,
-                overrides: legendButtonChevron,
+                overrides: {
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-chevronDown",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.AUTO_FIT,
+                  },
+                  color: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  },
+                  cursor: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Cursor.POINTER,
+                  },
+                },
               },
             ],
           },
@@ -289,7 +301,24 @@ export const schema = {
               },
               {
                 component: Seldon.ComponentId.ICON,
-                overrides: legendButtonChevron,
+                overrides: {
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-chevronDown",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.AUTO_FIT,
+                  },
+                  color: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  },
+                  cursor: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Cursor.POINTER,
+                  },
+                },
               },
             ],
           },
@@ -314,7 +343,24 @@ export const schema = {
               },
               {
                 component: Seldon.ComponentId.ICON,
-                overrides: legendButtonChevron,
+                overrides: {
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-chevronDown",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.AUTO_FIT,
+                  },
+                  color: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  },
+                  cursor: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Cursor.POINTER,
+                  },
+                },
               },
             ],
           },
@@ -339,7 +385,24 @@ export const schema = {
               },
               {
                 component: Seldon.ComponentId.ICON,
-                overrides: legendButtonChevron,
+                overrides: {
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-chevronDown",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.AUTO_FIT,
+                  },
+                  color: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  },
+                  cursor: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Cursor.POINTER,
+                  },
+                },
               },
             ],
           },
@@ -347,7 +410,10 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.CONTAINER,
-        overrides: container,
+        overrides: {
+          gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+          columns: { type: Sdn.ValueType.EXACT, value: 6 },
+        },
         children: [
           { component: Seldon.ComponentId.ORDINAL_CHIP },
           { component: Seldon.ComponentId.ORDINAL_CHIP },
@@ -356,16 +422,30 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.CONTAINER,
-        overrides: container,
+        overrides: {
+          gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+          columns: { type: Sdn.ValueType.EXACT, value: 6 },
+        },
         children: [
           { component: Seldon.ComponentId.ORDINAL_CHIP },
-          { component: Seldon.ComponentId.ORDINAL_CHIP },
+          { 
+            component: Seldon.ComponentId.ORDINAL_CHIP,
+            overrides: {
+              opacity: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 100 },
+              },
+            },
+           },
           { component: Seldon.ComponentId.ORDINAL_CHIP },
         ],
       },
       {
         component: Seldon.ComponentId.CONTAINER,
-        overrides: container,
+        overrides: {
+          gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+          columns: { type: Sdn.ValueType.EXACT, value: 6 },
+        },
         children: [
           { component: Seldon.ComponentId.ORDINAL_CHIP },
           { component: Seldon.ComponentId.ORDINAL_CHIP },
