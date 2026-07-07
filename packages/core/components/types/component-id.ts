@@ -28,6 +28,7 @@ export enum ComponentId {
   BOLD_CTA = "boldCta",
   JOIN_CTA = "joinCta",
   SOCIAL_PROOF_CTA = "socialProofCta",
+  TOPBAR = "topbar",
   MEDIA_CARD = "mediaCard",
   NOTIFICATION_CARD = "notificationCard",
   PRICING_CARD = "pricingCard",

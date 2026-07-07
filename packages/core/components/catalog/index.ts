@@ -159,6 +159,10 @@ import {
   schema as comboboxSchema,
 } from "./parts/Combobox.schema"
 import {
+  exportConfig as topbarExportConfig,
+  schema as topbarSchema,
+} from "./parts/Topbar.schema"
+import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
@@ -342,6 +346,7 @@ const primitives: ComponentSchema[] = [
 
 const parts: ComponentSchema[] = [
   barSchema,
+  topbarSchema,
   cardStackedSchema,
   fieldsetSchema,
   listStandardSchema,
@@ -467,6 +472,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
   // Parts
   [ComponentId.BAR]: barExportConfig,
+  [ComponentId.TOPBAR]: topbarExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
