@@ -1,5 +1,6 @@
 // Color processing utilities
 export { applyBrightness, convertAndApplyBrightness } from "./apply-brightness"
+export { colorValueToDisplayStrings } from "./color-value-to-display-strings"
 export { isDarkBackgroundColor } from "./contrast"
 export {
   toHSLString,

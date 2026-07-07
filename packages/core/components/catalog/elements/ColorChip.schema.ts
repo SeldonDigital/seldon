@@ -200,6 +200,10 @@ export const schema = {
               value: "@lineHeight.compact",
             },
           },
+          wrapText: {
+            type: Sdn.ValueType.EXACT,
+            value: false,
+          },
         },
       },
       {
@@ -226,6 +230,10 @@ export const schema = {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@lineHeight.compact",
             },
+          },
+          wrapText: {
+            type: Sdn.ValueType.EXACT,
+            value: false,
           },
         },
       },
