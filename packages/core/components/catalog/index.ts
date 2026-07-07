@@ -300,6 +300,10 @@ import {
   exportConfig as screenExportConfig,
   schema as screenSchema,
 } from "./screens/Screen.schema"
+import {
+  exportConfig as themeSpecExportConfig,
+  schema as themeSpecSchema,
+} from "./screens/ThemeSpec.schema"
 
 const elements: ComponentSchema[] = [
   avatarSchema,
@@ -381,7 +385,7 @@ const modules: ComponentSchema[] = [
 
 const boards: ComponentSchema[] = [boardSchema]
 
-const screens: ComponentSchema[] = [screenSchema]
+const screens: ComponentSchema[] = [screenSchema, themeSpecSchema]
 
 const frames: ComponentSchema[] = [containerSchema, frameSchema, sandboxSchema]
 
@@ -513,6 +517,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
   // Screens
   [ComponentId.SCREEN]: screenExportConfig,
+  [ComponentId.THEME_SPEC]: themeSpecExportConfig,
 
   // Boards
   [ComponentId.BOARD]: boardExportConfig,

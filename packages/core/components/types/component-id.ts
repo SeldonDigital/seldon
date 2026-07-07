@@ -61,6 +61,7 @@ export enum ComponentId {
   OPTION_GROUP = "optionGroup",
   SANDBOX = "sandbox",
   SCREEN = "screen",
+  THEME_SPEC = "themeSpec",
   SECTION = "section",
   SELECT = "select",
   SIDEBAR = "sidebar",
