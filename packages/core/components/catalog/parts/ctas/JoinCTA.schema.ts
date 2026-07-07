@@ -1,10 +1,6 @@
-import * as Sdn from "../../../../properties";
-import * as Seldon from "../../../constants";
-import { ComponentExport, ComponentSchema } from "../../../types";
-
-
-
-
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Join CTA",
@@ -55,10 +51,7 @@ export const schema = {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.comfortable",
       },
-      bottom: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.comfortable",

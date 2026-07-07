@@ -159,10 +159,6 @@ import {
   schema as comboboxSchema,
 } from "./parts/Combobox.schema"
 import {
-  exportConfig as topbarExportConfig,
-  schema as topbarSchema,
-} from "./parts/Topbar.schema"
-import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
@@ -179,13 +175,9 @@ import {
   schema as menuSchema,
 } from "./parts/Menu.schema"
 import {
-  exportConfig as colorSpecimenExportConfig,
-  schema as colorSpecimenSchema,
-} from "./parts/specimens/ColorSpecimen.schema"
-import {
-  exportConfig as typeSpecimenExportConfig,
-  schema as typeSpecimenSchema,
-} from "./parts/specimens/TypeSpecimen.schema"
+  exportConfig as topbarExportConfig,
+  schema as topbarSchema,
+} from "./parts/Topbar.schema"
 import {
   exportConfig as articleCardExportConfig,
   schema as articleCardSchema,
@@ -238,6 +230,14 @@ import {
   exportConfig as subscribeCtaExportConfig,
   schema as subscribeCtaSchema,
 } from "./parts/ctas/SubscribeCTA.schema"
+import {
+  exportConfig as colorSpecimenExportConfig,
+  schema as colorSpecimenSchema,
+} from "./parts/specimens/ColorSpecimen.schema"
+import {
+  exportConfig as typeSpecimenExportConfig,
+  schema as typeSpecimenSchema,
+} from "./parts/specimens/TypeSpecimen.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,

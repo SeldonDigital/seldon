@@ -37,8 +37,8 @@ import {
 } from "@lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { CanvasHtmlAttributes, ComponentRenderer } from "./ComponentRenderer"
-import { getPropertyHtmlAttributes } from "./property-html-attributes"
 import { REPEAT_OUTLINE } from "./canvas.bespoke"
+import { getPropertyHtmlAttributes } from "./property-html-attributes"
 
 export type CanvasNodeProps = {
   nodeId: VariantId | InstanceId

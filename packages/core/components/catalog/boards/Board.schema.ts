@@ -101,7 +101,10 @@ export const schema = {
         blur: { type: Sdn.ValueType.THEME_ORDINAL, value: "@blur.xsmall" },
         color: { type: Sdn.ValueType.EMPTY, value: null },
         brightness: { type: Sdn.ValueType.EMPTY, value: null },
-        opacity: { type: Sdn.ValueType.EXACT, value: { value: 10, unit: Sdn.Unit.PERCENT } },
+        opacity: {
+          type: Sdn.ValueType.EXACT,
+          value: { value: 10, unit: Sdn.Unit.PERCENT },
+        },
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
