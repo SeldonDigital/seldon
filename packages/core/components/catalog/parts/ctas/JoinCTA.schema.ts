@@ -249,7 +249,7 @@ export const schema = {
               content: {
                 type: Sdn.ValueType.EXACT,
                 value:
-                  "Earn up to $200 with our generous 40% commission for every sale you drive with your referral link.",
+                  "Earn money with our generous 30% commission for every sale you drive with your referral link.",
               },
               font: {
                 preset: {
