@@ -1,6 +1,6 @@
 "use client"
 
-import { getDialogPreviewBase } from "@lib/themes/build-dialog-preview"
+import { getThemeSpecPreviewBase } from "@lib/themes/build-theme-spec-preview"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { useMemo } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
@@ -35,7 +35,7 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
 
   // The board chrome renders with the board's own theme so its background and
   // border resolve, independent of which variant (if any) is selected. The
-  // per-variant dialogs below are themed individually.
+  // per-variant previews below are themed individually.
   const boardTheme = useNodeTheme(board)
 
   const variantEntryIds = isThemeBoard(board)
@@ -93,7 +93,7 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
         }}
       >
         {variantEntryIds.map((variantEntryId) => (
-          <ThemeVariantDialog
+          <ThemeVariantPreview
             key={variantEntryId}
             variantEntryId={variantEntryId}
             themes={workspace.themes}
@@ -104,34 +104,34 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
   )
 }
 
-type ThemeVariantDialogProps = {
+type ThemeVariantPreviewProps = {
   variantEntryId: string
   themes: Workspace["themes"]
 }
 
 /**
- * Renders a single Dialog preview themed by one workspace theme entry.
+ * Renders a single Theme Spec Sheet preview themed by one workspace theme entry.
  */
-function ThemeVariantDialog({
+function ThemeVariantPreview({
   variantEntryId,
   themes,
-}: ThemeVariantDialogProps) {
-  const { workspace: dialogBase, rootId } = getDialogPreviewBase()
+}: ThemeVariantPreviewProps) {
+  const { workspace: previewBase, rootId } = getThemeSpecPreviewBase()
 
   const previewWorkspace = useMemo(() => {
     if (!rootId) {
       return null
     }
-    const root = dialogBase.nodes[rootId]
+    const root = previewBase.nodes[rootId]
     return {
-      ...dialogBase,
+      ...previewBase,
       themes,
       nodes: {
-        ...dialogBase.nodes,
+        ...previewBase.nodes,
         [rootId]: { ...root, theme: variantEntryId },
       },
     } as Workspace
-  }, [dialogBase, rootId, themes, variantEntryId])
+  }, [previewBase, rootId, themes, variantEntryId])
 
   if (!previewWorkspace || !rootId) {
     return null
