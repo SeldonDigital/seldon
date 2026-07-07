@@ -528,6 +528,10 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.TextAlign.CENTER,
           },
+          lines: {
+            type: Sdn.ValueType.EXACT,
+            value: 5,
+          },
         },
       },
       {
