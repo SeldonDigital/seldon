@@ -290,6 +290,10 @@ export const schema = {
                       value: "@fontSize.xsmall",
                     },
                   },
+                  wrapText: {
+                    type: Sdn.ValueType.EXACT,
+                    value: false,
+                  },
                 },
               },
               {
@@ -326,6 +330,10 @@ export const schema = {
                   value: "@fontSize.xsmall",
                 },
               },
+              wrapText: {
+                type: Sdn.ValueType.EXACT,
+                value: false,
+              },
             },
           },
           {
@@ -343,6 +351,10 @@ export const schema = {
                   value: "@fontSize.xsmall",
                 },
               },
+              wrapText: {
+                type: Sdn.ValueType.EXACT,
+                value: false,
+              },
             },
           },
           {
@@ -359,6 +371,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_ORDINAL,
                   value: "@fontSize.xsmall",
                 },
+              },
+              wrapText: {
+                type: Sdn.ValueType.EXACT,
+                value: false,
               },
             },
           },
@@ -480,6 +496,10 @@ export const schema = {
                     value: "@fontSize.xsmall",
                   },
                 },
+                wrapText: {
+                  type: Sdn.ValueType.EXACT,
+                  value: false,
+                },
               },
             },
             {
@@ -496,6 +516,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
+                },
+                wrapText: {
+                  type: Sdn.ValueType.EXACT,
+                  value: false,
                 },
               },
             },
@@ -518,6 +542,10 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.TextDecoration.UNDERLINE,
                 },
+                wrapText: {
+                  type: Sdn.ValueType.EXACT,
+                  value: false,
+                },
               },
             },
             {
@@ -534,6 +562,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
+                },
+                wrapText: {
+                  type: Sdn.ValueType.EXACT,
+                  value: false,
                 },
               },
             },
@@ -564,7 +596,7 @@ export const schema = {
                 font: {
                   weight: {
                     type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@fontWeight.semibold",
+                    value: "@fontWeight.bold",
                   },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
@@ -1005,6 +1037,10 @@ export const schema = {
                     value: "@fontSize.xsmall",
                   },
                 },
+                wrapText: {
+                  type: Sdn.ValueType.EXACT,
+                  value: false,
+                },
               },
             },
             {
@@ -1021,6 +1057,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
+                },
+                wrapText: {
+                  type: Sdn.ValueType.EXACT,
+                  value: false,
                 },
               },
             },
@@ -1185,7 +1225,10 @@ export const schema = {
             align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.comfortable" },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.comfortable",
+            },
           },
           children: [
             {
