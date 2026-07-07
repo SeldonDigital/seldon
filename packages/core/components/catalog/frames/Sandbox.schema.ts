@@ -20,7 +20,6 @@ export const schema = {
   icon: Seldon.ComponentIcon.FRAME,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    direction: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
       top: {
         type: Sdn.ValueType.EXACT,
@@ -31,6 +30,7 @@ export const schema = {
         value: { value: 0, unit: Sdn.Unit.PX },
       },
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.VERTICAL,

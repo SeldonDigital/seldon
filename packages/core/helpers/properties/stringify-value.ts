@@ -95,7 +95,13 @@ export function stringifyValue(
     case ValueType.OPTION:
     case ValueType.THEME_ORDINAL:
     case ValueType.THEME_CATEGORICAL:
-      return value.value
+      // Option values are usually strings, but a boolean option (such as a
+      // yes/no toggle) stringifies to a readable On/Off label.
+      return typeof value.value === "boolean"
+        ? value.value
+          ? "On"
+          : "Off"
+        : value.value
 
     case ValueType.INHERIT:
       return "Inherit"

@@ -8,7 +8,23 @@ export enum BackgroundKind {
   NONE = "none",
   COLOR = "color",
   IMAGE = "image",
-  GRADIENT = "gradient",
+  LINEAR_GRADIENT = "linearGradient",
+  RADIAL_GRADIENT = "radialGradient",
+  CONIC_GRADIENT = "conicGradient",
+}
+
+/** The background kinds that paint a gradient. */
+export const GRADIENT_BACKGROUND_KINDS = [
+  BackgroundKind.LINEAR_GRADIENT,
+  BackgroundKind.RADIAL_GRADIENT,
+  BackgroundKind.CONIC_GRADIENT,
+] as const
+
+/** True when a kind paints any gradient. */
+export function isGradientBackgroundKind(
+  kind: unknown,
+): kind is (typeof GRADIENT_BACKGROUND_KINDS)[number] {
+  return (GRADIENT_BACKGROUND_KINDS as readonly unknown[]).includes(kind)
 }
 
 export const BACKGROUND_KIND_VALUES = Object.values(

@@ -8,9 +8,11 @@ import { migrateV6IconSetRenames } from "./steps/migrate-00006-icon-set-renames"
 import { migrateV7ThemeModeChroma } from "./steps/migrate-00007-theme-mode-chroma"
 import { migrateV8ThemeLightnessChange } from "./steps/migrate-00008-theme-lightness-change"
 import { migrateV9ThemeDisplayMode } from "./steps/migrate-00009-theme-display-mode"
+import { migrateV10GradientKinds } from "./steps/migrate-00010-gradient-kinds"
+import { migrateV11PositionDropDimensionOrdinal } from "./steps/migrate-00011-position-drop-dimension-ordinal"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 9
+export const CURRENT_WORKSPACE_VERSION = 11
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -24,6 +26,8 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   7: migrateV7ThemeModeChroma,
   8: migrateV8ThemeLightnessChange,
   9: migrateV9ThemeDisplayMode,
+  10: migrateV10GradientKinds,
+  11: migrateV11PositionDropDimensionOrdinal,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {

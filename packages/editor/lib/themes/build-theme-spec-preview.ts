@@ -3,29 +3,30 @@ import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empt
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
 import type { Workspace } from "@seldon/core/workspace/types"
 
-type DialogPreviewBase = {
+type ThemeSpecPreviewBase = {
   workspace: Workspace
   rootId: string | null
 }
 
-let cached: DialogPreviewBase | null = null
+let cached: ThemeSpecPreviewBase | null = null
 
 /**
- * Builds a throwaway workspace containing a single Dialog board and its nodes.
+ * Builds a throwaway workspace containing a single Theme Spec Sheet board and
+ * its nodes.
  *
  * The result is deterministic, so it is instantiated once and cached. Theme
- * board previews clone this base and point the Dialog root at a variant theme.
+ * board previews clone this base and point the root at a variant theme.
  */
-export function getDialogPreviewBase(): DialogPreviewBase {
+export function getThemeSpecPreviewBase(): ThemeSpecPreviewBase {
   if (cached) {
     return cached
   }
 
   const workspace = addComponent(
-    { boardKey: ComponentId.DIALOG },
+    { boardKey: ComponentId.THEME_SPEC },
     createEmptyWorkspace(),
   )
-  const board = workspace.boards[ComponentId.DIALOG]
+  const board = workspace.boards[ComponentId.THEME_SPEC]
   const rootId = board?.variants?.[0]?.id ?? null
 
   cached = { workspace, rootId }

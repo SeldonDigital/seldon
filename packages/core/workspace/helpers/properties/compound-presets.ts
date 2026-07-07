@@ -2,7 +2,6 @@ import { type Theme, ValueType, type Workspace } from "@seldon/core"
 import type { Properties } from "@seldon/core/properties/types/properties"
 import {
   type ThemeLookPreset,
-  convertLookParameterValue,
   getBuiltInLookSectionForPropertyKey,
   getThemeLookSection,
   isThemeLookPreset,
@@ -65,22 +64,18 @@ function buildResetProperties(
 
 function buildPresetProperties(
   propertyKey: string,
-  preset: ThemeLookPreset,
+  _preset: ThemeLookPreset,
   subKeys: string[],
 ): Properties {
+  // Applying a look stores the preset reference plus EMPTY facets. Compute-time
+  // expansion (`expandLookPresetFacets`) fills each EMPTY facet from the look in
+  // the active theme, so the value tracks both token changes and look
+  // redefinition. Writing literal facet values here would freeze the look and
+  // break that tracking. The explicit EMPTY facets also clear any prior facet
+  // overrides so re-applying a look resets the compound.
   const facets: Record<string, unknown> = {}
-
-  for (const [subKey, subValue] of Object.entries(preset.parameters ?? {})) {
-    facets[subKey] = convertLookParameterValue(subValue)
-  }
-
-  const presentKeys = new Set(
-    Object.keys(facets).filter((key) => key !== "preset"),
-  )
   for (const subKey of subKeys) {
-    if (!presentKeys.has(subKey)) {
-      facets[subKey] = { type: ValueType.EMPTY, value: null }
-    }
+    facets[subKey] = { type: ValueType.EMPTY, value: null }
   }
 
   return wrapCompoundPropertyValue(propertyKey, facets)

@@ -38,15 +38,22 @@ describe("unit utils", () => {
 })
 
 describe("getLayerAddOptions", () => {
-  it("offers typed color/image/gradient seeds for background", () => {
+  it("offers typed color/image and the three gradient seeds for background", () => {
     const options = getLayerAddOptions("background")
-    expect(options).toHaveLength(3)
     expect(options.map((o) => o.id)).toEqual([
       "add-layer-background-color",
       "add-layer-background-image",
-      "add-layer-background-gradient",
+      "add-layer-background-linear-gradient",
+      "add-layer-background-radial-gradient",
+      "add-layer-background-conic-gradient",
     ])
     expect(options.every((o) => o.seed)).toBe(true)
+  })
+
+  it("divides the gradient choices from color and image", () => {
+    const options = getLayerAddOptions("background")
+    const separated = options.filter((o) => o.separatorBefore).map((o) => o.id)
+    expect(separated).toEqual(["add-layer-background-linear-gradient"])
   })
 
   it("offers a single empty layer for shadow", () => {

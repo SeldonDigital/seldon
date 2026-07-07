@@ -21,6 +21,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -200,10 +201,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.compact",
-          },
           padding: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
             right: {
@@ -215,6 +212,10 @@ export const schema = {
               value: "@padding.cozy",
             },
             left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
           },
         },
         children: [
@@ -247,10 +248,6 @@ export const schema = {
                 type: Sdn.ValueType.EXACT,
                 value: "How to design better cards",
               },
-              lines: {
-                type: Sdn.ValueType.EXACT,
-                value: 2,
-              },
               font: {
                 preset: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -265,6 +262,10 @@ export const schema = {
                 size: { type: Sdn.ValueType.EMPTY, value: null },
                 lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
                 textCase: { type: Sdn.ValueType.EMPTY, value: null },
+              },
+              lines: {
+                type: Sdn.ValueType.EXACT,
+                value: 2,
               },
             },
           },
@@ -462,10 +463,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -483,6 +480,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
             },
           },
           children: [
@@ -515,10 +516,6 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "How to design better cards",
                 },
-                lines: {
-                  type: Sdn.ValueType.EXACT,
-                  value: 2,
-                },
                 font: {
                   preset: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -533,6 +530,10 @@ export const schema = {
                   size: { type: Sdn.ValueType.EMPTY, value: null },
                   lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
                   textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                },
+                lines: {
+                  type: Sdn.ValueType.EXACT,
+                  value: 2,
                 },
               },
             },
@@ -592,10 +593,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -613,6 +610,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
             },
           },
           children: [
@@ -645,10 +646,6 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "How to design better cards",
                 },
-                lines: {
-                  type: Sdn.ValueType.EXACT,
-                  value: 2,
-                },
                 font: {
                   preset: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -663,6 +660,10 @@ export const schema = {
                   size: { type: Sdn.ValueType.EMPTY, value: null },
                   lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
                   textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                },
+                lines: {
+                  type: Sdn.ValueType.EXACT,
+                  value: 2,
                 },
               },
             },

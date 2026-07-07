@@ -112,13 +112,13 @@ export const schema = {
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    borderCollapse: { type: Sdn.ValueType.EMPTY, value: null },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },
       topRight: { type: Sdn.ValueType.EMPTY, value: null },
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    borderCollapse: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {

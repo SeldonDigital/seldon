@@ -32,6 +32,10 @@ import {
   schema as chipSchema,
 } from "./elements/Chip.schema"
 import {
+  exportConfig as colorChipExportConfig,
+  schema as colorChipSchema,
+} from "./elements/ColorChip.schema"
+import {
   exportConfig as comboboxFieldExportConfig,
   schema as comboboxFieldSchema,
 } from "./elements/ComboboxField.schema"
@@ -116,7 +120,6 @@ import {
   exportConfig as sandboxExportConfig,
   schema as sandboxSchema,
 } from "./frames/Sandbox.schema"
-// Modules
 import {
   exportConfig as calendarExportConfig,
   schema as calendarSchema,
@@ -126,10 +129,6 @@ import {
   schema as dialogSchema,
 } from "./modules/Dialog.schema"
 import {
-  exportConfig as footerExportConfig,
-  schema as footerSchema,
-} from "./modules/Footer.schema"
-import {
   exportConfig as sidebarExportConfig,
   schema as sidebarSchema,
 } from "./modules/Sidebar.schema"
@@ -138,13 +137,18 @@ import {
   schema as tableSchema,
 } from "./modules/Table.schema"
 import {
-  exportConfig as typeSpecimenExportConfig,
-  schema as typeSpecimenSchema,
-} from "./modules/TypeSpecimen.schema"
-import {
   exportConfig as widgetTodoExportConfig,
   schema as widgetTodoSchema,
 } from "./modules/WidgetTodo.schema"
+import {
+  exportConfig as footerExportConfig,
+  schema as footerSchema,
+} from "./modules/footers/Footer.schema"
+// Modules
+import {
+  exportConfig as linksFooterExportConfig,
+  schema as linksFooterSchema,
+} from "./modules/footers/LinksFooter.schema"
 // Parts
 import {
   exportConfig as barExportConfig,
@@ -170,6 +174,10 @@ import {
   exportConfig as menuExportConfig,
   schema as menuSchema,
 } from "./parts/Menu.schema"
+import {
+  exportConfig as topbarExportConfig,
+  schema as topbarSchema,
+} from "./parts/Topbar.schema"
 import {
   exportConfig as articleCardExportConfig,
   schema as articleCardSchema,
@@ -202,6 +210,34 @@ import {
   exportConfig as statCardExportConfig,
   schema as statCardSchema,
 } from "./parts/cards/StatCard.schema"
+import {
+  exportConfig as boldCtaExportConfig,
+  schema as boldCtaSchema,
+} from "./parts/ctas/BoldCTA.schema"
+import {
+  exportConfig as ctaExportConfig,
+  schema as ctaSchema,
+} from "./parts/ctas/CTA.schema"
+import {
+  exportConfig as joinCtaExportConfig,
+  schema as joinCtaSchema,
+} from "./parts/ctas/JoinCTA.schema"
+import {
+  exportConfig as socialProofCtaExportConfig,
+  schema as socialProofCtaSchema,
+} from "./parts/ctas/SocialProofCTA.schema"
+import {
+  exportConfig as subscribeCtaExportConfig,
+  schema as subscribeCtaSchema,
+} from "./parts/ctas/SubscribeCTA.schema"
+import {
+  exportConfig as colorSpecimenExportConfig,
+  schema as colorSpecimenSchema,
+} from "./parts/specimens/ColorSpecimen.schema"
+import {
+  exportConfig as typeSpecimenExportConfig,
+  schema as typeSpecimenSchema,
+} from "./parts/specimens/TypeSpecimen.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
@@ -264,12 +300,17 @@ import {
   exportConfig as screenExportConfig,
   schema as screenSchema,
 } from "./screens/Screen.schema"
+import {
+  exportConfig as themeSpecExportConfig,
+  schema as themeSpecSchema,
+} from "./screens/ThemeSpec.schema"
 
 const elements: ComponentSchema[] = [
   avatarSchema,
   buttonSchema,
   calendarDaySchema,
   chipSchema,
+  colorChipSchema,
   formControlSchema,
   optionGroupSchema,
   headerSchema,
@@ -309,6 +350,7 @@ const primitives: ComponentSchema[] = [
 
 const parts: ComponentSchema[] = [
   barSchema,
+  topbarSchema,
   cardStackedSchema,
   fieldsetSchema,
   listStandardSchema,
@@ -322,12 +364,19 @@ const parts: ComponentSchema[] = [
   productCardSchema,
   profileCardSchema,
   statCardSchema,
+  ctaSchema,
+  subscribeCtaSchema,
+  boldCtaSchema,
+  joinCtaSchema,
+  socialProofCtaSchema,
+  typeSpecimenSchema,
+  colorSpecimenSchema,
 ]
 
 const modules: ComponentSchema[] = [
+  linksFooterSchema,
   calendarSchema,
   dialogSchema,
-  typeSpecimenSchema,
   footerSchema,
   sidebarSchema,
   tableSchema,
@@ -336,7 +385,7 @@ const modules: ComponentSchema[] = [
 
 const boards: ComponentSchema[] = [boardSchema]
 
-const screens: ComponentSchema[] = [screenSchema]
+const screens: ComponentSchema[] = [screenSchema, themeSpecSchema]
 
 const frames: ComponentSchema[] = [containerSchema, frameSchema, sandboxSchema]
 
@@ -392,6 +441,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.BUTTON]: buttonExportConfig,
   [ComponentId.CALENDAR_DAY]: calendarDayExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
+  [ComponentId.COLOR_CHIP]: colorChipExportConfig,
   [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
   [ComponentId.HEADER]: headerExportConfig,
@@ -416,16 +466,17 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.SANDBOX]: sandboxExportConfig,
 
   // Modules
+  [ComponentId.LINKS_FOOTER]: linksFooterExportConfig,
   [ComponentId.CALENDAR]: calendarExportConfig,
   [ComponentId.FOOTER]: footerExportConfig,
   [ComponentId.DIALOG]: dialogExportConfig,
-  [ComponentId.TYPE_SPECIMEN]: typeSpecimenExportConfig,
   [ComponentId.SIDEBAR]: sidebarExportConfig,
   [ComponentId.TABLE]: tableExportConfig,
   [ComponentId.WIDGET_TODO]: widgetTodoExportConfig,
 
   // Parts
   [ComponentId.BAR]: barExportConfig,
+  [ComponentId.TOPBAR]: topbarExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
@@ -439,6 +490,13 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.PRODUCT_CARD]: productCardExportConfig,
   [ComponentId.PROFILE_CARD]: profileCardExportConfig,
   [ComponentId.STAT_CARD]: statCardExportConfig,
+  [ComponentId.CTA]: ctaExportConfig,
+  [ComponentId.SUBSCRIBE_CTA]: subscribeCtaExportConfig,
+  [ComponentId.BOLD_CTA]: boldCtaExportConfig,
+  [ComponentId.JOIN_CTA]: joinCtaExportConfig,
+  [ComponentId.SOCIAL_PROOF_CTA]: socialProofCtaExportConfig,
+  [ComponentId.TYPE_SPECIMEN]: typeSpecimenExportConfig,
+  [ComponentId.COLOR_SPECIMEN]: colorSpecimenExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,
@@ -459,6 +517,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
   // Screens
   [ComponentId.SCREEN]: screenExportConfig,
+  [ComponentId.THEME_SPEC]: themeSpecExportConfig,
 
   // Boards
   [ComponentId.BOARD]: boardExportConfig,

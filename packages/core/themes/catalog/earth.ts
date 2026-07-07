@@ -565,7 +565,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 24, saturation: 30, lightness: 13 },
+        value: { hue: 36, saturation: 30, lightness: 95 },
       },
     },
     background: {
@@ -575,7 +575,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 36, saturation: 30, lightness: 95 },
+        value: { hue: 24, saturation: 30, lightness: 13 },
       },
     },
     active: {

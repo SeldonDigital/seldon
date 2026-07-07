@@ -576,15 +576,15 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "Modal",
                 },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                },
                 font: {
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.small",
                   },
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },
@@ -933,15 +933,15 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "Palette",
                 },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                },
                 font: {
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },

@@ -1,6 +1,6 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Type Specimen",
@@ -8,7 +8,7 @@ export const schema = {
   intent:
     "Schema for a type specimen panel that shows typography for a specific font.",
   tags: ["typography", "type", "specimen", "font", "ui", "panel", "text"],
-  level: Seldon.ComponentLevel.MODULE,
+  level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
@@ -62,6 +62,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: true,
     },
+    columnStart: { type: Sdn.ValueType.EMPTY, value: null },
+    columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
+    rowStart: { type: Sdn.ValueType.EMPTY, value: null },
+    rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -192,12 +196,6 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Font weights",
           },
-          font: {
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
-            },
-          },
           margin: {
             bottom: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -218,6 +216,12 @@ export const schema = {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@border.hairline",
+            },
+          },
+          font: {
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.xsmall",
             },
           },
         },

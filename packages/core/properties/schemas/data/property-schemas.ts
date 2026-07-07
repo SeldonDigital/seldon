@@ -62,6 +62,13 @@ import { symbolSchema } from "../../values/attributes/symbol"
 import { wrapperElementSchema } from "../../values/attributes/wrapper-element"
 import { gradientPresetSchema } from "../../values/effects/gradients/gradient"
 import { gradientAngleSchema } from "../../values/effects/gradients/gradient-angle"
+import {
+  gradientPositionXSchema,
+  gradientPositionYSchema,
+} from "../../values/effects/gradients/gradient-position"
+import { gradientRepeatSchema } from "../../values/effects/gradients/gradient-repeat"
+import { gradientShapeSchema } from "../../values/effects/gradients/gradient-shape"
+import { gradientSizeSchema } from "../../values/effects/gradients/gradient-size"
 import { gradientStopBrightnessSchema } from "../../values/effects/gradients/gradient-stop-brightness"
 import { gradientStopColorSchema } from "../../values/effects/gradients/gradient-stop-color"
 import { gradientStopOpacitySchema } from "../../values/effects/gradients/gradient-stop-opacity"
@@ -159,9 +166,9 @@ const PROPERTY_SCHEMAS_RAW = {
   cursor: cursorSchema,
 
   // 2. LAYOUT (properties README table order; then auxiliary layout schemas)
-  direction: directionSchema,
   placement: placementSchema,
   position: positionSchema,
+  direction: directionSchema,
   orientation: orientationSchema,
   align: alignSchema,
   width: widthSchema,
@@ -202,9 +209,15 @@ const PROPERTY_SCHEMAS_RAW = {
   backgroundBrightness: backgroundBrightnessSchema,
   backgroundOpacity: backgroundOpacitySchema,
   // Gradient-kind background facets reuse the shared gradient value schemas.
+  // The layer `kind` (linearGradient | radialGradient | conicGradient) selects
+  // which of these apply, so there is no per-layer gradient type facet.
   backgroundPreset: gradientPresetSchema,
-  backgroundGradientType: gradientTypeSchema,
   backgroundAngle: gradientAngleSchema,
+  backgroundPositionX: gradientPositionXSchema,
+  backgroundPositionY: gradientPositionYSchema,
+  backgroundShape: gradientShapeSchema,
+  backgroundRadialSize: gradientSizeSchema,
+  backgroundConicRepeat: gradientRepeatSchema,
   backgroundStartColor: gradientStopColorSchema,
   backgroundStartBrightness: gradientStopBrightnessSchema,
   backgroundStartOpacity: gradientStopOpacitySchema,
@@ -270,6 +283,11 @@ const PROPERTY_SCHEMAS_RAW = {
   gradientGradientType: gradientTypeSchema,
   gradientType: gradientTypeSchema,
   gradientAngle: gradientAngleSchema,
+  gradientPositionX: gradientPositionXSchema,
+  gradientPositionY: gradientPositionYSchema,
+  gradientShape: gradientShapeSchema,
+  gradientRadialSize: gradientSizeSchema,
+  gradientConicRepeat: gradientRepeatSchema,
   gradientStartColor: gradientStopColorSchema,
   gradientStartBrightness: gradientStopBrightnessSchema,
   gradientStartOpacity: gradientStopOpacitySchema,

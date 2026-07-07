@@ -178,7 +178,6 @@ export const schema = {
           align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
           padding: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -197,6 +196,7 @@ export const schema = {
               value: "@padding.compact",
             },
           },
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
           borderBottom: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
             style: { type: Sdn.ValueType.OPTION, value: Sdn.BorderStyle.SOLID },
@@ -1256,7 +1256,6 @@ export const schema = {
           },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
           padding: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -1275,6 +1274,7 @@ export const schema = {
               value: "@padding.compact",
             },
           },
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
           borderTop: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
             style: {
@@ -2424,7 +2424,6 @@ export const schema = {
             },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -2443,6 +2442,7 @@ export const schema = {
                 value: "@padding.compact",
               },
             },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
             borderTop: {
               preset: { type: Sdn.ValueType.EMPTY, value: null },
               style: {

@@ -10,6 +10,7 @@ import {
 } from "@lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { ComponentRenderer } from "../ComponentRenderer"
+import { getPropertyHtmlAttributes } from "../property-html-attributes"
 
 type BoardPreviewNodeProps = {
   nodeId: string
@@ -77,7 +78,10 @@ export function BoardPreviewNode({
       })}
       styleOverrides={isRoot ? { position: "relative" } : undefined}
       componentId={component.id}
-      htmlAttributes={{ "data-preview-node-id": node.id }}
+      htmlAttributes={{
+        "data-preview-node-id": node.id,
+        ...getPropertyHtmlAttributes(nodeProperties),
+      }}
       nodeId={`${cssScope}-${nodeId}` as VariantId}
     >
       {childNodeIds.map((childNodeId) => (

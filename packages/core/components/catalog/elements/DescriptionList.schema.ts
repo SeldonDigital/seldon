@@ -88,6 +88,7 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {
@@ -104,7 +105,6 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
-    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },
