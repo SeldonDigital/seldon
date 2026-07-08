@@ -40,10 +40,6 @@ import {
   schema as comboboxFieldSchema,
 } from "./elements/ComboboxField.schema"
 import {
-  exportConfig as ordinalChipExportConfig,
-  schema as ordinalChipSchema,
-} from "./elements/OrdinalChip.schema"
-import {
   exportConfig as descriptionListExportConfig,
   schema as descriptionListSchema,
 } from "./elements/DescriptionList.schema"
@@ -79,6 +75,10 @@ import {
   exportConfig as optionGroupExportConfig,
   schema as optionGroupSchema,
 } from "./elements/OptionGroup.schema"
+import {
+  exportConfig as ordinalChipExportConfig,
+  schema as ordinalChipSchema,
+} from "./elements/OrdinalChip.schema"
 import {
   exportConfig as sectionExportConfig,
   schema as sectionSchema,

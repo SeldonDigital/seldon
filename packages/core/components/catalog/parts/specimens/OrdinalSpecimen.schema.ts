@@ -1,10 +1,6 @@
-import * as Sdn from "../../../../properties";
-import * as Seldon from "../../../constants";
-import { ComponentExport, ComponentSchema } from "../../../types";
-
-
-
-
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Ordinal Specimen",
@@ -211,7 +207,8 @@ export const schema = {
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
-                    value: "Use the controls below to see how various combinations of this theme's tokens work in practice.",
+                    value:
+                      "Use the controls below to see how various combinations of this theme's tokens work in practice.",
                   },
                   font: {
                     preset: {

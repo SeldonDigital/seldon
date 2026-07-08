@@ -1,5 +1,5 @@
-import { create } from "zustand"
 import { ORDINAL_SCALES, type OrdinalScale } from "@lib/themes/ordinal-preview"
+import { create } from "zustand"
 
 /**
  * Per-preview ordinal step selections for theme boards. The specimen legend

@@ -59,10 +59,10 @@ export const schema = {
     rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
-    opacity: { 
+    opacity: {
       type: Sdn.ValueType.EXACT,
       value: { unit: Sdn.Unit.PERCENT, value: 40 },
-     },
+    },
     background: [
       {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
