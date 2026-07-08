@@ -10,64 +10,62 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
+import { LiHTMLAttributes } from "react"
 import { Frame, FrameProps } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
+import { HTMLLi } from "../native-react/HTML.Li"
+import { Icon, IconProps } from "../primitives/Icon"
 import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface ProductCardMinimalProps extends HTMLAttributes<HTMLElement> {
+export interface ItemCatalogProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
-  image?: ImageProps | null
+  icon?: IconProps | null
   frame?: FrameProps | null
-  textSubtitle?: TextSubtitleProps | null
   textTitle?: TextTitleProps | null
+  textSubtitle?: TextSubtitleProps | null
 }
 
 /*****
- * Product Card: ProductCardMinimal
- * Level: Part
- * Intent: Ecommerce product card emphasizing image, price, title, rating, and a single add-to-cart action.
- * Tags: card, product, ecommerce, price, rating, cta, UI, commerce
+ * Item: ItemCatalog
+ * Level: Element
+ * Intent: Default list item used for general content with flexible layout.
+ * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Inline
  *
  * @example
  * ```tsx
- * <ProductCardMinimal
+ * <ItemCatalog
  *   aria-hidden="false"
- *   image="/image.jpg"
+ *   icon="material-star"
  *   frame="{}"
- *   textSubtitle="Product Title"
- *   textTitle2="Product Title"
+ *   textTitle="Product Title"
+ *   textSubtitle2="Product Title"
  * />
  * ```
  *****/
-export function ProductCardMinimal({
+export function ItemCatalog({
   className = "",
-  image = sdn.image,
+  icon,
   frame = sdn.frame,
-  textSubtitle,
   textTitle,
+  textSubtitle,
   children,
   seldonRefs,
   ...props
-}: ProductCardMinimalProps) {
-  const productCardMinimalClassName = combineClassNames(
-    "sdn-product-card",
-    className,
-  )
-  const imageProps = applyRef(
+}: ItemCatalogProps) {
+  const itemCatalogClassName = combineClassNames("sdn-item-catalog", className)
+  const iconProps = applyRef(
     seldonRefs,
-    image === null
+    icon === null
       ? null
       : {
-          ...sdn.image,
-          ...image,
-          className: combineClassNames(sdn.image?.className, image?.className),
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
         },
   )
   const frameProps = applyRef(
@@ -78,19 +76,6 @@ export function ProductCardMinimal({
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const textSubtitleProps = applyRef(
-    seldonRefs,
-    textSubtitle === null
-      ? null
-      : {
-          ...sdn.textSubtitle,
-          ...textSubtitle,
-          className: combineClassNames(
-            sdn.textSubtitle?.className,
-            textSubtitle?.className,
-          ),
         },
   )
   const textTitleProps = applyRef(
@@ -106,10 +91,24 @@ export function ProductCardMinimal({
           ),
         },
   )
+  const textSubtitleProps = applyRef(
+    seldonRefs,
+    textSubtitle === null
+      ? null
+      : {
+          ...sdn.textSubtitle,
+          ...textSubtitle,
+          className: combineClassNames(
+            sdn.textSubtitle?.className,
+            textSubtitle?.className,
+          ),
+        },
+  )
 
   return (
-    <Frame
-      className={productCardMinimalClassName}
+    <HTMLLi
+      className={itemCatalogClassName}
+      data-seldon-ref={"catalogItem"}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
     >
@@ -117,39 +116,40 @@ export function ProductCardMinimal({
         children
       ) : (
         <>
-          {imageProps !== null && <Image {...imageProps} />}
+          {icon && iconProps && <Icon {...iconProps} />}
           <Frame {...frameProps}>
+            {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
             {textSubtitle && textSubtitleProps && (
               <TextSubtitle {...textSubtitleProps} />
             )}
-            {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
           </Frame>
         </>
       )}
-    </Frame>
+    </HTMLLi>
   )
 }
 
 //
 // Default property values
 //
-const sdn: ProductCardMinimalProps = {
+const sdn: ItemCatalogProps = {
   "aria-hidden": "false",
-  className: "sdn-product-card sdn-product-card",
-  image: {
-    src: "https://static.seldon.app/background-default-light.jpg",
-    "aria-hidden": "false",
-    className: "sdn-image sdn-image--nf4j",
+  className: "sdn-item-catalog sdn-item",
+  icon: {
+    className: "sdn-icon sdn-icon--mene",
+    "data-seldon-ref": "catalogIcon",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--kr9k",
-  },
-  textSubtitle: {
-    className: "sdn-text-subtitle sdn-text-title--adfu",
+    className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--owq7",
+    className: "sdn-text-title sdn-text-title--noun",
+    "data-seldon-ref": "catalogLabel",
+  },
+  textSubtitle: {
+    className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
+    "data-seldon-ref": "catalogVariant",
   },
 }

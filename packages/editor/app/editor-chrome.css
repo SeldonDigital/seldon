@@ -117,6 +117,27 @@ html:not(.sdn-show-focus)
   .sdn-item-section:is(:focus-visible, :has(:focus-visible))
   .sdn-button-iconic:not([aria-invalid="true"]) {
   border-color: transparent;
+  background-color: transparent;
+}
+
+/*
+ * The combobox field's input and icons paint their own visible-focus color and
+ * border. Gate these like the field border: restore the resting color and
+ * neutralize the border so focus paints nothing when the toggle is off. The
+ * selectors out-specify the generated focused-state rules.
+ */
+html:not(.sdn-show-focus)
+  .sdn-input:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-input"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
+  border-color: transparent;
+}
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
 }
 
 /*

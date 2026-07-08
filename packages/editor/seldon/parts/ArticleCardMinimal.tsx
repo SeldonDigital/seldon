@@ -173,6 +173,6 @@ const sdn: ArticleCardMinimalProps = {
     className: "sdn-text-label sdn-text-label--lug5",
   },
   textHeading: {
-    className: "sdn-text-heading sdn-text-heading--xkk9",
+    className: "sdn-text-heading sdn-text-title--adfu",
   },
 }

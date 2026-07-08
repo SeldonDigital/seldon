@@ -10,12 +10,12 @@ import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { FocusRingOverlay } from "../focus/FocusRingOverlay"
 import { AiChatPanel } from "../panels/ai-chat-panel/AiChatPanel"
-import { AddBoardPanel } from "../panels/catalog-panel/AddBoardPanel"
-import { AddFontCollectionPanel } from "../panels/catalog-panel/AddFontCollectionPanel"
-import { AddIconSetPanel } from "../panels/catalog-panel/AddIconSetPanel"
-import { AddThemePanel } from "../panels/catalog-panel/AddThemePanel"
-import { InsertVariantPanel } from "../panels/catalog-panel/InsertVariantPanel"
 import { ImageUploadPanel } from "../panels/image-upload-panel/ImageUploadPanel"
+import { VMBoardsDialog } from "../dialogs/boards/VMBoardsDialog"
+import { VMComponentsDialog } from "../dialogs/components/VMComponentsDialog"
+import { VMFontCollectionsDialog } from "../dialogs/font-collections/VMFontCollectionsDialog"
+import { VMIconSetsDialog } from "../dialogs/icon-sets/VMIconSetsDialog"
+import { VMThemesDialog } from "../dialogs/themes/VMThemesDialog"
 import { VMObjectsSidebar } from "../sidebars/objects/VMObjectsSidebar"
 import { VMPropertiesSidebar } from "../sidebars/properties/VMPropertiesSidebar"
 
@@ -64,11 +64,11 @@ export default function Editor() {
       </AnimatePresence>
 
       <ImageUploadPanel.Controller />
-      <InsertVariantPanel.Controller />
-      <AddBoardPanel.Controller />
-      <AddThemePanel.Controller />
-      <AddFontCollectionPanel.Controller />
-      <AddIconSetPanel.Controller />
+      <VMComponentsDialog />
+      <VMBoardsDialog />
+      <VMThemesDialog />
+      <VMFontCollectionsDialog />
+      <VMIconSetsDialog />
       <AiChatPanel.Controller />
       <FocusRingOverlay />
       <EditorShortcuts />

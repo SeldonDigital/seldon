@@ -44,8 +44,8 @@
   --sdn-swatch-swatch2: hsl(38 100% 48%);
   --sdn-swatch-swatch3: hsl(38 100% 68%);
   --sdn-swatch-swatch4: hsl(38 100% 88%);
-  --sdn-swatch-foreground: hsl(220 12% 12%);
-  --sdn-swatch-background: hsl(0 0% 100%);
+  --sdn-swatch-foreground: hsl(0 0% 100%);
+  --sdn-swatch-background: hsl(220 12% 12%);
   --sdn-swatch-active: hsl(218 100% 48%);
   --sdn-swatch-punch: hsl(202 100% 44%);
   --sdn-swatch-positive: hsl(140 78% 34%);
@@ -131,8 +131,8 @@
   --sdn-hc-on-swatch2: hsl(218 12% 98%);
   --sdn-hc-on-swatch3: hsl(218 12% 8%);
   --sdn-hc-on-swatch4: hsl(218 12% 8%);
-  --sdn-hc-on-foreground: hsl(218 12% 98%);
-  --sdn-hc-on-background: hsl(218 12% 8%);
+  --sdn-hc-on-foreground: hsl(218 12% 8%);
+  --sdn-hc-on-background: hsl(218 12% 98%);
   --sdn-hc-on-active: hsl(218 12% 98%);
   --sdn-hc-on-punch: hsl(218 12% 98%);
   --sdn-hc-on-positive: hsl(218 12% 98%);
@@ -200,8 +200,8 @@
   --sdn-swatch-swatch2: hsl(34 100% 64%);
   --sdn-swatch-swatch3: hsl(35 100% 82%);
   --sdn-swatch-swatch4: hsl(36 96% 99%);
-  --sdn-swatch-foreground: hsl(0 0% 100%);
-  --sdn-swatch-background: hsl(220 12% 12%);
+  --sdn-swatch-foreground: hsl(220 12% 12%);
+  --sdn-swatch-background: hsl(0 0% 100%);
   --sdn-swatch-active: hsl(228 100% 63%);
   --sdn-swatch-punch: hsl(207 83% 59%);
   --sdn-swatch-positive: hsl(134 50% 44%);
@@ -219,8 +219,8 @@
   --sdn-hc-on-swatch2: hsl(218 12% 8%);
   --sdn-hc-on-swatch3: hsl(218 12% 8%);
   --sdn-hc-on-swatch4: hsl(218 12% 8%);
-  --sdn-hc-on-foreground: hsl(218 12% 8%);
-  --sdn-hc-on-background: hsl(218 12% 98%);
+  --sdn-hc-on-foreground: hsl(218 12% 98%);
+  --sdn-hc-on-background: hsl(218 12% 8%);
   --sdn-hc-on-active: hsl(218 12% 98%);
   --sdn-hc-on-punch: hsl(218 12% 98%);
   --sdn-hc-on-positive: hsl(218 12% 98%);

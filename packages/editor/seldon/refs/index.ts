@@ -12,6 +12,14 @@
  *****/
 
 export type SeldonRef =
+  | "catalogIcon"
+  | "catalogItem"
+  | "catalogLabel"
+  | "catalogVariant"
+  | "dialogCancel"
+  | "dialogConfirm"
+  | "dialogContent"
+  | "dialogTitle"
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
@@ -60,6 +68,46 @@ export interface SeldonRefEntry {
 }
 
 export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
+  catalogIcon: {
+    component: "Icon",
+    nodeId: "component-icon-meNEMxeY",
+    className: "sdn-icon sdn-icon--mene",
+  },
+  catalogItem: {
+    component: "ItemCatalog",
+    nodeId: "component-item-product",
+    className: "sdn-item-catalog sdn-item",
+  },
+  catalogLabel: {
+    component: "TextTitle",
+    nodeId: "component-text-noun68PK",
+    className: "sdn-text-title sdn-text-title--noun",
+  },
+  catalogVariant: {
+    component: "TextSubtitle",
+    nodeId: "component-text-R4oTaXSN",
+    className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
+  },
+  dialogCancel: {
+    component: "Button",
+    nodeId: "component-dialog-qawWP4n0",
+    className: "sdn-button sdn-button--cq5m",
+  },
+  dialogConfirm: {
+    component: "Button",
+    nodeId: "component-dialog-ZZtuPyCa",
+    className: "sdn-button sdn-button--cq5m",
+  },
+  dialogContent: {
+    component: "Frame",
+    nodeId: "component-dialog-2wWoLkwm",
+    className: "sdn-frame sdn-frame--zjuk",
+  },
+  dialogTitle: {
+    component: "TextTitle",
+    nodeId: "component-dialog-j8D9mUx4",
+    className: "sdn-text-title sdn-text-title--eodu",
+  },
   filterActions: {
     component: "ButtonIconic",
     nodeId: "component-comboboxField-egV44OiP",

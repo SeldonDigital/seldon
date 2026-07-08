@@ -314,47 +314,47 @@ const sdn: ProductCardProps = {
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--v8n4",
+    className: "sdn-image sdn-image--nf4j",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--ovgw",
+    className: "sdn-frame sdn-frame--kr9k",
   },
   chip: {
-    className: "sdn-chip sdn-chip--xv4c",
+    className: "sdn-chip sdn-chip--dinb",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--7oyz",
+    className: "sdn-text-label sdn-text-label--wdwl",
   },
   textSubtitle: {
-    className: "sdn-text-subtitle sdn-text-subtitle--chae",
+    className: "sdn-text-subtitle sdn-text-subtitle--pir3",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--bems",
+    className: "sdn-text-title sdn-text-title--owq7",
   },
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--yn2e",
+    className: "sdn-frame sdn-frame--nvmc",
   },
   icon: {
-    className: "sdn-icon sdn-icon--gsdg",
+    className: "sdn-icon sdn-icon--r8qv",
   },
   icon2: {
-    className: "sdn-icon sdn-icon--gsdg",
+    className: "sdn-icon sdn-icon--r8qv",
   },
   icon3: {
-    className: "sdn-icon sdn-icon--gsdg",
+    className: "sdn-icon sdn-icon--r8qv",
   },
   icon4: {
-    className: "sdn-icon sdn-icon--gsdg",
+    className: "sdn-icon sdn-icon--r8qv",
   },
   icon5: {
-    className: "sdn-icon sdn-icon--b9hs",
+    className: "sdn-icon sdn-icon--oqss",
   },
   button: {
-    className: "sdn-button sdn-button--heir",
+    className: "sdn-button sdn-button-iconic--pgsr",
   },
   icon6: {
     icon: "material-shoppingCart",
@@ -362,6 +362,6 @@ const sdn: ProductCardProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--ylte",
+    className: "sdn-text-label sdn-text-label--76j4",
   },
 }

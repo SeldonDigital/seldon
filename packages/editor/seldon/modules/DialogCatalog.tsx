@@ -28,7 +28,7 @@ import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
+export interface DialogCatalogProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
@@ -50,7 +50,7 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
 }
 
 /*****
- * Dialog: DialogModal
+ * Dialog: DialogCatalog
  * Level: Module
  * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
  * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
@@ -58,13 +58,13 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
  *
  * @example
  * ```tsx
- * <DialogModal
+ * <DialogCatalog
  *   role="dialog"
  *   aria-hidden="false"
  * />
  * ```
  *****/
-export function DialogModal({
+export function DialogCatalog({
   className = "",
   bar = sdn.bar,
   textTitle,
@@ -84,8 +84,11 @@ export function DialogModal({
   children,
   seldonRefs,
   ...props
-}: DialogModalProps) {
-  const dialogModalClassName = combineClassNames("sdn-dialog-modal", className)
+}: DialogCatalogProps) {
+  const dialogCatalogClassName = combineClassNames(
+    "sdn-dialog-modal",
+    className,
+  )
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -263,7 +266,7 @@ export function DialogModal({
 
   return (
     <HTMLDiv
-      className={dialogModalClassName}
+      className={dialogCatalogClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
@@ -303,7 +306,7 @@ export function DialogModal({
 //
 // Default property values
 //
-const sdn: DialogModalProps = {
+const sdn: DialogCatalogProps = {
   role: "dialog",
   "aria-hidden": "false",
   className: "sdn-dialog-modal sdn-dialog",
@@ -313,20 +316,21 @@ const sdn: DialogModalProps = {
   },
   textTitle: {
     className: "sdn-text-title sdn-text-title--eodu",
+    "data-seldon-ref": "dialogTitle",
   },
   comboboxFieldSearch: {
-    className: "sdn-combobox-field-search sdn-combobox-field-search--jaw4",
+    className: "sdn-combobox-field-search sdn-combobox-field-search--9jd5",
   },
   icon: {
     icon: "material-search",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   input: {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--icju",
+    className: "sdn-input sdn-input--twyx",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -334,12 +338,13 @@ const sdn: DialogModalProps = {
   icon2: {
     icon: "material-close",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--zjuk",
+    "data-seldon-ref": "dialogContent",
   },
   barButtons: {
     "aria-hidden": "false",
@@ -347,6 +352,7 @@ const sdn: DialogModalProps = {
   },
   button: {
     className: "sdn-button sdn-button--cq5m",
+    "data-seldon-ref": "dialogCancel",
   },
   icon3: {
     icon: "seldon-none",
@@ -358,6 +364,7 @@ const sdn: DialogModalProps = {
   },
   button2: {
     className: "sdn-button sdn-button--cq5m",
+    "data-seldon-ref": "dialogConfirm",
   },
   icon4: {
     icon: "material-check",

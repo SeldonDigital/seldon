@@ -9,12 +9,9 @@ import { getVariantById } from "@seldon/core/workspace/helpers/general/get-varia
 import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/general/is-special-board-variant"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import {
-  CatalogPanelCategory,
-  CatalogPanelItem,
-} from "../catalog-panel/CatalogPanel"
+import { CatalogDialogCategory, CatalogDialogItem } from "../types"
 
-export type CatalogComponentItem = CatalogPanelItem & {
+export type CatalogComponentItem = CatalogDialogItem & {
   componentId: ComponentId
   variantId?: VariantId
 }
@@ -32,7 +29,7 @@ const categoryConfigs = [
 
 /**
  * Builds catalog categories for the component picker, plus the search query
- * that `CatalogPanel` renders.
+ * that `VMCatalogDialog` renders.
  */
 export function useComponentCatalog({
   shouldShowComponent,
@@ -42,7 +39,7 @@ export function useComponentCatalog({
   const { workspace } = useWorkspace()
   const [query, setQuery] = useState("")
 
-  const categories: CatalogPanelCategory<CatalogComponentItem>[] =
+  const categories: CatalogDialogCategory<CatalogComponentItem>[] =
     useMemo(() => {
       return categoryConfigs.map(({ category, schemas }) => {
         const items: CatalogComponentItem[] = schemas

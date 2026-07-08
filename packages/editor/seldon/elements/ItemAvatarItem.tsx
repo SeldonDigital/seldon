@@ -10,67 +10,99 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
+import { LiHTMLAttributes } from "react"
+import { AvatarRounded, AvatarRoundedProps } from "../elements/AvatarRounded"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLLi } from "../native-react/HTML.Li"
 import { Icon, IconProps } from "../primitives/Icon"
-import { Image, ImageProps } from "../primitives/Image"
+import { ImageProps } from "../primitives/Image"
+import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface ProductCardHorizontalProps extends HTMLAttributes<HTMLElement> {
+export interface ItemAvatarItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
+  inputCheckbox?: InputCheckboxProps | null
+  avatarRounded?: AvatarRoundedProps | null
   image?: ImageProps | null
   frame?: FrameProps | null
-  textSubtitle?: TextSubtitleProps | null
   textTitle?: TextTitleProps | null
+  textSubtitle?: TextSubtitleProps | null
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
 }
 
 /*****
- * Product Card: ProductCardHorizontal
- * Level: Part
- * Intent: Ecommerce product card emphasizing image, price, title, rating, and a single add-to-cart action.
- * Tags: card, product, ecommerce, price, rating, cta, UI, commerce
+ * Item: ItemAvatarItem
+ * Level: Element
+ * Intent: Default list item used for general content with flexible layout.
+ * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Inline
  *
  * @example
  * ```tsx
- * <ProductCardHorizontal
+ * <ItemAvatarItem
  *   aria-hidden="false"
+ *   inputCheckbox="{}"
+ *   avatarRounded="/image.jpg"
  *   image="/image.jpg"
  *   frame="{}"
- *   textSubtitle="Product Title"
- *   textTitle2="Product Title"
+ *   textTitle="Product Title"
+ *   textSubtitle2="Product Title"
  *   button={() => {}}
  *   icon="material-star"
  *   textLabel="{}"
  * />
  * ```
  *****/
-export function ProductCardHorizontal({
+export function ItemAvatarItem({
   className = "",
+  inputCheckbox,
+  avatarRounded = sdn.avatarRounded,
   image = sdn.image,
   frame = sdn.frame,
-  textSubtitle,
   textTitle,
-  button,
+  textSubtitle,
+  button = sdn.button,
   icon = sdn.icon,
   textLabel,
   children,
   seldonRefs,
   ...props
-}: ProductCardHorizontalProps) {
-  const productCardHorizontalClassName = combineClassNames(
-    "sdn-product-card-horizontal",
-    className,
+}: ItemAvatarItemProps) {
+  const itemAvatarItemClassName = combineClassNames("sdn-item", className)
+  const inputCheckboxProps = applyRef(
+    seldonRefs,
+    inputCheckbox === null
+      ? null
+      : {
+          ...sdn.inputCheckbox,
+          ...inputCheckbox,
+          className: combineClassNames(
+            sdn.inputCheckbox?.className,
+            inputCheckbox?.className,
+          ),
+        },
+  )
+  const avatarRoundedProps = applyRef(
+    seldonRefs,
+    avatarRounded === null
+      ? null
+      : {
+          ...sdn.avatarRounded,
+          ...avatarRounded,
+          className: combineClassNames(
+            sdn.avatarRounded?.className,
+            avatarRounded?.className,
+          ),
+        },
   )
   const imageProps = applyRef(
     seldonRefs,
@@ -92,19 +124,6 @@ export function ProductCardHorizontal({
           className: combineClassNames(sdn.frame?.className, frame?.className),
         },
   )
-  const textSubtitleProps = applyRef(
-    seldonRefs,
-    textSubtitle === null
-      ? null
-      : {
-          ...sdn.textSubtitle,
-          ...textSubtitle,
-          className: combineClassNames(
-            sdn.textSubtitle?.className,
-            textSubtitle?.className,
-          ),
-        },
-  )
   const textTitleProps = applyRef(
     seldonRefs,
     textTitle === null
@@ -115,6 +134,19 @@ export function ProductCardHorizontal({
           className: combineClassNames(
             sdn.textTitle?.className,
             textTitle?.className,
+          ),
+        },
+  )
+  const textSubtitleProps = applyRef(
+    seldonRefs,
+    textSubtitle === null
+      ? null
+      : {
+          ...sdn.textSubtitle,
+          ...textSubtitle,
+          className: combineClassNames(
+            sdn.textSubtitle?.className,
+            textSubtitle?.className,
           ),
         },
   )
@@ -156,8 +188,8 @@ export function ProductCardHorizontal({
   )
 
   return (
-    <Frame
-      className={productCardHorizontalClassName}
+    <HTMLLi
+      className={itemAvatarItemClassName}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
     >
@@ -165,58 +197,68 @@ export function ProductCardHorizontal({
         children
       ) : (
         <>
-          {imageProps !== null && <Image {...imageProps} />}
+          {inputCheckbox && inputCheckboxProps && (
+            <InputCheckbox {...inputCheckboxProps} />
+          )}
+          {avatarRoundedProps !== null && (
+            <AvatarRounded {...avatarRoundedProps} image={imageProps} />
+          )}
           <Frame {...frameProps}>
+            {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
             {textSubtitle && textSubtitleProps && (
               <TextSubtitle {...textSubtitleProps} />
             )}
-            {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-            {button && buttonProps && (
-              <Button {...buttonProps}>
-                {icon && iconProps && <Icon {...iconProps} />}
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
-              </Button>
-            )}
           </Frame>
+          {buttonProps !== null && (
+            <Button {...buttonProps}>
+              {icon && iconProps && <Icon {...iconProps} />}
+              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+            </Button>
+          )}
         </>
       )}
-    </Frame>
+    </HTMLLi>
   )
 }
 
 //
 // Default property values
 //
-const sdn: ProductCardHorizontalProps = {
+const sdn: ItemAvatarItemProps = {
   "aria-hidden": "false",
-  className: "sdn-product-card-horizontal sdn-product-card",
-  image: {
-    src: "https://static.seldon.app/background-default-light.jpg",
+  className: "sdn-item sdn-item",
+  inputCheckbox: {
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+  },
+  avatarRounded: {
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--ldqx",
+    className: "sdn-avatar sdn-avatar--a890",
+  },
+  image: {
+    src: "/avatar-user.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--zjyq",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--o91y",
-  },
-  textSubtitle: {
-    className: "sdn-text-subtitle sdn-text-title--adfu",
+    className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--wi5q",
+    className: "sdn-text-title sdn-text-title--ulqm",
+  },
+  textSubtitle: {
+    className: "sdn-text-subtitle sdn-text-subtitle--nxwj",
   },
   button: {
     className: "sdn-button sdn-button-iconic--pgsr",
   },
   icon: {
-    icon: "material-shoppingCart",
+    icon: "seldon-component",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--76j4",
+    className: "sdn-text-label sdn-text-label--ylte",
   },
 }

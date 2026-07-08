@@ -182,12 +182,12 @@ const sdn: ArticleCardHorizontalProps = {
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--rwhb",
+    className: "sdn-image sdn-image--oqk2",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--ozkl",
+    className: "sdn-frame sdn-frame--sjq9",
   },
   chip: {
     className: "sdn-chip sdn-chip--o0xb",
