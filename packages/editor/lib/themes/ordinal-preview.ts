@@ -101,35 +101,10 @@ function findFirstTextNodeId(
 }
 
 /**
- * Finds the first descendant node id of the given component, breadth first,
- * starting from a root node id. Traverses the board tree so it resolves the
- * instance embedded in this board rather than a same-typed node on another
- * board in the shared nodes map.
- */
-function findDescendantByComponent(
-  rootNodeId: string,
-  componentId: ComponentId,
-  workspace: Workspace,
-): string | null {
-  const root = workspace.nodes[rootNodeId]
-  if (!root) return null
-
-  const queue = [...getNodeChildIds(root, workspace)]
-  while (queue.length > 0) {
-    const id = queue.shift() as string
-    const node = workspace.nodes[id]
-    if (!node) continue
-    if (getNodeCatalogComponentId(node, workspace) === componentId) {
-      return id
-    }
-    queue.push(...getNodeChildIds(node, workspace))
-  }
-  return null
-}
-
-/**
  * Collects every descendant node id of the given component under a root, in
- * document (pre-order) order. Targeting the component directly keeps the layout
+ * document (pre-order) order. Traverses the board tree, so it resolves nodes
+ * embedded in this board rather than same-typed nodes on other boards in the
+ * shared preview nodes map. Targeting the component directly keeps the layout
  * stable when the specimen adds wrapping frames or static text around the legend
  * buttons and chips.
  */
@@ -167,7 +142,11 @@ export function getOrdinalPreviewLayout(): OrdinalPreviewLayout {
   const chipRows: OrdinalChipRow[] = []
 
   const specimenId = rootId
-    ? findDescendantByComponent(rootId, ComponentId.ORDINAL_SPECIMEN, workspace)
+    ? (collectDescendantsByComponent(
+        rootId,
+        ComponentId.ORDINAL_SPECIMEN,
+        workspace,
+      )[0] ?? null)
     : null
   const specimen = specimenId ? workspace.nodes[specimenId] : undefined
 
@@ -235,7 +214,7 @@ function formatLength(
 
 /**
  * The chip row text for a scale step: the token's step value paired with its
- * resolved length in the given theme, e.g. `0 | 1rem`. Modulated tokens show
+ * resolved length in the given theme, e.g. `0 · 1rem`. Modulated tokens show
  * their modulation step; exact tokens show their raw numeric value.
  */
 export function ordinalStepValueText(

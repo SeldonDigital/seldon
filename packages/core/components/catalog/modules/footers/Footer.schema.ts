@@ -1162,7 +1162,7 @@ export const schema = {
                               },
                               size: {
                                 type: Sdn.ValueType.THEME_ORDINAL,
-                                value: "@fontSize.small",
+                                value: "@fontSize.xsmall",
                               },
                             },
                           },
