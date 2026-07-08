@@ -291,7 +291,11 @@ export function DialogModal({
             <BarButtons
               {...barButtonsProps}
               button={buttonProps}
+              icon={icon3Props}
+              textLabel={textLabel && textLabelProps}
               button2={button2Props}
+              icon2={icon4Props}
+              textLabel2={textLabel2 && textLabel2Props}
             />
           )}
         </>

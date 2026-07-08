@@ -218,8 +218,14 @@ export function Sidebar({
             <BarButtons
               {...barButtonsProps}
               button={buttonProps}
+              icon={iconProps}
+              textLabel={textLabel && textLabelProps}
               button2={button2Props}
+              icon2={icon2Props}
+              textLabel2={textLabel2 && textLabel2Props}
               button3={button3Props}
+              icon3={icon3Props}
+              textLabel3={textLabel3 && textLabel3Props}
             />
           )}
         </>

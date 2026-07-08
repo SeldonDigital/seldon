@@ -13,13 +13,13 @@
 import { HTMLAttributes } from "react"
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import { ListboxOptionProps } from "../elements/ListboxOption"
+import { ListboxOption, ListboxOptionProps } from "../elements/ListboxOption"
 import { Frame, FrameProps } from "../frames/Frame"
 import { ListboxGrouped, ListboxGroupedProps } from "../parts/ListboxGrouped"
-import { HrProps } from "../primitives/Hr"
-import { IconProps } from "../primitives/Icon"
+import { Hr, HrProps } from "../primitives/Hr"
+import { Icon, IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
-import { TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
@@ -400,12 +400,51 @@ export function ComboboxGrouped({
             />
           )}
           {listboxGroupedProps !== null && (
-            <ListboxGrouped
-              {...listboxGroupedProps}
-              frame={frameProps}
-              hr={hrProps}
-              frame2={frame2Props}
-            />
+            <ListboxGrouped {...listboxGroupedProps}>
+              <Frame {...frameProps}>
+                {textLabel && textLabelProps && (
+                  <TextLabel {...textLabelProps} />
+                )}
+                {listboxOption && listboxOptionProps && (
+                  <ListboxOption {...listboxOptionProps}>
+                    {icon3 && icon3Props && <Icon {...icon3Props} />}
+                    {textLabel2 && textLabel2Props && (
+                      <TextLabel {...textLabel2Props} />
+                    )}
+                  </ListboxOption>
+                )}
+                {listboxOption2 && listboxOption2Props && (
+                  <ListboxOption {...listboxOption2Props}>
+                    {icon4 && icon4Props && <Icon {...icon4Props} />}
+                    {textLabel3 && textLabel3Props && (
+                      <TextLabel {...textLabel3Props} />
+                    )}
+                  </ListboxOption>
+                )}
+              </Frame>
+              {hr && hrProps && <Hr {...hrProps} />}
+              <Frame {...frame2Props}>
+                {textLabel4 && textLabel4Props && (
+                  <TextLabel {...textLabel4Props} />
+                )}
+                {listboxOption3 && listboxOption3Props && (
+                  <ListboxOption {...listboxOption3Props}>
+                    {icon5 && icon5Props && <Icon {...icon5Props} />}
+                    {textLabel5 && textLabel5Props && (
+                      <TextLabel {...textLabel5Props} />
+                    )}
+                  </ListboxOption>
+                )}
+                {listboxOption4 && listboxOption4Props && (
+                  <ListboxOption {...listboxOption4Props}>
+                    {icon6 && icon6Props && <Icon {...icon6Props} />}
+                    {textLabel6 && textLabel6Props && (
+                      <TextLabel {...textLabel6Props} />
+                    )}
+                  </ListboxOption>
+                )}
+              </Frame>
+            </ListboxGrouped>
           )}
         </>
       )}

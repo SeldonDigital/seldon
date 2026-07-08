@@ -333,8 +333,14 @@ export function Dialog({
             <BarButtons
               {...barButtonsProps}
               button={button2Props}
+              icon={icon3Props}
+              textLabel={textLabel2 && textLabel2Props}
               button2={button3Props}
+              icon2={icon4Props}
+              textLabel2={textLabel3 && textLabel3Props}
               button3={button4Props}
+              icon3={icon5Props}
+              textLabel3={textLabel4 && textLabel4Props}
             />
           )}
         </>

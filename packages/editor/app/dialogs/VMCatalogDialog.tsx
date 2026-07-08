@@ -150,17 +150,17 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
     onClick: handleClearQuery,
     style: query ? undefined : styles.hidden,
   }
-  const barButtons = {
-    button3: null,
-    icon: { icon: "seldon-none" as const },
-    textLabel: { children: "Cancel" },
-    icon2: { icon: "material-check" as const },
-    textLabel2: { children: confirmButtonText },
-  }
+  // The shell forwards its own cancel/confirm icon and label slots (small size),
+  // so the button leaves are wired through DialogCatalog's top-level props. The
+  // cancel/confirm icons ride the shell defaults; only the labels need content.
+  // `button3: null` suppresses the third BarButtons slot the shell does not use.
+  const barButtons = { button3: null }
+  const cancelLabel = { children: "Cancel" }
+  const confirmLabel = { children: confirmButtonText }
   const seldonRefs = {
     dialogContent: { style: styles.content, children: content },
     dialogCancel: { onClick: onClose },
-    dialogConfirm: { onClick: handleConfirm, disabled: !selectedItem },
+    dialogConfirm: { onClick: handleConfirm },
   }
 
   return (
@@ -183,6 +183,8 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
         input={searchInput}
         buttonIconic={searchClear}
         barButtons={barButtons}
+        textLabel={cancelLabel}
+        textLabel2={confirmLabel}
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />

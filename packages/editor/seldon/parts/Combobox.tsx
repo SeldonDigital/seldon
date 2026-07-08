@@ -289,8 +289,14 @@ export function Combobox({
             <Listbox
               {...listboxProps}
               listboxOption={listboxOptionProps}
+              icon={icon3Props}
+              textLabel={textLabel && textLabelProps}
               listboxOption2={listboxOption2Props}
+              icon2={icon4Props}
+              textLabel2={textLabel2 && textLabel2Props}
               listboxOption3={listboxOption3Props}
+              icon3={icon5Props}
+              textLabel3={textLabel3 && textLabel3Props}
             />
           )}
         </>
