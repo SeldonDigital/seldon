@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Join CTA",
@@ -46,12 +50,15 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
+      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
       right: {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.comfortable",
       },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: {
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@padding.cozy",
+      },
       left: {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.comfortable",
@@ -130,19 +137,19 @@ export const schema = {
     corners: {
       topLeft: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
       topRight: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
       bottomLeft: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
       bottomRight: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
     },
     shadow: [
