@@ -346,6 +346,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.BUTTON,
             overrides: {
+              align: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Align.CENTER,
+              },
               width: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Resize.FILL,
@@ -368,6 +372,10 @@ export const schema = {
                   content: {
                     type: Sdn.ValueType.EXACT,
                     value: "Play now",
+                  },
+                  width: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Resize.FIT,
                   },
                 },
               },

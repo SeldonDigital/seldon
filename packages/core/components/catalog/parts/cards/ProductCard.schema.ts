@@ -409,7 +409,7 @@ export const schema = {
             overrides: {
               width: {
                 type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FILL,
+                value: Sdn.Resize.FIT,
               },
             },
             children: [
