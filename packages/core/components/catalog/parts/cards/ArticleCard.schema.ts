@@ -253,10 +253,7 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@font.heading",
                 },
-                family: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "Playfair Display",
-                },
+                family: { type: Sdn.ValueType.EMPTY, value: null },
                 style: { type: Sdn.ValueType.EMPTY, value: null },
                 weight: { type: Sdn.ValueType.EMPTY, value: null },
                 size: { type: Sdn.ValueType.EMPTY, value: null },
@@ -265,7 +262,7 @@ export const schema = {
               },
               lines: {
                 type: Sdn.ValueType.EXACT,
-                value: 2,
+                value: 5,
               },
             },
           },
@@ -280,7 +277,7 @@ export const schema = {
               },
               lines: {
                 type: Sdn.ValueType.EXACT,
-                value: 2,
+                value: 5,
               },
             },
           },
@@ -521,10 +518,7 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.heading",
                   },
-                  family: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "Playfair Display",
-                  },
+                  family: { type: Sdn.ValueType.EMPTY, value: null },
                   style: { type: Sdn.ValueType.EMPTY, value: null },
                   weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: { type: Sdn.ValueType.EMPTY, value: null },
@@ -533,7 +527,7 @@ export const schema = {
                 },
                 lines: {
                   type: Sdn.ValueType.EXACT,
-                  value: 2,
+                  value: 3,
                 },
               },
             },
@@ -651,10 +645,7 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.heading",
                   },
-                  family: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "Playfair Display",
-                  },
+                  family: { type: Sdn.ValueType.EMPTY, value: null },
                   style: { type: Sdn.ValueType.EMPTY, value: null },
                   weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: { type: Sdn.ValueType.EMPTY, value: null },
@@ -663,7 +654,7 @@ export const schema = {
                 },
                 lines: {
                   type: Sdn.ValueType.EXACT,
-                  value: 2,
+                  value: 5,
                 },
               },
             },
@@ -678,7 +669,7 @@ export const schema = {
                 },
                 lines: {
                   type: Sdn.ValueType.EXACT,
-                  value: 2,
+                  value: 5,
                 },
               },
             },
