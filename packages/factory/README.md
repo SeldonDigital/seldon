@@ -86,14 +86,14 @@ flowchart TD
   icons --> css[Component stylesheet plus per-theme stylesheets]
   css --> images[getImagesToExport then rewrite to relative paths]
   images --> files[Component, native, frame, icon, fonts, readme, utility files]
-  files --> license[Insert license into every text file]
+  files --> license[Insert license, then format each source file]
   license --> output[Files to export]
 ```
 
 - **Context** indexes parents so property compute can resolve inheritance.
 - **Style registry** maps each node to a class and records tree depths for cascade order.
 - **Discovery** finds exportable components and orders them by component level. Icon discovery collects icons referenced by components, then adds every icon turned on in the workspace's icon sets, so exports ship complete icon sets.
-- **Generation** writes one file per component plus shared files, then inserts a license header into every text file. Native wrappers come from the `exportConfig.react.returns` of every exported component, plus `HTML.Div` for Frame.
+- **Generation** writes one file per component plus shared files, then inserts a license header into every text file and formats each source file. Native wrappers come from the `exportConfig.react.returns` of every exported component, plus `HTML.Div` for Frame.
 
 `exportReact` inlines its CSS generation through `buildStyleRegistry`, `generateComponentStylesheet`, and `generateThemeStylesheetFiles`. It produces one component stylesheet and one stylesheet file per theme.
 
@@ -114,6 +114,16 @@ function getCssFromProperties(
 It computes property values, applies inheritance from the parent context, resolves theme tokens, and writes optimized CSS. It drops unset values.
 
 Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its stock theme catalog id, such as `high-contrast` from `catalog:highContrast`, and falls back to its label or id when the template is missing. A variant theme prepends its root slug and appends its own label, such as `seldon-red`.
+
+---
+
+## Formatting
+
+Factory formats its output with Prettier. The options live in one file: [export/export-prettier-config.ts](./export/export-prettier-config.ts). Both the React and CSS formatters read it, so every exported file formats the same way. To change how exports are formatted, edit that file.
+
+The defaults match the Seldon repository, so generated files land already formatted and do not churn on the next format pass. The filename is not a name Prettier auto-discovers, so a consumer's own Prettier never applies it to their source. A consumer exporting into a differently formatted codebase edits this file to match their style.
+
+The `skipFormat` export option turns formatting off for a run.
 
 ---
 

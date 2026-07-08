@@ -16,6 +16,7 @@ import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
+import { resetBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
 import { getStyleContext } from "../../../helpers/build-export-context"
 import {
   getTemplateSourceNodeId,
@@ -125,6 +126,11 @@ export const buildStyleRegistry = (
   classNameToNodeId: Record<string, string>
   nodeTreeDepths: Record<string, number>
 } => {
+  // Style generation records each brightness-shifted swatch it references so the
+  // theme stylesheet can publish one concrete variable per pair. Clear it so a
+  // run only collects the pairs it uses.
+  resetBrightnessSwatches()
+
   const classes: Classes = {}
   const stateClasses: StateClasses = {}
   const descendantStateClasses: DescendantStateClasses = {}

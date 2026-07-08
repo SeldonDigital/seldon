@@ -228,7 +228,7 @@ const sdn: TopbarInlineLinksProps = {
     className: "sdn-button sdn-button--aket",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-title--ulid",
+    className: "sdn-text-label sdn-text-label--fcuq",
   },
   image: {
     className: "sdn-image sdn-image--guh3",

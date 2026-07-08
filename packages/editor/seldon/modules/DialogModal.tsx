@@ -334,7 +334,7 @@ const sdn: DialogModalProps = {
   icon2: {
     icon: "material-close",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--rezm",
   },
   frame: {
     wrapperElement: "div",

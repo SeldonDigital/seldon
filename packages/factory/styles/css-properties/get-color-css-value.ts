@@ -28,7 +28,12 @@ import {
 import { Theme } from "@seldon/core/themes/types"
 import { debugLog } from "@seldon/core/utils/debug-logger"
 
-import { getThemeSwatchVarReference } from "./get-theme-swatch-names"
+import { recordBrightnessSwatch } from "../computed-variables/brightness-swatches"
+import { swatchIdFromRef } from "../computed-variables/names"
+import {
+  getBrightnessSwatchVarReference,
+  getThemeSwatchVarReference,
+} from "./get-theme-swatch-names"
 
 /**
  * Wraps a CSS color reference (a `var(--sdn-...)` or any color expression) with
@@ -105,11 +110,28 @@ export function getColorCSSValue({
 
     // Keep the swatch as a theme variable so it swaps with the active theme.
     if (isSwatch) {
-      const reference = getThemeSwatchVarReference(
-        String((color as { value: unknown }).value),
-        theme,
-      )
+      const swatchKey = String((color as { value: unknown }).value)
+      const reference = getThemeSwatchVarReference(swatchKey, theme)
       if (reference) {
+        // A brightness shift cannot ride the plain swatch variable as a real
+        // color, so reference the dedicated brightness variable instead. It
+        // already holds the shifted color, leaving only opacity to apply here.
+        if (brightnessNum !== 0) {
+          const brightnessReference = getBrightnessSwatchVarReference(
+            swatchKey,
+            theme,
+            brightnessNum,
+          )
+          if (brightnessReference) {
+            const slot = swatchIdFromRef(swatchKey)
+            if (slot) recordBrightnessSwatch(slot, brightnessNum)
+            return applyTransformsToColorReference(
+              brightnessReference,
+              0,
+              opacityNum,
+            )
+          }
+        }
         return applyTransformsToColorReference(
           reference,
           brightnessNum,

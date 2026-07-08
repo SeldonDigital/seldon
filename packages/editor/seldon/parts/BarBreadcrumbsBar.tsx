@@ -188,12 +188,12 @@ const sdn: BarBreadcrumbsBarProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--xl1d",
   },
   icon2: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--qjxq",
   },
   link: {
     children: "Home",
@@ -203,7 +203,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon3: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--qjxq",
   },
   link2: {
     children: "Profile",
@@ -213,7 +213,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon4: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--qjxq",
   },
   link3: {
     children: "Settings",

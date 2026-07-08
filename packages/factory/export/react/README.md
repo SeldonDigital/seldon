@@ -26,7 +26,7 @@ async function exportReact(
 7. Transform image paths to relative paths with `replaceImagesWithRelativePaths`.
 8. Generate component files, native primitives, the Frame component, icons, the icon index, the Fonts component, the package README, utility files, and image files.
 9. Generate the `refs/index.ts` registry with `generateRefsRegistry`. It is emitted only when at least one node carries a ref.
-10. Add a license header to every string file with `insertLicense`.
+10. Add a license header to every string file with `insertLicense`, then run a final Prettier pass over each source file so the output stays formatted.
 
 Each generation step runs inside a `try/catch` so one failure does not stop the others.
 
@@ -164,7 +164,13 @@ Two predicates classify a component for the `Type` line in the generated JSDoc. 
 
 ## Formatting
 
-`format.ts` runs Prettier with the `typescript` parser and no semicolons. It runs twice so the import sort plugin puts each import on its own line. It honors a `skipFormat` option.
+`format.ts` runs Prettier on generated TypeScript. It runs twice so the import sort plugin puts each import on its own line. It honors a `skipFormat` option.
+
+Prettier options come from one file: `export/export-prettier-config.ts`. Both the React formatter and the CSS formatter read it, so all exported files format the same way. To change how exports are formatted, edit that file. Its defaults match the Seldon repository so generated files land already formatted and do not churn on the next format pass.
+
+The filename is not a name Prettier auto-discovers, so a consumer's own Prettier never applies it to their source. A consumer exporting into a differently formatted codebase edits `export-prettier-config.ts` to match their style.
+
+After license insertion, `exportReact` runs a final Prettier pass over every emitted source file. This keeps verbatim template output, such as the utility files, formatted like the rest.
 
 ---
 

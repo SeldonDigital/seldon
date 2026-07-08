@@ -4,6 +4,8 @@ import {
   THEME_PALETTE_SLOTS,
 } from "@seldon/core/themes/values"
 
+import { brightnessSuffix } from "../computed-variables/names"
+
 /**
  * Reserved swatch slots that emit a stable `var(--sdn-...swatch-*)` reference.
  * Harmony and interface roles align across themes by slot id, so a reference
@@ -93,4 +95,30 @@ export function getThemeSwatchVarReference(
   if (!name) return undefined
 
   return `var(--sdn-swatch-${name})`
+}
+
+/**
+ * Returns a `var(--sdn-swatch-*-b*)` reference for a `@swatch.*` key shifted by a
+ * non-zero brightness, or undefined when the key is not a reserved swatch. The
+ * referenced variable holds the concrete brightened color, published once per
+ * `(slot, brightness)` pair by the theme stylesheet, so the reference stays a
+ * real color and still swaps with the active theme.
+ */
+export function getBrightnessSwatchVarReference(
+  swatchKey: string,
+  theme: Theme,
+  brightness: number,
+): string | undefined {
+  if (brightness === 0) return undefined
+  if (!swatchKey.startsWith("@swatch.")) return undefined
+  const id = swatchKey.slice("@swatch.".length)
+  if (!REFERENCEABLE_SWATCH_SLOTS.has(id)) return undefined
+  if (!theme.swatch || !theme.swatch[id as keyof typeof theme.swatch]) {
+    return undefined
+  }
+
+  const name = getThemeSwatchVarNames(theme)[id]
+  if (!name) return undefined
+
+  return `var(--sdn-swatch-${name}-${brightnessSuffix(brightness)})`
 }
