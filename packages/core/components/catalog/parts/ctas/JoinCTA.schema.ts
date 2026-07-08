@@ -193,7 +193,7 @@ export const schema = {
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
-                value: "Become an Affiliate",
+                value: "Become a Contributor",
               },
               color: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -221,7 +221,7 @@ export const schema = {
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
-                value: "Join our Affiliate Program",
+                value: "Explore the codebase",
               },
               font: {
                 preset: {
@@ -233,6 +233,7 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.LEFT,
               },
+              lines: { type: Sdn.ValueType.EXACT, value: 3 },
             },
           },
           {
@@ -242,7 +243,7 @@ export const schema = {
               content: {
                 type: Sdn.ValueType.EXACT,
                 value:
-                  "Earn money with our generous 30% commission for every sale you drive with your referral link.",
+                  "Experiment with Seldon's open source codebase and see how it can be used to create a consistent and user-friendly experience.",
               },
               font: {
                 preset: {
@@ -281,7 +282,7 @@ export const schema = {
                   },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.offBlack",
+                    value: "@swatch.primary",
                   },
                   brightness: { type: Sdn.ValueType.EMPTY, value: null },
                   opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -332,7 +333,7 @@ export const schema = {
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
-                    value: "Become an affiliate",
+                    value: "View the repo",
                   },
                   color: {
                     type: Sdn.ValueType.COMPUTED,

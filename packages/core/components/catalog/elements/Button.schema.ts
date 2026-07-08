@@ -208,6 +208,10 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Button",
           },
+          cursor: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Cursor.POINTER,
+          },
           color: {
             type: Sdn.ValueType.COMPUTED,
             value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,

@@ -60,12 +60,13 @@ export const schema = {
   default: {
     children: [
       { component: Seldon.ComponentId.TOPBAR },
+      { component: Seldon.ComponentId.JOIN_CTA },
       { component: Seldon.ComponentId.COLOR_SPECIMEN },
       { component: Seldon.ComponentId.ORDINAL_SPECIMEN },
-      { 
+      {
         component: Seldon.ComponentId.FOOTER,
         variant: "standard",
-       },
+      },
     ],
   },
 } as const satisfies ComponentSchema
