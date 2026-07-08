@@ -50,6 +50,6 @@ export interface PropertySchema {
   units?: {
     allowed: Unit[]
     default: Unit
-    validation?: "number" | "percentage" | "both"
+    validation?: "number" | "percentage" | "signedPercentage" | "both"
   }
 }

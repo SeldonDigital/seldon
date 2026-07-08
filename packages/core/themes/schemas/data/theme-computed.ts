@@ -168,7 +168,7 @@ const DISPLAY_MODE_FACETS = [
   {
     facet: "chromaChange",
     label: "Chroma Change",
-    valueType: "percentage",
+    valueType: "signedPercentage",
     controlType: "number",
     unit: { type: "%", min: -100, max: 100, step: 1 },
     icon: "material-invertColors",
@@ -176,7 +176,7 @@ const DISPLAY_MODE_FACETS = [
   {
     facet: "lightnessChange",
     label: "Lightness Change",
-    valueType: "percentage",
+    valueType: "signedPercentage",
     controlType: "number",
     unit: { type: "%", min: -100, max: 100, step: 1 },
     icon: "material-brightnessHigh",

@@ -37,7 +37,7 @@ function isColorLikeProperty(name: string): boolean {
 
 function mapUnitToTheme(
   unit: Unit,
-  validation: "number" | "percentage" | "both" | undefined,
+  validation: "number" | "percentage" | "signedPercentage" | "both" | undefined,
 ): ThemeTokenSchema["unit"] {
   const type =
     unit === Unit.PX
@@ -57,6 +57,10 @@ function mapUnitToTheme(
 
   if (validation === "percentage") {
     return { ...base, type: "%", min: 0, max: 100, step: 1 }
+  }
+
+  if (validation === "signedPercentage") {
+    return { ...base, type: "%", min: -100, max: 100, step: 1 }
   }
 
   if (type === "deg") {
@@ -115,10 +119,19 @@ function deriveFromPropertySchema(
     const validation = prop.units.validation
     const uiUnit = mapUnitToTheme(
       prop.units.allowed[0],
-      validation as "number" | "percentage" | "both" | undefined,
+      validation as
+        | "number"
+        | "percentage"
+        | "signedPercentage"
+        | "both"
+        | undefined,
     )
     const support: ThemeTokenSchemaSupport =
-      validation === "percentage" ? "percentage" : "number"
+      validation === "percentage"
+        ? "percentage"
+        : validation === "signedPercentage"
+          ? "signedPercentage"
+          : "number"
     return {
       label,
       supports: [support],

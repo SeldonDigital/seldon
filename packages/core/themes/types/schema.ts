@@ -34,6 +34,7 @@ export type ThemeTokenSchemaSupport =
   | "enum"
   | "boolean"
   | "percentage"
+  | "signedPercentage"
 
 /** Per-shape validators (parallel to {@link PropertySchema.validation}). */
 export type ThemeTokenSchemaValidation = {
