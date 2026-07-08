@@ -30,6 +30,7 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
 import {
@@ -61,6 +62,7 @@ const previewClickLayerStyle: CSSProperties = { display: "contents" }
  */
 export function ThemeBoard({ board }: ThemeBoardProps) {
   const { workspace } = useWorkspace()
+  const { selectedThemeEntryId } = useSelection()
   const boardKey = getComponentKey(board)
   const className = `board-${boardKey}`
   const properties = getNodeProperties(board, workspace)
@@ -71,9 +73,18 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
   // per-variant previews below are themed individually.
   const boardTheme = useNodeTheme(board)
 
-  const variantEntryIds = isThemeBoard(board)
+  // Theme boards show one variant at a time: the one selected in the objects
+  // sidebar, falling back to the default (first) variant when the selection is
+  // empty or points at another board's variant.
+  const boardVariantIds = isThemeBoard(board)
     ? board.variants.map((variant) => variant.id)
     : []
+  const defaultVariantId = boardVariantIds[0] ?? null
+  const activeVariantId =
+    selectedThemeEntryId && boardVariantIds.includes(selectedThemeEntryId)
+      ? selectedThemeEntryId
+      : defaultVariantId
+  const variantEntryIds = activeVariantId ? [activeVariantId] : []
 
   const computedProperties: Properties = isInPreviewMode
     ? {

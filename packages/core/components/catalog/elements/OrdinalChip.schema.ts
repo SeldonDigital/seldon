@@ -61,7 +61,7 @@ export const schema = {
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { 
       type: Sdn.ValueType.EXACT,
-      value: { unit: Sdn.Unit.PERCENT, value: 35 },
+      value: { unit: Sdn.Unit.PERCENT, value: 40 },
      },
     background: [
       {
@@ -203,7 +203,7 @@ export const schema = {
           {
             component: Seldon.ComponentId.TEXT,
             overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 · 0.25rem" },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               font: {
                 preset: {
@@ -262,7 +262,7 @@ export const schema = {
           {
             component: Seldon.ComponentId.TEXT,
             overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 · 0.25rem" },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               font: {
                 preset: {
@@ -321,7 +321,7 @@ export const schema = {
           {
             component: Seldon.ComponentId.TEXT,
             overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 · 0.25rem" },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               font: {
                 preset: {
@@ -383,7 +383,7 @@ export const schema = {
           {
             component: Seldon.ComponentId.TEXT,
             overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 · 0.25rem" },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               font: {
                 preset: {
@@ -445,7 +445,7 @@ export const schema = {
           {
             component: Seldon.ComponentId.TEXT,
             overrides: {
-              content: { type: Sdn.ValueType.EXACT, value: "3.12 | 0.25rem" },
+              content: { type: Sdn.ValueType.EXACT, value: "3.12 · 0.25rem" },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               font: {
                 preset: {

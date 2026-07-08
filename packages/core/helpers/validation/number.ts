@@ -9,7 +9,9 @@ export function isNumber(
   value: string,
   options?: { min?: number; max?: number },
 ) {
-  if (!/^-?\d+(\.\d+)?$/.test(value)) {
+  // Accept an optional leading integer part, so a bare-decimal like `-.2` or
+  // `.2` validates the same as `-0.2`. Requires at least one digit.
+  if (!/^-?(?:\d+|\d*\.\d+)$/.test(value)) {
     return false
   }
 

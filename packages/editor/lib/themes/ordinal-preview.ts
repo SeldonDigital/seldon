@@ -128,6 +128,33 @@ function findDescendantByComponent(
 }
 
 /**
+ * Collects every descendant node id of the given component under a root, in
+ * document (pre-order) order. Targeting the component directly keeps the layout
+ * stable when the specimen adds wrapping frames or static text around the legend
+ * buttons and chips.
+ */
+function collectDescendantsByComponent(
+  rootNodeId: string,
+  componentId: ComponentId,
+  workspace: Workspace,
+): string[] {
+  const result: string[] = []
+  const root = workspace.nodes[rootNodeId]
+  if (!root) return result
+
+  const visit = (id: string) => {
+    const node = workspace.nodes[id]
+    if (!node) return
+    if (getNodeCatalogComponentId(node, workspace) === componentId) {
+      result.push(id)
+    }
+    for (const childId of getNodeChildIds(node, workspace)) visit(childId)
+  }
+  for (const childId of getNodeChildIds(root, workspace)) visit(childId)
+  return result
+}
+
+/**
  * Resolves the ordinal specimen's legend button nodes and chip row text nodes
  * from the cached Theme Spec preview base, mapping each to its scale by authored
  * order. Cached because the preview base is stable for the session.
@@ -140,47 +167,43 @@ export function getOrdinalPreviewLayout(): OrdinalPreviewLayout {
   const chipRows: OrdinalChipRow[] = []
 
   const specimenId = rootId
-    ? findDescendantByComponent(
-        rootId,
-        ComponentId.ORDINAL_SPECIMEN,
-        workspace,
-      )
+    ? findDescendantByComponent(rootId, ComponentId.ORDINAL_SPECIMEN, workspace)
     : null
   const specimen = specimenId ? workspace.nodes[specimenId] : undefined
 
-  if (specimen) {
-    const [legendFrameId, ...containerIds] = getNodeChildIds(
-      specimen,
+  if (specimenId && specimen) {
+    // Legend labels live on the specimen's menu BUTTON nodes, in authored scale
+    // order. Targeting BUTTON nodes skips any static text the specimen adds
+    // around the legend (such as a standalone title).
+    const buttonIds = collectDescendantsByComponent(
+      specimenId,
+      ComponentId.BUTTON,
       workspace,
     )
+    buttonIds.forEach((buttonId, index) => {
+      const scale = ORDINAL_SCALE_ORDER[index]
+      const labelNodeId = findFirstTextNodeId(buttonId, workspace)
+      if (scale && labelNodeId) {
+        legendButtons.push({ scale, buttonNodeId: buttonId, labelNodeId })
+      }
+    })
 
-    const legendFrame = legendFrameId
-      ? workspace.nodes[legendFrameId]
-      : undefined
-    if (legendFrame) {
-      getNodeChildIds(legendFrame, workspace).forEach((buttonId, index) => {
+    // Each ORDINAL_CHIP holds one row per scale in authored order.
+    const chipIds = collectDescendantsByComponent(
+      specimenId,
+      ComponentId.ORDINAL_CHIP,
+      workspace,
+    )
+    for (const chipId of chipIds) {
+      const chip = workspace.nodes[chipId]
+      if (!chip) continue
+      getNodeChildIds(chip, workspace).forEach((rowId, index) => {
         const scale = ORDINAL_SCALE_ORDER[index]
-        const labelNodeId = findFirstTextNodeId(buttonId, workspace)
-        if (scale && labelNodeId) {
-          legendButtons.push({ scale, buttonNodeId: buttonId, labelNodeId })
+        const textNodeId = findFirstTextNodeId(rowId, workspace)
+        if (scale && textNodeId) {
+          chipRows.push({ scale, textNodeId })
         }
       })
-    }
-
-    for (const containerId of containerIds) {
-      const container = workspace.nodes[containerId]
-      if (!container) continue
-      for (const chipId of getNodeChildIds(container, workspace)) {
-        const chip = workspace.nodes[chipId]
-        if (!chip) continue
-        getNodeChildIds(chip, workspace).forEach((rowId, index) => {
-          const scale = ORDINAL_SCALE_ORDER[index]
-          const textNodeId = findFirstTextNodeId(rowId, workspace)
-          if (scale && textNodeId) {
-            chipRows.push({ scale, textNodeId })
-          }
-        })
-      }
     }
   }
 
@@ -223,14 +246,16 @@ export function ordinalStepValueText(
   const ref = ordinalStepRef(scale, step)
   try {
     const option = getThemeOption(ref, theme)
-    const lengthText = formatLength(resolveModulatedOrExactLength(option, theme))
+    const lengthText = formatLength(
+      resolveModulatedOrExactLength(option, theme),
+    )
     let stepText = ""
     if (isModulatedToken(option)) {
       stepText = formatNumber(option.parameters.step)
     } else if (isThemeExactToken(option)) {
       stepText = formatNumber(option.parameters.value)
     }
-    if (stepText && lengthText) return `${stepText} | ${lengthText}`
+    if (stepText && lengthText) return `${stepText} · ${lengthText}`
     return lengthText || stepText
   } catch {
     return ""

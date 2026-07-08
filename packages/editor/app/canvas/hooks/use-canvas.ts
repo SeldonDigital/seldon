@@ -5,6 +5,7 @@ import { InstanceId, VariantId, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
+import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import {
   nodeRetrievalService,
   nodeTraversalService,
@@ -58,6 +59,14 @@ export function useCanvas() {
     (event) => {
       // Don't show highlights in preview mode
       if (isInPreviewMode) {
+        setHoverState(null)
+        setHoveredId(null)
+        return
+      }
+
+      // Theme boards suppress the hover overlay. They are previews, not an
+      // editable node tree, so silently clear hover and stop.
+      if (activeBoard && isThemeBoard(activeBoard)) {
         setHoverState(null)
         setHoveredId(null)
         return
@@ -192,6 +201,7 @@ export function useCanvas() {
     },
     [
       isInPreviewMode,
+      activeBoard,
       activeTool,
       workspace,
       hoverState?.objectId,
