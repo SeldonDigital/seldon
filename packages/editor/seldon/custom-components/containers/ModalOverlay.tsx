@@ -1,53 +1,93 @@
-import { CSSProperties, ReactNode, useRef } from "react"
+import { CSSProperties, ReactNode } from "react"
 import { createPortal } from "react-dom"
-import { DragControls, motion } from "framer-motion"
+import {
+  BoundingBox,
+  DragControls,
+  MotionValue,
+  PanInfo,
+  motion,
+} from "framer-motion"
 import { Backdrop } from "./Backdrop"
+
+type ResizeSide =
+  | "top"
+  | "right"
+  | "bottom"
+  | "left"
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right"
+
+const DEFAULT_RESIZE_SIDES: readonly ResizeSide[] = ["left", "right", "bottom"]
 
 interface ModalOverlayProps {
   onClose: () => void
   children: ReactNode
-  dragControls?: DragControls
+  x: MotionValue<number>
+  y: MotionValue<number>
+  width: MotionValue<number>
+  height: MotionValue<number>
+  moveControls: DragControls
+  dragConstraints: BoundingBox
+  onResizeStart: () => void
+  onResize: (side: ResizeSide, info: PanInfo) => void
+  resizeSides?: readonly ResizeSide[]
 }
 
 /**
- * Centered modal overlay. Renders a full-area backdrop that closes on click and
- * centers its child surface, both portaled to the document body. The centering
- * layer ignores pointer events so clicks outside the surface reach the backdrop.
+ * Draggable, resizable modal surface. Renders a full-area backdrop that closes
+ * on click and a fixed, motion-driven surface, both portaled to the document
+ * body. All drag and resize wiring arrives via props, matching
+ * `FloatingPanelSurface`; this View only renders the surface and edge handles.
  *
- * When `dragControls` is provided the surface becomes draggable within the
- * viewport. The caller starts a drag from its own handle by calling
- * `dragControls.start(event)`.
+ * The caller starts a drag from its own handle by calling `moveControls.start`.
+ * Resize handles cover the `resizeSides`, defaulting to the left, right, and
+ * bottom edges.
  */
 export function ModalOverlay({
   onClose,
   children,
-  dragControls,
+  x,
+  y,
+  width,
+  height,
+  moveControls,
+  dragConstraints,
+  onResizeStart,
+  onResize,
+  resizeSides = DEFAULT_RESIZE_SIDES,
 }: ModalOverlayProps) {
-  const overlayRef = useRef<HTMLDivElement>(null)
+  const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
 
-  const surface =
-    dragControls != null ? (
+  const resizeHandles = resizeSides.map((side) => {
+    const handleResize = (_event: PointerEvent, info: PanInfo) =>
+      onResize(side, info)
+    return (
       <motion.div
-        drag
-        dragControls={dragControls}
-        dragListener={false}
-        dragMomentum={false}
-        dragElastic={false}
-        dragConstraints={overlayRef}
-        style={surfaceStyle}
-      >
-        {children}
-      </motion.div>
-    ) : (
-      <div style={surfaceStyle}>{children}</div>
+        key={side}
+        onPan={handleResize}
+        onPointerDown={onResizeStart}
+        style={getResizeHandleStyle(side)}
+      />
     )
+  })
 
   return createPortal(
     <>
       <Backdrop onClick={onClose} style={backdropStyle} />
-      <div ref={overlayRef} style={overlayStyle}>
-        {surface}
-      </div>
+      <motion.div
+        drag
+        dragControls={moveControls}
+        dragListener={false}
+        dragMomentum={false}
+        dragElastic={false}
+        dragConstraints={dragConstraints}
+        style={surfaceMotionStyle}
+      >
+        {children}
+        {resizeHandles}
+      </motion.div>
     </>,
     document.body,
   )
@@ -59,16 +99,57 @@ const backdropStyle: CSSProperties = {
   zIndex: 30,
 }
 
-const overlayStyle: CSSProperties = {
+const surfaceStyle: CSSProperties = {
   position: "fixed",
-  inset: 0,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  left: 0,
+  top: 0,
   zIndex: 40,
-  pointerEvents: "none",
 }
 
-const surfaceStyle: CSSProperties = {
-  pointerEvents: "auto",
+const EDGE = "0.5rem"
+
+function getResizeHandleStyle(side: ResizeSide): CSSProperties {
+  const style: CSSProperties = { position: "absolute", touchAction: "none" }
+
+  if (side.includes("bottom")) {
+    style.bottom = 0
+    style.height = EDGE
+  }
+  if (side.includes("left")) {
+    style.left = 0
+    style.width = EDGE
+  }
+  if (side.includes("right")) {
+    style.right = 0
+    style.width = EDGE
+  }
+  if (side.includes("top")) {
+    style.top = 0
+    style.height = EDGE
+  }
+
+  switch (side) {
+    case "top":
+    case "bottom":
+      style.left = EDGE
+      style.right = EDGE
+      style.cursor = "ns-resize"
+      break
+    case "left":
+    case "right":
+      style.top = EDGE
+      style.bottom = EDGE
+      style.cursor = "ew-resize"
+      break
+    case "top-left":
+    case "bottom-right":
+      style.cursor = "nwse-resize"
+      break
+    case "top-right":
+    case "bottom-left":
+      style.cursor = "nesw-resize"
+      break
+  }
+
+  return style
 }

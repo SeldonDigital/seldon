@@ -9,8 +9,8 @@ import {
   useMemo,
   useState,
 } from "react"
-import { useDragControls } from "framer-motion"
 import { useHotkeys } from "react-hotkeys-hook"
+import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
 import { ModalOverlay } from "@seldon/components/custom-components"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
@@ -34,8 +34,9 @@ interface VMCatalogDialogProps<T extends CatalogDialogItem> {
  * Shared view-model for the catalog dialogs. Feeds the generated `DialogCatalog`
  * shell: it wires the title, search field, and cancel/confirm buttons, and
  * injects the category list into the shell's content frame via `seldonRefs`.
- * `DialogCatalog` is a complete modal surface, so it renders directly inside a
- * centered portal with a backdrop rather than the draggable `FloatingPanel`.
+ * `DialogCatalog` is a complete modal surface, so it renders inside `ModalOverlay`,
+ * a backdrop-backed portal that the title bar drags and the left, right, and
+ * bottom edges resize.
  */
 export function VMCatalogDialog<T extends CatalogDialogItem>({
   title,
@@ -47,13 +48,31 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
   onClose,
 }: VMCatalogDialogProps<T>) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const dragControls = useDragControls()
+
+  const {
+    x,
+    y,
+    width,
+    height,
+    handleResizeStart,
+    handleResize,
+    moveControls,
+    dragConstraints,
+  } = useFloatingPanel({
+    initialPosition: {
+      x: 0.5 * window.innerWidth - 0.5 * PANEL_INITIAL_WIDTH,
+      y: 0.5 * window.innerHeight - 0.5 * PANEL_INITIAL_HEIGHT,
+    },
+    initialSize: { width: PANEL_INITIAL_WIDTH, height: PANEL_INITIAL_HEIGHT },
+    handleClose: onClose,
+    closeOnEscape: false,
+  })
 
   useHotkeys("esc", onClose)
 
   const startDrag = useCallback(
-    (event: PointerEvent) => dragControls.start(event),
-    [dragControls],
+    (event: PointerEvent) => moveControls.start(event),
+    [moveControls],
   )
 
   const stopDrag = useCallback((event: PointerEvent) => {
@@ -145,7 +164,17 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
   }
 
   return (
-    <ModalOverlay onClose={onClose} dragControls={dragControls}>
+    <ModalOverlay
+      onClose={onClose}
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      moveControls={moveControls}
+      dragConstraints={dragConstraints}
+      onResizeStart={handleResizeStart}
+      onResize={handleResize}
+    >
       <DialogCatalog
         data-testid="catalog-dialog"
         bar={barHandle}
@@ -201,8 +230,8 @@ function CatalogRow<T extends CatalogDialogItem>({
 
 const styles: Record<string, CSSProperties> = {
   dialog: {
-    width: PANEL_INITIAL_WIDTH,
-    height: PANEL_INITIAL_HEIGHT,
+    width: "100%",
+    height: "100%",
   },
   dragHandle: {
     cursor: "grab",
