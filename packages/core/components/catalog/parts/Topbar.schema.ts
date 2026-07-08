@@ -381,20 +381,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@fontSize.small",
               },
-              background: [
-                {
-                  kind: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.BackgroundKind.NONE,
-                  },
-                },
-              ],
-              border: {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@border.none",
-                },
-              },
             },
             children: [
               {
@@ -403,14 +389,6 @@ export const schema = {
                   symbol: {
                     type: Sdn.ValueType.OPTION,
                     value: "material-email",
-                  },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@size.small",
-                  },
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.primary",
                   },
                 },
               },
@@ -421,16 +399,6 @@ export const schema = {
                   content: {
                     type: Sdn.ValueType.EXACT,
                     value: "Contact",
-                  },
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.primary",
-                  },
-                  font: {
-                    size: {
-                      type: Sdn.ValueType.THEME_ORDINAL,
-                      value: "@fontSize.xsmall",
-                    },
                   },
                 },
               },

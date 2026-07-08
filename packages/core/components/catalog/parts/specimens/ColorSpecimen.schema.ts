@@ -147,6 +147,201 @@ export const schema = {
             component: Seldon.ComponentId.COLOR_CHIP,
             overrides: {
               columnSpan: { type: Sdn.ValueType.EXACT, value: 2 },
+              background: [
+                {
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.white",
+                  },
+                },
+              ],
+            },
+            children: [
+              {
+                component: Seldon.ComponentId.TEXT,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "White" },
+                },
+              },
+              { component: Seldon.ComponentId.TEXT },
+              { component: Seldon.ComponentId.TEXT },
+            ],
+          },
+          {
+            component: Seldon.ComponentId.COLOR_CHIP,
+            overrides: {
+              columnSpan: { type: Sdn.ValueType.EXACT, value: 2 },
+              background: [
+                {
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.gray",
+                  },
+                },
+              ],
+            },
+            children: [
+              {
+                component: Seldon.ComponentId.TEXT,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "Gray" },
+                },
+              },
+              { component: Seldon.ComponentId.TEXT },
+              { component: Seldon.ComponentId.TEXT },
+            ],
+          },
+          {
+            component: Seldon.ComponentId.COLOR_CHIP,
+            overrides: {
+              columnSpan: { type: Sdn.ValueType.EXACT, value: 2 },
+              background: [
+                {
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.black",
+                  },
+                },
+              ],
+            },
+            children: [
+              {
+                component: Seldon.ComponentId.TEXT,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "Black" },
+                },
+              },
+              { component: Seldon.ComponentId.TEXT },
+              { component: Seldon.ComponentId.TEXT },
+            ],
+          },
+        ],
+      },
+      {
+        component: Seldon.ComponentId.CONTAINER,
+        overrides: {
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          columns: { type: Sdn.ValueType.EXACT, value: 6 },
+        },
+        children: [
+          {
+            component: Seldon.ComponentId.COLOR_CHIP,
+            overrides: {
+              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
+              background: [
+                {
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.foreground",
+                  },
+                },
+              ],
+            },
+            children: [
+              {
+                component: Seldon.ComponentId.TEXT,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "Foreground" },
+                },
+              },
+              { component: Seldon.ComponentId.TEXT },
+              { component: Seldon.ComponentId.TEXT },
+            ],
+          },
+          {
+            component: Seldon.ComponentId.COLOR_CHIP,
+            overrides: {
+              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
+              background: [
+                {
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.background",
+                  },
+                },
+              ],
+            },
+            children: [
+              {
+                component: Seldon.ComponentId.TEXT,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "Background" },
+                },
+              },
+              { component: Seldon.ComponentId.TEXT },
+              { component: Seldon.ComponentId.TEXT },
+            ],
+          },
+        ],
+      },
+      {
+        component: Seldon.ComponentId.CONTAINER,
+        overrides: {
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          columns: { type: Sdn.ValueType.EXACT, value: 6 },
+        },
+        children: [
+          {
+            component: Seldon.ComponentId.COLOR_CHIP,
+            overrides: {
+              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
+              background: [
+                {
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.offWhite",
+                  },
+                },
+              ],
+            },
+            children: [
+              {
+                component: Seldon.ComponentId.TEXT,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "Off White" },
+                },
+              },
+              { component: Seldon.ComponentId.TEXT },
+              { component: Seldon.ComponentId.TEXT },
+            ],
+          },
+          {
+            component: Seldon.ComponentId.COLOR_CHIP,
+            overrides: {
+              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
+              background: [
+                {
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.offBlack",
+                  },
+                },
+              ],
+            },
+            children: [
+              {
+                component: Seldon.ComponentId.TEXT,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "Off Black" },
+                },
+              },
+              { component: Seldon.ComponentId.TEXT },
+              { component: Seldon.ComponentId.TEXT },
+            ],
+          },
+        ],
+      },
+      {
+        component: Seldon.ComponentId.CONTAINER,
+        overrides: {
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          columns: { type: Sdn.ValueType.EXACT, value: 6 },
+        },
+        children: [
+          {
+            component: Seldon.ComponentId.COLOR_CHIP,
+            overrides: {
+              columnSpan: { type: Sdn.ValueType.EXACT, value: 2 },
             },
           },
           {
@@ -382,201 +577,6 @@ export const schema = {
                 component: Seldon.ComponentId.TEXT,
                 overrides: {
                   content: { type: Sdn.ValueType.EXACT, value: "Accent" },
-                },
-              },
-              { component: Seldon.ComponentId.TEXT },
-              { component: Seldon.ComponentId.TEXT },
-            ],
-          },
-        ],
-      },
-      {
-        component: Seldon.ComponentId.CONTAINER,
-        overrides: {
-          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
-          columns: { type: Sdn.ValueType.EXACT, value: 6 },
-        },
-        children: [
-          {
-            component: Seldon.ComponentId.COLOR_CHIP,
-            overrides: {
-              columnSpan: { type: Sdn.ValueType.EXACT, value: 2 },
-              background: [
-                {
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.white",
-                  },
-                },
-              ],
-            },
-            children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "White" },
-                },
-              },
-              { component: Seldon.ComponentId.TEXT },
-              { component: Seldon.ComponentId.TEXT },
-            ],
-          },
-          {
-            component: Seldon.ComponentId.COLOR_CHIP,
-            overrides: {
-              columnSpan: { type: Sdn.ValueType.EXACT, value: 2 },
-              background: [
-                {
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.gray",
-                  },
-                },
-              ],
-            },
-            children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Gray" },
-                },
-              },
-              { component: Seldon.ComponentId.TEXT },
-              { component: Seldon.ComponentId.TEXT },
-            ],
-          },
-          {
-            component: Seldon.ComponentId.COLOR_CHIP,
-            overrides: {
-              columnSpan: { type: Sdn.ValueType.EXACT, value: 2 },
-              background: [
-                {
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.black",
-                  },
-                },
-              ],
-            },
-            children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Black" },
-                },
-              },
-              { component: Seldon.ComponentId.TEXT },
-              { component: Seldon.ComponentId.TEXT },
-            ],
-          },
-        ],
-      },
-      {
-        component: Seldon.ComponentId.CONTAINER,
-        overrides: {
-          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
-          columns: { type: Sdn.ValueType.EXACT, value: 6 },
-        },
-        children: [
-          {
-            component: Seldon.ComponentId.COLOR_CHIP,
-            overrides: {
-              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
-              background: [
-                {
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.foreground",
-                  },
-                },
-              ],
-            },
-            children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Foreground" },
-                },
-              },
-              { component: Seldon.ComponentId.TEXT },
-              { component: Seldon.ComponentId.TEXT },
-            ],
-          },
-          {
-            component: Seldon.ComponentId.COLOR_CHIP,
-            overrides: {
-              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
-              background: [
-                {
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.background",
-                  },
-                },
-              ],
-            },
-            children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Background" },
-                },
-              },
-              { component: Seldon.ComponentId.TEXT },
-              { component: Seldon.ComponentId.TEXT },
-            ],
-          },
-        ],
-      },
-      {
-        component: Seldon.ComponentId.CONTAINER,
-        overrides: {
-          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
-          columns: { type: Sdn.ValueType.EXACT, value: 6 },
-        },
-        children: [
-          {
-            component: Seldon.ComponentId.COLOR_CHIP,
-            overrides: {
-              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
-              background: [
-                {
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.offWhite",
-                  },
-                },
-              ],
-            },
-            children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Off White" },
-                },
-              },
-              { component: Seldon.ComponentId.TEXT },
-              { component: Seldon.ComponentId.TEXT },
-            ],
-          },
-          {
-            component: Seldon.ComponentId.COLOR_CHIP,
-            overrides: {
-              columnSpan: { type: Sdn.ValueType.EXACT, value: 3 },
-              background: [
-                {
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.offBlack",
-                  },
-                },
-              ],
-            },
-            children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Off Black" },
                 },
               },
               { component: Seldon.ComponentId.TEXT },

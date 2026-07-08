@@ -29,7 +29,7 @@ export const schema = {
     },
     align: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Align.CENTER,
+      value: Sdn.Align.TOP_LEFT,
     },
     width: {
       type: Sdn.ValueType.OPTION,
@@ -46,12 +46,15 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
+      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
       right: {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.comfortable",
       },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: {
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@padding.cozy",
+      },
       left: {
         type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.comfortable",
@@ -130,19 +133,19 @@ export const schema = {
     corners: {
       topLeft: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
       topRight: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
       bottomLeft: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
       bottomRight: {
         type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@corners.comfortable",
+        value: "@corners.cozy",
       },
     },
     shadow: [
@@ -193,7 +196,7 @@ export const schema = {
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
-                value: "Become an Affiliate",
+                value: "Become a Contributor",
               },
               color: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -221,8 +224,9 @@ export const schema = {
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
-                value: "Join our Affiliate Program",
+                value: "Explore the codebase",
               },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               font: {
                 preset: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -233,6 +237,7 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.LEFT,
               },
+              lines: { type: Sdn.ValueType.EXACT, value: 8 },
             },
           },
           {
@@ -242,7 +247,7 @@ export const schema = {
               content: {
                 type: Sdn.ValueType.EXACT,
                 value:
-                  "Earn money with our generous 30% commission for every sale you drive with your referral link.",
+                  "Experiment with Seldon's open source codebase and see how it can be used to create a consistent and user-friendly experience.",
               },
               font: {
                 preset: {
@@ -281,7 +286,7 @@ export const schema = {
                   },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.offBlack",
+                    value: "@swatch.primary",
                   },
                   brightness: { type: Sdn.ValueType.EMPTY, value: null },
                   opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -296,19 +301,19 @@ export const schema = {
               corners: {
                 topLeft: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
                 topRight: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
                 bottomLeft: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
                 bottomRight: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
               },
             },
@@ -332,7 +337,7 @@ export const schema = {
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
-                    value: "Become an affiliate",
+                    value: "View the repo",
                   },
                   color: {
                     type: Sdn.ValueType.COMPUTED,

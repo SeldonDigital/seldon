@@ -59,6 +59,8 @@ export enum ComponentId {
   MENU_ITEM = "menuItem",
   NAV = "nav",
   OPTION_GROUP = "optionGroup",
+  ORDINAL_CHIP = "ordinalChip",
+  ORDINAL_SPECIMEN = "ordinalSpecimen",
   SANDBOX = "sandbox",
   SCREEN = "screen",
   THEME_SPEC = "themeSpec",

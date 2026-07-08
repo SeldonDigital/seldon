@@ -331,7 +331,7 @@ export const schema = {
               align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.TOP_LEFT },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
+              gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.EVENLY_SPACED },
             },
             children: [
               {
@@ -751,7 +751,10 @@ export const schema = {
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-                gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.open" },
+                gap: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Gap.EVENLY_SPACED,
+                },
               },
               children: [
                 {
@@ -1159,7 +1162,7 @@ export const schema = {
                               },
                               size: {
                                 type: Sdn.ValueType.THEME_ORDINAL,
-                                value: "@fontSize.small",
+                                value: "@fontSize.xsmall",
                               },
                             },
                           },
