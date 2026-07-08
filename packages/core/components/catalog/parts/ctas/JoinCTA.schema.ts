@@ -33,7 +33,7 @@ export const schema = {
     },
     align: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Align.CENTER,
+      value: Sdn.Align.TOP_LEFT,
     },
     width: {
       type: Sdn.ValueType.OPTION,
@@ -230,6 +230,7 @@ export const schema = {
                 type: Sdn.ValueType.EXACT,
                 value: "Explore the codebase",
               },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               font: {
                 preset: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -240,7 +241,7 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.LEFT,
               },
-              lines: { type: Sdn.ValueType.EXACT, value: 3 },
+              lines: { type: Sdn.ValueType.EXACT, value: 8 },
             },
           },
           {
@@ -304,19 +305,19 @@ export const schema = {
               corners: {
                 topLeft: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
                 topRight: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
                 bottomLeft: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
                 bottomRight: {
                   type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@corners.comfortable",
+                  value: "@corners.compact",
                 },
               },
             },
