@@ -100,13 +100,15 @@ export function generateJSXStructure(
 
     if (node.level === ComponentLevel.FRAME) {
       nodeType = "frame"
-      // Frame should be conditionally rendered if it's an invalid prop
-      if (!isValidProp) {
+      // Frame should be conditionally rendered if it's an invalid prop or a
+      // placeholder slot.
+      if (!isValidProp || node.isPlaceholder) {
         condition = propName
       }
-    } else if (!isValidProp) {
-      // Inline extras render only when the caller passes the prop. The merged
-      // props variable is checked as well so TypeScript narrows it to non-null.
+    } else if (!isValidProp || node.isPlaceholder) {
+      // Inline extras and placeholder slots render only when the caller passes
+      // the prop. The merged props variable is checked as well so TypeScript
+      // narrows it to non-null.
       nodeType = "conditional"
       condition = `${propName} && ${propVarName}`
     } else {
@@ -158,14 +160,15 @@ export function generateJSXStructure(
               )
             }
 
-            const isConditional = conditionalPaths.has(
-              descendant.dataBinding.path,
-            )
+            const isConditional =
+              conditionalPaths.has(descendant.dataBinding.path) ||
+              Boolean(descendant.isPlaceholder)
             grandchildProps.push({
               propKeyName: slotName,
               propVarName: `${grandchildPropValue}Props`,
-              // Guard conditional leaves with their source prop so an omitted
-              // caller value keeps the leaf absent, preserving baseline layout.
+              // Guard conditional and placeholder leaves with their source prop
+              // so an omitted caller value keeps the leaf absent, preserving
+              // baseline layout.
               guard: isConditional ? grandchildPropValue : undefined,
             })
 

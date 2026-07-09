@@ -46,6 +46,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-chevronDoubleRight"
     | "material-playArrow"
     | "material-expandMore"
+    | "material-eyeTracking"
     | "material-email"
     | "material-menu"
     | "material-phone"
@@ -574,6 +575,7 @@ const iconMap = {
   "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-playArrow": Icons.IconMaterialPlayArrow,
   "material-expandMore": Icons.IconMaterialExpandMore,
+  "material-eyeTracking": Icons.IconMaterialEyeTracking,
   "material-email": Icons.IconMaterialEmail,
   "material-menu": Icons.IconMaterialMenu,
   "material-phone": Icons.IconMaterialPhone,
