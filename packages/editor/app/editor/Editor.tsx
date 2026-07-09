@@ -9,7 +9,7 @@ import { usePreview } from "@lib/hooks/use-preview"
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { FocusRingOverlay } from "../focus/FocusRingOverlay"
-import { AiChatPanel } from "../panels/ai-chat-panel/AiChatPanel"
+import { VMAiChatPanel } from "../panels/ai-chat-panel/VMAiChatPanel"
 import { VMImageUploadDialog } from "../dialogs/image-upload/VMImageUploadDialog"
 import { VMBoardsDialog } from "../dialogs/boards/VMBoardsDialog"
 import { VMComponentsDialog } from "../dialogs/components/VMComponentsDialog"
@@ -69,7 +69,7 @@ export default function Editor() {
       <VMThemesDialog />
       <VMFontCollectionsDialog />
       <VMIconSetsDialog />
-      <AiChatPanel.Controller />
+      <VMAiChatPanel />
       <FocusRingOverlay />
       <EditorShortcuts />
     </main>

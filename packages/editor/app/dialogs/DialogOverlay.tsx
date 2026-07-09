@@ -39,8 +39,8 @@ interface DialogOverlayProps {
 /**
  * Draggable, resizable dialog surface. Renders a full-area backdrop that closes
  * on click and a fixed, motion-driven surface, both portaled to the document
- * body. All drag and resize wiring arrives via props, matching
- * `FloatingPanelSurface`; this View only renders the surface and edge handles.
+ * body. All drag and resize wiring arrives via props, matching its non-modal
+ * twin `PanelOverlay`; this View only renders the surface and edge handles.
  *
  * The caller starts a drag from its own handle by calling `moveControls.start`.
  * Resize handles cover the `resizeSides` the caller passes and drive `onResize`

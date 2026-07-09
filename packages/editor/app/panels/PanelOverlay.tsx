@@ -1,9 +1,7 @@
-// BESPOKE-VIEW: hand-authored draggable, resizable panel surface for the editor
-// floating panels. Wraps the generated `DialogHari` shell with Framer Motion
-// drag plus the shared resize helpers.
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
-import { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from "react"
-import { DialogHari } from "@seldon/components/modules/DialogHari"
+import { CSSProperties, ReactNode } from "react"
+import { createPortal } from "react-dom"
+import { Backdrop } from "@seldon/components/custom-components"
 import {
   Rect,
   ResizeSide,
@@ -14,7 +12,7 @@ import {
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 
-interface FloatingPanelSurfaceProps {
+interface PanelOverlayProps {
   x: MotionValue<number>
   y: MotionValue<number>
   width: MotionValue<number>
@@ -25,23 +23,24 @@ interface FloatingPanelSurfaceProps {
   onResize: (rect: Rect) => void
   getRect: () => Rect
   onClose: () => void
-  title?: string
   testId?: string
   resizeSides?: readonly ResizeSide[]
   minWidth?: number
   minHeight?: number
+  closeOnClickOutside?: boolean
+  preventInteractionOutside?: boolean
   children: ReactNode
 }
 
 /**
  * Draggable, resizable panel surface. All drag and resize wiring arrives via
- * props; this View renders the motion surface, the generated `DialogHari` shell,
- * and the edge handles. The title bar drags, the close button dismisses, and the
- * content frame holds the children. The surface portals to the document body, so
- * it re-applies the editor theme and mode to match the interface. Resize handles
- * cover the given `resizeSides` and drive `onResize` through the shared helpers.
+ * props; this View renders the motion surface, its children, and the edge
+ * handles, all portaled to the document body. Because the portal mounts outside
+ * the chrome root, it re-applies the editor theme and mode. It is the non-modal
+ * twin of `DialogOverlay`: it stays non-modal unless `closeOnClickOutside` or
+ * `preventInteractionOutside` asks for a backdrop.
  */
-export function FloatingPanelSurface({
+export function PanelOverlay({
   x,
   y,
   width,
@@ -52,13 +51,14 @@ export function FloatingPanelSurface({
   onResize,
   getRect,
   onClose,
-  title,
   testId,
   resizeSides = RESIZE_SIDES,
   minWidth,
   minHeight,
+  closeOnClickOutside = false,
+  preventInteractionOutside = false,
   children,
-}: FloatingPanelSurfaceProps) {
+}: PanelOverlayProps) {
   // The portal mounts on document.body, outside the chrome root that scopes the
   // editor theme and mode, so re-apply both here to match the editor interface.
   const { chromeTheme } = useEditorConfig()
@@ -66,12 +66,11 @@ export function FloatingPanelSurface({
 
   const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
 
-  const startDrag = (event: ReactPointerEvent) => moveControls.start(event)
-
-  const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
-  const dialogTitle = { children: title }
-  const closeButton = { onClick: onClose }
-  const contentFrame = { style: styles.content, children }
+  const showBackdrop = closeOnClickOutside || preventInteractionOutside
+  const backdropClick = closeOnClickOutside ? onClose : undefined
+  const backdrop = showBackdrop ? (
+    <Backdrop onClick={backdropClick} style={styles.backdrop} />
+  ) : null
 
   const resizeHandles = resizeSides.map((side) => {
     const { onPointerDown } = createResizeHandle({
@@ -87,8 +86,9 @@ export function FloatingPanelSurface({
     )
   })
 
-  return (
+  return createPortal(
     <div data-theme={chromeTheme} data-mode={resolvedMode} style={styles.scope}>
+      {backdrop}
       <motion.div
         drag
         style={surfaceMotionStyle}
@@ -99,22 +99,13 @@ export function FloatingPanelSurface({
         dragListener={false}
         data-testid={testId}
       >
-        <DialogHari
-          bar={barHandle}
-          textTitle={dialogTitle}
-          buttonIconic={closeButton}
-          frame={contentFrame}
-          style={styles.dialog}
-        />
+        {children}
         {resizeHandles}
       </motion.div>
-    </div>
+    </div>,
+    document.body,
   )
 }
-
-// The scope only carries the theme/mode attributes; `display: contents` keeps
-// it out of layout so the fixed surface positions as before.
-const scopeStyle: CSSProperties = { display: "contents" }
 
 const surfaceStyle: CSSProperties = {
   position: "fixed",
@@ -124,15 +115,14 @@ const surfaceStyle: CSSProperties = {
 }
 
 const styles: Record<string, CSSProperties> = {
-  scope: scopeStyle,
-  dialog: {
-    width: "100%",
-    height: "100%",
+  // The scope only carries the theme/mode attributes; `display: contents` keeps
+  // it out of layout so the fixed backdrop and surface position as before.
+  scope: {
+    display: "contents",
   },
-  dragHandle: {
-    cursor: "grab",
-  },
-  content: {
-    minHeight: 0,
+  backdrop: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 30,
   },
 }
