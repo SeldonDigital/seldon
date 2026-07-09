@@ -9,7 +9,6 @@ import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-trac
 import {
   OverlayLayer,
   PlacementZoneSurface,
-  PositionedPanel,
 } from "@seldon/components/custom-components"
 import { IndicatorInsert } from "./insert/IndicatorInsert"
 
@@ -110,9 +109,7 @@ export function SidebarPlacementZones({
 
   return (
     <OverlayLayer style={overlayStyle}>
-      <PositionedPanel style={relativeFillStyle}>
-        {renderZones()}
-      </PositionedPanel>
+      <div style={relativeFillStyle}>{renderZones()}</div>
     </OverlayLayer>
   )
 }

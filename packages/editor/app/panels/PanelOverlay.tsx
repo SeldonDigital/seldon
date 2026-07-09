@@ -1,7 +1,6 @@
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
 import { CSSProperties, ReactNode } from "react"
 import { createPortal } from "react-dom"
-import { Backdrop } from "@seldon/components/custom-components"
 import {
   Rect,
   ResizeSide,
@@ -69,7 +68,7 @@ export function PanelOverlay({
   const showBackdrop = closeOnClickOutside || preventInteractionOutside
   const backdropClick = closeOnClickOutside ? onClose : undefined
   const backdrop = showBackdrop ? (
-    <Backdrop onClick={backdropClick} style={styles.backdrop} />
+    <div onClick={backdropClick} style={styles.backdrop} />
   ) : null
 
   const resizeHandles = resizeSides.map((side) => {

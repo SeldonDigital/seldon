@@ -1,7 +1,6 @@
 import { CSSProperties, ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
-import { Backdrop } from "@seldon/components/custom-components"
 import {
   Rect,
   ResizeSide,
@@ -86,7 +85,7 @@ export function DialogOverlay({
 
   return createPortal(
     <div data-theme={chromeTheme} data-mode={resolvedMode} style={scopeStyle}>
-      <Backdrop onClick={onClose} style={backdropStyle} />
+      <div onClick={onClose} style={backdropStyle} />
       <motion.div
         drag
         dragControls={moveControls}

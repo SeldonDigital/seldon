@@ -14,7 +14,6 @@ import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-track
 import {
   OverlayLayer,
   PlacementZoneSurface,
-  PositionedPanel,
 } from "@seldon/components/custom-components"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
@@ -185,11 +184,11 @@ export function SidebarTracking({
 
   // Component rows and other targets without a node id skip placement tracking
   if (!node.id) {
-    return <PositionedPanel style={rowWrapperStyle}>{children}</PositionedPanel>
+    return <div style={rowWrapperStyle}>{children}</div>
   }
 
   return (
-    <PositionedPanel style={rowWrapperStyle}>
+    <div style={rowWrapperStyle}>
       {children}
       {activeTool === "select" ? (
         renderSelectDropzones()
@@ -204,7 +203,7 @@ export function SidebarTracking({
           onCanvasTrackingLeave={onCanvasTrackingLeave}
         />
       )}
-    </PositionedPanel>
+    </div>
   )
 }
 
