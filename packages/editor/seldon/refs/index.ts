@@ -14,6 +14,7 @@
 export type SeldonRef =
   | "catalogIcon"
   | "catalogItem"
+  | "catalogItems"
   | "catalogLabel"
   | "catalogVariant"
   | "dialogCancel"
@@ -77,6 +78,11 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "ItemCatalog",
     nodeId: "component-item-product",
     className: "sdn-item-catalog sdn-item",
+  },
+  catalogItems: {
+    component: "Container",
+    nodeId: "component-container-x52OfMWH",
+    className: "sdn-container sdn-container--x52o",
   },
   catalogLabel: {
     component: "TextTitle",

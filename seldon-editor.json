@@ -6953,19 +6953,18 @@
         "disabled": {
           "background": [
             {
-              "color": {
-                "type": "theme.categorical",
-                "value": "@swatch.gray"
-              },
-              "opacity": {
-                "type": "exact",
-                "value": {
-                  "unit": "%",
-                  "value": 20
-                }
+              "kind": {
+                "type": "option",
+                "value": "none"
               }
             }
-          ]
+          ],
+          "border": {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.gray"
+            }
+          }
         },
         "error": {
           "background": [
@@ -8727,7 +8726,7 @@
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 25
+                "value": 30
               }
             }
           }
@@ -54806,6 +54805,7 @@
     },
     "component-container-x52OfMWH": {
       "id": "component-container-x52OfMWH",
+      "ref": "catalogItems",
       "type": "instance",
       "level": "frame",
       "label": "Container",

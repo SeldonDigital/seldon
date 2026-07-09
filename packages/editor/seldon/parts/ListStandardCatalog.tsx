@@ -463,6 +463,7 @@ const sdn: ListStandardCatalogProps = {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-container sdn-container--x52o",
+    "data-seldon-ref": "catalogItems",
   },
   itemCatalog: {
     className: "sdn-item-catalog sdn-item-catalog--ieif",

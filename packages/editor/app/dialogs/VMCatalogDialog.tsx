@@ -3,7 +3,6 @@
 import {
   CSSProperties,
   ChangeEvent,
-  Fragment,
   PointerEvent,
   useCallback,
   useMemo,
@@ -13,6 +12,7 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
 import { ModalOverlay } from "@seldon/components/custom-components"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
+import { Container } from "@seldon/components/frames/Container"
 import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
 import { IconProps } from "@seldon/components/primitives/Icon"
@@ -119,10 +119,14 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
       return <TextSubtitle style={styles.empty}>No results found</TextSubtitle>
     }
 
+    // Pass rows as children so the dialog renders live data in place of the
+    // variant's placeholder rows, while the workspace keeps them for the canvas.
+    // The subtitle and the two-column Container mirror how the ListStandardCatalog
+    // variant composes a section.
     return visibleCategories.map(({ category, items }) => (
-      <Fragment key={category}>
+      <ListStandardCatalog key={category}>
         <TextSubtitle style={styles.category}>{category}</TextSubtitle>
-        <ListStandardCatalog>
+        <Container style={styles.catalogGrid}>
           {items.map((item) => (
             <CatalogRow
               key={item.id}
@@ -132,8 +136,8 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
               onPick={pickItem}
             />
           ))}
-        </ListStandardCatalog>
-      </Fragment>
+        </Container>
+      </ListStandardCatalog>
     ))
   }, [visibleCategories, selectedId, pickItem])
 
@@ -248,6 +252,10 @@ const styles: Record<string, CSSProperties> = {
   },
   category: {
     width: "100%",
+  },
+  catalogGrid: {
+    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+    gap: "var(--sdn-gaps-compact)",
   },
   row: {
     cursor: "pointer",
