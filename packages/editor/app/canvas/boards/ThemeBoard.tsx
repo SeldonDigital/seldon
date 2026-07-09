@@ -42,7 +42,7 @@ import {
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { StyleTag } from "@seldon/components/custom-components"
+import { StyleTag } from "../StyleTag"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { BoardPreviewNode } from "./BoardPreviewNode"
