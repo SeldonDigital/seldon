@@ -17,9 +17,7 @@ export function VMAiChatPanel() {
 
   if (!isOpen) return null
 
-  return (
-    <AiChatPanel onClose={close} send={send} status={status} warm={warm} />
-  )
+  return <AiChatPanel onClose={close} send={send} status={status} warm={warm} />
 }
 
 interface AiChatPanelProps {

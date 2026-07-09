@@ -7,8 +7,8 @@ import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
-import { PlaceholderBox } from "./PlaceholderBox"
 import { CanvasNode } from "../Node"
+import { PlaceholderBox } from "./PlaceholderBox"
 
 export type SandboxCanvasProps = {
   board: Board

@@ -9,7 +9,6 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Container } from "@seldon/components/frames/Container"
 import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
@@ -18,6 +17,7 @@ import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
+import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
 import { DialogOverlay } from "./DialogOverlay"
 import { CatalogDialogCategory, CatalogDialogItem } from "./types"
 
@@ -227,10 +227,7 @@ function CatalogRow<T extends CatalogDialogItem>({
   onSelect,
   onPick,
 }: CatalogRowProps<T>) {
-  const handleClick = useCallback(
-    () => onSelect(item.id),
-    [onSelect, item.id],
-  )
+  const handleClick = useCallback(() => onSelect(item.id), [onSelect, item.id])
   const handleDoubleClick = useCallback(() => onPick(item), [onPick, item])
 
   const rowIcon = { icon: item.icon as IconProps["icon"] }
@@ -282,7 +279,8 @@ const styles: Record<string, CSSProperties> = {
   rowSelected: {
     cursor: "pointer",
     width: "100%",
-    backgroundColor: "color-mix(in srgb, var(--sdn-swatch-white) 10%, transparent)",
+    backgroundColor:
+      "color-mix(in srgb, var(--sdn-swatch-white) 10%, transparent)",
   },
   empty: {
     width: "100%",

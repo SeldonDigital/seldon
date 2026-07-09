@@ -16,13 +16,13 @@ import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
-import { resetBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
 import { getStyleContext } from "../../../helpers/build-export-context"
 import {
   getTemplateSourceNodeId,
   getWorkspaceNodeList,
   resolveSourceVariantId,
 } from "../../../helpers/workspace-nodes"
+import { resetBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
 import { CSSObject } from "../../../styles/css-properties/types"
 import { kebabCase } from "../../react/utils/case-utils"

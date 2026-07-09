@@ -6,9 +6,9 @@ import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helper
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useDialog } from "@lib/hooks/use-dialog"
-import { CatalogDialogItem } from "../types"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
 import { VMCatalogDialog } from "../VMCatalogDialog"
+import { CatalogDialogItem } from "../types"
 
 const FONT_COLLECTION_ICON = "material-fontDownload"
 

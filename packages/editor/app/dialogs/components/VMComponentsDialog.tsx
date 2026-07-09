@@ -8,12 +8,12 @@ import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
-import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import {
   CatalogComponentItem,
   FilterComponentPredicate,
   useComponentCatalog,
 } from "../hooks/use-component-catalog"
+import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import { VMCatalogDialog } from "../VMCatalogDialog"
 
 /**

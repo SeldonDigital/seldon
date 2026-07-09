@@ -205,7 +205,14 @@ export async function exportReact(
   return filesToExport
 }
 
-const FORMATTABLE_SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
+const FORMATTABLE_SOURCE_EXTENSIONS = [
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+]
 
 function isFormattableSource(path: string): boolean {
   return FORMATTABLE_SOURCE_EXTENSIONS.some((ext) => path.endsWith(ext))

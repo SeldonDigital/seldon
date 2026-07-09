@@ -322,7 +322,11 @@ export function VMCombobox({
         style={comboboxFrameMergedStyle}
         onClick={handleFrameClick}
       >
-        <Frame wrapperElement="div" ref={wrapperRef} style={comboboxWrapperStyle}>
+        <Frame
+          wrapperElement="div"
+          ref={wrapperRef}
+          style={comboboxWrapperStyle}
+        >
           <InputEditor
             value={value}
             onChange={handleInputChange}

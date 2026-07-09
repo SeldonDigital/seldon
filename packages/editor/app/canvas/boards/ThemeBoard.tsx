@@ -42,11 +42,11 @@ import {
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
 import { StyleTag } from "@seldon/components/custom-components"
-import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
+import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { BoardPreviewNode } from "./BoardPreviewNode"
+import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
 
 export type ThemeBoardProps = {
   board: Board

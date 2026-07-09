@@ -109,7 +109,9 @@ export function emitHighContrastVariables(
   const mode = targetMode ?? authoredMode
   const modeSwatches = getModeSwatches(theme, mode)
 
-  const contrastForSurface = (surface: (typeof modeSwatches)[string]): string => {
+  const contrastForSurface = (
+    surface: (typeof modeSwatches)[string],
+  ): string => {
     const foreground = resolveHighContrastForeground(
       { type: ValueType.EXACT, value: surface },
       theme,

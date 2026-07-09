@@ -27,7 +27,8 @@ export const gradientStopBrightnessSchema: PropertySchema = {
           return o.value >= -100 && o.value <= 100
         }
       }
-      if (typeof value === "number" && value >= -100 && value <= 100) return true
+      if (typeof value === "number" && value >= -100 && value <= 100)
+        return true
       return false
     },
   },

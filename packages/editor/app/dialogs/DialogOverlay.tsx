@@ -1,14 +1,14 @@
+import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
 import { CSSProperties, ReactNode } from "react"
 import { createPortal } from "react-dom"
-import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import {
   Rect,
   ResizeSide,
   createResizeHandle,
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 
 const DEFAULT_RESIZE_SIDES: readonly ResizeSide[] = [
   "left",
@@ -79,7 +79,11 @@ export function DialogOverlay({
       onStart: onResizeStart,
     })
     return (
-      <div key={side} onPointerDown={onPointerDown} style={getResizeHandleStyle(side)} />
+      <div
+        key={side}
+        onPointerDown={onPointerDown}
+        style={getResizeHandleStyle(side)}
+      />
     )
   })
 

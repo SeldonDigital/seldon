@@ -1,12 +1,11 @@
-import { CSSProperties, useState } from "react";
-import { useObjectURL } from "@lib/hooks/use-object-url";
-import { Frame } from "@seldon/components/frames/Frame";
-import { IconMaterialUpload } from "@seldon/components/icons";
-import { Text } from "@seldon/components/primitives/Text";
-import { useAddToast } from "@app/toaster/hooks/use-add-toast";
-import { DropzoneSurface } from "./DropzoneSurface";
-import { ImagePreview } from "./ImagePreview";
-
+import { CSSProperties, useState } from "react"
+import { useObjectURL } from "@lib/hooks/use-object-url"
+import { Frame } from "@seldon/components/frames/Frame"
+import { IconMaterialUpload } from "@seldon/components/icons"
+import { Text } from "@seldon/components/primitives/Text"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { DropzoneSurface } from "./DropzoneSurface"
+import { ImagePreview } from "./ImagePreview"
 
 export interface ImageDropzoneProps {
   onFileChange: (file: File | null) => void

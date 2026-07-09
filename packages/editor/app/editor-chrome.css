@@ -127,7 +127,9 @@ html:not(.sdn-show-focus)
  * selectors out-specify the generated focused-state rules.
  */
 html:not(.sdn-show-focus)
-  .sdn-input:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
+  .sdn-input:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
 html:not(.sdn-show-focus)
   [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-input"]:not([aria-invalid="true"]) {

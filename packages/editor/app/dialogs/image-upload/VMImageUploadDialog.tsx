@@ -1,16 +1,22 @@
 "use client"
 
-import { CSSProperties, PointerEvent, RefObject, useCallback, useMemo } from "react"
+import {
+  CSSProperties,
+  PointerEvent,
+  RefObject,
+  useCallback,
+  useMemo,
+} from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
+import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
 import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
 import { BarButtonsProps } from "@seldon/components/parts/BarButtons"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
+import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
 import { DialogOverlay } from "../DialogOverlay"
 import { ImageDropzone } from "./ImageDropzone"
-import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
 // side and bottom edges plus the two bottom corners.

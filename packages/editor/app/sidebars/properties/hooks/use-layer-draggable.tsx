@@ -4,8 +4,8 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { LayeredPaintKey } from "@seldon/core"
-import { DragNodePreview } from "@app/sidebars/DragNodePreview"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { DragNodePreview } from "@app/sidebars/DragNodePreview"
 
 export const LAYER_DRAG_ACTION = "properties-reorder-layer"
 
