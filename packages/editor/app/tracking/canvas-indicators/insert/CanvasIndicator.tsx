@@ -9,25 +9,25 @@ import {
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
-import { InsertIndicatorLine } from "@seldon/components/custom-components"
+import { InsertIndicatorLine } from "@app/overlays"
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 import { CANVAS_INSERT_ACCENT } from "./insert-indicators.bespoke"
 
-type IndicatorInsertProps = {
+type CanvasIndicatorProps = {
   placement: Placement
   objectId: InstanceId | VariantId | ComponentId
   objectType: "node" | "board"
   lastChildNodeBeforeCursor: InstanceId | VariantId | null
 }
 
-export function IndicatorInsert({
+export function CanvasIndicator({
   placement,
   objectId,
   objectType,
   lastChildNodeBeforeCursor,
-}: IndicatorInsertProps) {
+}: CanvasIndicatorProps) {
   const { workspace } = useWorkspace()
 
   const isBoardObject = isComponentId(objectId)

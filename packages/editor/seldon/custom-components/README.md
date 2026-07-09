@@ -20,7 +20,9 @@ boundary so the swap to a generated component never touches application code.
 ## Layout
 
 - `primitives/` single-element building blocks.
+- `icons/` custom icon value renderers.
 - `controls/` interactive shells driven entirely by props.
-- `containers/` layout and wrapper shells.
-- `indicators/` canvas and sidebar overlay visuals.
-- `feedback/` transient UI such as toasts.
+
+Class-free positioned `div` wrappers, overlay visuals, and transient feedback are
+app concerns, not View placeholders. They live under `app/` (for example
+`app/overlays/` and `app/toaster/`), not here.

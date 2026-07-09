@@ -11,10 +11,7 @@ import { useDragStateStore } from "@lib/hooks/use-drag-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
-import {
-  OverlayLayer,
-  PlacementZoneSurface,
-} from "@seldon/components/custom-components"
+import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
 

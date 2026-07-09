@@ -4,16 +4,9 @@ import { LayeredPaintKey } from "@seldon/core"
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import { useLayerDraggable } from "./hooks/use-layer-draggable"
 import { useLayerDropzone } from "./hooks/use-layer-dropzone"
-import {
-  InsertIndicatorLine,
-  OverlayLayer,
-  PlacementZoneSurface,
-  Pointer,
-} from "@seldon/components/custom-components"
+import { InsertLine, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { Frame } from "@seldon/components/frames/Frame"
 import type { LayerPlacement } from "./helpers/layer-reorder"
-
-const LAYER_DRAG_DOT_SIZE = "var(--sdn-sizes-xsmall)"
 
 /** A row's layer-reorder context: which paint stack it belongs to and where. */
 export interface LayerDragContext {
@@ -164,34 +157,12 @@ function getBandStyle(
 }
 
 function LayerInsertIndicator({ placement }: { placement: LayerPlacement }) {
-  const lineStyle: CSSProperties = {
-    position: "absolute",
-    zIndex: 20,
-    pointerEvents: "none",
-    backgroundColor: COLORS.primary[600],
+  const position: CSSProperties = {
     left: 12,
     right: 0,
     height: 1,
     ...(placement === "before" ? { top: -0.5 } : { bottom: -0.5 }),
   }
 
-  const dotStyle: CSSProperties = {
-    position: "absolute",
-    left: "-8px",
-    top: "0.5px",
-    transform: "translateY(-50%)",
-    height: LAYER_DRAG_DOT_SIZE,
-    width: LAYER_DRAG_DOT_SIZE,
-    borderRadius: "9999px",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    borderColor: COLORS.primary[600],
-    backgroundColor: COLORS.charcoal[500],
-  }
-
-  return (
-    <InsertIndicatorLine style={lineStyle}>
-      <Pointer style={dotStyle} />
-    </InsertIndicatorLine>
-  )
+  return <InsertLine color={COLORS.primary[600]} position={position} />
 }
