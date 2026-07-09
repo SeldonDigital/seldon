@@ -9,8 +9,8 @@ import {
   useSectionExpansion,
 } from "../../hooks/use-section-expansion"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { BoardSection } from "../../helpers/get-board-sections"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"

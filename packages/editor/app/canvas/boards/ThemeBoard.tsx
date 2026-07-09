@@ -42,9 +42,9 @@ import {
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { StyleTag } from "../StyleTag"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
+import { StyleTag } from "../StyleTag"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
 
