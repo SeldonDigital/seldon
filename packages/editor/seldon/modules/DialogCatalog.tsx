@@ -86,7 +86,7 @@ export function DialogCatalog({
   ...props
 }: DialogCatalogProps) {
   const dialogCatalogClassName = combineClassNames(
-    "sdn-dialog-modal",
+    "sdn-dialog-catalog",
     className,
   )
   const barProps = applyRef(
@@ -313,7 +313,7 @@ export function DialogCatalog({
 const sdn: DialogCatalogProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-dialog-modal sdn-dialog",
+  className: "sdn-dialog-catalog sdn-dialog",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--yje0",

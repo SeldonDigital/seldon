@@ -806,6 +806,22 @@ body {
   border: var(--hairline) solid var(--sdn-swatch-offBlack-b25);
 }
 
+.sdn-dialog-catalog {
+  background-color: var(--sdn-swatch-white);
+  overflow: hidden;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: auto;
+  justify-content: space-between;
+  box-shadow: 0px 4px 0.5rem 0.188rem hsl(0 0% 0% / 10%);
+  width: 450px;
+  height: 450px;
+  flex-shrink: 0;
+  border-radius: var(--sdn-corners-compact);
+  border: var(--hairline) solid var(--sdn-swatch-offBlack);
+}
+
 .sdn-dialog-modal {
   display: flex;
   background-color: var(--sdn-swatch-white);
@@ -823,10 +839,10 @@ body {
 }
 
 .sdn-dialog-palette {
+  display: flex;
   background-color: var(--sdn-swatch-white);
   overflow: hidden;
   flex-wrap: nowrap;
-  display: flex;
   flex-direction: column;
   gap: auto;
   justify-content: space-between;

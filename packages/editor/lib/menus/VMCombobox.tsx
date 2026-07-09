@@ -7,7 +7,6 @@
  * filter engine lives in `useComboboxState`.
  */
 import { CSSProperties, RefObject, useEffect, useRef } from "react"
-import { Box } from "@seldon/components/custom-components"
 import { InputEditor } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
 
@@ -323,7 +322,7 @@ export function VMCombobox({
         style={comboboxFrameMergedStyle}
         onClick={handleFrameClick}
       >
-        <Box ref={wrapperRef} style={comboboxWrapperStyle}>
+        <Frame wrapperElement="div" ref={wrapperRef} style={comboboxWrapperStyle}>
           <InputEditor
             value={value}
             onChange={handleInputChange}
@@ -338,7 +337,7 @@ export function VMCombobox({
             {...inputPropsCommon}
             {...restInputProps}
           />
-        </Box>
+        </Frame>
       </Frame>
     )
   }

@@ -5,12 +5,12 @@ import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import { useLayerDraggable } from "./hooks/use-layer-draggable"
 import { useLayerDropzone } from "./hooks/use-layer-dropzone"
 import {
-  Box,
   InsertIndicatorLine,
   OverlayLayer,
   PlacementZoneSurface,
   Pointer,
 } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import type { LayerPlacement } from "./helpers/layer-reorder"
 
 const LAYER_DRAG_DOT_SIZE = "var(--sdn-sizes-xsmall)"
@@ -88,7 +88,7 @@ function LayerDragSource({
   }
 
   return (
-    <Box ref={ref} style={boxStyle}>
+    <Frame wrapperElement="div" ref={ref} style={boxStyle}>
       {children}
       <LayerDropBand
         property={property}
@@ -102,7 +102,7 @@ function LayerDragSource({
         layerCount={layerCount}
         placement="after"
       />
-    </Box>
+    </Frame>
   )
 }
 
