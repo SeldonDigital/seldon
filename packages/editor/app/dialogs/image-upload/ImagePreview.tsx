@@ -1,4 +1,6 @@
 import { CSSProperties } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
+import { Image } from "@seldon/components/primitives/Image"
 
 interface ImagePreviewProps {
   src: string
@@ -20,8 +22,8 @@ export function ImagePreview({
   onError,
 }: ImagePreviewProps) {
   return (
-    <div style={wrapperStyle}>
-      <img src={src} alt={alt} style={imageStyle} onError={onError} />
-    </div>
+    <Frame wrapperElement="div" style={wrapperStyle}>
+      <Image src={src} alt={alt} style={imageStyle} onError={onError} />
+    </Frame>
   )
 }

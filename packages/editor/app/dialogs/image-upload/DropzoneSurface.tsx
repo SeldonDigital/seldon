@@ -1,4 +1,6 @@
 import { CSSProperties, ChangeEvent, DragEvent, ReactNode, Ref } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
+import { Input } from "@seldon/components/primitives/Input"
 
 interface DropzoneSurfaceProps {
   fileInputRef: Ref<HTMLInputElement>
@@ -31,14 +33,15 @@ export function DropzoneSurface({
 }: DropzoneSurfaceProps) {
   return (
     <>
-      <input
+      <Input
         type="file"
         ref={fileInputRef}
         style={hiddenInputStyle}
         accept={accept}
         onChange={onFileChange}
       />
-      <div
+      <Frame
+        wrapperElement="div"
         style={style}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
@@ -46,7 +49,7 @@ export function DropzoneSurface({
         onClick={onClick}
       >
         {children}
-      </div>
+      </Frame>
     </>
   )
 }

@@ -10,7 +10,7 @@ import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { FocusRingOverlay } from "../focus/FocusRingOverlay"
 import { AiChatPanel } from "../panels/ai-chat-panel/AiChatPanel"
-import { ImageUploadPanel } from "../panels/image-upload-panel/ImageUploadPanel"
+import { VMImageUploadDialog } from "../dialogs/image-upload/VMImageUploadDialog"
 import { VMBoardsDialog } from "../dialogs/boards/VMBoardsDialog"
 import { VMComponentsDialog } from "../dialogs/components/VMComponentsDialog"
 import { VMFontCollectionsDialog } from "../dialogs/font-collections/VMFontCollectionsDialog"
@@ -63,7 +63,7 @@ export default function Editor() {
         </motion.div>
       </AnimatePresence>
 
-      <ImageUploadPanel.Controller />
+      <VMImageUploadDialog />
       <VMComponentsDialog />
       <VMBoardsDialog />
       <VMThemesDialog />

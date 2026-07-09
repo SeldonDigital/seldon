@@ -1,18 +1,10 @@
 import { CSSProperties, useState } from "react"
 import { useObjectURL } from "@lib/hooks/use-object-url"
-import {
-  DropzoneSurface,
-  ImagePreview,
-  Text,
-} from "@seldon/components/custom-components"
 import { IconMaterialUpload } from "@seldon/components/icons"
+import { Text } from "@seldon/components/primitives/Text"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  DROPZONE_DRAG_ACCENT,
-  DROPZONE_DRAG_BORDER,
-  DROPZONE_GAP,
-  DROPZONE_TEXT_SIZE,
-} from "./image-dropzone.bespoke"
+import { DropzoneSurface } from "./DropzoneSurface"
+import { ImagePreview } from "./ImagePreview"
 
 export interface ImageDropzoneProps {
   onFileChange: (file: File | null) => void
@@ -22,7 +14,7 @@ export interface ImageDropzoneProps {
 
 const styles: Record<string, CSSProperties> = {
   uploadIcon: { fontSize: "1.125rem" },
-  uploadText: { fontSize: DROPZONE_TEXT_SIZE },
+  uploadText: { fontSize: "var(--sdn-font-size-small)" },
 }
 
 const dropzoneBaseStyle: CSSProperties = {
@@ -42,11 +34,13 @@ function getDropzoneStyle(
     ...dropzoneBaseStyle,
     ...(isDragging
       ? {
-          color: DROPZONE_DRAG_ACCENT,
-          border: DROPZONE_DRAG_BORDER,
+          color: "var(--sdn-swatch-seldon-blue)",
+          border: "2px solid var(--sdn-swatch-seldon-blue)",
         }
-      : { color: "var(--sdn-swatch-white)" }),
-    ...(hasFile ? { position: "relative" } : { gap: DROPZONE_GAP }),
+      : {}),
+    ...(hasFile
+      ? { position: "relative" }
+      : { gap: "var(--sdn-gaps-tight)" }),
   }
 }
 
@@ -96,6 +90,7 @@ export function ImageDropzone({
   }
 
   const dropText = isDragging ? "Drop image here..." : "Select or drop image…"
+  const dropzoneStyle = getDropzoneStyle(isDragging, Boolean(currentFile))
 
   const content = previewUrl ? (
     <ImagePreview src={previewUrl} onError={handleImageError} />
@@ -110,7 +105,7 @@ export function ImageDropzone({
     <DropzoneSurface
       fileInputRef={fileInputRef}
       onFileChange={handleFileSelect}
-      style={getDropzoneStyle(isDragging, Boolean(currentFile))}
+      style={dropzoneStyle}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}

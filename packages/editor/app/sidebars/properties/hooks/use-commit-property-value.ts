@@ -20,7 +20,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,
-} from "@app/panels/hooks/use-upload-image-panel"
+} from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
 import {
   cleanCompoundValue,
   compoundPresetPropertyKey,

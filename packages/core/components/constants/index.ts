@@ -104,6 +104,9 @@ export const NATIVE_REACT_PRIMITIVES: Record<
     }
     htmlElementOption?: HtmlElement
     wrapperElementOption?: WrapperElement
+    // The native wrapper forwards `ref` to its host element, so components that
+    // return it expose a typed `ref` prop.
+    forwardsRef?: boolean
   }
 > = {
   HTMLAnchor: {
@@ -283,6 +286,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       generic: "InputHTMLAttributes",
       parameter: "HTMLInputElement",
     },
+    forwardsRef: true,
   },
   HTMLLabel: {
     types: {

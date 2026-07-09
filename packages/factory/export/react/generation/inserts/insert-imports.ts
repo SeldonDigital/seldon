@@ -363,11 +363,16 @@ function getReactImports(
     }
   }
 
+  const nativePrimitive =
+    NATIVE_REACT_PRIMITIVES[
+      config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
+    ]
+  const reactImports = [nativePrimitive.types.generic]
+  // Native wrappers that forward `ref` need the `Ref` type for the ref prop.
+  if (nativePrimitive.forwardsRef) {
+    reactImports.push("Ref")
+  }
   return {
-    react: [
-      NATIVE_REACT_PRIMITIVES[
-        config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
-      ].types.generic,
-    ],
+    react: reactImports,
   }
 }

@@ -38,7 +38,7 @@ import { useRenameInput } from "../../hooks/use-rename-input"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,
-} from "@app/panels/hooks/use-upload-image-panel"
+} from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {

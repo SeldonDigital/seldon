@@ -10,13 +10,14 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { InputHTMLAttributes } from "react"
+import { InputHTMLAttributes, Ref } from "react"
 import { HTMLInput } from "../native-react/HTML.Input"
 import { combineClassNames } from "../utils/class-name"
 
 export interface InputCheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
   "data-seldon-ref"?: string
+  ref?: Ref<HTMLInputElement>
   type?: string
 }
 
