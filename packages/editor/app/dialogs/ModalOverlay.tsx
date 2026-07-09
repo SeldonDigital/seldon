@@ -7,7 +7,7 @@ import {
   PanInfo,
   motion,
 } from "framer-motion"
-import { Backdrop } from "./Backdrop"
+import { Backdrop } from "@seldon/components/custom-components"
 
 type ResizeSide =
   | "top"

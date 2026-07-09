@@ -10,7 +10,6 @@ import {
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
-import { ModalOverlay } from "@seldon/components/custom-components"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Container } from "@seldon/components/frames/Container"
 import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
@@ -18,6 +17,7 @@ import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalo
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
+import { ModalOverlay } from "./ModalOverlay"
 import { CatalogDialogCategory, CatalogDialogItem } from "./types"
 
 interface VMCatalogDialogProps<T extends CatalogDialogItem> {

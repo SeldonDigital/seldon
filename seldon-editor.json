@@ -11275,6 +11275,14 @@
         "color": {
           "type": "computed",
           "value": "highContrastColor"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 1
+        },
+        "wrapText": {
+          "type": "exact",
+          "value": false
         }
       },
       "origin": "schema",
@@ -12504,6 +12512,14 @@
             "type": "theme.ordinal",
             "value": "@fontSize.small"
           }
+        },
+        "wrapText": {
+          "type": "exact",
+          "value": false
+        },
+        "lines": {
+          "type": "exact",
+          "value": 1
         }
       },
       "origin": "schema",
@@ -13739,6 +13755,14 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
+        },
+        "wrapText": {
+          "type": "exact",
+          "value": false
+        },
+        "lines": {
+          "type": "exact",
+          "value": 1
         }
       },
       "origin": "schema",
@@ -54549,7 +54573,12 @@
       "label": "Catalog",
       "theme": null,
       "template": "node:component-item-product",
-      "overrides": {},
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {
@@ -54704,7 +54733,12 @@
       "label": "Catalog",
       "theme": null,
       "template": "node:component-item-product",
-      "overrides": {},
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {
@@ -54830,7 +54864,12 @@
       "label": "Catalog",
       "theme": null,
       "template": "node:component-item-product",
-      "overrides": {},
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {
@@ -54936,7 +54975,12 @@
       "label": "Catalog",
       "theme": null,
       "template": "node:component-item-product",
-      "overrides": {},
+      "overrides": {
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {
@@ -55570,6 +55614,14 @@
             "type": "theme.ordinal",
             "value": "@fontSize.small"
           }
+        },
+        "wrapText": {
+          "type": "exact",
+          "value": false
+        },
+        "lines": {
+          "type": "exact",
+          "value": 1
         }
       },
       "origin": "schema",

@@ -57,6 +57,15 @@ export function useFloatingPanel({
       width: width.get(),
       height: height.get(),
     })
+    // Suppress native text selection while dragging a resize handle across the
+    // surface. Restore it once the pointer is released.
+    const previousUserSelect = document.body.style.userSelect
+    document.body.style.userSelect = "none"
+    const restoreUserSelect = () => {
+      document.body.style.userSelect = previousUserSelect
+      window.removeEventListener("pointerup", restoreUserSelect)
+    }
+    window.addEventListener("pointerup", restoreUserSelect)
   }, [height, width, x, y])
 
   const handleResize = useCallback(
