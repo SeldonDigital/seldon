@@ -37,7 +37,7 @@ export enum ComponentId {
   STAT_CARD = "statCard",
   CITE = "cite",
   DESCRIPTION_LIST = "descriptionList",
-  DIALOG = "dialog",
+  PANELS = "panels",
   FIELDSET = "fieldset",
   FOOTER = "footer",
   FORM_CONTROL = "formControl",

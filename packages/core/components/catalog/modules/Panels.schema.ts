@@ -3,8 +3,8 @@ import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Dialog",
-  id: Seldon.ComponentId.DIALOG,
+  name: "Panel",
+  id: Seldon.ComponentId.PANELS,
   intent:
     "Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.",
   tags: [

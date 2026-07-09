@@ -129,9 +129,9 @@ import {
   schema as calendarSchema,
 } from "./modules/Calendar.schema"
 import {
-  exportConfig as dialogExportConfig,
-  schema as dialogSchema,
-} from "./modules/Dialog.schema"
+  exportConfig as panelsExportConfig,
+  schema as panelsSchema,
+} from "./modules/Panels.schema"
 import {
   exportConfig as sidebarExportConfig,
   schema as sidebarSchema,
@@ -386,7 +386,7 @@ const parts: ComponentSchema[] = [
 const modules: ComponentSchema[] = [
   linksFooterSchema,
   calendarSchema,
-  dialogSchema,
+  panelsSchema,
   footerSchema,
   sidebarSchema,
   tableSchema,
@@ -480,7 +480,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.LINKS_FOOTER]: linksFooterExportConfig,
   [ComponentId.CALENDAR]: calendarExportConfig,
   [ComponentId.FOOTER]: footerExportConfig,
-  [ComponentId.DIALOG]: dialogExportConfig,
+  [ComponentId.PANELS]: panelsExportConfig,
   [ComponentId.SIDEBAR]: sidebarExportConfig,
   [ComponentId.TABLE]: tableExportConfig,
   [ComponentId.WIDGET_TODO]: widgetTodoExportConfig,

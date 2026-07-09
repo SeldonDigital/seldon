@@ -10,9 +10,10 @@ import { migrateV8ThemeLightnessChange } from "./steps/migrate-00008-theme-light
 import { migrateV9ThemeDisplayMode } from "./steps/migrate-00009-theme-display-mode"
 import { migrateV10GradientKinds } from "./steps/migrate-00010-gradient-kinds"
 import { migrateV11PositionDropDimensionOrdinal } from "./steps/migrate-00011-position-drop-dimension-ordinal"
+import { migrateV12DialogToPanels } from "./steps/migrate-00012-dialog-to-panels"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 11
+export const CURRENT_WORKSPACE_VERSION = 12
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -28,6 +29,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   9: migrateV9ThemeDisplayMode,
   10: migrateV10GradientKinds,
   11: migrateV11PositionDropDimensionOrdinal,
+  12: migrateV12DialogToPanels,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
@@ -50,6 +52,7 @@ if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
 const REPAIR_STEPS: MigrationStep[] = [
   migrateV3ThemeRenames,
   migrateV6IconSetRenames,
+  migrateV12DialogToPanels,
 ]
 
 /**
