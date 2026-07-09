@@ -2,11 +2,9 @@ import { CSSProperties } from "react"
 import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useFloatingPanel } from "./hooks/use-floating-panel"
-import {
-  Backdrop,
-  FloatingPanelSurface,
-} from "@seldon/components/custom-components"
+import { Backdrop } from "@seldon/components/custom-components"
 import { RESIZE_SIDES, ResizeSide } from "@seldon/components/utils/resize"
+import { FloatingPanelSurface } from "./FloatingPanelSurface.bespoke"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../constants"
 
 export type FloatingPanelProps = {

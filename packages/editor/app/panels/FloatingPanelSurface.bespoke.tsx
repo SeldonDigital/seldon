@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: hand-authored draggable, resizable panel surface for the editor
+// floating panels. Uses Framer Motion drag plus the shared resize helpers.
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
 import { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from "react"
 import { HeaderPanelsClose } from "@seldon/components/chrome/elements/HeaderPanelsClose"
@@ -7,7 +9,7 @@ import {
   RESIZE_SIDES,
   createResizeHandle,
   getResizeHandleStyle,
-} from "../../utils/resize"
+} from "@seldon/components/utils/resize"
 
 interface FloatingPanelSurfaceProps {
   x: MotionValue<number>

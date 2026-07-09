@@ -17,10 +17,8 @@ import { usePreview } from "@lib/hooks/use-preview"
 import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import {
-  BoardCanvasFrame,
-  StyleTag,
-} from "@seldon/components/custom-components"
+import { StyleTag } from "@seldon/components/custom-components"
+import { BoardCanvasFrame } from "./BoardCanvasFrame.bespoke"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
 import { BoardStateSwitcher } from "./BoardStateSwitcher"

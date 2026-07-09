@@ -1,3 +1,4 @@
+// BESPOKE-VIEW: hand-authored selectable preview cell for resource boards.
 import { CSSProperties, ReactNode } from "react"
 
 interface PreviewItemWrapperProps {

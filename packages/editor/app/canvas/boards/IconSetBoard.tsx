@@ -17,10 +17,8 @@ import { useIconSetBoardIcons } from "../hooks/use-icon-set-board-icons"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/chrome/frames/Frame"
-import {
-  PreviewItemWrapper,
-  StyleTag,
-} from "@seldon/components/custom-components"
+import { StyleTag } from "@seldon/components/custom-components"
+import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
 import { CssPortal } from "../CssPortal"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"

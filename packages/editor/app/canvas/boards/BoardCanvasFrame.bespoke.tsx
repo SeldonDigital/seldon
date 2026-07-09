@@ -1,3 +1,4 @@
+// BESPOKE-VIEW: hand-authored board root wrapper carrying the canvas board id.
 import { CSSProperties, ReactNode, Ref } from "react"
 
 interface BoardCanvasFrameProps {

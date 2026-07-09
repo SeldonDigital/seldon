@@ -1,5 +1,7 @@
+// BESPOKE-VIEW: hand-authored centered placeholder board for boards with no
+// real preview yet.
 import { CSSProperties, ReactNode } from "react"
-import { BoardCanvasFrame } from "./BoardCanvasFrame"
+import { BoardCanvasFrame } from "./BoardCanvasFrame.bespoke"
 
 interface PlaceholderBoxProps {
   boardId: string
