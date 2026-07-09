@@ -19,9 +19,15 @@ type ResizeSide =
   | "bottom-left"
   | "bottom-right"
 
-const DEFAULT_RESIZE_SIDES: readonly ResizeSide[] = ["left", "right", "bottom"]
+const DEFAULT_RESIZE_SIDES: readonly ResizeSide[] = [
+  "left",
+  "right",
+  "bottom",
+  "bottom-left",
+  "bottom-right",
+]
 
-interface ModalOverlayProps {
+interface DialogOverlayProps {
   onClose: () => void
   children: ReactNode
   x: MotionValue<number>
@@ -36,16 +42,16 @@ interface ModalOverlayProps {
 }
 
 /**
- * Draggable, resizable modal surface. Renders a full-area backdrop that closes
+ * Draggable, resizable dialog surface. Renders a full-area backdrop that closes
  * on click and a fixed, motion-driven surface, both portaled to the document
  * body. All drag and resize wiring arrives via props, matching
  * `FloatingPanelSurface`; this View only renders the surface and edge handles.
  *
  * The caller starts a drag from its own handle by calling `moveControls.start`.
  * Resize handles cover the `resizeSides`, defaulting to the left, right, and
- * bottom edges.
+ * bottom edges plus the two bottom corners for diagonal resizing.
  */
-export function ModalOverlay({
+export function DialogOverlay({
   onClose,
   children,
   x,
@@ -57,7 +63,7 @@ export function ModalOverlay({
   onResizeStart,
   onResize,
   resizeSides = DEFAULT_RESIZE_SIDES,
-}: ModalOverlayProps) {
+}: DialogOverlayProps) {
   const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
 
   const resizeHandles = resizeSides.map((side) => {

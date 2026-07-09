@@ -17,7 +17,7 @@ import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalo
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { ModalOverlay } from "./ModalOverlay"
+import { DialogOverlay } from "./DialogOverlay"
 import { CatalogDialogCategory, CatalogDialogItem } from "./types"
 
 interface VMCatalogDialogProps<T extends CatalogDialogItem> {
@@ -34,9 +34,9 @@ interface VMCatalogDialogProps<T extends CatalogDialogItem> {
  * Shared view-model for the catalog dialogs. Feeds the generated `DialogCatalog`
  * shell: it wires the title, search field, and cancel/confirm buttons, and
  * injects the category list into the shell's content frame via `seldonRefs`.
- * `DialogCatalog` is a complete modal surface, so it renders inside `ModalOverlay`,
+ * `DialogCatalog` is a complete modal surface, so it renders inside `DialogOverlay`,
  * a backdrop-backed portal that the title bar drags and the left, right, and
- * bottom edges resize.
+ * bottom edges plus bottom corners resize.
  */
 export function VMCatalogDialog<T extends CatalogDialogItem>({
   title,
@@ -168,7 +168,7 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
   }
 
   return (
-    <ModalOverlay
+    <DialogOverlay
       onClose={onClose}
       x={x}
       y={y}
@@ -192,7 +192,7 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />
-    </ModalOverlay>
+    </DialogOverlay>
   )
 }
 

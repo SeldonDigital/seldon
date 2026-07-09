@@ -222,6 +222,14 @@ export const schema = {
         children: [
           {
             component: Seldon.ComponentId.COMBOBOX_FIELD,
+            overrides: {
+              border: {
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.offBlack",
+                },
+              },
+            },
             children: [
               {
                 component: Seldon.ComponentId.ICON,
