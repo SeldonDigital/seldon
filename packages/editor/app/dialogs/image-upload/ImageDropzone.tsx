@@ -1,10 +1,12 @@
-import { CSSProperties, useState } from "react"
-import { useObjectURL } from "@lib/hooks/use-object-url"
-import { IconMaterialUpload } from "@seldon/components/icons"
-import { Text } from "@seldon/components/primitives/Text"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { DropzoneSurface } from "./DropzoneSurface"
-import { ImagePreview } from "./ImagePreview"
+import { CSSProperties, useState } from "react";
+import { useObjectURL } from "@lib/hooks/use-object-url";
+import { Frame } from "@seldon/components/frames/Frame";
+import { IconMaterialUpload } from "@seldon/components/icons";
+import { Text } from "@seldon/components/primitives/Text";
+import { useAddToast } from "@app/toaster/hooks/use-add-toast";
+import { DropzoneSurface } from "./DropzoneSurface";
+import { ImagePreview } from "./ImagePreview";
+
 
 export interface ImageDropzoneProps {
   onFileChange: (file: File | null) => void
@@ -12,35 +14,19 @@ export interface ImageDropzoneProps {
   fileInputRef: React.RefObject<HTMLInputElement | null>
 }
 
-const styles: Record<string, CSSProperties> = {
-  uploadIcon: { fontSize: "1.125rem" },
-  uploadText: { fontSize: "var(--sdn-font-size-small)" },
-}
-
-const dropzoneBaseStyle: CSSProperties = {
-  width: "100%",
-  height: "100%",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}
-
 function getDropzoneStyle(
   isDragging: boolean,
   hasFile: boolean,
 ): CSSProperties {
   return {
-    ...dropzoneBaseStyle,
+    ...dropzoneStyle,
     ...(isDragging
       ? {
-          color: "var(--sdn-swatch-seldon-blue)",
-          border: "2px solid var(--sdn-swatch-seldon-blue)",
+          color: "var(--sdn-swatch-primary)",
+          border: "2px solid var(--sdn-swatch-primary)",
         }
       : {}),
-    ...(hasFile
-      ? { position: "relative" }
-      : { gap: "var(--sdn-gaps-tight)" }),
+    ...(hasFile ? { position: "relative" } : {}),
   }
 }
 
@@ -95,10 +81,10 @@ export function ImageDropzone({
   const content = previewUrl ? (
     <ImagePreview src={previewUrl} onError={handleImageError} />
   ) : (
-    <>
+    <Frame wrapperElement="div" style={styles.prompt}>
       <IconMaterialUpload style={styles.uploadIcon} />
       <Text style={styles.uploadText}>{dropText}</Text>
-    </>
+    </Frame>
   )
 
   return (
@@ -114,4 +100,25 @@ export function ImageDropzone({
       {content}
     </DropzoneSurface>
   )
+}
+
+const styles: Record<string, CSSProperties> = {
+  uploadIcon: { fontSize: "var(--sdn-font-size-medium)" },
+  uploadText: { fontSize: "var(--sdn-font-size-small)" },
+  prompt: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "var(--sdn-gaps-tight)",
+  },
+}
+
+const dropzoneStyle: CSSProperties = {
+  width: "100%",
+  height: "100%",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }

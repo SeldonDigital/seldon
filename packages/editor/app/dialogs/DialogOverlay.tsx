@@ -8,6 +8,8 @@ import {
   createResizeHandle,
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 
 const DEFAULT_RESIZE_SIDES: readonly ResizeSide[] = [
   "left",
@@ -60,6 +62,12 @@ export function DialogOverlay({
   minWidth,
   minHeight,
 }: DialogOverlayProps) {
+  // The portal mounts on document.body, outside the chrome root that scopes the
+  // editor theme and mode. Re-apply both here so the dialog matches the editor
+  // interface instead of falling back to the :root default, mirroring VMMenu.
+  const { chromeTheme } = useEditorConfig()
+  const resolvedMode = useResolvedInterfaceMode()
+
   const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
 
   const resizeHandles = resizeSides.map((side) => {
@@ -77,7 +85,7 @@ export function DialogOverlay({
   })
 
   return createPortal(
-    <>
+    <div data-theme={chromeTheme} data-mode={resolvedMode} style={scopeStyle}>
       <Backdrop onClick={onClose} style={backdropStyle} />
       <motion.div
         drag
@@ -91,10 +99,14 @@ export function DialogOverlay({
         {children}
         {resizeHandles}
       </motion.div>
-    </>,
+    </div>,
     document.body,
   )
 }
+
+// The scope only carries the theme/mode attributes; `display: contents` keeps
+// it out of layout so the fixed backdrop and surface position as before.
+const scopeStyle: CSSProperties = { display: "contents" }
 
 const backdropStyle: CSSProperties = {
   position: "fixed",

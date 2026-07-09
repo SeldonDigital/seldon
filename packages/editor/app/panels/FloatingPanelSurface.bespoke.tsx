@@ -1,8 +1,9 @@
 // BESPOKE-VIEW: hand-authored draggable, resizable panel surface for the editor
-// floating panels. Uses Framer Motion drag plus the shared resize helpers.
+// floating panels. Wraps the generated `DialogHari` shell with Framer Motion
+// drag plus the shared resize helpers.
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
 import { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from "react"
-import { HeaderPanelsClose } from "@seldon/components/chrome/elements/HeaderPanelsClose"
+import { DialogHari } from "@seldon/components/modules/DialogHari"
 import {
   Rect,
   ResizeSide,
@@ -10,6 +11,8 @@ import {
   createResizeHandle,
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 
 interface FloatingPanelSurfaceProps {
   x: MotionValue<number>
@@ -32,9 +35,11 @@ interface FloatingPanelSurfaceProps {
 
 /**
  * Draggable, resizable panel surface. All drag and resize wiring arrives via
- * props; this View only renders the motion surface, header, and edge handles.
- * Resize handles cover the given `resizeSides` and drive `onResize` through the
- * shared resize helpers.
+ * props; this View renders the motion surface, the generated `DialogHari` shell,
+ * and the edge handles. The title bar drags, the close button dismisses, and the
+ * content frame holds the children. The surface portals to the document body, so
+ * it re-applies the editor theme and mode to match the interface. Resize handles
+ * cover the given `resizeSides` and drive `onResize` through the shared helpers.
  */
 export function FloatingPanelSurface({
   x,
@@ -54,12 +59,19 @@ export function FloatingPanelSurface({
   minHeight,
   children,
 }: FloatingPanelSurfaceProps) {
+  // The portal mounts on document.body, outside the chrome root that scopes the
+  // editor theme and mode, so re-apply both here to match the editor interface.
+  const { chromeTheme } = useEditorConfig()
+  const resolvedMode = useResolvedInterfaceMode()
+
   const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
 
   const startDrag = (event: ReactPointerEvent) => moveControls.start(event)
 
-  const titleProps = { children: title, style: styles.title }
-  const buttonIconicProps = { onClick: onClose }
+  const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
+  const dialogTitle = { children: title }
+  const closeButton = { onClick: onClose }
+  const contentFrame = { style: styles.content, children }
 
   const resizeHandles = resizeSides.map((side) => {
     const { onPointerDown } = createResizeHandle({
@@ -76,27 +88,33 @@ export function FloatingPanelSurface({
   })
 
   return (
-    <motion.div
-      drag
-      style={surfaceMotionStyle}
-      dragControls={moveControls}
-      dragMomentum={false}
-      dragElastic={false}
-      dragConstraints={dragConstraints}
-      dragListener={false}
-      data-testid={testId}
-      className="variant-dialog-default"
-    >
-      <HeaderPanelsClose
-        onPointerDown={startDrag}
-        titleProps={titleProps}
-        buttonIconicProps={buttonIconicProps}
-      />
-      {children}
-      {resizeHandles}
-    </motion.div>
+    <div data-theme={chromeTheme} data-mode={resolvedMode} style={styles.scope}>
+      <motion.div
+        drag
+        style={surfaceMotionStyle}
+        dragControls={moveControls}
+        dragMomentum={false}
+        dragElastic={false}
+        dragConstraints={dragConstraints}
+        dragListener={false}
+        data-testid={testId}
+      >
+        <DialogHari
+          bar={barHandle}
+          textTitle={dialogTitle}
+          buttonIconic={closeButton}
+          frame={contentFrame}
+          style={styles.dialog}
+        />
+        {resizeHandles}
+      </motion.div>
+    </div>
   )
 }
+
+// The scope only carries the theme/mode attributes; `display: contents` keeps
+// it out of layout so the fixed surface positions as before.
+const scopeStyle: CSSProperties = { display: "contents" }
 
 const surfaceStyle: CSSProperties = {
   position: "fixed",
@@ -106,10 +124,15 @@ const surfaceStyle: CSSProperties = {
 }
 
 const styles: Record<string, CSSProperties> = {
-  title: {
-    alignSelf: "center",
-    color: "var(--sdn-swatch-white)",
-    flex: "1 0 0",
-    fontSize: "14px",
+  scope: scopeStyle,
+  dialog: {
+    width: "100%",
+    height: "100%",
+  },
+  dragHandle: {
+    cursor: "grab",
+  },
+  content: {
+    minHeight: 0,
   },
 }

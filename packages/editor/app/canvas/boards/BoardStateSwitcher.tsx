@@ -43,7 +43,7 @@ const dialogBodyStyle: CSSProperties = {
 }
 
 const dialogFieldLabelStyle: CSSProperties = {
-  color: "rgba(255,255,255,0.55)",
+  color: "rgba(0,0,0,0.55)",
   font: "400 11px/1 system-ui, sans-serif",
 }
 

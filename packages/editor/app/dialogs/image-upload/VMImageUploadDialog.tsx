@@ -4,6 +4,8 @@ import { CSSProperties, PointerEvent, RefObject, useCallback, useMemo } from "re
 import { useHotkeys } from "react-hotkeys-hook"
 import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
 import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
+import { BarButtonsProps } from "@seldon/components/parts/BarButtons"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
 import { DialogOverlay } from "../DialogOverlay"
@@ -65,7 +67,7 @@ interface ImageUploadDialogProps {
 /**
  * View-model for the image upload dialog. Feeds the generated `DialogCatalog`
  * shell with the search field hidden: the title bar drags, the content frame
- * holds the dropzone, and the cancel/confirm buttons clear and upload. The
+ * holds the dropzone, and the footer buttons clear, cancel, and upload. The
  * shell is a complete modal surface, so it renders inside `DialogOverlay`, a
  * backdrop-backed portal that drags from the title bar and resizes from the
  * left, right, and bottom edges plus the bottom corners.
@@ -125,15 +127,22 @@ function ImageUploadDialog({
   const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
   const dialogTitle = { children: "Choose image" }
   const clearLabel = { children: "Clear" }
-  const confirmLabel = { children: confirmText }
-  // Suppress the shell's third BarButtons slot, matching the catalog dialogs.
-  // The cancel/confirm icons ride the shell defaults; only the labels and
-  // click handlers differ. Buttons stay enabled and no-op without a file.
-  const barButtons = { button3: null }
+  const cancelLabel = { children: "Cancel" }
+  const cancelIcon: IconProps = { icon: "material-close" }
+  // The footer renders three buttons in slot order: Clear and Cancel use the
+  // shell's two ref'd slots, and Use image uses the shell's third BarButtons
+  // slot. That slot defaults to medium sizing, so match the ref'd buttons with
+  // the small-size, small-icon, and small-label modifiers the shell applies to
+  // slots one and two. Buttons stay enabled and no-op without a file.
+  const barButtons: BarButtonsProps = {
+    button3: { className: "sdn-button--cq5m", onClick: onSave },
+    icon3: { icon: "material-check", className: "sdn-icon--x7ac" },
+    textLabel3: { className: "sdn-text-label--yo51", children: confirmText },
+  }
   const seldonRefs = {
     dialogContent: { style: styles.content, children: content },
     dialogCancel: { onClick: onClear },
-    dialogConfirm: { onClick: onSave },
+    dialogConfirm: { onClick: onClose },
   }
 
   return (
@@ -159,7 +168,8 @@ function ImageUploadDialog({
         comboboxFieldSearch={null}
         barButtons={barButtons}
         textLabel={clearLabel}
-        textLabel2={confirmLabel}
+        textLabel2={cancelLabel}
+        icon4={cancelIcon}
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />
