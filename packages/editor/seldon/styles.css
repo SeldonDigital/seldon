@@ -2660,6 +2660,7 @@ body {
 
 .sdn-item-catalog--ieif {
   align-self: unset;
+  height: unset;
   flex-shrink: unset;
 }
 
@@ -3065,6 +3066,17 @@ body {
   max-height: 3lh;
 }
 
+.sdn-text-title--8ah1 {
+  align-self: unset;
+  flex-shrink: unset;
+  max-height: unset;
+  color: var(--sdn-hc-on-primary-b30);
+  flex: 1 0 0;
+  min-width: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .sdn-text-title--adfu {
   color: var(--sdn-hc-on-white);
 }
@@ -3088,9 +3100,13 @@ body {
 
 .sdn-text-title--eodu {
   align-self: unset;
+  max-height: unset;
   color: var(--sdn-hc-on-primary-b30);
   width: 35%;
+  min-width: 0;
   font-size: var(--sdn-font-size-small);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .sdn-text-title--noun {
@@ -3124,10 +3140,13 @@ body {
 .sdn-text-title--ulid {
   align-self: unset;
   flex-shrink: unset;
+  max-height: unset;
   color: var(--sdn-hc-on-primary-b30);
   flex: 1 0 0;
   min-width: 0;
   font-size: var(--sdn-font-size-xsmall);
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .sdn-text-title--wi5q {

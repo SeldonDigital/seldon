@@ -1,23 +1,13 @@
 import { CSSProperties, ReactNode } from "react"
 import { createPortal } from "react-dom"
-import {
-  BoundingBox,
-  DragControls,
-  MotionValue,
-  PanInfo,
-  motion,
-} from "framer-motion"
+import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
 import { Backdrop } from "@seldon/components/custom-components"
-
-type ResizeSide =
-  | "top"
-  | "right"
-  | "bottom"
-  | "left"
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right"
+import {
+  Rect,
+  ResizeSide,
+  createResizeHandle,
+  getResizeHandleStyle,
+} from "@seldon/components/utils/resize"
 
 const DEFAULT_RESIZE_SIDES: readonly ResizeSide[] = [
   "left",
@@ -37,8 +27,11 @@ interface DialogOverlayProps {
   moveControls: DragControls
   dragConstraints: BoundingBox
   onResizeStart: () => void
-  onResize: (side: ResizeSide, info: PanInfo) => void
+  onResize: (rect: Rect) => void
+  getRect: () => Rect
   resizeSides?: readonly ResizeSide[]
+  minWidth?: number
+  minHeight?: number
 }
 
 /**
@@ -48,8 +41,8 @@ interface DialogOverlayProps {
  * `FloatingPanelSurface`; this View only renders the surface and edge handles.
  *
  * The caller starts a drag from its own handle by calling `moveControls.start`.
- * Resize handles cover the `resizeSides`, defaulting to the left, right, and
- * bottom edges plus the two bottom corners for diagonal resizing.
+ * Resize handles cover the `resizeSides` the caller passes and drive `onResize`
+ * through the shared resize helpers.
  */
 export function DialogOverlay({
   onClose,
@@ -62,20 +55,24 @@ export function DialogOverlay({
   dragConstraints,
   onResizeStart,
   onResize,
+  getRect,
   resizeSides = DEFAULT_RESIZE_SIDES,
+  minWidth,
+  minHeight,
 }: DialogOverlayProps) {
   const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
 
   const resizeHandles = resizeSides.map((side) => {
-    const handleResize = (_event: PointerEvent, info: PanInfo) =>
-      onResize(side, info)
+    const { onPointerDown } = createResizeHandle({
+      side,
+      getRect,
+      onResize,
+      minWidth,
+      minHeight,
+      onStart: onResizeStart,
+    })
     return (
-      <motion.div
-        key={side}
-        onPan={handleResize}
-        onPointerDown={onResizeStart}
-        style={getResizeHandleStyle(side)}
-      />
+      <div key={side} onPointerDown={onPointerDown} style={getResizeHandleStyle(side)} />
     )
   })
 
@@ -110,52 +107,4 @@ const surfaceStyle: CSSProperties = {
   left: 0,
   top: 0,
   zIndex: 40,
-}
-
-const EDGE = "0.5rem"
-
-function getResizeHandleStyle(side: ResizeSide): CSSProperties {
-  const style: CSSProperties = { position: "absolute", touchAction: "none" }
-
-  if (side.includes("bottom")) {
-    style.bottom = 0
-    style.height = EDGE
-  }
-  if (side.includes("left")) {
-    style.left = 0
-    style.width = EDGE
-  }
-  if (side.includes("right")) {
-    style.right = 0
-    style.width = EDGE
-  }
-  if (side.includes("top")) {
-    style.top = 0
-    style.height = EDGE
-  }
-
-  switch (side) {
-    case "top":
-    case "bottom":
-      style.left = EDGE
-      style.right = EDGE
-      style.cursor = "ns-resize"
-      break
-    case "left":
-    case "right":
-      style.top = EDGE
-      style.bottom = EDGE
-      style.cursor = "ew-resize"
-      break
-    case "top-left":
-    case "bottom-right":
-      style.cursor = "nwse-resize"
-      break
-    case "top-right":
-    case "bottom-left":
-      style.cursor = "nesw-resize"
-      break
-  }
-
-  return style
 }

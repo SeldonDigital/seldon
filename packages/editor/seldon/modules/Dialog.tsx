@@ -361,7 +361,7 @@ const sdn: DialogProps = {
     className: "sdn-bar sdn-bar--yje0",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--qbtu",
+    className: "sdn-text-title sdn-text-title--8ah1",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

@@ -16,9 +16,20 @@ import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
+import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
 import { DialogOverlay } from "./DialogOverlay"
 import { CatalogDialogCategory, CatalogDialogItem } from "./types"
+
+// The title bar owns the top edge for dragging, so the dialog resizes from the
+// side and bottom edges plus the two bottom corners.
+const DIALOG_RESIZE_SIDES: readonly ResizeSide[] = [
+  "left",
+  "right",
+  "bottom",
+  "bottom-left",
+  "bottom-right",
+]
 
 interface VMCatalogDialogProps<T extends CatalogDialogItem> {
   title: string
@@ -54,10 +65,13 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
     y,
     width,
     height,
-    handleResizeStart,
-    handleResize,
+    onResizeStart,
+    onResize,
+    getRect,
     moveControls,
     dragConstraints,
+    minWidth,
+    minHeight,
   } = useFloatingPanel({
     initialPosition: {
       x: 0.5 * window.innerWidth - 0.5 * PANEL_INITIAL_WIDTH,
@@ -176,8 +190,12 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
       height={height}
       moveControls={moveControls}
       dragConstraints={dragConstraints}
-      onResizeStart={handleResizeStart}
-      onResize={handleResize}
+      onResizeStart={onResizeStart}
+      onResize={onResize}
+      getRect={getRect}
+      resizeSides={DIALOG_RESIZE_SIDES}
+      minWidth={minWidth}
+      minHeight={minHeight}
     >
       <DialogCatalog
         data-testid="catalog-dialog"

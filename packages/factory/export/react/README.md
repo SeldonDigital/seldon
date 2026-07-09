@@ -154,7 +154,7 @@ Two predicates classify a component for the `Type` line in the generated JSDoc. 
 | File | Role |
 | --- | --- |
 | `utils/class-name.ts` | Provides class name helpers used during generation |
-| `utils/generate-utility-file-contents.ts` | Writes the exported `utils/class-name.ts` file with `combineClassNames` |
+| `utils/generate-utility-file-contents.ts` | Writes the exported runtime utility files: `utils/class-name.ts` (`combineClassNames`), `utils/apply-ref.ts` (`applyRef`), `utils/icon-registry.ts` (dynamic icon registry), and `utils/resize.ts` (framework-agnostic resize helpers) |
 | `utils/pluralize-level.ts` | Pluralizes a component level for output paths |
 | `utils/transform-source.ts` | Appends or prepends content to a source string |
 | `utils/case-utils.ts` | Supports casing for generated names |
@@ -182,7 +182,7 @@ After license insertion, `exportReact` runs a final Prettier pass over every emi
 
 ## Generated Output
 
-`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the `utils/class-name.ts` helper, image files, and a package README. When any node carries a reference handle, it also emits a `refs/index.ts` registry. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
+`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the runtime helpers under `utils/`, image files, and a package README. When any node carries a reference handle, it also emits a `refs/index.ts` registry. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
 
 Every child prop in a generated interface is optional and nullable. A schema child renders with its `sdn` defaults when the prop is omitted and does not render when the caller passes `null`. An invalid child renders only when the caller passes the prop.
 

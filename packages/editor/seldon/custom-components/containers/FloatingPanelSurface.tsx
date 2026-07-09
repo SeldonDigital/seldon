@@ -1,33 +1,13 @@
-import {
-  BoundingBox,
-  DragControls,
-  MotionValue,
-  PanInfo,
-  motion,
-} from "framer-motion"
-import { CSSProperties, ReactNode } from "react"
+import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
+import { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from "react"
 import { HeaderPanelsClose } from "@seldon/components/chrome/elements/HeaderPanelsClose"
-
-type ResizeSide =
-  | "top"
-  | "right"
-  | "bottom"
-  | "left"
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right"
-
-const RESIZE_SIDES: readonly ResizeSide[] = [
-  "top",
-  "right",
-  "bottom",
-  "left",
-  "top-left",
-  "top-right",
-  "bottom-left",
-  "bottom-right",
-]
+import {
+  Rect,
+  ResizeSide,
+  RESIZE_SIDES,
+  createResizeHandle,
+  getResizeHandleStyle,
+} from "../../utils/resize"
 
 interface FloatingPanelSurfaceProps {
   x: MotionValue<number>
@@ -37,16 +17,22 @@ interface FloatingPanelSurfaceProps {
   moveControls: DragControls
   dragConstraints: BoundingBox
   onResizeStart: () => void
-  onResize: (side: ResizeSide, info: PanInfo) => void
+  onResize: (rect: Rect) => void
+  getRect: () => Rect
   onClose: () => void
   title?: string
   testId?: string
+  resizeSides?: readonly ResizeSide[]
+  minWidth?: number
+  minHeight?: number
   children: ReactNode
 }
 
 /**
  * Draggable, resizable panel surface. All drag and resize wiring arrives via
  * props; this View only renders the motion surface, header, and edge handles.
+ * Resize handles cover the given `resizeSides` and drive `onResize` through the
+ * shared resize helpers.
  */
 export function FloatingPanelSurface({
   x,
@@ -57,24 +43,40 @@ export function FloatingPanelSurface({
   dragConstraints,
   onResizeStart,
   onResize,
+  getRect,
   onClose,
   title,
   testId,
+  resizeSides = RESIZE_SIDES,
+  minWidth,
+  minHeight,
   children,
 }: FloatingPanelSurfaceProps) {
+  const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
+
+  const startDrag = (event: ReactPointerEvent) => moveControls.start(event)
+
+  const titleProps = { children: title, style: styles.title }
+  const buttonIconicProps = { onClick: onClose }
+
+  const resizeHandles = resizeSides.map((side) => {
+    const { onPointerDown } = createResizeHandle({
+      side,
+      getRect,
+      onResize,
+      minWidth,
+      minHeight,
+      onStart: onResizeStart,
+    })
+    return (
+      <div key={side} onPointerDown={onPointerDown} style={getResizeHandleStyle(side)} />
+    )
+  })
+
   return (
     <motion.div
       drag
-      style={{
-        x,
-        y,
-        width,
-        height,
-        position: "fixed",
-        left: 0,
-        top: 0,
-        zIndex: 40,
-      }}
+      style={surfaceMotionStyle}
       dragControls={moveControls}
       dragMomentum={false}
       dragElastic={false}
@@ -84,26 +86,21 @@ export function FloatingPanelSurface({
       className="variant-dialog-default"
     >
       <HeaderPanelsClose
-        onPointerDown={(event) => moveControls.start(event)}
-        titleProps={{
-          children: title,
-          style: styles.title,
-        }}
-        buttonIconicProps={{
-          onClick: onClose,
-        }}
+        onPointerDown={startDrag}
+        titleProps={titleProps}
+        buttonIconicProps={buttonIconicProps}
       />
       {children}
-      {RESIZE_SIDES.map((side) => (
-        <motion.div
-          key={side}
-          onPan={(_event, info) => onResize(side, info)}
-          onPointerDown={onResizeStart}
-          style={getResizeHandleStyle(side)}
-        />
-      ))}
+      {resizeHandles}
     </motion.div>
   )
+}
+
+const surfaceStyle: CSSProperties = {
+  position: "fixed",
+  left: 0,
+  top: 0,
+  zIndex: 40,
 }
 
 const styles: Record<string, CSSProperties> = {
@@ -113,52 +110,4 @@ const styles: Record<string, CSSProperties> = {
     flex: "1 0 0",
     fontSize: "14px",
   },
-}
-
-const EDGE = "0.5rem"
-
-function getResizeHandleStyle(side: ResizeSide): CSSProperties {
-  const style: CSSProperties = { position: "absolute", touchAction: "none" }
-
-  if (side.includes("bottom")) {
-    style.bottom = 0
-    style.height = EDGE
-  }
-  if (side.includes("left")) {
-    style.left = 0
-    style.width = EDGE
-  }
-  if (side.includes("right")) {
-    style.right = 0
-    style.width = EDGE
-  }
-  if (side.includes("top")) {
-    style.top = 0
-    style.height = EDGE
-  }
-
-  switch (side) {
-    case "top":
-    case "bottom":
-      style.left = EDGE
-      style.right = EDGE
-      style.cursor = "ns-resize"
-      break
-    case "left":
-    case "right":
-      style.top = EDGE
-      style.bottom = EDGE
-      style.cursor = "ew-resize"
-      break
-    case "top-left":
-    case "bottom-right":
-      style.cursor = "nwse-resize"
-      break
-    case "top-right":
-    case "bottom-left":
-      style.cursor = "nesw-resize"
-      break
-  }
-
-  return style
 }

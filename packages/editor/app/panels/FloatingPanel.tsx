@@ -6,6 +6,7 @@ import {
   Backdrop,
   FloatingPanelSurface,
 } from "@seldon/components/custom-components"
+import { RESIZE_SIDES, ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../constants"
 
 export type FloatingPanelProps = {
@@ -20,6 +21,7 @@ export type FloatingPanelProps = {
   title?: string
   testId?: string
   isOpen?: boolean
+  resizeSides?: readonly ResizeSide[]
 }
 
 export function FloatingPanel({
@@ -34,16 +36,20 @@ export function FloatingPanel({
   title,
   testId,
   isOpen = true,
+  resizeSides = RESIZE_SIDES,
 }: FloatingPanelProps) {
   const {
     x,
     y,
     width,
     height,
-    handleResizeStart,
-    handleResize,
+    onResizeStart,
+    onResize,
+    getRect,
     moveControls,
     dragConstraints,
+    minWidth,
+    minHeight,
   } = useFloatingPanel({
     initialPosition: {
       x: initialPosition.x ?? 0.5 * window.innerWidth - 0.5 * initialWidth,
@@ -74,8 +80,12 @@ export function FloatingPanel({
           height={height}
           moveControls={moveControls}
           dragConstraints={dragConstraints}
-          onResizeStart={handleResizeStart}
-          onResize={handleResize}
+          onResizeStart={onResizeStart}
+          onResize={onResize}
+          getRect={getRect}
+          resizeSides={resizeSides}
+          minWidth={minWidth}
+          minHeight={minHeight}
           onClose={handleClose}
           title={title}
           testId={testId}

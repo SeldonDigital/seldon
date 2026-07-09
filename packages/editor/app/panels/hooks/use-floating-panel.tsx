@@ -1,22 +1,8 @@
 import { getWindowInnerSize } from "@lib/helpers/get-window-inner-size"
-import {
-  BoundingBox,
-  PanInfo,
-  useDragControls,
-  useMotionValue,
-} from "framer-motion"
+import { BoundingBox, useDragControls, useMotionValue } from "framer-motion"
 import { useCallback, useEffect, useState } from "react"
+import { Rect } from "@seldon/components/utils/resize"
 import { PANEL_MIN_HEIGHT, PANEL_MIN_WIDTH } from "@app/constants"
-
-export type Side =
-  | "top"
-  | "right"
-  | "bottom"
-  | "left"
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right"
 
 export function useFloatingPanel({
   initialPosition,
@@ -35,13 +21,6 @@ export function useFloatingPanel({
   const width = useMotionValue(initialSize.width)
   const height = useMotionValue(initialSize.height)
 
-  const [rectBeforeResize, setRectBeforeResize] = useState({
-    x: initialPosition.x,
-    y: initialPosition.y,
-    width: initialSize.width,
-    height: initialSize.height,
-  })
-
   const { width: windowWidth, height: windowHeight } = getWindowInnerSize()
   const [dragConstraints, setDragConstraints] = useState<BoundingBox>({
     top: 0,
@@ -50,15 +29,9 @@ export function useFloatingPanel({
     bottom: windowHeight - height.get(),
   })
 
-  const handleResizeStart = useCallback(() => {
-    setRectBeforeResize({
-      x: x.get(),
-      y: y.get(),
-      width: width.get(),
-      height: height.get(),
-    })
-    // Suppress native text selection while dragging a resize handle across the
-    // surface. Restore it once the pointer is released.
+  // Suppress native text selection while dragging a resize handle across the
+  // surface. Restore it once the pointer is released.
+  const onResizeStart = useCallback(() => {
     const previousUserSelect = document.body.style.userSelect
     document.body.style.userSelect = "none"
     const restoreUserSelect = () => {
@@ -66,44 +39,26 @@ export function useFloatingPanel({
       window.removeEventListener("pointerup", restoreUserSelect)
     }
     window.addEventListener("pointerup", restoreUserSelect)
-  }, [height, width, x, y])
+  }, [])
 
-  const handleResize = useCallback(
-    (side: Side, info: PanInfo) => {
-      let newX = rectBeforeResize.x
-      let newY = rectBeforeResize.y
-      let newWidth = rectBeforeResize.width
-      let newHeight = rectBeforeResize.height
+  const getRect = useCallback(
+    (): Rect => ({
+      x: x.get(),
+      y: y.get(),
+      width: width.get(),
+      height: height.get(),
+    }),
+    [x, y, width, height],
+  )
 
-      if (side.includes("right")) {
-        newWidth = rectBeforeResize.width + info.offset.x
-      }
-
-      if (side.includes("left")) {
-        newWidth = rectBeforeResize.width - info.offset.x
-        newX = rectBeforeResize.x + info.offset.x
-      }
-
-      if (side.includes("bottom")) {
-        newHeight = rectBeforeResize.height + info.offset.y
-      }
-
-      if (side.includes("top")) {
-        newHeight = rectBeforeResize.height - info.offset.y
-        newY = rectBeforeResize.y + info.offset.y
-      }
-
-      if (newWidth > PANEL_MIN_WIDTH) {
-        x.set(newX)
-        width.set(newWidth)
-      }
-
-      if (newHeight > PANEL_MIN_HEIGHT) {
-        y.set(newY)
-        height.set(newHeight)
-      }
+  const onResize = useCallback(
+    (rect: Rect) => {
+      x.set(rect.x)
+      y.set(rect.y)
+      width.set(rect.width)
+      height.set(rect.height)
     },
-    [rectBeforeResize, x, width, y, height],
+    [x, y, width, height],
   )
 
   /**
@@ -165,9 +120,12 @@ export function useFloatingPanel({
     y,
     width,
     height,
-    handleResizeStart,
-    handleResize,
+    onResizeStart,
+    getRect,
+    onResize,
     moveControls,
     dragConstraints,
+    minWidth: PANEL_MIN_WIDTH,
+    minHeight: PANEL_MIN_HEIGHT,
   }
 }
