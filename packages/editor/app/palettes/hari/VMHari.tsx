@@ -2,7 +2,7 @@
 
 import { CSSProperties, KeyboardEvent, useCallback, useEffect } from "react"
 import { HariStatus, useHari } from "@lib/hooks/use-ai-chat"
-import { VMPanelPalette } from "@app/panels/VMPanelPalette"
+import { VMPanelPalette } from "@app/palettes/VMPanelPalette"
 
 const HARI_INITIAL_WIDTH = 420
 const HARI_INITIAL_HEIGHT = 220

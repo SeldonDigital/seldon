@@ -13,8 +13,8 @@ import { PanelDialog } from "@seldon/components/modules/PanelDialog"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { usePalette } from "@app/panels/hooks/use-palette"
-import { DialogOverlay } from "../DialogOverlay"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import { WindowOverlay } from "@lib/overlays/WindowOverlay"
 import { ImageDropzone } from "./ImageDropzone"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
@@ -73,9 +73,9 @@ interface ImageUploadDialogProps {
  * View-model for the image upload dialog. Feeds the generated `PanelDialog`
  * shell with the search field hidden: the title bar drags, the content frame
  * holds the dropzone, and the footer buttons clear, cancel, and upload. The
- * shell is a complete modal surface, so it renders inside `DialogOverlay`, a
- * backdrop-backed portal that drags from the title bar and resizes from the
- * left, right, and bottom edges plus the bottom corners.
+ * shell is a complete modal surface, so it renders inside a modal
+ * `WindowOverlay`, a backdrop-backed portal that drags from the title bar and
+ * resizes from the left, right, and bottom edges plus the bottom corners.
  */
 function ImageUploadDialog({
   currentFile,
@@ -98,7 +98,7 @@ function ImageUploadDialog({
     dragConstraints,
     minWidth,
     minHeight,
-  } = usePalette({
+  } = useDraggableWindow({
     initialPosition: {
       x: 0.5 * window.innerWidth - 0.5 * PANEL_INITIAL_WIDTH,
       y: 0.5 * window.innerHeight - 0.5 * PANEL_INITIAL_HEIGHT,
@@ -131,9 +131,7 @@ function ImageUploadDialog({
 
   const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
   const dialogTitle = { children: "Choose image" }
-  // The footer splits into two frames: Clear sits alone in the left frame, while
-  // Cancel and Use image fill the right frame's ref'd slots. Buttons stay
-  // enabled and no-op without a file.
+
   const clearButton = { onClick: onClear }
   const clearLabel = { children: "Clear" }
   const cancelIcon: IconProps = { icon: "material-close" }
@@ -146,7 +144,8 @@ function ImageUploadDialog({
   }
 
   return (
-    <DialogOverlay
+    <WindowOverlay
+      modal
       onClose={onClose}
       x={x}
       y={y}
@@ -176,7 +175,7 @@ function ImageUploadDialog({
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />
-    </DialogOverlay>
+    </WindowOverlay>
   )
 }
 

@@ -2,18 +2,29 @@ import { getWindowInnerSize } from "@lib/helpers/get-window-inner-size"
 import { BoundingBox, useDragControls, useMotionValue } from "framer-motion"
 import { useCallback, useEffect, useState } from "react"
 import { Rect } from "@seldon/components/utils/resize"
-import { PANEL_MIN_HEIGHT, PANEL_MIN_WIDTH } from "@app/constants"
 
-export function usePalette({
+const DEFAULT_MIN_WINDOW_WIDTH = 300
+const DEFAULT_MIN_WINDOW_HEIGHT = 300
+
+/**
+ * Drag, resize, and position mechanics for a floating editor window. Shared by
+ * the dialog and palette view-models: it owns the motion values, drag controls,
+ * resize handlers, and drag constraints that `WindowOverlay` renders.
+ */
+export function useDraggableWindow({
   initialPosition,
   initialSize,
   handleClose,
   closeOnEscape = true,
+  minWidth = DEFAULT_MIN_WINDOW_WIDTH,
+  minHeight = DEFAULT_MIN_WINDOW_HEIGHT,
 }: {
   initialPosition: { x: number; y: number }
   initialSize: { width: number; height: number }
   handleClose: () => void
   closeOnEscape?: boolean
+  minWidth?: number
+  minHeight?: number
 }) {
   const moveControls = useDragControls()
   const x = useMotionValue(initialPosition.x)
@@ -62,7 +73,7 @@ export function usePalette({
   )
 
   /**
-   * Update the drag constraints based on the width and height of the panel
+   * Update the drag constraints based on the width and height of the window
    */
   useEffect(() => {
     const unsubscribeWidth = width.on("change", (width) =>
@@ -84,7 +95,7 @@ export function usePalette({
   }, [width, height, windowWidth, windowHeight])
 
   /**
-   * Listen to escape key to close the panel
+   * Listen to escape key to close the window
    */
   useEffect(() => {
     if (!closeOnEscape) return
@@ -100,7 +111,6 @@ export function usePalette({
 
   /**
    * Recalculate the drag constraints when the window is resized
-   *
    */
   useEffect(() => {
     function handleResize() {
@@ -125,7 +135,7 @@ export function usePalette({
     onResize,
     moveControls,
     dragConstraints,
-    minWidth: PANEL_MIN_WIDTH,
-    minHeight: PANEL_MIN_HEIGHT,
+    minWidth,
+    minHeight,
   }
 }

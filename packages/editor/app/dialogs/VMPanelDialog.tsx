@@ -17,8 +17,8 @@ import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { usePalette } from "@app/panels/hooks/use-palette"
-import { DialogOverlay } from "./DialogOverlay"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import { WindowOverlay } from "@lib/overlays/WindowOverlay"
 import { CatalogDialogCategory, CatalogDialogItem } from "./types"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
@@ -45,9 +45,9 @@ interface VMPanelDialogProps<T extends CatalogDialogItem> {
  * Shared view-model for the catalog dialogs. Feeds the generated `PanelDialog`
  * shell: it wires the title, search field, and cancel/confirm buttons, and
  * injects the category list into the shell's content frame via `seldonRefs`.
- * `PanelDialog` is a complete modal surface, so it renders inside `DialogOverlay`,
- * a backdrop-backed portal that the title bar drags and the left, right, and
- * bottom edges plus bottom corners resize.
+ * `PanelDialog` is a complete modal surface, so it renders inside a modal
+ * `WindowOverlay`, a backdrop-backed portal that the title bar drags and the
+ * left, right, and bottom edges plus bottom corners resize.
  */
 export function VMPanelDialog<T extends CatalogDialogItem>({
   title,
@@ -72,7 +72,7 @@ export function VMPanelDialog<T extends CatalogDialogItem>({
     dragConstraints,
     minWidth,
     minHeight,
-  } = usePalette({
+  } = useDraggableWindow({
     initialPosition: {
       x: 0.5 * window.innerWidth - 0.5 * PANEL_INITIAL_WIDTH,
       y: 0.5 * window.innerHeight - 0.5 * PANEL_INITIAL_HEIGHT,
@@ -180,7 +180,8 @@ export function VMPanelDialog<T extends CatalogDialogItem>({
   }
 
   return (
-    <DialogOverlay
+    <WindowOverlay
+      modal
       onClose={onClose}
       x={x}
       y={y}
@@ -209,7 +210,7 @@ export function VMPanelDialog<T extends CatalogDialogItem>({
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />
-    </DialogOverlay>
+    </WindowOverlay>
   )
 }
 

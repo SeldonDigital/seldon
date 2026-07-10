@@ -2,8 +2,8 @@
 
 import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
 import { PanelPalette } from "@seldon/components/modules/PanelPalette"
-import { usePalette } from "@app/panels/hooks/use-palette"
-import { PaletteOverlay } from "./PaletteOverlay"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import { WindowOverlay } from "@lib/overlays/WindowOverlay"
 
 interface VMPanelPaletteProps {
   title: string
@@ -19,9 +19,9 @@ interface VMPanelPaletteProps {
  * Shared view-model for the floating panels. Feeds the generated `PanelPalette`
  * shell: it wires the title, drag handle, and close button, and injects the
  * caller's content into the shell's content frame. It owns the drag, resize,
- * and escape wiring through `usePalette`, then renders `PanelPalette` inside
- * the non-modal `PaletteOverlay`. Mirrors `VMPanelDialog`, but the panel stays
- * non-modal so the canvas remains usable.
+ * and escape wiring through `useDraggableWindow`, then renders `PanelPalette`
+ * inside a non-modal `WindowOverlay`. Mirrors `VMPanelDialog`, but the panel
+ * stays non-modal so the canvas remains usable.
  */
 export function VMPanelPalette({
   title,
@@ -44,7 +44,7 @@ export function VMPanelPalette({
     dragConstraints,
     minWidth,
     minHeight,
-  } = usePalette({
+  } = useDraggableWindow({
     initialPosition: {
       x: 0.5 * window.innerWidth - 0.5 * initialWidth,
       y: 0.5 * window.innerHeight - 0.5 * initialHeight,
@@ -64,7 +64,7 @@ export function VMPanelPalette({
   const contentFrame = { style: styles.content, children }
 
   return (
-    <PaletteOverlay
+    <WindowOverlay
       onClose={onClose}
       testId={testId}
       closeOnClickOutside={closeOnClickOutside}
@@ -87,7 +87,7 @@ export function VMPanelPalette({
         frame={contentFrame}
         style={styles.dialog}
       />
-    </PaletteOverlay>
+    </WindowOverlay>
   )
 }
 

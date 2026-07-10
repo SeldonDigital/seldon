@@ -11,7 +11,7 @@ import {
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
 
-interface PaletteOverlayProps {
+interface WindowOverlayProps {
   x: MotionValue<number>
   y: MotionValue<number>
   width: MotionValue<number>
@@ -26,20 +26,22 @@ interface PaletteOverlayProps {
   resizeSides?: readonly ResizeSide[]
   minWidth?: number
   minHeight?: number
+  modal?: boolean
   closeOnClickOutside?: boolean
   preventInteractionOutside?: boolean
   children: ReactNode
 }
 
 /**
- * Draggable, resizable panel surface. All drag and resize wiring arrives via
- * props; this View renders the motion surface, its children, and the edge
- * handles, all portaled to the document body. Because the portal mounts outside
- * the chrome root, it re-applies the editor theme and mode. It is the non-modal
- * twin of `DialogOverlay`: it stays non-modal unless `closeOnClickOutside` or
- * `preventInteractionOutside` asks for a backdrop.
+ * Draggable, resizable window surface shared by dialogs and palettes. All drag
+ * and resize wiring arrives via props; this View renders the motion surface, its
+ * children, and the edge handles, all portaled to the document body. Because the
+ * portal mounts outside the chrome root, it re-applies the editor theme and mode.
+ *
+ * `modal` renders a closing backdrop for dialog surfaces. Palettes stay non-modal
+ * unless `closeOnClickOutside` or `preventInteractionOutside` asks for a backdrop.
  */
-export function PaletteOverlay({
+export function WindowOverlay({
   x,
   y,
   width,
@@ -54,19 +56,20 @@ export function PaletteOverlay({
   resizeSides = RESIZE_SIDES,
   minWidth,
   minHeight,
+  modal = false,
   closeOnClickOutside = false,
   preventInteractionOutside = false,
   children,
-}: PaletteOverlayProps) {
+}: WindowOverlayProps) {
   // The portal mounts on document.body, outside the chrome root that scopes the
   // editor theme and mode, so re-apply both here to match the editor interface.
   const { chromeTheme } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
 
-  const surfaceMotionStyle = { x, y, width, height, ...surfaceStyle }
+  const surfaceMotionStyle = { x, y, width, height, ...styles.surface }
 
-  const showBackdrop = closeOnClickOutside || preventInteractionOutside
-  const backdropClick = closeOnClickOutside ? onClose : undefined
+  const showBackdrop = modal || closeOnClickOutside || preventInteractionOutside
+  const backdropClick = modal || closeOnClickOutside ? onClose : undefined
   const backdrop = showBackdrop ? (
     <div onClick={backdropClick} style={styles.backdrop} />
   ) : null
@@ -94,12 +97,12 @@ export function PaletteOverlay({
       {backdrop}
       <motion.div
         drag
-        style={surfaceMotionStyle}
         dragControls={moveControls}
+        dragListener={false}
         dragMomentum={false}
         dragElastic={false}
         dragConstraints={dragConstraints}
-        dragListener={false}
+        style={surfaceMotionStyle}
         data-testid={testId}
       >
         {children}
@@ -108,13 +111,6 @@ export function PaletteOverlay({
     </div>,
     document.body,
   )
-}
-
-const surfaceStyle: CSSProperties = {
-  position: "fixed",
-  left: 0,
-  top: 0,
-  zIndex: 40,
 }
 
 const styles: Record<string, CSSProperties> = {
@@ -127,5 +123,11 @@ const styles: Record<string, CSSProperties> = {
     position: "fixed",
     inset: 0,
     zIndex: 30,
+  },
+  surface: {
+    position: "fixed",
+    left: 0,
+    top: 0,
+    zIndex: 40,
   },
 }

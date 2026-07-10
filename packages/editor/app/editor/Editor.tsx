@@ -15,7 +15,7 @@ import { VMIconSetsDialog } from "../dialogs/icon-sets/VMIconSetsDialog"
 import { VMImageUploadDialog } from "../dialogs/image-upload/VMImageUploadDialog"
 import { VMThemesDialog } from "../dialogs/themes/VMThemesDialog"
 import { FocusRingOverlay } from "../focus/FocusRingOverlay"
-import { VMHari } from "../panels/hari/VMHari"
+import { VMHari } from "../palettes/hari/VMHari"
 import { VMObjectsSidebar } from "../sidebars/objects/VMObjectsSidebar"
 import { VMPropertiesSidebar } from "../sidebars/properties/VMPropertiesSidebar"
 
