@@ -168,11 +168,9 @@ export function VMPanelDialog<T extends CatalogDialogItem>({
     onClick: handleClearQuery,
     style: query ? undefined : styles.hidden,
   }
-  // The shell forwards its own cancel/confirm icon and label slots (small size),
-  // so the button leaves are wired through PanelDialog's top-level props. The
-  // cancel/confirm icons ride the shell defaults; only the labels need content.
-  // `button3: null` suppresses the third BarButtons slot the shell does not use.
-  const barButtons = { button3: null }
+  // Cancel and confirm live in the footer's right frame (button4/button5). The
+  // shell leaves both slots as placeholders, so enable them and set their labels;
+  // their icons ride the shell defaults and onClick flows through seldonRefs.
   const cancelLabel = { children: "Cancel" }
   const confirmLabel = { children: confirmButtonText }
   const seldonRefs = {
@@ -204,9 +202,10 @@ export function VMPanelDialog<T extends CatalogDialogItem>({
         comboboxFieldSearch={searchField}
         input={searchInput}
         buttonIconic={searchClear}
-        barButtons={barButtons}
-        textLabel={cancelLabel}
-        textLabel2={confirmLabel}
+        button4={{}}
+        textLabel4={cancelLabel}
+        button5={{}}
+        textLabel5={confirmLabel}
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />

@@ -10,7 +10,6 @@ import {
 import { useHotkeys } from "react-hotkeys-hook"
 import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
 import { PanelDialog } from "@seldon/components/modules/PanelDialog"
-import { BarButtonsProps } from "@seldon/components/parts/BarButtons"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
@@ -132,23 +131,18 @@ function ImageUploadDialog({
 
   const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
   const dialogTitle = { children: "Choose image" }
+  // The footer splits into two frames: Clear sits alone in the left frame, while
+  // Cancel and Use image fill the right frame's ref'd slots. Buttons stay
+  // enabled and no-op without a file.
+  const clearButton = { onClick: onClear }
   const clearLabel = { children: "Clear" }
-  const cancelLabel = { children: "Cancel" }
   const cancelIcon: IconProps = { icon: "material-close" }
-  // The footer renders three buttons in slot order: Clear and Cancel use the
-  // shell's two ref'd slots, and Use image uses the shell's third BarButtons
-  // slot. That slot defaults to medium sizing, so match the ref'd buttons with
-  // the small-size, small-icon, and small-label modifiers the shell applies to
-  // slots one and two. Buttons stay enabled and no-op without a file.
-  const barButtons: BarButtonsProps = {
-    button3: { className: "sdn-button--cq5m", onClick: onSave },
-    icon3: { icon: "material-check", className: "sdn-icon--x7ac" },
-    textLabel3: { className: "sdn-text-label--yo51", children: confirmText },
-  }
+  const cancelLabel = { children: "Cancel" }
+  const confirmLabel = { children: confirmText }
   const seldonRefs = {
     dialogContent: { style: styles.content, children: content },
-    dialogCancel: { onClick: onClear },
-    dialogConfirm: { onClick: onClose },
+    dialogCancel: { onClick: onClose },
+    dialogConfirm: { onClick: onSave },
   }
 
   return (
@@ -172,10 +166,13 @@ function ImageUploadDialog({
         bar={barHandle}
         textTitle={dialogTitle}
         comboboxFieldSearch={null}
-        barButtons={barButtons}
+        button={clearButton}
         textLabel={clearLabel}
-        textLabel2={cancelLabel}
-        icon4={cancelIcon}
+        button4={{}}
+        icon6={cancelIcon}
+        textLabel4={cancelLabel}
+        button5={{}}
+        textLabel5={confirmLabel}
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />
