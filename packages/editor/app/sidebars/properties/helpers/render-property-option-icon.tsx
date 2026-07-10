@@ -1,4 +1,5 @@
 import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
+import { IconCustomColorValue, ThemeSwatches } from "@lib/icons/custom"
 import {
   type OptionIconDescriptor,
   getOptionIcon,
@@ -8,7 +9,6 @@ import React from "react"
 import { Theme, Workspace } from "@seldon/core"
 import { IconId, defaultIconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
-import { IconCustomColorValue, ThemeSwatches } from "@lib/icons/custom"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
