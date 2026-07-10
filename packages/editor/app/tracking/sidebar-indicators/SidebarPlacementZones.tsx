@@ -6,6 +6,7 @@ import { Instance, Variant } from "@seldon/core"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
+import { Frame } from "@seldon/components/frames/Frame"
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { SidebarIndicator } from "./insert/SidebarIndicator"
 
@@ -106,7 +107,7 @@ export function SidebarPlacementZones({
 
   return (
     <OverlayLayer style={overlayStyle}>
-      <div style={relativeFillStyle}>{renderZones()}</div>
+      <Frame style={relativeFillStyle}>{renderZones()}</Frame>
     </OverlayLayer>
   )
 }

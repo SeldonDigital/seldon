@@ -9,6 +9,7 @@ import {
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
+import { Frame } from "@seldon/components/frames/Frame"
 import { InsertIndicatorLine } from "@app/overlays"
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
@@ -87,8 +88,8 @@ export function CanvasIndicator({
   }
 
   return (
-    <div style={containerStyle}>
+    <Frame style={containerStyle}>
       <InsertIndicatorLine style={lineStyle} />
-    </div>
+    </Frame>
   )
 }

@@ -11,6 +11,7 @@ import { usePanel } from "@lib/hooks/use-panel"
 import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
+import { Frame } from "@seldon/components/frames/Frame"
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
@@ -181,11 +182,11 @@ export function SidebarTracking({
 
   // Component rows and other targets without a node id skip placement tracking
   if (!node.id) {
-    return <div style={rowWrapperStyle}>{children}</div>
+    return <Frame style={rowWrapperStyle}>{children}</Frame>
   }
 
   return (
-    <div style={rowWrapperStyle}>
+    <Frame style={rowWrapperStyle}>
       {children}
       {activeTool === "select" ? (
         renderSelectDropzones()
@@ -200,7 +201,7 @@ export function SidebarTracking({
           onCanvasTrackingLeave={onCanvasTrackingLeave}
         />
       )}
-    </div>
+    </Frame>
   )
 }
 
