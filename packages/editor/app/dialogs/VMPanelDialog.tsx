@@ -1,5 +1,6 @@
 "use client"
 
+import { WindowOverlay } from "@lib/overlays/WindowOverlay"
 import {
   CSSProperties,
   ChangeEvent,
@@ -9,6 +10,7 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Container } from "@seldon/components/frames/Container"
 import { PanelDialog } from "@seldon/components/modules/PanelDialog"
@@ -17,8 +19,6 @@ import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
-import { WindowOverlay } from "@lib/overlays/WindowOverlay"
 import { CatalogDialogCategory, CatalogDialogItem } from "./types"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the

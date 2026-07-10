@@ -6,8 +6,8 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { usePanel } from "@lib/hooks/use-panel"
 import { useDragStateStore } from "@lib/hooks/use-drag-state"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"

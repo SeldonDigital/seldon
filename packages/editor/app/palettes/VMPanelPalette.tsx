@@ -1,9 +1,9 @@
 "use client"
 
-import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
-import { PanelPalette } from "@seldon/components/modules/PanelPalette"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import { WindowOverlay } from "@lib/overlays/WindowOverlay"
+import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import { PanelPalette } from "@seldon/components/modules/PanelPalette"
 
 interface VMPanelPaletteProps {
   title: string
