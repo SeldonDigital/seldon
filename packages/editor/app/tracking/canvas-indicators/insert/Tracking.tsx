@@ -7,7 +7,7 @@ import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { useBelongsToActiveBoard } from "../../hooks/use-belongs-to-active-board"
 import { checkInsertionPoint } from "../../helpers/check-insertion-point"
-import { IndicatorInsert } from "./IndicatorInsert"
+import { CanvasIndicator } from "./CanvasIndicator"
 import { InsertGapSiblings } from "./InsertGapSiblings"
 
 /**
@@ -40,7 +40,7 @@ export function InsertTracking() {
 
   if (hoverState.objectType === "board") {
     return (
-      <IndicatorInsert
+      <CanvasIndicator
         lastChildNodeBeforeCursor={lastChildNodeBeforeCursor}
         objectId={objectId}
         objectType={objectType}
@@ -54,7 +54,7 @@ export function InsertTracking() {
   return (
     <>
       <InsertGapSiblings />
-      <IndicatorInsert
+      <CanvasIndicator
         lastChildNodeBeforeCursor={lastChildNodeBeforeCursor}
         objectId={objectId}
         objectType={objectType}

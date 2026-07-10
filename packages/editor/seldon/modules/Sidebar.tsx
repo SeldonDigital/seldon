@@ -11,12 +11,12 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { ButtonProps } from "../elements/Button"
+import { Button, ButtonProps } from "../elements/Button"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { IconProps } from "../primitives/Icon"
-import { TextLabelProps } from "../primitives/TextLabel"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
@@ -26,6 +26,8 @@ export interface SidebarProps extends HTMLAttributes<HTMLElement> {
   seldonRefs?: Record<string, Record<string, unknown>>
   frame?: FrameProps | null
   barButtons?: BarButtonsProps | null
+  frame2?: FrameProps | null
+  frame3?: FrameProps | null
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
@@ -35,6 +37,15 @@ export interface SidebarProps extends HTMLAttributes<HTMLElement> {
   button3?: ButtonProps | null
   icon3?: IconProps | null
   textLabel3?: TextLabelProps | null
+  button4?: ButtonProps | null
+  icon4?: IconProps | null
+  textLabel4?: TextLabelProps | null
+  button5?: ButtonProps | null
+  icon5?: IconProps | null
+  textLabel5?: TextLabelProps | null
+  button6?: ButtonProps | null
+  icon6?: IconProps | null
+  textLabel6?: TextLabelProps | null
 }
 
 /*****
@@ -56,15 +67,26 @@ export function Sidebar({
   className = "",
   frame = sdn.frame,
   barButtons = sdn.barButtons,
+  frame2 = sdn.frame2,
+  frame3 = sdn.frame3,
   button = sdn.button,
   icon = sdn.icon,
   textLabel,
   button2 = sdn.button2,
   icon2 = sdn.icon2,
   textLabel2,
-  button3 = sdn.button3,
-  icon3 = sdn.icon3,
+  button3,
+  icon3,
   textLabel3,
+  button4,
+  icon4,
+  textLabel4,
+  button5,
+  icon5,
+  textLabel5,
+  button6,
+  icon6,
+  textLabel6,
   children,
   seldonRefs,
   ...props
@@ -90,6 +112,32 @@ export function Sidebar({
           className: combineClassNames(
             sdn.barButtons?.className,
             barButtons?.className,
+          ),
+        },
+  )
+  const frame2Props = applyRef(
+    seldonRefs,
+    frame2 === null
+      ? null
+      : {
+          ...sdn.frame2,
+          ...frame2,
+          className: combineClassNames(
+            sdn.frame2?.className,
+            frame2?.className,
+          ),
+        },
+  )
+  const frame3Props = applyRef(
+    seldonRefs,
+    frame3 === null
+      ? null
+      : {
+          ...sdn.frame3,
+          ...frame3,
+          className: combineClassNames(
+            sdn.frame3?.className,
+            frame3?.className,
           ),
         },
   )
@@ -201,6 +249,114 @@ export function Sidebar({
           ),
         },
   )
+  const button4Props = applyRef(
+    seldonRefs,
+    button4 === null
+      ? null
+      : {
+          ...sdn.button4,
+          ...button4,
+          className: combineClassNames(
+            sdn.button4?.className,
+            button4?.className,
+          ),
+        },
+  )
+  const icon4Props = applyRef(
+    seldonRefs,
+    icon4 === null
+      ? null
+      : {
+          ...sdn.icon4,
+          ...icon4,
+          className: combineClassNames(sdn.icon4?.className, icon4?.className),
+        },
+  )
+  const textLabel4Props = applyRef(
+    seldonRefs,
+    textLabel4 === null
+      ? null
+      : {
+          ...sdn.textLabel4,
+          ...textLabel4,
+          className: combineClassNames(
+            sdn.textLabel4?.className,
+            textLabel4?.className,
+          ),
+        },
+  )
+  const button5Props = applyRef(
+    seldonRefs,
+    button5 === null
+      ? null
+      : {
+          ...sdn.button5,
+          ...button5,
+          className: combineClassNames(
+            sdn.button5?.className,
+            button5?.className,
+          ),
+        },
+  )
+  const icon5Props = applyRef(
+    seldonRefs,
+    icon5 === null
+      ? null
+      : {
+          ...sdn.icon5,
+          ...icon5,
+          className: combineClassNames(sdn.icon5?.className, icon5?.className),
+        },
+  )
+  const textLabel5Props = applyRef(
+    seldonRefs,
+    textLabel5 === null
+      ? null
+      : {
+          ...sdn.textLabel5,
+          ...textLabel5,
+          className: combineClassNames(
+            sdn.textLabel5?.className,
+            textLabel5?.className,
+          ),
+        },
+  )
+  const button6Props = applyRef(
+    seldonRefs,
+    button6 === null
+      ? null
+      : {
+          ...sdn.button6,
+          ...button6,
+          className: combineClassNames(
+            sdn.button6?.className,
+            button6?.className,
+          ),
+        },
+  )
+  const icon6Props = applyRef(
+    seldonRefs,
+    icon6 === null
+      ? null
+      : {
+          ...sdn.icon6,
+          ...icon6,
+          className: combineClassNames(sdn.icon6?.className, icon6?.className),
+        },
+  )
+  const textLabel6Props = applyRef(
+    seldonRefs,
+    textLabel6 === null
+      ? null
+      : {
+          ...sdn.textLabel6,
+          ...textLabel6,
+          className: combineClassNames(
+            sdn.textLabel6?.className,
+            textLabel6?.className,
+          ),
+        },
+  )
 
   return (
     <HTMLDiv
@@ -215,12 +371,58 @@ export function Sidebar({
         <>
           <Frame {...frameProps}></Frame>
           {barButtonsProps !== null && (
-            <BarButtons
-              {...barButtonsProps}
-              button={buttonProps}
-              button2={button2Props}
-              button3={button3Props}
-            />
+            <BarButtons {...barButtonsProps}>
+              <Frame {...frame2Props}></Frame>
+              <Frame {...frame3Props}></Frame>
+              {button && buttonProps && (
+                <Button {...buttonProps}>
+                  {icon && iconProps && <Icon {...iconProps} />}
+                  {textLabel && textLabelProps && (
+                    <TextLabel {...textLabelProps} />
+                  )}
+                </Button>
+              )}
+              {button2 && button2Props && (
+                <Button {...button2Props}>
+                  {icon2 && icon2Props && <Icon {...icon2Props} />}
+                  {textLabel2 && textLabel2Props && (
+                    <TextLabel {...textLabel2Props} />
+                  )}
+                </Button>
+              )}
+              {button3 && button3Props && (
+                <Button {...button3Props}>
+                  {icon3 && icon3Props && <Icon {...icon3Props} />}
+                  {textLabel3 && textLabel3Props && (
+                    <TextLabel {...textLabel3Props} />
+                  )}
+                </Button>
+              )}
+              {button4 && button4Props && (
+                <Button {...button4Props}>
+                  {icon4 && icon4Props && <Icon {...icon4Props} />}
+                  {textLabel4 && textLabel4Props && (
+                    <TextLabel {...textLabel4Props} />
+                  )}
+                </Button>
+              )}
+              {button5 && button5Props && (
+                <Button {...button5Props}>
+                  {icon5 && icon5Props && <Icon {...icon5Props} />}
+                  {textLabel5 && textLabel5Props && (
+                    <TextLabel {...textLabel5Props} />
+                  )}
+                </Button>
+              )}
+              {button6 && button6Props && (
+                <Button {...button6Props}>
+                  {icon6 && icon6Props && <Icon {...icon6Props} />}
+                  {textLabel6 && textLabel6Props && (
+                    <TextLabel {...textLabel6Props} />
+                  )}
+                </Button>
+              )}
+            </BarButtons>
           )}
         </>
       )}
@@ -244,37 +446,72 @@ const sdn: SidebarProps = {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar-tabs-bar--qtpt",
   },
+  frame2: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ysu5",
+  },
+  frame3: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ysu5",
+  },
   button: {
-    className: "sdn-button sdn-button-iconic--pgsr",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon: {
-    icon: "material-add",
+    icon: "seldon-none",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--ylte",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
-    className: "sdn-button sdn-button-iconic--pgsr",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon2: {
-    icon: "material-remove",
+    icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--ylte",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
   button3: {
-    className: "sdn-button sdn-button-iconic--pgsr",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon3: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-label--ylte",
+    className: "sdn-text-label sdn-text-label--wxqf",
+  },
+  button4: {
+    className: "sdn-button sdn-button--wjtm",
+  },
+  icon4: {
+    className: "sdn-icon sdn-icon--gh8m",
+  },
+  textLabel4: {
+    className: "sdn-text-label sdn-text-label--wxqf",
+  },
+  button5: {
+    className: "sdn-button sdn-button--wjtm",
+  },
+  icon5: {
+    className: "sdn-icon sdn-icon--gh8m",
+  },
+  textLabel5: {
+    className: "sdn-text-label sdn-text-label--wxqf",
+  },
+  button6: {
+    className: "sdn-button sdn-button--wjtm",
+  },
+  icon6: {
+    className: "sdn-icon sdn-icon--gh8m",
+  },
+  textLabel6: {
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
 }

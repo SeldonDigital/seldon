@@ -12,9 +12,9 @@ import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { useAddRemoveCommands } from "./commands/use-add-remove-commands"
 import { useMoveCommands } from "./commands/use-move-commands"
 import { useSelectCommands } from "./commands/use-select-commands"
-import { useDialog } from "./use-dialog"
 import { useEditorConfig } from "./use-editor-config"
 import { useNodeClipboardActions } from "./use-node-clipboard-actions"
+import { usePanel } from "./use-panel"
 import { usePreview } from "./use-preview"
 import { useTool } from "./use-tool"
 
@@ -58,7 +58,7 @@ export function useEditorShortcuts() {
     toggleShowUnusedIcons,
   } = useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
-  const { activeDialog, openDialog } = useDialog()
+  const { activePanel, openPanel } = usePanel()
   const navigate = useNavigate()
 
   const { workspace } = useWorkspace()
@@ -82,7 +82,7 @@ export function useEditorShortcuts() {
 
   // Delete/copy/move nodes
   useHotkeys("backspace, delete", deleteSelection, {
-    enabled: !activeDialog,
+    enabled: !activePanel,
   })
   useHotkeys("meta+d", duplicateSelection, {
     preventDefault: true,
@@ -93,7 +93,7 @@ export function useEditorShortcuts() {
   useHotkeys(
     "a",
     () => {
-      openDialog("add-board")
+      openPanel("add-board")
       setActiveTool("select")
     },
     { preventDefault: true },
@@ -101,7 +101,7 @@ export function useEditorShortcuts() {
   useHotkeys("shift+a", addVariant, { preventDefault: true })
 
   // Open the AI chat palette
-  useHotkeys("mod+j", () => openDialog("ai-chat"), {
+  useHotkeys("mod+j", () => openPanel("ai-chat"), {
     preventDefault: true,
     enableOnFormTags: true,
   })

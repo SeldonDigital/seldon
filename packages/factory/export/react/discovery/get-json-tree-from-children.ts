@@ -42,14 +42,19 @@ export function getJsonTreeFromChildren(
     throw new Error(`Component board not found for variant ${variant.id}`)
   }
 
+  const name = getComponentName(variant, workspace)
+  const variantProperties = getNodeProperties(variant, workspace)
+  const variantIsPlaceholder =
+    variantProperties.display?.value === Display.PLACEHOLDER
+
   const childIds = getChildrenIds(board, variant.id)
   const referenceMap: Record<string, string[]> = {}
   const children = childIds
     .filter((childId) => shouldExportChild(childId))
-    .map((childId) => convertNode(childId, referenceMap, "", []))
+    .map((childId) =>
+      convertNode(childId, referenceMap, "", [], variantIsPlaceholder),
+    )
 
-  const name = getComponentName(variant, workspace)
-  const variantProperties = getNodeProperties(variant, workspace)
   const componentId = getComponentIdOrThrow(variant, workspace)
   const schema = getComponentSchema(componentId)
   const componentLevel = schema.level
@@ -76,6 +81,7 @@ export function getJsonTreeFromChildren(
     classNames: getNodeOriginChain(variant, workspace)
       .map((node) => nodeIdToClass[node.id])
       .filter(Boolean),
+    isPlaceholder: variantIsPlaceholder,
   }
 
   return tree
@@ -101,6 +107,7 @@ export function getJsonTreeFromChildren(
     referenceMap: Record<string, string[]>,
     currentPath: string = "",
     pathNodes: string[] = [],
+    inheritedPlaceholder: boolean = false,
   ): JSONTreeNode {
     if (pathNodes.includes(id)) {
       throw new Error(
@@ -125,6 +132,10 @@ export function getJsonTreeFromChildren(
       }
     }
 
+    const isPlaceholder =
+      inheritedPlaceholder ||
+      nodeProperties.display?.value === Display.PLACEHOLDER
+
     const name = getComponentName(node, workspace)
     const catalogId = getNodeCatalogId(node, workspace) ?? node.id
 
@@ -146,7 +157,13 @@ export function getJsonTreeFromChildren(
       children = childIds
         .filter((childId) => shouldExportChild(childId))
         .map((childId) =>
-          convertNode(childId, childReferenceMap, path, newPathNodes),
+          convertNode(
+            childId,
+            childReferenceMap,
+            path,
+            newPathNodes,
+            isPlaceholder,
+          ),
         )
     }
 
@@ -204,6 +221,7 @@ export function getJsonTreeFromChildren(
       },
       children,
       classNames: classNamesArray,
+      isPlaceholder,
     }
   }
 }

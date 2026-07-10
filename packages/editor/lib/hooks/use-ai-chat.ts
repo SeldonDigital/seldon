@@ -13,7 +13,7 @@ import { useDispatch } from "@lib/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace } from "@lib/workspace/hooks/use-history"
 import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
-import { useDialog } from "./use-dialog"
+import { usePanel } from "./use-panel"
 
 export type AiChatRole = "user" | "assistant"
 
@@ -22,14 +22,14 @@ export interface AiChatMessage {
   content: string
 }
 
-export type AiChatStatus = "idle" | "pending" | "error"
+export type HariStatus = "idle" | "pending" | "error"
 
 interface AiChatState {
   messages: AiChatMessage[]
-  status: AiChatStatus
+  status: HariStatus
   error: string | null
   addMessage: (message: AiChatMessage) => void
-  setStatus: (status: AiChatStatus) => void
+  setStatus: (status: HariStatus) => void
   setError: (error: string | null) => void
   reset: () => void
 }
@@ -452,8 +452,8 @@ function formatOutcome(reply: string, report: ApplyReport): string {
  * one `set_workspace` dispatch, so the whole turn is a single undo step. A
  * validation failure leaves the workspace unchanged and surfaces in the chat.
  */
-export function useAiChat() {
-  const { activeDialog, openDialog, closeDialog } = useDialog()
+export function useHari() {
+  const { activePanel, openPanel, closePanel } = usePanel()
   const dispatch = useDispatch()
   const { activeBoard } = useActiveBoard()
 
@@ -540,9 +540,9 @@ export function useAiChat() {
   const reset = useStore((state) => state.reset)
 
   return {
-    isOpen: activeDialog === "ai-chat",
-    open: () => openDialog("ai-chat"),
-    close: closeDialog,
+    isOpen: activePanel === "ai-chat",
+    open: () => openPanel("ai-chat"),
+    close: closePanel,
     messages,
     status,
     error,

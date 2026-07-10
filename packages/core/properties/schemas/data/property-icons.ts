@@ -199,6 +199,7 @@ export const PROPERTY_OPTION_ICONS: Record<string, Record<string, string>> = {
   display: {
     show: "material-visibility",
     hide: "material-visibilityOff",
+    placeholder: "material-eyeTracking",
     exclude: "material-codeOff",
   },
   direction: {

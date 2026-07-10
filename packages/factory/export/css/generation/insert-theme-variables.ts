@@ -1,4 +1,5 @@
 import { Theme } from "@seldon/core"
+import { applyBrightness } from "@seldon/core/helpers/color/apply-brightness"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { modulate } from "@seldon/core/helpers/math/modulate"
 import {
@@ -15,6 +16,8 @@ import {
   emitComputedThemeVariables,
   emitHighContrastVariables,
 } from "../../../styles/computed-variables"
+import { getBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
+import { brightnessSuffix } from "../../../styles/computed-variables/names"
 import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"
@@ -195,6 +198,22 @@ function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
     cssVariables += `  --sdn-swatch-${swatchName}: ${HSLObjectToString(hsl)};\n`
   })
 
+  // One shared variable per brightness-shifted swatch used in this export,
+  // holding the concrete brightened color so a usage needs no runtime
+  // relative-color support and still swaps with the active theme.
+  const brightnessSwatches = getBrightnessSwatches()
+  if (brightnessSwatches.length > 0) {
+    cssVariables += `  /* Brightness Swatches */\n`
+    for (const { slot, brightness } of brightnessSwatches) {
+      const swatchName = uniqueSwatchNames[slot]
+      const hsl = swatches[slot]
+      if (!swatchName || !hsl) continue
+      cssVariables += `  --sdn-swatch-${swatchName}-${brightnessSuffix(brightness)}: ${HSLObjectToString(
+        applyBrightness(hsl, brightness),
+      )};\n`
+    }
+  }
+
   return cssVariables
 }
 
@@ -265,7 +284,7 @@ export async function generateThemeStylesheetFiles(
 
     files.push({
       themeId,
-      path: `${componentsFolder}/styles-${slug}.css`,
+      path: `${componentsFolder}/styles/${slug}.css`,
       content,
     })
   }

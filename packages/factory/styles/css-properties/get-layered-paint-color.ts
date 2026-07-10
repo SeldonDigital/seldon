@@ -9,8 +9,9 @@ import { getColorCSSValue } from "./get-color-css-value"
  * Live rendering always receives a resolved literal color. The code export sets
  * `useThemeVariableReferences` so a swatch becomes a `var(--sdn-swatch-*)`
  * reference that tracks the exported theme stylesheet. An opacity-only swatch
- * wraps that reference in `color-mix(... transparent)`. A brightness transform
- * cannot live in a variable, so those still resolve to a literal.
+ * wraps that reference in `color-mix(... transparent)`. A brightness-shifted
+ * swatch references a dedicated `var(--sdn-swatch-*-b*)` variable that holds the
+ * concrete brightened color, published once per pair by the theme stylesheet.
  */
 export function getLayeredPaintColor({
   color,

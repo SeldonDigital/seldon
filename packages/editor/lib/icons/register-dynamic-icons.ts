@@ -1,11 +1,5 @@
 import type { ComponentType } from "react"
 import {
-  IconCustomBooleanValue,
-  IconCustomColorValue,
-  IconCustomThemeColorValue,
-  ThemeSwatches,
-} from "@seldon/components/custom-components"
-import {
   IconMaterialComputer,
   IconMaterialLaptop,
   IconMaterialSmartphone,
@@ -17,6 +11,12 @@ import {
   RegisteredIconProps,
   registerIcon,
 } from "@seldon/components/utils/icon-registry"
+import {
+  IconCustomBooleanValue,
+  IconCustomColorValue,
+  IconCustomThemeColorValue,
+  ThemeSwatches,
+} from "./custom"
 
 /**
  * The generated `Icon` types its own props, while the registry stores props-open

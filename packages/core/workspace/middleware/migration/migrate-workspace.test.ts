@@ -8,7 +8,7 @@ import {
 
 describe("migrateWorkspace", () => {
   it("exposes the current version constant", () => {
-    expect(CURRENT_WORKSPACE_VERSION).toBe(11)
+    expect(CURRENT_WORKSPACE_VERSION).toBe(12)
   })
 
   it("leaves a workspace already at the current version unchanged", () => {

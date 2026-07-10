@@ -23,15 +23,14 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-component"
     | "material-search"
     | "material-close"
-    | "material-add"
-    | "material-remove"
-    | "material-chevronRight"
     | "seldon-none"
     | "material-check"
+    | "material-chevronRight"
     | "material-calendarToday"
     | "material-inbox"
     | "material-chevronDown"
     | "seldon-more"
+    | "material-add"
     | "material-unfoldMore"
     | "material-filterList"
     | "material-dataObject"
@@ -45,8 +44,14 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-chevronLeft"
     | "material-chevronDoubleRight"
     | "material-playArrow"
+    | "material-expandMore"
+    | "material-email"
+    | "material-menu"
+    | "material-phone"
     | "material-star"
     | "material-shoppingCart"
+    | "seldon-plus"
+    | "seldon-minus"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -117,8 +122,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-clip"
     | "seldon-iconInput"
     | "seldon-inputType"
-    | "seldon-minus"
-    | "seldon-plus"
     | "seldon-retry"
     | "seldon-componentDefault"
     | "seldon-componentVariant"
@@ -298,6 +301,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-plumbing"
     | "material-preview"
     | "material-refresh"
+    | "material-remove"
     | "material-removeCircle"
     | "material-resize"
     | "material-roundedCorner"
@@ -311,16 +315,15 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-zoomIn"
     | "material-zoomOut"
     | "material-comment"
-    | "material-email"
     | "material-helpOutline"
     | "material-localLaundryService"
-    | "material-phone"
     | "material-smartphone"
     | "material-adsClick"
     | "material-audiotrack"
     | "material-blurOff"
     | "material-colorLens"
     | "material-deblur"
+    | "material-eyeTracking"
     | "material-fastRewind"
     | "material-filter"
     | "material-fullscreen"
@@ -366,7 +369,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-keyboardArrowRight"
     | "material-keyboardArrowUp"
     | "material-link"
-    | "material-menu"
     | "material-more"
     | "material-moreHoriz"
     | "material-moreVert"
@@ -397,7 +399,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-dryCleaning"
     | "material-error"
     | "material-expandLess"
-    | "material-expandMore"
     | "material-height"
     | "material-info"
     | "material-invertColors"
@@ -551,15 +552,14 @@ const iconMap = {
   "seldon-component": Icons.IconSeldonComponent,
   "material-search": Icons.IconMaterialSearch,
   "material-close": Icons.IconMaterialClose,
-  "material-add": Icons.IconMaterialAdd,
-  "material-remove": Icons.IconMaterialRemove,
-  "material-chevronRight": Icons.IconMaterialChevronRight,
   "seldon-none": Icons.IconSeldonNone,
   "material-check": Icons.IconMaterialCheck,
+  "material-chevronRight": Icons.IconMaterialChevronRight,
   "material-calendarToday": Icons.IconMaterialCalendarToday,
   "material-inbox": Icons.IconMaterialInbox,
   "material-chevronDown": Icons.IconMaterialChevronDown,
   "seldon-more": Icons.IconSeldonMore,
+  "material-add": Icons.IconMaterialAdd,
   "material-unfoldMore": Icons.IconMaterialUnfoldMore,
   "material-filterList": Icons.IconMaterialFilterList,
   "material-dataObject": Icons.IconMaterialDataObject,
@@ -573,8 +573,14 @@ const iconMap = {
   "material-chevronLeft": Icons.IconMaterialChevronLeft,
   "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-playArrow": Icons.IconMaterialPlayArrow,
+  "material-expandMore": Icons.IconMaterialExpandMore,
+  "material-email": Icons.IconMaterialEmail,
+  "material-menu": Icons.IconMaterialMenu,
+  "material-phone": Icons.IconMaterialPhone,
   "material-star": Icons.IconMaterialStar,
   "material-shoppingCart": Icons.IconMaterialShoppingCart,
+  "seldon-plus": Icons.IconSeldonPlus,
+  "seldon-minus": Icons.IconSeldonMinus,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -645,8 +651,6 @@ const iconMap = {
   "seldon-clip": Icons.IconSeldonClip,
   "seldon-iconInput": Icons.IconSeldonIconInput,
   "seldon-inputType": Icons.IconSeldonInputType,
-  "seldon-minus": Icons.IconSeldonMinus,
-  "seldon-plus": Icons.IconSeldonPlus,
   "seldon-retry": Icons.IconSeldonRetry,
   "seldon-componentDefault": Icons.IconSeldonComponentDefault,
   "seldon-componentVariant": Icons.IconSeldonComponentVariant,
@@ -828,6 +832,7 @@ const iconMap = {
   "material-plumbing": Icons.IconMaterialPlumbing,
   "material-preview": Icons.IconMaterialPreview,
   "material-refresh": Icons.IconMaterialRefresh,
+  "material-remove": Icons.IconMaterialRemove,
   "material-removeCircle": Icons.IconMaterialRemoveCircle,
   "material-resize": Icons.IconMaterialResize,
   "material-roundedCorner": Icons.IconMaterialRoundedCorner,
@@ -841,16 +846,15 @@ const iconMap = {
   "material-zoomIn": Icons.IconMaterialZoomIn,
   "material-zoomOut": Icons.IconMaterialZoomOut,
   "material-comment": Icons.IconMaterialComment,
-  "material-email": Icons.IconMaterialEmail,
   "material-helpOutline": Icons.IconMaterialHelpOutline,
   "material-localLaundryService": Icons.IconMaterialLocalLaundryService,
-  "material-phone": Icons.IconMaterialPhone,
   "material-smartphone": Icons.IconMaterialSmartphone,
   "material-adsClick": Icons.IconMaterialAdsClick,
   "material-audiotrack": Icons.IconMaterialAudiotrack,
   "material-blurOff": Icons.IconMaterialBlurOff,
   "material-colorLens": Icons.IconMaterialColorLens,
   "material-deblur": Icons.IconMaterialDeblur,
+  "material-eyeTracking": Icons.IconMaterialEyeTracking,
   "material-fastRewind": Icons.IconMaterialFastRewind,
   "material-filter": Icons.IconMaterialFilter,
   "material-fullscreen": Icons.IconMaterialFullscreen,
@@ -896,7 +900,6 @@ const iconMap = {
   "material-keyboardArrowRight": Icons.IconMaterialKeyboardArrowRight,
   "material-keyboardArrowUp": Icons.IconMaterialKeyboardArrowUp,
   "material-link": Icons.IconMaterialLink,
-  "material-menu": Icons.IconMaterialMenu,
   "material-more": Icons.IconMaterialMore,
   "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-moreVert": Icons.IconMaterialMoreVert,
@@ -927,7 +930,6 @@ const iconMap = {
   "material-dryCleaning": Icons.IconMaterialDryCleaning,
   "material-error": Icons.IconMaterialError,
   "material-expandLess": Icons.IconMaterialExpandLess,
-  "material-expandMore": Icons.IconMaterialExpandMore,
   "material-height": Icons.IconMaterialHeight,
   "material-info": Icons.IconMaterialInfo,
   "material-invertColors": Icons.IconMaterialInvertColors,

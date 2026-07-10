@@ -1,7 +1,6 @@
-import { Theme, ThemeSwatchKey } from "@seldon/core"
+import { ComputedTheme, ThemeSwatchKey } from "@seldon/core"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import { isSwatchToken } from "@seldon/core/themes/values"
 
 const SWATCH_KEYS: ThemeSwatchKey[] = [
   "@swatch.primary",
@@ -11,19 +10,15 @@ const SWATCH_KEYS: ThemeSwatchKey[] = [
   "@swatch.swatch4",
 ]
 
-const FALLBACK_COLOR = "var(--color-blue)"
-
 /**
- * Resolves the swatch cluster of a theme into background CSS colors, ready to
- * hand to the pure `ThemeSwatches` View. Non-swatch tokens fall back to a
- * neutral color so the cluster always renders five dots.
+ * Resolves the swatch cluster of a computed theme into background CSS colors,
+ * ready to hand to the pure `ThemeSwatches` View. The five palette slots always
+ * resolve to concrete swatches on a computed theme, so `transparent` only guards
+ * the unreachable case of a colorspace the CSS helper does not support.
  */
-export function resolveThemeSwatchColors(theme: Theme): string[] {
-  return SWATCH_KEYS.map((key) => {
-    const themeValue = getThemeOption(key, theme)
-    const background = isSwatchToken(themeValue)
-      ? themeSwatchToCssBackground(themeValue)
-      : undefined
-    return background ?? FALLBACK_COLOR
-  })
+export function resolveThemeSwatchColors(theme: ComputedTheme): string[] {
+  return SWATCH_KEYS.map(
+    (key) =>
+      themeSwatchToCssBackground(getThemeOption(key, theme)) ?? "transparent",
+  )
 }

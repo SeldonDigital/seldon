@@ -8,13 +8,23 @@ const options = {
 } as unknown as ExportOptions
 
 describe("getUtilityFileContents", () => {
-  it("emits the class-name, apply-ref, and icon-registry utility files", () => {
+  it("emits the class-name, apply-ref, icon-registry, and resize utility files", () => {
     const files = getUtilityFileContents(options)
     expect(files.map((f) => f.path)).toEqual([
       "/src/components/utils/class-name.ts",
       "/src/components/utils/apply-ref.ts",
       "/src/components/utils/icon-registry.ts",
+      "/src/components/utils/resize.ts",
     ])
+  })
+
+  it("exports the resize helpers from the resize file", () => {
+    const file = getUtilityFileContents(options).find((f) =>
+      f.path.endsWith("resize.ts"),
+    )
+    expect(file?.content).toContain("export function getResizeHandleStyle")
+    expect(file?.content).toContain("export function computeResizedRect")
+    expect(file?.content).toContain("export function createResizeHandle")
   })
 
   it("exports the icon registry helpers from the icon-registry file", () => {

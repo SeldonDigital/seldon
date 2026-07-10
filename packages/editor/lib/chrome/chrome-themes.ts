@@ -6,20 +6,20 @@
  * on the chrome root swaps the interface theme. The canvas never reads these
  * variables.
  *
- * The switcher's option list comes only from the exported `styles-*.css` files,
- * not from the workspace. Each file contributes one option; its slug is the
- * file suffix and its label is the stock theme's authored name when the slug
+ * The switcher's option list comes only from the exported `styles/{slug}.css`
+ * files, not from the workspace. Each file contributes one option; its slug is
+ * the file name and its label is the stock theme's authored name when the slug
  * matches a stock theme, otherwise the slug in Title Case.
  */
 import { STOCK_THEMES_BY_ID } from "@seldon/core/themes"
 
-const themeStylesheets = import.meta.glob("../../seldon/styles-*.css", {
+const themeStylesheets = import.meta.glob("../../seldon/styles/*.css", {
   eager: true,
 })
 
-/** Slugs that have an exported `styles-{slug}.css` file. */
+/** Slugs that have an exported `styles/{slug}.css` file. */
 const EXPORTED_SLUGS = Object.keys(themeStylesheets)
-  .map((path) => path.match(/styles-(.+)\.css$/)?.[1])
+  .map((path) => path.match(/([^/]+)\.css$/)?.[1])
   .filter((slug): slug is string => Boolean(slug))
 
 export interface ChromeTheme {
@@ -56,7 +56,7 @@ const STOCK_NAMES_BY_SLUG: Record<string, string> = Object.fromEntries(
 )
 
 /**
- * The chrome switcher's themes, one per exported `styles-{slug}.css` file. The
+ * The chrome switcher's themes, one per exported `styles/{slug}.css` file. The
  * default `seldon` theme sorts first; the rest follow alphabetically by label.
  */
 export function getChromeThemes(): ChromeTheme[] {

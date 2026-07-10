@@ -17,6 +17,7 @@ import { getImagesToExport } from "./assets/get-images-to-export"
 import { replaceImagesWithRelativePaths } from "./assets/transform-image-paths"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
 import { getUsedIconIds } from "./discovery/get-used-icon-ids"
+import { format } from "./format"
 import { generateComponentFiles } from "./generation/helpers/generate-component-files"
 import { generateFrameComponent } from "./generation/helpers/generate-frame-component"
 import { generateReadmeFile } from "./generation/helpers/generate-readme-file"
@@ -187,11 +188,32 @@ export async function exportReact(
     // Failed to export images
   }
 
-  filesToExport.forEach((file) => {
-    if (typeof file.content === "string") {
+  // Insert the license header, then run a final format pass so every emitted
+  // source file matches the export Prettier config. This normalizes the license
+  // block and any verbatim template output (utility files) so re-exports do not
+  // churn against a repo's own Prettier.
+  await Promise.all(
+    filesToExport.map(async (file) => {
+      if (typeof file.content !== "string") return
       file.content = insertLicense(file.content)
-    }
-  })
+      if (!options.skipFormat && isFormattableSource(file.path)) {
+        file.content = await format(file.content)
+      }
+    }),
+  )
 
   return filesToExport
+}
+
+const FORMATTABLE_SOURCE_EXTENSIONS = [
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+]
+
+function isFormattableSource(path: string): boolean {
+  return FORMATTABLE_SOURCE_EXTENSIONS.some((ext) => path.endsWith(ext))
 }

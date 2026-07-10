@@ -78,12 +78,7 @@ export const ButtonMenu = forwardRef<HTMLButtonElement, ButtonMenuProps>(
     )
 
     return (
-      <HTMLButton
-        className={buttonMenuClassName}
-        data-seldon-ref={"menuStates"}
-        ref={ref}
-        {...props}
-      >
+      <HTMLButton className={buttonMenuClassName} ref={ref} {...props}>
         {children !== undefined ? (
           children
         ) : (

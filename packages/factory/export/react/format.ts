@@ -1,5 +1,7 @@
 import prettier from "prettier"
 
+import { exportPrettierConfig } from "../export-prettier-config"
+
 export async function format(
   content: string,
   options?: { skipFormat?: boolean },
@@ -7,38 +9,16 @@ export async function format(
   if (options?.skipFormat) {
     return content
   }
-  // We have to run this twice to make sure the imports (but first without the plugin)
-  // to make sure each import has it's own line
+  // We have to run this twice: first without the sort-imports plugin so each
+  // import lands on its own line, then again with the plugin to sort them.
   // https://github.com/trivago/prettier-plugin-sort-imports/issues/222
   const source = await prettier.format(content, {
     parser: "typescript",
-    semi: false,
+    semi: exportPrettierConfig.semi,
   })
 
   return prettier.format(source, {
-    semi: false,
+    ...exportPrettierConfig,
     parser: "typescript",
-    plugins: ["@trivago/prettier-plugin-sort-imports"],
-    importOrderSeparation: false,
-    importOrder: [
-      // Packages
-      "<THIRD_PARTY_MODULES>",
-      // Types and Constants
-      "^@seldon/core/components/(catalog|constants)",
-      "^@seldon/core",
-      // Hooks
-      "^@lib/(.*)/hooks/(.*)",
-      "^@lib/hooks/(.*)",
-      "^[./].*hooks.*",
-      "^@lib/workspace/(.*)",
-      "^@lib/api/hooks/(.*)",
-      // Seldon Components
-      "^[./].*seldon.*",
-      // Components
-      "^@components/(.*)",
-      "^[./].*ui.*",
-      "^[./]",
-    ],
-    importOrderSortSpecifiers: true,
   })
 }

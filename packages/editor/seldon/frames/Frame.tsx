@@ -10,11 +10,12 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes, ReactNode, createElement } from "react"
+import { HTMLAttributes, ReactNode, Ref, createElement } from "react"
 
 export type FrameProps = HTMLAttributes<HTMLElement> & {
   children?: ReactNode
   wrapperElement?: string
+  ref?: Ref<HTMLElement>
   "data-seldon-ref"?: string
 }
 

@@ -8,14 +8,14 @@ import { useEditorShortcuts } from "@lib/hooks/use-editor-shortcuts"
 import { usePreview } from "@lib/hooks/use-preview"
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
+import { VMBoardsDialog } from "../dialogs/boards/VMBoardsDialog"
+import { VMComponentsDialog } from "../dialogs/components/VMComponentsDialog"
+import { VMFontCollectionsDialog } from "../dialogs/font-collections/VMFontCollectionsDialog"
+import { VMIconSetsDialog } from "../dialogs/icon-sets/VMIconSetsDialog"
+import { VMImageUploadDialog } from "../dialogs/image-upload/VMImageUploadDialog"
+import { VMThemesDialog } from "../dialogs/themes/VMThemesDialog"
 import { FocusRingOverlay } from "../focus/FocusRingOverlay"
-import { AiChatPanel } from "../panels/ai-chat-panel/AiChatPanel"
-import { AddBoardPanel } from "../panels/catalog-panel/AddBoardPanel"
-import { AddFontCollectionPanel } from "../panels/catalog-panel/AddFontCollectionPanel"
-import { AddIconSetPanel } from "../panels/catalog-panel/AddIconSetPanel"
-import { AddThemePanel } from "../panels/catalog-panel/AddThemePanel"
-import { InsertVariantPanel } from "../panels/catalog-panel/InsertVariantPanel"
-import { ImageUploadPanel } from "../panels/image-upload-panel/ImageUploadPanel"
+import { VMHari } from "../palettes/hari/VMHari"
 import { VMObjectsSidebar } from "../sidebars/objects/VMObjectsSidebar"
 import { VMPropertiesSidebar } from "../sidebars/properties/VMPropertiesSidebar"
 
@@ -63,13 +63,13 @@ export default function Editor() {
         </motion.div>
       </AnimatePresence>
 
-      <ImageUploadPanel.Controller />
-      <InsertVariantPanel.Controller />
-      <AddBoardPanel.Controller />
-      <AddThemePanel.Controller />
-      <AddFontCollectionPanel.Controller />
-      <AddIconSetPanel.Controller />
-      <AiChatPanel.Controller />
+      <VMImageUploadDialog />
+      <VMComponentsDialog />
+      <VMBoardsDialog />
+      <VMThemesDialog />
+      <VMFontCollectionsDialog />
+      <VMIconSetsDialog />
+      <VMHari />
       <FocusRingOverlay />
       <EditorShortcuts />
     </main>

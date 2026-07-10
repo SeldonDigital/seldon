@@ -116,107 +116,23 @@ export function insertImports(
     }
   }
 
+  // The interface declares an optional prop for every node in the tree (see
+  // generateChildrenProps), each typed by that node's interface name. So the
+  // interface import set must cover every node's interface type, regardless of
+  // render depth or inline validation, or a deep slot type goes unimported.
   function traverseAndAddInterfaceToImports(node: JSONTreeNode) {
     const key = `../${pluralizeLevel(node.level)}/${node.name}`
 
-    // Frames should always have their interface imported when used, regardless of validation
-    if (node.level === ComponentLevel.FRAME && node.name === "Frame") {
-      // Always import Frame interface when it's used
-      if (imports[key]) {
-        if (!imports[key].includes(node.dataBinding.interfaceName)) {
-          imports[key].push(node.dataBinding.interfaceName)
-        }
-      } else {
-        imports[key] = [node.dataBinding.interfaceName]
+    if (imports[key]) {
+      if (!imports[key].includes(node.dataBinding.interfaceName)) {
+        imports[key].push(node.dataBinding.interfaceName)
       }
-
-      // Continue traversing children normally
-      if (Array.isArray(node.children)) {
-        node.children.forEach(traverseAndAddInterfaceToImports)
-      }
-      return
+    } else {
+      imports[key] = [node.dataBinding.interfaceName]
     }
 
     if (Array.isArray(node.children)) {
-      // Check if this component will be rendered inline
-      const validation = validateTreeNodeProps(node)
-
-      // If component has invalid props, it will be rendered inline
-      // So we need to import only the interfaces that are actually rendered
-      if (validation.invalidProps.length > 0) {
-        // Import the parent component's interface since it's used in the parent interface
-        if (imports[key]) {
-          if (!imports[key].includes(node.dataBinding.interfaceName)) {
-            imports[key].push(node.dataBinding.interfaceName)
-          }
-        } else {
-          imports[key] = [node.dataBinding.interfaceName]
-        }
-
-        // Don't import the parent interface, but import the interfaces that are actually rendered
-        node.children.forEach((child: JSONTreeNode) => {
-          const childIsValid = validation.validProps.some(
-            (validChild: JSONTreeNode) =>
-              validChild.dataBinding.path === child.dataBinding.path,
-          )
-
-          // Import the child interface itself
-          const childKey = `../${pluralizeLevel(child.level)}/${child.name}`
-          if (imports[childKey]) {
-            if (!imports[childKey].includes(child.dataBinding.interfaceName)) {
-              imports[childKey].push(child.dataBinding.interfaceName)
-            }
-          } else {
-            imports[childKey] = [child.dataBinding.interfaceName]
-          }
-
-          // Also import interfaces for children of this child (e.g., IconProps, LabelProps for Button)
-          if (Array.isArray(child.children)) {
-            child.children.forEach((grandchild: JSONTreeNode) => {
-              const grandchildKey = `../${pluralizeLevel(grandchild.level)}/${grandchild.name}`
-              if (imports[grandchildKey]) {
-                if (
-                  !imports[grandchildKey].includes(
-                    grandchild.dataBinding.interfaceName,
-                  )
-                ) {
-                  imports[grandchildKey].push(
-                    grandchild.dataBinding.interfaceName,
-                  )
-                }
-              } else {
-                imports[grandchildKey] = [grandchild.dataBinding.interfaceName]
-              }
-            })
-          }
-
-          // For valid children, continue traversing their children normally
-          if (childIsValid && Array.isArray(child.children)) {
-            child.children.forEach(traverseAndAddInterfaceToImports)
-          }
-        })
-      } else {
-        // Normal component rendering - import the interface itself
-        if (imports[key]) {
-          if (!imports[key].includes(node.dataBinding.interfaceName)) {
-            imports[key].push(node.dataBinding.interfaceName)
-          }
-        } else {
-          imports[key] = [node.dataBinding.interfaceName]
-        }
-
-        // Continue traversing children normally
-        node.children.forEach(traverseAndAddInterfaceToImports)
-      }
-    } else {
-      // Leaf component - always import its interface
-      if (imports[key]) {
-        if (!imports[key].includes(node.dataBinding.interfaceName)) {
-          imports[key].push(node.dataBinding.interfaceName)
-        }
-      } else {
-        imports[key] = [node.dataBinding.interfaceName]
-      }
+      node.children.forEach(traverseAndAddInterfaceToImports)
     }
   }
 
@@ -447,11 +363,16 @@ function getReactImports(
     }
   }
 
+  const nativePrimitive =
+    NATIVE_REACT_PRIMITIVES[
+      config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
+    ]
+  const reactImports = [nativePrimitive.types.generic]
+  // Native wrappers that forward `ref` need the `Ref` type for the ref prop.
+  if (nativePrimitive.forwardsRef) {
+    reactImports.push("Ref")
+  }
   return {
-    react: [
-      NATIVE_REACT_PRIMITIVES[
-        config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
-      ].types.generic,
-    ],
+    react: reactImports,
   }
 }

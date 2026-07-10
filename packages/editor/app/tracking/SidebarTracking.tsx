@@ -6,16 +6,13 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useDialog } from "@lib/hooks/use-dialog"
 import { useDragStateStore } from "@lib/hooks/use-drag-state"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
-import {
-  OverlayLayer,
-  PlacementZoneSurface,
-  PositionedPanel,
-} from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
+import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
 
@@ -66,7 +63,7 @@ export function SidebarTracking({
   onCanvasTrackingLeave,
 }: SidebarTrackingProps) {
   const { workspace } = useWorkspace({ usePreview: false })
-  const { openDialog } = useDialog()
+  const { openPanel } = usePanel()
   const { activeTool } = useTool()
   const isDragging = useDragStateStore((state) => state.isDragging)
   const { isPlacementAllowed, parentNode, canHaveChildren } =
@@ -79,7 +76,7 @@ export function SidebarTracking({
       const dialog = "component" as const
 
       if (placement === "inside") {
-        openDialog(dialog, {
+        openPanel(dialog, {
           nodeId: node.id,
           index: 0,
         })
@@ -100,7 +97,7 @@ export function SidebarTracking({
           ? nodeRelationshipService.getInstanceIndex(node, workspace)
           : nodeRelationshipService.getVariantIndex(node, workspace)
 
-        openDialog(dialog, {
+        openPanel(dialog, {
           nodeId: parentNode.id,
           index: placement === "before" ? currentIndex : currentIndex + 1,
         })
@@ -109,7 +106,7 @@ export function SidebarTracking({
         return
       }
     },
-    [isPlacementAllowed, activeTool, node, parentNode, workspace, openDialog],
+    [isPlacementAllowed, activeTool, node, parentNode, workspace, openPanel],
   )
 
   const handleRowClickWrapper = useCallback(
@@ -185,11 +182,11 @@ export function SidebarTracking({
 
   // Component rows and other targets without a node id skip placement tracking
   if (!node.id) {
-    return <PositionedPanel style={rowWrapperStyle}>{children}</PositionedPanel>
+    return <Frame style={rowWrapperStyle}>{children}</Frame>
   }
 
   return (
-    <PositionedPanel style={rowWrapperStyle}>
+    <Frame style={rowWrapperStyle}>
       {children}
       {activeTool === "select" ? (
         renderSelectDropzones()
@@ -204,7 +201,7 @@ export function SidebarTracking({
           onCanvasTrackingLeave={onCanvasTrackingLeave}
         />
       )}
-    </PositionedPanel>
+    </Frame>
   )
 }
 

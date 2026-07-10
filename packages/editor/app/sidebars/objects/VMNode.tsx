@@ -14,8 +14,8 @@ import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
-import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 
@@ -84,6 +84,7 @@ const VMNodeInner = function VMNodeInner({
     properties,
     isExcluded,
     isHidden,
+    isPlaceholder,
     nodeTypeColor,
     dataNodeType,
   } = useRowNode(node, {
@@ -191,15 +192,24 @@ const VMNodeInner = function VMNodeInner({
     },
   }
 
-  // A hidden or excluded node reads as disabled. Excluded rows also italicize
-  // the name shown in the combobox input.
-  const isDimmed = isHidden || isExcluded
+  // A hidden, placeholder, or excluded node reads as disabled. Excluded rows
+  // italicize and strike through the name shown in the combobox input;
+  // placeholder rows italicize it.
+  const isDimmed = isHidden || isPlaceholder || isExcluded
+  const excludedLabelStyle = {
+    ...nameInput.style,
+    fontStyle: "italic" as const,
+    textDecoration: "line-through" as const,
+  }
+  const placeholderLabelStyle = {
+    ...nameInput.style,
+    fontStyle: "italic" as const,
+  }
   const nodeLabel = isExcluded
-    ? {
-        ...nameInput,
-        style: { ...nameInput.style, fontStyle: "italic" as const },
-      }
-    : nameInput
+    ? { ...nameInput, style: excludedLabelStyle }
+    : isPlaceholder
+      ? { ...nameInput, style: placeholderLabelStyle }
+      : nameInput
 
   // Disabled is not owned by the combobox-field, so it never cascades from the
   // field to these leaves. Forward `aria-disabled` onto each leaf ref so their

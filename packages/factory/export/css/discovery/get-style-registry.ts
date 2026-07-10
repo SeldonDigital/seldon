@@ -22,6 +22,7 @@ import {
   getWorkspaceNodeList,
   resolveSourceVariantId,
 } from "../../../helpers/workspace-nodes"
+import { resetBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
 import { CSSObject } from "../../../styles/css-properties/types"
 import { kebabCase } from "../../react/utils/case-utils"
@@ -125,6 +126,11 @@ export const buildStyleRegistry = (
   classNameToNodeId: Record<string, string>
   nodeTreeDepths: Record<string, number>
 } => {
+  // Style generation records each brightness-shifted swatch it references so the
+  // theme stylesheet can publish one concrete variable per pair. Clear it so a
+  // run only collects the pairs it uses.
+  resetBrightnessSwatches()
+
   const classes: Classes = {}
   const stateClasses: StateClasses = {}
   const descendantStateClasses: DescendantStateClasses = {}

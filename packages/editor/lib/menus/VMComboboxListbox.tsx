@@ -13,7 +13,6 @@ import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
-import { Backdrop } from "@seldon/components/custom-components"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
 import { Listbox } from "@seldon/components/parts/Listbox"
 import { Hr } from "@seldon/components/primitives/Hr"
@@ -160,7 +159,7 @@ export function VMComboboxListbox({
       data-mode={resolvedMode}
       style={themeScopeStyle}
     >
-      <Backdrop onClick={handleClose} style={backdropStyle} />
+      <div onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}
       </Listbox>

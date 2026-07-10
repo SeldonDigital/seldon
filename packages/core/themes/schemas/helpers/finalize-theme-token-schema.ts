@@ -5,6 +5,7 @@ import {
   isThemeTokenFiniteNumber,
   isThemeTokenPercentageNumber,
   isThemeTokenPxRemLength,
+  isThemeTokenSignedPercentageNumber,
   isThemeTokenText,
 } from "../../../properties/schemas/helpers/shared/theme-token-atomic-validators"
 import type {
@@ -25,6 +26,8 @@ export function buildThemeTokenValidation(
       return { length: isThemeTokenPxRemLength }
     case "percentage":
       return { percentage: isThemeTokenPercentageNumber }
+    case "signedPercentage":
+      return { signedPercentage: isThemeTokenSignedPercentageNumber }
     case "boolean":
       return { boolean: isThemeTokenBoolean }
     case "text":

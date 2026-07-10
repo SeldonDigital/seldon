@@ -41,8 +41,30 @@ export function rhythmSideForFacet(side: string | undefined): RhythmSide {
   return "left"
 }
 
+/**
+ * Suffix that keys a brightness-shifted color variant, e.g. `b25` for a +25%
+ * tint and `bn20` for a -20% shade. A fractional percent keeps its digits with
+ * the dot swapped for an underscore so the suffix stays a valid identifier.
+ */
+export function brightnessSuffix(brightness: number): string {
+  const magnitude = Math.abs(brightness).toString().replace(".", "_")
+  return brightness < 0 ? `bn${magnitude}` : `b${magnitude}`
+}
+
 export function highContrastVarName(slot: string): string {
   return `--sdn-hc-on-${slot}`
+}
+
+/**
+ * High-contrast variable for a brightness-shifted surface swatch, e.g.
+ * `--sdn-hc-on-primary-b25`. The pick is baked against the brightened color, so
+ * a node reading a tinted or shaded background gets the correct foreground.
+ */
+export function highContrastBrightnessVarName(
+  slot: string,
+  brightness: number,
+): string {
+  return `--sdn-hc-on-${slot}-${brightnessSuffix(brightness)}`
 }
 
 export function autoFitVarName(scale: string, key: string): string {

@@ -86,14 +86,14 @@ flowchart TD
   icons --> css[Component stylesheet plus per-theme stylesheets]
   css --> images[getImagesToExport then rewrite to relative paths]
   images --> files[Component, native, frame, icon, fonts, readme, utility files]
-  files --> license[Insert license into every text file]
+  files --> license[Insert license, then format each source file]
   license --> output[Files to export]
 ```
 
 - **Context** indexes parents so property compute can resolve inheritance.
 - **Style registry** maps each node to a class and records tree depths for cascade order.
 - **Discovery** finds exportable components and orders them by component level. Icon discovery collects icons referenced by components, then adds every icon turned on in the workspace's icon sets, so exports ship complete icon sets.
-- **Generation** writes one file per component plus shared files, then inserts a license header into every text file. Native wrappers come from the `exportConfig.react.returns` of every exported component, plus `HTML.Div` for Frame.
+- **Generation** writes one file per component plus shared files, then inserts a license header into every text file and formats each source file. Native wrappers come from the `exportConfig.react.returns` of every exported component, plus `HTML.Div` for Frame.
 
 `exportReact` inlines its CSS generation through `buildStyleRegistry`, `generateComponentStylesheet`, and `generateThemeStylesheetFiles`. It produces one component stylesheet and one stylesheet file per theme.
 
@@ -117,6 +117,16 @@ Class names use the `sdn-` prefix. The prefix is applied in [export/css/discover
 
 ---
 
+## Formatting
+
+Factory formats its output with Prettier. The options live in one file: [export/export-prettier-config.ts](./export/export-prettier-config.ts). Both the React and CSS formatters read it, so every exported file formats the same way. To change how exports are formatted, edit that file.
+
+The defaults match the Seldon repository, so generated files land already formatted and do not churn on the next format pass. The filename is not a name Prettier auto-discovers, so a consumer's own Prettier never applies it to their source. A consumer exporting into a differently formatted codebase edits this file to match their style.
+
+The `skipFormat` export option turns formatting off for a run.
+
+---
+
 ## Generated Output
 
 Factory produces a component library under `output.componentsFolder`, with images under `output.assetsFolder`. Paths below are relative to the components folder.
@@ -133,13 +143,13 @@ refs/index.ts                          # ref registry, emitted only when nodes c
 utils/class-name.ts                    # combineClassNames helper
 Fonts.tsx                              # font loading component
 styles.css                             # component stylesheet
-styles-{slug}.css                      # one stylesheet per workspace theme
+styles/{slug}.css                      # one stylesheet per workspace theme
 README.md                              # generated usage guide
 ```
 
 The `frames/` folder holds both the generated `Frame.tsx` wrapper and any frame-level components, such as `Container.tsx`. Icon files keep their catalog subfolder path, such as `icons/material/user-interface/navigation/IconMaterialChevronUp.tsx`. The `refs/index.ts` file is emitted only when at least one node carries a ref. It exports a `SeldonRef` union and a `SELDON_REFS` map, and each referenced node renders a `data-seldon-ref` attribute so app code can target it by a type-safe ref name.
 
-Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file is named by its slug, such as `styles-seldon.css` and `styles-seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
+Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file goes in the `styles/` folder and is named by its slug, such as `styles/seldon.css` and `styles/seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
 
 Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
 

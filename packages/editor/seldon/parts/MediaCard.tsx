@@ -321,6 +321,6 @@ const sdn: MediaCardProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-label--ylte",
+    className: "sdn-text-label sdn-text-label--bray",
   },
 }

@@ -8,7 +8,26 @@ import {
   validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 import { assignPropNames } from "../shared/assign-prop-names"
+import { getConditionalPropPaths } from "../shared/get-conditional-prop-paths"
 import { JSXNode, JSXNodeType, JSXStructure } from "./types"
+
+/**
+ * Reports whether a node's descendant tree can be flattened into props without
+ * loss. Forwarding stops at a `FRAME` boundary, so a child that holds its own
+ * children behind a frame would silently drop them. When that happens the node
+ * renders its children as nested JSX instead, matching how instance trees nest
+ * their overrides. This is the wiring signal, kept independent from the schema
+ * validation that drives default-vs-conditional classification.
+ */
+function canForwardLosslessly(node: JSONTreeNode): boolean {
+  const children = Array.isArray(node.children) ? node.children : []
+  return children.every((child) => {
+    const grandchildren = Array.isArray(child.children) ? child.children : []
+    if (grandchildren.length === 0) return true
+    if (child.level === ComponentLevel.FRAME) return false
+    return canForwardLosslessly(child)
+  })
+}
 
 /**
  * Generates the JSX structure for a component along with its prop name map.
@@ -51,6 +70,11 @@ export function generateJSXStructure(
   // Validate component props
   const validation = validateExportedComponentProps(component)
 
+  // Classification signal: which nodes are inline extras (conditional) rather
+  // than canonical schema children. A forwarded conditional leaf is guarded by
+  // its source prop so it only renders when the caller supplies it.
+  const conditionalPaths = getConditionalPropPaths(component)
+
   // Build JSX structure recursively
   function buildJSXNode(node: JSONTreeNode): JSXNode {
     const propName = nodeIdToPropName.get(node.nodeId)
@@ -76,13 +100,15 @@ export function generateJSXStructure(
 
     if (node.level === ComponentLevel.FRAME) {
       nodeType = "frame"
-      // Frame should be conditionally rendered if it's an invalid prop
-      if (!isValidProp) {
+      // Frame should be conditionally rendered if it's an invalid prop or a
+      // placeholder slot.
+      if (!isValidProp || node.isPlaceholder) {
         condition = propName
       }
-    } else if (!isValidProp) {
-      // Inline extras render only when the caller passes the prop. The merged
-      // props variable is checked as well so TypeScript narrows it to non-null.
+    } else if (!isValidProp || node.isPlaceholder) {
+      // Inline extras and placeholder slots render only when the caller passes
+      // the prop. The merged props variable is checked as well so TypeScript
+      // narrows it to non-null.
       nodeType = "conditional"
       condition = `${propName} && ${propVarName}`
     } else {
@@ -95,15 +121,20 @@ export function generateJSXStructure(
 
     // Handle children
     const children: JSXNode[] = []
-    const grandchildProps: Array<{ propKeyName: string; propVarName: string }> =
-      []
+    const grandchildProps: Array<{
+      propKeyName: string
+      propVarName: string
+      guard?: string
+    }> = []
 
     if (Array.isArray(node.children)) {
       // Check if this node has grandchildren that should be passed as props
       const childValidation = validateTreeNodeProps(node)
 
       const hasValidGrandchildren =
-        childValidation.invalidProps.length === 0 && node.children.length > 0
+        childValidation.invalidProps.length === 0 &&
+        node.children.length > 0 &&
+        canForwardLosslessly(node)
 
       if (hasValidGrandchildren && node.level !== ComponentLevel.FRAME) {
         // Grandchildren are passed as props to this child component. The JSX
@@ -129,16 +160,26 @@ export function generateJSXStructure(
               )
             }
 
+            const isConditional =
+              conditionalPaths.has(descendant.dataBinding.path) ||
+              Boolean(descendant.isPlaceholder)
             grandchildProps.push({
               propKeyName: slotName,
               propVarName: `${grandchildPropValue}Props`,
+              // Guard conditional and placeholder leaves with their source prop
+              // so an omitted caller value keeps the leaf absent, preserving
+              // baseline layout.
+              guard: isConditional ? grandchildPropValue : undefined,
             })
 
+            // Recurse on the wiring signal only: a real child component with its
+            // own children threads them onto its slots regardless of whether the
+            // child matches an exact schema variant. The lossless check above
+            // guarantees no frame boundary drops a descendant.
             if (
               Array.isArray(descendant.children) &&
               descendant.children.length > 0 &&
-              descendant.level !== ComponentLevel.FRAME &&
-              validateTreeNodeProps(descendant).invalidProps.length === 0
+              descendant.level !== ComponentLevel.FRAME
             ) {
               forwardDescendants(descendant.children)
             }

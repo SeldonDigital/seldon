@@ -3,6 +3,18 @@ import { generateRootAttributePropsString } from "../shared/attribute-props"
 import { dataSeldonRefAttr } from "../shared/data-ref-attr"
 import { JSXNode } from "./types"
 
+type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
+
+/**
+ * Renders a forwarded grandchild as a JSX attribute. Conditional leaves are
+ * guarded by their source prop (`textLabel={textLabel && textLabelProps}`) so an
+ * omitted caller value keeps the slot empty; canonical leaves forward directly.
+ */
+function grandchildPropAttr(gp: GrandchildProp): string {
+  const value = gp.guard ? `${gp.guard} && ${gp.propVarName}` : gp.propVarName
+  return `${gp.propKeyName}={${value}}`
+}
+
 /**
  * Converts JSX structure to JSX string for component function body.
  *
@@ -53,7 +65,7 @@ export function jsxStructureToString(
       if (node.grandchildProps && node.grandchildProps.length > 0) {
         // Component with grandchildren passed as props
         const grandchildPropsString = node.grandchildProps
-          .map((gp) => `${gp.propKeyName}={${gp.propVarName}}`)
+          .map((gp) => grandchildPropAttr(gp))
           .join(" ")
         content += `\n${indentStr}  <${node.name} {...${node.propVarName}} ${grandchildPropsString} />`
       } else if (node.children && node.children.length > 0) {
@@ -75,7 +87,7 @@ export function jsxStructureToString(
       if (node.grandchildProps && node.grandchildProps.length > 0) {
         // Component with grandchildren passed as props
         const grandchildPropsString = node.grandchildProps
-          .map((gp) => `${gp.propKeyName}={${gp.propVarName}}`)
+          .map((gp) => grandchildPropAttr(gp))
           .join(" ")
         return `\n${indentStr}<${node.name} {...${node.propVarName}} ${grandchildPropsString} />`
       } else if (node.children && node.children.length > 0) {

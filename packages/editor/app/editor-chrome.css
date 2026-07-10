@@ -1,27 +1,13 @@
 /*
  * Permanent editor chrome. This sheet is NOT a bespoke-removal target: it holds
  * styling that has no workspace-generated View equivalent and will never come
- * from an export. Window scrollbars, the FocusRingOverlay border, native focus
- * suppression, and the brand color tokens used by editor-only chrome live here.
+ * from an export. Window scrollbars, the FocusRingOverlay border, and native
+ * focus suppression live here.
  *
  * Do NOT add component-level styling here. Hand styling that mirrors what a
  * generated View should provide belongs in the VM that renders it (inline or a
  * co-located `*.bespoke.*` helper), so it deletes cleanly once the View ships.
  */
-
-:root {
-  --color-blue: #3fb5ff;
-  --color-pearl: #f5f5f5;
-  --color-background: #1f1f1f;
-
-  /* Seldon brand colors used by the editor chrome. These have no generated
-     theme-token equivalent, so they live here. */
-  --sdn-swatch-seldon-red: hsl(0 100% 65%);
-  --sdn-swatch-seldon-green: hsl(135 76% 59%);
-  --sdn-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-swatch-seldon-yellow: hsl(60 100% 46%);
-  --sdn-swatch-seldon-purple: hsl(300 76% 48%);
-}
 
 /*
  * Topbar rainbow strip. The resting strip is a static interface gradient. During
@@ -117,6 +103,29 @@ html:not(.sdn-show-focus)
   .sdn-item-section:is(:focus-visible, :has(:focus-visible))
   .sdn-button-iconic:not([aria-invalid="true"]) {
   border-color: transparent;
+  background-color: transparent;
+}
+
+/*
+ * The combobox field's input and icons paint their own visible-focus color and
+ * border. Gate these like the field border: restore the resting color and
+ * neutralize the border so focus paints nothing when the toggle is off. The
+ * selectors out-specify the generated focused-state rules.
+ */
+html:not(.sdn-show-focus)
+  .sdn-input:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-input"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
+  border-color: transparent;
+}
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
 }
 
 /*

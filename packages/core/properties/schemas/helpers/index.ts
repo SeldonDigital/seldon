@@ -26,5 +26,6 @@ export {
   isThemeTokenFiniteNumber,
   isThemeTokenPercentageNumber,
   isThemeTokenPxRemLength,
+  isThemeTokenSignedPercentageNumber,
   isThemeTokenText,
 } from "./shared/theme-token-atomic-validators"

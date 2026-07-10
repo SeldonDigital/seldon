@@ -81,6 +81,6 @@ const sdn: ChipIconicProps = {
   icon: {
     icon: "material-inbox",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--x7ac",
+    className: "sdn-icon sdn-icon--gh8m",
   },
 }

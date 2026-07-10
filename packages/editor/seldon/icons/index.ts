@@ -172,6 +172,7 @@ export { IconMaterialEventSeat } from "./material/utility/time/IconMaterialEvent
 export { IconMaterialExpandLess } from "./material/user-interface/status/IconMaterialExpandLess"
 export { IconMaterialExpandMore } from "./material/user-interface/status/IconMaterialExpandMore"
 export { IconMaterialExtension } from "./material/user-interface/actions/IconMaterialExtension"
+export { IconMaterialEyeTracking } from "./material/user-interface/media/IconMaterialEyeTracking"
 export { IconMaterialFace } from "./material/user-interface/actions/IconMaterialFace"
 export { IconMaterialFastForward } from "./material/user-interface/navigation/IconMaterialFastForward"
 export { IconMaterialFastRewind } from "./material/user-interface/media/IconMaterialFastRewind"

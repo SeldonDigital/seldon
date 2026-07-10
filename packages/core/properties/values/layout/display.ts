@@ -2,10 +2,20 @@ import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 
-/** Whether the node appears in the workspace, stays hidden, or drops out of the tree. */
+/**
+ * Whether the node appears in the workspace, stays hidden, renders as an
+ * opt-in placeholder slot, or drops out of the tree.
+ *
+ * - `SHOW`: rendered and exported normally.
+ * - `HIDE`: hidden in the editor and rendered output, but still exported.
+ * - `PLACEHOLDER`: rendered in the editor; exported as an opt-in slot that
+ *   renders nothing by default and can be populated by a caller.
+ * - `EXCLUDE`: hidden in the editor and dropped from export.
+ */
 export enum Display {
   SHOW = "show",
   HIDE = "hide",
+  PLACEHOLDER = "placeholder",
   EXCLUDE = "exclude",
 }
 

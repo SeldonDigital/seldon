@@ -195,18 +195,18 @@ const sdn: ProductCardHorizontalProps = {
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--95oo",
+    className: "sdn-image sdn-image--ldqx",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--knug",
+    className: "sdn-frame sdn-frame--o91y",
   },
   textSubtitle: {
     className: "sdn-text-subtitle sdn-text-title--adfu",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--kxxv",
+    className: "sdn-text-title sdn-text-title--wi5q",
   },
   button: {
     className: "sdn-button sdn-button-iconic--pgsr",
@@ -217,6 +217,6 @@ const sdn: ProductCardHorizontalProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--ylte",
+    className: "sdn-text-label sdn-text-label--76j4",
   },
 }

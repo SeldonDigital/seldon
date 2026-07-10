@@ -570,7 +570,7 @@ Border looks describe a border treatment of style, width, color, opacity, and br
 | `width` | `atomic` | `empty` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
 | `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
 | `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `brightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 
 ```typescript
 import { TokenType, ValueType } from "@seldon/core/themes"
@@ -601,11 +601,11 @@ Gradient looks describe a two-stop linear or radial gradient with type, angle, a
 | `angle` | `atomic` | `empty` \| `exact: degrees` |
 | `startColor` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
 | `startOpacity` | `atomic` | `empty` \| `exact: %, 0–100` |
-| `startBrightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `startBrightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 | `startPosition` | `atomic` | `empty` \| `exact: %, 0–100` |
 | `endColor` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
 | `endOpacity` | `atomic` | `empty` \| `exact: %, 0–100` |
-| `endBrightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `endBrightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 | `endPosition` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript
@@ -638,7 +638,7 @@ Shadow looks describe a drop-shadow with offsets, blur, spread, color, brightnes
 | `blur` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @blur.*` |
 | `spread` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @spread.*` |
 | `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `brightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 | `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript

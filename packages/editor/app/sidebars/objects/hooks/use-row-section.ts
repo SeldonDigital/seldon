@@ -2,15 +2,15 @@ import { MouseEvent, useMemo } from "react"
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useTool } from "@lib/hooks/use-tool"
 import {
   useIsSectionExpanded,
   useSectionExpansion,
 } from "../../hooks/use-section-expansion"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/custom-components"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { BoardSection } from "../../helpers/get-board-sections"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"
@@ -27,7 +27,7 @@ export function useRowSection(section: BoardSection) {
   const { toggleSection } = useSectionExpansion()
   const { expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
-  const { openDialog } = useDialog()
+  const { openPanel } = usePanel()
   const { setActiveTool } = useTool()
   const { addPlayground } = useAddRemoveCommands()
 
@@ -101,21 +101,21 @@ export function useRowSection(section: BoardSection) {
       onClick: (event) => {
         event.stopPropagation()
         if (level === "THEME") {
-          openDialog("add-theme")
+          openPanel("add-theme")
         } else if (level === "FONT_COLLECTION") {
-          openDialog("add-font-collection")
+          openPanel("add-font-collection")
         } else if (level === "ICON_SET") {
-          openDialog("add-icon-set")
+          openPanel("add-icon-set")
         } else if (level === "PLAYGROUND") {
           addPlayground()
         } else {
-          openDialog("add-board", { level })
+          openPanel("add-board", { level })
         }
         setActiveTool("select")
       },
       "aria-label": "Add",
     }
-  }, [section.level, openDialog, setActiveTool, addPlayground])
+  }, [section.level, openPanel, setActiveTool, addPlayground])
 
   return {
     label: section.label,

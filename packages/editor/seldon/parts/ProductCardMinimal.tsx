@@ -139,17 +139,17 @@ const sdn: ProductCardMinimalProps = {
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--v8n4",
+    className: "sdn-image sdn-image--nf4j",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--ovgw",
+    className: "sdn-frame sdn-frame--kr9k",
   },
   textSubtitle: {
     className: "sdn-text-subtitle sdn-text-title--adfu",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--bems",
+    className: "sdn-text-title sdn-text-title--owq7",
   },
 }

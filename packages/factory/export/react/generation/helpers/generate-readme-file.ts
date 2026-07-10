@@ -247,7 +247,7 @@ You can override styles in several ways:
 
 The exported stylesheets include CSS design tokens (theme variables) that you can use for consistent theming across your application. This can be useful for integrating Seldon components with existing components.
 
-The default \`seldon\` theme uses bare \`--sdn-\` variables and ships as \`styles-seldon.css\`. Every other theme uses a \`--sdn-{slug}-\` prefix and ships as \`styles-{slug}.css\`, for example \`--sdn-seldon-red-swatch-primary\` in \`styles-seldon-red.css\`:
+The default \`seldon\` theme uses bare \`--sdn-\` variables and ships as \`styles/seldon.css\`. Every other theme uses a \`--sdn-{slug}-\` prefix and ships as \`styles/{slug}.css\`, for example \`--sdn-seldon-red-swatch-primary\` in \`styles/seldon-red.css\`:
 
 \`\`\`css
 /* Available theme variables include: */
@@ -397,7 +397,7 @@ Always provide meaningful labels and ARIA attributes:
 - Verify that required nested props are included (e.g., \`children\` for labels, \`icon\` for icons)
 
 ### Styling Issues
-- Import \`styles.css\` and each \`styles-{slug}.css\` file your workspace exports
+- Import \`styles.css\` and each \`styles/{slug}.css\` file your workspace exports
 - Check CSS class conflicts with your existing styles
 - Use browser dev tools to inspect generated class names (instance classes end with a short hash like \`sdn-button-iconic--abc12\`)
 
@@ -412,7 +412,7 @@ Always provide meaningful labels and ARIA attributes:
 Your exported components include:
 - \`Fonts.tsx\` - Font loading component  
 - \`styles.css\` - Reset, base, and component styles
-- \`styles-{slug}.css\` - Theme token variables, one file per workspace theme
+- \`styles/{slug}.css\` - Theme token variables, one file per workspace theme
 - Individual component files with full TypeScript definitions
 
 For more information about Seldon, visit [github.com/SeldonDigital/seldon](https://github.com/SeldonDigital/seldon)

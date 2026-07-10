@@ -617,14 +617,18 @@ export function useRowNode(
     return false
   }
 
-  // Excluded rows (own display or an excluded ancestor) read as italic. Hidden
-  // rows use the node's own display only. Both drive the disabled look.
+  // Excluded rows (own display or an excluded ancestor) read as italic with a
+  // strikethrough. Placeholder rows read as italic. Hidden rows use the node's
+  // own display only. All three drive the disabled look.
   const isExcluded = checkIfExcluded()
   const isHidden = properties?.display?.value === Display.HIDE
+  const isPlaceholder = properties?.display?.value === Display.PLACEHOLDER
 
   const baseLabelStyle: CSSProperties | undefined = isExcluded
-    ? { fontStyle: "italic" }
-    : undefined
+    ? { fontStyle: "italic", textDecoration: "line-through" }
+    : isPlaceholder
+      ? { fontStyle: "italic" }
+      : undefined
   const labelStyle: CSSProperties | undefined = isEcho
     ? { ...baseLabelStyle, fontStyle: "italic", opacity: 0.7 }
     : baseLabelStyle
@@ -666,6 +670,7 @@ export function useRowNode(
     properties,
     isExcluded,
     isHidden,
+    isPlaceholder,
     nodeTypeColor,
     dataNodeType: typeCheckingService.getEntityType(node),
   }

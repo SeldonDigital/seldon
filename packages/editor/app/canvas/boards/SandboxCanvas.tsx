@@ -6,9 +6,9 @@ import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import { Label } from "@seldon/components/chrome/primitives/Label"
-import { PlaceholderBox } from "@seldon/components/custom-components"
+import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { CanvasNode } from "../Node"
+import { PlaceholderBox } from "./PlaceholderBox"
 
 export type SandboxCanvasProps = {
   board: Board
@@ -38,7 +38,7 @@ export function SandboxCanvas({ board }: SandboxCanvasProps) {
         boardId={playgroundKey}
         className={`board-${playgroundKey}`}
       >
-        <Label className="seldon-instance">No Sandboxes</Label>
+        <TextLabel htmlElement="span">No Sandboxes</TextLabel>
       </PlaceholderBox>
     )
   }
