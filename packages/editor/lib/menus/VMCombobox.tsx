@@ -1,16 +1,16 @@
 /**
  * VMCombobox: the editable combobox VM. It owns the input behavior (focus,
- * commit, keyboard nav, blur) over the custom `InputEditor` primitive. In
+ * commit, keyboard nav, blur) over the generated `Input` primitive. In
  * `combobox` mode it anchors the floating `VMComboboxListbox`; in `standalone`
  * mode it is a plain commit-on-blur input used for inline rename and dialog
  * fields. Option-list rendering lives in `VMComboboxListbox`; the selection and
  * filter engine lives in `useComboboxState`.
  */
 import { CSSProperties, RefObject, useEffect, useRef } from "react"
-import { InputEditor } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
+import { Input } from "@seldon/components/primitives/Input"
 
-// Functional resets so the custom `InputEditor` primitive blends into a property
+// Functional resets so the generated `Input` primitive blends into a property
 // row. Appearance theming still comes from authored CSS; these only strip the
 // native input chrome the primitive would otherwise render. The type metrics
 // pin the input to the row's generated tokens until a generated View owns the
@@ -327,7 +327,7 @@ export function VMCombobox({
           ref={wrapperRef}
           style={comboboxWrapperStyle}
         >
-          <InputEditor
+          <Input
             value={value}
             onChange={handleInputChange}
             onFocus={handleFocus}
@@ -347,7 +347,7 @@ export function VMCombobox({
   }
 
   return (
-    <InputEditor
+    <Input
       autoFocus={autoFocus}
       value={value}
       onChange={handleInputChange}

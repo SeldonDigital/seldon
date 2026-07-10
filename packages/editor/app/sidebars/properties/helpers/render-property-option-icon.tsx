@@ -8,11 +8,8 @@ import React from "react"
 import { Theme, Workspace } from "@seldon/core"
 import { IconId, defaultIconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
+import { IconCustomColorValue, ThemeSwatches } from "@lib/icons/custom"
 import { useThemes } from "@lib/themes/hooks/use-themes"
-import {
-  IconCustomColorValue,
-  ThemeSwatches,
-} from "@seldon/components/custom-components"
 import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { FlatProperty } from "./properties-data"

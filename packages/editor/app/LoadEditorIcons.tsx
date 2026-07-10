@@ -20,7 +20,7 @@ import {
  * only ever receive a user-selected symbol, never a hardcoded editor-chrome id.
  * The brand makes feeding a plain `IconId` a compile error: callers mint a
  * `SymbolIconId` through `asSymbolIconId`, which marks the value as a symbol on
- * purpose. Render chrome icons with `<Icon>` from custom-components instead.
+ * purpose. Render chrome icons with `<Icon>` instead.
  */
 export type SymbolIconId = IconId & { readonly __symbol: unique symbol }
 

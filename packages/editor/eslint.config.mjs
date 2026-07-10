@@ -4,7 +4,7 @@ import tseslint from "typescript-eslint"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =
-  "app/ should render Views only. Move raw DOM markup into seldon/custom-components/ and consume it from there."
+  "app/ should render Views only. Move raw DOM markup into a reusable View (seldon/ for design components, lib/ for editor chrome) and consume it from there."
 
 export default defineConfig([
   globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
@@ -81,25 +81,6 @@ export default defineConfig([
               group: ["@seldon/core/**/services/**"],
               message:
                 "Call Model services from a ViewModel hook (use-*.ts), not from a component.",
-            },
-          ],
-        },
-      ],
-    },
-  },
-  // Purity boundary: custom-components are pure Views and must not depend on
-  // application or model runtime code. Fully migrated, so this is an error.
-  {
-    files: ["seldon/custom-components/**/*.{ts,tsx}"],
-    rules: {
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: [
-            {
-              group: ["@app/*", "@app/**", "@lib/*", "@lib/**"],
-              message:
-                "custom-components must stay pure Views. Receive data via props instead of importing app/lib.",
             },
           ],
         },

@@ -1,5 +1,6 @@
-// BESPOKE-VIEW: hand-authored transitional View. Replace with a generated
-// workspace component once one covers the theme swatch cluster.
+// Editor chrome: renders a computed theme's palette as an overlapping swatch
+// cluster. Prop-driven and factory-inert, so it lives in the editor rather than
+// the generated View layer.
 import { CSSProperties } from "react"
 import { SwatchDot } from "./SwatchDot"
 

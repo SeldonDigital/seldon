@@ -4,7 +4,7 @@ import {
   IconCustomColorValue,
   IconCustomThemeColorValue,
   ThemeSwatches,
-} from "@seldon/components/custom-components"
+} from "./custom"
 import {
   IconMaterialComputer,
   IconMaterialLaptop,
