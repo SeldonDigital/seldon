@@ -25,12 +25,12 @@ import type { Workspace } from "../../../model/workspace"
  */
 
 const OLD_CATALOG_ID = "dialog"
-const NEW_CATALOG_ID = "panels"
+const NEW_CATALOG_ID = "panel"
 const OLD_NODE_LABEL = "Dialog"
 const NEW_NODE_LABEL = "Panel"
 const NEW_BOARD_LABEL = "Panels"
 const OLD_NODE_PREFIX = "component-dialog-"
-const NEW_NODE_PREFIX = "component-panels-"
+const NEW_NODE_PREFIX = "component-panel-"
 const OLD_CATALOG_TEMPLATE = `catalog:${OLD_CATALOG_ID}`
 const NEW_CATALOG_TEMPLATE = `catalog:${NEW_CATALOG_ID}`
 const OLD_NODE_LINK_PREFIX = `node:${OLD_NODE_PREFIX}`

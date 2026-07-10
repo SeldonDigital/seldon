@@ -5,9 +5,9 @@ import { STOCK_ICON_SETS } from "@seldon/core/icon-sets/catalog"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-icon-set-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { VMCatalogDialog } from "../VMCatalogDialog"
+import { VMPanelDialog } from "../VMPanelDialog"
 import { CatalogDialogItem } from "../types"
 
 const ICON_SET_ICON = "material-category"
@@ -17,7 +17,7 @@ const ICON_SET_ICON = "material-category"
  * icon set is never offered.
  */
 export function VMIconSetsDialog() {
-  const { activeDialog, closeDialog } = useDialog()
+  const { activePanel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addIconSet } = useAddRemoveCommands()
 
@@ -51,17 +51,17 @@ export function VMIconSetsDialog() {
     [addIconSet],
   )
 
-  if (activeDialog !== "add-icon-set") return null
+  if (activePanel !== "add-icon-set") return null
 
   return (
-    <VMCatalogDialog
+    <VMPanelDialog
       title="Add icon set"
       confirmButtonText="Add icon set"
       categories={categories}
       query={query}
       onQueryChange={setQuery}
       onPick={handlePick}
-      onClose={closeDialog}
+      onClose={closePanel}
     />
   )
 }

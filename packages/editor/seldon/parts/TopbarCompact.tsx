@@ -350,6 +350,6 @@ const sdn: TopbarCompactProps = {
     className: "sdn-button sdn-button--aket",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--yo51",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
 }

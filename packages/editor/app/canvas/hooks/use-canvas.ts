@@ -15,7 +15,7 @@ import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
 import {
@@ -45,7 +45,7 @@ export function useCanvas() {
   const { workspace } = useWorkspace()
   const { activeBoard } = useActiveBoard()
   const { activeTool, setActiveTool } = useTool()
-  const { openDialog } = useDialog()
+  const { openPanel } = usePanel()
   const { hoverState, setHoverState } = useCanvasHoverState()
   const setHoveredId = useSetHoveredId()
   const { isInPreviewMode } = usePreview()
@@ -244,12 +244,12 @@ export function useCanvas() {
         index += 1
       }
 
-      openDialog("component", {
+      openPanel("component", {
         nodeId: parentNode.id,
         index,
       })
     },
-    [workspace, openDialog, addToast],
+    [workspace, openPanel, addToast],
   )
 
   const insertIntoNode = useCallback(
@@ -264,7 +264,7 @@ export function useCanvas() {
           return
         }
 
-        openDialog("component", {
+        openPanel("component", {
           nodeId: nodeId,
           index: 0,
         })
@@ -290,23 +290,23 @@ export function useCanvas() {
           index += 1
         }
 
-        openDialog("component", {
+        openPanel("component", {
           nodeId: parentNode.id,
           index,
         })
       }
     },
-    [openDialog, workspace, hoverState?.placement],
+    [openPanel, workspace, hoverState?.placement],
   )
 
   const insertOnBoard = useCallback(
     (hoverState: HoverState) => {
-      openDialog("component", {
+      openPanel("component", {
         nodeId: hoverState.objectId,
         index: 0,
       })
     },
-    [openDialog],
+    [openPanel],
   )
 
   const executeToolAction = useCallback(() => {

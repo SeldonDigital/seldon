@@ -3,7 +3,7 @@ import { create } from "zustand"
 import { BackgroundKind, ValueType } from "@seldon/core/properties"
 import { useImageUpload } from "@lib/api/hooks/use-image-upload"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 
 export type ImageUploadTarget = "source" | "background-image"
 
@@ -39,7 +39,7 @@ const useStore = create<ImageUploadPanelState>((set) => ({
 }))
 
 export function useImageUploadPanel() {
-  const { activeDialog, openDialog, closeDialog } = useDialog()
+  const { activePanel, openPanel, closePanel } = usePanel()
   const { property, setProperty, reset: resetStore } = useStore()
   const [currentFile, setCurrentFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -54,12 +54,12 @@ export function useImageUploadPanel() {
 
   function show({ property }: { property: ImageUploadTarget }) {
     setProperty(property)
-    openDialog("image-upload")
+    openPanel("image-upload")
   }
 
   function close() {
     resetStore()
-    closeDialog()
+    closePanel()
     resetUpload()
     setCurrentFile(null)
   }
@@ -99,7 +99,7 @@ export function useImageUploadPanel() {
 
   return {
     property,
-    isOpen: activeDialog === "image-upload",
+    isOpen: activePanel === "image-upload",
     currentFile,
     onFileChange: setCurrentFile,
     fileInputRef,

@@ -17,6 +17,7 @@ export type SeldonRef =
   | "catalogItems"
   | "catalogLabel"
   | "catalogVariant"
+  | "Default"
   | "dialogCancel"
   | "dialogConfirm"
   | "dialogContent"
@@ -94,24 +95,29 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-text-R4oTaXSN",
     className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
   },
+  Default: {
+    component: "ItemCatalog",
+    nodeId: "component-item-hSnQ9Zqv",
+    className: "sdn-item-catalog sdn-item-node--o00j",
+  },
   dialogCancel: {
     component: "Button",
-    nodeId: "component-dialog-qawWP4n0",
-    className: "sdn-button sdn-button--cq5m",
+    nodeId: "component-bar-oHXIPFr4",
+    className: "sdn-button sdn-button--wjtm",
   },
   dialogConfirm: {
     component: "Button",
-    nodeId: "component-dialog-ZZtuPyCa",
-    className: "sdn-button sdn-button--cq5m",
+    nodeId: "component-bar-UpjLfdY0",
+    className: "sdn-button sdn-button--upjl",
   },
   dialogContent: {
     component: "Frame",
-    nodeId: "component-dialog-2wWoLkwm",
+    nodeId: "component-panel-2wWoLkwm",
     className: "sdn-frame sdn-frame--zjuk",
   },
   dialogTitle: {
     component: "TextTitle",
-    nodeId: "component-dialog-j8D9mUx4",
+    nodeId: "component-panel-j8D9mUx4",
     className: "sdn-text-title sdn-text-title--eodu",
   },
   filterActions: {

@@ -5,13 +5,13 @@ import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import {
   CatalogComponentItem,
   FilterComponentPredicate,
-  useComponentCatalog,
-} from "../hooks/use-component-catalog"
-import { VMCatalogDialog } from "../VMCatalogDialog"
+  useDialog,
+} from "../hooks/use-dialog"
+import { VMPanelDialog } from "../VMPanelDialog"
 
 const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
   [ComponentLevel.SCREEN]: "screen",
@@ -27,7 +27,7 @@ const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
  * catalog is scoped to that component level (e.g. only elements).
  */
 export function VMBoardsDialog() {
-  const { activeDialog, dialogLevel, closeDialog } = useDialog()
+  const { activePanel, dialogLevel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addBoard } = useAddRemoveCommands()
   const { selectBoard } = useSelection()
@@ -58,7 +58,7 @@ export function VMBoardsDialog() {
     [currentBoards, dialogLevel],
   )
 
-  const { categories, query, setQuery } = useComponentCatalog({
+  const { categories, query, setQuery } = useDialog({
     shouldShowComponent,
   })
 
@@ -74,17 +74,17 @@ export function VMBoardsDialog() {
     ? `Add ${LEVEL_LABELS[dialogLevel] ?? "component"}`
     : "Add component"
 
-  if (activeDialog !== "add-board") return null
+  if (activePanel !== "add-board") return null
 
   return (
-    <VMCatalogDialog
+    <VMPanelDialog
       title={title}
       confirmButtonText={title}
       categories={categories}
       query={query}
       onQueryChange={setQuery}
       onPick={handlePick}
-      onClose={closeDialog}
+      onClose={closePanel}
     />
   )
 }

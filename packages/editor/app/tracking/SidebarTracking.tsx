@@ -6,7 +6,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useDragStateStore } from "@lib/hooks/use-drag-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
@@ -62,7 +62,7 @@ export function SidebarTracking({
   onCanvasTrackingLeave,
 }: SidebarTrackingProps) {
   const { workspace } = useWorkspace({ usePreview: false })
-  const { openDialog } = useDialog()
+  const { openPanel } = usePanel()
   const { activeTool } = useTool()
   const isDragging = useDragStateStore((state) => state.isDragging)
   const { isPlacementAllowed, parentNode, canHaveChildren } =
@@ -75,7 +75,7 @@ export function SidebarTracking({
       const dialog = "component" as const
 
       if (placement === "inside") {
-        openDialog(dialog, {
+        openPanel(dialog, {
           nodeId: node.id,
           index: 0,
         })
@@ -96,7 +96,7 @@ export function SidebarTracking({
           ? nodeRelationshipService.getInstanceIndex(node, workspace)
           : nodeRelationshipService.getVariantIndex(node, workspace)
 
-        openDialog(dialog, {
+        openPanel(dialog, {
           nodeId: parentNode.id,
           index: placement === "before" ? currentIndex : currentIndex + 1,
         })
@@ -105,7 +105,7 @@ export function SidebarTracking({
         return
       }
     },
-    [isPlacementAllowed, activeTool, node, parentNode, workspace, openDialog],
+    [isPlacementAllowed, activeTool, node, parentNode, workspace, openPanel],
   )
 
   const handleRowClickWrapper = useCallback(

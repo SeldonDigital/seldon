@@ -58,10 +58,9 @@
   --sdn-swatch-primary-bn20: hsl(186 34% 19.2%);
   --sdn-swatch-primary-b60: hsl(186 34% 69.6%);
   --sdn-swatch-primary-b30: hsl(186 34% 46.8%);
-  --sdn-swatch-offBlack-b25: hsl(186 22% 95.5%);
+  --sdn-swatch-black-b75: hsl(186 40% 97.5%);
   --sdn-swatch-black-b25: hsl(186 40% 92.5%);
   --sdn-swatch-white-b35: hsl(186 40% 48%);
-  --sdn-swatch-black-b75: hsl(186 40% 97.5%);
   --sdn-swatch-active-b50: hsl(180 87% 73%);
   --sdn-swatch-primary-b35: hsl(186 34% 50.6%);
   --sdn-swatch-primary-b50: hsl(186 34% 62%);
@@ -165,10 +164,9 @@
   --sdn-hc-on-primary-bn20: hsl(186 40% 90%);
   --sdn-hc-on-primary-b60: hsl(186 40% 20%);
   --sdn-hc-on-primary-b30: hsl(186 40% 90%);
-  --sdn-hc-on-offBlack-b25: hsl(186 40% 20%);
+  --sdn-hc-on-black-b75: hsl(186 40% 20%);
   --sdn-hc-on-black-b25: hsl(186 40% 20%);
   --sdn-hc-on-white-b35: hsl(186 40% 90%);
-  --sdn-hc-on-black-b75: hsl(186 40% 20%);
   --sdn-hc-on-active-b50: hsl(186 40% 20%);
   --sdn-hc-on-primary-b35: hsl(186 40% 90%);
   --sdn-hc-on-primary-b50: hsl(186 40% 20%);
@@ -255,10 +253,9 @@
   --sdn-swatch-primary-bn20: hsl(186 52% 14.4%);
   --sdn-swatch-primary-b60: hsl(186 52% 67.2%);
   --sdn-swatch-primary-b30: hsl(186 52% 42.6%);
-  --sdn-swatch-offBlack-b25: hsl(188 30% 32.5%);
+  --sdn-swatch-black-b75: hsl(186 40% 80%);
   --sdn-swatch-black-b25: hsl(186 40% 40%);
   --sdn-swatch-white-b35: hsl(186 40% 93.5%);
-  --sdn-swatch-black-b75: hsl(186 40% 80%);
   --sdn-swatch-active-b50: hsl(180 93% 71%);
   --sdn-swatch-primary-b35: hsl(186 52% 46.7%);
   --sdn-swatch-primary-b50: hsl(186 52% 59%);
@@ -294,10 +291,9 @@
   --sdn-hc-on-primary-bn20: hsl(186 40% 90%);
   --sdn-hc-on-primary-b60: hsl(186 40% 20%);
   --sdn-hc-on-primary-b30: hsl(186 40% 90%);
-  --sdn-hc-on-offBlack-b25: hsl(186 40% 90%);
+  --sdn-hc-on-black-b75: hsl(186 40% 20%);
   --sdn-hc-on-black-b25: hsl(186 40% 90%);
   --sdn-hc-on-white-b35: hsl(186 40% 20%);
-  --sdn-hc-on-black-b75: hsl(186 40% 20%);
   --sdn-hc-on-active-b50: hsl(186 40% 20%);
   --sdn-hc-on-primary-b35: hsl(186 40% 90%);
   --sdn-hc-on-primary-b50: hsl(186 40% 20%);

@@ -480,7 +480,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.LINKS_FOOTER]: linksFooterExportConfig,
   [ComponentId.CALENDAR]: calendarExportConfig,
   [ComponentId.FOOTER]: footerExportConfig,
-  [ComponentId.PANELS]: panelsExportConfig,
+  [ComponentId.PANEL]: panelsExportConfig,
   [ComponentId.SIDEBAR]: sidebarExportConfig,
   [ComponentId.TABLE]: tableExportConfig,
   [ComponentId.WIDGET_TODO]: widgetTodoExportConfig,

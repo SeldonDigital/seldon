@@ -6,21 +6,21 @@ import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers
 import { InstanceId, VariantId } from "@seldon/core/workspace/types"
 import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useTool } from "@lib/hooks/use-tool"
 import {
   CatalogComponentItem,
   FilterComponentPredicate,
-  useComponentCatalog,
-} from "../hooks/use-component-catalog"
+  useDialog,
+} from "../hooks/use-dialog"
 import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
-import { VMCatalogDialog } from "../VMCatalogDialog"
+import { VMPanelDialog } from "../VMPanelDialog"
 
 /**
  * Dialog for inserting an existing variant into the selected target node.
  */
 export function VMComponentsDialog() {
-  const { activeDialog, target, closeDialog } = useDialog()
+  const { activePanel, target, closePanel } = usePanel()
   const { setActiveTool } = useTool()
   const { dispatchWithAutoSelect } = useAutoSelectNode()
   const { workspace } = useWorkspace()
@@ -41,7 +41,7 @@ export function VMComponentsDialog() {
     [target, workspace],
   )
 
-  const { categories, query, setQuery } = useComponentCatalog({
+  const { categories, query, setQuery } = useDialog({
     shouldShowComponent,
   })
 
@@ -89,17 +89,17 @@ export function VMComponentsDialog() {
     [target, dispatchWithAutoSelect, setActiveTool],
   )
 
-  if (activeDialog !== "component") return null
+  if (activePanel !== "component") return null
 
   return (
-    <VMCatalogDialog
+    <VMPanelDialog
       title="Insert component"
       confirmButtonText="Insert component"
       categories={categories}
       query={query}
       onQueryChange={setQuery}
       onPick={handlePick}
-      onClose={closeDialog}
+      onClose={closePanel}
     />
   )
 }

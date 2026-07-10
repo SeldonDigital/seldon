@@ -11,7 +11,7 @@ import {
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
 
-interface PanelOverlayProps {
+interface PaletteOverlayProps {
   x: MotionValue<number>
   y: MotionValue<number>
   width: MotionValue<number>
@@ -39,7 +39,7 @@ interface PanelOverlayProps {
  * twin of `DialogOverlay`: it stays non-modal unless `closeOnClickOutside` or
  * `preventInteractionOutside` asks for a backdrop.
  */
-export function PanelOverlay({
+export function PaletteOverlay({
   x,
   y,
   width,
@@ -57,7 +57,7 @@ export function PanelOverlay({
   closeOnClickOutside = false,
   preventInteractionOutside = false,
   children,
-}: PanelOverlayProps) {
+}: PaletteOverlayProps) {
   // The portal mounts on document.body, outside the chrome root that scopes the
   // editor theme and mode, so re-apply both here to match the editor interface.
   const { chromeTheme } = useEditorConfig()

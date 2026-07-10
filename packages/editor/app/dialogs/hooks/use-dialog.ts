@@ -29,9 +29,9 @@ const categoryConfigs = [
 
 /**
  * Builds catalog categories for the component picker, plus the search query
- * that `VMCatalogDialog` renders.
+ * that `VMPanelDialog` renders.
  */
-export function useComponentCatalog({
+export function useDialog({
   shouldShowComponent,
 }: {
   shouldShowComponent: FilterComponentPredicate

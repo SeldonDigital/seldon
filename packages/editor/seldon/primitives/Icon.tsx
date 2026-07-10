@@ -23,15 +23,14 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-component"
     | "material-search"
     | "material-close"
-    | "material-add"
-    | "material-remove"
-    | "material-chevronRight"
     | "seldon-none"
     | "material-check"
+    | "material-chevronRight"
     | "material-calendarToday"
     | "material-inbox"
     | "material-chevronDown"
     | "seldon-more"
+    | "material-add"
     | "material-unfoldMore"
     | "material-filterList"
     | "material-dataObject"
@@ -46,7 +45,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-chevronDoubleRight"
     | "material-playArrow"
     | "material-expandMore"
-    | "material-eyeTracking"
     | "material-email"
     | "material-menu"
     | "material-phone"
@@ -303,6 +301,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-plumbing"
     | "material-preview"
     | "material-refresh"
+    | "material-remove"
     | "material-removeCircle"
     | "material-resize"
     | "material-roundedCorner"
@@ -324,6 +323,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-blurOff"
     | "material-colorLens"
     | "material-deblur"
+    | "material-eyeTracking"
     | "material-fastRewind"
     | "material-filter"
     | "material-fullscreen"
@@ -552,15 +552,14 @@ const iconMap = {
   "seldon-component": Icons.IconSeldonComponent,
   "material-search": Icons.IconMaterialSearch,
   "material-close": Icons.IconMaterialClose,
-  "material-add": Icons.IconMaterialAdd,
-  "material-remove": Icons.IconMaterialRemove,
-  "material-chevronRight": Icons.IconMaterialChevronRight,
   "seldon-none": Icons.IconSeldonNone,
   "material-check": Icons.IconMaterialCheck,
+  "material-chevronRight": Icons.IconMaterialChevronRight,
   "material-calendarToday": Icons.IconMaterialCalendarToday,
   "material-inbox": Icons.IconMaterialInbox,
   "material-chevronDown": Icons.IconMaterialChevronDown,
   "seldon-more": Icons.IconSeldonMore,
+  "material-add": Icons.IconMaterialAdd,
   "material-unfoldMore": Icons.IconMaterialUnfoldMore,
   "material-filterList": Icons.IconMaterialFilterList,
   "material-dataObject": Icons.IconMaterialDataObject,
@@ -575,7 +574,6 @@ const iconMap = {
   "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-playArrow": Icons.IconMaterialPlayArrow,
   "material-expandMore": Icons.IconMaterialExpandMore,
-  "material-eyeTracking": Icons.IconMaterialEyeTracking,
   "material-email": Icons.IconMaterialEmail,
   "material-menu": Icons.IconMaterialMenu,
   "material-phone": Icons.IconMaterialPhone,
@@ -834,6 +832,7 @@ const iconMap = {
   "material-plumbing": Icons.IconMaterialPlumbing,
   "material-preview": Icons.IconMaterialPreview,
   "material-refresh": Icons.IconMaterialRefresh,
+  "material-remove": Icons.IconMaterialRemove,
   "material-removeCircle": Icons.IconMaterialRemoveCircle,
   "material-resize": Icons.IconMaterialResize,
   "material-roundedCorner": Icons.IconMaterialRoundedCorner,
@@ -855,6 +854,7 @@ const iconMap = {
   "material-blurOff": Icons.IconMaterialBlurOff,
   "material-colorLens": Icons.IconMaterialColorLens,
   "material-deblur": Icons.IconMaterialDeblur,
+  "material-eyeTracking": Icons.IconMaterialEyeTracking,
   "material-fastRewind": Icons.IconMaterialFastRewind,
   "material-filter": Icons.IconMaterialFilter,
   "material-fullscreen": Icons.IconMaterialFullscreen,

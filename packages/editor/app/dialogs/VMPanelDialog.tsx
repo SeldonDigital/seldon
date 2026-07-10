@@ -11,13 +11,13 @@ import {
 import { useHotkeys } from "react-hotkeys-hook"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Container } from "@seldon/components/frames/Container"
-import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
+import { PanelDialog } from "@seldon/components/modules/PanelDialog"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
+import { usePalette } from "@app/panels/hooks/use-palette"
 import { DialogOverlay } from "./DialogOverlay"
 import { CatalogDialogCategory, CatalogDialogItem } from "./types"
 
@@ -31,7 +31,7 @@ const DIALOG_RESIZE_SIDES: readonly ResizeSide[] = [
   "bottom-right",
 ]
 
-interface VMCatalogDialogProps<T extends CatalogDialogItem> {
+interface VMPanelDialogProps<T extends CatalogDialogItem> {
   title: string
   confirmButtonText: string
   categories: CatalogDialogCategory<T>[]
@@ -42,14 +42,14 @@ interface VMCatalogDialogProps<T extends CatalogDialogItem> {
 }
 
 /**
- * Shared view-model for the catalog dialogs. Feeds the generated `DialogCatalog`
+ * Shared view-model for the catalog dialogs. Feeds the generated `PanelDialog`
  * shell: it wires the title, search field, and cancel/confirm buttons, and
  * injects the category list into the shell's content frame via `seldonRefs`.
- * `DialogCatalog` is a complete modal surface, so it renders inside `DialogOverlay`,
+ * `PanelDialog` is a complete modal surface, so it renders inside `DialogOverlay`,
  * a backdrop-backed portal that the title bar drags and the left, right, and
  * bottom edges plus bottom corners resize.
  */
-export function VMCatalogDialog<T extends CatalogDialogItem>({
+export function VMPanelDialog<T extends CatalogDialogItem>({
   title,
   confirmButtonText,
   categories,
@@ -57,7 +57,7 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
   onQueryChange,
   onPick,
   onClose,
-}: VMCatalogDialogProps<T>) {
+}: VMPanelDialogProps<T>) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const {
@@ -72,7 +72,7 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
     dragConstraints,
     minWidth,
     minHeight,
-  } = useFloatingPanel({
+  } = usePalette({
     initialPosition: {
       x: 0.5 * window.innerWidth - 0.5 * PANEL_INITIAL_WIDTH,
       y: 0.5 * window.innerHeight - 0.5 * PANEL_INITIAL_HEIGHT,
@@ -169,7 +169,7 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
     style: query ? undefined : styles.hidden,
   }
   // The shell forwards its own cancel/confirm icon and label slots (small size),
-  // so the button leaves are wired through DialogCatalog's top-level props. The
+  // so the button leaves are wired through PanelDialog's top-level props. The
   // cancel/confirm icons ride the shell defaults; only the labels need content.
   // `button3: null` suppresses the third BarButtons slot the shell does not use.
   const barButtons = { button3: null }
@@ -197,7 +197,7 @@ export function VMCatalogDialog<T extends CatalogDialogItem>({
       minWidth={minWidth}
       minHeight={minHeight}
     >
-      <DialogCatalog
+      <PanelDialog
         data-testid="catalog-dialog"
         bar={barHandle}
         textTitle={dialogTitle}

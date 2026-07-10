@@ -1,38 +1,38 @@
 "use client"
 
 import { CSSProperties, KeyboardEvent, useCallback, useEffect } from "react"
-import { AiChatStatus, useAiChat } from "@lib/hooks/use-ai-chat"
-import { VMHariPanel } from "@app/panels/VMHariPanel"
+import { HariStatus, useHari } from "@lib/hooks/use-ai-chat"
+import { VMPanelPalette } from "@app/panels/VMPanelPalette"
 
-const CHAT_INITIAL_WIDTH = 420
-const CHAT_INITIAL_HEIGHT = 220
+const HARI_INITIAL_WIDTH = 420
+const HARI_INITIAL_HEIGHT = 220
 
 /**
- * Gate for the AI chat panel. Mounts the panel only while the "ai-chat" dialog
+ * Gate for the Hari panel. Mounts the panel only while the "ai-chat" dialog
  * is active so it recenters on each open and its floating-panel hooks run only
  * when open, matching the other dialog view-models.
  */
-export function VMAiChatPanel() {
-  const { isOpen, close, send, status, warm } = useAiChat()
+export function VMHari() {
+  const { isOpen, close, send, status, warm } = useHari()
 
   if (!isOpen) return null
 
-  return <AiChatPanel onClose={close} send={send} status={status} warm={warm} />
+  return <Hari onClose={close} send={send} status={status} warm={warm} />
 }
 
-interface AiChatPanelProps {
+interface HariProps {
   onClose: () => void
   send: (message: string) => Promise<void>
-  status: AiChatStatus
+  status: HariStatus
   warm: () => Promise<void>
 }
 
 /**
- * View-model for the AI chat panel. Warms the agent on open and submits the
+ * View-model for the Hari panel. Warms the agent on open and submits the
  * textarea on Enter, then feeds its title and content to the shared
- * `VMHariPanel`. The panel stays non-modal so the canvas remains usable.
+ * `VMPanelPalette`. The panel stays non-modal so the canvas remains usable.
  */
-function AiChatPanel({ onClose, send, status, warm }: AiChatPanelProps) {
+function Hari({ onClose, send, status, warm }: HariProps) {
   useEffect(() => {
     void warm()
   }, [warm])
@@ -54,11 +54,11 @@ function AiChatPanel({ onClose, send, status, warm }: AiChatPanelProps) {
   )
 
   return (
-    <VMHariPanel
+    <VMPanelPalette
       title="AI Chat"
       testId="ai-chat-dialog"
-      initialWidth={CHAT_INITIAL_WIDTH}
-      initialHeight={CHAT_INITIAL_HEIGHT}
+      initialWidth={HARI_INITIAL_WIDTH}
+      initialHeight={HARI_INITIAL_HEIGHT}
       onClose={onClose}
     >
       <textarea
@@ -68,7 +68,7 @@ function AiChatPanel({ onClose, send, status, warm }: AiChatPanelProps) {
         disabled={isPending}
         style={styles.textarea}
       />
-    </VMHariPanel>
+    </VMPanelPalette>
   )
 }
 

@@ -9,12 +9,12 @@ import {
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
-import { DialogCatalog } from "@seldon/components/modules/DialogCatalog"
+import { PanelDialog } from "@seldon/components/modules/PanelDialog"
 import { BarButtonsProps } from "@seldon/components/parts/BarButtons"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { ResizeSide } from "@seldon/components/utils/resize"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
+import { usePalette } from "@app/panels/hooks/use-palette"
 import { DialogOverlay } from "../DialogOverlay"
 import { ImageDropzone } from "./ImageDropzone"
 
@@ -71,7 +71,7 @@ interface ImageUploadDialogProps {
 }
 
 /**
- * View-model for the image upload dialog. Feeds the generated `DialogCatalog`
+ * View-model for the image upload dialog. Feeds the generated `PanelDialog`
  * shell with the search field hidden: the title bar drags, the content frame
  * holds the dropzone, and the footer buttons clear, cancel, and upload. The
  * shell is a complete modal surface, so it renders inside `DialogOverlay`, a
@@ -99,7 +99,7 @@ function ImageUploadDialog({
     dragConstraints,
     minWidth,
     minHeight,
-  } = useFloatingPanel({
+  } = usePalette({
     initialPosition: {
       x: 0.5 * window.innerWidth - 0.5 * PANEL_INITIAL_WIDTH,
       y: 0.5 * window.innerHeight - 0.5 * PANEL_INITIAL_HEIGHT,
@@ -167,7 +167,7 @@ function ImageUploadDialog({
       minWidth={minWidth}
       minHeight={minHeight}
     >
-      <DialogCatalog
+      <PanelDialog
         data-testid="image-upload-dialog"
         bar={barHandle}
         textTitle={dialogTitle}

@@ -4,7 +4,7 @@ import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Panel",
-  id: Seldon.ComponentId.PANELS,
+  id: Seldon.ComponentId.PANEL,
   intent:
     "Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.",
   tags: [

@@ -1,11 +1,11 @@
 "use client"
 
 import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
-import { DialogHari } from "@seldon/components/modules/DialogHari"
-import { useFloatingPanel } from "@app/panels/hooks/use-floating-panel"
-import { PanelOverlay } from "./PanelOverlay"
+import { PanelPalette } from "@seldon/components/modules/PanelPalette"
+import { usePalette } from "@app/panels/hooks/use-palette"
+import { PaletteOverlay } from "./PaletteOverlay"
 
-interface VMHariPanelProps {
+interface VMPanelPaletteProps {
   title: string
   testId?: string
   initialWidth: number
@@ -16,14 +16,14 @@ interface VMHariPanelProps {
 }
 
 /**
- * Shared view-model for the floating panels. Feeds the generated `DialogHari`
+ * Shared view-model for the floating panels. Feeds the generated `PanelPalette`
  * shell: it wires the title, drag handle, and close button, and injects the
  * caller's content into the shell's content frame. It owns the drag, resize,
- * and escape wiring through `useFloatingPanel`, then renders `DialogHari` inside
- * the non-modal `PanelOverlay`. Mirrors `VMCatalogDialog`, but the panel stays
+ * and escape wiring through `usePalette`, then renders `PanelPalette` inside
+ * the non-modal `PaletteOverlay`. Mirrors `VMPanelDialog`, but the panel stays
  * non-modal so the canvas remains usable.
  */
-export function VMHariPanel({
+export function VMPanelPalette({
   title,
   testId,
   initialWidth,
@@ -31,7 +31,7 @@ export function VMHariPanel({
   onClose,
   closeOnClickOutside = false,
   children,
-}: VMHariPanelProps) {
+}: VMPanelPaletteProps) {
   const {
     x,
     y,
@@ -44,7 +44,7 @@ export function VMHariPanel({
     dragConstraints,
     minWidth,
     minHeight,
-  } = useFloatingPanel({
+  } = usePalette({
     initialPosition: {
       x: 0.5 * window.innerWidth - 0.5 * initialWidth,
       y: 0.5 * window.innerHeight - 0.5 * initialHeight,
@@ -64,7 +64,7 @@ export function VMHariPanel({
   const contentFrame = { style: styles.content, children }
 
   return (
-    <PanelOverlay
+    <PaletteOverlay
       onClose={onClose}
       testId={testId}
       closeOnClickOutside={closeOnClickOutside}
@@ -80,14 +80,14 @@ export function VMHariPanel({
       minWidth={minWidth}
       minHeight={minHeight}
     >
-      <DialogHari
+      <PanelPalette
         bar={barHandle}
         textTitle={dialogTitle}
         buttonIconic={closeButton}
         frame={contentFrame}
         style={styles.dialog}
       />
-    </PanelOverlay>
+    </PaletteOverlay>
   )
 }
 

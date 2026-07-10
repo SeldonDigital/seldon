@@ -69,12 +69,12 @@ export function ListStandardProductList({
   frame = sdn.frame,
   textTitle,
   textSubtitle,
-  itemCatalog2 = sdn.itemCatalog2,
+  itemCatalog2,
   icon2,
   frame2 = sdn.frame2,
   textTitle2,
   textSubtitle2,
-  itemCatalog3 = sdn.itemCatalog3,
+  itemCatalog3,
   icon3,
   frame3 = sdn.frame3,
   textTitle3,
@@ -294,7 +294,7 @@ export function ListStandardProductList({
               </Frame>
             </ItemCatalog>
           )}
-          {itemCatalog2Props !== null && (
+          {itemCatalog2 && itemCatalog2Props && (
             <ItemCatalog {...itemCatalog2Props}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}
               <Frame {...frame2Props}>
@@ -307,7 +307,7 @@ export function ListStandardProductList({
               </Frame>
             </ItemCatalog>
           )}
-          {itemCatalog3Props !== null && (
+          {itemCatalog3 && itemCatalog3Props && (
             <ItemCatalog {...itemCatalog3Props}>
               {icon3 && icon3Props && <Icon {...icon3Props} />}
               <Frame {...frame3Props}>
@@ -351,7 +351,6 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
   itemCatalog2: {
-    "aria-hidden": "false",
     className: "sdn-item-catalog sdn-item-node--o00j",
   },
   icon2: {
@@ -369,8 +368,8 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
   itemCatalog3: {
-    "aria-hidden": "false",
     className: "sdn-item-catalog sdn-item-node--o00j",
+    "data-seldon-ref": "Default",
   },
   icon3: {
     className: "sdn-icon sdn-icon--km45",

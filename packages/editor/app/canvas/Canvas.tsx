@@ -15,7 +15,7 @@ import {
   useStore as useSelectionStore,
 } from "@lib/workspace/hooks/use-selection"
 import { useSetHoverState } from "@lib/hooks/use-canvas-hover-state"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -49,7 +49,7 @@ export const Canvas = () => {
   const { activeBoard } = useActiveBoard()
   const { activeTool, setActiveTool } = useTool()
   const setHoverState = useSetHoverState()
-  const { activeDialog } = useDialog()
+  const { activePanel } = usePanel()
 
   const prevToolRef = useRef(activeTool)
   const savedNodeSelectionRef = useRef<{
@@ -133,7 +133,7 @@ export const Canvas = () => {
       id="canvas"
       onClick={handleCanvasClick}
       style={canvasStyle}
-      onMouseMove={activeDialog ? undefined : onMouseMove}
+      onMouseMove={activePanel ? undefined : onMouseMove}
       data-theme={DEFAULT_CHROME_THEME}
     >
       <CanvasTracking />

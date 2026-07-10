@@ -15,7 +15,7 @@ import { VMIconSetsDialog } from "../dialogs/icon-sets/VMIconSetsDialog"
 import { VMImageUploadDialog } from "../dialogs/image-upload/VMImageUploadDialog"
 import { VMThemesDialog } from "../dialogs/themes/VMThemesDialog"
 import { FocusRingOverlay } from "../focus/FocusRingOverlay"
-import { VMAiChatPanel } from "../panels/ai-chat-panel/VMAiChatPanel"
+import { VMHari } from "../panels/hari/VMHari"
 import { VMObjectsSidebar } from "../sidebars/objects/VMObjectsSidebar"
 import { VMPropertiesSidebar } from "../sidebars/properties/VMPropertiesSidebar"
 
@@ -69,7 +69,7 @@ export default function Editor() {
       <VMThemesDialog />
       <VMFontCollectionsDialog />
       <VMIconSetsDialog />
-      <VMAiChatPanel />
+      <VMHari />
       <FocusRingOverlay />
       <EditorShortcuts />
     </main>

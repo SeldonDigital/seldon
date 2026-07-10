@@ -11,7 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { ButtonProps } from "../elements/Button"
+import { Button, ButtonProps } from "../elements/Button"
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import {
   ComboboxFieldSearch,
@@ -21,14 +21,14 @@ import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { Bar, BarProps } from "../parts/Bar"
 import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { IconProps } from "../primitives/Icon"
+import { Icon, IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
-import { TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
+export interface PanelModalProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
@@ -41,6 +41,8 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
   icon2?: IconProps | null
   frame?: FrameProps | null
   barButtons?: BarButtonsProps | null
+  frame2?: FrameProps | null
+  frame3?: FrameProps | null
   button?: ButtonProps | null
   icon3?: IconProps | null
   textLabel?: TextLabelProps | null
@@ -50,7 +52,7 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
 }
 
 /*****
- * Dialog: DialogModal
+ * Panel: PanelModal
  * Level: Module
  * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
  * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
@@ -58,13 +60,13 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
  *
  * @example
  * ```tsx
- * <DialogModal
+ * <PanelModal
  *   role="dialog"
  *   aria-hidden="false"
  * />
  * ```
  *****/
-export function DialogModal({
+export function PanelModal({
   className = "",
   bar = sdn.bar,
   textTitle,
@@ -75,6 +77,8 @@ export function DialogModal({
   icon2 = sdn.icon2,
   frame = sdn.frame,
   barButtons = sdn.barButtons,
+  frame2 = sdn.frame2,
+  frame3 = sdn.frame3,
   button = sdn.button,
   icon3 = sdn.icon3,
   textLabel,
@@ -84,8 +88,8 @@ export function DialogModal({
   children,
   seldonRefs,
   ...props
-}: DialogModalProps) {
-  const dialogModalClassName = combineClassNames("sdn-dialog-modal", className)
+}: PanelModalProps) {
+  const panelModalClassName = combineClassNames("sdn-panel-modal", className)
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -188,6 +192,32 @@ export function DialogModal({
           ),
         },
   )
+  const frame2Props = applyRef(
+    seldonRefs,
+    frame2 === null
+      ? null
+      : {
+          ...sdn.frame2,
+          ...frame2,
+          className: combineClassNames(
+            sdn.frame2?.className,
+            frame2?.className,
+          ),
+        },
+  )
+  const frame3Props = applyRef(
+    seldonRefs,
+    frame3 === null
+      ? null
+      : {
+          ...sdn.frame3,
+          ...frame3,
+          className: combineClassNames(
+            sdn.frame3?.className,
+            frame3?.className,
+          ),
+        },
+  )
   const buttonProps = applyRef(
     seldonRefs,
     button === null
@@ -263,7 +293,7 @@ export function DialogModal({
 
   return (
     <HTMLDiv
-      className={dialogModalClassName}
+      className={panelModalClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
@@ -288,15 +318,26 @@ export function DialogModal({
           )}
           <Frame {...frameProps}></Frame>
           {barButtonsProps !== null && (
-            <BarButtons
-              {...barButtonsProps}
-              button={buttonProps}
-              icon={icon3Props}
-              textLabel={textLabel && textLabelProps}
-              button2={button2Props}
-              icon2={icon4Props}
-              textLabel2={textLabel2 && textLabel2Props}
-            />
+            <BarButtons {...barButtonsProps}>
+              <Frame {...frame2Props}></Frame>
+              <Frame {...frame3Props}></Frame>
+              {button && buttonProps && (
+                <Button {...buttonProps}>
+                  {icon3 && icon3Props && <Icon {...icon3Props} />}
+                  {textLabel && textLabelProps && (
+                    <TextLabel {...textLabelProps} />
+                  )}
+                </Button>
+              )}
+              {button2 && button2Props && (
+                <Button {...button2Props}>
+                  {icon4 && icon4Props && <Icon {...icon4Props} />}
+                  {textLabel2 && textLabel2Props && (
+                    <TextLabel {...textLabel2Props} />
+                  )}
+                </Button>
+              )}
+            </BarButtons>
           )}
         </>
       )}
@@ -307,13 +348,13 @@ export function DialogModal({
 //
 // Default property values
 //
-const sdn: DialogModalProps = {
+const sdn: PanelModalProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-dialog-modal sdn-dialog",
+  className: "sdn-panel-modal sdn-panel",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--yje0",
+    className: "sdn-bar sdn-bar--zhvk",
   },
   textTitle: {
     className: "sdn-text-title sdn-text-title--eodu",
@@ -347,28 +388,38 @@ const sdn: DialogModalProps = {
   },
   barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar-buttons--dabm",
+    className: "sdn-bar sdn-bar-buttons--0pge",
+  },
+  frame2: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ysu5",
+  },
+  frame3: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ysu5",
   },
   button: {
-    className: "sdn-button sdn-button--cq5m",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon3: {
     icon: "seldon-none",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--x7ac",
+    className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--yo51",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
-    className: "sdn-button sdn-button--cq5m",
+    className: "sdn-button sdn-button--wjtm",
   },
   icon4: {
     icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--x7ac",
+    className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--yo51",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
 }

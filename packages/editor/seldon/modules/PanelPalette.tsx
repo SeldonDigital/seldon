@@ -20,7 +20,7 @@ import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface DialogHariProps extends HTMLAttributes<HTMLElement> {
+export interface PanelPaletteProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
@@ -32,7 +32,7 @@ export interface DialogHariProps extends HTMLAttributes<HTMLElement> {
 }
 
 /*****
- * Dialog: DialogHari
+ * Panel: PanelPalette
  * Level: Module
  * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
  * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
@@ -40,13 +40,13 @@ export interface DialogHariProps extends HTMLAttributes<HTMLElement> {
  *
  * @example
  * ```tsx
- * <DialogHari
+ * <PanelPalette
  *   role="dialog"
  *   aria-hidden="false"
  * />
  * ```
  *****/
-export function DialogHari({
+export function PanelPalette({
   className = "",
   bar = sdn.bar,
   textTitle,
@@ -56,8 +56,11 @@ export function DialogHari({
   children,
   seldonRefs,
   ...props
-}: DialogHariProps) {
-  const dialogHariClassName = combineClassNames("sdn-dialog-palette", className)
+}: PanelPaletteProps) {
+  const panelPaletteClassName = combineClassNames(
+    "sdn-panel-palette",
+    className,
+  )
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -117,7 +120,7 @@ export function DialogHari({
 
   return (
     <HTMLDiv
-      className={dialogHariClassName}
+      className={panelPaletteClassName}
       role={sdn["role"]}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
@@ -144,10 +147,10 @@ export function DialogHari({
 //
 // Default property values
 //
-const sdn: DialogHariProps = {
+const sdn: PanelPaletteProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-dialog-palette sdn-dialog",
+  className: "sdn-panel-palette sdn-panel",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--9xs7",

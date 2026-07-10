@@ -4,9 +4,9 @@ import { useCallback, useMemo } from "react"
 import { STOCK_THEMES } from "@seldon/core/themes/catalog"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { VMCatalogDialog } from "../VMCatalogDialog"
+import { VMPanelDialog } from "../VMPanelDialog"
 import { CatalogDialogItem } from "../types"
 
 const THEME_ICON = "seldon-theme"
@@ -15,7 +15,7 @@ const THEME_ICON = "seldon-theme"
  * Dialog for adding a stock theme board to the workspace.
  */
 export function VMThemesDialog() {
-  const { activeDialog, closeDialog } = useDialog()
+  const { activePanel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addTheme } = useAddRemoveCommands()
 
@@ -47,17 +47,17 @@ export function VMThemesDialog() {
     [addTheme],
   )
 
-  if (activeDialog !== "add-theme") return null
+  if (activePanel !== "add-theme") return null
 
   return (
-    <VMCatalogDialog
+    <VMPanelDialog
       title="Add theme"
       confirmButtonText="Add theme"
       categories={categories}
       query={query}
       onQueryChange={setQuery}
       onPick={handlePick}
-      onClose={closeDialog}
+      onClose={closePanel}
     />
   )
 }

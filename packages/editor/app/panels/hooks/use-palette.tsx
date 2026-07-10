@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Rect } from "@seldon/components/utils/resize"
 import { PANEL_MIN_HEIGHT, PANEL_MIN_WIDTH } from "@app/constants"
 
-export function useFloatingPanel({
+export function usePalette({
   initialPosition,
   initialSize,
   handleClose,

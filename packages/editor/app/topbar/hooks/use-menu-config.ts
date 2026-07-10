@@ -24,7 +24,7 @@ import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-command
 import { useMoveCommands } from "@lib/hooks/commands/use-move-commands"
 import { useSelectCommands } from "@lib/hooks/commands/use-select-commands"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useImportExport } from "@lib/hooks/use-import-export"
 import { useNodeClipboardActions } from "@lib/hooks/use-node-clipboard-actions"
@@ -132,7 +132,7 @@ export function useMenuConfig(): MenuConfig {
   } = useSelection()
   const addToast = useAddToast()
   const { setActiveTool } = useTool()
-  const { openDialog } = useDialog()
+  const { openPanel } = usePanel()
 
   const canDeleteSelection = useMemo(() => {
     if (selectedNode) return true
@@ -249,7 +249,7 @@ export function useMenuConfig(): MenuConfig {
       {
         id: "open-ai-chat",
         label: "AI Chat",
-        action: () => openDialog("ai-chat"),
+        action: () => openPanel("ai-chat"),
         shortcut: "⌘ J",
         visibleIn: ["edit", "preview"],
       },
@@ -349,7 +349,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     addToast,
-    openDialog,
+    openPanel,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     showPlayground,
@@ -448,7 +448,7 @@ export function useMenuConfig(): MenuConfig {
         id: "add-component",
         label: "Add Component",
         action: () => {
-          openDialog("add-board")
+          openPanel("add-board")
           setActiveTool("select")
         },
         shortcut: "A",
@@ -538,7 +538,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     setActiveTool,
-    openDialog,
+    openPanel,
     addVariant,
     selectedBoard,
     moveSelectionForward,

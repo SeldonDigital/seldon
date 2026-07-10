@@ -5,9 +5,9 @@ import { STOCK_FONT_COLLECTIONS } from "@seldon/core/font-collections/catalog"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { useDialog } from "@lib/hooks/use-dialog"
+import { usePanel } from "@lib/hooks/use-panel"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { VMCatalogDialog } from "../VMCatalogDialog"
+import { VMPanelDialog } from "../VMPanelDialog"
 import { CatalogDialogItem } from "../types"
 
 const FONT_COLLECTION_ICON = "material-fontDownload"
@@ -17,7 +17,7 @@ const FONT_COLLECTION_ICON = "material-fontDownload"
  * System collection is never offered.
  */
 export function VMFontCollectionsDialog() {
-  const { activeDialog, closeDialog } = useDialog()
+  const { activePanel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addFontCollection } = useAddRemoveCommands()
 
@@ -51,17 +51,17 @@ export function VMFontCollectionsDialog() {
     [addFontCollection],
   )
 
-  if (activeDialog !== "add-font-collection") return null
+  if (activePanel !== "add-font-collection") return null
 
   return (
-    <VMCatalogDialog
+    <VMPanelDialog
       title="Add font collection"
       confirmButtonText="Add font collection"
       categories={categories}
       query={query}
       onQueryChange={setQuery}
       onPick={handlePick}
-      onClose={closeDialog}
+      onClose={closePanel}
     />
   )
 }
