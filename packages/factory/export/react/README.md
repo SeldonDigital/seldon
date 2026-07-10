@@ -182,7 +182,7 @@ After license insertion, `exportReact` runs a final Prettier pass over every emi
 
 ## Generated Output
 
-`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the runtime helpers under `utils/`, image files, and a package README. When any node carries a reference handle, it also emits a `refs/index.ts` registry. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
+`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme under `styles/`, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the runtime helpers under `utils/`, image files, and a package README. When any node carries a reference handle, it also emits a `refs/index.ts` registry. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
 
 Every child prop in a generated interface is optional and nullable. A schema child renders with its `sdn` defaults when the prop is omitted and does not render when the caller passes `null`. An invalid child renders only when the caller passes the prop.
 

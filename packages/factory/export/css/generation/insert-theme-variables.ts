@@ -284,7 +284,7 @@ export async function generateThemeStylesheetFiles(
 
     files.push({
       themeId,
-      path: `${componentsFolder}/styles-${slug}.css`,
+      path: `${componentsFolder}/styles/${slug}.css`,
       content,
     })
   }
