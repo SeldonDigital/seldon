@@ -276,6 +276,10 @@ import {
   schema as textareaSchema,
 } from "./primitives/controls/Textarea.schema"
 import {
+  exportConfig as toggleSwitchExportConfig,
+  schema as toggleSwitchSchema,
+} from "./custom/ToggleSwitch/ToggleSwitch.schema"
+import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
 } from "./primitives/texts/Blockquote.schema"
@@ -347,6 +351,7 @@ const primitives: ComponentSchema[] = [
   inputSchema,
   legendSchema,
   textareaSchema,
+  toggleSwitchSchema,
   listItemSchema,
   blockquoteSchema,
   citeSchema,
@@ -517,6 +522,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.TEXTAREA]: textareaExportConfig,
+  [ComponentId.TOGGLE_SWITCH]: toggleSwitchExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
   [ComponentId.LIST_ITEM]: listItemExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,

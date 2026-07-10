@@ -1,5 +1,6 @@
 import { ComponentToExport } from "../../../types"
 import { generateRootAttributePropsString } from "../shared/attribute-props"
+import { getReactReturnTag } from "../shared/custom-react"
 import { dataSeldonRefAttr } from "../shared/data-ref-attr"
 import { JSXNode } from "./types"
 
@@ -32,8 +33,6 @@ export function jsxStructureToString(
   classNameVarName: string,
   withRef: boolean = false,
 ): string {
-  const { config } = component
-
   // Build JSX string recursively
   function nodeToString(node: JSXNode, indent: number = 0): string {
     const indentStr = " ".repeat(indent)
@@ -113,8 +112,9 @@ export function jsxStructureToString(
   const rootRefAttr = dataSeldonRefAttr(jsxRoot.ref)
   const rootAttrProps = generateRootAttributePropsString(component)
   const forwardedRefProp = withRef ? " ref={ref}" : ""
+  const rootTag = getReactReturnTag(component)
   let content = `
-  return (\n    <${config.react.returns} className={${classNameVarName}}${rootRefAttr}${rootAttrProps}${forwardedRefProp} {...props}>`
+  return (\n    <${rootTag} className={${classNameVarName}}${rootRefAttr}${rootAttrProps}${forwardedRefProp} {...props}>`
 
   if (jsxRoot.children && jsxRoot.children.length > 0) {
     content += `\n      {children !== undefined ? (\n        children\n      ) : (\n        <>`
@@ -124,6 +124,6 @@ export function jsxStructureToString(
     content += `\n        </>\n      )}`
   }
 
-  content += `\n    </${config.react.returns}>\n  )`
+  content += `\n    </${rootTag}>\n  )`
   return content
 }

@@ -5,6 +5,7 @@ import {
   TransformStrategy,
   transformSource,
 } from "../../utils/transform-source"
+import { getCustomTemplateMeta } from "../shared/custom-react"
 import { generateChildrenProps } from "../shared/generate-children-props"
 import {
   generateOwnPropsContent,
@@ -38,11 +39,14 @@ export function insertInterface(
   const allProps = ["className?: string", `"data-seldon-ref"?: string`]
 
   // Components that return a native wrapper which forwards `ref` expose a typed
-  // `ref` prop. The ref rides the `{...props}` spread onto the wrapper.
+  // `ref` prop. The ref rides the `{...props}` spread onto the wrapper. Custom
+  // components resolve to the primitive their template wraps.
   const nativeReturn =
-    NATIVE_REACT_PRIMITIVES[
-      component.config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
-    ]
+    component.config.react.returns === "custom"
+      ? NATIVE_REACT_PRIMITIVES[getCustomTemplateMeta(component).base]
+      : NATIVE_REACT_PRIMITIVES[
+          component.config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
+        ]
   if (nativeReturn?.forwardsRef) {
     allProps.push(`ref?: Ref<${nativeReturn.types.parameter}>`)
   }

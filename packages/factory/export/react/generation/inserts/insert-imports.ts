@@ -14,6 +14,7 @@ import {
 } from "../../utils/transform-source"
 import { validateTreeNodeProps } from "../../validation/validate-component-props"
 import { JSXNode } from "../preprocess/types"
+import { getCustomTemplateMeta } from "../shared/custom-react"
 
 /**
  * This traverses the tree and checks the used primitives for which imports to add
@@ -51,6 +52,11 @@ export function insertImports(
 
   if (config.react.returns === "Frame") {
     imports["../frames/Frame"] = ["Frame"]
+  }
+
+  if (config.react.returns === "custom") {
+    const meta = getCustomTemplateMeta(component)
+    imports[meta.importPath] = [meta.importName]
   }
 
   if (config.react.returns.startsWith("HTML")) {
@@ -363,10 +369,13 @@ function getReactImports(
     }
   }
 
-  const nativePrimitive =
-    NATIVE_REACT_PRIMITIVES[
-      config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
-    ]
+  // Custom components extend the props of the primitive their template wraps.
+  const returnsKey =
+    config.react.returns === "custom"
+      ? getCustomTemplateMeta(component).base
+      : (config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES)
+
+  const nativePrimitive = NATIVE_REACT_PRIMITIVES[returnsKey]
   const reactImports = [nativePrimitive.types.generic]
   // Native wrappers that forward `ref` need the `Ref` type for the ref prop.
   if (nativePrimitive.forwardsRef) {

@@ -8,6 +8,7 @@ import {
   validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 import { assignPropNames } from "../shared/assign-prop-names"
+import { getReactReturnTag } from "../shared/custom-react"
 import { getConditionalPropPaths } from "../shared/get-conditional-prop-paths"
 import { JSXNode, JSXNodeType, JSXStructure } from "./types"
 
@@ -47,7 +48,7 @@ export function generateJSXStructure(
   _nodeIdToClass: NodeIdToClass,
   _workspace: Workspace,
 ): JSXStructure {
-  const { tree, config } = component
+  const { tree } = component
 
   const treeChildren = Array.isArray(tree.children) ? tree.children : []
 
@@ -215,7 +216,7 @@ export function generateJSXStructure(
 
   const root: JSXNode = {
     type: "component",
-    name: config.react.returns || "div",
+    name: getReactReturnTag(component) || "div",
     path: tree.dataBinding.path,
     propVarName: "props",
     ref: tree.ref,

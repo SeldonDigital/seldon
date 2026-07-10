@@ -1,6 +1,7 @@
 import { isEqual } from "lodash"
 
 import { Workspace } from "@seldon/core"
+import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import type { NodeParentIndex } from "@seldon/core/workspace/compute"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
@@ -279,11 +280,22 @@ export const buildStyleRegistry = (
       variantOwnedStates[node.id] = new Set(Object.keys(nodeStateDeltas))
     }
 
+    // A custom component styles a wrapper around a native control (a toggle
+    // switch wraps an input), so a pseudo like `checked` lives on the descendant
+    // control, not the wrapper. Route its own states root-scoped so `checked`
+    // emits `:has(:checked)` and the wrapper restyles when the control is on.
+    const nodeCatalogId = getNodeCatalogId(node, workspace)
+    const isCustomComponent =
+      nodeCatalogId != null &&
+      isComponentId(nodeCatalogId) &&
+      getComponentExportConfig(nodeCatalogId).react.returns === "custom"
+
     // A container variant owns the interaction: its states cascade from the row
     // root, so emit them root-scoped (with the ancestor selector for focus and
     // checked) and skip the self-scoped rule. Leaf variants keep their
     // self-scoped rule for standalone use.
-    const isContainerVariant = hasStateDeltas && containerNodeIds.has(node.id)
+    const isContainerVariant =
+      hasStateDeltas && (containerNodeIds.has(node.id) || isCustomComponent)
     if (isContainerVariant) {
       const rootClass = getClassNameForNode(node, workspace)
       for (const [stateName, stateCss] of Object.entries(nodeStateDeltas)) {

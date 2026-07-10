@@ -68,6 +68,7 @@ export enum ComponentId {
   SELECT = "select",
   SIDEBAR = "sidebar",
   SOURCE = "source",
+  TOGGLE_SWITCH = "toggleSwitch",
   TABLE = "table",
   TABLE_BODY = "tableBody",
   TABLE_DATA = "tableData",
