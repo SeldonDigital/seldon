@@ -1,8 +1,8 @@
 import path from "node:path"
 
 import { Workspace } from "@seldon/core"
-import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 import { CUSTOM_REACT_TEMPLATE_META } from "@seldon/core/components/catalog/custom/registry"
+import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
 import { createNodeExportAssetReader } from "../../../asset-reader"
 import { ComponentToExport, ExportOptions, FileToExport } from "../../../types"

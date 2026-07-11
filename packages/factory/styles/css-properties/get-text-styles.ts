@@ -149,7 +149,10 @@ export function getTextStyles({
       if (reference) {
         styles.fontSize = reference
       } else {
-        const resolvedButtonSize = resolveFontSize({ fontSize: buttonSize, theme })
+        const resolvedButtonSize = resolveFontSize({
+          fontSize: buttonSize,
+          theme,
+        })
         styles.fontSize = getCssValue(resolvedButtonSize) as string
       }
     }

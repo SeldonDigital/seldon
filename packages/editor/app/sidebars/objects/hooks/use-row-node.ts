@@ -36,6 +36,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useTool } from "@lib/hooks/use-tool"
+import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
@@ -58,7 +59,6 @@ import {
   useIsAncestorOfSelection,
   useIsParentOfSelection,
 } from "./use-selection-relations"
-import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
 
 /**
  * Hook that provides all state and handlers for rendering a node row in the objects sidebar.

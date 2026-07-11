@@ -14,6 +14,10 @@ import {
   exportConfig as boardExportConfig,
   schema as boardSchema,
 } from "./boards/Board.schema"
+import {
+  exportConfig as toggleSwitchExportConfig,
+  schema as toggleSwitchSchema,
+} from "./custom/ToggleSwitch.schema"
 // Elements
 import {
   exportConfig as avatarExportConfig,
@@ -275,10 +279,6 @@ import {
   exportConfig as textareaExportConfig,
   schema as textareaSchema,
 } from "./primitives/controls/Textarea.schema"
-import {
-  exportConfig as toggleSwitchExportConfig,
-  schema as toggleSwitchSchema,
-} from "./custom/ToggleSwitch.schema"
 import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,

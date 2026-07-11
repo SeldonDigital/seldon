@@ -458,7 +458,11 @@ export function getPropertyRegistryEntry(
 
   // Route every binary on/off property to the toggle switch, overriding the
   // registry default. Copy so the cached entry is not mutated.
-  if (entry && entry.control !== "switch" && isBooleanControlPath(propertyPath)) {
+  if (
+    entry &&
+    entry.control !== "switch" &&
+    isBooleanControlPath(propertyPath)
+  ) {
     return { ...entry, control: "switch" }
   }
 

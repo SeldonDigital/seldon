@@ -11,11 +11,11 @@ import {
   invariant,
 } from "@seldon/core"
 import { getComponentExportConfig } from "@seldon/core/components/catalog"
+import { CUSTOM_REACT_TEMPLATE_COMPONENTS } from "@seldon/core/components/catalog/custom"
 import {
   ComponentId,
   NATIVE_REACT_PRIMITIVES,
 } from "@seldon/core/components/constants"
-import { CUSTOM_REACT_TEMPLATE_COMPONENTS } from "@seldon/core/components/catalog/custom"
 import { HTMLAnchor } from "@seldon/core/components/native-react/HTML.Anchor"
 import { HTMLArticle } from "@seldon/core/components/native-react/HTML.Article"
 import { HTMLAside } from "@seldon/core/components/native-react/HTML.Aside"
