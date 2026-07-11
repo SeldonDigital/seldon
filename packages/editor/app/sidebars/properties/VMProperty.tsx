@@ -72,6 +72,12 @@ function VMPropertyInner(props: RowPropertyProps) {
   // same hook props as `ItemProperty`. The `toggleIcon` slot shows the row's
   // property glyph, the same `icon2` source the value cell uses on other rows.
   if (switchControl) {
+    // The toggle shows its value through its own on/off color, so the override
+    // "activated" tint must not also land on it, or an overridden "off" toggle
+    // reads as active. Drop activated for the control while keeping invalid and
+    // disabled; the label and icon still carry the override tint.
+    const toggleStateRef =
+      props.property.status === "override" ? undefined : stateRef
     const toggleRefs: Record<string, Record<string, unknown>> = {
       propertyToggle: { ...listItemProps.buttonIconic },
       propertyToggleIcon: { ...listItemProps.icon },
@@ -84,7 +90,7 @@ function VMPropertyInner(props: RowPropertyProps) {
           ref: toggleSwitchRef,
           onChange: onToggleSwitchChange,
         },
-        stateRef,
+        toggleStateRef,
       ),
     }
     if (listItemProps.icon2) {
