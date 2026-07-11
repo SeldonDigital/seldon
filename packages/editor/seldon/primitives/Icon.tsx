@@ -30,8 +30,8 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-inbox"
     | "material-chevronDown"
     | "seldon-more"
-    | "material-add"
     | "material-unfoldMore"
+    | "material-add"
     | "material-filterList"
     | "material-dataObject"
     | "material-save"
@@ -559,8 +559,8 @@ const iconMap = {
   "material-inbox": Icons.IconMaterialInbox,
   "material-chevronDown": Icons.IconMaterialChevronDown,
   "seldon-more": Icons.IconSeldonMore,
-  "material-add": Icons.IconMaterialAdd,
   "material-unfoldMore": Icons.IconMaterialUnfoldMore,
+  "material-add": Icons.IconMaterialAdd,
   "material-filterList": Icons.IconMaterialFilterList,
   "material-dataObject": Icons.IconMaterialDataObject,
   "material-save": Icons.IconMaterialSave,

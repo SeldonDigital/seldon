@@ -1843,14 +1843,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "id": "component-item-hjWwC1ug",
-              "children": [
-                {
-                  "id": "component-item-Wu9PPv3c"
-                }
-              ]
             }
           ]
         },
@@ -1870,22 +1862,6 @@
               "children": [
                 {
                   "id": "component-item-JvSW6JpE"
-                },
-                {
-                  "id": "component-item-qNPTBil0",
-                  "children": [
-                    {
-                      "id": "component-button-raEOhGWD",
-                      "children": [
-                        {
-                          "id": "component-icon-Ia42zTwt"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-text-Xg6PReX9"
-                    }
-                  ]
                 },
                 {
                   "id": "component-comboboxField-cMKwpdAk",
@@ -1913,6 +1889,46 @@
               "children": [
                 {
                   "id": "component-icon-5Coex6SW"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-item-b7oPitdU",
+          "children": [
+            {
+              "id": "component-item-HiKfAFK5",
+              "children": [
+                {
+                  "id": "component-item-jmuthUmH"
+                }
+              ]
+            },
+            {
+              "id": "component-item-fQ6EF5qC",
+              "children": [
+                {
+                  "id": "component-item-K7Y9jqAr"
+                },
+                {
+                  "id": "component-frame-INf3bFY0",
+                  "children": [
+                    {
+                      "id": "component-item-YzeMLx3R"
+                    },
+                    {
+                      "id": "component-toggleSwitch-pelhFQXa"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-item-qeIxCmeu",
+              "children": [
+                {
+                  "id": "component-item-wBbX56Dl"
                 }
               ]
             }
@@ -3091,201 +3107,7 @@
               ]
             },
             {
-              "id": "component-sidebar-ENPyLuzb",
-              "children": [
-                {
-                  "id": "component-item-YMriuIlx",
-                  "children": [
-                    {
-                      "id": "component-item-iPinBp3T",
-                      "children": [
-                        {
-                          "id": "component-item-TWdoYee3"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-c1ynekaf",
-                      "children": [
-                        {
-                          "id": "component-item-rcPlJ0xw"
-                        },
-                        {
-                          "id": "component-item-F9PHTdVl",
-                          "children": [
-                            {
-                              "id": "component-item-IYpxTPVR"
-                            },
-                            {
-                              "id": "component-item-267sGvXD"
-                            },
-                            {
-                              "id": "component-item-x9VHNyqt",
-                              "children": [
-                                {
-                                  "id": "component-item-FsgbXFXn"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-xTJFotQa",
-                      "children": [
-                        {
-                          "id": "component-item-eSCce7Ee"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-3hicCOE3",
-                      "children": [
-                        {
-                          "id": "component-item-UmWxhZa3"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "component-item-o00JfEL6",
-                  "children": [
-                    {
-                      "id": "component-item-i2TQI7ba",
-                      "children": [
-                        {
-                          "id": "component-item-78pgt5eP"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-KIo9sous",
-                      "children": [
-                        {
-                          "id": "component-item-8c1BYnxn"
-                        },
-                        {
-                          "id": "component-item-7czAdsWw"
-                        },
-                        {
-                          "id": "component-item-xurU12rv",
-                          "children": [
-                            {
-                              "id": "component-item-bUekv3kR"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-SNfjg631",
-                      "children": [
-                        {
-                          "id": "component-item-1QsPcow4"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "component-sidebar-Ldkfe0w0",
-                  "children": [
-                    {
-                      "id": "component-sidebar-gdb5TYmq",
-                      "children": [
-                        {
-                          "id": "component-sidebar-AfWfrQxB"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-Qs0G3Qbi",
-                      "children": [
-                        {
-                          "id": "component-sidebar-h8m0Nlra"
-                        },
-                        {
-                          "id": "component-sidebar-u5Ggz21o",
-                          "children": [
-                            {
-                              "id": "component-sidebar-UshDLesw"
-                            },
-                            {
-                              "id": "component-sidebar-wutYE3tN"
-                            },
-                            {
-                              "id": "component-sidebar-PNUA7kmt",
-                              "children": [
-                                {
-                                  "id": "component-sidebar-UELpLJSz"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-LkDrnlrk",
-                      "children": [
-                        {
-                          "id": "component-sidebar-bWFSefYw"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-Z0izpk3s",
-                      "children": [
-                        {
-                          "id": "component-sidebar-nR9sbokg"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "component-sidebar-tR0YLuQ4",
-                  "children": [
-                    {
-                      "id": "component-sidebar-gNgOPdER",
-                      "children": [
-                        {
-                          "id": "component-sidebar-WRKOtezh"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-CY2SNfD9",
-                      "children": [
-                        {
-                          "id": "component-sidebar-TRW0zdZ6"
-                        },
-                        {
-                          "id": "component-sidebar-Uot6DVpi"
-                        },
-                        {
-                          "id": "component-sidebar-t3NbSAxi",
-                          "children": [
-                            {
-                              "id": "component-sidebar-p0EEC1pa"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-oseMZPy4",
-                      "children": [
-                        {
-                          "id": "component-sidebar-0In3sNgB"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              "id": "component-sidebar-ENPyLuzb"
             }
           ]
         },
@@ -3312,249 +3134,7 @@
               ]
             },
             {
-              "id": "component-sidebar-evMwxVOP",
-              "children": [
-                {
-                  "id": "component-sidebar-kGXBvjeB",
-                  "children": [
-                    {
-                      "id": "component-sidebar-KACtbENG",
-                      "children": [
-                        {
-                          "id": "component-sidebar-h8RzUFNJ"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-sy2EUc1I",
-                      "children": [
-                        {
-                          "id": "component-sidebar-ynjh54rU"
-                        },
-                        {
-                          "id": "component-sidebar-Gr8jBtlk",
-                          "children": [
-                            {
-                              "id": "component-sidebar-eTOeoYyf"
-                            },
-                            {
-                              "id": "component-sidebar-k1ax4BOc"
-                            },
-                            {
-                              "id": "component-sidebar-FakEnJvK",
-                              "children": [
-                                {
-                                  "id": "component-sidebar-8A1GVspI"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-nH6jVHue",
-                      "children": [
-                        {
-                          "id": "component-sidebar-5EssWHuj"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-Ba44dnoB",
-                      "children": [
-                        {
-                          "id": "component-sidebar-OBnRsWQS"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "component-item-cPHT5wz0",
-                  "children": [
-                    {
-                      "id": "component-item-vY2yI14Z",
-                      "children": [
-                        {
-                          "id": "component-item-I67SLqg5"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-IZL4aRVx",
-                      "children": [
-                        {
-                          "id": "component-item-5UuQjUKJ"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-WaBSOjbu",
-                      "children": [
-                        {
-                          "id": "component-item-kd6ujZq9",
-                          "children": [
-                            {
-                              "id": "component-item-a0TOiLI4"
-                            }
-                          ]
-                        },
-                        {
-                          "id": "component-item-Pal7YMkk"
-                        },
-                        {
-                          "id": "component-item-mbaAhbFm",
-                          "children": [
-                            {
-                              "id": "component-item-VvasDXBV"
-                            },
-                            {
-                              "id": "component-item-8k3jIJtj"
-                            },
-                            {
-                              "id": "component-item-0B1iakNw",
-                              "children": [
-                                {
-                                  "id": "component-item-XLHSjORe"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-item-NrKyd6hk",
-                      "children": [
-                        {
-                          "id": "component-item-tMipwJEo"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "component-sidebar-QBNAUxMP",
-                  "children": [
-                    {
-                      "id": "component-sidebar-dFSVGnx9",
-                      "children": [
-                        {
-                          "id": "component-sidebar-satBPAhU"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-JzzR7qP9",
-                      "children": [
-                        {
-                          "id": "component-sidebar-3YrzyFSD"
-                        },
-                        {
-                          "id": "component-sidebar-UYVTz7i6",
-                          "children": [
-                            {
-                              "id": "component-sidebar-SPa4PZMx"
-                            },
-                            {
-                              "id": "component-sidebar-6vtYvfON"
-                            },
-                            {
-                              "id": "component-sidebar-pve5VRZz",
-                              "children": [
-                                {
-                                  "id": "component-sidebar-JSkLYst2"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-A01g4rch",
-                      "children": [
-                        {
-                          "id": "component-sidebar-TjF8RrUd"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-zSOV37q7",
-                      "children": [
-                        {
-                          "id": "component-sidebar-Uca8su3w"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "component-sidebar-xHulfWbO",
-                  "children": [
-                    {
-                      "id": "component-sidebar-UDOlJQyW",
-                      "children": [
-                        {
-                          "id": "component-sidebar-uZvWd2Z0"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-oRSzB48Z",
-                      "children": [
-                        {
-                          "id": "component-sidebar-G6pvZwoX"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-FdIo28wD",
-                      "children": [
-                        {
-                          "id": "component-item-hsCICNBq",
-                          "children": [
-                            {
-                              "id": "component-item-67Al6yW4"
-                            }
-                          ]
-                        },
-                        {
-                          "id": "component-sidebar-IxBkveHY"
-                        },
-                        {
-                          "id": "component-sidebar-mnYbvloE",
-                          "children": [
-                            {
-                              "id": "component-sidebar-VS5Ybyo4"
-                            },
-                            {
-                              "id": "component-sidebar-jAOWEfYY"
-                            },
-                            {
-                              "id": "component-sidebar-AOqI1NPL",
-                              "children": [
-                                {
-                                  "id": "component-sidebar-0S5Bl6yt"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-sidebar-yLLtfiG6",
-                      "children": [
-                        {
-                          "id": "component-sidebar-3ONYgWxR"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              "id": "component-sidebar-evMwxVOP"
             }
           ]
         }
@@ -16593,65 +16173,6 @@
         }
       }
     },
-    "component-text-Xg6PReX9": {
-      "id": "component-text-Xg6PReX9",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-label",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Property"
-        },
-        "width": {
-          "type": "exact",
-          "value": {
-            "unit": "%",
-            "value": 35
-          }
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "margin": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        },
-        "display": {
-          "type": "option",
-          "value": "show"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Label"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 30
-            }
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
     "component-comboboxField-cMKwpdAk": {
       "id": "component-comboboxField-cMKwpdAk",
       "type": "instance",
@@ -16895,80 +16416,6 @@
           "symbol": {
             "type": "option",
             "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-button-raEOhGWD": {
-      "id": "component-button-raEOhGWD",
-      "ref": "propertyAdd",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-iconic",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-icon-Ia42zTwt": {
-      "id": "component-icon-Ia42zTwt",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-VSAubWrH",
-      "overrides": {},
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
           },
           "size": {
             "type": "computed",
@@ -17526,85 +16973,6 @@
           "symbol": {
             "type": "option",
             "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-hjWwC1ug": {
-      "id": "component-item-hjWwC1ug",
-      "ref": "nodeAdd",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-iconic",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-item-Wu9PPv3c": {
-      "id": "component-item-Wu9PPv3c",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-VSAubWrH",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-add"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
           },
           "size": {
             "type": "computed",
@@ -24759,2562 +24127,6 @@
         }
       }
     },
-    "component-item-YMriuIlx": {
-      "id": "component-item-YMriuIlx",
-      "type": "instance",
-      "level": "element",
-      "label": "Section",
-      "theme": null,
-      "template": "node:component-item-qfPj12HJ",
-      "overrides": {
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 0
-              }
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 50
-              }
-            }
-          }
-        ],
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "offsetX": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "offsetY": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 1
-              }
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 20
-              }
-            },
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user"
-    },
-    "component-item-iPinBp3T": {
-      "id": "component-item-iPinBp3T",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-OCtkZUuF",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-item-TWdoYee3": {
-      "id": "component-item-TWdoYee3",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-7MKLAjub",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-unfoldMore"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-c1ynekaf": {
-      "id": "component-item-c1ynekaf",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox",
-      "theme": null,
-      "template": "node:component-item-GqRllIqj",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-item-rcPlJ0xw": {
-      "id": "component-item-rcPlJ0xw",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-item-Z34z7Dhr",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Section Name"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          },
-          "textCase": {
-            "type": "option",
-            "value": "uppercase"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Label"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 30
-            }
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-item-F9PHTdVl": {
-      "id": "component-item-F9PHTdVl",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-O7CtNVBH",
-      "overrides": {
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "border": {
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        },
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-item-IYpxTPVR": {
-      "id": "component-item-IYpxTPVR",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-0qVCFngD",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-component"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-267sGvXD": {
-      "id": "component-item-267sGvXD",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-sHhIabuo",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "right": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "bottom": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "left": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          }
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "none"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "corners": {
-          "topLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "topRight": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomRight": {
-            "type": "empty",
-            "value": null
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-item-x9VHNyqt": {
-      "id": "component-item-x9VHNyqt",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-8zOXA1We",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-item-FsgbXFXn": {
-      "id": "component-item-FsgbXFXn",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-dE8vlG8d",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-xTJFotQa": {
-      "id": "component-item-xTJFotQa",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-sDjvfAPl",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        },
-        "margin": {
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-item-eSCce7Ee": {
-      "id": "component-item-eSCce7Ee",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-CMEf5HDL",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-add"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-3hicCOE3": {
-      "id": "component-item-3hicCOE3",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-m1G2OAIO",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-item-UmWxhZa3": {
-      "id": "component-item-UmWxhZa3",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-X0ybtMzs",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-moreHoriz"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-o00JfEL6": {
-      "id": "component-item-o00JfEL6",
-      "type": "instance",
-      "level": "element",
-      "label": "Node",
-      "theme": null,
-      "template": "node:component-item-TnD6GN06",
-      "overrides": {
-        "role": {
-          "type": "option",
-          "value": "treeitem"
-        },
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "width": {
-            "type": "option",
-            "value": "hairline"
-          },
-          "style": {
-            "type": "option",
-            "value": "solid"
-          },
-          "color": {
-            "type": "option",
-            "value": "transparent"
-          },
-          "opacity": {
-            "type": "exact",
-            "value": {
-              "value": 100,
-              "unit": "%"
-            }
-          },
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "repeat": {
-          "count": 3
-        }
-      }
-    },
-    "component-item-i2TQI7ba": {
-      "id": "component-item-i2TQI7ba",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-HSgjhz6b",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-item-78pgt5eP": {
-      "id": "component-item-78pgt5eP",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-zn8GFZsT",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-chevronDown"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-KIo9sous": {
-      "id": "component-item-KIo9sous",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-LMjE9ivP",
-      "overrides": {
-        "padding": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-item-8c1BYnxn": {
-      "id": "component-item-8c1BYnxn",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-zdDEhaL4",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-component"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-7czAdsWw": {
-      "id": "component-item-7czAdsWw",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-pZCfJ3k6",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "placeholder": {
-          "type": "exact",
-          "value": "Component Name"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-item-xurU12rv": {
-      "id": "component-item-xurU12rv",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-CeZRPCDC",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-item-bUekv3kR": {
-      "id": "component-item-bUekv3kR",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-ZpsMrUME",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-SNfjg631": {
-      "id": "component-item-SNfjg631",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-hjWwC1ug",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-item-1QsPcow4": {
-      "id": "component-item-1QsPcow4",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-Wu9PPv3c",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-add"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-Ldkfe0w0": {
-      "id": "component-sidebar-Ldkfe0w0",
-      "type": "instance",
-      "level": "element",
-      "label": "Section",
-      "theme": null,
-      "template": "node:component-item-qfPj12HJ",
-      "overrides": {
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 0
-              }
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 50
-              }
-            }
-          }
-        ],
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "offsetX": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "offsetY": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 1
-              }
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 20
-              }
-            },
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user"
-    },
-    "component-sidebar-gdb5TYmq": {
-      "id": "component-sidebar-gdb5TYmq",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-OCtkZUuF",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-AfWfrQxB": {
-      "id": "component-sidebar-AfWfrQxB",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-7MKLAjub",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-unfoldMore"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-Qs0G3Qbi": {
-      "id": "component-sidebar-Qs0G3Qbi",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox",
-      "theme": null,
-      "template": "node:component-item-GqRllIqj",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-sidebar-h8m0Nlra": {
-      "id": "component-sidebar-h8m0Nlra",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-item-Z34z7Dhr",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Section Name"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          },
-          "textCase": {
-            "type": "option",
-            "value": "uppercase"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Label"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 30
-            }
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-u5Ggz21o": {
-      "id": "component-sidebar-u5Ggz21o",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-O7CtNVBH",
-      "overrides": {
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "border": {
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        },
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-sidebar-UshDLesw": {
-      "id": "component-sidebar-UshDLesw",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-0qVCFngD",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-component"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-wutYE3tN": {
-      "id": "component-sidebar-wutYE3tN",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-sHhIabuo",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "right": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "bottom": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "left": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          }
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "none"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "corners": {
-          "topLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "topRight": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomRight": {
-            "type": "empty",
-            "value": null
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-PNUA7kmt": {
-      "id": "component-sidebar-PNUA7kmt",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-8zOXA1We",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-UELpLJSz": {
-      "id": "component-sidebar-UELpLJSz",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-dE8vlG8d",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-LkDrnlrk": {
-      "id": "component-sidebar-LkDrnlrk",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-sDjvfAPl",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        },
-        "margin": {
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-bWFSefYw": {
-      "id": "component-sidebar-bWFSefYw",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-CMEf5HDL",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-add"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-Z0izpk3s": {
-      "id": "component-sidebar-Z0izpk3s",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-m1G2OAIO",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-nR9sbokg": {
-      "id": "component-sidebar-nR9sbokg",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-X0ybtMzs",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-moreHoriz"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-tR0YLuQ4": {
-      "id": "component-sidebar-tR0YLuQ4",
-      "type": "instance",
-      "level": "element",
-      "label": "Node",
-      "theme": null,
-      "template": "node:component-item-TnD6GN06",
-      "overrides": {
-        "role": {
-          "type": "option",
-          "value": "treeitem"
-        },
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "width": {
-            "type": "option",
-            "value": "hairline"
-          },
-          "style": {
-            "type": "option",
-            "value": "solid"
-          },
-          "color": {
-            "type": "option",
-            "value": "transparent"
-          },
-          "opacity": {
-            "type": "exact",
-            "value": {
-              "value": 100,
-              "unit": "%"
-            }
-          },
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "repeat": {
-          "count": 3
-        }
-      }
-    },
-    "component-sidebar-gNgOPdER": {
-      "id": "component-sidebar-gNgOPdER",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-HSgjhz6b",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-WRKOtezh": {
-      "id": "component-sidebar-WRKOtezh",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-zn8GFZsT",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-chevronDown"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-CY2SNfD9": {
-      "id": "component-sidebar-CY2SNfD9",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-LMjE9ivP",
-      "overrides": {
-        "padding": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-sidebar-TRW0zdZ6": {
-      "id": "component-sidebar-TRW0zdZ6",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-zdDEhaL4",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-component"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-Uot6DVpi": {
-      "id": "component-sidebar-Uot6DVpi",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-pZCfJ3k6",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "placeholder": {
-          "type": "exact",
-          "value": "Component Name"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-t3NbSAxi": {
-      "id": "component-sidebar-t3NbSAxi",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-CeZRPCDC",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-p0EEC1pa": {
-      "id": "component-sidebar-p0EEC1pa",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-ZpsMrUME",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-oseMZPy4": {
-      "id": "component-sidebar-oseMZPy4",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-hjWwC1ug",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-0In3sNgB": {
-      "id": "component-sidebar-0In3sNgB",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-Wu9PPv3c",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-add"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
     "component-sidebar-DrwVziuy": {
       "id": "component-sidebar-DrwVziuy",
       "type": "variant",
@@ -27448,1516 +24260,6 @@
       "origin": "schema",
       "__editor": {
         "initialOverrides": {}
-      }
-    },
-    "component-sidebar-kGXBvjeB": {
-      "id": "component-sidebar-kGXBvjeB",
-      "type": "instance",
-      "level": "element",
-      "label": "Section",
-      "theme": null,
-      "template": "node:component-item-qfPj12HJ",
-      "overrides": {
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 0
-              }
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 50
-              }
-            }
-          }
-        ],
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "offsetX": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "offsetY": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 1
-              }
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 20
-              }
-            },
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user"
-    },
-    "component-sidebar-KACtbENG": {
-      "id": "component-sidebar-KACtbENG",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-OCtkZUuF",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-h8RzUFNJ": {
-      "id": "component-sidebar-h8RzUFNJ",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-7MKLAjub",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-unfoldMore"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-sy2EUc1I": {
-      "id": "component-sidebar-sy2EUc1I",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox",
-      "theme": null,
-      "template": "node:component-item-GqRllIqj",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-sidebar-ynjh54rU": {
-      "id": "component-sidebar-ynjh54rU",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-item-Z34z7Dhr",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Section Name"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          },
-          "textCase": {
-            "type": "option",
-            "value": "uppercase"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Label"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 30
-            }
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-Gr8jBtlk": {
-      "id": "component-sidebar-Gr8jBtlk",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-O7CtNVBH",
-      "overrides": {
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "border": {
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        },
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-sidebar-eTOeoYyf": {
-      "id": "component-sidebar-eTOeoYyf",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-0qVCFngD",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-component"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-k1ax4BOc": {
-      "id": "component-sidebar-k1ax4BOc",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-sHhIabuo",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "right": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "bottom": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "left": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          }
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "none"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "corners": {
-          "topLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "topRight": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomRight": {
-            "type": "empty",
-            "value": null
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-FakEnJvK": {
-      "id": "component-sidebar-FakEnJvK",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-8zOXA1We",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-8A1GVspI": {
-      "id": "component-sidebar-8A1GVspI",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-dE8vlG8d",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-nH6jVHue": {
-      "id": "component-sidebar-nH6jVHue",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-sDjvfAPl",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        },
-        "margin": {
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-5EssWHuj": {
-      "id": "component-sidebar-5EssWHuj",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-CMEf5HDL",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-add"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-Ba44dnoB": {
-      "id": "component-sidebar-Ba44dnoB",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-m1G2OAIO",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-OBnRsWQS": {
-      "id": "component-sidebar-OBnRsWQS",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-X0ybtMzs",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-moreHoriz"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-QBNAUxMP": {
-      "id": "component-sidebar-QBNAUxMP",
-      "type": "instance",
-      "level": "element",
-      "label": "Section",
-      "theme": null,
-      "template": "node:component-item-qfPj12HJ",
-      "overrides": {
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 0
-              }
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 50
-              }
-            }
-          }
-        ],
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "offsetX": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "offsetY": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 1
-              }
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 20
-              }
-            },
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user"
-    },
-    "component-sidebar-dFSVGnx9": {
-      "id": "component-sidebar-dFSVGnx9",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-OCtkZUuF",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-satBPAhU": {
-      "id": "component-sidebar-satBPAhU",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-7MKLAjub",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-unfoldMore"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-JzzR7qP9": {
-      "id": "component-sidebar-JzzR7qP9",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox",
-      "theme": null,
-      "template": "node:component-item-GqRllIqj",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-sidebar-3YrzyFSD": {
-      "id": "component-sidebar-3YrzyFSD",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-item-Z34z7Dhr",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Section Name"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          },
-          "textCase": {
-            "type": "option",
-            "value": "uppercase"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Label"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 30
-            }
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-UYVTz7i6": {
-      "id": "component-sidebar-UYVTz7i6",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-O7CtNVBH",
-      "overrides": {
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "border": {
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        },
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-sidebar-SPa4PZMx": {
-      "id": "component-sidebar-SPa4PZMx",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-0qVCFngD",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-component"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-6vtYvfON": {
-      "id": "component-sidebar-6vtYvfON",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-sHhIabuo",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "right": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "bottom": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          },
-          "left": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
-          }
-        },
-        "background": [
-          {
-            "kind": {
-              "type": "option",
-              "value": "none"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "corners": {
-          "topLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "topRight": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomLeft": {
-            "type": "empty",
-            "value": null
-          },
-          "bottomRight": {
-            "type": "empty",
-            "value": null
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-pve5VRZz": {
-      "id": "component-sidebar-pve5VRZz",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-8zOXA1We",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-JSkLYst2": {
-      "id": "component-sidebar-JSkLYst2",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-dE8vlG8d",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-A01g4rch": {
-      "id": "component-sidebar-A01g4rch",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-sDjvfAPl",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        },
-        "margin": {
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-TjF8RrUd": {
-      "id": "component-sidebar-TjF8RrUd",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-CMEf5HDL",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-add"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-zSOV37q7": {
-      "id": "component-sidebar-zSOV37q7",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-item-m1G2OAIO",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-Uca8su3w": {
-      "id": "component-sidebar-Uca8su3w",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-item-X0ybtMzs",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-moreHoriz"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
       }
     },
     "component-comboboxField-LSIWPWiC": {
@@ -29101,1318 +24403,6 @@
           "symbol": {
             "type": "option",
             "value": "material-close"
-          }
-        }
-      }
-    },
-    "component-item-cPHT5wz0": {
-      "id": "component-item-cPHT5wz0",
-      "type": "instance",
-      "level": "element",
-      "label": "Property",
-      "theme": null,
-      "template": "node:component-item-input",
-      "overrides": {
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "width": {
-            "type": "option",
-            "value": "hairline"
-          },
-          "style": {
-            "type": "option",
-            "value": "solid"
-          },
-          "color": {
-            "type": "option",
-            "value": "transparent"
-          },
-          "opacity": {
-            "type": "exact",
-            "value": {
-              "value": 100,
-              "unit": "%"
-            }
-          },
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "repeat": {
-          "count": 3
-        }
-      }
-    },
-    "component-item-IZL4aRVx": {
-      "id": "component-item-IZL4aRVx",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-iVVLVSBT",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-item-5UuQjUKJ": {
-      "id": "component-item-5UuQjUKJ",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-Aa4AD1wO",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-chevronDown"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-WaBSOjbu": {
-      "id": "component-item-WaBSOjbu",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox",
-      "theme": null,
-      "template": "node:component-formControl-qMoPhhJ6",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-item-Pal7YMkk": {
-      "id": "component-item-Pal7YMkk",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-Xg6PReX9",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Property"
-        },
-        "width": {
-          "type": "exact",
-          "value": {
-            "unit": "%",
-            "value": 35
-          }
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "margin": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Label"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 30
-            }
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-item-mbaAhbFm": {
-      "id": "component-item-mbaAhbFm",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-comboboxField-cMKwpdAk",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-item-VvasDXBV": {
-      "id": "component-item-VvasDXBV",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-V1g4W5fN",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-8k3jIJtj": {
-      "id": "component-item-8k3jIJtj",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-input-IeGTgo7S",
-      "overrides": {
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "opacity": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 50
-            }
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-item-0B1iakNw": {
-      "id": "component-item-0B1iakNw",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-HqmnST2I",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-item-XLHSjORe": {
-      "id": "component-item-XLHSjORe",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-vzp64Ki8",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-chevronDown"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-vY2yI14Z": {
-      "id": "component-item-vY2yI14Z",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-raEOhGWD",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-item-I67SLqg5": {
-      "id": "component-item-I67SLqg5",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-Ia42zTwt",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-item-NrKyd6hk": {
-      "id": "component-item-NrKyd6hk",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-CGRbb6mm",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-item-tMipwJEo": {
-      "id": "component-item-tMipwJEo",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-5Coex6SW",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-moreHoriz"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-xHulfWbO": {
-      "id": "component-sidebar-xHulfWbO",
-      "type": "instance",
-      "level": "element",
-      "label": "Property",
-      "theme": null,
-      "template": "node:component-item-input",
-      "overrides": {
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "gap": {
-          "type": "option",
-          "value": "none"
-        },
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "width": {
-            "type": "option",
-            "value": "hairline"
-          },
-          "style": {
-            "type": "option",
-            "value": "solid"
-          },
-          "color": {
-            "type": "option",
-            "value": "transparent"
-          },
-          "opacity": {
-            "type": "exact",
-            "value": {
-              "value": 100,
-              "unit": "%"
-            }
-          },
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ],
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "repeat": {
-          "count": 3
-        }
-      }
-    },
-    "component-sidebar-oRSzB48Z": {
-      "id": "component-sidebar-oRSzB48Z",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-iVVLVSBT",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-G6pvZwoX": {
-      "id": "component-sidebar-G6pvZwoX",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-Aa4AD1wO",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-chevronDown"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-FdIo28wD": {
-      "id": "component-sidebar-FdIo28wD",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox",
-      "theme": null,
-      "template": "node:component-formControl-qMoPhhJ6",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-sidebar-IxBkveHY": {
-      "id": "component-sidebar-IxBkveHY",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-Xg6PReX9",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Property"
-        },
-        "width": {
-          "type": "exact",
-          "value": {
-            "unit": "%",
-            "value": 35
-          }
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "margin": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Label"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 30
-            }
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-mnYbvloE": {
-      "id": "component-sidebar-mnYbvloE",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-comboboxField-cMKwpdAk",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-sidebar-VS5Ybyo4": {
-      "id": "component-sidebar-VS5Ybyo4",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-V1g4W5fN",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-component"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@size.small"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-jAOWEfYY": {
-      "id": "component-sidebar-jAOWEfYY",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-input-IeGTgo7S",
-      "overrides": {
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "corners": {
-          "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          },
-          "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
-          }
-        },
-        "border": {
-          "opacity": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 50
-            }
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-AOqI1NPL": {
-      "id": "component-sidebar-AOqI1NPL",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-HqmnST2I",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-0S5Bl6yt": {
-      "id": "component-sidebar-0S5Bl6yt",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-vzp64Ki8",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-chevronDown"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-UDOlJQyW": {
-      "id": "component-sidebar-UDOlJQyW",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-raEOhGWD",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-uZvWd2Z0": {
-      "id": "component-sidebar-uZvWd2Z0",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-Ia42zTwt",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-add"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-sidebar-yLLtfiG6": {
-      "id": "component-sidebar-yLLtfiG6",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-CGRbb6mm",
-      "overrides": {},
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "buttonSize": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.tight"
-            }
-          },
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.thin"
-            }
-          }
-        }
-      }
-    },
-    "component-sidebar-3ONYgWxR": {
-      "id": "component-sidebar-3ONYgWxR",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-5Coex6SW",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-more"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-moreHoriz"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
           }
         }
       }
@@ -35167,30 +29157,6 @@
         }
       }
     },
-    "component-item-qNPTBil0": {
-      "id": "component-item-qNPTBil0",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-LMjE9ivP",
-      "overrides": {
-        "padding": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "display": {
-          "type": "option",
-          "value": "exclude"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
     "component-item-JvSW6JpE": {
       "id": "component-item-JvSW6JpE",
       "ref": "propertyLabel",
@@ -35242,316 +29208,6 @@
         "placeholder": {
           "type": "exact",
           "value": "Property Name"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-item-kd6ujZq9": {
-      "id": "component-item-kd6ujZq9",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-qNPTBil0",
-      "overrides": {
-        "padding": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-item-a0TOiLI4": {
-      "id": "component-item-a0TOiLI4",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-JvSW6JpE",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "placeholder": {
-          "type": "exact",
-          "value": "Component Name"
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "padding": {
-            "top": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "right": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "bottom": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            },
-            "left": {
-              "type": "exact",
-              "value": {
-                "unit": "px",
-                "value": 0
-              }
-            }
-          },
-          "background": [
-            {
-              "kind": {
-                "type": "option",
-                "value": "none"
-              }
-            }
-          ],
-          "border": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@border.none"
-            }
-          },
-          "corners": {
-            "topLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "topRight": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomLeft": {
-              "type": "empty",
-              "value": null
-            },
-            "bottomRight": {
-              "type": "empty",
-              "value": null
-            }
-          },
-          "role": {
-            "type": "option",
-            "value": "combobox"
-          },
-          "ariaHasPopup": {
-            "type": "option",
-            "value": "listbox"
-          },
-          "font": {
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-item-hsCICNBq": {
-      "id": "component-item-hsCICNBq",
-      "type": "instance",
-      "level": "element",
-      "label": "Combobox Field",
-      "theme": null,
-      "template": "node:component-item-qNPTBil0",
-      "overrides": {
-        "padding": {
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        }
-      },
-      "origin": "user",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-item-67Al6yW4": {
-      "id": "component-item-67Al6yW4",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Input",
-      "theme": null,
-      "template": "node:component-item-JvSW6JpE",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.tight"
-          }
-        },
-        "role": {
-          "type": "option",
-          "value": "combobox"
-        },
-        "ariaHasPopup": {
-          "type": "option",
-          "value": "listbox"
-        },
-        "font": {
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        },
-        "placeholder": {
-          "type": "exact",
-          "value": "Component Name"
         }
       },
       "origin": "user",
@@ -54857,6 +48513,652 @@
           }
         }
       }
+    },
+    "component-item-b7oPitdU": {
+      "id": "component-item-b7oPitdU",
+      "type": "variant",
+      "level": "element",
+      "label": "PropertyToggle",
+      "theme": null,
+      "template": "node:component-item-default",
+      "overrides": {
+        "margin": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "bottom": {
+            "type": "option",
+            "value": "none"
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "option",
+            "value": "none"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "gap": {
+          "type": "option",
+          "value": "none"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        },
+        "border": {
+          "width": {
+            "type": "option",
+            "value": "hairline"
+          },
+          "style": {
+            "type": "option",
+            "value": "solid"
+          },
+          "color": {
+            "type": "option",
+            "value": "transparent"
+          },
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "value": 100,
+              "unit": "%"
+            }
+          },
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ],
+        "clip": {
+          "type": "exact",
+          "value": true
+        },
+        "wrapChildren": {
+          "type": "exact",
+          "value": true
+        }
+      },
+      "__editor": {
+        "initialOverrides": {
+          "margin": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@margin.tight"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@margin.tight"
+            }
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            }
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      },
+      "states": {
+        "focused": {}
+      }
+    },
+    "component-item-HiKfAFK5": {
+      "id": "component-item-HiKfAFK5",
+      "ref": "propertyToggle",
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-iconic",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "buttonSize": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            }
+          },
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "none"
+              }
+            }
+          ],
+          "border": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@border.none"
+            }
+          }
+        }
+      }
+    },
+    "component-item-jmuthUmH": {
+      "id": "component-item-jmuthUmH",
+      "ref": "propertyToggleIcon",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-VSAubWrH",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-chevronDown"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-chevronDown"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-item-fQ6EF5qC": {
+      "id": "component-item-fQ6EF5qC",
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox",
+      "theme": null,
+      "template": "node:component-formControl-combobox",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "margin": {
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-item-K7Y9jqAr": {
+      "id": "component-item-K7Y9jqAr",
+      "ref": "propertyLabel",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-item-pZCfJ3k6",
+      "overrides": {
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 35
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "role": {
+          "type": "option",
+          "value": "combobox"
+        },
+        "ariaHasPopup": {
+          "type": "option",
+          "value": "listbox"
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        },
+        "placeholder": {
+          "type": "exact",
+          "value": "Property Name"
+        }
+      },
+      "origin": "user",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "padding": {
+            "top": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            },
+            "right": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            },
+            "bottom": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            },
+            "left": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            }
+          },
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "none"
+              }
+            }
+          ],
+          "border": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@border.none"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "empty",
+              "value": null
+            },
+            "topRight": {
+              "type": "empty",
+              "value": null
+            },
+            "bottomLeft": {
+              "type": "empty",
+              "value": null
+            },
+            "bottomRight": {
+              "type": "empty",
+              "value": null
+            }
+          },
+          "role": {
+            "type": "option",
+            "value": "combobox"
+          },
+          "ariaHasPopup": {
+            "type": "option",
+            "value": "listbox"
+          },
+          "font": {
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-item-YzeMLx3R": {
+      "id": "component-item-YzeMLx3R",
+      "ref": "toggleIcon",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-XI681ReX",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "seldon-component"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@size.small"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-item-qeIxCmeu": {
+      "id": "component-item-qeIxCmeu",
+      "ref": "propertyActions",
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-iconic",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "buttonSize": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            }
+          },
+          "border": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@border.thin"
+            }
+          }
+        }
+      }
+    },
+    "component-item-wBbX56Dl": {
+      "id": "component-item-wBbX56Dl",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-VSAubWrH",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "seldon-more"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-moreHoriz"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-toggleSwitch-pelhFQXa": {
+      "id": "component-toggleSwitch-pelhFQXa",
+      "ref": "toggleValue",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Toggle Switch",
+      "theme": null,
+      "template": "node:component-toggleSwitch-default",
+      "overrides": {
+        "buttonSize": {
+          "type": "theme.ordinal",
+          "value": "@fontSize.xxsmall"
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.xlight"
+            },
+            "style": {
+              "type": "option",
+              "value": "inner"
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 30
+              }
+            },
+            "offsetY": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xxsmall"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.black"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.tiny"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 50
+            }
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.offBlack"
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
+          },
+          "right": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
+          },
+          "bottom": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
+          },
+          "left": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
+          }
+        },
+        "width": {
+          "type": "theme.ordinal",
+          "value": "@dimension.small"
+        }
+      },
+      "origin": "user"
+    },
+    "component-frame-INf3bFY0": {
+      "id": "component-frame-INf3bFY0",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        }
+      },
+      "origin": "user"
     }
   },
   "themes": {

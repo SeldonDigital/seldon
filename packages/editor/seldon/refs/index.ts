@@ -58,6 +58,8 @@ export type SeldonRef =
   | "sectionLabel"
   | "sectionToggle"
   | "sectionToggleIcon"
+  | "toggleIcon"
+  | "toggleValue"
   | "valueIcon"
   | "valueLabel"
   | "valueOptionsMenu"
@@ -97,7 +99,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   Default: {
     component: "ItemCatalog",
     nodeId: "component-item-hSnQ9Zqv",
-    className: "sdn-item-catalog sdn-item-node--o00j",
+    className: "sdn-item-catalog sdn-item-catalog--bg0n",
   },
   dialogCancel: {
     component: "Button",
@@ -298,6 +300,16 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "Icon",
     nodeId: "component-item-7MKLAjub",
     className: "sdn-icon sdn-icon--umgs",
+  },
+  toggleIcon: {
+    component: "Icon",
+    nodeId: "component-item-YzeMLx3R",
+    className: "sdn-icon sdn-icon--xi68",
+  },
+  toggleValue: {
+    component: "ToggleSwitch",
+    nodeId: "component-toggleSwitch-pelhFQXa",
+    className: "sdn-toggle-switch sdn-toggle-switch--pelh",
   },
   valueIcon: {
     component: "Icon",

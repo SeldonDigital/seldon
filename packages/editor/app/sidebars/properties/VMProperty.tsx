@@ -1,21 +1,21 @@
 import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { mergeStateProps } from "@lib/views/state-props"
-import { ChangeEvent, memo, useCallback, useState } from "react"
-import { createPortal } from "react-dom"
+import { ChangeEvent, memo, useCallback } from "react"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
-import { SeldonToggle } from "@seldon/components/custom/SeldonToggle"
+import { ItemPropertyToggle } from "@seldon/components/elements/ItemPropertyToggle"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
-import "./VMProperty.bespoke.css"
 
 /**
- * View-model for a property row, bound to the generated `ItemProperty`. The
- * trailing actions slot always binds hook props so row footprint stays stable.
+ * View-model for a property row. Value rows bind the generated `ItemProperty`.
+ * Boolean rows (`wrapChildren`, `clip`) bind the generated `ItemPropertyToggle`,
+ * whose toggle owns the value. Both Views share the same row slots (name,
+ * disclosure, actions) through one `seldonRefs` channel.
  */
 function VMPropertyInner(props: RowPropertyProps) {
   const view = useRowProperty(props)
@@ -24,21 +24,91 @@ function VMPropertyInner(props: RowPropertyProps) {
   })
 
   const { listItemProps, control } = view
-
-  // `wrapChildren` and `clip` render as a binary On/Off toggle. The bespoke
-  // `SeldonToggle` is portaled into the (blanked) value cell so the generated
-  // row layout and value-cell box stay intact while the toggle owns the value.
   const switchControl = control.kind === "switch" ? control : null
-  const [switchFieldEl, setSwitchFieldEl] = useState<HTMLElement | null>(null)
-  const setSwitchFieldRef = useCallback((node: HTMLElement | null) => {
-    setSwitchFieldEl(node)
-  }, [])
 
   // The row's status maps to a generated leaf state (activated, invalid, or
   // disabled). The state props tint the row's content leaves (name, value,
   // value icon), replacing inline status colors, the same way the board row
   // drives activated.
   const stateRef = view.stateRef
+
+  // Indeterminate can't be expressed as a prop, so it is set through the toggle
+  // input's ref. It reflects the unset ("mixed") state.
+  const toggleSwitchRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      if (node) {
+        node.indeterminate = switchControl?.mixed ?? false
+      }
+    },
+    [switchControl?.mixed],
+  )
+
+  const onToggleSwitchChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      switchControl?.onToggle(event.currentTarget.checked)
+    },
+    [switchControl],
+  )
+
+  const toggleAriaChecked = switchControl?.mixed
+    ? "mixed"
+    : (switchControl?.checked ?? false)
+
+  // Sub-property rows for a compound or shorthand parent. Wrapped in
+  // `IndentationLevel` so each nesting depth adds one indent step and shifts the
+  // whole row, matching the objects-sidebar tree.
+  const childRows = view.hasChildren ? (
+    <FramerExpandable isExpanded={view.isExpanded}>
+      <IndentationLevel>
+        {view.childItems.map((childProps) => (
+          <VMProperty key={childProps.property.key} {...childProps} />
+        ))}
+      </IndentationLevel>
+    </FramerExpandable>
+  ) : null
+
+  // Boolean rows render the dedicated `ItemPropertyToggle` View. The toggle
+  // slot carries the value through `toggleValue`; the shared row slots bind the
+  // same hook props as `ItemProperty`. The `toggleIcon` slot shows the row's
+  // property glyph, the same `icon2` source the value cell uses on other rows.
+  if (switchControl) {
+    const toggleRefs: Record<string, Record<string, unknown>> = {
+      propertyToggle: { ...listItemProps.buttonIconic },
+      propertyToggleIcon: { ...listItemProps.icon },
+      propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
+      propertyActions: { ...optionsMenu.buttonIconic },
+      toggleValue: mergeStateProps(
+        {
+          checked: switchControl.checked,
+          "aria-checked": toggleAriaChecked,
+          ref: toggleSwitchRef,
+          onChange: onToggleSwitchChange,
+        },
+        stateRef,
+      ),
+    }
+    if (listItemProps.icon2) {
+      toggleRefs.toggleIcon = mergeStateProps(listItemProps.icon2, stateRef)
+    }
+
+    return (
+      <>
+        <ItemPropertyToggle
+          buttonIconic={{}}
+          formControlCombobox={{}}
+          input={{}}
+          icon2={{}}
+          toggleSwitch={{}}
+          buttonIconic2={{}}
+          seldonRefs={toggleRefs}
+          onClick={view.onRowClick}
+          onDoubleClick={view.onRowDoubleClick}
+        />
+        {optionsMenu.menu}
+        {childRows}
+      </>
+    )
+  }
 
   // Drive each slot through its stable workspace ref. The value `input` slot is
   // both the read-only display and, in edit mode, the live combobox/text control
@@ -67,84 +137,21 @@ function VMPropertyInner(props: RowPropertyProps) {
   // aligned, but disable it: `aria-disabled` marks the state, and
   // `pointerEvents: none` stops both the hover styling and click-into-edit, so
   // the row body's own click still toggles the disclosure.
-  const comboboxField = switchControl
-    ? ({ ref: setSwitchFieldRef } as ComboboxFieldProps)
-    : props.property.isLookParent
-      ? ({
-          "aria-disabled": true,
-          style: { pointerEvents: "none" },
-        } as ComboboxFieldProps)
-      : ({
-          ref: view.setValueFieldRef,
-          onClick: view.onValueFieldClick,
-        } as ComboboxFieldProps)
+  const comboboxField = props.property.isLookParent
+    ? ({
+        "aria-disabled": true,
+        style: { pointerEvents: "none" },
+      } as ComboboxFieldProps)
+    : ({
+        ref: view.setValueFieldRef,
+        onClick: view.onValueFieldClick,
+      } as ComboboxFieldProps)
 
   // Positional enabler: suppress `icon2` with `null` when the value icon is
   // hidden; otherwise leave it on its slot default so the bound `valueIcon` ref
   // paints the glyph. Dynamic color chips (`icon-custom-color-value`) resolve
   // through the same slot via the generated `Icon`'s runtime registry.
   const valueIconSlot = listItemProps.icon2 ? undefined : null
-
-  // Switch rows blank the value cell's default contents (value glyph, text
-  // input, chevron, and options button) so only the empty `ComboboxField` frame
-  // remains as a positioned host for the portaled toggle.
-  const valueIconProp = switchControl ? null : valueIconSlot
-  const valueMenuIconProp = switchControl ? null : listItemProps.icon3
-  const valueInputProp = switchControl ? null : undefined
-  const valueMenuButtonProp = switchControl ? null : undefined
-
-  const toggleSwitchRef = useCallback(
-    (node: HTMLInputElement | null) => {
-      if (node) {
-        node.indeterminate = switchControl?.mixed ?? false
-      }
-    },
-    [switchControl?.mixed],
-  )
-
-  const onToggleSwitchChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      switchControl?.onToggle(event.currentTarget.checked)
-    },
-    [switchControl],
-  )
-
-  const toggleAriaChecked = switchControl?.mixed
-    ? "mixed"
-    : (switchControl?.checked ?? false)
-
-  const toggleSwitch = switchControl ? (
-    <SeldonToggle
-      className="sdn-property-switch"
-      role="switch"
-      checked={switchControl.checked}
-      aria-checked={toggleAriaChecked}
-      ref={toggleSwitchRef}
-      onChange={onToggleSwitchChange}
-    />
-  ) : null
-
-  const switchPortal =
-    switchFieldEl && toggleSwitch
-      ? createPortal(toggleSwitch, switchFieldEl)
-      : null
-
-  const optionsListbox = switchControl ? null : (
-    <PropertyOptionsListbox control={control} onEndEdit={view.endEdit} />
-  )
-
-  // Sub-property rows for a compound or shorthand parent. Wrapped in
-  // `IndentationLevel` so each nesting depth adds one indent step and shifts the
-  // whole row, matching the objects-sidebar tree.
-  const childRows = view.hasChildren ? (
-    <FramerExpandable isExpanded={view.isExpanded}>
-      <IndentationLevel>
-        {view.childItems.map((childProps) => (
-          <VMProperty key={childProps.property.key} {...childProps} />
-        ))}
-      </IndentationLevel>
-    </FramerExpandable>
-  ) : null
 
   // Render the exported `ItemProperty` through its slots. `LayerDragRow` wraps a
   // multi-layer paint parent as a drag source and passes other rows through
@@ -162,18 +169,15 @@ function VMPropertyInner(props: RowPropertyProps) {
         <ItemProperty
           input={{}}
           comboboxField={comboboxField}
-          input2={valueInputProp}
-          buttonIconic2={valueMenuButtonProp}
-          icon2={valueIconProp}
-          icon3={valueMenuIconProp}
+          icon2={valueIconSlot}
+          icon3={listItemProps.icon3}
           seldonRefs={seldonRefs}
           onClick={view.onRowClick}
           onDoubleClick={view.onRowDoubleClick}
         />
       </LayerDragRow>
-      {switchPortal}
       {optionsMenu.menu}
-      {optionsListbox}
+      <PropertyOptionsListbox control={control} onEndEdit={view.endEdit} />
       {childRows}
     </>
   )
