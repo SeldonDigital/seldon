@@ -628,12 +628,46 @@ export function useRowNode(
     return false
   }
 
+  function checkIfPlaceholder(): boolean {
+    if (!nodeExistsInWorkspace) {
+      return false
+    }
+
+    if (properties?.display?.value === Display.PLACEHOLDER) return true
+
+    if (!typeCheckingService.isInstance(node)) {
+      return false
+    }
+
+    let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
+    while (currentParent) {
+      const parentProps = getNodeProperties(
+        currentParent as EntryNode,
+        workspace,
+      )
+      if (parentProps?.display?.value === Display.PLACEHOLDER) {
+        return true
+      }
+      if (typeCheckingService.isInstance(currentParent)) {
+        currentParent = nodeTraversalService.findParentNode(
+          currentParent.id,
+          workspace,
+        )
+      } else {
+        break
+      }
+    }
+
+    return false
+  }
+
   // Excluded rows (own display or an excluded ancestor) read as italic with a
-  // strikethrough. Placeholder rows read as italic. Hidden rows use the node's
-  // own display only. All three drive the disabled look.
+  // strikethrough. Placeholder rows (own display or a placeholder ancestor) read
+  // as italic. Hidden rows use the node's own display only. All three drive the
+  // disabled look.
   const isExcluded = checkIfExcluded()
   const isHidden = properties?.display?.value === Display.HIDE
-  const isPlaceholder = properties?.display?.value === Display.PLACEHOLDER
+  const isPlaceholder = checkIfPlaceholder()
 
   const baseLabelStyle: CSSProperties | undefined = isExcluded
     ? { fontStyle: "italic", textDecoration: "line-through" }
