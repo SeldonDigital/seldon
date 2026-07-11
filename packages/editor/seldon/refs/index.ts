@@ -32,7 +32,6 @@ export type SeldonRef =
   | "menuFile"
   | "menuMode"
   | "menus"
-  | "menuStates"
   | "menuTheme"
   | "menuView"
   | "nodeActions"
@@ -162,7 +161,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   },
   menuMode: {
     component: "ButtonMenu",
-    nodeId: "component-bar-JXHsaaaQ",
+    nodeId: "component-bar-nWDgCHuH",
     className: "sdn-button-menu sdn-button-iconic--pgsr",
   },
   menus: {
@@ -170,14 +169,9 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-bar-DrSavE9B",
     className: "sdn-frame sdn-frame--drsa",
   },
-  menuStates: {
-    component: "ButtonMenu",
-    nodeId: "component-button-OTbyoxbN",
-    className: "sdn-button-menu sdn-button",
-  },
   menuTheme: {
     component: "ButtonMenu",
-    nodeId: "component-button-uIofK8RQ",
+    nodeId: "component-button-trucC1Xo",
     className: "sdn-button-menu sdn-button-iconic--pgsr",
   },
   menuView: {

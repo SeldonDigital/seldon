@@ -1,10 +1,10 @@
 import { ComponentType } from "react"
 
 import { CustomReactTemplate } from "../../types"
-import { ToggleSwitch } from "./ToggleSwitch"
+import { SeldonToggle } from "./SeldonToggle"
 
 export * from "./registry"
-export { ToggleSwitch } from "./ToggleSwitch"
+export { SeldonToggle } from "./SeldonToggle"
 
 /**
  * Maps each bespoke template id to the React component the canvas renders. Kept
@@ -15,5 +15,5 @@ export const CUSTOM_REACT_TEMPLATE_COMPONENTS: Record<
   CustomReactTemplate,
   ComponentType<Record<string, unknown>>
 > = {
-  toggleSwitch: ToggleSwitch as ComponentType<Record<string, unknown>>,
+  toggleSwitch: SeldonToggle as ComponentType<Record<string, unknown>>,
 }

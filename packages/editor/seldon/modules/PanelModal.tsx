@@ -388,7 +388,7 @@ const sdn: PanelModalProps = {
   },
   barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar-buttons--0pge",
+    className: "sdn-bar-buttons sdn-bar-buttons--0pge",
   },
   frame2: {
     wrapperElement: "div",

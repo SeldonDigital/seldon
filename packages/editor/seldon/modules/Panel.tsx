@@ -537,7 +537,7 @@ const sdn: PanelProps = {
   },
   barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar-buttons--dabm",
+    className: "sdn-bar-buttons sdn-bar-buttons--dabm",
   },
   frame2: {
     wrapperElement: "div",

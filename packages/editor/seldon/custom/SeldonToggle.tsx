@@ -1,3 +1,15 @@
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
 import { InputHTMLAttributes, Ref } from "react"
 
 const TOGGLE_SWITCH_CLASS = "sdn-toggle-switch"
@@ -43,7 +55,7 @@ const toggleSwitchStyles = `
 }
 `
 
-export interface ToggleSwitchProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface SeldonToggleProps extends InputHTMLAttributes<HTMLInputElement> {
   ref?: Ref<HTMLInputElement>
 }
 
@@ -51,15 +63,16 @@ export interface ToggleSwitchProps extends InputHTMLAttributes<HTMLInputElement>
  * Bespoke toggle switch template shared by the canvas and the React factory. The
  * outer `span` is the track and receives the node class and inline style; the
  * hidden `input` carries the switch semantics (`role`, `aria-checked`, checked
- * state) and drives the thumb position through `:has(:checked)`.
+ * state) and drives the thumb position through `:has(:checked)`. The node-aware
+ * `ToggleSwitch` wrapper the factory generates renders this template.
  */
-export const ToggleSwitch = ({
+export const SeldonToggle = ({
   ref,
   className,
   style,
   children: _children,
   ...props
-}: ToggleSwitchProps) => {
+}: SeldonToggleProps) => {
   const trackClassName = className
     ? `${TOGGLE_SWITCH_CLASS} ${className}`
     : TOGGLE_SWITCH_CLASS

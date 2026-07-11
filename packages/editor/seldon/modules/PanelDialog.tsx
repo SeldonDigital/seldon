@@ -542,7 +542,7 @@ const sdn: PanelDialogProps = {
   },
   barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar-tabs-bar--qtpt",
+    className: "sdn-bar-buttons sdn-bar-tabs-bar--qtpt",
   },
   frame2: {
     wrapperElement: "div",

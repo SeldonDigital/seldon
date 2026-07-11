@@ -6,7 +6,7 @@ import { IndentationLevel } from "../hooks/use-indentation"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
-import { ToggleSwitch } from "@seldon/components/custom/ToggleSwitch"
+import { SeldonToggle } from "@seldon/components/custom/SeldonToggle"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
@@ -25,8 +25,8 @@ function VMPropertyInner(props: RowPropertyProps) {
 
   const { listItemProps, control } = view
 
-  // `wrapChildren` and `clip` render as a binary On/Off toggle. The core
-  // `ToggleSwitch` is portaled into the (blanked) value cell so the generated
+  // `wrapChildren` and `clip` render as a binary On/Off toggle. The bespoke
+  // `SeldonToggle` is portaled into the (blanked) value cell so the generated
   // row layout and value-cell box stay intact while the toggle owns the value.
   const switchControl = control.kind === "switch" ? control : null
   const [switchFieldEl, setSwitchFieldEl] = useState<HTMLElement | null>(null)
@@ -114,7 +114,7 @@ function VMPropertyInner(props: RowPropertyProps) {
     : (switchControl?.checked ?? false)
 
   const toggleSwitch = switchControl ? (
-    <ToggleSwitch
+    <SeldonToggle
       className="sdn-property-switch"
       role="switch"
       checked={switchControl.checked}

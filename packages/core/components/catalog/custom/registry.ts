@@ -21,9 +21,9 @@ export const CUSTOM_REACT_TEMPLATE_META: Record<
   CustomReactTemplateMeta
 > = {
   toggleSwitch: {
-    importName: "ToggleSwitch",
-    importPath: "../custom/ToggleSwitch",
-    fileStem: "ToggleSwitch",
+    importName: "SeldonToggle",
+    importPath: "../custom/SeldonToggle",
+    fileStem: "SeldonToggle",
     base: "HTMLInput",
   },
 }

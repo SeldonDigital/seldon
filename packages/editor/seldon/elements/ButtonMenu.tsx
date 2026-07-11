@@ -97,11 +97,11 @@ export const ButtonMenu = forwardRef<HTMLButtonElement, ButtonMenuProps>(
 //
 const sdn: ButtonMenuProps = {
   textLabel: {
-    className: "sdn-text-label sdn-text-label--zw0q",
+    className: "sdn-text-label sdn-text-label--sa6t",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--iqmk",
+    className: "sdn-icon sdn-icon--y2ct",
   },
 }

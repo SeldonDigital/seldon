@@ -85,7 +85,7 @@ export function BarButtons({
   seldonRefs,
   ...props
 }: BarButtonsProps) {
-  const barButtonsClassName = combineClassNames("sdn-bar", className)
+  const barButtonsClassName = combineClassNames("sdn-bar-buttons", className)
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -355,7 +355,7 @@ export function BarButtons({
 //
 const sdn: BarButtonsProps = {
   "aria-hidden": "false",
-  className: "sdn-bar sdn-bar",
+  className: "sdn-bar-buttons sdn-bar",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",

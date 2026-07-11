@@ -191,7 +191,7 @@ const sdn: FormControlComboboxProps = {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
   icon2: {
-    icon: "seldon-component",
+    icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
   },

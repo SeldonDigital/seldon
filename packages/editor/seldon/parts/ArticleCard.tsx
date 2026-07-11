@@ -324,7 +324,7 @@ const sdn: ArticleCardProps = {
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--p3o3",
+    className: "sdn-image sdn-image--j9of",
   },
   frame: {
     wrapperElement: "div",
@@ -346,7 +346,7 @@ const sdn: ArticleCardProps = {
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--9cdq",
+    className: "sdn-frame sdn-frame--l25c",
   },
   avatar: {
     className: "sdn-avatar sdn-avatar--a890",
@@ -359,13 +359,13 @@ const sdn: ArticleCardProps = {
   frame3: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--ew9f",
+    className: "sdn-frame sdn-frame--blp5",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--p1kq",
+    className: "sdn-text-label sdn-text-label--f3ym",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-title--adfu",
+    className: "sdn-text-label sdn-text-label--yqnd",
   },
   buttonSimple: {
     className: "sdn-button-simple sdn-button-iconic--8tzd",
