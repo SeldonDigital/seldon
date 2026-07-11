@@ -56,7 +56,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: true,
     },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     background: [
       {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },

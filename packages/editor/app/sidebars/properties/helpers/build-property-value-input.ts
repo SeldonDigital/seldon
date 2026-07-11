@@ -41,7 +41,7 @@ export function buildPropertyValueInput({
   // `pointerEvents: none` keeps hover and selection on the combobox field, and
   // the field's own click (wired by the shell) is what flips the row into edit
   // mode. The field becomes interactive again in the edit branches below.
-  if (!isEditing || control.kind === "none") {
+  if (!isEditing || control.kind === "none" || control.kind === "switch") {
     return buildDisplayInputProps(valueRef, displayValue)
   }
 

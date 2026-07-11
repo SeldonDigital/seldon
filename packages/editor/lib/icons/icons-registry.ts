@@ -2,7 +2,13 @@ import { parsePropertyPath } from "@lib/properties/property-paths"
 import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 
-export type ControlType = "combo" | "menu" | "number" | "text" | "error"
+export type ControlType =
+  | "combo"
+  | "menu"
+  | "number"
+  | "text"
+  | "switch"
+  | "error"
 
 export interface PropertyOption {
   value: string
@@ -176,8 +182,8 @@ const UI_OVERRIDES: PropertyRegistry = {
   },
   gap: { control: "combo" },
   rotation: { control: "number" },
-  wrapChildren: { control: "menu" },
-  clip: { control: "menu" },
+  wrapChildren: { control: "switch" },
+  clip: { control: "switch" },
   listStyleType: { control: "menu" },
   listStylePosition: { control: "menu" },
   cursor: { control: "menu" },

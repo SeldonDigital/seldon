@@ -51,7 +51,7 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },

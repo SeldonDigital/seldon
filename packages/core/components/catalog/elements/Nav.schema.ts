@@ -35,7 +35,7 @@ export const schema = {
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
