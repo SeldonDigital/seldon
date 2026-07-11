@@ -7,6 +7,7 @@ import {
   generateRootAttributePropsString,
   isAttributeKey,
 } from "./attribute-props"
+import { getReactReturnTag } from "./custom-react"
 import { dataSeldonRefAttr } from "./data-ref-attr"
 
 /**
@@ -201,7 +202,7 @@ export function generateSimpleReturn(
   classNameVarName: string,
   withRef: boolean = false,
 ): string {
-  const { config, tree } = component
+  const { tree } = component
   const refAttr = dataSeldonRefAttr(tree.ref)
   const forwardedRefProp = withRef ? " ref={ref}" : ""
   // Check if children prop exists in rootProps
@@ -225,18 +226,19 @@ export function generateSimpleReturn(
   const rootPropsString =
     rootLevelProps.length > 0 ? " " + rootLevelProps.join(" ") : ""
   const attrPropsString = generateRootAttributePropsString(component)
+  const tag = getReactReturnTag(component)
 
   if (hasChildrenProp) {
     return `
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString}${forwardedRefProp} {...props}>{children}</${config.react.returns}>`
+  return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString}${forwardedRefProp} {...props}>{children}</${tag}>`
   } else {
     return `
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString}${forwardedRefProp} {...props} />`
+  return <${tag} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString}${forwardedRefProp} {...props} />`
   }
 }

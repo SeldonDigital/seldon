@@ -507,7 +507,7 @@ const sdn: ListStandardProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--adfu",
+    className: "sdn-text-title sdn-text-label--yqnd",
   },
   textSubtitle: {
     className: "sdn-text-subtitle sdn-text-subtitle--pyri",
@@ -536,7 +536,7 @@ const sdn: ListStandardProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle2: {
-    className: "sdn-text-title sdn-text-title--adfu",
+    className: "sdn-text-title sdn-text-label--yqnd",
   },
   textSubtitle2: {
     className: "sdn-text-subtitle sdn-text-subtitle--pyri",
@@ -565,7 +565,7 @@ const sdn: ListStandardProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle3: {
-    className: "sdn-text-title sdn-text-title--adfu",
+    className: "sdn-text-title sdn-text-label--yqnd",
   },
   textSubtitle3: {
     className: "sdn-text-subtitle sdn-text-subtitle--pyri",

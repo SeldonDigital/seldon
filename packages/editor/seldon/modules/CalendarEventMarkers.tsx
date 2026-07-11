@@ -1616,7 +1616,7 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-frame sdn-frame--8xlb",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--wrw4",
+    className: "sdn-text-label sdn-text-label--ulqg",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--8tzd",
@@ -1624,7 +1624,7 @@ const sdn: CalendarEventMarkersProps = {
   icon: {
     icon: "material-chevronLeft",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--np61",
+    className: "sdn-icon sdn-icon--fgqd",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--8tzd",
@@ -1632,7 +1632,7 @@ const sdn: CalendarEventMarkersProps = {
   icon2: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--np61",
+    className: "sdn-icon sdn-icon--fgqd",
   },
   container: {
     wrapperElement: "div",
@@ -1663,7 +1663,7 @@ const sdn: CalendarEventMarkersProps = {
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--0bj3",
+    className: "sdn-frame sdn-frame--xyjz",
   },
   container2: {
     wrapperElement: "div",
@@ -1671,46 +1671,46 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-container sdn-container--npgy",
   },
   calendarDayMuted: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel9: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDaySelected: {
-    className: "sdn-calendar-day-selected sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-selected sdn-calendar-day-muted--tzv7",
   },
   textLabel10: {
     className: "sdn-text-label sdn-text-label--fye8",
   },
   textLabel11: {
-    className: "sdn-text-label sdn-text-label--mqlk",
+    className: "sdn-text-label sdn-text-label--yw9b",
   },
   calendarDay: {
-    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--tzv7",
   },
   textLabel12: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
   calendarDay2: {
-    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--tzv7",
   },
   textLabel13: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
   calendarDay3: {
-    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--tzv7",
   },
   textLabel14: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
   calendarDay4: {
-    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--tzv7",
   },
   textLabel15: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
   calendarDayMuted2: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel16: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1721,43 +1721,43 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-container sdn-container--npgy",
   },
   calendarDayMuted3: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel17: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted4: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel18: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted5: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel19: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted6: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel20: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted7: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel21: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted8: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel22: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted9: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel23: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1768,43 +1768,43 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-container sdn-container--npgy",
   },
   calendarDayMuted10: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel24: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted11: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel25: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted12: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel26: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted13: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel27: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted14: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel28: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted15: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel29: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted16: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel30: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1815,43 +1815,43 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-container sdn-container--npgy",
   },
   calendarDayMuted17: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel31: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted18: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel32: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted19: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel33: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted20: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel34: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted21: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel35: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted22: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel36: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted23: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel37: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1862,13 +1862,13 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-container sdn-container--npgy",
   },
   calendarDayMuted24: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel38: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayMuted25: {
-    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7",
   },
   textLabel39: {
     className: "sdn-text-label sdn-text-label--g3ro",

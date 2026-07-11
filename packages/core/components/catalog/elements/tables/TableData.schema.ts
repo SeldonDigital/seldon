@@ -53,7 +53,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     columns: { type: Sdn.ValueType.EMPTY, value: null },
     rows: { type: Sdn.ValueType.EMPTY, value: null },
     cellAlign: {

@@ -134,6 +134,30 @@ export function getTextStyles({
     styles.fontSize = themed ?? fontSize
   }
 
+  // `buttonSize` is the element size on the font-size scale. It sets the element
+  // `font-size` when the node does not author `font.size`, so em-based geometry
+  // (such as the toggle switch track and thumb) scales from the size token.
+  if (styles.fontSize === undefined && properties.buttonSize) {
+    const buttonSize = resolveValue(properties.buttonSize)
+    if (buttonSize && properties.buttonSize.type !== ValueType.EMPTY) {
+      const reference =
+        useThemeVariableReferences &&
+        properties.buttonSize.type === ValueType.THEME_ORDINAL
+          ? getThemeTokenVarReference(properties.buttonSize.value)
+          : undefined
+
+      if (reference) {
+        styles.fontSize = reference
+      } else {
+        const resolvedButtonSize = resolveFontSize({
+          fontSize: buttonSize,
+          theme,
+        })
+        styles.fontSize = getCssValue(resolvedButtonSize) as string
+      }
+    }
+  }
+
   // Only apply if font.lineHeight is defined in the schema
   if (lineHeight && properties.font?.lineHeight) {
     if (lineHeight.type === ValueType.EXACT) {

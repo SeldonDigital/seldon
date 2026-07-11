@@ -67,7 +67,7 @@ export const schema = {
       value: "@gap.compact",
     },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },

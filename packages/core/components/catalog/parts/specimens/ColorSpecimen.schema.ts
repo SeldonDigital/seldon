@@ -46,7 +46,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     columnStart: { type: Sdn.ValueType.EMPTY, value: null },
     columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
     rowStart: { type: Sdn.ValueType.EMPTY, value: null },

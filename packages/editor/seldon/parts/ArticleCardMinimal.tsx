@@ -159,7 +159,7 @@ const sdn: ArticleCardMinimalProps = {
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--p3o3",
+    className: "sdn-image sdn-image--j9of",
   },
   frame: {
     wrapperElement: "div",
@@ -173,6 +173,6 @@ const sdn: ArticleCardMinimalProps = {
     className: "sdn-text-label sdn-text-label--lug5",
   },
   textHeading: {
-    className: "sdn-text-heading sdn-text-title--adfu",
+    className: "sdn-text-heading sdn-text-label--yqnd",
   },
 }

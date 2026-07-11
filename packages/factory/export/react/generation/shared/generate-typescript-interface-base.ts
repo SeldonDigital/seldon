@@ -2,6 +2,7 @@ import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
 import { ComponentToExport } from "../../../types"
 import { isAttributeKey } from "./attribute-props"
+import { getCustomTemplateMeta } from "./custom-react"
 
 /**
  * Get the needed generic type and its parameter for interface generation
@@ -64,6 +65,16 @@ export function getGenericAndParameters(component: ComponentToExport) {
     return {
       generic: "HTMLAttributes",
       parameters,
+    }
+  }
+
+  // Custom components extend the props of the native primitive their template
+  // wraps (e.g. a toggle switch extends the input's attributes).
+  if (config.react.returns === "custom") {
+    const item = NATIVE_REACT_PRIMITIVES[getCustomTemplateMeta(component).base]
+    return {
+      generic: item.types.generic,
+      parameters: [item.types.parameter],
     }
   }
 

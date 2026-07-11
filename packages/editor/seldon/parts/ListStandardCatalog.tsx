@@ -457,7 +457,7 @@ const sdn: ListStandardCatalogProps = {
   "aria-hidden": "false",
   className: "sdn-list-standard-catalog sdn-list-standard",
   textSubtitle: {
-    className: "sdn-text-subtitle sdn-text-title--adfu",
+    className: "sdn-text-subtitle sdn-text-label--yqnd",
   },
   container: {
     wrapperElement: "div",

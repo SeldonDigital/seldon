@@ -520,23 +520,23 @@ const sdn: BarTopbarProps = {
     "data-seldon-ref": "menuTheme",
   },
   textLabel6: {
-    className: "sdn-text-label sdn-text-label--zw0q",
+    className: "sdn-text-label sdn-text-label--sa6t",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--iqmk",
+    className: "sdn-icon sdn-icon--y2ct",
   },
   buttonMenu2: {
     className: "sdn-button-menu sdn-button-iconic--pgsr",
     "data-seldon-ref": "menuMode",
   },
   textLabel7: {
-    className: "sdn-text-label sdn-text-label--zw0q",
+    className: "sdn-text-label sdn-text-label--sa6t",
   },
   icon2: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--iqmk",
+    className: "sdn-icon sdn-icon--y2ct",
   },
 }

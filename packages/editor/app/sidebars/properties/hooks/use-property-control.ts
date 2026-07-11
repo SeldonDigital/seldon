@@ -85,10 +85,19 @@ interface ComboboxControlView {
   }
 }
 
+interface SwitchControlView {
+  kind: "switch"
+  checked: boolean
+  /** True when the stored value is neither true nor false (unset), shown indeterminate. */
+  mixed: boolean
+  onToggle: (next: boolean) => void
+}
+
 export type PropertyControlView =
   | { kind: "none" }
   | FieldControlView
   | ComboboxControlView
+  | SwitchControlView
 
 /**
  * ViewModel for a property control. Composes the display derivation, write
@@ -174,6 +183,19 @@ export function usePropertyControl({
 
   if (!property.controlType) {
     return { kind: "none" }
+  }
+
+  // A switch is a binary On/Off control (wrapChildren, clip). It reads the
+  // stored boolean and commits "true"/"false", the same wire values the option
+  // list used, so the write router serializes them unchanged.
+  if (effectiveControlType === "switch") {
+    const stored = display.comboboxStoredValue
+    return {
+      kind: "switch",
+      checked: stored === "true",
+      mixed: stored !== "true" && stored !== "false",
+      onToggle: (next: boolean) => commit(next ? "true" : "false"),
+    }
   }
 
   if (effectiveControlType === "text" || effectiveControlType === "number") {

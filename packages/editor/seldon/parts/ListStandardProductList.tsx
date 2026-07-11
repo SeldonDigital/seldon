@@ -334,7 +334,7 @@ const sdn: ListStandardProductListProps = {
   className: "sdn-list-standard-product-list sdn-list-standard",
   itemCatalog: {
     "aria-hidden": "false",
-    className: "sdn-item-catalog sdn-item-node--o00j",
+    className: "sdn-item-catalog sdn-item-catalog--bg0n",
   },
   icon: {
     className: "sdn-icon sdn-icon--km45",
@@ -351,7 +351,7 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
   itemCatalog2: {
-    className: "sdn-item-catalog sdn-item-node--o00j",
+    className: "sdn-item-catalog sdn-item-catalog--bg0n",
   },
   icon2: {
     className: "sdn-icon sdn-icon--km45",
@@ -368,7 +368,7 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
   itemCatalog3: {
-    className: "sdn-item-catalog sdn-item-node--o00j",
+    className: "sdn-item-catalog sdn-item-catalog--bg0n",
     "data-seldon-ref": "Default",
   },
   icon3: {

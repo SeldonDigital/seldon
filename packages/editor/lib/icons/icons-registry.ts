@@ -1,8 +1,18 @@
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
+import {
+  getCompoundSubPropertySchema,
+  getPropertySchema,
+} from "@seldon/core/properties/schemas/helpers"
 
-export type ControlType = "combo" | "menu" | "number" | "text" | "error"
+export type ControlType =
+  | "combo"
+  | "menu"
+  | "number"
+  | "text"
+  | "switch"
+  | "error"
 
 export interface PropertyOption {
   value: string
@@ -176,8 +186,6 @@ const UI_OVERRIDES: PropertyRegistry = {
   },
   gap: { control: "combo" },
   rotation: { control: "number" },
-  wrapChildren: { control: "menu" },
-  clip: { control: "menu" },
   listStyleType: { control: "menu" },
   listStylePosition: { control: "menu" },
   cursor: { control: "menu" },
@@ -411,20 +419,52 @@ function getRootEntry(rootKey: string): PropertyRegistryEntry {
   return entry
 }
 
+/**
+ * A property is a binary on/off toggle when its schema presets are exactly
+ * `[true, false]`. These rows use the `switch` control regardless of any
+ * registry default, so every boolean renders as a toggle. Tristate aria states
+ * (`true`/`false`/`mixed`) and option enums are not boolean and keep their menu.
+ */
+function isBooleanControlPath(propertyPath: string): boolean {
+  const parsed = parsePropertyPath(propertyPath)
+  const schema =
+    parsed.kind === "layered-facet" || parsed.kind === "facet"
+      ? getCompoundSubPropertySchema(parsed.root, parsed.facet)
+      : getPropertySchema(propertyPath.split(".")[0]!)
+  const presets = schema?.presetOptions?.()
+  return (
+    Array.isArray(presets) &&
+    presets.length === 2 &&
+    presets.every((option) => typeof option === "boolean")
+  )
+}
+
 export function getPropertyRegistryEntry(
   propertyPath: string,
 ): PropertyRegistryEntry | undefined {
   const parsed = parsePropertyPath(propertyPath)
+
+  let entry: PropertyRegistryEntry | undefined
   if (parsed.kind === "layered-facet" || parsed.kind === "facet") {
-    return getRootEntry(parsed.root).subProperties?.[parsed.facet]
+    entry = getRootEntry(parsed.root).subProperties?.[parsed.facet]
+  } else {
+    const parts = propertyPath.split(".")
+    let current: PropertyRegistryEntry | undefined = getRootEntry(parts[0]!)
+    for (let i = 1; i < parts.length && current; i++) {
+      current = current.subProperties?.[parts[i]!]
+    }
+    entry = current
   }
 
-  const parts = propertyPath.split(".")
-  let current: PropertyRegistryEntry | undefined = getRootEntry(parts[0]!)
-
-  for (let i = 1; i < parts.length && current; i++) {
-    current = current.subProperties?.[parts[i]!]
+  // Route every binary on/off property to the toggle switch, overriding the
+  // registry default. Copy so the cached entry is not mutated.
+  if (
+    entry &&
+    entry.control !== "switch" &&
+    isBooleanControlPath(propertyPath)
+  ) {
+    return { ...entry, control: "switch" }
   }
 
-  return current
+  return entry
 }

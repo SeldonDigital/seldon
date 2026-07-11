@@ -14,6 +14,10 @@ import {
   exportConfig as boardExportConfig,
   schema as boardSchema,
 } from "./boards/Board.schema"
+import {
+  exportConfig as toggleSwitchExportConfig,
+  schema as toggleSwitchSchema,
+} from "./custom/ToggleSwitch.schema"
 // Elements
 import {
   exportConfig as avatarExportConfig,
@@ -347,6 +351,7 @@ const primitives: ComponentSchema[] = [
   inputSchema,
   legendSchema,
   textareaSchema,
+  toggleSwitchSchema,
   listItemSchema,
   blockquoteSchema,
   citeSchema,
@@ -517,6 +522,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.TEXTAREA]: textareaExportConfig,
+  [ComponentId.TOGGLE_SWITCH]: toggleSwitchExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
   [ComponentId.LIST_ITEM]: listItemExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,

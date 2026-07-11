@@ -3186,7 +3186,7 @@ const sdn: CalendarRangeProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--zjsr",
+    className: "sdn-frame sdn-frame--h7wy",
   },
   frame2: {
     wrapperElement: "div",
@@ -3202,7 +3202,7 @@ const sdn: CalendarRangeProps = {
     className: "sdn-icon sdn-icon--nlt7",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-title--pmi9",
+    className: "sdn-text-title sdn-text-title--mo5p",
   },
   container: {
     wrapperElement: "div",
@@ -3233,7 +3233,7 @@ const sdn: CalendarRangeProps = {
   frame3: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--rpjl",
+    className: "sdn-frame sdn-frame--qfdm",
   },
   container2: {
     wrapperElement: "div",
@@ -3241,7 +3241,7 @@ const sdn: CalendarRangeProps = {
     className: "sdn-container sdn-container--npgy",
   },
   calendarDay: {
-    className: "sdn-calendar-day sdn-calendar-day--bh5j",
+    className: "sdn-calendar-day sdn-calendar-day--pobd",
   },
   textLabel8: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -3347,19 +3347,19 @@ const sdn: CalendarRangeProps = {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDaySelected: {
-    className: "sdn-calendar-day-selected sdn-calendar-day-selected--dulb",
+    className: "sdn-calendar-day-selected sdn-calendar-day-selected--or9s",
   },
   textLabel24: {
     className: "sdn-text-label sdn-text-label--fye8",
   },
   calendarDay8: {
-    className: "sdn-calendar-day sdn-calendar-day--omg8",
+    className: "sdn-calendar-day sdn-calendar-day--xk18",
   },
   textLabel25: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDaySelected2: {
-    className: "sdn-calendar-day-selected sdn-calendar-day-selected--zit2",
+    className: "sdn-calendar-day-selected sdn-calendar-day-selected--og29",
   },
   textLabel26: {
     className: "sdn-text-label sdn-text-label--fye8",
@@ -3461,7 +3461,7 @@ const sdn: CalendarRangeProps = {
   frame4: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--zjsr",
+    className: "sdn-frame sdn-frame--h7wy",
   },
   frame5: {
     wrapperElement: "div",
@@ -3469,7 +3469,7 @@ const sdn: CalendarRangeProps = {
     className: "sdn-frame sdn-frame--8xlb",
   },
   textTitle2: {
-    className: "sdn-text-title sdn-text-title--pmi9",
+    className: "sdn-text-title sdn-text-title--mo5p",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--8tzd",
@@ -3508,7 +3508,7 @@ const sdn: CalendarRangeProps = {
   frame6: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--rpjl",
+    className: "sdn-frame sdn-frame--qfdm",
   },
   container8: {
     wrapperElement: "div",

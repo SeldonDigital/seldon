@@ -11,6 +11,7 @@ import {
   invariant,
 } from "@seldon/core"
 import { getComponentExportConfig } from "@seldon/core/components/catalog"
+import { CUSTOM_REACT_TEMPLATE_COMPONENTS } from "@seldon/core/components/catalog/custom"
 import {
   ComponentId,
   NATIVE_REACT_PRIMITIVES,
@@ -242,6 +243,15 @@ function getComponent(
     return null
   }
 
+  if (config.react.returns === "custom") {
+    const template = config.react.custom?.template
+    invariant(
+      template,
+      `Custom component ${componentId} is missing react.custom.template`,
+    )
+    return CUSTOM_REACT_TEMPLATE_COMPONENTS[template]
+  }
+
   const primitive = PRIMITIVES[config.react.returns]
   invariant(
     primitive,
@@ -268,6 +278,12 @@ function isVoidComponent(
   }
 
   const config = getComponentExportConfig(componentId)
+
+  // Custom templates build their own internal DOM and take no children slot, so
+  // the renderer must render them self-closing like a void element.
+  if (config.react.returns === "custom") {
+    return true
+  }
 
   return (
     config.react.returns !== "Frame" &&

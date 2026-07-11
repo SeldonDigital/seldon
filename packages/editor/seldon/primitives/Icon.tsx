@@ -30,8 +30,8 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-inbox"
     | "material-chevronDown"
     | "seldon-more"
-    | "material-add"
     | "material-unfoldMore"
+    | "material-add"
     | "material-filterList"
     | "material-dataObject"
     | "material-save"
@@ -43,13 +43,10 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-chevronDoubleLeft"
     | "material-chevronLeft"
     | "material-chevronDoubleRight"
-    | "material-playArrow"
     | "material-expandMore"
     | "material-email"
     | "material-menu"
     | "material-phone"
-    | "material-star"
-    | "material-shoppingCart"
     | "seldon-plus"
     | "seldon-minus"
     | "seldon-iconSocialFacebook"
@@ -150,6 +147,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-restoreFromTrash"
     | "material-sdCard"
     | "material-shoppingBag"
+    | "material-shoppingCart"
     | "material-simCard"
     | "material-store"
     | "material-storefront"
@@ -192,6 +190,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-grade"
     | "material-mood"
     | "material-moodBad"
+    | "material-star"
     | "material-starBorder"
     | "material-person"
     | "material-verifiedUser"
@@ -372,6 +371,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-more"
     | "material-moreHoriz"
     | "material-moreVert"
+    | "material-playArrow"
     | "material-rotateRight"
     | "material-router"
     | "material-skipNext"
@@ -559,8 +559,8 @@ const iconMap = {
   "material-inbox": Icons.IconMaterialInbox,
   "material-chevronDown": Icons.IconMaterialChevronDown,
   "seldon-more": Icons.IconSeldonMore,
-  "material-add": Icons.IconMaterialAdd,
   "material-unfoldMore": Icons.IconMaterialUnfoldMore,
+  "material-add": Icons.IconMaterialAdd,
   "material-filterList": Icons.IconMaterialFilterList,
   "material-dataObject": Icons.IconMaterialDataObject,
   "material-save": Icons.IconMaterialSave,
@@ -572,13 +572,10 @@ const iconMap = {
   "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
   "material-chevronLeft": Icons.IconMaterialChevronLeft,
   "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
-  "material-playArrow": Icons.IconMaterialPlayArrow,
   "material-expandMore": Icons.IconMaterialExpandMore,
   "material-email": Icons.IconMaterialEmail,
   "material-menu": Icons.IconMaterialMenu,
   "material-phone": Icons.IconMaterialPhone,
-  "material-star": Icons.IconMaterialStar,
-  "material-shoppingCart": Icons.IconMaterialShoppingCart,
   "seldon-plus": Icons.IconSeldonPlus,
   "seldon-minus": Icons.IconSeldonMinus,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
@@ -679,6 +676,7 @@ const iconMap = {
   "material-restoreFromTrash": Icons.IconMaterialRestoreFromTrash,
   "material-sdCard": Icons.IconMaterialSdCard,
   "material-shoppingBag": Icons.IconMaterialShoppingBag,
+  "material-shoppingCart": Icons.IconMaterialShoppingCart,
   "material-simCard": Icons.IconMaterialSimCard,
   "material-store": Icons.IconMaterialStore,
   "material-storefront": Icons.IconMaterialStorefront,
@@ -721,6 +719,7 @@ const iconMap = {
   "material-grade": Icons.IconMaterialGrade,
   "material-mood": Icons.IconMaterialMood,
   "material-moodBad": Icons.IconMaterialMoodBad,
+  "material-star": Icons.IconMaterialStar,
   "material-starBorder": Icons.IconMaterialStarBorder,
   "material-person": Icons.IconMaterialPerson,
   "material-verifiedUser": Icons.IconMaterialVerifiedUser,
@@ -903,6 +902,7 @@ const iconMap = {
   "material-more": Icons.IconMaterialMore,
   "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-moreVert": Icons.IconMaterialMoreVert,
+  "material-playArrow": Icons.IconMaterialPlayArrow,
   "material-rotateRight": Icons.IconMaterialRotateRight,
   "material-router": Icons.IconMaterialRouter,
   "material-skipNext": Icons.IconMaterialSkipNext,

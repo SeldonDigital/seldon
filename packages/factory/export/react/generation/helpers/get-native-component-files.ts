@@ -1,6 +1,7 @@
 import path from "node:path"
 
 import { Workspace } from "@seldon/core"
+import { CUSTOM_REACT_TEMPLATE_META } from "@seldon/core/components/catalog/custom/registry"
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
 import { createNodeExportAssetReader } from "../../../asset-reader"
@@ -68,10 +69,20 @@ export function getNativeComponentFiles(
     getUsedNativeComponents(workspace),
   )
 
+  // Bespoke templates whose sources must be copied when a custom component is
+  // exported. Each `react.custom.template` resolves to one file stem.
+  const usedCustomFileStems = new Set<string>()
+
   for (const component of componentsToExport) {
     const returns = component.config.react.returns
     if (returns.startsWith("HTML")) {
       usedFileStems.add(toNativeFileStem(returns))
+    }
+    if (returns === "custom" && component.config.react.custom) {
+      usedCustomFileStems.add(
+        CUSTOM_REACT_TEMPLATE_META[component.config.react.custom.template]
+          .fileStem,
+      )
     }
     addSwitchOptionStems(component, usedFileStems)
   }
@@ -86,6 +97,20 @@ export function getNativeComponentFiles(
       path: path.join(
         options.output.componentsFolder,
         "native-react",
+        `${fileStem}.tsx`,
+      ),
+      content,
+    })
+  }
+
+  for (const fileStem of usedCustomFileStems) {
+    const content = reader.readCustomComponent?.(fileStem)
+    if (!content) continue
+
+    primitives.push({
+      path: path.join(
+        options.output.componentsFolder,
+        "custom",
         `${fileStem}.tsx`,
       ),
       content,

@@ -11,9 +11,10 @@ import { migrateV9ThemeDisplayMode } from "./steps/migrate-00009-theme-display-m
 import { migrateV10GradientKinds } from "./steps/migrate-00010-gradient-kinds"
 import { migrateV11PositionDropDimensionOrdinal } from "./steps/migrate-00011-position-drop-dimension-ordinal"
 import { migrateV12DialogToPanels } from "./steps/migrate-00012-dialog-to-panels"
+import { migrateV13BooleanClipWrapChildren } from "./steps/migrate-00013-boolean-clip-wrapchildren"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 12
+export const CURRENT_WORKSPACE_VERSION = 13
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -30,6 +31,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   10: migrateV10GradientKinds,
   11: migrateV11PositionDropDimensionOrdinal,
   12: migrateV12DialogToPanels,
+  13: migrateV13BooleanClipWrapChildren,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {

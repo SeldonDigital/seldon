@@ -61,10 +61,7 @@ export function BarBreadcrumbsBar({
   seldonRefs,
   ...props
 }: BarBreadcrumbsBarProps) {
-  const barBreadcrumbsBarClassName = combineClassNames(
-    "sdn-bar-breadcrumbs-bar",
-    className,
-  )
+  const barBreadcrumbsBarClassName = combineClassNames("sdn-bar", className)
   const buttonIconicProps = applyRef(
     seldonRefs,
     buttonIconic === null
@@ -181,19 +178,19 @@ export function BarBreadcrumbsBar({
 const sdn: BarBreadcrumbsBarProps = {
   role: "navigation",
   "aria-hidden": "false",
-  className: "sdn-bar-breadcrumbs-bar sdn-bar",
+  className: "sdn-bar sdn-bar",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xl1d",
+    className: "sdn-icon sdn-icon--rezm",
   },
   icon2: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--qjxq",
+    className: "sdn-icon sdn-icon--ucf5",
   },
   link: {
     children: "Home",
@@ -203,7 +200,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon3: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--qjxq",
+    className: "sdn-icon sdn-icon--ucf5",
   },
   link2: {
     children: "Profile",
@@ -213,7 +210,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon4: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--qjxq",
+    className: "sdn-icon sdn-icon--ucf5",
   },
   link3: {
     children: "Settings",
