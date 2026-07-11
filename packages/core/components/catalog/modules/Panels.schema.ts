@@ -283,7 +283,7 @@ export const schema = {
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
-                value: "Dialog",
+                value: "Panel",
               },
               color: {
                 type: Sdn.ValueType.COMPUTED,

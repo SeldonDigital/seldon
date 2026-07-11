@@ -86,6 +86,8 @@ const VMNodeInner = function VMNodeInner({
     isHidden,
     isPlaceholder,
     nodeTypeColor,
+    isPrimaryShared,
+    isSecondaryShared,
     dataNodeType,
   } = useRowNode(node, {
     rootId,
@@ -234,11 +236,33 @@ const VMNodeInner = function VMNodeInner({
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
+  // Show Leaves / Branch / Tree lineage fill from the View menu. Primary rows
+  // read as a strong accent fill (they change when the selection is edited);
+  // secondary rows read faintly (related lineage that does not change). The fill
+  // uses the same `--sdn-swatch-active` accent as selection, so the selected row
+  // border and these fills stay in one color family.
+  const sharedHighlightBackground = isPrimaryShared
+    ? "color-mix(in srgb, var(--sdn-swatch-active) 35%, transparent)"
+    : isSecondaryShared
+      ? "color-mix(in srgb, var(--sdn-swatch-active) 12%, transparent)"
+      : undefined
+
   // The row's selection is styled on its combobox-field child. Repeat echo rows
-  // also carry a dashed base border so every field state renders dashed.
+  // also carry a dashed base border so every field state renders dashed. Merge
+  // the echo border and the lineage fill into one style so neither clobbers the
+  // other.
+  const echoFieldProps = buildRepeatFieldStyleProps(isEcho)
+  const comboboxFieldStyle = {
+    ...(echoFieldProps.style ?? {}),
+    ...(sharedHighlightBackground
+      ? { backgroundColor: sharedHighlightBackground }
+      : {}),
+  }
   const comboboxField = {
     ...buildFieldStateProps({ selected: isSelected }),
-    ...buildRepeatFieldStyleProps(isEcho),
+    ...(Object.keys(comboboxFieldStyle).length > 0
+      ? { style: comboboxFieldStyle }
+      : {}),
   }
 
   // Root-level row state. Selection lives on the combobox-field and disabled on
