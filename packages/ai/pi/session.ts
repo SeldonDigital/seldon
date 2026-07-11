@@ -12,7 +12,7 @@ import {
   type ResolvedContext,
   resolveContext,
 } from "./editor-context"
-import { buildOllamaModel, createPiAuth } from "./model"
+import { buildOllamaModel, createPiAuth, supportsThinking } from "./model"
 import type { ThinkingLevelOption } from "./model"
 import { buildPiSystemPrompt } from "./system-prompt"
 import { createContextTools } from "./tools/context"
@@ -72,7 +72,9 @@ export async function createSeldonSession(
   const toolNames = customTools.map((tool) => tool.name)
 
   const reasoning =
-    options.thinkingLevel !== undefined && options.thinkingLevel !== "off"
+    supportsThinking(options.model) &&
+    options.thinkingLevel !== undefined &&
+    options.thinkingLevel !== "off"
   const model = buildOllamaModel({
     model: options.model,
     host: options.host,

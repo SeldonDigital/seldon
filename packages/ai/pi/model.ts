@@ -1,4 +1,8 @@
-import type { Model, ThinkingLevel } from "@earendil-works/pi-ai"
+import type {
+  Model,
+  OpenAICompletionsCompat,
+  ThinkingLevel,
+} from "@earendil-works/pi-ai"
 import { AuthStorage, ModelRegistry } from "@earendil-works/pi-coding-agent"
 
 const DEFAULT_HOST = "http://127.0.0.1:11434"
@@ -38,11 +42,42 @@ function resolveHost(host?: string): string {
 }
 
 /**
+ * True when the model can run a thinking pass, so the thinking level has an
+ * effect. Among the local models we ship this covers the qwen3 family and
+ * gpt-oss. Coder and llama models have no thinking mode, so their thinking level
+ * is a no-op and reasoning stays off.
+ */
+export function supportsThinking(model?: string): boolean {
+  const id = resolvePiModelId(model).toLowerCase()
+  return id.includes("qwen3") || id.includes("gpt-oss")
+}
+
+/**
+ * OpenAI-compatible overrides for a local Ollama model. Ollama does not
+ * understand the `developer` role, so the system prompt goes through as a
+ * `system` message. Thinking-capable models use a per-family thinking control:
+ * qwen3 reads `chat_template_kwargs.enable_thinking`, and gpt-oss reasons at its
+ * default since Ollama does not accept `reasoning_effort` over this endpoint.
+ */
+function ollamaCompat(id: string): OpenAICompletionsCompat {
+  const compat: OpenAICompletionsCompat = { supportsDeveloperRole: false }
+  const lower = id.toLowerCase()
+  if (lower.includes("qwen3")) {
+    compat.thinkingFormat = "qwen-chat-template"
+    compat.supportsReasoningEffort = false
+  } else if (lower.includes("gpt-oss")) {
+    compat.supportsReasoningEffort = false
+  }
+  return compat
+}
+
+/**
  * Builds a Pi `Model` that targets a local Ollama server through its
  * OpenAI-compatible endpoint. Ollama needs no key and reports no cost, so the
  * cost fields are zero and auth is a runtime dummy (see {@link createPiAuth}).
- * `reasoning` is on only when a thinking level above `off` is requested, since
- * qwen3 supports a thinking pass that the constrained edit path does not need.
+ * `reasoning` is on only when the caller wants a thinking pass this turn, which
+ * the session gates on both the requested level and {@link supportsThinking}.
+ * The `compat` block carries the per-family thinking control for Ollama.
  */
 export function buildOllamaModel(options: {
   model?: string
@@ -62,6 +97,7 @@ export function buildOllamaModel(options: {
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
     contextWindow: 32768,
     maxTokens: 4096,
+    compat: ollamaCompat(id),
   }
 }
 
