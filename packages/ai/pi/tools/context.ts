@@ -9,7 +9,9 @@ import { catalogComponentsSection } from "../../prompt/context-sections/catalog-
 import { propertyShapeSection } from "../../prompt/context-sections/property-shape"
 import { propertyVocabularySection } from "../../prompt/context-sections/property-vocabulary"
 import { selectionSection } from "../../prompt/context-sections/selection"
+import { themeIdsSection } from "../../prompt/context-sections/theme-ids"
 import { themeTokensSection } from "../../prompt/context-sections/theme-tokens"
+import { buildActionPayloadSpecs } from "../../schema/action-schema"
 import type { ResolvedContext } from "../editor-context"
 
 function textResult(text: string) {
@@ -109,13 +111,32 @@ export function createContextTools(
     name: "list_theme_tokens",
     label: "List Theme Tokens",
     description:
-      "Return the theme token ids that can be referenced as @scope.key, for example @swatch.primary or @fontSize.medium.",
+      "Return the theme ids to target with set_theme_override and the theme token ids that can be referenced as @scope.key, for example @swatch.primary or @fontSize.medium.",
     parameters: Type.Object({}),
     execute: async () =>
       textResult(
         joinOrEmpty(
-          themeTokensSection(workspace),
+          [...themeIdsSection(workspace), ...themeTokensSection(workspace)],
           "No theme tokens available.",
+        ),
+      ),
+  })
+
+  const getActionSpec = defineTool({
+    name: "get_action_spec",
+    label: "Get Action Spec",
+    description:
+      "Return the payload spec, its required and optional keys, for one or more workspace action types. Call this before apply_actions when unsure of an action's payload shape.",
+    parameters: Type.Object({
+      types: Type.Array(Type.String(), {
+        description: "Action type names, for example set_node_properties.",
+      }),
+    }),
+    execute: async (_id, params) =>
+      textResult(
+        joinOrEmpty(
+          buildActionPayloadSpecs(params.types),
+          "No matching action types. See the action catalog in the system prompt.",
         ),
       ),
   })
@@ -138,5 +159,6 @@ export function createContextTools(
     getComponentVocabulary,
     listThemeTokens,
     listCatalogIds,
+    getActionSpec,
   ]
 }

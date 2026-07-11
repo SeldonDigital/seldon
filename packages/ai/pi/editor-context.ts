@@ -2,7 +2,6 @@ import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import { activeBoardSection } from "../prompt/context-sections/active-board"
 import { selectionSection } from "../prompt/context-sections/selection"
-import { themeIdsSection } from "../prompt/context-sections/theme-ids"
 
 /** The editor state the agent needs to target the right board and node. */
 export interface EditorContextInput {
@@ -49,10 +48,11 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
 
 /**
  * The compact per-turn context injected with each prompt. It carries only the
- * volatile parts the model must see fresh every turn: the active board tree, the
- * selection, and the theme ids. Static rules live in the cached system prompt,
- * and the heavier reference lists are fetched on demand through the read tools,
- * so this stays small and the system-prompt prefix cache stays warm.
+ * volatile parts the model must see fresh every turn: the active board tree and
+ * the selection. Static rules live in the cached system prompt, and the heavier
+ * reference lists, including theme ids and tokens, are fetched on demand through
+ * the read tools, so this stays small and the system-prompt prefix cache stays
+ * warm.
  */
 export function buildTurnContext(resolved: ResolvedContext): string {
   const {
@@ -87,7 +87,6 @@ export function buildTurnContext(resolved: ResolvedContext): string {
       selectedNodeRootId,
     ),
   )
-  lines.push(...themeIdsSection(workspace))
 
   return lines.join("\n")
 }

@@ -27,16 +27,20 @@ How to work:
 - Read the "Current editor context" message each turn for the active board, its
   node ids, and the selection. Act on that board only.
 - When you need a component's settable properties or value shapes, call
-  get_component_vocabulary with its catalog id. When you need theme tokens, call
-  list_theme_tokens. When you need addable component ids, call list_catalog_ids.
-- Make the edit by calling a mutation tool (set_node_properties, add_component,
-  and so on). Prefer the dedicated tool; use apply_action only for an action
-  without one.
-- If a tool returns an error, the reducer rejected the action. Read the reason,
-  fix the arguments, and call the tool again. If a tool reports it changed
-  nothing, retarget rather than repeating the same call.
-- Emit the fewest edits that satisfy the request. Order edits so any node you
-  create exists before you set its properties.
+  get_component_vocabulary with its catalog id. When you need theme ids or theme
+  tokens, call list_theme_tokens. When you need addable component ids, call
+  list_catalog_ids. When unsure of an action's payload keys, call
+  get_action_spec.
+- Make single common edits with a dedicated tool (set_node_properties,
+  add_component, and so on). To make several edits, batch them into one
+  apply_actions call instead of many separate calls. Use apply_actions for any
+  action without a dedicated tool.
+- If a tool returns an error or reports an action as rejected, the reducer
+  rejected it. Read the reason, fix the arguments, and try again. If a tool
+  reports it changed nothing, retarget rather than repeating the same call.
+- Emit the fewest edits that satisfy the request, and prefer one apply_actions
+  call over many. Order edits so any node you create exists before you set its
+  properties.
 - When done, reply with a short summary of what you changed. If nothing should
   change, make no tool calls and explain why.
 
@@ -72,6 +76,6 @@ A property's value shape depends on the key:
 
 ${hierarchy}
 
-Action types available through apply_action (the dedicated tools cover the common ones):
+Action types available through apply_actions (the dedicated tools cover the common ones):
 ${actionReference}`
 }

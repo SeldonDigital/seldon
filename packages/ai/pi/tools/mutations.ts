@@ -8,10 +8,7 @@ import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import { normalizeActions } from "../../repair/normalize-actions"
-import {
-  ALL_ACTION_TYPES,
-  buildActionPayloadSpecs,
-} from "../../schema/action-schema"
+import { ALL_ACTION_TYPES } from "../../schema/action-schema"
 import type { PiTurnState } from "./turn-state"
 
 const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
@@ -47,10 +44,12 @@ function commit(state: PiTurnState, rawAction: WorkspaceAction): string {
 }
 
 /**
- * The Seldon mutation tools for one turn. Each tool proposes a `WorkspaceAction`
- * validated against the shared working copy. Typed tools cover the common
- * payloads; `apply_action` is the escape hatch for the long tail of action types
- * so the model is never blocked on an action that lacks a typed wrapper.
+ * The Seldon mutation tools for one turn. Each tool proposes one or more
+ * `WorkspaceAction`s validated against the shared working copy. Typed tools
+ * cover the common single-action payloads; `apply_actions` batches many edits in
+ * one call and is the escape hatch for the long tail of action types, so the
+ * model spends fewer round-trips and is never blocked on an action that lacks a
+ * typed wrapper.
  */
 export function createMutationTools(state: PiTurnState): ToolDefinition[] {
   const propertyValue = Type.Record(Type.String(), Type.Unknown())
@@ -209,28 +208,43 @@ export function createMutationTools(state: PiTurnState): ToolDefinition[] {
       ),
   })
 
-  const applyAction = defineTool({
-    name: "apply_action",
-    label: "Apply Action",
-    description: `Escape hatch for any workspace action without a dedicated tool. Prefer a dedicated tool when one exists. "type" must be one of the allowed action types; "payload" must match that action's shape.\n${buildActionPayloadSpecs(
-      ALL_ACTION_TYPES,
-    ).join("\n")}`,
+  const applyActionsTool = defineTool({
+    name: "apply_actions",
+    label: "Apply Actions",
+    description:
+      'Apply one or more workspace actions in a single call, in order, against the working copy. Prefer this over calling tools repeatedly: put every edit for the request in one call. It is also the escape hatch for any action without a dedicated tool. Each item is { "type", "payload" }, where "type" is an allowed action type and "payload" matches that action\'s shape. Actions run top to bottom, so create a node before setting its properties. Call get_action_spec when unsure of an action\'s payload keys. Each action is reported on its own line; resend only the ones marked "rejected".',
     parameters: Type.Object({
-      type: Type.String({ description: "One of the allowed action types." }),
-      payload: Type.Record(Type.String(), Type.Unknown()),
+      actions: Type.Array(
+        Type.Object({
+          type: Type.String({
+            description: "One of the allowed action types.",
+          }),
+          payload: Type.Record(Type.String(), Type.Unknown()),
+        }),
+        { description: "Actions to apply, in order." },
+      ),
     }),
     execute: async (_id, params) => {
-      if (!KNOWN_ACTION_TYPES.has(params.type)) {
-        throw new Error(
-          `Unknown action type "${params.type}". Allowed types: ${ALL_ACTION_TYPES.join(", ")}.`,
-        )
+      if (params.actions.length === 0) {
+        return textResult("No actions provided.")
       }
-      return textResult(
-        commit(state, {
-          type: params.type,
-          payload: params.payload,
-        } as WorkspaceAction),
-      )
+      const lines = params.actions.map((action, index) => {
+        const position = index + 1
+        if (!KNOWN_ACTION_TYPES.has(action.type)) {
+          return `${position}. ${action.type} rejected: unknown action type. Allowed types: ${ALL_ACTION_TYPES.join(", ")}.`
+        }
+        try {
+          return `${position}. ${commit(state, {
+            type: action.type,
+            payload: action.payload,
+          } as WorkspaceAction)}`
+        } catch (caught) {
+          const reason =
+            caught instanceof Error ? caught.message : "invalid action"
+          return `${position}. ${action.type} rejected: ${reason}`
+        }
+      })
+      return textResult(lines.join("\n"))
     },
   })
 
@@ -242,6 +256,6 @@ export function createMutationTools(state: PiTurnState): ToolDefinition[] {
     removeInstance,
     setThemeOverride,
     setBoardLabel,
-    applyAction,
+    applyActionsTool,
   ]
 }
