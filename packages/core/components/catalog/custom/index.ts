@@ -1,10 +1,10 @@
 import { ComponentType } from "react"
 
 import { CustomReactTemplate } from "../../types"
-import { ToggleSwitch } from "./ToggleSwitch/ToggleSwitch"
+import { ToggleSwitch } from "./ToggleSwitch"
 
 export * from "./registry"
-export { ToggleSwitch } from "./ToggleSwitch/ToggleSwitch"
+export { ToggleSwitch } from "./ToggleSwitch"
 
 /**
  * Maps each bespoke template id to the React component the canvas renders. Kept

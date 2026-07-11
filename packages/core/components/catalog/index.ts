@@ -278,7 +278,7 @@ import {
 import {
   exportConfig as toggleSwitchExportConfig,
   schema as toggleSwitchSchema,
-} from "./custom/ToggleSwitch/ToggleSwitch.schema"
+} from "./custom/ToggleSwitch.schema"
 import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,

@@ -22,8 +22,8 @@ export const CUSTOM_REACT_TEMPLATE_META: Record<
 > = {
   toggleSwitch: {
     importName: "ToggleSwitch",
-    importPath: "../custom/ToggleSwitch/ToggleSwitch",
-    fileStem: "ToggleSwitch/ToggleSwitch",
+    importPath: "../custom/ToggleSwitch",
+    fileStem: "ToggleSwitch",
     base: "HTMLInput",
   },
 }
