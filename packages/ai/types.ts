@@ -4,6 +4,7 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
+import type { ThinkingLevelOption } from "./pi/model"
 import type { ActionRepair } from "./repair/normalize-actions"
 
 /** One turn of the chat conversation, passed back for context on later turns. */
@@ -25,19 +26,19 @@ export interface ChatToActionsInput {
   selectedNodeRootId?: string
   /** Model id override. Defaults to `SELDON_AI_MODEL` env or `qwen3`. */
   model?: string
+  /** Thinking level for the model. */
+  thinkingLevel?: ThinkingLevelOption
 }
 
 /** Context and model output captured for debugging. Logged by the editor console. */
 export interface AgentDebug {
   /** The compact context sent to the model. */
   context: string
-  /** The raw JSON string the model returned before parsing. */
+  /** The final assistant text the model returned. */
   rawResponse: string
   /** Deterministic shape fixes applied to the actions before returning. */
   repairs: ActionRepair[]
-  /** Present when a corrective round-trip ran because core rejected the first pass. */
-  correction?: AgentCorrection
-  /** Ollama timing, token, and memory metrics summed across the turn's calls. */
+  /** Timing and token metrics for the turn. */
   metrics?: AgentMetrics
 }
 
@@ -45,7 +46,7 @@ export interface AgentDebug {
 export interface AgentMetrics {
   /** Model id that served the turn. */
   model: string
-  /** Number of `/api/chat` calls in the turn (2 when a corrective call ran). */
+  /** Number of model calls the turn made. */
   calls: number
   /** Total wall time across calls, in milliseconds. */
   totalMs: number
@@ -57,18 +58,10 @@ export interface AgentMetrics {
   outputTokens: number
   /** Output tokens per second over the generation phase, if measurable. */
   outputTokensPerSecond?: number
-  /** Resident size of the loaded model in bytes, from `/api/ps`. */
+  /** Resident size of the loaded model in bytes, when reported. */
   modelSizeBytes?: number
-  /** VRAM footprint of the loaded model in bytes, from `/api/ps`. */
+  /** VRAM footprint of the loaded model in bytes, when reported. */
   modelVramBytes?: number
-}
-
-/** Details of the single corrective model call, for the console log. */
-export interface AgentCorrection {
-  /** The rejection reasons fed back to the model. */
-  reasons: string[]
-  /** The raw JSON string the corrective call returned. */
-  rawResponse: string
 }
 
 /** Result of {@link chatToActions}. Actions are applied by the caller through the workspace reducer. */

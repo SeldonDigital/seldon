@@ -1,0 +1,142 @@
+import {
+  type ToolDefinition,
+  defineTool,
+} from "@earendil-works/pi-coding-agent"
+import { Type } from "typebox"
+
+import { activeBoardSection } from "../../prompt/context-sections/active-board"
+import { catalogComponentsSection } from "../../prompt/context-sections/catalog-components"
+import { propertyShapeSection } from "../../prompt/context-sections/property-shape"
+import { propertyVocabularySection } from "../../prompt/context-sections/property-vocabulary"
+import { selectionSection } from "../../prompt/context-sections/selection"
+import { themeTokensSection } from "../../prompt/context-sections/theme-tokens"
+import type { ResolvedContext } from "../editor-context"
+
+function textResult(text: string) {
+  return { content: [{ type: "text" as const, text }], details: {} }
+}
+
+function joinOrEmpty(lines: string[], empty: string): string {
+  const body = lines.filter((line) => line !== "")
+  return body.length > 0 ? lines.join("\n").trim() : empty
+}
+
+/**
+ * Read-only tools that surface Seldon reference data on demand. Keeping the
+ * heavier lists (per-component vocabulary, theme tokens, catalog ids) behind
+ * tools rather than in every prompt keeps the turn small and the system-prompt
+ * cache warm, and the model pulls only what a given edit needs.
+ */
+export function createContextTools(
+  resolved: ResolvedContext,
+): ToolDefinition[] {
+  const {
+    workspace,
+    resolvedKey,
+    activeBoard,
+    selectedNodeId,
+    selectedNodeRootId,
+  } = resolved
+
+  const getActiveBoard = defineTool({
+    name: "get_active_board",
+    label: "Get Active Board",
+    description:
+      "Return the active board's variant node trees with each node's id, level, and catalog id. Use these ids as nodeId, parentId, instanceId, or variantId.",
+    parameters: Type.Object({}),
+    execute: async () => {
+      if (
+        !activeBoard ||
+        activeBoard.type !== "component" ||
+        resolvedKey === undefined
+      ) {
+        return textResult("No active component board is selected.")
+      }
+      return textResult(
+        activeBoardSection(workspace, resolvedKey, activeBoard).lines.join(
+          "\n",
+        ),
+      )
+    },
+  })
+
+  const getSelection = defineTool({
+    name: "get_selection",
+    label: "Get Selection",
+    description:
+      "Return the node the user has selected on the canvas, with its id, level, parent, children, and set properties.",
+    parameters: Type.Object({}),
+    execute: async () =>
+      textResult(
+        joinOrEmpty(
+          selectionSection(
+            workspace,
+            activeBoard,
+            selectedNodeId,
+            selectedNodeRootId,
+          ),
+          "No node is selected.",
+        ),
+      ),
+  })
+
+  const getComponentVocabulary = defineTool({
+    name: "get_component_vocabulary",
+    label: "Get Component Vocabulary",
+    description:
+      "Return the settable property keys and value shapes for a component catalog id. Only set keys this reports; other keys are not part of the component's vocabulary.",
+    parameters: Type.Object({
+      catalogId: Type.String({
+        description: "Catalog id of the component, for example button or text.",
+      }),
+    }),
+    execute: async (_id, params) => {
+      const ids = new Set([params.catalogId])
+      const lines = [
+        ...propertyVocabularySection(ids),
+        ...propertyShapeSection(ids),
+      ]
+      return textResult(
+        joinOrEmpty(
+          lines,
+          `No component vocabulary found for "${params.catalogId}". Use list_catalog_ids for valid ids.`,
+        ),
+      )
+    },
+  })
+
+  const listThemeTokens = defineTool({
+    name: "list_theme_tokens",
+    label: "List Theme Tokens",
+    description:
+      "Return the theme token ids that can be referenced as @scope.key, for example @swatch.primary or @fontSize.medium.",
+    parameters: Type.Object({}),
+    execute: async () =>
+      textResult(
+        joinOrEmpty(
+          themeTokensSection(workspace),
+          "No theme tokens available.",
+        ),
+      ),
+  })
+
+  const listCatalogIds = defineTool({
+    name: "list_catalog_ids",
+    label: "List Catalog Ids",
+    description:
+      "Return every component catalog id that can be added with add_component.",
+    parameters: Type.Object({}),
+    execute: async () =>
+      textResult(
+        joinOrEmpty(catalogComponentsSection(), "No catalog ids available."),
+      ),
+  })
+
+  return [
+    getActiveBoard,
+    getSelection,
+    getComponentVocabulary,
+    listThemeTokens,
+    listCatalogIds,
+  ]
+}

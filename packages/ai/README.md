@@ -1,6 +1,6 @@
 # Seldon · AI
 
-Seldon AI explores turning a chat message into Seldon **workspace actions** with a local model. It reads a workspace for context, sends the request to a local model through Ollama, and returns a list of `WorkspaceAction` payloads. The editor applies those actions through the same reducer every gesture uses. Nothing leaves the machine, and the package never writes the workspace file itself.
+Seldon AI explores turning a chat message into Seldon **workspace actions** with a local model. It reads a workspace for context, runs a tool-calling agent loop with [Pi](https://pi.dev) against a local model through Ollama, and returns a list of `WorkspaceAction` payloads. The editor applies those actions through the same reducer every gesture uses. Nothing leaves the machine, and the package never writes the workspace file itself.
 
 Core owns the workspace and its rules. This package only reads a workspace and proposes actions.
 
@@ -18,11 +18,13 @@ The package groups a few parts that work together:
 | Area | Role | Reference |
 | --- | --- | --- |
 | **Orchestration** | Run one chat turn from request to actions | [orchestrate.ts](./orchestrate.ts) |
-| **Context** | Build the compact context the model reads | [prompt/context-builder.ts](./prompt/context-builder.ts) |
-| **Prompt** | Hold the system prompt and the property taxonomy | [prompt/system-prompt.ts](./prompt/system-prompt.ts) |
+| **Pi harness** | Build the session, tools, and turn loop | [pi/](./pi) |
+| **System prompt** | Hold the static rules for the agent | [pi/system-prompt.ts](./pi/system-prompt.ts) |
+| **Editor context** | Build the per-turn editor context | [pi/editor-context.ts](./pi/editor-context.ts) |
+| **Context sections** | Build the reusable context blocks | [prompt/context-sections/](./prompt/context-sections) |
 | **Repair** | Fix common shape mistakes before validation | [repair/normalize-actions.ts](./repair/normalize-actions.ts) |
-| **Action schema** | List the allowed actions and the response format | [schema/action-schema.ts](./schema/action-schema.ts) |
-| **Model client** | Call the local Ollama model | [ollama-client.ts](./ollama-client.ts) |
+| **Action schema** | List the allowed actions and their payload specs | [schema/action-schema.ts](./schema/action-schema.ts) |
+| **Model** | Resolve the local Ollama model for Pi | [pi/model.ts](./pi/model.ts) |
 
 The package imports workspace types, catalogs, and compute from `@seldon/core`. It does not fork property or theme rules.
 
@@ -30,7 +32,7 @@ The package imports workspace types, catalogs, and compute from `@seldon/core`. 
 
 ## Local Model
 
-The client calls `http://127.0.0.1:11434/api/chat` with `stream: false` and a `format` JSON Schema that constrains the decode. The default model is `qwen3:4b`.
+Pi targets a local Ollama model through its OpenAI-compatible endpoint at `http://127.0.0.1:11434/v1`. The endpoint needs no API key. The default model is `qwen3:4b`. Tool-calling on small models is the main open question, so a turn may need a larger model.
 
 Install [Ollama](https://ollama.com), start it, and pull the default model:
 
@@ -50,13 +52,12 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 ### Environment variables
 
-The client reads these from `process.env` in [ollama-client.ts](./ollama-client.ts). An explicit call argument wins first, then the environment variable, then the default.
+Pi reads these from `process.env` in [pi/model.ts](./pi/model.ts). An explicit call argument wins first, then the environment variable, then the default.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `SELDON_AI_MODEL` | `qwen3:4b` | Model id the client requests |
+| `SELDON_AI_MODEL` | `qwen3:4b` | Model id the agent requests |
 | `OLLAMA_HOST` | `http://127.0.0.1:11434` | Base URL of the Ollama server |
-| `SELDON_AI_KEEP_ALIVE` | `30m` | How long Ollama keeps the model resident between turns |
 
 The agent runs inside the editor dev server. Set a variable inline when you start it from the repo root with `npm run dev`:
 
@@ -66,9 +67,6 @@ SELDON_AI_MODEL="qwen3:8b" npm run dev
 
 # Point at Ollama on another machine
 OLLAMA_HOST="http://192.168.1.20:11434" npm run dev
-
-# Keep the model resident longer between turns
-SELDON_AI_KEEP_ALIVE="2h" npm run dev
 ```
 
 Export a variable to reuse it across every command in the shell session:
@@ -94,23 +92,23 @@ const { actions, reply } = await chatToActions({
 })
 ```
 
-`chatToActions` builds the context, calls the local model with a schema-constrained response format, repairs common shape mistakes, then dry-runs the actions through the reducer. If Core rejects any action, it makes one corrective call with the rejection reasons. The caller applies the returned actions. This function never changes state.
+`chatToActions` builds a hermetic Pi session with the Seldon tools, injects the per-turn editor context with the user request, and lets the model call tools until it is done. The caller applies the returned actions. This function never changes state.
 
-The turn is single-shot with at most one corrective retry. It does not run a multi-turn tool loop yet.
+The model never writes the workspace. All file tools are off, and each Seldon tool only proposes a `WorkspaceAction`. A tool dry-runs the action against an in-memory working copy through the reducer, returns the reducer's error text to the model on rejection, and accumulates accepted actions.
 
 ---
 
 ## Context
 
-The context builder emits a small summary, not the full workspace file. It lists the active board's node tree with the ids to target, the property vocabulary and value shapes for those components, the hierarchy rules, the theme ids and token ids, and the component catalog ids. The model needs identity and structure, not every property override.
+The context is a small summary, not the full workspace file. It lists the active board's node tree with the ids to target, the property vocabulary and value shapes for those components, the hierarchy rules, the theme ids and token ids, and the component catalog ids. The model needs identity and structure, not every property override.
 
-Each part is one context section. Every section lives in its own module under [prompt/context-sections/](./prompt/context-sections), and [prompt/context-builder.ts](./prompt/context-builder.ts) orders them. A section drops out when it has nothing to say.
+Each part is one context section under [prompt/context-sections/](./prompt/context-sections). [pi/editor-context.ts](./pi/editor-context.ts) builds the compact per-turn context, and the read tools in [pi/tools/context.ts](./pi/tools/context.ts) surface the larger sections on demand. A section drops out when it has nothing to say.
 
 ---
 
 ## Action Set
 
-The agent may emit a curated subset of `WorkspaceAction`. The allowed types come from [schema/action-schema.ts](./schema/action-schema.ts), and [prompt/system-prompt.ts](./prompt/system-prompt.ts) documents the payload shapes the model should produce. The reducer validates every payload when the editor applies it, so an invalid action is rejected without changing state.
+The agent may emit a curated subset of `WorkspaceAction`. The allowed types come from [schema/action-schema.ts](./schema/action-schema.ts), and [pi/system-prompt.ts](./pi/system-prompt.ts) documents the payload shapes the model should produce. The mutation tools in [pi/tools/mutations.ts](./pi/tools/mutations.ts) expose those actions. The reducer validates every payload when the editor applies it, so an invalid action is rejected without changing state.
 
 ---
 

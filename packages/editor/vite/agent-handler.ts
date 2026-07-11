@@ -2,7 +2,10 @@ import {
   type AgentDebug,
   type AgentMetrics,
   type ChatMessage,
+  THINKING_LEVEL_OPTIONS,
+  type ThinkingLevelOption,
   chatToActions,
+  resolvePiModelId,
   warmModel,
 } from "@seldon/ai"
 import type {
@@ -19,6 +22,7 @@ export type AgentRequestBody = {
   selectedNodeId?: string
   selectedNodeRootId?: string
   model?: string
+  thinkingLevel?: ThinkingLevelOption
 }
 
 export type AgentResult = {
@@ -31,7 +35,8 @@ export type AgentResult = {
  * Runs the local AI agent against a workspace and returns the actions it wants
  * to apply. The workspace is read for grounding only. The editor applies the
  * returned actions through the reducer, so this handler never mutates state.
- * Calls a local Ollama model, so it must run in a Node context.
+ * Runs the Pi tool-calling loop against a local model, so it must run in a Node
+ * context.
  */
 export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
   if (!body?.workspace) {
@@ -49,9 +54,56 @@ export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
     selectedNodeId: body.selectedNodeId,
     selectedNodeRootId: body.selectedNodeRootId,
     model: body.model,
+    thinkingLevel: body.thinkingLevel,
   })
 
   return { actions, reply, debug }
+}
+
+/** Session-config choices the Hari palette renders. */
+export type AgentConfig = {
+  models: string[]
+  thinkingLevels: ThinkingLevelOption[]
+  defaults: {
+    model: string
+    thinkingLevel: ThinkingLevelOption
+  }
+}
+
+/** Lists the local Ollama models, best-effort. Empty when Ollama is unreachable. */
+async function listOllamaModels(): Promise<string[]> {
+  const host = process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434"
+  try {
+    const response = await fetch(`${host}/api/tags`)
+    if (!response.ok) return []
+    const data = (await response.json()) as {
+      models?: { name?: string; model?: string }[]
+    }
+    const names = (data.models ?? [])
+      .map((entry) => entry.model ?? entry.name)
+      .filter((name): name is string => typeof name === "string")
+    return [...new Set(names)].sort()
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Returns the session-config choices for the Hari palette: the locally available
+ * models, the thinking levels, and the current defaults. The model list is
+ * best-effort and comes from the local Ollama server.
+ */
+export async function agentConfig(): Promise<AgentConfig> {
+  const defaultModel = resolvePiModelId()
+  const models = await listOllamaModels()
+  return {
+    models: models.includes(defaultModel) ? models : [defaultModel, ...models],
+    thinkingLevels: THINKING_LEVEL_OPTIONS,
+    defaults: {
+      model: defaultModel,
+      thinkingLevel: "off",
+    },
+  }
 }
 
 export type WarmResult = {

@@ -1,5 +1,10 @@
-import { runAgentChat, warmAgent } from "@lib/ai/run-agent-chat"
-import type { AgentDebug, AgentMetrics } from "@seldon/ai"
+import {
+  type AgentConfig,
+  getAgentConfig,
+  runAgentChat,
+  warmAgent,
+} from "@lib/ai/run-agent-chat"
+import type { AgentDebug, AgentMetrics, ThinkingLevelOption } from "@seldon/ai"
 import { useCallback } from "react"
 import { create } from "zustand"
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
@@ -28,9 +33,17 @@ interface AiChatState {
   messages: AiChatMessage[]
   status: HariStatus
   error: string | null
+  /** Session-config choices from the agent, loaded when the panel opens. */
+  config: AgentConfig | null
+  /** Selected model and thinking level for the next turn. */
+  model?: string
+  thinkingLevel?: ThinkingLevelOption
   addMessage: (message: AiChatMessage) => void
   setStatus: (status: HariStatus) => void
   setError: (error: string | null) => void
+  setConfig: (config: AgentConfig) => void
+  setModel: (model: string) => void
+  setThinkingLevel: (thinkingLevel: ThinkingLevelOption) => void
   reset: () => void
 }
 
@@ -38,10 +51,19 @@ const useStore = create<AiChatState>((set) => ({
   messages: [],
   status: "idle",
   error: null,
+  config: null,
   addMessage: (message) =>
     set((state) => ({ messages: [...state.messages, message] })),
   setStatus: (status) => set({ status }),
   setError: (error) => set({ error }),
+  setConfig: (config) =>
+    set((state) => ({
+      config,
+      model: state.model ?? config.defaults.model,
+      thinkingLevel: state.thinkingLevel ?? config.defaults.thinkingLevel,
+    })),
+  setModel: (model) => set({ model }),
+  setThinkingLevel: (thinkingLevel) => set({ thinkingLevel }),
   reset: () => set({ messages: [], status: "idle", error: null }),
 }))
 
@@ -253,7 +275,7 @@ function formatCount(value: number): string {
 }
 
 /**
- * Logs a one-line Ollama performance summary for the turn: wall time, load time,
+ * Logs a one-line performance summary for the turn: wall time, load time,
  * input/output tokens, generation speed, model memory, and call count. Times are
  * shown in seconds. Metrics are absent only when the agent could not read them,
  * so the line is skipped.
@@ -349,11 +371,16 @@ function logWarm(metrics: AgentMetrics): void {
   aiLog(`🔥 Warmed ${metrics.model} · ${parts.join(" · ")}`, metrics)
 }
 
+/** True when AI Logging is on in the Dev menu. */
+function isLoggingEnabled(): boolean {
+  return useDebugStore.getState().aiLogging
+}
+
 /**
- * Emits one collapsed console group per turn when AI Logging is enabled in the
- * Dev menu. Groups keep the console tidy: the summary line shows collapsed, and
- * the grounding context and raw model response are nested groups the user can
- * expand on demand.
+ * Emits one collapsed console group per turn when AI Logging is enabled. Groups
+ * keep the console tidy: the summary line shows collapsed, and the grounding
+ * context and raw model response are nested groups the user can expand on
+ * demand.
  */
 function logAiTurn(
   message: string,
@@ -363,7 +390,7 @@ function logAiTurn(
   before: Workspace,
   activeBoardKey: BoardKey | undefined,
 ): void {
-  if (!useDebugStore.getState().aiLogging) return
+  if (!isLoggingEnabled()) return
 
   const outcomeIcon =
     report.rejected.length > 0
@@ -395,12 +422,6 @@ function logAiTurn(
       for (const repair of repairs) {
         aiLog(`${repair.actionType}.${repair.propertyKey}: ${repair.reason}`)
       }
-      console.groupEnd()
-    }
-    if (debug.correction) {
-      aiGroup("🔁 Corrective round-trip")
-      aiLog("Rejections fed back:", debug.correction.reasons)
-      aiLog("Corrected response:", debug.correction.rawResponse)
       console.groupEnd()
     }
   }
@@ -468,6 +489,7 @@ export function useHari() {
 
       const store = useStore.getState()
       const history = store.messages
+      const { model, thinkingLevel } = store
       store.addMessage({ role: "user", content: message })
       store.setStatus("pending")
       store.setError(null)
@@ -485,6 +507,8 @@ export function useHari() {
           activeBoardKey,
           selectedNodeId: selectedNodeId ?? undefined,
           selectedNodeRootId: selectedNodeRootId ?? undefined,
+          model,
+          thinkingLevel,
         })
 
         const outcome = applyActionsWithReport(current, actions)
@@ -526,8 +550,11 @@ export function useHari() {
     if (warmInFlight) return warmInFlight
     warmInFlight = (async () => {
       try {
-        const { metrics } = await warmAgent()
-        if (useDebugStore.getState().aiLogging) logWarm(metrics)
+        const config = await getAgentConfig()
+        if (config) useStore.getState().setConfig(config)
+        const { model } = useStore.getState()
+        const { metrics } = await warmAgent({ model })
+        if (isLoggingEnabled()) logWarm(metrics)
       } catch {
         // Warm-up is best-effort; a failure just means the first turn loads cold.
       } finally {
@@ -539,6 +566,12 @@ export function useHari() {
 
   const reset = useStore((state) => state.reset)
 
+  const config = useStore((state) => state.config)
+  const model = useStore((state) => state.model)
+  const thinkingLevel = useStore((state) => state.thinkingLevel)
+  const setModel = useStore((state) => state.setModel)
+  const setThinkingLevel = useStore((state) => state.setThinkingLevel)
+
   return {
     isOpen: activePanel === "ai-chat",
     open: () => openPanel("ai-chat"),
@@ -549,5 +582,10 @@ export function useHari() {
     send,
     warm,
     reset,
+    config,
+    model,
+    thinkingLevel,
+    setModel,
+    setThinkingLevel,
   }
 }

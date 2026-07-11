@@ -1,4 +1,9 @@
-import type { AgentDebug, AgentMetrics, ChatMessage } from "@seldon/ai"
+import type {
+  AgentDebug,
+  AgentMetrics,
+  ChatMessage,
+  ThinkingLevelOption,
+} from "@seldon/ai"
 import type {
   BoardKey,
   Workspace,
@@ -12,6 +17,18 @@ export type AgentChatRequest = {
   activeBoardKey?: BoardKey
   selectedNodeId?: string
   selectedNodeRootId?: string
+  model?: string
+  thinkingLevel?: ThinkingLevelOption
+}
+
+/** Session-config choices the Hari palette renders, from `/api/agent/config`. */
+export type AgentConfig = {
+  models: string[]
+  thinkingLevels: ThinkingLevelOption[]
+  defaults: {
+    model: string
+    thinkingLevel: ThinkingLevelOption
+  }
 }
 
 export type AgentChatResponse = {
@@ -48,6 +65,21 @@ export async function runAgentChat(
   return (await response.json()) as AgentChatResponse
 }
 
+/**
+ * Fetches the agent session-config choices from `/api/agent/config` for the Hari
+ * palette to render. Returns undefined when the endpoint is unavailable, so the
+ * palette can fall back gracefully.
+ */
+export async function getAgentConfig(): Promise<AgentConfig | undefined> {
+  try {
+    const response = await fetch("/api/agent/config")
+    if (!response.ok) return undefined
+    return (await response.json()) as AgentConfig
+  } catch {
+    return undefined
+  }
+}
+
 export type WarmResponse = {
   ok: true
   metrics: AgentMetrics
@@ -58,11 +90,13 @@ export type WarmResponse = {
  * `/api/agent/warm`, so the first real turn skips the cold load. Fire and forget
  * from the UI; the returned metrics are logged when AI Logging is on.
  */
-export async function warmAgent(): Promise<WarmResponse> {
+export async function warmAgent(warm?: {
+  model?: string
+}): Promise<WarmResponse> {
   const response = await fetch("/api/agent/warm", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: "{}",
+    body: JSON.stringify(warm ?? {}),
   })
   if (!response.ok) {
     throw new Error("Agent warm-up failed.")
