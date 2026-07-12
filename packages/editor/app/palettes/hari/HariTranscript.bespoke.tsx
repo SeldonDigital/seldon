@@ -43,10 +43,6 @@ function buildTranscript(
   const blocks: ReactNode[] = []
   for (const turn of turns) {
     blocks.push(userBlock(turn))
-    if (turn.status === "pending") {
-      blocks.push(statusBlock(turn))
-      continue
-    }
     if (turn.thinking) blocks.push(thinkingBlock(turn))
     if (showTools && turn.toolCalls && turn.toolCalls.length > 0) {
       blocks.push(toolsBlock(turn))
@@ -55,6 +51,7 @@ function buildTranscript(
       blocks.push(outcomeBlock(turn))
     }
     if (turn.reply) blocks.push(assistantBlock(turn))
+    if (turn.status === "pending") blocks.push(statusBlock(turn))
     if (turn.error || (turn.rejected && turn.rejected.length > 0)) {
       blocks.push(errorBlock(turn, onRetry))
     }
@@ -75,7 +72,13 @@ function statusBlock(turn: HariTurn): ReactNode {
 }
 
 function thinkingBlock(turn: HariTurn): ReactNode {
-  return <HariThinking key={`${turn.id}-thinking`} text={turn.thinking ?? ""} />
+  return (
+    <HariThinking
+      key={`${turn.id}-thinking`}
+      text={turn.thinking ?? ""}
+      durationMs={turn.thinkingMs}
+    />
+  )
 }
 
 function toolsBlock(turn: HariTurn): ReactNode {

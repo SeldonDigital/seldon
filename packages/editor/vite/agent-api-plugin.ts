@@ -4,6 +4,7 @@ import type { IncomingMessage, ServerResponse } from "node:http"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import type { Connect, Plugin } from "vite"
+import type { AgentStreamEvent } from "@seldon/ai"
 import type {
   AgentRequestBody,
   agentConfig,
@@ -125,6 +126,41 @@ function sendJson(res: ServerResponse, status: number, payload: unknown): void {
   res.end(JSON.stringify(payload))
 }
 
+/** Writes one newline-delimited JSON frame to the streaming response. */
+function writeFrame(res: ServerResponse, frame: unknown): void {
+  res.write(`${JSON.stringify(frame)}\n`)
+}
+
+/**
+ * Runs a chat turn and streams its events as newline-delimited JSON: one frame
+ * per {@link AgentStreamEvent} as it arrives, then a final `done` frame with the
+ * actions, reply, and debug the client applies. Errors before the stream opens
+ * return JSON; errors mid-stream close the stream with an `error` frame.
+ */
+async function streamAgentTurn(
+  res: ServerResponse,
+  agent: AgentModule,
+  body: AgentRequestBody,
+): Promise<void> {
+  res.statusCode = 200
+  res.setHeader("Content-Type", "application/x-ndjson")
+  res.setHeader("Cache-Control", "no-cache")
+  res.flushHeaders?.()
+
+  const onEvent = (event: AgentStreamEvent) => writeFrame(res, event)
+  try {
+    const result = await agent.runAgent(body, onEvent)
+    writeFrame(res, { type: "done", ...result })
+  } catch (error) {
+    writeFrame(res, {
+      type: "error",
+      error: error instanceof Error ? error.message : "Agent request failed.",
+    })
+  } finally {
+    res.end()
+  }
+}
+
 const middleware: Connect.NextHandleFunction = (req, res, next) => {
   // Mounted at `/api/agent`, so `req.url` is the remainder: `/config`, `/warm`, or `/`.
   const url = req.url ?? ""
@@ -159,7 +195,7 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
         return
       }
       const body = await readJsonBody<AgentRequestBody>(req)
-      sendJson(res, 200, await agent.runAgent(body))
+      await streamAgentTurn(res, agent, body)
     } catch (error) {
       sendJson(res, 500, {
         error: error instanceof Error ? error.message : "Agent request failed.",

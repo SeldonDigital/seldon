@@ -1,6 +1,7 @@
 import {
   type AgentDebug,
   type AgentMetrics,
+  type AgentStreamEvent,
   type ChatMessage,
   THINKING_LEVEL_OPTIONS,
   type ThinkingLevelOption,
@@ -39,7 +40,10 @@ export type AgentResult = {
  * Runs the Pi tool-calling loop against a local model, so it must run in a Node
  * context.
  */
-export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
+export async function runAgent(
+  body: AgentRequestBody,
+  onEvent?: (event: AgentStreamEvent) => void,
+): Promise<AgentResult> {
   if (!body?.workspace) {
     throw new Error("Missing workspace in request body.")
   }
@@ -57,6 +61,7 @@ export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
     selectedBoardId: body.selectedBoardId,
     model: body.model,
     thinkingLevel: body.thinkingLevel,
+    onEvent,
   })
 
   return { actions, reply, debug }
@@ -103,7 +108,7 @@ export async function agentConfig(): Promise<AgentConfig> {
     thinkingLevels: THINKING_LEVEL_OPTIONS,
     defaults: {
       model: defaultModel,
-      thinkingLevel: "off",
+      thinkingLevel: "minimal",
     },
   }
 }

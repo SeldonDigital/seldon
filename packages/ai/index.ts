@@ -5,6 +5,7 @@ export type { ThinkingLevelOption } from "./pi/model"
 export type {
   AgentDebug,
   AgentMetrics,
+  AgentStreamEvent,
   AgentToolCall,
   ChatMessage,
   ChatToActionsInput,

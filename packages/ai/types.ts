@@ -30,7 +30,20 @@ export interface ChatToActionsInput {
   model?: string
   /** Thinking level for the model. */
   thinkingLevel?: ThinkingLevelOption
+  /** Streams turn events as they happen, so the caller can render live. */
+  onEvent?: (event: AgentStreamEvent) => void
 }
+
+/**
+ * One incremental event streamed during a turn, before the final result. The
+ * transport writes these as they arrive so the UI can animate the reply.
+ */
+export type AgentStreamEvent =
+  | { type: "thinking"; delta: string }
+  | { type: "thinkingDone"; ms: number }
+  | { type: "text"; delta: string }
+  | { type: "tool"; name: string }
+  | { type: "toolResult"; ok: boolean }
 
 /** One tool the model invoked during a turn, with its final status. */
 export interface AgentToolCall {
@@ -52,6 +65,8 @@ export interface AgentDebug {
   thinking?: string
   /** Tool calls the model made during the turn, in order. */
   toolCalls?: AgentToolCall[]
+  /** Wall time the model spent thinking, in milliseconds, when it thought. */
+  thinkingMs?: number
   /** Timing and token metrics for the turn. */
   metrics?: AgentMetrics
 }

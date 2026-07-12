@@ -4,7 +4,11 @@ import {
   runAgentChat,
   warmAgent,
 } from "@lib/ai/run-agent-chat"
-import type { AgentToolCall, ThinkingLevelOption } from "@seldon/ai"
+import type {
+  AgentStreamEvent,
+  AgentToolCall,
+  ThinkingLevelOption,
+} from "@seldon/ai"
 import { useCallback } from "react"
 import { create } from "zustand"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
@@ -42,6 +46,8 @@ export interface HariTurn {
   prompt: string
   status: TurnStatus
   thinking?: string
+  /** Wall time the model spent thinking, in ms. Set marks the thinking done. */
+  thinkingMs?: number
   toolCalls?: AgentToolCall[]
   reply?: string
   changes?: string[]
@@ -58,8 +64,15 @@ interface AiChatState {
   /** Selected model and thinking level for the next turn. */
   model?: string
   thinkingLevel?: ThinkingLevelOption
+  /**
+   * Whether reasoning blocks are expanded. Shared across turns so the last
+   * toggle sticks; a new session opens it. Never force-opened once collapsed.
+   */
+  thinkingExpanded: boolean
   startTurn: (prompt: string) => string
   updateTurn: (id: string, patch: Partial<HariTurn>) => void
+  mutateTurn: (id: string, update: (turn: HariTurn) => HariTurn) => void
+  setThinkingExpanded: (expanded: boolean) => void
   setStatus: (status: HariStatus) => void
   setError: (error: string | null) => void
   setConfig: (config: AgentConfig) => void
@@ -75,6 +88,7 @@ const useStore = create<AiChatState>((set) => ({
   status: "idle",
   error: null,
   config: null,
+  thinkingExpanded: true,
   startTurn: (prompt) => {
     const id = `turn-${(turnSequence += 1)}`
     set((state) => ({
@@ -90,6 +104,11 @@ const useStore = create<AiChatState>((set) => ({
         turn.id === id ? { ...turn, ...patch } : turn,
       ),
     })),
+  mutateTurn: (id, update) =>
+    set((state) => ({
+      turns: state.turns.map((turn) => (turn.id === id ? update(turn) : turn)),
+    })),
+  setThinkingExpanded: (thinkingExpanded) => set({ thinkingExpanded }),
   setStatus: (status) => set({ status }),
   setError: (error) => set({ error }),
   setConfig: (config) =>
@@ -100,8 +119,60 @@ const useStore = create<AiChatState>((set) => ({
     })),
   setModel: (model) => set({ model }),
   setThinkingLevel: (thinkingLevel) => set({ thinkingLevel }),
-  reset: () => set({ turns: [], status: "idle", error: null }),
+  reset: () =>
+    set({ turns: [], status: "idle", error: null, thinkingExpanded: true }),
 }))
+
+/**
+ * Shared expand/collapse state for reasoning blocks. Backed by the chat store so
+ * every reasoning block reflects the same preference and the last toggle sticks.
+ */
+export function useThinkingExpanded(): [boolean, (expanded: boolean) => void] {
+  const expanded = useStore((state) => state.thinkingExpanded)
+  const setExpanded = useStore((state) => state.setThinkingExpanded)
+  return [expanded, setExpanded]
+}
+
+/**
+ * Folds one streamed event into the live turn: appends reasoning and reply
+ * text, records tool calls and their status, and marks the thinking done with
+ * its elapsed time. The final `done` result overwrites these with the
+ * authoritative values, so drift during streaming self-corrects.
+ */
+function applyTurnEvent(turnId: string, event: AgentStreamEvent): void {
+  const { mutateTurn } = useStore.getState()
+  switch (event.type) {
+    case "thinking":
+      mutateTurn(turnId, (turn) => ({
+        ...turn,
+        thinking: (turn.thinking ?? "") + event.delta,
+      }))
+      break
+    case "thinkingDone":
+      mutateTurn(turnId, (turn) => ({ ...turn, thinkingMs: event.ms }))
+      break
+    case "text":
+      mutateTurn(turnId, (turn) => ({
+        ...turn,
+        reply: (turn.reply ?? "") + event.delta,
+      }))
+      break
+    case "tool":
+      mutateTurn(turnId, (turn) => ({
+        ...turn,
+        toolCalls: [...(turn.toolCalls ?? []), { name: event.name, ok: true }],
+      }))
+      break
+    case "toolResult":
+      mutateTurn(turnId, (turn) => {
+        const toolCalls = [...(turn.toolCalls ?? [])]
+        const last = toolCalls[toolCalls.length - 1]
+        if (last) toolCalls[toolCalls.length - 1] = { ...last, ok: event.ok }
+        return { ...turn, toolCalls }
+      })
+      break
+  }
+}
 
 /** Flattens completed turns into the role/content history the agent expects. */
 function buildHistory(turns: HariTurn[]): AiChatMessage[] {
@@ -152,17 +223,20 @@ export function useHari() {
         const { selectedNodeId, selectedNodeRootId, selectedBoardId } =
           useSelectionStore.getState()
 
-        const { actions, reply, debug } = await runAgentChat({
-          workspace: current,
-          message,
-          history,
-          activeBoardKey,
-          selectedNodeId: selectedNodeId ?? undefined,
-          selectedNodeRootId: selectedNodeRootId ?? undefined,
-          selectedBoardId: selectedBoardId ?? undefined,
-          model,
-          thinkingLevel,
-        })
+        const { actions, reply, debug } = await runAgentChat(
+          {
+            workspace: current,
+            message,
+            history,
+            activeBoardKey,
+            selectedNodeId: selectedNodeId ?? undefined,
+            selectedNodeRootId: selectedNodeRootId ?? undefined,
+            selectedBoardId: selectedBoardId ?? undefined,
+            model,
+            thinkingLevel,
+          },
+          (event) => applyTurnEvent(turnId, event),
+        )
 
         const outcome = applyActionsWithReport(current, actions)
         logAiTurn(message, debug, actions, outcome, current, activeBoardKey)
@@ -178,6 +252,7 @@ export function useHari() {
           outcome.rejected.length > 0 && outcome.applied.length === 0
         useStore.getState().updateTurn(turnId, {
           thinking: debug.thinking,
+          thinkingMs: debug.thinkingMs,
           toolCalls: debug.toolCalls,
           reply,
           changes: describeChanges(outcome.workspace, outcome),

@@ -30,23 +30,42 @@ export async function chatToActionsPi(
   })
 
   const context = buildTurnContext(resolved)
+  const onEvent = input.onEvent
 
   let calls = 0
   let thinking = ""
   const toolCalls: AgentToolCall[] = []
+  let thinkingStart: number | undefined
+  let thinkingMs: number | undefined
+  // Marks the thinking phase complete on the first non-thinking event, so the UI
+  // can switch its label from "Thinking..." to the elapsed time while the reply
+  // still streams.
+  const endThinking = () => {
+    if (thinkingStart === undefined || thinkingMs !== undefined) return
+    thinkingMs = Date.now() - thinkingStart
+    onEvent?.({ type: "thinkingDone", ms: thinkingMs })
+  }
   const unsubscribe = session.subscribe((event) => {
     if (event.type === "turn_start") {
       calls += 1
-    } else if (
-      event.type === "message_update" &&
-      event.assistantMessageEvent.type === "thinking_delta"
-    ) {
-      thinking += event.assistantMessageEvent.delta
+    } else if (event.type === "message_update") {
+      const message = event.assistantMessageEvent
+      if (message.type === "thinking_delta") {
+        if (thinkingStart === undefined) thinkingStart = Date.now()
+        thinking += message.delta
+        onEvent?.({ type: "thinking", delta: message.delta })
+      } else if (message.type === "text_delta") {
+        endThinking()
+        onEvent?.({ type: "text", delta: message.delta })
+      }
     } else if (event.type === "tool_execution_start") {
+      endThinking()
       toolCalls.push({ name: event.toolName, ok: true })
+      onEvent?.({ type: "tool", name: event.toolName })
     } else if (event.type === "tool_execution_end") {
       const last = toolCalls[toolCalls.length - 1]
       if (last) last.ok = !event.isError
+      onEvent?.({ type: "toolResult", ok: !event.isError })
     }
   })
 
@@ -56,6 +75,7 @@ export async function chatToActionsPi(
   await session.prompt(prompt)
   const totalMs = Date.now() - started
 
+  endThinking()
   const reply = session.getLastAssistantText() ?? ""
   const stats = session.getSessionStats()
   unsubscribe()
@@ -83,6 +103,7 @@ export async function chatToActionsPi(
       repairs: state.repairs,
       thinking: thinking.trim() ? thinking.trim() : undefined,
       toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+      thinkingMs,
       metrics,
     },
   }
