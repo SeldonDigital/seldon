@@ -40,8 +40,10 @@ const repoRoot = path.join(pluginDir, "../../..")
 /**
  * Pi and its dependency graph are large and ship runtime assets and dynamic
  * requires, so they are kept external instead of bundled. The bundled handler is
- * written under the repo `node_modules` (below) so Node resolves these bare
- * imports from the project at runtime.
+ * written under the `ai` package's `node_modules` (below) so Node's upward
+ * resolution reaches wherever npm installed Pi, whether it nests under
+ * `packages/ai/node_modules` or hoists to the repo root, and still finds the
+ * root-level externals like `typebox`.
  */
 const externalPackages = [
   "@earendil-works/pi-coding-agent",
@@ -56,8 +58,8 @@ const externalPackages = [
  * esbuild, then imports it. The `development` condition makes `@seldon/core` and
  * `@seldon/ai` resolve to source instead of built output, mirroring the editor's
  * source-first setup. Pi packages stay external, and the output is written under
- * the repo `node_modules` so those external imports resolve at runtime. Works the
- * same under `vite dev` and `vite preview`.
+ * the `ai` package's `node_modules` so those external imports resolve at runtime.
+ * Works the same under `vite dev` and `vite preview`.
  */
 async function loadAgent(): Promise<AgentModule> {
   const result = await build({
@@ -77,7 +79,7 @@ async function loadAgent(): Promise<AgentModule> {
     },
   })
 
-  const outputDir = path.join(repoRoot, "node_modules", ".seldon-agent")
+  const outputDir = path.join(aiRoot, "node_modules", ".seldon-agent")
   await fs.mkdir(outputDir, { recursive: true })
   buildId += 1
   const outputFile = path.join(
