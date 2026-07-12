@@ -1,6 +1,5 @@
 import type { Theme } from "../../../themes/types"
 import type { Workspace } from "../../../workspace/types"
-import type { PropertyValueType } from "../../types/schema"
 import { getPropertySchema } from "./get-property-schema"
 
 /**

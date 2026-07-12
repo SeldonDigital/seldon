@@ -5,10 +5,7 @@
  * scale sections they relate to. Each section's `order` is its index in
  * {@link THEME_TOKEN_SECTION_ORDER}.
  */
-import type {
-  ThemeTokenSectionId,
-  ThemeTokenSectionSchema,
-} from "../types/schema"
+import type { ThemeTokenSectionSchema } from "../types/schema"
 
 const THEME_TOKEN_SECTION_ORDER: Array<Omit<ThemeTokenSectionSchema, "order">> =
   [

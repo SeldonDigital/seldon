@@ -19,12 +19,6 @@ import {
   isRGBObject,
 } from "@seldon/core/helpers/type-guards"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
-import {
-  getCatalogKeyForPropertyPath,
-  getPropertyOptions,
-  getPropertySchema,
-} from "@seldon/core/properties/schemas/helpers"
-import type { PropertyValueType } from "@seldon/core/properties/types/schema"
 import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
@@ -36,12 +30,6 @@ import {
   getTypedNode,
   isValueSet,
 } from "./shared"
-
-const PICKER_VALUE_TYPES: readonly PropertyValueType[] = [
-  "option",
-  "themeCategorical",
-  "themeOrdinal",
-]
 
 type DimensionValue = {
   unit: string
@@ -55,18 +43,6 @@ type PropertyValueLike = {
 
 type ComputedValueLike = {
   function: ComputedFunction
-}
-
-function pickerEntryToString(entry: unknown): string {
-  if (
-    entry &&
-    typeof entry === "object" &&
-    "value" in entry &&
-    entry.value !== undefined
-  ) {
-    return String(entry.value)
-  }
-  return String(entry)
 }
 
 function isDimensionValue(value: unknown): value is DimensionValue {

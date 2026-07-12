@@ -5,12 +5,6 @@ import type {
   ThemeFontKey,
   ThemeShadowKey,
 } from "../types/theme-reference-keys"
-import type {
-  ThemeBorderId,
-  ThemeFontId,
-  ThemeGradientId,
-  ThemeShadowId,
-} from "../types/theme-token-ids"
 import { TokenType } from "../values"
 import type { ThemeBorder } from "../values/appearance/border"
 import type { ThemeGradient } from "../values/effects/gradient"

@@ -7,7 +7,6 @@ import { Colorspace } from "../../themes/constants/colorspace"
 import {
   FONT_COLLECTION_BOARD_CATALOG_IDS,
   ICON_SET_BOARD_CATALOG_IDS,
-  MEDIA_BOARD_CATALOG_IDS,
   THEME_BOARD_CATALOG_IDS,
 } from "../helpers/components/resource-board-catalog-ids"
 import { createEmptyWorkspace } from "../helpers/create-empty-workspace"

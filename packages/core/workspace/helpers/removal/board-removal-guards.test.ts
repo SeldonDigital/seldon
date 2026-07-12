@@ -1,12 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  Board,
-  ComponentBoard,
-  ExtractPayload,
-  Workspace,
-} from "../../../index"
+import type { ExtractPayload, Workspace } from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { shouldBlockDeletableBoardRemoval } from "./board-removal-guards"
@@ -17,7 +12,6 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = ws.boards[boardKey]!
-const rootId = (board as ComponentBoard).variants[0].id as string
 
 describe("shouldBlockDeletableBoardRemoval", () => {
   it("does not block a component board whose variants are unused", () => {
