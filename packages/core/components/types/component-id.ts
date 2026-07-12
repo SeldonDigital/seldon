@@ -57,6 +57,7 @@ export enum ComponentId {
   LISTBOX_OPTION = "listboxOption",
   MENU = "menu",
   MENU_ITEM = "menuItem",
+  MESSAGE = "message",
   NAV = "nav",
   OPTION_GROUP = "optionGroup",
   ORDINAL_CHIP = "ordinalChip",

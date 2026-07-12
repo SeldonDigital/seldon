@@ -72,6 +72,10 @@ import {
   schema as menuItemSchema,
 } from "./elements/MenuItem.schema"
 import {
+  exportConfig as messageExportConfig,
+  schema as messageSchema,
+} from "./elements/Message.schema"
+import {
   exportConfig as navExportConfig,
   schema as navSchema,
 } from "./elements/Nav.schema"
@@ -330,6 +334,7 @@ const elements: ComponentSchema[] = [
   descriptionListSchema,
   itemSchema,
   menuItemSchema,
+  messageSchema,
   listboxOptionSchema,
   comboboxFieldSchema,
   navSchema,
@@ -464,6 +469,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.MENU_ITEM]: menuItemExportConfig,
+  [ComponentId.MESSAGE]: messageExportConfig,
   [ComponentId.LISTBOX_OPTION]: listboxOptionExportConfig,
   [ComponentId.COMBOBOX_FIELD]: comboboxFieldExportConfig,
   [ComponentId.NAV]: navExportConfig,
