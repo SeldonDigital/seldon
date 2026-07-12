@@ -4,6 +4,7 @@ import { CSSProperties, PropsWithChildren } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
+import { LayoutFrame } from "./LayoutFrame.bespoke"
 import { VMTopbar } from "./topbar/VMTopbar"
 
 export function Layout({
@@ -15,19 +16,20 @@ export function Layout({
   const resolvedMode = useResolvedInterfaceMode()
 
   const shouldShowHeader = appState === "project" || showPanels
+  const header = shouldShowHeader ? <VMTopbar /> : null
 
   // The chrome theme and mode scope the editor interface only. The canvas pins
   // itself back to the default theme so it never follows these attributes.
   return (
-    <div
+    <LayoutFrame
       style={styles.layout}
-      data-testid={testId}
-      data-theme={chromeTheme}
-      data-mode={resolvedMode}
+      dataTestId={testId}
+      dataTheme={chromeTheme}
+      dataMode={resolvedMode}
     >
-      {shouldShowHeader && <VMTopbar />}
+      {header}
       {children}
-    </div>
+    </LayoutFrame>
   )
 }
 
