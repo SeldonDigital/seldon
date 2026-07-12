@@ -22,7 +22,6 @@
       "@seldon/ai": ["../../packages/ai/index.ts"],
       "@seldon/ai/*": ["../../packages/ai/*"]
     },
-    "downlevelIteration": true, // allow looping over HTMLCollection for example
     "target": "ES2017"
   },
   "include": ["**/*.ts", "**/*.tsx"],
