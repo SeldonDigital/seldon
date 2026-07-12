@@ -16,6 +16,7 @@ import { useScrollSelection } from "./hooks/use-scroll-selection"
 import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
 import { getSelectionTarget } from "@lib/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
@@ -90,18 +91,18 @@ export function VMObjectsSidebar() {
   ))
 
   const treeChildren = (
-    <div
+    <Frame
       ref={scrollerRef}
       style={styles.scroller}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
     >
       <SelectionRelationsProvider>
-        <div style={styles.tree}>
+        <Frame style={styles.tree}>
           <LayoutGroup>{sectionGroups}</LayoutGroup>
-        </div>
+        </Frame>
       </SelectionRelationsProvider>
-    </div>
+    </Frame>
   )
 
   const seldonRefs = {

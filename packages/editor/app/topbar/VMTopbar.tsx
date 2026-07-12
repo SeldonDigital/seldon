@@ -16,6 +16,7 @@ import { AppState, useAppState } from "@lib/hooks/use-app-state"
 import { InterfaceMode, useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
+import { Frame } from "@seldon/components/frames/Frame"
 import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
 import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
 import { BarTopbar } from "@seldon/components/parts/BarTopbar"
@@ -245,7 +246,7 @@ export function VMTopbar() {
   const menuKey = openMenuId ?? "closed"
 
   return (
-    <header style={styles.header}>
+    <Frame wrapperElement="header" style={styles.header}>
       <BarTopbar
         data-testid="topbar"
         seldonRefs={seldonRefs}
@@ -275,8 +276,8 @@ export function VMTopbar() {
         align={menuAlign}
         minWidth="220px"
       />
-      <div ref={gradientRef} className={TOPBAR_GRADIENT_CLASS} />
-    </header>
+      <Frame ref={gradientRef} className={TOPBAR_GRADIENT_CLASS} />
+    </Frame>
   )
 }
 

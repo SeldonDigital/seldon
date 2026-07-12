@@ -14,10 +14,11 @@ import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
+import { Frame } from "@seldon/components/frames/Frame"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { RowSelectionTarget } from "./RowSelectionTarget"
+import { RowSelectionTarget } from "./RowSelectionTarget.bespoke"
 
 const NODE_SELECTION_KIND = "node"
 
@@ -44,7 +45,7 @@ interface VMNodeProps {
 
 /** Summary row standing in for echo rows beyond {@link ECHO_ROW_LIMIT}. */
 function RepeatEchoSummaryRow({ count }: { count: number }) {
-  return <div>+{count} more</div>
+  return <Frame>+{count} more</Frame>
 }
 
 const VMNodeInner = function VMNodeInner({

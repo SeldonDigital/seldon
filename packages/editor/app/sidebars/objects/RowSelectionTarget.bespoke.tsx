@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: stamps selection data attributes the selection resolver and
+// canvas tracking bridges read. Renders no styling of its own.
 import { ReactNode, Ref } from "react"
 
 interface RowSelectionTargetProps {
