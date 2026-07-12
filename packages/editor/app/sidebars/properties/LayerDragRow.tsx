@@ -1,11 +1,11 @@
 import { COLORS } from "@lib/helpers/colors"
+import { InsertLine, OverlayLayer, PlacementZoneSurface } from "@lib/overlays"
 import { CSSProperties, ReactNode } from "react"
 import { LayeredPaintKey } from "@seldon/core"
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import { useLayerDraggable } from "./hooks/use-layer-draggable"
 import { useLayerDropzone } from "./hooks/use-layer-dropzone"
 import { Frame } from "@seldon/components/frames/Frame"
-import { InsertLine, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import type { LayerPlacement } from "./helpers/layer-reorder"
 
 /** A row's layer-reorder context: which paint stack it belongs to and where. */

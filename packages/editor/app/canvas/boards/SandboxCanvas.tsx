@@ -6,6 +6,7 @@ import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
+import { Frame } from "@seldon/components/frames/Frame"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { CanvasNode } from "../Node"
 import { PlaceholderBox } from "./PlaceholderBox"
@@ -43,11 +44,10 @@ export function SandboxCanvas({ board }: SandboxCanvasProps) {
     )
   }
 
+  const playgroundClassName = `playground playground-${playgroundKey}`
+
   return (
-    <div
-      className={`playground playground-${playgroundKey}`}
-      style={playgroundStyle}
-    >
+    <Frame className={playgroundClassName} style={playgroundStyle}>
       {playground.variants.map((ref) => (
         <CanvasNode
           key={ref.id}
@@ -58,6 +58,6 @@ export function SandboxCanvas({ board }: SandboxCanvasProps) {
           isRoot
         />
       ))}
-    </div>
+    </Frame>
   )
 }

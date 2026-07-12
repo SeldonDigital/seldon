@@ -1,8 +1,8 @@
 import { COLORS } from "@lib/helpers/colors"
+import { InsertLine } from "@lib/overlays"
 import { Placement } from "@lib/types"
 import { FC } from "react"
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
-import { InsertLine } from "@app/overlays"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 type SidebarIndicatorProps = {

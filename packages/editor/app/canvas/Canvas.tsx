@@ -20,6 +20,7 @@ import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { CanvasTracking } from "../tracking/CanvasTracking"
+import { CanvasSurface } from "./CanvasSurface.bespoke"
 import {
   TRANSFORM_WRAPPER_INITIAL_POSITION_X,
   TRANSFORM_WRAPPER_INITIAL_POSITION_Y,
@@ -128,19 +129,20 @@ export const Canvas = () => {
     // root tree by useCanvas.
   }
 
+  const handleMouseMove = activePanel ? undefined : onMouseMove
+
   return (
-    <div
-      id="canvas"
-      onClick={handleCanvasClick}
+    <CanvasSurface
       style={canvasStyle}
-      onMouseMove={activePanel ? undefined : onMouseMove}
-      data-theme={DEFAULT_CHROME_THEME}
+      dataTheme={DEFAULT_CHROME_THEME}
+      onClick={handleCanvasClick}
+      onMouseMove={handleMouseMove}
     >
       <CanvasTracking />
       <TransformWrapper>
         <CanvasContainer />
       </TransformWrapper>
-    </div>
+    </CanvasSurface>
   )
 }
 

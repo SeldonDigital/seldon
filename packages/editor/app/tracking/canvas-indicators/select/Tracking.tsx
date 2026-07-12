@@ -1,10 +1,10 @@
 "use client"
 
 import { COLORS } from "@lib/helpers/colors"
+import { CanvasOutline } from "@lib/overlays"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"
-import { CanvasOutline } from "@app/overlays"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateClippingBox } from "../../helpers/calculate-clipping-box"
 import { calculateSelectionOutline } from "../../helpers/calculate-selection-outline"

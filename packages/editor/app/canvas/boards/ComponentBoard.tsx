@@ -17,9 +17,10 @@ import { usePreview } from "@lib/hooks/use-preview"
 import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
+import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
-import { StyleTag } from "../StyleTag"
+import { StyleTag } from "../StyleTag.bespoke"
 import { BoardCanvasFrame } from "./BoardCanvasFrame.bespoke"
 import { BoardStateSwitcher } from "./BoardStateSwitcher"
 
@@ -62,20 +63,24 @@ function wrapTablePartBoard(
   switch (kind) {
     case "cell":
       return (
-        <table style={tableWrapperStyle}>
-          <tbody>
-            <tr>{children}</tr>
-          </tbody>
-        </table>
+        <Frame wrapperElement="table" style={tableWrapperStyle}>
+          <Frame wrapperElement="tbody">
+            <Frame wrapperElement="tr">{children}</Frame>
+          </Frame>
+        </Frame>
       )
     case "row":
       return (
-        <table style={tableWrapperStyle}>
-          <tbody>{children}</tbody>
-        </table>
+        <Frame wrapperElement="table" style={tableWrapperStyle}>
+          <Frame wrapperElement="tbody">{children}</Frame>
+        </Frame>
       )
     case "section":
-      return <table style={tableWrapperStyle}>{children}</table>
+      return (
+        <Frame wrapperElement="table" style={tableWrapperStyle}>
+          {children}
+        </Frame>
+      )
     default:
       return children
   }
@@ -146,7 +151,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
           )}
         />
       </CssPortal>
-      <div style={boardWrapperStyle}>
+      <Frame style={boardWrapperStyle}>
         <BoardStateSwitcher boardKey={stateBoardKey} />
         <BoardCanvasFrame
           ref={boardRootRef}
@@ -174,7 +179,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
             }),
           )}
         </BoardCanvasFrame>
-      </div>
+      </Frame>
     </>
   )
 }

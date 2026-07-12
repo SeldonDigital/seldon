@@ -1,8 +1,8 @@
 import { COLORS } from "@lib/helpers/colors"
+import { CanvasOutline, InsertLine } from "@lib/overlays"
 import { Placement } from "@lib/types"
 import { CSSProperties, FC } from "react"
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
-import { CanvasOutline, InsertLine } from "@app/overlays"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 type IndicatorSelectProps = {

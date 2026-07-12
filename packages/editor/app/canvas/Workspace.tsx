@@ -13,6 +13,7 @@ import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useCanvas } from "./hooks/use-canvas"
+import { Frame } from "@seldon/components/frames/Frame"
 import { ComponentBoard } from "./boards/ComponentBoard"
 import { FontCollectionBoard } from "./boards/FontCollectionBoard"
 import { IconSetBoard } from "./boards/IconSetBoard"
@@ -24,15 +25,19 @@ export function CanvasWorkspace() {
 
   const { isInPreviewMode } = usePreview()
 
+  const handleClick = isInPreviewMode ? undefined : onCanvasClick
+  const handleMouseLeave = isInPreviewMode ? undefined : onCanvasMouseLeave
+  const handleMouseMove = isInPreviewMode ? undefined : onCanvasMouseMove
+
   return (
-    <div
+    <Frame
       id="root-tree"
-      onClick={isInPreviewMode ? undefined : onCanvasClick}
-      onMouseLeave={isInPreviewMode ? undefined : onCanvasMouseLeave}
-      onMouseMove={isInPreviewMode ? undefined : onCanvasMouseMove}
+      onClick={handleClick}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
     >
       <MemoizedActiveBoard />
-    </div>
+    </Frame>
   )
 }
 

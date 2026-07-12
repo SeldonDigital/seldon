@@ -1,3 +1,4 @@
+import { OverlayLayer, PlacementZoneSurface } from "@lib/overlays"
 import { Placement } from "@lib/types"
 import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
 import { Instance, Variant } from "@seldon/core"
@@ -12,7 +13,6 @@ import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
 import { Frame } from "@seldon/components/frames/Frame"
-import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
 

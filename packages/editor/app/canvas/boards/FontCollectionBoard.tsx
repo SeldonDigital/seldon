@@ -15,7 +15,7 @@ import { useFontCollectionBoardSpecimens } from "../hooks/use-font-collection-bo
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
-import { StyleTag } from "../StyleTag"
+import { StyleTag } from "../StyleTag.bespoke"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"

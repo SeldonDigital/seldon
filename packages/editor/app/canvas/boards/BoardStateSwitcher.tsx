@@ -22,6 +22,7 @@ import {
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
 import { CHILD_OVERRIDE_COLOR } from "../canvas.bespoke"
+import { BoardStateFrame } from "./BoardStateFrame.bespoke"
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -182,11 +183,11 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   })
 
   return (
-    <div
+    <BoardStateFrame
       style={wrapperStyle}
       onClick={stopClickPropagation}
-      data-theme={chromeTheme}
-      data-mode={resolvedMode}
+      dataTheme={chromeTheme}
+      dataMode={resolvedMode}
     >
       <VMMenu
         items={items}
@@ -200,6 +201,6 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
           />
         )}
       />
-    </div>
+    </BoardStateFrame>
   )
 }
