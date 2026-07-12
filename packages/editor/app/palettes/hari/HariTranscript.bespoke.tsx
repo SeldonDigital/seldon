@@ -2,7 +2,8 @@
 // useHari maps to the generated Message* blocks: the prompt, the model's
 // reasoning, the tools it called, the applied changes, the markdown reply, and
 // any rejection or error. Assistant replies render through HariMarkdown.
-import type { HariStatus, HariTurn } from "@lib/hooks/use-ai-chat"
+import type { HariTurn } from "@lib/hooks/use-ai-chat"
+import { useDebugStore } from "@lib/hooks/use-debug-mode"
 import { type CSSProperties, Fragment, type ReactNode, useMemo } from "react"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
@@ -15,24 +16,27 @@ import { HariThinking } from "./HariThinking.bespoke"
 
 interface HariTranscriptProps {
   turns: HariTurn[]
-  status: HariStatus
   /** Re-runs a turn's prompt from the error block's retry button. */
   onRetry?: (prompt: string) => void
 }
 
 /** Renders the transcript as a flat list of Message blocks for the turns frame. */
-export function HariTranscript({ turns, status, onRetry }: HariTranscriptProps) {
+export function HariTranscript({ turns, onRetry }: HariTranscriptProps) {
+  const showTools = useDebugStore((state) => state.showTools)
+  const showOutcome = useDebugStore((state) => state.showOutcome)
   const content = useMemo(
-    () => buildTranscript(turns, onRetry),
-    [turns, onRetry],
+    () => buildTranscript(turns, onRetry, showTools, showOutcome),
+    [turns, onRetry, showTools, showOutcome],
   )
   return content
 }
 
-/** Builds every turn's blocks in reading order, or the empty-state hint. */
+/** Builds every turn's blocks in reading order, or nothing before the first turn. */
 function buildTranscript(
   turns: HariTurn[],
   onRetry: HariTranscriptProps["onRetry"],
+  showTools: boolean,
+  showOutcome: boolean,
 ): ReactNode {
   if (turns.length === 0) return null
 
@@ -44,10 +48,10 @@ function buildTranscript(
       continue
     }
     if (turn.thinking) blocks.push(thinkingBlock(turn))
-    if (turn.toolCalls && turn.toolCalls.length > 0) {
+    if (showTools && turn.toolCalls && turn.toolCalls.length > 0) {
       blocks.push(toolsBlock(turn))
     }
-    if (turn.changes && turn.changes.length > 0) {
+    if (showOutcome && turn.changes && turn.changes.length > 0) {
       blocks.push(outcomeBlock(turn))
     }
     if (turn.reply) blocks.push(assistantBlock(turn))

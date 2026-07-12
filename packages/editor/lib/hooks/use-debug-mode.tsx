@@ -27,6 +27,12 @@ interface DebugState {
 
   aiLogging: boolean
   setAiLogging: (enabled: boolean) => void
+
+  showTools: boolean
+  setShowTools: (enabled: boolean) => void
+
+  showOutcome: boolean
+  setShowOutcome: (enabled: boolean) => void
 }
 
 export const useDebugStore = create<DebugState>()(
@@ -63,6 +69,14 @@ export const useDebugStore = create<DebugState>()(
       aiLogging: false,
       setAiLogging: (enabled) =>
         set((state) => ({ ...state, aiLogging: enabled })),
+
+      showTools: false,
+      setShowTools: (enabled) =>
+        set((state) => ({ ...state, showTools: enabled })),
+
+      showOutcome: false,
+      setShowOutcome: (enabled) =>
+        set((state) => ({ ...state, showOutcome: enabled })),
     }),
     {
       name: "debug-mode",
@@ -75,6 +89,8 @@ export const useDebugStore = create<DebugState>()(
         dispatchLogging: state.dispatchLogging,
         workspaceLogging: state.workspaceLogging,
         aiLogging: state.aiLogging,
+        showTools: state.showTools,
+        showOutcome: state.showOutcome,
       }),
     },
   ),
@@ -98,6 +114,10 @@ export function useDebugMode() {
     setWorkspaceLogging,
     aiLogging,
     setAiLogging,
+    showTools,
+    setShowTools,
+    showOutcome,
+    setShowOutcome,
   } = useDebugStore(
     useShallow((state) => ({
       canvasProfiling: state.canvasProfiling,
@@ -116,6 +136,10 @@ export function useDebugMode() {
       setWorkspaceLogging: state.setWorkspaceLogging,
       aiLogging: state.aiLogging,
       setAiLogging: state.setAiLogging,
+      showTools: state.showTools,
+      setShowTools: state.setShowTools,
+      showOutcome: state.showOutcome,
+      setShowOutcome: state.setShowOutcome,
     })),
   )
 
@@ -151,6 +175,14 @@ export function useDebugMode() {
     setAiLogging(!aiLogging)
   }, [setAiLogging, aiLogging])
 
+  const toggleShowTools = useCallback(() => {
+    setShowTools(!showTools)
+  }, [setShowTools, showTools])
+
+  const toggleShowOutcome = useCallback(() => {
+    setShowOutcome(!showOutcome)
+  }, [setShowOutcome, showOutcome])
+
   return {
     canvasProfiling,
     toggleCanvasProfiling,
@@ -175,5 +207,11 @@ export function useDebugMode() {
 
     aiLogging,
     toggleAiLogging,
+
+    showTools,
+    toggleShowTools,
+
+    showOutcome,
+    toggleShowOutcome,
   }
 }

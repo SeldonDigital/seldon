@@ -154,7 +154,7 @@ function Hari({
   const thinkingAnchor = useRef<HTMLElement | null>(null)
 
   const isPending = status === "pending"
-  const placeholder = "Describe a change and press Enter"
+  const placeholder = "Describe a change..."
   const controlsDisabled = config === null
   const modelValue = model ?? ""
   const thinkingValue = thinkingLevel ?? ""
@@ -249,8 +249,8 @@ function Hari({
   )
 
   const transcript = useMemo<ReactNode>(
-    () => <HariTranscript turns={turns} status={status} onRetry={send} />,
-    [turns, status, send],
+    () => <HariTranscript turns={turns} onRetry={send} />,
+    [turns, send],
   )
 
   // PanelHari gates each slot on its prop being present, so every wired slot is
