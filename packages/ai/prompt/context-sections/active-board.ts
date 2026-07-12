@@ -129,7 +129,8 @@ export function activeVariantSection(
 
   const variantNode = workspace.nodes[variantRef.id]
   const variantLabel = variantNode?.label ? ` "${variantNode.label}"` : ""
-  const defaultTag = activeBoard.variants[0]?.id === variantRef.id ? " (default)" : ""
+  const defaultTag =
+    activeBoard.variants[0]?.id === variantRef.id ? " (default)" : ""
   lines.push(
     "",
     "The context is scoped to the active variant the user has selected. Only its nodes below are in scope for a direct edit.",

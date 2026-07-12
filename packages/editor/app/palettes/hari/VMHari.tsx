@@ -1,14 +1,20 @@
 "use client"
 
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
-import type { ThinkingLevelOption } from "@seldon/ai"
-import { CSSProperties, KeyboardEvent, useCallback, useEffect, useMemo } from "react"
-import { HariStatus, useHari } from "@lib/hooks/use-ai-chat"
 import { MenuEntry, VMMenu } from "@lib/menus"
-import { VMPanelPalette } from "@app/palettes/VMPanelPalette"
-import { Frame } from "@seldon/components/frames/Frame"
+import type { ThinkingLevelOption } from "@seldon/ai"
+import {
+  CSSProperties,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react"
+import { HariStatus, useHari } from "@lib/hooks/use-ai-chat"
 import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
+import { Frame } from "@seldon/components/frames/Frame"
 import { Text } from "@seldon/components/primitives/Text"
+import { VMPanelPalette } from "@app/palettes/VMPanelPalette"
 import { HariComposer } from "./HariComposer.bespoke"
 
 const HARI_INITIAL_WIDTH = 420

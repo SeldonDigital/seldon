@@ -5,7 +5,6 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
-
 import type { ApplyReport } from "./apply-report"
 
 /** Resolves the primary target id from an action payload. */

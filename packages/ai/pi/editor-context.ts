@@ -121,7 +121,11 @@ export function buildTurnContext(resolved: ResolvedContext): string {
   ) {
     const variantId =
       selectedNodeId !== undefined
-        ? resolveActiveVariantId(activeBoard, selectedNodeId, selectedNodeRootId)
+        ? resolveActiveVariantId(
+            activeBoard,
+            selectedNodeId,
+            selectedNodeRootId,
+          )
         : undefined
     const tier1 =
       variantId !== undefined
