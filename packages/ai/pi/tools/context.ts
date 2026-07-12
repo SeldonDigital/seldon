@@ -12,6 +12,10 @@ import { selectionSection } from "../../prompt/context-sections/selection"
 import { themeIdsSection } from "../../prompt/context-sections/theme-ids"
 import { themeTokensSection } from "../../prompt/context-sections/theme-tokens"
 import {
+  findNodesSection,
+  workspaceBoardsSection,
+} from "../../prompt/context-sections/workspace-index"
+import {
   buildActionPayloadSpecs,
   buildActionReference,
 } from "../../schema/action-schema"
@@ -168,6 +172,37 @@ export function createContextTools(
       ),
   })
 
+  const listBoards = defineTool({
+    name: "list_boards",
+    label: "List Boards",
+    description:
+      "Tier 3. Return every component board in the workspace as board key -> catalog id -> label. Use to locate a board other than the active one. A node reached only through tier 3 needs the user's permission before you edit it.",
+    parameters: Type.Object({}),
+    execute: async () =>
+      textResult(
+        joinOrEmpty(workspaceBoardsSection(workspace), "No boards available."),
+      ),
+  })
+
+  const findNodes = defineTool({
+    name: "find_nodes",
+    label: "Find Nodes",
+    description:
+      "Tier 3. Search every board in the workspace for nodes whose label or catalog id contains the query, returning each match's node id, board, and variant. Use only when the target is on no board on screen. A node reached only through tier 3 needs the user's permission before you edit it.",
+    parameters: Type.Object({
+      query: Type.String({
+        description: "Text to match against node labels and catalog ids.",
+      }),
+    }),
+    execute: async (_id, params) =>
+      textResult(
+        joinOrEmpty(
+          findNodesSection(workspace, params.query),
+          `No nodes match "${params.query}".`,
+        ),
+      ),
+  })
+
   return [
     getActiveBoard,
     getSelection,
@@ -176,5 +211,7 @@ export function createContextTools(
     listCatalogIds,
     listActionTypes,
     getActionSpec,
+    listBoards,
+    findNodes,
   ]
 }

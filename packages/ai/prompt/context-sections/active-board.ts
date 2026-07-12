@@ -105,3 +105,45 @@ export function activeBoardSection(
 
   return { lines, treeCatalogIds }
 }
+
+/**
+ * Context section: Active variant (tier 1).
+ *
+ * The narrowest editing scope: a single variant subtree, the one the selection
+ * sits in. It hands the model just that column's ids so the common "change this"
+ * edit needs no wider context. Returns empty lines when the id is not a variant
+ * root on the active board, so the caller falls back to the whole board.
+ */
+export function activeVariantSection(
+  workspace: Workspace,
+  resolvedKey: BoardKey,
+  activeBoard: Board,
+  variantId: string,
+): { lines: string[]; treeCatalogIds: Set<string> } {
+  const lines: string[] = []
+  const treeCatalogIds = new Set<string>()
+  if (activeBoard.type !== "component") return { lines, treeCatalogIds }
+
+  const variantRef = activeBoard.variants.find((ref) => ref.id === variantId)
+  if (!variantRef) return { lines, treeCatalogIds }
+
+  const variantNode = workspace.nodes[variantRef.id]
+  const variantLabel = variantNode?.label ? ` "${variantNode.label}"` : ""
+  const defaultTag = activeBoard.variants[0]?.id === variantRef.id ? " (default)" : ""
+  lines.push(
+    "",
+    "The context is scoped to the active variant the user has selected. Only its nodes below are in scope for a direct edit.",
+    "",
+    `Active board: ${resolvedKey} -> ${activeBoard.catalogId} -> "${activeBoard.label}"`,
+    `Active variant ${variantRef.id}${variantLabel}${defaultTag} (use these ids for nodeId / parentId / instanceId / variantId):`,
+  )
+
+  const visited: EntryNode[] = []
+  walkTree([variantRef], workspace, 1, lines, visited)
+  for (const node of visited) {
+    const nodeCatalogId = getNodeCatalogId(node, workspace)
+    if (nodeCatalogId) treeCatalogIds.add(nodeCatalogId)
+  }
+
+  return { lines, treeCatalogIds }
+}
