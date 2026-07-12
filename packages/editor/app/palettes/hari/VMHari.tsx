@@ -23,11 +23,15 @@ import {
   type HariTurn,
   useHari,
 } from "@lib/hooks/use-ai-chat"
+import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
 import { HariTranscript } from "./HariTranscript.bespoke"
 
 const HARI_INITIAL_WIDTH = 420
 const HARI_INITIAL_HEIGHT = 480
+
+/** Labels the tier the next turn resolves against, shown in the basis chip. */
+type SelectionBasis = "workspace" | "board" | "selection"
 
 /**
  * Gate for the Hari panel. Mounts the panel only while the "ai-chat" dialog is
@@ -42,6 +46,7 @@ export function VMHari() {
     status,
     warm,
     turns,
+    reset,
     config,
     model,
     thinkingLevel,
@@ -58,6 +63,7 @@ export function VMHari() {
       status={status}
       warm={warm}
       turns={turns}
+      reset={reset}
       config={config}
       model={model}
       thinkingLevel={thinkingLevel}
@@ -73,6 +79,7 @@ interface HariProps {
   status: HariStatus
   warm: () => Promise<void>
   turns: HariTurn[]
+  reset: () => void
   config: AgentConfig | null
   model?: string
   thinkingLevel?: ThinkingLevelOption
@@ -93,6 +100,7 @@ function Hari({
   status,
   warm,
   turns,
+  reset,
   config,
   model,
   thinkingLevel,
@@ -102,6 +110,14 @@ function Hari({
   useEffect(() => {
     void warm()
   }, [warm])
+
+  const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
+  const selectedBoardId = useSelectionStore((state) => state.selectedBoardId)
+  const basis: SelectionBasis = selectedNodeId
+    ? "selection"
+    : selectedBoardId
+      ? "board"
+      : "workspace"
 
   const {
     x,
@@ -186,6 +202,14 @@ function Hari({
   const closeModelMenu = useCallback(() => setModelOpen(false), [])
   const closeThinkingMenu = useCallback(() => setThinkingOpen(false), [])
 
+  const onReset = useCallback(() => {
+    if (!window.confirm("Clear this chat and start a new session?")) return
+    reset()
+    setDraft("")
+    setModelOpen(false)
+    setThinkingOpen(false)
+  }, [reset])
+
   const modelItems = useMemo<MenuEntry[]>(
     () =>
       (config?.models ?? []).map((value) => ({
@@ -223,11 +247,15 @@ function Hari({
     [turns, status, send],
   )
 
+  // PanelHari gates each slot on its prop being present, so every wired slot is
+  // passed here. The slots' baked `data-seldon-ref` names (hariClose, hariInput,
+  // hariSend, hariModel, hariThinking, hariReset, hariSelection) ride their sdn
+  // defaults and stay on the rendered DOM as stable anchors.
   const barSlot = { onPointerDown: startDrag, style: styles.dragHandle }
   const titleSlot = { children: "AI Chat" }
   const closeSlot = { onClick: close }
-  const seldonRefs = { turns: { children: transcript } }
-  const textareaSlot = {
+  const transcriptSlot = { children: transcript }
+  const inputSlot = {
     value: draft,
     onChange: onDraftChange,
     onKeyDown: handleKeyDown,
@@ -248,6 +276,10 @@ function Hari({
     "data-testid": "ai-chat-thinking",
   }
   const thinkingLabelSlot = { children: thinkingButtonLabel }
+  const basisChipSlot = {}
+  const basisLabelSlot = { children: basis }
+  const resetSlot = { onClick: onReset, "data-testid": "ai-chat-reset" }
+  const resetLabelSlot = { children: "Clear" }
 
   return (
     <WindowOverlay
@@ -271,15 +303,17 @@ function Hari({
         bar={barSlot}
         textTitle={titleSlot}
         buttonIconic={closeSlot}
-        seldonRefs={seldonRefs}
-        textarea={textareaSlot}
+        frame={transcriptSlot}
+        textarea={inputSlot}
         buttonIconic2={sendSlot}
         buttonMenu={modelSlot}
         textLabel={modelLabelSlot}
         buttonMenu2={thinkingSlot}
         textLabel2={thinkingLabelSlot}
-        chip={null}
-        button={null}
+        chip={basisChipSlot}
+        textLabel3={basisLabelSlot}
+        button={resetSlot}
+        textLabel4={resetLabelSlot}
       />
       <VMMenu
         open={modelOpen}

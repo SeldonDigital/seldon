@@ -1302,7 +1302,11 @@ body {
 }
 
 .sdn-message-outcome {
-  background-color: var(--sdn-swatch-offWhite);
+  background-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-offBlack) 5%,
+    transparent
+  );
   cursor: default;
   flex-wrap: nowrap;
   display: flex;
@@ -1361,7 +1365,11 @@ body {
 }
 
 .sdn-message-user {
-  background-color: var(--sdn-swatch-offWhite);
+  background-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-offBlack) 10%,
+    transparent
+  );
   cursor: default;
   flex-wrap: nowrap;
   display: flex;
@@ -2637,6 +2645,11 @@ body {
   color: var(--sdn-swatch-negative);
 }
 
+.sdn-icon--w2z6 {
+  font-size: var(--sdn-cmp-auto-fit-font-size-medium);
+  color: var(--sdn-swatch-gray);
+}
+
 .sdn-icon--xi68 {
   font-size: var(--sdn-sizes-small);
 }
@@ -2958,6 +2971,12 @@ body {
   font-size: var(--sdn-font-size-xsmall);
 }
 
+.sdn-text-description--g5cm {
+  color: var(--sdn-hc-on-white);
+  font-family: IBM Plex Sans;
+  font-size: var(--sdn-font-size-xsmall);
+}
+
 .sdn-text-description--ri62 {
   align-self: unset;
   flex-shrink: unset;
@@ -2971,6 +2990,11 @@ body {
   color: var(--sdn-hc-on-white);
   overflow: hidden;
   max-height: 5lh;
+}
+
+.sdn-text-description--welb {
+  color: var(--sdn-hc-on-white);
+  font-size: var(--sdn-font-size-xsmall);
 }
 
 .sdn-text-heading--xkk9 {

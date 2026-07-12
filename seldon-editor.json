@@ -49993,6 +49993,7 @@
     },
     "component-panel-NnG60f0w": {
       "id": "component-panel-NnG60f0w",
+      "ref": "hariClose",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -50434,6 +50435,7 @@
     },
     "component-textarea-2uPWguWV": {
       "id": "component-textarea-2uPWguWV",
+      "ref": "hariInput",
       "type": "instance",
       "level": "primitive",
       "label": "Textarea",
@@ -50451,6 +50453,7 @@
     },
     "component-button-9yOOrW92": {
       "id": "component-button-9yOOrW92",
+      "ref": "hariReset",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -50562,6 +50565,7 @@
     },
     "component-panel-IpE0XEo6": {
       "id": "component-panel-IpE0XEo6",
+      "ref": "hariThinking",
       "type": "instance",
       "level": "element",
       "label": "Menu",
@@ -50813,6 +50817,7 @@
     },
     "component-panel-EqziYbqa": {
       "id": "component-panel-EqziYbqa",
+      "ref": "hariModel",
       "type": "instance",
       "level": "element",
       "label": "Menu",
@@ -51105,6 +51110,7 @@
     },
     "component-button-Wh0irV9y": {
       "id": "component-button-Wh0irV9y",
+      "ref": "hariSend",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -51187,6 +51193,7 @@
     },
     "component-chip-LO6kjXwm": {
       "id": "component-chip-LO6kjXwm",
+      "ref": "hariSelection",
       "type": "instance",
       "level": "element",
       "label": "Chip",
@@ -51322,7 +51329,7 @@
           },
           "size": {
             "type": "theme.ordinal",
-            "value": "@fontSize.small"
+            "value": "@fontSize.xsmall"
           }
         }
       },
@@ -51378,15 +51385,18 @@
             },
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.offWhite"
+              "value": "@swatch.offBlack"
             },
             "brightness": {
               "type": "empty",
               "value": null
             },
             "opacity": {
-              "type": "empty",
-              "value": null
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 10
+              }
             }
           }
         ]
@@ -51445,13 +51455,25 @@
           "value": "highContrastColor"
         },
         "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
+          "family": {
+            "type": "empty",
+            "value": null
           },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
           }
         }
       },
@@ -51554,13 +51576,25 @@
           "value": "highContrastColor"
         },
         "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
+          "family": {
+            "type": "empty",
+            "value": null
           },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.small"
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
           }
         }
       },
@@ -52267,15 +52301,18 @@
             },
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.offWhite"
+              "value": "@swatch.offBlack"
             },
             "brightness": {
               "type": "empty",
               "value": null
             },
             "opacity": {
-              "type": "empty",
-              "value": null
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 5
+              }
             }
           }
         ],
@@ -52852,6 +52889,7 @@
     },
     "component-button-2zJzYVCw": {
       "id": "component-button-2zJzYVCw",
+      "ref": "hariRetry",
       "type": "instance",
       "level": "element",
       "label": "Simple",
@@ -52979,8 +53017,8 @@
           "value": "autoFit"
         },
         "color": {
-          "type": "computed",
-          "value": "highContrastColor"
+          "type": "theme.categorical",
+          "value": "@swatch.gray"
         }
       },
       "origin": "schema",

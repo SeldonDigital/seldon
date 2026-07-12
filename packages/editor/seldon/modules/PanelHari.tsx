@@ -443,6 +443,7 @@ const sdn: PanelHariProps = {
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "hariClose",
   },
   icon: {
     icon: "material-close",
@@ -462,9 +463,11 @@ const sdn: PanelHariProps = {
   },
   textarea: {
     className: "sdn-textarea sdn-textarea--2upw",
+    "data-seldon-ref": "hariInput",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--wh0i",
+    "data-seldon-ref": "hariSend",
   },
   icon2: {
     icon: "material-arrowUpward",
@@ -483,6 +486,7 @@ const sdn: PanelHariProps = {
   },
   buttonMenu: {
     className: "sdn-button-menu sdn-button-menu--ipe0",
+    "data-seldon-ref": "hariModel",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--sa6t",
@@ -494,6 +498,7 @@ const sdn: PanelHariProps = {
   },
   buttonMenu2: {
     className: "sdn-button-menu sdn-button-menu--ipe0",
+    "data-seldon-ref": "hariThinking",
   },
   textLabel2: {
     className: "sdn-text-label sdn-text-label--sa6t",
@@ -505,12 +510,14 @@ const sdn: PanelHariProps = {
   },
   chip: {
     className: "sdn-chip sdn-chip--lo6k",
+    "data-seldon-ref": "hariSelection",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--lug5",
   },
   button: {
     className: "sdn-button sdn-button--9yoo",
+    "data-seldon-ref": "hariReset",
   },
   icon5: {
     icon: "material-clear",

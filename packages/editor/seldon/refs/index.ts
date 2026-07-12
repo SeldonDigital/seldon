@@ -25,6 +25,14 @@ export type SeldonRef =
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
+  | "hariClose"
+  | "hariInput"
+  | "hariModel"
+  | "hariReset"
+  | "hariRetry"
+  | "hariSelection"
+  | "hariSend"
+  | "hariThinking"
   | "logo"
   | "menuComponent"
   | "menuDev"
@@ -136,6 +144,46 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "Input",
     nodeId: "component-comboboxField-TWyxOQad",
     className: "sdn-input sdn-input--twyx",
+  },
+  hariClose: {
+    component: "ButtonIconic",
+    nodeId: "component-panel-NnG60f0w",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  hariInput: {
+    component: "Textarea",
+    nodeId: "component-textarea-2uPWguWV",
+    className: "sdn-textarea sdn-textarea--2upw",
+  },
+  hariModel: {
+    component: "ButtonMenu",
+    nodeId: "component-panel-EqziYbqa",
+    className: "sdn-button-menu sdn-button-menu--ipe0",
+  },
+  hariReset: {
+    component: "Button",
+    nodeId: "component-button-9yOOrW92",
+    className: "sdn-button sdn-button--9yoo",
+  },
+  hariRetry: {
+    component: "ButtonSimple",
+    nodeId: "component-button-2zJzYVCw",
+    className: "sdn-button-simple sdn-button-simple--2zjz",
+  },
+  hariSelection: {
+    component: "Chip",
+    nodeId: "component-chip-LO6kjXwm",
+    className: "sdn-chip sdn-chip--lo6k",
+  },
+  hariSend: {
+    component: "ButtonIconic",
+    nodeId: "component-button-Wh0irV9y",
+    className: "sdn-button-iconic sdn-button-iconic--wh0i",
+  },
+  hariThinking: {
+    component: "ButtonMenu",
+    nodeId: "component-panel-IpE0XEo6",
+    className: "sdn-button-menu sdn-button-menu--ipe0",
   },
   logo: {
     component: "Frame",

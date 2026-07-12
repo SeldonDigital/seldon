@@ -145,12 +145,12 @@ const sdn: MessageOutcomeProps = {
     className: "sdn-frame sdn-frame--fvwe",
   },
   icon: {
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--nlt7",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--lbxv",
+    className: "sdn-text-label sdn-text-description--ri62",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--ccqe",
+    className: "sdn-text sdn-text-description--welb",
   },
 }

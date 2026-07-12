@@ -38,7 +38,7 @@ function buildTranscript(
   turns: HariTurn[],
   onRetry: HariTranscriptProps["onRetry"],
 ): ReactNode {
-  if (turns.length === 0) return emptyBlock()
+  if (turns.length === 0) return null
 
   const blocks: ReactNode[] = []
   for (const turn of turns) {
@@ -60,14 +60,6 @@ function buildTranscript(
     }
   }
   return <>{blocks}</>
-}
-
-function emptyBlock(): ReactNode {
-  return (
-    <TextDescription className="sdn-text" style={emptyStyle}>
-      Ask Hari to make a change.
-    </TextDescription>
-  )
 }
 
 function userBlock(turn: HariTurn): ReactNode {
@@ -156,9 +148,4 @@ function errorBlock(
       buttonSimple={buttonSimple}
     />
   )
-}
-
-const emptyStyle = {
-  color: "var(--sdn-swatch-gray)",
-  fontSize: 13,
 }

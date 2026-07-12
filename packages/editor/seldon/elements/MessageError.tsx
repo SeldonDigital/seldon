@@ -173,6 +173,7 @@ const sdn: MessageErrorProps = {
   },
   buttonSimple: {
     className: "sdn-button-simple sdn-button-simple--2zjz",
+    "data-seldon-ref": "hariRetry",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--vrf8",
