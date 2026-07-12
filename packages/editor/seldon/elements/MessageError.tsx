@@ -163,17 +163,16 @@ const sdn: MessageErrorProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--fvwe",
+    className: "sdn-frame sdn-frame--ieew",
   },
   icon: {
-    className: "sdn-icon sdn-icon--vvk9",
+    className: "sdn-icon sdn-icon--gm8j",
   },
   textDescription: {
     className: "sdn-text sdn-text-label--lbxv",
   },
   buttonSimple: {
-    className: "sdn-button-simple sdn-button-simple--2zjz",
-    "data-seldon-ref": "hariRetry",
+    className: "sdn-button-simple sdn-button-iconic--iklu",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--vrf8",

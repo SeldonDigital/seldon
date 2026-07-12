@@ -89,6 +89,6 @@ const sdn: MessageUserProps = {
   "aria-hidden": "false",
   className: "sdn-message-user sdn-message",
   textDescription: {
-    className: "sdn-text sdn-text-description--g5cm",
+    className: "sdn-text sdn-text-description--welb",
   },
 }

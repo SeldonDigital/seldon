@@ -98,20 +98,20 @@ const MARKDOWN_COMPONENTS: Components = {
 const styles: Record<string, CSSProperties> = {
   paragraph: {
     margin: "0 0 8px",
-    fontSize: 14,
+    fontSize: "var(--sdn-font-size-xsmall)",
     lineHeight: 1.5,
     color: "var(--sdn-swatch-offBlack)",
   },
   heading: {
     margin: "12px 0 6px",
-    fontSize: 15,
+    fontSize: "var(--sdn-font-size-small)",
     fontWeight: 600,
     color: "var(--sdn-swatch-offBlack)",
   },
   list: {
     margin: "0 0 8px",
     paddingLeft: 20,
-    fontSize: 14,
+    fontSize: "var(--sdn-font-size-xsmall)",
     lineHeight: 1.5,
     color: "var(--sdn-swatch-offBlack)",
   },
@@ -124,14 +124,14 @@ const styles: Record<string, CSSProperties> = {
   },
   codeInline: {
     fontFamily: "monospace",
-    fontSize: 12.5,
+    fontSize: "var(--sdn-font-size-xsmall)",
     background: "var(--sdn-swatch-lightGray, rgba(0,0,0,0.06))",
     borderRadius: 3,
     padding: "1px 4px",
   },
   codeBlock: {
     fontFamily: "monospace",
-    fontSize: 12.5,
+    fontSize: "var(--sdn-font-size-xsmall)",
     background: "none",
     padding: 0,
   },
@@ -142,7 +142,7 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: 6,
     overflowX: "auto",
     fontFamily: "monospace",
-    fontSize: 12.5,
+    fontSize: "var(--sdn-font-size-xsmall)",
     lineHeight: 1.45,
   },
   blockquote: {

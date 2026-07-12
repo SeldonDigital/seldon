@@ -6185,7 +6185,7 @@
           "id": "component-message-user",
           "children": [
             {
-              "id": "component-text-g5Cm4y8A"
+              "id": "component-text-5X8uWVHu"
             }
           ]
         },
@@ -6193,7 +6193,7 @@
           "id": "component-message-assistant",
           "children": [
             {
-              "id": "component-text-l4qaeWyD"
+              "id": "component-text-rdPTp0zG"
             }
           ]
         },
@@ -6201,23 +6201,23 @@
           "id": "component-message-thinking",
           "children": [
             {
-              "id": "component-frame-fvwEao7y",
+              "id": "component-frame-IEewTaDU",
               "children": [
                 {
-                  "id": "component-text-715dXbWq"
+                  "id": "component-text-0r1JFBYH"
                 },
                 {
-                  "id": "component-button-1NyNToKr",
+                  "id": "component-button-iKLUV4uP",
                   "children": [
                     {
-                      "id": "component-icon-0y1i8Xw1"
+                      "id": "component-icon-KzY9lbAe"
                     }
                   ]
                 }
               ]
             },
             {
-              "id": "component-text-CcQE9ME0"
+              "id": "component-text-cHoacyQ2"
             }
           ]
         },
@@ -6225,24 +6225,24 @@
           "id": "component-message-tools",
           "children": [
             {
-              "id": "component-frame-M5RIZyLx",
+              "id": "component-frame-sv6rrO9w",
               "children": [
                 {
-                  "id": "component-icon-IXPTTyam"
+                  "id": "component-icon-9oUjKo1a"
                 },
                 {
-                  "id": "component-text-Ri62wvAS"
+                  "id": "component-text-HqunMGGR"
                 }
               ]
             },
             {
-              "id": "component-frame-GKsL5qlg",
+              "id": "component-frame-Ayyrs8IJ",
               "children": [
                 {
-                  "id": "component-icon-lLrFmVWS"
+                  "id": "component-icon-g3VzjtWD"
                 },
                 {
-                  "id": "component-text-Rvx1926d"
+                  "id": "component-text-izeiPpj4"
                 }
               ]
             }
@@ -6252,18 +6252,18 @@
           "id": "component-message-outcome",
           "children": [
             {
-              "id": "component-frame-YIezgy8G",
+              "id": "component-frame-6nWIzxEq",
               "children": [
                 {
-                  "id": "component-icon-xAru9IL2"
+                  "id": "component-icon-wxT91IpG"
                 },
                 {
-                  "id": "component-text-n5cun7y0"
+                  "id": "component-text-PIf8vzL0"
                 }
               ]
             },
             {
-              "id": "component-text-9R6s0lxD"
+              "id": "component-text-UAGUHvkF"
             }
           ]
         },
@@ -6271,21 +6271,21 @@
           "id": "component-message-error",
           "children": [
             {
-              "id": "component-frame-IkYvQhFw",
+              "id": "component-frame-aLahjnn6",
               "children": [
                 {
-                  "id": "component-icon-VVk9jdt9"
+                  "id": "component-icon-GM8jpOSl"
                 },
                 {
-                  "id": "component-text-CNe2ZiKK"
+                  "id": "component-text-gaFQYpvP"
                 }
               ]
             },
             {
-              "id": "component-button-2zJzYVCw",
+              "id": "component-button-AKDnMgFM",
               "children": [
                 {
-                  "id": "component-text-hRfN35ai"
+                  "id": "component-text-AfTUkMQr"
                 }
               ]
             }
@@ -6295,10 +6295,10 @@
           "id": "component-message-status",
           "children": [
             {
-              "id": "component-icon-W2z6bMFQ"
+              "id": "component-icon-8Ds95Uq5"
             },
             {
-              "id": "component-text-bIFakDS4"
+              "id": "component-text-UE8Mt3mk"
             }
           ]
         }
@@ -51430,9 +51430,33 @@
             "type": "theme.categorical",
             "value": "@font.body"
           },
+          "family": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
           "size": {
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          },
+          "letterSpacing": {
+            "type": "empty",
+            "value": null
           }
         }
       },
@@ -51456,9 +51480,33 @@
               "type": "theme.categorical",
               "value": "@font.body"
             },
+            "family": {
+              "type": "empty",
+              "value": null
+            },
+            "style": {
+              "type": "empty",
+              "value": null
+            },
+            "weight": {
+              "type": "empty",
+              "value": null
+            },
             "size": {
               "type": "theme.ordinal",
-              "value": "@fontSize.small"
+              "value": "@fontSize.xsmall"
+            },
+            "lineHeight": {
+              "type": "empty",
+              "value": null
+            },
+            "textCase": {
+              "type": "empty",
+              "value": null
+            },
+            "letterSpacing": {
+              "type": "empty",
+              "value": null
             }
           }
         }
@@ -51534,77 +51582,6 @@
               }
             }
           ]
-        }
-      }
-    },
-    "component-text-g5Cm4y8A": {
-      "id": "component-text-g5Cm4y8A",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-WeLbwz0Q",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "User message"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "family": {
-            "type": "empty",
-            "value": null
-          },
-          "style": {
-            "type": "empty",
-            "value": null
-          },
-          "weight": {
-            "type": "empty",
-            "value": null
-          },
-          "lineHeight": {
-            "type": "empty",
-            "value": null
-          },
-          "textCase": {
-            "type": "empty",
-            "value": null
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "User message"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.body"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.small"
-            }
-          }
         }
       }
     },
@@ -51784,223 +51761,6 @@
         }
       }
     },
-    "component-frame-fvwEao7y": {
-      "id": "component-frame-fvwEao7y",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "align": {
-          "type": "option",
-          "value": "left"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "horizontal"
-          },
-          "align": {
-            "type": "option",
-            "value": "left"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          }
-        }
-      }
-    },
-    "component-text-715dXbWq": {
-      "id": "component-text-715dXbWq",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-label",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Thinking..."
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.label"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Thinking..."
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.label"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-button-1NyNToKr": {
-      "id": "component-button-1NyNToKr",
-      "type": "instance",
-      "level": "element",
-      "label": "Iconic",
-      "theme": null,
-      "template": "node:component-button-iconic",
-      "overrides": {},
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {}
-      }
-    },
-    "component-icon-0y1i8Xw1": {
-      "id": "component-icon-0y1i8Xw1",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-default",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-chevronDown"
-        },
-        "size": {
-          "type": "computed",
-          "value": "autoFit"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-chevronDown"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-text-CcQE9ME0": {
-      "id": "component-text-CcQE9ME0",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-WeLbwz0Q",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Reasoning..."
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Reasoning..."
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.body"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
     "component-message-tools": {
       "id": "component-message-tools",
       "type": "variant",
@@ -52019,296 +51779,6 @@
           "gap": {
             "type": "theme.ordinal",
             "value": "@gap.compact"
-          }
-        }
-      }
-    },
-    "component-frame-M5RIZyLx": {
-      "id": "component-frame-M5RIZyLx",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "align": {
-          "type": "option",
-          "value": "left"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "horizontal"
-          },
-          "align": {
-            "type": "option",
-            "value": "left"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          }
-        }
-      }
-    },
-    "component-icon-IXPTTyam": {
-      "id": "component-icon-IXPTTyam",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-default",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-checkCircle"
-        },
-        "size": {
-          "type": "computed",
-          "value": "autoFit"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-checkCircle"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-text-Ri62wvAS": {
-      "id": "component-text-Ri62wvAS",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-description",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "set_properties(target, ...)"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "set_properties(target, ...)"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.body"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-frame-GKsL5qlg": {
-      "id": "component-frame-GKsL5qlg",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "align": {
-          "type": "option",
-          "value": "left"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "horizontal"
-          },
-          "align": {
-            "type": "option",
-            "value": "left"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          }
-        }
-      }
-    },
-    "component-icon-lLrFmVWS": {
-      "id": "component-icon-lLrFmVWS",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-default",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "seldon-componentDefault"
-        },
-        "size": {
-          "type": "computed",
-          "value": "autoFit"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "seldon-componentDefault"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-text-Rvx1926d": {
-      "id": "component-text-Rvx1926d",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-description",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "find_nodes(query)"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "find_nodes(query)"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.body"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
           }
         }
       }
@@ -52333,18 +51803,15 @@
             },
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.offBlack"
+              "value": "@swatch.offWhite"
             },
             "brightness": {
               "type": "empty",
               "value": null
             },
             "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 5
-              }
+              "type": "empty",
+              "value": null
             }
           }
         ],
@@ -52431,210 +51898,6 @@
                 "unit": "%",
                 "value": 30
               }
-            }
-          }
-        }
-      }
-    },
-    "component-frame-YIezgy8G": {
-      "id": "component-frame-YIezgy8G",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "align": {
-          "type": "option",
-          "value": "left"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "horizontal"
-          },
-          "align": {
-            "type": "option",
-            "value": "left"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          }
-        }
-      }
-    },
-    "component-icon-xAru9IL2": {
-      "id": "component-icon-xAru9IL2",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-default",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-checkCircle"
-        },
-        "size": {
-          "type": "computed",
-          "value": "autoFit"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-checkCircle"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-text-n5cun7y0": {
-      "id": "component-text-n5cun7y0",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-label",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Applied"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.label"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Applied"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.label"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-text-9R6s0lxD": {
-      "id": "component-text-9R6s0lxD",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-WeLbwz0Q",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Button background: primary -> accent"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Button background: primary -> accent"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.body"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.xsmall"
             }
           }
         }
@@ -52774,8 +52037,164 @@
         }
       }
     },
-    "component-frame-IkYvQhFw": {
-      "id": "component-frame-IkYvQhFw",
+    "component-message-status": {
+      "id": "component-message-status",
+      "type": "variant",
+      "level": "element",
+      "label": "Status",
+      "theme": null,
+      "template": "node:component-message-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-text-5X8uWVHu": {
+      "id": "component-text-5X8uWVHu",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-WeLbwz0Q",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "User message"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "User message"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.body"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-text-rdPTp0zG": {
+      "id": "component-text-rdPTp0zG",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-WeLbwz0Q",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Assistant message"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Assistant message"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.body"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-IEewTaDU": {
+      "id": "component-frame-IEewTaDU",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -52821,8 +52240,789 @@
         }
       }
     },
-    "component-icon-VVk9jdt9": {
-      "id": "component-icon-VVk9jdt9",
+    "component-text-0r1JFBYH": {
+      "id": "component-text-0r1JFBYH",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Thinking..."
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Thinking..."
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.label"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-button-iKLUV4uP": {
+      "id": "component-button-iKLUV4uP",
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-iconic",
+      "overrides": {
+        "buttonSize": {
+          "type": "theme.ordinal",
+          "value": "@fontSize.xsmall"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "option",
+              "value": "transparent"
+            }
+          }
+        ]
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "buttonSize": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.tight"
+            }
+          },
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "color"
+              },
+              "color": {
+                "type": "option",
+                "value": "transparent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "component-icon-KzY9lbAe": {
+      "id": "component-icon-KzY9lbAe",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-chevronDown"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-chevronDown"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-cHoacyQ2": {
+      "id": "component-text-cHoacyQ2",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-WeLbwz0Q",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Reasoning..."
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Reasoning..."
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.body"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-sv6rrO9w": {
+      "id": "component-frame-sv6rrO9w",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-icon-9oUjKo1a": {
+      "id": "component-icon-9oUjKo1a",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-checkCircle"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-checkCircle"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-HqunMGGR": {
+      "id": "component-text-HqunMGGR",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "set_properties(target, ...)"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "set_properties(target, ...)"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.body"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-Ayyrs8IJ": {
+      "id": "component-frame-Ayyrs8IJ",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-icon-g3VzjtWD": {
+      "id": "component-icon-g3VzjtWD",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "seldon-componentDefault"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "seldon-componentDefault"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-izeiPpj4": {
+      "id": "component-text-izeiPpj4",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "find_nodes(query)"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "find_nodes(query)"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.body"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-6nWIzxEq": {
+      "id": "component-frame-6nWIzxEq",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-icon-wxT91IpG": {
+      "id": "component-icon-wxT91IpG",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-checkCircle"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-checkCircle"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-PIf8vzL0": {
+      "id": "component-text-PIf8vzL0",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Applied"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Applied"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.label"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-text-UAGUHvkF": {
+      "id": "component-text-UAGUHvkF",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-WeLbwz0Q",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Button background: primary -> accent"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Button background: primary -> accent"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.body"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-aLahjnn6": {
+      "id": "component-frame-aLahjnn6",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-icon-GM8jpOSl": {
+      "id": "component-icon-GM8jpOSl",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -52860,8 +53060,8 @@
         }
       }
     },
-    "component-text-CNe2ZiKK": {
-      "id": "component-text-CNe2ZiKK",
+    "component-text-gaFQYpvP": {
+      "id": "component-text-gaFQYpvP",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -52919,9 +53119,8 @@
         }
       }
     },
-    "component-button-2zJzYVCw": {
-      "id": "component-button-2zJzYVCw",
-      "ref": "hariRetry",
+    "component-button-AKDnMgFM": {
+      "id": "component-button-AKDnMgFM",
       "type": "instance",
       "level": "element",
       "label": "Simple",
@@ -52943,8 +53142,8 @@
         }
       }
     },
-    "component-text-hRfN35ai": {
-      "id": "component-text-hRfN35ai",
+    "component-text-AfTUkMQr": {
+      "id": "component-text-AfTUkMQr",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -52994,46 +53193,8 @@
         }
       }
     },
-    "component-message-status": {
-      "id": "component-message-status",
-      "type": "variant",
-      "level": "element",
-      "label": "Status",
-      "theme": null,
-      "template": "node:component-message-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "align": {
-          "type": "option",
-          "value": "left"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        }
-      },
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "horizontal"
-          },
-          "align": {
-            "type": "option",
-            "value": "left"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          }
-        }
-      }
-    },
-    "component-icon-W2z6bMFQ": {
-      "id": "component-icon-W2z6bMFQ",
+    "component-icon-8Ds95Uq5": {
+      "id": "component-icon-8Ds95Uq5",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -53065,14 +53226,14 @@
             "value": "autoFit"
           },
           "color": {
-            "type": "computed",
-            "value": "highContrastColor"
+            "type": "theme.categorical",
+            "value": "@swatch.gray"
           }
         }
       }
     },
-    "component-text-bIFakDS4": {
-      "id": "component-text-bIFakDS4",
+    "component-text-UE8Mt3mk": {
+      "id": "component-text-UE8Mt3mk",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -53125,77 +53286,6 @@
             "size": {
               "type": "theme.ordinal",
               "value": "@fontSize.xsmall"
-            }
-          }
-        }
-      }
-    },
-    "component-text-l4qaeWyD": {
-      "id": "component-text-l4qaeWyD",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-WeLbwz0Q",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Assistant message"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "family": {
-            "type": "empty",
-            "value": null
-          },
-          "style": {
-            "type": "empty",
-            "value": null
-          },
-          "weight": {
-            "type": "empty",
-            "value": null
-          },
-          "lineHeight": {
-            "type": "empty",
-            "value": null
-          },
-          "textCase": {
-            "type": "empty",
-            "value": null
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Assistant message"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.body"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.small"
             }
           }
         }

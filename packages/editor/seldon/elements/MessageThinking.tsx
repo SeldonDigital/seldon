@@ -18,7 +18,6 @@ import {
   TextDescription,
   TextDescriptionProps,
 } from "../primitives/TextDescription"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
@@ -27,10 +26,10 @@ export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
   frame?: FrameProps | null
-  textLabel?: TextLabelProps | null
+  textDescription?: TextDescriptionProps | null
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
-  textDescription?: TextDescriptionProps | null
+  textDescription2?: TextDescriptionProps | null
 }
 
 /*****
@@ -45,20 +44,19 @@ export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
  * <MessageThinking
  *   aria-hidden="false"
  *   frame="{}"
- *   textLabel="{}"
+ *   textDescription="{}"
  *   buttonIconic={() => {}}
  *   icon="material-star"
- *   textDescription="{}"
  * />
  * ```
  *****/
 export function MessageThinking({
   className = "",
   frame = sdn.frame,
-  textLabel,
+  textDescription,
   buttonIconic,
   icon = sdn.icon,
-  textDescription,
+  textDescription2,
   children,
   seldonRefs,
   ...props
@@ -77,16 +75,16 @@ export function MessageThinking({
           className: combineClassNames(sdn.frame?.className, frame?.className),
         },
   )
-  const textLabelProps = applyRef(
+  const textDescriptionProps = applyRef(
     seldonRefs,
-    textLabel === null
+    textDescription === null
       ? null
       : {
-          ...sdn.textLabel,
-          ...textLabel,
+          ...sdn.textDescription,
+          ...textDescription,
           className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
+            sdn.textDescription?.className,
+            textDescription?.className,
           ),
         },
   )
@@ -113,16 +111,16 @@ export function MessageThinking({
           className: combineClassNames(sdn.icon?.className, icon?.className),
         },
   )
-  const textDescriptionProps = applyRef(
+  const textDescription2Props = applyRef(
     seldonRefs,
-    textDescription === null
+    textDescription2 === null
       ? null
       : {
-          ...sdn.textDescription,
-          ...textDescription,
+          ...sdn.textDescription2,
+          ...textDescription2,
           className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
+            sdn.textDescription2?.className,
+            textDescription2?.className,
           ),
         },
   )
@@ -138,13 +136,15 @@ export function MessageThinking({
       ) : (
         <>
           <Frame {...frameProps}>
-            {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+            {textDescription && textDescriptionProps && (
+              <TextDescription {...textDescriptionProps} />
+            )}
             {buttonIconic && buttonIconicProps && (
               <ButtonIconic {...buttonIconicProps} icon={iconProps} />
             )}
           </Frame>
-          {textDescription && textDescriptionProps && (
-            <TextDescription {...textDescriptionProps} />
+          {textDescription2 && textDescription2Props && (
+            <TextDescription {...textDescription2Props} />
           )}
         </>
       )}
@@ -161,20 +161,20 @@ const sdn: MessageThinkingProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--fvwe",
+    className: "sdn-frame sdn-frame--ieew",
   },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--lbxv",
+  textDescription: {
+    className: "sdn-text sdn-text-description--0r1j",
   },
   buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    className: "sdn-button-iconic sdn-button-iconic--iklu",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--kzy9",
   },
-  textDescription: {
-    className: "sdn-text sdn-text-description--ccqe",
+  textDescription2: {
+    className: "sdn-text sdn-text-description--choa",
   },
 }

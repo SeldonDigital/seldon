@@ -3,17 +3,13 @@
 // reasoning, the tools it called, the applied changes, the markdown reply, and
 // any rejection or error. Assistant replies render through HariMarkdown.
 import type { HariStatus, HariTurn } from "@lib/hooks/use-ai-chat"
-import { type ReactNode, useMemo } from "react"
+import { type CSSProperties, Fragment, type ReactNode, useMemo } from "react"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
 import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
 import { MessageStatus } from "@seldon/components/elements/MessageStatus"
 import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
-import { Frame } from "@seldon/components/frames/Frame"
-import { Icon } from "@seldon/components/primitives/Icon"
-import { TextDescription } from "@seldon/components/primitives/TextDescription"
-import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { HariMarkdown } from "./HariMarkdown.bespoke"
 import { HariThinking } from "./HariThinking.bespoke"
 
@@ -79,40 +75,41 @@ function thinkingBlock(turn: HariTurn): ReactNode {
 }
 
 function toolsBlock(turn: HariTurn): ReactNode {
-  const rows = (turn.toolCalls ?? []).map((call, index) => (
-    <Frame key={index} className="sdn-frame sdn-frame--fvwe">
-      <Icon
-        icon={call.ok ? "material-checkCircle" : "material-error"}
-        className="sdn-icon sdn-icon--nlt7"
+  const rows = (turn.toolCalls ?? []).map((call, index) => {
+    const icon = {
+      icon: call.ok ? "material-checkCircle" : "material-error",
+    } as const
+    const textDescription = { children: call.name }
+    return (
+      <MessageTools
+        key={index}
+        icon={icon}
+        textDescription={textDescription}
+        frame2={null}
       />
-      <TextDescription className="sdn-text sdn-text-description--ri62">
-        {call.name}
-      </TextDescription>
-    </Frame>
-  ))
-  return <MessageTools key={`${turn.id}-tools`}>{rows}</MessageTools>
+    )
+  })
+  return <Fragment key={`${turn.id}-tools`}>{rows}</Fragment>
 }
 
 function outcomeBlock(turn: HariTurn): ReactNode {
-  const header = (
-    <Frame key="header" className="sdn-frame sdn-frame--fvwe">
-      <Icon icon="material-checkCircle" className="sdn-icon sdn-icon--vsau" />
-      <TextLabel className="sdn-text-label sdn-text-label--lbxv">
-        Applied
-      </TextLabel>
-    </Frame>
+  const icon = { icon: "material-checkCircle" } as const
+  const textLabel = { children: "Applied" }
+  const textDescription = {
+    children: (turn.changes ?? []).join("\n"),
+    style: preWrapStyle,
+  }
+  return (
+    <MessageOutcome
+      key={`${turn.id}-outcome`}
+      icon={icon}
+      textLabel={textLabel}
+      textDescription={textDescription}
+    />
   )
-  const rows = (turn.changes ?? []).map((change, index) => (
-    <TextDescription
-      key={index}
-      className="sdn-text sdn-text-description--ccqe"
-    >
-      {change}
-    </TextDescription>
-  ))
-  const children = [header, ...rows]
-  return <MessageOutcome key={`${turn.id}-outcome`}>{children}</MessageOutcome>
 }
+
+const preWrapStyle: CSSProperties = { whiteSpace: "pre-wrap" }
 
 function assistantBlock(turn: HariTurn): ReactNode {
   return (

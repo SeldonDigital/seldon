@@ -142,15 +142,15 @@ const sdn: MessageOutcomeProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--fvwe",
+    className: "sdn-frame sdn-frame--ieew",
   },
   icon: {
-    className: "sdn-icon sdn-icon--nlt7",
+    className: "sdn-icon sdn-icon--vsau",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-description--ri62",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--welb",
+    className: "sdn-text sdn-text-description--choa",
   },
 }

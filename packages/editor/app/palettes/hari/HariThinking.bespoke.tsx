@@ -14,7 +14,7 @@ interface HariThinkingProps {
 export function HariThinking({ text }: HariThinkingProps) {
   const [open, setOpen] = useState(false)
 
-  const textLabel = { children: "Thinking" }
+  const headerSlot = { children: "Thinking" }
   const iconSlot: IconProps = {
     icon: open ? "material-chevronDown" : "material-chevronRight",
   }
@@ -23,17 +23,17 @@ export function HariThinking({ text }: HariThinkingProps) {
     "aria-expanded": open,
     "aria-label": open ? "Hide reasoning" : "Show reasoning",
   }
-  const textDescription = {
+  const bodySlot = {
     children: text,
     style: open ? expandedStyle : collapsedStyle,
   }
 
   return (
     <MessageThinking
-      textLabel={textLabel}
+      textDescription={headerSlot}
       buttonIconic={buttonIconic}
       icon={iconSlot}
-      textDescription={textDescription}
+      textDescription2={bodySlot}
     />
   )
 }

@@ -170,23 +170,23 @@ const sdn: MessageToolsProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--fvwe",
+    className: "sdn-frame sdn-frame--ieew",
   },
   icon: {
     className: "sdn-icon sdn-icon--nlt7",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--ri62",
+    className: "sdn-text sdn-text-description--hqun",
   },
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--fvwe",
+    className: "sdn-frame sdn-frame--ieew",
   },
   icon2: {
     className: "sdn-icon sdn-icon--nlt7",
   },
   textDescription2: {
-    className: "sdn-text sdn-text-description--ri62",
+    className: "sdn-text sdn-text-description--hqun",
   },
 }

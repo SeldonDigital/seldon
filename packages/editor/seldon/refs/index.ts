@@ -29,7 +29,6 @@ export type SeldonRef =
   | "hariInput"
   | "hariModel"
   | "hariReset"
-  | "hariRetry"
   | "hariSelection"
   | "hariSend"
   | "hariThinking"
@@ -164,11 +163,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "Button",
     nodeId: "component-button-9yOOrW92",
     className: "sdn-button sdn-button--9yoo",
-  },
-  hariRetry: {
-    component: "ButtonSimple",
-    nodeId: "component-button-2zJzYVCw",
-    className: "sdn-button-simple sdn-button-simple--2zjz",
   },
   hariSelection: {
     component: "Chip",

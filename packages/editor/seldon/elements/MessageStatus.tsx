@@ -104,9 +104,9 @@ const sdn: MessageStatusProps = {
   icon: {
     icon: "material-robot",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--w2z6",
+    className: "sdn-icon sdn-icon--8ds9",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--bifa",
+    className: "sdn-text-label sdn-text-label--ue8m",
   },
 }
