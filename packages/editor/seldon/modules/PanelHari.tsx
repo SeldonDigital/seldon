@@ -96,7 +96,7 @@ export function PanelHari({
   seldonRefs,
   ...props
 }: PanelHariProps) {
-  const panelHariClassName = combineClassNames("sdn-panel-palette", className)
+  const panelHariClassName = combineClassNames("sdn-panel-hari", className)
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -433,7 +433,7 @@ export function PanelHari({
 const sdn: PanelHariProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-panel-palette sdn-panel",
+  className: "sdn-panel-hari sdn-panel",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--9xs7",
@@ -453,7 +453,7 @@ const sdn: PanelHariProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--zjuk",
+    className: "sdn-frame sdn-frame--2wwo",
     "data-seldon-ref": "turns",
   },
   frame2: {

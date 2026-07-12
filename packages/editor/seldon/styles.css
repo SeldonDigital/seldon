@@ -1403,20 +1403,39 @@ body {
 }
 
 .sdn-panel-dialog {
-  background-color: var(--sdn-swatch-white);
+  background-color: var(--sdn-swatch-offWhite);
   overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 1px 0.125rem 0.031rem
+  box-shadow: 0px 2px 0.25rem 0.062rem
     color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
   width: 450px;
   height: 450px;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid var(--sdn-swatch-offBlack-b50);
+  border: var(--hairline) solid
+    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+}
+
+.sdn-panel-hari {
+  background-color: var(--sdn-swatch-offWhite);
+  overflow: hidden;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: auto;
+  justify-content: space-between;
+  box-shadow: 0px 2px 0.25rem 0.062rem
+    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  width: 450px;
+  height: 350px;
+  flex-shrink: 0;
+  border-radius: var(--sdn-corners-compact);
+  border: var(--hairline) solid
+    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-panel-modal {
@@ -2201,6 +2220,15 @@ body {
   min-width: 0;
 }
 
+.sdn-frame--2wwo {
+  background-color: var(--sdn-swatch-offWhite);
+  overflow-x: hidden;
+  overflow-y: auto;
+  gap: var(--sdn-gaps-compact);
+  min-height: 0;
+  padding: var(--sdn-paddings-compact);
+}
+
 .sdn-frame--33uo {
   align-self: unset;
   flex-direction: row;
@@ -2411,6 +2439,7 @@ body {
 
 .sdn-frame--jhsq {
   flex: unset;
+  background-color: var(--sdn-swatch-primary-b50);
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -2441,11 +2470,7 @@ body {
 
 .sdn-frame--meos {
   flex: unset;
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 50%,
-    transparent
-  );
+  background-color: var(--sdn-swatch-primary-b50);
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -3366,9 +3391,13 @@ body {
 .sdn-textarea--2upw {
   align-self: unset;
   flex-shrink: unset;
+  background-color: var(--sdn-swatch-offWhite);
+  color: var(--sdn-hc-on-offWhite);
   flex: 1 0 0;
   min-width: 0;
   font-size: var(--sdn-font-size-xsmall);
+  border: var(--hairline) solid
+    hsl(from var(--sdn-hc-on-offWhite) h s calc(l + (100 - l) * 0.25));
 }
 
 .sdn-button:focus-visible,

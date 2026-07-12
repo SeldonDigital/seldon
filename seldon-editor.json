@@ -6193,7 +6193,7 @@
           "id": "component-message-assistant",
           "children": [
             {
-              "id": "component-text-BnbGy2oc"
+              "id": "component-text-l4qaeWyD"
             }
           ]
         },
@@ -38041,7 +38041,7 @@
           {
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.white"
+              "value": "@swatch.offWhite"
             }
           }
         ],
@@ -38058,6 +38058,13 @@
             "type": "exact",
             "value": {
               "unit": "%",
+              "value": 0
+            }
+          },
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
               "value": 50
             }
           }
@@ -38068,7 +38075,26 @@
             "unit": "px",
             "value": 450
           }
-        }
+        },
+        "shadow": [
+          {
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xsmall"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.xxsmall"
+            },
+            "offsetY": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 2
+              }
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {}
@@ -38770,7 +38796,19 @@
         "scroll": {
           "type": "option",
           "value": "vertical"
-        }
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offWhite"
+            }
+          }
+        ]
       },
       "origin": "schema",
       "__editor": {
@@ -49524,7 +49562,7 @@
           {
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.white"
+              "value": "@swatch.offWhite"
             }
           }
         ],
@@ -49541,6 +49579,13 @@
             "type": "exact",
             "value": {
               "unit": "%",
+              "value": 0
+            }
+          },
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
               "value": 50
             }
           }
@@ -49548,7 +49593,26 @@
         "display": {
           "type": "option",
           "value": "show"
-        }
+        },
+        "shadow": [
+          {
+            "offsetY": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 2
+              }
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xsmall"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.xxsmall"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {}
@@ -50164,7 +50228,26 @@
         "align": {
           "type": "option",
           "value": "center"
-        }
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.primary"
+            },
+            "brightness": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 50
+              }
+            }
+          }
+        ]
       },
       "origin": "schema",
       "__editor": {
@@ -50276,7 +50359,7 @@
               "type": "theme.categorical",
               "value": "@swatch.primary"
             },
-            "opacity": {
+            "brightness": {
               "type": "exact",
               "value": {
                 "unit": "%",
@@ -50360,7 +50443,19 @@
         "scroll": {
           "type": "option",
           "value": "vertical"
-        }
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offWhite"
+            }
+          }
+        ]
       },
       "origin": "schema",
       "__editor": {
@@ -50447,7 +50542,15 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
-        }
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offWhite"
+            }
+          }
+        ]
       },
       "origin": "user"
     },
@@ -51550,77 +51653,6 @@
             "bottomRight": {
               "type": "option",
               "value": "rounded"
-            }
-          }
-        }
-      }
-    },
-    "component-text-BnbGy2oc": {
-      "id": "component-text-BnbGy2oc",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-WeLbwz0Q",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Assistant message"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "family": {
-            "type": "empty",
-            "value": null
-          },
-          "style": {
-            "type": "empty",
-            "value": null
-          },
-          "weight": {
-            "type": "empty",
-            "value": null
-          },
-          "lineHeight": {
-            "type": "empty",
-            "value": null
-          },
-          "textCase": {
-            "type": "empty",
-            "value": null
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Assistant message"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.body"
-            },
-            "size": {
-              "type": "theme.ordinal",
-              "value": "@fontSize.small"
             }
           }
         }
@@ -53093,6 +53125,77 @@
             "size": {
               "type": "theme.ordinal",
               "value": "@fontSize.xsmall"
+            }
+          }
+        }
+      }
+    },
+    "component-text-l4qaeWyD": {
+      "id": "component-text-l4qaeWyD",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-WeLbwz0Q",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Assistant message"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "family": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Assistant message"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.body"
+            },
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.small"
             }
           }
         }

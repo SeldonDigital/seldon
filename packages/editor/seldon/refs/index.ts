@@ -123,7 +123,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   dialogContent: {
     component: "Frame",
     nodeId: "component-panel-2wWoLkwm",
-    className: "sdn-frame sdn-frame--zjuk",
+    className: "sdn-frame sdn-frame--2wwo",
   },
   dialogTitle: {
     component: "TextTitle",
@@ -363,7 +363,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   turns: {
     component: "Frame",
     nodeId: "component-panel-VoRnpuW2",
-    className: "sdn-frame sdn-frame--zjuk",
+    className: "sdn-frame sdn-frame--2wwo",
   },
   valueIcon: {
     component: "Icon",

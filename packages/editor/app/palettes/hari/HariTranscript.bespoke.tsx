@@ -8,7 +8,6 @@ import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
 import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
 import { MessageStatus } from "@seldon/components/elements/MessageStatus"
-import { MessageThinking } from "@seldon/components/elements/MessageThinking"
 import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
 import { Frame } from "@seldon/components/frames/Frame"
@@ -16,6 +15,7 @@ import { Icon } from "@seldon/components/primitives/Icon"
 import { TextDescription } from "@seldon/components/primitives/TextDescription"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { HariMarkdown } from "./HariMarkdown.bespoke"
+import { HariThinking } from "./HariThinking.bespoke"
 
 interface HariTranscriptProps {
   turns: HariTurn[]
@@ -75,15 +75,7 @@ function statusBlock(turn: HariTurn): ReactNode {
 }
 
 function thinkingBlock(turn: HariTurn): ReactNode {
-  const textLabel = { children: "Thinking" }
-  const textDescription = { children: turn.thinking }
-  return (
-    <MessageThinking
-      key={`${turn.id}-thinking`}
-      textLabel={textLabel}
-      textDescription={textDescription}
-    />
-  )
+  return <HariThinking key={`${turn.id}-thinking`} text={turn.thinking ?? ""} />
 }
 
 function toolsBlock(turn: HariTurn): ReactNode {

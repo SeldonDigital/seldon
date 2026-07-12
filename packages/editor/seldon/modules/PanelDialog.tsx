@@ -537,7 +537,7 @@ const sdn: PanelDialogProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--zjuk",
+    className: "sdn-frame sdn-frame--2wwo",
     "data-seldon-ref": "dialogContent",
   },
   barButtons: {

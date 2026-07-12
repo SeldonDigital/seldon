@@ -33,6 +33,13 @@ const HARI_INITIAL_HEIGHT = 480
 /** Labels the tier the next turn resolves against, shown in the basis chip. */
 type SelectionBasis = "workspace" | "board" | "selection"
 
+/** Capital-case labels for the basis chip. */
+const BASIS_LABELS: Record<SelectionBasis, string> = {
+  workspace: "Workspace",
+  board: "Board",
+  selection: "Selection",
+}
+
 /**
  * Gate for the Hari panel. Mounts the panel only while the "ai-chat" dialog is
  * active so it recenters on each open and its floating-panel hooks run only when
@@ -147,9 +154,7 @@ function Hari({
   const thinkingAnchor = useRef<HTMLElement | null>(null)
 
   const isPending = status === "pending"
-  const placeholder = isPending
-    ? "Working..."
-    : "Describe a change and press Enter"
+  const placeholder = "Describe a change and press Enter"
   const controlsDisabled = config === null
   const modelValue = model ?? ""
   const thinkingValue = thinkingLevel ?? ""
@@ -157,11 +162,12 @@ function Hari({
   const thinkingButtonLabel = thinkingValue || "Default"
 
   const submit = useCallback(() => {
+    if (isPending) return
     const value = draft.trim()
     if (!value) return
     setDraft("")
     void send(value)
-  }, [draft, send])
+  }, [draft, send, isPending])
 
   const onDraftChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -252,7 +258,7 @@ function Hari({
   // hariSend, hariModel, hariThinking, hariReset, hariSelection) ride their sdn
   // defaults and stay on the rendered DOM as stable anchors.
   const barSlot = { onPointerDown: startDrag, style: styles.dragHandle }
-  const titleSlot = { children: "AI Chat" }
+  const titleSlot = { children: "Hari" }
   const closeSlot = { onClick: close }
   const transcriptSlot = { children: transcript }
   const inputSlot = {
@@ -260,7 +266,6 @@ function Hari({
     onChange: onDraftChange,
     onKeyDown: handleKeyDown,
     placeholder,
-    disabled: isPending,
     autoFocus: true,
   }
   const sendSlot = { onClick: submit, disabled: isPending }
@@ -277,7 +282,7 @@ function Hari({
   }
   const thinkingLabelSlot = { children: thinkingButtonLabel }
   const basisChipSlot = {}
-  const basisLabelSlot = { children: basis }
+  const basisLabelSlot = { children: BASIS_LABELS[basis] }
   const resetSlot = { onClick: onReset, "data-testid": "ai-chat-reset" }
   const resetLabelSlot = { children: "Clear" }
 
