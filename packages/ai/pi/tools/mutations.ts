@@ -4,11 +4,14 @@ import {
 } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
+import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import { normalizeActions } from "../../repair/normalize-actions"
 import { ALL_ACTION_TYPES } from "../../schema/action-schema"
+import type { ResolvedContext } from "../editor-context"
+import { type TargetSpec, resolveNodeTarget } from "./resolve-target"
 import type { PiTurnState } from "./turn-state"
 
 const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
@@ -51,8 +54,68 @@ function commit(state: PiTurnState, rawAction: WorkspaceAction): string {
  * model spends fewer round-trips and is never blocked on an action that lacks a
  * typed wrapper.
  */
-export function createMutationTools(state: PiTurnState): ToolDefinition[] {
+export function createMutationTools(
+  state: PiTurnState,
+  resolved: ResolvedContext,
+): ToolDefinition[] {
   const propertyValue = Type.Record(Type.String(), Type.Unknown())
+
+  const setProperties = defineTool({
+    name: "set_properties",
+    label: "Set Properties",
+    description:
+      'The primary way to change a node\'s properties. Give a target, a scope, and the properties to set. target is "selection" for the node the user has selected, or { "nodeId" } for a specific node from the context. scope "instance" overrides just that node; scope "all" edits the component source so every instance without its own override follows. Values may be written loosely: a bare string or number becomes an exact value, and an "@scope.key" string becomes a theme reference. Pass an optional "match" (a label or catalog id) so the tool can find the node if the target is not in the current scope.',
+    parameters: Type.Object({
+      target: Type.Union(
+        [Type.Literal("selection"), Type.Object({ nodeId: Type.String() })],
+        {
+          description:
+            '"selection" for the selected node, or { "nodeId": "..." } for a node id from the context.',
+        },
+      ),
+      scope: Type.Optional(
+        Type.Union([Type.Literal("instance"), Type.Literal("all")], {
+          description:
+            'Default "instance". Use "all" only for an explicit "all/every" request; it edits the component source.',
+        }),
+      ),
+      properties: propertyValue,
+      match: Type.Optional(
+        Type.String({
+          description:
+            "A label or catalog id to locate the node when the target is not in scope.",
+        }),
+      ),
+    }),
+    execute: async (_id, params) => {
+      const resolution = resolveNodeTarget(
+        state.workspace,
+        resolved.resolvedKey,
+        resolved.selectedNodeId,
+        resolved.selectedBoardId,
+        params.target as TargetSpec,
+        params.match,
+      )
+      if (resolution.kind === "message") return textResult(resolution.text)
+
+      const scope = params.scope ?? "instance"
+      const writeNodeId =
+        scope === "all"
+          ? getSourceNodeId(state.workspace, resolution.nodeId)
+          : resolution.nodeId
+
+      const outcome = commit(state, {
+        type: "set_node_properties",
+        payload: { nodeId: writeNodeId, properties: params.properties },
+      } as WorkspaceAction)
+
+      const scopeNote =
+        scope === "all"
+          ? `Scope all: wrote the component source ${writeNodeId}; every instance without its own override for these properties now follows.`
+          : `Scope instance: wrote ${writeNodeId} as a local override.`
+      return textResult(`${outcome}\n${scopeNote}`)
+    },
+  })
 
   const setNodeProperties = defineTool({
     name: "set_node_properties",
@@ -249,6 +312,7 @@ export function createMutationTools(state: PiTurnState): ToolDefinition[] {
   })
 
   return [
+    setProperties,
     setNodeProperties,
     setComponentProperties,
     addComponent,

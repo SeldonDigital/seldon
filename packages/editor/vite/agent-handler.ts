@@ -21,6 +21,7 @@ export type AgentRequestBody = {
   activeBoardKey?: BoardKey
   selectedNodeId?: string
   selectedNodeRootId?: string
+  selectedBoardId?: BoardKey
   model?: string
   thinkingLevel?: ThinkingLevelOption
 }
@@ -53,6 +54,7 @@ export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
     activeBoardKey: body.activeBoardKey,
     selectedNodeId: body.selectedNodeId,
     selectedNodeRootId: body.selectedNodeRootId,
+    selectedBoardId: body.selectedBoardId,
     model: body.model,
     thinkingLevel: body.thinkingLevel,
   })

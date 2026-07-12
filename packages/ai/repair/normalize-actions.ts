@@ -1,6 +1,10 @@
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import { isTaggedValue, propertyShape } from "../prompt/property-taxonomy"
+import {
+  isTaggedValue,
+  propertyShape,
+  themeRefTag,
+} from "../prompt/property-taxonomy"
 
 /** One deterministic shape fix applied to a model action before validation. */
 export interface ActionRepair {
@@ -61,6 +65,54 @@ function repairLayeredValue(
 }
 
 /**
+ * Wraps a loose value written to an atomic key into its tagged shape. Models
+ * often emit a bare literal (`"WORKS"`, `12`) or a bare theme reference
+ * (`"@swatch.primary"`) instead of the `{ type, value }` object the reducer
+ * expects. An `@` reference becomes a theme value tagged by its scope, and any
+ * other primitive becomes an exact value. Already-tagged values and non-scalar
+ * shapes pass through untouched for core validation to handle.
+ */
+function coerceAtomicValue(
+  key: string,
+  value: unknown,
+  actionType: string,
+  repairs: ActionRepair[],
+): unknown {
+  if (isTaggedValue(value)) return value
+
+  if (typeof value === "string") {
+    if (value.startsWith("@")) {
+      const tag = themeRefTag(key)
+      if (tag) {
+        repairs.push({
+          actionType,
+          propertyKey: key,
+          reason: `wrapped "${value}" into a ${tag} theme reference`,
+        })
+        return { type: tag, value }
+      }
+    }
+    repairs.push({
+      actionType,
+      propertyKey: key,
+      reason: "wrapped a bare string into an exact value",
+    })
+    return { type: "exact", value }
+  }
+
+  if (typeof value === "number" || typeof value === "boolean") {
+    repairs.push({
+      actionType,
+      propertyKey: key,
+      reason: `wrapped a bare ${typeof value} into an exact value`,
+    })
+    return { type: "exact", value }
+  }
+
+  return value
+}
+
+/**
  * Deterministically repairs common property-shape mistakes in model actions
  * before the reducer validates them. Conservative by design: it only rewrites
  * unambiguous cases and leaves everything else for core validation to reject
@@ -83,13 +135,15 @@ export function normalizeActions(
     let changed = false
     const nextProperties: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(properties)) {
-      if (propertyShape(key) === "layered") {
-        const next = repairLayeredValue(key, value, action.type, repairs)
-        nextProperties[key] = next
-        if (next !== value) changed = true
-      } else {
-        nextProperties[key] = value
+      const shape = propertyShape(key)
+      let next = value
+      if (shape === "layered") {
+        next = repairLayeredValue(key, value, action.type, repairs)
+      } else if (shape === "atomic") {
+        next = coerceAtomicValue(key, value, action.type, repairs)
       }
+      nextProperties[key] = next
+      if (next !== value) changed = true
     }
 
     if (!changed) return action

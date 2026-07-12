@@ -1,5 +1,6 @@
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/components/get-node-parent-id"
+import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getPropertyStatus } from "@seldon/core/workspace/helpers/properties/property-status"
 import { getEffectiveProperties } from "@seldon/core/workspace/helpers/properties/shared"
@@ -55,6 +56,13 @@ export function selectionSection(
 
   const parentId = getImmediateParentIdInWorkspace(workspace, selectedNodeId)
   lines.push(`Parent: ${parentId ?? "(root)"}`)
+
+  const sourceId = getSourceNodeId(workspace, selectedNodeId)
+  if (sourceId !== selectedNodeId) {
+    lines.push(
+      `Source: ${sourceId} (set_properties with scope "all" writes here so every instance follows; scope "instance" overrides only this node)`,
+    )
+  }
 
   if (board) {
     const childIds = getChildrenIds(board, selectedNodeId)

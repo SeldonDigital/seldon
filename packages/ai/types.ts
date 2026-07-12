@@ -24,6 +24,8 @@ export interface ChatToActionsInput {
   selectedNodeId?: string
   /** Variant-root column of the selected node, for disambiguating shared ids. */
   selectedNodeRootId?: string
+  /** Board selected on the canvas when no node is selected, for sentinel disambiguation. */
+  selectedBoardId?: BoardKey
   /** Model id override. Defaults to `SELDON_AI_MODEL` env or `qwen3`. */
   model?: string
   /** Thinking level for the model. */

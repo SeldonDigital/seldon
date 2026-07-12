@@ -66,7 +66,7 @@ export async function createSeldonSession(
   const resolved = resolveContext(input)
   const state = createTurnState(input.workspace)
 
-  const mutationTools = createMutationTools(state)
+  const mutationTools = createMutationTools(state, resolved)
   const contextTools = createContextTools(resolved)
   const customTools = [...mutationTools, ...contextTools]
   const toolNames = customTools.map((tool) => tool.name)

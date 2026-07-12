@@ -17,6 +17,7 @@ export type AgentChatRequest = {
   activeBoardKey?: BoardKey
   selectedNodeId?: string
   selectedNodeRootId?: string
+  selectedBoardId?: BoardKey
   model?: string
   thinkingLevel?: ThinkingLevelOption
 }

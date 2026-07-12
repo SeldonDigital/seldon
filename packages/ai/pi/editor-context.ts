@@ -13,6 +13,7 @@ export interface EditorContextInput {
   activeBoardKey?: BoardKey
   selectedNodeId?: string
   selectedNodeRootId?: string
+  selectedBoardId?: BoardKey
 }
 
 /** The active board resolved from the request, plus the passthrough selection. */
@@ -22,6 +23,7 @@ export interface ResolvedContext {
   activeBoard?: Board
   selectedNodeId?: string
   selectedNodeRootId?: string
+  selectedBoardId?: BoardKey
 }
 
 /**
@@ -30,8 +32,13 @@ export interface ResolvedContext {
  * board, so the agent is always scoped to one board on screen.
  */
 export function resolveContext(input: EditorContextInput): ResolvedContext {
-  const { workspace, activeBoardKey, selectedNodeId, selectedNodeRootId } =
-    input
+  const {
+    workspace,
+    activeBoardKey,
+    selectedNodeId,
+    selectedNodeRootId,
+    selectedBoardId,
+  } = input
   const componentBoards = Object.entries(workspace.boards).filter(
     ([, board]) => board.type === "component",
   )
@@ -47,6 +54,7 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
     activeBoard,
     selectedNodeId,
     selectedNodeRootId,
+    selectedBoardId,
   }
 }
 
