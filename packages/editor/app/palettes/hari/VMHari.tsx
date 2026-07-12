@@ -2,16 +2,14 @@
 
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
 import type { ThinkingLevelOption } from "@seldon/ai"
-import {
-  CSSProperties,
-  ChangeEvent,
-  KeyboardEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react"
+import { CSSProperties, KeyboardEvent, useCallback, useEffect, useMemo } from "react"
 import { HariStatus, useHari } from "@lib/hooks/use-ai-chat"
+import { MenuEntry, VMMenu } from "@lib/menus"
 import { VMPanelPalette } from "@app/palettes/VMPanelPalette"
+import { Frame } from "@seldon/components/frames/Frame"
+import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
+import { Text } from "@seldon/components/primitives/Text"
+import { HariComposer } from "./HariComposer.bespoke"
 
 const HARI_INITIAL_WIDTH = 420
 const HARI_INITIAL_HEIGHT = 260
@@ -68,8 +66,8 @@ interface HariProps {
  * View-model for the Hari panel. Warms the agent on open, exposes the session
  * config controls, and submits the textarea on Enter, then feeds its title and
  * content to the shared `VMPanelPalette`. The panel stays non-modal so the
- * canvas remains usable. The controls are plain selects for now, to be reskinned
- * with Seldon components later.
+ * canvas remains usable. The model and thinking controls are `ButtonMenu`
+ * triggers backed by the shared floating `VMMenu`.
  */
 function Hari({
   onClose,
@@ -94,39 +92,33 @@ function Hari({
   const controlsDisabled = config === null
   const modelValue = model ?? ""
   const thinkingValue = thinkingLevel ?? ""
+  const modelButtonLabel = modelValue || "Default"
+  const thinkingButtonLabel = thinkingValue || "Default"
 
-  const modelOptions = useMemo(
+  const modelItems = useMemo<MenuEntry[]>(
     () =>
-      (config?.models ?? []).map((value) => (
-        <option key={value} value={value}>
-          {value}
-        </option>
-      )),
-    [config],
+      (config?.models ?? []).map((value) => ({
+        id: value,
+        label: value,
+        onSelect: () => setModel(value),
+        selected: value === modelValue,
+        activeMarker: "bullet",
+        testId: `ai-chat-model-${value}`,
+      })),
+    [config, modelValue, setModel],
   )
 
-  const thinkingOptions = useMemo(
+  const thinkingItems = useMemo<MenuEntry[]>(
     () =>
-      (config?.thinkingLevels ?? []).map((value) => (
-        <option key={value} value={value}>
-          {value}
-        </option>
-      )),
-    [config],
-  )
-
-  const handleModelChange = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      setModel(event.target.value)
-    },
-    [setModel],
-  )
-
-  const handleThinkingChange = useCallback(
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      setThinkingLevel(event.target.value as ThinkingLevelOption)
-    },
-    [setThinkingLevel],
+      (config?.thinkingLevels ?? []).map((value) => ({
+        id: value,
+        label: value,
+        onSelect: () => setThinkingLevel(value as ThinkingLevelOption),
+        selected: value === thinkingValue,
+        activeMarker: "bullet",
+        testId: `ai-chat-thinking-${value}`,
+      })),
+    [config, thinkingValue, setThinkingLevel],
   )
 
   const handleKeyDown = useCallback(
@@ -148,36 +140,50 @@ function Hari({
       initialHeight={HARI_INITIAL_HEIGHT}
       onClose={onClose}
     >
-      <div style={styles.controls}>
-        <label style={styles.control}>
-          <span style={styles.controlLabel}>Model</span>
-          <select
-            value={modelValue}
-            onChange={handleModelChange}
-            disabled={controlsDisabled}
-            style={styles.select}
-          >
-            {modelOptions}
-          </select>
-        </label>
-        <label style={styles.control}>
-          <span style={styles.controlLabel}>Thinking</span>
-          <select
-            value={thinkingValue}
-            onChange={handleThinkingChange}
-            disabled={controlsDisabled}
-            style={styles.select}
-          >
-            {thinkingOptions}
-          </select>
-        </label>
-      </div>
-      <textarea
-        autoFocus
-        onKeyDown={handleKeyDown}
+      <Frame style={styles.controls}>
+        <Frame style={styles.control}>
+          <Text htmlElement="label" style={styles.controlLabel}>
+            Model
+          </Text>
+          <VMMenu
+            items={modelItems}
+            renderTrigger={({ ref, triggerProps }) => (
+              <ButtonMenu
+                ref={ref}
+                type="button"
+                {...triggerProps}
+                disabled={controlsDisabled}
+                style={styles.trigger}
+                data-testid="ai-chat-model"
+                textLabel={{ children: modelButtonLabel }}
+              />
+            )}
+          />
+        </Frame>
+        <Frame style={styles.control}>
+          <Text htmlElement="label" style={styles.controlLabel}>
+            Thinking
+          </Text>
+          <VMMenu
+            items={thinkingItems}
+            renderTrigger={({ ref, triggerProps }) => (
+              <ButtonMenu
+                ref={ref}
+                type="button"
+                {...triggerProps}
+                disabled={controlsDisabled}
+                style={styles.trigger}
+                data-testid="ai-chat-thinking"
+                textLabel={{ children: thinkingButtonLabel }}
+              />
+            )}
+          />
+        </Frame>
+      </Frame>
+      <HariComposer
         placeholder={placeholder}
         disabled={isPending}
-        style={styles.textarea}
+        onKeyDown={handleKeyDown}
       />
     </VMPanelPalette>
   )
@@ -202,24 +208,7 @@ const styles: Record<string, CSSProperties> = {
     letterSpacing: 0.4,
     color: "var(--sdn-swatch-gray)",
   },
-  select: {
+  trigger: {
     width: "100%",
-    boxSizing: "border-box",
-    fontFamily: "inherit",
-    fontSize: 12,
-  },
-  textarea: {
-    flex: 1,
-    minHeight: 0,
-    width: "100%",
-    boxSizing: "border-box",
-    resize: "none",
-    border: "none",
-    outline: "none",
-    padding: 0,
-    color: "var(--sdn-swatch-offBlack)",
-    background: "transparent",
-    fontFamily: "inherit",
-    fontSize: 14,
   },
 }
