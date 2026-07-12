@@ -4,7 +4,7 @@ import {
   runAgentChat,
   warmAgent,
 } from "@lib/ai/run-agent-chat"
-import type { ThinkingLevelOption } from "@seldon/ai"
+import type { AgentToolCall, ThinkingLevelOption } from "@seldon/ai"
 import { useCallback } from "react"
 import { create } from "zustand"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
@@ -12,9 +12,10 @@ import { useDispatch } from "@lib/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace } from "@lib/workspace/hooks/use-history"
 import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
 import {
+  type RejectedAction,
   applyActionsWithReport,
+  describeChanges,
   findActiveBoardKey,
-  formatOutcome,
 } from "./ai-chat/apply-report"
 import { isLoggingEnabled, logAiTurn, logWarm } from "./ai-chat/log-turn"
 import { usePanel } from "./use-panel"
@@ -28,8 +29,28 @@ export interface AiChatMessage {
 
 export type HariStatus = "idle" | "pending" | "error"
 
+/** Per-turn lifecycle, used to pick the transcript block for the last turn. */
+export type TurnStatus = "pending" | "done" | "error"
+
+/**
+ * One chat turn's structured record. The transcript renders each populated
+ * field as its own message block: the prompt, the model's reasoning, the tools
+ * it called, the applied changes, the model reply, and any rejection or error.
+ */
+export interface HariTurn {
+  id: string
+  prompt: string
+  status: TurnStatus
+  thinking?: string
+  toolCalls?: AgentToolCall[]
+  reply?: string
+  changes?: string[]
+  rejected?: RejectedAction[]
+  error?: string
+}
+
 interface AiChatState {
-  messages: AiChatMessage[]
+  turns: HariTurn[]
   status: HariStatus
   error: string | null
   /** Session-config choices from the agent, loaded when the panel opens. */
@@ -37,7 +58,8 @@ interface AiChatState {
   /** Selected model and thinking level for the next turn. */
   model?: string
   thinkingLevel?: ThinkingLevelOption
-  addMessage: (message: AiChatMessage) => void
+  startTurn: (prompt: string) => string
+  updateTurn: (id: string, patch: Partial<HariTurn>) => void
   setStatus: (status: HariStatus) => void
   setError: (error: string | null) => void
   setConfig: (config: AgentConfig) => void
@@ -46,13 +68,28 @@ interface AiChatState {
   reset: () => void
 }
 
+let turnSequence = 0
+
 const useStore = create<AiChatState>((set) => ({
-  messages: [],
+  turns: [],
   status: "idle",
   error: null,
   config: null,
-  addMessage: (message) =>
-    set((state) => ({ messages: [...state.messages, message] })),
+  startTurn: (prompt) => {
+    const id = `turn-${(turnSequence += 1)}`
+    set((state) => ({
+      turns: [...state.turns, { id, prompt, status: "pending" }],
+      status: "pending",
+      error: null,
+    }))
+    return id
+  },
+  updateTurn: (id, patch) =>
+    set((state) => ({
+      turns: state.turns.map((turn) =>
+        turn.id === id ? { ...turn, ...patch } : turn,
+      ),
+    })),
   setStatus: (status) => set({ status }),
   setError: (error) => set({ error }),
   setConfig: (config) =>
@@ -63,8 +100,18 @@ const useStore = create<AiChatState>((set) => ({
     })),
   setModel: (model) => set({ model }),
   setThinkingLevel: (thinkingLevel) => set({ thinkingLevel }),
-  reset: () => set({ messages: [], status: "idle", error: null }),
+  reset: () => set({ turns: [], status: "idle", error: null }),
 }))
+
+/** Flattens completed turns into the role/content history the agent expects. */
+function buildHistory(turns: HariTurn[]): AiChatMessage[] {
+  const history: AiChatMessage[] = []
+  for (const turn of turns) {
+    history.push({ role: "user", content: turn.prompt })
+    if (turn.reply) history.push({ role: "assistant", content: turn.reply })
+  }
+  return history
+}
 
 /**
  * Coalesces concurrent warm-up requests so overlapping callers share one
@@ -85,7 +132,7 @@ export function useHari() {
   const dispatch = useDispatch()
   const { activeBoard } = useActiveBoard()
 
-  const messages = useStore((state) => state.messages)
+  const turns = useStore((state) => state.turns)
   const status = useStore((state) => state.status)
   const error = useStore((state) => state.error)
 
@@ -95,11 +142,9 @@ export function useHari() {
       if (!message) return
 
       const store = useStore.getState()
-      const history = store.messages
+      const history = buildHistory(store.turns)
       const { model, thinkingLevel } = store
-      store.addMessage({ role: "user", content: message })
-      store.setStatus("pending")
-      store.setError(null)
+      const turnId = store.startTurn(message)
 
       try {
         const current = getCurrentWorkspace()
@@ -129,24 +174,23 @@ export function useHari() {
           })
         }
 
-        useStore.getState().addMessage({
-          role: "assistant",
-          content: formatOutcome(reply, outcome),
+        const failed =
+          outcome.rejected.length > 0 && outcome.applied.length === 0
+        useStore.getState().updateTurn(turnId, {
+          thinking: debug.thinking,
+          toolCalls: debug.toolCalls,
+          reply,
+          changes: describeChanges(outcome.workspace, outcome),
+          rejected: outcome.rejected.length > 0 ? outcome.rejected : undefined,
+          status: failed ? "error" : "done",
         })
-        useStore
-          .getState()
-          .setStatus(
-            outcome.rejected.length > 0 && outcome.applied.length === 0
-              ? "error"
-              : "idle",
-          )
+        useStore.getState().setStatus(failed ? "error" : "idle")
       } catch (caught) {
         const messageText =
           caught instanceof Error ? caught.message : "Agent request failed."
-        useStore.getState().addMessage({
-          role: "assistant",
-          content: `Error: ${messageText}`,
-        })
+        useStore
+          .getState()
+          .updateTurn(turnId, { error: messageText, status: "error" })
         useStore.getState().setStatus("error")
         useStore.getState().setError(messageText)
       }
@@ -184,7 +228,7 @@ export function useHari() {
     isOpen: activePanel === "ai-chat",
     open: () => openPanel("ai-chat"),
     close: closePanel,
-    messages,
+    turns,
     status,
     error,
     send,

@@ -32,6 +32,14 @@ export interface ChatToActionsInput {
   thinkingLevel?: ThinkingLevelOption
 }
 
+/** One tool the model invoked during a turn, with its final status. */
+export interface AgentToolCall {
+  /** Tool name, such as `set_properties` or `find_nodes`. */
+  name: string
+  /** False when the tool reported an error. */
+  ok: boolean
+}
+
 /** Context and model output captured for debugging. Logged by the editor console. */
 export interface AgentDebug {
   /** The compact context sent to the model. */
@@ -40,6 +48,10 @@ export interface AgentDebug {
   rawResponse: string
   /** Deterministic shape fixes applied to the actions before returning. */
   repairs: ActionRepair[]
+  /** Reasoning text the model streamed, when thinking is enabled. */
+  thinking?: string
+  /** Tool calls the model made during the turn, in order. */
+  toolCalls?: AgentToolCall[]
   /** Timing and token metrics for the turn. */
   metrics?: AgentMetrics
 }

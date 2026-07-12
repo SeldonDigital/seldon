@@ -49,6 +49,12 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-phone"
     | "seldon-plus"
     | "seldon-minus"
+    | "material-clear"
+    | "material-arrowUpward"
+    | "material-checkCircle"
+    | "seldon-componentDefault"
+    | "material-error"
+    | "material-robot"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -120,7 +126,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-iconInput"
     | "seldon-inputType"
     | "seldon-retry"
-    | "seldon-componentDefault"
     | "seldon-componentVariant"
     | "seldon-icon"
     | "seldon-input"
@@ -262,7 +267,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-cancel"
     | "material-circle"
     | "material-cleaningServices"
-    | "material-clear"
     | "material-cloudDownload"
     | "material-cloudUpload"
     | "material-codeXml"
@@ -347,7 +351,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-arrowForward"
     | "material-arrowLeft"
     | "material-arrowRight"
-    | "material-arrowUpward"
     | "material-backspace"
     | "material-brightnessAuto"
     | "material-brightnessHigh"
@@ -390,14 +393,12 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-borderColor"
     | "material-checkBox"
     | "material-checkBoxOutlineBlank"
-    | "material-checkCircle"
     | "material-checkCircleOutline"
     | "material-construction"
     | "material-contrast"
     | "material-doNotDisturbOn"
     | "material-doneAll"
     | "material-dryCleaning"
-    | "material-error"
     | "material-expandLess"
     | "material-height"
     | "material-info"
@@ -415,7 +416,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-powerOff"
     | "material-print"
     | "material-radioButtonUnchecked"
-    | "material-robot"
     | "material-signalWifiOff"
     | "material-unfoldLess"
     | "material-visibility"
@@ -578,6 +578,12 @@ const iconMap = {
   "material-phone": Icons.IconMaterialPhone,
   "seldon-plus": Icons.IconSeldonPlus,
   "seldon-minus": Icons.IconSeldonMinus,
+  "material-clear": Icons.IconMaterialClear,
+  "material-arrowUpward": Icons.IconMaterialArrowUpward,
+  "material-checkCircle": Icons.IconMaterialCheckCircle,
+  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
+  "material-error": Icons.IconMaterialError,
+  "material-robot": Icons.IconMaterialRobot,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -649,7 +655,6 @@ const iconMap = {
   "seldon-iconInput": Icons.IconSeldonIconInput,
   "seldon-inputType": Icons.IconSeldonInputType,
   "seldon-retry": Icons.IconSeldonRetry,
-  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
   "seldon-componentVariant": Icons.IconSeldonComponentVariant,
   "seldon-icon": Icons.IconSeldonIcon,
   "seldon-input": Icons.IconSeldonInput,
@@ -793,7 +798,6 @@ const iconMap = {
   "material-cancel": Icons.IconMaterialCancel,
   "material-circle": Icons.IconMaterialCircle,
   "material-cleaningServices": Icons.IconMaterialCleaningServices,
-  "material-clear": Icons.IconMaterialClear,
   "material-cloudDownload": Icons.IconMaterialCloudDownload,
   "material-cloudUpload": Icons.IconMaterialCloudUpload,
   "material-codeXml": Icons.IconMaterialCodeXml,
@@ -878,7 +882,6 @@ const iconMap = {
   "material-arrowForward": Icons.IconMaterialArrowForward,
   "material-arrowLeft": Icons.IconMaterialArrowLeft,
   "material-arrowRight": Icons.IconMaterialArrowRight,
-  "material-arrowUpward": Icons.IconMaterialArrowUpward,
   "material-backspace": Icons.IconMaterialBackspace,
   "material-brightnessAuto": Icons.IconMaterialBrightnessAuto,
   "material-brightnessHigh": Icons.IconMaterialBrightnessHigh,
@@ -921,14 +924,12 @@ const iconMap = {
   "material-borderColor": Icons.IconMaterialBorderColor,
   "material-checkBox": Icons.IconMaterialCheckBox,
   "material-checkBoxOutlineBlank": Icons.IconMaterialCheckBoxOutlineBlank,
-  "material-checkCircle": Icons.IconMaterialCheckCircle,
   "material-checkCircleOutline": Icons.IconMaterialCheckCircleOutline,
   "material-construction": Icons.IconMaterialConstruction,
   "material-contrast": Icons.IconMaterialContrast,
   "material-doNotDisturbOn": Icons.IconMaterialDoNotDisturbOn,
   "material-doneAll": Icons.IconMaterialDoneAll,
   "material-dryCleaning": Icons.IconMaterialDryCleaning,
-  "material-error": Icons.IconMaterialError,
   "material-expandLess": Icons.IconMaterialExpandLess,
   "material-height": Icons.IconMaterialHeight,
   "material-info": Icons.IconMaterialInfo,
@@ -946,7 +947,6 @@ const iconMap = {
   "material-powerOff": Icons.IconMaterialPowerOff,
   "material-print": Icons.IconMaterialPrint,
   "material-radioButtonUnchecked": Icons.IconMaterialRadioButtonUnchecked,
-  "material-robot": Icons.IconMaterialRobot,
   "material-signalWifiOff": Icons.IconMaterialSignalWifiOff,
   "material-unfoldLess": Icons.IconMaterialUnfoldLess,
   "material-visibility": Icons.IconMaterialVisibility,

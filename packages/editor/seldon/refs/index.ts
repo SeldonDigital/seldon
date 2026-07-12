@@ -60,6 +60,7 @@ export type SeldonRef =
   | "sectionToggleIcon"
   | "toggleIcon"
   | "toggleValue"
+  | "turns"
   | "valueIcon"
   | "valueLabel"
   | "valueOptionsMenu"
@@ -239,7 +240,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertiesContainer: {
     component: "Frame",
     nodeId: "component-sidebar-evMwxVOP",
-    className: "sdn-frame sdn-frame--enpy",
+    className: "sdn-frame sdn-frame--evmw",
   },
   propertyActions: {
     component: "ButtonIconic",
@@ -310,6 +311,11 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "ToggleSwitch",
     nodeId: "component-toggleSwitch-pelhFQXa",
     className: "sdn-toggle-switch sdn-toggle-switch--pelh",
+  },
+  turns: {
+    component: "Frame",
+    nodeId: "component-panel-VoRnpuW2",
+    className: "sdn-frame sdn-frame--zjuk",
   },
   valueIcon: {
     component: "Icon",

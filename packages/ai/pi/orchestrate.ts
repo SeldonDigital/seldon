@@ -1,5 +1,6 @@
 import type {
   AgentMetrics,
+  AgentToolCall,
   ChatToActionsInput,
   ChatToActionsResult,
 } from "../types"
@@ -31,8 +32,22 @@ export async function chatToActionsPi(
   const context = buildTurnContext(resolved)
 
   let calls = 0
+  let thinking = ""
+  const toolCalls: AgentToolCall[] = []
   const unsubscribe = session.subscribe((event) => {
-    if (event.type === "turn_start") calls += 1
+    if (event.type === "turn_start") {
+      calls += 1
+    } else if (
+      event.type === "message_update" &&
+      event.assistantMessageEvent.type === "thinking_delta"
+    ) {
+      thinking += event.assistantMessageEvent.delta
+    } else if (event.type === "tool_execution_start") {
+      toolCalls.push({ name: event.toolName, ok: true })
+    } else if (event.type === "tool_execution_end") {
+      const last = toolCalls[toolCalls.length - 1]
+      if (last) last.ok = !event.isError
+    }
   })
 
   const prompt = `${historyBlock(input.history)}Current editor context:\n${context}\n\nUser request: ${input.message}`
@@ -66,6 +81,8 @@ export async function chatToActionsPi(
       context,
       rawResponse: reply,
       repairs: state.repairs,
+      thinking: thinking.trim() ? thinking.trim() : undefined,
+      toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
       metrics,
     },
   }

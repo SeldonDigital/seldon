@@ -494,10 +494,10 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle2: {
-    className: "sdn-text-title sdn-text-title--dr0a",
+    className: "sdn-text-title sdn-text-title--matt",
   },
   textSubtitle3: {
-    className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
+    className: "sdn-text-subtitle sdn-text-subtitle--b0xy",
   },
   itemCatalog3: {
     className: "sdn-item-catalog sdn-item-catalog--ieif",
@@ -511,10 +511,10 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle3: {
-    className: "sdn-text-title sdn-text-title--dr0a",
+    className: "sdn-text-title sdn-text-title--matt",
   },
   textSubtitle4: {
-    className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
+    className: "sdn-text-subtitle sdn-text-subtitle--b0xy",
   },
   itemCatalog4: {
     className: "sdn-item-catalog sdn-item-catalog--ieif",
@@ -528,9 +528,9 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle4: {
-    className: "sdn-text-title sdn-text-title--dr0a",
+    className: "sdn-text-title sdn-text-title--matt",
   },
   textSubtitle5: {
-    className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
+    className: "sdn-text-subtitle sdn-text-subtitle--b0xy",
   },
 }

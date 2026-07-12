@@ -75,6 +75,71 @@ export function applyActionsWithReport(
   return { workspace, applied, ineffective, rejected, appliedActions }
 }
 
+/** Resolves the primary target id from an action payload. */
+function targetIdOf(payload: unknown): string | undefined {
+  if (!payload || typeof payload !== "object") return undefined
+  const bag = payload as Record<string, unknown>
+  for (const key of ["nodeId", "instanceId", "variantId", "boardKey"]) {
+    if (typeof bag[key] === "string") return bag[key] as string
+  }
+  return undefined
+}
+
+/** A short label for a target id, preferring the node or board label. */
+function labelFor(workspace: Workspace, id: string | undefined): string {
+  if (!id) return "workspace"
+  const node = workspace.nodes?.[id]
+  if (node?.label) return node.label
+  const board = workspace.boards?.[id]
+  if (board?.label) return board.label
+  return id
+}
+
+/** Compact serialization of a tagged property value, e.g. `@swatch.primary`. */
+function summarizeValue(value: unknown): string {
+  if (value && typeof value === "object" && "value" in value) {
+    const inner = (value as { value?: unknown }).value
+    if (typeof inner === "string" || typeof inner === "number") {
+      return String(inner)
+    }
+    return JSON.stringify(inner)
+  }
+  return typeof value === "string" ? value : JSON.stringify(value)
+}
+
+/** The property key/value pairs an action sets, if any. */
+function changedProperties(action: WorkspaceAction): [string, unknown][] {
+  const payload = (action as { payload?: unknown }).payload
+  if (!payload || typeof payload !== "object") return []
+  const properties = (payload as Record<string, unknown>).properties
+  if (!properties || typeof properties !== "object") return []
+  return Object.entries(properties as Record<string, unknown>)
+}
+
+/**
+ * Builds one human-readable row per applied change for the outcome block. Each
+ * row names the target and the property it set, falling back to the action type
+ * when the action carries no property map.
+ */
+export function describeChanges(
+  workspace: Workspace,
+  report: ApplyReport,
+): string[] {
+  const rows: string[] = []
+  for (const action of report.appliedActions) {
+    const label = labelFor(workspace, targetIdOf(action.payload))
+    const props = changedProperties(action)
+    if (props.length === 0) {
+      rows.push(`${label}: ${action.type}`)
+      continue
+    }
+    for (const [key, value] of props) {
+      rows.push(`${label} ${key}: ${summarizeValue(value)}`)
+    }
+  }
+  return rows
+}
+
 /** Builds the assistant transcript line from the model reply and apply report. */
 export function formatOutcome(reply: string, report: ApplyReport): string {
   const parts: string[] = []

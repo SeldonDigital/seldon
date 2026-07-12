@@ -1,29 +1,38 @@
 "use client"
 
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
-import { MenuEntry, VMMenu } from "@lib/menus"
+import { type MenuEntry, VMMenu } from "@lib/menus"
+import { WindowOverlay } from "@lib/overlays/WindowOverlay"
 import type { ThinkingLevelOption } from "@seldon/ai"
 import {
-  CSSProperties,
-  KeyboardEvent,
+  type CSSProperties,
+  type ChangeEvent,
+  type KeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
+  type PointerEvent,
+  type ReactNode,
   useCallback,
   useEffect,
   useMemo,
+  useRef,
+  useState,
 } from "react"
-import { HariStatus, useHari } from "@lib/hooks/use-ai-chat"
-import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
-import { Frame } from "@seldon/components/frames/Frame"
-import { Text } from "@seldon/components/primitives/Text"
-import { VMPanelPalette } from "@app/palettes/VMPanelPalette"
-import { HariComposer } from "./HariComposer.bespoke"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import {
+  type HariStatus,
+  type HariTurn,
+  useHari,
+} from "@lib/hooks/use-ai-chat"
+import { PanelHari } from "@seldon/components/modules/PanelHari"
+import { HariTranscript } from "./HariTranscript.bespoke"
 
 const HARI_INITIAL_WIDTH = 420
-const HARI_INITIAL_HEIGHT = 260
+const HARI_INITIAL_HEIGHT = 480
 
 /**
- * Gate for the Hari panel. Mounts the panel only while the "ai-chat" dialog
- * is active so it recenters on each open and its floating-panel hooks run only
- * when open, matching the other dialog view-models.
+ * Gate for the Hari panel. Mounts the panel only while the "ai-chat" dialog is
+ * active so it recenters on each open and its floating-panel hooks run only when
+ * open, matching the other dialog view-models.
  */
 export function VMHari() {
   const {
@@ -32,6 +41,7 @@ export function VMHari() {
     send,
     status,
     warm,
+    turns,
     config,
     model,
     thinkingLevel,
@@ -43,10 +53,11 @@ export function VMHari() {
 
   return (
     <Hari
-      onClose={close}
+      close={close}
       send={send}
       status={status}
       warm={warm}
+      turns={turns}
       config={config}
       model={model}
       thinkingLevel={thinkingLevel}
@@ -57,10 +68,11 @@ export function VMHari() {
 }
 
 interface HariProps {
-  onClose: () => void
+  close: () => void
   send: (message: string) => Promise<void>
   status: HariStatus
   warm: () => Promise<void>
+  turns: HariTurn[]
   config: AgentConfig | null
   model?: string
   thinkingLevel?: ThinkingLevelOption
@@ -69,17 +81,18 @@ interface HariProps {
 }
 
 /**
- * View-model for the Hari panel. Warms the agent on open, exposes the session
- * config controls, and submits the textarea on Enter, then feeds its title and
- * content to the shared `VMPanelPalette`. The panel stays non-modal so the
- * canvas remains usable. The model and thinking controls are `ButtonMenu`
- * triggers backed by the shared floating `VMMenu`.
+ * View-model for the Hari panel. Renders the generated `PanelHari` shell inside
+ * a non-modal floating window: the title bar drags the window, the close button
+ * dismisses it, the transcript fills the `turns` frame, and the composer submits
+ * on Enter or the send button. The model and thinking triggers open the shared
+ * floating `VMMenu` anchored to the clicked button.
  */
 function Hari({
-  onClose,
+  close,
   send,
   status,
   warm,
+  turns,
   config,
   model,
   thinkingLevel,
@@ -90,23 +103,98 @@ function Hari({
     void warm()
   }, [warm])
 
+  const {
+    x,
+    y,
+    width,
+    height,
+    onResizeStart,
+    onResize,
+    getRect,
+    moveControls,
+    dragConstraints,
+    minWidth,
+    minHeight,
+  } = useDraggableWindow({
+    initialPosition: {
+      x: 0.5 * window.innerWidth - 0.5 * HARI_INITIAL_WIDTH,
+      y: 0.5 * window.innerHeight - 0.5 * HARI_INITIAL_HEIGHT,
+    },
+    initialSize: { width: HARI_INITIAL_WIDTH, height: HARI_INITIAL_HEIGHT },
+    handleClose: close,
+  })
+
+  const [draft, setDraft] = useState("")
+  const [modelOpen, setModelOpen] = useState(false)
+  const [thinkingOpen, setThinkingOpen] = useState(false)
+  const modelAnchor = useRef<HTMLElement | null>(null)
+  const thinkingAnchor = useRef<HTMLElement | null>(null)
+
   const isPending = status === "pending"
   const placeholder = isPending
     ? "Working..."
     : "Describe a change and press Enter"
-
   const controlsDisabled = config === null
   const modelValue = model ?? ""
   const thinkingValue = thinkingLevel ?? ""
   const modelButtonLabel = modelValue || "Default"
   const thinkingButtonLabel = thinkingValue || "Default"
 
+  const submit = useCallback(() => {
+    const value = draft.trim()
+    if (!value) return
+    setDraft("")
+    void send(value)
+  }, [draft, send])
+
+  const onDraftChange = useCallback(
+    (event: ChangeEvent<HTMLTextAreaElement>) =>
+      setDraft(event.currentTarget.value),
+    [],
+  )
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key !== "Enter" || event.shiftKey) return
+      event.preventDefault()
+      submit()
+    },
+    [submit],
+  )
+
+  const startDrag = useCallback(
+    (event: PointerEvent) => moveControls.start(event),
+    [moveControls],
+  )
+
+  const openModelMenu = useCallback(
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
+      modelAnchor.current = event.currentTarget
+      setModelOpen((open) => !open)
+    },
+    [],
+  )
+
+  const openThinkingMenu = useCallback(
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
+      thinkingAnchor.current = event.currentTarget
+      setThinkingOpen((open) => !open)
+    },
+    [],
+  )
+
+  const closeModelMenu = useCallback(() => setModelOpen(false), [])
+  const closeThinkingMenu = useCallback(() => setThinkingOpen(false), [])
+
   const modelItems = useMemo<MenuEntry[]>(
     () =>
       (config?.models ?? []).map((value) => ({
         id: value,
         label: value,
-        onSelect: () => setModel(value),
+        onSelect: () => {
+          setModel(value)
+          setModelOpen(false)
+        },
         selected: value === modelValue,
         activeMarker: "bullet",
         testId: `ai-chat-model-${value}`,
@@ -119,7 +207,10 @@ function Hari({
       (config?.thinkingLevels ?? []).map((value) => ({
         id: value,
         label: value,
-        onSelect: () => setThinkingLevel(value as ThinkingLevelOption),
+        onSelect: () => {
+          setThinkingLevel(value as ThinkingLevelOption)
+          setThinkingOpen(false)
+        },
         selected: value === thinkingValue,
         activeMarker: "bullet",
         testId: `ai-chat-thinking-${value}`,
@@ -127,94 +218,91 @@ function Hari({
     [config, thinkingValue, setThinkingLevel],
   )
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLTextAreaElement>) => {
-      if (event.key !== "Enter" || event.shiftKey) return
-      event.preventDefault()
-      const value = event.currentTarget.value
-      event.currentTarget.value = ""
-      void send(value)
-    },
-    [send],
+  const transcript = useMemo<ReactNode>(
+    () => <HariTranscript turns={turns} status={status} onRetry={send} />,
+    [turns, status, send],
   )
 
+  const barSlot = { onPointerDown: startDrag, style: styles.dragHandle }
+  const titleSlot = { children: "AI Chat" }
+  const closeSlot = { onClick: close }
+  const seldonRefs = { turns: { children: transcript } }
+  const textareaSlot = {
+    value: draft,
+    onChange: onDraftChange,
+    onKeyDown: handleKeyDown,
+    placeholder,
+    disabled: isPending,
+    autoFocus: true,
+  }
+  const sendSlot = { onClick: submit, disabled: isPending }
+  const modelSlot = {
+    onClick: openModelMenu,
+    disabled: controlsDisabled,
+    "data-testid": "ai-chat-model",
+  }
+  const modelLabelSlot = { children: modelButtonLabel }
+  const thinkingSlot = {
+    onClick: openThinkingMenu,
+    disabled: controlsDisabled,
+    "data-testid": "ai-chat-thinking",
+  }
+  const thinkingLabelSlot = { children: thinkingButtonLabel }
+
   return (
-    <VMPanelPalette
-      title="AI Chat"
+    <WindowOverlay
+      onClose={close}
       testId="ai-chat-dialog"
-      initialWidth={HARI_INITIAL_WIDTH}
-      initialHeight={HARI_INITIAL_HEIGHT}
-      onClose={onClose}
+      closeOnClickOutside={false}
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      moveControls={moveControls}
+      dragConstraints={dragConstraints}
+      onResizeStart={onResizeStart}
+      onResize={onResize}
+      getRect={getRect}
+      minWidth={minWidth}
+      minHeight={minHeight}
     >
-      <Frame style={styles.controls}>
-        <Frame style={styles.control}>
-          <Text htmlElement="label" style={styles.controlLabel}>
-            Model
-          </Text>
-          <VMMenu
-            items={modelItems}
-            renderTrigger={({ ref, triggerProps }) => (
-              <ButtonMenu
-                ref={ref}
-                type="button"
-                {...triggerProps}
-                disabled={controlsDisabled}
-                style={styles.trigger}
-                data-testid="ai-chat-model"
-                textLabel={{ children: modelButtonLabel }}
-              />
-            )}
-          />
-        </Frame>
-        <Frame style={styles.control}>
-          <Text htmlElement="label" style={styles.controlLabel}>
-            Thinking
-          </Text>
-          <VMMenu
-            items={thinkingItems}
-            renderTrigger={({ ref, triggerProps }) => (
-              <ButtonMenu
-                ref={ref}
-                type="button"
-                {...triggerProps}
-                disabled={controlsDisabled}
-                style={styles.trigger}
-                data-testid="ai-chat-thinking"
-                textLabel={{ children: thinkingButtonLabel }}
-              />
-            )}
-          />
-        </Frame>
-      </Frame>
-      <HariComposer
-        placeholder={placeholder}
-        disabled={isPending}
-        onKeyDown={handleKeyDown}
+      <PanelHari
+        style={styles.dialog}
+        bar={barSlot}
+        textTitle={titleSlot}
+        buttonIconic={closeSlot}
+        seldonRefs={seldonRefs}
+        textarea={textareaSlot}
+        buttonIconic2={sendSlot}
+        buttonMenu={modelSlot}
+        textLabel={modelLabelSlot}
+        buttonMenu2={thinkingSlot}
+        textLabel2={thinkingLabelSlot}
+        chip={null}
+        button={null}
       />
-    </VMPanelPalette>
+      <VMMenu
+        open={modelOpen}
+        anchorRef={modelAnchor}
+        onClose={closeModelMenu}
+        items={modelItems}
+      />
+      <VMMenu
+        open={thinkingOpen}
+        anchorRef={thinkingAnchor}
+        onClose={closeThinkingMenu}
+        items={thinkingItems}
+      />
+    </WindowOverlay>
   )
 }
 
 const styles: Record<string, CSSProperties> = {
-  controls: {
-    display: "flex",
-    gap: 8,
-    marginBottom: 8,
-  },
-  control: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 2,
-    flex: 1,
-    minWidth: 0,
-  },
-  controlLabel: {
-    fontSize: 10,
-    textTransform: "uppercase",
-    letterSpacing: 0.4,
-    color: "var(--sdn-swatch-gray)",
-  },
-  trigger: {
+  dialog: {
     width: "100%",
+    height: "100%",
+  },
+  dragHandle: {
+    cursor: "grab",
   },
 }
