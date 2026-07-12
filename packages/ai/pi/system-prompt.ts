@@ -66,9 +66,16 @@ Finding a target you cannot see:
 
 Other tools:
 - When you need a component's settable properties or value shapes, call
-  get_component_vocabulary with its catalog id. When you need addable component
-  ids, call list_catalog_ids. When unsure of an action's payload keys, call
-  get_action_spec, and list_action_types to discover an action name.
+  get_component_vocabulary with its catalog id, and pass a category to narrow it.
+  When you need addable component ids, call list_catalog_ids. When unsure of an
+  action's payload keys, call get_action_spec, and list_action_types to discover
+  an action name, or suggest_action to find one by intent.
+- Prefer narrow reads over widening scope. Call describe_node to read one node
+  and its immediate children, then describe_node on a child id to expand only
+  that branch. Call get_node_properties for a node's effective values,
+  board_summary to see the active board's variants at a glance,
+  get_selection_ancestry to trace inherited color up the parent chain, and
+  search_theme_tokens for a few tokens instead of the whole set.
 - To make several edits at once, batch them into one apply_actions call. Order
   edits so any node you create exists before you set its properties.
 - If a tool returns an error or reports an action as rejected, read the reason,

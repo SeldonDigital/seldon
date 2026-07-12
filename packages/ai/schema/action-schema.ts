@@ -123,6 +123,23 @@ const ACTION_META_BY_TYPE = new Map<string, ActionMeta>(
   ACTION_META.map((meta) => [meta.type, meta]),
 )
 
+const SEARCH_LIMIT = 12
+
+/**
+ * Finds action types whose name contains the query and returns each with its
+ * payload spec, collapsing the list-then-spec pair of calls into one lookup. The
+ * model names an intent, for example "align" or "delete", and gets the matching
+ * action types ready to emit, without pulling the whole action catalog.
+ */
+export function searchActions(query: string): string[] {
+  const needle = query.trim().toLowerCase().replace(/\s+/g, "_")
+  if (needle === "") return []
+  const matches = ACTION_META.filter((meta) =>
+    meta.type.toLowerCase().includes(needle),
+  ).slice(0, SEARCH_LIMIT)
+  return buildActionPayloadSpecs(matches.map((meta) => meta.type))
+}
+
 /**
  * Returns a payload spec line for each given action type, listing required keys
  * and any remaining optional keys. Used to show the model the exact shape of an

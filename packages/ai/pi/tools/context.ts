@@ -4,13 +4,22 @@ import {
 } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
+import { PropertyDisplayCategory } from "@seldon/core/properties/constants/property-display"
+
 import { activeBoardSection } from "../../prompt/context-sections/active-board"
+import { ancestrySection } from "../../prompt/context-sections/ancestry"
+import { boardSummarySection } from "../../prompt/context-sections/board-summary"
 import { catalogComponentsSection } from "../../prompt/context-sections/catalog-components"
+import { describeNodeSection } from "../../prompt/context-sections/describe-node"
+import { nodePropertiesSection } from "../../prompt/context-sections/node-properties"
 import { propertyShapeSection } from "../../prompt/context-sections/property-shape"
 import { propertyVocabularySection } from "../../prompt/context-sections/property-vocabulary"
 import { selectionSection } from "../../prompt/context-sections/selection"
 import { themeIdsSection } from "../../prompt/context-sections/theme-ids"
-import { themeTokensSection } from "../../prompt/context-sections/theme-tokens"
+import {
+  searchThemeTokensSection,
+  themeTokensSection,
+} from "../../prompt/context-sections/theme-tokens"
 import {
   findNodesSection,
   workspaceBoardsSection,
@@ -18,8 +27,20 @@ import {
 import {
   buildActionPayloadSpecs,
   buildActionReference,
+  searchActions,
 } from "../../schema/action-schema"
 import type { ResolvedContext } from "../editor-context"
+
+const PROPERTY_CATEGORY_VALUES = Object.values(PropertyDisplayCategory)
+
+function toPropertyCategory(
+  value: string | undefined,
+): PropertyDisplayCategory | undefined {
+  if (value === undefined) return undefined
+  return PROPERTY_CATEGORY_VALUES.includes(value as PropertyDisplayCategory)
+    ? (value as PropertyDisplayCategory)
+    : undefined
+}
 
 function textResult(text: string) {
   return { content: [{ type: "text" as const, text }], details: {} }
@@ -93,16 +114,23 @@ export function createContextTools(
     name: "get_component_vocabulary",
     label: "Get Component Vocabulary",
     description:
-      "Return the settable property keys and value shapes for a component catalog id. Only set keys this reports; other keys are not part of the component's vocabulary.",
+      "Return the settable property keys and value shapes for a component catalog id. Only set keys this reports; other keys are not part of the component's vocabulary. Pass category to list only one group: attributes, layout, appearance, typography, effects, or accessibility.",
     parameters: Type.Object({
       catalogId: Type.String({
         description: "Catalog id of the component, for example button or text.",
       }),
+      category: Type.Optional(
+        Type.String({
+          description:
+            "Optional display category to filter keys: attributes, layout, appearance, typography, effects, or accessibility.",
+        }),
+      ),
     }),
     execute: async (_id, params) => {
       const ids = new Set([params.catalogId])
+      const category = toPropertyCategory(params.category)
       const lines = [
-        ...propertyVocabularySection(ids),
+        ...propertyVocabularySection(ids, category),
         ...propertyShapeSection(ids),
       ]
       return textResult(
@@ -112,6 +140,134 @@ export function createContextTools(
         ),
       )
     },
+  })
+
+  const describeNode = defineTool({
+    name: "describe_node",
+    label: "Describe Node",
+    description:
+      "Return a shallow view of one node: its identity, parent, immediate children, and set or overridden properties. Call it on a child id to expand that branch, instead of pulling the whole tree.",
+    parameters: Type.Object({
+      nodeId: Type.String({
+        description: "Node id to describe, from the context or a read tool.",
+      }),
+    }),
+    execute: async (_id, params) =>
+      textResult(
+        joinOrEmpty(
+          describeNodeSection(workspace, params.nodeId),
+          `No node found for id "${params.nodeId}".`,
+        ),
+      ),
+  })
+
+  const getNodeProperties = defineTool({
+    name: "get_node_properties",
+    label: "Get Node Properties",
+    description:
+      "Return the effective, merged property values for one node id, each tagged set, override, or inherited. Use it to read what a value resolves to before editing.",
+    parameters: Type.Object({
+      nodeId: Type.String({
+        description: "Node id whose effective properties you need.",
+      }),
+    }),
+    execute: async (_id, params) =>
+      textResult(
+        joinOrEmpty(
+          nodePropertiesSection(workspace, params.nodeId),
+          `No properties found for node "${params.nodeId}".`,
+        ),
+      ),
+  })
+
+  const getSelectionAncestry = defineTool({
+    name: "get_selection_ancestry",
+    label: "Get Selection Ancestry",
+    description:
+      "Return the parent chain from a node up to its variant root, with each ancestor's set color, background, and opacity. Use it to reason about inherited color or high contrast without widening the editing scope. Defaults to the selected node.",
+    parameters: Type.Object({
+      nodeId: Type.Optional(
+        Type.String({
+          description:
+            "Node id to trace. Omit to use the node selected on the canvas.",
+        }),
+      ),
+    }),
+    execute: async (_id, params) => {
+      const targetId = params.nodeId ?? selectedNodeId
+      if (targetId === undefined) {
+        return textResult(
+          "No node selected. Pass a nodeId to trace its ancestry.",
+        )
+      }
+      return textResult(
+        joinOrEmpty(
+          ancestrySection(workspace, targetId),
+          `No node found for id "${targetId}".`,
+        ),
+      )
+    },
+  })
+
+  const getBoardSummary = defineTool({
+    name: "board_summary",
+    label: "Board Summary",
+    description:
+      "Return a cheap summary of the active board: each variant's name, node count, and the component catalog ids it holds, with no ids or property detail. Use it to locate a target before pulling the full tree.",
+    parameters: Type.Object({}),
+    execute: async () => {
+      if (
+        !activeBoard ||
+        activeBoard.type !== "component" ||
+        resolvedKey === undefined
+      ) {
+        return textResult("No active component board is selected.")
+      }
+      return textResult(
+        joinOrEmpty(
+          boardSummarySection(workspace, resolvedKey, activeBoard),
+          "No board summary available.",
+        ),
+      )
+    },
+  })
+
+  const searchThemeTokens = defineTool({
+    name: "search_theme_tokens",
+    label: "Search Theme Tokens",
+    description:
+      "Return only the theme tokens whose scope or key matches the query, for example \"swatch\" or \"primary\". Use it instead of list_theme_tokens when you need a few tokens, not the whole set.",
+    parameters: Type.Object({
+      query: Type.String({
+        description: "Text to match against token scopes and keys.",
+      }),
+    }),
+    execute: async (_id, params) =>
+      textResult(
+        joinOrEmpty(
+          searchThemeTokensSection(workspace, params.query),
+          `No theme tokens match "${params.query}".`,
+        ),
+      ),
+  })
+
+  const suggestAction = defineTool({
+    name: "suggest_action",
+    label: "Suggest Action",
+    description:
+      "Return the action types whose name matches an intent, each with its payload spec. Use it instead of list_action_types then get_action_spec when you know the intent, for example \"align\" or \"delete\".",
+    parameters: Type.Object({
+      query: Type.String({
+        description: "Intent text to match against action type names.",
+      }),
+    }),
+    execute: async (_id, params) =>
+      textResult(
+        joinOrEmpty(
+          searchActions(params.query),
+          `No action types match "${params.query}". Call list_action_types for the full set.`,
+        ),
+      ),
   })
 
   const listThemeTokens = defineTool({
@@ -206,11 +362,17 @@ export function createContextTools(
   return [
     getActiveBoard,
     getSelection,
+    describeNode,
+    getNodeProperties,
+    getSelectionAncestry,
+    getBoardSummary,
     getComponentVocabulary,
     listThemeTokens,
+    searchThemeTokens,
     listCatalogIds,
     listActionTypes,
     getActionSpec,
+    suggestAction,
     listBoards,
     findNodes,
   ]
