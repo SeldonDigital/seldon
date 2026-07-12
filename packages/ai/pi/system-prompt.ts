@@ -1,13 +1,13 @@
 import { hierarchySection } from "../prompt/context-sections/hierarchy"
-import { buildActionReference } from "../schema/action-schema"
 
 /**
  * System prompt for the Pi tool-calling harness. It holds only the parts that
- * are stable across turns so Pi's prompt-prefix cache stays warm: the agent
- * contract, the value-type legend, the property-shape legend, the editing rules,
- * the level hierarchy, and the action-type catalog. The volatile board and
- * selection are injected per turn, and the heavier reference lists are pulled on
- * demand through the read tools, so this prompt does not grow with the workspace.
+ * are stable and small across turns so Pi's prompt-prefix cache stays warm: the
+ * agent contract, the value-type legend, the property-shape legend, the editing
+ * rules, and the level hierarchy. The volatile board and selection are injected
+ * per turn, and the heavier reference lists, including the full action-type
+ * catalog, are pulled on demand through the read tools, so this prompt does not
+ * grow with the workspace or the action set.
  *
  * Component rules live here rather than in a Pi Skill because Skills rely on the
  * built-in `read` tool to load their file, and this harness disables file tools
@@ -16,7 +16,6 @@ import { buildActionReference } from "../schema/action-schema"
  */
 export function buildPiSystemPrompt(): string {
   const hierarchy = hierarchySection().join("\n")
-  const actionReference = buildActionReference()
 
   return `You are the Seldon design agent. You turn a user's request into edits on a
 Seldon design by calling tools. You never edit files and you have no file
@@ -34,7 +33,9 @@ How to work:
 - Make single common edits with a dedicated tool (set_node_properties,
   add_component, and so on). To make several edits, batch them into one
   apply_actions call instead of many separate calls. Use apply_actions for any
-  action without a dedicated tool.
+  action without a dedicated tool. When no dedicated tool covers the request,
+  call list_action_types to find the action name, then get_action_spec for its
+  payload.
 - If a tool returns an error or reports an action as rejected, the reducer
   rejected it. Read the reason, fix the arguments, and try again. If a tool
   reports it changed nothing, retarget rather than repeating the same call.
@@ -74,8 +75,5 @@ A property's value shape depends on the key:
 - Layered keys, background and shadow, take an array of layer objects. Never set a color or spacing as a flat value on the parent. For a background color, use a color layer:
   "background": [ { "kind": { "type": "option", "value": "color" }, "color": { "type": "theme.categorical", "value": "@swatch.primary" } } ]
 
-${hierarchy}
-
-Action types available through apply_actions (the dedicated tools cover the common ones):
-${actionReference}`
+${hierarchy}`
 }

@@ -11,7 +11,10 @@ import { propertyVocabularySection } from "../../prompt/context-sections/propert
 import { selectionSection } from "../../prompt/context-sections/selection"
 import { themeIdsSection } from "../../prompt/context-sections/theme-ids"
 import { themeTokensSection } from "../../prompt/context-sections/theme-tokens"
-import { buildActionPayloadSpecs } from "../../schema/action-schema"
+import {
+  buildActionPayloadSpecs,
+  buildActionReference,
+} from "../../schema/action-schema"
 import type { ResolvedContext } from "../editor-context"
 
 function textResult(text: string) {
@@ -122,6 +125,18 @@ export function createContextTools(
       ),
   })
 
+  const listActionTypes = defineTool({
+    name: "list_action_types",
+    label: "List Action Types",
+    description:
+      "Return every workspace action type name, grouped by domain. Call this to discover an action for apply_actions when no dedicated tool covers the request, then call get_action_spec for its payload shape.",
+    parameters: Type.Object({}),
+    execute: async () =>
+      textResult(
+        joinOrEmpty([buildActionReference()], "No action types available."),
+      ),
+  })
+
   const getActionSpec = defineTool({
     name: "get_action_spec",
     label: "Get Action Spec",
@@ -136,7 +151,7 @@ export function createContextTools(
       textResult(
         joinOrEmpty(
           buildActionPayloadSpecs(params.types),
-          "No matching action types. See the action catalog in the system prompt.",
+          "No matching action types. Call list_action_types for valid names.",
         ),
       ),
   })
@@ -159,6 +174,7 @@ export function createContextTools(
     getComponentVocabulary,
     listThemeTokens,
     listCatalogIds,
+    listActionTypes,
     getActionSpec,
   ]
 }

@@ -27,13 +27,15 @@ const POLL_INTERVAL_MS = 500
  * starts Ollama; an explicit value already in the environment always wins.
  *
  * - OLLAMA_FLASH_ATTENTION speeds up attention and lowers memory use.
- * - OLLAMA_KV_CACHE_TYPE shrinks the KV cache (needs flash attention). q8_0 is
- *   the high-quality default; q4_0 saves more memory at some quality cost.
  * - OLLAMA_KEEP_ALIVE keeps the model resident so idle turns skip the cold load.
+ *
+ * KV cache quantization is deliberately not set. On Apple Silicon a quantized KV
+ * cache has no fast Metal attention kernel, so it slows decode as context grows,
+ * and a small model on a 32 GB machine has no memory pressure to trade for. The
+ * default f16 KV cache decodes faster for our long-context tool-loop turns.
  */
 const PERF_ENV = {
   OLLAMA_FLASH_ATTENTION: "1",
-  OLLAMA_KV_CACHE_TYPE: "q8_0",
   OLLAMA_KEEP_ALIVE: "30m",
 }
 
