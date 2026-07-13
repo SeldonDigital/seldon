@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { ComponentId } from "../../../components/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
+import type { ComponentTreeRef } from "../../types"
 import {
   canMoveInstance,
   resolveInstanceMoveTarget,
@@ -13,8 +14,9 @@ const workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = workspace.boards[ComponentId.BUTTON]!
-const defaultRoot = board.variants[0]!
-const userVariant = board.variants
+const variants = board.variants as ComponentTreeRef[]
+const defaultRoot = variants[0]!
+const userVariant = variants
   .slice(1)
   .find((variant) => (variant.children?.length ?? 0) >= 2)!
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
 import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
-import { ValueType } from "../../../properties/constants"
+import { Unit, ValueType } from "../../../properties/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "./add/add-component"
 import { addPlayground } from "./add/add-playground"
@@ -62,7 +62,12 @@ describe("resetNodeState / resetNodeStateProperty", () => {
       {
         nodeId: rootId(ws),
         state: "hover",
-        properties: { opacity: { type: ValueType.EXACT, value: 0.5 } },
+        properties: {
+          opacity: {
+            type: ValueType.EXACT,
+            value: { value: 0.5, unit: Unit.PERCENT },
+          },
+        },
       } as ExtractPayload<"set_node_state_properties">,
       ws,
     )

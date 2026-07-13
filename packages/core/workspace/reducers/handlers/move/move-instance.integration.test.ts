@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../../index"
+import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { moveInstance } from "./move-instance"
@@ -13,7 +13,7 @@ const buildButton = () =>
   )
 
 const defaultTree = (workspace: ReturnType<typeof buildButton>) =>
-  workspace.boards[ComponentId.BUTTON]!.variants[0]!
+  workspace.boards[ComponentId.BUTTON]!.variants[0]! as ComponentTreeRef
 
 describe("moveInstance", () => {
   it("moves a schema instance to a new index under its parent", () => {

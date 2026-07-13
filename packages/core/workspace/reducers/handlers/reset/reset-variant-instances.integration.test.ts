@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import { ValueType } from "../../../../properties/constants"
+import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { parseNodeLink } from "../../../model/template-ref"
 import type {
@@ -44,7 +44,12 @@ const setOpacity = (ws: Workspace, nodeId: string) =>
   setNodeProperties(
     {
       nodeId,
-      properties: { opacity: { type: ValueType.EXACT, value: 50 } },
+      properties: {
+        opacity: {
+          type: ValueType.EXACT,
+          value: { value: 50, unit: Unit.PERCENT },
+        },
+      },
     } as ExtractPayload<"set_node_properties">,
     ws,
   )

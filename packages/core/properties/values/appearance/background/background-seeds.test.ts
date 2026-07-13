@@ -35,7 +35,7 @@ describe("BACKGROUND_KIND_SEEDS", () => {
 
 describe("backgroundLayerForKind", () => {
   it("returns the seed layer for each kind", () => {
-    expect(backgroundLayerForKind("none").kind).toEqual({
+    expect(backgroundLayerForKind("none")!.kind).toEqual({
       type: ValueType.OPTION,
       value: BackgroundKind.NONE,
     })
