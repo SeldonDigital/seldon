@@ -5934,10 +5934,10 @@
                   "id": "component-frame-i5KJL1rC",
                   "children": [
                     {
-                      "id": "component-button-N1pT65yh",
+                      "id": "component-panel-PMmBQIRj",
                       "children": [
                         {
-                          "id": "component-button-mHfkEw1F"
+                          "id": "component-panel-6bYvgklS"
                         }
                       ]
                     },
@@ -5950,10 +5950,10 @@
                       ]
                     },
                     {
-                      "id": "component-panel-PMmBQIRj",
+                      "id": "component-button-N1pT65yh",
                       "children": [
                         {
-                          "id": "component-panel-6bYvgklS"
+                          "id": "component-button-mHfkEw1F"
                         }
                       ]
                     }
@@ -53649,7 +53649,12 @@
       "label": "Icon",
       "theme": null,
       "template": "node:component-button-oVKDSm9s",
-      "overrides": {},
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-neurology"
+        }
+      },
       "origin": "user",
       "__editor": {
         "initialOverrides": {
@@ -53686,7 +53691,12 @@
       "label": "Icon",
       "theme": null,
       "template": "node:component-button-oVKDSm9s",
-      "overrides": {},
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-outputCircle"
+        }
+      },
       "origin": "user",
       "__editor": {
         "initialOverrides": {
@@ -53723,7 +53733,12 @@
       "label": "Icon",
       "theme": null,
       "template": "node:component-button-oVKDSm9s",
-      "overrides": {},
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-buildCircle"
+        }
+      },
       "origin": "user",
       "__editor": {
         "initialOverrides": {

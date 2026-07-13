@@ -715,4 +715,7 @@ export const materialIconIds: readonly IconId[] = [
   "material-fitPageWidth",
   "material-splitscreenAdd",
   "material-splitscreenVerticalAdd",
+  "material-neurology",
+  "material-buildCircle",
+  "material-outputCircle",
 ] as const

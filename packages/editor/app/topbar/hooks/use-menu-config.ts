@@ -86,12 +86,6 @@ export function useMenuConfig(): MenuConfig {
     toggleWorkspaceLogging,
     aiLogging,
     toggleAiLogging,
-    showTools,
-    toggleShowTools,
-    showOutcome,
-    toggleShowOutcome,
-    noThink,
-    toggleNoThink,
   } = useDebugMode()
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
@@ -259,27 +253,6 @@ export function useMenuConfig(): MenuConfig {
         shortcut: "⌘ J",
         visibleIn: ["edit", "preview"],
       },
-      {
-        id: "show-tools",
-        label: "Show Tools",
-        action: toggleShowTools,
-        active: showTools,
-        visibleIn: ["edit", "preview"],
-      },
-      {
-        id: "show-outcome",
-        label: "Show Outcome",
-        action: toggleShowOutcome,
-        active: showOutcome,
-        visibleIn: ["edit", "preview"],
-      },
-      {
-        id: "no-think",
-        label: "Clamp Thinking",
-        action: toggleNoThink,
-        active: noThink,
-        visibleIn: ["edit", "preview"],
-      },
       "separator",
       {
         id: "show-playground",
@@ -397,12 +370,6 @@ export function useMenuConfig(): MenuConfig {
     toggleWorkspaceLogging,
     aiLogging,
     toggleAiLogging,
-    showTools,
-    toggleShowTools,
-    showOutcome,
-    toggleShowOutcome,
-    noThink,
-    toggleNoThink,
   ])
 
   const editMenuItems = useMemo(() => {

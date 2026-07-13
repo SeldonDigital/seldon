@@ -30,12 +30,19 @@ import {
 } from "@lib/workspace/hooks/use-selection-scope"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
 import { HariTranscript } from "./HariTranscript.bespoke"
+import "./hari.css"
 
 const HARI_INITIAL_WIDTH = 420
 const HARI_INITIAL_HEIGHT = 480
 
 /** Class that renders a header ButtonToggle in its activated (on) state. */
 const ACTIVE_TOGGLE_CLASS = "sdn-state-activated"
+
+/** Class that suppresses the hover highlight on a header ButtonToggle. */
+const NO_HOVER_TOGGLE_CLASS = "hari-toggle-no-hover"
+
+/** Header toggle class list for the on and off states, hover suppressed. */
+const ACTIVE_NO_HOVER_TOGGLE_CLASS = `${ACTIVE_TOGGLE_CLASS} ${NO_HOVER_TOGGLE_CLASS}`
 
 /** Capital-case labels for the scope chip, one per selection kind. */
 const SCOPE_LABELS: Record<SelectionScope, string> = {
@@ -278,21 +285,23 @@ function Hari({
   const titleSlot = { children: "Hari" }
   const clampToggleSlot = {
     onClick: toggleNoThink,
-    className: noThink ? ACTIVE_TOGGLE_CLASS : undefined,
+    className: noThink ? ACTIVE_NO_HOVER_TOGGLE_CLASS : NO_HOVER_TOGGLE_CLASS,
     "aria-pressed": noThink,
     title: "Clamp Thinking",
     "data-testid": "ai-chat-clamp",
   }
   const toolsToggleSlot = {
     onClick: toggleShowTools,
-    className: showTools ? ACTIVE_TOGGLE_CLASS : undefined,
+    className: showTools ? ACTIVE_NO_HOVER_TOGGLE_CLASS : NO_HOVER_TOGGLE_CLASS,
     "aria-pressed": showTools,
     title: "Show Tools",
     "data-testid": "ai-chat-tools",
   }
   const outcomeToggleSlot = {
     onClick: toggleShowOutcome,
-    className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined,
+    className: showOutcome
+      ? ACTIVE_NO_HOVER_TOGGLE_CLASS
+      : NO_HOVER_TOGGLE_CLASS,
     "aria-pressed": showOutcome,
     title: "Show Outcome",
     "data-testid": "ai-chat-outcome",
@@ -349,9 +358,9 @@ function Hari({
         style={styles.dialog}
         bar={barSlot}
         textTitle={titleSlot}
-        buttonToggle={clampToggleSlot}
+        buttonToggle={outcomeToggleSlot}
         buttonToggle2={toolsToggleSlot}
-        buttonToggle3={outcomeToggleSlot}
+        buttonToggle3={clampToggleSlot}
         buttonIconic={resetSlot}
         buttonIconic2={closeSlot}
         frame2={transcriptSlot}

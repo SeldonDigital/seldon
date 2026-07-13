@@ -535,10 +535,10 @@ const sdn: PanelHariProps = {
   },
   buttonToggle: {
     className: "sdn-button-toggle sdn-button-iconic--pgsr",
-    "data-seldon-ref": "hariClamp",
+    "data-seldon-ref": "hariOutcome",
   },
   icon: {
-    icon: "seldon-component",
+    icon: "material-outputCircle",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--ovkd",
   },
@@ -547,16 +547,16 @@ const sdn: PanelHariProps = {
     "data-seldon-ref": "hariTools",
   },
   icon2: {
-    icon: "seldon-component",
+    icon: "material-buildCircle",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--ovkd",
   },
   buttonToggle3: {
     className: "sdn-button-toggle sdn-button-iconic--pgsr",
-    "data-seldon-ref": "hariOutcome",
+    "data-seldon-ref": "hariClamp",
   },
   icon3: {
-    icon: "seldon-component",
+    icon: "material-neurology",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--ovkd",
   },

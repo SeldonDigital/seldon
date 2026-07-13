@@ -55,6 +55,9 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-error"
     | "material-robot"
     | "seldon-reset"
+    | "material-neurology"
+    | "material-outputCircle"
+    | "material-buildCircle"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -584,6 +587,9 @@ const iconMap = {
   "material-error": Icons.IconMaterialError,
   "material-robot": Icons.IconMaterialRobot,
   "seldon-reset": Icons.IconSeldonReset,
+  "material-neurology": Icons.IconMaterialNeurology,
+  "material-outputCircle": Icons.IconMaterialOutputCircle,
+  "material-buildCircle": Icons.IconMaterialBuildCircle,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
