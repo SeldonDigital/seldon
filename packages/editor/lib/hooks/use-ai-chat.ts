@@ -26,7 +26,12 @@ import {
   findActiveBoardKey,
 } from "./ai-chat/apply-report"
 import { describeChanges } from "./ai-chat/change-summary"
-import { isLoggingEnabled, logAiTurn, logWarm } from "./ai-chat/log-turn"
+import {
+  isLoggingEnabled,
+  logAiTurn,
+  logAiWarning,
+  logWarm,
+} from "./ai-chat/log-turn"
 import { collectVocabularyWarnings } from "./ai-chat/vocabulary-warnings"
 import { useDebugStore } from "./use-debug-mode"
 import { usePanel } from "./use-panel"
@@ -119,7 +124,10 @@ const useStore = create<AiChatState>((set) => ({
   setConfig: (config) =>
     set((state) => ({
       config,
-      model: state.model ?? config.defaults.model,
+      model:
+        state.model && config.models.includes(state.model)
+          ? state.model
+          : config.defaults.model,
       thinkingLevel: state.thinkingLevel ?? config.defaults.thinkingLevel,
     })),
   setModel: (model) => set({ model }),
@@ -321,7 +329,12 @@ export function useHari() {
         const { model } = useStore.getState()
         const { metrics } = await warmAgent({ model })
         if (isLoggingEnabled()) logWarm(metrics)
-      } catch {
+      } catch (error) {
+        if (isLoggingEnabled()) {
+          logAiWarning(
+            error instanceof Error ? error.message : "Agent warm-up failed.",
+          )
+        }
         // Warm-up is best-effort; a failure just means the first turn loads cold.
       } finally {
         warmInFlight = null

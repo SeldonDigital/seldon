@@ -35,6 +35,7 @@ export type AgentConfig = {
     model: string
     thinkingLevel: ThinkingLevelOption
   }
+  warnings?: string[]
 }
 
 export type AgentChatResponse = {
@@ -125,7 +126,16 @@ export async function getAgentConfig(): Promise<AgentConfig | undefined> {
   try {
     const response = await fetch("/api/agent/config")
     if (!response.ok) return undefined
-    return (await response.json()) as AgentConfig
+    const config = (await response.json()) as AgentConfig
+    for (const warning of config.warnings ?? []) {
+      console.warn(
+        "%c[seldon/ai]%c %s",
+        "color:#a855f7;font-weight:bold",
+        "",
+        warning,
+      )
+    }
+    return config
   } catch {
     return undefined
   }
@@ -150,7 +160,14 @@ export async function warmAgent(warm?: {
     body: JSON.stringify(warm ?? {}),
   })
   if (!response.ok) {
-    throw new Error("Agent warm-up failed.")
+    let message = "Agent warm-up failed."
+    try {
+      const data = (await response.json()) as { error?: string }
+      if (data?.error) message = data.error
+    } catch {
+      // Response was not JSON; keep the default message.
+    }
+    throw new Error(message)
   }
   return (await response.json()) as WarmResponse
 }

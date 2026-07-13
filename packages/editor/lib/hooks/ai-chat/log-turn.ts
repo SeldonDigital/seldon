@@ -45,6 +45,11 @@ function aiLog(message: string, ...args: unknown[]): void {
   console.log(`${AI_TAG} ${message}`, AI_TAG_STYLE, "", ...args)
 }
 
+/** Logs an AI warning with the same browser-console badge as the debug rows. */
+export function logAiWarning(message: string, ...args: unknown[]): void {
+  console.warn(`${AI_TAG} ${message}`, AI_TAG_STYLE, "", ...args)
+}
+
 /** Logs one applied action's target header and each property's before -> after. */
 function logActionChange(
   before: Workspace,

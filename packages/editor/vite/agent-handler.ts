@@ -66,7 +66,7 @@ export async function runAgent(
     selectedBoardId: body.selectedBoardId,
     scope: body.scope,
     resourceTargetId: body.resourceTargetId,
-    model: body.model,
+    model: await resolveAvailableModel(body.model),
     thinkingLevel: body.thinkingLevel,
     noThink: body.noThink,
     onEvent,
@@ -84,6 +84,7 @@ export type AgentConfig = {
     model: string
     thinkingLevel: ThinkingLevelOption
   }
+  warnings?: string[]
 }
 
 /** Lists the local Ollama models, best-effort. Empty when Ollama is unreachable. */
@@ -104,21 +105,52 @@ async function listOllamaModels(): Promise<string[]> {
   }
 }
 
+function missingModelMessage(model: string, models: string[]): string {
+  if (models.length === 0) {
+    return `AI model "${model}" is not installed in Ollama. No local Ollama models are installed. Pull it with: ollama pull ${model}`
+  }
+  return `AI model "${model}" is not installed in Ollama. Available models: ${models.join(", ")}. Pull it with: ollama pull ${model}`
+}
+
+async function resolveAvailableModel(requestedModel: string | undefined) {
+  const configuredDefaultModel = resolvePiModelId()
+  const models = await listOllamaModels()
+  if (models.length === 0) return requestedModel ?? configuredDefaultModel
+  if (requestedModel) {
+    if (!models.includes(requestedModel)) {
+      throw new Error(missingModelMessage(requestedModel, models))
+    }
+    return requestedModel
+  }
+  return models.includes(configuredDefaultModel)
+    ? configuredDefaultModel
+    : models[0]
+}
+
 /**
  * Returns the session-config choices for the Hari palette: the locally available
  * models, the thinking levels, and the current defaults. The model list is
  * best-effort and comes from the local Ollama server.
  */
 export async function agentConfig(): Promise<AgentConfig> {
-  const defaultModel = resolvePiModelId()
+  const configuredDefaultModel = resolvePiModelId()
   const models = await listOllamaModels()
+  const availableModels = models.length > 0 ? models : [configuredDefaultModel]
+  const defaultModel = availableModels.includes(configuredDefaultModel)
+    ? configuredDefaultModel
+    : availableModels[0]
+  const warnings =
+    models.length > 0 && !models.includes(configuredDefaultModel)
+      ? [missingModelMessage(configuredDefaultModel, models)]
+      : undefined
   return {
-    models: models.includes(defaultModel) ? models : [defaultModel, ...models],
+    models: availableModels,
     thinkingLevels: THINKING_LEVEL_OPTIONS,
     defaults: {
       model: defaultModel,
       thinkingLevel: "minimal",
     },
+    warnings,
   }
 }
 
@@ -135,6 +167,8 @@ export type WarmResult = {
 export async function warmAgent(body?: {
   model?: string
 }): Promise<WarmResult> {
-  const metrics = await warmModel({ model: body?.model })
+  const metrics = await warmModel({
+    model: await resolveAvailableModel(body?.model),
+  })
   return { ok: true, metrics }
 }
