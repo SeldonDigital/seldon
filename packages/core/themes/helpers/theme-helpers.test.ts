@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { Colorspace } from "../constants/colorspace"
 import { TokenType } from "../constants/token-type"
 import { defaultTheme } from "../index"
+import type { ThemePipelineInput } from "../types"
 import { buildEmptyCustomTokenPayload } from "./build-empty-custom-token-payload"
 import { modulate, modulateWithTheme } from "./modulate"
 import { normalizeTheme } from "./normalize-theme"
@@ -12,7 +13,9 @@ import {
 } from "./reserved-token-names"
 
 describe("modulateWithTheme", () => {
-  const theme = { modulation: { parameters: { ratio: 2, baseSize: 16 } } }
+  const theme = {
+    modulation: { parameters: { ratio: 2, baseSize: 16 } },
+  } as unknown as ThemePipelineInput
 
   it("returns the base size at step 0", () => {
     expect(modulateWithTheme({ theme, parameters: { step: 0 } })).toBe(16)

@@ -32,12 +32,6 @@
     "./index.ts",
     "./constants.ts"
   ],
-  "exclude": [
-    "./dist",
-    "node_modules",
-    "**/generated-ai-action-schema.json",
-    "**/*.spec.ts",
-    "**/*.test.ts"
-  ],
+  "exclude": ["./dist", "node_modules", "**/generated-ai-action-schema.json"],
   "references": []
 }

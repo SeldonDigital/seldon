@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import { ValueType } from "../../../../properties/constants"
+import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import type { EntryNode, ExtractPayload, Workspace } from "../../../types"
 import { addComponent } from "../add/add-component"
@@ -24,7 +24,12 @@ describe("resetVariantToCatalog", () => {
     const withOverride = setNodeProperties(
       {
         nodeId: userVariantId,
-        properties: { opacity: { type: ValueType.EXACT, value: 25 } },
+        properties: {
+          opacity: {
+            type: ValueType.EXACT,
+            value: { value: 25, unit: Unit.PERCENT },
+          },
+        },
       } as ExtractPayload<"set_node_properties">,
       workspace,
     )

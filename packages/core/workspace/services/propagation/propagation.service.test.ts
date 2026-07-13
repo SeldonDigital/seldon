@@ -5,6 +5,7 @@ import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { parseWorkspace } from "../../helpers/parse-workspace"
 import { workspaceReducer } from "../../reducers/reducer"
 import type {
+  ComponentTreeRef,
   EntryNodeId,
   Instance,
   Variant,
@@ -35,7 +36,8 @@ function buildScenario() {
     ws,
     act("insert_default_instance", { boardKey: BOARD, parentId: uv1Id }),
   )
-  const childId = ws.boards[BOARD]!.variants[0]!.children![0]!.id as EntryNodeId
+  const childId = (ws.boards[BOARD]!.variants[0] as ComponentTreeRef)
+    .children![0]!.id as EntryNodeId
   return { ws, defaultRootId, uv1Id, childId }
 }
 
@@ -61,7 +63,7 @@ describe("WorkspacePropagationService.propagateNodeOperation", () => {
     const result = service.propagateNodeOperation({
       nodeId: defaultRootId,
       propagation: "none",
-      apply: (_node, current) => ({ workspace: current, data: 7 }),
+      apply: (_node, current) => ({ workspace: current }),
       workspace: ws,
     })
     expect(result.boards).toBeTruthy()

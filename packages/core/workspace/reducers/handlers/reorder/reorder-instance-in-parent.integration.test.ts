@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../../index"
+import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { reorderInstanceInParent } from "./reorder-instance-in-parent"
@@ -11,8 +11,9 @@ const workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = workspace.boards[ComponentId.BUTTON]!
-const defaultRoot = board.variants[0]!
-const userVariant = board.variants
+const variants = board.variants as ComponentTreeRef[]
+const defaultRoot = variants[0]!
+const userVariant = variants
   .slice(1)
   .find((variant) => (variant.children?.length ?? 0) >= 2)!
 
@@ -28,9 +29,11 @@ describe("reorderInstanceInParent", () => {
       workspace,
     )
 
-    const after = next.boards[ComponentId.BUTTON]!.variants.find(
-      (variant) => variant.id === userVariant.id,
-    )!.children!.map((child) => child.id)
+    const after = (
+      next.boards[ComponentId.BUTTON]!.variants as ComponentTreeRef[]
+    )
+      .find((variant) => variant.id === userVariant.id)!
+      .children!.map((child) => child.id)
 
     expect(next).not.toBe(workspace)
     expect(after[0]).not.toBe(firstChild)

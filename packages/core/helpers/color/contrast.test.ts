@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { ValueType } from "../../index"
+import { Color, ValueType } from "../../index"
 import { isDarkBackgroundColor } from "./contrast"
 
-const hex = (value: string) => ({ type: ValueType.EXACT as const, value })
+const hex = (value: `#${string}`) => ({ type: ValueType.EXACT as const, value })
 
 describe("isDarkBackgroundColor", () => {
   it("classifies dark and light colors", () => {
@@ -25,7 +25,10 @@ describe("isDarkBackgroundColor", () => {
       isDarkBackgroundColor({ type: ValueType.EMPTY, value: null }),
     ).toThrow()
     expect(() =>
-      isDarkBackgroundColor({ type: ValueType.OPTION, value: "transparent" }),
+      isDarkBackgroundColor({
+        type: ValueType.OPTION,
+        value: Color.TRANSPARENT,
+      }),
     ).toThrow()
   })
 })
