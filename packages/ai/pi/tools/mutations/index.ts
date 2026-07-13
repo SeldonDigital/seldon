@@ -4,8 +4,12 @@ import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
 import { createAddComponentTool } from "./add-component"
 import { createApplyActionsTool } from "./apply-actions"
+import { createDuplicateComponentTool } from "./duplicate-component"
+import { createInsertComponentTool } from "./insert-component"
 import { createInsertVariantInstanceTool } from "./insert-variant-instance"
+import { createMoveComponentTool } from "./move-component"
 import { createRemoveInstanceTool } from "./remove-instance"
+import { createReorderComponentTool } from "./reorder-component"
 import { createSetBoardLabelTool } from "./set-board-label"
 import { createSetFontCollectionFamilyPresetTool } from "./set-font-collection-family-preset"
 import { createSetFontCollectionFamilyVariantTool } from "./set-font-collection-family-variant"
@@ -33,7 +37,11 @@ export function createMutationTools(
   const tools: ToolDefinition[] = [
     createSetPropertiesTool(state, resolved),
     createAddComponentTool(state),
+    createInsertComponentTool(state),
     createInsertVariantInstanceTool(state),
+    createDuplicateComponentTool(state),
+    createMoveComponentTool(state),
+    createReorderComponentTool(state),
     createRemoveInstanceTool(state),
     createSetBoardLabelTool(state),
     createApplyActionsTool(state),
