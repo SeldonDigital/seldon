@@ -102,13 +102,13 @@ The model never writes the workspace. All file tools are off, and each Seldon to
 
 The context is a small summary, not the full workspace file. It lists the active board's node tree with the ids to target, the property vocabulary and value shapes for those components, the hierarchy rules, the theme ids and token ids, and the component catalog ids. The model needs identity and structure, not every property override.
 
-Each part is one context section under [prompt/context-sections/](./prompt/context-sections). [pi/editor-context.ts](./pi/editor-context.ts) builds the compact per-turn context, and the read tools in [pi/tools/context.ts](./pi/tools/context.ts) surface the larger sections on demand. A section drops out when it has nothing to say.
+Each part is one context section under [prompt/context-sections/](./prompt/context-sections). [pi/editor-context.ts](./pi/editor-context.ts) builds the compact per-turn context, and the read tools in [pi/tools/context/](./pi/tools/context) surface the larger sections on demand, one tool per file. A section drops out when it has nothing to say.
 
 ---
 
 ## Action Set
 
-The agent may emit a curated subset of `WorkspaceAction`. The allowed types come from [schema/action-schema.ts](./schema/action-schema.ts), and [pi/system-prompt.ts](./pi/system-prompt.ts) documents the payload shapes the model should produce. The mutation tools in [pi/tools/mutations.ts](./pi/tools/mutations.ts) expose those actions. The reducer validates every payload when the editor applies it, so an invalid action is rejected without changing state.
+The agent may emit a curated subset of `WorkspaceAction`. The allowed types come from [schema/action-schema.ts](./schema/action-schema.ts), and [pi/system-prompt.ts](./pi/system-prompt.ts) documents the payload shapes the model should produce. The mutation tools in [pi/tools/mutations/](./pi/tools/mutations) expose those actions, one tool per file. The reducer validates every payload when the editor applies it, so an invalid action is rejected without changing state.
 
 ---
 

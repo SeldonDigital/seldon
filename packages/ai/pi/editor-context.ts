@@ -45,9 +45,9 @@ export interface ResolvedContext {
 }
 
 /**
- * Resolves the board the agent should act on. Mirrors the Ollama context
- * builder: the requested board when it exists, otherwise the first component
- * board, so the agent is always scoped to one board on screen.
+ * Resolves the board the agent should act on: the requested board when it
+ * exists, otherwise the first component board, so the agent is always scoped to
+ * one board on screen. The rest of the selection passes through unchanged.
  */
 export function resolveContext(input: EditorContextInput): ResolvedContext {
   const {
@@ -81,11 +81,11 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
 }
 
 /**
- * Resolves the variant column the selection sits in, the tier-1 scope. The
- * selection's root id is a slash path whose first segment is the variant root,
- * so that segment is tried first. When it is absent or not a root on the board,
- * the selected node is located by walking each variant tree. Returns undefined
- * when no selection resolves to a variant, so the caller falls back to tier 2.
+ * Resolves the variant column the selection sits in. The selection's root id is
+ * a slash path whose first segment is the variant root, so that segment is tried
+ * first. When it is absent or not a root on the board, the selected node is
+ * located by walking each variant tree. Returns undefined when no selection
+ * resolves to a variant, so the caller falls back to the whole board.
  */
 function resolveActiveVariantId(
   board: Board,
@@ -118,92 +118,127 @@ function resolveActiveVariantId(
 /**
  * The compact per-turn context injected with each prompt. It carries only the
  * volatile parts the model must see fresh every turn, driven by the selection
- * scope the editor classified. Resource scopes (theme, font collection, icon
- * set) describe the selected entry and its edit tools. Workspace scope lists the
- * boards and themes for broad, cross-board work. Component scopes (board,
- * variant, instance) scope to the narrowest tier that fits: the active variant
- * subtree when a node is selected (tier 1), otherwise every variant on the
- * active board (tier 2). The whole workspace (tier 3) stays behind the
- * find_nodes and list_boards tools. Static rules live in the cached system
- * prompt, so this stays small and the prefix cache stays warm.
+ * scope. A resource scope (theme, font collection, icon set) describes the
+ * selected entry, or its board's entries when a board is selected, with the edit
+ * tools for it. Workspace scope lists every board shallow plus the theme ids for
+ * broad work. A component scope narrows to the selection: the selected node's
+ * own subtree for an instance, the variant subtree for a variant, and every
+ * variant on the board otherwise, then appends the selected node and its
+ * settable values. One-level widening stays behind widen_scope. Static rules
+ * live in the cached system prompt, so this stays small and the prefix cache
+ * stays warm.
  */
 export function buildTurnContext(resolved: ResolvedContext): string {
+  const header = `Workspace: "${resolved.workspace.metadata.label ?? "Untitled"}"`
+
+  const resource = resourceScopeContext(resolved)
+  if (resource) return [header, ...resource].join("\n")
+
+  if (resolved.scope === "workspace") {
+    return [header, ...workspaceScopeContext(resolved)].join("\n")
+  }
+
+  return [header, ...componentScopeContext(resolved)].join("\n")
+}
+
+/** The value lines and directives for one resource scope. */
+interface ResourceScopeSpec {
+  valueLines: string[]
+  boardDirective: (boardKey: BoardKey) => string
+  variantDirective: () => string
+}
+
+/**
+ * The per-scope wording for a theme, font collection, or icon set. Returns null
+ * when the scope is not a resource scope, so the caller falls through to the
+ * component path. The board directive names the board and its default entry; the
+ * variant directive names the single selected entry.
+ */
+function resourceScopeSpec(
+  scope: SelectionScope | undefined,
+  entryId: string,
+  workspace: Workspace,
+): ResourceScopeSpec | null {
+  if (scope === "theme") {
+    return {
+      valueLines: [],
+      boardDirective: (boardKey) =>
+        `Scope: theme board "${boardKey}". Edit token values on its default theme "${entryId}" with set_theme_override (path like swatch.primary or fontSize.medium), or target one of the entries above. Call list_theme_tokens or search_theme_tokens for token paths. Call widen_scope for the workspace. Do not edit component nodes.`,
+      variantDirective: () =>
+        `Scope: theme variant "${entryId}". Edit its token values with set_theme_override (themeId "${entryId}", path like swatch.primary or fontSize.medium). Call list_theme_tokens or search_theme_tokens for token paths. If this is the wrong theme, call widen_scope to see the board's other themes. Do not edit component nodes.`,
+    }
+  }
+  if (scope === "fontCollection") {
+    return {
+      valueLines: fontCollectionValuesSection(entryId, workspace),
+      boardDirective: (boardKey) =>
+        `Scope: font collection board "${boardKey}". Toggle families and weights on its default collection "${entryId}" with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off), or target an entry above. Call widen_scope for the workspace. Do not edit component nodes.`,
+      variantDirective: () =>
+        `Scope: font collection variant "${entryId}". Toggle families and weights with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off). If this is the wrong collection, call widen_scope to see the board's other collections. Do not edit component nodes.`,
+    }
+  }
+  if (scope === "iconSet") {
+    return {
+      valueLines: iconSetValuesSection(entryId, workspace),
+      boardDirective: (boardKey) =>
+        `Scope: icon set board "${boardKey}". Toggle a subcategory on its default set "${entryId}" with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>, or target an entry above. Call widen_scope for the workspace. Do not edit component nodes.`,
+      variantDirective: () =>
+        `Scope: icon set variant "${entryId}". Toggle a subcategory with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>. If this is the wrong set, call widen_scope to see the board's other sets. Do not edit component nodes.`,
+    }
+  }
+  return null
+}
+
+/**
+ * The context for a resource scope. A board selection lists the board's entries
+ * and points at the default; a variant selection scopes to the one entry. Both
+ * lead value lines with the entry values. Returns null when the scope is not a
+ * resource scope or no entry is selected.
+ */
+function resourceScopeContext(resolved: ResolvedContext): string[] | null {
+  const { workspace, scope, resourceTargetId, selectedBoardId } = resolved
+  if (resourceTargetId === undefined) return null
+  const spec = resourceScopeSpec(scope, resourceTargetId, workspace)
+  if (!spec) return null
+
+  const lines = [...spec.valueLines]
+  const owner = findResourceBoardForEntry(workspace, resourceTargetId)
+  if (selectedBoardId !== undefined && owner) {
+    lines.push(...resourceBoardEntriesSection(owner.board, owner.boardKey))
+    lines.push("", spec.boardDirective(owner.boardKey))
+  } else {
+    lines.push("", spec.variantDirective())
+  }
+  return lines
+}
+
+/** The context for the workspace scope: every board shallow, plus theme ids. */
+function workspaceScopeContext(resolved: ResolvedContext): string[] {
+  const { workspace } = resolved
+  return [
+    ...workspaceShallowSection(workspace).lines,
+    ...themeIdsSection(workspace),
+    "",
+    "Scope: the whole workspace. The request may span many boards, variants, and themes. The boards above are shown shallow, so drill down where the target lives: call get_active_board, describe_node, or widen_scope to expand a board, and find_nodes or list_boards to search. The user selected the workspace, so you may edit across boards without asking first.",
+  ]
+}
+
+/**
+ * The context for a component scope: the tree narrowed to the selection plus its
+ * scope directive, then the selected node and, when a node is selected, its
+ * settable values. Instance scope shows the selected node's own subtree, variant
+ * scope the variant subtree, and every other case the whole board.
+ */
+function componentScopeContext(resolved: ResolvedContext): string[] {
   const {
     workspace,
     resolvedKey,
     activeBoard,
     selectedNodeId,
     selectedNodeRootId,
-    selectedBoardId,
     scope,
-    resourceTargetId,
   } = resolved
-  const lines: string[] = [
-    `Workspace: "${workspace.metadata.label ?? "Untitled"}"`,
-  ]
-
-  if (scope === "theme" && resourceTargetId) {
-    const owner = findResourceBoardForEntry(workspace, resourceTargetId)
-    if (selectedBoardId !== undefined && owner) {
-      lines.push(...resourceBoardEntriesSection(owner.board, owner.boardKey))
-      lines.push(
-        "",
-        `Scope: theme board "${owner.boardKey}". Edit token values on its default theme "${resourceTargetId}" with set_theme_override (path like swatch.primary or fontSize.medium), or target one of the entries above. Call list_theme_tokens or search_theme_tokens for token paths. Call widen_scope for the workspace. Do not edit component nodes.`,
-      )
-    } else {
-      lines.push(
-        "",
-        `Scope: theme variant "${resourceTargetId}". Edit its token values with set_theme_override (themeId "${resourceTargetId}", path like swatch.primary or fontSize.medium). Call list_theme_tokens or search_theme_tokens for token paths. If this is the wrong theme, call widen_scope to see the board's other themes. Do not edit component nodes.`,
-      )
-    }
-    return lines.join("\n")
-  }
-
-  if (scope === "fontCollection" && resourceTargetId) {
-    const owner = findResourceBoardForEntry(workspace, resourceTargetId)
-    lines.push(...fontCollectionValuesSection(resourceTargetId, workspace))
-    if (selectedBoardId !== undefined && owner) {
-      lines.push(...resourceBoardEntriesSection(owner.board, owner.boardKey))
-      lines.push(
-        "",
-        `Scope: font collection board "${owner.boardKey}". Toggle families and weights on its default collection "${resourceTargetId}" with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off), or target an entry above. Call widen_scope for the workspace. Do not edit component nodes.`,
-      )
-    } else {
-      lines.push(
-        "",
-        `Scope: font collection variant "${resourceTargetId}". Toggle families and weights with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off). If this is the wrong collection, call widen_scope to see the board's other collections. Do not edit component nodes.`,
-      )
-    }
-    return lines.join("\n")
-  }
-
-  if (scope === "iconSet" && resourceTargetId) {
-    const owner = findResourceBoardForEntry(workspace, resourceTargetId)
-    lines.push(...iconSetValuesSection(resourceTargetId, workspace))
-    if (selectedBoardId !== undefined && owner) {
-      lines.push(...resourceBoardEntriesSection(owner.board, owner.boardKey))
-      lines.push(
-        "",
-        `Scope: icon set board "${owner.boardKey}". Toggle a subcategory on its default set "${resourceTargetId}" with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>, or target an entry above. Call widen_scope for the workspace. Do not edit component nodes.`,
-      )
-    } else {
-      lines.push(
-        "",
-        `Scope: icon set variant "${resourceTargetId}". Toggle a subcategory with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>. If this is the wrong set, call widen_scope to see the board's other sets. Do not edit component nodes.`,
-      )
-    }
-    return lines.join("\n")
-  }
-
-  if (scope === "workspace") {
-    lines.push(...workspaceShallowSection(workspace).lines)
-    lines.push(...themeIdsSection(workspace))
-    lines.push(
-      "",
-      "Scope: the whole workspace. The request may span many boards, variants, and themes. The boards above are shown shallow, so drill down where the target lives: call get_active_board, describe_node, or widen_scope to expand a board, and find_nodes or list_boards to search. The user selected the workspace, so you may edit across boards without asking first.",
-    )
-    return lines.join("\n")
-  }
+  const lines: string[] = []
 
   if (
     activeBoard &&
@@ -215,21 +250,12 @@ export function buildTurnContext(resolved: ResolvedContext): string {
     // when the node is not on the active board.
     const instanceSubtree =
       scope === "instance" && selectedNodeId !== undefined
-        ? nodeSubtreeSection(
-            workspace,
-            resolvedKey,
-            activeBoard,
-            selectedNodeId,
-          )
+        ? nodeSubtreeSection(workspace, resolvedKey, activeBoard, selectedNodeId)
         : undefined
 
     const variantId =
       selectedNodeId !== undefined
-        ? resolveActiveVariantId(
-            activeBoard,
-            selectedNodeId,
-            selectedNodeRootId,
-          )
+        ? resolveActiveVariantId(activeBoard, selectedNodeId, selectedNodeRootId)
         : undefined
     const variant =
       scope !== "board" && variantId !== undefined
@@ -263,27 +289,35 @@ export function buildTurnContext(resolved: ResolvedContext): string {
       selectedNodeRootId,
     ),
   )
+  lines.push(...selectedComponentValues(resolved))
+  return lines
+}
 
-  const selectedNode = selectedNodeId ? workspace.nodes[selectedNodeId] : undefined
+/**
+ * The settable values for the selected node's component, or [] when nothing is
+ * selected. The values reference theme scopes as `@scope.*`, so the shared token
+ * block is emitted alongside them for the model to resolve the ids.
+ */
+function selectedComponentValues(resolved: ResolvedContext): string[] {
+  const { workspace, selectedNodeId } = resolved
+  const selectedNode = selectedNodeId
+    ? workspace.nodes[selectedNodeId]
+    : undefined
   const selectedCatalogId = selectedNode
     ? getNodeCatalogId(selectedNode, workspace)
     : undefined
-  if (selectedCatalogId) {
-    const catalogIds = new Set([selectedCatalogId])
-    lines.push(...propertyShapeSection(catalogIds))
-    // The settable values reference theme scopes as `@scope.*`, so the shared
-    // token block must be present for the model to resolve the ids.
-    lines.push(...themeTokensSection(workspace))
-    lines.push(
-      ...componentValuesSection(
-        catalogIds,
-        workspace,
-        "Settable values for the selected component (pick a listed choice; omit a key to leave it unchanged):",
-      ),
-    )
-  }
+  if (!selectedCatalogId) return []
 
-  return lines.join("\n")
+  const catalogIds = new Set([selectedCatalogId])
+  return [
+    ...propertyShapeSection(catalogIds),
+    ...themeTokensSection(workspace),
+    ...componentValuesSection(
+      catalogIds,
+      workspace,
+      "Settable values for the selected component (pick a listed choice; omit a key to leave it unchanged):",
+    ),
+  ]
 }
 
 /**
