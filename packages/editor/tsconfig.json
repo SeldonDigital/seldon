@@ -29,8 +29,6 @@
     "node_modules",
     "**/generated-ai-action-schema.json",
     ".next",
-    "dist",
-    "**/*.spec.ts",
-    "**/*.test.ts"
+    "dist"
   ]
 }

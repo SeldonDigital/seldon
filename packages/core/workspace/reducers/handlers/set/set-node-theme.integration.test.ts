@@ -17,7 +17,7 @@ describe("setNodeTheme", () => {
     const nodeId = workspace.boards[ComponentId.BUTTON]!.variants[0]!.id
 
     const next = setNodeTheme(
-      { nodeId, theme: themeId } as ExtractPayload<"set_node_theme">,
+      { nodeId, theme: themeId } as unknown as ExtractPayload<"set_node_theme">,
       workspace,
     )
 

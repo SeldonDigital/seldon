@@ -17,7 +17,7 @@ const workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = workspace.boards[ComponentId.BUTTON]!
-const defaultRoot = board.variants[0]!
+const defaultRoot = board.variants[0]! as ComponentTreeRef
 const userVariant = board.variants[1]!
 
 const insert = (variantId: string, parentId: string) =>
@@ -80,6 +80,6 @@ describe("insertVariantInstance (happy path)", () => {
     )
 
     expect(result).not.toBe(ws)
-    expect(targetRef(result).children.length).toBe(before + 1)
+    expect(targetRef(result).children!.length).toBe(before + 1)
   })
 })

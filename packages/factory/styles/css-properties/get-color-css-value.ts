@@ -89,7 +89,7 @@ export function getColorCSSValue({
 }: {
   color: ColorValue | EmptyValue
   opacity?: PercentageValue | EmptyValue | number
-  brightness?: PercentageValue | EmptyValue
+  brightness?: PercentageValue | EmptyValue | number
   theme: Theme
   useThemeVariableReferences?: boolean
 }): string {
