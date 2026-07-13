@@ -139,6 +139,9 @@ function formatCount(value: number): string {
 function logMetricsSummary(metrics: AgentMetrics | undefined): void {
   if (!metrics) return
   const parts: string[] = [`${(metrics.totalMs / 1000).toFixed(2)} s total`]
+  if (metrics.firstTokenMs !== undefined) {
+    parts.push(`${(metrics.firstTokenMs / 1000).toFixed(2)} s to first token`)
+  }
   if (metrics.loadMs > 0) {
     parts.push(`${(metrics.loadMs / 1000).toFixed(2)} s load`)
   }
@@ -162,11 +165,16 @@ function logMetricsSummary(metrics: AgentMetrics | undefined): void {
  * the next anchor, so multi-line blocks like the node trees roll up correctly.
  */
 const CONTEXT_SECTION_ANCHORS: { label: string; startsWith: string }[] = [
-  { label: "Active board + states", startsWith: "Active board:" },
-  { label: "Node trees", startsWith: "Node trees per variant" },
+  { label: "Active board", startsWith: "Active board:" },
+  { label: "Selection subtree", startsWith: "Selection subtree" },
+  { label: "Variant tree", startsWith: "Active variant" },
+  { label: "Board trees", startsWith: "Node trees per variant" },
+  { label: "Workspace boards", startsWith: "Workspace boards" },
+  { label: "Resource entries", startsWith: "Resource board entries" },
   { label: "Selection", startsWith: "Selected node:" },
   { label: "Property vocabulary", startsWith: "Property vocabulary" },
   { label: "Property value shapes", startsWith: "Property value shapes" },
+  { label: "Settable values", startsWith: "Settable values" },
   { label: "Hierarchy", startsWith: "Hierarchy (level" },
   { label: "Theme ids", startsWith: "Theme ids" },
   { label: "Theme tokens", startsWith: "Theme tokens" },

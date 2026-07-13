@@ -68,25 +68,24 @@ export function createMutationTools(
   const setProperties = defineTool({
     name: "set_properties",
     label: "Set Properties",
-    description: `The primary way to change a node's properties. Give a target, an optional scope, and the properties to set. target is "selection" for the node the user has selected, or { "nodeId" } for a specific node from the context. scope "instance" overrides just that node; scope "all" edits the component source so every instance without its own override follows. The default follows the selection scope (currently "${defaultScope}"). Values may be written loosely: a bare string or number becomes an exact value, and an "@scope.key" string becomes a theme reference. Pass an optional "match" (a label or catalog id) so the tool can find the node if the target is not in the current scope.`,
+    description: `Primary tool to change a node's properties. Values may be loose: a bare string or number becomes an exact value, an "@scope.key" string becomes a theme reference. Default scope is "${defaultScope}".`,
     parameters: Type.Object({
       target: Type.Union(
         [Type.Literal("selection"), Type.Object({ nodeId: Type.String() })],
         {
           description:
-            '"selection" for the selected node, or { "nodeId": "..." } for a node id from the context.',
+            '"selection" for the selected node, or { "nodeId" } from the context.',
         },
       ),
       scope: Type.Optional(
         Type.Union([Type.Literal("instance"), Type.Literal("all")], {
-          description: `Defaults to the selection scope ("${defaultScope}"). "instance" overrides just this node; "all" edits the component source so every instance follows.`,
+          description: `"instance" overrides this node; "all" edits the component source so every instance follows. Default "${defaultScope}".`,
         }),
       ),
       properties: propertyValue,
       match: Type.Optional(
         Type.String({
-          description:
-            "A label or catalog id to locate the node when the target is not in scope.",
+          description: "Label or catalog id to locate the node when out of scope.",
         }),
       ),
     }),
@@ -262,7 +261,7 @@ export function createMutationTools(
     name: "set_font_collection_family_preset",
     label: "Set Font Collection Family Preset",
     description:
-      'Turn a whole family (slot) of the selected font collection on or off. preset "all" enables every weight, "none" disables them. fontCollectionId defaults to the selected font collection.',
+      'Turn a whole family (slot) on or off. preset "all" enables every weight, "none" disables them.',
     parameters: Type.Object({
       fontCollectionId: Type.Optional(
         Type.String({
@@ -293,8 +292,7 @@ export function createMutationTools(
   const setFontCollectionFamilyVariant = defineTool({
     name: "set_font_collection_family_variant",
     label: "Set Font Collection Family Variant",
-    description:
-      "Turn one weight (variant) of a family on or off in the selected font collection. fontCollectionId defaults to the selected font collection.",
+    description: "Turn one weight (variant) of a family on or off.",
     parameters: Type.Object({
       fontCollectionId: Type.Optional(
         Type.String({
@@ -332,7 +330,7 @@ export function createMutationTools(
     name: "set_icon_set_subcategory_preset",
     label: "Set Icon Set Subcategory Preset",
     description:
-      'Turn a whole subcategory of the selected icon set on or off. preset "all" includes every icon, "none" excludes them. iconSetId defaults to the selected icon set.',
+      'Turn a whole subcategory on or off. preset "all" includes every icon, "none" excludes them.',
     parameters: Type.Object({
       iconSetId: Type.Optional(
         Type.String({
@@ -366,7 +364,7 @@ export function createMutationTools(
     name: "set_icon_set_override",
     label: "Set Icon Set Override",
     description:
-      "Turn a single icon of the selected icon set on or off. path is includedIcons.<iconId>; value is true to include, false to exclude. iconSetId defaults to the selected icon set.",
+      "Turn a single icon on or off. path is includedIcons.<iconId>; value true includes, false excludes.",
     parameters: Type.Object({
       iconSetId: Type.Optional(
         Type.String({
@@ -417,7 +415,7 @@ export function createMutationTools(
     name: "apply_actions",
     label: "Apply Actions",
     description:
-      'Apply one or more workspace actions in a single call, in order, against the working copy. Prefer this over calling tools repeatedly: put every edit for the request in one call. It is also the escape hatch for any action without a dedicated tool. Each item is { "type", "payload" }, where "type" is an allowed action type and "payload" matches that action\'s shape. Actions run top to bottom, so create a node before setting its properties. Call get_action_spec when unsure of an action\'s payload keys. Each action is reported on its own line; resend only the ones marked "rejected".',
+      'Apply several workspace actions in one call, in order. Prefer this over repeated calls: put every edit in one call. Also the escape hatch for actions without a dedicated tool. Each item is { "type", "payload" }; they run top to bottom, so create a node before setting its properties. Call get_action_spec when unsure of payload keys. Resend only items marked "rejected".',
     parameters: Type.Object({
       actions: Type.Array(
         Type.Object({
@@ -453,19 +451,28 @@ export function createMutationTools(
     },
   })
 
-  return [
+  // Resource mutation tools only make sense in their own scope, so they are
+  // gated out of node and board turns to keep the tool schema small. Workspace
+  // scope spans everything, and an unset scope keeps them for safety.
+  const turnScope = resolved.scope
+  const includeAll = turnScope === undefined || turnScope === "workspace"
+
+  const tools: ToolDefinition[] = [
     setProperties,
     setNodeProperties,
     setComponentProperties,
     addComponent,
     insertVariantInstance,
     removeInstance,
-    setThemeOverride,
-    setFontCollectionFamilyPreset,
-    setFontCollectionFamilyVariant,
-    setIconSetSubcategoryPreset,
-    setIconSetOverride,
     setBoardLabel,
     applyActionsTool,
   ]
+  if (includeAll || turnScope === "theme") tools.push(setThemeOverride)
+  if (includeAll || turnScope === "fontCollection") {
+    tools.push(setFontCollectionFamilyPreset, setFontCollectionFamilyVariant)
+  }
+  if (includeAll || turnScope === "iconSet") {
+    tools.push(setIconSetSubcategoryPreset, setIconSetOverride)
+  }
+  return tools
 }

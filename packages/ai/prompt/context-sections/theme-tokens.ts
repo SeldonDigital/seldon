@@ -12,7 +12,7 @@ const TITLE =
  * are the scopes worth referencing from component properties; structural theme
  * metadata is left out to keep the list actionable.
  */
-const TOKEN_SCOPES = [
+export const TOKEN_SCOPES = [
   "swatch",
   "fontSize",
   "fontWeight",

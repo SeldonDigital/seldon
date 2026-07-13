@@ -120,6 +120,12 @@ export interface AgentMetrics {
   totalMs: number
   /** Model load time across calls, in milliseconds. */
   loadMs: number
+  /**
+   * Wall time from the prompt call to the first streamed model event, in
+   * milliseconds. Covers model load and prompt prefill, so it measures the gap
+   * before the UI shows any thinking, text, or tool activity.
+   */
+  firstTokenMs?: number
   /** Input tokens processed across calls. */
   promptTokens: number
   /** Output tokens generated across calls. */

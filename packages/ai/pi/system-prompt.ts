@@ -71,10 +71,11 @@ Editing node properties with set_properties:
   scope, so the tool can find it in one step instead of a search loop.
 
 Finding a target you cannot see:
-- The context is scoped to the active variant or board. If the target is not
-  there, escalate once: call get_active_board for the other variants, or
-  find_nodes / list_boards for the whole workspace. Do not re-search the same
-  scope.
+- The context is scoped to the selection: an instance's own subtree, a variant,
+  or a board. If the target is not there, call widen_scope to climb exactly one
+  level up (parent, then variant, then board, then a shallow workspace), or
+  find_nodes / list_boards to jump straight to the whole workspace. Do not
+  re-search the same scope.
 - A node found only through find_nodes or list_boards is outside what the user is
   viewing. Name the board it lives on and ask the user to confirm before editing
   it. Make no such edit until the user agrees; reply with the question and stop.

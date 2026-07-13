@@ -1,4 +1,5 @@
 import { findComponentSchema } from "@seldon/core/components/catalog"
+import { parseThemeRef } from "@seldon/core/helpers/theme/get-theme-key-components"
 import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants/shared/compound-properties"
 import { joinCompoundFacetKey } from "@seldon/core/properties/schemas/helpers/property-path"
 import {
@@ -13,6 +14,10 @@ import type { Workspace } from "@seldon/core/workspace/types"
 
 import { SHORTHAND_SIDES, propertyShape } from "../property-taxonomy"
 import { section } from "./section"
+import { TOKEN_SCOPES } from "./theme-tokens"
+
+/** Scopes the shared Theme tokens block lists, so a facet can reference `@scope.*`. */
+const SHARED_TOKEN_SCOPES: readonly string[] = TOKEN_SCOPES
 
 const TITLE =
   "Settable values (pick from the choices listed; a key with only a free value shape is omitted here):"
@@ -80,6 +85,50 @@ function annotateThemeToken(
   return token
 }
 
+/**
+ * The theme scope a facet's tokens belong to, so its choices can point at the
+ * shared Theme tokens block instead of reprinting the ids. Ordinal and family
+ * tokens embed their scope (`@gap.small`), so the first token parses it. Color
+ * and look tokens are bare, but each bare id set is unique to one theme table,
+ * so a membership check names the scope. Returns null when nothing matches.
+ */
+function detectScope(tokens: string[], theme?: Theme): string | null {
+  const parsed = parseThemeRef(tokens[0])
+  if (parsed) return parsed.section
+  if (!theme) return null
+  for (const scope of SHARED_TOKEN_SCOPES) {
+    const table = (theme as unknown as Record<string, unknown>)[scope]
+    if (
+      table &&
+      typeof table === "object" &&
+      tokens.every((token) => token in (table as Record<string, unknown>))
+    ) {
+      return scope
+    }
+  }
+  return null
+}
+
+/**
+ * The theme choices for one facet. When the scope is listed in the shared Theme
+ * tokens block, this returns a compact `@scope.*` reference so the ids are not
+ * reprinted per facet. Otherwise it falls back to the annotated id list, so
+ * scopes the shared block omits (fontFamily, blur, spread) still resolve.
+ */
+function themeChoicePart(
+  schemaKey: string,
+  valueType: "themeOrdinal" | "themeCategorical",
+  theme?: Theme,
+): string | null {
+  const tokens = getPropertyOptions(schemaKey, valueType, theme).map(String)
+  if (tokens.length === 0) return null
+  const scope = detectScope(tokens, theme)
+  if (scope && SHARED_TOKEN_SCOPES.includes(scope)) return `@${scope}.*`
+  return tokens
+    .map((token) => annotateThemeToken(token, schemaKey, theme))
+    .join(" / ")
+}
+
 function describeChoices(schemaKey: string, theme?: Theme): string | null {
   const schema = getPropertySchema(schemaKey)
   if (!schema) return null
@@ -91,16 +140,12 @@ function describeChoices(schemaKey: string, theme?: Theme): string | null {
     if (options.length > 0) parts.push(options.join(" / "))
   }
   if (supports.includes("themeOrdinal")) {
-    const tokens = getPropertyOptions(schemaKey, "themeOrdinal", theme)
-      .map(String)
-      .map((token) => annotateThemeToken(token, schemaKey, theme))
-    if (tokens.length > 0) parts.push(tokens.join(" / "))
+    const part = themeChoicePart(schemaKey, "themeOrdinal", theme)
+    if (part) parts.push(part)
   }
   if (supports.includes("themeCategorical")) {
-    const tokens = getPropertyOptions(schemaKey, "themeCategorical", theme)
-      .map(String)
-      .map((token) => annotateThemeToken(token, schemaKey, theme))
-    if (tokens.length > 0) parts.push(tokens.join(" / "))
+    const part = themeChoicePart(schemaKey, "themeCategorical", theme)
+    if (part) parts.push(part)
   }
 
   const hasChoice = parts.length > 0

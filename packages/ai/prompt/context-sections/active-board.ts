@@ -1,3 +1,4 @@
+import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type {
   Board,
@@ -23,6 +24,7 @@ function walkTree(
   depth: number,
   lines: string[],
   visited: EntryNode[],
+  maxDepth: number = Number.POSITIVE_INFINITY,
 ): void {
   for (const ref of refs) {
     const node = workspace.nodes[ref.id]
@@ -41,10 +43,23 @@ function walkTree(
     } else {
       lines.push(`${indent}- ${ref.id} (no node entry)`)
     }
-    if (ref.children && ref.children.length > 0) {
-      walkTree(ref.children, workspace, depth + 1, lines, visited)
+    if (depth < maxDepth && ref.children && ref.children.length > 0) {
+      walkTree(ref.children, workspace, depth + 1, lines, visited, maxDepth)
     }
   }
+}
+
+/** Collects the resolved catalog ids from a set of visited nodes. */
+function collectCatalogIds(
+  visited: EntryNode[],
+  workspace: Workspace,
+): Set<string> {
+  const ids = new Set<string>()
+  for (const node of visited) {
+    const catalogId = getNodeCatalogId(node, workspace)
+    if (catalogId) ids.add(catalogId)
+  }
+  return ids
 }
 
 /**
@@ -151,4 +166,75 @@ export function activeVariantSection(
   }
 
   return { lines, treeCatalogIds }
+}
+
+/**
+ * Context section: Selection subtree (instance scope).
+ *
+ * The narrowest scope of all: the selected node and everything under it, with no
+ * parents or siblings. An instance edit is a local override, so the model rarely
+ * needs the wider column. It walks down from the node's tree ref on the active
+ * board and returns empty lines when the id is not on the board, so the caller
+ * can fall back to the variant subtree.
+ */
+export function nodeSubtreeSection(
+  workspace: Workspace,
+  resolvedKey: BoardKey,
+  activeBoard: Board,
+  nodeId: string,
+): { lines: string[]; treeCatalogIds: Set<string> } {
+  const lines: string[] = []
+  if (activeBoard.type !== "component") {
+    return { lines, treeCatalogIds: new Set<string>() }
+  }
+
+  let target: ComponentTreeRef | undefined
+  walkBoardTreeRefs(activeBoard.variants, (ref) => {
+    if (ref.id !== nodeId) return
+    target = ref
+    return true
+  })
+  if (!target) return { lines, treeCatalogIds: new Set<string>() }
+
+  const node = workspace.nodes[nodeId]
+  const label = node?.label ? ` "${node.label}"` : ""
+  lines.push(
+    "",
+    "The context is scoped to the selected node and its descendants. Only the ids below are in scope for a direct edit.",
+    "",
+    `Active board: ${resolvedKey} -> ${activeBoard.catalogId} -> "${activeBoard.label}"`,
+    `Selection subtree ${nodeId}${label} (use these ids for nodeId / parentId / instanceId):`,
+  )
+
+  const visited: EntryNode[] = []
+  walkTree([target], workspace, 1, lines, visited)
+  return { lines, treeCatalogIds: collectCatalogIds(visited, workspace) }
+}
+
+/**
+ * Context section: Workspace (shallow).
+ *
+ * Broad, cross-board work starts with a wide but shallow map: every component
+ * board walked only a few levels deep, so the model can locate the right board
+ * before drilling in. Deeper nodes stay behind widen_scope, describe_node, and
+ * get_active_board, keeping the initial prompt small.
+ */
+export function workspaceShallowSection(
+  workspace: Workspace,
+  maxDepth: number = 3,
+): { lines: string[]; treeCatalogIds: Set<string> } {
+  const lines: string[] = [
+    "",
+    `Workspace boards (each walked ${maxDepth} levels deep; call widen_scope, describe_node, or get_active_board to go deeper):`,
+  ]
+  const visited: EntryNode[] = []
+  for (const [boardKey, board] of Object.entries(workspace.boards)) {
+    if (board.type !== "component") continue
+    lines.push(`Board ${boardKey} -> ${board.catalogId} -> "${board.label}":`)
+    const defaultVariant = board.variants[0]
+    if (defaultVariant) {
+      walkTree([defaultVariant], workspace, 1, lines, visited, maxDepth)
+    }
+  }
+  return { lines, treeCatalogIds: collectCatalogIds(visited, workspace) }
 }

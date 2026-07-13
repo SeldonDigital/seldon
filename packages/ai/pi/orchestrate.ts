@@ -49,6 +49,12 @@ export async function chatToActionsPi(
   const toolCalls: AgentToolCall[] = []
   let thinkingStart: number | undefined
   let thinkingMs: number | undefined
+  // Absolute time of the first streamed model output, whether thinking, text, or
+  // a tool call. The gap before it covers model load and prompt prefill.
+  let firstEventAt: number | undefined
+  const markFirstEvent = () => {
+    if (firstEventAt === undefined) firstEventAt = Date.now()
+  }
   // Marks the thinking phase complete on the first non-thinking event, so the UI
   // can switch its label from "Thinking..." to the elapsed time while the reply
   // still streams.
@@ -63,14 +69,17 @@ export async function chatToActionsPi(
     } else if (event.type === "message_update") {
       const message = event.assistantMessageEvent
       if (message.type === "thinking_delta") {
+        markFirstEvent()
         if (thinkingStart === undefined) thinkingStart = Date.now()
         thinking += message.delta
         onEvent?.({ type: "thinking", delta: message.delta })
       } else if (message.type === "text_delta") {
+        markFirstEvent()
         endThinking()
         onEvent?.({ type: "text", delta: message.delta })
       }
     } else if (event.type === "tool_execution_start") {
+      markFirstEvent()
       endThinking()
       toolCalls.push({ name: event.toolName, ok: true })
       onEvent?.({ type: "tool", name: event.toolName })
@@ -86,6 +95,8 @@ export async function chatToActionsPi(
   const started = Date.now()
   await session.prompt(prompt)
   const totalMs = Date.now() - started
+  const firstTokenMs =
+    firstEventAt !== undefined ? firstEventAt - started : undefined
 
   endThinking()
   if (signal) signal.removeEventListener("abort", onAbort)
@@ -99,6 +110,7 @@ export async function chatToActionsPi(
     calls,
     totalMs,
     loadMs: 0,
+    firstTokenMs,
     promptTokens: stats.tokens.input,
     outputTokens,
     outputTokensPerSecond:
