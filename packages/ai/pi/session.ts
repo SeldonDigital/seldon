@@ -12,7 +12,12 @@ import {
   type ResolvedContext,
   resolveContext,
 } from "./editor-context"
-import { buildOllamaModel, createPiAuth, supportsThinking } from "./model"
+import {
+  buildOllamaModel,
+  clampedThinkingLevel,
+  createPiAuth,
+  supportsThinking,
+} from "./model"
 import type { ThinkingLevelOption } from "./model"
 import { buildPiSystemPrompt } from "./system-prompt"
 import { createContextTools } from "./tools/context"
@@ -77,9 +82,12 @@ export async function createSeldonSession(
   // `enable_thinking` kwarg. Leaving it false makes Pi send nothing, and qwen's
   // chat template then defaults thinking ON, so "off" would never disable it.
   // On/off is driven by the session thinking level: a level enables thinking,
-  // `undefined` sends `enable_thinking: false`.
+  // `undefined` sends `enable_thinking: false`. Clamp asks each model for the
+  // least reasoning it supports: qwen3 turns off, gpt-oss drops to low effort.
   const thinkingCapable = supportsThinking(options.model)
-  const requestedLevel = options.noThink ? "off" : options.thinkingLevel
+  const requestedLevel = options.noThink
+    ? clampedThinkingLevel(options.model)
+    : options.thinkingLevel
   const thinkingOn =
     thinkingCapable &&
     requestedLevel !== undefined &&

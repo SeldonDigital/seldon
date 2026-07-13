@@ -44,7 +44,7 @@ function buildTranscript(
   const blocks: ReactNode[] = []
   for (const turn of turns) {
     blocks.push(userBlock(turn))
-    if (turn.thinking) blocks.push(thinkingBlock(turn))
+    if (turn.thinking || turn.clamped) blocks.push(thinkingBlock(turn))
     if (showTools && hasToolActivity(turn)) {
       blocks.push(toolsBlock(turn))
     }
@@ -84,6 +84,7 @@ function thinkingBlock(turn: HariTurn): ReactNode {
       key={`${turn.id}-thinking`}
       text={turn.thinking ?? ""}
       durationMs={turn.thinkingMs}
+      clamped={turn.clamped}
     />
   )
 }

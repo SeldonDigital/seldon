@@ -2,6 +2,7 @@ import type {
   Model,
   OpenAICompletionsCompat,
   ThinkingLevel,
+  ThinkingLevelMap,
 } from "@earendil-works/pi-ai"
 import { AuthStorage, ModelRegistry } from "@earendil-works/pi-coding-agent"
 
@@ -17,14 +18,13 @@ const OLLAMA_PROVIDER = "ollama"
 
 /**
  * Thinking level the caller may request. Pi's own `ThinkingLevel` omits `off`;
- * we add it so the editor control can turn reasoning off entirely, which is the
- * fast default for schema-shaped edits.
+ * we add it for the internal Clamp path, which turns reasoning off entirely on
+ * models that support it. The menu does not offer `off`; Clamp is that control.
  */
 export type ThinkingLevelOption = "off" | ThinkingLevel
 
-/** The thinking levels the config endpoint offers, ordered off to most. */
+/** The thinking levels the config endpoint offers, ordered least to most. */
 export const THINKING_LEVEL_OPTIONS: ThinkingLevelOption[] = [
-  "off",
   "minimal",
   "low",
   "medium",
@@ -53,11 +53,23 @@ export function supportsThinking(model?: string): boolean {
 }
 
 /**
+ * The thinking level Clamp requests for a model. qwen3 reads the chat-template
+ * `enable_thinking` kwarg, so it turns reasoning fully off. gpt-oss always
+ * reasons over Ollama's endpoint and only accepts an effort, so Clamp maps it to
+ * the lowest effort instead. Other models have no thinking pass, so `off` is a
+ * no-op that matches their default.
+ */
+export function clampedThinkingLevel(model?: string): ThinkingLevelOption {
+  const id = resolvePiModelId(model).toLowerCase()
+  return id.includes("gpt-oss") ? "low" : "off"
+}
+
+/**
  * OpenAI-compatible overrides for a local Ollama model. Ollama does not
  * understand the `developer` role, so the system prompt goes through as a
  * `system` message. Thinking-capable models use a per-family thinking control:
- * qwen3 reads `chat_template_kwargs.enable_thinking`, and gpt-oss reasons at its
- * default since Ollama does not accept `reasoning_effort` over this endpoint.
+ * qwen3 reads `chat_template_kwargs.enable_thinking`, and gpt-oss takes an
+ * OpenAI-style `reasoning_effort` that Ollama accepts for it.
  */
 function ollamaCompat(id: string): OpenAICompletionsCompat {
   const compat: OpenAICompletionsCompat = { supportsDeveloperRole: false }
@@ -66,9 +78,20 @@ function ollamaCompat(id: string): OpenAICompletionsCompat {
     compat.thinkingFormat = "qwen-chat-template"
     compat.supportsReasoningEffort = false
   } else if (lower.includes("gpt-oss")) {
-    compat.supportsReasoningEffort = false
+    compat.supportsReasoningEffort = true
   }
   return compat
+}
+
+/**
+ * Maps pi thinking levels to the efforts a model accepts. gpt-oss over Ollama
+ * only takes `low`, `medium`, `high`, `max`, or `none`, so the levels it does
+ * not know fold to the nearest valid effort. `low`, `medium`, and `high` pass
+ * through unmapped. Models without an entry send their level unchanged.
+ */
+function thinkingLevelMap(id: string): ThinkingLevelMap | undefined {
+  if (!id.toLowerCase().includes("gpt-oss")) return undefined
+  return { minimal: "low", xhigh: "high", max: "high" }
 }
 
 /**
@@ -93,6 +116,7 @@ export function buildOllamaModel(options: {
     provider: OLLAMA_PROVIDER,
     baseUrl: `${host}/v1`,
     reasoning: options.reasoning ?? false,
+    thinkingLevelMap: thinkingLevelMap(id),
     input: ["text"],
     cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
     contextWindow: 32768,

@@ -559,6 +559,23 @@ body {
   border: var(--hairline) solid transparent;
 }
 
+.sdn-button-toggle {
+  background-color: var(--sdn-swatch-primary-b75);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sdn-gaps-compact);
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  font-size: var(--sdn-font-size-medium);
+  padding: var(--sdn-paddings-tight);
+  border-radius: 99999px;
+  border: var(--hairline) solid var(--sdn-swatch-primary);
+}
+
 .sdn-button-tools {
   display: flex;
   background-color: var(--sdn-swatch-swatch4-b50);
@@ -1360,6 +1377,22 @@ body {
   border-style: solid;
 }
 
+.sdn-message-tools {
+  cursor: default;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: var(--sdn-gaps-tight);
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: var(--sdn-paddings-compact);
+  border-radius: var(--sdn-corners-compact);
+  border: var(--hairline) solid transparent;
+}
+
 .sdn-message-user {
   background-color: color-mix(
     in srgb,
@@ -1884,14 +1917,6 @@ body {
   border-top-left-radius: 0px;
 }
 
-.sdn-button--9yoo {
-  padding-top: var(--sdn-cmp-optical-padding-vertical-xsmall);
-  padding-right: var(--sdn-cmp-optical-padding-right-xsmall);
-  padding-bottom: var(--sdn-cmp-optical-padding-vertical-xsmall);
-  padding-left: var(--sdn-cmp-optical-padding-left-xsmall);
-  font-size: var(--sdn-font-size-xsmall);
-}
-
 .sdn-button--aket {
   border: unset;
   padding-top: var(--sdn-cmp-optical-padding-vertical-small);
@@ -2413,6 +2438,21 @@ body {
   padding: var(--sdn-paddings-tight);
 }
 
+.sdn-frame--i5kj {
+  align-self: unset;
+  flex: unset;
+  flex-direction: row;
+  gap: var(--sdn-gaps-compact);
+  margin-top: 0;
+  margin-right: var(--sdn-margins-cozy);
+  margin-bottom: 0;
+  margin-left: var(--sdn-margins-cozy);
+  width: fit-content;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 0;
+}
+
 .sdn-frame--ieew {
   flex-direction: row;
   align-items: center;
@@ -2527,6 +2567,15 @@ body {
   padding: var(--sdn-paddings-cozy);
 }
 
+.sdn-frame--sv6r {
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  gap: var(--sdn-gaps-compact);
+  padding: 0;
+  margin: 0;
+}
+
 .sdn-frame--tv9y {
   align-self: unset;
   flex-direction: row;
@@ -2594,8 +2643,11 @@ body {
 }
 
 .sdn-icon--8ds9 {
-  font-size: var(--sdn-cmp-auto-fit-font-size-medium);
   color: var(--sdn-swatch-gray);
+}
+
+.sdn-icon--9ouj {
+  color: var(--sdn-hc-on-white);
 }
 
 .sdn-icon--eyw9 {
@@ -2614,7 +2666,6 @@ body {
 }
 
 .sdn-icon--gm8j {
-  font-size: var(--sdn-cmp-auto-fit-font-size-medium);
   color: var(--sdn-swatch-negative);
 }
 
@@ -2638,6 +2689,11 @@ body {
 .sdn-icon--nlt7 {
   font-size: var(--sdn-cmp-auto-fit-font-size-medium);
   color: var(--sdn-hc-on-white);
+}
+
+.sdn-icon--ovkd {
+  font-size: var(--sdn-cmp-auto-fit-font-size-medium);
+  color: var(--sdn-hc-on-primary-b75);
 }
 
 .sdn-icon--pbp5 {
@@ -3000,6 +3056,14 @@ body {
   letter-spacing: 0.1px;
 }
 
+.sdn-text-description--aeeo {
+  align-self: unset;
+  width: fit-content;
+  font-size: var(--sdn-font-size-xsmall);
+  line-height: var(--sdn-line-height-solid);
+  letter-spacing: 0.1px;
+}
+
 .sdn-text-description--choa {
   font-size: var(--sdn-font-size-xsmall);
 }
@@ -3044,6 +3108,16 @@ body {
 .sdn-text-label--7mza {
   color: var(--sdn-hc-on-primary);
   font-size: var(--sdn-cmp-auto-fit-font-size-medium);
+}
+
+.sdn-text-label--aftu {
+  align-self: unset;
+  flex-shrink: unset;
+  color: var(--sdn-hc-on-primary);
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: var(--sdn-cmp-auto-fit-font-size-xsmall);
+  text-transform: uppercase;
 }
 
 .sdn-text-label--bwn4 {
@@ -3226,15 +3300,6 @@ body {
   color: var(--sdn-swatch-gray);
   flex: 1 0 0;
   min-width: 0;
-}
-
-.sdn-text-label--vrf8 {
-  align-self: unset;
-  flex-shrink: unset;
-  color: var(--sdn-hc-on-primary);
-  flex: 1 0 0;
-  min-width: 0;
-  font-size: var(--sdn-cmp-auto-fit-font-size-xsmall);
 }
 
 .sdn-text-label--wxqf {
@@ -5862,5 +5927,98 @@ body {
 }
 
 .sdn-button-segmented.sdn-state-dragged .sdn-icon--umgs {
+  color: var(--sdn-hc-on-primary-bn20);
+}
+
+.sdn-button-toggle:focus-visible,
+.sdn-button-toggle:has(:focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-punch-b75) 20%,
+    transparent
+  );
+  border: var(--hairline) solid var(--sdn-swatch-punch);
+}
+
+.sdn-button-toggle:focus-visible .sdn-icon--ovkd,
+.sdn-button-toggle:has(:focus-visible) .sdn-icon--ovkd {
+  color: var(--sdn-swatch-punch);
+}
+
+.sdn-button-toggle[aria-selected="true"] {
+  background-color: var(--sdn-swatch-offWhite-b75);
+}
+
+.sdn-button-toggle[aria-selected="true"] .sdn-icon--ovkd {
+  color: var(--sdn-swatch-active);
+}
+
+.sdn-button-toggle:disabled,
+.sdn-button-toggle[aria-disabled="true"] {
+  background-color: unset;
+  border: var(--hairline) solid var(--sdn-swatch-gray);
+}
+
+.sdn-button-toggle:disabled .sdn-icon--ovkd,
+.sdn-button-toggle[aria-disabled="true"] .sdn-icon--ovkd {
+  color: var(--sdn-swatch-gray);
+}
+
+.sdn-button-toggle[aria-invalid="true"] {
+  background-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-negative-b75) 20%,
+    transparent
+  );
+  border: var(--hairline) solid var(--sdn-swatch-negative);
+}
+
+.sdn-button-toggle[aria-invalid="true"] .sdn-icon--ovkd {
+  color: var(--sdn-swatch-negative);
+}
+
+.sdn-button-toggle.sdn-state-activated {
+  background-color: var(--sdn-swatch-offWhite);
+}
+
+.sdn-button-toggle.sdn-state-activated .sdn-icon--ovkd {
+  color: var(--sdn-swatch-active);
+}
+
+.sdn-button-toggle:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-primary-b75) 20%,
+    transparent
+  );
+  border: var(--hairline) solid
+    color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
+}
+
+.sdn-button-toggle:hover .sdn-icon--ovkd {
+  opacity: 0.8;
+  color: var(--sdn-hc-on-offWhite);
+}
+
+.sdn-button-toggle:active {
+  background-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-primary-b75) 40%,
+    transparent
+  );
+  border: var(--hairline) solid
+    color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
+}
+
+.sdn-button-toggle:active .sdn-icon--ovkd {
+  opacity: 0.6;
+  color: var(--sdn-hc-on-offWhite);
+}
+
+.sdn-button-toggle.sdn-state-dragged {
+  background-color: var(--sdn-swatch-primary-bn20);
+}
+
+.sdn-button-toggle.sdn-state-dragged .sdn-icon--ovkd {
   color: var(--sdn-hc-on-primary-bn20);
 }

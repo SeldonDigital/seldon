@@ -11,9 +11,9 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { Button, ButtonProps } from "../elements/Button"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
+import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
 import { Chip, ChipProps } from "../elements/Chip"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
@@ -31,26 +31,32 @@ export interface PanelHariProps extends HTMLAttributes<HTMLElement> {
   seldonRefs?: Record<string, Record<string, unknown>>
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
-  buttonIconic?: ButtonIconicProps | null
-  icon?: IconProps | null
   frame?: FrameProps | null
-  frame2?: FrameProps | null
-  textarea?: TextareaProps | null
-  buttonIconic2?: ButtonIconicProps | null
+  buttonToggle?: ButtonToggleProps | null
+  icon?: IconProps | null
+  buttonToggle2?: ButtonToggleProps | null
   icon2?: IconProps | null
+  buttonToggle3?: ButtonToggleProps | null
+  icon3?: IconProps | null
+  buttonIconic?: ButtonIconicProps | null
+  icon4?: IconProps | null
+  buttonIconic2?: ButtonIconicProps | null
+  icon5?: IconProps | null
+  frame2?: FrameProps | null
   frame3?: FrameProps | null
+  textarea?: TextareaProps | null
   frame4?: FrameProps | null
+  frame5?: FrameProps | null
   buttonMenu?: ButtonMenuProps | null
   textLabel?: TextLabelProps | null
-  icon3?: IconProps | null
+  icon6?: IconProps | null
   buttonMenu2?: ButtonMenuProps | null
   textLabel2?: TextLabelProps | null
-  icon4?: IconProps | null
+  icon7?: IconProps | null
   chip?: ChipProps | null
   textLabel3?: TextLabelProps | null
-  button?: ButtonProps | null
-  icon5?: IconProps | null
-  textLabel4?: TextLabelProps | null
+  buttonIconic3?: ButtonIconicProps | null
+  icon8?: IconProps | null
 }
 
 /*****
@@ -72,26 +78,32 @@ export function PanelHari({
   className = "",
   bar = sdn.bar,
   textTitle,
-  buttonIconic = sdn.buttonIconic,
-  icon = sdn.icon,
   frame = sdn.frame,
-  frame2 = sdn.frame2,
-  textarea,
-  buttonIconic2,
+  buttonToggle,
+  icon = sdn.icon,
+  buttonToggle2,
   icon2 = sdn.icon2,
+  buttonToggle3,
+  icon3 = sdn.icon3,
+  buttonIconic = sdn.buttonIconic,
+  icon4 = sdn.icon4,
+  buttonIconic2,
+  icon5 = sdn.icon5,
+  frame2 = sdn.frame2,
   frame3 = sdn.frame3,
+  textarea,
   frame4 = sdn.frame4,
+  frame5 = sdn.frame5,
   buttonMenu,
   textLabel,
-  icon3 = sdn.icon3,
+  icon6 = sdn.icon6,
   buttonMenu2,
   textLabel2,
-  icon4 = sdn.icon4,
+  icon7 = sdn.icon7,
   chip,
   textLabel3,
-  button,
-  icon5 = sdn.icon5,
-  textLabel4,
+  buttonIconic3,
+  icon8 = sdn.icon8,
   children,
   seldonRefs,
   ...props
@@ -120,16 +132,26 @@ export function PanelHari({
           ),
         },
   )
-  const buttonIconicProps = applyRef(
+  const frameProps = applyRef(
     seldonRefs,
-    buttonIconic === null
+    frame === null
       ? null
       : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
+          ...sdn.frame,
+          ...frame,
+          className: combineClassNames(sdn.frame?.className, frame?.className),
+        },
+  )
+  const buttonToggleProps = applyRef(
+    seldonRefs,
+    buttonToggle === null
+      ? null
+      : {
+          ...sdn.buttonToggle,
+          ...buttonToggle,
           className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
+            sdn.buttonToggle?.className,
+            buttonToggle?.className,
           ),
         },
   )
@@ -143,14 +165,96 @@ export function PanelHari({
           className: combineClassNames(sdn.icon?.className, icon?.className),
         },
   )
-  const frameProps = applyRef(
+  const buttonToggle2Props = applyRef(
     seldonRefs,
-    frame === null
+    buttonToggle2 === null
       ? null
       : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
+          ...sdn.buttonToggle2,
+          ...buttonToggle2,
+          className: combineClassNames(
+            sdn.buttonToggle2?.className,
+            buttonToggle2?.className,
+          ),
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
+    icon2 === null
+      ? null
+      : {
+          ...sdn.icon2,
+          ...icon2,
+          className: combineClassNames(sdn.icon2?.className, icon2?.className),
+        },
+  )
+  const buttonToggle3Props = applyRef(
+    seldonRefs,
+    buttonToggle3 === null
+      ? null
+      : {
+          ...sdn.buttonToggle3,
+          ...buttonToggle3,
+          className: combineClassNames(
+            sdn.buttonToggle3?.className,
+            buttonToggle3?.className,
+          ),
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
+    icon3 === null
+      ? null
+      : {
+          ...sdn.icon3,
+          ...icon3,
+          className: combineClassNames(sdn.icon3?.className, icon3?.className),
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
+    buttonIconic === null
+      ? null
+      : {
+          ...sdn.buttonIconic,
+          ...buttonIconic,
+          className: combineClassNames(
+            sdn.buttonIconic?.className,
+            buttonIconic?.className,
+          ),
+        },
+  )
+  const icon4Props = applyRef(
+    seldonRefs,
+    icon4 === null
+      ? null
+      : {
+          ...sdn.icon4,
+          ...icon4,
+          className: combineClassNames(sdn.icon4?.className, icon4?.className),
+        },
+  )
+  const buttonIconic2Props = applyRef(
+    seldonRefs,
+    buttonIconic2 === null
+      ? null
+      : {
+          ...sdn.buttonIconic2,
+          ...buttonIconic2,
+          className: combineClassNames(
+            sdn.buttonIconic2?.className,
+            buttonIconic2?.className,
+          ),
+        },
+  )
+  const icon5Props = applyRef(
+    seldonRefs,
+    icon5 === null
+      ? null
+      : {
+          ...sdn.icon5,
+          ...icon5,
+          className: combineClassNames(sdn.icon5?.className, icon5?.className),
         },
   )
   const frame2Props = applyRef(
@@ -163,6 +267,19 @@ export function PanelHari({
           className: combineClassNames(
             sdn.frame2?.className,
             frame2?.className,
+          ),
+        },
+  )
+  const frame3Props = applyRef(
+    seldonRefs,
+    frame3 === null
+      ? null
+      : {
+          ...sdn.frame3,
+          ...frame3,
+          className: combineClassNames(
+            sdn.frame3?.className,
+            frame3?.className,
           ),
         },
   )
@@ -179,42 +296,6 @@ export function PanelHari({
           ),
         },
   )
-  const buttonIconic2Props = applyRef(
-    seldonRefs,
-    buttonIconic2 === null
-      ? null
-      : {
-          ...sdn.buttonIconic2,
-          ...buttonIconic2,
-          className: combineClassNames(
-            sdn.buttonIconic2?.className,
-            buttonIconic2?.className,
-          ),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const frame3Props = applyRef(
-    seldonRefs,
-    frame3 === null
-      ? null
-      : {
-          ...sdn.frame3,
-          ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
-        },
-  )
   const frame4Props = applyRef(
     seldonRefs,
     frame4 === null
@@ -225,6 +306,19 @@ export function PanelHari({
           className: combineClassNames(
             sdn.frame4?.className,
             frame4?.className,
+          ),
+        },
+  )
+  const frame5Props = applyRef(
+    seldonRefs,
+    frame5 === null
+      ? null
+      : {
+          ...sdn.frame5,
+          ...frame5,
+          className: combineClassNames(
+            sdn.frame5?.className,
+            frame5?.className,
           ),
         },
   )
@@ -254,14 +348,14 @@ export function PanelHari({
           ),
         },
   )
-  const icon3Props = applyRef(
+  const icon6Props = applyRef(
     seldonRefs,
-    icon3 === null
+    icon6 === null
       ? null
       : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
+          ...sdn.icon6,
+          ...icon6,
+          className: combineClassNames(sdn.icon6?.className, icon6?.className),
         },
   )
   const buttonMenu2Props = applyRef(
@@ -290,14 +384,14 @@ export function PanelHari({
           ),
         },
   )
-  const icon4Props = applyRef(
+  const icon7Props = applyRef(
     seldonRefs,
-    icon4 === null
+    icon7 === null
       ? null
       : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
+          ...sdn.icon7,
+          ...icon7,
+          className: combineClassNames(sdn.icon7?.className, icon7?.className),
         },
   )
   const chipProps = applyRef(
@@ -323,40 +417,27 @@ export function PanelHari({
           ),
         },
   )
-  const buttonProps = applyRef(
+  const buttonIconic3Props = applyRef(
     seldonRefs,
-    button === null
+    buttonIconic3 === null
       ? null
       : {
-          ...sdn.button,
-          ...button,
+          ...sdn.buttonIconic3,
+          ...buttonIconic3,
           className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
+            sdn.buttonIconic3?.className,
+            buttonIconic3?.className,
           ),
         },
   )
-  const icon5Props = applyRef(
+  const icon8Props = applyRef(
     seldonRefs,
-    icon5 === null
+    icon8 === null
       ? null
       : {
-          ...sdn.icon5,
-          ...icon5,
-          className: combineClassNames(sdn.icon5?.className, icon5?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          ...sdn.icon8,
+          ...icon8,
+          className: combineClassNames(sdn.icon8?.className, icon8?.className),
         },
   )
 
@@ -374,26 +455,37 @@ export function PanelHari({
           {barProps !== null && (
             <Bar {...barProps}>
               {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
+              <Frame {...frameProps}>
+                {buttonToggle && buttonToggleProps && (
+                  <ButtonToggle {...buttonToggleProps} icon={iconProps} />
+                )}
+                {buttonToggle2 && buttonToggle2Props && (
+                  <ButtonToggle {...buttonToggle2Props} icon={icon2Props} />
+                )}
+                {buttonToggle3 && buttonToggle3Props && (
+                  <ButtonToggle {...buttonToggle3Props} icon={icon3Props} />
+                )}
+              </Frame>
               {buttonIconic && buttonIconicProps && (
-                <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+                <ButtonIconic {...buttonIconicProps} icon={icon4Props} />
+              )}
+              {buttonIconic2 && buttonIconic2Props && (
+                <ButtonIconic {...buttonIconic2Props} icon={icon5Props} />
               )}
             </Bar>
           )}
-          <Frame {...frameProps}></Frame>
-          <Frame {...frame2Props}>
-            {textarea && textareaProps && <Textarea {...textareaProps} />}
-            {buttonIconic2 && buttonIconic2Props && (
-              <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
-            )}
-          </Frame>
+          <Frame {...frame2Props}></Frame>
           <Frame {...frame3Props}>
-            <Frame {...frame4Props}>
+            {textarea && textareaProps && <Textarea {...textareaProps} />}
+          </Frame>
+          <Frame {...frame4Props}>
+            <Frame {...frame5Props}>
               {buttonMenu && buttonMenuProps && (
                 <ButtonMenu {...buttonMenuProps}>
                   {textLabel && textLabelProps && (
                     <TextLabel {...textLabelProps} />
                   )}
-                  {icon3 && icon3Props && <Icon {...icon3Props} />}
+                  {icon6 && icon6Props && <Icon {...icon6Props} />}
                 </ButtonMenu>
               )}
               {buttonMenu2 && buttonMenu2Props && (
@@ -401,7 +493,7 @@ export function PanelHari({
                   {textLabel2 && textLabel2Props && (
                     <TextLabel {...textLabel2Props} />
                   )}
-                  {icon4 && icon4Props && <Icon {...icon4Props} />}
+                  {icon7 && icon7Props && <Icon {...icon7Props} />}
                 </ButtonMenu>
               )}
               {chip && chipProps && (
@@ -411,15 +503,10 @@ export function PanelHari({
                   )}
                 </Chip>
               )}
+              {buttonIconic3 && buttonIconic3Props && (
+                <ButtonIconic {...buttonIconic3Props} icon={icon8Props} />
+              )}
             </Frame>
-            {button && buttonProps && (
-              <Button {...buttonProps}>
-                {icon5 && icon5Props && <Icon {...icon5Props} />}
-                {textLabel4 && textLabel4Props && (
-                  <TextLabel {...textLabel4Props} />
-                )}
-              </Button>
-            )}
           </Frame>
         </>
       )}
@@ -441,22 +528,62 @@ const sdn: PanelHariProps = {
   textTitle: {
     className: "sdn-text-title sdn-text-title--ulid",
   },
+  frame: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--i5kj",
+  },
+  buttonToggle: {
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+    "data-seldon-ref": "hariClamp",
+  },
+  icon: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--ovkd",
+  },
+  buttonToggle2: {
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+    "data-seldon-ref": "hariTools",
+  },
+  icon2: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--ovkd",
+  },
+  buttonToggle3: {
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+    "data-seldon-ref": "hariOutcome",
+  },
+  icon3: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--ovkd",
+  },
   buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  icon4: {
+    icon: "seldon-reset",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--rezm",
+  },
+  buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
     "data-seldon-ref": "hariClose",
   },
-  icon: {
+  icon5: {
     icon: "material-close",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--rezm",
   },
-  frame: {
+  frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--2wwo",
     "data-seldon-ref": "turns",
   },
-  frame2: {
+  frame3: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--jhsq",
@@ -465,21 +592,12 @@ const sdn: PanelHariProps = {
     className: "sdn-textarea sdn-textarea--2upw",
     "data-seldon-ref": "hariInput",
   },
-  buttonIconic2: {
-    className: "sdn-button-iconic sdn-button-iconic--wh0i",
-    "data-seldon-ref": "hariSend",
-  },
-  icon2: {
-    icon: "material-arrowUpward",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
-  },
-  frame3: {
+  frame4: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--meos",
   },
-  frame4: {
+  frame5: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--a5w4",
@@ -491,7 +609,7 @@ const sdn: PanelHariProps = {
   textLabel: {
     className: "sdn-text-label sdn-text-label--sa6t",
   },
-  icon3: {
+  icon6: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
@@ -503,7 +621,7 @@ const sdn: PanelHariProps = {
   textLabel2: {
     className: "sdn-text-label sdn-text-label--sa6t",
   },
-  icon4: {
+  icon7: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
@@ -515,16 +633,13 @@ const sdn: PanelHariProps = {
   textLabel3: {
     className: "sdn-text-label sdn-text-label--lug5",
   },
-  button: {
-    className: "sdn-button sdn-button--9yoo",
-    "data-seldon-ref": "hariReset",
+  buttonIconic3: {
+    className: "sdn-button-iconic sdn-button-iconic--wh0i",
+    "data-seldon-ref": "hariSend",
   },
-  icon5: {
-    icon: "material-clear",
+  icon8: {
+    icon: "material-arrowUpward",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--eyw9",
-  },
-  textLabel4: {
-    className: "sdn-text-label sdn-text-label--vrf8",
+    className: "sdn-icon sdn-icon--umgs",
   },
 }

@@ -49,12 +49,12 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-phone"
     | "seldon-plus"
     | "seldon-minus"
-    | "material-clear"
     | "material-arrowUpward"
     | "material-checkCircle"
     | "seldon-componentDefault"
     | "material-error"
     | "material-robot"
+    | "seldon-reset"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -114,7 +114,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-edited"
     | "seldon-frame"
     | "seldon-missing"
-    | "seldon-reset"
     | "seldon-size"
     | "seldon-sketchCircle"
     | "seldon-sketchPencil"
@@ -267,6 +266,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-cancel"
     | "material-circle"
     | "material-cleaningServices"
+    | "material-clear"
     | "material-cloudDownload"
     | "material-cloudUpload"
     | "material-codeXml"
@@ -578,12 +578,12 @@ const iconMap = {
   "material-phone": Icons.IconMaterialPhone,
   "seldon-plus": Icons.IconSeldonPlus,
   "seldon-minus": Icons.IconSeldonMinus,
-  "material-clear": Icons.IconMaterialClear,
   "material-arrowUpward": Icons.IconMaterialArrowUpward,
   "material-checkCircle": Icons.IconMaterialCheckCircle,
   "seldon-componentDefault": Icons.IconSeldonComponentDefault,
   "material-error": Icons.IconMaterialError,
   "material-robot": Icons.IconMaterialRobot,
+  "seldon-reset": Icons.IconSeldonReset,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -643,7 +643,6 @@ const iconMap = {
   "seldon-edited": Icons.IconSeldonEdited,
   "seldon-frame": Icons.IconSeldonFrame,
   "seldon-missing": Icons.IconSeldonMissing,
-  "seldon-reset": Icons.IconSeldonReset,
   "seldon-size": Icons.IconSeldonSize,
   "seldon-sketchCircle": Icons.IconSeldonSketchCircle,
   "seldon-sketchPencil": Icons.IconSeldonSketchPencil,
@@ -798,6 +797,7 @@ const iconMap = {
   "material-cancel": Icons.IconMaterialCancel,
   "material-circle": Icons.IconMaterialCircle,
   "material-cleaningServices": Icons.IconMaterialCleaningServices,
+  "material-clear": Icons.IconMaterialClear,
   "material-cloudDownload": Icons.IconMaterialCloudDownload,
   "material-cloudUpload": Icons.IconMaterialCloudUpload,
   "material-codeXml": Icons.IconMaterialCodeXml,

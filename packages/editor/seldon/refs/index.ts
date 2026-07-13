@@ -25,13 +25,15 @@ export type SeldonRef =
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
+  | "hariClamp"
   | "hariClose"
   | "hariInput"
   | "hariModel"
-  | "hariReset"
+  | "hariOutcome"
   | "hariSelection"
   | "hariSend"
   | "hariThinking"
+  | "hariTools"
   | "logo"
   | "menuComponent"
   | "menuDev"
@@ -144,9 +146,14 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-comboboxField-TWyxOQad",
     className: "sdn-input sdn-input--twyx",
   },
+  hariClamp: {
+    component: "ButtonToggle",
+    nodeId: "component-button-N1pT65yh",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  },
   hariClose: {
     component: "ButtonIconic",
-    nodeId: "component-panel-NnG60f0w",
+    nodeId: "component-panel-dHCB3O1v",
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
   hariInput: {
@@ -159,10 +166,10 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-panel-EqziYbqa",
     className: "sdn-button-menu sdn-button-menu--ipe0",
   },
-  hariReset: {
-    component: "Button",
-    nodeId: "component-button-9yOOrW92",
-    className: "sdn-button sdn-button--9yoo",
+  hariOutcome: {
+    component: "ButtonToggle",
+    nodeId: "component-panel-PMmBQIRj",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
   },
   hariSelection: {
     component: "Chip",
@@ -178,6 +185,11 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "ButtonMenu",
     nodeId: "component-panel-IpE0XEo6",
     className: "sdn-button-menu sdn-button-menu--ipe0",
+  },
+  hariTools: {
+    component: "ButtonToggle",
+    nodeId: "component-panel-ablPq3kW",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
   },
   logo: {
     component: "Frame",

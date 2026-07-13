@@ -145,7 +145,7 @@ const sdn: MessageOutcomeProps = {
     className: "sdn-frame sdn-frame--ieew",
   },
   icon: {
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--wxt9",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--lbxv",

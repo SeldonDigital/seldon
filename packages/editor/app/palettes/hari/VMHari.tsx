@@ -17,6 +17,7 @@ import {
   useRef,
   useState,
 } from "react"
+import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import {
   type HariStatus,
@@ -32,6 +33,9 @@ import { HariTranscript } from "./HariTranscript.bespoke"
 
 const HARI_INITIAL_WIDTH = 420
 const HARI_INITIAL_HEIGHT = 480
+
+/** Class that renders a header ButtonToggle in its activated (on) state. */
+const ACTIVE_TOGGLE_CLASS = "sdn-state-activated"
 
 /** Capital-case labels for the scope chip, one per selection kind. */
 const SCOPE_LABELS: Record<SelectionScope, string> = {
@@ -128,6 +132,15 @@ function Hari({
   }, [warm])
 
   const scope = useSelectionScope()
+
+  const {
+    showTools,
+    toggleShowTools,
+    showOutcome,
+    toggleShowOutcome,
+    noThink,
+    toggleNoThink,
+  } = useDebugMode()
 
   const {
     x,
@@ -257,11 +270,38 @@ function Hari({
   )
 
   // PanelHari gates each slot on its prop being present, so every wired slot is
-  // passed here. The slots' baked `data-seldon-ref` names (hariClose, hariInput,
-  // hariSend, hariModel, hariThinking, hariReset, hariSelection) ride their sdn
-  // defaults and stay on the rendered DOM as stable anchors.
+  // passed here. The slots' baked `data-seldon-ref` names (hariClamp, hariTools,
+  // hariOutcome, hariClose, turns, hariInput, hariModel, hariThinking,
+  // hariSelection, hariSend) ride their sdn defaults and stay on the rendered DOM
+  // as stable anchors. `sdn-state-activated` renders a toggle in its on state.
   const barSlot = { onPointerDown: startDrag, style: styles.dragHandle }
   const titleSlot = { children: "Hari" }
+  const clampToggleSlot = {
+    onClick: toggleNoThink,
+    className: noThink ? ACTIVE_TOGGLE_CLASS : undefined,
+    "aria-pressed": noThink,
+    title: "Clamp Thinking",
+    "data-testid": "ai-chat-clamp",
+  }
+  const toolsToggleSlot = {
+    onClick: toggleShowTools,
+    className: showTools ? ACTIVE_TOGGLE_CLASS : undefined,
+    "aria-pressed": showTools,
+    title: "Show Tools",
+    "data-testid": "ai-chat-tools",
+  }
+  const outcomeToggleSlot = {
+    onClick: toggleShowOutcome,
+    className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined,
+    "aria-pressed": showOutcome,
+    title: "Show Outcome",
+    "data-testid": "ai-chat-outcome",
+  }
+  const resetSlot = {
+    onClick: onReset,
+    title: "Clear",
+    "data-testid": "ai-chat-reset",
+  }
   const closeSlot = { onClick: close }
   const transcriptSlot = { children: transcript }
   const inputSlot = {
@@ -271,8 +311,6 @@ function Hari({
     placeholder,
     autoFocus: true,
   }
-  const sendSlot = { onClick: isPending ? stop : submit }
-  const sendIconSlot = isPending ? { icon: "material-stop" as const } : undefined
   const modelSlot = {
     onClick: openModelMenu,
     disabled: controlsDisabled,
@@ -287,8 +325,8 @@ function Hari({
   const thinkingLabelSlot = { children: thinkingButtonLabel }
   const basisChipSlot = {}
   const basisLabelSlot = { children: SCOPE_LABELS[scope] }
-  const resetSlot = { onClick: onReset, "data-testid": "ai-chat-reset" }
-  const resetLabelSlot = { children: "Clear" }
+  const sendSlot = { onClick: isPending ? stop : submit }
+  const sendIconSlot = isPending ? { icon: "material-stop" as const } : undefined
 
   return (
     <WindowOverlay
@@ -311,19 +349,21 @@ function Hari({
         style={styles.dialog}
         bar={barSlot}
         textTitle={titleSlot}
-        buttonIconic={closeSlot}
-        frame={transcriptSlot}
+        buttonToggle={clampToggleSlot}
+        buttonToggle2={toolsToggleSlot}
+        buttonToggle3={outcomeToggleSlot}
+        buttonIconic={resetSlot}
+        buttonIconic2={closeSlot}
+        frame2={transcriptSlot}
         textarea={inputSlot}
-        buttonIconic2={sendSlot}
-        icon2={sendIconSlot}
         buttonMenu={modelSlot}
         textLabel={modelLabelSlot}
         buttonMenu2={thinkingSlot}
         textLabel2={thinkingLabelSlot}
         chip={basisChipSlot}
         textLabel3={basisLabelSlot}
-        button={resetSlot}
-        textLabel4={resetLabelSlot}
+        buttonIconic3={sendSlot}
+        icon8={sendIconSlot}
       />
       <VMMenu
         open={modelOpen}

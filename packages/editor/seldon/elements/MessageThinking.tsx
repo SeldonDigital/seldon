@@ -30,6 +30,7 @@ export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
   icon?: IconProps | null
   textDescription?: TextDescriptionProps | null
   textDescription2?: TextDescriptionProps | null
+  textDescription3?: TextDescriptionProps | null
 }
 
 /*****
@@ -47,6 +48,7 @@ export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
  *   buttonIconic={() => {}}
  *   icon="material-star"
  *   textDescription="{}"
+ *   textDescription2="{}"
  * />
  * ```
  *****/
@@ -57,6 +59,7 @@ export function MessageThinking({
   icon = sdn.icon,
   textDescription,
   textDescription2,
+  textDescription3,
   children,
   seldonRefs,
   ...props
@@ -124,6 +127,19 @@ export function MessageThinking({
           ),
         },
   )
+  const textDescription3Props = applyRef(
+    seldonRefs,
+    textDescription3 === null
+      ? null
+      : {
+          ...sdn.textDescription3,
+          ...textDescription3,
+          className: combineClassNames(
+            sdn.textDescription3?.className,
+            textDescription3?.className,
+          ),
+        },
+  )
 
   return (
     <Frame
@@ -142,9 +158,12 @@ export function MessageThinking({
             {textDescription && textDescriptionProps && (
               <TextDescription {...textDescriptionProps} />
             )}
+            {textDescription2 && textDescription2Props && (
+              <TextDescription {...textDescription2Props} />
+            )}
           </Frame>
-          {textDescription2 && textDescription2Props && (
-            <TextDescription {...textDescription2Props} />
+          {textDescription3 && textDescription3Props && (
+            <TextDescription {...textDescription3Props} />
           )}
         </>
       )}
@@ -175,6 +194,9 @@ const sdn: MessageThinkingProps = {
     className: "sdn-text sdn-text-description--0r1j",
   },
   textDescription2: {
+    className: "sdn-text sdn-text-description--aeeo",
+  },
+  textDescription3: {
     className: "sdn-text sdn-text-description--choa",
   },
 }

@@ -62,7 +62,10 @@ export function MessageTools({
   seldonRefs,
   ...props
 }: MessageToolsProps) {
-  const messageToolsClassName = combineClassNames("sdn-message", className)
+  const messageToolsClassName = combineClassNames(
+    "sdn-message-tools",
+    className,
+  )
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -166,14 +169,14 @@ export function MessageTools({
 //
 const sdn: MessageToolsProps = {
   "aria-hidden": "false",
-  className: "sdn-message sdn-message",
+  className: "sdn-message-tools sdn-message",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--ieew",
+    className: "sdn-frame sdn-frame--sv6r",
   },
   icon: {
-    className: "sdn-icon sdn-icon--nlt7",
+    className: "sdn-icon sdn-icon--9ouj",
   },
   textDescription: {
     className: "sdn-text sdn-text-description--hqun",
@@ -181,10 +184,10 @@ const sdn: MessageToolsProps = {
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--ieew",
+    className: "sdn-frame sdn-frame--sv6r",
   },
   icon2: {
-    className: "sdn-icon sdn-icon--nlt7",
+    className: "sdn-icon sdn-icon--9ouj",
   },
   textDescription2: {
     className: "sdn-text sdn-text-description--hqun",

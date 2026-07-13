@@ -175,6 +175,6 @@ const sdn: MessageErrorProps = {
     className: "sdn-button-simple sdn-button-iconic--iklu",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--vrf8",
+    className: "sdn-text-label sdn-text-label--aftu",
   },
 }

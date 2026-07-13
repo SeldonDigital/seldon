@@ -55,6 +55,8 @@ export interface HariTurn {
   thinking?: string
   /** Wall time the model spent thinking, in ms. Set marks the thinking done. */
   thinkingMs?: number
+  /** True when reasoning was clamped off for this turn. */
+  clamped?: boolean
   toolCalls?: AgentToolCall[]
   reply?: string
   changes?: string[]
@@ -231,6 +233,7 @@ export function useHari() {
           useSelectionStore.getState()
         const scope = getSelectionScope(current)
         const resourceTargetId = getResourceTargetId(current)
+        const noThink = useDebugStore.getState().noThink
 
         const { actions, reply, debug } = await runAgentChat(
           {
@@ -245,7 +248,7 @@ export function useHari() {
             resourceTargetId,
             model,
             thinkingLevel,
-            noThink: useDebugStore.getState().noThink,
+            noThink,
           },
           (event) => applyTurnEvent(turnId, event),
           controller.signal,
@@ -267,6 +270,7 @@ export function useHari() {
         useStore.getState().updateTurn(turnId, {
           thinking: debug.thinking,
           thinkingMs: debug.thinkingMs,
+          clamped: noThink,
           toolCalls: debug.toolCalls,
           reply,
           changes: describeChanges(outcome.workspace, outcome),
