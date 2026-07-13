@@ -4,7 +4,7 @@
 // any rejection or error. Assistant replies render through HariMarkdown.
 import type { HariTurn } from "@lib/hooks/use-ai-chat"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
-import { type CSSProperties, Fragment, type ReactNode, useMemo } from "react"
+import { type CSSProperties, type ReactNode, useMemo } from "react"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
 import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
@@ -120,7 +120,9 @@ function toolRow(
  * The tools block: each tool the model called, then the deterministic shape
  * repairs, the vocabulary warnings, and the rejections for the turn. Repairs and
  * warnings are the signal for a malformed edit that still validated or was
- * silently dropped, so they read here rather than only in the console.
+ * silently dropped, so they read here rather than only in the console. Every row
+ * renders inside one parent block so the turn reads as a single tool section
+ * rather than a stack of separate messages.
  */
 function toolsBlock(turn: HariTurn): ReactNode {
   const rows: ReactNode[] = []
@@ -154,7 +156,7 @@ function toolsBlock(turn: HariTurn): ReactNode {
       ),
     )
   })
-  return <Fragment key={`${turn.id}-tools`}>{rows}</Fragment>
+  return <MessageTools key={`${turn.id}-tools`}>{rows}</MessageTools>
 }
 
 function outcomeBlock(turn: HariTurn): ReactNode {
