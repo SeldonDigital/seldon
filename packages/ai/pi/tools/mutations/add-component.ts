@@ -9,33 +9,36 @@ import type { WorkspaceAction } from "@seldon/core/workspace/types"
 import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
 
-/** Adds a catalog component instance under an existing parent node. */
+/**
+ * Adds a component from the catalog to the workspace, which materializes its
+ * board. There is no separate "make a board" step: adding the catalog component
+ * is what creates the board. To place an instance inside an existing node, use
+ * insert_component instead.
+ */
 export function createAddComponentTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "add_component",
     label: "Add Component",
     description:
-      "Add a component instance from the catalog under an existing parent node. Only nest what the hierarchy allows.",
+      "Add a component from the catalog to the workspace as its own board. Pass its catalog id (from list_catalog_ids). To place it inside an existing node, use insert_component.",
     parameters: Type.Object({
-      boardKey: Type.String({
-        description: "Catalog id of the component to add.",
+      catalogId: Type.String({
+        description:
+          "Catalog id of the component to add (from list_catalog_ids).",
       }),
-      parentId: Type.String({ description: "Existing parent node id." }),
-      index: Type.Optional(
-        Type.Number({
-          description: "Insertion index among the parent's children.",
-        }),
-      ),
     }),
-    execute: async (_id, params) =>
-      textResult(
+    execute: async (_id, params) => {
+      if (state.workspace.boards[params.catalogId]) {
+        return textResult(
+          `Component "${params.catalogId}" is already in the workspace. Select its board, or use insert_component to place an instance of it under a parent node.`,
+        )
+      }
+      return textResult(
         commit(state, {
-          type: "add_component_and_insert_default_instance",
-          payload: {
-            boardKey: params.boardKey,
-            target: { parentId: params.parentId, index: params.index },
-          },
+          type: "add_component",
+          payload: { boardKey: params.catalogId },
         } as WorkspaceAction),
-      ),
+      )
+    },
   })
 }

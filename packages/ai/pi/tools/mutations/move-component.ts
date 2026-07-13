@@ -9,20 +9,22 @@ import type { WorkspaceAction } from "@seldon/core/workspace/types"
 import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
 
-/** Inserts an instance of an existing variant under an existing parent node. */
-export function createInsertVariantInstanceTool(
-  state: PiTurnState,
-): ToolDefinition {
+/**
+ * Relocates an instance under a new parent within the same variant. The reducer
+ * rejects a move across variants, into a default variant, into the instance's
+ * own subtree, or under a parent whose level cannot hold it.
+ */
+export function createMoveComponentTool(state: PiTurnState): ToolDefinition {
   return defineTool({
-    name: "insert_variant_instance",
-    label: "Insert Variant Instance",
+    name: "move_component",
+    label: "Move Component",
     description:
-      "Insert an instance of a specific existing variant under an existing parent node. Use insert_component to add a component from the catalog by its catalog id.",
+      "Move an existing instance under a new parent node in the same variant. Only nest what the hierarchy allows.",
     parameters: Type.Object({
-      variantId: Type.String({
-        description: "Variant node id from the context.",
+      instanceId: Type.String({
+        description: "Instance node id to move, from the context.",
       }),
-      parentId: Type.String({ description: "Existing parent node id." }),
+      parentId: Type.String({ description: "New parent node id." }),
       index: Type.Optional(
         Type.Number({
           description: "Insertion index among the parent's children.",
@@ -32,9 +34,9 @@ export function createInsertVariantInstanceTool(
     execute: async (_id, params) =>
       textResult(
         commit(state, {
-          type: "insert_variant_instance",
+          type: "move_instance",
           payload: {
-            variantId: params.variantId,
+            instanceId: params.instanceId,
             target: { parentId: params.parentId, index: params.index },
           },
         } as WorkspaceAction),

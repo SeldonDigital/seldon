@@ -212,8 +212,12 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | Tool | Proposes |
 | --- | --- |
 | `set_properties` | Property values on a node or its component source |
-| `add_component` | A new component board |
-| `insert_variant_instance` | A variant, or an instance inside a tree |
+| `add_component` | Add a catalog component to the workspace as its own board |
+| `insert_component` | Insert a catalog component under a parent, creating its board if needed |
+| `insert_variant_instance` | Insert an instance of a specific existing variant |
+| `duplicate_component` | Paste a copy under a parent, or duplicate a node in place |
+| `move_component` | Relocate an instance under a new parent in the same variant |
+| `reorder_component` | Reposition an instance among its siblings |
 | `remove_instance` | Delete an instance |
 | `set_board_label` | Rename a board |
 | `apply_actions` | A batch of raw actions, the escape hatch for the long tail |
@@ -230,6 +234,7 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | `list_boards`, `find_nodes`, `board_summary` | Boards and nodes across the workspace |
 | `get_component_vocabulary` | Settable properties and value shapes for a component |
 | `list_theme_tokens`, `search_theme_tokens` | Theme token ids and paths |
+| `search_icons` | Enabled icon ids for the symbol property |
 | `list_catalog_ids` | Component catalog ids |
 | `list_action_types`, `get_action_spec`, `suggest_action` | Action reference for `apply_actions` |
 
