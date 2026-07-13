@@ -13,7 +13,7 @@ import {
 } from "./compute-node-properties"
 
 const exact = (value: unknown) =>
-  ({ type: ValueType.EXACT, value }) as unknown as Properties[string]
+  ({ type: ValueType.EXACT, value }) as unknown as Properties[keyof Properties]
 
 describe("mergeEffectiveProperties", () => {
   it("returns an empty object for no sources", () => {

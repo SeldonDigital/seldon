@@ -46,7 +46,7 @@ describe("insertDefaultInstance (happy path)", () => {
     )
 
     expect(result).not.toBe(ws)
-    expect(variantRef(result, userVariantId).children.length).toBe(
+    expect(variantRef(result, userVariantId).children!.length).toBe(
       beforeChildren + 1,
     )
   })
@@ -55,8 +55,8 @@ describe("insertDefaultInstance (happy path)", () => {
 describe("insertDuplicateInstance (happy path)", () => {
   it("duplicates an existing instance into a non-default user variant", () => {
     const { ws, userVariantId } = withUserVariant()
-    const instanceId = variantRef(ws, userVariantId).children[0].id as string
-    const beforeChildren = variantRef(ws, userVariantId).children.length
+    const instanceId = variantRef(ws, userVariantId).children![0]!.id as string
+    const beforeChildren = variantRef(ws, userVariantId).children!.length
 
     const result = insertDuplicateInstance(
       { instanceId, target: { parentId: userVariantId, index: 0 } } as never,
@@ -64,7 +64,7 @@ describe("insertDuplicateInstance (happy path)", () => {
     )
 
     expect(result).not.toBe(ws)
-    expect(variantRef(result, userVariantId).children.length).toBe(
+    expect(variantRef(result, userVariantId).children!.length).toBe(
       beforeChildren + 1,
     )
   })

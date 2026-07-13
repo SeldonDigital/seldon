@@ -13,7 +13,7 @@ import { createEmptyWorkspace } from "../helpers/create-empty-workspace"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../helpers/seed/seed-default-font-collection-board"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "../helpers/seed/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "../helpers/seed/seed-default-theme-board"
-import type { Workspace, WorkspaceAction } from "../types"
+import type { ComponentTreeRef, Workspace, WorkspaceAction } from "../types"
 import { workspaceReducer } from "./reducer"
 
 const dispatch = (ws: Workspace, action: WorkspaceAction): Workspace =>
@@ -140,7 +140,7 @@ function buildBase() {
     }),
   )
 
-  const buttonVariants = ws.boards[BOARD]!.variants
+  const buttonVariants = ws.boards[BOARD]!.variants as ComponentTreeRef[]
   const defaultRootId = buttonVariants[0]!.id
   const uv1Id = buttonVariants[1]!.id
   const uv2Id = buttonVariants[2]!.id

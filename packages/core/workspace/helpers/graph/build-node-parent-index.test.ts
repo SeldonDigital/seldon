@@ -16,7 +16,7 @@ describe("buildNodeParentIndex", () => {
               id: "root",
               children: [
                 { id: "child1", children: [{ id: "grandchild" }] },
-                "child2",
+                { id: "child2" },
               ],
             },
           ],

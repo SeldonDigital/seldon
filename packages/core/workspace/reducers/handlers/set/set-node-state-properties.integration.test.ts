@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../../index"
-import { ValueType } from "../../../../properties/constants"
+import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
+import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { setNodeStateProperties } from "./set-node-state-properties"
@@ -11,14 +11,20 @@ const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
-const defaultRoot = workspace.boards[ComponentId.BUTTON]!.variants[0]!
+const defaultRoot = workspace.boards[ComponentId.BUTTON]!
+  .variants[0]! as ComponentTreeRef
 
 const hoverOpacity = (nodeId: string) =>
   setNodeStateProperties(
     {
       nodeId,
       state: "hover",
-      properties: { opacity: { type: ValueType.EXACT, value: 0.5 } },
+      properties: {
+        opacity: {
+          type: ValueType.EXACT,
+          value: { value: 0.5, unit: Unit.PERCENT },
+        },
+      },
     } as ExtractPayload<"set_node_state_properties">,
     workspace,
   )
@@ -30,7 +36,10 @@ describe("setNodeStateProperties", () => {
 
     expect(states?.hover).toBeDefined()
     expect(states!.hover).toMatchObject({
-      opacity: { type: ValueType.EXACT, value: 0.5 },
+      opacity: {
+        type: ValueType.EXACT,
+        value: { value: 0.5, unit: Unit.PERCENT },
+      },
     })
   })
 

@@ -2,7 +2,7 @@ import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import { ValueType } from "../../../../properties/constants"
+import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { formatNodeLink } from "../../../model/template-ref"
 import type {
@@ -78,14 +78,24 @@ describe("resetInstanceToSource", () => {
     let withOverrides = setNodeProperties(
       {
         nodeId: instanceRootId,
-        properties: { opacity: { type: ValueType.EXACT, value: 40 } },
+        properties: {
+          opacity: {
+            type: ValueType.EXACT,
+            value: { value: 40, unit: Unit.PERCENT },
+          },
+        },
       } as ExtractPayload<"set_node_properties">,
       ws,
     )
     withOverrides = setNodeProperties(
       {
         nodeId: instanceChildId,
-        properties: { opacity: { type: ValueType.EXACT, value: 60 } },
+        properties: {
+          opacity: {
+            type: ValueType.EXACT,
+            value: { value: 60, unit: Unit.PERCENT },
+          },
+        },
       } as ExtractPayload<"set_node_properties">,
       withOverrides,
     )
@@ -112,7 +122,12 @@ describe("resetInstanceToSource", () => {
     const drifted = produce(ws, (draft) => {
       const child = draft.nodes[instanceChildId] as EntryNode
       child.template = formatNodeLink("component-icon-default")
-      child.overrides = { opacity: { type: ValueType.EXACT, value: 80 } }
+      child.overrides = {
+        opacity: {
+          type: ValueType.EXACT,
+          value: { value: 80, unit: Unit.PERCENT },
+        },
+      }
     })
     expect(templateOf(drifted, instanceChildId)).not.toBe(
       formatNodeLink(sourceChildId),

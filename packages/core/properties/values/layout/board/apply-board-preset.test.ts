@@ -45,7 +45,7 @@ describe("matchBoardCompoundPreset", () => {
       ...applyBoardDevicePreset("iphone"),
       width: { type: ValueType.EXACT, value: { value: 1, unit: Unit.PX } },
     }
-    expect(matchBoardCompoundPreset(tampered)).toBeNull()
+    expect(matchBoardCompoundPreset(tampered as BoardCompound)).toBeNull()
     expect(matchBoardCompoundPreset(undefined)).toBeNull()
     expect(matchBoardCompoundPreset({})).toBeNull()
   })
