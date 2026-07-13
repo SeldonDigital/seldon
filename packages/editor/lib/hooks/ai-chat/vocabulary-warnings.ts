@@ -3,12 +3,7 @@ import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/proper
 import { getCatalogKeyForPropertyPath } from "@seldon/core/properties/schemas/helpers/property-path"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
-
-import {
-  changedProperties,
-  isTaggedValue,
-  targetIdOf,
-} from "./action-helpers"
+import { changedProperties, isTaggedValue, targetIdOf } from "./action-helpers"
 
 /** The component identity and settable keys a warning check needs. */
 interface Vocabulary {

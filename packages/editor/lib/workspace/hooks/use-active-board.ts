@@ -20,7 +20,9 @@ export function useActiveBoard() {
       // node and board selection but must not switch the canvas. The board it
       // was showing is held in `frozenBoardKey`, so keep rendering that.
       if (workspaceSelected) {
-        return frozenBoardKey ? (workspace.boards[frozenBoardKey] ?? null) : null
+        return frozenBoardKey
+          ? (workspace.boards[frozenBoardKey] ?? null)
+          : null
       }
 
       if (selection) {

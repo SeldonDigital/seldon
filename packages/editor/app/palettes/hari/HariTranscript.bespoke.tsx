@@ -2,9 +2,9 @@
 // useHari maps to the generated Message* blocks: the prompt, the model's
 // reasoning, the tools it called, the applied changes, the markdown reply, and
 // any rejection or error. Assistant replies render through HariMarkdown.
+import { type CSSProperties, type ReactNode, useMemo } from "react"
 import type { HariTurn } from "@lib/hooks/use-ai-chat"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
-import { type CSSProperties, type ReactNode, useMemo } from "react"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
 import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"

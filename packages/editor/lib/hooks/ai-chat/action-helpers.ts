@@ -1,7 +1,12 @@
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** The payload keys that name an action's primary target, in priority order. */
-const TARGET_ID_KEYS = ["nodeId", "instanceId", "variantId", "boardKey"] as const
+const TARGET_ID_KEYS = [
+  "nodeId",
+  "instanceId",
+  "variantId",
+  "boardKey",
+] as const
 
 /** Resolves the primary target id from an action payload. */
 export function targetIdOf(payload: unknown): string | undefined {
@@ -32,7 +37,9 @@ export function targetIdWithParentOf(payload: unknown): string | undefined {
 }
 
 /** The property key/value pairs an action sets, if any. */
-export function changedProperties(action: WorkspaceAction): [string, unknown][] {
+export function changedProperties(
+  action: WorkspaceAction,
+): [string, unknown][] {
   const payload = (action as { payload?: unknown }).payload
   if (!payload || typeof payload !== "object") return []
   const properties = (payload as Record<string, unknown>).properties

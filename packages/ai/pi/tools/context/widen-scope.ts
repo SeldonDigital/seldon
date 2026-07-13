@@ -96,7 +96,9 @@ export function createWidenScopeTool(
           ),
         )
       }
-      const isVariantRoot = activeBoard.variants.some((ref) => ref.id === fromId)
+      const isVariantRoot = activeBoard.variants.some(
+        (ref) => ref.id === fromId,
+      )
       if (isVariantRoot) {
         return textResult(
           joinOrEmpty(

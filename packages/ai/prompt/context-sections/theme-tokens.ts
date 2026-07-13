@@ -64,7 +64,10 @@ export function searchThemeTokensSection(
   for (const line of themeTokenLines(workspace)) {
     const [scopeLabel] = line.split(":")
     const scope = scopeLabel.replace(/^@/, "")
-    const keys = line.slice(line.indexOf(":") + 1).trim().split(", ")
+    const keys = line
+      .slice(line.indexOf(":") + 1)
+      .trim()
+      .split(", ")
     const scopeHit = scope.toLowerCase().includes(needle)
     const matched = scopeHit
       ? keys

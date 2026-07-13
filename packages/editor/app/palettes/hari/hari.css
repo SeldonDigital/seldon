@@ -17,11 +17,15 @@
   color: var(--sdn-hc-on-primary-b75);
 }
 
-.sdn-button-toggle.hari-toggle-no-hover.sdn-state-activated:hover:not(:active):not(:focus-visible) {
+.sdn-button-toggle.hari-toggle-no-hover.sdn-state-activated:hover:not(
+    :active
+  ):not(:focus-visible) {
   background-color: var(--sdn-swatch-offWhite);
 }
 
-.sdn-button-toggle.hari-toggle-no-hover.sdn-state-activated:hover:not(:active):not(:focus-visible)
+.sdn-button-toggle.hari-toggle-no-hover.sdn-state-activated:hover:not(
+    :active
+  ):not(:focus-visible)
   .sdn-icon--ovkd {
   color: var(--sdn-swatch-active);
 }

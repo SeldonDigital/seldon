@@ -36,7 +36,8 @@ export function targetPath(
   while (currentId && !seen.has(currentId)) {
     seen.add(currentId)
     segments.unshift(segmentLabel(workspace, currentId))
-    currentId = getImmediateParentIdInWorkspace(workspace, currentId) ?? undefined
+    currentId =
+      getImmediateParentIdInWorkspace(workspace, currentId) ?? undefined
   }
   return segments.join("/")
 }

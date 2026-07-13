@@ -28,7 +28,9 @@ export function createGetActiveBoardTool(
         return textResult("No active component board is selected.")
       }
       return textResult(
-        activeBoardSection(workspace, resolvedKey, activeBoard).lines.join("\n"),
+        activeBoardSection(workspace, resolvedKey, activeBoard).lines.join(
+          "\n",
+        ),
       )
     },
   })

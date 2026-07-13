@@ -1,12 +1,12 @@
 import { findComponentSchema } from "@seldon/core/components/catalog"
 import { parseThemeRef } from "@seldon/core/helpers/theme/get-theme-key-components"
 import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants/shared/compound-properties"
-import { joinCompoundFacetKey } from "@seldon/core/properties/schemas/helpers/property-path"
+import { getPropertySchema } from "@seldon/core/properties/schemas/helpers/get-property-schema"
 import {
   getPresetOptions,
   getPropertyOptions,
 } from "@seldon/core/properties/schemas/helpers/property-options"
-import { getPropertySchema } from "@seldon/core/properties/schemas/helpers/get-property-schema"
+import { joinCompoundFacetKey } from "@seldon/core/properties/schemas/helpers/property-path"
 import { getThemeLookSection } from "@seldon/core/themes/looks/resolve-theme-look"
 import type { Theme } from "@seldon/core/themes/types"
 import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"

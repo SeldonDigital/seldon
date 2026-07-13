@@ -12,7 +12,8 @@ import { joinOrEmpty, textResult } from "./shared"
 export function createGetSelectionTool(
   resolved: ResolvedContext,
 ): ToolDefinition {
-  const { workspace, activeBoard, selectedNodeId, selectedNodeRootId } = resolved
+  const { workspace, activeBoard, selectedNodeId, selectedNodeRootId } =
+    resolved
   return defineTool({
     name: "get_selection",
     label: "Get Selection",

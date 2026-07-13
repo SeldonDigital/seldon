@@ -250,12 +250,21 @@ function componentScopeContext(resolved: ResolvedContext): string[] {
     // when the node is not on the active board.
     const instanceSubtree =
       scope === "instance" && selectedNodeId !== undefined
-        ? nodeSubtreeSection(workspace, resolvedKey, activeBoard, selectedNodeId)
+        ? nodeSubtreeSection(
+            workspace,
+            resolvedKey,
+            activeBoard,
+            selectedNodeId,
+          )
         : undefined
 
     const variantId =
       selectedNodeId !== undefined
-        ? resolveActiveVariantId(activeBoard, selectedNodeId, selectedNodeRootId)
+        ? resolveActiveVariantId(
+            activeBoard,
+            selectedNodeId,
+            selectedNodeRootId,
+          )
         : undefined
     const variant =
       scope !== "board" && variantId !== undefined

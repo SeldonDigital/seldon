@@ -1,11 +1,6 @@
 import { getPropertyCategory } from "@seldon/core/properties/schemas/helpers"
 import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
-
-import {
-  changedProperties,
-  isTaggedValue,
-  targetIdOf,
-} from "./action-helpers"
+import { changedProperties, isTaggedValue, targetIdOf } from "./action-helpers"
 import type { ApplyReport } from "./apply-report"
 import { targetPath } from "./target-path"
 
@@ -33,13 +28,17 @@ function flattenLayers(key: string, layers: unknown[]): string[] {
     if (!layer || typeof layer !== "object") return []
     const prefix = layers.length > 1 ? `${key}[${index}]` : key
     return Object.entries(layer as Record<string, unknown>).map(
-      ([facet, facetValue]) => `${prefix}.${facet}: ${summarizeValue(facetValue)}`,
+      ([facet, facetValue]) =>
+        `${prefix}.${facet}: ${summarizeValue(facetValue)}`,
     )
   })
 }
 
 /** One line per sub-value of a compound or shorthand property. */
-function flattenCompound(key: string, value: Record<string, unknown>): string[] {
+function flattenCompound(
+  key: string,
+  value: Record<string, unknown>,
+): string[] {
   const shorthand = getPropertyCategory(key) === "shorthand"
   return Object.entries(value).map(([sub, subValue]) =>
     shorthand

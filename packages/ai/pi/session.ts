@@ -89,9 +89,7 @@ export async function createSeldonSession(
     ? clampedThinkingLevel(options.model)
     : options.thinkingLevel
   const thinkingOn =
-    thinkingCapable &&
-    requestedLevel !== undefined &&
-    requestedLevel !== "off"
+    thinkingCapable && requestedLevel !== undefined && requestedLevel !== "off"
   const model = buildOllamaModel({
     model: options.model,
     host: options.host,

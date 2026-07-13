@@ -108,7 +108,12 @@ function coerceTree(
   if (isPlainObject(value) && !isTaggedValue(value)) {
     const out: Record<string, unknown> = {}
     for (const [facet, facetValue] of Object.entries(value)) {
-      out[facet] = coerceTree(`${path}.${facet}`, facetValue, actionType, repairs)
+      out[facet] = coerceTree(
+        `${path}.${facet}`,
+        facetValue,
+        actionType,
+        repairs,
+      )
     }
     return out
   }

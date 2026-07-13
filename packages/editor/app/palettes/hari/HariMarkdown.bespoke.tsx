@@ -20,7 +20,10 @@ const REMARK_PLUGINS = [remarkGfm]
  */
 export function HariMarkdown({ content }: HariMarkdownProps) {
   return (
-    <ReactMarkdown remarkPlugins={REMARK_PLUGINS} components={MARKDOWN_COMPONENTS}>
+    <ReactMarkdown
+      remarkPlugins={REMARK_PLUGINS}
+      components={MARKDOWN_COMPONENTS}
+    >
       {content}
     </ReactMarkdown>
   )

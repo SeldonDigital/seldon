@@ -29,7 +29,9 @@ export function createGetSelectionAncestryTool(
     execute: async (_id, params) => {
       const targetId = params.nodeId ?? selectedNodeId
       if (targetId === undefined) {
-        return textResult("No node selected. Pass a nodeId to trace its ancestry.")
+        return textResult(
+          "No node selected. Pass a nodeId to trace its ancestry.",
+        )
       }
       return textResult(
         joinOrEmpty(

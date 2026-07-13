@@ -1,10 +1,6 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Message",
@@ -169,34 +165,16 @@ export const schema = {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@font.body",
             },
-            family: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            style: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            weight: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
+            family: { type: Sdn.ValueType.EMPTY, value: null },
+            style: { type: Sdn.ValueType.EMPTY, value: null },
+            weight: { type: Sdn.ValueType.EMPTY, value: null },
             size: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@fontSize.xsmall",
             },
-            lineHeight: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            textCase: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            letterSpacing: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
+            lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+            textCase: { type: Sdn.ValueType.EMPTY, value: null },
+            letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
       },
@@ -812,7 +790,7 @@ export const schema = {
           brightness: { type: Sdn.ValueType.EMPTY, value: null },
           opacity: { type: Sdn.ValueType.EMPTY, value: null },
         },
-        corners:{
+        corners: {
           topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
           bottomLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
         },

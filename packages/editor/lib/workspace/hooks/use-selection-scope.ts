@@ -9,11 +9,11 @@ import {
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 import { getComponent, getNode } from "@lib/workspace/workspace-accessors"
+import { getCurrentWorkspace } from "./use-history"
 import {
   type SelectedResourceEntry,
   useStore as useSelectionStore,
 } from "./use-selection"
-import { getCurrentWorkspace } from "./use-history"
 import { useWorkspace } from "./use-workspace"
 
 export type { SelectionScope }
@@ -157,7 +157,9 @@ export function useSelectionScope(): SelectionScope {
   const selectedResourceItemKey = useSelectionStore(
     (state) => state.selectedResourceItemKey,
   )
-  const workspaceSelected = useSelectionStore((state) => state.workspaceSelected)
+  const workspaceSelected = useSelectionStore(
+    (state) => state.workspaceSelected,
+  )
   const { workspace } = useWorkspace()
 
   return resolveSelectionScope(

@@ -55,7 +55,10 @@ function ancestorLine(workspace: Workspace, nodeId: string): string {
  * the whole board. Returns nothing when the id is not a node, so the caller can
  * report a clean miss.
  */
-export function ancestrySection(workspace: Workspace, nodeId: string): string[] {
+export function ancestrySection(
+  workspace: Workspace,
+  nodeId: string,
+): string[] {
   if (!workspace.nodes[nodeId]) return []
 
   const chain: string[] = []

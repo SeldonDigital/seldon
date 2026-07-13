@@ -1,10 +1,10 @@
+import type { AgentStreamEvent } from "@seldon/ai"
 import { build } from "esbuild"
 import fs from "node:fs/promises"
 import type { IncomingMessage, ServerResponse } from "node:http"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import type { Connect, Plugin } from "vite"
-import type { AgentStreamEvent } from "@seldon/ai"
 import type {
   AgentRequestBody,
   agentConfig,

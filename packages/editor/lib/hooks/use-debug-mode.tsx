@@ -82,8 +82,7 @@ export const useDebugStore = create<DebugState>()(
         set((state) => ({ ...state, showOutcome: enabled })),
 
       noThink: false,
-      setNoThink: (enabled) =>
-        set((state) => ({ ...state, noThink: enabled })),
+      setNoThink: (enabled) => set((state) => ({ ...state, noThink: enabled })),
     }),
     {
       name: "debug-mode",

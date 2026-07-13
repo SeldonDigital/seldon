@@ -53,7 +53,9 @@ export function findNodesSection(
       const byName =
         label.toLowerCase().includes(needle) ||
         catalogId.toLowerCase().includes(needle)
-      const snippet = byName ? null : matchNodeStrings(workspace, ref.id, needle)
+      const snippet = byName
+        ? null
+        : matchNodeStrings(workspace, ref.id, needle)
       if (!byName && snippet === null) return
       const kind = catalogId ? `${node.level} ${catalogId}` : node.level
       const labelText = label ? ` label="${label}"` : ""

@@ -81,7 +81,9 @@ function tierTwoBlock(
   ]
     .join("\n")
     .trim()
-  return block ? `\n\nActive board (tier 2) and its settable values:\n${block}` : ""
+  return block
+    ? `\n\nActive board (tier 2) and its settable values:\n${block}`
+    : ""
 }
 
 /** The settable values of one node's component, appended when a match is found off-board. */
@@ -118,7 +120,9 @@ function searchWorkspace(
       const byName =
         label.toLowerCase().includes(needle) ||
         catalogId.toLowerCase().includes(needle)
-      const snippet = byName ? null : matchNodeStrings(workspace, ref.id, needle)
+      const snippet = byName
+        ? null
+        : matchNodeStrings(workspace, ref.id, needle)
       if (!byName && snippet === null) return
       matches.push({
         id: ref.id,

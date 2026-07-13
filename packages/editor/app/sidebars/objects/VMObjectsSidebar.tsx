@@ -4,6 +4,7 @@ import {
   useSaveWorkspace,
   useWorkspaceName,
 } from "@lib/persistence/workspace-save-store"
+import { buildFieldStateProps } from "@lib/views/state-props"
 import { LayoutGroup } from "framer-motion"
 import { CSSProperties, PointerEvent, useCallback, useState } from "react"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
@@ -14,7 +15,6 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { buildFieldStateProps } from "@lib/views/state-props"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"

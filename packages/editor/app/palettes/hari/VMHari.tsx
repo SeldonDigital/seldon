@@ -8,8 +8,8 @@ import {
   type CSSProperties,
   type ChangeEvent,
   type KeyboardEvent,
-  type MouseEvent as ReactMouseEvent,
   type PointerEvent,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
   useCallback,
   useEffect,
@@ -17,17 +17,13 @@ import {
   useRef,
   useState,
 } from "react"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
-import {
-  type HariStatus,
-  type HariTurn,
-  useHari,
-} from "@lib/hooks/use-ai-chat"
 import {
   type SelectionScope,
   useSelectionScope,
 } from "@lib/workspace/hooks/use-selection-scope"
+import { type HariStatus, type HariTurn, useHari } from "@lib/hooks/use-ai-chat"
+import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
 import { HariTranscript } from "./HariTranscript.bespoke"
 import "./hari.css"
@@ -335,7 +331,9 @@ function Hari({
   const basisChipSlot = {}
   const basisLabelSlot = { children: SCOPE_LABELS[scope] }
   const sendSlot = { onClick: isPending ? stop : submit }
-  const sendIconSlot = isPending ? { icon: "material-stop" as const } : undefined
+  const sendIconSlot = isPending
+    ? { icon: "material-stop" as const }
+    : undefined
 
   return (
     <WindowOverlay
