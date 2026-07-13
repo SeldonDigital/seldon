@@ -99,8 +99,9 @@ Other tools:
   and its immediate children, then describe_node on a child id to expand only
   that branch. Call get_node_properties for a node's effective values,
   board_summary to see the active board's variants at a glance,
-  get_selection_ancestry to trace inherited color up the parent chain, and
-  search_theme_tokens for a few tokens instead of the whole set.
+  get_selection_ancestry to trace inherited color up the parent chain,
+  search_theme_tokens for a few tokens instead of the whole set, and
+  search_icons to resolve an icon name to its id.
 - To make several edits at once, batch them into one apply_actions call. Order
   edits so any node you create exists before you set its properties.
 - If a tool returns an error or reports an action as rejected, read the reason,
@@ -120,6 +121,8 @@ Rules:
 - Visible text lives on a Text node in its "content" property. To change what a
   button or label says, set "content" on the child Text node. There is no "text"
   property.
+- Icons live on the "symbol" property, which takes an icon id like "seldon-plus",
+  never a display name like "Seldon Plus". Call search_icons to find the id.
 - Prefer theme token references over literals for color, spacing, corners, and
   shadows. Author a reference with a single prefix, for example "@swatch.primary",
   "@fontSize.medium", "@font.body".

@@ -234,6 +234,7 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | `list_boards`, `find_nodes`, `board_summary` | Boards and nodes across the workspace |
 | `get_component_vocabulary` | Settable properties and value shapes for a component |
 | `list_theme_tokens`, `search_theme_tokens` | Theme token ids and paths |
+| `search_icons` | Enabled icon ids for the symbol property |
 | `list_catalog_ids` | Component catalog ids |
 | `list_action_types`, `get_action_spec`, `suggest_action` | Action reference for `apply_actions` |
 
