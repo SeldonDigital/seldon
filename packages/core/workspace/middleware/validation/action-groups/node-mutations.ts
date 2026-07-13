@@ -239,6 +239,8 @@ export function validateNodeMutation(
       propertyValidators.keys(
         action.payload.properties,
         getNodeComponentId(node, workspace),
+        undefined,
+        { rejectDottedKeys: true },
       )
       propertyValidators.values(action.payload.properties, workspace, themeId)
       assertMatchColorSiblingsLocked(

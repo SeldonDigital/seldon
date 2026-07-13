@@ -1,3 +1,4 @@
+import { joinCompoundFacetKey } from "@seldon/core/properties/schemas/helpers/property-path"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import {
@@ -134,7 +135,32 @@ export function normalizeActions(
 
     let changed = false
     const nextProperties: Record<string, unknown> = {}
+    const dottedFacets: Record<string, Record<string, unknown>> = {}
     for (const [key, value] of Object.entries(properties)) {
+      const dotIndex = key.indexOf(".")
+      if (dotIndex > 0 && propertyShape(key.slice(0, dotIndex)) !== "atomic") {
+        const root = key.slice(0, dotIndex)
+        const facet = key.slice(dotIndex + 1)
+        const facetSchemaKey =
+          propertyShape(root) === "shorthand"
+            ? root
+            : joinCompoundFacetKey(root, facet)
+        const bucket = dottedFacets[root] ?? (dottedFacets[root] = {})
+        bucket[facet] = coerceAtomicValue(
+          facetSchemaKey,
+          value,
+          action.type,
+          repairs,
+        )
+        repairs.push({
+          actionType: action.type,
+          propertyKey: key,
+          reason: `nested dotted key into ${root} facet "${facet}"`,
+        })
+        changed = true
+        continue
+      }
+
       const shape = propertyShape(key)
       let next = value
       if (shape === "layered") {
@@ -144,6 +170,20 @@ export function normalizeActions(
       }
       nextProperties[key] = next
       if (next !== value) changed = true
+    }
+
+    for (const [root, facets] of Object.entries(dottedFacets)) {
+      const existing = nextProperties[root]
+      const merged = isPlainObject(existing)
+        ? { ...existing, ...facets }
+        : facets
+      if (root === "background" && !("kind" in merged) && "color" in merged) {
+        merged.kind = { type: "option", value: "color" }
+      }
+      nextProperties[root] =
+        propertyShape(root) === "layered"
+          ? repairLayeredValue(root, merged, action.type, repairs)
+          : merged
     }
 
     if (!changed) return action
