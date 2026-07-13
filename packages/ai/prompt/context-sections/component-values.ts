@@ -135,6 +135,12 @@ function describeChoices(schemaKey: string, theme?: Theme): string | null {
   const supports = schema.supports ?? []
   const parts: string[] = []
 
+  // The icon catalog is thousands of ids, far too many to inline and not scoped
+  // to the workspace. Point the model at search_icons to resolve an id instead.
+  if (schemaKey === "symbol") {
+    return 'icon id like "seldon-plus" (call search_icons to find one)'
+  }
+
   if (supports.includes("option")) {
     const options = getPresetOptions(schemaKey).map(String)
     if (options.length > 0) parts.push(options.join(" / "))

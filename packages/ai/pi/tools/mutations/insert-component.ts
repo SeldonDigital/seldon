@@ -1,0 +1,56 @@
+import {
+  type ToolDefinition,
+  defineTool,
+} from "@earendil-works/pi-coding-agent"
+import { Type } from "typebox"
+
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+
+import type { PiTurnState } from "../turn-state"
+import { commit, textResult } from "./commit"
+
+/**
+ * Inserts a catalog component's default instance under an existing parent node.
+ * Board existence decides the action, so the model does not: a missing board is
+ * created and inserted in one step, an existing board is inserted into. The
+ * parent's level must allow the component, or the reducer rejects the insert.
+ */
+export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
+  return defineTool({
+    name: "insert_component",
+    label: "Insert Component",
+    description:
+      "Insert a catalog component under an existing parent node (for example the selection). Pass its catalog id (from list_catalog_ids). Creates the board if it does not exist yet. Only nest what the hierarchy allows.",
+    parameters: Type.Object({
+      catalogId: Type.String({
+        description:
+          "Catalog id of the component to insert (from list_catalog_ids).",
+      }),
+      parentId: Type.String({ description: "Existing parent node id." }),
+      index: Type.Optional(
+        Type.Number({
+          description: "Insertion index among the parent's children.",
+        }),
+      ),
+    }),
+    execute: async (_id, params) => {
+      const action: WorkspaceAction = state.workspace.boards[params.catalogId]
+        ? ({
+            type: "insert_default_instance",
+            payload: {
+              boardKey: params.catalogId,
+              parentId: params.parentId,
+              index: params.index,
+            },
+          } as WorkspaceAction)
+        : ({
+            type: "add_component_and_insert_default_instance",
+            payload: {
+              boardKey: params.catalogId,
+              target: { parentId: params.parentId, index: params.index },
+            },
+          } as WorkspaceAction)
+      return textResult(commit(state, action))
+    },
+  })
+}

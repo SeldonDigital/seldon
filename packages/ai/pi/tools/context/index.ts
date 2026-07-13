@@ -14,6 +14,7 @@ import { createListActionTypesTool } from "./list-action-types"
 import { createListBoardsTool } from "./list-boards"
 import { createListCatalogIdsTool } from "./list-catalog-ids"
 import { createListThemeTokensTool } from "./list-theme-tokens"
+import { createSearchIconsTool } from "./search-icons"
 import { createSearchThemeTokensTool } from "./search-theme-tokens"
 import { createSuggestActionTool } from "./suggest-action"
 import { createWidenScopeTool } from "./widen-scope"
@@ -38,6 +39,7 @@ export function createContextTools(
     createGetComponentVocabularyTool(resolved),
     createListThemeTokensTool(resolved),
     createSearchThemeTokensTool(resolved),
+    createSearchIconsTool(resolved),
     createListCatalogIdsTool(),
     createListActionTypesTool(),
     createGetActionSpecTool(),
