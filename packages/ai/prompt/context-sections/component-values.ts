@@ -163,7 +163,7 @@ function describeChoices(schemaKey: string, theme?: Theme): string | null {
  * that their per-facet choices still surface through the facet path. Returns the
  * body lines only, so a caller can wrap them or fold several components together.
  */
-export function componentValueLines(catalogId: string, theme?: Theme): string[] {
+function componentValueLines(catalogId: string, theme?: Theme): string[] {
   const schema = findComponentSchema(catalogId)
   if (!schema?.properties) return []
 

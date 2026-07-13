@@ -117,21 +117,18 @@ export function activeBoardSection(
     walkTree([variantRef], workspace, 1, lines, visited)
   })
 
-  for (const node of visited) {
-    const nodeCatalogId = getNodeCatalogId(node, workspace)
-    if (nodeCatalogId) treeCatalogIds.add(nodeCatalogId)
-  }
+  for (const id of collectCatalogIds(visited, workspace)) treeCatalogIds.add(id)
 
   return { lines, treeCatalogIds }
 }
 
 /**
- * Context section: Active variant (tier 1).
+ * Context section: Active variant.
  *
- * The narrowest editing scope: a single variant subtree, the one the selection
- * sits in. It hands the model just that column's ids so the common "change this"
- * edit needs no wider context. Returns empty lines when the id is not a variant
- * root on the active board, so the caller falls back to the whole board.
+ * A single variant subtree, the one the selection sits in. It hands the model
+ * just that column's ids so the common "change this" edit needs no wider
+ * context. Returns empty lines when the id is not a variant root on the active
+ * board, so the caller falls back to the whole board.
  */
 export function activeVariantSection(
   workspace: Workspace,
@@ -160,12 +157,7 @@ export function activeVariantSection(
 
   const visited: EntryNode[] = []
   walkTree([variantRef], workspace, 1, lines, visited)
-  for (const node of visited) {
-    const nodeCatalogId = getNodeCatalogId(node, workspace)
-    if (nodeCatalogId) treeCatalogIds.add(nodeCatalogId)
-  }
-
-  return { lines, treeCatalogIds }
+  return { lines, treeCatalogIds: collectCatalogIds(visited, workspace) }
 }
 
 /**

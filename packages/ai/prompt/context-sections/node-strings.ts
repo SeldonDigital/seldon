@@ -3,7 +3,7 @@ import { getEffectiveProperties } from "@seldon/core/workspace/helpers/propertie
 import type { Workspace } from "@seldon/core/workspace/types"
 
 /** One string leaf found in a node's set properties, keyed by its dotted path. */
-export interface NodeString {
+interface NodeString {
   path: string
   text: string
 }
@@ -54,7 +54,7 @@ function walkValue(value: unknown, path: string, out: NodeString[]): void {
  * to an id without expanding the node first. Returns an empty list for a node
  * with no property view.
  */
-export function collectNodeStrings(
+function collectNodeStrings(
   workspace: Workspace,
   nodeId: string,
 ): NodeString[] {

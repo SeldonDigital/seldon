@@ -128,6 +128,14 @@ const useStore = create<AiChatState>((set) => ({
 }))
 
 /**
+ * Clears the chat transcript from outside the panel, such as a menu action,
+ * without subscribing the caller to the streaming state the panel watches.
+ */
+export function resetChat(): void {
+  useStore.getState().reset()
+}
+
+/**
  * Folds one streamed event into the live turn: appends reasoning and reply
  * text, records tool calls and their status, and marks the thinking done with
  * its elapsed time. The final `done` result overwrites these with the

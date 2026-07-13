@@ -39,12 +39,14 @@ export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
   textLabel4?: TextLabelProps | null
   buttonSimple5?: ButtonSimpleProps | null
   textLabel5?: TextLabelProps | null
+  buttonSimple6?: ButtonSimpleProps | null
+  textLabel6?: TextLabelProps | null
   frame4?: FrameProps | null
   buttonMenu?: ButtonMenuProps | null
-  textLabel6?: TextLabelProps | null
+  textLabel7?: TextLabelProps | null
   icon?: IconProps | null
   buttonMenu2?: ButtonMenuProps | null
-  textLabel7?: TextLabelProps | null
+  textLabel8?: TextLabelProps | null
   icon2?: IconProps | null
 }
 
@@ -80,12 +82,14 @@ export function BarTopbar({
   textLabel4,
   buttonSimple5,
   textLabel5,
+  buttonSimple6,
+  textLabel6,
   frame4 = sdn.frame4,
   buttonMenu,
-  textLabel6,
+  textLabel7,
   icon = sdn.icon,
   buttonMenu2,
-  textLabel7,
+  textLabel8,
   icon2 = sdn.icon2,
   children,
   seldonRefs,
@@ -281,6 +285,32 @@ export function BarTopbar({
           ),
         },
   )
+  const buttonSimple6Props = applyRef(
+    seldonRefs,
+    buttonSimple6 === null
+      ? null
+      : {
+          ...sdn.buttonSimple6,
+          ...buttonSimple6,
+          className: combineClassNames(
+            sdn.buttonSimple6?.className,
+            buttonSimple6?.className,
+          ),
+        },
+  )
+  const textLabel6Props = applyRef(
+    seldonRefs,
+    textLabel6 === null
+      ? null
+      : {
+          ...sdn.textLabel6,
+          ...textLabel6,
+          className: combineClassNames(
+            sdn.textLabel6?.className,
+            textLabel6?.className,
+          ),
+        },
+  )
   const frame4Props = applyRef(
     seldonRefs,
     frame4 === null
@@ -307,16 +337,16 @@ export function BarTopbar({
           ),
         },
   )
-  const textLabel6Props = applyRef(
+  const textLabel7Props = applyRef(
     seldonRefs,
-    textLabel6 === null
+    textLabel7 === null
       ? null
       : {
-          ...sdn.textLabel6,
-          ...textLabel6,
+          ...sdn.textLabel7,
+          ...textLabel7,
           className: combineClassNames(
-            sdn.textLabel6?.className,
-            textLabel6?.className,
+            sdn.textLabel7?.className,
+            textLabel7?.className,
           ),
         },
   )
@@ -343,16 +373,16 @@ export function BarTopbar({
           ),
         },
   )
-  const textLabel7Props = applyRef(
+  const textLabel8Props = applyRef(
     seldonRefs,
-    textLabel7 === null
+    textLabel8 === null
       ? null
       : {
-          ...sdn.textLabel7,
-          ...textLabel7,
+          ...sdn.textLabel8,
+          ...textLabel8,
           className: combineClassNames(
-            sdn.textLabel7?.className,
-            textLabel7?.className,
+            sdn.textLabel8?.className,
+            textLabel8?.className,
           ),
         },
   )
@@ -419,21 +449,28 @@ export function BarTopbar({
                   )}
                 </ButtonSimple>
               )}
+              {buttonSimple6 && buttonSimple6Props && (
+                <ButtonSimple {...buttonSimple6Props}>
+                  {textLabel6 && textLabel6Props && (
+                    <TextLabel {...textLabel6Props} />
+                  )}
+                </ButtonSimple>
+              )}
             </Frame>
           </Frame>
           <Frame {...frame4Props}>
             {buttonMenu && buttonMenuProps && (
               <ButtonMenu {...buttonMenuProps}>
-                {textLabel6 && textLabel6Props && (
-                  <TextLabel {...textLabel6Props} />
+                {textLabel7 && textLabel7Props && (
+                  <TextLabel {...textLabel7Props} />
                 )}
                 {icon && iconProps && <Icon {...iconProps} />}
               </ButtonMenu>
             )}
             {buttonMenu2 && buttonMenu2Props && (
               <ButtonMenu {...buttonMenu2Props}>
-                {textLabel7 && textLabel7Props && (
-                  <TextLabel {...textLabel7Props} />
+                {textLabel8 && textLabel8Props && (
+                  <TextLabel {...textLabel8Props} />
                 )}
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
               </ButtonMenu>
@@ -505,9 +542,15 @@ const sdn: BarTopbarProps = {
   },
   buttonSimple5: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
-    "data-seldon-ref": "menuDev",
   },
   textLabel5: {
+    className: "sdn-text-label sdn-text-label--lbxv",
+  },
+  buttonSimple6: {
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuDev",
+  },
+  textLabel6: {
     className: "sdn-text-label sdn-text-label--lbxv",
   },
   frame4: {
@@ -519,7 +562,7 @@ const sdn: BarTopbarProps = {
     className: "sdn-button-menu sdn-button-iconic--pgsr",
     "data-seldon-ref": "menuTheme",
   },
-  textLabel6: {
+  textLabel7: {
     className: "sdn-text-label sdn-text-label--sa6t",
   },
   icon: {
@@ -531,7 +574,7 @@ const sdn: BarTopbarProps = {
     className: "sdn-button-menu sdn-button-iconic--pgsr",
     "data-seldon-ref": "menuMode",
   },
-  textLabel7: {
+  textLabel8: {
     className: "sdn-text-label sdn-text-label--sa6t",
   },
   icon2: {

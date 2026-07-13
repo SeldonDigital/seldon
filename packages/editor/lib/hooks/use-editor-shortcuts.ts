@@ -58,7 +58,7 @@ export function useEditorShortcuts() {
     toggleShowUnusedIcons,
   } = useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
-  const { activePanel, openPanel } = usePanel()
+  const { activePanel, openPanel, closePanel } = usePanel()
   const navigate = useNavigate()
 
   const { workspace } = useWorkspace()
@@ -100,11 +100,15 @@ export function useEditorShortcuts() {
   )
   useHotkeys("shift+a", addVariant, { preventDefault: true })
 
-  // Open the AI chat palette
-  useHotkeys("mod+j", () => openPanel("ai-chat"), {
-    preventDefault: true,
-    enableOnFormTags: true,
-  })
+  // Toggle the Hari chat palette
+  useHotkeys(
+    "`",
+    () => {
+      if (activePanel === "ai-chat") closePanel()
+      else openPanel("ai-chat")
+    },
+    { preventDefault: true },
+  )
   useHotkeys("[", moveSelectionForward, {
     preventDefault: true,
   })

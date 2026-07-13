@@ -6,14 +6,13 @@ import { matchNodeStrings } from "./node-strings"
 import { section } from "./section"
 
 const BOARDS_TITLE =
-  "Component boards in the workspace (tier 3, board key -> catalog id -> label):"
+  "Component boards in the workspace (board key -> catalog id -> label):"
 
 /**
- * Context section: Workspace boards (tier 3).
+ * Context section: Workspace boards.
  *
- * The widest scope. Lists every component board so the model can locate one
- * other than the active board. This is reference data, not an edit target: a
- * node reached only through this tier needs the user's permission before an edit.
+ * Lists every component board so the model can locate one other than the active
+ * board. This is reference data for search, not an edit target on its own.
  */
 export function workspaceBoardsSection(workspace: Workspace): string[] {
   const rows: string[] = []
@@ -27,12 +26,12 @@ export function workspaceBoardsSection(workspace: Workspace): string[] {
 const FIND_LIMIT = 50
 
 /**
- * Context section: Workspace node search (tier 3).
+ * Context section: Workspace node search.
  *
  * Searches every component board's variant trees for nodes whose label or
  * resolved catalog id contains the query, and reports each match with the board
  * and variant it lives on. The board and variant are what make an off-screen hit
- * actionable, and what the model must name when asking to edit a tier-3 node.
+ * actionable, and what the model must name when targeting a node it cannot see.
  */
 export function findNodesSection(
   workspace: Workspace,
@@ -67,7 +66,7 @@ export function findNodesSection(
   }
 
   return section(
-    `Nodes across the workspace matching "${query}" (tier 3):`,
+    `Nodes across the workspace matching "${query}":`,
     matches.slice(0, FIND_LIMIT),
   )
 }

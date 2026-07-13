@@ -155,7 +155,7 @@ export function VMTopbar() {
   )
 
   const menuSlots = useMemo<MenuSlot[]>(() => {
-    return [0, 1, 2, 3, 4].map((index) => {
+    return [0, 1, 2, 3, 4, 5].map((index) => {
       const menu = menuConfig[index]
       if (!menu) return EMPTY_SLOT
       if (menu.visibleIn && !menu.visibleIn.includes(appState))
@@ -262,10 +262,12 @@ export function VMTopbar() {
         textLabel4={menuSlots[3].label}
         buttonSimple5={menuSlots[4].button}
         textLabel5={menuSlots[4].label}
+        buttonSimple6={menuSlots[5].button}
+        textLabel6={menuSlots[5].label}
         buttonMenu={themeButton}
-        textLabel6={themeLabel}
+        textLabel7={themeLabel}
         buttonMenu2={modeButton}
-        textLabel7={modeLabel}
+        textLabel8={modeLabel}
       />
       <VMMenu
         key={menuKey}
