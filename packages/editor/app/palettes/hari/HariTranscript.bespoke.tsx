@@ -11,7 +11,9 @@ import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
 import { MessageStatus } from "@seldon/components/elements/MessageStatus"
 import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
-import type { IconProps } from "@seldon/components/primitives/Icon"
+import { Frame } from "@seldon/components/frames/Frame"
+import { Icon, type IconProps } from "@seldon/components/primitives/Icon"
+import { TextDescription } from "@seldon/components/primitives/TextDescription"
 import { HariMarkdown } from "./HariMarkdown.bespoke"
 import { HariThinking } from "./HariThinking.bespoke"
 
@@ -99,21 +101,27 @@ function hasToolActivity(turn: HariTurn): boolean {
   )
 }
 
-/** One row in the tools block: an icon and a line of text. */
+/**
+ * One row in the tools block: an icon and a line of text. It renders the same
+ * row frame the generated MessageTools uses internally, so stacking rows inside
+ * one MessageTools reads as a single block rather than nesting a message per row.
+ */
 function toolRow(
   key: string,
   iconName: IconProps["icon"],
   text: string,
 ): ReactNode {
-  const icon = { icon: iconName }
-  const textDescription = { children: text, style: preWrapStyle }
+  const icon = { icon: iconName, className: ROW_ICON_CLASS }
+  const textDescription = {
+    children: text,
+    className: ROW_TEXT_CLASS,
+    style: preWrapStyle,
+  }
   return (
-    <MessageTools
-      key={key}
-      icon={icon}
-      textDescription={textDescription}
-      frame2={null}
-    />
+    <Frame key={key} className={ROW_FRAME_CLASS}>
+      <Icon {...icon} />
+      <TextDescription {...textDescription} />
+    </Frame>
   )
 }
 
@@ -178,6 +186,12 @@ function outcomeBlock(turn: HariTurn): ReactNode {
 }
 
 const preWrapStyle: CSSProperties = { whiteSpace: "pre-wrap" }
+
+// The row frame, icon, and text classes the generated MessageTools bakes onto
+// its internal rows, reused so a hand-stacked row matches the view component.
+const ROW_FRAME_CLASS = "sdn-frame sdn-frame--sv6r"
+const ROW_ICON_CLASS = "sdn-icon sdn-icon--9ouj"
+const ROW_TEXT_CLASS = "sdn-text sdn-text-description--hqun"
 
 function assistantBlock(turn: HariTurn): ReactNode {
   return (
