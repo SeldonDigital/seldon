@@ -7,7 +7,12 @@ import {
   activeVariantSection,
 } from "../prompt/context-sections/active-board"
 import { componentValuesSection } from "../prompt/context-sections/component-values"
+import { fontCollectionValuesSection } from "../prompt/context-sections/font-collection-values"
+import { iconSetValuesSection } from "../prompt/context-sections/icon-set-values"
 import { selectionSection } from "../prompt/context-sections/selection"
+import { themeIdsSection } from "../prompt/context-sections/theme-ids"
+import { workspaceBoardsSection } from "../prompt/context-sections/workspace-index"
+import type { SelectionScope } from "../types"
 
 /** The editor state the agent needs to target the right board and node. */
 export interface EditorContextInput {
@@ -16,6 +21,8 @@ export interface EditorContextInput {
   selectedNodeId?: string
   selectedNodeRootId?: string
   selectedBoardId?: BoardKey
+  scope?: SelectionScope
+  resourceTargetId?: string
 }
 
 /** The active board resolved from the request, plus the passthrough selection. */
@@ -26,6 +33,8 @@ export interface ResolvedContext {
   selectedNodeId?: string
   selectedNodeRootId?: string
   selectedBoardId?: BoardKey
+  scope?: SelectionScope
+  resourceTargetId?: string
 }
 
 /**
@@ -40,6 +49,8 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
     selectedNodeId,
     selectedNodeRootId,
     selectedBoardId,
+    scope,
+    resourceTargetId,
   } = input
   const componentBoards = Object.entries(workspace.boards).filter(
     ([, board]) => board.type === "component",
@@ -57,6 +68,8 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
     selectedNodeId,
     selectedNodeRootId,
     selectedBoardId,
+    scope,
+    resourceTargetId,
   }
 }
 
@@ -97,12 +110,15 @@ function resolveActiveVariantId(
 
 /**
  * The compact per-turn context injected with each prompt. It carries only the
- * volatile parts the model must see fresh every turn, scoped to the narrowest
- * tier that fits: the active variant subtree when the user has a selection
- * (tier 1), otherwise every variant on the active board (tier 2). The whole
- * workspace (tier 3) stays behind the find_nodes and list_boards tools. Static
- * rules live in the cached system prompt, and the heavier reference lists are
- * fetched on demand, so this stays small and the prefix cache stays warm.
+ * volatile parts the model must see fresh every turn, driven by the selection
+ * scope the editor classified. Resource scopes (theme, font collection, icon
+ * set) describe the selected entry and its edit tools. Workspace scope lists the
+ * boards and themes for broad, cross-board work. Component scopes (board,
+ * variant, instance) scope to the narrowest tier that fits: the active variant
+ * subtree when a node is selected (tier 1), otherwise every variant on the
+ * active board (tier 2). The whole workspace (tier 3) stays behind the
+ * find_nodes and list_boards tools. Static rules live in the cached system
+ * prompt, so this stays small and the prefix cache stays warm.
  */
 export function buildTurnContext(resolved: ResolvedContext): string {
   const {
@@ -111,10 +127,49 @@ export function buildTurnContext(resolved: ResolvedContext): string {
     activeBoard,
     selectedNodeId,
     selectedNodeRootId,
+    scope,
+    resourceTargetId,
   } = resolved
   const lines: string[] = [
     `Workspace: "${workspace.metadata.label ?? "Untitled"}"`,
   ]
+
+  if (scope === "theme" && resourceTargetId) {
+    lines.push(...themeIdsSection(workspace))
+    lines.push(
+      "",
+      `Scope: theme. Edit token values on theme "${resourceTargetId}" with set_theme_override (path like swatch.primary or fontSize.medium). This is a workspace-level token edit, so the active board does not matter. Call list_theme_tokens or search_theme_tokens for token paths and ids. Do not edit component nodes.`,
+    )
+    return lines.join("\n")
+  }
+
+  if (scope === "fontCollection" && resourceTargetId) {
+    lines.push(...fontCollectionValuesSection(resourceTargetId, workspace))
+    lines.push(
+      "",
+      `Scope: font collection. Toggle families and weights on "${resourceTargetId}" with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off). Do not edit component nodes.`,
+    )
+    return lines.join("\n")
+  }
+
+  if (scope === "iconSet" && resourceTargetId) {
+    lines.push(...iconSetValuesSection(resourceTargetId, workspace))
+    lines.push(
+      "",
+      `Scope: icon set. Toggle a whole subcategory on "${resourceTargetId}" with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>. Do not edit component nodes.`,
+    )
+    return lines.join("\n")
+  }
+
+  if (scope === "workspace") {
+    lines.push(...workspaceBoardsSection(workspace))
+    lines.push(...themeIdsSection(workspace))
+    lines.push(
+      "",
+      "Scope: the whole workspace (tier 3). The request may span many boards, variants, and themes. Reason broadly and edit wherever the target lives. The user selected the workspace, so you may edit across boards without asking first. Use find_nodes, list_boards, and get_active_board to locate targets and their values before editing.",
+    )
+    return lines.join("\n")
+  }
 
   if (
     activeBoard &&
@@ -136,18 +191,12 @@ export function buildTurnContext(resolved: ResolvedContext): string {
 
     if (tier1 && tier1.lines.length > 0) {
       lines.push(...tier1.lines)
-      lines.push(
-        "",
-        "Scope: the active variant above (tier 1 of 3). Widen only if it lacks the target: call get_active_board for every variant on this board (tier 2), then find_nodes or list_boards to search the whole workspace (tier 3).",
-      )
+      lines.push("", variantScopeDirective(scope))
     } else {
       lines.push(
         ...activeBoardSection(workspace, resolvedKey, activeBoard).lines,
       )
-      lines.push(
-        "",
-        "Scope: every variant on the active board above (tier 2 of 3). Widen only if it lacks the target: call find_nodes or list_boards to search the whole workspace (tier 3).",
-      )
+      lines.push("", boardScopeDirective(scope))
     }
   } else {
     lines.push(
@@ -180,4 +229,27 @@ export function buildTurnContext(resolved: ResolvedContext): string {
   }
 
   return lines.join("\n")
+}
+
+/**
+ * The directive for a tier-1 context (a node is selected). Instance scope edits
+ * a local override on the node; variant scope edits the component source inside
+ * the variant so every instance of it follows. Both keep the tier ladder note.
+ */
+function variantScopeDirective(scope?: SelectionScope): string {
+  if (scope === "instance") {
+    return "Scope: instance (the selected node). Keep edits local: set_properties defaults to scope 'instance' and writes an override on this node only. Do not widen or edit the component source. Widen only if the target is missing here: call get_active_board (tier 2), then find_nodes or list_boards (tier 3)."
+  }
+  return "Scope: the active variant above and its subtree (tier 1 of 3). Edits are global within this variant: editing a component changes its source here, so every instance of it in the variant follows. set_properties defaults to scope 'all'. Widen only if the variant lacks the target: call get_active_board for every variant on this board (tier 2), then find_nodes or list_boards (tier 3)."
+}
+
+/**
+ * The directive for a tier-2 context (a board is selected, no node). Board scope
+ * should cascade, so prefer editing the default variant or component source.
+ */
+function boardScopeDirective(scope?: SelectionScope): string {
+  if (scope === "board") {
+    return "Scope: the active board above (tier 2 of 3). Make the change cascade: prefer editing the default variant (listed first) or the component source so every variant and instance follows. set_properties defaults to scope 'all'. Widen only if the board lacks the target: call find_nodes or list_boards (tier 3)."
+  }
+  return "Scope: every variant on the active board above (tier 2 of 3). Widen only if it lacks the target: call find_nodes or list_boards to search the whole workspace (tier 3)."
 }

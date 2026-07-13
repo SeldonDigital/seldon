@@ -4,6 +4,7 @@ import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import { activeBoardSection } from "../../prompt/context-sections/active-board"
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
+import type { SelectionScope } from "../../types"
 
 /** How the model names a node to edit: the current selection or an explicit id. */
 export type TargetSpec = "selection" | { nodeId: string }
@@ -138,12 +139,15 @@ function describe(match: NodeMatch): string {
  * Widens once to a workspace lookup and reports one outcome. A single match in
  * the active board resolves; a single match elsewhere returns a permission ask,
  * upholding the tier-3 gate; several matches return a short pick list; none
- * returns a not-found. Never resolves silently to an off-screen node.
+ * returns a not-found. Never resolves silently to an off-screen node. Workspace
+ * scope relaxes the gate: the user selected the whole workspace, so a single
+ * off-board match resolves directly instead of returning the permission ask.
  */
 function widen(
   workspace: Workspace,
   query: string,
   activeKey: BoardKey | undefined,
+  scope: SelectionScope | undefined,
 ): TargetResolution {
   const matches = searchWorkspace(workspace, query, activeKey)
   if (matches.length === 0) {
@@ -154,7 +158,9 @@ function widen(
   }
   if (matches.length === 1) {
     const match = matches[0]
-    if (match.inActiveBoard) return { kind: "resolved", nodeId: match.id }
+    if (match.inActiveBoard || scope === "workspace") {
+      return { kind: "resolved", nodeId: match.id }
+    }
     return {
       kind: "message",
       text: `Found ${describe(match)}, outside the active board. Ask the user to confirm before editing it, then call again with target { "nodeId": "${match.id}" }.${nodeValuesBlock(workspace, match.id)}`,
@@ -183,12 +189,13 @@ export function resolveNodeTarget(
   selectedBoardId: BoardKey | undefined,
   target: TargetSpec,
   match: string | undefined,
+  scope: SelectionScope | undefined,
 ): TargetResolution {
   if (target === "selection") {
     if (selectedNodeId && workspace.nodes[selectedNodeId]) {
       return { kind: "resolved", nodeId: selectedNodeId }
     }
-    if (match) return widen(workspace, match, activeKey)
+    if (match) return widen(workspace, match, activeKey, scope)
     const selectionNote = selectedBoardId
       ? `A board (${selectedBoardId}) is selected, not a node`
       : "Nothing is selected"
@@ -201,5 +208,5 @@ export function resolveNodeTarget(
   if (workspace.nodes[target.nodeId]) {
     return { kind: "resolved", nodeId: target.nodeId }
   }
-  return widen(workspace, match ?? target.nodeId, activeKey)
+  return widen(workspace, match ?? target.nodeId, activeKey, scope)
 }

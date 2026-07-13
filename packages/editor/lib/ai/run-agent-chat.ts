@@ -3,6 +3,7 @@ import type {
   AgentMetrics,
   AgentStreamEvent,
   ChatMessage,
+  SelectionScope,
   ThinkingLevelOption,
 } from "@seldon/ai"
 import type {
@@ -19,6 +20,8 @@ export type AgentChatRequest = {
   selectedNodeId?: string
   selectedNodeRootId?: string
   selectedBoardId?: BoardKey
+  scope?: SelectionScope
+  resourceTargetId?: string
   model?: string
   thinkingLevel?: ThinkingLevelOption
   noThink?: boolean

@@ -60,11 +60,15 @@ export function createMutationTools(
 ): ToolDefinition[] {
   const propertyValue = Type.Record(Type.String(), Type.Unknown())
 
+  // The default write scope follows the selection scope: an instance selection
+  // stays local, while board, variant, and workspace selections cascade by
+  // writing the component source. The model may still pass an explicit scope.
+  const defaultScope = resolved.scope === "instance" ? "instance" : "all"
+
   const setProperties = defineTool({
     name: "set_properties",
     label: "Set Properties",
-    description:
-      'The primary way to change a node\'s properties. Give a target, a scope, and the properties to set. target is "selection" for the node the user has selected, or { "nodeId" } for a specific node from the context. scope "instance" overrides just that node; scope "all" edits the component source so every instance without its own override follows. Values may be written loosely: a bare string or number becomes an exact value, and an "@scope.key" string becomes a theme reference. Pass an optional "match" (a label or catalog id) so the tool can find the node if the target is not in the current scope.',
+    description: `The primary way to change a node's properties. Give a target, an optional scope, and the properties to set. target is "selection" for the node the user has selected, or { "nodeId" } for a specific node from the context. scope "instance" overrides just that node; scope "all" edits the component source so every instance without its own override follows. The default follows the selection scope (currently "${defaultScope}"). Values may be written loosely: a bare string or number becomes an exact value, and an "@scope.key" string becomes a theme reference. Pass an optional "match" (a label or catalog id) so the tool can find the node if the target is not in the current scope.`,
     parameters: Type.Object({
       target: Type.Union(
         [Type.Literal("selection"), Type.Object({ nodeId: Type.String() })],
@@ -75,8 +79,7 @@ export function createMutationTools(
       ),
       scope: Type.Optional(
         Type.Union([Type.Literal("instance"), Type.Literal("all")], {
-          description:
-            'Default "instance". Use "all" only for an explicit "all/every" request; it edits the component source.',
+          description: `Defaults to the selection scope ("${defaultScope}"). "instance" overrides just this node; "all" edits the component source so every instance follows.`,
         }),
       ),
       properties: propertyValue,
@@ -95,10 +98,11 @@ export function createMutationTools(
         resolved.selectedBoardId,
         params.target as TargetSpec,
         params.match,
+        resolved.scope,
       )
       if (resolution.kind === "message") return textResult(resolution.text)
 
-      const scope = params.scope ?? "instance"
+      const scope = params.scope ?? defaultScope
       const writeNodeId =
         scope === "all"
           ? getSourceNodeId(state.workspace, resolution.nodeId)
@@ -254,6 +258,144 @@ export function createMutationTools(
       ),
   })
 
+  const setFontCollectionFamilyPreset = defineTool({
+    name: "set_font_collection_family_preset",
+    label: "Set Font Collection Family Preset",
+    description:
+      'Turn a whole family (slot) of the selected font collection on or off. preset "all" enables every weight, "none" disables them. fontCollectionId defaults to the selected font collection.',
+    parameters: Type.Object({
+      fontCollectionId: Type.Optional(
+        Type.String({
+          description: "Font collection entry id. Defaults to the selection.",
+        }),
+      ),
+      slot: Type.String({
+        description: "Family slot, for example primary or secondary.",
+      }),
+      preset: Type.Union([Type.Literal("all"), Type.Literal("none")]),
+    }),
+    execute: async (_id, params) => {
+      const fontCollectionId = params.fontCollectionId ?? resolved.resourceTargetId
+      if (!fontCollectionId) {
+        return textResult(
+          "No font collection is selected. Pass fontCollectionId.",
+        )
+      }
+      return textResult(
+        commit(state, {
+          type: "set_font_collection_family_preset",
+          payload: { fontCollectionId, slot: params.slot, preset: params.preset },
+        } as WorkspaceAction),
+      )
+    },
+  })
+
+  const setFontCollectionFamilyVariant = defineTool({
+    name: "set_font_collection_family_variant",
+    label: "Set Font Collection Family Variant",
+    description:
+      "Turn one weight (variant) of a family on or off in the selected font collection. fontCollectionId defaults to the selected font collection.",
+    parameters: Type.Object({
+      fontCollectionId: Type.Optional(
+        Type.String({
+          description: "Font collection entry id. Defaults to the selection.",
+        }),
+      ),
+      slot: Type.String({ description: "Family slot, for example primary." }),
+      variant: Type.String({
+        description: "Weight token, for example regular or bold.",
+      }),
+      enabled: Type.Boolean({ description: "true to enable, false to disable." }),
+    }),
+    execute: async (_id, params) => {
+      const fontCollectionId = params.fontCollectionId ?? resolved.resourceTargetId
+      if (!fontCollectionId) {
+        return textResult(
+          "No font collection is selected. Pass fontCollectionId.",
+        )
+      }
+      return textResult(
+        commit(state, {
+          type: "set_font_collection_family_variant",
+          payload: {
+            fontCollectionId,
+            slot: params.slot,
+            variant: params.variant,
+            enabled: params.enabled,
+          },
+        } as WorkspaceAction),
+      )
+    },
+  })
+
+  const setIconSetSubcategoryPreset = defineTool({
+    name: "set_icon_set_subcategory_preset",
+    label: "Set Icon Set Subcategory Preset",
+    description:
+      'Turn a whole subcategory of the selected icon set on or off. preset "all" includes every icon, "none" excludes them. iconSetId defaults to the selected icon set.',
+    parameters: Type.Object({
+      iconSetId: Type.Optional(
+        Type.String({
+          description: "Icon set entry id. Defaults to the selection.",
+        }),
+      ),
+      subcategory: Type.String({
+        description: "Subcategory path, for example communication/email.",
+      }),
+      preset: Type.Union([Type.Literal("all"), Type.Literal("none")]),
+    }),
+    execute: async (_id, params) => {
+      const iconSetId = params.iconSetId ?? resolved.resourceTargetId
+      if (!iconSetId) {
+        return textResult("No icon set is selected. Pass iconSetId.")
+      }
+      return textResult(
+        commit(state, {
+          type: "set_icon_set_subcategory_preset",
+          payload: {
+            iconSetId,
+            subcategory: params.subcategory,
+            preset: params.preset,
+          },
+        } as WorkspaceAction),
+      )
+    },
+  })
+
+  const setIconSetOverride = defineTool({
+    name: "set_icon_set_override",
+    label: "Set Icon Set Override",
+    description:
+      "Turn a single icon of the selected icon set on or off. path is includedIcons.<iconId>; value is true to include, false to exclude. iconSetId defaults to the selected icon set.",
+    parameters: Type.Object({
+      iconSetId: Type.Optional(
+        Type.String({
+          description: "Icon set entry id. Defaults to the selection.",
+        }),
+      ),
+      path: Type.String({
+        description: "Override path, for example includedIcons.arrow-right.",
+      }),
+      value: Type.Optional(Type.Unknown()),
+    }),
+    execute: async (_id, params) => {
+      const iconSetId = params.iconSetId ?? resolved.resourceTargetId
+      if (!iconSetId) {
+        return textResult("No icon set is selected. Pass iconSetId.")
+      }
+      return textResult(
+        commit(state, {
+          type: "set_icon_set_override",
+          payload: {
+            iconSetId,
+            path: params.path,
+            value: params.value ?? null,
+          },
+        } as WorkspaceAction),
+      )
+    },
+  })
+
   const setBoardLabel = defineTool({
     name: "set_board_label",
     label: "Set Board Label",
@@ -319,6 +461,10 @@ export function createMutationTools(
     insertVariantInstance,
     removeInstance,
     setThemeOverride,
+    setFontCollectionFamilyPreset,
+    setFontCollectionFamilyVariant,
+    setIconSetSubcategoryPreset,
+    setIconSetOverride,
     setBoardLabel,
     applyActionsTool,
   ]

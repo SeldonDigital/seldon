@@ -16,6 +16,10 @@ import { useDispatch } from "@lib/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace } from "@lib/workspace/hooks/use-history"
 import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
 import {
+  getResourceTargetId,
+  getSelectionScope,
+} from "@lib/workspace/hooks/use-selection-scope"
+import {
   type RejectedAction,
   applyActionsWithReport,
   describeChanges,
@@ -204,6 +208,8 @@ export function useHari() {
         const activeBoardKey = findActiveBoardKey(current, activeBoard)
         const { selectedNodeId, selectedNodeRootId, selectedBoardId } =
           useSelectionStore.getState()
+        const scope = getSelectionScope(current)
+        const resourceTargetId = getResourceTargetId(current)
 
         const { actions, reply, debug } = await runAgentChat(
           {
@@ -214,6 +220,8 @@ export function useHari() {
             selectedNodeId: selectedNodeId ?? undefined,
             selectedNodeRootId: selectedNodeRootId ?? undefined,
             selectedBoardId: selectedBoardId ?? undefined,
+            scope,
+            resourceTargetId,
             model,
             thinkingLevel,
             noThink: useDebugStore.getState().noThink,

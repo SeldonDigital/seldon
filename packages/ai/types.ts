@@ -13,6 +13,22 @@ export interface ChatMessage {
   content: string
 }
 
+/**
+ * The kind of thing the user has selected, which sets the harness's expected
+ * reach for the turn. The editor classifies the selection and passes it in, so
+ * the harness drives context, tool defaults, and the permission gate from an
+ * explicit scope rather than inferring it from ids.
+ */
+export type SelectionScope =
+  | "workspace"
+  | "board"
+  | "variant"
+  | "instance"
+  | "theme"
+  | "fontCollection"
+  | "iconSet"
+  | "media"
+
 /** Input to {@link chatToActions}. The workspace is read for context only; it is never mutated here. */
 export interface ChatToActionsInput {
   workspace: Workspace
@@ -26,6 +42,17 @@ export interface ChatToActionsInput {
   selectedNodeRootId?: string
   /** Board selected on the canvas when no node is selected, for sentinel disambiguation. */
   selectedBoardId?: BoardKey
+  /**
+   * The selection scope the editor classified for this turn. Drives the
+   * per-turn context, the deterministic tool defaults, and the permission gate.
+   */
+  scope?: SelectionScope
+  /**
+   * The theme, font collection, or icon set entry id to edit when the scope is
+   * a resource scope. Resolved by the editor from the selected resource entry,
+   * resource item, or resource board default.
+   */
+  resourceTargetId?: string
   /** Model id override. Defaults to `SELDON_AI_MODEL` env or `qwen3`. */
   model?: string
   /** Thinking level for the model. */
