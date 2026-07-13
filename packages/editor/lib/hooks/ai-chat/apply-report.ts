@@ -198,7 +198,8 @@ function changedProperties(action: WorkspaceAction): [string, unknown][] {
  * Builds the outcome block: for each target that changed, one line with its
  * ancestry path, then one line listing every property and value touched on it,
  * comma separated. Actions to the same target merge into one entry, and an
- * action with no property map lists its action type instead.
+ * action with no property map lists its action type instead. Groups are
+ * separated by a blank line so each target reads as its own block.
  */
 export function describeChanges(
   workspace: Workspace,
@@ -214,6 +215,7 @@ export function describeChanges(
 
   const rows: string[] = []
   for (const [id, actions] of groups) {
+    if (rows.length > 0) rows.push("")
     rows.push(targetPath(workspace, id || undefined))
     const changes: string[] = []
     for (const action of actions) {

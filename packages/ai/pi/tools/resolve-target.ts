@@ -4,6 +4,7 @@ import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import { activeBoardSection } from "../../prompt/context-sections/active-board"
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
+import { matchNodeStrings } from "../../prompt/context-sections/node-strings"
 import type { SelectionScope } from "../../types"
 
 /** How the model names a node to edit: the current selection or an explicit id. */
@@ -26,6 +27,7 @@ interface NodeMatch {
   boardLabel: string
   catalogId: string
   label: string
+  snippet: string | null
   inActiveBoard: boolean
 }
 
@@ -113,16 +115,18 @@ function searchWorkspace(
       if (!node) return
       const catalogId = getNodeCatalogId(node, workspace) ?? ""
       const label = node.label ?? ""
-      const hit =
+      const byName =
         label.toLowerCase().includes(needle) ||
         catalogId.toLowerCase().includes(needle)
-      if (!hit) return
+      const snippet = byName ? null : matchNodeStrings(workspace, ref.id, needle)
+      if (!byName && snippet === null) return
       matches.push({
         id: ref.id,
         boardKey: key,
         boardLabel: board.label,
         catalogId,
         label,
+        snippet,
         inActiveBoard: activeIds.has(ref.id),
       })
     })
@@ -132,7 +136,8 @@ function searchWorkspace(
 
 function describe(match: NodeMatch): string {
   const name = match.label || match.catalogId || match.id
-  return `${match.id} ("${name}"${match.catalogId ? ` ${match.catalogId}` : ""}) on board ${match.boardKey} "${match.boardLabel}"`
+  const value = match.snippet ? ` value="${match.snippet}"` : ""
+  return `${match.id} ("${name}"${match.catalogId ? ` ${match.catalogId}` : ""})${value} on board ${match.boardKey} "${match.boardLabel}"`
 }
 
 /**

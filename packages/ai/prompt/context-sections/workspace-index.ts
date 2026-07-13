@@ -2,6 +2,7 @@ import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/wal
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type { Workspace } from "@seldon/core/workspace/types"
 
+import { matchNodeStrings } from "./node-strings"
 import { section } from "./section"
 
 const BOARDS_TITLE =
@@ -50,14 +51,16 @@ export function findNodesSection(
       if (!node) return
       const catalogId = getNodeCatalogId(node, workspace) ?? ""
       const label = node.label ?? ""
-      const hit =
+      const byName =
         label.toLowerCase().includes(needle) ||
         catalogId.toLowerCase().includes(needle)
-      if (!hit) return
+      const snippet = byName ? null : matchNodeStrings(workspace, ref.id, needle)
+      if (!byName && snippet === null) return
       const kind = catalogId ? `${node.level} ${catalogId}` : node.level
       const labelText = label ? ` label="${label}"` : ""
+      const valueText = snippet ? ` value="${snippet}"` : ""
       matches.push(
-        `- ${ref.id} [${kind}]${labelText} on board ${key} "${board.label}" variant ${variantRootId}`,
+        `- ${ref.id} [${kind}]${labelText}${valueText} on board ${key} "${board.label}" variant ${variantRootId}`,
       )
     })
     if (matches.length >= FIND_LIMIT) break

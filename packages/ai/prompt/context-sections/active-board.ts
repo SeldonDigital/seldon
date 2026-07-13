@@ -7,6 +7,8 @@ import type {
   Workspace,
 } from "@seldon/core/workspace/types"
 
+import { nodeStringsSummary } from "./node-strings"
+
 /**
  * Every workspace action targets a node by id, so the model can only act on ids
  * it has seen. This serializes a variant subtree into indented lines that pair
@@ -33,7 +35,9 @@ function walkTree(
       const stateKeys = node.states ? Object.keys(node.states) : []
       const states =
         stateKeys.length > 0 ? ` states=[${stateKeys.join(", ")}]` : ""
-      lines.push(`${indent}- ${ref.id} [${kind}]${label}${states}`)
+      const summary = nodeStringsSummary(workspace, ref.id)
+      const values = summary ? ` {${summary}}` : ""
+      lines.push(`${indent}- ${ref.id} [${kind}]${label}${states}${values}`)
     } else {
       lines.push(`${indent}- ${ref.id} (no node entry)`)
     }
