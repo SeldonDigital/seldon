@@ -27,6 +27,7 @@ export async function chatToActionsPi(
   const { session, state, resolved } = await createSeldonSession(input, {
     model: input.model,
     thinkingLevel: input.thinkingLevel,
+    noThink: input.noThink,
   })
 
   const context = buildTurnContext(resolved)

@@ -25,6 +25,7 @@ export type AgentRequestBody = {
   selectedBoardId?: BoardKey
   model?: string
   thinkingLevel?: ThinkingLevelOption
+  noThink?: boolean
 }
 
 export type AgentResult = {
@@ -61,6 +62,7 @@ export async function runAgent(
     selectedBoardId: body.selectedBoardId,
     model: body.model,
     thinkingLevel: body.thinkingLevel,
+    noThink: body.noThink,
     onEvent,
   })
 

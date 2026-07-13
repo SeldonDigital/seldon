@@ -30,6 +30,12 @@ export interface ChatToActionsInput {
   model?: string
   /** Thinking level for the model. */
   thinkingLevel?: ThinkingLevelOption
+  /**
+   * Forces reasoning off for this turn, overriding the thinking level. Sends an
+   * explicit `enable_thinking: false` to qwen while tool-calling stays enabled.
+   * A test lever for clamping overthinking on direct edits.
+   */
+  noThink?: boolean
   /** Streams turn events as they happen, so the caller can render live. */
   onEvent?: (event: AgentStreamEvent) => void
 }

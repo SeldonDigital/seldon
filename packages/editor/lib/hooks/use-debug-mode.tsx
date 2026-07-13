@@ -33,6 +33,9 @@ interface DebugState {
 
   showOutcome: boolean
   setShowOutcome: (enabled: boolean) => void
+
+  noThink: boolean
+  setNoThink: (enabled: boolean) => void
 }
 
 export const useDebugStore = create<DebugState>()(
@@ -77,6 +80,10 @@ export const useDebugStore = create<DebugState>()(
       showOutcome: false,
       setShowOutcome: (enabled) =>
         set((state) => ({ ...state, showOutcome: enabled })),
+
+      noThink: false,
+      setNoThink: (enabled) =>
+        set((state) => ({ ...state, noThink: enabled })),
     }),
     {
       name: "debug-mode",
@@ -91,6 +98,7 @@ export const useDebugStore = create<DebugState>()(
         aiLogging: state.aiLogging,
         showTools: state.showTools,
         showOutcome: state.showOutcome,
+        noThink: state.noThink,
       }),
     },
   ),
@@ -118,6 +126,8 @@ export function useDebugMode() {
     setShowTools,
     showOutcome,
     setShowOutcome,
+    noThink,
+    setNoThink,
   } = useDebugStore(
     useShallow((state) => ({
       canvasProfiling: state.canvasProfiling,
@@ -140,6 +150,8 @@ export function useDebugMode() {
       setShowTools: state.setShowTools,
       showOutcome: state.showOutcome,
       setShowOutcome: state.setShowOutcome,
+      noThink: state.noThink,
+      setNoThink: state.setNoThink,
     })),
   )
 
@@ -183,6 +195,10 @@ export function useDebugMode() {
     setShowOutcome(!showOutcome)
   }, [setShowOutcome, showOutcome])
 
+  const toggleNoThink = useCallback(() => {
+    setNoThink(!noThink)
+  }, [setNoThink, noThink])
+
   return {
     canvasProfiling,
     toggleCanvasProfiling,
@@ -213,5 +229,8 @@ export function useDebugMode() {
 
     showOutcome,
     toggleShowOutcome,
+
+    noThink,
+    toggleNoThink,
   }
 }

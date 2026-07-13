@@ -1,12 +1,11 @@
 // BESPOKE-VIEW: collapsible reasoning block for the Hari transcript. The header
 // toggle collapses the reasoning to a single row or expands it to its full
-// height. The expand state is shared across turns via the chat store, so the
-// last toggle sticks and is never force-opened. The header reads "Thinking..."
-// while the model reasons, then "Thought for Ns" once the phase completes.
-// Expanded text keeps the model's own line breaks via pre-wrap; the generated
-// MessageThinking supplies the frame, label, and toggle button.
-import { useThinkingExpanded } from "@lib/hooks/use-ai-chat"
-import type { CSSProperties } from "react"
+// height. Each block owns its own expand state, so toggling one leaves the
+// others untouched; it defaults open. The header reads "Thinking..." while the
+// model reasons, then "Thought for Ns" once the phase completes. Expanded text
+// keeps the model's own line breaks via pre-wrap; the generated MessageThinking
+// supplies the frame, label, and toggle button.
+import { type CSSProperties, useState } from "react"
 import { MessageThinking } from "@seldon/components/elements/MessageThinking"
 import type { IconProps } from "@seldon/components/primitives/Icon"
 
@@ -18,7 +17,7 @@ interface HariThinkingProps {
 
 /** Renders the reasoning block with a header toggle that shows or hides it. */
 export function HariThinking({ text, durationMs }: HariThinkingProps) {
-  const [open, setOpen] = useThinkingExpanded()
+  const [open, setOpen] = useState(true)
 
   const label =
     durationMs === undefined

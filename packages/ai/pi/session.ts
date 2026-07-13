@@ -23,6 +23,8 @@ export interface SeldonSessionOptions {
   model?: string
   host?: string
   thinkingLevel?: ThinkingLevelOption
+  /** Forces reasoning off for this turn, overriding the thinking level. */
+  noThink?: boolean
 }
 
 export interface SeldonSession {
@@ -71,21 +73,28 @@ export async function createSeldonSession(
   const customTools = [...mutationTools, ...contextTools]
   const toolNames = customTools.map((tool) => tool.name)
 
-  const reasoning =
-    supportsThinking(options.model) &&
-    options.thinkingLevel !== undefined &&
-    options.thinkingLevel !== "off"
+  // Thinking-capable models keep `reasoning: true` so Pi always emits the
+  // `enable_thinking` kwarg. Leaving it false makes Pi send nothing, and qwen's
+  // chat template then defaults thinking ON, so "off" would never disable it.
+  // On/off is driven by the session thinking level: a level enables thinking,
+  // `undefined` sends `enable_thinking: false`.
+  const thinkingCapable = supportsThinking(options.model)
+  const requestedLevel = options.noThink ? "off" : options.thinkingLevel
+  const thinkingOn =
+    thinkingCapable &&
+    requestedLevel !== undefined &&
+    requestedLevel !== "off"
   const model = buildOllamaModel({
     model: options.model,
     host: options.host,
-    reasoning,
+    reasoning: thinkingCapable,
   })
   const { authStorage, modelRegistry } = createPiAuth()
   const resourceLoader = await buildResourceLoader()
 
   const { session } = await createAgentSession({
     model,
-    thinkingLevel: reasoning ? options.thinkingLevel : undefined,
+    thinkingLevel: thinkingOn ? requestedLevel : undefined,
     authStorage,
     modelRegistry,
     resourceLoader,

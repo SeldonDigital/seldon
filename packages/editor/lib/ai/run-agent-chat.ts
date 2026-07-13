@@ -21,6 +21,7 @@ export type AgentChatRequest = {
   selectedBoardId?: BoardKey
   model?: string
   thinkingLevel?: ThinkingLevelOption
+  noThink?: boolean
 }
 
 /** Session-config choices the Hari palette renders, from `/api/agent/config`. */

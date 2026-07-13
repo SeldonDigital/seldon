@@ -22,6 +22,7 @@ import {
   findActiveBoardKey,
 } from "./ai-chat/apply-report"
 import { isLoggingEnabled, logAiTurn, logWarm } from "./ai-chat/log-turn"
+import { useDebugStore } from "./use-debug-mode"
 import { usePanel } from "./use-panel"
 
 export type AiChatRole = "user" | "assistant"
@@ -64,15 +65,9 @@ interface AiChatState {
   /** Selected model and thinking level for the next turn. */
   model?: string
   thinkingLevel?: ThinkingLevelOption
-  /**
-   * Whether reasoning blocks are expanded. Shared across turns so the last
-   * toggle sticks; a new session opens it. Never force-opened once collapsed.
-   */
-  thinkingExpanded: boolean
   startTurn: (prompt: string) => string
   updateTurn: (id: string, patch: Partial<HariTurn>) => void
   mutateTurn: (id: string, update: (turn: HariTurn) => HariTurn) => void
-  setThinkingExpanded: (expanded: boolean) => void
   setStatus: (status: HariStatus) => void
   setError: (error: string | null) => void
   setConfig: (config: AgentConfig) => void
@@ -88,7 +83,6 @@ const useStore = create<AiChatState>((set) => ({
   status: "idle",
   error: null,
   config: null,
-  thinkingExpanded: true,
   startTurn: (prompt) => {
     const id = `turn-${(turnSequence += 1)}`
     set((state) => ({
@@ -108,7 +102,6 @@ const useStore = create<AiChatState>((set) => ({
     set((state) => ({
       turns: state.turns.map((turn) => (turn.id === id ? update(turn) : turn)),
     })),
-  setThinkingExpanded: (thinkingExpanded) => set({ thinkingExpanded }),
   setStatus: (status) => set({ status }),
   setError: (error) => set({ error }),
   setConfig: (config) =>
@@ -119,19 +112,8 @@ const useStore = create<AiChatState>((set) => ({
     })),
   setModel: (model) => set({ model }),
   setThinkingLevel: (thinkingLevel) => set({ thinkingLevel }),
-  reset: () =>
-    set({ turns: [], status: "idle", error: null, thinkingExpanded: true }),
+  reset: () => set({ turns: [], status: "idle", error: null }),
 }))
-
-/**
- * Shared expand/collapse state for reasoning blocks. Backed by the chat store so
- * every reasoning block reflects the same preference and the last toggle sticks.
- */
-export function useThinkingExpanded(): [boolean, (expanded: boolean) => void] {
-  const expanded = useStore((state) => state.thinkingExpanded)
-  const setExpanded = useStore((state) => state.setThinkingExpanded)
-  return [expanded, setExpanded]
-}
 
 /**
  * Folds one streamed event into the live turn: appends reasoning and reply
@@ -234,6 +216,7 @@ export function useHari() {
             selectedBoardId: selectedBoardId ?? undefined,
             model,
             thinkingLevel,
+            noThink: useDebugStore.getState().noThink,
           },
           (event) => applyTurnEvent(turnId, event),
         )
