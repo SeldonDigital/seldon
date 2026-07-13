@@ -23,7 +23,8 @@ export function createAddComponentTool(state: PiTurnState): ToolDefinition {
       "Add a component from the catalog to the workspace as its own board. Pass its catalog id (from list_catalog_ids). To place it inside an existing node, use insert_component.",
     parameters: Type.Object({
       catalogId: Type.String({
-        description: "Catalog id of the component to add (from list_catalog_ids).",
+        description:
+          "Catalog id of the component to add (from list_catalog_ids).",
       }),
     }),
     execute: async (_id, params) => {

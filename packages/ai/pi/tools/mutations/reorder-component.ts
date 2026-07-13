@@ -10,9 +10,7 @@ import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
 
 /** Reorders an instance among its siblings under the same parent. */
-export function createReorderComponentTool(
-  state: PiTurnState,
-): ToolDefinition {
+export function createReorderComponentTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "reorder_component",
     label: "Reorder Component",

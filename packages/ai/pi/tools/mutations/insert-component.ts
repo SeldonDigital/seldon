@@ -23,7 +23,8 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
       "Insert a catalog component under an existing parent node (for example the selection). Pass its catalog id (from list_catalog_ids). Creates the board if it does not exist yet. Only nest what the hierarchy allows.",
     parameters: Type.Object({
       catalogId: Type.String({
-        description: "Catalog id of the component to insert (from list_catalog_ids).",
+        description:
+          "Catalog id of the component to insert (from list_catalog_ids).",
       }),
       parentId: Type.String({ description: "Existing parent node id." }),
       index: Type.Optional(
