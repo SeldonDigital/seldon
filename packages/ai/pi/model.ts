@@ -6,7 +6,7 @@ import type {
 import { AuthStorage, ModelRegistry } from "@earendil-works/pi-coding-agent"
 
 const DEFAULT_HOST = "http://127.0.0.1:11434"
-const DEFAULT_MODEL = "qwen3:4b"
+const DEFAULT_MODEL = "gpt-oss:20b"
 
 /**
  * Provider name for the local Ollama model. Pi resolves an API key by provider,

@@ -36,10 +36,14 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * stored as the option the editor renders rather than an exact string it flags
  * as invalid; any other primitive becomes an exact value. `schemaKey` is the
  * flattened key the leaf resolves to, so options and theme tags read from the
- * right schema. Already-tagged and non-scalar values pass through untouched.
+ * right schema. `resolved` is false when the key could not be mapped to a schema
+ * path, so an exact fallback is flagged as a distinct, higher-suspicion repair:
+ * with no schema to consult, options and theme tags are invisible, so the exact
+ * shape may be wrong. Already-tagged and non-scalar values pass through.
  */
 function coerceLeaf(
   schemaKey: string,
+  resolved: boolean,
   value: unknown,
   actionType: string,
   repairs: ActionRepair[],
@@ -74,7 +78,9 @@ function coerceLeaf(
     repairs.push({
       actionType,
       propertyKey: schemaKey,
-      reason: `wrapped a bare ${typeof value} into an exact value`,
+      reason: resolved
+        ? `wrapped a bare ${typeof value} into an exact value`
+        : `could not resolve a schema key for "${schemaKey}"; wrapped a bare ${typeof value} into an exact value, which may be the wrong shape`,
     })
     return { type: "exact", value }
   }
@@ -106,8 +112,10 @@ function coerceTree(
     }
     return out
   }
+  const resolvedKey = getCatalogKeyForPropertyPath(path)
   return coerceLeaf(
-    getCatalogKeyForPropertyPath(path) ?? path,
+    resolvedKey ?? path,
+    resolvedKey !== undefined,
     value,
     actionType,
     repairs,

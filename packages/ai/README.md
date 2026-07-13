@@ -32,14 +32,14 @@ The package imports workspace types, catalogs, and compute from `@seldon/core`. 
 
 ## Local Model
 
-Pi targets a local Ollama model through its OpenAI-compatible endpoint at `http://127.0.0.1:11434/v1`. The endpoint needs no API key. The default model is `qwen3:4b`. Tool-calling on small models is the main open question, so a turn may need a larger model.
+Pi targets a local Ollama model through its OpenAI-compatible endpoint at `http://127.0.0.1:11434/v1`. The endpoint needs no API key. The default model is `gpt-oss:20b`. Tool-calling on small models is the main open question, so a turn may need a larger model.
 
 Install [Ollama](https://ollama.com), start it, and pull the default model:
 
 ```bash
 brew install ollama
 ollama serve
-ollama pull qwen3:4b
+ollama pull gpt-oss:20b
 ```
 
 On Linux, install Ollama with the official script instead of Homebrew:
@@ -56,7 +56,7 @@ Pi reads these from `process.env` in [pi/model.ts](./pi/model.ts). An explicit c
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `SELDON_AI_MODEL` | `qwen3:4b` | Model id the agent requests |
+| `SELDON_AI_MODEL` | `gpt-oss:20b` | Model id the agent requests |
 | `OLLAMA_HOST` | `http://127.0.0.1:11434` | Base URL of the Ollama server |
 
 The agent runs inside the editor dev server. Set a variable inline when you start it from the repo root with `npm run dev`:

@@ -157,7 +157,7 @@ function Hari({
   const thinkingAnchor = useRef<HTMLElement | null>(null)
 
   const isPending = status === "pending"
-  const placeholder = "Describe a change..."
+  const placeholder = "Describe what you want to do..."
   const controlsDisabled = config === null
   const modelValue = model ?? ""
   const thinkingValue = thinkingLevel ?? ""

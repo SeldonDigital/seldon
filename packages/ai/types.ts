@@ -53,7 +53,7 @@ export interface ChatToActionsInput {
    * resource item, or resource board default.
    */
   resourceTargetId?: string
-  /** Model id override. Defaults to `SELDON_AI_MODEL` env or `qwen3`. */
+  /** Model id override. Defaults to `SELDON_AI_MODEL` env or `gpt-oss:20b`. */
   model?: string
   /** Thinking level for the model. */
   thinkingLevel?: ThinkingLevelOption

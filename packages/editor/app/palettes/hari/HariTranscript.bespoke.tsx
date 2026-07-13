@@ -11,6 +11,7 @@ import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
 import { MessageStatus } from "@seldon/components/elements/MessageStatus"
 import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
+import type { IconProps } from "@seldon/components/primitives/Icon"
 import { HariMarkdown } from "./HariMarkdown.bespoke"
 import { HariThinking } from "./HariThinking.bespoke"
 
@@ -44,7 +45,7 @@ function buildTranscript(
   for (const turn of turns) {
     blocks.push(userBlock(turn))
     if (turn.thinking) blocks.push(thinkingBlock(turn))
-    if (showTools && turn.toolCalls && turn.toolCalls.length > 0) {
+    if (showTools && hasToolActivity(turn)) {
       blocks.push(toolsBlock(turn))
     }
     if (showOutcome && turn.changes && turn.changes.length > 0) {
@@ -87,19 +88,70 @@ function thinkingBlock(turn: HariTurn): ReactNode {
   )
 }
 
+/** True when the turn has any tool activity worth showing in the tools block. */
+function hasToolActivity(turn: HariTurn): boolean {
+  return (
+    (turn.toolCalls?.length ?? 0) > 0 ||
+    (turn.repairs?.length ?? 0) > 0 ||
+    (turn.warnings?.length ?? 0) > 0 ||
+    (turn.rejected?.length ?? 0) > 0
+  )
+}
+
+/** One row in the tools block: an icon and a line of text. */
+function toolRow(
+  key: string,
+  iconName: IconProps["icon"],
+  text: string,
+): ReactNode {
+  const icon = { icon: iconName }
+  const textDescription = { children: text, style: preWrapStyle }
+  return (
+    <MessageTools
+      key={key}
+      icon={icon}
+      textDescription={textDescription}
+      frame2={null}
+    />
+  )
+}
+
+/**
+ * The tools block: each tool the model called, then the deterministic shape
+ * repairs, the vocabulary warnings, and the rejections for the turn. Repairs and
+ * warnings are the signal for a malformed edit that still validated or was
+ * silently dropped, so they read here rather than only in the console.
+ */
 function toolsBlock(turn: HariTurn): ReactNode {
-  const rows = (turn.toolCalls ?? []).map((call, index) => {
-    const icon = {
-      icon: call.ok ? "material-checkCircle" : "material-error",
-    } as const
-    const textDescription = { children: call.name }
-    return (
-      <MessageTools
-        key={index}
-        icon={icon}
-        textDescription={textDescription}
-        frame2={null}
-      />
+  const rows: ReactNode[] = []
+  ;(turn.toolCalls ?? []).forEach((call, index) => {
+    rows.push(
+      toolRow(
+        `call-${index}`,
+        call.ok ? "material-checkCircle" : "material-error",
+        call.name,
+      ),
+    )
+  })
+  ;(turn.repairs ?? []).forEach((repair, index) => {
+    rows.push(
+      toolRow(
+        `repair-${index}`,
+        "material-warning",
+        `repair: ${repair.actionType}.${repair.propertyKey} — ${repair.reason}`,
+      ),
+    )
+  })
+  ;(turn.warnings ?? []).forEach((warning, index) => {
+    rows.push(toolRow(`warning-${index}`, "material-warning", warning))
+  })
+  ;(turn.rejected ?? []).forEach((item, index) => {
+    rows.push(
+      toolRow(
+        `rejected-${index}`,
+        "material-error",
+        `rejected: ${item.type} — ${item.reason}`,
+      ),
     )
   })
   return <Fragment key={`${turn.id}-tools`}>{rows}</Fragment>

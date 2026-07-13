@@ -5,6 +5,7 @@ import {
   warmAgent,
 } from "@lib/ai/run-agent-chat"
 import type {
+  ActionRepair,
   AgentStreamEvent,
   AgentToolCall,
   ThinkingLevelOption,
@@ -22,10 +23,11 @@ import {
 import {
   type RejectedAction,
   applyActionsWithReport,
-  describeChanges,
   findActiveBoardKey,
 } from "./ai-chat/apply-report"
+import { describeChanges } from "./ai-chat/change-summary"
 import { isLoggingEnabled, logAiTurn, logWarm } from "./ai-chat/log-turn"
+import { collectVocabularyWarnings } from "./ai-chat/vocabulary-warnings"
 import { useDebugStore } from "./use-debug-mode"
 import { usePanel } from "./use-panel"
 
@@ -56,6 +58,10 @@ export interface HariTurn {
   toolCalls?: AgentToolCall[]
   reply?: string
   changes?: string[]
+  /** Deterministic shape fixes applied to the model's values before validation. */
+  repairs?: ActionRepair[]
+  /** Set keys or option values a component cannot take, so the edit is silently dropped. */
+  warnings?: string[]
   rejected?: RejectedAction[]
   error?: string
 }
@@ -257,12 +263,15 @@ export function useHari() {
 
         const failed =
           outcome.rejected.length > 0 && outcome.applied.length === 0
+        const warnings = collectVocabularyWarnings(current, actions)
         useStore.getState().updateTurn(turnId, {
           thinking: debug.thinking,
           thinkingMs: debug.thinkingMs,
           toolCalls: debug.toolCalls,
           reply,
           changes: describeChanges(outcome.workspace, outcome),
+          repairs: debug.repairs.length > 0 ? debug.repairs : undefined,
+          warnings: warnings.length > 0 ? warnings : undefined,
           rejected: outcome.rejected.length > 0 ? outcome.rejected : undefined,
           status: failed ? "error" : "done",
         })

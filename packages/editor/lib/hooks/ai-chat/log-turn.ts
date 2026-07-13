@@ -5,22 +5,8 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
+import { changedProperties, targetIdWithParentOf } from "./action-helpers"
 import type { ApplyReport } from "./apply-report"
-
-/** Resolves the primary target id from an action payload. */
-function targetIdOf(payload: unknown): string | undefined {
-  if (!payload || typeof payload !== "object") return undefined
-  const bag = payload as Record<string, unknown>
-  for (const key of ["nodeId", "instanceId", "variantId", "boardKey"]) {
-    if (typeof bag[key] === "string") return bag[key] as string
-  }
-  const target = bag.target
-  if (target && typeof target === "object") {
-    const parentId = (target as Record<string, unknown>).parentId
-    if (typeof parentId === "string") return parentId
-  }
-  return undefined
-}
 
 /** Human-readable label/level for a target id, resolved as a node then a board. */
 function describeTarget(workspace: Workspace, id: string | undefined): string {
@@ -45,15 +31,6 @@ function summarizeValue(value: unknown): string {
   return json && json.length > 60 ? `${json.slice(0, 60)}…` : String(json)
 }
 
-/** The property key/value pairs an action sets, if any. */
-function changedProperties(action: WorkspaceAction): [string, unknown][] {
-  const payload = (action as { payload?: unknown }).payload
-  if (!payload || typeof payload !== "object") return []
-  const properties = (payload as Record<string, unknown>).properties
-  if (!properties || typeof properties !== "object") return []
-  return Object.entries(properties as Record<string, unknown>)
-}
-
 /** Purple badge that prefixes every seldon/ai console row, matching seldon/core. */
 const AI_TAG = "%c[seldon/ai]%c"
 const AI_TAG_STYLE = "color:#a855f7;font-weight:bold"
@@ -66,6 +43,25 @@ function aiGroup(title: string): void {
 /** Logs a row prefixed with the purple [seldon/ai] badge, plus any extra args. */
 function aiLog(message: string, ...args: unknown[]): void {
   console.log(`${AI_TAG} ${message}`, AI_TAG_STYLE, "", ...args)
+}
+
+/** Logs one applied action's target header and each property's before -> after. */
+function logActionChange(
+  before: Workspace,
+  after: Workspace,
+  action: WorkspaceAction,
+): void {
+  const id = targetIdWithParentOf(action.payload)
+  aiLog(`${action.type} → ${describeTarget(after, id)}`)
+  const overrides = id
+    ? (before.nodes?.[id]?.overrides as Record<string, unknown> | undefined)
+    : undefined
+  for (const [key, nextValue] of changedProperties(action)) {
+    const previous = overrides?.[key]
+    aiLog(
+      `    ${key}: ${summarizeValue(previous)} → ${summarizeValue(nextValue)}`,
+    )
+  }
 }
 
 /**
@@ -81,17 +77,7 @@ function logChanges(
   if (appliedActions.length === 0) return
   aiGroup("🎯 Changed")
   for (const action of appliedActions) {
-    const id = targetIdOf(action.payload)
-    aiLog(`${action.type} → ${describeTarget(after, id)}`)
-    for (const [key, nextValue] of changedProperties(action)) {
-      const overrides = id
-        ? (before.nodes?.[id]?.overrides as Record<string, unknown> | undefined)
-        : undefined
-      const previous = overrides?.[key]
-      aiLog(
-        `    ${key}: ${summarizeValue(previous)} → ${summarizeValue(nextValue)}`,
-      )
-    }
+    logActionChange(before, after, action)
   }
   console.groupEnd()
 }
@@ -244,6 +230,65 @@ export function logWarm(metrics: AgentMetrics): void {
  * context and raw model response are nested groups the user can expand on
  * demand.
  */
+/** The single-glyph outcome badge for the turn header. */
+function outcomeIcon(report: ApplyReport): string {
+  if (report.rejected.length > 0) return "❌"
+  if (report.applied.length === 0 && report.ineffective.length > 0) return "⚠️"
+  if (report.applied.length > 0) return "✅"
+  return "➖"
+}
+
+/** Logs a board-scoped workspace snapshot under a titled group, with the full file nested. */
+function logWorkspaceSnapshot(
+  title: string,
+  workspace: Workspace,
+  activeBoardKey: BoardKey | undefined,
+): void {
+  aiGroup(title)
+  console.log(scopeToBoard(workspace, activeBoardKey))
+  console.groupCollapsed("Full workspace")
+  console.log(workspace)
+  console.groupEnd()
+  console.groupEnd()
+}
+
+/** Logs the grounding context, its size breakdown, the raw reply, and any repairs. */
+function logDebug(debug: AgentDebug): void {
+  aiGroup("🧭 Context")
+  console.log(debug.context)
+  console.groupEnd()
+  logContextSizes(debug.context)
+  aiGroup("📥 Raw model response")
+  console.log(debug.rawResponse)
+  console.groupEnd()
+  const repairs = debug.repairs ?? []
+  if (repairs.length === 0) return
+  aiGroup(`🔧 Shape repairs (${repairs.length})`)
+  for (const repair of repairs) {
+    aiLog(`${repair.actionType}.${repair.propertyKey}: ${repair.reason}`)
+  }
+  console.groupEnd()
+}
+
+/** Logs the parsed action types, the per-target change detail, and the outcome badge. */
+function logActionsAndOutcome(
+  before: Workspace,
+  actions: WorkspaceAction[],
+  report: ApplyReport,
+): void {
+  aiLog(
+    "⚙️ Parsed actions",
+    actions.map((action) => action.type),
+    actions,
+  )
+  logChanges(before, report.workspace, report.appliedActions)
+  aiLog(`${outcomeIcon(report)} Outcome`, {
+    applied: report.applied,
+    ineffective: report.ineffective,
+    rejected: report.rejected,
+  })
+}
+
 export function logAiTurn(
   message: string,
   debug: AgentDebug | undefined,
@@ -254,56 +299,11 @@ export function logAiTurn(
 ): void {
   if (!isLoggingEnabled()) return
 
-  const outcomeIcon =
-    report.rejected.length > 0
-      ? "❌"
-      : report.applied.length === 0 && report.ineffective.length > 0
-        ? "⚠️"
-        : report.applied.length > 0
-          ? "✅"
-          : "➖"
-
   console.groupCollapsed(`${AI_TAG} 💬 ${message}`, AI_TAG_STYLE, "")
-  aiGroup("🗂 Workspace before")
-  console.log(scopeToBoard(before, activeBoardKey))
-  console.groupCollapsed("Full workspace")
-  console.log(before)
-  console.groupEnd()
-  console.groupEnd()
-  if (debug) {
-    aiGroup("🧭 Context")
-    console.log(debug.context)
-    console.groupEnd()
-    logContextSizes(debug.context)
-    aiGroup("📥 Raw model response")
-    console.log(debug.rawResponse)
-    console.groupEnd()
-    const repairs = debug.repairs ?? []
-    if (repairs.length > 0) {
-      aiGroup(`🔧 Shape repairs (${repairs.length})`)
-      for (const repair of repairs) {
-        aiLog(`${repair.actionType}.${repair.propertyKey}: ${repair.reason}`)
-      }
-      console.groupEnd()
-    }
-  }
-  aiLog(
-    "⚙️ Parsed actions",
-    actions.map((action) => action.type),
-    actions,
-  )
-  logChanges(before, report.workspace, report.appliedActions)
-  aiLog(`${outcomeIcon} Outcome`, {
-    applied: report.applied,
-    ineffective: report.ineffective,
-    rejected: report.rejected,
-  })
-  aiGroup("🗂 Workspace after")
-  console.log(scopeToBoard(report.workspace, activeBoardKey))
-  console.groupCollapsed("Full workspace")
-  console.log(report.workspace)
-  console.groupEnd()
-  console.groupEnd()
+  logWorkspaceSnapshot("🗂 Workspace before", before, activeBoardKey)
+  if (debug) logDebug(debug)
+  logActionsAndOutcome(before, actions, report)
+  logWorkspaceSnapshot("🗂 Workspace after", report.workspace, activeBoardKey)
   if (debug) logMetricsSummary(debug.metrics)
   console.groupEnd()
 }
