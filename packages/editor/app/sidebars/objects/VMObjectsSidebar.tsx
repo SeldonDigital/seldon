@@ -6,12 +6,20 @@ import {
 } from "@lib/persistence/workspace-save-store"
 import { LayoutGroup } from "framer-motion"
 import { CSSProperties, PointerEvent, useCallback, useState } from "react"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import {
+  useSelectionActions,
+  useStore as useSelectionStore,
+} from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useTool } from "@lib/hooks/use-tool"
+import { buildFieldStateProps } from "@lib/views/state-props"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
 import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
+import { useRowClick } from "./hooks/use-row-click"
 import { useScrollSelection } from "./hooks/use-scroll-selection"
 import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
 import { getSelectionTarget } from "@lib/workspace/selection-target"
@@ -39,6 +47,13 @@ export function VMObjectsSidebar() {
   const saveNow = useSaveWorkspace()
   const addToast = useAddToast()
   const [isEditingName, setEditingName] = useState(false)
+
+  const { activeBoard } = useActiveBoard()
+  const { selectWorkspace } = useSelectionActions()
+  const { activeTool } = useTool()
+  const workspaceSelected = useSelectionStore(
+    (state) => state.workspaceSelected,
+  )
 
   useDraggableMonitor()
 
@@ -76,6 +91,21 @@ export function VMObjectsSidebar() {
 
   const enterRename = useCallback(() => setEditingName(true), [])
 
+  // Selecting the project row selects the workspace itself. The board the
+  // canvas is showing is frozen so the canvas stays put while the workspace is
+  // the active selection.
+  const selectWorkspaceRow = useCallback(() => {
+    const frozenBoardKey = activeBoard ? getComponentKey(activeBoard) : null
+    selectWorkspace(frozenBoardKey)
+  }, [activeBoard, selectWorkspace])
+
+  // Reuses the row click contract: ignores clicks on the force-save button and
+  // only selects under the select tool.
+  const onProjectClick = useRowClick({
+    activeTool,
+    onSelect: selectWorkspaceRow,
+  })
+
   // The projectActions button force-saves the live workspace immediately,
   // bypassing the autosave debounce.
   const handleForceSave = useCallback(() => {
@@ -83,7 +113,11 @@ export function VMObjectsSidebar() {
     addToast("Project saved")
   }, [workspace, saveNow, addToast])
 
-  const projectField = { onDoubleClick: enterRename }
+  const projectField = {
+    onClick: onProjectClick,
+    onDoubleClick: enterRename,
+    ...buildFieldStateProps({ selected: workspaceSelected }),
+  }
   const projectActions = { onClick: handleForceSave }
 
   const sectionGroups = sections.map((section) => (

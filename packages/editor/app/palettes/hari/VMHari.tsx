@@ -23,21 +23,26 @@ import {
   type HariTurn,
   useHari,
 } from "@lib/hooks/use-ai-chat"
-import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
+import {
+  type SelectionScope,
+  useSelectionScope,
+} from "@lib/workspace/hooks/use-selection-scope"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
 import { HariTranscript } from "./HariTranscript.bespoke"
 
 const HARI_INITIAL_WIDTH = 420
 const HARI_INITIAL_HEIGHT = 480
 
-/** Labels the tier the next turn resolves against, shown in the basis chip. */
-type SelectionBasis = "workspace" | "board" | "selection"
-
-/** Capital-case labels for the basis chip. */
-const BASIS_LABELS: Record<SelectionBasis, string> = {
+/** Capital-case labels for the scope chip, one per selection kind. */
+const SCOPE_LABELS: Record<SelectionScope, string> = {
   workspace: "Workspace",
   board: "Board",
-  selection: "Selection",
+  variant: "Variant",
+  instance: "Instance",
+  theme: "Theme",
+  fontCollection: "Font Collection",
+  iconSet: "Icon Set",
+  media: "Media",
 }
 
 /**
@@ -118,13 +123,7 @@ function Hari({
     void warm()
   }, [warm])
 
-  const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
-  const selectedBoardId = useSelectionStore((state) => state.selectedBoardId)
-  const basis: SelectionBasis = selectedNodeId
-    ? "selection"
-    : selectedBoardId
-      ? "board"
-      : "workspace"
+  const scope = useSelectionScope()
 
   const {
     x,
@@ -282,7 +281,7 @@ function Hari({
   }
   const thinkingLabelSlot = { children: thinkingButtonLabel }
   const basisChipSlot = {}
-  const basisLabelSlot = { children: BASIS_LABELS[basis] }
+  const basisLabelSlot = { children: SCOPE_LABELS[scope] }
   const resetSlot = { onClick: onReset, "data-testid": "ai-chat-reset" }
   const resetLabelSlot = { children: "Clear" }
 

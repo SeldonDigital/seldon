@@ -81,6 +81,19 @@ type SelectionState = {
   selectedBoardId: BoardKey | null
   selectedNodeId: VariantId | InstanceId | null
   /**
+   * Whether the workspace itself is the selection (the objects-sidebar project
+   * row). Mutually exclusive with every other selection field: setting it clears
+   * the rest, and any other selection setter clears it. The canvas does not
+   * change while it is set; `useActiveBoard` keeps rendering `frozenBoardKey`.
+   */
+  workspaceSelected: boolean
+  /**
+   * The board the canvas was showing when the workspace was selected. Held so
+   * the canvas stays put while `workspaceSelected` is true, even though the
+   * board and node selection are cleared. Null when no board was active.
+   */
+  frozenBoardKey: BoardKey | null
+  /**
    * The variant-root id of the column the selected node was clicked in. A child
    * node id is shared across variant columns, so this tells the canvas which
    * copy to outline. Null when the column is unknown (e.g. sidebar selection),
@@ -107,6 +120,7 @@ type SelectionState = {
   ) => void
   selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
   selectResourceItem: (key: string | null) => void
+  selectWorkspace: (frozenBoardKey: BoardKey | null) => void
 }
 
 export const useStore = create<SelectionState>()((set) => ({
@@ -115,6 +129,8 @@ export const useStore = create<SelectionState>()((set) => ({
   selectedNodeRootId: null,
   selectedResourceEntry: null,
   selectedResourceItemKey: null,
+  workspaceSelected: false,
+  frozenBoardKey: null,
   selectBoard: (id: BoardKey | null) => {
     set({
       selectedBoardId: id,
@@ -122,6 +138,8 @@ export const useStore = create<SelectionState>()((set) => ({
       selectedNodeRootId: null,
       selectedResourceEntry: null,
       selectedResourceItemKey: null,
+      workspaceSelected: false,
+      frozenBoardKey: null,
     })
   },
   selectNode: (id: VariantId | InstanceId | null, rootId?: string | null) => {
@@ -131,6 +149,8 @@ export const useStore = create<SelectionState>()((set) => ({
       selectedBoardId: null,
       selectedResourceEntry: null,
       selectedResourceItemKey: null,
+      workspaceSelected: false,
+      frozenBoardKey: null,
     })
   },
   selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => {
@@ -140,6 +160,8 @@ export const useStore = create<SelectionState>()((set) => ({
       selectedNodeRootId: null,
       selectedBoardId: null,
       selectedResourceItemKey: null,
+      workspaceSelected: false,
+      frozenBoardKey: null,
     })
   },
   selectResourceItem: (key: string | null) => {
@@ -149,6 +171,19 @@ export const useStore = create<SelectionState>()((set) => ({
       selectedNodeRootId: null,
       selectedBoardId: null,
       selectedResourceEntry: null,
+      workspaceSelected: false,
+      frozenBoardKey: null,
+    })
+  },
+  selectWorkspace: (frozenBoardKey: BoardKey | null) => {
+    set({
+      workspaceSelected: true,
+      frozenBoardKey,
+      selectedNodeId: null,
+      selectedNodeRootId: null,
+      selectedBoardId: null,
+      selectedResourceEntry: null,
+      selectedResourceItemKey: null,
     })
   },
 }))
@@ -223,6 +258,7 @@ export function useSelectionActions() {
   const selectNode = useStore((state) => state.selectNode)
   const selectResourceEntry = useStore((state) => state.selectResourceEntry)
   const selectResourceItem = useStore((state) => state.selectResourceItem)
+  const selectWorkspace = useStore((state) => state.selectWorkspace)
 
   const _selectBoard = useCallback(
     (id: BoardKey | null) => {
@@ -342,17 +378,31 @@ export function useSelectionActions() {
     [selectResourceItem],
   )
 
+  const _selectWorkspace = useCallback(
+    (frozenBoardKey: BoardKey | null) => {
+      if (useStore.getState().workspaceSelected) return
+      selectWorkspace(frozenBoardKey)
+    },
+    [selectWorkspace],
+  )
+
   return {
     selectBoard: _selectBoard,
     selectNode: _selectNode,
     selectResourceEntry: _selectResourceEntry,
     selectResourceItem: _selectResourceItem,
+    selectWorkspace: _selectWorkspace,
   }
 }
 
 export function useSelection() {
-  const { selectBoard, selectNode, selectResourceEntry, selectResourceItem } =
-    useSelectionActions()
+  const {
+    selectBoard,
+    selectNode,
+    selectResourceEntry,
+    selectResourceItem,
+    selectWorkspace,
+  } = useSelectionActions()
 
   const selectedBoardId = useStore((state) => state.selectedBoardId)
   const selectedNodeId = useStore((state) => state.selectedNodeId)
@@ -360,6 +410,8 @@ export function useSelection() {
   const selectedResourceItemKey = useStore(
     (state) => state.selectedResourceItemKey,
   )
+  const workspaceSelected = useStore((state) => state.workspaceSelected)
+  const frozenBoardKey = useStore((state) => state.frozenBoardKey)
   const { workspace } = useWorkspace()
 
   // Derived per-kind selected entry ids. These are computed projections of the
@@ -391,6 +443,7 @@ export function useSelection() {
     selectNode,
     selectResourceEntry,
     selectResourceItem,
+    selectWorkspace,
     selectedNodeId,
     selectedBoardId,
     selectedResourceEntry,
@@ -399,6 +452,8 @@ export function useSelection() {
     selectedIconSetEntryId,
     selectedMediaEntryId,
     selectedResourceItemKey,
+    workspaceSelected,
+    frozenBoardKey,
     selectedNode,
     selectedBoard,
     selectedId:
