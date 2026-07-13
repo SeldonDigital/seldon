@@ -152,6 +152,8 @@ const styles: Record<string, CSSProperties> = {
     margin: "0 0 8px",
     paddingLeft: 10,
     borderLeft: "3px solid var(--sdn-swatch-gray)",
+    fontSize: "var(--sdn-font-size-xsmall)",
+    lineHeight: 1.5,
     color: "var(--sdn-swatch-gray)",
   },
   rule: {
