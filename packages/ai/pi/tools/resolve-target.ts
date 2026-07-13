@@ -2,6 +2,9 @@ import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/wal
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
+import { activeBoardSection } from "../../prompt/context-sections/active-board"
+import { componentValuesSection } from "../../prompt/context-sections/component-values"
+
 /** How the model names a node to edit: the current selection or an explicit id. */
 export type TargetSpec = "selection" | { nodeId: string }
 
@@ -36,6 +39,58 @@ function boardNodeIds(workspace: Workspace, boardKey: BoardKey): Set<string> {
     ids.add(ref.id)
   })
   return ids
+}
+
+/** The distinct component catalog ids present in a board's variant trees. */
+function boardCatalogIds(
+  workspace: Workspace,
+  boardKey: BoardKey,
+): Set<string> {
+  const ids = new Set<string>()
+  const board = workspace.boards[boardKey]
+  if (!board || board.type !== "component") return ids
+  walkBoardTreeRefs(board.variants, (ref) => {
+    const node = workspace.nodes[ref.id]
+    if (!node) return
+    const catalogId = getNodeCatalogId(node, workspace)
+    if (catalogId) ids.add(catalogId)
+  })
+  return ids
+}
+
+/**
+ * The tier-2 fallback appended to a selection miss: the active board's node
+ * trees plus the settable values of the components on it. When the selection
+ * can't be resolved, the model walks up to the board and picks a target with the
+ * values already in hand, instead of a blind re-search. Returns "" when no
+ * active component board exists, so the caller adds nothing.
+ */
+function tierTwoBlock(
+  workspace: Workspace,
+  activeKey: BoardKey | undefined,
+): string {
+  if (activeKey === undefined) return ""
+  const board = workspace.boards[activeKey]
+  if (!board || board.type !== "component") return ""
+  const block = [
+    ...activeBoardSection(workspace, activeKey, board).lines,
+    ...componentValuesSection(boardCatalogIds(workspace, activeKey), workspace),
+  ]
+    .join("\n")
+    .trim()
+  return block ? `\n\nActive board (tier 2) and its settable values:\n${block}` : ""
+}
+
+/** The settable values of one node's component, appended when a match is found off-board. */
+function nodeValuesBlock(workspace: Workspace, nodeId: string): string {
+  const node = workspace.nodes[nodeId]
+  if (!node) return ""
+  const catalogId = getNodeCatalogId(node, workspace)
+  if (!catalogId) return ""
+  const block = componentValuesSection(new Set([catalogId]), workspace)
+    .join("\n")
+    .trim()
+  return block ? `\n\nSettable values for ${catalogId}:\n${block}` : ""
 }
 
 /** Searches every component board for nodes whose label or catalog id matches. */
@@ -102,7 +157,7 @@ function widen(
     if (match.inActiveBoard) return { kind: "resolved", nodeId: match.id }
     return {
       kind: "message",
-      text: `Found ${describe(match)}, outside the active board. Ask the user to confirm before editing it, then call again with target { "nodeId": "${match.id}" }.`,
+      text: `Found ${describe(match)}, outside the active board. Ask the user to confirm before editing it, then call again with target { "nodeId": "${match.id}" }.${nodeValuesBlock(workspace, match.id)}`,
     }
   }
   const list = matches
@@ -139,7 +194,7 @@ export function resolveNodeTarget(
       : "Nothing is selected"
     return {
       kind: "message",
-      text: `${selectionNote}, so 'this' is ambiguous. Pass an explicit target { nodeId } from the context, or a \`match\` descriptor to search, or ask the user which node to change.`,
+      text: `${selectionNote}, so 'this' is ambiguous. Pick the target from the active board below, or pass an explicit target { nodeId }, or ask the user which node to change.${tierTwoBlock(workspace, activeKey)}`,
     }
   }
 

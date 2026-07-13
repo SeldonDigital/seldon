@@ -1,10 +1,12 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import {
   activeBoardSection,
   activeVariantSection,
 } from "../prompt/context-sections/active-board"
+import { componentValuesSection } from "../prompt/context-sections/component-values"
 import { selectionSection } from "../prompt/context-sections/selection"
 
 /** The editor state the agent needs to target the right board and node. */
@@ -162,6 +164,20 @@ export function buildTurnContext(resolved: ResolvedContext): string {
       selectedNodeRootId,
     ),
   )
+
+  const selectedNode = selectedNodeId ? workspace.nodes[selectedNodeId] : undefined
+  const selectedCatalogId = selectedNode
+    ? getNodeCatalogId(selectedNode, workspace)
+    : undefined
+  if (selectedCatalogId) {
+    lines.push(
+      ...componentValuesSection(
+        new Set([selectedCatalogId]),
+        workspace,
+        "Settable values for the selected component (pick a listed choice; omit a key to leave it unchanged):",
+      ),
+    )
+  }
 
   return lines.join("\n")
 }

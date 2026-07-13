@@ -10,6 +10,7 @@ import { activeBoardSection } from "../../prompt/context-sections/active-board"
 import { ancestrySection } from "../../prompt/context-sections/ancestry"
 import { boardSummarySection } from "../../prompt/context-sections/board-summary"
 import { catalogComponentsSection } from "../../prompt/context-sections/catalog-components"
+import { componentValuesSection } from "../../prompt/context-sections/component-values"
 import { describeNodeSection } from "../../prompt/context-sections/describe-node"
 import { nodePropertiesSection } from "../../prompt/context-sections/node-properties"
 import { propertyShapeSection } from "../../prompt/context-sections/property-shape"
@@ -114,7 +115,7 @@ export function createContextTools(
     name: "get_component_vocabulary",
     label: "Get Component Vocabulary",
     description:
-      "Return the settable property keys and value shapes for a component catalog id. Only set keys this reports; other keys are not part of the component's vocabulary. Pass category to list only one group: attributes, layout, appearance, typography, effects, or accessibility.",
+      "Return the settable property keys, value shapes, and the choices each key accepts (option keywords, theme tokens, units) for a component catalog id. Only set keys this reports; other keys are not part of the component's vocabulary. Call this on a wider-scope component when the selection lacks the target, to get that component's settable values. Pass category to list only one group: attributes, layout, appearance, typography, effects, or accessibility.",
     parameters: Type.Object({
       catalogId: Type.String({
         description: "Catalog id of the component, for example button or text.",
@@ -132,6 +133,7 @@ export function createContextTools(
       const lines = [
         ...propertyVocabularySection(ids, category),
         ...propertyShapeSection(ids),
+        ...componentValuesSection(ids, workspace),
       ]
       return textResult(
         joinOrEmpty(
