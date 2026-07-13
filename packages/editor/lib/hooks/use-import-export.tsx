@@ -7,6 +7,15 @@ import {
 import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { useExportStatusStore } from "@lib/export/export-status-store"
 import {
+  isExportLoggingEnabled,
+  logExport,
+  logExportError,
+  logExportGroup,
+  logExportGroupEnd,
+  logExportRows,
+  logExportWarn,
+} from "@lib/export/log-export"
+import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@lib/export/write-export-to-directory"
@@ -21,6 +30,13 @@ import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+
+const EXPORT_STATUS_DURATION_MS = 120_000
+
+function summarizeExportPath(path: string): string {
+  if (path.length <= 64) return path
+  return `…${path.slice(-63)}`
+}
 
 export function useImportExport() {
   const workspaceId = useWorkspaceId()
@@ -109,24 +125,79 @@ export function useImportExport() {
   )
 
   const exportToFolder = useCallback(async () => {
-    const { setExporting } = useExportStatusStore.getState()
+    const { setCompletion, setExporting } = useExportStatusStore.getState()
+    const startedAt = performance.now()
+    let completionMessage: string | null = null
+    let completionIntent: "success" | "error" = "success"
+    logExportGroup("Export Components selected", {
+      boards: Object.keys(workspace.boards).length,
+      nodes: Object.keys(workspace.nodes).length,
+    })
     try {
+      logExport("Opening folder picker")
       const directory = await pickExportDirectory()
       if (!directory) {
-        addToast("Folder picker is not supported in this browser")
+        completionIntent = "error"
+        completionMessage = "Folder picker is not supported in this browser"
+        logExportWarn(completionMessage)
         return
       }
+      logExport("Folder selected", { name: directory.name })
       setExporting(true)
+      setCompletion(
+        "Generating export files…",
+        "status",
+        EXPORT_STATUS_DURATION_MS,
+      )
       const { runLocalExport } = await import("@lib/export/run-local-export")
       const files = await runLocalExport(workspace)
-      const count = await writeExportToDirectory(directory, files)
-      addToast(`Exported ${count} files`)
+      logExport(`Generated ${files.length} file(s)`)
+      if (isExportLoggingEnabled()) {
+        logExportRows(
+          files.map((file) => ({
+            path: file.path,
+            bytes:
+              typeof file.content === "string"
+                ? new Blob([file.content]).size
+                : file.content.byteLength,
+          })),
+        )
+      }
+      setCompletion(
+        `Writing 0/${files.length} export files…`,
+        "status",
+        EXPORT_STATUS_DURATION_MS,
+      )
+      const count = await writeExportToDirectory(directory, files, {
+        onProgress: ({ currentPath, total, written }) => {
+          setCompletion(
+            `Writing ${written}/${total}: ${summarizeExportPath(currentPath)}`,
+            "status",
+            EXPORT_STATUS_DURATION_MS,
+          )
+        },
+      })
+      logExport(`Wrote ${count} file(s)`, { directory: directory.name })
+      const fileLabel = count === 1 ? "file" : "files"
+      completionMessage = `Export complete: ${count} ${fileLabel} written`
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "Export failed")
+      completionIntent = "error"
+      completionMessage =
+        error instanceof Error ? error.message : "Export failed"
+      logExportError("Export failed", error)
     } finally {
       setExporting(false)
+      if (completionMessage) {
+        logExport("Showing export notice", {
+          intent: completionIntent,
+          message: completionMessage,
+        })
+        setCompletion(completionMessage, completionIntent)
+      }
+      logExport(`Finished in ${Math.round(performance.now() - startedAt)}ms`)
+      logExportGroupEnd()
     }
-  }, [addToast, workspace])
+  }, [workspace])
 
   return {
     importWorkspaceFromFile,

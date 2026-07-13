@@ -85,6 +85,8 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    exportLogging,
+    toggleExportLogging,
     aiLogging,
     toggleAiLogging,
     showTools,
@@ -326,6 +328,13 @@ export function useMenuConfig(): MenuConfig {
         visibleIn: ["edit", "preview"],
       },
       {
+        id: "export-logging",
+        label: "Export Logging",
+        action: toggleExportLogging,
+        active: exportLogging,
+        visibleIn: ["edit", "preview"],
+      },
+      {
         id: "ai-logging",
         label: "AI Logging",
         action: toggleAiLogging,
@@ -366,6 +375,8 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    exportLogging,
+    toggleExportLogging,
     aiLogging,
     toggleAiLogging,
   ])
