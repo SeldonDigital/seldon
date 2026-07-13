@@ -44,7 +44,7 @@ import {
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
-import { StyleTag } from "../StyleTag"
+import { StyleTag } from "../StyleTag.bespoke"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
 
@@ -433,14 +433,14 @@ function ThemeVariantPreview({
       selectionId={variantEntryId}
       selectionKind="theme"
     >
-      <div style={previewClickLayerStyle} onClick={handlePreviewClick}>
+      <Frame style={previewClickLayerStyle} onClick={handlePreviewClick}>
         <BoardPreviewNode
           nodeId={rootId}
           workspace={previewWorkspace}
           scope={variantEntryId}
           isRoot
         />
-      </div>
+      </Frame>
       <VMMenu
         open={menuOpen}
         anchorRef={anchorRef}

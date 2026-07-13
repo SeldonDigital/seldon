@@ -1,23 +1,15 @@
 export { chatToActions, warmModel } from "./orchestrate"
-export { getLoadedModelInfo, ollamaChat, resolveModel } from "./ollama-client"
+export { ALL_ACTION_TYPES, buildActionReference } from "./schema/action-schema"
+export { THINKING_LEVEL_OPTIONS, resolvePiModelId } from "./pi/model"
+export type { ThinkingLevelOption } from "./pi/model"
 export type {
-  OllamaChatMetrics,
-  OllamaChatResult,
-  OllamaModelInfo,
-} from "./ollama-client"
-export {
-  ALL_ACTION_TYPES,
-  RESPONSE_FORMAT,
-  buildActionReference,
-} from "./schema/action-schema"
-export { buildContext } from "./prompt/context-builder"
-export { buildSystemPrompt } from "./prompt/system-prompt"
-export type {
-  AgentCorrection,
   AgentDebug,
   AgentMetrics,
+  AgentStreamEvent,
+  AgentToolCall,
   ChatMessage,
   ChatToActionsInput,
   ChatToActionsResult,
+  SelectionScope,
 } from "./types"
 export type { ActionRepair } from "./repair/normalize-actions"

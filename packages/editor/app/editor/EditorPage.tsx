@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react"
 import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
+import { Frame } from "@seldon/components/frames/Frame"
 import Editor from "@app/editor/Editor"
 import { LocalWorkspaceShell } from "@app/editor/LocalWorkspaceShell"
 import { ProjectInitialize } from "@app/editor/ProjectInitialize"
@@ -15,15 +16,28 @@ export default function EditorPage() {
   const { record, loading, error } = useWorkspaceRecord(workspaceId)
 
   if (!workspaceId) {
-    return <p style={message}>Missing workspace id.</p>
+    return (
+      <Frame wrapperElement="p" style={message}>
+        Missing workspace id.
+      </Frame>
+    )
   }
 
   if (loading) {
-    return <p style={message}>Loading workspace…</p>
+    return (
+      <Frame wrapperElement="p" style={message}>
+        Loading workspace…
+      </Frame>
+    )
   }
 
   if (error || !record) {
-    return <p style={message}>{error ?? "Workspace not found"}</p>
+    const errorMessage = error ?? "Workspace not found"
+    return (
+      <Frame wrapperElement="p" style={message}>
+        {errorMessage}
+      </Frame>
+    )
   }
 
   return (

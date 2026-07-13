@@ -51,6 +51,15 @@ export default defineConfig([
       "no-console": "off",
     },
   },
+  // The AI turn logger is a purpose-built debug console gated behind the Dev
+  // menu's AI Logging toggle. It intentionally uses console.log and
+  // console.table to render structured, collapsible turn output.
+  {
+    files: ["lib/hooks/ai-chat/log-turn.ts"],
+    rules: {
+      "no-console": "off",
+    },
+  },
   // ViewModel hooks authored as .tsx (e.g. context providers) may call Model
   // services; the service-import rule targets view components only.
   {

@@ -97,9 +97,8 @@ const DOMAIN_ORDER = [
  * Builds a compact keyword catalog of every allowed action for the system
  * prompt. Each domain lists only the action type names, comma joined, so the
  * model learns the vocabulary cheaply. Payload shapes are not inlined here: the
- * common ones live in the system prompt, and the corrective round-trip injects
- * the exact spec for any action the reducer rejects. Kept static across turns so
- * the KV prefix cache reuses its prefill.
+ * common ones live in the system prompt, and `apply_action` surfaces the exact
+ * spec for any other action on demand.
  */
 export function buildActionReference(): string {
   const byDomain = new Map<string, string[]>()
@@ -124,11 +123,27 @@ const ACTION_META_BY_TYPE = new Map<string, ActionMeta>(
   ACTION_META.map((meta) => [meta.type, meta]),
 )
 
+const SEARCH_LIMIT = 12
+
+/**
+ * Finds action types whose name contains the query and returns each with its
+ * payload spec, collapsing the list-then-spec pair of calls into one lookup. The
+ * model names an intent, for example "align" or "delete", and gets the matching
+ * action types ready to emit, without pulling the whole action catalog.
+ */
+export function searchActions(query: string): string[] {
+  const needle = query.trim().toLowerCase().replace(/\s+/g, "_")
+  if (needle === "") return []
+  const matches = ACTION_META.filter((meta) =>
+    meta.type.toLowerCase().includes(needle),
+  ).slice(0, SEARCH_LIMIT)
+  return buildActionPayloadSpecs(matches.map((meta) => meta.type))
+}
+
 /**
  * Returns a payload spec line for each given action type, listing required keys
- * and any remaining optional keys. Used by the corrective round-trip to show the
- * model the exact shape of an action the reducer rejected, expanding detail only
- * for the actions actually chosen. Unknown types are skipped.
+ * and any remaining optional keys. Used to show the model the exact shape of an
+ * action through the `apply_action` tool. Unknown types are skipped.
  */
 export function buildActionPayloadSpecs(types: Iterable<string>): string[] {
   const seen = new Set<string>()
@@ -150,39 +165,3 @@ export function buildActionPayloadSpecs(types: Iterable<string>): string[] {
   }
   return lines
 }
-
-/**
- * JSON Schema passed to Ollama as `format`. It forces schema-valid decode of a
- * response envelope: a short natural-language `reply` plus an `actions` array of
- * `{ type, payload }` objects whose `type` is one of the allowed action types.
- * The payload stays a free-form object; the reducer validates it deeply when the
- * editor applies each action.
- */
-export const RESPONSE_FORMAT = {
-  type: "object",
-  properties: {
-    reply: {
-      type: "string",
-      description: "Short natural-language summary of the actions taken.",
-    },
-    actions: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          type: {
-            type: "string",
-            enum: ALL_ACTION_TYPES,
-          },
-          payload: {
-            type: "object",
-            description:
-              "Payload matching the action type, per the system prompt.",
-          },
-        },
-        required: ["type", "payload"],
-      },
-    },
-  },
-  required: ["reply", "actions"],
-} as const

@@ -5,12 +5,14 @@
  * Source: `packages/core/font-collections/catalog/google/<slug>/{OFL,LICENSE}.txt`
  * Destination: `packages/editor/public/font-licenses/<slug>.txt`
  *
- * Idempotent: re-running overwrites the copied files.
+ * Idempotent: files with matching contents are skipped, so re-running does not
+ * rewrite unchanged files or touch their mtimes.
  */
 import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  readFileSync,
   readdirSync,
   statSync,
 } from "node:fs"
@@ -31,6 +33,7 @@ if (!existsSync(sourceRoot)) {
 mkdirSync(destRoot, { recursive: true })
 
 let copied = 0
+let skipped = 0
 
 for (const slug of readdirSync(sourceRoot)) {
   const familyDir = join(sourceRoot, slug)
@@ -41,8 +44,22 @@ for (const slug of readdirSync(sourceRoot)) {
   )
   if (!licenseName) continue
 
-  copyFileSync(join(familyDir, licenseName), join(destRoot, `${slug}.txt`))
+  const source = join(familyDir, licenseName)
+  const dest = join(destRoot, `${slug}.txt`)
+
+  if (
+    existsSync(dest) &&
+    statSync(dest).size === statSync(source).size &&
+    readFileSync(dest).equals(readFileSync(source))
+  ) {
+    skipped += 1
+    continue
+  }
+
+  copyFileSync(source, dest)
   copied += 1
 }
 
-console.log(`Copied ${copied} font license file(s) to public/font-licenses.`)
+console.log(
+  `Copied ${copied} font license file(s) to public/font-licenses (${skipped} up to date).`,
+)

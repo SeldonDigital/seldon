@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run dev --workspace @seldon/editor",
+    "ollama:kill": "pkill -f 'ollama serve' || true",
     "build": "npm run build --workspace @seldon/editor",
     "start": "npm run start --workspace @seldon/editor",
     "lint": "npm run lint --workspace @seldon/editor",

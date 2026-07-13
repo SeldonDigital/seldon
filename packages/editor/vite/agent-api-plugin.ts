@@ -1,11 +1,16 @@
+import type { AgentStreamEvent } from "@seldon/ai"
 import { build } from "esbuild"
 import fs from "node:fs/promises"
 import type { IncomingMessage, ServerResponse } from "node:http"
-import os from "node:os"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import type { Connect, Plugin } from "vite"
-import type { AgentRequestBody, runAgent, warmAgent } from "./agent-handler"
+import type {
+  AgentRequestBody,
+  agentConfig,
+  runAgent,
+  warmAgent,
+} from "./agent-handler"
 
 const ROUTE = "/api/agent"
 
@@ -13,19 +18,49 @@ const pluginDir = path.dirname(fileURLToPath(import.meta.url))
 const handlerEntry = path.join(pluginDir, "agent-handler.ts")
 const coreRoot = path.join(pluginDir, "../../core")
 const factoryRoot = path.join(pluginDir, "../../factory")
-const aiEntry = path.join(pluginDir, "../../ai/index.ts")
+const aiRoot = path.join(pluginDir, "../../ai")
+const aiEntry = path.join(aiRoot, "index.ts")
 
 type RunAgent = typeof runAgent
 type WarmAgent = typeof warmAgent
-type AgentModule = { runAgent: RunAgent; warmAgent: WarmAgent }
+type AgentConfig = typeof agentConfig
+type AgentModule = {
+  runAgent: RunAgent
+  warmAgent: WarmAgent
+  agentConfig: AgentConfig
+}
 
 let cachedAgent: Promise<AgentModule> | null = null
+/** Bumped per build so each bundle imports from a fresh URL, bypassing the ESM cache. */
+let buildId = 0
+/** Previous bundle path, removed after the next build so the cache dir stays clean. */
+let previousOutputFile: string | null = null
+
+const repoRoot = path.join(pluginDir, "../../..")
+
+/**
+ * Pi and its dependency graph are large and ship runtime assets and dynamic
+ * requires, so they are kept external instead of bundled. The bundled handler is
+ * written under the `ai` package's `node_modules` (below) so Node's upward
+ * resolution reaches wherever npm installed Pi, whether it nests under
+ * `packages/ai/node_modules` or hoists to the repo root, and still finds the
+ * root-level externals like `typebox`.
+ */
+const externalPackages = [
+  "@earendil-works/pi-coding-agent",
+  "@earendil-works/pi-ai",
+  "@earendil-works/pi-agent-core",
+  "@earendil-works/pi-tui",
+  "typebox",
+]
 
 /**
  * Bundles the agent handler and its core/ai graph into a single Node module with
  * esbuild, then imports it. The `development` condition makes `@seldon/core` and
  * `@seldon/ai` resolve to source instead of built output, mirroring the editor's
- * source-first setup. Works the same under `vite dev` and `vite preview`.
+ * source-first setup. Pi packages stay external, and the output is written under
+ * the `ai` package's `node_modules` so those external imports resolve at runtime.
+ * Works the same under `vite dev` and `vite preview`.
  */
 async function loadAgent(): Promise<AgentModule> {
   const result = await build({
@@ -37,6 +72,7 @@ async function loadAgent(): Promise<AgentModule> {
     write: false,
     logLevel: "silent",
     conditions: ["development"],
+    external: externalPackages,
     alias: {
       "@seldon/core": coreRoot,
       "@seldon/factory": factoryRoot,
@@ -44,11 +80,17 @@ async function loadAgent(): Promise<AgentModule> {
     },
   })
 
+  const outputDir = path.join(aiRoot, "node_modules", ".seldon-agent")
+  await fs.mkdir(outputDir, { recursive: true })
+  buildId += 1
   const outputFile = path.join(
-    os.tmpdir(),
-    `seldon-agent-handler-${process.pid}.mjs`,
+    outputDir,
+    `agent-handler-${process.pid}-${buildId}.mjs`,
   )
   await fs.writeFile(outputFile, result.outputFiles[0].text)
+  const staleOutputFile = previousOutputFile
+  previousOutputFile = outputFile
+  if (staleOutputFile) await fs.rm(staleOutputFile, { force: true })
   return (await import(pathToFileURL(outputFile).href)) as AgentModule
 }
 
@@ -57,6 +99,16 @@ function getAgent(): Promise<AgentModule> {
     cachedAgent = loadAgent()
   }
   return cachedAgent
+}
+
+/** True when a changed file is part of the agent handler or the `ai` package. */
+function affectsAgent(file: string): boolean {
+  const normalized = path.normalize(file)
+  if (normalized === handlerEntry) return true
+  return (
+    normalized.startsWith(aiRoot + path.sep) &&
+    !normalized.includes(`${path.sep}node_modules${path.sep}`)
+  )
 }
 
 async function readJsonBody<T>(req: IncomingMessage): Promise<T> {
@@ -74,13 +126,80 @@ function sendJson(res: ServerResponse, status: number, payload: unknown): void {
   res.end(JSON.stringify(payload))
 }
 
+/** Writes one newline-delimited JSON frame to the streaming response. */
+function writeFrame(res: ServerResponse, frame: unknown): void {
+  res.write(`${JSON.stringify(frame)}\n`)
+}
+
+/**
+ * Runs a chat turn and streams its events as newline-delimited JSON: one frame
+ * per {@link AgentStreamEvent} as it arrives, then a final `done` frame with the
+ * actions, reply, and debug the client applies. Errors before the stream opens
+ * return JSON; errors mid-stream close the stream with an `error` frame.
+ */
+async function streamAgentTurn(
+  res: ServerResponse,
+  agent: AgentModule,
+  body: AgentRequestBody,
+): Promise<void> {
+  res.statusCode = 200
+  res.setHeader("Content-Type", "application/x-ndjson")
+  res.setHeader("Cache-Control", "no-cache")
+  res.flushHeaders?.()
+
+  // The client aborts the fetch when the user presses Stop, which closes the
+  // response socket. Forward that as an abort into the agent so the local model
+  // turn is cancelled instead of running to completion in the background. Watch
+  // the response, not the request: the request body is already fully consumed by
+  // the time we get here, so its stream closes at once and would abort every
+  // turn at the start. The `finished` guard skips the close that our own
+  // res.end() triggers on a normal turn.
+  const controller = new AbortController()
+  let finished = false
+  res.on("close", () => {
+    if (!finished) controller.abort()
+  })
+
+  const onEvent = (event: AgentStreamEvent) => writeFrame(res, event)
+  try {
+    const result = await agent.runAgent(body, onEvent, controller.signal)
+    writeFrame(res, { type: "done", ...result })
+  } catch (error) {
+    writeFrame(res, {
+      type: "error",
+      error: error instanceof Error ? error.message : "Agent request failed.",
+    })
+  } finally {
+    finished = true
+    res.end()
+  }
+}
+
 const middleware: Connect.NextHandleFunction = (req, res, next) => {
+  // Mounted at `/api/agent`, so `req.url` is the remainder: `/config`, `/warm`, or `/`.
+  const url = req.url ?? ""
+  const isConfig = url.startsWith("/config")
+
+  if (req.method === "GET" && isConfig) {
+    void (async () => {
+      try {
+        const agent = await getAgent()
+        sendJson(res, 200, await agent.agentConfig())
+      } catch (error) {
+        sendJson(res, 500, {
+          error:
+            error instanceof Error ? error.message : "Agent config failed.",
+        })
+      }
+    })()
+    return
+  }
+
   if (req.method !== "POST") {
     next()
     return
   }
-  // Mounted at `/api/agent`, so `req.url` is the remainder: `/warm` or `/`.
-  const isWarm = (req.url ?? "").startsWith("/warm")
+  const isWarm = url.startsWith("/warm")
   void (async () => {
     try {
       const agent = await getAgent()
@@ -90,7 +209,7 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
         return
       }
       const body = await readJsonBody<AgentRequestBody>(req)
-      sendJson(res, 200, await agent.runAgent(body))
+      await streamAgentTurn(res, agent, body)
     } catch (error) {
       sendJson(res, 500, {
         error: error instanceof Error ? error.message : "Agent request failed.",
@@ -108,6 +227,21 @@ export function agentApiPlugin(): Plugin {
     name: "seldon-agent-api",
     configureServer(server) {
       server.middlewares.use(ROUTE, middleware)
+
+      // The agent handler and `ai` package are bundled once and cached, and Vite
+      // HMR does not cover this Node-side bundle. Watch their sources and drop the
+      // cache on change so the next request re-bundles without a server restart.
+      server.watcher.add([handlerEntry, aiRoot])
+      const invalidate = (file: string) => {
+        if (!affectsAgent(file)) return
+        cachedAgent = null
+        server.config.logger.info(
+          `[seldon-agent] reloading agent after change to ${path.relative(repoRoot, file)}`,
+        )
+      }
+      server.watcher.on("change", invalidate)
+      server.watcher.on("add", invalidate)
+      server.watcher.on("unlink", invalidate)
     },
     configurePreviewServer(server) {
       server.middlewares.use(ROUTE, middleware)

@@ -18,6 +18,7 @@ import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
 import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
 import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
+import { Frame } from "@seldon/components/frames/Frame"
 import { BarTopbar } from "@seldon/components/parts/BarTopbar"
 import { ImageProps } from "@seldon/components/primitives/Image"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
@@ -154,7 +155,7 @@ export function VMTopbar() {
   )
 
   const menuSlots = useMemo<MenuSlot[]>(() => {
-    return [0, 1, 2, 3, 4].map((index) => {
+    return [0, 1, 2, 3, 4, 5].map((index) => {
       const menu = menuConfig[index]
       if (!menu) return EMPTY_SLOT
       if (menu.visibleIn && !menu.visibleIn.includes(appState))
@@ -245,7 +246,7 @@ export function VMTopbar() {
   const menuKey = openMenuId ?? "closed"
 
   return (
-    <header style={styles.header}>
+    <Frame wrapperElement="header" style={styles.header}>
       <BarTopbar
         data-testid="topbar"
         seldonRefs={seldonRefs}
@@ -261,10 +262,12 @@ export function VMTopbar() {
         textLabel4={menuSlots[3].label}
         buttonSimple5={menuSlots[4].button}
         textLabel5={menuSlots[4].label}
+        buttonSimple6={menuSlots[5].button}
+        textLabel6={menuSlots[5].label}
         buttonMenu={themeButton}
-        textLabel6={themeLabel}
+        textLabel7={themeLabel}
         buttonMenu2={modeButton}
-        textLabel7={modeLabel}
+        textLabel8={modeLabel}
       />
       <VMMenu
         key={menuKey}
@@ -275,8 +278,8 @@ export function VMTopbar() {
         align={menuAlign}
         minWidth="220px"
       />
-      <div ref={gradientRef} className={TOPBAR_GRADIENT_CLASS} />
-    </header>
+      <Frame ref={gradientRef} className={TOPBAR_GRADIENT_CLASS} />
+    </Frame>
   )
 }
 

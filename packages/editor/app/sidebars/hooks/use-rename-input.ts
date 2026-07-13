@@ -80,7 +80,6 @@ export function useRenameInput({
     if (input) input.blur()
     clearSelection()
     // Focus once when entering edit mode; label changes mid-edit must not refocus.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing])
 
   if (!isEditing) {

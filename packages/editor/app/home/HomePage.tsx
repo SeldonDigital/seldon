@@ -6,10 +6,10 @@ import {
   listStoredWorkspaces,
 } from "@lib/storage/workspace-store"
 import { useCallback, useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router"
+import { useNavigate } from "react-router"
 import { createEmptyWorkspace } from "@seldon/core"
 import { useParseWorkspace } from "./hooks/use-parse-workspace"
-import "./home.css"
+import { HomeView } from "./HomePage.bespoke"
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -53,60 +53,12 @@ export default function HomePage() {
   )
 
   return (
-    <main className="home">
-      <header>
-        <h1 className="home-title">Seldon · Editor</h1>
-        <p className="home-subtitle">
-          Workspaces are stored in this browser only. Open a workspace.json file
-          or create a new workspace.
-        </p>
-      </header>
-
-      <div className="home-actions">
-        <button
-          type="button"
-          className="home-button home-button-primary"
-          onClick={() => void handleNew()}
-        >
-          New workspace
-        </button>
-        <button
-          type="button"
-          className="home-button home-button-secondary"
-          onClick={() => void handleImport()}
-        >
-          Open workspace.json
-        </button>
-      </div>
-
-      <section>
-        <h2 className="home-section-title">Recent workspaces</h2>
-        {loading ? (
-          <p className="home-muted">Loading…</p>
-        ) : workspaces.length === 0 ? (
-          <p className="home-muted">No workspaces yet.</p>
-        ) : (
-          <ul className="home-list">
-            {workspaces.map((ws) => (
-              <li key={ws.id}>
-                <Link to={`/${ws.id}`} className="home-list-link">
-                  <span className="home-list-name">{ws.name}</span>
-                  <span className="home-list-meta">
-                    Updated {new Date(ws.updatedAt).toLocaleString()}
-                  </span>
-                </Link>
-                <button
-                  type="button"
-                  className="home-delete"
-                  onClick={() => void handleDelete(ws.id)}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-    </main>
+    <HomeView
+      workspaces={workspaces}
+      loading={loading}
+      onNew={handleNew}
+      onImport={handleImport}
+      onDelete={handleDelete}
+    />
   )
 }

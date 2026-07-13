@@ -73,6 +73,7 @@ import { WrapperElement } from "@seldon/core/properties"
 import type { ComputeContext } from "@seldon/core/properties/compute"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { CssPortal } from "./CssPortal"
+import { StyleTag } from "./StyleTag.bespoke"
 
 export type CanvasHtmlAttributes = Record<string, string | boolean>
 
@@ -135,7 +136,7 @@ export const ComponentRenderer = ({
     return (
       <>
         <CssPortal>
-          <style data-seldon-style-for={className}>{css}</style>
+          <StyleTag css={css} styleFor={className} />
         </CssPortal>
         <LoadEditorIcons
           iconId={asSymbolIconId(properties.symbol?.value)}
@@ -153,7 +154,7 @@ export const ComponentRenderer = ({
   return (
     <>
       <CssPortal>
-        <style data-seldon-style-for={className}>{css}</style>
+        <StyleTag css={css} styleFor={className} />
       </CssPortal>
       {isVoidPrimitive ? (
         /* @ts-expect-error - Component can be any valid component */

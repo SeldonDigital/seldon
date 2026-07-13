@@ -6,6 +6,7 @@ import { CSSProperties } from "react"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useEditorShortcuts } from "@lib/hooks/use-editor-shortcuts"
 import { usePreview } from "@lib/hooks/use-preview"
+import { Frame } from "@seldon/components/frames/Frame"
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { VMBoardsDialog } from "../dialogs/boards/VMBoardsDialog"
@@ -25,7 +26,7 @@ export default function Editor() {
   const showSidePanels = showPanels && !isInPreviewMode
 
   return (
-    <main style={styles.main}>
+    <Frame wrapperElement="main" style={styles.main}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.div
           style={{ flex: 1 }}
@@ -43,9 +44,9 @@ export default function Editor() {
               visible={showSidePanels}
               priority={LayoutPriority.Low}
             >
-              <div style={styles.objectsPane}>
+              <Frame style={styles.objectsPane}>
                 <VMObjectsSidebar />
-              </div>
+              </Frame>
             </Allotment.Pane>
             <Allotment.Pane priority={LayoutPriority.High}>
               <Canvas />
@@ -72,7 +73,7 @@ export default function Editor() {
       <VMHari />
       <FocusRingOverlay />
       <EditorShortcuts />
-    </main>
+    </Frame>
   )
 }
 

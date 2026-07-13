@@ -1,4 +1,5 @@
 import { CSSProperties, createContext, useContext } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 import { SIDEBAR_INDENT_PADDING } from "./sidebar-rows.bespoke"
 
 /**
@@ -55,7 +56,7 @@ export const IndentationLevel = ({
 
   return (
     <IndentationContextProvider>
-      <div style={wrapperStyle}>{children}</div>
+      <Frame style={wrapperStyle}>{children}</Frame>
     </IndentationContextProvider>
   )
 }

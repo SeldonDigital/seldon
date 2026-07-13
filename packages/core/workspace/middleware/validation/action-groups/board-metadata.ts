@@ -125,7 +125,9 @@ export function validateBoardMetadata(
       boardValidators.exists(workspace, boardKey)
       const board = workspace.boards[boardKey]
       const schemaId = resolvePropertySchemaId(board, boardKey)
-      propertyValidators.keys(action.payload.properties, schemaId, board)
+      propertyValidators.keys(action.payload.properties, schemaId, board, {
+        rejectDottedKeys: true,
+      })
       propertyValidators.values(
         action.payload.properties,
         workspace,

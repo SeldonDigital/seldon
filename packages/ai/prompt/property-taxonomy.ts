@@ -1,5 +1,6 @@
 import { PROPERTY_COMPOUND_CATALOG } from "@seldon/core/properties/constants/shared/compound-properties"
 import { PROPERTY_SHORTHAND_KEYS } from "@seldon/core/properties/constants/shared/shorthand-properties"
+import { getPropertySchema } from "@seldon/core/properties/schemas/helpers/get-property-schema"
 
 /**
  * Property shape taxonomy, derived live from core catalogs. See
@@ -55,4 +56,22 @@ export function isTaggedValue(
   }
   const tag = (value as { type?: unknown }).type
   return typeof tag === "string" && VALUE_TYPE_TAGS.has(tag)
+}
+
+/**
+ * Returns the theme value-type tag an atomic property accepts for `@scope.key`
+ * references, read from its core schema `supports`. Ordered scales report
+ * `theme.ordinal` and named sets report `theme.categorical`. Properties with no
+ * theme support report null, so a coercion pass leaves the value for core
+ * validation to reject precisely. No property supports both theme kinds, so the
+ * tag is unambiguous, and this stays correct as core property schemas evolve.
+ */
+export function themeRefTag(
+  propertyKey: string,
+): "theme.ordinal" | "theme.categorical" | null {
+  const supports = getPropertySchema(propertyKey)?.supports
+  if (!supports) return null
+  if (supports.includes("themeOrdinal")) return "theme.ordinal"
+  if (supports.includes("themeCategorical")) return "theme.categorical"
+  return null
 }

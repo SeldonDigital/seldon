@@ -23,6 +23,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useMoveCommands } from "@lib/hooks/commands/use-move-commands"
 import { useSelectCommands } from "@lib/hooks/commands/use-select-commands"
+import { resetChat } from "@lib/hooks/use-ai-chat"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useImportExport } from "@lib/hooks/use-import-export"
@@ -86,6 +87,12 @@ export function useMenuConfig(): MenuConfig {
     toggleWorkspaceLogging,
     aiLogging,
     toggleAiLogging,
+    showTools,
+    toggleShowTools,
+    showOutcome,
+    toggleShowOutcome,
+    noThink,
+    toggleNoThink,
   } = useDebugMode()
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
@@ -132,7 +139,7 @@ export function useMenuConfig(): MenuConfig {
   } = useSelection()
   const addToast = useAddToast()
   const { setActiveTool } = useTool()
-  const { openPanel } = usePanel()
+  const { activePanel, openPanel, closePanel } = usePanel()
 
   const canDeleteSelection = useMemo(() => {
     if (selectedNode) return true
@@ -247,14 +254,6 @@ export function useMenuConfig(): MenuConfig {
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
       {
-        id: "open-ai-chat",
-        label: "AI Chat",
-        action: () => openPanel("ai-chat"),
-        shortcut: "⌘ J",
-        visibleIn: ["edit", "preview"],
-      },
-      "separator",
-      {
         id: "show-playground",
         label: "Show Playgrounds",
         action: toggleShowPlayground,
@@ -349,7 +348,6 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     addToast,
-    openPanel,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     showPlayground,
@@ -523,14 +521,14 @@ export function useMenuConfig(): MenuConfig {
         id: "select-source",
         label: "Select Source",
         action: selectSource,
-        shortcut: "⌥ `",
+        shortcut: "⌥ ~",
         enabled: canSelectSource,
       },
       {
         id: "select-original",
         label: "Select Original",
         action: selectOriginal,
-        shortcut: "⇧ `",
+        shortcut: "⇧ ~",
         enabled: canSelectOriginal,
       },
     ]
@@ -564,6 +562,57 @@ export function useMenuConfig(): MenuConfig {
     canSelectSource,
   ])
 
+  const isChatOpen = activePanel === "ai-chat"
+  const hariMenuItems = useMemo(() => {
+    const items: (MenuItem | "separator")[] = [
+      {
+        id: "show-chat",
+        label: "Show Chat",
+        action: () => (isChatOpen ? closePanel() : openPanel("ai-chat")),
+        active: isChatOpen,
+        shortcut: "~",
+      },
+      "separator",
+      {
+        id: "show-output",
+        label: "Show Output",
+        action: toggleShowOutcome,
+        active: showOutcome,
+      },
+      {
+        id: "show-tools",
+        label: "Show Tools",
+        action: toggleShowTools,
+        active: showTools,
+      },
+      "separator",
+      {
+        id: "clamp-thinking",
+        label: "Clamp Thinking",
+        action: toggleNoThink,
+        active: noThink,
+      },
+      "separator",
+      {
+        id: "reset-chat",
+        label: "Reset Chat",
+        action: resetChat,
+      },
+    ]
+
+    return items
+  }, [
+    isChatOpen,
+    closePanel,
+    openPanel,
+    showOutcome,
+    toggleShowOutcome,
+    showTools,
+    toggleShowTools,
+    noThink,
+    toggleNoThink,
+  ])
+
   // Build menu configuration
   const menuConfig: MenuConfig = useMemo(
     () => [
@@ -583,6 +632,12 @@ export function useMenuConfig(): MenuConfig {
         label: "Component",
         visibleIn: ["edit", "preview"], // Not visible in project view
         items: selectionMenuItems as MenuItem[],
+      },
+      {
+        id: "hari",
+        label: "Hari",
+        visibleIn: ["edit", "preview"], // Not visible in project view
+        items: hariMenuItems as MenuItem[],
       },
       {
         id: "view",
@@ -728,6 +783,7 @@ export function useMenuConfig(): MenuConfig {
       fileMenuItems,
       editMenuItems,
       selectionMenuItems,
+      hariMenuItems,
       devMenuItems,
       togglePreviewMode,
       isInPreviewMode,

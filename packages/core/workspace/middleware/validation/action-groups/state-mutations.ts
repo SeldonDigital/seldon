@@ -57,6 +57,8 @@ export function validateStateMutation(
       propertyValidators.keys(
         action.payload.properties,
         getNodeComponentId(node, workspace),
+        undefined,
+        { rejectDottedKeys: true },
       )
       propertyValidators.values(action.payload.properties, workspace, themeId)
       break
