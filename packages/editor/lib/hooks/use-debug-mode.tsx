@@ -25,6 +25,9 @@ interface DebugState {
   workspaceLogging: boolean
   setWorkspaceLogging: (enabled: boolean) => void
 
+  exportLogging: boolean
+  setExportLogging: (enabled: boolean) => void
+
   aiLogging: boolean
   setAiLogging: (enabled: boolean) => void
 
@@ -69,6 +72,10 @@ export const useDebugStore = create<DebugState>()(
       setWorkspaceLogging: (enabled) =>
         set((state) => ({ ...state, workspaceLogging: enabled })),
 
+      exportLogging: false,
+      setExportLogging: (enabled) =>
+        set((state) => ({ ...state, exportLogging: enabled })),
+
       aiLogging: false,
       setAiLogging: (enabled) =>
         set((state) => ({ ...state, aiLogging: enabled })),
@@ -94,6 +101,7 @@ export const useDebugStore = create<DebugState>()(
         verboseLogging: state.verboseLogging,
         dispatchLogging: state.dispatchLogging,
         workspaceLogging: state.workspaceLogging,
+        exportLogging: state.exportLogging,
         aiLogging: state.aiLogging,
         showTools: state.showTools,
         showOutcome: state.showOutcome,
@@ -119,6 +127,8 @@ export function useDebugMode() {
     setDispatchLogging,
     workspaceLogging,
     setWorkspaceLogging,
+    exportLogging,
+    setExportLogging,
     aiLogging,
     setAiLogging,
     showTools,
@@ -143,6 +153,8 @@ export function useDebugMode() {
       setDispatchLogging: state.setDispatchLogging,
       workspaceLogging: state.workspaceLogging,
       setWorkspaceLogging: state.setWorkspaceLogging,
+      exportLogging: state.exportLogging,
+      setExportLogging: state.setExportLogging,
       aiLogging: state.aiLogging,
       setAiLogging: state.setAiLogging,
       showTools: state.showTools,
@@ -182,6 +194,10 @@ export function useDebugMode() {
     setWorkspaceLogging(!workspaceLogging)
   }, [setWorkspaceLogging, workspaceLogging])
 
+  const toggleExportLogging = useCallback(() => {
+    setExportLogging(!exportLogging)
+  }, [setExportLogging, exportLogging])
+
   const toggleAiLogging = useCallback(() => {
     setAiLogging(!aiLogging)
   }, [setAiLogging, aiLogging])
@@ -219,6 +235,9 @@ export function useDebugMode() {
 
     workspaceLogging,
     toggleWorkspaceLogging,
+
+    exportLogging,
+    toggleExportLogging,
 
     aiLogging,
     toggleAiLogging,

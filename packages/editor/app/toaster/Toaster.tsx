@@ -13,7 +13,7 @@ export function Toasts() {
     <ToastStack>
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
-          <Toast key={toast.id} message={toast.message} />
+          <Toast key={toast.id} intent={toast.intent} message={toast.message} />
         ))}
       </AnimatePresence>
     </ToastStack>

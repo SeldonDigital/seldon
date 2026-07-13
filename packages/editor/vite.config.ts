@@ -40,5 +40,10 @@ export default defineConfig(({ mode }) => ({
     // Allow Vite to read the sibling @seldon/core and @seldon/factory source
     // and the hoisted node_modules at the repository root.
     fs: { allow: [repoRoot] },
+    watch: {
+      // Local exports are user output, not editor source. Ignore them so a
+      // successful export inside the repo does not reload before feedback paints.
+      ignored: ["**/exports/**"],
+    },
   },
 }))

@@ -1,9 +1,13 @@
-// BESPOKE-VIEW: hand-authored transitional View with inline token styling.
-// Replace with a generated workspace component once one covers the toast card.
+// BESPOKE-VIEW: animates generated Seldon message components as toasts.
 import { motion } from "framer-motion"
-import { CSSProperties } from "react"
+import { type CSSProperties } from "react"
+import { type ToastIntent } from "./hooks/use-toast-store"
+import { MessageError } from "@seldon/components/elements/MessageError"
+import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
+import { MessageStatus } from "@seldon/components/elements/MessageStatus"
 
 interface ToastProps {
+  intent: ToastIntent
   message: string
 }
 
@@ -13,20 +17,23 @@ const toastVariants = {
   exit: { opacity: 0, y: 10 },
 }
 
-const toastStyle: CSSProperties = {
-  padding: "1rem 1.5rem",
-  backgroundColor: "var(--sdn-swatch-white)",
-  borderRadius: "0.75rem",
-  boxShadow:
-    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-  outline: "1px solid var(--sdn-swatch-black)",
-  color: "var(--sdn-swatch-black)",
+const toastShellStyle: CSSProperties = {
+  width: "min(28rem, calc(100vw - 2rem))",
+  filter: "drop-shadow(0 10px 18px rgb(0 0 0 / 0.16))",
 }
 
-const messageStyle: CSSProperties = { fontSize: "var(--sdn-font-size-small)" }
+const statusToastStyle: CSSProperties = {
+  alignSelf: "stretch",
+  backgroundColor: "var(--sdn-swatch-offWhite)",
+  borderColor:
+    "color-mix(in srgb, var(--sdn-swatch-offBlack) 30%, transparent)",
+}
+
+const successIcon = { icon: "material-checkCircle" } as const
+const errorIcon = { icon: "material-error" } as const
 
 /** Animated toast card. */
-export function Toast({ message }: ToastProps) {
+export function Toast({ intent, message }: ToastProps) {
   return (
     <motion.div
       layout
@@ -34,9 +41,44 @@ export function Toast({ message }: ToastProps) {
       initial="initial"
       animate="animate"
       exit="exit"
-      style={toastStyle}
+      style={toastShellStyle}
     >
-      <p style={messageStyle}>{message}</p>
+      {renderToastContent(intent, message)}
     </motion.div>
+  )
+}
+
+function renderToastContent(intent: ToastIntent, message: string) {
+  if (intent === "success") {
+    return (
+      <MessageOutcome
+        aria-live="polite"
+        icon={successIcon}
+        role="status"
+        textLabel={{ children: message }}
+      />
+    )
+  }
+
+  if (intent === "error") {
+    return (
+      <MessageError
+        aria-live="assertive"
+        buttonSimple={null}
+        icon={errorIcon}
+        role="alert"
+        textDescription={{ children: message }}
+      />
+    )
+  }
+
+  return (
+    <MessageStatus
+      aria-live="polite"
+      icon={null}
+      role="status"
+      style={statusToastStyle}
+      textLabel={{ children: message }}
+    />
   )
 }

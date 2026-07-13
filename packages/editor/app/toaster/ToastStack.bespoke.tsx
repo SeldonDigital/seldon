@@ -1,23 +1,24 @@
-// BESPOKE-VIEW: hand-authored transitional View with inline token styling.
-// Replace with a generated workspace component once one covers the toast stack.
-import { CSSProperties, ReactNode } from "react"
+// BESPOKE-VIEW: positions the generated toast messages above the editor chrome.
+import { type CSSProperties, type ReactNode } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 
 interface ToastStackProps {
   children: ReactNode
 }
 
 const stackStyle: CSSProperties = {
-  position: "absolute",
+  position: "fixed",
   bottom: "3rem",
   left: "50%",
-  zIndex: 50,
+  zIndex: 2147483001,
   display: "flex",
   flexDirection: "column",
   gap: "var(--sdn-gaps-compact)",
+  pointerEvents: "none",
   transform: "translateX(-50%)",
 }
 
 /** Bottom-centered, vertically stacked container for toasts. */
 export function ToastStack({ children }: ToastStackProps) {
-  return <div style={stackStyle}>{children}</div>
+  return <Frame style={stackStyle}>{children}</Frame>
 }
