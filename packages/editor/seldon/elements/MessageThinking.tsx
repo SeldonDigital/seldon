@@ -26,9 +26,9 @@ export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
   frame?: FrameProps | null
-  textDescription?: TextDescriptionProps | null
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
+  textDescription?: TextDescriptionProps | null
   textDescription2?: TextDescriptionProps | null
 }
 
@@ -44,18 +44,18 @@ export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
  * <MessageThinking
  *   aria-hidden="false"
  *   frame="{}"
- *   textDescription="{}"
  *   buttonIconic={() => {}}
  *   icon="material-star"
+ *   textDescription="{}"
  * />
  * ```
  *****/
 export function MessageThinking({
   className = "",
   frame = sdn.frame,
-  textDescription,
   buttonIconic,
   icon = sdn.icon,
+  textDescription,
   textDescription2,
   children,
   seldonRefs,
@@ -73,19 +73,6 @@ export function MessageThinking({
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const textDescriptionProps = applyRef(
-    seldonRefs,
-    textDescription === null
-      ? null
-      : {
-          ...sdn.textDescription,
-          ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
         },
   )
   const buttonIconicProps = applyRef(
@@ -109,6 +96,19 @@ export function MessageThinking({
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
+        },
+  )
+  const textDescriptionProps = applyRef(
+    seldonRefs,
+    textDescription === null
+      ? null
+      : {
+          ...sdn.textDescription,
+          ...textDescription,
+          className: combineClassNames(
+            sdn.textDescription?.className,
+            textDescription?.className,
+          ),
         },
   )
   const textDescription2Props = applyRef(
@@ -136,11 +136,11 @@ export function MessageThinking({
       ) : (
         <>
           <Frame {...frameProps}>
-            {textDescription && textDescriptionProps && (
-              <TextDescription {...textDescriptionProps} />
-            )}
             {buttonIconic && buttonIconicProps && (
               <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+            )}
+            {textDescription && textDescriptionProps && (
+              <TextDescription {...textDescriptionProps} />
             )}
           </Frame>
           {textDescription2 && textDescription2Props && (
@@ -163,9 +163,6 @@ const sdn: MessageThinkingProps = {
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--ieew",
   },
-  textDescription: {
-    className: "sdn-text sdn-text-description--0r1j",
-  },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--iklu",
   },
@@ -173,6 +170,9 @@ const sdn: MessageThinkingProps = {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--kzy9",
+  },
+  textDescription: {
+    className: "sdn-text sdn-text-description--0r1j",
   },
   textDescription2: {
     className: "sdn-text sdn-text-description--choa",

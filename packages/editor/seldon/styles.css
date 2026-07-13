@@ -1406,8 +1406,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 2px 0.25rem 0.062rem
-    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 2px 0.25rem 0.062rem hsl(0 0% 0% / 20%);
   width: 450px;
   height: 450px;
   flex-shrink: 0;
@@ -1424,8 +1423,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 2px 0.25rem 0.062rem
-    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 2px 0.25rem 0.062rem hsl(0 0% 0% / 20%);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
@@ -2435,7 +2433,7 @@ body {
 
 .sdn-frame--jhsq {
   flex: unset;
-  background-color: var(--sdn-swatch-primary-b50);
+  background-color: var(--sdn-swatch-offWhite);
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -3395,13 +3393,17 @@ body {
 .sdn-textarea--2upw {
   align-self: unset;
   flex-shrink: unset;
-  background-color: var(--sdn-swatch-offWhite);
+  background-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-offWhite) 5%,
+    transparent
+  );
   color: var(--sdn-hc-on-offWhite);
   flex: 1 0 0;
   min-width: 0;
   font-size: var(--sdn-font-size-xsmall);
   border: var(--hairline) solid
-    hsl(from var(--sdn-hc-on-offWhite) h s calc(l + (100 - l) * 0.25));
+    color-mix(in srgb, var(--sdn-hc-on-offWhite) 25%, transparent);
 }
 
 .sdn-button:focus-visible,

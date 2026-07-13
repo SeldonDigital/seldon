@@ -6204,15 +6204,15 @@
               "id": "component-frame-IEewTaDU",
               "children": [
                 {
-                  "id": "component-text-0r1JFBYH"
-                },
-                {
                   "id": "component-button-iKLUV4uP",
                   "children": [
                     {
                       "id": "component-icon-KzY9lbAe"
                     }
                   ]
+                },
+                {
+                  "id": "component-text-0r1JFBYH"
                 }
               ]
             },
@@ -38092,6 +38092,14 @@
                 "unit": "px",
                 "value": 2
               }
+            },
+            "color": {
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             }
           }
         ]
@@ -49610,6 +49618,14 @@
             "spread": {
               "type": "theme.ordinal",
               "value": "@spread.xxsmall"
+            },
+            "color": {
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             }
           }
         ]
@@ -50237,14 +50253,7 @@
             },
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 50
-              }
+              "value": "@swatch.offWhite"
             }
           }
         ]
@@ -50548,9 +50557,32 @@
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.offWhite"
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 5
+              }
             }
           }
-        ]
+        ],
+        "border": {
+          "brightness": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 0
+            }
+          },
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 25
+            }
+          }
+        }
       },
       "origin": "user"
     },
