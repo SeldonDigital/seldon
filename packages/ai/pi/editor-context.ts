@@ -9,6 +9,7 @@ import {
 import { componentValuesSection } from "../prompt/context-sections/component-values"
 import { fontCollectionValuesSection } from "../prompt/context-sections/font-collection-values"
 import { iconSetValuesSection } from "../prompt/context-sections/icon-set-values"
+import { propertyShapeSection } from "../prompt/context-sections/property-shape"
 import { selectionSection } from "../prompt/context-sections/selection"
 import { themeIdsSection } from "../prompt/context-sections/theme-ids"
 import { workspaceBoardsSection } from "../prompt/context-sections/workspace-index"
@@ -219,9 +220,11 @@ export function buildTurnContext(resolved: ResolvedContext): string {
     ? getNodeCatalogId(selectedNode, workspace)
     : undefined
   if (selectedCatalogId) {
+    const catalogIds = new Set([selectedCatalogId])
+    lines.push(...propertyShapeSection(catalogIds))
     lines.push(
       ...componentValuesSection(
-        new Set([selectedCatalogId]),
+        catalogIds,
         workspace,
         "Settable values for the selected component (pick a listed choice; omit a key to leave it unchanged):",
       ),

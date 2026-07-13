@@ -65,6 +65,12 @@ export interface ChatToActionsInput {
   noThink?: boolean
   /** Streams turn events as they happen, so the caller can render live. */
   onEvent?: (event: AgentStreamEvent) => void
+  /**
+   * Aborts the turn. When it fires, the Pi session is stopped so the local model
+   * stops generating. Set server-side from the request's disconnect, so a user
+   * pressing Stop in the editor cancels the running turn.
+   */
+  signal?: AbortSignal
 }
 
 /**

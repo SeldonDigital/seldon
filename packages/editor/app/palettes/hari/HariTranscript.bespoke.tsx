@@ -52,6 +52,7 @@ function buildTranscript(
     }
     if (turn.reply) blocks.push(assistantBlock(turn))
     if (turn.status === "pending") blocks.push(statusBlock(turn))
+    if (turn.status === "stopped") blocks.push(stoppedBlock(turn))
     if (turn.error || (turn.rejected && turn.rejected.length > 0)) {
       blocks.push(errorBlock(turn, onRetry))
     }
@@ -69,6 +70,11 @@ function userBlock(turn: HariTurn): ReactNode {
 function statusBlock(turn: HariTurn): ReactNode {
   const textLabel = { children: "Working..." }
   return <MessageStatus key={`${turn.id}-status`} textLabel={textLabel} />
+}
+
+function stoppedBlock(turn: HariTurn): ReactNode {
+  const textLabel = { children: "Stopped." }
+  return <MessageStatus key={`${turn.id}-stopped`} textLabel={textLabel} />
 }
 
 function thinkingBlock(turn: HariTurn): ReactNode {

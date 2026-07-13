@@ -60,11 +60,13 @@ type StreamFrame = AgentStreamEvent | DoneFrame | ErrorFrame
 export async function runAgentChat(
   request: AgentChatRequest,
   onEvent?: (event: AgentStreamEvent) => void,
+  signal?: AbortSignal,
 ): Promise<AgentChatResponse> {
   const response = await fetch("/api/agent", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(request),
+    signal,
   })
 
   if (!response.ok || !response.body) {

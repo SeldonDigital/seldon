@@ -55,6 +55,7 @@ export function VMHari() {
     isOpen,
     close,
     send,
+    stop,
     status,
     warm,
     turns,
@@ -72,6 +73,7 @@ export function VMHari() {
     <Hari
       close={close}
       send={send}
+      stop={stop}
       status={status}
       warm={warm}
       turns={turns}
@@ -88,6 +90,7 @@ export function VMHari() {
 interface HariProps {
   close: () => void
   send: (message: string) => Promise<void>
+  stop: () => void
   status: HariStatus
   warm: () => Promise<void>
   turns: HariTurn[]
@@ -109,6 +112,7 @@ interface HariProps {
 function Hari({
   close,
   send,
+  stop,
   status,
   warm,
   turns,
@@ -267,7 +271,8 @@ function Hari({
     placeholder,
     autoFocus: true,
   }
-  const sendSlot = { onClick: submit, disabled: isPending }
+  const sendSlot = { onClick: isPending ? stop : submit }
+  const sendIconSlot = isPending ? { icon: "material-stop" as const } : undefined
   const modelSlot = {
     onClick: openModelMenu,
     disabled: controlsDisabled,
@@ -310,6 +315,7 @@ function Hari({
         frame={transcriptSlot}
         textarea={inputSlot}
         buttonIconic2={sendSlot}
+        icon2={sendIconSlot}
         buttonMenu={modelSlot}
         textLabel={modelLabelSlot}
         buttonMenu2={thinkingSlot}

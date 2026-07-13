@@ -40,6 +40,9 @@ How to work:
     defaults to scope "instance".
   - Theme: change token values with list_theme_tokens then set_theme_override on
     the named theme entry. This is a workspace token edit; the board is irrelevant.
+    A token may show as "id (Display Name)", for example "swatch4 (Tint 4)".
+    Match the user's words against the display name, but always reference the id,
+    for example @swatch.swatch4, never @tint.4.
   - Font Collection: turn families and weights on or off with
     set_font_collection_family_preset (whole family) or
     set_font_collection_family_variant (one weight). Do not edit component nodes.

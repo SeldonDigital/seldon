@@ -147,9 +147,22 @@ async function streamAgentTurn(
   res.setHeader("Cache-Control", "no-cache")
   res.flushHeaders?.()
 
+  // The client aborts the fetch when the user presses Stop, which closes the
+  // response socket. Forward that as an abort into the agent so the local model
+  // turn is cancelled instead of running to completion in the background. Watch
+  // the response, not the request: the request body is already fully consumed by
+  // the time we get here, so its stream closes at once and would abort every
+  // turn at the start. The `finished` guard skips the close that our own
+  // res.end() triggers on a normal turn.
+  const controller = new AbortController()
+  let finished = false
+  res.on("close", () => {
+    if (!finished) controller.abort()
+  })
+
   const onEvent = (event: AgentStreamEvent) => writeFrame(res, event)
   try {
-    const result = await agent.runAgent(body, onEvent)
+    const result = await agent.runAgent(body, onEvent, controller.signal)
     writeFrame(res, { type: "done", ...result })
   } catch (error) {
     writeFrame(res, {
@@ -157,6 +170,7 @@ async function streamAgentTurn(
       error: error instanceof Error ? error.message : "Agent request failed.",
     })
   } finally {
+    finished = true
     res.end()
   }
 }

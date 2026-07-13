@@ -47,6 +47,7 @@ export type AgentResult = {
 export async function runAgent(
   body: AgentRequestBody,
   onEvent?: (event: AgentStreamEvent) => void,
+  signal?: AbortSignal,
 ): Promise<AgentResult> {
   if (!body?.workspace) {
     throw new Error("Missing workspace in request body.")
@@ -69,6 +70,7 @@ export async function runAgent(
     thinkingLevel: body.thinkingLevel,
     noThink: body.noThink,
     onEvent,
+    signal,
   })
 
   return { actions, reply, debug }

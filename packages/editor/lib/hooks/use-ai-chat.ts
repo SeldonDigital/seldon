@@ -39,7 +39,7 @@ export interface AiChatMessage {
 export type HariStatus = "idle" | "pending" | "error"
 
 /** Per-turn lifecycle, used to pick the transcript block for the last turn. */
-export type TurnStatus = "pending" | "done" | "error"
+export type TurnStatus = "pending" | "done" | "error" | "stopped"
 
 /**
  * One chat turn's structured record. The transcript renders each populated
@@ -179,6 +179,18 @@ function buildHistory(turns: HariTurn[]): AiChatMessage[] {
 let warmInFlight: Promise<void> | null = null
 
 /**
+ * The in-flight turn's abort controller, so the Stop button can cancel the
+ * running turn. Aborting closes the request, which the server forwards to the Pi
+ * session so the local model stops generating. Cleared when the turn settles.
+ */
+let activeController: AbortController | null = null
+
+/** True for the abort error thrown when the user stops the turn. */
+function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === "AbortError"
+}
+
+/**
  * Chat state plus the send loop. `send` posts the message and current workspace
  * to the local agent, then folds the returned actions through the reducer with
  * one `set_workspace` dispatch, so the whole turn is a single undo step. A
@@ -202,6 +214,9 @@ export function useHari() {
       const history = buildHistory(store.turns)
       const { model, thinkingLevel } = store
       const turnId = store.startTurn(message)
+
+      const controller = new AbortController()
+      activeController = controller
 
       try {
         const current = getCurrentWorkspace()
@@ -227,6 +242,7 @@ export function useHari() {
             noThink: useDebugStore.getState().noThink,
           },
           (event) => applyTurnEvent(turnId, event),
+          controller.signal,
         )
 
         const outcome = applyActionsWithReport(current, actions)
@@ -252,6 +268,11 @@ export function useHari() {
         })
         useStore.getState().setStatus(failed ? "error" : "idle")
       } catch (caught) {
+        if (isAbortError(caught)) {
+          useStore.getState().updateTurn(turnId, { status: "stopped" })
+          useStore.getState().setStatus("idle")
+          return
+        }
         const messageText =
           caught instanceof Error ? caught.message : "Agent request failed."
         useStore
@@ -259,10 +280,16 @@ export function useHari() {
           .updateTurn(turnId, { error: messageText, status: "error" })
         useStore.getState().setStatus("error")
         useStore.getState().setError(messageText)
+      } finally {
+        if (activeController === controller) activeController = null
       }
     },
     [activeBoard, dispatch],
   )
+
+  const stop = useCallback(() => {
+    activeController?.abort()
+  }, [])
 
   const warm = useCallback(() => {
     if (warmInFlight) return warmInFlight
@@ -298,6 +325,7 @@ export function useHari() {
     status,
     error,
     send,
+    stop,
     warm,
     reset,
     config,

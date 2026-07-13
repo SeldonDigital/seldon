@@ -30,6 +30,17 @@ export async function chatToActionsPi(
     noThink: input.noThink,
   })
 
+  // Stop the running turn when the caller aborts, so the local model stops
+  // generating instead of finishing in the background after the user hits Stop.
+  const { signal } = input
+  const onAbort = () => {
+    void session.abort()
+  }
+  if (signal) {
+    if (signal.aborted) onAbort()
+    else signal.addEventListener("abort", onAbort)
+  }
+
   const context = buildTurnContext(resolved)
   const onEvent = input.onEvent
 
@@ -77,6 +88,7 @@ export async function chatToActionsPi(
   const totalMs = Date.now() - started
 
   endThinking()
+  if (signal) signal.removeEventListener("abort", onAbort)
   const reply = session.getLastAssistantText() ?? ""
   const stats = session.getSessionStats()
   unsubscribe()

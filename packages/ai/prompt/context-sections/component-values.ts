@@ -6,6 +6,7 @@ import {
   getPropertyOptions,
 } from "@seldon/core/properties/schemas/helpers/property-options"
 import { getPropertySchema } from "@seldon/core/properties/schemas/helpers/get-property-schema"
+import { getThemeLookSection } from "@seldon/core/themes/looks/resolve-theme-look"
 import type { Theme } from "@seldon/core/themes/types"
 import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"
 import type { Workspace } from "@seldon/core/workspace/types"
@@ -25,6 +26,60 @@ const TITLE =
  * Returns null when there is no choice worth listing, so the caller drops the
  * row rather than print an empty one.
  */
+/** Strips spaces and punctuation so a display name only counts as distinct from
+ * its id when it truly differs, e.g. "Tint 4" vs "swatch4" or "Wide" vs "custom1". */
+function normalizeToken(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]/g, "")
+}
+
+/** The friendly name a theme cell carries, if any, from a scope table. */
+function cellName(table: unknown, id: string): string | null {
+  if (table && typeof table === "object") {
+    const cell = (table as Record<string, unknown>)[id]
+    if (cell && typeof cell === "object" && "name" in cell) {
+      const name = (cell as { name?: unknown }).name
+      if (typeof name === "string" && name.trim() !== "") return name
+    }
+  }
+  return null
+}
+
+/**
+ * Renders a theme token as `token (Name)` when its computed cell carries a
+ * friendly name that differs from the id, so the model can map a user's words
+ * ("Tint 4", a custom "Wide" spacing, a named Look) to the token it must
+ * reference. Resolves the scope from the token: prefixed tokens (`@padding.custom1`)
+ * read their scope table directly; bare tokens read the property's Look section
+ * (font, border, gradient, shadow) or fall back to the swatch table for colors.
+ */
+function annotateThemeToken(
+  token: string,
+  schemaKey: string,
+  theme?: Theme,
+): string {
+  if (!theme) return token
+
+  let table: unknown
+  let id: string
+  if (token.startsWith("@")) {
+    const dot = token.indexOf(".")
+    const scope = dot === -1 ? "" : token.slice(1, dot)
+    id = dot === -1 ? token.slice(1) : token.slice(dot + 1)
+    table = (theme as unknown as Record<string, unknown>)[scope]
+  } else {
+    id = token
+    table =
+      getThemeLookSection(theme, schemaKey) ??
+      (theme as unknown as { swatch?: unknown }).swatch
+  }
+
+  const name = cellName(table, id)
+  if (name && normalizeToken(name) !== normalizeToken(id)) {
+    return `${token} (${name})`
+  }
+  return token
+}
+
 function describeChoices(schemaKey: string, theme?: Theme): string | null {
   const schema = getPropertySchema(schemaKey)
   if (!schema) return null
@@ -36,15 +91,15 @@ function describeChoices(schemaKey: string, theme?: Theme): string | null {
     if (options.length > 0) parts.push(options.join(" / "))
   }
   if (supports.includes("themeOrdinal")) {
-    const tokens = getPropertyOptions(schemaKey, "themeOrdinal", theme).map(
-      String,
-    )
+    const tokens = getPropertyOptions(schemaKey, "themeOrdinal", theme)
+      .map(String)
+      .map((token) => annotateThemeToken(token, schemaKey, theme))
     if (tokens.length > 0) parts.push(tokens.join(" / "))
   }
   if (supports.includes("themeCategorical")) {
-    const tokens = getPropertyOptions(schemaKey, "themeCategorical", theme).map(
-      String,
-    )
+    const tokens = getPropertyOptions(schemaKey, "themeCategorical", theme)
+      .map(String)
+      .map((token) => annotateThemeToken(token, schemaKey, theme))
     if (tokens.length > 0) parts.push(tokens.join(" / "))
   }
 
