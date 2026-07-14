@@ -2,9 +2,10 @@
 @import "../seldon/styles.css";
 
 /*
- * Self-hosted IBM Plex Sans registered under its literal family name so the editor
- * chrome can fall back to it when a declared font is inaccessible. local() first lets
- * an installed or remotely loaded IBM Plex win; otherwise the vendored woff2 is used.
+ * Self-hosted editor chrome fonts, registered under their literal family names so
+ * the chrome renders them without any network request to a font host. local()
+ * first lets an installed copy win; otherwise the vendored woff2 in ./fonts is
+ * used. The woff2 files live in ./fonts/plex and ./fonts/inconsolata.
  */
 @font-face {
   font-family: "IBM Plex Sans";
@@ -13,7 +14,7 @@
   font-display: swap;
   src:
     local("IBM Plex Sans"),
-    url("./plex/IBMPlexSans-Regular.woff2") format("woff2");
+    url("./fonts/plex/IBMPlexSans-Regular.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
@@ -22,7 +23,7 @@
   font-display: swap;
   src:
     local("IBM Plex Sans Italic"),
-    url("./plex/IBMPlexSans-Italic.woff2") format("woff2");
+    url("./fonts/plex/IBMPlexSans-Italic.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
@@ -31,7 +32,7 @@
   font-display: swap;
   src:
     local("IBM Plex Sans Medium"),
-    url("./plex/IBMPlexSans-Medium.woff2") format("woff2");
+    url("./fonts/plex/IBMPlexSans-Medium.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
@@ -40,7 +41,7 @@
   font-display: swap;
   src:
     local("IBM Plex Sans SemiBold"),
-    url("./plex/IBMPlexSans-SemiBold.woff2") format("woff2");
+    url("./fonts/plex/IBMPlexSans-SemiBold.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
@@ -49,7 +50,119 @@
   font-display: swap;
   src:
     local("IBM Plex Sans"),
-    url("./plex/IBMPlexSans-Bold.woff2") format("woff2");
+    url("./fonts/plex/IBMPlexSans-Bold.woff2") format("woff2");
+}
+
+/* Self-hosted IBM Plex Serif, the secondary chrome family. */
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif"),
+    url("./fonts/plex/IBMPlexSerif-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif Medium"),
+    url("./fonts/plex/IBMPlexSerif-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif SemiBold"),
+    url("./fonts/plex/IBMPlexSerif-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif"),
+    url("./fonts/plex/IBMPlexSerif-Bold.woff2") format("woff2");
+}
+
+/* Self-hosted Inconsolata, the monospace chrome family used by code blocks. */
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-200.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-300.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-800.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-900.woff2") format("woff2");
 }
 
 .no-spinner {

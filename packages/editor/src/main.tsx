@@ -7,7 +7,7 @@ import { Providers } from "@app/Providers"
 import { Toasts } from "@app/toaster/Toaster"
 import HomePage from "../app/home/HomePage"
 import "../app/globals.css"
-import "../app/plex/fonts.css"
+import "../app/fonts/plex/fonts.css"
 import "../app/editor-chrome.css"
 // Side-effect import: registers editor-only, prop-driven `icon-custom-*` icons
 // with the generated `Icon`'s runtime registry at load.

@@ -234,11 +234,13 @@ function errorBlock(
       .join("; ")
   const textDescription = { children: text }
   const buttonSimple = onRetry ? { onClick: () => onRetry(turn.prompt) } : null
+  const textLabel = onRetry ? { children: "Retry" } : null
   return (
     <MessageError
       key={`${turn.id}-error`}
       textDescription={textDescription}
       buttonSimple={buttonSimple}
+      textLabel={textLabel}
     />
   )
 }
