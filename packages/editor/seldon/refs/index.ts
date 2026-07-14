@@ -69,6 +69,7 @@ export type SeldonRef =
   | "sectionToggleIcon"
   | "toggleIcon"
   | "toggleValue"
+  | "tool"
   | "turns"
   | "valueIcon"
   | "valueLabel"
@@ -366,10 +367,15 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-toggleSwitch-pelhFQXa",
     className: "sdn-toggle-switch sdn-toggle-switch--pelh",
   },
+  tool: {
+    component: "Frame",
+    nodeId: "component-frame-RStcYvkF",
+    className: "sdn-frame sdn-frame--rstc",
+  },
   turns: {
     component: "Frame",
     nodeId: "component-panel-VoRnpuW2",
-    className: "sdn-frame sdn-frame--2wwo",
+    className: "sdn-frame sdn-frame--vorn",
   },
   valueIcon: {
     component: "Icon",

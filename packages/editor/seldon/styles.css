@@ -1435,17 +1435,14 @@ body {
   cursor: default;
   flex-wrap: nowrap;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
   gap: var(--sdn-gaps-tight);
-  padding-top: var(--sdn-paddings-tight);
-  padding-right: var(--sdn-paddings-compact);
-  padding-bottom: var(--sdn-paddings-tight);
-  padding-left: var(--sdn-paddings-compact);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
+  padding: var(--sdn-paddings-compact);
   border-radius: var(--sdn-corners-compact);
   border: var(--hairline) solid transparent;
 }
@@ -2630,6 +2627,16 @@ body {
   min-width: 0;
 }
 
+.sdn-frame--rstc {
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: var(--sdn-gaps-tight);
+  margin-top: var(--sdn-margins-tight);
+  margin-left: var(--sdn-margins-tight);
+  padding: 0;
+}
+
 .sdn-frame--sjq9 {
   align-self: unset;
   gap: var(--sdn-gaps-compact);
@@ -2646,6 +2653,18 @@ body {
   gap: var(--sdn-gaps-comfortable);
   height: fit-content;
   min-width: 0;
+}
+
+.sdn-frame--vorn {
+  background-color: var(--sdn-swatch-offWhite);
+  overflow-x: hidden;
+  overflow-y: auto;
+  gap: var(--sdn-gaps-compact);
+  padding-top: var(--sdn-paddings-compact);
+  padding-right: var(--sdn-paddings-cozy);
+  padding-bottom: var(--sdn-paddings-compact);
+  padding-left: var(--sdn-paddings-cozy);
+  min-height: 0;
 }
 
 .sdn-frame--xyjz {
@@ -2709,6 +2728,12 @@ body {
 }
 
 .sdn-icon--9ouj {
+  font-size: var(--sdn-sizes-small);
+  color: var(--sdn-hc-on-white);
+}
+
+.sdn-icon--bmas {
+  font-size: var(--sdn-cmp-auto-fit-font-size-xsmall);
   color: var(--sdn-hc-on-white);
 }
 
@@ -3119,6 +3144,17 @@ body {
 .sdn-text-description--0r1j {
   align-self: unset;
   flex-shrink: unset;
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: var(--sdn-font-size-xsmall);
+  line-height: var(--sdn-line-height-solid);
+  letter-spacing: 0.1px;
+}
+
+.sdn-text-description--71gg {
+  align-self: unset;
+  flex-shrink: unset;
+  color: var(--sdn-hc-on-white);
   flex: 1 0 0;
   min-width: 0;
   font-size: var(--sdn-font-size-xsmall);

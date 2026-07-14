@@ -50,6 +50,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-plus"
     | "seldon-minus"
     | "material-arrowUpward"
+    | "material-build"
     | "material-checkCircle"
     | "material-error"
     | "material-robot"
@@ -265,7 +266,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-apps"
     | "material-aspectRatio"
     | "material-autorenew"
-    | "material-build"
     | "material-cancel"
     | "material-circle"
     | "material-cleaningServices"
@@ -582,6 +582,7 @@ const iconMap = {
   "seldon-plus": Icons.IconSeldonPlus,
   "seldon-minus": Icons.IconSeldonMinus,
   "material-arrowUpward": Icons.IconMaterialArrowUpward,
+  "material-build": Icons.IconMaterialBuild,
   "material-checkCircle": Icons.IconMaterialCheckCircle,
   "material-error": Icons.IconMaterialError,
   "material-robot": Icons.IconMaterialRobot,
@@ -799,7 +800,6 @@ const iconMap = {
   "material-apps": Icons.IconMaterialApps,
   "material-aspectRatio": Icons.IconMaterialAspectRatio,
   "material-autorenew": Icons.IconMaterialAutorenew,
-  "material-build": Icons.IconMaterialBuild,
   "material-cancel": Icons.IconMaterialCancel,
   "material-circle": Icons.IconMaterialCircle,
   "material-cleaningServices": Icons.IconMaterialCleaningServices,

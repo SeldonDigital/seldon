@@ -1,8 +1,8 @@
 // View-model for the Hari chat transcript. Each structured turn from useHari
 // maps to the generated Message* blocks: the prompt, the model's reasoning, the
 // tools it called, the applied changes, the markdown reply, and any rejection or
-// error. Tool activity renders one MessageTools row per entry, grouped in a
-// single frame so the turn reads as one tools section. Assistant replies render
+// error. Tool activity renders as one collapsible HariTools block per turn, so
+// the turn reads as a single "Tools Applied" section. Assistant replies render
 // through HariMarkdown.
 import { type CSSProperties, type ReactNode, useMemo } from "react"
 import type { HariTurn } from "@lib/hooks/use-ai-chat"
@@ -11,12 +11,11 @@ import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
 import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
 import { MessageStatus } from "@seldon/components/elements/MessageStatus"
-import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
-import { Frame } from "@seldon/components/frames/Frame"
 import type { IconProps } from "@seldon/components/primitives/Icon"
 import { HariMarkdown } from "./HariMarkdown"
 import { HariThinking } from "./HariThinking"
+import { type ToolRow, HariTools } from "./HariTools"
 
 interface HariTranscriptProps {
   turns: HariTurn[]
@@ -48,9 +47,9 @@ function buildTranscript(
   for (const turn of turns) {
     blocks.push(userBlock(turn))
     if (turn.thinking || turn.clamped) blocks.push(thinkingBlock(turn))
-    const toolsNode = toolsBlock(turn, showTools)
+    const toolsNode = showTools ? toolsBlock(turn) : null
     if (toolsNode) blocks.push(toolsNode)
-    const outcomeNode = outcomeBlock(turn, showOutcome)
+    const outcomeNode = showOutcome ? outcomeBlock(turn) : null
     if (outcomeNode) blocks.push(outcomeNode)
     if (turn.reply) blocks.push(assistantBlock(turn))
     if (turn.status === "pending") blocks.push(statusBlock(turn))
@@ -91,70 +90,52 @@ function thinkingBlock(turn: HariTurn): ReactNode {
   )
 }
 
-/** One tool-activity row: the generated MessageTools element, a status icon and text. */
-function toolRow(
-  key: string,
-  iconName: IconProps["icon"],
-  text: string,
-): ReactNode {
-  const icon = { icon: iconName }
-  const textDescription = { children: text, style: preWrapStyle }
-  return (
-    <MessageTools key={key} icon={icon} textDescription={textDescription} />
-  )
+/**
+ * Every tool-activity row for the turn, in reading order: the tools the model
+ * called, then the deterministic shape repairs, the vocabulary warnings, and the
+ * rejections. Each row carries its own status icon and label. A failed call is
+ * marked in its text, since a failed edit attempt is the signal that a change was
+ * tried and missed and must not read as a silent success.
+ */
+function collectToolRows(turn: HariTurn): ToolRow[] {
+  const rows: ToolRow[] = []
+  ;(turn.toolCalls ?? []).forEach((call, index) => {
+    rows.push({
+      key: `call-${index}`,
+      icon: call.ok ? "material-checkCircle" : "material-error",
+      text: call.ok ? call.name : `${call.name} (failed)`,
+    })
+  })
+  ;(turn.repairs ?? []).forEach((repair, index) => {
+    rows.push({
+      key: `repair-${index}`,
+      icon: "material-warning",
+      text: `repair: ${repair.actionType}.${repair.propertyKey} — ${repair.reason}`,
+    })
+  })
+  ;(turn.warnings ?? []).forEach((warning, index) => {
+    rows.push({ key: `warning-${index}`, icon: "material-warning", text: warning })
+  })
+  ;(turn.rejected ?? []).forEach((item, index) => {
+    rows.push({
+      key: `rejected-${index}`,
+      icon: "material-error",
+      text: `rejected: ${item.type} — ${item.reason}`,
+    })
+  })
+  return rows
 }
 
 /**
- * The tools block: the tools the model called, then the deterministic shape
- * repairs, the vocabulary warnings, and the rejections for the turn. When Show
- * Tools is off the block still surfaces any failed tool call, since a failed edit
- * attempt is the signal that a change was tried and missed and must not read as a
- * silent success. Repairs, warnings, rejections, and successful calls stay behind
- * Show Tools. Returns null when there is nothing to show. Every row renders inside
- * one grouping frame so the turn reads as a single tool section.
+ * The tools block: one collapsible HariTools per turn. Show Tools gates whether
+ * the block renders at all; when shown it starts expanded, and the per-turn
+ * chevron collapses or expands it. Returns null when the turn has no tool
+ * activity.
  */
-function toolsBlock(turn: HariTurn, showTools: boolean): ReactNode {
-  const calls = turn.toolCalls ?? []
-  const shownCalls = showTools ? calls : calls.filter((call) => !call.ok)
-  const rows: ReactNode[] = []
-  shownCalls.forEach((call, index) => {
-    rows.push(
-      toolRow(
-        `call-${index}`,
-        call.ok ? "material-checkCircle" : "material-error",
-        call.name,
-      ),
-    )
-  })
-  if (showTools) {
-    ;(turn.repairs ?? []).forEach((repair, index) => {
-      rows.push(
-        toolRow(
-          `repair-${index}`,
-          "material-warning",
-          `repair: ${repair.actionType}.${repair.propertyKey} — ${repair.reason}`,
-        ),
-      )
-    })
-    ;(turn.warnings ?? []).forEach((warning, index) => {
-      rows.push(toolRow(`warning-${index}`, "material-warning", warning))
-    })
-    ;(turn.rejected ?? []).forEach((item, index) => {
-      rows.push(
-        toolRow(
-          `rejected-${index}`,
-          "material-error",
-          `rejected: ${item.type} — ${item.reason}`,
-        ),
-      )
-    })
-  }
+function toolsBlock(turn: HariTurn): ReactNode {
+  const rows = collectToolRows(turn)
   if (rows.length === 0) return null
-  return (
-    <Frame key={`${turn.id}-tools`} style={toolsGroupStyle}>
-      {rows}
-    </Frame>
-  )
+  return <HariTools key={`${turn.id}-tools`} rows={rows} defaultOpen />
 }
 
 /** Icon, label, and fallback line for each reducer-truth outcome badge. */
@@ -180,15 +161,15 @@ const OUTCOME_META: Record<
 }
 
 /**
- * The outcome badge: a reducer-truth summary shown for every done turn, so a
- * reply can never read as a success the workspace never took. It shows the full
- * per-target change list when Show Outcome is on, otherwise a one-line summary.
+ * The outcome badge: a reducer-truth summary for a done turn. Show Output gates
+ * whether it renders. When shown, an applied turn lists its full per-target
+ * changes; every other outcome shows its one-line description.
  */
-function outcomeBlock(turn: HariTurn, showOutcome: boolean): ReactNode {
+function outcomeBlock(turn: HariTurn): ReactNode {
   if (turn.status !== "done" || !turn.outcome) return null
   const meta = OUTCOME_META[turn.outcome]
   const detail =
-    showOutcome && turn.outcome === "applied" && (turn.changes?.length ?? 0) > 0
+    turn.outcome === "applied" && (turn.changes?.length ?? 0) > 0
       ? (turn.changes ?? []).join("\n")
       : meta.description
   const icon = { icon: meta.icon }
@@ -205,14 +186,6 @@ function outcomeBlock(turn: HariTurn, showOutcome: boolean): ReactNode {
 }
 
 const preWrapStyle: CSSProperties = { whiteSpace: "pre-wrap" }
-
-// Stacks the tool rows into one section so a turn's tool activity reads as a
-// single block rather than a run of separate messages.
-const toolsGroupStyle: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "var(--sdn-gaps-compact)",
-}
 
 function assistantBlock(turn: HariTurn): ReactNode {
   const reply = turn.reply ?? ""
