@@ -30,11 +30,12 @@ function readTextFile(
 
 /**
  * The shared component stylesheet plus each rendered theme's variable
- * stylesheet, concatenated. Component classes reference `--sdn-{slug}-*`
- * custom properties that only the matching theme file defines — both are
- * required for CSS to resolve to real values, not just class names. A board
- * sheet may render variants under different themes, hence a list; slugged
- * variable prefixes cannot collide across themes, so concatenation is safe.
+ * stylesheet, concatenated. Component classes reference unprefixed `--sdn-*`
+ * custom properties; each theme file defines them under its own
+ * `[data-theme="{slug}"]` selector (the seldon default also answers bare
+ * `:root`), so the element carrying `data-theme` picks the active theme. A
+ * board sheet may render variants under different themes, hence a list;
+ * attribute scoping keeps the concatenation collision-free.
  */
 export function assembleStyles(
   files: ReadonlyMap<string, FileToExport>,
@@ -45,7 +46,7 @@ export function assembleStyles(
   const shared = readTextFile(files, `${componentsFolder}/styles.css`)
   const slugs = [...new Set(themeIds.map((id) => getThemeSlug(id, workspace)))]
   const themes = slugs.map((slug) =>
-    readTextFile(files, `${componentsFolder}/styles-${slug}.css`),
+    readTextFile(files, `${componentsFolder}/styles/${slug}.css`),
   )
   return [shared, ...themes].join("\n")
 }
@@ -61,15 +62,17 @@ export function extractFontLinks(
 
 /**
  * The board-sheet body: every variant of one board side by side, each under
- * a small monospace label. Inline styles only — the sheet is chrome around
- * Factory output, never part of it.
+ * a small monospace label. Each section carries its variant's `data-theme`
+ * so themes resolve per section even when they differ across the sheet.
+ * Inline styles only — the sheet is chrome around Factory output, never
+ * part of it.
  */
 export function assembleBoardSheet(
-  sections: ReadonlyArray<{ label: string; html: string }>,
+  sections: ReadonlyArray<{ label: string; html: string; themeSlug: string }>,
 ): string {
   const bodies = sections.map(
-    ({ label, html }) =>
-      `<section><header style="font:12px/2 monospace;color:#666">${label}</header>${html}</section>`,
+    ({ label, html, themeSlug }) =>
+      `<section data-theme="${themeSlug}"><header style="font:12px/2 monospace;color:#666">${label}</header>${html}</section>`,
   )
   return `<div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">${bodies.join("")}</div>`
 }
@@ -88,13 +91,17 @@ export function assembleDocument(
 ): string {
   const styles = assembleStyles(files, themeIds, workspace, componentsFolder)
   const fontLinks = extractFontLinks(files, componentsFolder)
+  // A single-theme document activates its theme on <body>; multi-theme board
+  // sheets leave the body on the :root default and scope per section instead.
+  const slugs = [...new Set(themeIds.map((id) => getThemeSlug(id, workspace)))]
+  const themeAttr = slugs.length === 1 ? ` data-theme="${slugs[0]}"` : ""
   return [
     "<!doctype html>",
     '<html><head><meta charset="utf-8">',
     ...fontLinks,
     `<style>${styles}</style>`,
     "</head>",
-    '<body style="margin:0;padding:24px;background:#f7f7f7">',
+    `<body${themeAttr} style="margin:0;padding:24px;background:#f7f7f7">`,
     bodyHtml,
     "</body>",
     "</html>",

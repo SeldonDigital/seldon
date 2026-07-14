@@ -217,12 +217,15 @@ function exposedActionCases(fixture: Fixture): CaseAction[] {
       type: "set_component_theme",
       payload: {
         boardKey: ComponentId.BUTTON,
-        theme: "theme-material-default",
+        theme: "theme-googleMaterial-default",
       },
     },
     {
       type: "set_node_theme",
-      payload: { nodeId: labelVariantId, theme: "theme-material-default" },
+      payload: {
+        nodeId: labelVariantId,
+        theme: "theme-googleMaterial-default",
+      },
     },
     {
       type: "add_theme_custom_swatch",

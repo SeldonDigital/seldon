@@ -420,7 +420,7 @@ export const SEARCH_EVAL_SET: SearchEvalPair[] = [
   },
   {
     query: "material design look",
-    expected: ["material"],
+    expected: ["googleMaterial"],
   },
   {
     query: "typefaces from google",

@@ -335,12 +335,14 @@ describe("journey: sweep spacing across every button variant", () => {
       .map((m: any) => m.id)
     expect(variantIds.length).toBeGreaterThan(1)
 
-    // 3: the spacing contract (schema-served gate) — real @gap tokens to sweep with.
+    // 3: the spacing contract (schema-served gate) — real @gap tokens exist.
+    // The sweep below uses distinct EXACT values, so it never needs one
+    // token per variant; the gate only proves the schema serves the scale.
     const gapSchema = await t.callOk("get_property_schema", {
       propertyKey: "gap",
     })
     const gapKeys = gapSchema.property.schema.themeKeys.ordinal as string[]
-    expect(gapKeys.length).toBeGreaterThanOrEqual(variantIds.length)
+    expect(gapKeys.length).toBeGreaterThan(0)
 
     // 4: ONE batch over all of them. Exact values, distinct per variant, so
     // neither Core's override dedup nor a catalog-shipped @gap override can

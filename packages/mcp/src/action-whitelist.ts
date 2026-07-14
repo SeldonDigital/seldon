@@ -95,8 +95,6 @@ export const ACTION_EXPOSURE = {
   stubs_remove_media_row: "excluded",
   stubs_set_media_field: "excluded",
   stubs_duplicate_media_row: "excluded",
-  // Deprecated no-op narration channel.
-  transcript_add_message: "excluded",
   // Credentials and ownership are user territory, never model territory.
   set_board_credentials: "excluded",
   set_workspace_owner: "excluded",
@@ -165,6 +163,7 @@ export const ACTION_EXPOSURE = {
   set_node_layer_kind: "tier2",
   reset_variant_to_catalog: "tier2",
   reset_variant_instances: "tier2",
+  reset_component_board: "tier2",
   reset_instance_to_original: "tier2",
   reset_default_variant_to_catalog: "tier2",
 
@@ -181,7 +180,6 @@ export const ACTION_EXPOSURE = {
   remove_theme_custom_swatch: "tier2",
   remove_theme_custom_font: "tier2",
   remove_theme_custom_border: "tier2",
-  remove_theme_custom_background: "tier2",
   remove_theme_custom_gradient: "tier2",
   remove_theme_custom_shadow: "tier2",
   remove_theme_custom_scrollbar: "tier2",
@@ -255,9 +253,7 @@ export function isExposedActionType(
  * `apply_actions`. Single source of the classification wording —
  * `apply_actions` and `get_action_schema` both surface it verbatim.
  */
-export function explainExposure(
-  type: string,
-):
+export function explainExposure(type: string):
   | { exposed: true }
   | {
       exposed: false

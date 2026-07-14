@@ -145,7 +145,7 @@ describe("view_node — format html", () => {
     if (result.renderedScope.kind !== "board") return
     expect(result.renderedScope.variantIds.length).toBeGreaterThan(0)
     expect(result.html).toContain("display:flex")
-    expect((result.html!.match(/<section>/g) ?? []).length).toBe(
+    expect((result.html!.match(/<section data-theme=/g) ?? []).length).toBe(
       result.renderedScope.variantIds.length,
     )
   })
@@ -156,10 +156,10 @@ describe("view_node — theme option (non-mutating)", () => {
     const { ctx, buttonVariantId } = fixture
     const before = ctx.session.requireOpen().workspace
 
-    // Fresh workspaces seed seldon/highContrast/material theme boards; the
-    // material entry is present without any add_theme.
+    // Fresh workspaces seed seldon/highContrast/googleMaterial theme boards;
+    // the googleMaterial entry is present without any add_theme.
     const themeId = getWorkspaceOutline(ctx).themes.find((theme) =>
-      theme.id.includes("material"),
+      theme.id.includes("googleMaterial"),
     )!.id
 
     const result = await viewNode(ctx, {
@@ -168,7 +168,10 @@ describe("view_node — theme option (non-mutating)", () => {
       theme: themeId,
     })
     expect(result.themeIds).toContain(themeId)
-    expect(result.html).toContain("--sdn-material")
+    // Theme variables are attribute-scoped: the body activates the theme and
+    // the concatenated styles must carry that theme's variable block.
+    expect(result.html).toContain('<body data-theme="google-material"')
+    expect(result.html).toContain('[data-theme="google-material"]')
 
     // Non-mutating: the session workspace is whatever apply_actions left it
     // at — viewNode's scratch theme override never leaks into it.

@@ -5,6 +5,7 @@
  * identical code path without one tool module importing another. Throws
  * ToolError; never mutates the session or the on-disk workspace.
  */
+import { getThemeSlug } from "@seldon/factory/export/css/generation/get-theme-slug"
 import { getCssObjectFromProperties } from "@seldon/factory/styles/css-properties/get-css-object-from-properties"
 import type { CSSObject } from "@seldon/factory/styles/css-properties/types"
 import type { StyleGenerationContext } from "@seldon/factory/styles/types"
@@ -260,11 +261,19 @@ export async function renderTarget(
   try {
     if (resolved.kind === "board") {
       const variants = resolved.variantIds.map((id) => workspace.nodes[id]!)
-      const sections: Array<{ label: string; html: string }> = []
+      const sections: Array<{
+        label: string
+        html: string
+        themeSlug: string
+      }> = []
       for (const variant of variants) {
         sections.push({
           label: variant.label,
           html: await renderVariantHtml(workspace, variant),
+          themeSlug: getThemeSlug(
+            resolveThemeId(workspace, variant.id),
+            workspace,
+          ),
         })
       }
       const themeIds = [

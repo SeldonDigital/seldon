@@ -106,7 +106,7 @@ describe("list_catalog", () => {
     expect(result.components["primitive"]).toContain("icon")
     expect(result.components["part"]).toContain("pricingCard")
 
-    expect(result.themes.map((theme) => theme.id)).toContain("material")
+    expect(result.themes.map((theme) => theme.id)).toContain("googleMaterial")
 
     for (const set of result.iconSets) {
       expect(set.iconCount).toBeGreaterThan(0)
@@ -159,7 +159,10 @@ describe("search_catalog — keyword ranking", () => {
       query: "material",
       kind: "theme",
     })
-    expect(themes.results[0]).toMatchObject({ id: "material", kind: "theme" })
+    expect(themes.results[0]).toMatchObject({
+      id: "googleMaterial",
+      kind: "theme",
+    })
 
     const fonts = await searchCatalog(ctx, { query: "google fonts" })
     expect(
@@ -169,7 +172,10 @@ describe("search_catalog — keyword ranking", () => {
 
   it("matches curated synonyms: cta → button", async () => {
     const { ctx } = makeCtx()
-    const { results } = await searchCatalog(ctx, { query: "cta" })
+    // The catalog's CTA part family carries the literal "cta" tag and
+    // outranks the synonym match by design; widen the cut so the test
+    // exercises the expansion itself, not the top-8 horse race.
+    const { results } = await searchCatalog(ctx, { query: "cta", limit: 20 })
     expect(results.some((result) => result.id === "button")).toBe(true)
   })
 
@@ -573,8 +579,8 @@ describe("end-to-end build: pricing card from an empty workspace", () => {
 describe("get_computed_theme", () => {
   it("resolves a stock theme without a workspace", async () => {
     const { ctx } = makeCtx()
-    const { theme } = getComputedThemeTool(ctx, { themeId: "material" })
-    expect(theme.id).toBe("material")
+    const { theme } = getComputedThemeTool(ctx, { themeId: "googleMaterial" })
+    expect(theme.id).toBe("googleMaterial")
     expect(theme.swatch["primary"]).toBeDefined()
     expect(Object.keys(theme.gap).length).toBeGreaterThan(0)
   })
@@ -618,6 +624,6 @@ describe("get_computed_theme", () => {
       getComputedThemeTool(ctx, { themeId: "ghost" }),
     )
     expect(teaching.code).toBe("theme_not_found")
-    expect(teaching.detail?.availableThemeIds).toContain("material")
+    expect(teaching.detail?.availableThemeIds).toContain("googleMaterial")
   })
 })
