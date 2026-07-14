@@ -44,6 +44,14 @@ export type HariStatus = "idle" | "pending" | "error"
 export type TurnStatus = "pending" | "done" | "error" | "stopped"
 
 /**
+ * The reducer-truth result of a turn, independent of the model's reply prose.
+ * `applied` had at least one accepted change, `ineffective` only had edits that
+ * matched nothing, and `none` produced no edit at all. The transcript renders
+ * this so a reply can never read as a success the workspace never took.
+ */
+export type TurnOutcome = "applied" | "ineffective" | "none"
+
+/**
  * One chat turn's structured record. The transcript renders each populated
  * field as its own message block: the prompt, the model's reasoning, the tools
  * it called, the applied changes, the model reply, and any rejection or error.
@@ -59,6 +67,8 @@ export interface HariTurn {
   clamped?: boolean
   toolCalls?: AgentToolCall[]
   reply?: string
+  /** Reducer-truth outcome badge, set apart from the reply so a no-op is visible. */
+  outcome?: TurnOutcome
   changes?: string[]
   /** Deterministic shape fixes applied to the model's values before validation. */
   repairs?: ActionRepair[]
@@ -274,6 +284,12 @@ export function useHari() {
 
         const failed =
           outcome.rejected.length > 0 && outcome.applied.length === 0
+        const turnOutcome: TurnOutcome =
+          outcome.applied.length > 0
+            ? "applied"
+            : outcome.ineffective.length > 0
+              ? "ineffective"
+              : "none"
         const warnings = collectVocabularyWarnings(current, actions)
         useStore.getState().updateTurn(turnId, {
           thinking: debug.thinking,
@@ -281,6 +297,7 @@ export function useHari() {
           clamped: noThink,
           toolCalls: debug.toolCalls,
           reply,
+          outcome: turnOutcome,
           changes: describeChanges(outcome.workspace, outcome),
           repairs: debug.repairs.length > 0 ? debug.repairs : undefined,
           warnings: warnings.length > 0 ? warnings : undefined,

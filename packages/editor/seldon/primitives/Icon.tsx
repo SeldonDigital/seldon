@@ -51,7 +51,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-minus"
     | "material-arrowUpward"
     | "material-checkCircle"
-    | "seldon-componentDefault"
     | "material-error"
     | "material-robot"
     | "seldon-reset"
@@ -128,6 +127,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-iconInput"
     | "seldon-inputType"
     | "seldon-retry"
+    | "seldon-componentDefault"
     | "seldon-componentVariant"
     | "seldon-icon"
     | "seldon-input"
@@ -583,7 +583,6 @@ const iconMap = {
   "seldon-minus": Icons.IconSeldonMinus,
   "material-arrowUpward": Icons.IconMaterialArrowUpward,
   "material-checkCircle": Icons.IconMaterialCheckCircle,
-  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
   "material-error": Icons.IconMaterialError,
   "material-robot": Icons.IconMaterialRobot,
   "seldon-reset": Icons.IconSeldonReset,
@@ -660,6 +659,7 @@ const iconMap = {
   "seldon-iconInput": Icons.IconSeldonIconInput,
   "seldon-inputType": Icons.IconSeldonInputType,
   "seldon-retry": Icons.IconSeldonRetry,
+  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
   "seldon-componentVariant": Icons.IconSeldonComponentVariant,
   "seldon-icon": Icons.IconSeldonIcon,
   "seldon-input": Icons.IconSeldonInput,

@@ -21,8 +21,11 @@ import {
 } from "../hooks/use-board-state-store"
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
-import { CHILD_OVERRIDE_COLOR } from "../canvas.bespoke"
-import { BoardStateFrame } from "./BoardStateFrame.bespoke"
+import { Frame } from "@seldon/components/frames/Frame"
+
+// bespoke: marks board states whose override lives only on a child. Remove once
+// a generated View owns this canvas overlay treatment.
+const CHILD_OVERRIDE_COLOR = "var(--sdn-swatch-punch)"
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -182,12 +185,14 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     testId: "board-state-add",
   })
 
+  // Chrome wrapper for the on-canvas state switcher. Re-scopes the switcher to
+  // the live chrome theme and mode via data-theme/data-mode.
   return (
-    <BoardStateFrame
+    <Frame
       style={wrapperStyle}
       onClick={stopClickPropagation}
-      dataTheme={chromeTheme}
-      dataMode={resolvedMode}
+      data-theme={chromeTheme}
+      data-mode={resolvedMode}
     >
       <VMMenu
         items={items}
@@ -201,6 +206,6 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
           />
         )}
       />
-    </BoardStateFrame>
+    </Frame>
   )
 }

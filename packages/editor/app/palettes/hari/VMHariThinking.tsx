@@ -1,15 +1,12 @@
-// BESPOKE-VIEW: collapsible reasoning block for the Hari transcript. The header
-// toggle collapses the reasoning to a single row or expands it to its full
-// height. Each block owns its own expand state, so toggling one leaves the
-// others untouched; it defaults open. The header reads "Thinking..." while the
-// model reasons, then "Thought for Ns" once the phase completes. Expanded text
-// keeps the model's own line breaks via pre-wrap; the generated MessageThinking
-// supplies the frame, label, and toggle button.
+// View-model for the reasoning block in the Hari transcript. The generated
+// MessageThinking supplies the frame, label, and toggle button; this adapter
+// owns the runtime pieces a static schema cannot: the expand/collapse state,
+// the dynamic header label, and the collapsed/expanded body text treatment.
 import { type CSSProperties, useState } from "react"
 import { MessageThinking } from "@seldon/components/elements/MessageThinking"
 import type { IconProps } from "@seldon/components/primitives/Icon"
 
-interface HariThinkingProps {
+interface VMHariThinkingProps {
   text: string
   /** Set once thinking completes; drives the header label and the elapsed time. */
   durationMs?: number
@@ -18,7 +15,11 @@ interface HariThinkingProps {
 }
 
 /** Renders the reasoning block with a header toggle that shows or hides it. */
-export function HariThinking({ text, durationMs, clamped }: HariThinkingProps) {
+export function VMHariThinking({
+  text,
+  durationMs,
+  clamped,
+}: VMHariThinkingProps) {
   const [open, setOpen] = useState(true)
 
   const label =

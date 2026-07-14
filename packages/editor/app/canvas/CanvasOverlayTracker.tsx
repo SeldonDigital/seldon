@@ -33,7 +33,6 @@ import {
   resolveOutlineSurfaceForBoard,
   resolveOutlineSurfaceForNode,
 } from "../tracking/helpers/resolve-outline-surface"
-import { INSERT_HOVER_ACCENT } from "./canvas.bespoke"
 import {
   getCanvasSelectionElements,
   getScopedSelectionElement,
@@ -43,8 +42,9 @@ import {
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30
 
-/** Seldon accent token used for the insert component tool hover box. */
-const ACCENT_HOVER_COLOR = INSERT_HOVER_ACCENT
+// bespoke: Seldon accent token used for the insert component tool hover box.
+// Remove once a generated View owns this canvas overlay treatment.
+const ACCENT_HOVER_COLOR = "var(--sdn-swatch-accent)"
 
 /**
  * Hover outline colors for the insert component tool. A node that can accept

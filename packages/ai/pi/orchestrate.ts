@@ -7,6 +7,13 @@ import type {
 import { buildTurnContext } from "./editor-context"
 import { createSeldonSession, createWarmSession } from "./session"
 
+/**
+ * Corrective follow-up sent when a turn ends with no accepted edit. It forces the
+ * model to either make a real change or state plainly that it made none, so the
+ * reply cannot assert a success the reducer never applied.
+ */
+const VERIFICATION_PROMPT = `You ended the turn without any accepted edit. If the request asked to change the design, call the matching edit tool now and let it be accepted before you reply. If no change was intended, or you are waiting on the user to confirm or disambiguate, say so plainly and make no tool call. Do not describe a change as done unless an edit tool accepted it.`
+
 /** Renders the prior conversation as a compact block for the fresh session. */
 function historyBlock(history: ChatToActionsInput["history"]): string {
   if (!history || history.length === 0) return ""
@@ -94,6 +101,13 @@ export async function chatToActionsPi(
 
   const started = Date.now()
   await session.prompt(prompt)
+  // The model sometimes replies as if it changed the design without a single
+  // accepted edit, which reads as a false success. When the turn produced no
+  // action, prompt once more to force an accepted edit or an explicit reason for
+  // making none, so the reply can no longer claim a change that never happened.
+  if (state.actions.length === 0 && !signal?.aborted) {
+    await session.prompt(VERIFICATION_PROMPT)
+  }
   const totalMs = Date.now() - started
   const firstTokenMs =
     firstEventAt !== undefined ? firstEventAt - started : undefined

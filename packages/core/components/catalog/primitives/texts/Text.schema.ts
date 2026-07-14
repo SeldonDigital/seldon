@@ -286,26 +286,6 @@ export const schema = {
       },
     },
     {
-      id: "label",
-      label: "Label",
-      intent: "Associates readable text with a form control for accessibility.",
-      overrides: {
-        htmlElement: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.HtmlElement.LABEL,
-        },
-        content: { type: Sdn.ValueType.EXACT, value: "Label" },
-        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-        font: {
-          preset: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@font.label",
-          },
-        },
-        wrapText: { type: Sdn.ValueType.EXACT, value: false },
-      },
-    },
-    {
       id: "description",
       label: "Description",
       intent:

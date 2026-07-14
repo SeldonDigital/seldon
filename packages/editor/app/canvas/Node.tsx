@@ -37,8 +37,11 @@ import {
 } from "@lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { CanvasHtmlAttributes, ComponentRenderer } from "./ComponentRenderer"
-import { REPEAT_OUTLINE } from "./canvas.bespoke"
 import { getPropertyHtmlAttributes } from "./property-html-attributes"
+
+// bespoke: dashed outline marking repeat echo copies. Remove once a generated
+// View owns this canvas overlay treatment.
+const REPEAT_OUTLINE = "1px dashed var(--sdn-swatch-primary)"
 
 export type CanvasNodeProps = {
   nodeId: VariantId | InstanceId

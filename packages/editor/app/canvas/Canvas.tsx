@@ -19,8 +19,8 @@ import { usePanel } from "@lib/hooks/use-panel"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { Frame } from "@seldon/components/frames/Frame"
 import { CanvasTracking } from "../tracking/CanvasTracking"
-import { CanvasSurface } from "./CanvasSurface.bespoke"
 import {
   TRANSFORM_WRAPPER_INITIAL_POSITION_X,
   TRANSFORM_WRAPPER_INITIAL_POSITION_Y,
@@ -131,10 +131,13 @@ export const Canvas = () => {
 
   const handleMouseMove = activePanel ? undefined : onMouseMove
 
+  // Canvas root surface. Carries the canvas id and pins the chrome theme via
+  // data-theme so board rendering reads authored swatch values.
   return (
-    <CanvasSurface
+    <Frame
+      id="canvas"
       style={canvasStyle}
-      dataTheme={DEFAULT_CHROME_THEME}
+      data-theme={DEFAULT_CHROME_THEME}
       onClick={handleCanvasClick}
       onMouseMove={handleMouseMove}
     >
@@ -142,7 +145,7 @@ export const Canvas = () => {
       <TransformWrapper>
         <CanvasContainer />
       </TransformWrapper>
-    </CanvasSurface>
+    </Frame>
   )
 }
 

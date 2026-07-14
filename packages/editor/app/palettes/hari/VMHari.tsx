@@ -25,7 +25,7 @@ import { type HariStatus, type HariTurn, useHari } from "@lib/hooks/use-ai-chat"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
-import { HariTranscript } from "./HariTranscript.bespoke"
+import { VMHariTranscript } from "./VMHariTranscript"
 import "./hari.css"
 
 const HARI_INITIAL_WIDTH = 420
@@ -268,7 +268,7 @@ function Hari({
   )
 
   const transcript = useMemo<ReactNode>(
-    () => <HariTranscript turns={turns} onRetry={send} />,
+    () => <VMHariTranscript turns={turns} onRetry={send} />,
     [turns, send],
   )
 

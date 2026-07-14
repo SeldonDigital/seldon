@@ -1,4 +1,5 @@
 // BESPOKE-VIEW: hand-authored selectable preview cell for resource boards.
+import { Frame } from "@seldon/components/frames/Frame"
 import { CSSProperties, ReactNode } from "react"
 
 interface PreviewItemWrapperProps {
@@ -28,7 +29,7 @@ export function PreviewItemWrapper({
   children,
 }: PreviewItemWrapperProps) {
   return (
-    <div
+    <Frame
       title={title}
       data-canvas-selection-id={canvasSelectionId}
       data-selection-id={selectionId}
@@ -36,6 +37,6 @@ export function PreviewItemWrapper({
       style={wrapperStyle}
     >
       {children}
-    </div>
+    </Frame>
   )
 }

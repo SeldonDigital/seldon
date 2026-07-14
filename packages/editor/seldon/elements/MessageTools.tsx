@@ -11,7 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { Frame, FrameProps } from "../frames/Frame"
+import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import {
   TextDescription,
@@ -24,12 +24,8 @@ export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
-  frame?: FrameProps | null
   icon?: IconProps | null
   textDescription?: TextDescriptionProps | null
-  frame2?: FrameProps | null
-  icon2?: IconProps | null
-  textDescription2?: TextDescriptionProps | null
 }
 
 /*****
@@ -37,27 +33,21 @@ export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
- * Type: Inline
+ * Type: Custom
  *
  * @example
  * ```tsx
  * <MessageTools
  *   aria-hidden="false"
- *   frame="{}"
  *   icon="material-star"
  *   textDescription="{}"
- *   frame2="{}"
  * />
  * ```
  *****/
 export function MessageTools({
   className = "",
-  frame = sdn.frame,
   icon,
   textDescription,
-  frame2 = sdn.frame2,
-  icon2,
-  textDescription2,
   children,
   seldonRefs,
   ...props
@@ -65,16 +55,6 @@ export function MessageTools({
   const messageToolsClassName = combineClassNames(
     "sdn-message-tools",
     className,
-  )
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
   )
   const iconProps = applyRef(
     seldonRefs,
@@ -99,42 +79,6 @@ export function MessageTools({
           ),
         },
   )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const textDescription2Props = applyRef(
-    seldonRefs,
-    textDescription2 === null
-      ? null
-      : {
-          ...sdn.textDescription2,
-          ...textDescription2,
-          className: combineClassNames(
-            sdn.textDescription2?.className,
-            textDescription2?.className,
-          ),
-        },
-  )
 
   return (
     <Frame
@@ -146,18 +90,10 @@ export function MessageTools({
         children
       ) : (
         <>
-          <Frame {...frameProps}>
-            {icon && iconProps && <Icon {...iconProps} />}
-            {textDescription && textDescriptionProps && (
-              <TextDescription {...textDescriptionProps} />
-            )}
-          </Frame>
-          <Frame {...frame2Props}>
-            {icon2 && icon2Props && <Icon {...icon2Props} />}
-            {textDescription2 && textDescription2Props && (
-              <TextDescription {...textDescription2Props} />
-            )}
-          </Frame>
+          {icon && iconProps && <Icon {...iconProps} />}
+          {textDescription && textDescriptionProps && (
+            <TextDescription {...textDescriptionProps} />
+          )}
         </>
       )}
     </Frame>
@@ -170,26 +106,10 @@ export function MessageTools({
 const sdn: MessageToolsProps = {
   "aria-hidden": "false",
   className: "sdn-message-tools sdn-message",
-  frame: {
-    wrapperElement: "div",
-    "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--sv6r",
-  },
   icon: {
     className: "sdn-icon sdn-icon--9ouj",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--hqun",
-  },
-  frame2: {
-    wrapperElement: "div",
-    "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--sv6r",
-  },
-  icon2: {
-    className: "sdn-icon sdn-icon--9ouj",
-  },
-  textDescription2: {
     className: "sdn-text sdn-text-description--hqun",
   },
 }

@@ -21,7 +21,6 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
 import { StyleTag } from "../StyleTag.bespoke"
-import { BoardCanvasFrame } from "./BoardCanvasFrame.bespoke"
 import { BoardStateSwitcher } from "./BoardStateSwitcher"
 
 export type ComponentBoardProps = {
@@ -153,9 +152,9 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
       </CssPortal>
       <Frame style={boardWrapperStyle}>
         <BoardStateSwitcher boardKey={stateBoardKey} />
-        <BoardCanvasFrame
+        <Frame
           ref={boardRootRef}
-          boardId={boardKey}
+          data-board-id={boardKey}
           className={className}
           style={rootStyle}
         >
@@ -178,7 +177,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
               )
             }),
           )}
-        </BoardCanvasFrame>
+        </Frame>
       </Frame>
     </>
   )
