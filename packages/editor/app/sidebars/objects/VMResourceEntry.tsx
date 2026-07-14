@@ -14,7 +14,7 @@ import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { RowSelectionTarget } from "./RowSelectionTarget.bespoke"
+import { VMRowSelectionTarget } from "./VMRowSelectionTarget"
 import type { ResourceRowConfig } from "./helpers/resource-row-config"
 
 type VMResourceEntryProps = {
@@ -104,7 +104,7 @@ export function VMResourceEntry({
 
   return (
     <>
-      <RowSelectionTarget
+      <VMRowSelectionTarget
         ref={rowRef}
         selectionId={entryId}
         selectionKind={config.selectionKind}
@@ -121,7 +121,7 @@ export function VMResourceEntry({
           data-resource-kind={config.kind}
           data-active={isActive}
         />
-      </RowSelectionTarget>
+      </VMRowSelectionTarget>
       {actionsMenu.menu}
     </>
   )

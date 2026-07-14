@@ -31,7 +31,6 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { BoardSection } from "../helpers/get-board-sections"
 import { VMBoard } from "./VMBoard"
 import { VMSection } from "./VMSection"
-import { OBJECTS_TREE_GAP } from "./objects.bespoke"
 
 /**
  * View-model for the objects sidebar. Feeds the generated `SidebarObjects`
@@ -203,6 +202,6 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     minWidth: 0,
     padding: "var(--sdn-paddings-tight) 0 var(--sdn-paddings-cozy) 0",
-    gap: OBJECTS_TREE_GAP,
+    gap: "var(--sdn-gaps-tight)",
   },
 }

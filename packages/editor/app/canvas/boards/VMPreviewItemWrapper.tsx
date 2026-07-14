@@ -1,8 +1,7 @@
-// BESPOKE-VIEW: hand-authored selectable preview cell for resource boards.
 import { CSSProperties, ReactNode } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
 
-interface PreviewItemWrapperProps {
+interface VMPreviewItemWrapperProps {
   canvasSelectionId: string
   selectionId: string
   selectionKind: string
@@ -21,13 +20,13 @@ const wrapperStyle: CSSProperties = {
  * Selectable preview cell for a resource board (theme, icon, font specimen).
  * Carries both canvas and sidebar selection ids so the shared bridges resolve.
  */
-export function PreviewItemWrapper({
+export function VMPreviewItemWrapper({
   canvasSelectionId,
   selectionId,
   selectionKind,
   title,
   children,
-}: PreviewItemWrapperProps) {
+}: VMPreviewItemWrapperProps) {
   return (
     <Frame
       title={title}

@@ -1,8 +1,8 @@
-// BESPOKE-VIEW: stamps selection data attributes the selection resolver and
-// canvas tracking bridges read. Renders no styling of its own.
 import { ReactNode, Ref } from "react"
 
-interface RowSelectionTargetProps {
+import { Frame } from "@seldon/components/frames/Frame"
+
+interface VMRowSelectionTargetProps {
   selectionId: string
   selectionKind: string
   /**
@@ -11,7 +11,7 @@ interface RowSelectionTargetProps {
    * resolver can tell apart copies of a child id reused across variants.
    */
   selectionRootId?: string
-  ref?: Ref<HTMLDivElement>
+  ref?: Ref<HTMLElement>
   children: ReactNode
 }
 
@@ -20,15 +20,15 @@ interface RowSelectionTargetProps {
  * data attributes that the selection resolver and canvas tracking bridges
  * read; renders no styling of its own.
  */
-export function RowSelectionTarget({
+export function VMRowSelectionTarget({
   selectionId,
   selectionKind,
   selectionRootId,
   ref,
   children,
-}: RowSelectionTargetProps) {
+}: VMRowSelectionTargetProps) {
   return (
-    <div
+    <Frame
       ref={ref}
       tabIndex={-1}
       data-selection-id={selectionId}
@@ -36,6 +36,6 @@ export function RowSelectionTarget({
       data-selection-root-id={selectionRootId}
     >
       {children}
-    </div>
+    </Frame>
   )
 }

@@ -18,7 +18,7 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { Frame } from "@seldon/components/frames/Frame"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { RowSelectionTarget } from "./RowSelectionTarget.bespoke"
+import { VMRowSelectionTarget } from "./VMRowSelectionTarget"
 
 const NODE_SELECTION_KIND = "node"
 
@@ -275,7 +275,7 @@ const VMNodeInner = function VMNodeInner({
 
   return (
     <>
-      <RowSelectionTarget
+      <VMRowSelectionTarget
         ref={ref}
         selectionId={node.id}
         selectionKind={NODE_SELECTION_KIND}
@@ -306,7 +306,7 @@ const VMNodeInner = function VMNodeInner({
             data-active={isNodeActive}
           />
         </SidebarTracking>
-      </RowSelectionTarget>
+      </VMRowSelectionTarget>
       {actionsMenu.menu}
 
       {childrenSection}

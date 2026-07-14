@@ -14,7 +14,6 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
-import { CANVAS_INSERT_ACCENT } from "./insert-indicators.bespoke"
 
 type CanvasIndicatorProps = {
   placement: Placement
@@ -77,7 +76,7 @@ export function CanvasIndicator({
     height: "100%",
     zIndex: 10,
     position: "absolute",
-    backgroundColor: CANVAS_INSERT_ACCENT,
+    backgroundColor: "var(--sdn-swatch-accent)",
     opacity: 0.5,
     ...(orientation === "horizontal" && {
       borderRadius: "1.5px 1.5px 0 0",

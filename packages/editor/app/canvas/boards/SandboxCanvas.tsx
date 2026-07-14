@@ -9,7 +9,7 @@ import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { CanvasNode } from "../Node"
-import { PlaceholderBox } from "./PlaceholderBox"
+import { VMPlaceholderBox } from "./VMPlaceholderBox"
 
 export type SandboxCanvasProps = {
   board: Board
@@ -35,12 +35,12 @@ export function SandboxCanvas({ board }: SandboxCanvasProps) {
 
   if (playground.variants.length === 0) {
     return (
-      <PlaceholderBox
+      <VMPlaceholderBox
         boardId={playgroundKey}
         className={`board-${playgroundKey}`}
       >
         <TextLabel htmlElement="span">No Sandboxes</TextLabel>
-      </PlaceholderBox>
+      </VMPlaceholderBox>
     )
   }
 

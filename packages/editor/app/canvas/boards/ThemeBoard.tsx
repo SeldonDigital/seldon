@@ -46,7 +46,7 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
 import { BoardPreviewNode } from "./BoardPreviewNode"
-import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
+import { VMPreviewItemWrapper } from "./VMPreviewItemWrapper"
 
 export type ThemeBoardProps = {
   board: Board
@@ -428,7 +428,7 @@ function ThemeVariantPreview({
   }
 
   return (
-    <PreviewItemWrapper
+    <VMPreviewItemWrapper
       canvasSelectionId={variantEntryId}
       selectionId={variantEntryId}
       selectionKind="theme"
@@ -447,6 +447,6 @@ function ThemeVariantPreview({
         onClose={closeMenu}
         items={menuItems}
       />
-    </PreviewItemWrapper>
+    </VMPreviewItemWrapper>
   )
 }

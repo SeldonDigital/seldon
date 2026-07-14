@@ -13,7 +13,7 @@ import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable"
-import { RowSelectionTarget } from "./RowSelectionTarget.bespoke"
+import { VMRowSelectionTarget } from "./VMRowSelectionTarget"
 import { VMNode } from "./VMNode"
 import { VMResourceEntry } from "./VMResourceEntry"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
@@ -190,7 +190,7 @@ function VMBoardRow({
 
   return (
     <>
-      <RowSelectionTarget
+      <VMRowSelectionTarget
         ref={rowRef}
         selectionId={boardKey}
         selectionKind={BOARD_SELECTION_KIND}
@@ -208,7 +208,7 @@ function VMBoardRow({
           data-componentid={dataComponentId}
           data-active={boardIsActive}
         />
-      </RowSelectionTarget>
+      </VMRowSelectionTarget>
       {actionsMenu.menu}
 
       <FramerExpandable isExpanded={isExpanded}>

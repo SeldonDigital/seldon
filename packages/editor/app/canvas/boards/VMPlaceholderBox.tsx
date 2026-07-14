@@ -1,9 +1,7 @@
-// BESPOKE-VIEW: hand-authored centered placeholder board for boards with no
-// real preview yet.
 import { CSSProperties, ReactNode } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
 
-interface PlaceholderBoxProps {
+interface VMPlaceholderBoxProps {
   boardId: string
   className?: string
   children: ReactNode
@@ -13,22 +11,17 @@ const placeholderStyle: CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  minHeight: "200px",
   width: "100%",
 }
 
 /** Centered placeholder board used while a board kind has no real preview. */
-export function PlaceholderBox({
+export function VMPlaceholderBox({
   boardId,
   className,
   children,
-}: PlaceholderBoxProps) {
+}: VMPlaceholderBoxProps) {
   return (
-    <Frame
-      data-board-id={boardId}
-      className={className}
-      style={placeholderStyle}
-    >
+    <Frame data-board-id={boardId} className={className} style={placeholderStyle}>
       {children}
     </Frame>
   )

@@ -21,7 +21,7 @@ import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
-import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
+import { VMPreviewItemWrapper } from "./VMPreviewItemWrapper"
 import { injectBoardBackground } from "./inject-board-background"
 
 export type IconSetBoardProps = {
@@ -193,7 +193,7 @@ function IconPreview({
   }
 
   return (
-    <PreviewItemWrapper
+    <VMPreviewItemWrapper
       title={label}
       canvasSelectionId={canvasSelectionId(resourceItemKey, entryId)}
       selectionId={resourceItemKey}
@@ -205,6 +205,6 @@ function IconPreview({
         scope={scope}
         isRoot
       />
-    </PreviewItemWrapper>
+    </VMPreviewItemWrapper>
   )
 }
