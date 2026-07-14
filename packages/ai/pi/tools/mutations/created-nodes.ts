@@ -13,15 +13,13 @@ function compositionRoots(workspace: Workspace): ComponentTreeRef[] {
   return roots
 }
 
-/** Immediate child node ids of a node, read from the variant trees. */
-function childRefIds(workspace: Workspace, nodeId: string): string[] {
-  let children: string[] = []
+/** One pass over the variant trees: node id -> immediate child node ids. */
+function childrenIndex(workspace: Workspace): Map<string, string[]> {
+  const index = new Map<string, string[]>()
   walkBoardTreeRefs(compositionRoots(workspace), (ref) => {
-    if (ref.id !== nodeId) return
-    children = (ref.children ?? []).map((child) => child.id)
-    return true
+    index.set(ref.id, (ref.children ?? []).map((child) => child.id))
   })
-  return children
+  return index
 }
 
 /** Node ids present in `after` but not in `before`. */
@@ -53,39 +51,52 @@ function topCreatedNodeIds(before: Workspace, after: Workspace): string[] {
   return [...tops]
 }
 
-/** One `id "label" [level] — children: ...` line for a created node. */
-function summarizeNode(workspace: Workspace, id: string): string {
+/** How many levels of the created subtree to print, and the total line cap. */
+const MAX_DEPTH = 3
+const MAX_LINES = 60
+
+/** Appends one indented `id "label" [level]` line per node down to MAX_DEPTH. */
+function summarizeSubtree(
+  workspace: Workspace,
+  index: Map<string, string[]>,
+  id: string,
+  depth: number,
+  lines: string[],
+): void {
+  if (lines.length >= MAX_LINES) return
   const node = workspace.nodes?.[id]
   const label = node?.label ? ` "${node.label}"` : ""
   const level = node?.level ? ` [${node.level}]` : ""
-  const childIds = childRefIds(workspace, id)
-  const children = childIds
-    .map((childId) => {
-      const childLabel = workspace.nodes?.[childId]?.label
-      return childLabel ? `${childId} "${childLabel}"` : childId
-    })
-    .join(", ")
-  const childText = childIds.length > 0 ? ` — children: ${children}` : ""
-  return `${id}${label}${level}${childText}`
+  lines.push(`${"  ".repeat(depth)}${id}${label}${level}`)
+  if (depth >= MAX_DEPTH) return
+  for (const childId of index.get(id) ?? []) {
+    summarizeSubtree(workspace, index, childId, depth + 1, lines)
+  }
 }
 
-/** New board keys and created subtree roots with a one-level child summary, or "" when nothing was created. */
+/**
+ * New board keys and the created subtree roots printed a few levels deep, so the
+ * model can target a nested node it just created without a drill-down. Returns ""
+ * when nothing was created.
+ */
 function describeCreated(before: Workspace, after: Workspace): string {
   const lines: string[] = []
   const boards = newBoardKeys(before, after)
   if (boards.length > 0) lines.push(`New board: ${boards.join(", ")}.`)
+  const index = childrenIndex(after)
   for (const id of topCreatedNodeIds(before, after)) {
-    lines.push(summarizeNode(after, id))
+    summarizeSubtree(after, index, id, 0, lines)
   }
   return lines.join("\n")
 }
 
 /**
- * Appends the created board key and node id, plus a one-level child summary, to
- * a create tool's result so the model can keep editing the new node in the same
- * turn instead of stopping to ask. Because the caller adopts the working copy
- * directly, these ids are stable and a follow-on edit lands on them. Returns the
- * bare message when the action created nothing.
+ * Appends the created board key and an indented tree of the created subtree,
+ * a few levels deep, to a create tool's result so the model can target a nested
+ * node it just created and keep editing in the same turn instead of stopping to
+ * ask. Because the caller adopts the working copy directly, these ids are stable
+ * and a follow-on edit lands on them. Returns the bare message when the action
+ * created nothing.
  */
 export function withCreatedIdentity(
   before: Workspace,
@@ -94,5 +105,5 @@ export function withCreatedIdentity(
 ): string {
   const created = describeCreated(before, after)
   if (!created) return message
-  return `${message}\n${created}\nUse these ids to finish any remaining edits from the request in this same turn. Do not stop to ask when you can continue.`
+  return `${message}\nCreated (indentation shows nesting):\n${created}\nThese ids are stable. Use them to finish any remaining edits from the request in this same turn. If a node you need is deeper than shown, call describe_node on the lowest id to expand it. Do not stop to ask when you can continue.`
 }

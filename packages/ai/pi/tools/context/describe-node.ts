@@ -5,14 +5,11 @@ import {
 import { Type } from "typebox"
 
 import { describeNodeSection } from "../../../prompt/context-sections/describe-node"
-import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
 /** Returns a shallow view of one node: identity, parent, children, set properties. */
-export function createDescribeNodeTool(
-  resolved: ResolvedContext,
-): ToolDefinition {
-  const { workspace } = resolved
+export function createDescribeNodeTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "describe_node",
     label: "Describe Node",
@@ -26,7 +23,7 @@ export function createDescribeNodeTool(
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(
-          describeNodeSection(workspace, params.nodeId),
+          describeNodeSection(state.workspace, params.nodeId),
           `No node found for id "${params.nodeId}".`,
         ),
       ),

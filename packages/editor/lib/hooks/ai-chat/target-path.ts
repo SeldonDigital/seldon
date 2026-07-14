@@ -1,3 +1,4 @@
+import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/components/get-node-parent-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type { Workspace } from "@seldon/core/workspace/types"
@@ -17,19 +18,21 @@ function segmentLabel(workspace: Workspace, id: string): string {
   return catalogId ? capitalize(catalogId) : id
 }
 
-/**
- * The ancestry path to a target as `label/label/label`, root first. A board key
- * resolves to its label, and an unknown id passes through, so every target still
- * reads as one line even when it is not a node.
- */
-export function targetPath(
-  workspace: Workspace,
-  id: string | undefined,
-): string {
-  if (!id) return "workspace"
-  if (workspace.boards?.[id]) return workspace.boards[id]!.label ?? id
-  if (!workspace.nodes?.[id]) return id
+/** Label of the board whose variant list references the entry id, if any. */
+function entryBoardLabel(workspace: Workspace, id: string): string | undefined {
+  for (const board of Object.values(workspace.boards)) {
+    const variants = board.variants as ReadonlyArray<{ id: string }>
+    if (variants.some((ref) => ref.id === id)) return board.label
+  }
+  return undefined
+}
 
+/**
+ * The composition ancestry for an instance, root first, as
+ * `Variant/.../.../Instance`. Climbs the composition parents until the variant
+ * root, which has no parent, so the path always starts at the owning variant.
+ */
+function instancePath(workspace: Workspace, id: string): string {
   const segments: string[] = []
   const seen = new Set<string>()
   let currentId: string | undefined = id
@@ -40,4 +43,45 @@ export function targetPath(
       getImmediateParentIdInWorkspace(workspace, currentId) ?? undefined
   }
   return segments.join("/")
+}
+
+/**
+ * The outcome path to a change target, root first, chosen by what the target is:
+ *
+ * - Board add or remove: `Workspace/Board`.
+ * - Default or user variant: `Board/Variant`.
+ * - Instance: `Variant/.../.../Instance`.
+ * - Theme, font collection, icon set, or media entry: `Board/Variant`.
+ *
+ * An unknown id passes through, so every target still reads as one line.
+ */
+export function targetPath(
+  workspace: Workspace,
+  id: string | undefined,
+): string {
+  const workspaceLabel = workspace.metadata?.label || "Untitled"
+  if (!id) return workspaceLabel
+
+  const board = workspace.boards?.[id]
+  if (board) return `${workspaceLabel}/${board.label ?? id}`
+
+  const node = workspace.nodes?.[id]
+  if (node) {
+    if (node.type === "instance") return instancePath(workspace, id)
+    const ownerLabel = getBoardByNodeId(workspace, id)?.label
+    return ownerLabel ? `${ownerLabel}/${node.label}` : node.label
+  }
+
+  const entry =
+    workspace.themes?.[id] ??
+    workspace["font-collections"]?.[id] ??
+    workspace["icon-sets"]?.[id] ??
+    workspace.media?.[id]
+  if (entry) {
+    const entryLabel = typeof entry.label === "string" ? entry.label : id
+    const ownerLabel = entryBoardLabel(workspace, id)
+    return ownerLabel ? `${ownerLabel}/${entryLabel}` : entryLabel
+  }
+
+  return id
 }

@@ -7,6 +7,7 @@ import { Type } from "typebox"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import type { PiTurnState } from "../turn-state"
+import { resolveCatalogId } from "./catalog-ids"
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
 
@@ -29,16 +30,20 @@ export function createAddComponentTool(state: PiTurnState): ToolDefinition {
       }),
     }),
     execute: async (_id, params) => {
-      if (state.workspace.boards[params.catalogId]) {
+      const resolved = resolveCatalogId(params.catalogId)
+      if (!resolved.id) return textResult(resolved.message ?? "Unknown catalog id.")
+      const catalogId = resolved.id
+      if (state.workspace.boards[catalogId]) {
         return textResult(
-          `Component "${params.catalogId}" is already in the workspace. Select its board, or use insert_component to place an instance of it under a parent node.`,
+          `Component "${catalogId}" is already in the workspace. Select its board, or use insert_component to place an instance of it under a parent node.`,
         )
       }
       const before = state.workspace
-      const message = commit(state, {
+      const applied = commit(state, {
         type: "add_component",
-        payload: { boardKey: params.catalogId },
+        payload: { boardKey: catalogId },
       } as WorkspaceAction)
+      const message = resolved.note ? `${resolved.note}\n${applied}` : applied
       return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })

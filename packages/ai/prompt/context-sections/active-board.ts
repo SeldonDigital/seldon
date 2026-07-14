@@ -1,3 +1,4 @@
+import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type {
@@ -13,8 +14,10 @@ import { nodeStringsSummary } from "./node-strings"
 /**
  * Every workspace action targets a node by id, so the model can only act on ids
  * it has seen. This serializes a variant subtree into indented lines that pair
- * each id with its level and resolved catalog id, the exact handle the model
- * needs to map a node to its property vocabulary. It lives here because the
+ * each id with its level, resolved catalog id, and node type (default, variant,
+ * or instance). For an instance it also prints its source id, the node a
+ * scope-all edit writes and the handle that tells title-variant nodes apart from
+ * label-variant nodes that share the same catalog id. It lives here because the
  * active-board section is its only caller: the tree it prints and the id set it
  * gathers are two views of the same walk.
  */
@@ -32,14 +35,24 @@ function walkTree(
     if (node) {
       visited.push(node)
       const catalogId = getNodeCatalogId(node, workspace)
-      const kind = catalogId ? `${node.level} ${catalogId}` : node.level
+      const kind = catalogId
+        ? `${node.level} ${catalogId} ${node.type}`
+        : `${node.level} ${node.type}`
       const label = node.label ? ` label="${node.label}"` : ""
       const stateKeys = node.states ? Object.keys(node.states) : []
       const states =
         stateKeys.length > 0 ? ` states=[${stateKeys.join(", ")}]` : ""
+      const sourceId = getSourceNodeId(workspace, ref.id)
+      const sourceLabel = workspace.nodes[sourceId]?.label
+      const source =
+        sourceId !== ref.id
+          ? ` src=${sourceId}${sourceLabel ? ` "${sourceLabel}"` : ""}`
+          : ""
       const summary = nodeStringsSummary(workspace, ref.id)
       const values = summary ? ` {${summary}}` : ""
-      lines.push(`${indent}- ${ref.id} [${kind}]${label}${states}${values}`)
+      lines.push(
+        `${indent}- ${ref.id} [${kind}]${label}${states}${source}${values}`,
+      )
     } else {
       lines.push(`${indent}- ${ref.id} (no node entry)`)
     }

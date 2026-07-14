@@ -54,7 +54,7 @@ function buildTranscript(
     if (turn.reply) blocks.push(assistantBlock(turn))
     if (turn.status === "pending") blocks.push(statusBlock(turn))
     if (turn.status === "stopped") blocks.push(stoppedBlock(turn))
-    if (turn.error || (turn.rejected && turn.rejected.length > 0)) {
+    if (turn.error || turn.status === "error") {
       blocks.push(errorBlock(turn, onRetry))
     }
   }
@@ -189,8 +189,10 @@ const preWrapStyle: CSSProperties = { whiteSpace: "pre-wrap" }
 
 function assistantBlock(turn: HariTurn): ReactNode {
   const reply = turn.reply ?? ""
+  const streaming = turn.status === "pending"
+  const className = streaming ? "hari-assistant-streaming" : undefined
   return (
-    <MessageAssistant key={`${turn.id}-assistant`}>
+    <MessageAssistant key={`${turn.id}-assistant`} className={className}>
       <HariMarkdown content={reply} />
     </MessageAssistant>
   )

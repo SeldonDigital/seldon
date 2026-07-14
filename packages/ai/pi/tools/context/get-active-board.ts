@@ -6,13 +6,15 @@ import { Type } from "typebox"
 
 import { activeBoardSection } from "../../../prompt/context-sections/active-board"
 import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { textResult } from "./shared"
 
 /** Returns the active board's variant node trees with ids, levels, catalog ids. */
 export function createGetActiveBoardTool(
+  state: PiTurnState,
   resolved: ResolvedContext,
 ): ToolDefinition {
-  const { workspace, resolvedKey, activeBoard } = resolved
+  const { resolvedKey } = resolved
   return defineTool({
     name: "get_active_board",
     label: "Get Active Board",
@@ -20,6 +22,9 @@ export function createGetActiveBoardTool(
       "Return the active board's variant node trees: each node's id, level, and catalog id.",
     parameters: Type.Object({}),
     execute: async () => {
+      const workspace = state.workspace
+      const activeBoard =
+        resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
       if (
         !activeBoard ||
         activeBoard.type !== "component" ||

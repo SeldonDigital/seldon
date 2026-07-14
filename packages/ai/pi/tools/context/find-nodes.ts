@@ -5,12 +5,11 @@ import {
 import { Type } from "typebox"
 
 import { findNodesSection } from "../../../prompt/context-sections/workspace-index"
-import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
-/** Tier 3. Searches every board for nodes matching a label or catalog id query. */
-export function createFindNodesTool(resolved: ResolvedContext): ToolDefinition {
-  const { workspace } = resolved
+/** Searches every board for nodes matching a label or catalog id query. */
+export function createFindNodesTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "find_nodes",
     label: "Find Nodes",
@@ -24,7 +23,7 @@ export function createFindNodesTool(resolved: ResolvedContext): ToolDefinition {
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(
-          findNodesSection(workspace, params.query),
+          findNodesSection(state.workspace, params.query),
           `No nodes match "${params.query}".`,
         ),
       ),

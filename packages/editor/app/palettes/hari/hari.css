@@ -29,3 +29,19 @@
   .sdn-icon--ovkd {
   color: var(--sdn-swatch-active);
 }
+
+/*
+ * While a turn streams, its reply is provisional: the model may still be
+ * emitting mid-turn commentary before the final result. Mark it as in-progress
+ * with italic offBlack text at half opacity. When the turn finishes the class
+ * drops and the reply renders in its normal treatment.
+ */
+.sdn-message-assistant.hari-assistant-streaming {
+  opacity: 0.5;
+}
+
+.sdn-message-assistant.hari-assistant-streaming
+  :is(p, h1, h2, h3, h4, h5, h6, li, a, code, pre, blockquote) {
+  color: var(--sdn-swatch-offBlack);
+  font-style: italic;
+}

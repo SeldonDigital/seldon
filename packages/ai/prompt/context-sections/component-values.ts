@@ -141,6 +141,13 @@ function describeChoices(schemaKey: string, theme?: Theme): string | null {
     return 'icon id like "seldon-plus" (call search_icons to find one)'
   }
 
+  // Enabled font families vary by workspace and can be many, so surface them
+  // through search_fonts like icons, and note the theme slots and custom names
+  // the facet also accepts.
+  if (schemaKey === "fontFamily") {
+    return 'enabled family value like "Merriweather" (call search_fonts to find one), a @fontFamily.* theme slot, or a custom family name'
+  }
+
   if (supports.includes("option")) {
     const options = getPresetOptions(schemaKey).map(String)
     if (options.length > 0) parts.push(options.join(" / "))

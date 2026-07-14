@@ -5,23 +5,23 @@ import {
 import { Type } from "typebox"
 
 import { workspaceBoardsSection } from "../../../prompt/context-sections/workspace-index"
-import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
-/** Tier 3. Returns every component board, to locate one other than the active. */
-export function createListBoardsTool(
-  resolved: ResolvedContext,
-): ToolDefinition {
-  const { workspace } = resolved
+/** Returns every component board, to locate one other than the active. */
+export function createListBoardsTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "list_boards",
     label: "List Boards",
     description:
-      "Tier 3. Return every component board as board key -> catalog id -> label, to locate a board other than the active one. A node reached only through tier 3 needs the user's permission before you edit it.",
+      "Return every component board as board key -> catalog id -> label, to locate a board other than the active one. A node on a board the user is not viewing needs the user's permission before you edit it.",
     parameters: Type.Object({}),
     execute: async () =>
       textResult(
-        joinOrEmpty(workspaceBoardsSection(workspace), "No boards available."),
+        joinOrEmpty(
+          workspaceBoardsSection(state.workspace),
+          "No boards available.",
+        ),
       ),
   })
 }
