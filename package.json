@@ -30,7 +30,8 @@
   "workspaces": [
     "packages/editor",
     "packages/core",
-    "packages/factory"
+    "packages/factory",
+    "packages/mcp"
   ],
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",

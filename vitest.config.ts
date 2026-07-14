@@ -5,6 +5,7 @@ export default defineConfig({
     projects: [
       "packages/core/vitest.config.ts",
       "packages/factory/vitest.config.ts",
+      "packages/mcp/vitest.config.ts",
     ],
     // Coverage is a workspace-wide concern, so configure it once here. Running
     // `npm run coverage` writes a single report to `/coverage` at the repo root

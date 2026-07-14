@@ -1,0 +1,38 @@
+{
+  "name": "@seldon/mcp",
+  "private": true,
+  "type": "module",
+  "description": "Seldon MCP server — makes AI agents first-class clients of the Seldon engine",
+  "scripts": {
+    "start": "node --import tsx --conditions=development src/main.ts",
+    "build:icon-tags": "node --import tsx --conditions=development scripts/build-icon-tags.ts",
+    "build:search-index": "node --import tsx --conditions=development scripts/build-search-index.ts",
+    "eval:search": "node --import tsx --conditions=development scripts/search-eval.ts",
+    "build:eval-review": "node --import tsx --conditions=development scripts/build-eval-review.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "quality": "tsc",
+    "format": "node ../../scripts/format.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@seldon/core": "file:../core",
+    "@seldon/factory": "file:../factory",
+    "esbuild": "^0.28.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.25.76"
+  },
+  "optionalDependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "playwright": "^1.58.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.19.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

@@ -2763,6 +2763,27 @@
         "payload": {
           "additionalProperties": false,
           "properties": {
+            "sourceBoardKey": {
+              "type": "string"
+            }
+          },
+          "required": ["sourceBoardKey"],
+          "type": "object"
+        },
+        "type": {
+          "const": "apply_component_properties_to_all_boards",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
             "boardKey": {
               "type": "string"
             },
@@ -3671,6 +3692,28 @@
         },
         "type": {
           "const": "reset_variant_to_catalog",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "variantRootId": {
+              "description": "Node id for a variant row (legacy string ids or v2 entry ids).",
+              "type": "string"
+            }
+          },
+          "required": ["variantRootId"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_variant_instances",
           "type": "string"
         }
       },
