@@ -20,12 +20,16 @@ import { createSetThemeOverrideTool } from "./set-theme-override"
 
 /**
  * The Seldon mutation tools for one turn. Each tool proposes one or more
- * `WorkspaceAction`s validated against the shared working copy. Node and board
- * tools are always present; `apply_actions` batches many edits and is the escape
- * hatch for the long tail of action types. Resource tools (theme, font
- * collection, icon set) only make sense in their own scope, so they are gated
- * out of node and board turns to keep the tool schema small. Workspace scope
- * spans everything, and an unset scope keeps them for safety.
+ * `WorkspaceAction`s validated against the shared working copy. The dedicated
+ * node and board tools are always present, and every common focused edit has one.
+ *
+ * `apply_actions` takes raw `{ type, payload }` actions, so it skips the
+ * dedicated tools' required-field checks, target resolution, and scope guardrail.
+ * In a focused turn that both bleeds edits and confuses the model between the
+ * `set_properties` tool and the `set_node_properties` action, so it is gated to
+ * workspace scope (and an unset scope), where broad, long-tail edits belong.
+ * Resource tools (theme, font collection, icon set) only make sense in their own
+ * scope, so they are gated out of node and board turns to keep the schema small.
  */
 export function createMutationTools(
   state: PiTurnState,
@@ -44,8 +48,10 @@ export function createMutationTools(
     createReorderComponentTool(state),
     createRemoveInstanceTool(state),
     createSetBoardLabelTool(state),
-    createApplyActionsTool(state),
   ]
+  if (includeAll) {
+    tools.push(createApplyActionsTool(state))
+  }
   if (includeAll || turnScope === "theme") {
     tools.push(createSetThemeOverrideTool(state))
   }

@@ -303,19 +303,27 @@ function componentScopeContext(resolved: ResolvedContext): string[] {
 }
 
 /**
- * The settable values for the selected node's component, or [] when nothing is
- * selected. The values reference theme scopes as `@scope.*`, so the shared token
- * block is emitted alongside them for the model to resolve the ids.
+ * The settable values for the selected node's component. The values reference
+ * theme scopes as `@scope.*`, so the shared token block is emitted alongside them
+ * for the model to resolve the ids.
+ *
+ * The token block carries the friendly names of ordinal scales, such as fontSize
+ * "xxlarge (Big)", which the model needs to map a spoken size like "big" to the
+ * right reference instead of guessing "huge". Those names are small and universal,
+ * so the block is emitted whenever a component board is active, even before a node
+ * is picked. Returns [] only when no component board is active.
  */
 function selectedComponentValues(resolved: ResolvedContext): string[] {
-  const { workspace, selectedNodeId } = resolved
+  const { workspace, activeBoard, selectedNodeId } = resolved
   const selectedNode = selectedNodeId
     ? workspace.nodes[selectedNodeId]
     : undefined
   const selectedCatalogId = selectedNode
     ? getNodeCatalogId(selectedNode, workspace)
     : undefined
-  if (!selectedCatalogId) return []
+  if (!selectedCatalogId) {
+    return activeBoard?.type === "component" ? themeTokensSection(workspace) : []
+  }
 
   const catalogIds = new Set([selectedCatalogId])
   return [

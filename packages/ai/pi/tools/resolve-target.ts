@@ -98,6 +98,58 @@ function nodeValuesBlock(workspace: Workspace, nodeId: string): string {
   return block ? `\n\nSettable values for ${catalogId}:\n${block}` : ""
 }
 
+/** Every node id in the subtree rooted at `rootId` on a component board. */
+function subtreeNodeIds(
+  workspace: Workspace,
+  boardKey: BoardKey,
+  rootId: string,
+): Set<string> {
+  const ids = new Set<string>()
+  const board = workspace.boards[boardKey]
+  if (!board || board.type !== "component") return ids
+
+  const root = findRef(board.variants, rootId)
+  if (!root) return ids
+
+  walkBoardTreeRefs([root], (ref) => {
+    ids.add(ref.id)
+  })
+  return ids
+}
+
+/** The first tree ref with the given id, searched depth-first. */
+function findRef(
+  refs: Parameters<typeof walkBoardTreeRefs>[0],
+  id: string,
+): Parameters<Parameters<typeof walkBoardTreeRefs>[1]>[0] | undefined {
+  let found: Parameters<Parameters<typeof walkBoardTreeRefs>[1]>[0] | undefined
+  walkBoardTreeRefs(refs, (ref) => {
+    if (ref.id !== id) return
+    found = ref
+    return true
+  })
+  return found
+}
+
+/**
+ * The matches for `query` that lie within the selected node's own subtree. A
+ * request like "its title" should resolve into the selection's descendants
+ * before the search widens outward, so a same-named node on another board never
+ * wins over the part the user pointed at.
+ */
+function searchSubtree(
+  workspace: Workspace,
+  boardKey: BoardKey,
+  rootId: string,
+  query: string,
+): NodeMatch[] {
+  const ids = subtreeNodeIds(workspace, boardKey, rootId)
+  if (ids.size === 0) return []
+  return searchWorkspace(workspace, query, boardKey).filter((match) =>
+    ids.has(match.id),
+  )
+}
+
 /** Searches every component board for nodes whose label or catalog id matches. */
 function searchWorkspace(
   workspace: Workspace,
@@ -201,6 +253,31 @@ export function resolveNodeTarget(
   scope: SelectionScope | undefined,
 ): TargetResolution {
   if (target === "selection") {
+    // A match hint on a selected node means "a part of me": dive into the
+    // selection's own subtree first, so the edit stays inside what the user
+    // pointed at before the search widens outward.
+    if (
+      match &&
+      selectedNodeId &&
+      workspace.nodes[selectedNodeId] &&
+      activeKey !== undefined
+    ) {
+      const within = searchSubtree(workspace, activeKey, selectedNodeId, match)
+      if (within.length === 1) {
+        return { kind: "resolved", nodeId: within[0].id }
+      }
+      if (within.length > 1) {
+        const list = within
+          .slice(0, MATCH_LIMIT)
+          .map((item) => `- ${describe(item)}`)
+          .join("\n")
+        return {
+          kind: "message",
+          text: `Several parts of the selection match "${match}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
+        }
+      }
+      return widen(workspace, match, activeKey, scope)
+    }
     if (selectedNodeId && workspace.nodes[selectedNodeId]) {
       return { kind: "resolved", nodeId: selectedNodeId }
     }

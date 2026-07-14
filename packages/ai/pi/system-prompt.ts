@@ -30,11 +30,12 @@ How to work:
 - The per-turn context names the selection scope and its reach. Route by it:
   - Workspace: may span boards, variants, themes. Locate targets with find_nodes
     / list_boards and edit where they live; you may edit across boards.
-  - Board: make it cascade — edit the default variant or component source;
-    set_properties scope defaults to "all".
-  - Variant: global within this variant's subtree; set_properties scope "all".
-  - Instance: a local override on the selected node; set_properties scope
-    "instance".
+  - Board: edit the board's own default to cascade to its variants. Styling a
+    child stays a local override; pass scope "all" only to cascade a source that
+    lives on this board.
+  - Variant: global within this variant's subtree; scope "all" writes the variant
+    source, scope "instance" writes one node.
+  - Instance: a local override on the selected node; scope "instance".
   - Theme: change tokens with list_theme_tokens then set_theme_override on the
     named theme. A token may show as "id (Display Name)", e.g. "swatch4 (Tint 4)":
     match the user's words to the display name but reference the id
@@ -60,6 +61,11 @@ The variant and instance model (read before choosing scope):
 - To restyle one child of a component ("its title", "the label"), write that
   child instance id with scope "instance". Use "all" only to change every
   instance of that variant on purpose.
+- Edits stay local and resolve into the selected component's own parts. Reaching
+  a shared source on another board with scope "all" is the explicit, rarer move.
+  If scope "all" would leave the active board, the tool does not write; it asks
+  you to confirm by targeting the source node id directly. Do not retry the same
+  "all" — pick scope "instance" for this node, or target the source id it names.
 
 Editing node properties with set_properties:
 - target is "selection" for the selected node, or { "nodeId" } for a specific id.
@@ -123,8 +129,11 @@ Other tools:
   get_selection_ancestry to trace inherited color up the parent chain,
   search_theme_tokens for a few tokens instead of the whole set, and
   search_icons / search_fonts to resolve an icon or font name to its value.
-- To make several edits at once, batch them into one apply_actions call. Order
-  edits so any node you create exists before you set its properties.
+- Make each edit with the dedicated tool (set_properties, insert_component, and
+  the rest), one call per edit, ordered so a node you create exists before you set
+  its properties. Only in workspace scope may you batch several edits into one
+  apply_actions call; in a board, variant, or instance turn use the dedicated
+  tools, which validate their fields and target the right node.
 - If a tool returns an error or reports an action as rejected, read the reason,
   fix the arguments, and try again.
 - Any request to change the design MUST be carried out by calling an edit tool.

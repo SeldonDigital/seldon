@@ -158,8 +158,8 @@ The editor classifies what the user selected into a `SelectionScope` and passes 
 | Scope | Context the model sees | Edit behavior |
 | --- | --- | --- |
 | `workspace` | Every board, walked shallow | Broad, cross-board edits, no permission ask |
-| `board` | The selected board and its variants | Prefer the default variant or source so edits cascade |
-| `variant` | The variant subtree | Global within the variant, `set_properties` scope `all` |
+| `board` | The selected board and its variants | Edit the board's own default to cascade to its variants; styling a child stays a local override |
+| `variant` | The variant subtree | Global within the variant with `set_properties` scope `all`, or one node with scope `instance` |
 | `instance` | The selected node and its descendants | Local override, `set_properties` scope `instance` |
 | `theme` | The selected theme entry or its board's entries | `set_theme_override` on token values |
 | `fontCollection` | The selected collection or its board's entries | Font family and weight tools |
@@ -167,6 +167,8 @@ The editor classifies what the user selected into a `SelectionScope` and passes 
 | `media` | None | The agent does not edit media |
 
 The context starts at the narrowest useful scope and stays small. An instance turn sees only the selected node's subtree, a variant turn only that variant's tree, and a board turn only that board. The model widens one level at a time when it needs more. See [Finding A Target](#finding-a-target).
+
+`set_properties` writes a local override by default. Scope `all` writes the node's shared source so every instance follows, but only when that source sits on the active board. When `all` would write a source on another board, the tool makes no edit and returns a directive to confirm the reach by targeting the source id directly. This keeps a child edit, such as one card's title, from silently restyling every instance of a shared element. Workspace scope is exempt, since the user chose to act across the file.
 
 ---
 
@@ -222,7 +224,7 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | `reorder_component` | Reposition an instance among its siblings |
 | `remove_instance` | Delete an instance |
 | `set_board_label` | Rename a board |
-| `apply_actions` | A batch of raw actions, the escape hatch for the long tail |
+| `apply_actions` | A batch of raw actions, the escape hatch for the long tail. Workspace scope only, since raw actions skip the dedicated tools' field checks, target resolution, and scope guardrail |
 | `set_theme_override` | A theme token value |
 | `set_font_collection_family_preset` / `set_font_collection_family_variant` | Toggle families and weights |
 | `set_icon_set_subcategory_preset` / `set_icon_set_override` | Toggle a subcategory or a single icon |
