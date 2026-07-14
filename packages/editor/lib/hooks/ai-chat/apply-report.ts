@@ -1,14 +1,11 @@
-import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
+import type { RejectedActionResult } from "@seldon/ai"
 import type {
   BoardKey,
   Workspace,
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
-export interface RejectedAction {
-  type: string
-  reason: string
-}
+export type RejectedAction = RejectedActionResult
 
 export interface ApplyReport {
   workspace: Workspace
@@ -30,47 +27,26 @@ export function findActiveBoardKey(
   )
 }
 
-/** True when applying an action left the workspace effectively unchanged. */
-function isUnchanged(before: Workspace, after: Workspace): boolean {
-  if (before === after) return true
-  return JSON.stringify(before) === JSON.stringify(after)
-}
-
 /**
- * Applies actions one at a time through the reducer so each turn is a single
- * undo step (via one `set_workspace` dispatch by the caller) while still
- * reporting per-action results. The reducer runs core validation, so an invalid
- * action throws and is recorded as rejected. An action that validates but
- * matches nothing is recorded as ineffective, which the chat surfaces instead of
- * a misleading success.
+ * Assembles the turn report from the workspace the agent already built. The
+ * turn dry-ran every action through the reducer against its working copy, so
+ * the caller adopts that workspace directly with one `set_workspace` dispatch
+ * instead of re-applying the actions. Re-applying would re-mint the random ids
+ * of nodes created mid-turn and silently drop any follow-on edit that targeted
+ * them. `ineffective` and `rejected` come from the turn, so the transcript
+ * outcome stays truthful.
  */
-export function applyActionsWithReport(
-  current: Workspace,
+export function buildTurnReport(
+  workspace: Workspace,
   actions: WorkspaceAction[],
+  ineffective: string[],
+  rejected: RejectedAction[],
 ): ApplyReport {
-  let workspace = current
-  const applied: string[] = []
-  const ineffective: string[] = []
-  const rejected: RejectedAction[] = []
-  const appliedActions: WorkspaceAction[] = []
-
-  for (const action of actions) {
-    try {
-      const next = applyActions(workspace, [action])
-      if (isUnchanged(workspace, next)) {
-        ineffective.push(action.type)
-      } else {
-        applied.push(action.type)
-        appliedActions.push(action)
-        workspace = next
-      }
-    } catch (caught) {
-      rejected.push({
-        type: action.type,
-        reason: caught instanceof Error ? caught.message : "invalid action",
-      })
-    }
+  return {
+    workspace,
+    applied: actions.map((action) => action.type),
+    ineffective,
+    rejected,
+    appliedActions: actions,
   }
-
-  return { workspace, applied, ineffective, rejected, appliedActions }
 }

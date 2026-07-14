@@ -3,6 +3,7 @@ import type {
   AgentMetrics,
   AgentStreamEvent,
   ChatMessage,
+  RejectedActionResult,
   SelectionScope,
   ThinkingLevelOption,
 } from "@seldon/ai"
@@ -39,7 +40,11 @@ export type AgentConfig = {
 
 export type AgentChatResponse = {
   actions: WorkspaceAction[]
+  /** Workspace the turn built, adopted directly by the editor as one undo step. */
+  workspace: Workspace
   reply: string
+  ineffective: string[]
+  rejected: RejectedActionResult[]
   debug: AgentDebug
 }
 

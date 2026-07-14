@@ -3,6 +3,7 @@ import {
   type AgentMetrics,
   type AgentStreamEvent,
   type ChatMessage,
+  type RejectedActionResult,
   type SelectionScope,
   THINKING_LEVEL_OPTIONS,
   type ThinkingLevelOption,
@@ -33,7 +34,11 @@ export type AgentRequestBody = {
 
 export type AgentResult = {
   actions: WorkspaceAction[]
+  /** Workspace the turn built, adopted directly by the editor as one undo step. */
+  workspace: Workspace
   reply: string
+  ineffective: string[]
+  rejected: RejectedActionResult[]
   debug: AgentDebug
 }
 
@@ -56,24 +61,25 @@ export async function runAgent(
     throw new Error("Missing message in request body.")
   }
 
-  const { actions, reply, debug } = await chatToActions({
-    workspace: body.workspace,
-    message: body.message,
-    history: body.history,
-    activeBoardKey: body.activeBoardKey,
-    selectedNodeId: body.selectedNodeId,
-    selectedNodeRootId: body.selectedNodeRootId,
-    selectedBoardId: body.selectedBoardId,
-    scope: body.scope,
-    resourceTargetId: body.resourceTargetId,
-    model: body.model,
-    thinkingLevel: body.thinkingLevel,
-    noThink: body.noThink,
-    onEvent,
-    signal,
-  })
+  const { actions, workspace, reply, ineffective, rejected, debug } =
+    await chatToActions({
+      workspace: body.workspace,
+      message: body.message,
+      history: body.history,
+      activeBoardKey: body.activeBoardKey,
+      selectedNodeId: body.selectedNodeId,
+      selectedNodeRootId: body.selectedNodeRootId,
+      selectedBoardId: body.selectedBoardId,
+      scope: body.scope,
+      resourceTargetId: body.resourceTargetId,
+      model: body.model,
+      thinkingLevel: body.thinkingLevel,
+      noThink: body.noThink,
+      onEvent,
+      signal,
+    })
 
-  return { actions, reply, debug }
+  return { actions, workspace, reply, ineffective, rejected, debug }
 }
 
 /** Session-config choices the Hari palette renders. */

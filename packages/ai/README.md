@@ -195,11 +195,13 @@ The model never writes the workspace. All file tools are off, and each mutation 
 
 1. Run the deterministic shape repair from [repair/normalize-actions.ts](./repair/normalize-actions.ts).
 2. Dry-run the action against the working copy through the same reducer the editor uses.
-3. On a reducer rejection, throw so Pi feeds the exact error text back to the model, which is how the model self-corrects.
-4. On a validated action that changes nothing, report it without recording it, so the model retargets instead of the caller applying a no-op.
+3. On a reducer rejection, record it on the turn state and throw, so Pi feeds the exact error text back to the model, which is how the model self-corrects.
+4. On a validated action that changes nothing, record it as ineffective and report it without recording the action, so the model retargets instead of the caller applying a no-op.
 5. On a real change, advance the working copy and record the action.
 
-The reducer validates every payload again when the editor applies the returned actions, so an invalid action never changes real state.
+The turn returns the working copy it built, not just the actions. The editor adopts that workspace with one `set_workspace` dispatch, so an id a create tool minted mid-turn stays stable and a follow-on edit that targets it lands. Re-applying the actions would re-mint those random ids and drop the follow-on edit.
+
+Adopting is guarded twice. The `set_workspace` dispatch runs the store's verification middleware, which throws on any dangling or duplicate ref. Before that, `checkTurnIntegrity` in the editor confirms the mutation only changed what its actions changed: a removed board key, or a removed node id with no `remove_instance` in the turn, discards the turn. Either failure keeps the current workspace and shows an error turn.
 
 ---
 
@@ -212,10 +214,10 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | Tool | Proposes |
 | --- | --- |
 | `set_properties` | Property values on a node or its component source |
-| `add_component` | Add a catalog component to the workspace as its own board |
-| `insert_component` | Insert a catalog component under a parent, creating its board if needed |
-| `insert_variant_instance` | Insert an instance of a specific existing variant |
-| `duplicate_component` | Paste a copy under a parent, or duplicate a node in place |
+| `add_component` | Add a catalog component to the workspace as its own board; reports the new board key and node id |
+| `insert_component` | Insert a catalog component under a parent, creating its board if needed; reports the new node id |
+| `insert_variant_instance` | Insert an instance of a specific existing variant; reports the new node id |
+| `duplicate_component` | Paste a copy under a parent, or duplicate a node in place; reports the new node id |
 | `move_component` | Relocate an instance under a new parent in the same variant |
 | `reorder_component` | Reposition an instance among its siblings |
 | `remove_instance` | Delete an instance |

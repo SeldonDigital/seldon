@@ -22,10 +22,11 @@ import {
 } from "@lib/workspace/hooks/use-selection-scope"
 import {
   type RejectedAction,
-  applyActionsWithReport,
+  buildTurnReport,
   findActiveBoardKey,
 } from "./ai-chat/apply-report"
 import { describeChanges } from "./ai-chat/change-summary"
+import { checkTurnIntegrity } from "./ai-chat/check-turn-integrity"
 import { isLoggingEnabled, logAiTurn, logWarm } from "./ai-chat/log-turn"
 import { collectVocabularyWarnings } from "./ai-chat/vocabulary-warnings"
 import { useDebugStore } from "./use-debug-mode"
@@ -253,41 +254,72 @@ export function useHari() {
         const resourceTargetId = getResourceTargetId(current)
         const noThink = useDebugStore.getState().noThink
 
-        const { actions, reply, debug } = await runAgentChat(
-          {
-            workspace: current,
-            message,
-            history,
-            activeBoardKey,
-            selectedNodeId: selectedNodeId ?? undefined,
-            selectedNodeRootId: selectedNodeRootId ?? undefined,
-            selectedBoardId: selectedBoardId ?? undefined,
-            scope,
-            resourceTargetId,
-            model,
-            thinkingLevel,
-            noThink,
-          },
-          (event) => applyTurnEvent(turnId, event),
-          controller.signal,
-        )
+        const { actions, workspace, reply, ineffective, rejected, debug } =
+          await runAgentChat(
+            {
+              workspace: current,
+              message,
+              history,
+              activeBoardKey,
+              selectedNodeId: selectedNodeId ?? undefined,
+              selectedNodeRootId: selectedNodeRootId ?? undefined,
+              selectedBoardId: selectedBoardId ?? undefined,
+              scope,
+              resourceTargetId,
+              model,
+              thinkingLevel,
+              noThink,
+            },
+            (event) => applyTurnEvent(turnId, event),
+            controller.signal,
+          )
 
-        const outcome = applyActionsWithReport(current, actions)
-        logAiTurn(message, debug, actions, outcome, current, activeBoardKey)
+        const report = buildTurnReport(workspace, actions, ineffective, rejected)
+        logAiTurn(message, debug, actions, report, current, activeBoardKey)
 
-        if (outcome.applied.length > 0) {
-          dispatch({
-            type: "set_workspace",
-            payload: { workspace: outcome.workspace },
+        // Records an error turn and stops. Used when the turn built a workspace
+        // we refuse to adopt, so a bad turn surfaces plainly and never lands.
+        const failTurn = (reason: string) => {
+          useStore.getState().updateTurn(turnId, {
+            thinking: debug.thinking,
+            thinkingMs: debug.thinkingMs,
+            clamped: noThink,
+            toolCalls: debug.toolCalls,
+            reply,
+            error: reason,
+            status: "error",
           })
+          useStore.getState().setStatus("error")
+          useStore.getState().setError(reason)
         }
 
-        const failed =
-          outcome.rejected.length > 0 && outcome.applied.length === 0
+        // Adopt the workspace the agent built as one undo step, but only when it
+        // is safe. The integrity check catches a mutation that dropped an id it
+        // should not have, and the dispatch runs the store's verification, which
+        // throws on a broken workspace. Either failure keeps the current state.
+        if (report.applied.length > 0) {
+          const integrity = checkTurnIntegrity(current, workspace, actions)
+          if (!integrity.ok) {
+            failTurn(`Change discarded to protect the workspace: ${integrity.reason}.`)
+            return
+          }
+          try {
+            dispatch({ type: "set_workspace", payload: { workspace } })
+          } catch (caught) {
+            failTurn(
+              caught instanceof Error
+                ? `Change rejected by the workspace: ${caught.message}`
+                : "The workspace change was rejected.",
+            )
+            return
+          }
+        }
+
+        const failed = report.rejected.length > 0 && report.applied.length === 0
         const turnOutcome: TurnOutcome =
-          outcome.applied.length > 0
+          report.applied.length > 0
             ? "applied"
-            : outcome.ineffective.length > 0
+            : report.ineffective.length > 0
               ? "ineffective"
               : "none"
         const warnings = collectVocabularyWarnings(current, actions)
@@ -298,10 +330,10 @@ export function useHari() {
           toolCalls: debug.toolCalls,
           reply,
           outcome: turnOutcome,
-          changes: describeChanges(outcome.workspace, outcome),
+          changes: describeChanges(report.workspace, report),
           repairs: debug.repairs.length > 0 ? debug.repairs : undefined,
           warnings: warnings.length > 0 ? warnings : undefined,
-          rejected: outcome.rejected.length > 0 ? outcome.rejected : undefined,
+          rejected: report.rejected.length > 0 ? report.rejected : undefined,
           status: failed ? "error" : "done",
         })
         useStore.getState().setStatus(failed ? "error" : "idle")

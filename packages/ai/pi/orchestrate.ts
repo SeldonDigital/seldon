@@ -135,6 +135,9 @@ export async function chatToActionsPi(
 
   return {
     actions: state.actions,
+    workspace: state.workspace,
+    ineffective: state.ineffective,
+    rejected: state.rejected,
     reply,
     debug: {
       context,

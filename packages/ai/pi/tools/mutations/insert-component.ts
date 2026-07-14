@@ -8,6 +8,7 @@ import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+import { withCreatedIdentity } from "./created-nodes"
 
 /**
  * Inserts a catalog component's default instance under an existing parent node.
@@ -50,7 +51,9 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
               target: { parentId: params.parentId, index: params.index },
             },
           } as WorkspaceAction)
-      return textResult(commit(state, action))
+      const before = state.workspace
+      const message = commit(state, action)
+      return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })
 }

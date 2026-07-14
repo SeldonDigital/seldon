@@ -10,6 +10,7 @@ export type {
   ChatMessage,
   ChatToActionsInput,
   ChatToActionsResult,
+  RejectedActionResult,
   SelectionScope,
 } from "./types"
 export type { ActionRepair } from "./repair/normalize-actions"

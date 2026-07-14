@@ -138,9 +138,27 @@ export interface AgentMetrics {
   modelVramBytes?: number
 }
 
-/** Result of {@link chatToActions}. Actions are applied by the caller through the workspace reducer. */
+/** One action the reducer rejected during the turn, with the reducer's reason. */
+export interface RejectedActionResult {
+  type: string
+  reason: string
+}
+
+/**
+ * Result of {@link chatToActions}. The caller adopts {@link workspace} directly
+ * with one `set_workspace` dispatch rather than re-applying {@link actions}, so
+ * ids the turn minted stay stable. `actions` is retained for the change summary
+ * and undo grouping; `ineffective` and `rejected` mirror what happened during
+ * the turn for the transcript.
+ */
 export interface ChatToActionsResult {
   actions: WorkspaceAction[]
+  /** Workspace the turn built, already folded through the reducer during the turn. */
+  workspace: Workspace
   reply: string
+  /** Action types that validated but changed nothing, in call order. */
+  ineffective: string[]
+  /** Actions the reducer rejected during the turn, with the reducer's reason. */
+  rejected: RejectedActionResult[]
   debug: AgentDebug
 }

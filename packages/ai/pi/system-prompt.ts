@@ -75,6 +75,12 @@ Adding, inserting, and duplicating components:
   deletes one.
 - If an insert or move is rejected by the hierarchy, read the reason and ask the
   user rather than retrying the same nest.
+- Ask before you create, not after. When a "add X" placement is genuinely
+  ambiguous, ask first and create nothing. Once a create tool succeeds, its
+  result reports the new board key and node id with the node's immediate
+  children. Those ids are stable, so keep going in the same turn: target them to
+  finish the rest of the request. Do not stop to ask once a node exists and edits
+  from the request still remain.
 
 Finding a target you cannot see:
 - The context is scoped to the selection: an instance's own subtree, a variant,

@@ -8,6 +8,7 @@ import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+import { withCreatedIdentity } from "./created-nodes"
 
 /**
  * Adds a component from the catalog to the workspace, which materializes its
@@ -33,12 +34,12 @@ export function createAddComponentTool(state: PiTurnState): ToolDefinition {
           `Component "${params.catalogId}" is already in the workspace. Select its board, or use insert_component to place an instance of it under a parent node.`,
         )
       }
-      return textResult(
-        commit(state, {
-          type: "add_component",
-          payload: { boardKey: params.catalogId },
-        } as WorkspaceAction),
-      )
+      const before = state.workspace
+      const message = commit(state, {
+        type: "add_component",
+        payload: { boardKey: params.catalogId },
+      } as WorkspaceAction)
+      return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })
 }
