@@ -70,7 +70,10 @@ export function createNodeExportAssetReader(
       // Only read files inside the repo root. The path is derived from the
       // workspace, so containment stops a crafted workspace from reading and
       // embedding arbitrary files from disk.
-      if (!isInside(rootDirectory, absolutePath) || !fs.existsSync(absolutePath)) {
+      if (
+        !isInside(rootDirectory, absolutePath) ||
+        !fs.existsSync(absolutePath)
+      ) {
         return undefined
       }
       return fs.readFileSync(absolutePath)

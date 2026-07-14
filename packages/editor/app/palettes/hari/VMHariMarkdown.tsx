@@ -27,7 +27,10 @@ const REMARK_PLUGINS = [remarkGfm]
  */
 export function VMHariMarkdown({ content }: VMHariMarkdownProps) {
   return (
-    <ReactMarkdown remarkPlugins={REMARK_PLUGINS} components={MARKDOWN_COMPONENTS}>
+    <ReactMarkdown
+      remarkPlugins={REMARK_PLUGINS}
+      components={MARKDOWN_COMPONENTS}
+    >
       {content}
     </ReactMarkdown>
   )

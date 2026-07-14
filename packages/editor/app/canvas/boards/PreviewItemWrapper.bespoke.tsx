@@ -1,6 +1,6 @@
 // BESPOKE-VIEW: hand-authored selectable preview cell for resource boards.
-import { Frame } from "@seldon/components/frames/Frame"
 import { CSSProperties, ReactNode } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 
 interface PreviewItemWrapperProps {
   canvasSelectionId: string
