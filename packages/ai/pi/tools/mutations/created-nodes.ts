@@ -2,6 +2,8 @@ import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/wal
 import { getCompositionContainers } from "@seldon/core/workspace/helpers/general/get-composition-containers"
 import type { ComponentTreeRef, Workspace } from "@seldon/core/workspace/types"
 
+import { nodeSummaryTail } from "../../../prompt/context-sections/node-line"
+
 /** Variant tree roots across component and playground boards, the only rows with child refs. */
 function compositionRoots(workspace: Workspace): ComponentTreeRef[] {
   const roots: ComponentTreeRef[] = []
@@ -55,7 +57,13 @@ function topCreatedNodeIds(before: Workspace, after: Workspace): string[] {
 const MAX_DEPTH = 3
 const MAX_LINES = 60
 
-/** Appends one indented `id "label" [level]` line per node down to MAX_DEPTH. */
+/**
+ * Appends one indented line per node down to MAX_DEPTH, using the same node
+ * descriptor as the active-board tree so a just-created node reads with its
+ * level, catalog id, type, source label, and string values. That lets the model
+ * tell a card's title node apart from its other text nodes and target it in the
+ * same turn instead of stopping to ask.
+ */
 function summarizeSubtree(
   workspace: Workspace,
   index: Map<string, string[]>,
@@ -64,10 +72,7 @@ function summarizeSubtree(
   lines: string[],
 ): void {
   if (lines.length >= MAX_LINES) return
-  const node = workspace.nodes?.[id]
-  const label = node?.label ? ` "${node.label}"` : ""
-  const level = node?.level ? ` [${node.level}]` : ""
-  lines.push(`${"  ".repeat(depth)}${id}${label}${level}`)
+  lines.push(`${"  ".repeat(depth)}${id}${nodeSummaryTail(workspace, id)}`)
   if (depth >= MAX_DEPTH) return
   for (const childId of index.get(id) ?? []) {
     summarizeSubtree(workspace, index, childId, depth + 1, lines)

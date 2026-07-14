@@ -101,10 +101,15 @@ export function createSetPropertiesTool(
         resolved.resolvedKey !== undefined &&
         sourceBoardKey === resolved.resolvedKey
 
+      // The write stays local by default, even in workspace scope. A cascade only
+      // becomes the default when a broad selection targets a node whose source is
+      // on the active board. A targeted node whose source lives elsewhere, such as
+      // a card's title that resolves from a shared Text variant, defaults to a
+      // local override so the edit lands on the node the model named instead of a
+      // shared source that a variant preset would then override.
       const scope =
         params.scope ??
-        (isWorkspaceScope ||
-        (resolved.scope !== "instance" && sourceOnActiveBoard)
+        (resolved.scope !== "instance" && sourceOnActiveBoard
           ? "all"
           : "instance")
 

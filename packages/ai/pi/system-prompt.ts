@@ -29,7 +29,11 @@ How to work:
   Then emit it. Spend no effort on analysis or persuasion beyond that.
 - The per-turn context names the selection scope and its reach. Route by it:
   - Workspace: may span boards, variants, themes. Locate targets with find_nodes
-    / list_boards and edit where they live; you may edit across boards.
+    / list_boards and edit where they live; you may edit across boards. To add a
+    new component, call add_component with its catalog id: it makes the
+    component's own board and needs no parent, so never ask for one. Edits still
+    default to a local override; pass set_properties scope "all" to change every
+    instance of a component on purpose.
   - Board: edit the board's own default to cascade to its variants. Styling a
     child stays a local override; pass scope "all" only to cascade a source that
     lives on this board.
@@ -80,11 +84,14 @@ Editing node properties with set_properties:
   find it in one step instead of a search loop.
 
 Adding or moving components (pick the tool by intent, then act):
-- Place a catalog component under a parent, such as the selection:
+- Add a component to the workspace with no specific parent ("add a media card to
+  the workspace"): add_component with its catalogId. It makes the component's own
+  board and needs no parent, so do not ask the user for one and do not look for a
+  frame or screen to hold it.
+- Place a catalog component under a specific parent, such as the selection:
   insert_component with the parent node id. It creates the board if needed, so
   never add first then insert. Pass an exact catalogId from list_catalog_ids,
   copied verbatim; do not change its casing or add hyphens.
-- Add a catalog component as its own board with no parent: add_component.
 - Copy a node already on the canvas: duplicate_component (parentId pastes under
   that parent, omit it to duplicate in place), or insert_variant_instance for a
   specific existing variant.

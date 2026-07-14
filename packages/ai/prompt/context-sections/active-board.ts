@@ -1,4 +1,3 @@
-import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type {
@@ -9,7 +8,7 @@ import type {
   Workspace,
 } from "@seldon/core/workspace/types"
 
-import { nodeStringsSummary } from "./node-strings"
+import { nodeSummaryTail } from "./node-line"
 
 /**
  * Every workspace action targets a node by id, so the model can only act on ids
@@ -32,30 +31,8 @@ function walkTree(
   for (const ref of refs) {
     const node = workspace.nodes[ref.id]
     const indent = "  ".repeat(depth)
-    if (node) {
-      visited.push(node)
-      const catalogId = getNodeCatalogId(node, workspace)
-      const kind = catalogId
-        ? `${node.level} ${catalogId} ${node.type}`
-        : `${node.level} ${node.type}`
-      const label = node.label ? ` label="${node.label}"` : ""
-      const stateKeys = node.states ? Object.keys(node.states) : []
-      const states =
-        stateKeys.length > 0 ? ` states=[${stateKeys.join(", ")}]` : ""
-      const sourceId = getSourceNodeId(workspace, ref.id)
-      const sourceLabel = workspace.nodes[sourceId]?.label
-      const source =
-        sourceId !== ref.id
-          ? ` src=${sourceId}${sourceLabel ? ` "${sourceLabel}"` : ""}`
-          : ""
-      const summary = nodeStringsSummary(workspace, ref.id)
-      const values = summary ? ` {${summary}}` : ""
-      lines.push(
-        `${indent}- ${ref.id} [${kind}]${label}${states}${source}${values}`,
-      )
-    } else {
-      lines.push(`${indent}- ${ref.id} (no node entry)`)
-    }
+    if (node) visited.push(node)
+    lines.push(`${indent}- ${ref.id}${nodeSummaryTail(workspace, ref.id)}`)
     if (depth < maxDepth && ref.children && ref.children.length > 0) {
       walkTree(ref.children, workspace, depth + 1, lines, visited, maxDepth)
     }
