@@ -110,6 +110,6 @@ const sdn: MessageToolsProps = {
     className: "sdn-icon sdn-icon--9ouj",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--hqun",
+    className: "sdn-text-description sdn-text-description--hqun",
   },
 }

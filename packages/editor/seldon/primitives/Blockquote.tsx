@@ -17,7 +17,6 @@ import { combineClassNames } from "../utils/class-name"
 export interface BlockquoteProps extends BlockquoteHTMLAttributes<HTMLQuoteElement> {
   className?: string
   "data-seldon-ref"?: string
-  children?: string
 }
 
 /*****

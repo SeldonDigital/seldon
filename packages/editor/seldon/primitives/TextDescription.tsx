@@ -43,7 +43,6 @@ export interface TextDescriptionProps extends HTMLAttributes<
 > {
   className?: string
   "data-seldon-ref"?: string
-  children?: string
   htmlElement?:
     | "p"
     | "span"
@@ -82,7 +81,10 @@ export function TextDescription({
   htmlElement = sdn.htmlElement,
   ...props
 }: TextDescriptionProps) {
-  const textDescriptionClassName = combineClassNames("sdn-text", className)
+  const textDescriptionClassName = combineClassNames(
+    "sdn-text-description",
+    className,
+  )
 
   switch (htmlElement) {
     case "span":
@@ -264,5 +266,5 @@ const sdn: TextDescriptionProps = {
   children: "Description",
   htmlElement: "p",
   "aria-hidden": "false",
-  className: "sdn-text sdn-text",
+  className: "sdn-text-description sdn-text",
 }

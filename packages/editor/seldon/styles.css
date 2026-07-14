@@ -1594,7 +1594,7 @@ body {
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
   font-weight: var(--sdn-font-weight-normal);
-  font-size: var(--sdn-font-size-medium);
+  font-size: var(--sdn-font-size-xsmall);
   line-height: var(--sdn-line-height-tight);
   text-align: left;
   white-space: normal;
@@ -1622,6 +1622,20 @@ body {
   height: fit-content;
   flex-shrink: 0;
   font-family: Inconsolata;
+  font-style: normal;
+  font-weight: var(--sdn-font-weight-normal);
+  font-size: var(--sdn-font-size-small);
+  line-height: var(--sdn-line-height-tight);
+  text-align: left;
+  white-space: normal;
+}
+
+.sdn-text-description {
+  color: var(--sdn-hc-on-offWhite);
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  font-family: var(--sdn-font-family-primary);
   font-style: normal;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-small);
@@ -3095,7 +3109,7 @@ body {
   font-size: var(--sdn-cmp-auto-fit-font-size-tiny);
 }
 
-.sdn-text--svkr {
+.sdn-text--s4kj {
   align-self: unset;
   flex-shrink: unset;
   flex: 1 0 0;

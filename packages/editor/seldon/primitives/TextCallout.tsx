@@ -43,7 +43,6 @@ export interface TextCalloutProps extends HTMLAttributes<
 > {
   className?: string
   "data-seldon-ref"?: string
-  children?: string
   htmlElement?:
     | "p"
     | "span"

@@ -3,7 +3,7 @@
 // tools it called, the applied changes, the markdown reply, and any rejection or
 // error. Tool activity renders one MessageTools row per entry, grouped in a
 // single frame so the turn reads as one tools section. Assistant replies render
-// through HariMarkdown.
+// through VMHariMarkdown.
 import { type CSSProperties, type ReactNode, useMemo } from "react"
 import type { HariTurn } from "@lib/hooks/use-ai-chat"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
@@ -15,7 +15,7 @@ import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
 import { Frame } from "@seldon/components/frames/Frame"
 import type { IconProps } from "@seldon/components/primitives/Icon"
-import { HariMarkdown } from "./HariMarkdown.bespoke"
+import { VMHariMarkdown } from "./VMHariMarkdown"
 import { VMHariThinking } from "./VMHariThinking"
 
 interface VMHariTranscriptProps {
@@ -218,7 +218,7 @@ function assistantBlock(turn: HariTurn): ReactNode {
   const reply = turn.reply ?? ""
   return (
     <MessageAssistant key={`${turn.id}-assistant`}>
-      <HariMarkdown content={reply} />
+      <VMHariMarkdown content={reply} />
     </MessageAssistant>
   )
 }

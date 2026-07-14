@@ -341,7 +341,7 @@ const sdn: ArticleCardProps = {
     className: "sdn-text-heading sdn-text-heading--xkk9",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--w5ys",
+    className: "sdn-text-description sdn-text-description--w5ys",
   },
   frame2: {
     wrapperElement: "div",

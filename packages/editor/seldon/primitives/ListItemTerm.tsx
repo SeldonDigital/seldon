@@ -21,7 +21,6 @@ export interface ListItemTermProps extends HTMLAttributes<
 > {
   className?: string
   "data-seldon-ref"?: string
-  children?: string
   htmlElement?: "li" | "dt" | "dd"
 }
 

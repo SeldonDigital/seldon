@@ -341,7 +341,7 @@ const sdn: TopbarCompactProps = {
     className: "sdn-link-plain sdn-link-plain--67at",
   },
   text: {
-    className: "sdn-text sdn-text-label--lbxv",
+    className: "sdn-text sdn-text--s4kj",
   },
   linkPlain6: {
     className: "sdn-link-plain sdn-link-plain--yc40",

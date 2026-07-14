@@ -151,6 +151,6 @@ const sdn: MessageOutcomeProps = {
     className: "sdn-text-label sdn-text-label--lbxv",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--choa",
+    className: "sdn-text-description sdn-text-description--choa",
   },
 }

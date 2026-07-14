@@ -199,6 +199,6 @@ const sdn: ArticleCardHorizontalProps = {
     className: "sdn-text-heading sdn-text-heading--xkk9",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--w5ys",
+    className: "sdn-text-description sdn-text-description--w5ys",
   },
 }
