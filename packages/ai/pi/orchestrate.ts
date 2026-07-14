@@ -34,6 +34,7 @@ export async function chatToActionsPi(
   const { session, state, resolved } = await createSeldonSession(input, {
     model: input.model,
     thinkingLevel: input.thinkingLevel,
+    thinkingCapable: input.thinkingCapable,
     noThink: input.noThink,
   })
 

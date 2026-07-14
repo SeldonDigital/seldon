@@ -28,6 +28,12 @@ export interface SeldonSessionOptions {
   model?: string
   host?: string
   thinkingLevel?: ThinkingLevelOption
+  /**
+   * Whether the model can run a thinking pass, resolved by the caller from
+   * Ollama's reported capabilities. When omitted, falls back to the name-based
+   * {@link supportsThinking} check.
+   */
+  thinkingCapable?: boolean
   /** Forces reasoning off for this turn, overriding the thinking level. */
   noThink?: boolean
 }
@@ -84,7 +90,7 @@ export async function createSeldonSession(
   // On/off is driven by the session thinking level: a level enables thinking,
   // `undefined` sends `enable_thinking: false`. Clamp asks each model for the
   // least reasoning it supports: qwen3 turns off, gpt-oss drops to low effort.
-  const thinkingCapable = supportsThinking(options.model)
+  const thinkingCapable = options.thinkingCapable ?? supportsThinking(options.model)
   const requestedLevel = options.noThink
     ? clampedThinkingLevel(options.model)
     : options.thinkingLevel

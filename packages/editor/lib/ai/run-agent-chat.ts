@@ -3,6 +3,7 @@ import type {
   AgentMetrics,
   AgentStreamEvent,
   ChatMessage,
+  ModelThinking,
   RejectedActionResult,
   SelectionScope,
   ThinkingLevelOption,
@@ -25,13 +26,17 @@ export type AgentChatRequest = {
   resourceTargetId?: string
   model?: string
   thinkingLevel?: ThinkingLevelOption
+  thinkingCapable?: boolean
   noThink?: boolean
 }
 
 /** Session-config choices the Hari palette renders, from `/api/agent/config`. */
 export type AgentConfig = {
   models: string[]
-  thinkingLevels: ThinkingLevelOption[]
+  /** Thinking menu per model, resolved from each model's Ollama capabilities. */
+  thinkingByModel: Record<string, ModelThinking>
+  /** The level Clamp resolves to per model: `off` where reasoning can be turned off, else the lowest effort. */
+  clampedLevels: Record<string, ThinkingLevelOption>
   defaults: {
     model: string
     thinkingLevel: ThinkingLevelOption

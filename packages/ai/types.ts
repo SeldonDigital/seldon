@@ -58,6 +58,12 @@ export interface ChatToActionsInput {
   /** Thinking level for the model. */
   thinkingLevel?: ThinkingLevelOption
   /**
+   * Whether the model can run a thinking pass, resolved by the editor from
+   * Ollama's reported capabilities. When omitted, the session falls back to a
+   * name-based check.
+   */
+  thinkingCapable?: boolean
+  /**
    * Forces reasoning off for this turn, overriding the thinking level. Sends an
    * explicit `enable_thinking: false` to qwen while tool-calling stays enabled.
    * A test lever for clamping overthinking on direct edits.

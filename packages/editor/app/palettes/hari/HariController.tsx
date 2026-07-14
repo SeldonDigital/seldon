@@ -3,7 +3,7 @@
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
 import { type MenuEntry, MenuController } from "@lib/menus"
 import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
-import type { ThinkingLevelOption } from "@seldon/ai"
+import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
 import {
   type CSSProperties,
   type ChangeEvent,
@@ -40,6 +40,17 @@ const NO_HOVER_TOGGLE_CLASS = "hari-toggle-no-hover"
 
 /** Header toggle class list for the on and off states, hover suppressed. */
 const ACTIVE_NO_HOVER_TOGGLE_CLASS = `${ACTIVE_TOGGLE_CLASS} ${NO_HOVER_TOGGLE_CLASS}`
+
+/**
+ * The button label for a thinking value: the matching option label when the
+ * value is in the menu, an empty value as "Default", else the titled value.
+ */
+function levelLabel(options: ThinkingMenuOption[], value: string): string {
+  const option = options.find((entry) => entry.value === value)
+  if (option) return option.label
+  if (!value) return "Default"
+  return value[0]!.toUpperCase() + value.slice(1)
+}
 
 /** Capital-case labels for the scope chip, one per selection kind. */
 const SCOPE_LABELS: Record<SelectionScope, string> = {
@@ -181,7 +192,18 @@ function Hari({
   const modelValue = model ?? ""
   const thinkingValue = thinkingLevel ?? ""
   const modelButtonLabel = modelValue || "Default"
-  const thinkingButtonLabel = thinkingValue || "Default"
+  const modelThinking = config?.thinkingByModel?.[modelValue]
+  const thinkingOptions = modelThinking?.options ?? []
+  // A non-thinking model has no menu, and Clamp locks the menu for the turn.
+  const thinkingDisabled =
+    controlsDisabled || noThink || thinkingOptions.length === 0
+  // The button shows the label of the active level, falling back to a titled
+  // value. Clamp overrides the turn, so it shows the level Clamp resolves to for
+  // the active model instead.
+  const clampedLevel = config?.clampedLevels?.[modelValue] ?? "off"
+  const thinkingButtonLabel = noThink
+    ? levelLabel(thinkingOptions, clampedLevel)
+    : levelLabel(thinkingOptions, thinkingValue)
 
   const submit = useCallback(() => {
     if (isPending) return
@@ -263,29 +285,35 @@ function Hari({
         label: value,
         onSelect: () => {
           setModel(value)
+          // Reset the level when it is not in the new model's menu, so switching
+          // to a model with different thinking never leaves a stale selection.
+          const next = config?.thinkingByModel?.[value]
+          if (next && !next.options.some((o) => o.value === thinkingValue)) {
+            setThinkingLevel(next.default)
+          }
           setModelOpen(false)
         },
         selected: value === modelValue,
         activeMarker: "bullet",
         testId: `ai-chat-model-${value}`,
       })),
-    [config, modelValue, setModel],
+    [config, modelValue, thinkingValue, setModel, setThinkingLevel],
   )
 
   const thinkingItems = useMemo<MenuEntry[]>(
     () =>
-      (config?.thinkingLevels ?? []).map((value) => ({
-        id: value,
-        label: value,
+      thinkingOptions.map((option) => ({
+        id: option.value,
+        label: option.label,
         onSelect: () => {
-          setThinkingLevel(value as ThinkingLevelOption)
+          setThinkingLevel(option.value)
           setThinkingOpen(false)
         },
-        selected: value === thinkingValue,
+        selected: option.value === thinkingValue,
         activeMarker: "bullet",
-        testId: `ai-chat-thinking-${value}`,
+        testId: `ai-chat-thinking-${option.value}`,
       })),
-    [config, thinkingValue, setThinkingLevel],
+    [thinkingOptions, thinkingValue, setThinkingLevel],
   )
 
   const transcript = useMemo<ReactNode>(
@@ -349,7 +377,7 @@ function Hari({
   const modelLabelSlot = { children: modelButtonLabel }
   const thinkingSlot = {
     onClick: openThinkingMenu,
-    disabled: controlsDisabled,
+    disabled: thinkingDisabled,
     "data-testid": "ai-chat-thinking",
   }
   const thinkingLabelSlot = { children: thinkingButtonLabel }

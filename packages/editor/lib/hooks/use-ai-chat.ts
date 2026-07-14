@@ -240,6 +240,10 @@ export function useHari() {
       const store = useStore.getState()
       const history = buildHistory(store.turns)
       const { model, thinkingLevel } = store
+      // The turn trusts the model's discovered capability over the server's
+      // name check, so a newly installed thinking model reasons end to end.
+      const mode = model ? store.config?.thinkingByModel?.[model]?.mode : undefined
+      const thinkingCapable = mode === undefined ? undefined : mode !== "none"
       const turnId = store.startTurn(message)
 
       const controller = new AbortController()
@@ -268,6 +272,7 @@ export function useHari() {
               resourceTargetId,
               model,
               thinkingLevel,
+              thinkingCapable,
               noThink,
             },
             (event) => applyTurnEvent(turnId, event),
