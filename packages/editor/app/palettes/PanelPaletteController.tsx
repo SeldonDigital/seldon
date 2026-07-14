@@ -98,6 +98,8 @@ const styles: Record<string, CSSProperties> = {
   },
   dragHandle: {
     cursor: "grab",
+    userSelect: "none",
+    touchAction: "none",
   },
   content: {
     minHeight: 0,

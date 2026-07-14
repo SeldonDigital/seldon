@@ -13,6 +13,7 @@ import {
   type ReactNode,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -171,6 +172,8 @@ function Hari({
   const [thinkingOpen, setThinkingOpen] = useState(false)
   const modelAnchor = useRef<HTMLElement | null>(null)
   const thinkingAnchor = useRef<HTMLElement | null>(null)
+  const transcriptRef = useRef<HTMLElement | null>(null)
+  const pinnedToBottomRef = useRef(true)
 
   const isPending = status === "pending"
   const placeholder = "Describe what you want to do..."
@@ -185,8 +188,26 @@ function Hari({
     const value = draft.trim()
     if (!value) return
     setDraft("")
+    pinnedToBottomRef.current = true
     void send(value)
   }, [draft, send, isPending])
+
+  // Track whether the transcript is scrolled to (or near) the bottom, so
+  // streaming only auto-scrolls when the user has not scrolled up to read back.
+  const onTranscriptScroll = useCallback(() => {
+    const el = transcriptRef.current
+    if (!el) return
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+    pinnedToBottomRef.current = distanceFromBottom < 40
+  }, [])
+
+  // Keep the transcript pinned to the bottom as streamed turns grow, unless the
+  // user has scrolled up. Runs before paint so the content never flashes mid-scroll.
+  useLayoutEffect(() => {
+    const el = transcriptRef.current
+    if (!el || !pinnedToBottomRef.current) return
+    el.scrollTop = el.scrollHeight
+  }, [turns])
 
   const onDraftChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -308,7 +329,11 @@ function Hari({
     "data-testid": "ai-chat-reset",
   }
   const closeSlot = { onClick: close }
-  const transcriptSlot = { children: transcript }
+  const transcriptSlot = {
+    children: transcript,
+    ref: transcriptRef,
+    onScroll: onTranscriptScroll,
+  }
   const inputSlot = {
     value: draft,
     onChange: onDraftChange,
@@ -395,5 +420,7 @@ const styles: Record<string, CSSProperties> = {
   },
   dragHandle: {
     cursor: "grab",
+    userSelect: "none",
+    touchAction: "none",
   },
 }

@@ -186,6 +186,8 @@ const styles: Record<string, CSSProperties> = {
   },
   dragHandle: {
     cursor: "grab",
+    userSelect: "none",
+    touchAction: "none",
   },
   content: {
     flex: 1,
