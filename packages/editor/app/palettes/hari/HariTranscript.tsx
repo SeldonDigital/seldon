@@ -15,7 +15,7 @@ import { MessageUser } from "@seldon/components/elements/MessageUser"
 import type { IconProps } from "@seldon/components/primitives/Icon"
 import { HariMarkdown } from "./HariMarkdown"
 import { HariThinking } from "./HariThinking"
-import { type ToolRow, HariTools } from "./HariTools"
+import { HariTools, type ToolRow } from "./HariTools"
 
 interface HariTranscriptProps {
   turns: HariTurn[]
@@ -114,7 +114,11 @@ function collectToolRows(turn: HariTurn): ToolRow[] {
     })
   })
   ;(turn.warnings ?? []).forEach((warning, index) => {
-    rows.push({ key: `warning-${index}`, icon: "material-warning", text: warning })
+    rows.push({
+      key: `warning-${index}`,
+      icon: "material-warning",
+      text: warning,
+    })
   })
   ;(turn.rejected ?? []).forEach((item, index) => {
     rows.push({

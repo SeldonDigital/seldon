@@ -1,6 +1,6 @@
 "use client"
 
-import { MenuEntry, MenuItem, MenuController } from "@lib/menus"
+import { MenuController, MenuEntry, MenuItem } from "@lib/menus"
 import { CSSProperties, useMemo } from "react"
 import {
   type CustomState,

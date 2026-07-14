@@ -2,7 +2,7 @@
 
 import { getChromeThemes } from "@lib/chrome/chrome-themes"
 import { useExportStatusStore } from "@lib/export/export-status-store"
-import { MenuAlign, MenuEntry, MenuController } from "@lib/menus"
+import { MenuAlign, MenuController, MenuEntry } from "@lib/menus"
 import {
   CSSProperties,
   MouseEvent,

@@ -1,7 +1,7 @@
 "use client"
 
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
-import { type MenuEntry, MenuController } from "@lib/menus"
+import { MenuController, type MenuEntry } from "@lib/menus"
 import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
 import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
 import {

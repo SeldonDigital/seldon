@@ -1,6 +1,6 @@
 "use client"
 
-import { type MenuEntry, MenuController } from "@lib/menus"
+import { MenuController, type MenuEntry } from "@lib/menus"
 import { getThemeSpecPreviewBase } from "@lib/themes/build-theme-spec-preview"
 import {
   ORDINAL_SCALES,

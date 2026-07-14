@@ -102,7 +102,9 @@ type MenuControllerTriggerProps = MenuControllerCommon & {
   onClose?: never
 }
 
-export type MenuControllerProps = MenuControllerControlledProps | MenuControllerTriggerProps
+export type MenuControllerProps =
+  | MenuControllerControlledProps
+  | MenuControllerTriggerProps
 
 /**
  * View-model for menus. In controlled mode the caller owns `open`/`anchorRef`

@@ -1,4 +1,4 @@
-// BESPOKE-VIEW: hand-authored <style> injector for canvas CSS. 
+// BESPOKE-VIEW: hand-authored <style> injector for canvas CSS.
 // Pair with a portal to scope where it mounts.
 interface StyleTagProps {
   css: string

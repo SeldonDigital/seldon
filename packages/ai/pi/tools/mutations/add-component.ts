@@ -31,7 +31,8 @@ export function createAddComponentTool(state: PiTurnState): ToolDefinition {
     }),
     execute: async (_id, params) => {
       const resolved = resolveCatalogId(params.catalogId)
-      if (!resolved.id) return textResult(resolved.message ?? "Unknown catalog id.")
+      if (!resolved.id)
+        return textResult(resolved.message ?? "Unknown catalog id.")
       const catalogId = resolved.id
       if (state.workspace.boards[catalogId]) {
         return textResult(

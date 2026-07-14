@@ -1,5 +1,4 @@
 import { ReactNode, Ref } from "react"
-
 import { Frame } from "@seldon/components/frames/Frame"
 
 interface RowSelectionTargetProps {

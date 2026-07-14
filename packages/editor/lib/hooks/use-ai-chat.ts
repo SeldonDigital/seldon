@@ -242,7 +242,9 @@ export function useHari() {
       const { model, thinkingLevel } = store
       // The turn trusts the model's discovered capability over the server's
       // name check, so a newly installed thinking model reasons end to end.
-      const mode = model ? store.config?.thinkingByModel?.[model]?.mode : undefined
+      const mode = model
+        ? store.config?.thinkingByModel?.[model]?.mode
+        : undefined
       const thinkingCapable = mode === undefined ? undefined : mode !== "none"
       const turnId = store.startTurn(message)
 
@@ -279,7 +281,12 @@ export function useHari() {
             controller.signal,
           )
 
-        const report = buildTurnReport(workspace, actions, ineffective, rejected)
+        const report = buildTurnReport(
+          workspace,
+          actions,
+          ineffective,
+          rejected,
+        )
         logAiTurn(message, debug, actions, report, current, activeBoardKey)
 
         // Records an error turn and stops. Used when the turn built a workspace
@@ -305,7 +312,9 @@ export function useHari() {
         if (report.applied.length > 0) {
           const integrity = checkTurnIntegrity(current, workspace, actions)
           if (!integrity.ok) {
-            failTurn(`Change discarded to protect the workspace: ${integrity.reason}.`)
+            failTurn(
+              `Change discarded to protect the workspace: ${integrity.reason}.`,
+            )
             return
           }
           try {

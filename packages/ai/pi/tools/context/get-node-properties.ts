@@ -9,7 +9,9 @@ import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
 /** Returns the effective, merged property values for one node. */
-export function createGetNodePropertiesTool(state: PiTurnState): ToolDefinition {
+export function createGetNodePropertiesTool(
+  state: PiTurnState,
+): ToolDefinition {
   return defineTool({
     name: "get_node_properties",
     label: "Get Node Properties",

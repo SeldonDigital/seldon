@@ -90,7 +90,8 @@ export async function createSeldonSession(
   // On/off is driven by the session thinking level: a level enables thinking,
   // `undefined` sends `enable_thinking: false`. Clamp asks each model for the
   // least reasoning it supports: qwen3 turns off, gpt-oss drops to low effort.
-  const thinkingCapable = options.thinkingCapable ?? supportsThinking(options.model)
+  const thinkingCapable =
+    options.thinkingCapable ?? supportsThinking(options.model)
   const requestedLevel = options.noThink
     ? clampedThinkingLevel(options.model)
     : options.thinkingLevel

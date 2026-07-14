@@ -8,7 +8,6 @@ import { usePreview } from "@lib/hooks/use-preview"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
-import { EditorCrossfade } from "./EditorCrossfade.bespoke"
 import { BoardsDialog } from "../dialogs/boards/BoardsDialog"
 import { ComponentsDialog } from "../dialogs/components/ComponentsDialog"
 import { FontCollectionsDialog } from "../dialogs/font-collections/FontCollectionsDialog"
@@ -19,6 +18,7 @@ import { FocusRingOverlay } from "../focus/FocusRingOverlay"
 import { HariController } from "../palettes/hari/HariController"
 import { ObjectsSidebar } from "../sidebars/objects/ObjectsSidebar"
 import { PropertiesSidebar } from "../sidebars/properties/PropertiesSidebar"
+import { EditorCrossfade } from "./EditorCrossfade.bespoke"
 
 export default function Editor() {
   const { showPanels } = useEditorConfig()

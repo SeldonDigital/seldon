@@ -322,7 +322,9 @@ function selectedComponentValues(resolved: ResolvedContext): string[] {
     ? getNodeCatalogId(selectedNode, workspace)
     : undefined
   if (!selectedCatalogId) {
-    return activeBoard?.type === "component" ? themeTokensSection(workspace) : []
+    return activeBoard?.type === "component"
+      ? themeTokensSection(workspace)
+      : []
   }
 
   const catalogIds = new Set([selectedCatalogId])

@@ -37,7 +37,8 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
     }),
     execute: async (_id, params) => {
       const resolved = resolveCatalogId(params.catalogId)
-      if (!resolved.id) return textResult(resolved.message ?? "Unknown catalog id.")
+      if (!resolved.id)
+        return textResult(resolved.message ?? "Unknown catalog id.")
       const catalogId = resolved.id
       const action: WorkspaceAction = state.workspace.boards[catalogId]
         ? ({

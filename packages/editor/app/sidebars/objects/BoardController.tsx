@@ -13,9 +13,9 @@ import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
-import { RowSelectionTarget } from "./RowSelectionTarget"
 import { NodeController } from "./NodeController"
 import { ResourceEntry } from "./ResourceEntry"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
 
 const BOARD_SELECTION_KIND = "board"
@@ -30,7 +30,9 @@ type BoardControllerProps =
  * passed for a section with no boards. Branches before any board hooks run so
  * the empty case never needs board data.
  */
-export const BoardController = memo(function BoardController(props: BoardControllerProps) {
+export const BoardController = memo(function BoardController(
+  props: BoardControllerProps,
+) {
   if ("emptyLabel" in props) {
     return <BoardEmpty label={props.emptyLabel} />
   }

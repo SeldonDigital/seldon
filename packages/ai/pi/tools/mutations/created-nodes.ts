@@ -19,7 +19,10 @@ function compositionRoots(workspace: Workspace): ComponentTreeRef[] {
 function childrenIndex(workspace: Workspace): Map<string, string[]> {
   const index = new Map<string, string[]>()
   walkBoardTreeRefs(compositionRoots(workspace), (ref) => {
-    index.set(ref.id, (ref.children ?? []).map((child) => child.id))
+    index.set(
+      ref.id,
+      (ref.children ?? []).map((child) => child.id),
+    )
   })
   return index
 }

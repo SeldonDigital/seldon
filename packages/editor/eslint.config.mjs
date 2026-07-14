@@ -74,12 +74,7 @@ export default defineConfig([
   // are exempt. Bespoke views opt out entirely.
   {
     files: ["app/**/*.tsx", "lib/**/*.tsx"],
-    ignores: [
-      "**/*.bespoke.*",
-      "**/hooks/**",
-      "**/helpers/**",
-      "**/use-*.tsx",
-    ],
+    ignores: ["**/*.bespoke.*", "**/hooks/**", "**/helpers/**", "**/use-*.tsx"],
     rules: {
       "no-restricted-syntax": [
         "error",

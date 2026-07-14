@@ -29,8 +29,8 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { CssBlock } from "./CssBlock"
 import { Category } from "./Category"
+import { CssBlock } from "./CssBlock"
 import { Property } from "./Property"
 import {
   FontCollectionEditingContext,

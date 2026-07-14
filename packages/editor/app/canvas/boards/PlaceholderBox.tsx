@@ -21,7 +21,11 @@ export function PlaceholderBox({
   children,
 }: PlaceholderBoxProps) {
   return (
-    <Frame data-board-id={boardId} className={className} style={placeholderStyle}>
+    <Frame
+      data-board-id={boardId}
+      className={className}
+      style={placeholderStyle}
+    >
       {children}
     </Frame>
   )

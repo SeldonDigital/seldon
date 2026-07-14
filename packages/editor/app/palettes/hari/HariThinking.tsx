@@ -15,11 +15,7 @@ interface HariThinkingProps {
 }
 
 /** Renders the reasoning block with a header toggle that shows or hides it. */
-export function HariThinking({
-  text,
-  durationMs,
-  clamped,
-}: HariThinkingProps) {
+export function HariThinking({ text, durationMs, clamped }: HariThinkingProps) {
   const [open, setOpen] = useState(true)
 
   const label =
