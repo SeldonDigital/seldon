@@ -1,4 +1,4 @@
-import { VMComboboxListbox } from "@lib/menus"
+import { ComboboxListbox } from "@lib/menus"
 import { PropertyControlView } from "./hooks/use-property-control"
 
 interface PropertyOptionsListboxProps {
@@ -25,7 +25,7 @@ export function PropertyOptionsListbox({
   }
 
   return (
-    <VMComboboxListbox
+    <ComboboxListbox
       open={open}
       position={position}
       handleClose={handleClose}

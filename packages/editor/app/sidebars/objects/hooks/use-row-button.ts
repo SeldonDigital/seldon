@@ -8,7 +8,7 @@ interface UseRowButtonOptions {
 }
 
 /**
- * Shared toggle button/icon props for VMBoard and VMNode. Returns behavior and
+ * Shared toggle button/icon props for BoardController and NodeController. Returns behavior and
  * accessibility only. Appearance (color, selection tint, leaf hiding, rotation)
  * is owned by the generated component CSS and by explicit VM-level state, not by
  * inline styles here.

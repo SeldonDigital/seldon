@@ -12,15 +12,15 @@ import { useRenameInput } from "../hooks/use-rename-input"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable"
-import { VMRowSelectionTarget } from "./VMRowSelectionTarget"
-import { VMNode } from "./VMNode"
-import { VMResourceEntry } from "./VMResourceEntry"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
+import { RowSelectionTarget } from "./RowSelectionTarget"
+import { NodeController } from "./NodeController"
+import { ResourceEntry } from "./ResourceEntry"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
 
 const BOARD_SELECTION_KIND = "board"
 
-type VMBoardProps =
+type BoardControllerProps =
   | { board: BoardType; show?: boolean }
   | { emptyLabel: string }
 
@@ -30,18 +30,18 @@ type VMBoardProps =
  * passed for a section with no boards. Branches before any board hooks run so
  * the empty case never needs board data.
  */
-export const VMBoard = memo(function VMBoard(props: VMBoardProps) {
+export const BoardController = memo(function BoardController(props: BoardControllerProps) {
   if ("emptyLabel" in props) {
-    return <VMBoardEmpty label={props.emptyLabel} />
+    return <BoardEmpty label={props.emptyLabel} />
   }
-  return <VMBoardRow board={props.board} show={props.show} />
+  return <BoardRow board={props.board} show={props.show} />
 })
 
 /**
  * Inert placeholder row shown when a section has no boards. Mirrors a board row
  * shell with all slots empty, so it reads as a disabled "No <section>" line.
  */
-function VMBoardEmpty({ label }: { label: string }) {
+function BoardEmpty({ label }: { label: string }) {
   const seldonRefs = { nodeLabel: { value: label, readOnly: true } }
   return (
     <ItemNode
@@ -61,7 +61,7 @@ function VMBoardEmpty({ label }: { label: string }) {
  * Handles board selection, expansion, and canvas tracking. Hover highlight comes
  * from the shared hover bridge via the tree-root controller.
  */
-function VMBoardRow({
+function BoardRow({
   board,
   show = true,
 }: {
@@ -129,7 +129,7 @@ function VMBoardRow({
   const resourceRowConfig = getBoardResourceRowConfig(board)
   const childRows = resourceRowConfig
     ? variants.map((entryId) => (
-        <VMResourceEntry
+        <ResourceEntry
           key={entryId}
           config={resourceRowConfig}
           entryId={entryId}
@@ -140,7 +140,7 @@ function VMBoardRow({
     : variants.map((variantId, index) => {
         const disableReordering = index === 0
         return (
-          <VMNode
+          <NodeController
             key={variantId}
             nodeId={variantId}
             rootId={variantId}
@@ -190,7 +190,7 @@ function VMBoardRow({
 
   return (
     <>
-      <VMRowSelectionTarget
+      <RowSelectionTarget
         ref={rowRef}
         selectionId={boardKey}
         selectionKind={BOARD_SELECTION_KIND}
@@ -208,7 +208,7 @@ function VMBoardRow({
           data-componentid={dataComponentId}
           data-active={boardIsActive}
         />
-      </VMRowSelectionTarget>
+      </RowSelectionTarget>
       {actionsMenu.menu}
 
       <FramerExpandable isExpanded={isExpanded}>

@@ -27,7 +27,7 @@ interface Position {
   positionAbove?: boolean
 }
 
-interface VMComboboxListboxProps {
+interface ComboboxListboxProps {
   open: boolean
   position: Position
   handleClose: () => void
@@ -59,7 +59,7 @@ const backdropStyle: CSSProperties = {
 // The portal root only scopes the chrome theme and mode swap; it lays out nothing.
 const themeScopeStyle: CSSProperties = { display: "contents" }
 
-export function VMComboboxListbox({
+export function ComboboxListbox({
   open,
   position,
   handleClose,
@@ -71,7 +71,7 @@ export function VMComboboxListbox({
   resolveIcon,
   onSelect,
   onHighlight,
-}: VMComboboxListboxProps) {
+}: ComboboxListboxProps) {
   const { chromeTheme } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
   if (!open) {

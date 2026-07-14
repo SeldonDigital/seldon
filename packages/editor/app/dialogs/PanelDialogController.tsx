@@ -31,7 +31,7 @@ const DIALOG_RESIZE_SIDES: readonly ResizeSide[] = [
   "bottom-right",
 ]
 
-interface VMPanelDialogProps<T extends CatalogDialogItem> {
+interface PanelDialogControllerProps<T extends CatalogDialogItem> {
   title: string
   confirmButtonText: string
   categories: CatalogDialogCategory<T>[]
@@ -49,7 +49,7 @@ interface VMPanelDialogProps<T extends CatalogDialogItem> {
  * `WindowOverlay`, a backdrop-backed portal that the title bar drags and the
  * left, right, and bottom edges plus bottom corners resize.
  */
-export function VMPanelDialog<T extends CatalogDialogItem>({
+export function PanelDialogController<T extends CatalogDialogItem>({
   title,
   confirmButtonText,
   categories,
@@ -57,7 +57,7 @@ export function VMPanelDialog<T extends CatalogDialogItem>({
   onQueryChange,
   onPick,
   onClose,
-}: VMPanelDialogProps<T>) {
+}: PanelDialogControllerProps<T>) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const {

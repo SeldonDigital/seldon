@@ -27,11 +27,11 @@ import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { CssBlock } from "./CssBlock"
-import { VMCategory } from "./VMCategory"
-import { VMProperty } from "./VMProperty"
+import { Category } from "./Category"
+import { Property } from "./Property"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -76,7 +76,7 @@ export interface PropertyTreeProps {
  * View-model for the properties sidebar. Renders the no-selection shell or
  * the property tree for the current selection.
  */
-export function VMPropertiesSidebar() {
+export function PropertiesSidebar() {
   const state = usePropertiesSidebar()
   const filter = useFilterInput()
 
@@ -445,7 +445,7 @@ function TreeSection({
       <CssBlock cssProperties={cssStrings} />
     ) : (
       section.properties.map((property) => (
-        <VMProperty
+        <Property
           key={property.key}
           property={property}
           workspace={workspace}
@@ -461,7 +461,7 @@ function TreeSection({
 
   return (
     <Fragment>
-      <VMCategory
+      <Category
         section={section}
         actions={sectionActions}
         onAddCustom={onAddCustom}

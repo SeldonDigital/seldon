@@ -14,12 +14,12 @@ const previewStyle: CSSProperties = {
   borderRadius: "var(--sdn-corners-tight)",
 }
 
-interface VMDragNodePreviewProps {
+interface DragNodePreviewProps {
   label: string
   icon: IconProps["icon"]
 }
 
-export function VMDragNodePreview({ label, icon }: VMDragNodePreviewProps) {
+export function DragNodePreview({ label, icon }: DragNodePreviewProps) {
   const iconSlot = { icon }
   const inputSlot = { value: label, readOnly: true }
 

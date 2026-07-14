@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
 
-interface VMPlaceholderBoxProps {
+interface PlaceholderBoxProps {
   boardId: string
   className?: string
   children: ReactNode
@@ -15,11 +15,11 @@ const placeholderStyle: CSSProperties = {
 }
 
 /** Centered placeholder board used while a board kind has no real preview. */
-export function VMPlaceholderBox({
+export function PlaceholderBox({
   boardId,
   className,
   children,
-}: VMPlaceholderBoxProps) {
+}: PlaceholderBoxProps) {
   return (
     <Frame data-board-id={boardId} className={className} style={placeholderStyle}>
       {children}

@@ -14,12 +14,12 @@ import {
   useDialog,
 } from "../hooks/use-dialog"
 import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
-import { VMPanelDialog } from "../VMPanelDialog"
+import { PanelDialogController } from "../PanelDialogController"
 
 /**
  * Dialog for inserting an existing variant into the selected target node.
  */
-export function VMComponentsDialog() {
+export function ComponentsDialog() {
   const { activePanel, target, closePanel } = usePanel()
   const { setActiveTool } = useTool()
   const { dispatchWithAutoSelect } = useAutoSelectNode()
@@ -92,7 +92,7 @@ export function VMComponentsDialog() {
   if (activePanel !== "component") return null
 
   return (
-    <VMPanelDialog
+    <PanelDialogController
       title="Insert component"
       confirmButtonText="Insert component"
       categories={categories}

@@ -6,7 +6,7 @@ import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
 import { ItemPropertyToggle } from "@seldon/components/elements/ItemPropertyToggle"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
@@ -17,7 +17,7 @@ import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
  * whose toggle owns the value. Both Views share the same row slots (name,
  * disclosure, actions) through one `seldonRefs` channel.
  */
-function VMPropertyInner(props: RowPropertyProps) {
+function PropertyInner(props: RowPropertyProps) {
   const view = useRowProperty(props)
   const optionsMenu = useRowActionsMenu(view.resetActions, {
     focusTargetRef: view.focusTargetRef,
@@ -61,7 +61,7 @@ function VMPropertyInner(props: RowPropertyProps) {
     <FramerExpandable isExpanded={view.isExpanded}>
       <IndentationLevel>
         {view.childItems.map((childProps) => (
-          <VMProperty key={childProps.property.key} {...childProps} />
+          <Property key={childProps.property.key} {...childProps} />
         ))}
       </IndentationLevel>
     </FramerExpandable>
@@ -189,4 +189,4 @@ function VMPropertyInner(props: RowPropertyProps) {
   )
 }
 
-export const VMProperty = memo(VMPropertyInner, arePropertyRowPropsEqual)
+export const Property = memo(PropertyInner, arePropertyRowPropsEqual)

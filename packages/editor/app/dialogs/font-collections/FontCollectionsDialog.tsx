@@ -7,7 +7,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { usePanel } from "@lib/hooks/use-panel"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { VMPanelDialog } from "../VMPanelDialog"
+import { PanelDialogController } from "../PanelDialogController"
 import { CatalogDialogItem } from "../types"
 
 const FONT_COLLECTION_ICON = "material-fontDownload"
@@ -16,7 +16,7 @@ const FONT_COLLECTION_ICON = "material-fontDownload"
  * Dialog for adding a stock font collection board to the workspace. The seeded
  * System collection is never offered.
  */
-export function VMFontCollectionsDialog() {
+export function FontCollectionsDialog() {
   const { activePanel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addFontCollection } = useAddRemoveCommands()
@@ -54,7 +54,7 @@ export function VMFontCollectionsDialog() {
   if (activePanel !== "add-font-collection") return null
 
   return (
-    <VMPanelDialog
+    <PanelDialogController
       title="Add font collection"
       confirmButtonText="Add font collection"
       categories={categories}

@@ -2,7 +2,7 @@
 
 import { getChromeThemes } from "@lib/chrome/chrome-themes"
 import { useExportStatusStore } from "@lib/export/export-status-store"
-import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
+import { MenuAlign, MenuEntry, MenuController } from "@lib/menus"
 import {
   CSSProperties,
   MouseEvent,
@@ -75,7 +75,7 @@ function buildMenuTrigger(
 
 /**
  * Maps a topbar menu's items into the framework-agnostic `MenuEntry` list the
- * floating `VMMenu` consumes, dropping items hidden in the current app state.
+ * floating `MenuController` consumes, dropping items hidden in the current app state.
  */
 function toMenuEntries(menu: MenuDropdown, appState: AppState): MenuEntry[] {
   return menu.items.flatMap<MenuEntry>((item) => {
@@ -108,11 +108,11 @@ const EMPTY_SLOT: MenuSlot = { button: null, label: null }
  * View-model for the topbar. Feeds the generated `BarTopbar` view: it injects
  * the logo/wordmark images and maps each menu from `useMenuConfig` onto a
  * `buttonSimple` trigger slot, then overlays a single controlled floating
- * `VMMenu` anchored to whichever trigger is open. The right-side slots hold the
+ * `MenuController` anchored to whichever trigger is open. The right-side slots hold the
  * chrome-theme and interface-mode dropdowns, and the rainbow gradient strip is a
  * custom overlay because the view has no slot for it.
  */
-export function VMTopbar() {
+export function TopbarController() {
   const menuConfig = useMenuConfig()
   const { appState } = useAppState()
   const { chromeTheme, setChromeTheme, interfaceMode, setInterfaceMode } =
@@ -269,7 +269,7 @@ export function VMTopbar() {
         buttonMenu2={modeButton}
         textLabel8={modeLabel}
       />
-      <VMMenu
+      <MenuController
         key={menuKey}
         open={openMenuId !== null}
         anchorRef={anchorRef}

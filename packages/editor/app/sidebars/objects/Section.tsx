@@ -3,7 +3,7 @@ import { useRowSection } from "./hooks/use-row-section"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
 import { BoardSection } from "../helpers/get-board-sections"
 
-interface VMSectionProps {
+interface SectionProps {
   section: BoardSection
 }
 
@@ -12,7 +12,7 @@ interface VMSectionProps {
  * "Elements"). Sections drive hover styling through `useSectionHeaderRow`, not
  * the canvas tracking system.
  */
-export function VMSection({ section }: VMSectionProps) {
+export function Section({ section }: SectionProps) {
   const { label, icon, buttonIconic, buttonIconic2, onToggle } =
     useRowSection(section)
   const { handleClick, handleMouseEnter, handleMouseLeave } =

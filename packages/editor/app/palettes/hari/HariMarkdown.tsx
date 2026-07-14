@@ -14,7 +14,7 @@ import { Text } from "@seldon/components/primitives/Text"
 import { TextCodeblock } from "@seldon/components/primitives/TextCodeblock"
 import { TextHeading } from "@seldon/components/primitives/TextHeading"
 
-interface VMHariMarkdownProps {
+interface HariMarkdownProps {
   content: string
 }
 
@@ -25,7 +25,7 @@ const REMARK_PLUGINS = [remarkGfm]
  * to a generated primitive, so links open in a new tab and code renders with the
  * catalog codeblock treatment.
  */
-export function VMHariMarkdown({ content }: VMHariMarkdownProps) {
+export function HariMarkdown({ content }: HariMarkdownProps) {
   return (
     <ReactMarkdown
       remarkPlugins={REMARK_PLUGINS}

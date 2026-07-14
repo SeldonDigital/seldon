@@ -5,7 +5,7 @@ import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
 import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import { PanelPalette } from "@seldon/components/modules/PanelPalette"
 
-interface VMPanelPaletteProps {
+interface PanelPaletteControllerProps {
   title: string
   testId?: string
   initialWidth: number
@@ -20,10 +20,10 @@ interface VMPanelPaletteProps {
  * shell: it wires the title, drag handle, and close button, and injects the
  * caller's content into the shell's content frame. It owns the drag, resize,
  * and escape wiring through `useDraggableWindow`, then renders `PanelPalette`
- * inside a non-modal `WindowOverlay`. Mirrors `VMPanelDialog`, but the panel
+ * inside a non-modal `WindowOverlay`. Mirrors `PanelDialogController`, but the panel
  * stays non-modal so the canvas remains usable.
  */
-export function VMPanelPalette({
+export function PanelPaletteController({
   title,
   testId,
   initialWidth,
@@ -31,7 +31,7 @@ export function VMPanelPalette({
   onClose,
   closeOnClickOutside = false,
   children,
-}: VMPanelPaletteProps) {
+}: PanelPaletteControllerProps) {
   const {
     x,
     y,

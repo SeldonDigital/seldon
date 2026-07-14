@@ -6,7 +6,7 @@ import { type CSSProperties, useState } from "react"
 import { MessageThinking } from "@seldon/components/elements/MessageThinking"
 import type { IconProps } from "@seldon/components/primitives/Icon"
 
-interface VMHariThinkingProps {
+interface HariThinkingProps {
   text: string
   /** Set once thinking completes; drives the header label and the elapsed time. */
   durationMs?: number
@@ -15,11 +15,11 @@ interface VMHariThinkingProps {
 }
 
 /** Renders the reasoning block with a header toggle that shows or hides it. */
-export function VMHariThinking({
+export function HariThinking({
   text,
   durationMs,
   clamped,
-}: VMHariThinkingProps) {
+}: HariThinkingProps) {
   const [open, setOpen] = useState(true)
 
   const label =

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { LayeredPaintKey } from "@seldon/core"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { VMDragNodePreview } from "@app/sidebars/VMDragNodePreview"
+import { DragNodePreview } from "@app/sidebars/DragNodePreview"
 
 export const LAYER_DRAG_ACTION = "properties-reorder-layer"
 
@@ -47,7 +47,7 @@ export function useLayerDraggable({
           render: ({ container }) => {
             const root = createRoot(container)
             root.render(
-              <VMDragNodePreview
+              <DragNodePreview
                 label={label}
                 icon={icon as IconProps["icon"]}
               />,

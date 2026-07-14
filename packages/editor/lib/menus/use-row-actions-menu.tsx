@@ -10,7 +10,7 @@ import {
 } from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { VMMenu } from "./VMMenu"
+import { MenuController } from "./MenuController"
 import { ICONIC_BUTTON_ATTR } from "./iconic-button"
 import { MenuAlign, MenuEntry } from "./types"
 
@@ -107,7 +107,7 @@ export function useRowActionsMenu(
   const closeMenu = () => setOpen(false)
   const menuAlign = options?.align ?? "end"
   const menu = hasActions ? (
-    <VMMenu
+    <MenuController
       open={open}
       anchorRef={triggerRef}
       focusTargetRef={options?.focusTargetRef}

@@ -1,6 +1,6 @@
 "use client"
 
-import { MenuEntry, MenuItem, VMMenu } from "@lib/menus"
+import { MenuEntry, MenuItem, MenuController } from "@lib/menus"
 import { CSSProperties, useMemo } from "react"
 import {
   type CustomState,
@@ -53,7 +53,7 @@ function stateLabel(state: NodeState, customStates: CustomState[]): string {
 /**
  * On-canvas interaction-state switcher. Sits just above the board and selects
  * the active state for the whole board tree. The dropdown chrome, positioning,
- * keyboard navigation, and dismissal come from the shared `VMMenu`. Adding a
+ * keyboard navigation, and dismissal come from the shared `MenuController`. Adding a
  * custom state creates it with a sticky default name through a core action.
  * Custom-state names are not editable yet.
  */
@@ -194,7 +194,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
       data-theme={chromeTheme}
       data-mode={resolvedMode}
     >
-      <VMMenu
+      <MenuController
         items={items}
         renderTrigger={({ ref, triggerProps }) => (
           <ButtonMenu

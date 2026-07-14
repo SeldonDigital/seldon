@@ -3,7 +3,7 @@
 // tools it called, the applied changes, the markdown reply, and any rejection or
 // error. Tool activity renders one MessageTools row per entry, grouped in a
 // single frame so the turn reads as one tools section. Assistant replies render
-// through VMHariMarkdown.
+// through HariMarkdown.
 import { type CSSProperties, type ReactNode, useMemo } from "react"
 import type { HariTurn } from "@lib/hooks/use-ai-chat"
 import { useDebugStore } from "@lib/hooks/use-debug-mode"
@@ -15,17 +15,17 @@ import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
 import { Frame } from "@seldon/components/frames/Frame"
 import type { IconProps } from "@seldon/components/primitives/Icon"
-import { VMHariMarkdown } from "./VMHariMarkdown"
-import { VMHariThinking } from "./VMHariThinking"
+import { HariMarkdown } from "./HariMarkdown"
+import { HariThinking } from "./HariThinking"
 
-interface VMHariTranscriptProps {
+interface HariTranscriptProps {
   turns: HariTurn[]
   /** Re-runs a turn's prompt from the error block's retry button. */
   onRetry?: (prompt: string) => void
 }
 
 /** Renders the transcript as a flat list of Message blocks for the turns frame. */
-export function VMHariTranscript({ turns, onRetry }: VMHariTranscriptProps) {
+export function HariTranscript({ turns, onRetry }: HariTranscriptProps) {
   const showTools = useDebugStore((state) => state.showTools)
   const showOutcome = useDebugStore((state) => state.showOutcome)
   const content = useMemo(
@@ -38,7 +38,7 @@ export function VMHariTranscript({ turns, onRetry }: VMHariTranscriptProps) {
 /** Builds every turn's blocks in reading order, or nothing before the first turn. */
 function buildTranscript(
   turns: HariTurn[],
-  onRetry: VMHariTranscriptProps["onRetry"],
+  onRetry: HariTranscriptProps["onRetry"],
   showTools: boolean,
   showOutcome: boolean,
 ): ReactNode {
@@ -82,7 +82,7 @@ function stoppedBlock(turn: HariTurn): ReactNode {
 function thinkingBlock(turn: HariTurn): ReactNode {
   const text = turn.thinking ?? ""
   return (
-    <VMHariThinking
+    <HariThinking
       key={`${turn.id}-thinking`}
       text={text}
       durationMs={turn.thinkingMs}
@@ -218,14 +218,14 @@ function assistantBlock(turn: HariTurn): ReactNode {
   const reply = turn.reply ?? ""
   return (
     <MessageAssistant key={`${turn.id}-assistant`}>
-      <VMHariMarkdown content={reply} />
+      <HariMarkdown content={reply} />
     </MessageAssistant>
   )
 }
 
 function errorBlock(
   turn: HariTurn,
-  onRetry: VMHariTranscriptProps["onRetry"],
+  onRetry: HariTranscriptProps["onRetry"],
 ): ReactNode {
   const text =
     turn.error ??

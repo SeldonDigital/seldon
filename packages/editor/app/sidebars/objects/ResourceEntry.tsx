@@ -14,10 +14,10 @@ import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { VMRowSelectionTarget } from "./VMRowSelectionTarget"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 import type { ResourceRowConfig } from "./helpers/resource-row-config"
 
-type VMResourceEntryProps = {
+type ResourceEntryProps = {
   config: ResourceRowConfig
   entryId: string
   show?: boolean
@@ -30,12 +30,12 @@ type VMResourceEntryProps = {
  * entry and custom variants. Selecting the row highlights and scrolls to its
  * canvas preview.
  */
-export function VMResourceEntry({
+export function ResourceEntry({
   config,
   entryId,
   show = true,
   parentIsSelected = false,
-}: VMResourceEntryProps) {
+}: ResourceEntryProps) {
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectResourceEntry } = useSelection()
@@ -82,7 +82,7 @@ export function VMResourceEntry({
   const icon2: IconProps = { icon: config.icon }
 
   // Resource rows are always leaves, so the toggle slot stays a spacer with its
-  // chevron hidden (mirrors the childless `VMNode` treatment) to keep label
+  // chevron hidden (mirrors the childless `NodeController` treatment) to keep label
   // indentation aligned. The trailing actions icon keeps the generated
   // `seldon-more` default, hidden by the actions button placeholder. Per-row
   // data flows through stable refs.
@@ -93,8 +93,8 @@ export function VMResourceEntry({
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
-  // The row's selection is styled on its combobox-field child, matching `VMNode`
-  // and `VMBoard`.
+  // The row's selection is styled on its combobox-field child, matching `NodeController`
+  // and `BoardController`.
   const comboboxField = buildFieldStateProps({ selected: isSelected })
 
   // Root-level row state mirrors selection for selectors and tests.
@@ -104,7 +104,7 @@ export function VMResourceEntry({
 
   return (
     <>
-      <VMRowSelectionTarget
+      <RowSelectionTarget
         ref={rowRef}
         selectionId={entryId}
         selectionKind={config.selectionKind}
@@ -121,7 +121,7 @@ export function VMResourceEntry({
           data-resource-kind={config.kind}
           data-active={isActive}
         />
-      </VMRowSelectionTarget>
+      </RowSelectionTarget>
       {actionsMenu.menu}
     </>
   )

@@ -1,9 +1,9 @@
 /**
- * VMCombobox: the editable combobox VM. It owns the input behavior (focus,
+ * ComboboxController: the editable combobox VM. It owns the input behavior (focus,
  * commit, keyboard nav, blur) over the generated `Input` primitive. In
- * `combobox` mode it anchors the floating `VMComboboxListbox`; in `standalone`
+ * `combobox` mode it anchors the floating `ComboboxListbox`; in `standalone`
  * mode it is a plain commit-on-blur input used for inline rename and dialog
- * fields. Option-list rendering lives in `VMComboboxListbox`; the selection and
+ * fields. Option-list rendering lives in `ComboboxListbox`; the selection and
  * filter engine lives in `useComboboxState`.
  */
 import { CSSProperties, RefObject, useEffect, useRef } from "react"
@@ -72,7 +72,7 @@ function notifyCommit(
   onValueChange?.(value)
 }
 
-export function VMCombobox({
+export function ComboboxController({
   mode = "standalone",
   value,
   onValueChange,

@@ -2,7 +2,7 @@ import { ReactNode, Ref } from "react"
 
 import { Frame } from "@seldon/components/frames/Frame"
 
-interface VMRowSelectionTargetProps {
+interface RowSelectionTargetProps {
   selectionId: string
   selectionKind: string
   /**
@@ -20,13 +20,13 @@ interface VMRowSelectionTargetProps {
  * data attributes that the selection resolver and canvas tracking bridges
  * read; renders no styling of its own.
  */
-export function VMRowSelectionTarget({
+export function RowSelectionTarget({
   selectionId,
   selectionKind,
   selectionRootId,
   ref,
   children,
-}: VMRowSelectionTargetProps) {
+}: RowSelectionTargetProps) {
   return (
     <Frame
       ref={ref}

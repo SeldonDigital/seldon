@@ -6,7 +6,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { usePanel } from "@lib/hooks/use-panel"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { VMPanelDialog } from "../VMPanelDialog"
+import { PanelDialogController } from "../PanelDialogController"
 import { CatalogDialogItem } from "../types"
 
 const THEME_ICON = "seldon-theme"
@@ -14,7 +14,7 @@ const THEME_ICON = "seldon-theme"
 /**
  * Dialog for adding a stock theme board to the workspace.
  */
-export function VMThemesDialog() {
+export function ThemesDialog() {
   const { activePanel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addTheme } = useAddRemoveCommands()
@@ -50,7 +50,7 @@ export function VMThemesDialog() {
   if (activePanel !== "add-theme") return null
 
   return (
-    <VMPanelDialog
+    <PanelDialogController
       title="Add theme"
       confirmButtonText="Add theme"
       categories={categories}

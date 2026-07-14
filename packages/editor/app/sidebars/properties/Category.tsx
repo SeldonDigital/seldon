@@ -7,7 +7,7 @@ import { ItemSection } from "@seldon/components/elements/ItemSection"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 
-interface VMCategoryProps {
+interface CategoryProps {
   section: PropertySection | ThemePropertySection
   actions?: MenuEntry[]
   /** When set, renders a trailing "+" button that adds a custom token. */
@@ -19,7 +19,7 @@ interface VMCategoryProps {
  * "Attributes", "Layout"). Categories don't use the tracking system, so
  * useRowHover is used for hover styling.
  */
-export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
+export function Category({ section, actions, onAddCustom }: CategoryProps) {
   const { label, icon, buttonIconic, onToggle } = useRowCategory(section)
   const { handleClick, handleMouseEnter, handleMouseLeave } =
     useSectionHeaderRow({ onToggle })
@@ -53,7 +53,7 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
 
   // Positional enablers: render each trailing slot only when it has content, so
   // the add "+" sits flush right when a category has no actions (mirrors the
-  // objects sidebar's `VMSection`). An empty actions placeholder would otherwise
+  // objects sidebar's `Section`). An empty actions placeholder would otherwise
   // reserve width and push the "+" off the edge.
   const addSlot = addButton ? {} : null
   const actionsSlot = actionsMenu.hasActions ? {} : null

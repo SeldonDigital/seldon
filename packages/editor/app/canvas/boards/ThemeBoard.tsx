@@ -1,6 +1,6 @@
 "use client"
 
-import { type MenuEntry, VMMenu } from "@lib/menus"
+import { type MenuEntry, MenuController } from "@lib/menus"
 import { getThemeSpecPreviewBase } from "@lib/themes/build-theme-spec-preview"
 import {
   ORDINAL_SCALES,
@@ -46,7 +46,7 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
 import { BoardPreviewNode } from "./BoardPreviewNode"
-import { VMPreviewItemWrapper } from "./VMPreviewItemWrapper"
+import { PreviewItemWrapper } from "./PreviewItemWrapper"
 
 export type ThemeBoardProps = {
   board: Board
@@ -428,7 +428,7 @@ function ThemeVariantPreview({
   }
 
   return (
-    <VMPreviewItemWrapper
+    <PreviewItemWrapper
       canvasSelectionId={variantEntryId}
       selectionId={variantEntryId}
       selectionKind="theme"
@@ -441,12 +441,12 @@ function ThemeVariantPreview({
           isRoot
         />
       </Frame>
-      <VMMenu
+      <MenuController
         open={menuOpen}
         anchorRef={anchorRef}
         onClose={closeMenu}
         items={menuItems}
       />
-    </VMPreviewItemWrapper>
+    </PreviewItemWrapper>
   )
 }

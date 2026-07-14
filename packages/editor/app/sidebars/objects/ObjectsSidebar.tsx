@@ -26,18 +26,18 @@ import { getSelectionTarget } from "@lib/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { BoardSection } from "../helpers/get-board-sections"
-import { VMBoard } from "./VMBoard"
-import { VMSection } from "./VMSection"
+import { BoardController } from "./BoardController"
+import { Section } from "./Section"
 
 /**
  * View-model for the objects sidebar. Feeds the generated `SidebarObjects`
  * view: it renders the inert header combobox and the section list, scroller,
  * and tree-level hover controller injected into the view's frame.
  */
-export function VMObjectsSidebar() {
+export function ObjectsSidebar() {
   const { sections } = useObjectsSidebar()
   const scrollerRef = useScrollSelection()
   const setHoveredId = useSetHoveredId()
@@ -162,16 +162,16 @@ function ObjectsSectionGroup({ section }: { section: BoardSection }) {
   const emptyLabel = `No ${section.label.toLowerCase()}`
   const boardRows =
     section.boards.length === 0 ? (
-      <VMBoard emptyLabel={emptyLabel} />
+      <BoardController emptyLabel={emptyLabel} />
     ) : (
       section.boards.map((board) => (
-        <VMBoard key={getComponentKey(board)} board={board} />
+        <BoardController key={getComponentKey(board)} board={board} />
       ))
     )
 
   return (
     <>
-      <VMSection section={section} />
+      <Section section={section} />
       <FramerExpandable isExpanded={isExpanded}>{boardRows}</FramerExpandable>
     </>
   )

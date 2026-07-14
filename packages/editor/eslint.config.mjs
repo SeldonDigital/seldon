@@ -68,20 +68,40 @@ export default defineConfig([
       "no-restricted-imports": "off",
     },
   },
-  // View boundary: app/ components are binding shells. They should not author
-  // raw DOM markup or reach into Model services directly. Warnings for now;
-  // these become errors once the migration completes.
+  // View boundary: app/ views are binding shells. A view that authors raw DOM
+  // markup or framer-motion markup is bespoke and must be named *.bespoke.*.
+  // Hooks, helpers, and use-* modules are logic, not views, so they are exempt.
+  // Bespoke views opt out entirely.
   {
     files: ["app/**/*.tsx"],
-    ignores: ["**/*.bespoke.*"],
+    ignores: [
+      "**/*.bespoke.*",
+      "**/hooks/**",
+      "**/helpers/**",
+      "**/use-*.tsx",
+    ],
     rules: {
       "no-restricted-syntax": [
-        "warn",
+        "error",
         {
           selector: "JSXOpeningElement[name.name=/^[a-z]/]",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
+        {
+          selector:
+            "JSXOpeningElement[name.type='JSXMemberExpression'][name.object.name='motion']",
+          message: APP_VIEW_BOUNDARY_MESSAGE,
+        },
       ],
+    },
+  },
+  // Model service boundary: app/ components reach Model services through a
+  // ViewModel hook, never directly. Warning globally; error in the fully
+  // migrated properties sidebar so it cannot regress.
+  {
+    files: ["app/**/*.tsx"],
+    ignores: ["**/*.bespoke.*"],
+    rules: {
       "no-restricted-imports": [
         "warn",
         {
@@ -96,35 +116,10 @@ export default defineConfig([
       ],
     },
   },
-  // Completed areas: all raw markup has moved into Views, so the no-raw-markup
-  // boundary is enforced as an error here. Other areas stay at warning until
-  // their markup is migrated.
-  {
-    files: ["app/tracking/**/*.tsx", "app/toaster/**/*.tsx"],
-    ignores: ["**/*.bespoke.*"],
-    rules: {
-      "no-restricted-syntax": [
-        "error",
-        {
-          selector: "JSXOpeningElement[name.name=/^[a-z]/]",
-          message: APP_VIEW_BOUNDARY_MESSAGE,
-        },
-      ],
-    },
-  },
-  // The properties sidebar is fully migrated: no raw markup, no Model service
-  // imports. Lock both boundaries as errors so the area cannot regress.
   {
     files: ["app/sidebars/properties/**/*.tsx"],
     ignores: ["**/*.bespoke.*"],
     rules: {
-      "no-restricted-syntax": [
-        "error",
-        {
-          selector: "JSXOpeningElement[name.name=/^[a-z]/]",
-          message: APP_VIEW_BOUNDARY_MESSAGE,
-        },
-      ],
       "no-restricted-imports": [
         "error",
         {

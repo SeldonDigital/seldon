@@ -1,7 +1,7 @@
 "use client"
 
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
-import { type MenuEntry, VMMenu } from "@lib/menus"
+import { type MenuEntry, MenuController } from "@lib/menus"
 import { WindowOverlay } from "@lib/overlays/WindowOverlay"
 import type { ThinkingLevelOption } from "@seldon/ai"
 import {
@@ -25,7 +25,7 @@ import { type HariStatus, type HariTurn, useHari } from "@lib/hooks/use-ai-chat"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
-import { VMHariTranscript } from "./VMHariTranscript"
+import { HariTranscript } from "./HariTranscript"
 import "./hari.css"
 
 const HARI_INITIAL_WIDTH = 420
@@ -57,7 +57,7 @@ const SCOPE_LABELS: Record<SelectionScope, string> = {
  * active so it recenters on each open and its floating-panel hooks run only when
  * open, matching the other dialog view-models.
  */
-export function VMHari() {
+export function HariController() {
   const {
     isOpen,
     close,
@@ -114,7 +114,7 @@ interface HariProps {
  * a non-modal floating window: the title bar drags the window, the close button
  * dismisses it, the transcript fills the `turns` frame, and the composer submits
  * on Enter or the send button. The model and thinking triggers open the shared
- * floating `VMMenu` anchored to the clicked button.
+ * floating `MenuController` anchored to the clicked button.
  */
 function Hari({
   close,
@@ -268,7 +268,7 @@ function Hari({
   )
 
   const transcript = useMemo<ReactNode>(
-    () => <VMHariTranscript turns={turns} onRetry={send} />,
+    () => <HariTranscript turns={turns} onRetry={send} />,
     [turns, send],
   )
 
@@ -372,13 +372,13 @@ function Hari({
         buttonIconic3={sendSlot}
         icon8={sendIconSlot}
       />
-      <VMMenu
+      <MenuController
         open={modelOpen}
         anchorRef={modelAnchor}
         onClose={closeModelMenu}
         items={modelItems}
       />
-      <VMMenu
+      <MenuController
         open={thinkingOpen}
         anchorRef={thinkingAnchor}
         onClose={closeThinkingMenu}

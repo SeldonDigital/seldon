@@ -29,7 +29,7 @@ const categoryConfigs = [
 
 /**
  * Builds catalog categories for the component picker, plus the search query
- * that `VMPanelDialog` renders.
+ * that `PanelDialogController` renders.
  */
 export function useDialog({
   shouldShowComponent,

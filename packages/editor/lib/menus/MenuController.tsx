@@ -61,7 +61,7 @@ function markerIconProps(
   return { icon: glyph, "aria-hidden": "true", style: { visibility: "hidden" } }
 }
 
-interface VMMenuCommon {
+interface MenuControllerCommon {
   items: MenuEntry[]
   align?: MenuAlign
   minWidth?: string
@@ -86,30 +86,30 @@ export interface DropdownRenderTriggerArgs {
 }
 
 /** Controlled mode: the caller owns `open` and the anchor element. */
-type VMMenuControlledProps = VMMenuCommon & {
+type MenuControllerControlledProps = MenuControllerCommon & {
   open: boolean
   anchorRef: RefObject<HTMLElement | null>
   onClose: () => void
   renderTrigger?: never
 }
 
-/** Trigger mode: VMMenu owns open state and anchors to its own trigger. */
-type VMMenuTriggerProps = VMMenuCommon & {
+/** Trigger mode: MenuController owns open state and anchors to its own trigger. */
+type MenuControllerTriggerProps = MenuControllerCommon & {
   renderTrigger: (args: DropdownRenderTriggerArgs) => ReactNode
   open?: never
   anchorRef?: never
   onClose?: never
 }
 
-export type VMMenuProps = VMMenuControlledProps | VMMenuTriggerProps
+export type MenuControllerProps = MenuControllerControlledProps | MenuControllerTriggerProps
 
 /**
  * View-model for menus. In controlled mode the caller owns `open`/`anchorRef`
  * (used for headless slot triggers like sidebar row actions). In trigger mode
- * the caller supplies `renderTrigger` and VMMenu owns the open state and trigger
+ * the caller supplies `renderTrigger` and MenuController owns the open state and trigger
  * wiring. Both render the same floating `Menu` View.
  */
-export function VMMenu(props: VMMenuProps) {
+export function MenuController(props: MenuControllerProps) {
   if (props.renderTrigger) {
     return <TriggerMenu {...props} />
   }
@@ -127,7 +127,7 @@ function TriggerMenu({
   minWidth,
   focusTargetRef,
   renderTrigger,
-}: VMMenuTriggerProps) {
+}: MenuControllerTriggerProps) {
   const [open, setOpen] = useState(false)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const toggle = () => setOpen((current) => !current)
@@ -163,7 +163,7 @@ function TriggerMenu({
   )
 }
 
-interface FloatingMenuProps extends VMMenuCommon {
+interface FloatingMenuProps extends MenuControllerCommon {
   open: boolean
   anchorRef: RefObject<HTMLElement | null>
   onClose: () => void

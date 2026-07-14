@@ -18,7 +18,7 @@ import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
-import { VMPreviewItemWrapper } from "./VMPreviewItemWrapper"
+import { PreviewItemWrapper } from "./PreviewItemWrapper"
 import { injectBoardBackground } from "./inject-board-background"
 
 export type FontCollectionBoardProps = {
@@ -219,7 +219,7 @@ function FontCollectionTypeSpecimen({
   }
 
   return (
-    <VMPreviewItemWrapper
+    <PreviewItemWrapper
       canvasSelectionId={canvasSelectionId(resourceItemKey, entryId)}
       selectionId={resourceItemKey}
       selectionKind="resourceItem"
@@ -230,6 +230,6 @@ function FontCollectionTypeSpecimen({
         scope={scope}
         isRoot
       />
-    </VMPreviewItemWrapper>
+    </PreviewItemWrapper>
   )
 }

@@ -16,16 +16,16 @@ import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { Frame } from "@seldon/components/frames/Frame"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { VMRowSelectionTarget } from "./VMRowSelectionTarget"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 
 const NODE_SELECTION_KIND = "node"
 
 /** Most echo rows to list before collapsing the remainder into a summary row. */
 const ECHO_ROW_LIMIT = 6
 
-interface VMNodeProps {
+interface NodeControllerProps {
   nodeId: string
   /**
    * Node-id path of this copy, from the variant-root down to this row, joined
@@ -48,7 +48,7 @@ function RepeatEchoSummaryRow({ count }: { count: number }) {
   return <Frame>+{count} more</Frame>
 }
 
-const VMNodeInner = function VMNodeInner({
+const NodeInner = function NodeInner({
   node,
   rootId,
   show,
@@ -126,7 +126,7 @@ const VMNodeInner = function VMNodeInner({
   function renderChildRows(childNodeId: string): ReactElement[] {
     const childRootId = `${rootId}/${childNodeId}`
     const indexZeroRow = (
-      <VMNode
+      <NodeController
         key={childNodeId}
         nodeId={childNodeId}
         rootId={childRootId}
@@ -150,7 +150,7 @@ const VMNodeInner = function VMNodeInner({
     for (let echoIndex = 1; echoIndex <= shownEchoes; echoIndex++) {
       const echoKey = `${childNodeId}#echo${echoIndex}`
       rows.push(
-        <VMNode
+        <NodeController
           key={echoKey}
           nodeId={childNodeId}
           rootId={childRootId}
@@ -275,7 +275,7 @@ const VMNodeInner = function VMNodeInner({
 
   return (
     <>
-      <VMRowSelectionTarget
+      <RowSelectionTarget
         ref={ref}
         selectionId={node.id}
         selectionKind={NODE_SELECTION_KIND}
@@ -306,7 +306,7 @@ const VMNodeInner = function VMNodeInner({
             data-active={isNodeActive}
           />
         </SidebarTracking>
-      </VMRowSelectionTarget>
+      </RowSelectionTarget>
       {actionsMenu.menu}
 
       {childrenSection}
@@ -314,21 +314,21 @@ const VMNodeInner = function VMNodeInner({
   )
 }
 
-export const VMNode = memo(function VMNode({
+export const NodeController = memo(function NodeController({
   nodeId,
   rootId,
   show = true,
   parentIsSelected = false,
   disableReordering = false,
   isEcho = false,
-}: VMNodeProps) {
+}: NodeControllerProps) {
   const { workspace } = useWorkspace({ usePreview: false })
   const node = getNode(workspace, nodeId)
 
   if (!node) return null
 
   return (
-    <VMNodeInner
+    <NodeInner
       node={node}
       rootId={rootId}
       show={show}

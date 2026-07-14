@@ -5,7 +5,7 @@ import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { Frame } from "@seldon/components/frames/Frame"
-import { VMTopbar } from "./topbar/VMTopbar"
+import { TopbarController } from "./topbar/TopbarController"
 
 export function Layout({
   children,
@@ -16,7 +16,7 @@ export function Layout({
   const resolvedMode = useResolvedInterfaceMode()
 
   const shouldShowHeader = appState === "project" || showPanels
-  const header = shouldShowHeader ? <VMTopbar /> : null
+  const header = shouldShowHeader ? <TopbarController /> : null
 
   // Chrome shell for the editor interface. The chrome theme and mode scope the
   // interface only via data-theme/data-mode. The canvas pins itself back to the

@@ -11,7 +11,7 @@ import {
   FilterComponentPredicate,
   useDialog,
 } from "../hooks/use-dialog"
-import { VMPanelDialog } from "../VMPanelDialog"
+import { PanelDialogController } from "../PanelDialogController"
 
 const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
   [ComponentLevel.SCREEN]: "screen",
@@ -26,7 +26,7 @@ const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
  * Dialog for adding a board to the workspace. When a level is provided the
  * catalog is scoped to that component level (e.g. only elements).
  */
-export function VMBoardsDialog() {
+export function BoardsDialog() {
   const { activePanel, dialogLevel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addBoard } = useAddRemoveCommands()
@@ -77,7 +77,7 @@ export function VMBoardsDialog() {
   if (activePanel !== "add-board") return null
 
   return (
-    <VMPanelDialog
+    <PanelDialogController
       title={title}
       confirmButtonText={title}
       categories={categories}

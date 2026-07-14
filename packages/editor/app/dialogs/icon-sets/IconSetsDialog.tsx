@@ -7,7 +7,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { usePanel } from "@lib/hooks/use-panel"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { VMPanelDialog } from "../VMPanelDialog"
+import { PanelDialogController } from "../PanelDialogController"
 import { CatalogDialogItem } from "../types"
 
 const ICON_SET_ICON = "material-category"
@@ -16,7 +16,7 @@ const ICON_SET_ICON = "material-category"
  * Dialog for adding a stock icon set board to the workspace. The seeded Seldon
  * icon set is never offered.
  */
-export function VMIconSetsDialog() {
+export function IconSetsDialog() {
   const { activePanel, closePanel } = usePanel()
   const { workspace } = useWorkspace()
   const { addIconSet } = useAddRemoveCommands()
@@ -54,7 +54,7 @@ export function VMIconSetsDialog() {
   if (activePanel !== "add-icon-set") return null
 
   return (
-    <VMPanelDialog
+    <PanelDialogController
       title="Add icon set"
       confirmButtonText="Add icon set"
       categories={categories}

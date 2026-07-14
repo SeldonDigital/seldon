@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
 
-interface VMPreviewItemWrapperProps {
+interface PreviewItemWrapperProps {
   canvasSelectionId: string
   selectionId: string
   selectionKind: string
@@ -20,13 +20,13 @@ const wrapperStyle: CSSProperties = {
  * Selectable preview cell for a resource board (theme, icon, font specimen).
  * Carries both canvas and sidebar selection ids so the shared bridges resolve.
  */
-export function VMPreviewItemWrapper({
+export function PreviewItemWrapper({
   canvasSelectionId,
   selectionId,
   selectionKind,
   title,
   children,
-}: VMPreviewItemWrapperProps) {
+}: PreviewItemWrapperProps) {
   return (
     <Frame
       title={title}
