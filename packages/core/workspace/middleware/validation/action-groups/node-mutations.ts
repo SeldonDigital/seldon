@@ -9,7 +9,7 @@ import {
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { rules } from "../../../../rules/config/rules.config"
 import { getComputedTheme } from "../../../compute"
-import { ErrorMessages } from "../../../constants"
+import { DEFAULT_THEME_ID, ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
@@ -239,6 +239,8 @@ export function validateNodeMutation(
       propertyValidators.keys(
         action.payload.properties,
         getNodeComponentId(node, workspace),
+        undefined,
+        { rejectDottedKeys: true },
       )
       propertyValidators.values(action.payload.properties, workspace, themeId)
       assertMatchColorSiblingsLocked(
@@ -429,8 +431,11 @@ export function validateThemeMutation(
     case "reset_theme_override":
     case "set_theme_label":
     case "set_theme_editor_data":
+      themeEntryValidators.exists(workspace, themeIdOf(action))
+      break
     case "set_theme_override":
       themeEntryValidators.exists(workspace, themeIdOf(action))
+      assertThemeOverridePathValid(action)
       break
     case "delete_theme":
       themeEntryValidators.exists(workspace, action.payload.themeId)
@@ -444,6 +449,22 @@ export function validateThemeMutation(
 
 function themeIdOf(action: Action): string {
   return (action.payload as { themeId: string }).themeId
+}
+
+/**
+ * Rejects a `set_theme_override` whose path is empty or not a string. The theme
+ * override tree accepts authoring roots such as `color` and `core` that are not
+ * literal keys on a materialized theme, so this guard stays at the structural
+ * level and does not restrict the section.
+ */
+function assertThemeOverridePathValid(action: Action): void {
+  const path = (action.payload as { path?: unknown }).path
+  if (typeof path !== "string" || path.length === 0) {
+    throw new WorkspaceValidationError(
+      "Theme override path must be a non-empty string",
+      action,
+    )
+  }
 }
 
 /** Loads an instance node, throwing when the id is missing or not an instance. */
@@ -642,7 +663,7 @@ function assertMatchColorSiblingsLocked(
   themeId: string | undefined,
   properties: Record<string, unknown>,
 ): void {
-  const theme = getComputedTheme(themeId ?? "seldon", workspace) as {
+  const theme = getComputedTheme(themeId ?? DEFAULT_THEME_ID, workspace) as {
     matchColor?: {
       parameters?: { includeBrightness?: boolean; includeOpacity?: boolean }
     }

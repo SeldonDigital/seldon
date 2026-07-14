@@ -16,6 +16,10 @@ import {
   Display,
   FontStyle,
   Gap,
+  GradientPositionX,
+  GradientPositionY,
+  GradientShape,
+  GradientSize,
   GradientType,
   HtmlElement,
   ImageFit,
@@ -195,6 +199,30 @@ function initializePresetMappings() {
     PRESET_MAPPINGS.set(value, GradientType[key as keyof typeof GradientType])
   })
 
+  // Radial gradient shape presets
+  Object.entries(GradientShape).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, GradientShape[key as keyof typeof GradientShape])
+  })
+
+  // Radial gradient size presets
+  Object.entries(GradientSize).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, GradientSize[key as keyof typeof GradientSize])
+  })
+
+  // Radial gradient center axis anchors (left/center/right, top/center/bottom)
+  Object.entries(GradientPositionX).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      GradientPositionX[key as keyof typeof GradientPositionX],
+    )
+  })
+  Object.entries(GradientPositionY).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      GradientPositionY[key as keyof typeof GradientPositionY],
+    )
+  })
+
   // Image fit presets
   Object.entries(ImageFit).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(value, ImageFit[key as keyof typeof ImageFit])
@@ -322,7 +350,7 @@ function getDefaultUnitForProperty(propertyKey: string): Unit {
  * Check if a property key is a color-related property
  * Uses the core properties system for authoritative color property detection
  */
-function isColorProperty(propertyKey: string): boolean {
+export function isColorProperty(propertyKey: string): boolean {
   // Handle sub-properties by checking the full path
   const actualProperty = propertyKey.includes(".")
     ? propertyKey.split(".").pop()!

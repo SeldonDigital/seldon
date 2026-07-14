@@ -1,5 +1,12 @@
 import { ComponentId } from "../../components/constants"
+import type { ThemeInstanceId } from "../../themes/types"
 import { InstanceId, VariantId } from "../types"
+
+/**
+ * Fallback theme id when a board or node carries no theme ref. Matches the
+ * protected `seldon` theme entry that every workspace keeps.
+ */
+export const DEFAULT_THEME_ID = "seldon" as ThemeInstanceId
 
 export const ErrorMessages = {
   nodeNotFound: (id: InstanceId | VariantId) => `Node ${id} not found.`,
@@ -10,10 +17,6 @@ export const ErrorMessages = {
     `Board not found for variant ${id}.`,
   tooManyDefaultVariants: (id: ComponentId) =>
     `Board ${id} has more than one default variant.`,
-  invalidBoardIndex: (id: ComponentId, index: number, expected: number) =>
-    `Board ${id} has an invalid index of ${index} (expected ${expected}).`,
-  nodeOrBoardNotFound: (id: InstanceId | VariantId | ComponentId) =>
-    `No node or board found with id ${id}.`,
   componentVariantsInUse: (_id: ComponentId) =>
     `One or more variants of this board are in use in other components. Remove them first before deleting the board.`,
   variantsInUseForReset: (
@@ -38,14 +41,10 @@ export const ErrorMessages = {
     `Node ${id} is not a variant.`,
   nodeNotInstance: (id: InstanceId | VariantId) =>
     `Node ${id} is not an instance but a variant.`,
-  noChildAtIndex: (id: InstanceId | VariantId, index: number) =>
-    `Node ${id} does not have a child at index ${index}.`,
   childNotAllowed: (id: InstanceId | VariantId) =>
     `Node ${id} cannot have children.`,
   parentNotFound: (id: InstanceId | VariantId) =>
     `Parent node not found for node ${id}.`,
-  moveNotAllowed: (id: InstanceId | VariantId) =>
-    `Node ${id} is not allowed to be moved.`,
   cannotMoveToDifferentVariant: () =>
     `A component cannot be moved to a different variant or board.`,
   cannotMoveIntoOwnSubtree: (id: InstanceId | VariantId) =>
@@ -53,7 +52,6 @@ export const ErrorMessages = {
   cyclicComponentTree: (id: string) =>
     `Component tree contains a cycle at node ${id}.`,
   danglingVariant: (id: VariantId) => `Variant ${id} is not used in any board.`,
-  missingVariant: (id: VariantId) => `Variant ${id} not found.`,
   danglingChildNode: (id: InstanceId) =>
     `Child node ${id} is not used in any node.`,
   instanceMissingOrigin: (id: InstanceId) =>
@@ -64,8 +62,6 @@ export const ErrorMessages = {
   ) => `Node ${id} references ${instance} which does not exist.`,
   duplicateIds: (ids: string[]) =>
     `Duplicate IDs found in workspace: ${ids.join(", ")}.`,
-  duplicateInstanceIds: (ids: string[]) =>
-    `Duplicate child IDs found in workspace: ${ids.join(", ")}.`,
   variantRefersToParent: (id: VariantId, property: string) =>
     `Variant ${id}'s property ${property} is based on a parent node but variants don't have a parent node.`,
   cannotMoveToDefaultPosition: () =>

@@ -35,7 +35,7 @@ export const schema = {
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -145,7 +145,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
             orientation: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Orientation.VERTICAL,
@@ -153,6 +152,7 @@ export const schema = {
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
           },
           children: [
             {
@@ -167,13 +167,13 @@ export const schema = {
                     value: "@margin.compact",
                   },
                 },
-                brightness: {
-                  type: Sdn.ValueType.EXACT,
-                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
-                },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
                   value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                },
+                brightness: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
                 },
                 font: {
                   preset: {
@@ -211,7 +211,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.FRAME,
           overrides: {
-            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
             orientation: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Orientation.VERTICAL,
@@ -219,6 +218,7 @@ export const schema = {
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
           },
           children: [
             {
@@ -233,13 +233,13 @@ export const schema = {
                     value: "@margin.compact",
                   },
                 },
-                brightness: {
-                  type: Sdn.ValueType.EXACT,
-                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
-                },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
                   value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                },
+                brightness: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
                 },
                 font: {
                   preset: {

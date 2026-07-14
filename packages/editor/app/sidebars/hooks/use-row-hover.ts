@@ -13,7 +13,7 @@ export function useRowHover(isSelected: boolean, hoverOpacity: number = 10) {
       ...(isSelected ? { borderColor: SIDEBAR_SELECTED_BORDER } : {}),
       ...(isHovered && !isSelected
         ? {
-            backgroundColor: `hsl(0 0% 100% / ${hoverOpacity / 100})`,
+            backgroundColor: `color-mix(in srgb, var(--sdn-swatch-active) ${hoverOpacity}%, transparent)`,
           }
         : {}),
     }),

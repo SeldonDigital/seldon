@@ -1,19 +1,6 @@
 import { ValueType } from "@seldon/core"
 
 /**
- * Gets placeholder text for a property control
- * @param property - Property object with value
- * @param defaultPlaceholder - Default placeholder text
- * @returns Placeholder text based on property value
- */
-export function getPropertyPlaceholder(
-  property: { value: unknown },
-  defaultPlaceholder: string,
-): string {
-  return isValueEmpty(property.value) ? "Default" : defaultPlaceholder
-}
-
-/**
  * Formats a property key into a readable label
  * @param propertyKey - The property key to format
  * @returns Formatted property label
@@ -79,19 +66,4 @@ export function getValueType(value: unknown): ValueType {
   return value && typeof value === "object" && "type" in value
     ? (value.type as ValueType)
     : ValueType.EMPTY
-}
-
-/**
- * Checks if a value is empty or unset
- * @param value - The value to check
- * @returns True if the value is empty, null, undefined, or has EMPTY type
- */
-export function isValueEmpty(value: unknown): boolean {
-  if (!value || value === null || value === undefined) {
-    return true
-  }
-  if (typeof value === "object" && "type" in value) {
-    return (value as { type: ValueType }).type === ValueType.EMPTY
-  }
-  return false
 }

@@ -20,10 +20,9 @@ Properties use three primary shapes:
 Layered paint properties are stored as arrays of compound layers:
 
 - `background[]`
-- `gradient[]`
 - `shadow[]`
 
-Layer index `0` is topmost. Treat these as ordered stacks. Do not model them as single compound objects.
+Layer index `0` is topmost. Treat these as ordered stacks. Do not model them as single compound objects. Gradients are not a separate node stack. A gradient paints through a `background[]` layer with `kind: gradient`.
 
 ### Value Types
 
@@ -37,7 +36,7 @@ Use the current `ValueType` set:
 - `THEME_CATEGORICAL` for named theme token sets, such as `@swatch.*` and `@font.*`.
 - `THEME_ORDINAL` for ordered theme scales, such as `@fontSize.*`, `@margin.*`, and `@borderWidth.*`.
 
-Do not use `PRESET` as a value type. Preset-like choices use `ValueType.OPTION`, or theme references such as `@border.hairline`, `@font.body`, and `@background.primary` where the property supports them.
+Do not use `PRESET` as a value type. Preset-like choices use `ValueType.OPTION`, or theme references such as `@border.hairline`, `@font.body`, and `@gradient.primary` where the property supports them.
 
 ### EMPTY, INHERIT, And None
 
@@ -87,9 +86,9 @@ Workspace files store raw authoring state only. Node entries persist `template` 
 
 ### Paths And References
 
-Authoritative property path unions live in `types/property-keys.ts`. They include top-level keys, compound facets, shorthand sides, and layered paint facets with bracket indices in type literals, such as `background[0].color`.
+Authoritative property key unions live in `types/property-keys.ts`. They cover top-level keys, compound facet names, shorthand sides, and the layered paint keys `background` and `shadow`.
 
-Runtime lookup paths used by `findInObject` are dot-separated, such as `background.0.color`. Type unions still use bracket indices such as `background[0].color`. Schemas do not author computed source paths. Each compute function derives its own source. `getBasedOnValue` resolves an explicit path such as `#self.background.color` or `#parent.buttonSize`, and normalizes schema-style layered paint paths to layer `0` lookup paths.
+Runtime lookup paths used by `findInObject` are dot-separated, such as `background.0.color`. Schemas do not author computed source paths. Each compute function derives its own source. `getBasedOnValue` resolves an explicit path such as `#self.background.color` or `#parent.buttonSize`, and normalizes schema-style layered paint paths to layer `0` lookup paths.
 
 Theme references are validated by restricted theme key unions where properties opt in. Use `@` token paths that match the property type.
 

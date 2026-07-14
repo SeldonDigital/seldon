@@ -1,4 +1,5 @@
 import { ValueType } from "../../../properties"
+import { parseThemeRef } from "../../theme/get-theme-key-components"
 
 /**
  * Determines the appropriate ValueType for a theme value string
@@ -7,34 +8,34 @@ import { ValueType } from "../../../properties"
  * @returns The appropriate ValueType (THEME_CATEGORICAL, THEME_ORDINAL, or OPTION)
  */
 export function getValueType(value: string): ValueType {
-  if (!value.startsWith("@")) {
+  const ref = parseThemeRef(value)
+  if (!ref) {
     return ValueType.OPTION
   }
 
-  const themeSection = value.split(".")[0] as `@${string}`
-  switch (themeSection) {
-    case "@border":
-    case "@swatch":
-    case "@shadow":
-    case "@gradient":
-    case "@background":
-    case "@color":
-    case "@fontFamily":
-    case "@font":
+  switch (ref.section) {
+    case "border":
+    case "swatch":
+    case "shadow":
+    case "gradient":
+    case "background":
+    case "color":
+    case "fontFamily":
+    case "font":
       return ValueType.THEME_CATEGORICAL
 
-    case "@borderWidth":
-    case "@blur":
-    case "@corners":
-    case "@fontSize":
-    case "@fontWeight":
-    case "@lineHeight":
-    case "@size":
-    case "@margin":
-    case "@padding":
-    case "@gap":
-    case "@dimension":
-    case "@spread":
+    case "borderWidth":
+    case "blur":
+    case "corners":
+    case "fontSize":
+    case "fontWeight":
+    case "lineHeight":
+    case "size":
+    case "margin":
+    case "padding":
+    case "gap":
+    case "dimension":
+    case "spread":
       return ValueType.THEME_ORDINAL
 
     default:

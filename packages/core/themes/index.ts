@@ -11,10 +11,7 @@ export {
   THEMES_BY_ID,
   defaultTheme,
 } from "./catalog"
-export {
-  packagedThemeCatalogIds,
-  resolvePackagedThemeByCatalogId,
-} from "./catalog-ids"
+export { packagedThemeCatalogIds } from "./catalog-ids"
 export * from "./looks"
 export * from "./schemas"
 export * from "./types"

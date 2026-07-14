@@ -1,13 +1,43 @@
+import { theme as seldonStockTheme } from "../catalog/seldon"
 import { getDynamicSwatchColors } from "../compute/get-dynamic-swatch-color"
 import { getDynamicSwatchName } from "../compute/get-dynamic-swatch-names"
 import { normalizeThemeInput } from "../compute/normalize-theme"
 import { Colorspace } from "../constants/colorspace"
 import { injectBuiltInLooks } from "../looks/built-in-looks"
 import type { ComputedTheme, StockTheme } from "../types/theme"
+import type { ThemeInterfaceSwatchId } from "../types/theme-token-ids"
 import type { ThemePaletteSlot, ThemeSwatch } from "../values"
-import { TokenType } from "../values"
+import { THEME_INTERFACE_SLOTS, TokenType } from "../values"
 import { isDynamicSwatchToken, isSwatchToken } from "../values"
 import { toRecomputableStockInput } from "./to-recomputable-stock"
+
+let seldonInterfaceDefaults:
+  | Partial<Record<ThemeInterfaceSwatchId, ThemeSwatch>>
+  | undefined
+
+/**
+ * Interface swatch cells read from the Seldon catalog, used to fill any
+ * interface slot a theme does not author. Read lazily and memoized: the Seldon
+ * catalog imports `computeTheme`, so the catalog `theme` is only safe to touch
+ * at call time, after its module finished evaluating.
+ */
+function getSeldonInterfaceDefaults(): Partial<
+  Record<ThemeInterfaceSwatchId, ThemeSwatch>
+> {
+  if (!seldonInterfaceDefaults) {
+    const defaults: Partial<Record<ThemeInterfaceSwatchId, ThemeSwatch>> = {}
+    const seldonSwatch = seldonStockTheme.swatch as Record<
+      string,
+      ThemeSwatch | undefined
+    >
+    for (const id of THEME_INTERFACE_SLOTS) {
+      const cell = seldonSwatch[id]
+      if (cell && isSwatchToken(cell)) defaults[id] = cell
+    }
+    seldonInterfaceDefaults = defaults
+  }
+  return seldonInterfaceDefaults
+}
 
 function defaultIntentForPaletteSlot(role: ThemePaletteSlot): string {
   const intents: Record<ThemePaletteSlot, string> = {
@@ -47,6 +77,17 @@ export function computeTheme(theme: StockTheme | ComputedTheme): ComputedTheme {
       resolvedSwatch[key] = cell
     } else {
       resolvedSwatch[key] = cell as ThemeSwatch
+    }
+  }
+
+  // Fill any interface slot the theme did not author from the Seldon defaults, so
+  // every computed theme exposes the full interface vocabulary and node refs like
+  // `@swatch.active` resolve on every theme.
+  const interfaceDefaults = getSeldonInterfaceDefaults()
+  for (const id of THEME_INTERFACE_SLOTS) {
+    if (!resolvedSwatch[id]) {
+      const fallback = interfaceDefaults[id]
+      if (fallback) resolvedSwatch[id] = fallback
     }
   }
 

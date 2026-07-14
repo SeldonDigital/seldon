@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
 import type { ExtractPayload } from "../../../../index"
-import { ValueType } from "../../../../properties/constants"
+import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { addCustomState } from "../add/add-custom-state"
@@ -28,7 +28,12 @@ describe("removeCustomState", () => {
       {
         nodeId,
         state: "warning",
-        properties: { opacity: { type: ValueType.EXACT, value: 0.5 } },
+        properties: {
+          opacity: {
+            type: ValueType.EXACT,
+            value: { value: 0.5, unit: Unit.PERCENT },
+          },
+        },
       } as ExtractPayload<"set_node_state_properties">,
       registered,
     )

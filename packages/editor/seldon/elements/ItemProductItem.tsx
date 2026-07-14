@@ -11,10 +11,7 @@
  *
  *****/
 import { LiHTMLAttributes } from "react"
-import {
-  AvatarSquareBorder,
-  AvatarSquareBorderProps,
-} from "../elements/AvatarSquareBorder"
+import { AvatarSquared, AvatarSquaredProps } from "../elements/AvatarSquared"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLLi } from "../native-react/HTML.Li"
@@ -32,7 +29,7 @@ export interface ItemProductItemProps extends LiHTMLAttributes<HTMLLIElement> {
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
   inputCheckbox?: InputCheckboxProps | null
-  avatarSquareBorder?: AvatarSquareBorderProps | null
+  avatarSquared?: AvatarSquaredProps | null
   image?: ImageProps | null
   frame?: FrameProps | null
   textTitle?: TextTitleProps | null
@@ -54,7 +51,7 @@ export interface ItemProductItemProps extends LiHTMLAttributes<HTMLLIElement> {
  * <ItemProductItem
  *   aria-hidden="false"
  *   inputCheckbox="{}"
- *   avatarSquareBorder="/image.jpg"
+ *   avatarSquared="/image.jpg"
  *   image="/image.jpg"
  *   frame="{}"
  *   textTitle="Product Title"
@@ -68,7 +65,7 @@ export interface ItemProductItemProps extends LiHTMLAttributes<HTMLLIElement> {
 export function ItemProductItem({
   className = "",
   inputCheckbox,
-  avatarSquareBorder = sdn.avatarSquareBorder,
+  avatarSquared = sdn.avatarSquared,
   image = sdn.image,
   frame = sdn.frame,
   textTitle,
@@ -97,16 +94,16 @@ export function ItemProductItem({
           ),
         },
   )
-  const avatarSquareBorderProps = applyRef(
+  const avatarSquaredProps = applyRef(
     seldonRefs,
-    avatarSquareBorder === null
+    avatarSquared === null
       ? null
       : {
-          ...sdn.avatarSquareBorder,
-          ...avatarSquareBorder,
+          ...sdn.avatarSquared,
+          ...avatarSquared,
           className: combineClassNames(
-            sdn.avatarSquareBorder?.className,
-            avatarSquareBorder?.className,
+            sdn.avatarSquared?.className,
+            avatarSquared?.className,
           ),
         },
   )
@@ -206,11 +203,8 @@ export function ItemProductItem({
           {inputCheckbox && inputCheckboxProps && (
             <InputCheckbox {...inputCheckboxProps} />
           )}
-          {avatarSquareBorderProps !== null && (
-            <AvatarSquareBorder
-              {...avatarSquareBorderProps}
-              image={imageProps}
-            />
+          {avatarSquaredProps !== null && (
+            <AvatarSquared {...avatarSquaredProps} image={imageProps} />
           )}
           <Frame {...frameProps}>
             {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
@@ -239,9 +233,9 @@ const sdn: ItemProductItemProps = {
   inputCheckbox: {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
-  avatarSquareBorder: {
+  avatarSquared: {
     "aria-hidden": "false",
-    className: "sdn-avatar sdn-avatar-square-border--uoep",
+    className: "sdn-avatar sdn-avatar-squared--uoep",
   },
   image: {
     src: "/background-default-dark.jpg",

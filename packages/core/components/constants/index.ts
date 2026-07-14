@@ -104,6 +104,9 @@ export const NATIVE_REACT_PRIMITIVES: Record<
     }
     htmlElementOption?: HtmlElement
     wrapperElementOption?: WrapperElement
+    // The native wrapper forwards `ref` to its host element, so components that
+    // return it expose a typed `ref` prop.
+    forwardsRef?: boolean
   }
 > = {
   HTMLAnchor: {
@@ -132,7 +135,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
   HTMLBlockquote: {
     types: {
       generic: "BlockquoteHTMLAttributes",
-      parameter: "HTMLBlockquoteElement",
+      parameter: "HTMLQuoteElement",
     },
     wrapperElementOption: WrapperElement.BLOCKQUOTE,
   },
@@ -187,7 +190,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
   HTMLFieldset: {
     types: {
       generic: "FieldsetHTMLAttributes",
-      parameter: "HTMLFieldsetElement",
+      parameter: "HTMLFieldSetElement",
     },
     htmlElementOption: HtmlElement.FIELDSET,
     wrapperElementOption: WrapperElement.FIELDSET,
@@ -283,6 +286,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       generic: "InputHTMLAttributes",
       parameter: "HTMLInputElement",
     },
+    forwardsRef: true,
   },
   HTMLLabel: {
     types: {

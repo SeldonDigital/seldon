@@ -1,31 +1,15 @@
 import { produce } from "immer"
 
 import { ExtractPayload, Workspace } from "../../../../index"
-import { deleteOverrideAtPath } from "../../../helpers/themes/theme-override-paths"
+import {
+  deleteOverrideAtPath,
+  setOverrideAtPath,
+} from "../../../helpers/general/override-paths"
 import {
   WORKSPACE_EDITABLE_THEME_ENTRY_ID,
   ensureWorkspaceEditableThemeEntry,
 } from "../../../helpers/themes/workspace-editable-theme"
 import type { EntryTheme } from "../../../model/entry-theme"
-
-function setOverrideAtPath(
-  target: Record<string, unknown>,
-  path: string,
-  value: unknown,
-): void {
-  const keys = path.split(".").filter(Boolean)
-  if (keys.length === 0) return
-  let cur: Record<string, unknown> = target
-  for (let i = 0; i < keys.length - 1; i++) {
-    const k = keys[i]!
-    const next = cur[k]
-    if (typeof next !== "object" || next === null || Array.isArray(next)) {
-      cur[k] = {}
-    }
-    cur = cur[k] as Record<string, unknown>
-  }
-  cur[keys[keys.length - 1]!] = value
-}
 
 /**
  * Writes payload.value into `workspace.themes[themeId].overrides` at payload.path.

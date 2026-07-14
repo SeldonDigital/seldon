@@ -1,23 +1,17 @@
-import { ValueType } from "../../properties/constants"
+import { capitalize } from "../helpers/capitalize"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type {
   ThemeBorderKey,
   ThemeFontKey,
   ThemeShadowKey,
 } from "../types/theme-reference-keys"
-import type {
-  ThemeBorderId,
-  ThemeFontId,
-  ThemeGradientId,
-  ThemeShadowId,
-} from "../types/theme-token-ids"
 import { TokenType } from "../values"
 import type { ThemeBorder } from "../values/appearance/border"
 import type { ThemeGradient } from "../values/effects/gradient"
 import type { ThemeScrollbar } from "../values/effects/scrollbar"
 import type { ThemeShadow } from "../values/effects/shadow"
 import type { ThemeFont } from "../values/typography/font"
-import { LOOK_FACETS } from "./look-facets"
+import { buildEmptyLookParameters } from "./look-facets"
 
 export const SHADOW_LOOK_NONE = "@shadow.none" as const satisfies ThemeShadowKey
 export const BORDER_LOOK_NONE = "@border.none" as const satisfies ThemeBorderKey
@@ -39,7 +33,7 @@ export const BUILT_IN_LOOK_SECTIONS: readonly BuiltInLookSection[] = [
  */
 export type ClearedLookSection = "shadow" | "border" | "font"
 
-export const CLEARED_LOOK_SECTIONS: readonly ClearedLookSection[] = [
+const CLEARED_LOOK_SECTIONS: readonly ClearedLookSection[] = [
   "shadow",
   "border",
   "font",
@@ -47,15 +41,6 @@ export const CLEARED_LOOK_SECTIONS: readonly ClearedLookSection[] = [
 
 /** Every look section that must always carry its full reserved id set. */
 export type ReservedLookSection = BuiltInLookSection | "scrollbar"
-
-/** Facet keys per section, derived from the shared {@link LOOK_FACETS} descriptor. */
-const PARAMETER_KEYS_BY_SECTION = {
-  shadow: LOOK_FACETS.shadow.map((facet) => facet.facet),
-  gradient: LOOK_FACETS.gradient.map((facet) => facet.facet),
-  border: LOOK_FACETS.border.map((facet) => facet.facet),
-  font: LOOK_FACETS.font.map((facet) => facet.facet),
-  scrollbar: LOOK_FACETS.scrollbar.map((facet) => facet.facet),
-} satisfies Record<ReservedLookSection, readonly string[]>
 
 /**
  * Reserved (named) look ids per section. These must always be present in a
@@ -92,25 +77,6 @@ const RESERVED_LOOK_SECTIONS: readonly ReservedLookSection[] = [
   "scrollbar",
 ] as const
 
-function humanizeLookId(id: string): string {
-  return id.charAt(0).toUpperCase() + id.slice(1)
-}
-
-const EMPTY_PROPERTY_VALUE = {
-  type: ValueType.EMPTY,
-  value: null,
-} as const
-
-function buildEmptyParameters(
-  keys: readonly string[],
-): Record<string, typeof EMPTY_PROPERTY_VALUE> {
-  const parameters: Record<string, typeof EMPTY_PROPERTY_VALUE> = {}
-  for (const key of keys) {
-    parameters[key] = EMPTY_PROPERTY_VALUE
-  }
-  return parameters
-}
-
 const BUILT_IN_LOOK_DEFINITIONS: Record<
   ClearedLookSection,
   { id: string; name: string; token: string }
@@ -134,7 +100,7 @@ function buildBuiltInLookCell(
     type: TokenType.LOOK,
     name: definition.name,
     intent: `Built-in ${definition.name.toLowerCase()} look for ${section}.`,
-    parameters: buildEmptyParameters(PARAMETER_KEYS_BY_SECTION[section]),
+    parameters: buildEmptyLookParameters(section),
   }
 }
 
@@ -186,9 +152,9 @@ function buildReservedLookCell(
 ): ThemeShadow | ThemeGradient | ThemeBorder | ThemeFont | ThemeScrollbar {
   return {
     type: TokenType.LOOK,
-    name: humanizeLookId(id),
+    name: capitalize(id),
     intent: `Reserved ${id} look for ${section}.`,
-    parameters: buildEmptyParameters(PARAMETER_KEYS_BY_SECTION[section]),
+    parameters: buildEmptyLookParameters(section),
   }
 }
 
@@ -223,11 +189,4 @@ export function injectBuiltInLooks<T extends StockTheme | ComputedTheme>(
   }
 
   return next
-}
-
-export function isReservedThemeLookId(
-  section: BuiltInLookSection,
-  id: string,
-): id is ThemeShadowId | ThemeGradientId | ThemeBorderId | ThemeFontId {
-  return id === getBuiltInLookId(section)
 }

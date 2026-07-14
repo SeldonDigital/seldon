@@ -21,6 +21,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -200,10 +201,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.cozy",
-          },
           padding: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
             right: {
@@ -215,6 +212,10 @@ export const schema = {
               value: "@padding.cozy",
             },
             left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.cozy",
           },
         },
         children: [
@@ -251,6 +252,12 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Resize.FIT,
               },
+              margin: {
+                top: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@margin.cozy",
+                },
+              },
               gap: {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@gap.compact",
@@ -258,43 +265,26 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.IMAGE,
-                overrides: {
-                  source: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "https://static.seldon.app/avatar-user.jpg",
-                  },
-                  imageFit: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.ImageFit.COVER,
-                  },
-                  width: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@dimension.small",
-                  },
-                  height: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@dimension.small",
-                  },
-                  corners: {
-                    topLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    topRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
+                component: Seldon.ComponentId.AVATAR,
+                children: [
+                  {
+                    component: Seldon.ComponentId.IMAGE,
+                    overrides: {
+                      source: {
+                        type: Sdn.ValueType.EXACT,
+                        value: "/avatar-bentley.png",
+                      },
+                      width: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@dimension.medium",
+                      },
+                      height: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@dimension.medium",
+                      },
                     },
                   },
-                },
+                ],
               },
               {
                 component: Seldon.ComponentId.FRAME,
@@ -323,7 +313,13 @@ export const schema = {
                     overrides: {
                       content: {
                         type: Sdn.ValueType.EXACT,
-                        value: "Seldon Studio",
+                        value: "Sir Bentley",
+                      },
+                      font: {
+                        weight: {
+                          type: Sdn.ValueType.THEME_ORDINAL,
+                          value: "@fontWeight.medium",
+                        },
                       },
                     },
                   },
@@ -335,6 +331,12 @@ export const schema = {
                         type: Sdn.ValueType.EXACT,
                         value: "1.2M views · 2 days ago",
                       },
+                      font: {
+                        size: {
+                          type: Sdn.ValueType.THEME_ORDINAL,
+                          value: "@fontSize.xsmall",
+                        },
+                      },
                     },
                   },
                 ],
@@ -344,6 +346,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.BUTTON,
             overrides: {
+              align: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Align.CENTER,
+              },
               width: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Resize.FILL,
@@ -367,6 +373,10 @@ export const schema = {
                     type: Sdn.ValueType.EXACT,
                     value: "Play now",
                   },
+                  width: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Resize.FIT,
+                  },
                 },
               },
             ],
@@ -378,7 +388,7 @@ export const schema = {
   variants: [
     {
       id: "compact",
-      label: "Compact Media Card",
+      label: "Compact",
       intent:
         "Dense media card showing only the thumbnail, title, and creator for browse grids.",
       children: [
@@ -418,10 +428,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -439,6 +445,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.tight",
             },
           },
           children: [

@@ -12,12 +12,19 @@ import { Theme, ThemeMarginKey } from "@seldon/core/themes/types"
 import { isModulatedToken } from "@seldon/core/themes/types"
 
 import { getCssValue } from "./get-css-value"
+import { getThemeTokenVarReference } from "./get-theme-token-reference"
 
 export function getAbsoluteSizeCssValue(
   value: MarginSideValue | PaddingSideValue | CornerValue | PositionSideValue,
   theme: Theme,
+  useThemeVariableReferences?: boolean,
 ): string {
   if (value.type === ValueType.THEME_ORDINAL) {
+    if (useThemeVariableReferences) {
+      const reference = getThemeTokenVarReference(value.value)
+      if (reference) return reference
+    }
+
     const themeValue = getThemeOption(value.value as ThemeMarginKey, theme)
 
     if (isModulatedToken(themeValue)) {

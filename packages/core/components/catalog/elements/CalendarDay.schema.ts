@@ -45,9 +45,9 @@ export const schema = {
     },
     padding: {
       top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
-      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
       bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
-      left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+      left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
     },
     gap: {
       type: Sdn.ValueType.THEME_ORDINAL,
@@ -58,7 +58,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     columnStart: { type: Sdn.ValueType.EMPTY, value: null },
     columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
     rowStart: { type: Sdn.ValueType.EMPTY, value: null },
@@ -163,6 +163,7 @@ export const schema = {
         variant: "label",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "00" },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           textAlign: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.TextAlign.CENTER,
@@ -179,24 +180,6 @@ export const schema = {
         "A day rendered as a bordered grid square that fills its column, for calendars that show gridlines.",
       overrides: {
         width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-        corners: {
-          topLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          topRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-        },
         background: [
           {
             kind: {
@@ -222,6 +205,24 @@ export const schema = {
           brightness: { type: Sdn.ValueType.EMPTY, value: null },
           opacity: { type: Sdn.ValueType.EMPTY, value: null },
         },
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+        },
       },
     },
     {
@@ -230,11 +231,11 @@ export const schema = {
       intent:
         "A day outside the active month or otherwise disabled, dimmed to recede from selectable days.",
       overrides: {
-        ariaDisabled: { type: Sdn.ValueType.EXACT, value: true },
         opacity: {
           type: Sdn.ValueType.EXACT,
           value: { unit: Sdn.Unit.PERCENT, value: 35 },
         },
+        ariaDisabled: { type: Sdn.ValueType.EXACT, value: true },
       },
     },
     {
@@ -243,7 +244,6 @@ export const schema = {
       intent:
         "The chosen day, filled with the primary swatch so its number reads in high contrast.",
       overrides: {
-        ariaSelected: { type: Sdn.ValueType.EXACT, value: true },
         background: [
           {
             kind: {
@@ -261,6 +261,7 @@ export const schema = {
             },
           },
         ],
+        ariaSelected: { type: Sdn.ValueType.EXACT, value: true },
       },
     },
     {
@@ -269,10 +270,6 @@ export const schema = {
       intent:
         "The current day, outlined with a primary ring while keeping the surface clear.",
       overrides: {
-        ariaCurrent: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.AriaCurrent.DATE,
-        },
         background: [
           {
             kind: {
@@ -300,6 +297,10 @@ export const schema = {
           width: { type: Sdn.ValueType.EMPTY, value: null },
           brightness: { type: Sdn.ValueType.EMPTY, value: null },
           opacity: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        ariaCurrent: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.AriaCurrent.DATE,
         },
       },
     },

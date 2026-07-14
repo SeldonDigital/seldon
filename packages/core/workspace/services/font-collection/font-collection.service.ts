@@ -234,25 +234,6 @@ export class WorkspaceFontCollectionService {
     }
     return used
   }
-
-  /** Returns the next free `familyNN` slot id for a `font-collections` entry, starting at `family01`. */
-  public getNextCustomFamilyId(
-    workspace: Workspace,
-    fontCollectionId: string,
-  ): string {
-    const entry = workspace["font-collections"][fontCollectionId] as
-      | EntryFontCollection
-      | undefined
-    const bag = (entry?.overrides?.families ?? {}) as Record<string, unknown>
-    const familyIds = Object.keys(bag).filter((id) => id.startsWith("family"))
-    const highest = familyIds
-      .map((id) => parseInt(id.replace("family", ""), 10))
-      .filter((n) => !Number.isNaN(n))
-      .sort((a, b) => a - b)
-      .at(-1)
-    const next = (highest ?? 0) + 1
-    return `family${next < 10 ? `0${next}` : next}`
-  }
 }
 
 export const workspaceFontCollectionService =

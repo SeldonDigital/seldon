@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
+import { parseWorkspace } from "../../helpers/parse-workspace"
 import { workspaceReducer } from "../../reducers/reducer"
 import type {
+  ComponentTreeRef,
   EntryNodeId,
   Instance,
   Variant,
@@ -34,7 +36,8 @@ function buildScenario() {
     ws,
     act("insert_default_instance", { boardKey: BOARD, parentId: uv1Id }),
   )
-  const childId = ws.boards[BOARD]!.variants[0]!.children![0]!.id as EntryNodeId
+  const childId = (ws.boards[BOARD]!.variants[0] as ComponentTreeRef)
+    .children![0]!.id as EntryNodeId
   return { ws, defaultRootId, uv1Id, childId }
 }
 
@@ -60,7 +63,7 @@ describe("WorkspacePropagationService.propagateNodeOperation", () => {
     const result = service.propagateNodeOperation({
       nodeId: defaultRootId,
       propagation: "none",
-      apply: (_node, current) => ({ workspace: current, data: 7 }),
+      apply: (_node, current) => ({ workspace: current }),
       workspace: ws,
     })
     expect(result.boards).toBeTruthy()
@@ -154,9 +157,14 @@ describe("WorkspacePropagationService.propagatePositionalChildOperation", () => 
   })
 })
 
-describe("WorkspacePropagationService.parseWorkspace", () => {
+describe("parseWorkspace", () => {
   it("parses a JSON string back into a workspace", () => {
     const ws = createEmptyWorkspace()
-    expect(service.parseWorkspace(JSON.stringify(ws))).toEqual(ws)
+    expect(parseWorkspace(JSON.stringify(ws))).toEqual(ws)
+  })
+
+  it("rejects JSON that is not a workspace object", () => {
+    expect(() => parseWorkspace("[]")).toThrow(/JSON object/)
+    expect(() => parseWorkspace('{"metadata":{}}')).toThrow(/"boards" map/)
   })
 })

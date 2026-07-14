@@ -35,7 +35,6 @@ interface UsePropertyComboboxInput {
 
 interface UsePropertyComboboxResult {
   inputRef: RefObject<HTMLInputElement | null>
-  comboboxRef: RefObject<HTMLDivElement | null>
   open: boolean
   setOpen: (open: boolean) => void
   inputValue: string
@@ -51,7 +50,6 @@ interface UsePropertyComboboxResult {
   hasSections: boolean
   hasFilteredOptions: boolean
   position: Position
-  handleControlClick: (event: React.MouseEvent) => void
   handleComboboxClose: () => void
   openComboboxWithFocus: () => void
 }
@@ -78,7 +76,6 @@ export function usePropertyCombobox({
   commit,
 }: UsePropertyComboboxInput): UsePropertyComboboxResult {
   const inputRef = useRef<HTMLInputElement>(null)
-  const comboboxRef = useRef<HTMLDivElement>(null)
   const originalValueRef = useRef<string | undefined>(undefined)
   const hasSelectionRef = useRef(false)
 
@@ -128,8 +125,13 @@ export function usePropertyCombobox({
     }
   }, [comboboxOpen, comboboxStoredValue])
 
+  // Mirror the stored value into the closed input only when the row is not
+  // editing. While editing is held open (including the beat after a selection
+  // while the workspace-derived value catches up), the input keeps the value the
+  // user just chose instead of briefly resyncing to the stale stored value. This
+  // matches how the field path owns its draft until editing ends.
   useEffect(() => {
-    if (!comboboxOpen) {
+    if (!comboboxOpen && !isEditing) {
       const option = flatOptions.find((o) => o.value === comboboxControlValue)
       setInputValue(option ? option.name : displayValue || "")
     }
@@ -139,6 +141,7 @@ export function usePropertyCombobox({
     flatOptions,
     setInputValue,
     comboboxOpen,
+    isEditing,
   ])
 
   const hasSections =
@@ -181,15 +184,7 @@ export function usePropertyCombobox({
   const position = useComboboxPosition({
     open: comboboxOpen,
     frameRef,
-    comboboxRef,
   })
-
-  const handleControlClick = (event: React.MouseEvent) => {
-    if (isMenuOrComboType && !comboboxOpen && !property.isDimmed) {
-      event.stopPropagation()
-      openComboboxWithFocus()
-    }
-  }
 
   const restoreInputIfNeeded = () => {
     if (!hasSelectionRef.current && originalValueRef.current !== undefined) {
@@ -215,7 +210,6 @@ export function usePropertyCombobox({
 
   return {
     inputRef,
-    comboboxRef,
     open: comboboxOpen,
     setOpen: setComboboxOpen,
     inputValue,
@@ -231,7 +225,6 @@ export function usePropertyCombobox({
     hasSections,
     hasFilteredOptions,
     position,
-    handleControlClick,
     handleComboboxClose,
     openComboboxWithFocus,
   }

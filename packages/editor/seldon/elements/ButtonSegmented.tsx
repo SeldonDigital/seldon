@@ -224,7 +224,7 @@ export const ButtonSegmented = forwardRef<
 //
 const sdn: ButtonSegmentedProps = {
   button: {
-    className: "sdn-button sdn-button--wwhx",
+    className: "sdn-button sdn-button--euxa",
   },
   icon: {
     icon: "seldon-component",
@@ -235,7 +235,7 @@ const sdn: ButtonSegmentedProps = {
     className: "sdn-text-label sdn-text-label--ylte",
   },
   button2: {
-    className: "sdn-button sdn-button--mam0",
+    className: "sdn-button sdn-button-simple--fjtm",
   },
   icon2: {
     icon: "seldon-component",
@@ -246,7 +246,7 @@ const sdn: ButtonSegmentedProps = {
     className: "sdn-text-label sdn-text-label--ylte",
   },
   button3: {
-    className: "sdn-button sdn-button--4nmh",
+    className: "sdn-button sdn-button--ys7e",
   },
   icon3: {
     icon: "seldon-component",

@@ -12,7 +12,8 @@
 export * from "./helpers"
 
 // Enums: canonical definitions live in `themes/constants`; re-exported here for one-stop theme imports.
-export { Colorspace, Harmony, Ratio } from "../constants"
+export { Colorspace, Harmony, Ratio, THEME_MODES } from "../constants"
+export type { ThemeMode } from "../constants"
 
 export { TokenType } from "../constants"
 
@@ -49,11 +50,9 @@ export { BORDER_WIDTH_OPTIONS } from "../values"
 export {
   isDynamicSwatchToken,
   isFontFamilyToken,
-  isLookToken,
   isModulatedToken,
   isOptionToken,
   isSwatchToken,
-  isThemeExactNumberToken,
   isThemeExactToken,
 } from "../values"
 

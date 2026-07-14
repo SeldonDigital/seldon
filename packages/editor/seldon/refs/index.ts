@@ -12,12 +12,37 @@
  *****/
 
 export type SeldonRef =
+  | "catalogIcon"
+  | "catalogItem"
+  | "catalogItems"
+  | "catalogLabel"
+  | "catalogVariant"
+  | "Default"
+  | "dialogCancel"
+  | "dialogConfirm"
+  | "dialogContent"
+  | "dialogTitle"
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
+  | "hariClamp"
+  | "hariClose"
+  | "hariInput"
+  | "hariModel"
+  | "hariOutcome"
+  | "hariSelection"
+  | "hariSend"
+  | "hariThinking"
+  | "hariTools"
+  | "logo"
+  | "menuComponent"
+  | "menuDev"
+  | "menuEdit"
+  | "menuFile"
   | "menuMode"
-  | "menuStates"
+  | "menus"
   | "menuTheme"
+  | "menuView"
   | "nodeActions"
   | "nodeIcon"
   | "nodeLabel"
@@ -42,6 +67,9 @@ export type SeldonRef =
   | "sectionLabel"
   | "sectionToggle"
   | "sectionToggleIcon"
+  | "toggleIcon"
+  | "toggleValue"
+  | "turns"
   | "valueIcon"
   | "valueLabel"
   | "valueOptionsMenu"
@@ -53,6 +81,56 @@ export interface SeldonRefEntry {
 }
 
 export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
+  catalogIcon: {
+    component: "Icon",
+    nodeId: "component-icon-meNEMxeY",
+    className: "sdn-icon sdn-icon--mene",
+  },
+  catalogItem: {
+    component: "ItemCatalog",
+    nodeId: "component-item-product",
+    className: "sdn-item-catalog sdn-item",
+  },
+  catalogItems: {
+    component: "Container",
+    nodeId: "component-container-x52OfMWH",
+    className: "sdn-container sdn-container--x52o",
+  },
+  catalogLabel: {
+    component: "TextTitle",
+    nodeId: "component-text-noun68PK",
+    className: "sdn-text-title sdn-text-title--noun",
+  },
+  catalogVariant: {
+    component: "TextSubtitle",
+    nodeId: "component-text-R4oTaXSN",
+    className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
+  },
+  Default: {
+    component: "ItemCatalog",
+    nodeId: "component-item-hSnQ9Zqv",
+    className: "sdn-item-catalog sdn-item-catalog--bg0n",
+  },
+  dialogCancel: {
+    component: "Button",
+    nodeId: "component-bar-oHXIPFr4",
+    className: "sdn-button sdn-button--wjtm",
+  },
+  dialogConfirm: {
+    component: "Button",
+    nodeId: "component-bar-UpjLfdY0",
+    className: "sdn-button sdn-button--upjl",
+  },
+  dialogContent: {
+    component: "Frame",
+    nodeId: "component-panel-2wWoLkwm",
+    className: "sdn-frame sdn-frame--2wwo",
+  },
+  dialogTitle: {
+    component: "TextTitle",
+    nodeId: "component-panel-j8D9mUx4",
+    className: "sdn-text-title sdn-text-title--eodu",
+  },
   filterActions: {
     component: "ButtonIconic",
     nodeId: "component-comboboxField-egV44OiP",
@@ -68,20 +146,95 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-comboboxField-TWyxOQad",
     className: "sdn-input sdn-input--twyx",
   },
+  hariClamp: {
+    component: "ButtonToggle",
+    nodeId: "component-button-N1pT65yh",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  },
+  hariClose: {
+    component: "ButtonIconic",
+    nodeId: "component-panel-dHCB3O1v",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  hariInput: {
+    component: "Textarea",
+    nodeId: "component-textarea-2uPWguWV",
+    className: "sdn-textarea sdn-textarea--2upw",
+  },
+  hariModel: {
+    component: "ButtonMenu",
+    nodeId: "component-panel-EqziYbqa",
+    className: "sdn-button-menu sdn-button-menu--ipe0",
+  },
+  hariOutcome: {
+    component: "ButtonToggle",
+    nodeId: "component-panel-PMmBQIRj",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  },
+  hariSelection: {
+    component: "Chip",
+    nodeId: "component-chip-LO6kjXwm",
+    className: "sdn-chip sdn-chip--lo6k",
+  },
+  hariSend: {
+    component: "ButtonIconic",
+    nodeId: "component-button-Wh0irV9y",
+    className: "sdn-button-iconic sdn-button-iconic--wh0i",
+  },
+  hariThinking: {
+    component: "ButtonMenu",
+    nodeId: "component-panel-IpE0XEo6",
+    className: "sdn-button-menu sdn-button-menu--ipe0",
+  },
+  hariTools: {
+    component: "ButtonToggle",
+    nodeId: "component-panel-ablPq3kW",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  },
+  logo: {
+    component: "Frame",
+    nodeId: "component-frame-AjNqkrLb",
+    className: "sdn-frame sdn-frame--ajnq",
+  },
+  menuComponent: {
+    component: "ButtonSimple",
+    nodeId: "component-bar-tJLcDfnC",
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+  },
+  menuDev: {
+    component: "ButtonSimple",
+    nodeId: "component-bar-EW9LJxSD",
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+  },
+  menuEdit: {
+    component: "ButtonSimple",
+    nodeId: "component-bar-8iQ7zRar",
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+  },
+  menuFile: {
+    component: "ButtonSimple",
+    nodeId: "component-bar-dBgSvhzY",
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+  },
   menuMode: {
     component: "ButtonMenu",
-    nodeId: "component-bar-JXHsaaaQ",
+    nodeId: "component-bar-nWDgCHuH",
     className: "sdn-button-menu sdn-button-iconic--pgsr",
   },
-  menuStates: {
-    component: "ButtonMenu",
-    nodeId: "component-button-OTbyoxbN",
-    className: "sdn-button-menu sdn-button",
+  menus: {
+    component: "Frame",
+    nodeId: "component-bar-DrSavE9B",
+    className: "sdn-frame sdn-frame--drsa",
   },
   menuTheme: {
     component: "ButtonMenu",
-    nodeId: "component-button-uIofK8RQ",
+    nodeId: "component-button-trucC1Xo",
     className: "sdn-button-menu sdn-button-iconic--pgsr",
+  },
+  menuView: {
+    component: "ButtonSimple",
+    nodeId: "component-bar-FUwSPfCT",
+    className: "sdn-button-simple sdn-button-simple--dbgs",
   },
   nodeActions: {
     component: "ButtonIconic",
@@ -116,7 +269,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   optionIcon: {
     component: "Icon",
     nodeId: "component-icon-3QOuNmn2",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   optionLabel: {
     component: "TextLabel",
@@ -141,7 +294,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertiesContainer: {
     component: "Frame",
     nodeId: "component-sidebar-evMwxVOP",
-    className: "sdn-frame sdn-frame--enpy",
+    className: "sdn-frame sdn-frame--evmw",
   },
   propertyActions: {
     component: "ButtonIconic",
@@ -149,9 +302,9 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
   propertyLabel: {
-    component: "TextLabel",
-    nodeId: "component-text-Xg6PReX9",
-    className: "sdn-text-label sdn-text-label--xg6p",
+    component: "Input",
+    nodeId: "component-item-JvSW6JpE",
+    className: "sdn-input sdn-input--jvsw",
   },
   propertyToggle: {
     component: "ButtonIconic",
@@ -201,7 +354,22 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionToggleIcon: {
     component: "Icon",
     nodeId: "component-item-7MKLAjub",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--umgs",
+  },
+  toggleIcon: {
+    component: "Icon",
+    nodeId: "component-item-YzeMLx3R",
+    className: "sdn-icon sdn-icon--xi68",
+  },
+  toggleValue: {
+    component: "ToggleSwitch",
+    nodeId: "component-toggleSwitch-pelhFQXa",
+    className: "sdn-toggle-switch sdn-toggle-switch--pelh",
+  },
+  turns: {
+    component: "Frame",
+    nodeId: "component-panel-VoRnpuW2",
+    className: "sdn-frame sdn-frame--2wwo",
   },
   valueIcon: {
     component: "Icon",

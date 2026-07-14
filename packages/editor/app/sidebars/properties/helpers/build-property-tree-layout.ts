@@ -16,10 +16,7 @@ import {
   ThemePropertySection,
   getThemePropertySections,
 } from "./get-theme-property-sections"
-import {
-  getIconRowCategory,
-  iconCategoryLabel,
-} from "./icon-set-properties-data"
+import { getIconRowCategory, titleCase } from "./icon-set-properties-data"
 import { FlatProperty } from "./properties-data"
 import { buildReferenceProperty } from "./reference-display"
 import { injectRepeatRows } from "./repeat-display"
@@ -52,7 +49,17 @@ function buildLeadingNodeFieldRows(
   return rows
 }
 
-export function buildPropertyTreeSections({
+export interface PropertyTreeLayout {
+  sections: Array<PropertySection | ThemePropertySection>
+  /** Full row lookup list, including leading node-field and repeat rows. */
+  allProperties: FlatProperty[]
+}
+
+/**
+ * Builds the section list and the full row lookup list for the property tree
+ * in one pass, so the leading node-field rows are computed once.
+ */
+export function buildPropertyTreeLayout({
   properties,
   workspace,
   node,
@@ -75,7 +82,7 @@ export function buildPropertyTreeSections({
   familyProperties?: FlatProperty[]
   iconProperties?: FlatProperty[]
   cssStringCount: number
-}): Array<PropertySection | ThemePropertySection> {
+}): PropertyTreeLayout {
   // The metadata section heads resource trees the way the attributes section
   // heads component trees: title it "Family · Variant" (just the family when the
   // variant label matches), falling back to "Metadata" when no family label.
@@ -105,10 +112,13 @@ export function buildPropertyTreeSections({
 
   if (themeEditingContext?.isThemeEditing) {
     const themeSections = getThemePropertySections(properties, theme)
-    return [
-      ...(metadataSection ? [metadataSection] : []),
-      ...themeSections,
-    ] as Array<PropertySection | ThemePropertySection>
+    return {
+      sections: [
+        ...(metadataSection ? [metadataSection] : []),
+        ...themeSections,
+      ] as Array<PropertySection | ThemePropertySection>,
+      allProperties: properties,
+    }
   }
 
   const propertiesWithLeadingFields = isResourceType(node as Board)
@@ -141,7 +151,7 @@ export function buildPropertyTreeSections({
       if (!category || seen.has(category)) continue
       seen.add(category)
       allSections.push({
-        label: iconCategoryLabel(category),
+        label: titleCase(category),
         category,
         properties: parentRows.filter(
           (p) => getIconRowCategory(p.key) === category,
@@ -158,30 +168,5 @@ export function buildPropertyTreeSections({
     })
   }
 
-  return allSections
-}
-
-export function buildPropertyTreeAllProperties({
-  properties,
-  workspace,
-  node,
-  themeEditingContext,
-}: {
-  properties: FlatProperty[]
-  workspace: Workspace
-  node: Variant | Instance | Board
-  themeEditingContext?: ThemeEditingContext | null
-}): FlatProperty[] {
-  if (themeEditingContext?.isThemeEditing) {
-    return properties
-  }
-
-  if (isResourceType(node as Board)) {
-    return [...properties]
-  }
-
-  return [
-    ...buildLeadingNodeFieldRows(node, workspace),
-    ...injectRepeatRows(properties, node, workspace),
-  ]
+  return { sections: allSections, allProperties: propertiesWithLeadingFields }
 }

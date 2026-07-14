@@ -34,7 +34,7 @@ html {
 
 html,
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: var(--sdn-font-family-primary, system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif);
 }
 
 :root {

@@ -21,6 +21,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -200,10 +201,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.tight",
-          },
           padding: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
             right: {
@@ -215,6 +212,10 @@ export const schema = {
               value: "@padding.cozy",
             },
             left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.tight",
           },
         },
         children: [
@@ -233,7 +234,7 @@ export const schema = {
                   },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.custom1",
+                    value: "@swatch.active",
                   },
                   brightness: { type: Sdn.ValueType.EMPTY, value: null },
                   opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -408,7 +409,7 @@ export const schema = {
             overrides: {
               width: {
                 type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FILL,
+                value: Sdn.Resize.FIT,
               },
             },
             children: [
@@ -440,7 +441,7 @@ export const schema = {
   variants: [
     {
       id: "minimal",
-      label: "Minimal Product Card",
+      label: "Minimal",
       intent:
         "Stripped-down product card showing only image, name, and price for dense grids.",
       children: [
@@ -480,10 +481,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -501,6 +498,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.tight",
             },
           },
           children: [
@@ -536,7 +537,7 @@ export const schema = {
     },
     {
       id: "horizontal",
-      label: "Horizontal Product Card",
+      label: "Horizontal",
       intent:
         "Side-by-side product card with the image on the left and details on the right for list views.",
       overrides: {
@@ -544,13 +545,13 @@ export const schema = {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Orientation.HORIZONTAL,
         },
-        width: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.Resize.FILL,
-        },
         align: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Align.CENTER_LEFT,
+        },
+        width: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Resize.FILL,
         },
       },
       children: [
@@ -590,10 +591,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -611,6 +608,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.tight",
             },
           },
           children: [
@@ -632,16 +633,16 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "$49.00",
                 },
-                font: {
-                  preset: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@font.heading",
-                  },
-                },
                 margin: {
                   bottom: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@margin.compact",
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.heading",
                   },
                 },
               },

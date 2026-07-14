@@ -21,6 +21,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -56,7 +57,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -214,14 +215,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.tight",
-          },
-          clip: {
-            type: Sdn.ValueType.EXACT,
-            value: true,
-          },
           margin: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -239,6 +232,14 @@ export const schema = {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@margin.cozy",
             },
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.tight",
+          },
+          clip: {
+            type: Sdn.ValueType.EXACT,
+            value: true,
           },
           border: {
             preset: {
@@ -396,7 +397,7 @@ export const schema = {
   variants: [
     {
       id: "horizontal",
-      label: "Horizontal Card",
+      label: "Horizontal",
       intent:
         "UI component schema for horizontally oriented cards, often used in product previews, listings, and compact content displays.",
       overrides: {
@@ -494,7 +495,7 @@ export const schema = {
     },
     {
       id: "product",
-      label: "Product Card",
+      label: "Product",
       intent:
         "Product card schema optimized for ecommerce use cases, supporting pricing, images, descriptions, and action triggers.",
       overrides: {
@@ -532,10 +533,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
-            },
             margin: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -553,6 +550,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@margin.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.tight",
             },
           },
           children: [

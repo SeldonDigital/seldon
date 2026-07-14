@@ -23,11 +23,12 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useMoveCommands } from "@lib/hooks/commands/use-move-commands"
 import { useSelectCommands } from "@lib/hooks/commands/use-select-commands"
+import { resetChat } from "@lib/hooks/use-ai-chat"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useDialog } from "@lib/hooks/use-dialog"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useImportExport } from "@lib/hooks/use-import-export"
 import { useNodeClipboardActions } from "@lib/hooks/use-node-clipboard-actions"
+import { usePanel } from "@lib/hooks/use-panel"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
 import { useZoomControls } from "@lib/hooks/use-zoom-controls"
@@ -65,6 +66,8 @@ export function useMenuConfig(): MenuConfig {
     toggleShowUnusedIcons,
     showPlayground,
     toggleShowPlayground,
+    showCodeNames,
+    toggleShowCodeNames,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const {
@@ -82,6 +85,14 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    aiLogging,
+    toggleAiLogging,
+    showTools,
+    toggleShowTools,
+    showOutcome,
+    toggleShowOutcome,
+    noThink,
+    toggleNoThink,
   } = useDebugMode()
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
@@ -128,7 +139,7 @@ export function useMenuConfig(): MenuConfig {
   } = useSelection()
   const addToast = useAddToast()
   const { setActiveTool } = useTool()
-  const { openDialog } = useDialog()
+  const { activePanel, openPanel, closePanel } = usePanel()
 
   const canDeleteSelection = useMemo(() => {
     if (selectedNode) return true
@@ -314,6 +325,13 @@ export function useMenuConfig(): MenuConfig {
         active: workspaceLogging,
         visibleIn: ["edit", "preview"],
       },
+      {
+        id: "ai-logging",
+        label: "AI Logging",
+        action: toggleAiLogging,
+        active: aiLogging,
+        visibleIn: ["edit", "preview"],
+      },
     ]
 
     if (process.env.NODE_ENV === "development") {
@@ -348,6 +366,8 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    aiLogging,
+    toggleAiLogging,
   ])
 
   const editMenuItems = useMemo(() => {
@@ -426,7 +446,7 @@ export function useMenuConfig(): MenuConfig {
         id: "add-component",
         label: "Add Component",
         action: () => {
-          openDialog("add-board")
+          openPanel("add-board")
           setActiveTool("select")
         },
         shortcut: "A",
@@ -501,14 +521,14 @@ export function useMenuConfig(): MenuConfig {
         id: "select-source",
         label: "Select Source",
         action: selectSource,
-        shortcut: "⌥ `",
+        shortcut: "⌥ ~",
         enabled: canSelectSource,
       },
       {
         id: "select-original",
         label: "Select Original",
         action: selectOriginal,
-        shortcut: "⇧ `",
+        shortcut: "⇧ ~",
         enabled: canSelectOriginal,
       },
     ]
@@ -516,7 +536,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     setActiveTool,
-    openDialog,
+    openPanel,
     addVariant,
     selectedBoard,
     moveSelectionForward,
@@ -542,6 +562,57 @@ export function useMenuConfig(): MenuConfig {
     canSelectSource,
   ])
 
+  const isChatOpen = activePanel === "ai-chat"
+  const hariMenuItems = useMemo(() => {
+    const items: (MenuItem | "separator")[] = [
+      {
+        id: "show-chat",
+        label: "Show Chat",
+        action: () => (isChatOpen ? closePanel() : openPanel("ai-chat")),
+        active: isChatOpen,
+        shortcut: "~",
+      },
+      "separator",
+      {
+        id: "show-output",
+        label: "Show Output",
+        action: toggleShowOutcome,
+        active: showOutcome,
+      },
+      {
+        id: "show-tools",
+        label: "Show Tools",
+        action: toggleShowTools,
+        active: showTools,
+      },
+      "separator",
+      {
+        id: "clamp-thinking",
+        label: "Clamp Thinking",
+        action: toggleNoThink,
+        active: noThink,
+      },
+      "separator",
+      {
+        id: "reset-chat",
+        label: "Reset Chat",
+        action: resetChat,
+      },
+    ]
+
+    return items
+  }, [
+    isChatOpen,
+    closePanel,
+    openPanel,
+    showOutcome,
+    toggleShowOutcome,
+    showTools,
+    toggleShowTools,
+    noThink,
+    toggleNoThink,
+  ])
+
   // Build menu configuration
   const menuConfig: MenuConfig = useMemo(
     () => [
@@ -561,6 +632,12 @@ export function useMenuConfig(): MenuConfig {
         label: "Component",
         visibleIn: ["edit", "preview"], // Not visible in project view
         items: selectionMenuItems as MenuItem[],
+      },
+      {
+        id: "hari",
+        label: "Hari",
+        visibleIn: ["edit", "preview"], // Not visible in project view
+        items: hariMenuItems as MenuItem[],
       },
       {
         id: "view",
@@ -648,6 +725,13 @@ export function useMenuConfig(): MenuConfig {
           },
           "separator",
           {
+            id: "show-code-names",
+            label: "Show Code Names",
+            action: toggleShowCodeNames,
+            active: showCodeNames,
+          },
+          "separator",
+          {
             id: "show-unused-properties",
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
@@ -699,6 +783,7 @@ export function useMenuConfig(): MenuConfig {
       fileMenuItems,
       editMenuItems,
       selectionMenuItems,
+      hariMenuItems,
       devMenuItems,
       togglePreviewMode,
       isInPreviewMode,
@@ -725,6 +810,8 @@ export function useMenuConfig(): MenuConfig {
       toggleShowUnusedFonts,
       showUnusedIcons,
       toggleShowUnusedIcons,
+      showCodeNames,
+      toggleShowCodeNames,
     ],
   )
 

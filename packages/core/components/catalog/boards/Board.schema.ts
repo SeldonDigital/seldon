@@ -75,6 +75,39 @@ export const schema = {
         opacity: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    border: {
+      preset: {
+        type: Sdn.ValueType.THEME_CATEGORICAL,
+        value: "@border.hairline",
+      },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
+      color: {
+        type: Sdn.ValueType.THEME_CATEGORICAL,
+        value: "@swatch.gray",
+      },
+      width: { type: Sdn.ValueType.EMPTY, value: null },
+      brightness: { type: Sdn.ValueType.EMPTY, value: null },
+      opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    },
+    shadow: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@shadow.xlight",
+        },
+        style: { type: Sdn.ValueType.EMPTY, value: null },
+        offsetX: { type: Sdn.ValueType.EMPTY, value: null },
+        offsetY: { type: Sdn.ValueType.EMPTY, value: null },
+        blur: { type: Sdn.ValueType.THEME_ORDINAL, value: "@blur.xsmall" },
+        color: { type: Sdn.ValueType.EMPTY, value: null },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: {
+          type: Sdn.ValueType.EXACT,
+          value: { value: 10, unit: Sdn.Unit.PERCENT },
+        },
+        spread: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     scroll: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Scroll.VERTICAL,

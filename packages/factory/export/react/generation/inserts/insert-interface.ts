@@ -1,8 +1,11 @@
+import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
+
 import { ComponentToExport } from "../../../types"
 import {
   TransformStrategy,
   transformSource,
 } from "../../utils/transform-source"
+import { getCustomTemplateMeta } from "../shared/custom-react"
 import { generateChildrenProps } from "../shared/generate-children-props"
 import {
   generateOwnPropsContent,
@@ -34,6 +37,19 @@ export function insertInterface(
   // target, and child refs ride the `sdn` default props through the
   // `{...props}` spread onto the child root, so declare the ref attribute.
   const allProps = ["className?: string", `"data-seldon-ref"?: string`]
+
+  // Components that return a native wrapper which forwards `ref` expose a typed
+  // `ref` prop. The ref rides the `{...props}` spread onto the wrapper. Custom
+  // components resolve to the primitive their template wraps.
+  const nativeReturn =
+    component.config.react.returns === "custom"
+      ? NATIVE_REACT_PRIMITIVES[getCustomTemplateMeta(component).base]
+      : NATIVE_REACT_PRIMITIVES[
+          component.config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
+        ]
+  if (nativeReturn?.forwardsRef) {
+    allProps.push(`ref?: Ref<${nativeReturn.types.parameter}>`)
+  }
 
   // Components that compose children expose a ref override channel. A caller
   // keys overrides by a descendant's `data-seldon-ref` name, and the merged

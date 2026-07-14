@@ -11,6 +11,7 @@ import {
 } from "../../../helpers/components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { FONT_COLLECTION_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
+import { formatEntryId } from "../../../helpers/general/entry-id"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-default-font-collection-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import type { EntryFontCollection } from "../../../model/entry-font-collection"
@@ -56,7 +57,7 @@ export function addFontCollection(
         ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
         : -1
 
-    const defaultEntryId = `font-collection-${boardKey}-default`
+    const defaultEntryId = formatEntryId("font-collection", boardKey, "default")
 
     const stock =
       STOCK_FONT_COLLECTIONS_BY_ID[boardKey as FontCollectionTemplateId]

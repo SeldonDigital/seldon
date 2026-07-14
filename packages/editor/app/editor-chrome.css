@@ -1,30 +1,60 @@
 /*
  * Permanent editor chrome. This sheet is NOT a bespoke-removal target: it holds
  * styling that has no workspace-generated View equivalent and will never come
- * from an export. Window scrollbars, the FocusRingOverlay border, native focus
- * suppression, and the brand color tokens used by editor-only chrome live here.
+ * from an export. Window scrollbars, the FocusRingOverlay border, and native
+ * focus suppression live here.
  *
  * Do NOT add component-level styling here. Hand styling that mirrors what a
  * generated View should provide belongs in the VM that renders it (inline or a
  * co-located `*.bespoke.*` helper), so it deletes cleanly once the View ships.
  */
 
-:root {
-  --color-blue: #3fb5ff;
-  --color-pearl: #f5f5f5;
-  --color-background: #1f1f1f;
+/*
+ * Topbar rainbow strip. The resting strip is a static interface gradient. During
+ * a local export the strip grows and `useTopbarGradientAnimation` repaints the
+ * `background-image` each frame, cross-fading the stops in place. The resting
+ * stops here must match TOPBAR_RESTING_TOKENS so the handoff back to CSS is
+ * seamless when the animation clears its inline paint.
+ */
+.topbar-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background-image: linear-gradient(
+    90deg,
+    var(--sdn-swatch-negative) 0%,
+    var(--sdn-swatch-warning) 20%,
+    var(--sdn-swatch-positive) 40%,
+    var(--sdn-swatch-active) 70%,
+    var(--sdn-swatch-negative) 100%
+  );
+  transition: height 0.3s ease;
+}
 
-  /* Seldon brand colors used by the editor chrome (e.g. the topbar gradient).
-     These have no generated theme-token equivalent, so they live here. */
-  --sdn-swatch-seldon-red: hsl(0 100% 65%);
-  --sdn-swatch-seldon-green: hsl(135 76% 59%);
-  --sdn-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-swatch-seldon-yellow: hsl(60 100% 46%);
-  --sdn-swatch-seldon-purple: hsl(300 76% 48%);
+/* Grows the strip while an export animates; transitions back when it ends. */
+.topbar-gradient--active {
+  height: 3px;
 }
 
 body {
-  background: #000;
+  background: var(--sdn-swatch-black);
+}
+
+/*
+ * The topbar wordmark ships as an <img> with a hardcoded fill, so it cannot
+ * follow the interface mode on its own. Repaint it through a mask filled with
+ * the offWhite swatch: the neutral swatches invert per mode, so the letters
+ * render off-white on the dark logo pill in light mode and off-black on the
+ * light pill in dark mode. object-position pushes the img's own pixels out of
+ * the content box so only the painted mask shows.
+ */
+[data-seldon-ref="logo"] img[src="/wordmark-light.svg"] {
+  -webkit-mask: url("/wordmark-light.svg") no-repeat left center / contain;
+  mask: url("/wordmark-light.svg") no-repeat left center / contain;
+  background-color: var(--sdn-swatch-offWhite);
+  object-position: -10000px 0;
 }
 
 /*
@@ -38,23 +68,156 @@ body {
 }
 
 /*
- * Generated components paint a focus-within border (e.g. the combobox field
+ * Generated components paint a visible-focus border (e.g. the combobox field
  * outline). That is a focus visual, so gate it behind Show Keyboard Focus like
  * the overlay ring. With the toggle off, neutralize the border so focus paints
- * nothing on its own. The attribute selectors out-specify the generated rules
- * and cover every focus-within variant in one place.
+ * nothing on its own. The selectors mirror the generated focused-state binding
+ * (`:focus-visible` on the element or a descendant) and out-specify its rules.
  */
-html:not(.sdn-show-focus) .sdn-combobox-field:focus-within,
-html:not(.sdn-show-focus) [class*="sdn-combobox-field"]:focus-within,
-html:not(.sdn-show-focus) .sdn-item-section:focus-within,
-html:not(.sdn-show-focus) .sdn-button-iconic:focus-within {
+html:not(.sdn-show-focus)
+  .sdn-combobox-field:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  .sdn-item-section:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  .sdn-button-menu:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  .sdn-button-iconic:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ) {
   border-color: transparent;
 }
 html:not(.sdn-show-focus)
-  [class*="sdn-combobox-field"]:focus-within
-  .sdn-button-iconic,
-html:not(.sdn-show-focus) .sdn-item-section:focus-within .sdn-button-iconic {
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  .sdn-button-iconic:not([aria-invalid="true"]),
+html:not(.sdn-show-focus)
+  .sdn-item-section:is(:focus-visible, :has(:focus-visible))
+  .sdn-button-iconic:not([aria-invalid="true"]) {
   border-color: transparent;
+  background-color: transparent;
+}
+
+/*
+ * The combobox field's input and icons paint their own visible-focus color and
+ * border. Gate these like the field border: restore the resting color and
+ * neutralize the border so focus paints nothing when the toggle is off. The
+ * selectors out-specify the generated focused-state rules.
+ */
+html:not(.sdn-show-focus)
+  .sdn-input:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-input"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
+  border-color: transparent;
+}
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
+}
+
+/*
+ * Menus and listboxes author a focused state that exports as a visible-focus
+ * cascade (punch border on the surface, punch tint on every item leaf). Gate
+ * it like the other focus visuals: restore the resting border and let leaves
+ * inherit their item color. Activated and disabled leaves keep their own
+ * state tint.
+ */
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ) {
+  border-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
+}
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"],
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"] {
+  color: inherit;
+}
+/* Leaf states lose their own color to the generated focused-state punch rule
+   (higher specificity), so re-assert them above the inherit reset. Order sets
+   precedence at equal specificity: activated < disabled < invalid. */
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"].sdn-state-activated,
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"].sdn-state-activated,
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"].sdn-state-activated,
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"].sdn-state-activated {
+  color: var(--sdn-swatch-active);
+}
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-disabled="true"],
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-disabled="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-disabled="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-disabled="true"] {
+  color: var(--sdn-swatch-gray);
+}
+/* Error state wins over every gated reset. */
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-invalid="true"],
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-invalid="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-invalid="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-invalid="true"] {
+  color: var(--sdn-swatch-negative);
+}
+
+/*
+ * Pane separators drawn by the Allotment split-view library between the
+ * sidebars and the canvas. Allotment paints them with `--separator-border`;
+ * defining it on the themed chrome root wins over the library's `:root`
+ * default through inheritance. The theme's mode block inverts swatch
+ * lightness, so this one reference renders OffBlack at 20% in light mode and
+ * OffWhite at 20% in dark mode.
+ */
+[data-theme] {
+  --separator-border: color-mix(
+    in srgb,
+    var(--sdn-swatch-offBlack) 20%,
+    transparent
+  );
 }
 
 /* Unified focus ring drawn by FocusRingOverlay. Geometry is set inline. */
@@ -71,7 +234,7 @@ html::-webkit-scrollbar-track {
   background: transparent;
 }
 html::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: color-mix(in srgb, var(--sdn-swatch-white) 30%, transparent);
   border-radius: 9999px;
 }
 

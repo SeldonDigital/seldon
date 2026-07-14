@@ -240,6 +240,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_board_preview":
     case "set_component_properties":
     case "reset_component_property":
+    case "reset_component_board":
     case "apply_component_properties_to_all_boards":
     case "set_component_theme":
       validateBoardMetadata(workspace, action)

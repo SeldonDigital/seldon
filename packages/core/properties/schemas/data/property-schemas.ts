@@ -62,6 +62,13 @@ import { symbolSchema } from "../../values/attributes/symbol"
 import { wrapperElementSchema } from "../../values/attributes/wrapper-element"
 import { gradientPresetSchema } from "../../values/effects/gradients/gradient"
 import { gradientAngleSchema } from "../../values/effects/gradients/gradient-angle"
+import {
+  gradientPositionXSchema,
+  gradientPositionYSchema,
+} from "../../values/effects/gradients/gradient-position"
+import { gradientRepeatSchema } from "../../values/effects/gradients/gradient-repeat"
+import { gradientShapeSchema } from "../../values/effects/gradients/gradient-shape"
+import { gradientSizeSchema } from "../../values/effects/gradients/gradient-size"
 import { gradientStopBrightnessSchema } from "../../values/effects/gradients/gradient-stop-brightness"
 import { gradientStopColorSchema } from "../../values/effects/gradients/gradient-stop-color"
 import { gradientStopOpacitySchema } from "../../values/effects/gradients/gradient-stop-opacity"
@@ -123,9 +130,9 @@ import { textCaseSchema } from "../../values/typography/text-casing"
 import { textDecorationSchema } from "../../values/typography/text-decoration"
 import { wrapTextSchema } from "../../values/typography/wrap-text"
 
-/** Flat catalog map keyed by joined facet names; see `PROPERTY-SCHEMAS.md`. */
+/** Flat catalog map keyed by joined facet names; see `properties/schemas/README.md`. */
 const PROPERTY_SCHEMAS_RAW = {
-  // 1. ATTRIBUTES (PROPERTIES.md table order)
+  // 1. ATTRIBUTES (properties README table order)
   display: displaySchema,
   htmlElement: htmlElementSchema,
   wrapperElement: wrapperElementSchema,
@@ -158,10 +165,10 @@ const PROPERTY_SCHEMAS_RAW = {
   screenHeight: screenHeightSchema,
   cursor: cursorSchema,
 
-  // 2. LAYOUT (PROPERTIES.md table order; then auxiliary layout schemas)
-  direction: directionSchema,
+  // 2. LAYOUT (properties README table order; then auxiliary layout schemas)
   placement: placementSchema,
   position: positionSchema,
+  direction: directionSchema,
   orientation: orientationSchema,
   align: alignSchema,
   width: widthSchema,
@@ -185,7 +192,7 @@ const PROPERTY_SCHEMAS_RAW = {
   resize: resizeSchema,
   screenSize: screenSizeSchema,
 
-  // 3. APPEARANCE (PROPERTIES.md: color → opacity → background[] → border* → corners → borderCollapse)
+  // 3. APPEARANCE (properties README: color → opacity → background[] → border* → corners → borderCollapse)
   color: colorSchema,
   accentColor: accentColorSchema,
   brightness: brightnessSchema,
@@ -202,9 +209,15 @@ const PROPERTY_SCHEMAS_RAW = {
   backgroundBrightness: backgroundBrightnessSchema,
   backgroundOpacity: backgroundOpacitySchema,
   // Gradient-kind background facets reuse the shared gradient value schemas.
+  // The layer `kind` (linearGradient | radialGradient | conicGradient) selects
+  // which of these apply, so there is no per-layer gradient type facet.
   backgroundPreset: gradientPresetSchema,
-  backgroundGradientType: gradientTypeSchema,
   backgroundAngle: gradientAngleSchema,
+  backgroundPositionX: gradientPositionXSchema,
+  backgroundPositionY: gradientPositionYSchema,
+  backgroundShape: gradientShapeSchema,
+  backgroundRadialSize: gradientSizeSchema,
+  backgroundConicRepeat: gradientRepeatSchema,
   backgroundStartColor: gradientStopColorSchema,
   backgroundStartBrightness: gradientStopBrightnessSchema,
   backgroundStartOpacity: gradientStopOpacitySchema,
@@ -247,7 +260,7 @@ const PROPERTY_SCHEMAS_RAW = {
   corners: cornersSchema,
   borderCollapse: borderCollapseSchema,
 
-  // 4. TYPOGRAPHY (PROPERTIES.md: font.* then textAlign → lines)
+  // 4. TYPOGRAPHY (properties README: font.* then textAlign → lines)
   fontPreset: fontPresetSchema,
   fontFamily: fontFamilySchema,
   fontStyle: fontStyleSchema,
@@ -261,7 +274,7 @@ const PROPERTY_SCHEMAS_RAW = {
   wrapText: wrapTextSchema,
   lines: linesSchema,
 
-  // EFFECTS (PROPERTIES.md — gradient[], shadow[], scroll, scrollbarStyle)
+  // EFFECTS (properties README: gradient look facets, shadow[], scroll, scrollbarStyle)
   gradientPreset: gradientPresetSchema,
   // `getCompoundSubPropertySchema("gradient", "gradientType")` joins parent + PascalCase facet →
   // `gradientGradientType` (facet name repeats "gradient"). Same schema is also under `gradientType`
@@ -270,6 +283,11 @@ const PROPERTY_SCHEMAS_RAW = {
   gradientGradientType: gradientTypeSchema,
   gradientType: gradientTypeSchema,
   gradientAngle: gradientAngleSchema,
+  gradientPositionX: gradientPositionXSchema,
+  gradientPositionY: gradientPositionYSchema,
+  gradientShape: gradientShapeSchema,
+  gradientRadialSize: gradientSizeSchema,
+  gradientConicRepeat: gradientRepeatSchema,
   gradientStartColor: gradientStopColorSchema,
   gradientStartBrightness: gradientStopBrightnessSchema,
   gradientStartOpacity: gradientStopOpacitySchema,
@@ -313,8 +331,5 @@ const PROPERTY_SCHEMAS_RAW = {
 
 export const PROPERTY_SCHEMAS =
   attachPropertyDisplayMetadata(PROPERTY_SCHEMAS_RAW)
-
-/** The property schema catalog: same object as {@link PROPERTY_SCHEMAS}. */
-export const PROPERTY_SCHEMA_CATALOG = PROPERTY_SCHEMAS
 
 export type PropertyName = keyof typeof PROPERTY_SCHEMAS

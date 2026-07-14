@@ -6,31 +6,13 @@ import type { Value } from "../types/value"
 import type { AtomicValue } from "../types/value-atomic"
 import { BackgroundKind } from "../values/appearance/background/background-kind"
 import { Color } from "../values/appearance/color"
+import { parseBasedOnPath } from "./parse-based-on-path"
 import { ComputeContext } from "./types"
-
-const LAYERED_PAINT_ROOTS = ["background", "shadow"] as const
 
 export type ResolvedBasedOnWithAnchor = {
   value: Value | undefined
   /** Properties context that supplied `value`; used for sibling layer facets. */
   facetSource: Omit<ComputeContext, "theme"> | null
-}
-
-/**
- * Maps schema-style paths such as `background.color` to runtime paths `background.0.color`.
- */
-function normalizeBasedOnLookupPath(path: string): string {
-  for (const root of LAYERED_PAINT_ROOTS) {
-    const prefix = `${root}.`
-    if (!path.startsWith(prefix)) continue
-
-    const rest = path.slice(prefix.length)
-    if (/^\d+\./.test(rest)) continue
-
-    return `${root}.0.${rest}`
-  }
-
-  return path
 }
 
 function isNonContributingBackgroundColor(value: Value | undefined): boolean {
@@ -76,9 +58,7 @@ export function resolveBasedOnWithAnchor(
   basedOn: string,
   context: Omit<ComputeContext, "theme">,
 ): ResolvedBasedOnWithAnchor {
-  const colorLookupPath = normalizeBasedOnLookupPath(
-    basedOn.replace(/^#(parent\.|self\.)?/, ""),
-  )
+  const { anchor, lookupPath: colorLookupPath } = parseBasedOnPath(basedOn)
 
   const kindLookupPath =
     colorLookupPath.startsWith("background.") &&
@@ -122,7 +102,13 @@ export function resolveBasedOnWithAnchor(
     return { value, facetSource: cursor }
   }
 
-  if (basedOn.startsWith("#parent.") && context.parentContext) {
+  if (anchor === "parent") {
+    // No parent context means there is nothing to read. Resolve to no value
+    // instead of silently reading the same path on self.
+    if (!context.parentContext) {
+      return { value: undefined, facetSource: null }
+    }
+
     const parent = context.parentContext
 
     return walkParents(
@@ -131,7 +117,7 @@ export function resolveBasedOnWithAnchor(
     )
   }
 
-  if (basedOn.startsWith("#self.")) {
+  if (anchor === "self") {
     const selfValue = findInObject<Value>(context.properties, colorLookupPath)
 
     if (!isNonContributingLayer(context.properties, selfValue)) {

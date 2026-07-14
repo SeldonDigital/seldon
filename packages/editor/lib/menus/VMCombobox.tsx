@@ -1,20 +1,20 @@
 /**
  * VMCombobox: the editable combobox VM. It owns the input behavior (focus,
- * commit, keyboard nav, blur) over the custom `InputEditor` primitive. In
- * `combobox` mode it anchors the floating `ComboboxListbox`; in `standalone`
+ * commit, keyboard nav, blur) over the generated `Input` primitive. In
+ * `combobox` mode it anchors the floating `VMComboboxListbox`; in `standalone`
  * mode it is a plain commit-on-blur input used for inline rename and dialog
- * fields. Option-list rendering lives in `ComboboxListbox`; the selection and
+ * fields. Option-list rendering lives in `VMComboboxListbox`; the selection and
  * filter engine lives in `useComboboxState`.
  */
 import { CSSProperties, RefObject, useEffect, useRef } from "react"
-import { Box } from "@seldon/components/custom-components"
-import { InputEditor } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
-import { COMBOBOX_FONT_SIZE, COMBOBOX_LINE_HEIGHT } from "./combobox.bespoke"
+import { Input } from "@seldon/components/primitives/Input"
 
-// Functional resets so the custom `InputEditor` primitive blends into a property
+// Functional resets so the generated `Input` primitive blends into a property
 // row. Appearance theming still comes from authored CSS; these only strip the
-// native input chrome the primitive would otherwise render.
+// native input chrome the primitive would otherwise render. The type metrics
+// pin the input to the row's generated tokens until a generated View owns the
+// combobox input styling.
 const comboboxInputStyle: CSSProperties = {
   flex: 1,
   padding: 0,
@@ -22,8 +22,8 @@ const comboboxInputStyle: CSSProperties = {
   borderRadius: 0,
   outline: "none",
   backgroundColor: "transparent",
-  lineHeight: COMBOBOX_LINE_HEIGHT,
-  fontSize: COMBOBOX_FONT_SIZE,
+  lineHeight: "var(--sdn-line-height-solid)",
+  fontSize: "var(--sdn-font-size-xsmall)",
 }
 
 const comboboxFrameStyle: CSSProperties = {
@@ -322,8 +322,12 @@ export function VMCombobox({
         style={comboboxFrameMergedStyle}
         onClick={handleFrameClick}
       >
-        <Box ref={wrapperRef} style={comboboxWrapperStyle}>
-          <InputEditor
+        <Frame
+          wrapperElement="div"
+          ref={wrapperRef}
+          style={comboboxWrapperStyle}
+        >
+          <Input
             value={value}
             onChange={handleInputChange}
             onFocus={handleFocus}
@@ -337,13 +341,13 @@ export function VMCombobox({
             {...inputPropsCommon}
             {...restInputProps}
           />
-        </Box>
+        </Frame>
       </Frame>
     )
   }
 
   return (
-    <InputEditor
+    <Input
       autoFocus={autoFocus}
       value={value}
       onChange={handleInputChange}

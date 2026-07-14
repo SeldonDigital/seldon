@@ -15,6 +15,7 @@ import { ThemeModulation } from "@seldon/core/themes/types"
 
 import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
+import { getThemeTokenVarReference } from "./get-theme-token-reference"
 import { CSSObject } from "./types"
 
 /**
@@ -63,6 +64,7 @@ export function getSizeStyles({
   parentContext,
   theme,
   layoutMode,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
 
@@ -206,13 +208,20 @@ export function getSizeStyles({
         styles.flexShrink = 0
       }
     } else if (width.type === ValueType.THEME_ORDINAL) {
-      const themeValue = getThemeOption(width.value, theme) as ThemeModulation
+      const reference = useThemeVariableReferences
+        ? getThemeTokenVarReference(width.value)
+        : undefined
 
-      styles.width =
-        modulateWithTheme({
-          theme,
-          parameters: themeValue.parameters,
-        }) + "rem"
+      if (reference) {
+        styles.width = reference
+      } else {
+        const themeValue = getThemeOption(width.value, theme) as ThemeModulation
+        styles.width =
+          modulateWithTheme({
+            theme,
+            parameters: themeValue.parameters,
+          }) + "rem"
+      }
 
       if (!parentIsGrid && parentOrientation === Orientation.HORIZONTAL) {
         styles.flexShrink = 0
@@ -266,12 +275,23 @@ export function getSizeStyles({
         styles.flexShrink = 0
       }
     } else if (height.type === ValueType.THEME_ORDINAL) {
-      const themeValue = getThemeOption(height.value, theme) as ThemeModulation
-      styles.height =
-        modulateWithTheme({
+      const reference = useThemeVariableReferences
+        ? getThemeTokenVarReference(height.value)
+        : undefined
+
+      if (reference) {
+        styles.height = reference
+      } else {
+        const themeValue = getThemeOption(
+          height.value,
           theme,
-          parameters: themeValue.parameters,
-        }) + "rem"
+        ) as ThemeModulation
+        styles.height =
+          modulateWithTheme({
+            theme,
+            parameters: themeValue.parameters,
+          }) + "rem"
+      }
 
       if (!parentIsGrid && parentOrientation === Orientation.VERTICAL) {
         styles.flexShrink = 0

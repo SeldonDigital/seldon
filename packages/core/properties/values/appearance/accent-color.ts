@@ -1,12 +1,9 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { isValidColor } from "../../../helpers/validation/color"
 import { Theme } from "../../../themes/types"
 import { ComputedFunction } from "../../constants"
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { Color, ColorValue } from "./color"
-
-/** Unset or a color value for control accents. */
-export type AccentColorValue = EmptyValue | ColorValue
+import { Color } from "./color"
 
 export const accentColorSchema: PropertySchema = {
   name: "accentColor",
@@ -39,10 +36,8 @@ export const accentColorSchema: PropertySchema = {
     computed: (value: unknown) =>
       value === ComputedFunction.HIGH_CONTRAST_COLOR ||
       value === ComputedFunction.MATCH_COLOR,
-    themeCategorical: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.swatch
-    },
+    themeCategorical: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "swatch"),
   },
   presetOptions: () => Object.values(Color),
   themeCategoricalKeys: (theme: Theme) => Object.keys(theme.swatch),

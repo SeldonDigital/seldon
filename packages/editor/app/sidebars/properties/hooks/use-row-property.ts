@@ -3,17 +3,20 @@ import {
   getOptionIcon,
 } from "@lib/icons/resolve-option-icon"
 import { MenuEntry } from "@lib/menus"
+import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
+import { ICONIC_BUTTON_SELECTOR } from "@lib/menus/iconic-button"
+import { parsePropertyPath } from "@lib/properties/property-paths"
 import {
-  childPathsUnderCompoundParent,
-  parsePropertyPath,
-} from "@lib/properties/property-paths"
+  buildActivatedRefProps,
+  buildDisabledRefProps,
+  buildInvalidRefProps,
+} from "@lib/views/state-props"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Board,
   Instance,
   type LayeredPaintKey,
   PropertyKey,
-  SubPropertyKey,
   Theme,
   type ThemeCustomTokenSection,
   ValueType,
@@ -31,35 +34,29 @@ import {
 } from "@lib/workspace/hooks/use-node-active-state"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useInlineRename } from "../../hooks/use-inline-rename"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { useRenameInput } from "../../hooks/use-rename-input"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,
-} from "@app/panels/hooks/use-upload-image-panel"
+} from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  buildActivatedRefProps,
-  buildDisabledRefProps,
-  buildInvalidRefProps,
-} from "../../shared/build-field-state-props"
-import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
-import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
 import type { LayerDragContext } from "../LayerDragRow"
+import { dispatchPropertyReset } from "../helpers/commit-helpers"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
-import { FlatProperty } from "../helpers/properties-data"
-import { getPropertyLabelStyle } from "../helpers/property-styling-tokens.bespoke"
+import { FlatProperty, getCompoundChildRows } from "../helpers/properties-data"
+import { getPropertyDebugColor } from "../helpers/property-styling"
+import { resolveThemeSwatchColors } from "../helpers/resolve-theme-swatch-colors"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
@@ -139,11 +136,10 @@ export function useRowProperty({
   iconSetEditingContext,
 }: RowPropertyProps) {
   const { showPropertyTypes } = useDebugMode()
-  const { resetProperty, removeNodeLayer, applyBoardPropertiesToAllBoards } =
-    useObjectProperties()
+  const { resetProperty, removeNodeLayer } = useObjectProperties()
   const { toggleProperty } = usePropertyExpansion()
   const { getPropertyValueForDisplay, shouldShowMenuIcon } =
-    usePropertyControlData({ property, theme })
+    usePropertyControlData({ property })
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const frameRef = useRef<HTMLDivElement>(null)
@@ -151,6 +147,55 @@ export function useRowProperty({
   const [isEditingProperty, setIsEditingProperty] = useState(false)
   const [isRenaming, setIsRenaming] = useState(false)
   const addToast = useAddToast()
+
+  // The row's local edit state flips a render before the workspace-derived
+  // `property.value` prop reflects a commit, so dropping straight to display
+  // mode paints the stale pre-commit value for a frame. Hold edit mode (which
+  // shows the value the user just entered) until `property.value` changes, then
+  // switch to display. A timer guards no-op commits that never change the value.
+  const deferredCloseBaselineRef = useRef<string | null>(null)
+  const deferredCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  )
+
+  const cancelDeferredClose = useCallback(() => {
+    if (deferredCloseTimerRef.current !== null) {
+      clearTimeout(deferredCloseTimerRef.current)
+      deferredCloseTimerRef.current = null
+    }
+    deferredCloseBaselineRef.current = null
+  }, [])
+
+  const setEditing = useCallback(
+    (editing: boolean) => {
+      if (editing) {
+        cancelDeferredClose()
+        setIsEditingProperty(true)
+        return
+      }
+      deferredCloseBaselineRef.current = JSON.stringify(property.value ?? null)
+      if (deferredCloseTimerRef.current !== null) {
+        clearTimeout(deferredCloseTimerRef.current)
+      }
+      deferredCloseTimerRef.current = setTimeout(() => {
+        deferredCloseTimerRef.current = null
+        deferredCloseBaselineRef.current = null
+        setIsEditingProperty(false)
+      }, 600)
+    },
+    [cancelDeferredClose, property.value],
+  )
+
+  useEffect(() => {
+    if (deferredCloseBaselineRef.current === null) return
+    const currentKey = JSON.stringify(property.value ?? null)
+    if (currentKey !== deferredCloseBaselineRef.current) {
+      cancelDeferredClose()
+      setIsEditingProperty(false)
+    }
+  }, [property.value, cancelDeferredClose])
+
+  useEffect(() => cancelDeferredClose, [cancelDeferredClose])
 
   // Instances cannot author interaction states. In a non-Normal state their rows
   // are read-only: no hover outline, no chevron, default cursor, and a click
@@ -193,7 +238,13 @@ export function useRowProperty({
     const parts = property.key.split(".")
     const section = parts[0]
     let id: string | undefined
-    if (parts.length === 2) {
+    if (section === "swatch") {
+      // Swatch rows nest under a group: `swatch.<group>.<id>`. Only a custom
+      // swatch (`swatch.custom.customN`) can be renamed in place.
+      if (parts.length === 3 && parts[1] === "custom") {
+        id = parts[2]
+      }
+    } else if (parts.length === 2) {
       id = parts[1]
     } else if (parts.length === 3 && parts[2] === "step") {
       id = parts[1]
@@ -219,10 +270,7 @@ export function useRowProperty({
   // Sub-properties for this compound/shorthand property.
   const children = useMemo(() => {
     if (!property.isCompound && !property.isShorthand) return []
-    return allProperties.filter(
-      (p) =>
-        p.isSubProperty && childPathsUnderCompoundParent(property.key, p.key),
-    )
+    return getCompoundChildRows(property.key, allProperties)
   }, [allProperties, property.key, property.isCompound, property.isShorthand])
 
   const hasChildren = children.length > 0
@@ -280,24 +328,21 @@ export function useRowProperty({
     [displaySkipsOptions, property, theme, node, workspace],
   )
 
-  const nodeId = isBoard(node) ? getComponentKey(node) : node.id
-
   // The unit is folded into the display string (e.g. "24px") and shown in the
-  // single combobox value field. There is no separate unit element.
-  const value = getDisplayValue(
-    propertyValue,
-    property.key,
-    nodeId,
-    workspace,
-    theme,
-    options,
-  )
+  // single combobox value field. There is no separate unit element. A look-parent
+  // row (theme look groups and computed groups like Modulation) owns no value, so
+  // it shows nothing rather than formatting EMPTY into a "Default" placeholder.
+  const value = property.isLookParent
+    ? ""
+    : getDisplayValue(propertyValue, theme, options)
 
-  const labelStyle = useMemo(
-    () => getPropertyLabelStyle(property, showPropertyTypes),
-    [property, showPropertyTypes],
-  )
-  const labelColor = labelStyle.color
+  // Outside debug mode, property status maps to a generated leaf state
+  // (activated, invalid, disabled) applied on the row's refs, so the label
+  // carries no inline status color. Debug mode keeps the inline status colors
+  // for its type visualization.
+  const labelColor = showPropertyTypes
+    ? getPropertyDebugColor(property)
+    : undefined
 
   const swatchChipColor = useMemo(() => {
     if (!theme || !isSwatchIconPropertyKey(property.key)) {
@@ -306,7 +351,15 @@ export function useRowProperty({
     return getThemeTokenIconColorFromPropertyValue(property.value, theme)
   }, [property.key, property.value, theme])
 
-  const endEdit = useCallback(() => setIsEditingProperty(false), [])
+  // The theme-assignment row's closed value paints the assigned theme's swatch
+  // cluster, the same strip its menu options show. Resolved from the row's theme,
+  // exactly like `swatchChipColor`.
+  const themeSwatchColors = useMemo(() => {
+    if (!isThemeAssignment || !theme) return undefined
+    return resolveThemeSwatchColors(theme)
+  }, [isThemeAssignment, theme])
+
+  const endEdit = useCallback(() => setEditing(false), [setEditing])
 
   // Mount the value control. The view (none / field / combobox) drives the value
   // `input` slot and, for combobox, the floating option list rendered by the
@@ -317,10 +370,9 @@ export function useRowProperty({
     theme,
     frameRef,
     isEditing: isEditingProperty,
-    onEditChange: setIsEditingProperty,
+    onEditChange: setEditing,
     onTabNext: handleTabNext,
     onTabPrev: handleTabPrev,
-    color: labelColor,
     themeEditingContext,
     fontCollectionEditingContext,
     iconSetEditingContext,
@@ -347,7 +399,7 @@ export function useRowProperty({
   usePropertyEditRowRegistration(
     property.key,
     frameRef,
-    () => setIsEditingProperty(true),
+    () => setEditing(true),
     isNavigable,
   )
 
@@ -367,30 +419,7 @@ export function useRowProperty({
       themeEditingContext.resetThemeProperty(property)
       return
     }
-    if (property.isSubProperty) {
-      const parsed = parsePropertyPath(property.key)
-      if (parsed.kind === "layered-facet") {
-        resetProperty(
-          parsed.root as PropertyKey,
-          parsed.facet as SubPropertyKey,
-          parsed.index,
-        )
-      } else if (parsed.kind === "facet") {
-        resetProperty(
-          parsed.root as PropertyKey,
-          parsed.facet as SubPropertyKey,
-        )
-      } else {
-        resetProperty(property.key as PropertyKey)
-      }
-    } else {
-      const parsed = parsePropertyPath(property.key)
-      if (parsed.kind === "layered-parent") {
-        resetProperty(parsed.root as PropertyKey, undefined, parsed.index)
-      } else {
-        resetProperty(property.key as PropertyKey)
-      }
-    }
+    dispatchPropertyReset(property.key, property.isSubProperty, resetProperty)
   }
 
   // Single click on the combobox-field value frame flips the row into edit mode.
@@ -407,7 +436,7 @@ export function useRowProperty({
       }
       if (!property.isDimmed && property.controlType) {
         event.stopPropagation()
-        setIsEditingProperty(true)
+        setEditing(true)
       }
     },
     [
@@ -415,7 +444,7 @@ export function useRowProperty({
       addToast,
       property.isDimmed,
       property.controlType,
-      setIsEditingProperty,
+      setEditing,
     ],
   )
 
@@ -428,21 +457,6 @@ export function useRowProperty({
     onTabNext: handleTabNext,
     onTabPrev: handleTabPrev,
   })
-
-  // Dynamic value icons (swatch color, theme token, theme swatch strip, symbol
-  // glyph) cannot render through the generated string-`Icon` slot. Resolve the
-  // current value through the same resolver the listbox uses, so the closed
-  // field paints the identical node. A plain icon id keeps the slot path.
-  const valueIconNode = useMemo<React.ReactNode>(() => {
-    if (control.kind !== "combobox") {
-      return null
-    }
-    const rendered = control.optionList.resolveIcon({
-      value: control.optionList.value,
-      name: value,
-    })
-    return rendered.kind === "node" ? rendered.node : null
-  }, [control, value])
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement
@@ -486,7 +500,7 @@ export function useRowProperty({
         !isEditingProperty &&
         (property.controlType === "menu" || property.controlType === "combo")
       ) {
-        setIsEditingProperty(true)
+        setEditing(true)
       }
     },
     [
@@ -495,6 +509,7 @@ export function useRowProperty({
       property.isDimmed,
       property.controlType,
       isEditingProperty,
+      setEditing,
     ],
   )
 
@@ -537,7 +552,10 @@ export function useRowProperty({
     }
   }, [customTokenTarget])
 
-  const { labelChildren } = useInlineRename({
+  // The property name slot is an `Input`, so a renameable row reuses the same
+  // edit-in-place hook as object names. Non-renameable rows keep `isRenaming`
+  // false, so the input stays a read-only, inert display of the label.
+  const nameInput = useRenameInput({
     label: labelText,
     isEditing: isRenaming,
     setEditing: setIsRenaming,
@@ -586,40 +604,21 @@ export function useRowProperty({
           : []),
       ]
 
-  // The board's device row (the `board` compound) can push its board properties
-  // onto every other component board. Append it to the row's actions menu so the
-  // command lives beside the device/viewport setting.
-  const handleApplyToAllBoards = () => {
-    const confirmed = window.confirm(
-      "Apply this board's properties to all other component boards? This overwrites their board properties.",
-    )
-    if (!confirmed) return
-    applyBoardPropertiesToAllBoards({ sourceBoardKey: nodeId })
-  }
-
+  // The board-level commands (Apply to All Boards, Reset Board) live on the
+  // board category header's actions menu, so the board compound row itself
+  // carries no menu entries.
   const resetActions: MenuEntry[] =
-    isBoard(node) && property.key === "board"
-      ? [
-          {
-            id: "apply-to-all-boards",
-            label: "Apply to All Boards",
-            onSelect: handleApplyToAllBoards,
-            testId: `property-row-${property.key}-apply-to-all`,
-          },
-          ...(rowActions.length > 0 ? ["separator" as const] : []),
-          ...rowActions,
-        ]
-      : rowActions
+    isBoard(node) && property.key === "board" ? [] : rowActions
 
   const listItemProps = buildPropertyRowProps({
     property,
     isExpanded,
     hasChildren,
     labelText,
-    labelStyle,
     labelColor,
     iconId,
     isThemeAssignment,
+    themeSwatchColors,
     swatchChipColor,
     supportsUpload,
     showMenuIcon: shouldShowMenuIcon(),
@@ -629,14 +628,12 @@ export function useRowProperty({
     handleMenuClick,
   })
 
-  if (customTokenTarget && isRenaming) {
-    listItemProps.textLabel = {
-      ...listItemProps.textLabel,
-      children: labelChildren as unknown as string,
-      // The label wraps the live rename input here, so restore pointer events
-      // that the resting name label suppresses.
-      style: { ...listItemProps.textLabel.style, pointerEvents: "auto" },
-    }
+  // The name `Input` slot carries the rename hook's display or edit props plus
+  // the row's resting name style. The hook owns `pointerEvents` (inert while
+  // displaying, live while editing), so its style is spread last.
+  const nameLabelProps = {
+    ...nameInput,
+    style: { ...listItemProps.nameLabelStyle, ...nameInput.style },
   }
 
   const layerDrag = resolveLayerDrag({ property, node, allProperties })
@@ -654,6 +651,7 @@ export function useRowProperty({
 
   return {
     listItemProps,
+    nameLabelProps,
     onRowClick: handleRowClick,
     onRowDoubleClick: handleRowDoubleClick,
     control,
@@ -679,6 +677,5 @@ export function useRowProperty({
     hasChildren,
     childItems,
     layerDrag,
-    valueIconNode,
   }
 }

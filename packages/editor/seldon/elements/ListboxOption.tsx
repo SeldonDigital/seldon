@@ -105,7 +105,7 @@ const sdn: ListboxOptionProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
     "data-seldon-ref": "optionIcon",
   },
   textLabel: {

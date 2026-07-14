@@ -13,14 +13,12 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useFontCollectionBoardSpecimens } from "../hooks/use-font-collection-board-specimens"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/chrome/frames/Frame"
-import {
-  PreviewItemWrapper,
-  StyleTag,
-} from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
+import { StyleTag } from "../StyleTag.bespoke"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
+import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
 import { injectBoardBackground } from "./inject-board-background"
 
 export type FontCollectionBoardProps = {

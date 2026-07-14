@@ -1,8 +1,8 @@
 /**
  * Panel display category and global ordering for catalog properties.
- * Mirrors `PROPERTIES.md` → Property Categories (Attributes, Layout, Appearance, Typography, Effects).
+ * Mirrors the properties README Property Categories (Attributes, Layout, Appearance, Typography, Effects).
  * `PROPERTY_DISPLAY_ORDER` is the source of truth for `PropertySchema.displayCategory` / `displayOrder`.
- * When adding catalog keys, update `schemas/data/property-schemas.ts` and the contributor notes in `PROPERTIES.md` so sections stay aligned.
+ * When adding catalog keys, update `schemas/data/property-schemas.ts` and the contributor notes in the properties README so sections stay aligned.
  */
 
 export const PropertyDisplayCategory = {
@@ -63,11 +63,11 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
   {
     category: PropertyDisplayCategory.LAYOUT,
     keys: [
+      "placement",
+      "position",
       "direction",
       "orientation",
       "align",
-      "placement",
-      "position",
       "width",
       "height",
       "margin",
@@ -108,8 +108,12 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "backgroundBrightness",
       "backgroundOpacity",
       "backgroundPreset",
-      "backgroundGradientType",
       "backgroundAngle",
+      "backgroundPositionX",
+      "backgroundPositionY",
+      "backgroundShape",
+      "backgroundRadialSize",
+      "backgroundConicRepeat",
       "backgroundStartColor",
       "backgroundStartBrightness",
       "backgroundStartOpacity",
@@ -176,6 +180,11 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "gradientGradientType",
       "gradientType",
       "gradientAngle",
+      "gradientPositionX",
+      "gradientPositionY",
+      "gradientShape",
+      "gradientRadialSize",
+      "gradientConicRepeat",
       "gradientStartColor",
       "gradientStartBrightness",
       "gradientStartOpacity",
@@ -230,8 +239,6 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
  * one row per id in this order, ahead of the Attributes block.
  */
 export const NODE_FIELD_DISPLAY_ORDER = ["theme", "reference"] as const
-
-export type NodeFieldDisplayId = (typeof NODE_FIELD_DISPLAY_ORDER)[number]
 
 export type PropertyDisplayMeta = {
   displayCategory: PropertyDisplayCategory

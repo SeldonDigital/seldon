@@ -16,20 +16,13 @@ export function getShadowStyles({
   properties,
   theme,
   useThemeVariableReferences,
-  themeSlug,
 }: StyleGenerationContext): CSSObject {
   const layers = getLayeredPaintLayers(properties, "shadow")
   const isText = !!properties.content
 
   const shadows = layers
     .map((layer) =>
-      resolveShadowLayer(
-        layer,
-        theme,
-        isText,
-        useThemeVariableReferences,
-        themeSlug,
-      ),
+      resolveShadowLayer(layer, theme, isText, useThemeVariableReferences),
     )
     .filter((shadow): shadow is string => shadow !== undefined)
 
@@ -50,7 +43,6 @@ function resolveShadowLayer(
   theme: Theme,
   isText: boolean,
   useThemeVariableReferences?: boolean,
-  themeSlug?: string,
 ): string | undefined {
   const preset = resolveValue(shadow.preset)
   const themeShadow = preset ? getThemeOption(preset.value, theme) : undefined
@@ -94,7 +86,6 @@ function resolveShadowLayer(
     brightness: resolvedBrightness,
     theme,
     useThemeVariableReferences,
-    themeSlug,
   })
 
   // Text shadows do not support a spread value.

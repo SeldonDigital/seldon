@@ -8,9 +8,11 @@ import { CSSObject } from "./types"
 export function getCornersStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: {
   properties: Properties
   theme: Theme
+  useThemeVariableReferences?: boolean
 }): CSSObject {
   const styles: CSSObject = {}
 
@@ -22,19 +24,35 @@ export function getCornersStyles({
   const topLeft = resolveValue(properties.corners.topLeft)
 
   if (topRight) {
-    styles.borderTopRightRadius = getAbsoluteSizeCssValue(topRight, theme)
+    styles.borderTopRightRadius = getAbsoluteSizeCssValue(
+      topRight,
+      theme,
+      useThemeVariableReferences,
+    )
   }
 
   if (bottomRight) {
-    styles.borderBottomRightRadius = getAbsoluteSizeCssValue(bottomRight, theme)
+    styles.borderBottomRightRadius = getAbsoluteSizeCssValue(
+      bottomRight,
+      theme,
+      useThemeVariableReferences,
+    )
   }
 
   if (bottomLeft) {
-    styles.borderBottomLeftRadius = getAbsoluteSizeCssValue(bottomLeft, theme)
+    styles.borderBottomLeftRadius = getAbsoluteSizeCssValue(
+      bottomLeft,
+      theme,
+      useThemeVariableReferences,
+    )
   }
 
   if (topLeft) {
-    styles.borderTopLeftRadius = getAbsoluteSizeCssValue(topLeft, theme)
+    styles.borderTopLeftRadius = getAbsoluteSizeCssValue(
+      topLeft,
+      theme,
+      useThemeVariableReferences,
+    )
   }
 
   return styles

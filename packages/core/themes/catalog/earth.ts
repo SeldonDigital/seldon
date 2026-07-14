@@ -20,12 +20,12 @@ export const theme: StockTheme = {
   },
   modulation: {
     type: TokenType.COMPUTED,
-    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
+    parameters: { ratio: Ratio.PerfectFourth, baseFontSize: 16, baseSize: 1 },
   },
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: { hue: 18, saturation: 60, lightness: 45 },
+      baseColor: { hue: 16, saturation: 55, lightness: 47 },
       harmony: Harmony.Analogous,
       angle: 9,
       step: 12,
@@ -33,6 +33,14 @@ export const theme: StockTheme = {
       grayPoint: 56,
       blackPoint: 8,
       bleed: 12,
+    },
+  },
+  displayMode: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      mode: "light",
+      chromaChange: -5,
+      lightnessChange: 4,
     },
   },
   matchColor: {
@@ -58,8 +66,8 @@ export const theme: StockTheme = {
   fontFamily: {
     type: TokenType.COMPUTED,
     parameters: {
-      primary: { type: TokenType.FONT_FAMILY, parameters: "Raleway" },
-      secondary: { type: TokenType.FONT_FAMILY, parameters: "Raleway" },
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Fraunces" },
     },
   },
   size: {
@@ -176,7 +184,7 @@ export const theme: StockTheme = {
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 6.21 },
+      parameters: { step: 9.32 },
     },
   },
   padding: {
@@ -199,7 +207,7 @@ export const theme: StockTheme = {
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 6.21 },
+      parameters: { step: 9.32 },
     },
   },
   gap: {
@@ -222,7 +230,7 @@ export const theme: StockTheme = {
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 6.21 },
+      parameters: { step: 9.32 },
     },
   },
   corners: {
@@ -236,16 +244,20 @@ export const theme: StockTheme = {
       name: "Compact",
       parameters: { step: -3.11 },
     },
-    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
+    cozy: {
+      type: TokenType.MODULATED,
+      name: "Cozy",
+      parameters: { step: 0.9 },
+    },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: { step: 1.82 },
+      parameters: { step: 3.11 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 3.11 },
+      parameters: { step: 4.92 },
     },
   },
   borderWidth: {
@@ -547,6 +559,15 @@ export const theme: StockTheme = {
       role: "swatch4",
       intent: "A tint of the primary color",
     },
+    foreground: {
+      name: "Foreground",
+      intent: "The default color used for text and foreground content.",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 36, saturation: 30, lightness: 95 },
+      },
+    },
     background: {
       name: "Background",
       intent:
@@ -554,7 +575,79 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 18, saturation: 12, lightness: 8 },
+        value: { hue: 24, saturation: 30, lightness: 13 },
+      },
+    },
+    active: {
+      name: "Active",
+      intent: "Active color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 16, saturation: 58, lightness: 45 },
+      },
+    },
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 95, saturation: 23, lightness: 39 },
+      },
+    },
+    positive: {
+      name: "Positive",
+      intent: "Actions that are successful or correct",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 132, saturation: 64, lightness: 36 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Actions that are unsuccessful or incorrect",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 352, saturation: 94, lightness: 44 },
+      },
+    },
+    warning: {
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 49, saturation: 100, lightness: 46 },
+      },
+    },
+    accent: {
+      name: "Accent",
+      intent: "To act as an accent color",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 158, saturation: 32, lightness: 37 },
+      },
+    },
+    offBlack: {
+      name: "Off Black",
+      intent: "Dark color for text on light backgrounds",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 24, saturation: 18, lightness: 16 },
+      },
+    },
+    offWhite: {
+      name: "Off White",
+      intent: "Light color for text on dark backgrounds",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 36, saturation: 30, lightness: 96 },
       },
     },
     custom1: {
@@ -563,7 +656,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 38, saturation: 18, lightness: 76 },
+        value: { hue: 38, saturation: 15, lightness: 71 },
       },
     },
     custom2: {
@@ -572,7 +665,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 72, saturation: 18, lightness: 55 },
+        value: { hue: 72, saturation: 16, lightness: 51 },
       },
     },
     custom3: {
@@ -581,7 +674,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 158, saturation: 18, lightness: 37 },
+        value: { hue: 158, saturation: 19, lightness: 34 },
       },
     },
   },
@@ -979,7 +1072,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -994,7 +1087,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -1009,7 +1102,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -1024,7 +1117,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -1039,7 +1132,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },

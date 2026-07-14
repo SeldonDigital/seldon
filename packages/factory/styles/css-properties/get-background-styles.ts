@@ -5,7 +5,10 @@ import {
 } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
-import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
+import {
+  BackgroundKind,
+  isGradientBackgroundKind,
+} from "@seldon/core/properties/values/appearance/background/background-kind"
 import { Theme } from "@seldon/core/themes/types"
 
 import { StyleGenerationContext } from "../types"
@@ -40,8 +43,9 @@ type PaintEntry = {
  *   `linear-gradient` entry, since CSS allows only one `background-color`.
  * - `image` paints a `url(...)` entry with its own position, size, repeat, and
  *   blend mode.
- * - `gradient` paints a `linear/radial-gradient(...)` entry resolved from its
- *   theme recipe and stop facets.
+ * - `linearGradient`, `radialGradient`, and `conicGradient` each paint a
+ *   `linear/radial/conic-gradient(...)` entry resolved from their theme recipe
+ *   and facets.
  *
  * The image `filter` and `opacity` facets are intentionally not emitted. CSS
  * has no per-layer background filter or image opacity, so they apply only on
@@ -53,7 +57,7 @@ type PaintEntry = {
 export function getBackgroundStyles(
   context: StyleGenerationContext,
 ): CSSObject {
-  const { properties, theme, useThemeVariableReferences, themeSlug } = context
+  const { properties, theme, useThemeVariableReferences } = context
   const layers = getLayeredPaintLayers(properties, "background")
 
   const paint: PaintEntry[] = []
@@ -88,12 +92,12 @@ export function getBackgroundStyles(
       return
     }
 
-    if (kind === BackgroundKind.GRADIENT) {
+    if (isGradientBackgroundKind(kind)) {
       const gradient = resolveGradientLayer(
         layer,
+        kind,
         theme,
         useThemeVariableReferences,
-        themeSlug,
       )
       if (!gradient) return
       hasGradient = true
@@ -142,12 +146,12 @@ function resolveBackgroundKind(layer: BackgroundLayer): BackgroundKind {
   if (kind && typeof kind.value === "string") {
     if (kind.value === BackgroundKind.COLOR) return BackgroundKind.COLOR
     if (kind.value === BackgroundKind.IMAGE) return BackgroundKind.IMAGE
-    if (kind.value === BackgroundKind.GRADIENT) return BackgroundKind.GRADIENT
+    if (isGradientBackgroundKind(kind.value)) return kind.value
     if (kind.value === BackgroundKind.NONE) return BackgroundKind.NONE
   }
   if (resolveValue(layer.image)) return BackgroundKind.IMAGE
   if (resolveValue(layer.preset) || resolveValue(layer.startColor))
-    return BackgroundKind.GRADIENT
+    return BackgroundKind.LINEAR_GRADIENT
   if (resolveValue(layer.color)) return BackgroundKind.COLOR
   return BackgroundKind.NONE
 }
@@ -155,7 +159,7 @@ function resolveBackgroundKind(layer: BackgroundLayer): BackgroundKind {
 /** Resolves a color layer to a CSS color string, or undefined when unset. */
 function resolveColorLayer(
   layer: BackgroundLayer,
-  { theme, useThemeVariableReferences, themeSlug }: StyleGenerationContext,
+  { theme, useThemeVariableReferences }: StyleGenerationContext,
 ): string | undefined {
   const color = resolveValue(layer.color)
   if (!color) return undefined
@@ -165,7 +169,6 @@ function resolveColorLayer(
     opacity: resolveValue(layer.opacity),
     theme,
     useThemeVariableReferences,
-    themeSlug,
   })
 }
 

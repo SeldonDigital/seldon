@@ -5,7 +5,6 @@ import type {
   ComponentBoard,
   ComponentTreeRef,
   ExtractPayload,
-  Workspace,
 } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"

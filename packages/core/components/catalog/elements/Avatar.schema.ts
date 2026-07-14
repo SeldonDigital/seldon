@@ -26,13 +26,13 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.DEFAULT,
     },
-    direction: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.HORIZONTAL,
@@ -415,8 +415,8 @@ export const schema = {
               value: "@dimension.large",
             },
             height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
             },
             border: {
               preset: {
@@ -451,19 +451,19 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "/avatar-user.png",
             },
-            position: {
-              right: {
-                type: Sdn.ValueType.EXACT,
-                value: { value: -2.5, unit: Sdn.Unit.REM },
-              },
-            },
             width: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@dimension.large",
             },
             height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+            margin: {
+              left: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: -1.75, unit: Sdn.Unit.REM },
+              },
             },
             border: {
               preset: {
@@ -530,19 +530,19 @@ export const schema = {
               type: Sdn.ValueType.EXACT,
               value: "/avatar-user.png",
             },
-            position: {
-              right: {
-                type: Sdn.ValueType.EXACT,
-                value: { value: -5, unit: Sdn.Unit.REM },
-              },
-            },
             width: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@dimension.large",
             },
             height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+            margin: {
+              left: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: -1.75, unit: Sdn.Unit.REM },
+              },
             },
             border: {
               preset: {

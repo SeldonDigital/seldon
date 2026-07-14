@@ -1,5 +1,7 @@
 "use client"
 
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import { buildFieldStateProps } from "@lib/views/state-props"
 import { useCallback, useRef } from "react"
 import {
   useIsResourceEntrySelected,
@@ -12,8 +14,7 @@ import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { RowSelectionTarget } from "./RowSelectionTarget"
+import { RowSelectionTarget } from "./RowSelectionTarget.bespoke"
 import type { ResourceRowConfig } from "./helpers/resource-row-config"
 
 type VMResourceEntryProps = {
@@ -80,14 +81,21 @@ export function VMResourceEntry({
 
   const icon2: IconProps = { icon: config.icon }
 
-  // Resource rows are leaves: the toggle slot stays an empty spacer, and the
-  // trailing actions icon keeps the generated `seldon-more` default, hidden by
-  // the actions button placeholder. Per-row data flows through stable refs.
+  // Resource rows are always leaves, so the toggle slot stays a spacer with its
+  // chevron hidden (mirrors the childless `VMNode` treatment) to keep label
+  // indentation aligned. The trailing actions icon keeps the generated
+  // `seldon-more` default, hidden by the actions button placeholder. Per-row
+  // data flows through stable refs.
   const seldonRefs = {
+    nodeToggleIcon: { style: { opacity: 0 } },
     nodeIcon: { ...icon2 },
     nodeLabel: { ...nameInput },
     nodeActions: { ...actionsMenu.buttonIconic },
   }
+
+  // The row's selection is styled on its combobox-field child, matching `VMNode`
+  // and `VMBoard`.
+  const comboboxField = buildFieldStateProps({ selected: isSelected })
 
   // Root-level row state mirrors selection for selectors and tests.
   const itemNodeState = {
@@ -103,7 +111,7 @@ export function VMResourceEntry({
       >
         <ItemNode
           buttonIconic={{}}
-          comboboxField={{}}
+          comboboxField={comboboxField}
           seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}

@@ -6,7 +6,7 @@ Reducer handlers return a workspace. They do not resolve computed values or writ
 
 ## Where Actions Come From
 
-Editors, agents, and services send `WorkspaceAction` payloads. The union in `types.ts` is the action contract. The editor builds most actions through workspace hooks. Load and import flows use `set_workspace` to validate saved JSON before it enters editor state. Use `applyActions` to fold a batch through `workspaceReducer`. `workspace-action-schema.json` is a permissive placeholder until the schema generator can run on a clean typecheck.
+Editors, agents, and services send `WorkspaceAction` payloads. The union in `types.ts` is the action contract. The editor builds most actions through workspace hooks. Load and import flows use `set_workspace` to validate saved JSON before it enters editor state. Use `applyActions` to fold a batch through `workspaceReducer`. `workspace-action-schema.json` is generated from the action union with `npm run generate:action-schema`. Regenerate it when the union changes.
 
 ---
 
@@ -32,7 +32,7 @@ flowchart TD
 
 Validation failures throw `WorkspaceValidationError` before a handler runs. Handler failures throw from the handler. Verification failures throw `WorkspaceValidationError` after a handler returns.
 
-The `reducer` switch has no default branch. Validation rejects unknown action types in development builds. Production builds skip that check. Some actions return the workspace unchanged: `transcript_add_message` and every `stubs_*` action. The `add_component_and_insert_default_instance` action has no single handler. The reducer composes it from `addComponent` and `insertVariantInstance`.
+The `reducer` switch has no default branch. Validation rejects unknown action types in development builds. Production builds skip that check. Every `stubs_*` action returns the workspace unchanged. The `add_component_and_insert_default_instance` action has no single handler. The reducer composes it from `addComponent` and `insertVariantInstance`.
 
 ---
 
@@ -54,6 +54,7 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `ExtractPayload` | `types.ts` | Gets the payload type for one action. |
 | `InsertDefaultInstance` | `types.ts` | Defines the payload for `insert_default_instance`. |
 | `ScaleTokenInput` | `types.ts` | Defines scale token input values for custom scale tokens. |
+| `ThemeCustomTokenSection` | `types.ts` | Defines the theme sections that accept custom tokens. Drives the generic custom-token handlers. |
 | `AddCustomToken` | `types.ts` | Defines the union of every `add_theme_custom_*` action. |
 | `RemoveCustomToken` | `types.ts` | Defines the union of every `remove_theme_custom_*` action. |
 
@@ -169,24 +170,9 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | `add_font_collection_custom_family` | `addFontCollectionCustomFamily` | `add-font-collection-custom-family.ts` |
 | `add_icon_set` | `addIconSet` | `add-icon-set.ts` |
 | `add_media` | `addMedia` | `add-media.ts` |
-| `add_theme_custom_swatch` | `addThemeCustomSwatch` | `add-theme-custom-swatch.ts` |
-| `add_theme_custom_font` | `addThemeCustomFont` | `add-theme-custom-font.ts` |
-| `add_theme_custom_border` | `addThemeCustomBorder` | `add-theme-custom-border.ts` |
-| `add_theme_custom_gradient` | `addThemeCustomGradient` | `add-theme-custom-gradient.ts` |
-| `add_theme_custom_shadow` | `addThemeCustomShadow` | `add-theme-custom-shadow.ts` |
-| `add_theme_custom_scrollbar` | `addThemeCustomScrollbar` | `add-theme-custom-scrollbar.ts` |
-| `add_theme_custom_size` | `addThemeCustomSize` | `add-theme-custom-size.ts` |
-| `add_theme_custom_dimension` | `addThemeCustomDimension` | `add-theme-custom-dimension.ts` |
-| `add_theme_custom_margin` | `addThemeCustomMargin` | `add-theme-custom-margin.ts` |
-| `add_theme_custom_padding` | `addThemeCustomPadding` | `add-theme-custom-padding.ts` |
-| `add_theme_custom_gap` | `addThemeCustomGap` | `add-theme-custom-gap.ts` |
-| `add_theme_custom_corners` | `addThemeCustomCorners` | `add-theme-custom-corners.ts` |
-| `add_theme_custom_borderWidth` | `addThemeCustomBorderWidth` | `add-theme-custom-border-width.ts` |
-| `add_theme_custom_blur` | `addThemeCustomBlur` | `add-theme-custom-blur.ts` |
-| `add_theme_custom_spread` | `addThemeCustomSpread` | `add-theme-custom-spread.ts` |
-| `add_theme_custom_fontSize` | `addThemeCustomFontSize` | `add-theme-custom-font-size.ts` |
-| `add_theme_custom_fontWeight` | `addThemeCustomFontWeight` | `add-theme-custom-font-weight.ts` |
-| `add_theme_custom_lineHeight` | `addThemeCustomLineHeight` | `add-theme-custom-line-height.ts` |
+| `add_theme_custom_*` (every custom-token section) | `addThemeCustomToken` | `add-theme-custom-token.ts` |
+
+Every `add_theme_custom_*` action routes through one generic handler. The reducer derives the section from the action type and the handler builds the cell shape that section's token table expects: swatch, look, modulated, exact, or a discriminated scale cell.
 
 ---
 
@@ -209,24 +195,9 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | `delete_icon_set` | `deleteIconSet` | `delete-icon-set.ts` |
 | `remove_media` | `removeMedia` | `remove-media.ts` |
 | `remove_theme_custom_swatch` | `removeThemeCustomSwatch` | `remove-theme-custom-swatch.ts` |
-| `remove_theme_custom_font` | `removeThemeCustomFont` | `remove-theme-custom-font.ts` |
-| `remove_theme_custom_border` | `removeThemeCustomBorder` | `remove-theme-custom-border.ts` |
-| `remove_theme_custom_background` | `removeThemeCustomBackground` | `remove-theme-custom-background.ts` |
-| `remove_theme_custom_gradient` | `removeThemeCustomGradient` | `remove-theme-custom-gradient.ts` |
-| `remove_theme_custom_shadow` | `removeThemeCustomShadow` | `remove-theme-custom-shadow.ts` |
-| `remove_theme_custom_scrollbar` | `removeThemeCustomScrollbar` | `remove-theme-custom-scrollbar.ts` |
-| `remove_theme_custom_size` | `removeThemeCustomSize` | `remove-theme-custom-size.ts` |
-| `remove_theme_custom_dimension` | `removeThemeCustomDimension` | `remove-theme-custom-dimension.ts` |
-| `remove_theme_custom_margin` | `removeThemeCustomMargin` | `remove-theme-custom-margin.ts` |
-| `remove_theme_custom_padding` | `removeThemeCustomPadding` | `remove-theme-custom-padding.ts` |
-| `remove_theme_custom_gap` | `removeThemeCustomGap` | `remove-theme-custom-gap.ts` |
-| `remove_theme_custom_corners` | `removeThemeCustomCorners` | `remove-theme-custom-corners.ts` |
-| `remove_theme_custom_borderWidth` | `removeThemeCustomBorderWidth` | `remove-theme-custom-border-width.ts` |
-| `remove_theme_custom_blur` | `removeThemeCustomBlur` | `remove-theme-custom-blur.ts` |
-| `remove_theme_custom_spread` | `removeThemeCustomSpread` | `remove-theme-custom-spread.ts` |
-| `remove_theme_custom_fontSize` | `removeThemeCustomFontSize` | `remove-theme-custom-font-size.ts` |
-| `remove_theme_custom_fontWeight` | `removeThemeCustomFontWeight` | `remove-theme-custom-font-weight.ts` |
-| `remove_theme_custom_lineHeight` | `removeThemeCustomLineHeight` | `remove-theme-custom-line-height.ts` |
+| `remove_theme_custom_*` (every other custom-token section) | `removeThemeCustomToken` | `remove-theme-custom-token.ts` |
+
+Every non-swatch `remove_theme_custom_*` action routes through one generic handler that derives the section from the action type. Swatch removal keeps its own handler because it first inlines the swatch's resolved color into referencing nodes.
 
 `remove_theme`, `remove_icon_set`, `remove_font_collection`, and `remove_media` delete a catalog board with `removeBoardByKey`. Validation blocks removal of a required default board, such as the Seldon theme or icon set board. The `delete_*` handlers remove one variant entry and drop its ref from the owning board. They keep the default entry.
 
@@ -293,6 +264,7 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | `getNextCustomFamilyId` | `font-collection-custom-family.ts` | Returns the next free `familyNN` slot id. Used when adding a custom family. |
 | `appendCustomFamily` | `font-collection-custom-family.ts` | Adds a user family to a font collection entry. Used by `addFontCollectionCustomFamily`. |
 | `removeCustomFamily` | `font-collection-custom-family.ts` | Removes a user family from a font collection entry. Used by `removeFontCollectionCustomFamily`. |
+| `randomSuffix` | `random-suffix.ts` | Returns a short random base36 suffix for generated entry ids. Used by the resource duplicate handlers. |
 
 `removeBoardByKey` in `handlers/remove/remove-board-by-key.ts` deletes a board by its key. The component and resource removal handlers share it.
 

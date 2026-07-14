@@ -9,7 +9,9 @@ import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
+import { DEFAULT_THEME_BOARD_AUTHOR } from "../../../helpers/components/default-board-metadata"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+import { formatEntryId } from "../../../helpers/general/entry-id"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatThemeCatalog } from "../../../model/template-ref"
 import { boardOrderService, workspaceMutationService } from "../../../services"
@@ -39,7 +41,7 @@ export function addTheme(
         ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
         : -1
 
-    const defaultThemeEntryId = `theme-${boardKey}-default`
+    const defaultThemeEntryId = formatEntryId("theme", boardKey, "default")
 
     const stockTheme = STOCK_THEMES_BY_ID[boardKey as ThemeTemplateId]
     const label = stockTheme
@@ -60,7 +62,7 @@ export function addTheme(
       type: "theme" as const,
       catalogId: boardKey,
       label,
-      author: "Seldon Digital",
+      author: DEFAULT_THEME_BOARD_AUTHOR,
       componentPreview: "seldonThemePreview",
       componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
       componentProperties: getInitialBoardComponentProperties("theme"),

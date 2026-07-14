@@ -1,9 +1,11 @@
 "use client"
 
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
-import { CSSProperties, ReactNode, useRef } from "react"
+import { CSSProperties, ReactNode, useMemo, useRef } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
+import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
+import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
@@ -15,12 +17,11 @@ import { usePreview } from "@lib/hooks/use-preview"
 import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import {
-  BoardCanvasFrame,
-  StyleTag,
-} from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
+import { StyleTag } from "../StyleTag.bespoke"
+import { BoardCanvasFrame } from "./BoardCanvasFrame.bespoke"
 import { BoardStateSwitcher } from "./BoardStateSwitcher"
 
 export type ComponentBoardProps = {
@@ -29,6 +30,14 @@ export type ComponentBoardProps = {
 
 const boardRootStyle: CSSProperties = { position: "static" }
 const boardWrapperStyle: CSSProperties = { position: "relative" }
+
+// The board root carries the theme's primary font so canvas text that inherits
+// its family (e.g. a cleared `@font.normal` look on Link) follows the active
+// theme and updates on theme switch, matching the exported `html/body` base.
+const PRIMARY_FONT_FAMILY = {
+  type: ValueType.THEME_CATEGORICAL,
+  value: "@fontFamily.primary",
+} as unknown as FontFamilyValue
 
 /**
  * Native table-part elements (`<td>`, `<th>`, `<tr>`, `<thead>`, `<tbody>`) are
@@ -54,20 +63,24 @@ function wrapTablePartBoard(
   switch (kind) {
     case "cell":
       return (
-        <table style={tableWrapperStyle}>
-          <tbody>
-            <tr>{children}</tr>
-          </tbody>
-        </table>
+        <Frame wrapperElement="table" style={tableWrapperStyle}>
+          <Frame wrapperElement="tbody">
+            <Frame wrapperElement="tr">{children}</Frame>
+          </Frame>
+        </Frame>
       )
     case "row":
       return (
-        <table style={tableWrapperStyle}>
-          <tbody>{children}</tbody>
-        </table>
+        <Frame wrapperElement="table" style={tableWrapperStyle}>
+          <Frame wrapperElement="tbody">{children}</Frame>
+        </Frame>
       )
     case "section":
-      return <table style={tableWrapperStyle}>{children}</table>
+      return (
+        <Frame wrapperElement="table" style={tableWrapperStyle}>
+          {children}
+        </Frame>
+      )
     default:
       return children
   }
@@ -89,6 +102,18 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   const { device, isInPreviewMode } = usePreview()
   const boardRootRef = useRef<HTMLDivElement>(null)
   useCanvasReorderFlip(boardRootRef, workspace)
+
+  const baseFontFamily = useMemo(
+    () => resolveFontFamily({ fontFamily: PRIMARY_FONT_FAMILY, theme })?.value,
+    [theme],
+  )
+  const rootStyle = useMemo<CSSProperties>(
+    () =>
+      baseFontFamily
+        ? { ...boardRootStyle, fontFamily: baseFontFamily }
+        : boardRootStyle,
+    [baseFontFamily],
+  )
 
   const patchedProperties: Properties = isInPreviewMode
     ? {
@@ -126,13 +151,13 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
           )}
         />
       </CssPortal>
-      <div style={boardWrapperStyle}>
+      <Frame style={boardWrapperStyle}>
         <BoardStateSwitcher boardKey={stateBoardKey} />
         <BoardCanvasFrame
           ref={boardRootRef}
           boardId={boardKey}
           className={className}
-          style={boardRootStyle}
+          style={rootStyle}
         >
           {wrapTablePartBoard(
             TABLE_PART_WRAPPERS[boardKey as ComponentId],
@@ -154,7 +179,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
             }),
           )}
         </BoardCanvasFrame>
-      </div>
+      </Frame>
     </>
   )
 }

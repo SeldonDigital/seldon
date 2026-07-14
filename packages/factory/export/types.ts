@@ -130,6 +130,12 @@ export type JSONTreeNode = {
   level: ComponentLevel
   dataBinding: DataBinding
   classNames?: string[]
+  /**
+   * True when this node (or an ancestor within the same tree) has Display set to
+   * Placeholder. Placeholder nodes stay in the tree and interface but render as
+   * opt-in slots that are empty by default.
+   */
+  isPlaceholder?: boolean
 }
 
 /**

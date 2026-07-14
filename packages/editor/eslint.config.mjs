@@ -4,26 +4,7 @@ import tseslint from "typescript-eslint"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =
-  "app/ should render Views only. Move raw DOM markup into seldon/custom-components/ and consume it from there."
-
-// Message for the design-token guardrail.
-const DESIGN_TOKEN_MESSAGE =
-  "Design-token inline styling (var(--sdn-*) / var(--color-*)) must live in a co-located *.bespoke.* file or the permanent editor-chrome sheet, so temporary visuals stay quarantined and removable once a generated View covers them."
-
-// Flags inline design-token references in string and template literals. Shared
-// so every linted scope applies the same guardrail. Generated Views own visual
-// styling via styles.css; hand-coded VM code keeps any required tokens in a
-// co-located *.bespoke.* file (which is exempt below).
-const DESIGN_TOKEN_RESTRICTIONS = [
-  {
-    selector: "Literal[value=/var\\(--(sdn|color)-/]",
-    message: DESIGN_TOKEN_MESSAGE,
-  },
-  {
-    selector: "TemplateElement[value.raw=/var\\(--(sdn|color)-/]",
-    message: DESIGN_TOKEN_MESSAGE,
-  },
-]
+  "app/ should render Views only. Move raw DOM markup into a reusable View (seldon/ for design components, lib/ for editor chrome) and consume it from there."
 
 export default defineConfig([
   globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
@@ -70,6 +51,15 @@ export default defineConfig([
       "no-console": "off",
     },
   },
+  // The AI turn logger is a purpose-built debug console gated behind the Dev
+  // menu's AI Logging toggle. It intentionally uses console.log and
+  // console.table to render structured, collapsible turn output.
+  {
+    files: ["lib/hooks/ai-chat/log-turn.ts"],
+    rules: {
+      "no-console": "off",
+    },
+  },
   // ViewModel hooks authored as .tsx (e.g. context providers) may call Model
   // services; the service-import rule targets view components only.
   {
@@ -91,7 +81,6 @@ export default defineConfig([
           selector: "JSXOpeningElement[name.name=/^[a-z]/]",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
-        ...DESIGN_TOKEN_RESTRICTIONS,
       ],
       "no-restricted-imports": [
         "warn",
@@ -101,25 +90,6 @@ export default defineConfig([
               group: ["@seldon/core/**/services/**"],
               message:
                 "Call Model services from a ViewModel hook (use-*.ts), not from a component.",
-            },
-          ],
-        },
-      ],
-    },
-  },
-  // Purity boundary: custom-components are pure Views and must not depend on
-  // application or model runtime code. Fully migrated, so this is an error.
-  {
-    files: ["seldon/custom-components/**/*.{ts,tsx}"],
-    rules: {
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: [
-            {
-              group: ["@app/*", "@app/**", "@lib/*", "@lib/**"],
-              message:
-                "custom-components must stay pure Views. Receive data via props instead of importing app/lib.",
             },
           ],
         },
@@ -139,7 +109,6 @@ export default defineConfig([
           selector: "JSXOpeningElement[name.name=/^[a-z]/]",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
-        ...DESIGN_TOKEN_RESTRICTIONS,
       ],
     },
   },
@@ -155,7 +124,6 @@ export default defineConfig([
           selector: "JSXOpeningElement[name.name=/^[a-z]/]",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
-        ...DESIGN_TOKEN_RESTRICTIONS,
       ],
       "no-restricted-imports": [
         "error",
@@ -169,16 +137,6 @@ export default defineConfig([
           ],
         },
       ],
-    },
-  },
-  // Design-token guardrail for VM-layer code not covered by the app/**/*.tsx
-  // blocks above: app .ts files and the whole lib/ tree. Bespoke files are the
-  // sanctioned home for design tokens, so they are exempt.
-  {
-    files: ["app/**/*.ts", "lib/**/*.{ts,tsx}"],
-    ignores: ["**/*.bespoke.*"],
-    rules: {
-      "no-restricted-syntax": ["warn", ...DESIGN_TOKEN_RESTRICTIONS],
     },
   },
 ])

@@ -101,6 +101,29 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    font: {
+      preset: {
+        type: Sdn.ValueType.THEME_CATEGORICAL,
+        value: "@font.body",
+      },
+      family: { type: Sdn.ValueType.EMPTY, value: null },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
+      weight: { type: Sdn.ValueType.EMPTY, value: null },
+      size: { type: Sdn.ValueType.EMPTY, value: null },
+      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+    },
+    textDecoration: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.TextDecoration.NONE,
+    },
+    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
+    wrapText: {
+      type: Sdn.ValueType.EXACT,
+      value: true,
+    },
+    lines: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {
@@ -117,29 +140,6 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
-    font: {
-      preset: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@font.body",
-      },
-      family: { type: Sdn.ValueType.EMPTY, value: null },
-      style: { type: Sdn.ValueType.EMPTY, value: null },
-      weight: { type: Sdn.ValueType.EMPTY, value: null },
-      size: { type: Sdn.ValueType.EMPTY, value: null },
-      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-      textCase: { type: Sdn.ValueType.EMPTY, value: null },
-      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
-    },
-    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
-    textDecoration: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.TextDecoration.NONE,
-    },
-    wrapText: {
-      type: Sdn.ValueType.EXACT,
-      value: true,
-    },
-    lines: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },

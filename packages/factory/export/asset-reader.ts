@@ -10,6 +10,7 @@ export type IconExportSource = {
 
 export type ExportAssetReader = {
   readNativeComponent(fileStem: string): string | undefined
+  readCustomComponent?(fileStem: string): string | undefined
   readIconFile(absolutePath: string): Buffer | undefined
   getIconExportSource?(iconId: IconId): IconExportSource | undefined
   listNativeComponentFileStems(): string[]
@@ -22,6 +23,10 @@ export function createNodeExportAssetReader(
     rootDirectory,
     "packages/core/components/native-react",
   )
+  const customReactPath = path.join(
+    rootDirectory,
+    "packages/core/components/catalog/custom",
+  )
 
   return {
     readNativeComponent(fileStem: string): string | undefined {
@@ -29,6 +34,16 @@ export function createNodeExportAssetReader(
         return undefined
       }
       const filePath = path.join(nativeReactPath, `${fileStem}.tsx`)
+      if (!fs.existsSync(filePath)) {
+        return undefined
+      }
+      return fs.readFileSync(filePath, "utf8")
+    },
+    readCustomComponent(fileStem: string): string | undefined {
+      if (!fs.existsSync(customReactPath)) {
+        return undefined
+      }
+      const filePath = path.join(customReactPath, `${fileStem}.tsx`)
       if (!fs.existsSync(filePath)) {
         return undefined
       }

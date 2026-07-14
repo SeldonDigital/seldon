@@ -1,12 +1,8 @@
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview"
+import { preserveOffsetOnSource } from "@atlaskit/pragmatic-drag-and-drop/element/preserve-offset-on-source"
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
 import { useEffect, useRef, useState } from "react"
-import { createRoot } from "react-dom/client"
 import { Instance, Variant } from "@seldon/core"
-import { DragNodePreview } from "@seldon/components/custom-components"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { useNodeIcon } from "./use-node-icon"
 
 /**
  * Makes an element draggable for drag-and-drop operations in the objects sidebar.
@@ -23,7 +19,6 @@ export function useDraggable({
 }) {
   const [dragging, setDragging] = useState<boolean>(false)
   const ref = useRef<HTMLDivElement>(null)
-  const icon = useNodeIcon(target)
 
   useEffect(() => {
     const el = ref.current
@@ -41,25 +36,37 @@ export function useDraggable({
         setDragging(true)
       },
       onDrop: () => setDragging(false),
-      onGenerateDragPreview: ({ nativeSetDragImage }) => {
+      onGenerateDragPreview: ({ nativeSetDragImage, location }) => {
+        // The drag image is the row's combobox-field only, which drops the
+        // leading disclosure arrow and keeps the icon, label, and selected
+        // border exactly as they sit in the sidebar. Detached from the layout,
+        // the field has no surface, so pin its width and paint the sidebar
+        // background. `preserveOffsetOnSource` keeps the image under the cursor
+        // at the exact point the row was grabbed.
+        const field =
+          (el.querySelector(".sdn-combobox-field") as HTMLElement | null) ?? el
+        const width = field.getBoundingClientRect().width
         setCustomNativeDragPreview({
-          getOffset: pointerOutsideOfPreview({ x: "16px", y: "8px" }),
+          getOffset: preserveOffsetOnSource({
+            element: field,
+            input: location.current.input,
+          }),
           render: ({ container }) => {
-            const root = createRoot(container)
-
-            root.render(
-              <DragNodePreview
-                label={target.label}
-                icon={icon as IconProps["icon"]}
-              />,
-            )
-            return () => root.unmount()
+            const clone = field.cloneNode(true) as HTMLElement
+            clone.style.width = `${width}px`
+            clone.style.margin = "0"
+            clone.style.backgroundColor = "var(--sdn-swatch-offWhite)"
+            clone
+              .querySelectorAll('[data-dragging="true"]')
+              .forEach((node) => node.removeAttribute("data-dragging"))
+            container.appendChild(clone)
+            return () => clone.remove()
           },
           nativeSetDragImage,
         })
       },
     })
-  }, [target, enable, onDragStart, icon])
+  }, [target, enable, onDragStart])
 
   return {
     ref,

@@ -67,7 +67,7 @@ export const schema = {
       value: "@gap.compact",
     },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -590,7 +590,6 @@ export const schema = {
       label: "Tree Item",
       intent: "List item used for tree-like structures with nested children.",
       overrides: {
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.TREEITEM },
         margin: {
           top: {
             type: Sdn.ValueType.THEME_ORDINAL,
@@ -623,6 +622,7 @@ export const schema = {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@gap.tight",
         },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.TREEITEM },
       },
       children: [
         {

@@ -13,6 +13,7 @@
 import { SVGAttributes } from "react"
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
+import { getRegisteredIcon } from "../utils/icon-registry"
 
 export interface IconProps extends SVGAttributes<SVGElement> {
   className?: string
@@ -22,16 +23,15 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-component"
     | "material-search"
     | "material-close"
-    | "material-add"
-    | "material-remove"
-    | "material-chevronRight"
     | "seldon-none"
     | "material-check"
+    | "material-chevronRight"
     | "material-calendarToday"
     | "material-inbox"
     | "material-chevronDown"
     | "seldon-more"
     | "material-unfoldMore"
+    | "material-add"
     | "material-filterList"
     | "material-dataObject"
     | "material-save"
@@ -40,6 +40,24 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-favoriteBorder"
     | "material-accountCircle"
     | "material-settings"
+    | "material-chevronDoubleLeft"
+    | "material-chevronLeft"
+    | "material-chevronDoubleRight"
+    | "material-expandMore"
+    | "material-email"
+    | "material-menu"
+    | "material-phone"
+    | "seldon-plus"
+    | "seldon-minus"
+    | "material-arrowUpward"
+    | "material-checkCircle"
+    | "seldon-componentDefault"
+    | "material-error"
+    | "material-robot"
+    | "seldon-reset"
+    | "material-neurology"
+    | "material-outputCircle"
+    | "material-buildCircle"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -99,7 +117,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-edited"
     | "seldon-frame"
     | "seldon-missing"
-    | "seldon-reset"
     | "seldon-size"
     | "seldon-sketchCircle"
     | "seldon-sketchPencil"
@@ -110,10 +127,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-clip"
     | "seldon-iconInput"
     | "seldon-inputType"
-    | "seldon-minus"
-    | "seldon-plus"
     | "seldon-retry"
-    | "seldon-componentDefault"
     | "seldon-componentVariant"
     | "seldon-icon"
     | "seldon-input"
@@ -293,6 +307,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-plumbing"
     | "material-preview"
     | "material-refresh"
+    | "material-remove"
     | "material-removeCircle"
     | "material-resize"
     | "material-roundedCorner"
@@ -306,16 +321,15 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-zoomIn"
     | "material-zoomOut"
     | "material-comment"
-    | "material-email"
     | "material-helpOutline"
     | "material-localLaundryService"
-    | "material-phone"
     | "material-smartphone"
     | "material-adsClick"
     | "material-audiotrack"
     | "material-blurOff"
     | "material-colorLens"
     | "material-deblur"
+    | "material-eyeTracking"
     | "material-fastRewind"
     | "material-filter"
     | "material-fullscreen"
@@ -340,17 +354,13 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-arrowForward"
     | "material-arrowLeft"
     | "material-arrowRight"
-    | "material-arrowUpward"
     | "material-backspace"
     | "material-brightnessAuto"
     | "material-brightnessHigh"
     | "material-brightnessLow"
     | "material-brightnessMedium"
     | "material-chevronDoubleDown"
-    | "material-chevronDoubleLeft"
-    | "material-chevronDoubleRight"
     | "material-chevronDoubleUp"
-    | "material-chevronLeft"
     | "material-chevronUp"
     | "material-event"
     | "material-fastForward"
@@ -364,7 +374,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-keyboardArrowRight"
     | "material-keyboardArrowUp"
     | "material-link"
-    | "material-menu"
     | "material-more"
     | "material-moreHoriz"
     | "material-moreVert"
@@ -387,16 +396,13 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-borderColor"
     | "material-checkBox"
     | "material-checkBoxOutlineBlank"
-    | "material-checkCircle"
     | "material-checkCircleOutline"
     | "material-construction"
     | "material-contrast"
     | "material-doNotDisturbOn"
     | "material-doneAll"
     | "material-dryCleaning"
-    | "material-error"
     | "material-expandLess"
-    | "material-expandMore"
     | "material-height"
     | "material-info"
     | "material-invertColors"
@@ -413,7 +419,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-powerOff"
     | "material-print"
     | "material-radioButtonUnchecked"
-    | "material-robot"
     | "material-signalWifiOff"
     | "material-unfoldLess"
     | "material-visibility"
@@ -508,6 +513,21 @@ export function Icon({ className = "", icon = sdn.icon, ...props }: IconProps) {
 
   let Icon = iconMap[icon || "__default__"]
   if (!Icon) {
+    // Ids absent from the static map may be registered at runtime as dynamic,
+    // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
+    const RegisteredIcon = getRegisteredIcon(icon)
+    if (RegisteredIcon) {
+      //
+      // React JSX component resolved from the runtime icon registry
+      //
+      return (
+        <RegisteredIcon
+          className={iconClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        />
+      )
+    }
     Icon = iconMap["__default__"]
   }
   //
@@ -535,16 +555,15 @@ const iconMap = {
   "seldon-component": Icons.IconSeldonComponent,
   "material-search": Icons.IconMaterialSearch,
   "material-close": Icons.IconMaterialClose,
-  "material-add": Icons.IconMaterialAdd,
-  "material-remove": Icons.IconMaterialRemove,
-  "material-chevronRight": Icons.IconMaterialChevronRight,
   "seldon-none": Icons.IconSeldonNone,
   "material-check": Icons.IconMaterialCheck,
+  "material-chevronRight": Icons.IconMaterialChevronRight,
   "material-calendarToday": Icons.IconMaterialCalendarToday,
   "material-inbox": Icons.IconMaterialInbox,
   "material-chevronDown": Icons.IconMaterialChevronDown,
   "seldon-more": Icons.IconSeldonMore,
   "material-unfoldMore": Icons.IconMaterialUnfoldMore,
+  "material-add": Icons.IconMaterialAdd,
   "material-filterList": Icons.IconMaterialFilterList,
   "material-dataObject": Icons.IconMaterialDataObject,
   "material-save": Icons.IconMaterialSave,
@@ -553,6 +572,24 @@ const iconMap = {
   "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
   "material-accountCircle": Icons.IconMaterialAccountCircle,
   "material-settings": Icons.IconMaterialSettings,
+  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
+  "material-chevronLeft": Icons.IconMaterialChevronLeft,
+  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
+  "material-expandMore": Icons.IconMaterialExpandMore,
+  "material-email": Icons.IconMaterialEmail,
+  "material-menu": Icons.IconMaterialMenu,
+  "material-phone": Icons.IconMaterialPhone,
+  "seldon-plus": Icons.IconSeldonPlus,
+  "seldon-minus": Icons.IconSeldonMinus,
+  "material-arrowUpward": Icons.IconMaterialArrowUpward,
+  "material-checkCircle": Icons.IconMaterialCheckCircle,
+  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
+  "material-error": Icons.IconMaterialError,
+  "material-robot": Icons.IconMaterialRobot,
+  "seldon-reset": Icons.IconSeldonReset,
+  "material-neurology": Icons.IconMaterialNeurology,
+  "material-outputCircle": Icons.IconMaterialOutputCircle,
+  "material-buildCircle": Icons.IconMaterialBuildCircle,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -612,7 +649,6 @@ const iconMap = {
   "seldon-edited": Icons.IconSeldonEdited,
   "seldon-frame": Icons.IconSeldonFrame,
   "seldon-missing": Icons.IconSeldonMissing,
-  "seldon-reset": Icons.IconSeldonReset,
   "seldon-size": Icons.IconSeldonSize,
   "seldon-sketchCircle": Icons.IconSeldonSketchCircle,
   "seldon-sketchPencil": Icons.IconSeldonSketchPencil,
@@ -623,10 +659,7 @@ const iconMap = {
   "seldon-clip": Icons.IconSeldonClip,
   "seldon-iconInput": Icons.IconSeldonIconInput,
   "seldon-inputType": Icons.IconSeldonInputType,
-  "seldon-minus": Icons.IconSeldonMinus,
-  "seldon-plus": Icons.IconSeldonPlus,
   "seldon-retry": Icons.IconSeldonRetry,
-  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
   "seldon-componentVariant": Icons.IconSeldonComponentVariant,
   "seldon-icon": Icons.IconSeldonIcon,
   "seldon-input": Icons.IconSeldonInput,
@@ -808,6 +841,7 @@ const iconMap = {
   "material-plumbing": Icons.IconMaterialPlumbing,
   "material-preview": Icons.IconMaterialPreview,
   "material-refresh": Icons.IconMaterialRefresh,
+  "material-remove": Icons.IconMaterialRemove,
   "material-removeCircle": Icons.IconMaterialRemoveCircle,
   "material-resize": Icons.IconMaterialResize,
   "material-roundedCorner": Icons.IconMaterialRoundedCorner,
@@ -821,16 +855,15 @@ const iconMap = {
   "material-zoomIn": Icons.IconMaterialZoomIn,
   "material-zoomOut": Icons.IconMaterialZoomOut,
   "material-comment": Icons.IconMaterialComment,
-  "material-email": Icons.IconMaterialEmail,
   "material-helpOutline": Icons.IconMaterialHelpOutline,
   "material-localLaundryService": Icons.IconMaterialLocalLaundryService,
-  "material-phone": Icons.IconMaterialPhone,
   "material-smartphone": Icons.IconMaterialSmartphone,
   "material-adsClick": Icons.IconMaterialAdsClick,
   "material-audiotrack": Icons.IconMaterialAudiotrack,
   "material-blurOff": Icons.IconMaterialBlurOff,
   "material-colorLens": Icons.IconMaterialColorLens,
   "material-deblur": Icons.IconMaterialDeblur,
+  "material-eyeTracking": Icons.IconMaterialEyeTracking,
   "material-fastRewind": Icons.IconMaterialFastRewind,
   "material-filter": Icons.IconMaterialFilter,
   "material-fullscreen": Icons.IconMaterialFullscreen,
@@ -855,17 +888,13 @@ const iconMap = {
   "material-arrowForward": Icons.IconMaterialArrowForward,
   "material-arrowLeft": Icons.IconMaterialArrowLeft,
   "material-arrowRight": Icons.IconMaterialArrowRight,
-  "material-arrowUpward": Icons.IconMaterialArrowUpward,
   "material-backspace": Icons.IconMaterialBackspace,
   "material-brightnessAuto": Icons.IconMaterialBrightnessAuto,
   "material-brightnessHigh": Icons.IconMaterialBrightnessHigh,
   "material-brightnessLow": Icons.IconMaterialBrightnessLow,
   "material-brightnessMedium": Icons.IconMaterialBrightnessMedium,
   "material-chevronDoubleDown": Icons.IconMaterialChevronDoubleDown,
-  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
-  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-chevronDoubleUp": Icons.IconMaterialChevronDoubleUp,
-  "material-chevronLeft": Icons.IconMaterialChevronLeft,
   "material-chevronUp": Icons.IconMaterialChevronUp,
   "material-event": Icons.IconMaterialEvent,
   "material-fastForward": Icons.IconMaterialFastForward,
@@ -879,7 +908,6 @@ const iconMap = {
   "material-keyboardArrowRight": Icons.IconMaterialKeyboardArrowRight,
   "material-keyboardArrowUp": Icons.IconMaterialKeyboardArrowUp,
   "material-link": Icons.IconMaterialLink,
-  "material-menu": Icons.IconMaterialMenu,
   "material-more": Icons.IconMaterialMore,
   "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-moreVert": Icons.IconMaterialMoreVert,
@@ -902,16 +930,13 @@ const iconMap = {
   "material-borderColor": Icons.IconMaterialBorderColor,
   "material-checkBox": Icons.IconMaterialCheckBox,
   "material-checkBoxOutlineBlank": Icons.IconMaterialCheckBoxOutlineBlank,
-  "material-checkCircle": Icons.IconMaterialCheckCircle,
   "material-checkCircleOutline": Icons.IconMaterialCheckCircleOutline,
   "material-construction": Icons.IconMaterialConstruction,
   "material-contrast": Icons.IconMaterialContrast,
   "material-doNotDisturbOn": Icons.IconMaterialDoNotDisturbOn,
   "material-doneAll": Icons.IconMaterialDoneAll,
   "material-dryCleaning": Icons.IconMaterialDryCleaning,
-  "material-error": Icons.IconMaterialError,
   "material-expandLess": Icons.IconMaterialExpandLess,
-  "material-expandMore": Icons.IconMaterialExpandMore,
   "material-height": Icons.IconMaterialHeight,
   "material-info": Icons.IconMaterialInfo,
   "material-invertColors": Icons.IconMaterialInvertColors,
@@ -928,7 +953,6 @@ const iconMap = {
   "material-powerOff": Icons.IconMaterialPowerOff,
   "material-print": Icons.IconMaterialPrint,
   "material-radioButtonUnchecked": Icons.IconMaterialRadioButtonUnchecked,
-  "material-robot": Icons.IconMaterialRobot,
   "material-signalWifiOff": Icons.IconMaterialSignalWifiOff,
   "material-unfoldLess": Icons.IconMaterialUnfoldLess,
   "material-visibility": Icons.IconMaterialVisibility,

@@ -1,10 +1,10 @@
-import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
-import { PropertyControlView } from "../hooks/use-property-control"
-import { InputProps } from "@seldon/components/primitives/Input"
 import {
   buildDisplayInputProps,
   buildEditingRefProps,
-} from "../../shared/build-field-state-props"
+} from "@lib/views/state-props"
+import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
+import { PropertyControlView } from "../hooks/use-property-control"
+import { InputProps } from "@seldon/components/primitives/Input"
 
 export type ValueInputProps = InputProps & { ref?: Ref<HTMLInputElement> }
 
@@ -41,7 +41,7 @@ export function buildPropertyValueInput({
   // `pointerEvents: none` keeps hover and selection on the combobox field, and
   // the field's own click (wired by the shell) is what flips the row into edit
   // mode. The field becomes interactive again in the edit branches below.
-  if (!isEditing || control.kind === "none") {
+  if (!isEditing || control.kind === "none" || control.kind === "switch") {
     return buildDisplayInputProps(valueRef, displayValue)
   }
 

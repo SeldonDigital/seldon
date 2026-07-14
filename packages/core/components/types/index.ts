@@ -154,6 +154,28 @@ export type NativeReactPrimitive =
   | "HTMLUl"
   | "HTMLVideo"
 
+/**
+ * Identifies a bespoke, hand-authored React template that cannot be derived from
+ * a schema (composite markup with custom `:checked`/state CSS). The template
+ * lives in `components/catalog/custom/` and is shared by the canvas and factory.
+ */
+export type CustomReactTemplate = "toggleSwitch"
+
+/**
+ * Type-only export descriptors for future Swift and Android factories. These
+ * carry the platform-native control name a factory would render for the
+ * component. No factory consumes them yet.
+ */
+export interface SwiftComponentExport {
+  returns: string
+  tintFrom?: string
+}
+
+export interface AndroidComponentExport {
+  returns: string
+  tintFrom?: string
+}
+
 export interface ComponentExport {
   react: {
     returns:
@@ -162,6 +184,15 @@ export interface ComponentExport {
       | "wrapperElement"
       | "iconMap"
       | "Frame"
+      | "custom"
+    /**
+     * When `returns` is `"custom"`, identifies the bespoke template to render and
+     * the native primitive its props interface extends.
+     */
+    custom?: {
+      base: NativeReactPrimitive
+      template: CustomReactTemplate
+    }
     /**
      * When set, the component is generated with `React.forwardRef` targeting
      * this element type (e.g. "HTMLButtonElement"), so callers can attach a ref
@@ -170,4 +201,8 @@ export interface ComponentExport {
      */
     forwardRef?: string
   }
+  /** Type-only descriptor for a future Swift factory. */
+  swift?: SwiftComponentExport
+  /** Type-only descriptor for a future Android factory. */
+  android?: AndroidComponentExport
 }

@@ -1,4 +1,5 @@
 import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
+import { IconCustomColorValue, ThemeSwatches } from "@lib/icons/custom"
 import {
   type OptionIconDescriptor,
   getOptionIcon,
@@ -9,11 +10,7 @@ import { Theme, Workspace } from "@seldon/core"
 import { IconId, defaultIconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 import { useThemes } from "@lib/themes/hooks/use-themes"
-import {
-  IconCustomColorValue,
-  ThemeSwatches,
-} from "@seldon/components/custom-components"
-import { IconSeldonToken } from "@seldon/components/icons/seldon/user-interface/actions/IconSeldonToken"
+import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { FlatProperty } from "./properties-data"
 import { getRepeatSymbolDescendant } from "./repeat-display"
@@ -127,9 +124,9 @@ function resolveOptionIconDescriptor(
         node: <IconCustomColorValue color={descriptor.color} />,
       }
     case "themeToken":
-      // `seldon-token` is an editor-registry id, not an exported slot id, so it
+      // `seldon-theme` is an editor-registry id, not an exported slot id, so it
       // renders as a node rather than through the `optionIcon` slot.
-      return { kind: "node", node: <IconSeldonToken /> }
+      return { kind: "node", node: <IconSeldonTheme /> }
     case "glyph":
       // Symbol glyphs are handled before this point; fall back to the property
       // icon for any other value-as-icon row.

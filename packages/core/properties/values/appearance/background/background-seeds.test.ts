@@ -10,17 +10,32 @@ import {
 describe("BACKGROUND_KIND_SEEDS", () => {
   it("seeds every background kind", () => {
     expect(Object.keys(BACKGROUND_KIND_SEEDS).sort()).toEqual(
-      ["color", "gradient", "image", "none"].sort(),
+      [
+        "color",
+        "conicGradient",
+        "image",
+        "linearGradient",
+        "none",
+        "radialGradient",
+      ].sort(),
     )
     expect(BACKGROUND_KIND_SEEDS[BackgroundKind.COLOR].color).toBeDefined()
-    expect(BACKGROUND_KIND_SEEDS[BackgroundKind.GRADIENT].preset).toBeDefined()
+    expect(
+      BACKGROUND_KIND_SEEDS[BackgroundKind.LINEAR_GRADIENT].preset,
+    ).toBeDefined()
+    expect(
+      BACKGROUND_KIND_SEEDS[BackgroundKind.RADIAL_GRADIENT].preset,
+    ).toBeDefined()
+    expect(
+      BACKGROUND_KIND_SEEDS[BackgroundKind.CONIC_GRADIENT].preset,
+    ).toBeDefined()
     expect(BACKGROUND_KIND_SEEDS[BackgroundKind.IMAGE].image).toBeDefined()
   })
 })
 
 describe("backgroundLayerForKind", () => {
   it("returns the seed layer for each kind", () => {
-    expect(backgroundLayerForKind("none").kind).toEqual({
+    expect(backgroundLayerForKind("none")!.kind).toEqual({
       type: ValueType.OPTION,
       value: BackgroundKind.NONE,
     })

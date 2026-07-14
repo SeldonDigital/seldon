@@ -24,6 +24,12 @@ export const schema = {
       type: Sdn.ValueType.INHERIT,
       value: null,
     },
+    position: {
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
+    },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FIT,

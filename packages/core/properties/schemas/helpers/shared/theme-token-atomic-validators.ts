@@ -14,6 +14,15 @@ export function isThemeTokenPercentageNumber(value: unknown): boolean {
   )
 }
 
+export function isThemeTokenSignedPercentageNumber(value: unknown): boolean {
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    value >= -100 &&
+    value <= 100
+  )
+}
+
 export function isThemeTokenBoolean(value: unknown): boolean {
   return typeof value === "boolean"
 }

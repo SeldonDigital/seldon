@@ -1,17 +1,14 @@
 "use client"
 
+import { OverlayLayer, PlacementZoneSurface } from "@lib/overlays"
 import { Placement } from "@lib/types"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
-import {
-  OverlayLayer,
-  PlacementZoneSurface,
-  PositionedPanel,
-} from "@seldon/components/custom-components"
-import { IndicatorInsert } from "./insert/IndicatorInsert"
+import { Frame } from "@seldon/components/frames/Frame"
+import { SidebarIndicator } from "./insert/SidebarIndicator"
 
 interface SidebarPlacementZonesProps {
   node: Variant | Instance
@@ -110,9 +107,7 @@ export function SidebarPlacementZones({
 
   return (
     <OverlayLayer style={overlayStyle}>
-      <PositionedPanel style={relativeFillStyle}>
-        {renderZones()}
-      </PositionedPanel>
+      <Frame style={relativeFillStyle}>{renderZones()}</Frame>
     </OverlayLayer>
   )
 }
@@ -145,7 +140,7 @@ function PlacementZone({
   isAllowed,
   tool,
 }: PlacementZoneProps) {
-  const Indicator = tool === "component" ? IndicatorInsert : null
+  const Indicator = tool === "component" ? SidebarIndicator : null
 
   const zoneStyle: CSSProperties = {
     position: "absolute",

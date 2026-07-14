@@ -1,10 +1,13 @@
 import type { GradientValue } from "../../effects/gradients/gradient"
 import type { GradientAngleValue } from "../../effects/gradients/gradient-angle"
+import type { GradientPositionValue } from "../../effects/gradients/gradient-position"
+import type { GradientRepeatValue } from "../../effects/gradients/gradient-repeat"
+import type { GradientShapeValue } from "../../effects/gradients/gradient-shape"
+import type { GradientSizeValue } from "../../effects/gradients/gradient-size"
 import type { GradientStopBrightnessValue } from "../../effects/gradients/gradient-stop-brightness"
 import type { GradientStopColorValue } from "../../effects/gradients/gradient-stop-color"
 import type { GradientStopOpacityValue } from "../../effects/gradients/gradient-stop-opacity"
 import type { GradientStopPositionValue } from "../../effects/gradients/gradient-stop-position"
-import type { GradientTypeValue } from "../../effects/gradients/gradient-type"
 import { EmptyValue } from "../../shared/empty/empty"
 import { BackgroundBlendModeValue } from "./background-blend-mode"
 import { BackgroundBrightnessValue } from "./background-brightness"
@@ -22,7 +25,11 @@ import { BackgroundSizeValue } from "./background-size"
  *
  * - `color` uses `color`, `brightness`, `opacity`.
  * - `image` uses `image`, `blendMode`, `position`, `size`, `repeat`, `filter`.
- * - `gradient` uses `preset` plus the gradient stop and shape facets.
+ * - `linearGradient` uses `preset`, `angle`, and the gradient stop facets.
+ * - `radialGradient` uses `preset`, `positionX`, `positionY`, `shape`,
+ *   `radialSize`, and the gradient stop facets.
+ * - `conicGradient` uses `preset`, `angle`, `conicRepeat`, and the gradient
+ *   stop facets.
  */
 export interface BackgroundLayer {
   kind?: BackgroundKindValue | EmptyValue
@@ -36,8 +43,12 @@ export interface BackgroundLayer {
   brightness?: BackgroundBrightnessValue | EmptyValue
   opacity?: BackgroundOpacityValue | EmptyValue
   preset?: GradientValue | EmptyValue
-  gradientType?: GradientTypeValue | EmptyValue
   angle?: GradientAngleValue | EmptyValue
+  positionX?: GradientPositionValue | EmptyValue
+  positionY?: GradientPositionValue | EmptyValue
+  shape?: GradientShapeValue | EmptyValue
+  radialSize?: GradientSizeValue | EmptyValue
+  conicRepeat?: GradientRepeatValue | EmptyValue
   startColor?: GradientStopColorValue | EmptyValue
   startOpacity?: GradientStopOpacityValue | EmptyValue
   startBrightness?: GradientStopBrightnessValue | EmptyValue

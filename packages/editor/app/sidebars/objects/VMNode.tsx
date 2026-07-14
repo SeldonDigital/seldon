@@ -1,3 +1,10 @@
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import {
+  buildDisabledRefProps,
+  buildFieldStateProps,
+  buildRepeatFieldStyleProps,
+  mergeStateProps,
+} from "@lib/views/state-props"
 import { type ReactElement, memo } from "react"
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
@@ -7,17 +14,11 @@ import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
-import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import {
-  buildDisabledRefProps,
-  buildFieldStateProps,
-  buildRepeatFieldStyleProps,
-  mergeStateProps,
-} from "../shared/build-field-state-props"
+import { Frame } from "@seldon/components/frames/Frame"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { RowSelectionTarget } from "./RowSelectionTarget"
+import { RowSelectionTarget } from "./RowSelectionTarget.bespoke"
 
 const NODE_SELECTION_KIND = "node"
 
@@ -44,7 +45,7 @@ interface VMNodeProps {
 
 /** Summary row standing in for echo rows beyond {@link ECHO_ROW_LIMIT}. */
 function RepeatEchoSummaryRow({ count }: { count: number }) {
-  return <div>+{count} more</div>
+  return <Frame>+{count} more</Frame>
 }
 
 const VMNodeInner = function VMNodeInner({
@@ -84,6 +85,10 @@ const VMNodeInner = function VMNodeInner({
     properties,
     isExcluded,
     isHidden,
+    isPlaceholder,
+    nodeTypeColor,
+    isPrimaryShared,
+    isSecondaryShared,
     dataNodeType,
   } = useRowNode(node, {
     rootId,
@@ -100,8 +105,11 @@ const VMNodeInner = function VMNodeInner({
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTracking(node)
 
+  // Display shows the row label (which may be a transformed code name), but
+  // inline rename always edits and commits the underlying node label.
   const nameInput = useRenameInput({
     label: String(baseLabel.children),
+    editLabel: node.label,
     isEditing: isEditingName,
     setEditing: setEditingName,
     onSubmit: setNodeLabel,
@@ -187,20 +195,36 @@ const VMNodeInner = function VMNodeInner({
     },
   }
 
-  // A hidden or excluded node reads as disabled. Excluded rows also italicize
-  // the name shown in the combobox input.
-  const isDimmed = isHidden || isExcluded
+  // A hidden, placeholder, or excluded node reads as disabled. Excluded rows
+  // italicize and strike through the name shown in the combobox input;
+  // placeholder rows italicize it.
+  const isDimmed = isHidden || isPlaceholder || isExcluded
+  const excludedLabelStyle = {
+    ...nameInput.style,
+    fontStyle: "italic" as const,
+    textDecoration: "line-through" as const,
+  }
+  const placeholderLabelStyle = {
+    ...nameInput.style,
+    fontStyle: "italic" as const,
+  }
   const nodeLabel = isExcluded
-    ? {
-        ...nameInput,
-        style: { ...nameInput.style, fontStyle: "italic" as const },
-      }
-    : nameInput
+    ? { ...nameInput, style: excludedLabelStyle }
+    : isPlaceholder
+      ? { ...nameInput, style: placeholderLabelStyle }
+      : nameInput
 
   // Disabled is not owned by the combobox-field, so it never cascades from the
   // field to these leaves. Forward `aria-disabled` onto each leaf ref so their
   // own `[aria-disabled]` styles dim the row.
   const disabledRef = buildDisabledRefProps(isDimmed)
+
+  // Show Node Types debug tint. Applied inline to the icon and label refs only,
+  // so it wins over the field's selection and state cascade there while leaving
+  // the disclosure arrow, buttons, border, and background untinted.
+  const nodeTypeStyle = nodeTypeColor
+    ? { style: { color: nodeTypeColor } }
+    : undefined
 
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
@@ -208,16 +232,38 @@ const VMNodeInner = function VMNodeInner({
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
-    nodeIcon: mergeStateProps(icon2, disabledRef),
-    nodeLabel: mergeStateProps(nodeLabel, disabledRef),
+    nodeIcon: mergeStateProps(icon2, disabledRef, nodeTypeStyle),
+    nodeLabel: mergeStateProps(nodeLabel, disabledRef, nodeTypeStyle),
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
+  // Show Leaves / Branch / Tree lineage fill from the View menu. Primary rows
+  // read as a strong accent fill (they change when the selection is edited);
+  // secondary rows read faintly (related lineage that does not change). The fill
+  // uses the same `--sdn-swatch-active` accent as selection, so the selected row
+  // border and these fills stay in one color family.
+  const sharedHighlightBackground = isPrimaryShared
+    ? "color-mix(in srgb, var(--sdn-swatch-active) 35%, transparent)"
+    : isSecondaryShared
+      ? "color-mix(in srgb, var(--sdn-swatch-active) 12%, transparent)"
+      : undefined
+
   // The row's selection is styled on its combobox-field child. Repeat echo rows
-  // also carry a dashed base border so every field state renders dashed.
+  // also carry a dashed base border so every field state renders dashed. Merge
+  // the echo border and the lineage fill into one style so neither clobbers the
+  // other.
+  const echoFieldProps = buildRepeatFieldStyleProps(isEcho)
+  const comboboxFieldStyle = {
+    ...(echoFieldProps.style ?? {}),
+    ...(sharedHighlightBackground
+      ? { backgroundColor: sharedHighlightBackground }
+      : {}),
+  }
   const comboboxField = {
     ...buildFieldStateProps({ selected: isSelected }),
-    ...buildRepeatFieldStyleProps(isEcho),
+    ...(Object.keys(comboboxFieldStyle).length > 0
+      ? { style: comboboxFieldStyle }
+      : {}),
   }
 
   // Root-level row state. Selection lives on the combobox-field and disabled on

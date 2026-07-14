@@ -917,32 +917,6 @@
           "type": "object"
         },
         "type": {
-          "const": "remove_theme_custom_background",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
-          "properties": {
-            "key": {
-              "pattern": "^custom[0-9]*$",
-              "type": "string"
-            },
-            "themeId": {
-              "type": "string"
-            }
-          },
-          "required": ["key", "themeId"],
-          "type": "object"
-        },
-        "type": {
           "const": "remove_theme_custom_gradient",
           "type": "string"
         }
@@ -2259,6 +2233,7 @@
                 "bottomRight",
                 "brightness",
                 "color",
+                "conicRepeat",
                 "endBrightness",
                 "endColor",
                 "endOpacity",
@@ -2276,9 +2251,13 @@
                 "offsetY",
                 "opacity",
                 "position",
+                "positionX",
+                "positionY",
                 "preset",
+                "radialSize",
                 "repeat",
                 "right",
+                "shape",
                 "size",
                 "spread",
                 "startBrightness",
@@ -2396,6 +2375,7 @@
                 "bottomRight",
                 "brightness",
                 "color",
+                "conicRepeat",
                 "endBrightness",
                 "endColor",
                 "endOpacity",
@@ -2413,9 +2393,13 @@
                 "offsetY",
                 "opacity",
                 "position",
+                "positionX",
+                "positionY",
                 "preset",
+                "radialSize",
                 "repeat",
                 "right",
+                "shape",
                 "size",
                 "spread",
                 "startBrightness",
@@ -2709,6 +2693,7 @@
                 "bottomRight",
                 "brightness",
                 "color",
+                "conicRepeat",
                 "endBrightness",
                 "endColor",
                 "endOpacity",
@@ -2726,9 +2711,13 @@
                 "offsetY",
                 "opacity",
                 "position",
+                "positionX",
+                "positionY",
                 "preset",
+                "radialSize",
                 "repeat",
                 "right",
+                "shape",
                 "size",
                 "spread",
                 "startBrightness",
@@ -2772,6 +2761,27 @@
         },
         "type": {
           "const": "apply_component_properties_to_all_boards",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "boardKey": {
+              "type": "string"
+            }
+          },
+          "required": ["boardKey"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_component_board",
           "type": "string"
         }
       },
@@ -3226,14 +3236,14 @@
               "anyOf": [
                 {
                   "enum": [
+                    "adobeSpectrum",
                     "earth",
+                    "googleMaterial",
                     "highContrast",
+                    "ibmCarbon",
                     "industrial",
-                    "material",
-                    "pop",
-                    "royalAzure",
+                    "popPunk",
                     "seldon",
-                    "sky",
                     "sunsetBlue",
                     "wildberry"
                   ],
@@ -4503,30 +4513,6 @@
       },
       "required": ["payload", "type"],
       "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "properties": {
-            "chatMessage": {
-              "type": "string"
-            },
-            "expectUserAnswer": {
-              "type": "boolean"
-            }
-          },
-          "required": ["chatMessage", "expectUserAnswer"],
-          "type": "object"
-        },
-        "type": {
-          "const": "transcript_add_message",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
     }
   ],
   "definitions": {
@@ -4819,7 +4805,14 @@
     },
     "BackgroundKind": {
       "description": "What a single background layer paints.",
-      "enum": ["none", "color", "image", "gradient"],
+      "enum": [
+        "none",
+        "color",
+        "image",
+        "linearGradient",
+        "radialGradient",
+        "conicGradient"
+      ],
       "type": "string"
     },
     "BackgroundKindOptionValue": {
@@ -4840,7 +4833,7 @@
     },
     "BackgroundLayer": {
       "additionalProperties": false,
-      "description": "One layer in the background stack. `kind` selects which facets apply:\n\n- `color` uses `color`, `brightness`, `opacity`.\n- `image` uses `image`, `blendMode`, `position`, `size`, `repeat`, `filter`.\n- `gradient` uses `preset` plus the gradient stop and shape facets.",
+      "description": "One layer in the background stack. `kind` selects which facets apply:\n\n- `color` uses `color`, `brightness`, `opacity`.\n- `image` uses `image`, `blendMode`, `position`, `size`, `repeat`, `filter`.\n- `linearGradient` uses `preset`, `angle`, and the gradient stop facets.\n- `radialGradient` uses `preset`, `positionX`, `positionY`, `shape`,\n  `radialSize`, and the gradient stop facets.\n- `conicGradient` uses `preset`, `angle`, `conicRepeat`, and the gradient\n  stop facets.",
       "properties": {
         "angle": {
           "anyOf": [
@@ -4987,6 +4980,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -5002,18 +5007,58 @@
               },
               "required": ["type", "value"],
               "type": "object"
+            }
+          ]
+        },
+        "conicRepeat": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
             },
             {
-              "$ref": "#/definitions/HexValue"
+              "additionalProperties": false,
+              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
             },
             {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
+              "additionalProperties": false,
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
+              "properties": {
+                "type": {
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
             }
           ]
         },
@@ -5092,6 +5137,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -5124,18 +5181,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -5269,29 +5314,6 @@
             },
             {
               "$ref": "#/definitions/BackgroundFilterOptionValue"
-            }
-          ]
-        },
-        "gradientType": {
-          "anyOf": [
-            {
-              "additionalProperties": false,
-              "description": "The value CAN be set but initially it is not.",
-              "properties": {
-                "type": {
-                  "const": "empty",
-                  "description": "Leave unset so defaults and platform rules apply after merge.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "null"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "$ref": "#/definitions/GradientTypeOptionValue"
             }
           ]
         },
@@ -5638,6 +5660,214 @@
             }
           ]
         },
+        "positionX": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "px",
+                      "description": "Length in pixels.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "rem",
+                      "description": "Length relative to the root font size.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "%",
+                      "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientPositionOptionValue"
+            }
+          ]
+        },
+        "positionY": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "px",
+                      "description": "Length in pixels.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "rem",
+                      "description": "Length relative to the root font size.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "%",
+                      "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientPositionOptionValue"
+            }
+          ]
+        },
         "preset": {
           "anyOf": [
             {
@@ -5661,6 +5891,29 @@
             }
           ]
         },
+        "radialSize": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientSizeOptionValue"
+            }
+          ]
+        },
         "repeat": {
           "anyOf": [
             {
@@ -5681,6 +5934,29 @@
             },
             {
               "$ref": "#/definitions/BackgroundRepeatOptionValue"
+            }
+          ]
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientShapeOptionValue"
             }
           ]
         },
@@ -5983,6 +6259,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -6015,18 +6303,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -6362,6 +6638,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -6394,18 +6682,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -6663,6 +6939,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -6695,18 +6983,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -7044,14 +7320,23 @@
             },
             {
               "enum": [
+                "@swatch.accent",
+                "@swatch.active",
                 "@swatch.background",
                 "@swatch.black",
+                "@swatch.foreground",
                 "@swatch.gray",
+                "@swatch.negative",
+                "@swatch.offBlack",
+                "@swatch.offWhite",
+                "@swatch.positive",
                 "@swatch.primary",
+                "@swatch.punch",
                 "@swatch.swatch1",
                 "@swatch.swatch2",
                 "@swatch.swatch3",
                 "@swatch.swatch4",
+                "@swatch.warning",
                 "@swatch.white"
               ],
               "type": "string"
@@ -7090,6 +7375,18 @@
           "type": "object"
         },
         {
+          "$ref": "#/definitions/HexValue"
+        },
+        {
+          "$ref": "#/definitions/TransparentValue"
+        },
+        {
+          "$ref": "#/definitions/ColorOptionValue"
+        },
+        {
+          "$ref": "#/definitions/ColorThemeValue"
+        },
+        {
           "additionalProperties": false,
           "properties": {
             "type": {
@@ -7122,18 +7419,6 @@
           },
           "required": ["type", "value"],
           "type": "object"
-        },
-        {
-          "$ref": "#/definitions/HexValue"
-        },
-        {
-          "$ref": "#/definitions/TransparentValue"
-        },
-        {
-          "$ref": "#/definitions/ColorOptionValue"
-        },
-        {
-          "$ref": "#/definitions/ColorThemeValue"
         }
       ],
       "description": "Unset or paint from literals, structured color objects, swatches, transparent, or computed rules."
@@ -7820,8 +8105,8 @@
       "type": "object"
     },
     "Display": {
-      "description": "Whether the node appears in the workspace, stays hidden, or drops out of the tree.",
-      "enum": ["show", "hide", "exclude"],
+      "description": "Whether the node appears in the workspace, stays hidden, renders as an\nopt-in placeholder slot, or drops out of the tree.\n\n- `SHOW`: rendered and exported normally.\n- `HIDE`: hidden in the editor and rendered output, but still exported.\n- `PLACEHOLDER`: rendered in the editor; exported as an opt-in slot that\n  renders nothing by default and can be populated by a caller.\n- `EXCLUDE`: hidden in the editor and dropped from export.",
+      "enum": ["show", "hide", "placeholder", "exclude"],
       "type": "string"
     },
     "DisplayExactValue": {
@@ -8183,23 +8468,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "const": "autoFit",
-                  "description": "Scale a length or size from a reference value and factor.",
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -8245,6 +8513,23 @@
                   },
                   "required": ["unit", "value"],
                   "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "computed",
+                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "type": "string"
+                },
+                "value": {
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -8591,6 +8876,58 @@
             }
           ]
         },
+        "conicRepeat": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
+              "properties": {
+                "type": {
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ]
+        },
         "endBrightness": {
           "anyOf": [
             {
@@ -8666,6 +9003,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -8698,18 +9047,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -8830,6 +9167,260 @@
             }
           ]
         },
+        "positionX": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "px",
+                      "description": "Length in pixels.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "rem",
+                      "description": "Length relative to the root font size.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "%",
+                      "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientPositionOptionValue"
+            }
+          ]
+        },
+        "positionY": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "px",
+                      "description": "Length in pixels.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "rem",
+                      "description": "Length relative to the root font size.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "%",
+                      "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientPositionOptionValue"
+            }
+          ]
+        },
+        "radialSize": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientSizeOptionValue"
+            }
+          ]
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/GradientShapeOptionValue"
+            }
+          ]
+        },
         "startBrightness": {
           "anyOf": [
             {
@@ -8905,6 +9496,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -8937,18 +9540,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -9047,6 +9638,70 @@
           ]
         }
       },
+      "type": "object"
+    },
+    "GradientPositionOptionValue": {
+      "additionalProperties": false,
+      "description": "Stores one named axis anchor for a radial gradient center.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "enum": ["bottom", "center", "left", "right", "top"],
+          "type": "string"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "GradientShape": {
+      "description": "The outline a radial gradient spreads along.",
+      "enum": ["circle", "ellipse"],
+      "type": "string"
+    },
+    "GradientShapeOptionValue": {
+      "additionalProperties": false,
+      "description": "Stores one radial gradient shape choice from the enum.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/GradientShape"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "GradientSize": {
+      "description": "How far a radial gradient reaches relative to the layer box.",
+      "enum": [
+        "closest-side",
+        "closest-corner",
+        "farthest-side",
+        "farthest-corner"
+      ],
+      "type": "string"
+    },
+    "GradientSizeOptionValue": {
+      "additionalProperties": false,
+      "description": "Stores one radial gradient size keyword from the enum.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/GradientSize"
+        }
+      },
+      "required": ["type", "value"],
       "type": "object"
     },
     "GradientType": {
@@ -10514,6 +11169,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -10546,18 +11213,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -11662,6 +12317,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -11694,18 +12361,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -12025,23 +12680,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "const": "autoFit",
-                  "description": "Scale a length or size from a reference value and factor.",
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -12087,6 +12725,23 @@
                   },
                   "required": ["unit", "value"],
                   "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "computed",
+                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "type": "string"
+                },
+                "value": {
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -12497,23 +13152,6 @@
                   "additionalProperties": false,
                   "properties": {
                     "type": {
-                      "const": "computed",
-                      "description": "Resolve from a declared function and inputs that reference other values.",
-                      "type": "string"
-                    },
-                    "value": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    }
-                  },
-                  "required": ["type", "value"],
-                  "type": "object"
-                },
-                {
-                  "additionalProperties": false,
-                  "properties": {
-                    "type": {
                       "const": "exact",
                       "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                       "type": "string"
@@ -12559,6 +13197,23 @@
                       },
                       "required": ["unit", "value"],
                       "type": "object"
+                    }
+                  },
+                  "required": ["type", "value"],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "const": "computed",
+                      "description": "Resolve from a declared function and inputs that reference other values.",
+                      "type": "string"
+                    },
+                    "value": {
+                      "const": "autoFit",
+                      "description": "Scale a length or size from a reference value and factor.",
+                      "type": "string"
                     }
                   },
                   "required": ["type", "value"],
@@ -12804,23 +13459,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "const": "autoFit",
-                  "description": "Scale a length or size from a reference value and factor.",
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -12866,6 +13504,23 @@
                   },
                   "required": ["unit", "value"],
                   "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "computed",
+                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "type": "string"
+                },
+                "value": {
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -13790,23 +14445,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "const": "autoFit",
-                  "description": "Scale a length or size from a reference value and factor.",
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -13852,6 +14490,23 @@
                   },
                   "required": ["unit", "value"],
                   "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "computed",
+                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "type": "string"
+                },
+                "value": {
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -13940,23 +14595,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "const": "autoFit",
-                  "description": "Scale a length or size from a reference value and factor.",
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -14002,6 +14640,23 @@
                   },
                   "required": ["unit", "value"],
                   "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "computed",
+                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "type": "string"
+                },
+                "value": {
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14084,21 +14739,7 @@
               "type": "object"
             },
             {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "const": "autoFit",
-                  "description": "Scale a length or size from a reference value and factor.",
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
+              "$ref": "#/definitions/SizeThemeValue"
             },
             {
               "additionalProperties": false,
@@ -14155,7 +14796,21 @@
               "type": "object"
             },
             {
-              "$ref": "#/definitions/SizeThemeValue"
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "computed",
+                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "type": "string"
+                },
+                "value": {
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
             }
           ]
         },
@@ -14453,23 +15108,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "const": "autoFit",
-                  "description": "Scale a length or size from a reference value and factor.",
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -14515,6 +15153,23 @@
                   },
                   "required": ["unit", "value"],
                   "type": "object"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "computed",
+                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "type": "string"
+                },
+                "value": {
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14706,41 +15361,6 @@
       "required": ["type", "value"],
       "type": "object"
     },
-    "PositionSideThemeValue": {
-      "additionalProperties": false,
-      "description": "Ordinal reference into the theme dimension scale for one edge offset.",
-      "properties": {
-        "type": {
-          "const": "theme.ordinal",
-          "description": "Point at a theme token on an ordered scale such as spacing or type size.",
-          "type": "string"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "pattern": "^@dimension\\.custom[0-9]*$",
-              "type": "string"
-            },
-            {
-              "enum": [
-                "@dimension.huge",
-                "@dimension.large",
-                "@dimension.medium",
-                "@dimension.small",
-                "@dimension.tiny",
-                "@dimension.xlarge",
-                "@dimension.xsmall",
-                "@dimension.xxlarge",
-                "@dimension.xxsmall"
-              ],
-              "type": "string"
-            }
-          ]
-        }
-      },
-      "required": ["type", "value"],
-      "type": "object"
-    },
     "PositionValue": {
       "additionalProperties": false,
       "description": "Optional offsets from each edge when using positioned layout.",
@@ -14843,12 +15463,9 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/PositionSideThemeValue"
             }
           ],
-          "description": "One edge offset as unset, a measured length, or a theme dimension step."
+          "description": "One edge offset as unset or a measured length."
         },
         "left": {
           "anyOf": [
@@ -14948,12 +15565,9 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/PositionSideThemeValue"
             }
           ],
-          "description": "One edge offset as unset, a measured length, or a theme dimension step."
+          "description": "One edge offset as unset or a measured length."
         },
         "right": {
           "anyOf": [
@@ -15053,12 +15667,9 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/PositionSideThemeValue"
             }
           ],
-          "description": "One edge offset as unset, a measured length, or a theme dimension step."
+          "description": "One edge offset as unset or a measured length."
         },
         "top": {
           "anyOf": [
@@ -15158,12 +15769,9 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/PositionSideThemeValue"
             }
           ],
-          "description": "One edge offset as unset, a measured length, or a theme dimension step."
+          "description": "One edge offset as unset or a measured length."
         }
       },
       "type": "object"
@@ -15840,6 +16448,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -15872,18 +16492,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -16363,6 +16971,18 @@
               "type": "object"
             },
             {
+              "$ref": "#/definitions/HexValue"
+            },
+            {
+              "$ref": "#/definitions/TransparentValue"
+            },
+            {
+              "$ref": "#/definitions/ColorOptionValue"
+            },
+            {
+              "$ref": "#/definitions/ColorThemeValue"
+            },
+            {
               "additionalProperties": false,
               "properties": {
                 "type": {
@@ -16395,18 +17015,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/HexValue"
-            },
-            {
-              "$ref": "#/definitions/TransparentValue"
-            },
-            {
-              "$ref": "#/definitions/ColorOptionValue"
-            },
-            {
-              "$ref": "#/definitions/ColorThemeValue"
             }
           ]
         },
@@ -16890,7 +17498,6 @@
     "ThemeCustomTokenSection": {
       "description": "Every section that accepts user-added `customN` tokens (matches the `add_theme_custom_*` tables).",
       "enum": [
-        "background",
         "blur",
         "border",
         "borderWidth",
@@ -16932,16 +17539,16 @@
       "type": "string"
     },
     "ThemeInstanceId": {
-      "description": "Packaged theme catalog ids (`ThemeTemplateId`).\n\n**`ThemeTemplateId`** — Use these exact strings as the suffix in `catalog:{id}` template\nreferences (see [THEMES.md](../THEMES.md) and [WORKSPACE.md](../../workspace/WORKSPACE.md)).\nThey match `metadata.id` on stock themes under `themes/catalog/`.\n\n**`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row\n(`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in\nthe `themes` map** are opaque **strings** (for example `theme-sky-default`); resolution happens\nthrough `getComputedTheme` / `computeWorkspaceThemes`, not through this union alone. Prefer\ntreating those refs as `string` at workspace boundaries until workspace types are aligned.",
+      "description": "Packaged theme catalog ids (`ThemeTemplateId`).\n\n**`ThemeTemplateId`** — Use these exact strings as the suffix in `catalog:{id}` template\nreferences (see [THEMES.md](../THEMES.md) and [WORKSPACE.md](../../workspace/WORKSPACE.md)).\nThey match `metadata.id` on stock themes under `themes/catalog/`.\n\n**`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row\n(`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in\nthe `themes` map** are opaque **strings** (for example `theme-earth-default`); resolution happens\nthrough `getComputedTheme` / `computeWorkspaceThemes`, not through this union alone. Prefer\ntreating those refs as `string` at workspace boundaries until workspace types are aligned.",
       "enum": [
+        "adobeSpectrum",
         "earth",
+        "googleMaterial",
         "highContrast",
+        "ibmCarbon",
         "industrial",
-        "material",
-        "pop",
-        "royalAzure",
+        "popPunk",
         "seldon",
-        "sky",
         "sunsetBlue",
         "wildberry"
       ],

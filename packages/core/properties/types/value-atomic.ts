@@ -30,6 +30,10 @@ import {
   FontWeightValue,
   GapValue,
   GradientAngleValue,
+  GradientPositionValue,
+  GradientRepeatValue,
+  GradientShapeValue,
+  GradientSizeValue,
   GradientStopColorValue,
   GradientStopOpacityValue,
   GradientStopPositionValue,
@@ -127,6 +131,10 @@ export type AtomicValue =
   | LinesValue
   | GradientAngleValue
   | GradientValue
+  | GradientPositionValue
+  | GradientRepeatValue
+  | GradientShapeValue
+  | GradientSizeValue
   | GradientStopColorValue
   | GradientStopOpacityValue
   | GradientStopPositionValue

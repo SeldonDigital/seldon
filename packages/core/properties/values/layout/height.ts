@@ -1,12 +1,8 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { Theme } from "../../../themes/types"
 import { ComputedFunction, Unit } from "../../constants"
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { DimensionValue } from "./dimension"
 import { Resize } from "./resize"
-
-/** Vertical edge length using the same value shapes as the shared dimension model. */
-export type HeightValue = EmptyValue | DimensionValue
 
 export const heightSchema: PropertySchema = {
   name: "height",
@@ -45,10 +41,8 @@ export const heightSchema: PropertySchema = {
       typeof value === "string" &&
       (Object.values(Resize) as string[]).includes(value),
     computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme) return false
-      return typeof value === "string" && value in theme.dimension
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "dimension"),
   },
   presetOptions: () => Object.values(Resize),
   themeOrdinalKeys: (theme: Theme) =>

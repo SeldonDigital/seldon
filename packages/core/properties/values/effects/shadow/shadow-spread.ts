@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeSpreadKey } from "../../../../themes/types"
 import { Unit, ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
@@ -38,10 +39,8 @@ export const shadowSpreadSchema: PropertySchema = {
       if (typeof m.value !== "number" || !Number.isFinite(m.value)) return false
       return m.unit === Unit.PX || m.unit === Unit.REM
     },
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.spread
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "spread"),
   },
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.spread).map((id) => `@spread.${id}`),

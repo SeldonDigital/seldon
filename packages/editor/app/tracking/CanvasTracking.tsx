@@ -1,5 +1,7 @@
 "use client"
 
+import { isThemeBoard } from "@seldon/core/workspace/model/components"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@lib/workspace/hooks/use-selection"
 import {
   useCanvasHoverState,
@@ -30,6 +32,7 @@ export function CanvasTracking() {
   const nodeIds = visibleNodes.map((node) => node.id)
   const { showSelection, wireframeMode } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
+  const { activeBoard } = useActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
   const isTransforming = useCanvasRemeasureStore(
     (state) => state.isTransforming,
@@ -39,6 +42,10 @@ export function CanvasTracking() {
   // box reads cleanly. Explicit wireframe mode still wins, and leaving the tool
   // restores normal auto behavior without touching persisted state.
   const showWireframes = wireframeMode === "on"
+
+  // Theme boards are previews, not an editable node tree, so they show no
+  // selection or hover outline on the canvas.
+  const activeBoardIsTheme = activeBoard ? isThemeBoard(activeBoard) : false
 
   // A between-siblings gap is highlighted by the paired sibling outlines
   // (InsertGapSiblings), so the single full-node hover box is suppressed to
@@ -69,10 +76,13 @@ export function CanvasTracking() {
             />
           )
         })}
-      {showSelection && activeTool === "select" && !isDragging && (
-        <CanvasSelectionOutline wireframe={showWireframes} />
-      )}
-      {showSelection && activeTool === "select" && (
+      {showSelection &&
+        activeTool === "select" &&
+        !isDragging &&
+        !activeBoardIsTheme && (
+          <CanvasSelectionOutline wireframe={showWireframes} />
+        )}
+      {showSelection && activeTool === "select" && !activeBoardIsTheme && (
         <CanvasHoverOutline wireframe={showWireframes} />
       )}
       {activeTool === "component" && !isSiblingGap && <CanvasHoverOutline />}

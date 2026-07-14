@@ -6,7 +6,10 @@ import {
   isLayeredPaintProperty,
 } from "@seldon/core/properties/types/property-keys"
 import { isBuiltInClearedLookToken } from "@seldon/core/themes/looks"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
+import {
+  NORMAL_STATE,
+  type NodeState,
+} from "@seldon/core/workspace/model/node-state"
 
 import { getNodeComputeContext } from "../../compute/compute-node-properties"
 import { matchCompoundPreset } from "./compound-presets"
@@ -102,6 +105,7 @@ function calculatePropertyStatus(
   schemaValue: unknown,
   node: PropertyPanelSubject,
   state?: NodeState,
+  atomicBaselineValue?: unknown,
 ): PropertyStatus {
   if (hasNodeOverride) {
     if (isCompoundProperty(key as PropertyKey)) {
@@ -112,11 +116,14 @@ function calculatePropertyStatus(
           : "unset"
     }
 
-    if (
-      hasSchemaDefault &&
-      schemaValue &&
-      propertyValuesMatch(nodePropertyValue, schemaValue)
-    ) {
+    // In a non-Normal state the baseline is the resolved Normal value, so a
+    // state override that matches Normal reads as set and one that differs reads
+    // as override. In the Normal view the baseline stays the schema default.
+    const atomicMatched = !!(
+      atomicBaselineValue &&
+      propertyValuesMatch(nodePropertyValue, atomicBaselineValue)
+    )
+    if (atomicMatched) {
       return "set"
     }
 
@@ -190,6 +197,14 @@ function calculateSubPropertyStatus(
   // value as set so state views keep showing base-authored facets.
   if (isValueSet(parentProperty?.[subKey])) {
     return "set"
+  }
+
+  // A compound facet reaches here only when it belongs to the layer's structure
+  // (e.g. brightness/opacity on a color layer). It is part of the vocabulary, so
+  // an unset one is "unset", not "not used". Marking it "not used" would poison
+  // the compound's aggregate and hide the whole row.
+  if (isCompoundProperty(key as PropertyKey)) {
+    return "unset"
   }
 
   return "not used"
@@ -385,6 +400,13 @@ export function getPropertyStatus(
   const bag = getPropertyOverridesBag(node, state)
   const { theme } = getNodeComputeContext(nodeId, workspace)
 
+  // In a non-Normal state, an override's baseline is the resolved Normal value,
+  // not the catalog default, so blue/white tracks "differs from Normal".
+  const normalBaseline =
+    state && state !== NORMAL_STATE
+      ? getEffectiveProperties(nodeId, workspace)
+      : undefined
+
   for (const key of Object.keys(effective)) {
     const hasNodeOverride = hasPropertyOverride(node, key, undefined, state)
     const hasSchemaDefault = key in schemaProperties
@@ -392,6 +414,9 @@ export function getPropertyStatus(
     const schemaValue = hasSchemaDefault
       ? (schemaProperties as Record<string, unknown>)[key]
       : null
+    const atomicBaselineValue = normalBaseline
+      ? (normalBaseline as Record<string, unknown>)[key]
+      : schemaValue
 
     status[key] = calculatePropertyStatus(
       key,
@@ -401,6 +426,7 @@ export function getPropertyStatus(
       schemaValue,
       node,
       state,
+      atomicBaselineValue,
     )
 
     const subStatusContext: SubStatusContext = {

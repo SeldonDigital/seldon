@@ -14,7 +14,7 @@ import { hasEffectiveThemeReference } from "./effective-theme-references"
 /**
  * True when any theme-catalog row on this board is still referenced by effective theme.
  */
-export function areThemeBoardRootsReferencedByEffectiveTheme(
+function areThemeBoardRootsReferencedByEffectiveTheme(
   board: Board,
   workspace: Workspace,
 ): boolean {
@@ -34,7 +34,7 @@ export function areThemeBoardRootsReferencedByEffectiveTheme(
  * True when any id in `candidateIds` appears as a ref id under another board's variant tree
  * (excluding trees owned by `excludeBoardKey`).
  */
-export function areCatalogIdsUsedInOtherBoardTrees(
+function areCatalogIdsUsedInOtherBoardTrees(
   workspace: Workspace,
   excludeBoardKey: BoardKey,
   candidateIds: ReadonlySet<string>,
@@ -58,7 +58,7 @@ export function areCatalogIdsUsedInOtherBoardTrees(
 /**
  * Font / media catalog rows: true when another board's composition tree references a row id.
  */
-export function areResourceBoardRowsUsedInTrees(
+function areResourceBoardRowsUsedInTrees(
   workspace: Workspace,
   boardKey: BoardKey,
   board: Board,

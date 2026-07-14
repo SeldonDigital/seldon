@@ -5,6 +5,7 @@ import {
   buildVariantSnippet,
 } from "@lib/copy-schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
+import { useExportStatusStore } from "@lib/export/export-status-store"
 import {
   pickExportDirectory,
   writeExportToDirectory,
@@ -13,7 +14,7 @@ import { triggerDownload } from "@lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
-import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
+import { parseWorkspace } from "@seldon/core/workspace/helpers/parse-workspace"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
@@ -97,27 +98,33 @@ export function useImportExport() {
   const importWorkspaceFromFile = useCallback(
     async (file: File) => {
       const text = await file.text()
-      const parsed = workspacePropagationService.parseWorkspace(
-        text,
-      ) as Workspace
-      await importWorkspace(parsed)
+      try {
+        const parsed = parseWorkspace(text)
+        await importWorkspace(parsed)
+      } catch (error) {
+        addToast(error instanceof Error ? error.message : "Import failed")
+      }
     },
-    [importWorkspace],
+    [addToast, importWorkspace],
   )
 
   const exportToFolder = useCallback(async () => {
+    const { setExporting } = useExportStatusStore.getState()
     try {
       const directory = await pickExportDirectory()
       if (!directory) {
         addToast("Folder picker is not supported in this browser")
         return
       }
+      setExporting(true)
       const { runLocalExport } = await import("@lib/export/run-local-export")
       const files = await runLocalExport(workspace)
       const count = await writeExportToDirectory(directory, files)
       addToast(`Exported ${count} files`)
     } catch (error) {
       addToast(error instanceof Error ? error.message : "Export failed")
+    } finally {
+      setExporting(false)
     }
   }, [addToast, workspace])
 

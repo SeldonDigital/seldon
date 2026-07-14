@@ -1,5 +1,4 @@
 import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
-import { getParentPathForPreset } from "@lib/properties/property-paths"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 
 /**
@@ -47,33 +46,4 @@ export function getSubPropertyKeys(propertyKey: string): string[] {
     return Object.keys(registryEntry.subProperties)
   }
   return []
-}
-
-/**
- * Gets the parent property key from a preset property key
- * @param presetPropertyKey - The preset property key (e.g., "border.preset")
- * @returns The parent property key (e.g., "border")
- */
-export function getParentPropertyKey(presetPropertyKey: string): string {
-  return getParentPathForPreset(presetPropertyKey)
-}
-
-/**
- * Determines if a property should use shorthand main property behavior
- * @param propertyKey - The property key to check
- * @returns True if the property is a shorthand property
- */
-export function shouldUseShorthandMainPropertyBehavior(
-  propertyKey: string,
-): boolean {
-  return isShorthandProperty(propertyKey)
-}
-
-/**
- * Determines if a property should use preset property behavior
- * @param propertyKey - The property key to check
- * @returns True if the property is a preset property
- */
-export function shouldUsePresetPropertyBehavior(propertyKey: string): boolean {
-  return isPresetProperty(propertyKey)
 }

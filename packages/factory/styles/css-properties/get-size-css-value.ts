@@ -1,9 +1,10 @@
-import { SizeValue } from "@seldon/core"
+import { SizeValue, ValueType } from "@seldon/core"
 import { resolveSize } from "@seldon/core/helpers/resolution/resolve-size"
 import { Theme } from "@seldon/core/themes/types"
 
 import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
+import { getThemeTokenVarReference } from "./get-theme-token-reference"
 
 /**
  * Retrieves the CSS size value based on the provided size value and theme.
@@ -18,11 +19,18 @@ export function getSizeCSSValue({
   size,
   parentContext,
   theme,
+  useThemeVariableReferences,
 }: {
   size: SizeValue
   parentContext: StyleGenerationContext | null
   theme: Theme
+  useThemeVariableReferences?: boolean
 }) {
+  if (useThemeVariableReferences && size.type === ValueType.THEME_ORDINAL) {
+    const reference = getThemeTokenVarReference(size.value)
+    if (reference) return reference
+  }
+
   const resolvedSize = resolveSize({
     size,
     parentContext,

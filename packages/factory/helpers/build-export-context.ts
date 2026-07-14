@@ -3,6 +3,7 @@ import {
   type NodeParentIndex,
   buildNodeParentIndex,
   computeNodeProperties,
+  getNodeComputeContext,
   resolveLayoutMode,
 } from "@seldon/core/workspace/compute"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
@@ -34,6 +35,14 @@ export function getStyleContext(
     state,
   })
 
+  // The effective compute context core resolves computed values against. Style
+  // helpers reuse it in variable mode to detect a `COMPUTED` cell and resolve its
+  // source the same way core does, so the theme variable matches the baked value.
+  const computeContext = getNodeComputeContext(nodeId, workspace, {
+    parentIndex,
+    state,
+  })
+
   const parentId = parentIndex.get(nodeId)
   const parentContext = parentId
     ? getStyleContext(parentId, workspace, parentIndex, state)
@@ -44,5 +53,5 @@ export function getStyleContext(
   const node = workspace.nodes?.[nodeId]
   const layoutMode = node ? resolveLayoutMode(node, workspace) : undefined
 
-  return { properties, parentContext, theme, layoutMode }
+  return { properties, computeContext, parentContext, theme, layoutMode }
 }

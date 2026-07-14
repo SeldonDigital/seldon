@@ -46,7 +46,9 @@ export function getConditionalPropPaths(
       return
     }
 
-    if (!isValidIn(node, parentValidation)) {
+    // Placeholder nodes render as opt-in slots, so route them through the same
+    // conditional path as inline extras: no default, guarded render.
+    if (node.isPlaceholder || !isValidIn(node, parentValidation)) {
       conditional.add(node.dataBinding.path)
     }
 

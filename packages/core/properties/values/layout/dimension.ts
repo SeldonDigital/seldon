@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeDimensionKey } from "../../../themes/types"
 import { ComputedFunction, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -28,14 +29,6 @@ export type DimensionValue =
   | PixelValue
   | RemValue
   | PercentageValue
-  | ComputedAutoFitValue
-
-/** Dimension shapes that exclude theme ordinal picks. */
-export type DimensionResizeValue =
-  | EmptyValue
-  | DimensionResizeOptionValue
-  | PixelValue
-  | RemValue
   | ComputedAutoFitValue
 
 export const dimensionSchema: PropertySchema = {
@@ -70,10 +63,8 @@ export const dimensionSchema: PropertySchema = {
       typeof value === "string" &&
       (Object.values(Resize) as string[]).includes(value),
     computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme) return false
-      return typeof value === "string" && value in theme.dimension
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "dimension"),
   },
   presetOptions: () => Object.values(Resize),
   themeOrdinalKeys: (theme: Theme) =>

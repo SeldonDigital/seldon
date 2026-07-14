@@ -46,7 +46,6 @@ flowchart LR
 | `PROPERTY_DISPLAY_META` | `property-display.ts` | Lookup of display metadata by flattened catalog key. Attached when building `PROPERTY_SCHEMAS`. |
 | `attachPropertyDisplayMetadata` | `property-display.ts` | Adds display category and order to a schema map. Called when assembling `PROPERTY_SCHEMAS`. |
 | `NODE_FIELD_DISPLAY_ORDER` | `property-display.ts` | Order of leading node-entry fields shown before the property rows: `theme` then `reference`. These are node metadata, not `Properties` keys. |
-| `NodeFieldDisplayId` | `property-display.ts` | Union of node field ids in `NODE_FIELD_DISPLAY_ORDER`. Types the leading inspector rows for theme and the reference handle. |
 
 ### Typography assets
 
@@ -59,7 +58,7 @@ flowchart LR
 
 ## Notes
 
-- `background`, `gradient`, and `shadow` use `nodeStorage: "layered"` in `PROPERTY_COMPOUND_CATALOG`. Other compounds use `nodeStorage: "facets"`.
+- `background` and `shadow` use `nodeStorage: "layered"` in `PROPERTY_COMPOUND_CATALOG`. Other compounds use `nodeStorage: "facets"`.
 - `position` is listed in `PROPERTY_SHORTHAND_KEYS` but stores a facet map like margin and padding.
 
 ---

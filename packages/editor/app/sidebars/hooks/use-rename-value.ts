@@ -27,7 +27,6 @@ export function useRenameValue({
       setValue(label)
     }
     // Seed only on the edit-mode transition; label changes mid-edit are ignored.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing])
 
   const cancel = () => {

@@ -1,12 +1,16 @@
 /**
  * Hook for property validation logic
  */
-import { isFreeTextProperty } from "@lib/properties/serialize-value"
+import {
+  isColorProperty,
+  isFreeTextProperty,
+} from "@lib/properties/serialize-value"
 import {
   isNumber,
   isPercentage,
   isPx,
   isRem,
+  isValidColor,
 } from "@seldon/core/helpers/validation"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getUnitsForProperty } from "@seldon/core/properties"
@@ -14,48 +18,20 @@ import { FlatProperty } from "../helpers/properties-data"
 
 interface UsePropertyValidationResult {
   validationFunction: ((value: string) => boolean) | undefined
-  units: string[]
 }
 
 /**
- * Returns validation function and units for a property
+ * Returns the validation function for a property. Unit lists are derived
+ * internally to validate typed values against the property's allowed units.
  */
 export function usePropertyValidation(
   property: FlatProperty,
 ): UsePropertyValidationResult {
-  // Exclude units for theme properties that should be plain numbers
-  // This includes properties ending with .step (e.g., dimension.huge.step, margin.cozy.step)
-  // and font weight properties (e.g., fontWeight.thin, fontWeight.bold)
-  const shouldExcludeUnits =
-    property.key === "modulation.ratio" ||
-    property.key === "modulation.baseSize" ||
-    property.key.startsWith("fontWeight.") ||
-    property.key.endsWith(".step")
-
-  // Force Base Font Size to use PX units
-  const shouldUsePxOnly = property.key === "modulation.baseFontSize"
-
-  // Color angle and step should use degrees
-  const shouldUseDegOnly =
-    property.key === "colorHarmony.angle" ||
-    property.key === "colorHarmony.step"
-
-  // Color point properties and bleed should use percentage units
-  const shouldUsePercentOnly =
-    property.key === "colorHarmony.whitePoint" ||
-    property.key === "colorHarmony.grayPoint" ||
-    property.key === "colorHarmony.blackPoint" ||
-    property.key === "colorHarmony.bleed"
-
-  const units = shouldExcludeUnits
-    ? []
-    : shouldUsePxOnly
-      ? ["px"]
-      : shouldUseDegOnly
-        ? ["deg"]
-        : shouldUsePercentOnly
-          ? ["%"]
-          : getUnitsForProperty(property.key)
+  // Theme rows carry their allowed units on the property, resolved from the core
+  // token schema. Node properties leave `units` unset and resolve through the
+  // property schema instead. This keeps units schema-driven with no per-key
+  // special cases.
+  const units = property.units ?? getUnitsForProperty(property.key)
 
   // Scale `.step` rows accept a bare number (modulated step) or a px/rem length
   // (exact). `lineHeight` stays a unitless number, so it is excluded.
@@ -70,6 +46,13 @@ export function usePropertyValidation(
     }
 
     if (property.controlType === "combo" || property.controlType === "menu") {
+      // Color combos accept typed hex/hsl/rgb/lch and `@swatch.*` values, which
+      // the commit path serializes through `serializeColor`. This precedes the
+      // unit check because color schemas carry no units and fall back to the
+      // default px/rem/% list, which would otherwise reject color strings.
+      if (isColorProperty(property.key)) {
+        return (value: string) => isValidColor(value.trim())
+      }
       if (units.length > 0) {
         return (value: string) => {
           if (isThemeValueKey(value)) return true
@@ -94,6 +77,15 @@ export function usePropertyValidation(
           return units.some((unit) => {
             if (unit === "px" && isPx(value)) return true
             if (unit === "rem" && isRem(value)) return true
+            // `isPercentage` above rejects negatives, so a signed percentage
+            // (e.g. a `-5%` chroma shift) is accepted here.
+            if (
+              unit === "%" &&
+              value.endsWith("%") &&
+              !isNaN(parseFloat(value))
+            ) {
+              return true
+            }
             if (
               unit === "deg" &&
               value.toLowerCase().endsWith("deg") &&
@@ -108,15 +100,10 @@ export function usePropertyValidation(
       }
     }
 
-    if (property.controlType === "text") {
-      return undefined
-    }
-
     return undefined
   }
 
   return {
     validationFunction: getValidationFunction(),
-    units,
   }
 }

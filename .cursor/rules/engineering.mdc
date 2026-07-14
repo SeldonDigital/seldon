@@ -17,6 +17,7 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 - All comments should be about current behavior, not legacy, deprecated, past behavior, or anything that is not relevant going forward. 
 - Do not add comments that are obvious or referential to markdown files. 
 - Add JSDocs as needed.
+- In `*.schema.ts` files, inline every property and `overrides` object literal at its child. Do not hoist shared schema values into a module `const` and reuse it. The only module-level values are the `schema` export and its `exportConfig`. See `.cursor/rules/components.mdc`.
 
 ### Naming
 
@@ -74,4 +75,13 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 
 ### Framework Guidance
 
-Keep React, Next.js, Web Vitals, image, and URL-state guidance out of this global rule. App-code framework rules live in file-scoped rules. JSX authoring for the editor app lives in `.cursor/rules/editor-jsx.mdc`.
+Keep React, Next.js, Web Vitals, image, and URL-state guidance out of this global rule. App-code framework rules live in file-scoped rules.
+
+### JSX Authoring (Always Enforced)
+
+Important: When you edit any `.tsx` file under `packages/editor/`, you MUST follow `.cursor/rules/editor-jsx.mdc`. The core rule, repeated here so it is always in scope:
+
+- Returned JSX holds element tags and identifier references only. Compute nothing inside the returned JSX.
+- No expressions in returned JSX. This covers ternaries, `&&`, `||`, comparisons, computed objects or arrays, inline `style` objects, template literals, inline arrow or function handlers, and helper or function calls that build a value, such as `comboboxField={buildFieldStateProps({ selected })}`.
+- Hoist every JSX value into a named `const`, `useMemo`, or `useCallback` above the `return`, then reference the identifier. Write `const comboboxField = buildFieldStateProps({ selected })`, then `comboboxField={comboboxField}`.
+- Bare literal slot enablers stay inline. A positional `{}`, `null`, or `undefined` that only turns a slot on or off carries no logic.

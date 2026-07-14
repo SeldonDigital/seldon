@@ -185,7 +185,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--rezm",
   },
   icon2: {
     icon: "material-chevronRight",

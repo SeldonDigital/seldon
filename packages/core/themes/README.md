@@ -20,14 +20,14 @@ Stock themes ship with Seldon as starting points and reference implementations. 
 | `earth` | Warm natural swatches with analogous harmony, humanist type tone, and comfortable scales. |
 | `highContrast` | Neutral high-contrast theme with simple typography and strong readability. |
 | `industrial` | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices. |
-| `material` | Vivid app-oriented theme inspired by Material-style type and spacing. |
-| `pop` | Expressive split-complementary theme with high contrast and punchy scales. |
-| `royalAzure` | Deep blue complementary theme with refined typography and stable scales. |
-| `sky` | Light complementary theme with airy contrast and open spacing. |
+| `googleMaterial` | Theme aligned with Material Design 3, using Roboto and the M3 baseline palette. |
+| `popPunk` | Expressive split-complementary theme with high contrast and punchy scales. |
+| `ibmCarbon` | IBM Carbon-inspired theme with neutral grays, IBM Blue, IBM Plex type, and square corners. |
+| `adobeSpectrum` | Adobe Spectrum-inspired theme with neutral grays, Spectrum blue, Source type, and rounded corners. |
 | `sunsetBlue` | Warm-cool split-complementary theme with relaxed typography. |
 | `wildberry` | Rich square-harmony theme with saturated berry colors and bold styling. |
 
-`metadata.id` and catalog template ids use the same string as **Stock Theme ID**. For example: `catalog:sky`, `catalog:royalAzure`.
+`metadata.id` and catalog template ids use the same string as **Stock Theme ID**. For example: `catalog:earth`, `catalog:ibmCarbon`.
 
 ---
 
@@ -118,6 +118,20 @@ The Computed section holds the inputs that drive the compute engines and the col
 | `colorHarmony.parameters.blackPoint` | number | Lightness anchor, black |
 | `colorHarmony.parameters.bleed` | number | Hue bleed into neutrals |
 
+`displayMode` controls the light and dark appearance of the derived swatches.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `displayMode.parameters.mode` | `ThemeMode` | `option: light, dark` (`themes/constants/enums.ts`) |
+| `displayMode.parameters.chromaChange` | number | Chroma shift in percent, -100 through 100 |
+| `displayMode.parameters.lightnessChange` | number | Lightness shift in percent, -100 through 100 |
+
+`mode` names the mode the theme's authored colored swatches represent. `chromaChange` shifts the chroma of derived opposite-mode colors. `lightnessChange` shifts the lightness of derived opposite-mode colors. Neither changes how theme colors compute. Factory export builds each mode's swatch table through `getModeSwatches` in `compute/get-mode-swatches.ts`.
+
+Every theme authors its neutral pairs literally: `offWhite` holds a light color and `offBlack` a dark one. The pairs `white`/`black`, `foreground`/`background`, and `offBlack`/`offWhite` never derive. The light table serves them as authored. The dark table serves each slot its partner's authored value. This assignment does not depend on the theme's `mode`.
+
+Every other swatch stays authored in the theme's own `mode` and derives for the opposite mode. `gray` converts to LCH and inverts its lightness without a chroma shift. Colored swatches are identity colors: they keep their authored hue in both modes, shift their lightness by `lightnessChange` percent, and scale chroma by `chromaChange` percent, capped at the sRGB gamut for the shifted lightness so the conversion cannot drift the hue.
+
 `fontFamily` holds the primary and secondary font stacks. Each slot is a `TokenType.FONT_FAMILY` cell, referenced through `@fontFamily.primary` and `@fontFamily.secondary`.
 
 `matchColor` configures the `MATCH_COLOR` compute function.
@@ -200,7 +214,7 @@ When adding a **custom** key to a theme:
 
 Custom tokens do not participate in either ordinal or categorical behaviors. They are loose extensions that components reference directly by their key. If a property references a key that is missing from the active theme, the property's default value is used.
 
-Every token except `@fontFamily.*` accepts custom keys. Stock themes ship without authoring any so color palettes and scale tokens stay consistent across themes, but a theme is free to add `custom1`, `custom2`, ... wherever they make sense.
+Every token except `@fontFamily.*` accepts custom keys. Most stock themes ship without authoring any so color palettes and scale tokens stay consistent across themes. `earth` and `googleMaterial` author custom swatches as examples. A theme is free to add `custom1`, `custom2`, ... wherever they make sense.
 
 ---
 
@@ -221,7 +235,7 @@ Every token except `@fontFamily.*` accepts custom keys. Stock themes ship withou
 | `@fontSize.*` | `theme.ordinal` | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge` | `custom1` \| `custom2` \| ... |
 | `@fontWeight.*` | `theme.ordinal` | `thin` \| `xlight` \| `light` \| `normal` \| `medium` \| `semibold` \| `bold` \| `xbold` \| `black` | `custom1` \| `custom2` \| ... |
 | `@lineHeight.*` | `theme.ordinal` | `solid` \| `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` \| `none` | `custom1` \| `custom2` \| ... |
-| `@swatch.*` | `theme.categorical` | `white` \| `gray` \| `black` \| `primary` \| `swatch1` \| `swatch2` \| `swatch3` \| `swatch4` \| `background` | `custom1` \| `custom2` \| ... |
+| `@swatch.*` | `theme.categorical` | `white` \| `gray` \| `black` \| `primary` \| `swatch1` \| `swatch2` \| `swatch3` \| `swatch4` \| `foreground` \| `background` \| `active` \| `punch` \| `positive` \| `negative` \| `warning` \| `accent` \| `offBlack` \| `offWhite` | `custom1` \| `custom2` \| ... |
 | `@font.*` | `theme.categorical` | `display` \| `heading` \| `subheading` \| `title` \| `subtitle` \| `callout` \| `body` \| `label` \| `tagline` \| `code` | `custom1` \| `custom2` \| ... |
 | `@border.*` | `theme.categorical` | `hairline` \| `thin` \| `normal` \| `thick` \| `bevel` | `custom1` \| `custom2` \| ... |
 | `@gradient.*` | `theme.categorical` | `primary` \| `gradient1` \| `gradient2` | `custom1` \| `custom2` \| ... |
@@ -255,7 +269,7 @@ Every token cell uses a single input field named `parameters`. The shape of `par
 | `swatch` | `{ colorspace: "hsl" \| "rgb" \| "lch" \| "hex" \| "name", value: <payload for that colorspace> }` |
 | `font.family` | string (font family name) |
 | `option` | string option key (e.g. `"hairline"`); the set of allowed keys is per-table |
-| `look` | object of nested parameters specific to the look (font, shadow, border, gradient, background, scrollbar) |
+| `look` | object of nested parameters specific to the look (font, shadow, border, gradient, scrollbar) |
 
 ```typescript
 enum TokenType {
@@ -396,7 +410,7 @@ swatch: {
 
 Swatch tokens hold a specified color, defined in one of the supported colorspaces. Use swatches for defining color as needed. Note that when switching themes, dynamic colors will always switch based on a matching dynamic color while custom swatches will follow the rules outlined in copying and pasting components.
 
-`background` is the only reserved swatch key. All other swatch keys are completely custom, with the `name` field being the main identifier for users, so use a meaningful value.
+The reserved fixed-color swatch keys are the ten interface slots: `foreground`, `background`, `active`, `punch`, `positive`, `negative`, `warning`, `accent`, `offBlack`, and `offWhite`. They stay slot-stable across themes, and missing slots fall back to the Seldon interface defaults during `computeTheme`. All other authored swatch keys are custom, with the `name` field being the main identifier for users, so use a meaningful value.
 
 | Field | Required | Type | Notes |
 | --- | --- | --- | --- |
@@ -556,7 +570,7 @@ Border looks describe a border treatment of style, width, color, opacity, and br
 | `width` | `atomic` | `empty` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
 | `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
 | `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `brightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 
 ```typescript
 import { TokenType, ValueType } from "@seldon/core/themes"
@@ -587,11 +601,11 @@ Gradient looks describe a two-stop linear or radial gradient with type, angle, a
 | `angle` | `atomic` | `empty` \| `exact: degrees` |
 | `startColor` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
 | `startOpacity` | `atomic` | `empty` \| `exact: %, 0–100` |
-| `startBrightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `startBrightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 | `startPosition` | `atomic` | `empty` \| `exact: %, 0–100` |
 | `endColor` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
 | `endOpacity` | `atomic` | `empty` \| `exact: %, 0–100` |
-| `endBrightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `endBrightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 | `endPosition` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript
@@ -624,7 +638,7 @@ Shadow looks describe a drop-shadow with offsets, blur, spread, color, brightnes
 | `blur` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @blur.*` |
 | `spread` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @spread.*` |
 | `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `brightness` | `atomic` | `empty` \| `exact: %, -100–100` |
 | `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript
@@ -695,12 +709,16 @@ import { instantiateTheme } from "@seldon/core/themes/compute"
 
 const branded = instantiateTheme(
   "seldon",
-  { color: { baseColor: { hue: 200, saturation: 70, lightness: 45 } } },
+  {
+    colorHarmony: {
+      parameters: { baseColor: { hue: 200, saturation: 70, lightness: 45 } },
+    },
+  },
   STOCK_THEMES_BY_ID,
 )
 
 const layered = computeTheme(
-  merge({}, STOCK_THEMES_BY_ID.material, brandOverrides, scaleOverrides),
+  merge({}, STOCK_THEMES_BY_ID.googleMaterial, brandOverrides, scaleOverrides),
 )
 ```
 
@@ -708,9 +726,9 @@ Workspace pipelines pick a stock template by id and apply user-supplied override
 
 ### Workspace serialization
 
-[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by an opaque string ref (for example `theme-sky-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
+[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by an opaque string ref (for example `theme-earth-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
 
-[`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds` and `resolvePackagedThemeByCatalogId`. Workspace validation uses the ids to check theme board `catalogId` values.
+[`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds`. Workspace validation uses the ids to check theme board `catalogId` values.
 
 ### Computed resolution (imports)
 
@@ -742,7 +760,7 @@ const invalidRef: BorderColorValue = {
 }
 ```
 
-`validateThemeTokenValue` in [`schemas/helpers/validate-theme-token-value.ts`](./schemas/helpers/validate-theme-token-value.ts) is the runtime counterpart: when an entry has a `propertyKey`, it delegates to `validatePropertyValue` (same `valueType` and `theme` arguments as on the property side); for unbridged entries it checks the value against the entry's primary `ThemeTokenSchema.supports` shape.
+At runtime, workspace validation middleware checks token values when a theme action is dispatched. There is no standalone token validator in this package.
 
 ---
 
@@ -759,17 +777,17 @@ export type ThemeTemplateId =
   | "earth"
   | "highContrast"
   | "industrial"
-  | "material"
-  | "pop"
-  | "royalAzure"
-  | "sky"
+  | "googleMaterial"
+  | "popPunk"
+  | "ibmCarbon"
+  | "adobeSpectrum"
   | "sunsetBlue"
   | "wildberry"
 
 export type ThemeInstanceId = ThemeTemplateId
 ```
 
-In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-sky-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
+In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-earth-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
 
 ### Token Table Shape
 
@@ -822,7 +840,7 @@ export type ThemeSwatchId =
   | "swatch2"
   | "swatch3"
   | "swatch4"
-  | ThemeStaticSwatchId // "background" | `custom${number}`
+  | ThemeStaticSwatchId // the ten interface slots | `custom${number}`
 ```
 
 ### Theme Reference Validation
@@ -913,13 +931,12 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 - **Missing pipeline shape**: `normalizeThemeInput` throws `"Theme must have modulation and colorHarmony properties"` when those groups are missing.
 - **Missing icon set**: `normalizeThemeInput` throws `"Theme must define iconSet"` when neither `iconSet` nor the legacy `icon` field is present.
 - **Unknown stock template**: `instantiateTheme` throws `Unknown theme template: <id>` when the id is not in the supplied `PresetThemesById` map.
-- **Bad token cell**: `validateThemeTokenValue` returns `false` for unknown keys and shape-mismatched payloads.
+- **Bad token cell**: workspace validation middleware rejects unknown keys and shape-mismatched payloads when a theme action is dispatched.
 
 ### Graceful Degradation
 
 - **Missing `customN` keys**: properties that reference an absent custom slot fall back to their schema default.
-- **Partial color overrides**: dynamic swatches recompute from whatever `color.*` inputs are provided. Unset fields keep the stock value.
-- **Unbridged token entries**: `validateThemeTokenValue` falls through to the entry's primary `ThemeTokenSchema.supports` shape when no `propertyKey` is set.
+- **Partial color overrides**: dynamic swatches recompute from whatever `colorHarmony` inputs are provided. Unset fields keep the stock value.
 - **Legacy theme JSON**: `normalizeThemeInput` coerces missing `TokenType` tags and unit-shaped numbers before palette math runs.
 
 ### Debugging Support
@@ -993,11 +1010,11 @@ Most theme work goes through this sub-recipe rather than touching token kinds:
 
 **6. Add tests**
 
-Create test files following the existing patterns alongside [`test/test-theme.ts`](./test/test-theme.ts):
+Create test files following the existing patterns in this package:
 
 ```typescript
 // /packages/core/themes/catalog/<id>.test.ts
-import { describe, expect, it } from "bun:test"
+import { describe, expect, it } from "vitest"
 
 import { STOCK_THEMES_BY_ID, computeTheme } from "@seldon/core/themes"
 

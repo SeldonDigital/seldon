@@ -10,36 +10,19 @@ import { isRGBObject } from "../../helpers/type-guards/color/is-rgb-object"
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { isHex, isHexWithoutHash } from "../../helpers/validation"
 import { ValueType } from "../constants"
-import type { ColorValue } from "../values/appearance/color"
 import type { EmptyValue } from "../values/shared/empty/empty"
 import type { Hex, HexValue } from "../values/shared/exact/hex"
 import type { HSL } from "../values/shared/exact/hsl"
 import type { LCH } from "../values/shared/exact/lch"
 import type { PercentageValue } from "../values/shared/exact/percentage"
 import type { RGB } from "../values/shared/exact/rgb"
+import { parseBasedOnPath } from "./parse-based-on-path"
 import type { ComputeContext } from "./types"
 
-const LAYERED_PAINT_ROOTS = ["background", "shadow"] as const
-
 /** Neutral white used as the opacity backdrop when no deeper surface exists. */
-export const NEUTRAL_WHITE: HexValue = {
+const NEUTRAL_WHITE: HexValue = {
   type: ValueType.EXACT,
   value: "#FFFFFF",
-}
-
-/** Anchors a bare layered-paint facet path (e.g. `background.color`) to layer `0`. */
-export function normalizeLayerFacetPath(path: string): string {
-  for (const root of LAYERED_PAINT_ROOTS) {
-    const prefix = `${root}.`
-    if (!path.startsWith(prefix)) continue
-
-    const rest = path.slice(prefix.length)
-    if (/^\d+\./.test(rest)) continue
-
-    return `${root}.0.${rest}`
-  }
-
-  return path
 }
 
 function isNonContributingLayerPercentage(value: unknown): boolean {
@@ -57,9 +40,7 @@ export function readAnchoredLayerPercentage(
   colorBasedOn: string,
   facet: "brightness" | "opacity",
 ): PercentageValue | undefined {
-  const layerPath = normalizeLayerFacetPath(
-    colorBasedOn.replace(/^#(parent\.|self\.)?/, ""),
-  )
+  const layerPath = parseBasedOnPath(colorBasedOn).lookupPath
   const facetPath = layerPath.replace(/\.color$/, `.${facet}`)
   const raw = findInObject(facetSource.properties, facetPath)
 
@@ -86,7 +67,7 @@ export function applyLayerOpacity(
   }
 }
 
-export function exactColorToChromaInput(color: HSL | LCH | RGB | Hex): string {
+function exactColorToChromaInput(color: HSL | LCH | RGB | Hex): string {
   if (typeof color === "string") {
     if (isHex(color)) return color
     if (isHexWithoutHash(color)) return `#${color}`
@@ -107,5 +88,3 @@ export function exactColorToChromaInput(color: HSL | LCH | RGB | Hex): string {
 
   throw new Error("Unable to parse color for opacity")
 }
-
-export type { ColorValue }

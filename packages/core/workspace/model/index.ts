@@ -1,8 +1,6 @@
-export { WORKSPACE_SPEC_VERSION } from "./constants"
 export type { WorkspaceStringMap } from "./string-maps"
 export type { WorkspaceMetadata } from "./metadata"
 export type {
-  ComponentResourceRef,
   ComponentTreeRef,
   FontCollectionEntryRef,
   IconSetEntryRef,
@@ -48,7 +46,6 @@ export type {
   CustomState,
   EntryNodeStates,
   NodeState,
-  NormalState,
   ReservedStateName,
   StateExpression,
 } from "./node-state"

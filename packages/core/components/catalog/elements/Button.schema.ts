@@ -29,6 +29,12 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.POINTER,
     },
+    position: {
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
+    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -202,6 +208,10 @@ export const schema = {
             type: Sdn.ValueType.EXACT,
             value: "Button",
           },
+          cursor: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Cursor.POINTER,
+          },
           color: {
             type: Sdn.ValueType.COMPUTED,
             value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
@@ -223,7 +233,7 @@ export const schema = {
   variants: [
     {
       id: "label",
-      label: "Simple Button",
+      label: "Simple",
       intent: "Text-only button with a single label and no icon.",
       overrides: {
         padding: {
@@ -273,9 +283,170 @@ export const schema = {
       ],
     },
     {
+      id: "menu",
+      label: "Menu",
+      intent:
+        "Dropdown menu button pairing a label with a chevron that reveals more options.",
+      overrides: {
+        buttonSize: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@fontSize.small",
+        },
+        padding: {
+          top: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
+          right: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.compact",
+          },
+          bottom: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
+          left: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.compact",
+          },
+        },
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.offWhite",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+        border: {
+          width: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.BorderWidth.HAIRLINE,
+          },
+          color: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@swatch.offBlack",
+          },
+          opacity: {
+            type: Sdn.ValueType.EXACT,
+            value: { unit: Sdn.Unit.PERCENT, value: 40 },
+          },
+        },
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+        },
+        shadow: [
+          {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@shadow.light",
+            },
+            style: { type: Sdn.ValueType.EMPTY, value: null },
+            offsetX: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PX, value: 0 },
+            },
+            offsetY: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PX, value: 1 },
+            },
+            blur: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@blur.tiny",
+            },
+            color: {
+              type: Sdn.ValueType.EXACT,
+              value: { hue: 0, saturation: 0, lightness: 0 },
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PERCENT, value: 10 },
+            },
+            spread: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@spread.xxsmall",
+            },
+          },
+        ],
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Button Menu",
+            },
+            cursor: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Cursor.POINTER,
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.label",
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: Sdn.ComputedFunction.AUTO_FIT,
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-chevronDown",
+            },
+            size: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.AUTO_FIT,
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+            cursor: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Cursor.POINTER,
+            },
+          },
+        },
+      ],
+    },
+    {
       id: "iconic",
-      label: "Iconic Button",
-      intent: "Icnic button with a single icon and no label.",
+      label: "Iconic",
+      intent: "Iconic button with a single icon and no label.",
       overrides: {
         padding: {
           top: {
@@ -318,7 +489,7 @@ export const schema = {
     },
     {
       id: "tools",
-      label: "Tool Buttons",
+      label: "Tools",
       intent: "Vertical group of tool buttons.",
       overrides: {
         orientation: {
@@ -347,24 +518,6 @@ export const schema = {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@gap.compact",
         },
-        corners: {
-          topLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          topRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-        },
         background: [
           {
             kind: {
@@ -389,6 +542,24 @@ export const schema = {
           preset: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
             value: "@border.none",
+          },
+        },
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
           },
         },
       },
@@ -532,7 +703,7 @@ export const schema = {
     },
     {
       id: "segmented",
-      label: "Segmented Button",
+      label: "Segmented",
       intent:
         "Combines related actions into a segmented control with selectable options.",
       overrides: {

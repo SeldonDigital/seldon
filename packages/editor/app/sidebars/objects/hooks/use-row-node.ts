@@ -5,6 +5,8 @@ import {
 import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { removeNewLines } from "@lib/helpers/new-lines"
 import { MenuEntry } from "@lib/menus"
+import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
+import { getComponentName } from "@seldon/factory/export/react/discovery/get-component-name"
 import { CSSProperties } from "react"
 import { Display, InstanceId, Properties, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
@@ -32,7 +34,9 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useTool } from "@lib/hooks/use-tool"
+import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
@@ -45,7 +49,6 @@ import { hasNode } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
@@ -80,7 +83,8 @@ export function useRowNode(
   const { activeTool } = useTool()
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
     useSelectionActions()
-  const { showNodeIds } = useDebugMode()
+  const { showNodeIds, showNodeTypes } = useDebugMode()
+  const { showCodeNames } = useEditorConfig()
   const addToast = useAddToast()
   const hasClipboardProperties = usePropertiesClipboard(
     (state) => state.properties !== null,
@@ -125,6 +129,16 @@ export function useRowNode(
   const isParentOfSelectedNode = useIsParentOfSelection(node.id)
   const isNodeActive =
     parentIsSelected || isParentOfSelectedNode || selectedNodeIsWithin
+
+  // Show Leaves / Branch / Tree lineage highlight from the View menu. Primary
+  // rows change when the selection is edited; secondary rows are related
+  // lineage that does not. The selected row keeps its own selection styling, so
+  // it is excluded here. When the mode is "selection" the sets are empty and no
+  // row lights up, which is the default.
+  const sharedHighlight = useSharedNodeHighlight()
+  const isPrimaryShared = !isSelected && sharedHighlight.primary.has(node.id)
+  const isSecondaryShared =
+    !isSelected && !isPrimaryShared && sharedHighlight.secondary.has(node.id)
 
   const { dragging, ref } = useDraggable({
     enable: show && !isEditingName && !disableReordering,
@@ -182,7 +196,14 @@ export function useRowNode(
 
   function getNodeLabel() {
     if (showNodeIds) {
-      return `ID: ${node.id} / TEMPLATE: ${node.template}`
+      return `${node.id} | ${node.template}`
+    }
+
+    // Show Code Names swaps the friendly label for the export component name,
+    // e.g. a "Simple" Button variant reads "ButtonSimple". Display only; the
+    // node label and rename behavior are unchanged.
+    if (showCodeNames && nodeExistsInWorkspace) {
+      return getComponentName(node, workspace)
     }
 
     if (
@@ -223,6 +244,23 @@ export function useRowNode(
   const icon2: IconProps = {
     icon: getComponentTypeIcon(),
   }
+
+  // Show Node Types debug mode tints the row's icon and label by node type:
+  // user variants use the Punch swatch and instances a lighter tint. Boards and
+  // default variants keep the default color. VMNode applies this onto the icon
+  // and label refs only, so borders, buttons, and the disclosure arrow are
+  // unaffected.
+  function getNodeTypeColor(): string | undefined {
+    if (!showNodeTypes) return undefined
+    if (typeCheckingService.isInstance(node)) {
+      return "color-mix(in srgb, var(--sdn-swatch-punch) 80%, var(--sdn-swatch-white))"
+    }
+    if (typeCheckingService.isUserVariant(node)) {
+      return "var(--sdn-swatch-punch)"
+    }
+    return undefined
+  }
+  const nodeTypeColor = getNodeTypeColor()
 
   const catalogComponentId = nodeExistsInWorkspace
     ? getNodeCatalogComponentId(node, workspace)
@@ -590,14 +628,52 @@ export function useRowNode(
     return false
   }
 
-  // Excluded rows (own display or an excluded ancestor) read as italic. Hidden
-  // rows use the node's own display only. Both drive the disabled look.
+  function checkIfPlaceholder(): boolean {
+    if (!nodeExistsInWorkspace) {
+      return false
+    }
+
+    if (properties?.display?.value === Display.PLACEHOLDER) return true
+
+    if (!typeCheckingService.isInstance(node)) {
+      return false
+    }
+
+    let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
+    while (currentParent) {
+      const parentProps = getNodeProperties(
+        currentParent as EntryNode,
+        workspace,
+      )
+      if (parentProps?.display?.value === Display.PLACEHOLDER) {
+        return true
+      }
+      if (typeCheckingService.isInstance(currentParent)) {
+        currentParent = nodeTraversalService.findParentNode(
+          currentParent.id,
+          workspace,
+        )
+      } else {
+        break
+      }
+    }
+
+    return false
+  }
+
+  // Excluded rows (own display or an excluded ancestor) read as italic with a
+  // strikethrough. Placeholder rows (own display or a placeholder ancestor) read
+  // as italic. Hidden rows use the node's own display only. All three drive the
+  // disabled look.
   const isExcluded = checkIfExcluded()
   const isHidden = properties?.display?.value === Display.HIDE
+  const isPlaceholder = checkIfPlaceholder()
 
   const baseLabelStyle: CSSProperties | undefined = isExcluded
-    ? { fontStyle: "italic" }
-    : undefined
+    ? { fontStyle: "italic", textDecoration: "line-through" }
+    : isPlaceholder
+      ? { fontStyle: "italic" }
+      : undefined
   const labelStyle: CSSProperties | undefined = isEcho
     ? { ...baseLabelStyle, fontStyle: "italic", opacity: 0.7 }
     : baseLabelStyle
@@ -639,6 +715,10 @@ export function useRowNode(
     properties,
     isExcluded,
     isHidden,
+    isPlaceholder,
+    nodeTypeColor,
+    isPrimaryShared,
+    isSecondaryShared,
     dataNodeType: typeCheckingService.getEntityType(node),
   }
 }

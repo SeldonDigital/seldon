@@ -1,11 +1,15 @@
-import { BorderCompound } from "@seldon/core"
+import { BorderCompound, ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { Theme, ThemeBorder } from "@seldon/core/themes/types"
 
+import { getComputedCssValue } from "../computed-variables"
 import { StyleGenerationContext } from "../types"
 import { getBorderWidthCSSValue } from "./get-border-width-css-value"
-import { getColorCSSValue } from "./get-color-css-value"
+import {
+  applyTransformsToColorReference,
+  getColorCSSValue,
+} from "./get-color-css-value"
 import { CSSObject } from "./types"
 
 type Side = "top" | "right" | "bottom" | "left"
@@ -40,7 +44,9 @@ const SIDE_COMPOUND_KEY: Record<
 
 export function getBorderStyles({
   properties,
+  computeContext,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
 
@@ -51,7 +57,14 @@ export function getBorderStyles({
     const sideBorder = properties[SIDE_COMPOUND_KEY[side]]
     Object.assign(
       styles,
-      getBorderSideStyles(side, sideBorder, shorthand, theme),
+      getBorderSideStyles(
+        side,
+        sideBorder,
+        shorthand,
+        theme,
+        useThemeVariableReferences,
+        computeContext,
+      ),
     )
   })
 
@@ -67,6 +80,8 @@ function getBorderSideStyles(
   sideBorder: BorderCompound | undefined,
   shorthand: BorderCompound | undefined,
   theme: Theme,
+  useThemeVariableReferences?: boolean,
+  computeContext?: StyleGenerationContext["computeContext"],
 ): CSSObject {
   const capitalizedSide = side.charAt(0).toUpperCase() + side.slice(1)
   const styles: CSSObject = {}
@@ -84,7 +99,11 @@ function getBorderSideStyles(
 
   if (width) {
     styles[`border${capitalizedSide}Width` as BorderWidthKey] =
-      getBorderWidthCSSValue(width, theme) as CSSObject["borderWidth"]
+      getBorderWidthCSSValue(
+        width,
+        theme,
+        useThemeVariableReferences,
+      ) as CSSObject["borderWidth"]
   }
 
   const style =
@@ -112,13 +131,36 @@ function getBorderSideStyles(
     resolveValue(themeBorder?.parameters.opacity)
 
   if (color) {
-    styles[`border${capitalizedSide}Color` as BorderColorKey] =
-      getColorCSSValue({
-        color,
-        brightness,
-        opacity,
-        theme,
-      })
+    const baked = getColorCSSValue({
+      color,
+      brightness,
+      opacity,
+      theme,
+      useThemeVariableReferences,
+    })
+
+    // A computed border color (high contrast) references its theme variable so
+    // it follows theme and mode switches; transforms wrap the reference the
+    // same way swatch references handle them. The pre-compute cell layers like
+    // the resolved value: side compound over shorthand over theme preset,
+    // skipping EMPTY cells the same way `resolveValue` does.
+    const original = [
+      computeContext?.properties[SIDE_COMPOUND_KEY[side]]?.color,
+      computeContext?.properties.border?.color,
+      themeBorder?.parameters.color,
+    ].find((cell) => !!cell && cell.type !== ValueType.EMPTY)
+    const themed =
+      useThemeVariableReferences && computeContext
+        ? getComputedCssValue({ original, context: computeContext })
+        : null
+
+    styles[`border${capitalizedSide}Color` as BorderColorKey] = themed
+      ? applyTransformsToColorReference(
+          themed,
+          brightness?.value.value ?? 0,
+          opacity?.value.value ?? 100,
+        )
+      : baked
   }
 
   return styles

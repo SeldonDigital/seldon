@@ -21,6 +21,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -200,10 +201,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.compact",
-          },
           padding: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
             right: {
@@ -215,6 +212,10 @@ export const schema = {
               value: "@padding.cozy",
             },
             left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
           },
         },
         children: [
@@ -247,24 +248,21 @@ export const schema = {
                 type: Sdn.ValueType.EXACT,
                 value: "How to design better cards",
               },
-              lines: {
-                type: Sdn.ValueType.EXACT,
-                value: 2,
-              },
               font: {
                 preset: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@font.heading",
                 },
-                family: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "Playfair Display",
-                },
+                family: { type: Sdn.ValueType.EMPTY, value: null },
                 style: { type: Sdn.ValueType.EMPTY, value: null },
                 weight: { type: Sdn.ValueType.EMPTY, value: null },
                 size: { type: Sdn.ValueType.EMPTY, value: null },
                 lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
                 textCase: { type: Sdn.ValueType.EMPTY, value: null },
+              },
+              lines: {
+                type: Sdn.ValueType.EXACT,
+                value: 5,
               },
             },
           },
@@ -279,7 +277,7 @@ export const schema = {
               },
               lines: {
                 type: Sdn.ValueType.EXACT,
-                value: 2,
+                value: 5,
               },
             },
           },
@@ -315,43 +313,18 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.IMAGE,
-                overrides: {
-                  source: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "https://static.seldon.app/avatar-user.jpg",
-                  },
-                  imageFit: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.ImageFit.COVER,
-                  },
-                  width: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@dimension.small",
-                  },
-                  height: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@dimension.small",
-                  },
-                  corners: {
-                    topLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    topRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
+                component: Seldon.ComponentId.AVATAR,
+                children: [
+                  {
+                    component: Seldon.ComponentId.IMAGE,
+                    overrides: {
+                      source: {
+                        type: Sdn.ValueType.EXACT,
+                        value: "/avatar-bentley.png",
+                      },
                     },
                   },
-                },
+                ],
               },
               {
                 component: Seldon.ComponentId.FRAME,
@@ -380,7 +353,13 @@ export const schema = {
                     overrides: {
                       content: {
                         type: Sdn.ValueType.EXACT,
-                        value: "Jane Cooper",
+                        value: "Sir Bentley",
+                      },
+                      font: {
+                        weight: {
+                          type: Sdn.ValueType.THEME_ORDINAL,
+                          value: "@fontWeight.medium",
+                        },
                       },
                     },
                   },
@@ -441,7 +420,7 @@ export const schema = {
   variants: [
     {
       id: "minimal",
-      label: "Minimal Article Card",
+      label: "Minimal",
       intent:
         "Compact article card showing only image, category, and headline for dense feeds.",
       children: [
@@ -481,10 +460,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -502,6 +477,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
             },
           },
           children: [
@@ -534,24 +513,21 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "How to design better cards",
                 },
-                lines: {
-                  type: Sdn.ValueType.EXACT,
-                  value: 2,
-                },
                 font: {
                   preset: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.heading",
                   },
-                  family: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "Playfair Display",
-                  },
+                  family: { type: Sdn.ValueType.EMPTY, value: null },
                   style: { type: Sdn.ValueType.EMPTY, value: null },
                   weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: { type: Sdn.ValueType.EMPTY, value: null },
                   lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
                   textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                },
+                lines: {
+                  type: Sdn.ValueType.EXACT,
+                  value: 3,
                 },
               },
             },
@@ -561,7 +537,7 @@ export const schema = {
     },
     {
       id: "horizontal",
-      label: "Horizontal Article Card",
+      label: "Horizontal",
       intent:
         "Side-by-side article card with the image on the left and the preview on the right for list layouts.",
       overrides: {
@@ -611,10 +587,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
             },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
-            },
             padding: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
@@ -632,6 +604,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@padding.cozy",
               },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
             },
           },
           children: [
@@ -664,24 +640,21 @@ export const schema = {
                   type: Sdn.ValueType.EXACT,
                   value: "How to design better cards",
                 },
-                lines: {
-                  type: Sdn.ValueType.EXACT,
-                  value: 2,
-                },
                 font: {
                   preset: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.heading",
                   },
-                  family: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "Playfair Display",
-                  },
+                  family: { type: Sdn.ValueType.EMPTY, value: null },
                   style: { type: Sdn.ValueType.EMPTY, value: null },
                   weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: { type: Sdn.ValueType.EMPTY, value: null },
                   lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
                   textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                },
+                lines: {
+                  type: Sdn.ValueType.EXACT,
+                  value: 5,
                 },
               },
             },
@@ -696,7 +669,7 @@ export const schema = {
                 },
                 lines: {
                   type: Sdn.ValueType.EXACT,
-                  value: 2,
+                  value: 5,
                 },
               },
             },

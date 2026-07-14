@@ -48,6 +48,7 @@ import {
   ThemeTokenNamespace,
 } from "../../themes/types"
 import { isThemeValueKey } from "../validation/theme"
+import { parseThemeRef } from "./get-theme-key-components"
 
 /**
  * Retrieves a theme option value from a theme object using a theme value key
@@ -119,66 +120,70 @@ export function getThemeOption(key: string, theme: Theme): ThemeOption {
     throw new Error(`${key} is not a valid theme value`)
   }
 
-  const [section, optionId] = key.split(".")
+  const parsed = parseThemeRef(key)
+  if (!parsed) {
+    throw new Error(`${key} is not a valid theme value`)
+  }
+  const { section, optionId } = parsed
 
   let result: ThemeOption | undefined
 
-  switch (section as `@${ThemeTokenNamespace}`) {
-    case "@fontFamily":
+  switch (section as ThemeTokenNamespace) {
+    case "fontFamily":
       result = theme.fontFamily.parameters[optionId as ThemeFontFamilyId]
       break
-    case "@font":
+    case "font":
       result = theme.font[optionId as ThemeFontId]
       break
-    case "@fontSize":
+    case "fontSize":
       result = theme.fontSize[optionId as ThemeFontSizeId]
       break
-    case "@fontWeight":
+    case "fontWeight":
       result = theme.fontWeight[optionId as ThemeFontWeightId]
       break
-    case "@lineHeight":
+    case "lineHeight":
       result = theme.lineHeight[optionId as ThemeLineHeightId]
       break
-    case "@margin":
+    case "margin":
       result = theme.margin[optionId as ThemeSpacingId]
       break
-    case "@padding":
+    case "padding":
       result = theme.padding[optionId as ThemeSpacingId]
       break
-    case "@gap":
+    case "gap":
       result = theme.gap[optionId as ThemeSpacingId]
       break
-    case "@size":
+    case "size":
       result = theme.size[optionId as ThemeSizeId]
       break
-    case "@dimension":
+    case "dimension":
       result = theme.dimension[optionId as ThemeDimensionId]
       break
-    case "@swatch":
+    case "swatch":
       result = theme.swatch[optionId as ThemeSwatchId]
       break
-    case "@borderWidth":
+    case "borderWidth":
       result = theme.borderWidth[optionId as ThemeBorderWidthId]
       break
-    case "@corners":
+    case "corners":
       result = theme.corners[optionId as ThemeCornersId]
       break
-    case "@shadow":
+    case "shadow":
       result = theme.shadow[optionId as ThemeShadowId]
       break
-    case "@scrollbar":
+    case "scrollbar":
       result = theme.scrollbar[optionId as ThemeScrollbarId]
       break
-    case "@gradient":
+    case "gradient":
       result = theme.gradient[optionId as ThemeGradientId]
       break
-    case "@blur":
+    case "blur":
       result = theme.blur[optionId as ThemeSizeId]
       break
-    case "@spread":
+    case "spread":
       result = theme.spread[optionId as ThemeSizeId]
       break
-    case "@border":
+    case "border":
       result = theme.border[optionId as ThemeBorderId]
       break
     default:

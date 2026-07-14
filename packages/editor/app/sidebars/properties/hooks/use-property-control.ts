@@ -1,13 +1,5 @@
 import type { ComboboxOptionItems } from "@lib/menus"
-import {
-  CSSProperties,
-  MouseEvent,
-  Ref,
-  RefObject,
-  useCallback,
-  useEffect,
-  useState,
-} from "react"
+import { RefObject, useCallback, useEffect, useState } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
@@ -17,7 +9,6 @@ import {
   IconSetEditingContext,
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
-import { formatControlPlaceholder } from "../helpers/format-control-placeholder"
 import { FlatProperty } from "../helpers/properties-data"
 import {
   OptionIconRender,
@@ -39,7 +30,6 @@ export interface PropertyControlProps {
   onBlur?: () => void
   onTabNext?: () => boolean
   onTabPrev?: () => boolean
-  color?: string
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
@@ -54,30 +44,18 @@ interface Position {
 
 interface FieldControlView {
   kind: "field"
-  onBlur?: () => void
-  wrapperStyle: CSSProperties
   combobox: {
     value: string
     onValueChange: (value: string) => void
     onSubmit: (value: string) => void
     onCancel: () => void
-    placeholder: string
     validate?: (value: string) => boolean
-    disabled?: boolean
     autoFocus: boolean
-    style: CSSProperties
   }
 }
 
 interface ComboboxControlView {
   kind: "combobox"
-  surface: {
-    containerRef: Ref<HTMLDivElement>
-    onClick: (event: MouseEvent<HTMLDivElement>) => void
-    containerStyle: CSSProperties
-    wrapperStyle: CSSProperties
-    innerStyle: CSSProperties
-  }
   field: {
     inputRef: RefObject<HTMLInputElement | null>
     value: string
@@ -88,10 +66,7 @@ interface ComboboxControlView {
     onCancel: () => void
     onHighlightNext: () => void
     onHighlightPrev: () => void
-    placeholder: string
-    disabled?: boolean
     autoFocus: boolean
-    style: CSSProperties
   }
   options: {
     open: boolean
@@ -110,15 +85,24 @@ interface ComboboxControlView {
   }
 }
 
+interface SwitchControlView {
+  kind: "switch"
+  checked: boolean
+  /** True when the stored value is neither true nor false (unset), shown indeterminate. */
+  mixed: boolean
+  onToggle: (next: boolean) => void
+}
+
 export type PropertyControlView =
   | { kind: "none" }
   | FieldControlView
   | ComboboxControlView
+  | SwitchControlView
 
 /**
  * ViewModel for a property control. Composes the display derivation, write
- * router, and combobox controller, then returns a discriminated view state so
- * `PropertyControl` stays a binding shell.
+ * router, and combobox controller, then returns a discriminated view state
+ * that `buildPropertyValueInput` and `PropertyOptionsListbox` bind to.
  */
 export function usePropertyControl({
   property,
@@ -128,7 +112,6 @@ export function usePropertyControl({
   isEditing: externalIsEditing,
   onEditChange,
   onBlur,
-  color,
   themeEditingContext,
   fontCollectionEditingContext,
   iconSetEditingContext,
@@ -140,10 +123,10 @@ export function usePropertyControl({
   const isEditing = externalIsEditing ?? internalIsEditing
   const setIsEditing = onEditChange ?? setInternalIsEditing
 
-  const { getPropertyValueForDisplay, getPlaceholder } = usePropertyControlData(
-    { property, theme },
-  )
-  const { validationFunction, units } = usePropertyValidation(property)
+  const { getPropertyValueForDisplay } = usePropertyControlData({
+    property,
+  })
+  const { validationFunction } = usePropertyValidation(property)
 
   const subject = propertySubject ?? selection
 
@@ -152,7 +135,6 @@ export function usePropertyControl({
     theme,
     subject,
     workspace,
-    color,
     propertyValue: getPropertyValueForDisplay(),
   })
 
@@ -199,31 +181,37 @@ export function usePropertyControl({
     }
   }, [isEditing, display.displayValue])
 
-  const placeholder = formatControlPlaceholder({
-    placeholder: getPlaceholder(),
-    controlType: effectiveControlType,
-    units,
-  })
-
   if (!property.controlType) {
     return { kind: "none" }
+  }
+
+  // A switch is a binary On/Off control (wrapChildren, clip). It reads the
+  // stored boolean and commits "true"/"false", the same wire values the option
+  // list used, so the write router serializes them unchanged.
+  if (effectiveControlType === "switch") {
+    const stored = display.comboboxStoredValue
+    return {
+      kind: "switch",
+      checked: stored === "true",
+      mixed: stored !== "true" && stored !== "false",
+      onToggle: (next: boolean) => commit(next ? "true" : "false"),
+    }
   }
 
   if (effectiveControlType === "text" || effectiveControlType === "number") {
     return {
       kind: "field",
-      onBlur,
-      wrapperStyle: display.textWrapperStyle,
       combobox: {
-        value: fieldDraft,
+        // While editing, show the in-flight draft. Once editing ends, render the
+        // workspace-resolved value directly so a committed value that resolves to
+        // a different display (e.g. a pruned override falling back to Default)
+        // never paints the typed text for a frame before the sync effect runs.
+        value: isEditing ? fieldDraft : display.displayValue,
         onValueChange: setFieldDraft,
         onSubmit: commit,
         onCancel: () => setFieldDraft(display.displayValue),
-        placeholder,
         validate: validationFunction,
-        disabled: property.isDimmed,
         autoFocus: isEditing,
-        style: display.standaloneStyle,
       },
     }
   }
@@ -237,13 +225,6 @@ export function usePropertyControl({
 
   return {
     kind: "combobox",
-    surface: {
-      containerRef: combo.comboboxRef,
-      onClick: combo.handleControlClick,
-      containerStyle: display.containerStyle,
-      wrapperStyle: display.wrapperStyle,
-      innerStyle: display.innerStyle,
-    },
     field: {
       inputRef: combo.inputRef,
       value: combo.inputValue,
@@ -254,10 +235,7 @@ export function usePropertyControl({
       onCancel: combo.handleCancelInput,
       onHighlightNext: combo.highlightNext,
       onHighlightPrev: combo.highlightPrev,
-      placeholder,
-      disabled: property.isDimmed,
       autoFocus: isEditing,
-      style: display.fieldStyle,
     },
     options: {
       open: combo.open && combo.hasFilteredOptions,

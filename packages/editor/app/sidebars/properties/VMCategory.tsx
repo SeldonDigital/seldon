@@ -1,9 +1,9 @@
 import { MenuEntry } from "@lib/menus"
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { Fragment, type MouseEvent } from "react"
+import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { useRowCategory } from "./hooks/use-row-category"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { useSectionHeaderRow } from "../shared/use-section-header-row"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 
@@ -46,21 +46,26 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
     sectionToggle: { ...buttonIconic },
     sectionToggleIcon: { icon },
     sectionLabel: { children: label },
-    sectionActions: { ...actionsMenu.buttonIconic },
   }
+  if (actionsMenu.hasActions)
+    seldonRefs.sectionActions = { ...actionsMenu.buttonIconic }
   if (addButton) seldonRefs.sectionAdd = { ...addButton }
 
-  // Positional enabler: render the add slot only when a custom-token adder exists.
+  // Positional enablers: render each trailing slot only when it has content, so
+  // the add "+" sits flush right when a category has no actions (mirrors the
+  // objects sidebar's `VMSection`). An empty actions placeholder would otherwise
+  // reserve width and push the "+" off the edge.
   const addSlot = addButton ? {} : null
+  const actionsSlot = actionsMenu.hasActions ? {} : null
 
   return (
     <Fragment>
       <ItemSection
         buttonIconic={{}}
-        formControlComboboxControl={{}}
+        formControlCombobox={{}}
         textLabel={{}}
         buttonIconic2={addSlot}
-        buttonIconic3={{}}
+        buttonIconic3={actionsSlot}
         seldonRefs={seldonRefs}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}

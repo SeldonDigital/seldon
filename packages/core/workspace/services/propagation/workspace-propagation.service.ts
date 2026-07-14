@@ -1,3 +1,4 @@
+import type { Propagation } from "../../../rules/types/rule-config-types"
 import {
   EntryNodeId,
   Instance,
@@ -19,7 +20,7 @@ export class WorkspacePropagationService {
   /** Applies an operation to a node and propagates it across instances per the propagation mode. */
   public propagateNodeOperation<OpResult extends OperationResult>(args: {
     nodeId: VariantId | InstanceId
-    propagation: "none" | "downstream" | "bidirectional"
+    propagation: Propagation
     apply: (
       node: Variant | Instance,
       workspace: Workspace,
@@ -36,16 +37,11 @@ export class WorkspacePropagationService {
    */
   public propagatePositionalChildOperation(args: {
     childId: VariantId | InstanceId
-    propagation: "none" | "downstream" | "bidirectional"
+    propagation: Propagation
     applyToChild: (childId: EntryNodeId, workspace: Workspace) => Workspace
     workspace: Workspace
   }): Workspace {
     return propagatePositionalChildOperation(args)
-  }
-
-  /** Parses a JSON string into a workspace. */
-  public parseWorkspace(json: string): Workspace {
-    return JSON.parse(json)
   }
 }
 

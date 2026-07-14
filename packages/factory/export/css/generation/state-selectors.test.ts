@@ -40,9 +40,10 @@ describe("getStateSelectorSuffixes", () => {
 })
 
 describe("getAncestorStateSelectorSuffixes", () => {
-  it("uses focus-within for focused on an ancestor", () => {
+  it("uses visible focus for focused on an ancestor", () => {
     expect(getAncestorStateSelectorSuffixes("focused")).toEqual([
-      ":focus-within",
+      ":focus-visible",
+      ":has(:focus-visible)",
     ])
   })
 

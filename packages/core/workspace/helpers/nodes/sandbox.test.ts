@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import { Unit, ValueType } from "../../../properties"
+import { ValueType } from "../../../properties"
 import { formatNodeCatalog } from "../../model/template-ref"
 import type { EntryNode } from "../../types"
 import {

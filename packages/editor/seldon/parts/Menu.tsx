@@ -13,13 +13,10 @@
 import { HTMLAttributes } from "react"
 import { MenuItem, MenuItemProps } from "../elements/MenuItem"
 import {
-  MenuItemCheckboxMenuItem,
-  MenuItemCheckboxMenuItemProps,
-} from "../elements/MenuItemCheckboxMenuItem"
-import {
-  MenuItemRadioMenuItem,
-  MenuItemRadioMenuItemProps,
-} from "../elements/MenuItemRadioMenuItem"
+  MenuItemCheckbox,
+  MenuItemCheckboxProps,
+} from "../elements/MenuItemCheckbox"
+import { MenuItemRadio, MenuItemRadioProps } from "../elements/MenuItemRadio"
 import { Frame } from "../frames/Frame"
 import { Hr, HrProps } from "../primitives/Hr"
 import { Icon, IconProps } from "../primitives/Icon"
@@ -40,10 +37,10 @@ export interface MenuProps extends HTMLAttributes<HTMLElement> {
   textLabel3?: TextLabelProps | null
   textLabel4?: TextLabelProps | null
   hr?: HrProps | null
-  menuItemCheckboxMenuItem?: MenuItemCheckboxMenuItemProps | null
+  menuItemCheckbox?: MenuItemCheckboxProps | null
   icon3?: IconProps | null
   textLabel5?: TextLabelProps | null
-  menuItemRadioMenuItem?: MenuItemRadioMenuItemProps | null
+  menuItemRadio?: MenuItemRadioProps | null
   icon4?: IconProps | null
   textLabel6?: TextLabelProps | null
 }
@@ -74,10 +71,10 @@ export function Menu({
   textLabel3,
   textLabel4,
   hr = sdn.hr,
-  menuItemCheckboxMenuItem = sdn.menuItemCheckboxMenuItem,
+  menuItemCheckbox = sdn.menuItemCheckbox,
   icon3 = sdn.icon3,
   textLabel5,
-  menuItemRadioMenuItem = sdn.menuItemRadioMenuItem,
+  menuItemRadio = sdn.menuItemRadio,
   icon4 = sdn.icon4,
   textLabel6,
   children,
@@ -193,16 +190,16 @@ export function Menu({
           className: combineClassNames(sdn.hr?.className, hr?.className),
         },
   )
-  const menuItemCheckboxMenuItemProps = applyRef(
+  const menuItemCheckboxProps = applyRef(
     seldonRefs,
-    menuItemCheckboxMenuItem === null
+    menuItemCheckbox === null
       ? null
       : {
-          ...sdn.menuItemCheckboxMenuItem,
-          ...menuItemCheckboxMenuItem,
+          ...sdn.menuItemCheckbox,
+          ...menuItemCheckbox,
           className: combineClassNames(
-            sdn.menuItemCheckboxMenuItem?.className,
-            menuItemCheckboxMenuItem?.className,
+            sdn.menuItemCheckbox?.className,
+            menuItemCheckbox?.className,
           ),
         },
   )
@@ -229,16 +226,16 @@ export function Menu({
           ),
         },
   )
-  const menuItemRadioMenuItemProps = applyRef(
+  const menuItemRadioProps = applyRef(
     seldonRefs,
-    menuItemRadioMenuItem === null
+    menuItemRadio === null
       ? null
       : {
-          ...sdn.menuItemRadioMenuItem,
-          ...menuItemRadioMenuItem,
+          ...sdn.menuItemRadio,
+          ...menuItemRadio,
           className: combineClassNames(
-            sdn.menuItemRadioMenuItem?.className,
-            menuItemRadioMenuItem?.className,
+            sdn.menuItemRadio?.className,
+            menuItemRadio?.className,
           ),
         },
   )
@@ -298,21 +295,21 @@ export function Menu({
             </MenuItem>
           )}
           {hrProps !== null && <Hr {...hrProps} />}
-          {menuItemCheckboxMenuItemProps !== null && (
-            <MenuItemCheckboxMenuItem {...menuItemCheckboxMenuItemProps}>
+          {menuItemCheckboxProps !== null && (
+            <MenuItemCheckbox {...menuItemCheckboxProps}>
               {icon3 && icon3Props && <Icon {...icon3Props} />}
               {textLabel5 && textLabel5Props && (
                 <TextLabel {...textLabel5Props} />
               )}
-            </MenuItemCheckboxMenuItem>
+            </MenuItemCheckbox>
           )}
-          {menuItemRadioMenuItemProps !== null && (
-            <MenuItemRadioMenuItem {...menuItemRadioMenuItemProps}>
+          {menuItemRadioProps !== null && (
+            <MenuItemRadio {...menuItemRadioProps}>
               {icon4 && icon4Props && <Icon {...icon4Props} />}
               {textLabel6 && textLabel6Props && (
                 <TextLabel {...textLabel6Props} />
               )}
-            </MenuItemRadioMenuItem>
+            </MenuItemRadio>
           )}
         </>
       )}
@@ -335,7 +332,7 @@ const sdn: MenuProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -351,7 +348,7 @@ const sdn: MenuProps = {
   icon2: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -363,7 +360,7 @@ const sdn: MenuProps = {
     "aria-hidden": "false",
     className: "sdn-hr sdn-hr--lrmt",
   },
-  menuItemCheckboxMenuItem: {
+  menuItemCheckbox: {
     role: "menuitemcheckbox",
     "aria-hidden": "false",
     className: "sdn-menu-item sdn-menu-item--rrtt",
@@ -371,12 +368,12 @@ const sdn: MenuProps = {
   icon3: {
     icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel5: {
     className: "sdn-text-label sdn-text-label--xohb",
   },
-  menuItemRadioMenuItem: {
+  menuItemRadio: {
     role: "menuitemradio",
     "aria-hidden": "false",
     className: "sdn-menu-item sdn-menu-item--rrtt",
@@ -384,7 +381,7 @@ const sdn: MenuProps = {
   icon4: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel6: {
     className: "sdn-text-label sdn-text-label--xohb",

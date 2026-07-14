@@ -33,7 +33,7 @@ export const schema = {
     },
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     color: {
       type: Sdn.ValueType.COMPUTED,
       value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
@@ -154,13 +154,13 @@ export const schema = {
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "⌘K" },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-          opacity: {
-            type: Sdn.ValueType.EXACT,
-            value: { unit: Sdn.Unit.PERCENT, value: 60 },
-          },
           color: {
             type: Sdn.ValueType.COMPUTED,
             value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+          },
+          opacity: {
+            type: Sdn.ValueType.EXACT,
+            value: { unit: Sdn.Unit.PERCENT, value: 60 },
           },
           font: {
             preset: {

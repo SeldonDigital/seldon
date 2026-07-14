@@ -1,3 +1,4 @@
+import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
 import { Theme, ThemeCornersKey } from "../../../themes/types"
 import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -78,10 +79,8 @@ export const cornersSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Corner) as string[]).includes(value),
-    themeOrdinal: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.corners
-    },
+    themeOrdinal: (value: unknown, theme?: Theme) =>
+      themeTokenRefIsValid(value, theme, "corners"),
   },
   presetOptions: () => Object.values(Corner),
   themeOrdinalKeys: (theme: Theme) =>

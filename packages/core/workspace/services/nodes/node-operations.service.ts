@@ -13,6 +13,7 @@ import {
   getContainerByKey,
 } from "../../helpers/general/get-composition-containers"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
+import { collectTreeRefIds } from "../../helpers/nodes/collect-tree-ref-ids"
 import {
   buildDuplicateEntryVariantSubtreePlan,
   findBoardContainingTreeNodeId,
@@ -51,7 +52,6 @@ import {
 import { boardOrderService } from "../components/board-order.service"
 import { workspaceMutationService } from "../mutation/workspace-mutation.service"
 import {
-  collectDescendantTreeIds,
   collectReferencedTreeIdsExcludingSubtree,
   findTreeRef,
   insertComponentTreeChild,
@@ -175,7 +175,7 @@ export class NodeOperationsService {
     }
   }
 
-  public deleteBoard(
+  private deleteBoard(
     componentId: ComponentId,
     workspace: Workspace,
   ): Workspace {
@@ -315,7 +315,7 @@ export class NodeOperationsService {
       // Reinserting a live subtree under its own descendant would make the tree
       // ref contain itself, which overflows Immer when it freezes the draft.
       // Validation rejects this earlier; bail out as a no-op if it slips through.
-      if (collectDescendantTreeIds(treeRef).includes(newPosition.parentId)) {
+      if (collectTreeRefIds(treeRef).includes(newPosition.parentId)) {
         return
       }
 
@@ -366,9 +366,7 @@ export class NodeOperationsService {
     // descendant nodes orphaned.
     this._deleteSubtreeFromDraft(variantId, draft)
 
-    for (const board of getCompositionContainers(
-      draft as unknown as Workspace,
-    )) {
+    for (const board of getCompositionContainers(draft)) {
       if (!board) continue
       board.variants = board.variants.filter((ref) => ref.id !== variantId)
       walkRemoveVariantRefs(board.variants, variantId)
@@ -383,12 +381,9 @@ export class NodeOperationsService {
       throw new Error("Workspace is not an immer draft")
     }
 
-    const board = getBoardByNodeId(
-      draftWorkspace as unknown as Workspace,
-      nodeId,
-    )
+    const board = getBoardByNodeId(draftWorkspace, nodeId)
     const treeRef = board ? findTreeRef(board, nodeId) : null
-    const idsToDelete = treeRef ? collectDescendantTreeIds(treeRef) : [nodeId]
+    const idsToDelete = treeRef ? collectTreeRefIds(treeRef) : [nodeId]
 
     if (board && treeRef) {
       const isTopLevelRoot = board.variants.some((ref) => ref.id === nodeId)
@@ -401,7 +396,7 @@ export class NodeOperationsService {
     // fingerprints match, so a descendant may still be referenced by a tree
     // outside the subtree being deleted. Keep those rows to avoid dangling refs.
     const referencedElsewhere = collectReferencedTreeIdsExcludingSubtree(
-      getCompositionContainers(draftWorkspace as unknown as Workspace),
+      getCompositionContainers(draftWorkspace),
       nodeId,
     )
 
@@ -426,19 +421,15 @@ export class NodeOperationsService {
       )
 
       if (typeCheckingService.isVariant(node)) {
-        const located = findBoardContainingTreeNodeId(
-          draft as unknown as Workspace,
-          node.id,
-        )
+        const located = findBoardContainingTreeNodeId(draft, node.id)
         invariant(located, ErrorMessages.componentNotFoundForVariant(node.id))
         invariant(
           isComponentBoard(located.board) || isPlaygroundBoard(located.board),
           `duplicateNode: unsupported board type for ${node.id}`,
         )
 
-        const defaultVariantRow = getWorkspaceNodes(
-          draft as unknown as Workspace,
-        )[located.board.variants[0]?.id as string]
+        const defaultVariantRow =
+          getWorkspaceNodes(draft)[located.board.variants[0]?.id as string]
         const componentId =
           nodeCatalogComponentId(node) ??
           nodeCatalogComponentId(defaultVariantRow)
@@ -449,10 +440,10 @@ export class NodeOperationsService {
 
         const label = workspaceMutationService.getInitialVariantLabel(
           componentId,
-          draft as unknown as Workspace,
+          draft,
         )
         const plan = buildDuplicateEntryVariantSubtreePlan(
-          draft as unknown as Workspace,
+          draft,
           located.board,
           located.boardKey,
           node.id,
@@ -463,10 +454,7 @@ export class NodeOperationsService {
           `duplicateNode: could not plan variant duplicate ${node.id}`,
         )
 
-        const board = getContainerByKey(
-          draft as unknown as Workspace,
-          located.boardKey as BoardKey,
-        )!
+        const board = getContainerByKey(draft, located.boardKey as BoardKey)!
         Object.assign(draft.nodes, plan.newNodes)
 
         // A duplicated Sandbox keeps the source overrides, including position, so
@@ -494,21 +482,15 @@ export class NodeOperationsService {
         return
       }
 
-      const located = findBoardContainingTreeNodeId(
-        draft as unknown as Workspace,
-        node.id,
-      )
+      const located = findBoardContainingTreeNodeId(draft, node.id)
       invariant(located, ErrorMessages.parentNotFound(nodeId))
 
-      const liveNodes = getWorkspaceNodes(draft as unknown as Workspace)
+      const liveNodes = getWorkspaceNodes(draft)
       const nodes = isDraft(liveNodes) ? current(liveNodes) : liveNodes
       const sourceRow = nodes[node.id]
       invariant(sourceRow, ErrorMessages.nodeNotFound(node.id))
 
-      const board = getContainerByKey(
-        draft as unknown as Workspace,
-        located.boardKey as BoardKey,
-      )!
+      const board = getContainerByKey(draft, located.boardKey as BoardKey)!
       const tree = getVariantTree(board, node.id)
 
       const newRootId = componentBoardUniqueNodeId(located.boardKey)
@@ -517,7 +499,7 @@ export class NodeOperationsService {
 
       let newTreeRef: ComponentTreeRef = { id: newRootId }
       if (tree) {
-        for (const id of collectDescendantTreeIds(tree)) {
+        for (const id of collectTreeRefIds(tree)) {
           if (id === node.id) continue
           idMap.set(id, componentBoardUniqueNodeId(located.boardKey))
         }
@@ -645,7 +627,7 @@ export class NodeOperationsService {
     const idMap = new Map<string, string>()
     const newRootId = componentBoardUniqueNodeId(boardKey)
 
-    for (const id of collectDescendantTreeIds(tree)) {
+    for (const id of collectTreeRefIds(tree)) {
       if (id === nodeId) continue
       idMap.set(id, componentBoardUniqueNodeId(boardKey))
     }
@@ -704,7 +686,7 @@ export class NodeOperationsService {
     if (tree) {
       const nodes = getWorkspaceNodes(workspace)
       const idMap = new Map<string, string>()
-      for (const id of collectDescendantTreeIds(tree)) {
+      for (const id of collectTreeRefIds(tree)) {
         if (id === nodeId) continue
         idMap.set(id, componentBoardUniqueNodeId(boardKey))
       }

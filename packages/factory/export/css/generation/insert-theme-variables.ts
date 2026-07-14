@@ -1,30 +1,26 @@
 import { Theme } from "@seldon/core"
+import { applyBrightness } from "@seldon/core/helpers/color/apply-brightness"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { modulate } from "@seldon/core/helpers/math/modulate"
-import { colorspaceLiteralToHsl } from "@seldon/core/themes/compute"
-import { Colorspace } from "@seldon/core/themes/constants/colorspace"
+import {
+  colorspaceLiteralToHsl,
+  getModeSwatches,
+} from "@seldon/core/themes/compute"
+import type { ThemeMode } from "@seldon/core/themes/constants"
 import { isModulatedToken, isThemeExactToken } from "@seldon/core/themes/values"
-import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
+import type { ThemeScaleToken } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
 
+import {
+  emitComputedThemeVariables,
+  emitHighContrastVariables,
+} from "../../../styles/computed-variables"
+import { getBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
+import { brightnessSuffix } from "../../../styles/computed-variables/names"
 import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"
-
-function swatchToCssString(swatch: ThemeSwatch): string {
-  const { parameters } = swatch
-  if (parameters.colorspace === Colorspace.HSL) {
-    return HSLObjectToString(parameters.value)
-  }
-  if (parameters.colorspace === Colorspace.HEX) {
-    return parameters.value
-  }
-  if (parameters.colorspace === Colorspace.NAME) {
-    return parameters.value
-  }
-  return String(parameters.value)
-}
 
 function exactTokenCss(token: ThemeScaleToken): string {
   if (isThemeExactToken(token)) {
@@ -46,7 +42,10 @@ function exactTokenCss(token: ThemeScaleToken): string {
 }
 
 function generateThemeCSSVariables(theme: Theme, slug: string): string {
-  const prefix = slug === "seldon" ? `--sdn-` : `--sdn-${slug}-`
+  // Every theme defines the same unprefixed variable names. The stylesheet
+  // scopes them by `[data-theme]`, so a consumer switches the active theme by
+  // setting that attribute rather than by rewriting component references.
+  const prefix = `--sdn-`
   let cssVariables = ""
 
   if (slug !== "seldon") {
@@ -74,6 +73,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   }
 
   const harmony = theme.colorHarmony.parameters
+  const displayMode = theme.displayMode.parameters
   const baseHsl = colorspaceLiteralToHsl(harmony.baseColor)
   cssVariables += `  /* Colors */\n`
   cssVariables += `  ${prefix}color-base-hue: ${baseHsl.hue};\n`
@@ -86,18 +86,17 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   cssVariables += `  ${prefix}color-gray-point: ${harmony.grayPoint}%;\n`
   cssVariables += `  ${prefix}color-black-point: ${harmony.blackPoint}%;\n`
   cssVariables += `  ${prefix}color-bleed: ${harmony.bleed};\n`
+  cssVariables += `  ${prefix}color-mode: ${displayMode.mode};\n`
+  cssVariables += `  ${prefix}color-chroma-change: ${displayMode.chromaChange}%;\n`
+  cssVariables += `  ${prefix}color-lightness-change: ${displayMode.lightnessChange}%;\n`
   cssVariables += `  ${prefix}color-contrast-ratio: ${theme.highContrast.parameters.contrastRatio};\n`
 
-  cssVariables += `  /* Swatches */\n`
-
-  const uniqueSwatchNames = getThemeSwatchVarNames(theme)
-
-  Object.entries(theme.swatch).forEach(([key, value]) => {
-    if (!value) return
-    const colorString = swatchToCssString(value)
-    const swatchName = uniqueSwatchNames[key]
-    cssVariables += `  ${prefix}swatch-${swatchName}: ${colorString};\n`
-  })
+  // The base block serves the theme's authored mode, so its swatch table comes
+  // from the mode assignment: literal neutral pairs for light, swapped for dark.
+  cssVariables += generateModeSwatchVariables(
+    theme,
+    displayMode.mode ?? "light",
+  )
 
   const writeModulatedScale = (
     label: string,
@@ -170,12 +169,93 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
     cssVariables += `  ${prefix}border-width-${key}: ${calculatedBorderWidth}rem;\n`
   })
 
+  // Computed functions that bake a derived per-theme value (high contrast, auto
+  // fit, optical padding) publish their own variable families here, scoped by the
+  // same `[data-theme]` selector, so a computed value swaps with the active theme
+  // just like a token. Match Color needs none because it reuses swatch variables.
+  cssVariables += emitComputedThemeVariables(theme)
+
   return cssVariables
+}
+
+/**
+ * Swatch variables for one target appearance. The neutral pairs
+ * (foreground/background, white/black, offBlack/offWhite) carry authored
+ * colors as-is: the literal assignment for light, the swapped assignment for
+ * dark. Every other color is authored in the theme's own mode and moves
+ * through LCH for the opposite one: neutral `gray` inverts its lightness, while
+ * non-neutral swatches shift lightness by the theme's `lightnessChange` and
+ * scale chroma by its `chromaChange` percentage.
+ */
+function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
+  const swatches = getModeSwatches(theme, mode)
+  const uniqueSwatchNames = getThemeSwatchVarNames(theme)
+  let cssVariables = `  /* Swatches */\n`
+
+  Object.entries(swatches).forEach(([key, hsl]) => {
+    const swatchName = uniqueSwatchNames[key]
+    if (!swatchName) return
+    cssVariables += `  --sdn-swatch-${swatchName}: ${HSLObjectToString(hsl)};\n`
+  })
+
+  // One shared variable per brightness-shifted swatch used in this export,
+  // holding the concrete brightened color so a usage needs no runtime
+  // relative-color support and still swaps with the active theme.
+  const brightnessSwatches = getBrightnessSwatches()
+  if (brightnessSwatches.length > 0) {
+    cssVariables += `  /* Brightness Swatches */\n`
+    for (const { slot, brightness } of brightnessSwatches) {
+      const swatchName = uniqueSwatchNames[slot]
+      const hsl = swatches[slot]
+      if (!swatchName || !hsl) continue
+      cssVariables += `  --sdn-swatch-${swatchName}-${brightnessSuffix(brightness)}: ${HSLObjectToString(
+        applyBrightness(hsl, brightness),
+      )};\n`
+    }
+  }
+
+  return cssVariables
+}
+
+/**
+ * Full variable set for the mode opposite to the theme's authored `mode`:
+ * the opposite-appearance swatch table plus the high-contrast picks that
+ * read on it. Size-based families stay mode-independent.
+ */
+function generateOppositeModeCSSVariables(theme: Theme): string {
+  const authoredMode = theme.displayMode.parameters.mode ?? "light"
+  const oppositeMode = authoredMode === "dark" ? "light" : "dark"
+
+  return (
+    generateModeSwatchVariables(theme, oppositeMode) +
+    emitHighContrastVariables(theme, oppositeMode)
+  )
 }
 
 export function generateThemeStylesheet(slug: string, theme: Theme): string {
   const variables = generateThemeCSSVariables(theme, slug)
-  return `:root {\n${variables}}\n`
+
+  // The default theme also answers `:root` so unscoped subtrees (and any node
+  // that never sets `data-theme`) resolve to it. Every theme, default included,
+  // answers its own `[data-theme="{slug}"]` selector so a consumer can switch to
+  // it explicitly.
+  const selector =
+    slug === "seldon"
+      ? `:root,\n[data-theme="seldon"]`
+      : `[data-theme="${slug}"]`
+
+  // Every theme ships its opposite mode as a swatch-only block behind
+  // `data-mode`. Setting `data-mode` to the authored mode matches nothing and
+  // falls back to the base block, so consumers always set the resolved mode.
+  const mode = theme.displayMode.parameters.mode
+  const oppositeMode = mode === "dark" ? "light" : "dark"
+  const modeSelector =
+    slug === "seldon"
+      ? `:root[data-mode="${oppositeMode}"],\n[data-theme="seldon"][data-mode="${oppositeMode}"]`
+      : `[data-theme="${slug}"][data-mode="${oppositeMode}"]`
+  const modeVariables = generateOppositeModeCSSVariables(theme)
+
+  return `${selector} {\n${variables}}\n\n${modeSelector} {\n${modeVariables}}\n`
 }
 
 export type ThemeStylesheetFile = {
@@ -204,7 +284,7 @@ export async function generateThemeStylesheetFiles(
 
     files.push({
       themeId,
-      path: `${componentsFolder}/styles-${slug}.css`,
+      path: `${componentsFolder}/styles/${slug}.css`,
       content,
     })
   }

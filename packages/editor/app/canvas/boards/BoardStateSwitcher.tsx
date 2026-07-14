@@ -1,7 +1,7 @@
 "use client"
 
-import { MenuEntry, MenuItem, VMCombobox, VMMenu } from "@lib/menus"
-import { CSSProperties, useMemo, useState } from "react"
+import { MenuEntry, MenuItem, VMMenu } from "@lib/menus"
+import { CSSProperties, useMemo } from "react"
 import {
   type CustomState,
   NORMAL_STATE,
@@ -13,14 +13,16 @@ import {
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import {
   useActiveBoardState,
   useBoardStateStore,
 } from "../hooks/use-board-state-store"
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
-import { FloatingPanel } from "../../panels/FloatingPanel"
 import { CHILD_OVERRIDE_COLOR } from "../canvas.bespoke"
+import { BoardStateFrame } from "./BoardStateFrame.bespoke"
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -33,25 +35,8 @@ const wrapperStyle: CSSProperties = {
   zIndex: 5,
 }
 
-const dialogBodyStyle: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 8,
-  padding: 12,
-}
-
-const dialogFieldLabelStyle: CSSProperties = {
-  color: "rgba(255,255,255,0.55)",
-  font: "400 11px/1 system-ui, sans-serif",
-}
-
-/** Derives a stable custom-state key from a typed name. */
-function toStateKey(name: string): string {
-  return name
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
+function stopClickPropagation(event: React.MouseEvent) {
+  event.stopPropagation()
 }
 
 function stateLabel(state: NodeState, customStates: CustomState[]): string {
@@ -65,24 +50,38 @@ function stateLabel(state: NodeState, customStates: CustomState[]): string {
 /**
  * On-canvas interaction-state switcher. Sits just above the board and selects
  * the active state for the whole board tree. The dropdown chrome, positioning,
- * keyboard navigation, and dismissal come from the shared `VMMenu`. Adding
- * and renaming custom states open small dialogs and go only through core
- * actions, never by mutating the registry directly.
+ * keyboard navigation, and dismissal come from the shared `VMMenu`. Adding a
+ * custom state creates it with a sticky default name through a core action.
+ * Custom-state names are not editable yet.
  */
 export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   const { workspace, dispatch } = useWorkspace()
+  // The canvas root pins data-theme to the default chrome theme so board
+  // rendering reads authored swatch values. The switcher is chrome, so it
+  // re-scopes to the live chrome theme and mode, matching the topbar.
+  const { chromeTheme } = useEditorConfig()
+  const resolvedMode = useResolvedInterfaceMode()
   const activeState = useActiveBoardState(boardKey)
   const setActiveState = useBoardStateStore((store) => store.setActiveState)
-
-  const [addOpen, setAddOpen] = useState(false)
-  const [addValue, setAddValue] = useState("")
-  const [renameOpen, setRenameOpen] = useState(false)
-  const [renameDrafts, setRenameDrafts] = useState<Record<string, string>>({})
 
   const customStates = useMemo(
     () => workspace.metadata.customStates ?? [],
     [workspace.metadata.customStates],
   )
+
+  // Option-1 (Normal) through Option-0 (Dragged), numbered top to bottom in menu
+  // display order, matching the hotkeys in `useEditorShortcuts`.
+  const stateShortcuts = useMemo(() => {
+    const order = [
+      NORMAL_STATE,
+      ...RESERVED_STATE_GROUPS.flatMap((group) => group.states),
+    ]
+    const map: Record<string, string> = {}
+    order.forEach((state, index) => {
+      map[state] = `⌥${(index + 1) % 10}`
+    })
+    return map
+  }, [])
 
   // Split states that carry overrides into two sets so the menu can show a
   // distinct indicator for each. A state is followed up each node's template
@@ -126,35 +125,18 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
 
   const select = (state: NodeState) => setActiveState(boardKey, state)
 
-  const openAddDialog = () => {
-    setAddValue("")
-    setAddOpen(true)
-  }
-
-  const openRenameDialog = () => {
-    setRenameDrafts(
-      Object.fromEntries(customStates.map((entry) => [entry.key, entry.label])),
-    )
-    setRenameOpen(true)
-  }
-
-  const commitAdd = (value: string) => {
-    const key = toStateKey(value)
-    const label = value.trim()
-    setAddOpen(false)
-    if (!key || key in RESERVED_STATE_LABELS) return
-    if (customStates.some((entry) => entry.key === key)) {
-      select(key)
-      return
-    }
-    dispatch({ type: "add_custom_state", payload: { key, label } })
+  // Creates a custom state with a sticky default name. Names are not editable
+  // yet, so the next free `Custom N` label is assigned automatically.
+  const addCustomState = () => {
+    const existing = new Set(customStates.map((entry) => entry.key))
+    let index = 1
+    while (existing.has(`custom-${index}`)) index += 1
+    const key = `custom-${index}`
+    dispatch({
+      type: "add_custom_state",
+      payload: { key, label: `Custom ${index}` },
+    })
     select(key)
-  }
-
-  const commitRename = (key: string, value: string) => {
-    const label = value.trim()
-    if (label.length === 0) return
-    dispatch({ type: "rename_custom_state", payload: { key, label } })
   }
 
   // Builds a selectable state row. `selected` drives the leading radio for the
@@ -171,6 +153,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
       activeMarker: "bullet",
       active: ownOverrideStates.has(state),
       labelStyle: childOnly ? { color: CHILD_OVERRIDE_COLOR } : undefined,
+      shortcut: stateShortcuts[state],
       testId: `board-state-${state}`,
     }
   }
@@ -194,21 +177,18 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   items.push("separator")
   items.push({
     id: "add-custom-state",
-    label: "Add custom state...",
-    onSelect: openAddDialog,
+    label: "Add custom state",
+    onSelect: addCustomState,
     testId: "board-state-add",
   })
-  if (customStates.length > 0) {
-    items.push({
-      id: "rename-custom-state",
-      label: "Rename custom state...",
-      onSelect: openRenameDialog,
-      testId: "board-state-rename",
-    })
-  }
 
   return (
-    <div style={wrapperStyle} onClick={(event) => event.stopPropagation()}>
+    <BoardStateFrame
+      style={wrapperStyle}
+      onClick={stopClickPropagation}
+      dataTheme={chromeTheme}
+      dataMode={resolvedMode}
+    >
       <VMMenu
         items={items}
         renderTrigger={({ ref, triggerProps }) => (
@@ -221,64 +201,6 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
           />
         )}
       />
-
-      {addOpen && (
-        <FloatingPanel
-          handleClose={() => setAddOpen(false)}
-          title="Add custom state"
-          initialWidth={320}
-          initialHeight={150}
-          closeOnClickOutside
-          testId="add-custom-state-dialog"
-        >
-          <div style={dialogBodyStyle}>
-            <span style={dialogFieldLabelStyle}>State name</span>
-            <VMCombobox
-              mode="standalone"
-              value={addValue}
-              onValueChange={setAddValue}
-              onSubmit={commitAdd}
-              onCancel={() => setAddOpen(false)}
-              placeholder="New state name"
-            />
-          </div>
-        </FloatingPanel>
-      )}
-
-      {renameOpen && (
-        <FloatingPanel
-          handleClose={() => setRenameOpen(false)}
-          title="Rename custom state"
-          initialWidth={320}
-          initialHeight={Math.min(140 + customStates.length * 48, 420)}
-          closeOnClickOutside
-          testId="rename-custom-state-dialog"
-        >
-          <div style={dialogBodyStyle}>
-            {customStates.map((entry) => (
-              <div
-                key={entry.key}
-                style={{ display: "flex", flexDirection: "column", gap: 4 }}
-              >
-                <span style={dialogFieldLabelStyle}>{entry.key}</span>
-                <VMCombobox
-                  mode="standalone"
-                  value={renameDrafts[entry.key] ?? entry.label}
-                  onValueChange={(value) =>
-                    setRenameDrafts((drafts) => ({
-                      ...drafts,
-                      [entry.key]: value,
-                    }))
-                  }
-                  onSubmit={(value) => commitRename(entry.key, value)}
-                  autoFocus={false}
-                  placeholder="State name"
-                />
-              </div>
-            ))}
-          </div>
-        </FloatingPanel>
-      )}
-    </div>
+    </BoardStateFrame>
   )
 }

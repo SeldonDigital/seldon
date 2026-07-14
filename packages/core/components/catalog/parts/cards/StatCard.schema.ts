@@ -21,6 +21,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -235,7 +236,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.custom2",
+                value: "@swatch.punch",
               },
             },
           },
@@ -249,7 +250,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.custom2",
+                value: "@swatch.punch",
               },
             },
           },
@@ -276,7 +277,7 @@ export const schema = {
   variants: [
     {
       id: "withSparkline",
-      label: "Stat Card With Sparkline",
+      label: "Sparkline",
       intent:
         "Stat card that adds a sparkline image beneath the metric to show the trend over time.",
       children: [
@@ -342,7 +343,7 @@ export const schema = {
                 },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.custom2",
+                  value: "@swatch.punch",
                 },
               },
             },
@@ -356,7 +357,7 @@ export const schema = {
                 },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.custom2",
+                  value: "@swatch.punch",
                 },
               },
             },

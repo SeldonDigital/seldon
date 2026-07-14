@@ -289,8 +289,14 @@ export function Combobox({
             <Listbox
               {...listboxProps}
               listboxOption={listboxOptionProps}
+              icon={icon3Props}
+              textLabel={textLabel && textLabelProps}
               listboxOption2={listboxOption2Props}
+              icon2={icon4Props}
+              textLabel2={textLabel2 && textLabel2Props}
               listboxOption3={listboxOption3Props}
+              icon3={icon5Props}
+              textLabel3={textLabel3 && textLabel3Props}
             />
           )}
         </>
@@ -341,7 +347,7 @@ const sdn: ComboboxProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -354,7 +360,7 @@ const sdn: ComboboxProps = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel2: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -367,7 +373,7 @@ const sdn: ComboboxProps = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--xohb",

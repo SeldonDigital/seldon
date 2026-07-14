@@ -32,19 +32,6 @@ export const PROPERTY_SECTIONS: PropertySectionSchema[] =
     keys: block.keys,
   }))
 
-export function getPropertySectionSchema(
-  sectionId: PropertyDisplayCategory,
-): PropertySectionSchema | undefined {
-  return PROPERTY_SECTIONS.find((section) => section.id === sectionId)
-}
-
 export function getAllPropertySectionSchemas(): PropertySectionSchema[] {
   return [...PROPERTY_SECTIONS].sort((a, b) => a.order - b.order)
-}
-
-/** Catalog keys listed under this panel section, or undefined if the id is unknown. */
-export function getCatalogKeysForPropertySection(
-  sectionId: PropertyDisplayCategory,
-): readonly string[] | undefined {
-  return getPropertySectionSchema(sectionId)?.keys
 }

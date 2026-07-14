@@ -1,10 +1,11 @@
-import { getComponentSchema } from "../../../components/catalog"
+import { findComponentSchema } from "../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
 import { getImmediateParentIdInWorkspace } from "../../helpers/components/get-node-parent-id"
+import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
 import {
@@ -89,7 +90,7 @@ export class NodeRelationshipService {
     return result
   }
 
-  public findAdjacentVariant(
+  private findAdjacentVariant(
     node: Variant,
     placement: "before" | "after",
     workspace: Workspace,
@@ -132,7 +133,7 @@ export class NodeRelationshipService {
         : node
 
     while (currentNode) {
-      if (typeCheckingService.canNodeHaveChildren(currentNode)) {
+      if (typeCheckingService.canNodeHaveChildren(currentNode, workspace)) {
         return currentNode
       }
 
@@ -193,35 +194,6 @@ export class NodeRelationshipService {
     })
   }
 
-  public findOtherNodesWithSameVariant(
-    node: Instance | Variant,
-    workspace: Workspace,
-  ): (Variant | Instance)[] {
-    if (typeCheckingService.isVariant(node)) {
-      return Object.values(workspace.nodes).filter((candidate) => {
-        return (
-          typeCheckingService.isInstance(candidate) &&
-          templateSourceNodeId(candidate) === node.id &&
-          candidate.id !== node.id
-        )
-      })
-    }
-
-    const sourceId = templateSourceNodeId(node)
-    if (!sourceId) return []
-
-    return Object.values(workspace.nodes).filter((candidate) => {
-      if (candidate.id === node.id) return false
-      if (typeCheckingService.isInstance(candidate)) {
-        return templateSourceNodeId(candidate) === sourceId
-      }
-      if (typeCheckingService.isVariant(candidate)) {
-        return candidate.id === sourceId
-      }
-      return false
-    })
-  }
-
   public isParentOfNode(
     possibleParent: InstanceId | VariantId,
     subject: InstanceId | VariantId,
@@ -258,24 +230,13 @@ export class NodeRelationshipService {
     nodeId: InstanceId | VariantId | ComponentId,
     workspace: Workspace,
   ): string {
-    try {
-      const schema = getComponentSchema(nodeId as ComponentId)
-      return schema.name
-    } catch {
-      try {
-        const node = nodeRetrievalService.getNode(
-          nodeId as InstanceId | VariantId,
-          workspace,
-        )
-        const componentId = nodeCatalogComponentId(node)
-        if (componentId) {
-          return getComponentSchema(componentId).name
-        }
-      } catch {
-        return "Unknown Component"
-      }
-      return "Unknown Component"
-    }
+    const directSchema = findComponentSchema(nodeId)
+    if (directSchema) return directSchema.name
+
+    const node = getWorkspaceNodes(workspace)[nodeId as InstanceId | VariantId]
+    const componentId = node ? nodeCatalogComponentId(node) : null
+    const schema = componentId ? findComponentSchema(componentId) : undefined
+    return schema?.name ?? "Unknown Component"
   }
 
   /** True when the node, or any of its ancestors, maps to the given component id. */

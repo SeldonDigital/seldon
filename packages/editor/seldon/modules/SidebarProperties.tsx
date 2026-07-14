@@ -13,9 +13,9 @@
 import { HTMLAttributes } from "react"
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import {
-  ComboboxFieldFilterField,
-  ComboboxFieldFilterFieldProps,
-} from "../elements/ComboboxFieldFilterField"
+  ComboboxFieldFilter,
+  ComboboxFieldFilterProps,
+} from "../elements/ComboboxFieldFilter"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { IconProps } from "../primitives/Icon"
@@ -27,7 +27,7 @@ export interface SidebarPropertiesProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
-  comboboxFieldFilterField?: ComboboxFieldFilterFieldProps | null
+  comboboxFieldFilter?: ComboboxFieldFilterProps | null
   icon?: IconProps | null
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
@@ -52,7 +52,7 @@ export interface SidebarPropertiesProps extends HTMLAttributes<HTMLElement> {
  *****/
 export function SidebarProperties({
   className = "",
-  comboboxFieldFilterField,
+  comboboxFieldFilter,
   icon = sdn.icon,
   input = sdn.input,
   buttonIconic = sdn.buttonIconic,
@@ -66,16 +66,16 @@ export function SidebarProperties({
     "sdn-sidebar-objects",
     className,
   )
-  const comboboxFieldFilterFieldProps = applyRef(
+  const comboboxFieldFilterProps = applyRef(
     seldonRefs,
-    comboboxFieldFilterField === null
+    comboboxFieldFilter === null
       ? null
       : {
-          ...sdn.comboboxFieldFilterField,
-          ...comboboxFieldFilterField,
+          ...sdn.comboboxFieldFilter,
+          ...comboboxFieldFilter,
           className: combineClassNames(
-            sdn.comboboxFieldFilterField?.className,
-            comboboxFieldFilterField?.className,
+            sdn.comboboxFieldFilter?.className,
+            comboboxFieldFilter?.className,
           ),
         },
   )
@@ -144,9 +144,9 @@ export function SidebarProperties({
         children
       ) : (
         <>
-          {comboboxFieldFilterField && comboboxFieldFilterFieldProps && (
-            <ComboboxFieldFilterField
-              {...comboboxFieldFilterFieldProps}
+          {comboboxFieldFilter && comboboxFieldFilterProps && (
+            <ComboboxFieldFilter
+              {...comboboxFieldFilterProps}
               icon={iconProps}
               input={inputProps}
               buttonIconic={buttonIconicProps}
@@ -167,8 +167,8 @@ const sdn: SidebarPropertiesProps = {
   role: "complementary",
   "aria-hidden": "false",
   className: "sdn-sidebar-objects sdn-sidebar",
-  comboboxFieldFilterField: {
-    className: "sdn-combobox-field-filter-field sdn-combobox-field--z3a0",
+  comboboxFieldFilter: {
+    className: "sdn-combobox-field sdn-combobox-field--z3a0",
   },
   icon: {
     icon: "material-filterList",
@@ -192,7 +192,7 @@ const sdn: SidebarPropertiesProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--enpy",
+    className: "sdn-frame sdn-frame--evmw",
     "data-seldon-ref": "propertiesContainer",
   },
 }

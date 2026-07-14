@@ -8,6 +8,7 @@ import { getVariantById } from "../../../helpers/general/get-variant-by-id"
 import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
 import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
 import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
+import { collectTreeRefIds } from "../../../helpers/nodes/collect-tree-ref-ids"
 import type {
   Instance,
   Variant,
@@ -18,10 +19,7 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "../../../services"
-import {
-  collectDescendantTreeIds,
-  findTreeRef,
-} from "../../../services/shared/component-tree-helpers"
+import { findTreeRef } from "../../../services/shared/component-tree-helpers"
 import type {
   Action,
   EntryNode,
@@ -94,9 +92,9 @@ export const nodeValidators = {
     if (!board) return
     const treeRef = findTreeRef(board, nodeId)
     if (!treeRef) return
-    // `collectDescendantTreeIds` includes the node itself, so this also rejects
+    // `collectTreeRefIds` includes the node itself, so this also rejects
     // moving a node directly under itself.
-    const subtreeIds = new Set(collectDescendantTreeIds(treeRef))
+    const subtreeIds = new Set(collectTreeRefIds(treeRef))
     check(
       !subtreeIds.has(parentId),
       ErrorMessages.cannotMoveIntoOwnSubtree(nodeId),

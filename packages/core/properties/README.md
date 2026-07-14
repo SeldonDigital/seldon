@@ -265,13 +265,13 @@ Properties that control the positioning, sizing, and spatial relationships of co
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `direction` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl` |
 | `placement` | `atomic` | `empty` \| `inherit` \| `option: static, relative, absolute, fixed, sticky` |
 | `position` | `shorthand` | `position.top, position.right, position.bottom, position.left` |
 | └ `position.top` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.right` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.left` | `atomic` | `empty` \| `inherit` \| `<length%>` |
+| `direction` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl` |
 | `orientation` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: horizontal, vertical` |
 | `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
 | `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
@@ -325,7 +325,7 @@ Properties that control the visual appearance and styling of components.
 | `accentColor` | `atomic` | `empty` \| `inherit` \| `<color>` |
 | `brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
 | `opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| `background` | `array` | Ordered layers, `background[0]` topmost. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
+| `background` | `array` | Ordered layers. `background[0]` is the back layer and the last layer paints on top. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
 | `border` | `compound` | `preset, style, color, width, brightness, opacity` |
 | └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
@@ -436,7 +436,7 @@ Properties that control visual effects and interactions.
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `shadow` | `array` | Ordered layers, `shadow[0]` topmost. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
+| `shadow` | `array` | Ordered layers. `shadow[0]` is the back layer and the last layer paints on top. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
 | └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`) |
 | └ `shadow[].style` | `atomic` | `empty` \| `inherit` \| `option: outer, inner` |
 | └ `shadow[].offsetX` | `atomic` | `empty` \| `inherit` \| `<length>` |
@@ -619,29 +619,7 @@ const invalidProps: Properties = {
 
 ### Property Path Validation
 
-**Authoritative path unions** live in [`types/property-keys.ts`](types/property-keys.ts) as `CompoundPropertyPath`, `ShorthandPropertyPath`, and their union `PropertyPath`. They include every top-level key, compound facets such as `border.*`, `font.*`, per-side borders, and `position.*`, shorthand sides such as `margin.*`, `padding.*`, and `corners.*`, and layered paint facets with **bracket indices** in the type literal:
-
-```typescript
-// Abbreviated from `types/property-keys.ts` — see source for full definitions keyed by BorderCompound, FontCompound, etc.
-export type CompoundPropertyPath =
-  | PropertyKey
-  | `border.${keyof BorderCompound & string}`
-  | `borderTop.${keyof BorderCompound & string}`
-  | `borderRight.${keyof BorderCompound & string}`
-  | `borderBottom.${keyof BorderCompound & string}`
-  | `borderLeft.${keyof BorderCompound & string}`
-  | `font.${keyof FontCompound & string}`
-  | `position.${keyof PositionValue & string}`
-  | `background[${number}].${keyof BackgroundLayer & string}`
-  | `shadow[${number}].${keyof ShadowCompound & string}`
-
-export type ShorthandPropertyPath =
-  | `margin.${keyof MarginValue & string}`
-  | `padding.${keyof PaddingValue & string}`
-  | `corners.${keyof CornersValue & string}`
-
-export type PropertyPath = CompoundPropertyPath | ShorthandPropertyPath
-```
+**Authoritative property key unions** live in [`types/property-keys.ts`](types/property-keys.ts): `PropertyKey` for top-level keys plus `CompoundPropertyKey`, `ShorthandPropertyKey`, and `LayeredPaintKey` with the `LAYERED_PAINT_KEYS` runtime set for the compound, shorthand, and layered paint groupings.
 
 **Runtime paths** used by `getBasedOnValue` and `findInObject` are **dot-separated only**: array indices are numeric path segments, not brackets. Use `background.0.color`, `shadow.0.offsetX`, not `background[0].color`.
 

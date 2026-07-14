@@ -60,6 +60,7 @@ export { IconMaterialHelpOutline } from "./user-interface/communication/IconMate
 export { IconMaterialVisibility } from "./user-interface/status/IconMaterialVisibility"
 export { IconMaterialRobot } from "./user-interface/status/IconMaterialRobot"
 export { IconMaterialVisibilityOff } from "./user-interface/status/IconMaterialVisibilityOff"
+export { IconMaterialEyeTracking } from "./user-interface/media/IconMaterialEyeTracking"
 export { IconMaterialLock } from "./system/security/IconMaterialLock"
 export { IconMaterialLockOpen } from "./system/security/IconMaterialLockOpen"
 export { IconMaterialPerson } from "./social-media/user/IconMaterialPerson"
@@ -397,6 +398,7 @@ export const materialIconIds: readonly IconId[] = [
   "material-help",
   "material-helpOutline",
   "material-visibility",
+  "material-eyeTracking",
   "material-robot",
   "material-visibilityOff",
   "material-lock",
@@ -713,4 +715,7 @@ export const materialIconIds: readonly IconId[] = [
   "material-fitPageWidth",
   "material-splitscreenAdd",
   "material-splitscreenVerticalAdd",
+  "material-neurology",
+  "material-buildCircle",
+  "material-outputCircle",
 ] as const

@@ -11,6 +11,13 @@ import { useShallow } from "zustand/react/shallow"
  */
 export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
 
+/**
+ * Editor interface light/dark mode. `"system"` follows the OS appearance,
+ * resolving to light or dark at runtime. Applies to the editor chrome only; it
+ * is never written to the workspace and never affects the canvas.
+ */
+export type InterfaceMode = "system" | "light" | "dark"
+
 interface EditorConfigState {
   // Canvas selection and hover overlay boxes in select mode
   showSelection: boolean
@@ -56,9 +63,23 @@ interface EditorConfigState {
   showPlayground: boolean
   setShowPlayground: (enabled: boolean) => void
 
+  // Objects sidebar: show export component (code) names instead of labels
+  showCodeNames: boolean
+  setShowCodeNames: (enabled: boolean) => void
+
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
   setUseRefactoredSidebars: (enabled: boolean) => void
+
+  // Editor chrome theme (slug of an exported theme stylesheet). This re-themes
+  // the editor interface only; it is never written to the workspace and never
+  // affects the canvas.
+  chromeTheme: string
+  setChromeTheme: (slug: string) => void
+
+  // Editor interface light/dark mode (chrome only). `"system"` follows the OS.
+  interfaceMode: InterfaceMode
+  setInterfaceMode: (mode: InterfaceMode) => void
 }
 
 const useStore = create<EditorConfigState>()(
@@ -124,10 +145,25 @@ const useStore = create<EditorConfigState>()(
       setShowPlayground: (enabled) =>
         set((state) => ({ ...state, showPlayground: enabled })),
 
+      // Objects sidebar code names (off by default)
+      showCodeNames: false,
+      setShowCodeNames: (enabled) =>
+        set((state) => ({ ...state, showCodeNames: enabled })),
+
       // Sidebar refactor settings
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
         set((state) => ({ ...state, useRefactoredSidebars: enabled })),
+
+      // Editor chrome theme
+      chromeTheme: "seldon",
+      setChromeTheme: (slug) =>
+        set((state) => ({ ...state, chromeTheme: slug })),
+
+      // Editor interface mode (defaults to light; persisted across sessions)
+      interfaceMode: "light",
+      setInterfaceMode: (mode) =>
+        set((state) => ({ ...state, interfaceMode: mode })),
     }),
     {
       name: "editor-config",
@@ -143,7 +179,10 @@ const useStore = create<EditorConfigState>()(
         showUnusedFonts: state.showUnusedFonts,
         showUnusedIcons: state.showUnusedIcons,
         showPlayground: state.showPlayground,
+        showCodeNames: state.showCodeNames,
         useRefactoredSidebars: state.useRefactoredSidebars,
+        chromeTheme: state.chromeTheme,
+        interfaceMode: state.interfaceMode,
       }),
     },
   ),
@@ -173,8 +212,14 @@ export function useEditorConfig() {
     setShowUnusedIcons,
     showPlayground,
     setShowPlayground,
+    showCodeNames,
+    setShowCodeNames,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
+    chromeTheme,
+    setChromeTheme,
+    interfaceMode,
+    setInterfaceMode,
   } = useStore(
     useShallow((state) => ({
       showSelection: state.showSelection,
@@ -199,8 +244,14 @@ export function useEditorConfig() {
       setShowUnusedIcons: state.setShowUnusedIcons,
       showPlayground: state.showPlayground,
       setShowPlayground: state.setShowPlayground,
+      showCodeNames: state.showCodeNames,
+      setShowCodeNames: state.setShowCodeNames,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
+      chromeTheme: state.chromeTheme,
+      setChromeTheme: state.setChromeTheme,
+      interfaceMode: state.interfaceMode,
+      setInterfaceMode: state.setInterfaceMode,
     })),
   )
 
@@ -239,6 +290,10 @@ export function useEditorConfig() {
   const toggleShowPlayground = useCallback(() => {
     setShowPlayground(!showPlayground)
   }, [setShowPlayground, showPlayground])
+
+  const toggleShowCodeNames = useCallback(() => {
+    setShowCodeNames(!showCodeNames)
+  }, [setShowCodeNames, showCodeNames])
 
   const toggleRefactoredSidebars = useCallback(() => {
     setUseRefactoredSidebars(!useRefactoredSidebars)
@@ -297,9 +352,22 @@ export function useEditorConfig() {
     setShowPlayground,
     toggleShowPlayground,
 
+    // Objects sidebar code names methods
+    showCodeNames,
+    setShowCodeNames,
+    toggleShowCodeNames,
+
     // Sidebar refactor methods
     useRefactoredSidebars,
     setUseRefactoredSidebars,
     toggleRefactoredSidebars,
+
+    // Editor chrome theme
+    chromeTheme,
+    setChromeTheme,
+
+    // Editor interface mode
+    interfaceMode,
+    setInterfaceMode,
   }
 }

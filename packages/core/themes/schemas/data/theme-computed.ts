@@ -17,6 +17,7 @@ import type {
   AutoFitParameters,
   ColorHarmonyParameters,
   ComputedModulationParameters,
+  DisplayModeParameters,
   FontFamilyGroupParameters,
   HighContrastParameters,
   MatchColorParameters,
@@ -59,6 +60,11 @@ const HARMONY_OPTIONS = [
   { label: "Triadic", value: String(Harmony.Triadic) },
   { label: "Analogous", value: String(Harmony.Analogous) },
   { label: "Square", value: String(Harmony.Square) },
+]
+
+const THEME_MODE_OPTIONS = [
+  { label: "Light", value: "light" },
+  { label: "Dark", value: "dark" },
 ]
 
 const MODULATION_FACETS = [
@@ -109,7 +115,7 @@ const COLOR_HARMONY_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "deg", min: 0, max: 360, step: 1 },
-    icon: "seldon-rotation",
+    icon: "material-rotateRight",
   },
   {
     facet: "step",
@@ -143,12 +149,39 @@ const COLOR_HARMONY_FACETS = [
   {
     facet: "bleed",
     label: "Bleed",
-    valueType: "number",
+    valueType: "percentage",
     controlType: "number",
-    unit: { type: "none", min: 0, max: 1, step: 0.01 },
+    unit: { type: "%", min: 0, max: 100, step: 1 },
     icon: "material-blurOn",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<ColorHarmonyParameters>[]
+
+const DISPLAY_MODE_FACETS = [
+  {
+    facet: "mode",
+    label: "Mode",
+    valueType: "enum",
+    controlType: "combo",
+    options: THEME_MODE_OPTIONS,
+    icon: "material-brightnessMedium",
+  },
+  {
+    facet: "chromaChange",
+    label: "Chroma Change",
+    valueType: "signedPercentage",
+    controlType: "number",
+    unit: { type: "%", min: -100, max: 100, step: 1 },
+    icon: "material-invertColors",
+  },
+  {
+    facet: "lightnessChange",
+    label: "Lightness Change",
+    valueType: "signedPercentage",
+    controlType: "number",
+    unit: { type: "%", min: -100, max: 100, step: 1 },
+    icon: "material-brightnessHigh",
+  },
+] as const satisfies readonly ComputedGroupFacetFor<DisplayModeParameters>[]
 
 const FONT_FAMILY_FACETS = [
   {
@@ -173,14 +206,14 @@ const MATCH_COLOR_FACETS = [
     label: "Include Brightness",
     valueType: "boolean",
     controlType: "boolean",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "includeOpacity",
     label: "Include Opacity",
     valueType: "boolean",
     controlType: "boolean",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<MatchColorParameters>[]
 
@@ -251,6 +284,7 @@ const AUTO_FIT_FACETS = [
 export const COMPUTED_GROUPS = [
   { key: "modulation", label: "Modulation", facets: MODULATION_FACETS },
   { key: "colorHarmony", label: "Color Harmony", facets: COLOR_HARMONY_FACETS },
+  { key: "displayMode", label: "Display Mode", facets: DISPLAY_MODE_FACETS },
   { key: "fontFamily", label: "Font Family", facets: FONT_FAMILY_FACETS },
   { key: "matchColor", label: "Match Color", facets: MATCH_COLOR_FACETS },
   { key: "highContrast", label: "High Contrast", facets: HIGH_CONTRAST_FACETS },

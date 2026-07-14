@@ -17,7 +17,6 @@ const PASSTHROUGH_ACTION_TYPES = new Set<Action["type"]>([
   "reset_workspace_intent",
   "reset_workspace_tags",
   "reset_workspace_license",
-  "transcript_add_message",
   "stubs_add_font_collection_row",
   "stubs_remove_font_collection_row",
   "stubs_set_font_collection_field",

@@ -9,7 +9,7 @@
  * | add_component, remove_component, reorder_board, duplicate_component | components (+ nodes/themes/resources per type) |
  * | duplicate_playground | playgrounds (+ nodes) |
  * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground, set_playground_label | components + section rows / playgrounds |
- * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, apply_component_properties_to_all_boards, set_component_theme | components |
+ * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, reset_component_board, apply_component_properties_to_all_boards, set_component_theme | components |
  * | reset_board_label, reset_board_intent, reset_board_tags, reset_board_license, reset_board_author, reset_board_credentials, reset_board_preview, reset_board_editor_data | components |
  * | reorder_variant_in_board | components.variants order |
  * | add_variant | components.variants + nodes |
@@ -33,7 +33,6 @@
  * | delete_icon_set | icon-sets (variant rows only; drops board ref) |
  * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
  * | stubs_* (font / media) | reserved — no-op until spec |
- * | transcript_add_message | none (no-op) |
  */
 import type { FontOrigin } from "../../font-collections/types"
 import {
@@ -106,7 +105,6 @@ export type ThemeCustomTokenSection =
   | "swatch"
   | "font"
   | "border"
-  | "background"
   | "gradient"
   | "shadow"
   | "scrollbar"
@@ -128,7 +126,6 @@ export const THEME_CUSTOM_TOKEN_SECTIONS = [
   "swatch",
   "font",
   "border",
-  "background",
   "gradient",
   "shadow",
   "scrollbar",
@@ -233,7 +230,6 @@ export type RemoveCustomToken =
   | { type: "remove_theme_custom_swatch"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_font"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_border"; payload: RemoveThemeCustomBase }
-  | { type: "remove_theme_custom_background"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_gradient"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_shadow"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_scrollbar"; payload: RemoveThemeCustomBase }
@@ -594,6 +590,12 @@ export type WorkspaceAction =
       type: "apply_component_properties_to_all_boards"
       payload: {
         sourceBoardKey: BoardKey
+      }
+    }
+  | {
+      type: "reset_component_board"
+      payload: {
+        boardKey: BoardKey
       }
     }
   | {
@@ -967,16 +969,6 @@ export type WorkspaceAction =
   | { type: "stubs_set_media_field"; payload: { id?: string } }
   /** @internal */
   | { type: "stubs_duplicate_media_row"; payload: { id?: string } }
-  /**
-   * @deprecated Not persisted in workspace.json. Editor/agent narration will move to a separate channel; dispatch is a no-op until then.
-   */
-  | {
-      type: "transcript_add_message"
-      payload: {
-        chatMessage: string
-        expectUserAnswer: boolean
-      }
-    }
 
 export type ExtractPayload<T extends WorkspaceAction["type"]> = Extract<
   WorkspaceAction,

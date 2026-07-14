@@ -8,6 +8,7 @@
  * reading, and editing so the three stay in sync. Each list is typed against
  * `keyof <Parameters>`, so omitting a facet fails the build.
  */
+import { ValueType } from "../../properties/constants/shared/value-types"
 import type { PropertyName } from "../../properties/schemas/data/property-schemas"
 import type { ThemeTokenSchema, ThemeTokenSchemaSupport } from "../types/schema"
 import type { BorderParameters } from "../values/appearance/border"
@@ -58,13 +59,43 @@ const GRADIENT_LOOK_FACETS = [
     facet: "gradientType",
     label: "Type",
     propertyKey: "gradientType",
-    icon: "seldon-gradient",
+    icon: "material-gradient",
   },
   {
     facet: "angle",
     label: "Angle",
     propertyKey: "gradientAngle",
-    icon: "seldon-rotation",
+    icon: "material-rotateRight",
+  },
+  {
+    facet: "positionX",
+    label: "Position X",
+    propertyKey: "gradientPositionX",
+    icon: "material-width",
+  },
+  {
+    facet: "positionY",
+    label: "Position Y",
+    propertyKey: "gradientPositionY",
+    icon: "material-height",
+  },
+  {
+    facet: "shape",
+    label: "Shape",
+    propertyKey: "gradientShape",
+    icon: "material-circle",
+  },
+  {
+    facet: "radialSize",
+    label: "Size",
+    propertyKey: "gradientRadialSize",
+    icon: "material-aspectRatio",
+  },
+  {
+    facet: "conicRepeat",
+    label: "Repeat",
+    propertyKey: "gradientConicRepeat",
+    icon: "material-repeat",
   },
   {
     facet: "startPosition",
@@ -81,13 +112,13 @@ const GRADIENT_LOOK_FACETS = [
     facet: "startBrightness",
     label: "Start Brightness",
     propertyKey: "gradientStartBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "startOpacity",
     label: "Start Opacity",
     propertyKey: "gradientStartOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
   {
     facet: "endPosition",
@@ -100,13 +131,13 @@ const GRADIENT_LOOK_FACETS = [
     facet: "endBrightness",
     label: "End Brightness",
     propertyKey: "gradientEndBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "endOpacity",
     label: "End Opacity",
     propertyKey: "gradientEndOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
 ] as const satisfies readonly LookFacetEntryFor<GradientParameters>[]
 
@@ -116,13 +147,13 @@ const SHADOW_LOOK_FACETS = [
     facet: "brightness",
     label: "Brightness",
     propertyKey: "shadowBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "opacity",
     label: "Opacity",
     propertyKey: "shadowOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
   {
     facet: "offsetX",
@@ -168,13 +199,13 @@ const BORDER_LOOK_FACETS = [
     facet: "brightness",
     label: "Brightness",
     propertyKey: "borderBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "opacity",
     label: "Opacity",
     propertyKey: "borderOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
 ] as const satisfies readonly LookFacetEntryFor<BorderParameters>[]
 
@@ -183,7 +214,7 @@ const FONT_LOOK_FACETS = [
     facet: "family",
     label: "Family",
     propertyKey: "fontFamily",
-    icon: "seldon-fontFamily",
+    icon: "material-fontDownload",
   },
   {
     facet: "style",
@@ -195,19 +226,19 @@ const FONT_LOOK_FACETS = [
     facet: "weight",
     label: "Weight",
     propertyKey: "fontWeight",
-    icon: "seldon-fontWeight",
+    icon: "material-formatBold",
   },
   {
     facet: "size",
     label: "Size",
     propertyKey: "fontSize",
-    icon: "seldon-fontSize",
+    icon: "material-formatSize",
   },
   {
     facet: "lineHeight",
     label: "Line Height",
     propertyKey: "fontLineHeight",
-    icon: "seldon-fontLineHeight",
+    icon: "material-formatLineSpacing",
   },
   {
     facet: "textCase",
@@ -219,7 +250,7 @@ const FONT_LOOK_FACETS = [
     facet: "letterSpacing",
     label: "Letter Spacing",
     propertyKey: "fontLetterSpacing",
-    icon: "seldon-fontLetterSpacing",
+    icon: "material-formatLetterSpacing",
   },
 ] as const satisfies readonly LookFacetEntryFor<FontParameters>[]
 
@@ -275,6 +306,19 @@ export function isBridgedLookFacet(
   facet: LookFacetEntry,
 ): facet is BridgedLookFacet {
   return "propertyKey" in facet
+}
+
+const EMPTY_FACET_VALUE = { type: ValueType.EMPTY, value: null } as const
+
+/** Every facet of `section` set to the EMPTY property value, in facet order. */
+export function buildEmptyLookParameters(
+  section: LookSection,
+): Record<string, typeof EMPTY_FACET_VALUE> {
+  const parameters: Record<string, typeof EMPTY_FACET_VALUE> = {}
+  for (const facet of LOOK_FACETS[section]) {
+    parameters[facet.facet] = EMPTY_FACET_VALUE
+  }
+  return parameters
 }
 
 /**

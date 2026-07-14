@@ -1,4 +1,5 @@
 import { invariant } from "../../../index"
+import type { Propagation } from "../../../rules/types/rule-config-types"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
@@ -27,8 +28,6 @@ type ApplyOperation<OpResult extends OperationResult> = (
   workspace: Workspace,
   sourceResult?: OpResult,
 ) => OpResult
-
-type Propagation = "none" | "downstream" | "bidirectional"
 
 /** Applies an operation to a node and propagates it across instances per the propagation mode. */
 export function propagateNodeOperation<OpResult extends OperationResult>({

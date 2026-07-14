@@ -11,6 +11,7 @@ import {
   RGBObjectToString,
 } from "@seldon/core/helpers/color"
 import { formatPresetValue } from "@seldon/core/helpers/properties/format-preset-value"
+import { parseThemeRef } from "@seldon/core/helpers/theme/get-theme-key-components"
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import {
   isHSLObject,
@@ -18,12 +19,6 @@ import {
   isRGBObject,
 } from "@seldon/core/helpers/type-guards"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
-import {
-  getCatalogKeyForPropertyPath,
-  getPropertyOptions,
-  getPropertySchema,
-} from "@seldon/core/properties/schemas/helpers"
-import type { PropertyValueType } from "@seldon/core/properties/types/schema"
 import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
@@ -35,12 +30,6 @@ import {
   getTypedNode,
   isValueSet,
 } from "./shared"
-
-const PICKER_VALUE_TYPES: readonly PropertyValueType[] = [
-  "option",
-  "themeCategorical",
-  "themeOrdinal",
-]
 
 type DimensionValue = {
   unit: string
@@ -54,51 +43,6 @@ type PropertyValueLike = {
 
 type ComputedValueLike = {
   function: ComputedFunction
-}
-
-function pickerEntryToString(entry: unknown): string {
-  if (
-    entry &&
-    typeof entry === "object" &&
-    "value" in entry &&
-    entry.value !== undefined
-  ) {
-    return String(entry.value)
-  }
-  return String(entry)
-}
-
-function getAllowedValuesForPath(
-  path: string,
-  workspace: Workspace,
-  theme?: Theme,
-): string[] {
-  const catalogKey = getCatalogKeyForPropertyPath(path)
-  if (!catalogKey) return []
-
-  const schema = getPropertySchema(catalogKey)
-  if (!schema) return []
-
-  const values = new Set<string>()
-  for (const valueType of schema.supports) {
-    if (!PICKER_VALUE_TYPES.includes(valueType)) continue
-    if (
-      (valueType === "themeCategorical" || valueType === "themeOrdinal") &&
-      !theme
-    ) {
-      continue
-    }
-    for (const entry of getPropertyOptions(
-      catalogKey,
-      valueType,
-      theme,
-      workspace,
-    )) {
-      values.add(pickerEntryToString(entry))
-    }
-  }
-
-  return [...values]
 }
 
 function isDimensionValue(value: unknown): value is DimensionValue {
@@ -124,17 +68,19 @@ function formatThemeValue(value: unknown, theme?: Theme): string {
   if (token.startsWith("@") && theme) {
     return getThemeValueName(token, theme)
   }
-  if (token.startsWith("@")) {
-    const parts = token.split(".")
-    if (parts.length >= 2) {
-      const lastSegment = parts[parts.length - 1]
-      return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1)
-    }
+  const optionId = parseThemeRef(token)?.optionId
+  if (optionId) {
+    return optionId.charAt(0).toUpperCase() + optionId.slice(1)
   }
   return token
 }
 
 function formatComputedValue(value: unknown): string {
+  if (typeof value === "string") {
+    return (
+      COMPUTED_FUNCTION_DISPLAY_NAMES[value as ComputedFunction] ?? "Computed"
+    )
+  }
   if (value && typeof value === "object" && "function" in value) {
     const functionName = (value as ComputedValueLike).function
     return COMPUTED_FUNCTION_DISPLAY_NAMES[functionName] || functionName
@@ -204,22 +150,7 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
   return "Has value"
 }
 
-export function getAllowedValues(
-  path: string,
-  _nodeId: string,
-  workspace: Workspace,
-  theme?: Theme,
-): string[] {
-  return getAllowedValuesForPath(path, workspace, theme)
-}
-
-export function formatValue(
-  _path: string,
-  value: unknown,
-  _nodeId: string,
-  _workspace: Workspace,
-  theme?: Theme,
-): string {
+export function formatValue(value: unknown, theme?: Theme): string {
   return formatDisplayValue(value, theme)
 }
 

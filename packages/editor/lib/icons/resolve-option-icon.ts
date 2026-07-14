@@ -9,7 +9,7 @@ import {
 } from "./icons-registry"
 
 /** Icon id rendered for theme token values that are not swatch colors. */
-export const THEME_TOKEN_ICON = "seldon-token"
+export const THEME_TOKEN_ICON = "seldon-theme"
 
 /**
  * How a property value's icon should render. `static` is a plain icon id,

@@ -59,7 +59,7 @@ The code is grouped by pipeline stage:
 `insertNodeStyles` sorts the registry classes and appends them under a component styles header. Non-instance classes come before instance classes. Among non-instances, variant classes come first, then shallower tree depths, then alphabetical order. Empty rules are dropped. When a class carries interaction-state deltas in `stateClasses`, it also appends one CSS rule per state, each selector built from the state's suffixes by `getStateSelectorSuffixes`.
 
 **Theme files** (`generation/insert-theme-variables.ts`)
-`generateThemeStylesheetFiles` writes one CSS file per entry in `workspace.themes`. When the workspace has no themes, it writes a single `seldon` file. Each file is a `:root` block of CSS custom properties for one theme, named `styles-{slug}.css`. The prefix is `--sdn-` for the `seldon` theme and `--sdn-{slug}-` for other themes. Tokens include core values, font families, the color system, swatches, sizes, margins, paddings, gaps, corners, font sizes, font weights, line heights, and border widths. `generateThemeStylesheet` builds the block for one theme.
+`generateThemeStylesheetFiles` writes one CSS file per entry in `workspace.themes`. When the workspace has no themes, it writes a single `seldon` file. Each file goes in the `styles/` folder, is named `{slug}.css`, and holds one block of CSS custom properties for one theme. Every theme defines the same unprefixed variable names, such as `--sdn-swatch-primary` and `--sdn-sizes-medium`. The default `seldon` theme answers `:root, [data-theme="seldon"]`, so an unscoped subtree resolves to it. Every other theme answers `[data-theme="{slug}"]`. A consumer switches the active theme by setting the `data-theme` attribute on an element, which redefines the variables for that subtree. Tokens include core values, font families, the color system, swatches, sizes, margins, paddings, gaps, corners, font sizes, font weights, line heights, and border widths. `generateThemeStylesheet` builds the block for one theme.
 
 **Theme slug** (`generation/get-theme-slug.ts`)
 `getThemeSlug` maps a workspace theme id to a slug. The slug names both the theme file and its CSS variable prefix. A default theme slugs from its stock catalog id. A variant walks its template chain to the root default, prepends that slug, and appends its own label, such as `seldon-red`. A theme id without a workspace entry slugs from the id.
@@ -86,7 +86,7 @@ The CSS pipeline produces:
 
 ## Theme Variable References
 
-Component classes reference theme tokens through CSS custom properties. `buildStyleRegistry` resolves properties with `useThemeVariableReferences` enabled and passes the theme slug, so a class points at `--sdn-{slug}-` variables. The matching values live in the theme files. This keeps one set of component classes that can switch themes by swapping the theme file.
+Component classes reference theme tokens through CSS custom properties. `buildStyleRegistry` resolves properties with `useThemeVariableReferences` enabled, so a class points at unprefixed `--sdn-*` variables for swatches, scales, and typography. Colors with a brightness or opacity transform cannot live in a variable and stay literal. Custom swatches are arbitrary per theme, so they stay literal too. Reserved harmony and interface swatches, scale tokens, and typography tokens all align across themes by name. The matching values live in the theme files. This keeps one set of component classes that switch themes when a consumer sets `data-theme`.
 
 ---
 

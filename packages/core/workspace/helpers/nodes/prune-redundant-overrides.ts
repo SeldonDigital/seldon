@@ -1,3 +1,5 @@
+import { ValueType } from "../../../properties/constants"
+import { getAnchoredFacetDefault } from "../../../properties/helpers/anchored-facet-default"
 import type { Properties } from "../../../properties/types/properties"
 import type {
   PropertyKey,
@@ -74,8 +76,52 @@ function enumeratePatchFacets(patch: Properties): TouchedFacet[] {
   return facets
 }
 
+/** Serializes with sorted object keys so key order never affects equality. */
+function stableStringify(value: unknown): string {
+  return JSON.stringify(value, (_key, val) => {
+    if (val && typeof val === "object" && !Array.isArray(val)) {
+      const record = val as Record<string, unknown>
+      return Object.keys(record)
+        .sort()
+        .reduce<Record<string, unknown>>((sorted, key) => {
+          sorted[key] = record[key]
+          return sorted
+        }, {})
+    }
+    return val
+  })
+}
+
+/**
+ * Compares two property slices by value, not by authored key order. The editor
+ * serializes measured values as `{ unit, value }` while seeds and schemas author
+ * `{ value, unit }`, so a raw string compare would miss equal values.
+ */
 function slicesMatch(a: unknown, b: unknown): boolean {
-  return JSON.stringify(a) === JSON.stringify(b)
+  return stableStringify(a) === stableStringify(b)
+}
+
+/** True when a baseline slice carries no authored value to compare against. */
+function isEmptyBaselineSlice(value: unknown): boolean {
+  if (value === undefined) return true
+  return (
+    !!value &&
+    typeof value === "object" &&
+    (value as { type?: unknown }).type === ValueType.EMPTY
+  )
+}
+
+/**
+ * The value a baseline facet resolves to for the redundancy check. An unset
+ * brightness or opacity renders as its fixed neutral (no shift / fully opaque),
+ * so a write of that neutral equals the baseline and stays a no-op.
+ */
+function resolveBaselineSlice(
+  baselineSlice: unknown,
+  facet: TouchedFacet,
+): unknown {
+  if (!isEmptyBaselineSlice(baselineSlice)) return baselineSlice
+  return getAnchoredFacetDefault(facet.subpropertyKey) ?? baselineSlice
 }
 
 function deleteFacet(overrides: Properties, facet: TouchedFacet): void {
@@ -135,6 +181,24 @@ function dropEmptyOverride(overrides: Properties, key: PropertyKey): void {
 }
 
 /**
+ * Returns a deep clone of `bag` with every leaf facet named in `patch` removed.
+ * Used to compute the baseline a state write falls back to when its own facets
+ * are absent, so sibling facets like a `preset` still contribute. Cloning goes
+ * through JSON because a merged bag can carry Immer draft proxies on its leaf
+ * values, which `structuredClone` rejects. Property bags are pure JSON data.
+ */
+export function stripPatchFacets(
+  bag: Properties,
+  patch: Properties,
+): Properties {
+  const reduced = JSON.parse(JSON.stringify(bag)) as Properties
+  for (const facet of enumeratePatchFacets(patch)) {
+    deleteFacet(reduced, facet)
+  }
+  return reduced
+}
+
+/**
  * Removes override facets that match the baseline a node would resolve to
  * without them, so a write that equals the inherited value stays a no-op instead
  * of a stored override. Only facets present in `patch` are considered, leaving
@@ -158,12 +222,13 @@ export function pruneRedundantOverrides(
     )
     if (overrideSlice === undefined) continue
 
-    const baselineSlice = readPropertySlice(
+    const rawBaselineSlice = readPropertySlice(
       baseline,
       facet.propertyKey,
       facet.subpropertyKey,
       facet.layerIndex ?? 0,
     )
+    const baselineSlice = resolveBaselineSlice(rawBaselineSlice, facet)
     if (!slicesMatch(overrideSlice, baselineSlice)) continue
 
     deleteFacet(overrides, facet)

@@ -164,7 +164,6 @@ export function getNodeIdAddedByAction(
     case "remove_theme_custom_swatch":
     case "remove_theme_custom_font":
     case "remove_theme_custom_border":
-    case "remove_theme_custom_background":
     case "remove_theme_custom_gradient":
     case "remove_theme_custom_shadow":
     case "remove_theme_custom_scrollbar":
@@ -247,7 +246,6 @@ export function getNodeIdAddedByAction(
     case "reorder_instance_in_parent":
     case "remove_instance":
     case "remove_variant":
-    case "transcript_add_message":
       return null
 
     default:

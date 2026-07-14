@@ -5,15 +5,12 @@
  * scale sections they relate to. Each section's `order` is its index in
  * {@link THEME_TOKEN_SECTION_ORDER}.
  */
-import type {
-  ThemeTokenSectionId,
-  ThemeTokenSectionSchema,
-} from "../types/schema"
+import type { ThemeTokenSectionSchema } from "../types/schema"
 
 const THEME_TOKEN_SECTION_ORDER: Array<Omit<ThemeTokenSectionSchema, "order">> =
   [
     { id: "computed", label: "Computed" },
-    { id: "swatch", label: "Swatch" },
+    { id: "swatch", label: "Swatches" },
     { id: "size", label: "Size" },
     { id: "margin", label: "Margin" },
     { id: "padding", label: "Padding" },
@@ -38,12 +35,6 @@ export const THEME_TOKEN_SECTIONS: ThemeTokenSectionSchema[] =
     ...section,
     order: index,
   }))
-
-export function getThemeTokenSectionSchema(
-  sectionId: ThemeTokenSectionId,
-): ThemeTokenSectionSchema | undefined {
-  return THEME_TOKEN_SECTIONS.find((section) => section.id === sectionId)
-}
 
 export function getAllThemeTokenSectionSchemas(): ThemeTokenSectionSchema[] {
   return [...THEME_TOKEN_SECTIONS].sort((a, b) => a.order - b.order)

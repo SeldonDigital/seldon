@@ -1,6 +1,7 @@
 import { isEqual } from "lodash"
 
 import { Workspace } from "@seldon/core"
+import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import type { NodeParentIndex } from "@seldon/core/workspace/compute"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
@@ -22,10 +23,10 @@ import {
   getWorkspaceNodeList,
   resolveSourceVariantId,
 } from "../../../helpers/workspace-nodes"
+import { resetBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
 import { CSSObject } from "../../../styles/css-properties/types"
 import { kebabCase } from "../../react/utils/case-utils"
-import { getThemeSlug } from "../generation/get-theme-slug"
 import {
   Classes,
   DescendantStateClasses,
@@ -126,6 +127,11 @@ export const buildStyleRegistry = (
   classNameToNodeId: Record<string, string>
   nodeTreeDepths: Record<string, number>
 } => {
+  // Style generation records each brightness-shifted swatch it references so the
+  // theme stylesheet can publish one concrete variable per pair. Clear it so a
+  // run only collects the pairs it uses.
+  resetBrightnessSwatches()
+
   const classes: Classes = {}
   const stateClasses: StateClasses = {}
   const descendantStateClasses: DescendantStateClasses = {}
@@ -164,12 +170,8 @@ export const buildStyleRegistry = (
   const computeNodeCss = (nodeId: string, state?: string): CSSObject => {
     const context = getStyleContext(nodeId, workspace, parentIndex, state)
     return getCssObjectFromProperties(context.properties, {
-      properties: context.properties,
-      parentContext: context.parentContext,
-      theme: context.theme,
-      layoutMode: context.layoutMode,
+      ...context,
       useThemeVariableReferences: true,
-      themeSlug: getThemeSlug(context.theme.id as string, workspace),
     })
   }
 
@@ -229,26 +231,15 @@ export const buildStyleRegistry = (
       const instanceContext = getStyleContext(node.id, workspace, parentIndex)
 
       const variantCss = getCssObjectFromProperties(variantContext.properties, {
-        properties: variantContext.properties,
-        parentContext: variantContext.parentContext,
-        theme: variantContext.theme,
-        layoutMode: variantContext.layoutMode,
+        ...variantContext,
         useThemeVariableReferences: true,
-        themeSlug: getThemeSlug(variantContext.theme.id as string, workspace),
       })
 
       const instanceCss = getCssObjectFromProperties(
         instanceContext.properties,
         {
-          properties: instanceContext.properties,
-          parentContext: instanceContext.parentContext,
-          theme: instanceContext.theme,
-          layoutMode: instanceContext.layoutMode,
+          ...instanceContext,
           useThemeVariableReferences: true,
-          themeSlug: getThemeSlug(
-            instanceContext.theme.id as string,
-            workspace,
-          ),
         },
       )
 
@@ -256,12 +247,8 @@ export const buildStyleRegistry = (
     } else {
       const context = getStyleContext(node.id, workspace, parentIndex)
       css = getCssObjectFromProperties(context.properties, {
-        properties: context.properties,
-        parentContext: context.parentContext,
-        theme: context.theme,
-        layoutMode: context.layoutMode,
+        ...context,
         useThemeVariableReferences: true,
-        themeSlug: getThemeSlug(context.theme.id as string, workspace),
       })
     }
 
@@ -279,12 +266,8 @@ export const buildStyleRegistry = (
           state,
         )
         const stateCss = getCssObjectFromProperties(stateContext.properties, {
-          properties: stateContext.properties,
-          parentContext: stateContext.parentContext,
-          theme: stateContext.theme,
-          layoutMode: stateContext.layoutMode,
+          ...stateContext,
           useThemeVariableReferences: true,
-          themeSlug: getThemeSlug(stateContext.theme.id as string, workspace),
         })
         const delta = calculateCssDifferences(css, stateCss)
         if (Object.keys(delta).length > 0) {
@@ -297,11 +280,22 @@ export const buildStyleRegistry = (
       variantOwnedStates[node.id] = new Set(Object.keys(nodeStateDeltas))
     }
 
+    // A custom component styles a wrapper around a native control (a toggle
+    // switch wraps an input), so a pseudo like `checked` lives on the descendant
+    // control, not the wrapper. Route its own states root-scoped so `checked`
+    // emits `:has(:checked)` and the wrapper restyles when the control is on.
+    const nodeCatalogId = getNodeCatalogId(node, workspace)
+    const isCustomComponent =
+      nodeCatalogId != null &&
+      isComponentId(nodeCatalogId) &&
+      getComponentExportConfig(nodeCatalogId).react.returns === "custom"
+
     // A container variant owns the interaction: its states cascade from the row
     // root, so emit them root-scoped (with the ancestor selector for focus and
     // checked) and skip the self-scoped rule. Leaf variants keep their
     // self-scoped rule for standalone use.
-    const isContainerVariant = hasStateDeltas && containerNodeIds.has(node.id)
+    const isContainerVariant =
+      hasStateDeltas && (containerNodeIds.has(node.id) || isCustomComponent)
     if (isContainerVariant) {
       const rootClass = getClassNameForNode(node, workspace)
       for (const [stateName, stateCss] of Object.entries(nodeStateDeltas)) {

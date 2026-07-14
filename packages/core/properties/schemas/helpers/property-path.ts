@@ -1,39 +1,13 @@
-import { ValueType } from "../../constants"
 import { isCompoundCatalogProperty } from "../../constants/shared/compound-properties"
 import { isShorthandCatalogProperty } from "../../constants/shared/shorthand-properties"
-import type { PropertyValueType } from "../../types/schema"
+import { LAYERED_PAINT_KEYS } from "../../types/property-keys"
 import { PROPERTY_SCHEMAS } from "../data/property-schemas"
 
-const LAYERED_PAINT_ROOTS = new Set<string>(["background", "shadow"])
+const LAYERED_PAINT_ROOTS: ReadonlySet<string> = LAYERED_PAINT_KEYS
 
-function joinCompoundFacetKey(parent: string, facet: string): string {
+/** Flattens a compound facet to its catalog key, e.g. `border` + `color` -> `borderColor`. */
+export function joinCompoundFacetKey(parent: string, facet: string): string {
   return `${parent}${facet.charAt(0).toUpperCase()}${facet.slice(1)}`
-}
-
-/**
- * Maps wire {@link ValueType} strings on stored values to {@link PropertyValueType} for schema helpers.
- */
-export function valueTypeWireToPropertyValueType(
-  wire: string,
-): PropertyValueType | undefined {
-  switch (wire) {
-    case ValueType.EMPTY:
-      return "empty"
-    case ValueType.INHERIT:
-      return "inherit"
-    case ValueType.EXACT:
-      return "exact"
-    case ValueType.OPTION:
-      return "option"
-    case ValueType.COMPUTED:
-      return "computed"
-    case ValueType.THEME_CATEGORICAL:
-      return "themeCategorical"
-    case ValueType.THEME_ORDINAL:
-      return "themeOrdinal"
-    default:
-      return undefined
-  }
 }
 
 /**

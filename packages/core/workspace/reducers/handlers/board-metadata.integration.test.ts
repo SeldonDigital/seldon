@@ -42,7 +42,9 @@ describe("board label", () => {
   it("sets a label and resets to the catalog default", () => {
     const set = setBoardLabel(pay({ label: "Custom" }), componentWorkspace())
     expect(board(set, boardKey).label).toBe("Custom")
-    expect(resetBoardLabel(pay({}), set).label).not.toBe("Custom")
+    expect(board(resetBoardLabel(pay({}), set), boardKey).label).not.toBe(
+      "Custom",
+    )
   })
 })
 

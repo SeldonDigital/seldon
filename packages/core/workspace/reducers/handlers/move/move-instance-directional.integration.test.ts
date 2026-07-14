@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../../index"
+import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { moveInstanceDirectional } from "./move-instance-directional"
@@ -11,8 +11,9 @@ const workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = workspace.boards[ComponentId.BUTTON]!
-const defaultRoot = board.variants[0]!
-const userVariant = board.variants
+const variants = board.variants as ComponentTreeRef[]
+const defaultRoot = variants[0]!
+const userVariant = variants
   .slice(1)
   .find((variant) => (variant.children?.length ?? 0) >= 2)!
 

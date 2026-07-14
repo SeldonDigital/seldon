@@ -1,14 +1,6 @@
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import type { Board, ComponentTreeRef, EntryNodeId } from "../../types"
 
-export function collectDescendantTreeIds(ref: ComponentTreeRef): EntryNodeId[] {
-  const ids: EntryNodeId[] = [ref.id]
-  for (const child of ref.children ?? []) {
-    ids.push(...collectDescendantTreeIds(child))
-  }
-  return ids
-}
-
 /**
  * Collects every node id referenced by board trees, skipping the subtree rooted
  * at `excludedRootId`. Schema instantiation can share one workspace node across

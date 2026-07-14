@@ -208,7 +208,7 @@ const sdn: ItemProps = {
     className: "sdn-text-subtitle sdn-text-subtitle--nxwj",
   },
   button: {
-    className: "sdn-button sdn-button--1bc9",
+    className: "sdn-button sdn-button-iconic--pgsr",
   },
   icon: {
     icon: "seldon-component",

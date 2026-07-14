@@ -5,7 +5,6 @@ import type {
   ComponentBoard,
   EntryNode,
   ExtractPayload,
-  Workspace,
 } from "../../../../index"
 import { getBoardOrder } from "../../../helpers/components/board-sort-order"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"

@@ -1,5 +1,5 @@
 /**
- * Identifier unions and runtime sets for `Properties` keys, sub-property keys, and dotted paths.
+ * Identifier unions and runtime sets for `Properties` keys and sub-property keys.
  * Parallels `themes/types/theme-token-ids.ts` (slot ids on theme token tables).
  */
 import { PROPERTY_COMPOUND_CATALOG } from "../constants/shared/compound-properties"
@@ -102,29 +102,3 @@ export function isLayeredPaintProperty(
 
 /** Any top-level key whose value has sub-fields on the node (object map or paint stack). */
 export type CompoundPropertyKey = ObjectFacetPropertyKey | LayeredPaintKey
-
-/**
- * String paths for compound facets. Layered paint (`background`, `shadow`) is stored
- * as arrays on the node — paths use bracket indices only, not `shadow.*` without an index.
- */
-export type CompoundPropertyPath =
-  | PropertyKey
-  | `border.${keyof BorderCompound & string}`
-  | `borderTop.${keyof BorderCompound & string}`
-  | `borderRight.${keyof BorderCompound & string}`
-  | `borderBottom.${keyof BorderCompound & string}`
-  | `borderLeft.${keyof BorderCompound & string}`
-  | `font.${keyof FontCompound & string}`
-  | `board.${keyof BoardCompound & string}`
-  | `position.${keyof PositionValue & string}`
-  | `background[${number}].${keyof BackgroundLayer & string}`
-  | `shadow[${number}].${keyof ShadowCompound & string}`
-
-/** String paths for each side or corner under margin, padding, or corners. */
-export type ShorthandPropertyPath =
-  | `margin.${keyof MarginValue & string}`
-  | `padding.${keyof PaddingValue & string}`
-  | `corners.${keyof CornersValue & string}`
-
-/** Every accepted string path for addressing a nested property value. */
-export type PropertyPath = CompoundPropertyPath | ShorthandPropertyPath

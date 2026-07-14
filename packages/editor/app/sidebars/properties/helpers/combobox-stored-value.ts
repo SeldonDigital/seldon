@@ -45,14 +45,9 @@ export function getComboboxStoredValue(propertyValue: unknown): string {
     case ValueType.EXACT:
       return getExactStoredValue(typed.value)
     case ValueType.COMPUTED:
-      if (
-        typed.value &&
-        typeof typed.value === "object" &&
-        "function" in typed.value
-      ) {
-        return String((typed.value as { function: string }).function)
-      }
-      return ""
+      // A computed value stores the function name as a plain string
+      // ({ type: COMPUTED, value: ComputedFunction.X }).
+      return typeof typed.value === "string" ? typed.value : ""
     default:
       return ""
   }

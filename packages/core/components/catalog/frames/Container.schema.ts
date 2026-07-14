@@ -41,7 +41,7 @@ export const schema = {
     },
     gap: { type: Sdn.ValueType.EMPTY, value: null },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: { type: Sdn.ValueType.EXACT, value: false },
     columns: {
       type: Sdn.ValueType.EXACT,
       value: { unit: Sdn.Unit.NUMBER, value: 1 },

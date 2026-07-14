@@ -14,13 +14,12 @@ import { LiHTMLAttributes } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
 import {
-  FormControlComboboxControl,
-  FormControlComboboxControlProps,
-} from "../elements/FormControlComboboxControl"
+  FormControlCombobox,
+  FormControlComboboxProps,
+} from "../elements/FormControlCombobox"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Input, InputProps } from "../primitives/Input"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
@@ -30,11 +29,11 @@ export interface ItemPropertyProps extends LiHTMLAttributes<HTMLLIElement> {
   seldonRefs?: Record<string, Record<string, unknown>>
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
-  formControlComboboxControl?: FormControlComboboxControlProps | null
-  textLabel?: TextLabelProps | null
+  formControlCombobox?: FormControlComboboxProps | null
+  input?: InputProps | null
   comboboxField?: ComboboxFieldProps | null
   icon2?: IconProps | null
-  input?: InputProps | null
+  input2?: InputProps | null
   buttonIconic2?: ButtonIconicProps | null
   icon3?: IconProps | null
   buttonIconic3?: ButtonIconicProps | null
@@ -54,10 +53,9 @@ export interface ItemPropertyProps extends LiHTMLAttributes<HTMLLIElement> {
  *   aria-hidden="false"
  *   buttonIconic={() => {}}
  *   icon="material-star"
- *   formControlComboboxControl="{}"
- *   textLabel="{}"
- *   comboboxField="{}"
+ *   formControlCombobox="{}"
  *   input="{}"
+ *   comboboxField="{}"
  *   buttonIconic2={() => {}}
  * />
  * ```
@@ -66,11 +64,11 @@ export function ItemProperty({
   className = "",
   buttonIconic = sdn.buttonIconic,
   icon = sdn.icon,
-  formControlComboboxControl = sdn.formControlComboboxControl,
-  textLabel,
+  formControlCombobox = sdn.formControlCombobox,
+  input,
   comboboxField = sdn.comboboxField,
   icon2 = sdn.icon2,
-  input = sdn.input,
+  input2 = sdn.input2,
   buttonIconic2 = sdn.buttonIconic2,
   icon3 = sdn.icon3,
   buttonIconic3 = sdn.buttonIconic3,
@@ -106,30 +104,27 @@ export function ItemProperty({
           className: combineClassNames(sdn.icon?.className, icon?.className),
         },
   )
-  const formControlComboboxControlProps = applyRef(
+  const formControlComboboxProps = applyRef(
     seldonRefs,
-    formControlComboboxControl === null
+    formControlCombobox === null
       ? null
       : {
-          ...sdn.formControlComboboxControl,
-          ...formControlComboboxControl,
+          ...sdn.formControlCombobox,
+          ...formControlCombobox,
           className: combineClassNames(
-            sdn.formControlComboboxControl?.className,
-            formControlComboboxControl?.className,
+            sdn.formControlCombobox?.className,
+            formControlCombobox?.className,
           ),
         },
   )
-  const textLabelProps = applyRef(
+  const inputProps = applyRef(
     seldonRefs,
-    textLabel === null
+    input === null
       ? null
       : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          ...sdn.input,
+          ...input,
+          className: combineClassNames(sdn.input?.className, input?.className),
         },
   )
   const comboboxFieldProps = applyRef(
@@ -155,14 +150,17 @@ export function ItemProperty({
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
         },
   )
-  const inputProps = applyRef(
+  const input2Props = applyRef(
     seldonRefs,
-    input === null
+    input2 === null
       ? null
       : {
-          ...sdn.input,
-          ...input,
-          className: combineClassNames(sdn.input?.className, input?.className),
+          ...sdn.input2,
+          ...input2,
+          className: combineClassNames(
+            sdn.input2?.className,
+            input2?.className,
+          ),
         },
   )
   const buttonIconic2Props = applyRef(
@@ -225,19 +223,19 @@ export function ItemProperty({
           {buttonIconicProps !== null && (
             <ButtonIconic {...buttonIconicProps} icon={iconProps} />
           )}
-          {formControlComboboxControlProps !== null && (
-            <FormControlComboboxControl {...formControlComboboxControlProps}>
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {formControlComboboxProps !== null && (
+            <FormControlCombobox {...formControlComboboxProps}>
+              {input && inputProps && <Input {...inputProps} />}
               {comboboxField && comboboxFieldProps && (
                 <ComboboxField
                   {...comboboxFieldProps}
                   icon={icon2Props}
-                  input={inputProps}
+                  input={input2Props}
                   buttonIconic={buttonIconic2Props}
                   icon2={icon3Props}
                 />
               )}
-            </FormControlComboboxControl>
+            </FormControlCombobox>
           )}
           {buttonIconic3Props !== null && (
             <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
@@ -264,12 +262,12 @@ const sdn: ItemPropertyProps = {
     className: "sdn-icon sdn-icon--vsau",
     "data-seldon-ref": "propertyToggleIcon",
   },
-  formControlComboboxControl: {
+  formControlCombobox: {
     "aria-hidden": "false",
-    className: "sdn-form-control sdn-form-control-combobox-control--qmop",
+    className: "sdn-form-control sdn-form-control-combobox--qmop",
   },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--xg6p",
+  input: {
+    className: "sdn-input sdn-input--jvsw",
     "data-seldon-ref": "propertyLabel",
   },
   comboboxField: {
@@ -282,7 +280,7 @@ const sdn: ItemPropertyProps = {
     className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "valueIcon",
   },
-  input: {
+  input2: {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

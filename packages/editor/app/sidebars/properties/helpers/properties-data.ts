@@ -20,7 +20,9 @@ import {
   ControlType,
   getPropertyRegistryEntry,
 } from "@lib/icons/icons-registry"
+import { THEME_TOKEN_ICON } from "@lib/icons/resolve-option-icon"
 import {
+  childPathsUnderCompoundParent,
   getCompoundLayerValue,
   isLayeredPaintRoot,
   layeredFacetPath,
@@ -51,6 +53,7 @@ import {
   getPropertyStatus as coreGetPropertyStatus,
   getCompoundPropertyStructure,
 } from "@seldon/core/helpers/properties/properties-bridge"
+import { EMPTY_VALUE } from "@seldon/core/properties"
 import {
   getCompoundSubPropertySchema,
   getPropertyCategory,
@@ -74,14 +77,17 @@ import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { isCompoundProperty, isShorthandProperty } from "./property-types"
+import {
+  type PropertyType,
+  isCompoundProperty,
+  isShorthandProperty,
+} from "./property-types"
 import {
   createSubPropertyLabel,
   formatPropertyLabel,
   getValueType,
 } from "./shared-utils"
 
-const EMPTY_VALUE = { type: ValueType.EMPTY, value: null }
 const UNKNOWN_VALUE = "unknown"
 const UNKNOWN_DISPLAY = "Error"
 
@@ -93,7 +99,6 @@ function facetAllowsAuthoredComputed(subPropertyPath: string): boolean {
 }
 
 type PropertyStatus = "set" | "unset" | "override" | "not used" | "error"
-type PropertyType = "atomic" | "compound" | "shorthand"
 
 export interface FlatProperty {
   key: string
@@ -104,6 +109,12 @@ export interface FlatProperty {
   actualValue: string
   valueType: ValueType
   controlType?: ControlType
+  /**
+   * Allowed unit suffixes for a measured theme value, resolved from the core
+   * token schema. Present only on theme rows that declare a unit; absent on node
+   * properties, which resolve units through the property schema instead.
+   */
+  units?: string[]
   isCompound: boolean
   isShorthand: boolean
   isSubProperty: boolean
@@ -131,7 +142,7 @@ export interface FlatProperty {
  * core selector facet is `kind` (background) always do; other compounds only
  * when the theme offers presets.
  */
-export function hasCompoundSelectorCombo(
+function hasCompoundSelectorCombo(
   propertyKey: string,
   theme?: Theme,
   workspace?: Workspace,
@@ -151,7 +162,7 @@ export function hasCompoundSelectorCombo(
  * @param theme - Optional theme to check for preset options
  * @returns True if the theme has a section for this property with preset options
  */
-export function hasCompoundPresetOptions(
+function hasCompoundPresetOptions(
   propertyKey: string,
   theme?: Theme,
   workspace?: Workspace,
@@ -162,7 +173,7 @@ export function hasCompoundPresetOptions(
 
   const presetSchema = getCompoundSubPropertySchema(propertyKey, "preset")
   if (presetSchema?.presetOptions) {
-    const presetSchemaKey = `${propertyKey}${"preset".charAt(0).toUpperCase()}${"preset".slice(1)}`
+    const presetSchemaKey = `${propertyKey}Preset`
     if (getPresetOptions(presetSchemaKey, workspace).length > 0) {
       return true
     }
@@ -228,6 +239,18 @@ export function getPropertiesSubjectId(
   return node.id
 }
 
+/** The sub-property rows a compound or shorthand parent row recurses into. */
+export function getCompoundChildRows(
+  parentKey: string,
+  allProperties: FlatProperty[],
+): FlatProperty[] {
+  return allProperties.filter(
+    (candidate) =>
+      candidate.isSubProperty &&
+      childPathsUnderCompoundParent(parentKey, candidate.key),
+  )
+}
+
 /**
  * Gets node properties with status information
  * @param node - The node to get properties for
@@ -240,14 +263,10 @@ export function getNodePropertiesWithStatus(
   state?: NodeState,
 ): { properties: Properties; propertyStatus: Record<string, PropertyStatus> } {
   const subjectId = getPropertiesSubjectId(node)
-  const properties = coreGetEffectiveProperties(
-    subjectId,
-    workspace as unknown as Workspace,
-    state,
-  )
+  const properties = coreGetEffectiveProperties(subjectId, workspace, state)
   const propertyStatus = coreGetPropertyStatus(
     subjectId,
-    workspace as unknown as Workspace,
+    workspace,
     state,
   ) as Record<string, PropertyStatus>
 
@@ -255,40 +274,22 @@ export function getNodePropertiesWithStatus(
 }
 
 /**
- * Gets sub-properties for shorthand properties
- * @param propertyKey - The property key
- * @param propertyValue - The property value
- * @param workspace - Current workspace
- * @param node - The node
- * @param propertyStatus - Property status map
- * @param theme - Optional theme
- * @param mergedProperties - Optional pre-computed merged properties
- * @returns Array of flat properties
+ * Gets sub-properties for shorthand properties. Side keys come from dotted
+ * entries in the merged properties, falling back to the registry's declared
+ * sub-properties.
  */
 function getShorthandSubProperties(
   propertyKey: string,
   workspace: Workspace,
   node: Variant | Instance | Board,
   propertyStatus: Record<string, PropertyStatus>,
+  mergedProperties: Properties,
   theme?: Theme,
-  mergedProperties?: Properties,
 ): FlatProperty[] {
-  let effectiveMergedProperties = mergedProperties
-  if (!effectiveMergedProperties) {
-    const result = getNodePropertiesWithStatus(node, workspace)
-    effectiveMergedProperties = result.properties
-  }
-
   const subEntries: string[] = []
-  if (
-    typeof effectiveMergedProperties === "object" &&
-    !Array.isArray(effectiveMergedProperties)
-  ) {
-    for (const key of Object.keys(effectiveMergedProperties)) {
-      if (key.startsWith(`${propertyKey}.`)) {
-        const subKey = key.substring(propertyKey.length + 1)
-        subEntries.push(subKey)
-      }
+  for (const key of Object.keys(mergedProperties)) {
+    if (key.startsWith(`${propertyKey}.`)) {
+      subEntries.push(key.substring(propertyKey.length + 1))
     }
   }
 
@@ -304,24 +305,20 @@ function getShorthandSubProperties(
   for (const subKey of subEntries) {
     const subPropertyPath = `${propertyKey}.${subKey}`
     const subPropertyValue =
-      typeof effectiveMergedProperties === "object" &&
-      !Array.isArray(effectiveMergedProperties)
-        ? findInObject(effectiveMergedProperties, subPropertyPath) ||
-          EMPTY_VALUE
-        : EMPTY_VALUE
+      findInObject(mergedProperties, subPropertyPath) || EMPTY_VALUE
     const subStatus = propertyStatus[subPropertyPath] || "not used"
 
-    const flatSubProperty = createFlatSubProperty(
-      propertyKey,
-      subKey,
-      subPropertyValue,
-      subStatus,
-      node,
-      workspace,
-      theme,
+    subProperties.push(
+      createFlatSubProperty(
+        propertyKey,
+        subKey,
+        subPropertyValue,
+        subStatus,
+        node,
+        workspace,
+        theme,
+      ),
     )
-
-    subProperties.push(flatSubProperty)
   }
 
   return subProperties
@@ -351,15 +348,8 @@ function isInvalidExactStringValue(
   const isComboControl = controlType === "combo"
   const isImageProperty =
     basePropertyName === "source" || basePropertyName === "image"
-  const isBackgroundImageProperty =
-    basePropertyName === "image" && propertyPath.startsWith("background")
 
-  if (
-    isComboControl ||
-    isImageProperty ||
-    isBackgroundImageProperty ||
-    !basePropertyName
-  ) {
+  if (isComboControl || isImageProperty || !basePropertyName) {
     return false
   }
 
@@ -374,7 +364,7 @@ function isInvalidExactStringValue(
 /**
  * Create a flat property from property data
  */
-export function createFlatProperty(
+function createFlatProperty(
   propertyKey: string,
   propertyValue: unknown,
   status: PropertyStatus,
@@ -383,6 +373,7 @@ export function createFlatProperty(
   theme?: Theme,
   state?: NodeState,
   matchLock?: { displayValue: unknown } | null,
+  layerIndex: number = 0,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
   const isCompound = isCompoundProperty(propertyKey as PropertyKey)
@@ -404,7 +395,7 @@ export function createFlatProperty(
         getPropertiesSubjectId(node),
         workspace,
         theme,
-        0,
+        layerIndex,
         state,
       )
     } catch {
@@ -426,13 +417,7 @@ export function createFlatProperty(
     }
   } else {
     try {
-      actualValue = coreFormatValue(
-        propertyKey,
-        propertyValue,
-        getPropertiesSubjectId(node),
-        workspace,
-        theme,
-      )
+      actualValue = coreFormatValue(propertyValue, theme)
     } catch {
       actualValue = UNKNOWN_DISPLAY
       hasError = true
@@ -473,7 +458,7 @@ export function createFlatProperty(
     isSubProperty: propertyKey.includes(".") && !isCompound && !isShorthand,
     propertyType: getPropertyCategory(propertyKey) || "atomic",
     status: finalStatus,
-    icon: registryEntry?.icon || "seldon-token",
+    icon: registryEntry?.icon || THEME_TOKEN_ICON,
     isDimmed: !!matchLock,
   }
 }
@@ -532,7 +517,7 @@ function resolveMatchSiblingLock(
   return { displayValue: displayValue ?? EMPTY_VALUE }
 }
 
-export function createFlatSubProperty(
+function createFlatSubProperty(
   propertyKey: string,
   subKey: string,
   subValue: unknown,
@@ -559,58 +544,39 @@ export function createFlatSubProperty(
       subValue.type === ValueType.COMPUTED &&
       !facetAllowsAuthoredComputed(subPropertyPath))
 
+  const isInvalidExact = isInvalidExactStringValue(
+    subPropertyPath,
+    subValue,
+    subRegistryEntry?.control,
+    theme,
+  )
+
+  let actualValue = UNKNOWN_VALUE
+  let formatFailed = false
+  try {
+    actualValue = coreFormatValue(subValue, theme)
+  } catch {
+    actualValue = UNKNOWN_DISPLAY
+    formatFailed = true
+  }
+  if (!formatFailed && isInvalidExact) {
+    actualValue = (subValue as Record<string, unknown>).value as string
+  }
+
   return {
     key: subPropertyPath,
     propertyType: "atomic", // Sub-properties are always atomic
     label: createSubPropertyLabel(propertyKey, subKey, subRegistryEntry?.label),
-    icon: subRegistryEntry?.icon || "seldon-token",
+    icon: subRegistryEntry?.icon || THEME_TOKEN_ICON,
     value: subValue || EMPTY_VALUE,
-    actualValue: (() => {
-      let hasError = false
-      let actualValue = "unknown"
-
-      try {
-        actualValue = coreFormatValue(
-          subPropertyPath,
-          subValue,
-          getPropertiesSubjectId(node),
-          workspace,
-          theme,
-        )
-      } catch {
-        actualValue = "Error"
-        hasError = true
-      }
-
-      if (
-        !hasError &&
-        isInvalidExactStringValue(
-          subPropertyPath,
-          subValue,
-          subRegistryEntry?.control,
-          theme,
-        )
-      ) {
-        hasError = true
-        actualValue = (subValue as Record<string, unknown>).value as string
-      }
-
-      return actualValue
-    })(),
+    actualValue,
     valueType: getValueType(subValue),
     controlType: subRegistryEntry?.control,
     isCompound: false,
     isShorthand: false,
     isSubProperty: true,
     isDimmed: !!isDimmed,
-    status: isInvalidExactStringValue(
-      subPropertyPath,
-      subValue,
-      subRegistryEntry?.control,
-      theme,
-    )
-      ? "error"
-      : status,
+    status: isInvalidExact ? "error" : status,
   }
 }
 
@@ -697,66 +663,6 @@ function getSubProperties(
 }
 
 /**
- * Builds the parent row for an upper paint layer (index >= 1). It mirrors the
- * index-0 compound row: a preset combo (when the property has theme presets)
- * plus expandable facet children. `layerIndex` lets the commit target this slot
- * and leave the other layers intact.
- */
-function buildLayerParentFlatProperty(
-  propertyKey: LayeredPaintKey,
-  index: number,
-  label: string,
-  layerValue: unknown,
-  node: Variant | Instance | Board,
-  workspace: Workspace,
-  propertyStatus: Record<string, PropertyStatus>,
-  theme?: Theme,
-  state?: NodeState,
-): FlatProperty {
-  const registryEntry = getPropertyRegistryEntry(propertyKey)
-  const usesPresetPicker = hasCompoundSelectorCombo(
-    propertyKey,
-    theme,
-    workspace,
-  )
-
-  // Core resolves the compound display per layer (preset name / "Custom" /
-  // "None"), the same path the index-0 row uses, so upper layers stay 1:1.
-  let actualValue = ""
-  try {
-    actualValue = coreFormatCompoundDisplay(
-      propertyKey,
-      getPropertiesSubjectId(node),
-      workspace,
-      theme,
-      index,
-      state,
-    )
-  } catch {
-    actualValue = ""
-  }
-
-  const parentStatus =
-    propertyStatus[layeredParentPath(propertyKey, index)] ?? "unset"
-
-  return {
-    key: layeredParentPath(propertyKey, index),
-    label,
-    value: layerValue || EMPTY_VALUE,
-    actualValue,
-    valueType: getValueType(layerValue),
-    controlType: usesPresetPicker ? "combo" : registryEntry?.control,
-    isCompound: true,
-    isShorthand: false,
-    isSubProperty: false,
-    propertyType: "compound",
-    status: parentStatus,
-    icon: registryEntry?.icon || "seldon-token",
-    layerIndex: index,
-  }
-}
-
-/**
  * Emits one parent row plus facet children for every paint layer of a layered
  * property. Rows come out in reverse index order, so the highest index renders
  * at the top and index 0 (the bottom layer) renders last. Labels are positional
@@ -813,20 +719,25 @@ function flattenLayeredPaintProperty(
         ),
       )
     } else {
+      // An upper paint layer (index >= 1) mirrors the index-0 compound row: a
+      // preset combo plus expandable facet children. Its key and `layerIndex`
+      // address the slot so the commit leaves the other layers intact.
       const layerValue = getCompoundLayerValue(rawArray, i) || EMPTY_VALUE
-      out.push(
-        buildLayerParentFlatProperty(
-          propertyKey,
-          i,
-          `${baseLabel} ${i + 1}`,
-          layerValue,
-          node,
-          workspace,
-          propertyStatus,
-          theme,
-          state,
-        ),
+      const parent = createFlatProperty(
+        propertyKey,
+        layerValue,
+        propertyStatus[layeredParentPath(propertyKey, i)] ?? "unset",
+        node,
+        workspace,
+        theme,
+        state,
+        null,
+        i,
       )
+      parent.key = layeredParentPath(propertyKey, i)
+      parent.label = `${baseLabel} ${i + 1}`
+      parent.layerIndex = i
+      out.push(parent)
       out.push(
         ...getSubProperties(
           propertyKey,
@@ -1050,8 +961,8 @@ export function flattenNodeProperties(
         workspace,
         node,
         propertyStatus,
+        mergedProperties,
         theme,
-        mergedProperties, // Pass merged properties to avoid re-calling getNodePropertiesWithStatus
       )
       properties.push(...subProperties)
     }

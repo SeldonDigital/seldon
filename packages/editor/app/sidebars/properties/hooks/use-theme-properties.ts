@@ -105,6 +105,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     setCoreFontSize,
     setBaseColor,
     setHarmony,
+    setColorMode,
     setColorValue,
     setComputedValue,
     setFontFamilyValue,
@@ -129,11 +130,15 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
       if (key === "modulation.baseFontSize") {
-        setCoreFontSize(Number(newValue))
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) return
+        setCoreFontSize(numericValue)
         return
       }
       if (key === "modulation.baseSize") {
-        setCoreSize(Number(newValue))
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) return
+        setCoreSize(numericValue)
         return
       }
 
@@ -155,6 +160,23 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
           | "grayPoint"
           | "blackPoint"
           | "bleed"
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) {
+          console.warn(`Invalid numeric value for ${key}: ${newValue}`)
+          return
+        }
+        setColorValue(colorKey, numericValue)
+        return
+      }
+
+      // Display Mode group: mode plus the chroma/lightness shifts applied to the
+      // derived opposite-mode swatches.
+      if (key === "displayMode.mode") {
+        setColorMode(newValue === "dark" ? "dark" : "light")
+        return
+      }
+      if (key.startsWith("displayMode.")) {
+        const colorKey = key.split(".")[1] as "chromaChange" | "lightnessChange"
         const numericValue = parseNumericInput(newValue)
         if (numericValue === null) {
           console.warn(`Invalid numeric value for ${key}: ${newValue}`)
@@ -204,9 +226,13 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
 
-      // Swatch values are stored as HSL objects on the swatch cell
+      // Swatch values are stored as HSL objects on the swatch cell. Swatch rows
+      // nest under a group: `swatch.<group>.<id>`, so the id is the last segment.
       if (key.startsWith("swatch.")) {
-        const swatchId = key.split(".")[1] as ThemeCustomSwatchId
+        const swatchId = key
+          .split(".")
+          .slice(2)
+          .join(".") as ThemeCustomSwatchId
         setSwatchValue(swatchId, parseHSLString(toHSLString(newValue)))
         return
       }
@@ -281,6 +307,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       setCoreFontSize,
       setBaseColor,
       setHarmony,
+      setColorMode,
       setColorValue,
       setComputedValue,
       setFontFamilyValue,

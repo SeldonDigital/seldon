@@ -1,8 +1,4 @@
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { BooleanValue } from "../shared/option/boolean"
-
-export type WrapTextValue = EmptyValue | BooleanValue
 
 export const wrapTextSchema: PropertySchema = {
   name: "wrapText",
