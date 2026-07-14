@@ -285,12 +285,12 @@ function DragDropZone({
     onCanvasTrackingLeave?.()
   }
 
-  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     if (isButtonTarget(event)) return
     onClick?.(event)
   }
 
-  const handleDoubleClick = (event: MouseEvent<HTMLDivElement>) => {
+  const handleDoubleClick = (event: MouseEvent<HTMLElement>) => {
     if (isButtonTarget(event)) return
     onDoubleClick?.(event)
   }

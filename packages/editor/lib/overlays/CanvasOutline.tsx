@@ -1,4 +1,5 @@
 import { CSSProperties } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 
 interface CanvasOutlineProps {
   style: CSSProperties
@@ -6,5 +7,5 @@ interface CanvasOutlineProps {
 
 /** Positioned outline box for selection, hover, and wireframe overlays. */
 export function CanvasOutline({ style }: CanvasOutlineProps) {
-  return <div style={style} />
+  return <Frame style={style} />
 }

@@ -1,3 +1,6 @@
+import { CSSProperties } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
+
 interface SwatchDotProps {
   color: string
   index: number
@@ -18,18 +21,20 @@ export function SwatchDot({
   index,
   isSelected = false,
 }: SwatchDotProps) {
+  const dotStyle: CSSProperties = {
+    zIndex: 5 - index,
+    display: "block",
+    height: "0.75rem",
+    width: "0.75rem",
+    borderRadius: "9999px",
+    backgroundColor: color,
+    marginRight: getSwatchMarginRight(index, isSelected),
+  }
   return (
-    <span
+    <Frame
+      wrapperElement="span"
       className="shadow-dieter-rams-button"
-      style={{
-        zIndex: 5 - index,
-        display: "block",
-        height: "0.75rem",
-        width: "0.75rem",
-        borderRadius: "9999px",
-        backgroundColor: color,
-        marginRight: getSwatchMarginRight(index, isSelected),
-      }}
+      style={dotStyle}
     />
   )
 }

@@ -1,13 +1,14 @@
 import { CSSProperties, MouseEvent, ReactNode, Ref } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 
 interface PlacementZoneSurfaceProps {
   style?: CSSProperties
-  ref?: Ref<HTMLDivElement>
+  ref?: Ref<HTMLElement>
   dataTestId?: string
   onMouseEnter?: () => void
   onMouseLeave?: () => void
-  onClick?: (event: MouseEvent<HTMLDivElement>) => void
-  onDoubleClick?: (event: MouseEvent<HTMLDivElement>) => void
+  onClick?: (event: MouseEvent<HTMLElement>) => void
+  onDoubleClick?: (event: MouseEvent<HTMLElement>) => void
   children?: ReactNode
 }
 
@@ -26,7 +27,7 @@ export function PlacementZoneSurface({
   children,
 }: PlacementZoneSurfaceProps) {
   return (
-    <div
+    <Frame
       ref={ref}
       style={style}
       data-testid={dataTestId}
@@ -36,6 +37,6 @@ export function PlacementZoneSurface({
       onDoubleClick={onDoubleClick}
     >
       {children}
-    </div>
+    </Frame>
   )
 }

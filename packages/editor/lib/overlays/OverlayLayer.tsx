@@ -1,4 +1,5 @@
 import { CSSProperties, ReactNode } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 
 interface OverlayLayerProps {
   style?: CSSProperties
@@ -9,5 +10,6 @@ const baseStyle: CSSProperties = { position: "absolute", inset: 0 }
 
 /** Edge-to-edge overlay layer. Additional style merges over the inset base. */
 export function OverlayLayer({ style, children }: OverlayLayerProps) {
-  return <div style={{ ...baseStyle, ...style }}>{children}</div>
+  const layerStyle = { ...baseStyle, ...style }
+  return <Frame style={layerStyle}>{children}</Frame>
 }

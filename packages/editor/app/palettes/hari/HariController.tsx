@@ -2,7 +2,7 @@
 
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
 import { type MenuEntry, MenuController } from "@lib/menus"
-import { WindowOverlay } from "@lib/overlays/WindowOverlay"
+import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
 import type { ThinkingLevelOption } from "@seldon/ai"
 import {
   type CSSProperties,

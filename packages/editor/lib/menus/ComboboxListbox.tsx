@@ -14,6 +14,7 @@ import { createPortal } from "react-dom"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
+import { Frame } from "@seldon/components/frames/Frame"
 import { Listbox } from "@seldon/components/parts/Listbox"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
@@ -154,16 +155,16 @@ export function ComboboxListbox({
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
-    <div
+    <Frame
       data-theme={chromeTheme}
       data-mode={resolvedMode}
       style={themeScopeStyle}
     >
-      <div onClick={handleClose} style={backdropStyle} />
+      <Frame onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}
       </Listbox>
-    </div>,
+    </Frame>,
     document.body,
   )
 }

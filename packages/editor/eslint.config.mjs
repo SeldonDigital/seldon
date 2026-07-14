@@ -4,7 +4,7 @@ import tseslint from "typescript-eslint"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =
-  "app/ should render Views only. Move raw DOM markup into a reusable View (seldon/ for design components, lib/ for editor chrome) and consume it from there."
+  "app/ and lib/ should render Views only. Move raw DOM markup into a reusable View (seldon/ for design components, lib/ for editor chrome), or mark a genuinely hand-authored view as *.bespoke.*, and consume it from there."
 
 export default defineConfig([
   globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
@@ -68,12 +68,12 @@ export default defineConfig([
       "no-restricted-imports": "off",
     },
   },
-  // View boundary: app/ views are binding shells. A view that authors raw DOM
-  // markup or framer-motion markup is bespoke and must be named *.bespoke.*.
-  // Hooks, helpers, and use-* modules are logic, not views, so they are exempt.
-  // Bespoke views opt out entirely.
+  // View boundary: app/ and lib/ views are binding shells. A view that authors
+  // raw DOM markup or framer-motion markup is bespoke and must be named
+  // *.bespoke.*. Hooks, helpers, and use-* modules are logic, not views, so they
+  // are exempt. Bespoke views opt out entirely.
   {
-    files: ["app/**/*.tsx"],
+    files: ["app/**/*.tsx", "lib/**/*.tsx"],
     ignores: [
       "**/*.bespoke.*",
       "**/hooks/**",

@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: hand-authored SVG icon asset. Raw svg markup, not a generated
+// View.
 import { CSSProperties, SVGProps } from "react"
 
 interface Props extends Omit<SVGProps<SVGSVGElement>, "color"> {

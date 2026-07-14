@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: hand-authored framer-motion floating window (draggable,
+// resizable) built on motion.div. No generated component covers this chrome.
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
 import { CSSProperties, ReactNode } from "react"
 import { createPortal } from "react-dom"

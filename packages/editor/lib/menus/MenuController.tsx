@@ -13,6 +13,7 @@ import { createPortal } from "react-dom"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { MenuItem } from "@seldon/components/elements/MenuItem"
+import { Frame } from "@seldon/components/frames/Frame"
 import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
@@ -312,7 +313,7 @@ function FloatingMenu({
   }
 
   return createPortal(
-    <div
+    <Frame
       ref={menuRef}
       tabIndex={-1}
       style={containerStyle}
@@ -351,7 +352,7 @@ function FloatingMenu({
           )
         })}
       </Menu>
-    </div>,
+    </Frame>,
     document.body,
   )
 }

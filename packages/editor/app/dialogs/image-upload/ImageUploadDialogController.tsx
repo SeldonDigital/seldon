@@ -1,6 +1,6 @@
 "use client"
 
-import { WindowOverlay } from "@lib/overlays/WindowOverlay"
+import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
 import {
   CSSProperties,
   PointerEvent,
