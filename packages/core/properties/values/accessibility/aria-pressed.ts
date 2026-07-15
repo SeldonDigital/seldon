@@ -5,11 +5,10 @@ import { AriaTristate } from "./aria-tristate"
 export const ariaPressedSchema: PropertySchema = {
   name: "ariaPressed",
   description: "Pressed state for toggle button roles",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(AriaTristate) as string[]).includes(value),

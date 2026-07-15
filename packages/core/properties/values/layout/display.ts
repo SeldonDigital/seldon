@@ -19,30 +19,23 @@ export enum Display {
   EXCLUDE = "exclude",
 }
 
-/** Stores show, hide, or exclude as a freeform exact value from the Display enum. */
-export interface DisplayExactValue {
-  type: ValueType.EXACT
-  value: Display
-}
-
 /** Picks show, hide, or exclude from the Display enum. */
 export interface DisplayOptionValue {
   type: ValueType.OPTION
   value: Display
 }
 
-/** Unset, a freeform exact value, or a picked option from Display. */
-export type DisplayValue = EmptyValue | DisplayExactValue | DisplayOptionValue
+/** Unset or a picked option from Display. */
+export type DisplayValue = EmptyValue | DisplayOptionValue
 
 export const displaySchema: PropertySchema = {
   name: "display",
   description:
     "Controls whether the element shows, stays hidden, or is excluded from the tree.",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Display) as string[]).includes(value),

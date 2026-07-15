@@ -26,11 +26,10 @@ export type AriaCurrentValue = EmptyValue | AriaCurrentOptionValue
 export const ariaCurrentSchema: PropertySchema = {
   name: "ariaCurrent",
   description: "Marks the current item within a set of related items",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(AriaCurrent) as string[]).includes(value),

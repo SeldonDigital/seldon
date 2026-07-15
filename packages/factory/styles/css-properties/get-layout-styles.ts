@@ -1,10 +1,4 @@
-import {
-  Direction,
-  Gap,
-  Orientation,
-  Properties,
-  ValueType,
-} from "@seldon/core"
+import { Gap, Orientation, Properties, ValueType } from "@seldon/core"
 import { modulate } from "@seldon/core/helpers/math/modulate"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
@@ -52,7 +46,6 @@ export function getLayoutStyles({
 }): CSSObject {
   const styles: CSSObject = {}
 
-  const direction = resolveValue(nodeProperties.direction)
   const wrapChildren = resolveValue(nodeProperties.wrapChildren)
   const orientation = resolveValue(nodeProperties.orientation)
   const align = resolveValue(nodeProperties.align)
@@ -67,14 +60,13 @@ export function getLayoutStyles({
   // gap value might be computed, so we need to use the computed "computedProperties" object otherwise generating gap will fail
   const gap = resolveValue(computedProperties.gap)
 
-  const isRtl =
-    direction?.type === ValueType.OPTION && direction.value === Direction.RTL
-
   const isGrid = layoutMode === "grid"
 
-  // Nine-position alignment maps. Grid reuses the horizontal map: alignItems
-  // controls the block axis, justifyItems the inline axis.
-  const horizontalLTRLayout = {
+  // Nine-position alignment maps emitting logical start/end. A cascaded
+  // direction: rtl flips these along the inline axis, so a named position such
+  // as "left" mirrors to the right under RTL. Grid reuses the horizontal map:
+  // alignItems controls the block axis, justifyItems the inline axis.
+  const horizontalLayout = {
     auto: { align: "normal", justify: "normal" },
     "top-left": { align: "start", justify: "start" },
     left: { align: "center", justify: "start" },
@@ -87,20 +79,7 @@ export function getLayoutStyles({
     "bottom-right": { align: "end", justify: "end" },
   } as const
 
-  const horizontalRTLLayout = {
-    auto: { align: "normal", justify: "normal" },
-    "top-right": { align: "start", justify: "start" },
-    left: { align: "center", justify: "end" },
-    "bottom-right": { align: "end", justify: "start" },
-    "top-center": { align: "start", justify: "center" },
-    center: { align: "center", justify: "center" },
-    "bottom-center": { align: "end", justify: "center" },
-    "top-left": { align: "start", justify: "end" },
-    right: { align: "center", justify: "start" },
-    "bottom-left": { align: "end", justify: "end" },
-  } as const
-
-  const verticalLTRLayout = {
+  const verticalLayout = {
     auto: { align: "normal", justify: "normal" },
     "top-left": { align: "start", justify: "start" },
     left: { align: "start", justify: "center" },
@@ -111,19 +90,6 @@ export function getLayoutStyles({
     "top-right": { align: "end", justify: "start" },
     right: { align: "end", justify: "center" },
     "bottom-right": { align: "end", justify: "end" },
-  } as const
-
-  const verticalRTLLayout = {
-    auto: { align: "normal", justify: "normal" },
-    "top-right": { align: "start", justify: "start" },
-    left: { align: "end", justify: "center" },
-    "bottom-right": { align: "start", justify: "end" },
-    "top-center": { align: "center", justify: "start" },
-    center: { align: "center", justify: "center" },
-    "bottom-center": { align: "center", justify: "end" },
-    "top-left": { align: "end", justify: "start" },
-    right: { align: "start", justify: "center" },
-    "bottom-left": { align: "end", justify: "end" },
   } as const
 
   if (isGrid) {
@@ -140,7 +106,7 @@ export function getLayoutStyles({
     }
 
     if (align && !truncatesText) {
-      const map = isRtl ? horizontalRTLLayout : horizontalLTRLayout
+      const map = horizontalLayout
       styles.alignItems = map[align.value as keyof typeof map]?.align
       styles.justifyItems = map[align.value as keyof typeof map]?.justify
     }
@@ -161,12 +127,8 @@ export function getLayoutStyles({
 
       const map =
         orientationValue === Orientation.HORIZONTAL
-          ? isRtl
-            ? horizontalRTLLayout
-            : horizontalLTRLayout
-          : isRtl
-            ? verticalRTLLayout
-            : verticalLTRLayout
+          ? horizontalLayout
+          : verticalLayout
 
       styles.display = "flex"
       styles.alignItems = map[align.value as keyof typeof map]?.align

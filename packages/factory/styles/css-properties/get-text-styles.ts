@@ -17,6 +17,22 @@ import { getCssValue } from "./get-css-value"
 import { getThemeTokenVarReference } from "./get-theme-token-reference"
 import { CSSObject } from "./types"
 
+/**
+ * Physical text-align choices mapped to logical CSS values. left and right
+ * become start and end so a cascaded direction flips them, while center and
+ * justify are direction-neutral.
+ */
+const LOGICAL_TEXT_ALIGN: Record<
+  TextAlign,
+  "start" | "end" | "center" | "justify"
+> = {
+  [TextAlign.AUTO]: "start",
+  [TextAlign.LEFT]: "start",
+  [TextAlign.RIGHT]: "end",
+  [TextAlign.CENTER]: "center",
+  [TextAlign.JUSTIFY]: "justify",
+}
+
 export function getTextStyles({
   properties,
   computeContext,
@@ -176,9 +192,9 @@ export function getTextStyles({
   }
 
   if (textAlign && properties.textAlign) {
-    // Using start ensures that the text is aligned to the left in LTR and right in RTL
-    styles.textAlign =
-      textAlign.value === TextAlign.AUTO ? "start" : textAlign.value
+    // Emit logical values so a cascaded direction: rtl mirrors alignment: left
+    // and right map to start and end, which resolve left in LTR and right in RTL.
+    styles.textAlign = LOGICAL_TEXT_ALIGN[textAlign.value as TextAlign]
   }
 
   // Only apply if font.letterSpacing is defined in the schema

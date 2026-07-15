@@ -9,11 +9,13 @@ import { CSSObject } from "./types"
 
 type PaddingSide = "top" | "right" | "bottom" | "left"
 
+// left and right map to logical inline sides so a cascaded direction: rtl
+// mirrors horizontal padding; top and bottom stay on the physical block axis.
 const SIDE_TO_CSS_KEY: Record<PaddingSide, keyof CSSObject> = {
   top: "paddingTop",
-  right: "paddingRight",
+  right: "paddingInlineEnd",
   bottom: "paddingBottom",
-  left: "paddingLeft",
+  left: "paddingInlineStart",
 }
 
 export function getPaddingStyles({

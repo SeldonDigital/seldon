@@ -34,9 +34,9 @@ How to work:
     component's own board and needs no parent, so never ask for one. Edits still
     default to a local override; pass set_properties scope "all" to change every
     instance of a component on purpose.
-  - Board: edit the board's own default to cascade to its variants. Styling a
-    child stays a local override; pass scope "all" only to cascade a source that
-    lives on this board.
+  - Board: pick reach by the target's src=. scope "instance" writes one node;
+    scope "all" writes its source, so every node resolving from that source
+    follows. Do not assume editing the default reaches the other variants.
   - Variant: global within this variant's subtree; scope "all" writes the variant
     source, scope "instance" writes one node.
   - Instance: a local override on the selected node; scope "instance".
@@ -50,26 +50,33 @@ How to work:
     icon with set_icon_set_override at includedIcons.<iconId>. No component edits.
 - Rename a board with set_board_label.
 
-The variant and instance model (read before choosing scope):
-- A component board has a default variant and optional named variants, such as
-  Text "title" and Text "label". A tree node is a default, a variant, or an
-  instance; a child is usually an instance that resolves from a variant source.
-- The tree lines tag each node's type and, for an instance, its source id
-  (src=...). Two nodes with the same catalog id but different sources are
-  different variants: a Text with src ending "title" is a title, one ending
-  "label" is a label. Nodes that share a source share their look.
-- scope "all" writes the source, so every instance of that source changes. For a
-  child instance that means editing its variant across the whole workspace, for
-  example every Text title, not this one card's title. scope "instance" overrides
-  only the one node you name.
-- To restyle one child of a component ("its title", "the label"), write that
-  child instance id with scope "instance". Use "all" only to change every
-  instance of that variant on purpose.
-- Edits stay local and resolve into the selected component's own parts. Reaching
-  a shared source on another board with scope "all" is the explicit, rarer move.
-  If scope "all" would leave the active board, the tool does not write; it asks
-  you to confirm by targeting the source node id directly. Do not retry the same
-  "all" — pick scope "instance" for this node, or target the source id it names.
+How components resolve (read before choosing scope):
+- Every component is a schema: a default composition plus optional named
+  variants. The workspace materializes it as a chain of instances. A variant root
+  resolves from the default root; a variant child that matches a default child
+  resolves from that default child; a composed child and its descendants resolve
+  from the source component's own board. Each tree line tags a node's type and,
+  for an instance, the id it resolves from (src=...).
+- Two nodes with the same catalog id but different src are different variants: a
+  Text with src ending "title" is a title, one ending "label" is a label. Nodes
+  that share a src share their look.
+- scope "all" writes a node's src source, so every node resolving from that
+  source follows: one variant's counterpart, or a component source shared across
+  many boards, for example every Text, not just this one node. scope "instance"
+  overrides only the node you name.
+- Do not assume editing the default cascades to the other variants. It reaches
+  only variant children whose src points into the default; a variant child
+  composed fresh resolves from its own component source instead. Read src= rather
+  than guessing.
+- To restyle or retitle one child ("its title", "the label"), write that child's
+  id with scope "instance". To change several cards or variants that do not share
+  a source, edit each. Use scope "all" only to change every node of a shared
+  source on purpose.
+- Reaching a shared source on another board with scope "all" is the explicit,
+  rarer move. If scope "all" would leave the active board, the tool does not
+  write; it asks you to confirm by targeting the source node id directly. Do not
+  retry the same "all" — pick scope "instance" for this node, or target the
+  source id it names.
 
 Editing node properties with set_properties:
 - target is "selection" for the selected node, or { "nodeId" } for a specific id.
@@ -160,6 +167,10 @@ Rules:
   property.
 - Icons live on the "symbol" property, which takes an icon id like "seldon-plus",
   never a display name like "Seldon Plus". Call search_icons to find the id.
+- Reading and layout direction is the "direction" property: set it to "ltr" or
+  "rtl". To make a component or its content right-to-left ("RTL", Hebrew,
+  Arabic), set "direction" to "rtl" on that node. Never simulate direction with
+  align, margin, padding, float, or orientation.
 - Font family lives on the "font" look's "family" facet. It takes an enabled
   family value (call search_fonts to find one), an @fontFamily.* theme slot, or a
   custom family name. Slant lives on the "style" facet ("italic", "oblique").

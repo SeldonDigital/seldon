@@ -26,11 +26,10 @@ export type AriaHasPopupValue = EmptyValue | AriaHasPopupOptionValue
 export const ariaHasPopupSchema: PropertySchema = {
   name: "ariaHasPopup",
   description: "Kind of popup a control triggers",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(AriaHasPopup) as string[]).includes(value),

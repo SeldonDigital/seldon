@@ -12,9 +12,10 @@ import { migrateV10GradientKinds } from "./steps/migrate-00010-gradient-kinds"
 import { migrateV11PositionDropDimensionOrdinal } from "./steps/migrate-00011-position-drop-dimension-ordinal"
 import { migrateV12DialogToPanels } from "./steps/migrate-00012-dialog-to-panels"
 import { migrateV13BooleanClipWrapChildren } from "./steps/migrate-00013-boolean-clip-wrapchildren"
+import { migrateV14EnumBooleanOption } from "./steps/migrate-00014-enum-boolean-option"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 13
+export const CURRENT_WORKSPACE_VERSION = 14
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -32,6 +33,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   11: migrateV11PositionDropDimensionOrdinal,
   12: migrateV12DialogToPanels,
   13: migrateV13BooleanClipWrapChildren,
+  14: migrateV14EnumBooleanOption,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {

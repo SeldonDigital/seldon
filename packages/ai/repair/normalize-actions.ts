@@ -39,7 +39,11 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * right schema. `resolved` is false when the key could not be mapped to a schema
  * path, so an exact fallback is flagged as a distinct, higher-suspicion repair:
  * with no schema to consult, options and theme tags are invisible, so the exact
- * shape may be wrong. Already-tagged and non-scalar values pass through.
+ * shape may be wrong. A value already tagged `exact` whose scalar matches one
+ * of the property's option keywords is re-tagged to `option`, so a closed-set
+ * property a model emits as `{ type: "exact", value: "rtl" }` passes the now
+ * strict option-only validation. Other already-tagged and non-scalar values
+ * pass through.
  */
 function coerceLeaf(
   schemaKey: string,
@@ -48,7 +52,24 @@ function coerceLeaf(
   actionType: string,
   repairs: ActionRepair[],
 ): unknown {
-  if (isTaggedValue(value)) return value
+  if (isTaggedValue(value)) {
+    const tagged = value as { type: unknown; value: unknown }
+    if (
+      tagged.type === "exact" &&
+      (typeof tagged.value === "string" ||
+        typeof tagged.value === "number" ||
+        typeof tagged.value === "boolean") &&
+      getPresetOptions(schemaKey).some((option) => option === tagged.value)
+    ) {
+      repairs.push({
+        actionType,
+        propertyKey: schemaKey,
+        reason: "re-tagged an exact value into an option value",
+      })
+      return { ...tagged, type: "option" }
+    }
+    return value
+  }
 
   if (typeof value === "string" && value.startsWith("@")) {
     const tag = themeRefTag(schemaKey)

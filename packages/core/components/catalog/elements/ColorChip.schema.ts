@@ -58,11 +58,11 @@ export const schema = {
       value: "@gap.tight",
     },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     clip: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
     columnStart: { type: Sdn.ValueType.EMPTY, value: null },
@@ -169,7 +169,7 @@ export const schema = {
     role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
   },
@@ -201,7 +201,7 @@ export const schema = {
             },
           },
           wrapText: {
-            type: Sdn.ValueType.EXACT,
+            type: Sdn.ValueType.OPTION,
             value: false,
           },
         },
@@ -232,7 +232,7 @@ export const schema = {
             },
           },
           wrapText: {
-            type: Sdn.ValueType.EXACT,
+            type: Sdn.ValueType.OPTION,
             value: false,
           },
         },
@@ -263,7 +263,7 @@ export const schema = {
             },
           },
           wrapText: {
-            type: Sdn.ValueType.EXACT,
+            type: Sdn.ValueType.OPTION,
             value: false,
           },
         },

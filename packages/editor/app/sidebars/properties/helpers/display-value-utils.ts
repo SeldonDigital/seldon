@@ -56,10 +56,13 @@ function formatComputedDisplayValue(
 }
 
 /**
- * Formats exact enum value for display using option names
- * Handles EXACT enum values (like Harmony) that have options
+ * Formats an enum value for display using its option names, so a stored key like
+ * "rtl" shows as "Right to Left" instead of a title-cased raw value. Handles both
+ * EXACT enums (like Harmony) and OPTION enums (like direction), since a closed
+ * set can be stored under either type. Returns null when there is no options list
+ * or no matching option, so the caller falls back to core formatting.
  */
-function formatExactEnumDisplayValue(
+function formatEnumOptionDisplayValue(
   propertyValue: Value,
   options: Option[] | OptionGroup[] | undefined,
 ): string | null {
@@ -67,7 +70,8 @@ function formatExactEnumDisplayValue(
     !propertyValue ||
     typeof propertyValue !== "object" ||
     !("type" in propertyValue) ||
-    propertyValue.type !== ValueType.EXACT ||
+    (propertyValue.type !== ValueType.EXACT &&
+      propertyValue.type !== ValueType.OPTION) ||
     !options ||
     options.length === 0
   ) {
@@ -100,9 +104,9 @@ export function getDisplayValue(
   const computedDisplay = formatComputedDisplayValue(propertyValue, options)
   if (computedDisplay) return computedDisplay
 
-  // For exact enum values (like Harmony), try option matching
-  const exactEnumDisplay = formatExactEnumDisplayValue(propertyValue, options)
-  if (exactEnumDisplay) return exactEnumDisplay
+  // For enum values (EXACT or OPTION, like Harmony or direction), match names
+  const enumOptionDisplay = formatEnumOptionDisplayValue(propertyValue, options)
+  if (enumOptionDisplay) return enumOptionDisplay
 
   // For theme values, try option matching first (UI optimization)
   // This allows UI-specific option names to be used when available

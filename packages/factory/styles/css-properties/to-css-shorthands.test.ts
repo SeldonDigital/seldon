@@ -7,9 +7,9 @@ describe("toCSSShorthands", () => {
     expect(
       toCSSShorthands({
         paddingTop: "4px",
-        paddingRight: "4px",
+        paddingInlineEnd: "4px",
         paddingBottom: "4px",
-        paddingLeft: "4px",
+        paddingInlineStart: "4px",
       }),
     ).toEqual({ padding: "4px" })
   })
@@ -18,9 +18,9 @@ describe("toCSSShorthands", () => {
     expect(
       toCSSShorthands({
         marginTop: "8px",
-        marginRight: "8px",
+        marginInlineEnd: "8px",
         marginBottom: "8px",
-        marginLeft: "8px",
+        marginInlineStart: "8px",
       }),
     ).toEqual({ margin: "8px" })
   })
@@ -34,9 +34,9 @@ describe("toCSSShorthands", () => {
   it("does not collapse when sides differ", () => {
     const input = {
       paddingTop: "4px",
-      paddingRight: "8px",
+      paddingInlineEnd: "8px",
       paddingBottom: "4px",
-      paddingLeft: "8px",
+      paddingInlineStart: "8px",
     }
     expect(toCSSShorthands(input)).toEqual(input)
   })
@@ -44,7 +44,7 @@ describe("toCSSShorthands", () => {
   it("does not collapse when any side is undefined", () => {
     const input = {
       paddingTop: "4px",
-      paddingRight: "4px",
+      paddingInlineEnd: "4px",
       paddingBottom: "4px",
     }
     expect(toCSSShorthands(input)).toEqual(input)
@@ -55,9 +55,9 @@ describe("toCSSShorthands", () => {
       toCSSShorthands({
         padding: "2px",
         paddingTop: "4px",
-        paddingRight: "4px",
+        paddingInlineEnd: "4px",
         paddingBottom: "4px",
-        paddingLeft: "4px",
+        paddingInlineStart: "4px",
       }),
     ).toEqual({ padding: "2px" })
   })
@@ -95,9 +95,9 @@ describe("toCSSShorthands", () => {
   it("does not mutate the input object", () => {
     const input = {
       paddingTop: "4px",
-      paddingRight: "4px",
+      paddingInlineEnd: "4px",
       paddingBottom: "4px",
-      paddingLeft: "4px",
+      paddingInlineStart: "4px",
     }
     toCSSShorthands(input)
     expect(input.paddingTop).toBe("4px")

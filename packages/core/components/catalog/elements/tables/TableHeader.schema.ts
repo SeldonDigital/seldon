@@ -50,10 +50,10 @@ export const schema = {
       value: "@gap.tight",
     },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EXACT, value: false },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
     columns: { type: Sdn.ValueType.EMPTY, value: null },
     rows: { type: Sdn.ValueType.EMPTY, value: null },
     cellAlign: {
@@ -137,7 +137,7 @@ export const schema = {
     ],
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
   },

@@ -3,16 +3,17 @@ import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 
 import { CSSObject } from "./types"
 
+// Logical start/end so a cascaded direction: rtl mirrors cell text alignment.
 const alignmentStyles: Partial<Record<Align, CSSObject>> = {
-  [Align.TOP_LEFT]: { textAlign: "left", verticalAlign: "top" },
+  [Align.TOP_LEFT]: { textAlign: "start", verticalAlign: "top" },
   [Align.TOP_CENTER]: { textAlign: "center", verticalAlign: "top" },
-  [Align.TOP_RIGHT]: { textAlign: "right", verticalAlign: "top" },
-  [Align.CENTER_LEFT]: { textAlign: "left", verticalAlign: "middle" },
+  [Align.TOP_RIGHT]: { textAlign: "end", verticalAlign: "top" },
+  [Align.CENTER_LEFT]: { textAlign: "start", verticalAlign: "middle" },
   [Align.CENTER]: { textAlign: "center", verticalAlign: "middle" },
-  [Align.CENTER_RIGHT]: { textAlign: "right", verticalAlign: "middle" },
-  [Align.BOTTOM_LEFT]: { textAlign: "left", verticalAlign: "bottom" },
+  [Align.CENTER_RIGHT]: { textAlign: "end", verticalAlign: "middle" },
+  [Align.BOTTOM_LEFT]: { textAlign: "start", verticalAlign: "bottom" },
   [Align.BOTTOM_CENTER]: { textAlign: "center", verticalAlign: "bottom" },
-  [Align.BOTTOM_RIGHT]: { textAlign: "right", verticalAlign: "bottom" },
+  [Align.BOTTOM_RIGHT]: { textAlign: "end", verticalAlign: "bottom" },
 }
 
 export function getTableStyles({

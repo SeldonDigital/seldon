@@ -14,7 +14,7 @@ import {
   AutoPlayValue,
   BackgroundLayer,
   BoardCompound,
-  BooleanValue,
+  BooleanOptionValue,
   BorderCollapseValue,
   BorderCompound,
   BrightnessValue,
@@ -123,8 +123,8 @@ export type Properties = Partial<{
   padding: PaddingValue
   gap: GapValue | EmptyValue
   rotation: RotationValue | EmptyValue
-  wrapChildren: BooleanValue | EmptyValue
-  clip: BooleanValue | EmptyValue
+  wrapChildren: BooleanOptionValue | EmptyValue
+  clip: BooleanOptionValue | EmptyValue
   listStyleType: ListStyleTypeValue | EmptyValue
   listStylePosition: ListStylePositionValue | EmptyValue
   columns: ColumnCountValue | EmptyValue
@@ -154,7 +154,7 @@ export type Properties = Partial<{
   font: FontCompound
   textAlign: TextAlignValue | EmptyValue
   textDecoration: TextDecorationValue | EmptyValue
-  wrapText: BooleanValue | EmptyValue
+  wrapText: BooleanOptionValue | EmptyValue
   lines: LinesValue | EmptyValue
 
   shadow: ShadowCompound[]
@@ -163,7 +163,7 @@ export type Properties = Partial<{
 
   role: AriaRoleValue
   ariaLabel: ContentValue | EmptyValue
-  ariaHidden: BooleanValue | EmptyValue
+  ariaHidden: BooleanOptionValue | EmptyValue
   ariaDisabled: AriaDisabledValue
   ariaExpanded: AriaExpandedValue
   ariaSelected: AriaSelectedValue

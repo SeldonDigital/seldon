@@ -53,10 +53,10 @@ export const schema = {
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
-    clip: { type: Sdn.ValueType.EXACT, value: false },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
     background: [
       {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },

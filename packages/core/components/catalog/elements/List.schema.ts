@@ -44,7 +44,7 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     gap: { type: Sdn.ValueType.EMPTY, value: null },
-    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
+    wrapChildren: { type: Sdn.ValueType.OPTION, value: false },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     listStyleType: {
@@ -125,7 +125,7 @@ export const schema = {
       },
     ],
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
   default: {
     children: [

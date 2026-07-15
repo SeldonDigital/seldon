@@ -20,7 +20,6 @@ flowchart LR
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
 | `Display` | `layout/display.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
-| `DisplayExactValue` | `layout/display.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `DisplayOptionValue` | `layout/display.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `DisplayValue` | `layout/display.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `displaySchema` | `layout/display.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -34,7 +33,6 @@ flowchart LR
 | `symbolSchema` | `attributes/symbol.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `sourceSchema` | `attributes/source.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `ImageFit` | `shared/utilities/image-fit.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
-| `ImageFitExactValue` | `shared/utilities/image-fit.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `ImageFitOptionValue` | `shared/utilities/image-fit.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `ImageFitValue` | `shared/utilities/image-fit.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `imageFitSchema` | `shared/utilities/image-fit.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -68,7 +66,6 @@ flowchart LR
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
 | `Direction` | `layout/direction.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
-| `DirectionExactValue` | `layout/direction.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `DirectionOptionValue` | `layout/direction.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `DirectionValue` | `layout/direction.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `directionSchema` | `layout/direction.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -80,7 +77,6 @@ flowchart LR
 | `PositionSideValue` | `layout/position.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `positionSchema` | `layout/position.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `Orientation` | `layout/orientation.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
-| `OrientationExactValue` | `layout/orientation.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `OrientationOptionValue` | `layout/orientation.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `OrientationValue` | `layout/orientation.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `orientationSchema` | `layout/orientation.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -352,7 +348,6 @@ flowchart LR
 | `StringValue` | `shared/exact/string.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |
 | `ContentValue` | `shared/exact/string.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |
 | `InheritValue` | `shared/inherit/inherit.ts` | Tagged wire shape for unset or explicit inherit storage. Assigned on workspace overrides and merged before compute or export. |
-| `AlignExactValue` | `shared/option/align.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `AlignOptionValue` | `shared/option/align.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `BooleanValue` | `shared/option/boolean.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |
 | `BooleanOptionValue` | `shared/option/boolean.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |

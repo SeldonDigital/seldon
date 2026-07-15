@@ -20,7 +20,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    checked: { type: Sdn.ValueType.EXACT, value: false },
+    checked: { type: Sdn.ValueType.OPTION, value: false },
     buttonSize: {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@fontSize.medium",

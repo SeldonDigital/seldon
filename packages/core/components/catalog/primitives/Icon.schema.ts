@@ -54,7 +54,7 @@ export const schema = {
     role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
   },

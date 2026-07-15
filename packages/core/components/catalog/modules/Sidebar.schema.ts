@@ -58,11 +58,11 @@ export const schema = {
       value: Sdn.Gap.EVENLY_SPACED,
     },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     clip: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
     color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -162,7 +162,7 @@ export const schema = {
     role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.COMPLEMENTARY },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
   },

@@ -55,10 +55,10 @@ export const schema = {
     },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EXACT, value: false },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
     columnStart: { type: Sdn.ValueType.EMPTY, value: null },
     columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
     rowStart: { type: Sdn.ValueType.EMPTY, value: null },
@@ -149,7 +149,7 @@ export const schema = {
     role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
@@ -235,7 +235,7 @@ export const schema = {
           type: Sdn.ValueType.EXACT,
           value: { unit: Sdn.Unit.PERCENT, value: 35 },
         },
-        ariaDisabled: { type: Sdn.ValueType.EXACT, value: true },
+        ariaDisabled: { type: Sdn.ValueType.OPTION, value: true },
       },
     },
     {
@@ -261,7 +261,7 @@ export const schema = {
             },
           },
         ],
-        ariaSelected: { type: Sdn.ValueType.EXACT, value: true },
+        ariaSelected: { type: Sdn.ValueType.OPTION, value: true },
       },
     },
     {

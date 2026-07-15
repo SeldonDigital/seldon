@@ -18,16 +18,18 @@ export interface FontStyleOptionValue {
 /** Empty or one named font style keyword. */
 export type FontStyleValue = EmptyValue | FontStyleOptionValue
 
+// TODO: `oblique <angle>` (e.g. "oblique 10deg") is a real CSS value that needs
+// an `exact` string shape. It is not supported yet; add `exact` back with an
+// angle-aware validator when angled oblique lands. For now slant is the fixed
+// normal/italic/oblique option set only.
 /** Validates stored font style values. */
 export const fontStyleSchema: PropertySchema = {
   name: "fontStyle",
-  description:
-    "Sets slant from normal, italic, or oblique, or a custom CSS string.",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  description: "Sets slant from normal, italic, or oblique.",
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(FontStyle) as string[]).includes(value),

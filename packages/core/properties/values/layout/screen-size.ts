@@ -1,7 +1,6 @@
 import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
-import { StringValue } from "../shared/exact/string"
 import { InheritValue } from "../shared/inherit/inherit"
 
 /** Named device size bands for breakpoint-style layout. */
@@ -20,21 +19,16 @@ export interface ScreenSizeOptionValue {
   value: ScreenSize
 }
 
-/** Unset, inherited, a free-form exact string, or a named device band. */
-export type ScreenSizeValue =
-  | EmptyValue
-  | InheritValue
-  | StringValue
-  | ScreenSizeOptionValue
+/** Unset, inherited, or a named device band. */
+export type ScreenSizeValue = EmptyValue | InheritValue | ScreenSizeOptionValue
 
 export const screenSizeSchema: PropertySchema = {
   name: "screenSize",
   description: "Selects a named device size band for layout and preview.",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(ScreenSize) as string[]).includes(value),

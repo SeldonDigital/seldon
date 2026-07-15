@@ -10,10 +10,10 @@ import {
 import { getBackgroundSizeStyle } from "./get-background-size-style"
 
 describe("getBackgroundSizeStyle", () => {
-  it("maps a named fit stored as an exact string", () => {
+  it("maps a named fit stored as an option string", () => {
     expect(
       getBackgroundSizeStyle({
-        type: ValueType.EXACT,
+        type: ValueType.OPTION,
         value: ImageFit.COVER,
       } as unknown as SingleBackgroundSizeValue),
     ).toBe("cover")

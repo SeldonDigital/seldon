@@ -24,6 +24,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Placeholder text",
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,
@@ -161,7 +162,7 @@ export const schema = {
       value: Sdn.TextDecoration.NONE,
     },
     wrapText: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },

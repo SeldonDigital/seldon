@@ -57,11 +57,11 @@ export const schema = {
       value: "@gap.comfortable",
     },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     clip: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
     background: [

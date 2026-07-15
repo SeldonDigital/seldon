@@ -8,32 +8,22 @@ export enum Orientation {
   VERTICAL = "vertical",
 }
 
-/** Stores a horizontal or vertical orientation as a freeform exact value. */
-export interface OrientationExactValue {
-  type: ValueType.EXACT
-  value: Orientation
-}
-
 /** Picks horizontal or vertical layout as an option value. */
 export interface OrientationOptionValue {
   type: ValueType.OPTION
   value: Orientation
 }
 
-/** Unset, a freeform exact value, or a picked horizontal or vertical choice from Orientation. */
-export type OrientationValue =
-  | EmptyValue
-  | OrientationExactValue
-  | OrientationOptionValue
+/** Unset or a picked horizontal or vertical choice from Orientation. */
+export type OrientationValue = EmptyValue | OrientationOptionValue
 
 export const orientationSchema: PropertySchema = {
   name: "orientation",
   description: "Controls whether layout stacks horizontally or vertically.",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Orientation) as string[]).includes(value),

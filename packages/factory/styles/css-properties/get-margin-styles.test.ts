@@ -17,9 +17,9 @@ describe("getMarginStyles", () => {
     } as unknown as Properties
     expect(getMarginStyles({ properties, theme: defaultTheme })).toEqual({
       marginTop: "4px",
-      marginRight: "8px",
+      marginInlineEnd: "8px",
       marginBottom: "12px",
-      marginLeft: "16px",
+      marginInlineStart: "16px",
     })
   })
 
