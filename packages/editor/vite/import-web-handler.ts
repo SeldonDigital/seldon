@@ -19,9 +19,14 @@ export type ImportWebResponse = {
     dedupedCount: number
     matchedCount: number
     unmatchedCount: number
+    classifiedCount: number
     suggestions: string[]
   }
 }
+
+/** Local Ollama host and model, matching the AI agent's defaults. */
+const OLLAMA_HOST = process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434"
+const AI_MODEL = process.env.SELDON_AI_MODEL ?? "gpt-oss:20b"
 
 function toWireFile(file: FileToExport): WireFile {
   if (typeof file.content === "string") {
@@ -50,7 +55,11 @@ export async function runImportWebHandler(
     throw new Error("Url must start with http:// or https://.")
   }
 
-  const result = await runImportWeb(url)
+  // Classification is on by default and best-effort: the pipeline falls back to
+  // a heuristic description per piece when the local model is unreachable.
+  const result = await runImportWeb(url, {
+    classify: { model: AI_MODEL, host: OLLAMA_HOST },
+  })
   return {
     files: result.files.map(toWireFile),
     summary: result.summary,

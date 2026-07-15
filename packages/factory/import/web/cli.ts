@@ -19,21 +19,29 @@ async function writeFile(baseDir: string, file: FileToExport): Promise<void> {
 
 /**
  * Standalone entry for the web import pipeline. Fetches the given URL, runs the
- * deterministic deconstruction and matching, then writes the report and every
- * suggested schema JSON into a "Components Report" folder under the output
- * directory.
+ * deconstruction and matching, then writes the report and every suggested
+ * schema JSON into a "Components Report" folder under the output directory.
  *
- * Run with: bun packages/factory/import/web/cli.ts <url> [outDir]
+ * Pass `--classify` to name unmatched pieces with the local model (needs a
+ * running Ollama server); it is off by default so the script stays fast and
+ * offline.
+ *
+ * Run with: bun packages/factory/import/web/cli.ts <url> [outDir] [--classify]
  */
 async function main(): Promise<void> {
-  const [url, outDir = process.cwd()] = process.argv.slice(2)
+  const args = process.argv.slice(2)
+  const classify = args.includes("--classify")
+  const positionals = args.filter((arg) => !arg.startsWith("--"))
+  const [url, outDir = process.cwd()] = positionals
   if (!url) {
-    console.error("Usage: bun packages/factory/import/web/cli.ts <url> [outDir]")
+    console.error(
+      "Usage: bun packages/factory/import/web/cli.ts <url> [outDir] [--classify]",
+    )
     process.exit(1)
   }
 
-  console.log(`Importing ${url} ...`)
-  const result = await runImportWeb(url)
+  console.log(`Importing ${url}${classify ? " with classification" : ""} ...`)
+  const result = await runImportWeb(url, { classify: classify ? {} : false })
 
   const baseDir = path.join(path.resolve(outDir), REPORT_FOLDER)
   for (const file of result.files) {
@@ -45,6 +53,7 @@ async function main(): Promise<void> {
   console.log(`Unique pieces:      ${summary.dedupedCount}`)
   console.log(`Matched to catalog: ${summary.matchedCount}`)
   console.log(`Unmatched:          ${summary.unmatchedCount}`)
+  console.log(`Named by model:     ${summary.classifiedCount}`)
   console.log(`Wrote ${result.files.length} files to ${baseDir}`)
 }
 

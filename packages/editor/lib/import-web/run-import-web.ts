@@ -12,6 +12,7 @@ export type ImportWebSummary = {
   dedupedCount: number
   matchedCount: number
   unmatchedCount: number
+  classifiedCount: number
   suggestions: string[]
 }
 

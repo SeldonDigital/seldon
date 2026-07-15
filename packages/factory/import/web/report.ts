@@ -1,8 +1,4 @@
-import type {
-  DedupedPiece,
-  MatchResult,
-  SuggestedSchema,
-} from "./types"
+import type { DedupedPiece, MatchResult, SuggestedSchema } from "./types"
 
 /** A short human label for a piece, such as `nav#navigation (3 children)`. */
 function pieceLabel(piece: DedupedPiece): string {
@@ -13,10 +9,36 @@ function pieceLabel(piece: DedupedPiece): string {
   return `${sample.tag}${role} (${shape})`
 }
 
+/** The detail block for one suggested schema. */
+function suggestionDetail(suggestion: SuggestedSchema): string[] {
+  const lines: string[] = []
+  lines.push(`### ${suggestion.name}`)
+  lines.push("")
+  lines.push(`- File: \`schemas/${suggestion.id}.schema.json\``)
+  lines.push(`- Level: ${suggestion.level}`)
+  lines.push(`- Named by: ${suggestion.source === "model" ? "model" : "heuristic"}`)
+  lines.push(`- Intent: ${suggestion.intent}`)
+  const evidence = suggestion.evidence
+  if (evidence.classes?.length) {
+    lines.push(`- Classes: ${evidence.classes.join(" ")}`)
+  }
+  if (evidence.text) {
+    lines.push(`- Text: "${evidence.text}"`)
+  }
+  if (evidence.attrs && Object.keys(evidence.attrs).length > 0) {
+    lines.push(`- Attributes: ${JSON.stringify(evidence.attrs)}`)
+  }
+  if (evidence.childOutline.length > 0) {
+    lines.push(`- Children: ${evidence.childOutline.join(", ")}`)
+  }
+  lines.push("")
+  return lines
+}
+
 /**
  * Builds the markdown report for one import run. It states the source, the
- * counts, a table of matched pieces, and a list of unmatched pieces paired with
- * the schema file drafted for each.
+ * counts, a table of matched pieces, a table of unmatched pieces, and a detail
+ * block for each drafted schema with its name and evidence.
  */
 export function buildReport(input: {
   url: string
@@ -28,6 +50,9 @@ export function buildReport(input: {
   const { url, rawNodeCount, pieces, results, suggestions } = input
   const matched = results.filter((result) => result.matched !== null)
   const unmatched = results.filter((result) => result.matched === null)
+  const classifiedCount = suggestions.filter(
+    (suggestion) => suggestion.source === "model",
+  ).length
 
   const lines: string[] = []
   lines.push("# Components Report")
@@ -43,6 +68,7 @@ export function buildReport(input: {
   lines.push(`- Matched to catalog: ${matched.length}`)
   lines.push(`- Unmatched: ${unmatched.length}`)
   lines.push(`- Suggested schemas: ${suggestions.length}`)
+  lines.push(`- Named by model: ${classifiedCount}`)
   lines.push("")
 
   lines.push("## Matched Pieces")
@@ -65,13 +91,13 @@ export function buildReport(input: {
   if (unmatched.length === 0) {
     lines.push("Every piece matched the catalog. No new schemas are needed.")
   } else {
-    lines.push("| Piece | Count | Suggested schema | Reason |")
-    lines.push("| --- | --- | --- | --- |")
+    lines.push("| Piece | Count | Name | Level | File |")
+    lines.push("| --- | --- | --- | --- | --- |")
     unmatched.forEach((result, index) => {
       const suggestion = suggestions[index]
-      const file = suggestion ? `schemas/${suggestion.id}.schema.json` : "n/a"
+      if (!suggestion) return
       lines.push(
-        `| ${pieceLabel(result.piece)} | ${result.piece.count} | ${file} | ${result.reason} |`,
+        `| ${pieceLabel(result.piece)} | ${result.piece.count} | ${suggestion.name} | ${suggestion.level} | schemas/${suggestion.id}.schema.json |`,
       )
     })
   }
@@ -85,11 +111,8 @@ export function buildReport(input: {
     )
     lines.push("")
     for (const suggestion of suggestions) {
-      lines.push(
-        `- \`schemas/${suggestion.id}.schema.json\` — ${suggestion.level}, ${suggestion.default.children.length} child references`,
-      )
+      lines.push(...suggestionDetail(suggestion))
     }
-    lines.push("")
   }
 
   return lines.join("\n")

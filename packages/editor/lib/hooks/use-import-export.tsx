@@ -147,7 +147,7 @@ export function useImportExport() {
       }))
       await writeExportToDirectory(directory, reportFiles)
       addToast(
-        `Imported ${summary.matchedCount} matched, ${summary.unmatchedCount} new schemas`,
+        `Imported ${summary.matchedCount} matched, ${summary.unmatchedCount} new schemas (${summary.classifiedCount} named by AI)`,
       )
     } catch (error) {
       addToast(error instanceof Error ? error.message : "Import failed")

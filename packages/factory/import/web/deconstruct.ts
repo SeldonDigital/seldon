@@ -3,7 +3,7 @@ import type { Document, Element } from "happy-dom"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { HtmlElement } from "@seldon/core/properties"
 
-import type { FunctionalNode } from "./types"
+import type { FunctionalNode, NodeEvidence } from "./types"
 
 /**
  * Maps an HTML tag to the catalog component that plays the same role. This is
@@ -76,6 +76,34 @@ const RANK_LEVEL: ComponentLevel[] = [
   ComponentLevel.SCREEN,
 ]
 
+/** Attributes worth keeping because they hint at a component's purpose. */
+const EVIDENCE_ATTRS = [
+  "aria-label",
+  "alt",
+  "title",
+  "type",
+  "name",
+  "placeholder",
+  "data-testid",
+  "data-component",
+]
+
+const MAX_TEXT = 120
+const MAX_CLASSES = 12
+const MAX_ATTR_VALUE = 80
+
+/** The element's own text, joined from direct text nodes and capped. */
+function ownText(element: Element): string {
+  const parts: string[] = []
+  for (const node of Array.from(element.childNodes)) {
+    if (node.nodeType !== TEXT_NODE) continue
+    const value = (node.textContent ?? "").trim()
+    if (value !== "") parts.push(value)
+  }
+  const text = parts.join(" ").replace(/\s+/g, " ").trim()
+  return text.length > MAX_TEXT ? `${text.slice(0, MAX_TEXT)}…` : text
+}
+
 /** True when the element holds its own non-whitespace text, not just children. */
 function hasOwnText(element: Element): boolean {
   for (const node of Array.from(element.childNodes)) {
@@ -83,6 +111,32 @@ function hasOwnText(element: Element): boolean {
     if ((node.textContent ?? "").trim() !== "") return true
   }
   return false
+}
+
+/** Captures the content and attribute signal that names a component. */
+function collectEvidence(element: Element): NodeEvidence {
+  const evidence: NodeEvidence = {}
+
+  const text = ownText(element)
+  if (text !== "") evidence.text = text
+
+  const className = element.getAttribute("class") ?? ""
+  const classes = className
+    .split(/\s+/)
+    .filter((token) => token !== "")
+    .slice(0, MAX_CLASSES)
+  if (classes.length > 0) evidence.classes = classes
+
+  const attrs: Record<string, string> = {}
+  for (const name of EVIDENCE_ATTRS) {
+    const value = element.getAttribute(name)
+    if (value === null || value.trim() === "") continue
+    attrs[name] = value.trim().slice(0, MAX_ATTR_VALUE)
+  }
+  if (element.getAttribute("href")) attrs.href = "yes"
+  if (Object.keys(attrs).length > 0) evidence.attrs = attrs
+
+  return evidence
 }
 
 /** The ARIA role, explicit when set, otherwise inferred from a few key tags. */
@@ -158,6 +212,7 @@ function toFunctionalNode(element: Element): FunctionalNode | null {
     seededComponent: seed,
     hasText: hasOwnText(element),
     children,
+    evidence: collectEvidence(element),
   }
 }
 
