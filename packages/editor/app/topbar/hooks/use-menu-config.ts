@@ -100,6 +100,7 @@ export function useMenuConfig(): MenuConfig {
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
+    importWeb,
     exportToFolder,
   } = useImportExport()
   const { addVariant, deleteSelection, duplicateSelection } =
@@ -221,17 +222,24 @@ export function useMenuConfig(): MenuConfig {
         },
         visibleIn: ["edit", "preview"], // Not visible in project view
       },
+      "separator",
       {
-        id: "export-workspace",
-        label: "Save Workspace As…",
-        action: exportWorkspaceToFile,
+        id: "import-web",
+        label: "Import Web…",
+        action: importWeb,
         visibleIn: ["edit", "preview"],
       },
-      "separator",
       {
         id: "export-folder",
         label: "Export Components…",
         action: exportToFolder,
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
+        id: "export-workspace",
+        label: "Save Workspace As…",
+        action: exportWorkspaceToFile,
         visibleIn: ["edit", "preview"],
       },
       "separator",
@@ -249,6 +257,7 @@ export function useMenuConfig(): MenuConfig {
     exportWorkspaceToFile,
     goToProjects,
     importWorkspaceFromFile,
+    importWeb,
   ])
 
   const devMenuItems = useMemo(() => {

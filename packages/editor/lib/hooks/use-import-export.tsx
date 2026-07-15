@@ -128,9 +128,38 @@ export function useImportExport() {
     }
   }, [addToast, workspace])
 
+  const importWeb = useCallback(async () => {
+    const { setExporting } = useExportStatusStore.getState()
+    const url = prompt("Enter the website URL to import")?.trim()
+    if (!url) return
+    try {
+      const directory = await pickExportDirectory()
+      if (!directory) {
+        addToast("Folder picker is not supported in this browser")
+        return
+      }
+      setExporting(true)
+      const { runImportWeb } = await import("@lib/import-web/run-import-web")
+      const { files, summary } = await runImportWeb(url)
+      const reportFiles = files.map((file) => ({
+        path: `Components Report/${file.path}`,
+        content: file.content,
+      }))
+      await writeExportToDirectory(directory, reportFiles)
+      addToast(
+        `Imported ${summary.matchedCount} matched, ${summary.unmatchedCount} new schemas`,
+      )
+    } catch (error) {
+      addToast(error instanceof Error ? error.message : "Import failed")
+    } finally {
+      setExporting(false)
+    }
+  }, [addToast])
+
   return {
     importWorkspaceFromFile,
     importWorkspace,
+    importWeb,
     exportWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
