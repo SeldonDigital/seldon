@@ -9,6 +9,13 @@ import type { ExportRequestBody, runExport } from "./export-handler"
 
 const ROUTE = "/api/export"
 
+// The editor workspace is a couple of MB at most, so this ceiling leaves ample
+// headroom while stopping an unbounded body from exhausting server memory.
+const MAX_BODY_BYTES = 32 * 1024 * 1024
+
+/** Thrown when a request body exceeds MAX_BODY_BYTES so the middleware can 413. */
+class PayloadTooLargeError extends Error {}
+
 const pluginDir = path.dirname(fileURLToPath(import.meta.url))
 const handlerEntry = path.join(pluginDir, "export-handler.ts")
 const coreRoot = path.join(pluginDir, "../../core")
@@ -59,8 +66,16 @@ function getRunExport(): Promise<RunExport> {
 
 async function readJsonBody(req: IncomingMessage): Promise<ExportRequestBody> {
   const chunks: Buffer[] = []
+  let total = 0
   for await (const chunk of req) {
-    chunks.push(chunk as Buffer)
+    const buffer = chunk as Buffer
+    total += buffer.length
+    if (total > MAX_BODY_BYTES) {
+      throw new PayloadTooLargeError(
+        `Export request body exceeds ${MAX_BODY_BYTES} bytes.`,
+      )
+    }
+    chunks.push(buffer)
   }
   return JSON.parse(Buffer.concat(chunks).toString("utf8")) as ExportRequestBody
 }
@@ -76,6 +91,19 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
     next()
     return
   }
+
+  // This endpoint is unauthenticated and reads repo source, so it is meant to
+  // stay bound to the local dev/preview server. If you ever expose the server
+  // (for example `vite --host` for device testing), add a gate here before
+  // running the export: generate a per-session token at server start, require
+  // it on the request (header or query param), and/or check req.headers.origin
+  // and req.headers.host against an allowlist, rejecting with 401/403 otherwise.
+  const contentType = req.headers["content-type"] ?? ""
+  if (!contentType.includes("application/json")) {
+    sendJson(res, 415, { error: "Expected an application/json request body." })
+    return
+  }
+
   void (async () => {
     try {
       const body = await readJsonBody(req)
@@ -83,6 +111,10 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
       const result = await run(body)
       sendJson(res, 200, result)
     } catch (error) {
+      if (error instanceof PayloadTooLargeError) {
+        sendJson(res, 413, { error: error.message })
+        return
+      }
       sendJson(res, 500, {
         error: error instanceof Error ? error.message : "Export failed.",
       })

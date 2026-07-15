@@ -1,4 +1,5 @@
 import { CSSProperties } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 
 interface PointerProps {
   style: CSSProperties
@@ -6,5 +7,5 @@ interface PointerProps {
 
 /** Small circular endpoint marker for an insertion indicator. */
 export function Pointer({ style }: PointerProps) {
-  return <div style={style} />
+  return <Frame style={style} />
 }

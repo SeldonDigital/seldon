@@ -1,4 +1,5 @@
 import { CSSProperties, ReactNode } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 
 interface InsertIndicatorLineProps {
   style: CSSProperties
@@ -10,5 +11,5 @@ export function InsertIndicatorLine({
   style,
   children,
 }: InsertIndicatorLineProps) {
-  return <div style={style}>{children}</div>
+  return <Frame style={style}>{children}</Frame>
 }

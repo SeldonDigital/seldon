@@ -101,7 +101,11 @@ export function generateOwnPropsContent(component: ComponentToExport): string {
     if (value.options) {
       // If this prop has options, create a union (e.g. "span" | "div")
       content += `${key}?: ${value.options?.map((i) => `'${i}'`).join(" | ")};`
-    } else if (key === "children" || key === "src" || key === "alt") {
+    } else if (key === "children") {
+      // React's HTMLAttributes base already declares children?: ReactNode.
+      // Do not re-declare or narrow it to string here.
+      continue
+    } else if (key === "src" || key === "alt") {
       content += `${key}?: string;`
     } else if (value.type === "boolean") {
       content += `${key}?: boolean;`

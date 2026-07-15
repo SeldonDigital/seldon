@@ -6,13 +6,15 @@ import { Type } from "typebox"
 
 import { boardSummarySection } from "../../../prompt/context-sections/board-summary"
 import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
 /** Returns a cheap summary of the active board, with no ids, to locate a target. */
 export function createBoardSummaryTool(
+  state: PiTurnState,
   resolved: ResolvedContext,
 ): ToolDefinition {
-  const { workspace, resolvedKey, activeBoard } = resolved
+  const { resolvedKey } = resolved
   return defineTool({
     name: "board_summary",
     label: "Board Summary",
@@ -20,6 +22,9 @@ export function createBoardSummaryTool(
       "Return a cheap summary of the active board: each variant's name, node count, and catalog ids, with no ids. Use it to locate a target before pulling the full tree.",
     parameters: Type.Object({}),
     execute: async () => {
+      const workspace = state.workspace
+      const activeBoard =
+        resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
       if (
         !activeBoard ||
         activeBoard.type !== "component" ||

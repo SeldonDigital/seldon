@@ -169,7 +169,7 @@ const sdn: MessageErrorProps = {
     className: "sdn-icon sdn-icon--gm8j",
   },
   textDescription: {
-    className: "sdn-text sdn-text-label--lbxv",
+    className: "sdn-text-description sdn-text-label--lbxv",
   },
   buttonSimple: {
     className: "sdn-button-simple sdn-button-iconic--iklu",

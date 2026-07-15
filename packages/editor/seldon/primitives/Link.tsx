@@ -17,7 +17,6 @@ import { combineClassNames } from "../utils/class-name"
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   className?: string
   "data-seldon-ref"?: string
-  children?: string
 }
 
 /*****

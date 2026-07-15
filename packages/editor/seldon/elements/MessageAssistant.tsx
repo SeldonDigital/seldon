@@ -92,6 +92,6 @@ const sdn: MessageAssistantProps = {
   "aria-hidden": "false",
   className: "sdn-message-assistant sdn-message",
   textDescription: {
-    className: "sdn-text sdn-text-description--welb",
+    className: "sdn-text-description sdn-text-description--welb",
   },
 }

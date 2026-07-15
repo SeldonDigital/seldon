@@ -2,6 +2,7 @@
 // cluster. Prop-driven and factory-inert, so it lives in the editor rather than
 // the generated View layer.
 import { CSSProperties } from "react"
+import { Frame } from "@seldon/components/frames/Frame"
 import { SwatchDot } from "./SwatchDot"
 
 interface ThemeSwatchesProps {
@@ -16,7 +17,7 @@ export function ThemeSwatches({
   isSelected = false,
 }: ThemeSwatchesProps) {
   return (
-    <div style={containerStyle}>
+    <Frame style={containerStyle}>
       {colors.map((color, index) => (
         <SwatchDot
           key={index}
@@ -25,6 +26,6 @@ export function ThemeSwatches({
           isSelected={isSelected}
         />
       ))}
-    </div>
+    </Frame>
   )
 }

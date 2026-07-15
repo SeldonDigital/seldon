@@ -1,6 +1,6 @@
 "use client"
 
-import { MenuEntry, MenuItem, VMMenu } from "@lib/menus"
+import { MenuController, MenuEntry, MenuItem } from "@lib/menus"
 import { CSSProperties, useMemo } from "react"
 import {
   type CustomState,
@@ -21,8 +21,11 @@ import {
 } from "../hooks/use-board-state-store"
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
-import { CHILD_OVERRIDE_COLOR } from "../canvas.bespoke"
-import { BoardStateFrame } from "./BoardStateFrame.bespoke"
+import { Frame } from "@seldon/components/frames/Frame"
+
+// bespoke: marks board states whose override lives only on a child. Remove once
+// a generated View owns this canvas overlay treatment.
+const CHILD_OVERRIDE_COLOR = "var(--sdn-swatch-punch)"
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -50,7 +53,7 @@ function stateLabel(state: NodeState, customStates: CustomState[]): string {
 /**
  * On-canvas interaction-state switcher. Sits just above the board and selects
  * the active state for the whole board tree. The dropdown chrome, positioning,
- * keyboard navigation, and dismissal come from the shared `VMMenu`. Adding a
+ * keyboard navigation, and dismissal come from the shared `MenuController`. Adding a
  * custom state creates it with a sticky default name through a core action.
  * Custom-state names are not editable yet.
  */
@@ -182,14 +185,16 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     testId: "board-state-add",
   })
 
+  // Chrome wrapper for the on-canvas state switcher. Re-scopes the switcher to
+  // the live chrome theme and mode via data-theme/data-mode.
   return (
-    <BoardStateFrame
+    <Frame
       style={wrapperStyle}
       onClick={stopClickPropagation}
-      dataTheme={chromeTheme}
-      dataMode={resolvedMode}
+      data-theme={chromeTheme}
+      data-mode={resolvedMode}
     >
-      <VMMenu
+      <MenuController
         items={items}
         renderTrigger={({ ref, triggerProps }) => (
           <ButtonMenu
@@ -201,6 +206,6 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
           />
         )}
       />
-    </BoardStateFrame>
+    </Frame>
   )
 }

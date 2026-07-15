@@ -286,7 +286,7 @@ const sdn: TopbarSpreadProps = {
     className: "sdn-link-plain sdn-link-plain--1tic",
   },
   text: {
-    className: "sdn-text sdn-text--svkr",
+    className: "sdn-text sdn-text--s4kj",
   },
   linkPlain5: {
     className: "sdn-link-plain sdn-link-plain--q3fs",

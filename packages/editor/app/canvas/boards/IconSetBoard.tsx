@@ -21,7 +21,7 @@ import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
-import { PreviewItemWrapper } from "./PreviewItemWrapper.bespoke"
+import { PreviewItemWrapper } from "./PreviewItemWrapper"
 import { injectBoardBackground } from "./inject-board-background"
 
 export type IconSetBoardProps = {

@@ -580,7 +580,7 @@ const sdn: PanelHariProps = {
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--2wwo",
+    className: "sdn-frame sdn-frame--vorn",
     "data-seldon-ref": "turns",
   },
   frame3: {

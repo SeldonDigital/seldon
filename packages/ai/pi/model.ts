@@ -18,19 +18,10 @@ const OLLAMA_PROVIDER = "ollama"
 
 /**
  * Thinking level the caller may request. Pi's own `ThinkingLevel` omits `off`;
- * we add it for the internal Clamp path, which turns reasoning off entirely on
- * models that support it. The menu does not offer `off`; Clamp is that control.
+ * we add it for turning reasoning off, which the binary menu offers as "Off" and
+ * Clamp forces on a binary model.
  */
 export type ThinkingLevelOption = "off" | ThinkingLevel
-
-/** The thinking levels the config endpoint offers, ordered least to most. */
-export const THINKING_LEVEL_OPTIONS: ThinkingLevelOption[] = [
-  "minimal",
-  "low",
-  "medium",
-  "high",
-  "xhigh",
-]
 
 /** Resolves the model id from an explicit value, env, or the local default. */
 export function resolvePiModelId(model?: string): string {
@@ -42,10 +33,10 @@ function resolveHost(host?: string): string {
 }
 
 /**
- * True when the model can run a thinking pass, so the thinking level has an
- * effect. Among the local models we ship this covers the qwen3 family and
- * gpt-oss. Coder and llama models have no thinking mode, so their thinking level
- * is a no-op and reasoning stays off.
+ * Name-based fallback for whether a model can run a thinking pass. Used only
+ * when Ollama does not report `capabilities` for the model (older Ollama, or an
+ * imported GGUF with an incomplete Modelfile). The primary signal is the
+ * `thinking` capability from `/api/show`, resolved by {@link deriveModelThinking}.
  */
 export function supportsThinking(model?: string): boolean {
   const id = resolvePiModelId(model).toLowerCase()
@@ -53,15 +44,76 @@ export function supportsThinking(model?: string): boolean {
 }
 
 /**
- * The thinking level Clamp requests for a model. qwen3 reads the chat-template
- * `enable_thinking` kwarg, so it turns reasoning fully off. gpt-oss always
- * reasons over Ollama's endpoint and only accepts an effort, so Clamp maps it to
- * the lowest effort instead. Other models have no thinking pass, so `off` is a
- * no-op that matches their default.
+ * True when the model takes a graded reasoning effort over Ollama's OpenAI
+ * endpoint, rather than a binary on/off. This is the one thinking trait Ollama
+ * does not report through `capabilities`, so it stays a name check. gpt-oss is
+ * the graded family we ship; every other thinking model is treated as binary.
+ */
+export function supportsReasoningEffort(model?: string): boolean {
+  return resolvePiModelId(model).toLowerCase().includes("gpt-oss")
+}
+
+/**
+ * The thinking level Clamp requests for a model. A graded model cannot turn
+ * reasoning off, so Clamp drops it to the lowest effort. Every other model turns
+ * off, which is a real disable for a binary model and a no-op for a
+ * non-thinking one.
  */
 export function clampedThinkingLevel(model?: string): ThinkingLevelOption {
-  const id = resolvePiModelId(model).toLowerCase()
-  return id.includes("gpt-oss") ? "low" : "off"
+  return supportsReasoningEffort(model) ? "low" : "off"
+}
+
+/** One entry in a model's thinking menu: the value sent to the turn and its label. */
+export interface ThinkingMenuOption {
+  value: ThinkingLevelOption
+  label: string
+}
+
+/**
+ * A model's thinking menu, resolved from its capabilities:
+ *
+ * - `graded`: a reasoning-effort model, so the menu offers low, medium, high.
+ * - `binary`: an on/off thinking model, so the menu offers Off and On.
+ * - `none`: no thinking pass, so the menu is empty and the level stays off.
+ */
+export interface ModelThinking {
+  mode: "graded" | "binary" | "none"
+  options: ThinkingMenuOption[]
+  default: ThinkingLevelOption
+}
+
+const GRADED_OPTIONS: ThinkingMenuOption[] = [
+  { value: "low", label: "Low" },
+  { value: "medium", label: "Medium" },
+  { value: "high", label: "High" },
+]
+
+// A binary model only distinguishes thinking on from off. "On" carries a valid
+// level so the turn enables reasoning; a binary model ignores the grade.
+const BINARY_OPTIONS: ThinkingMenuOption[] = [
+  { value: "off", label: "Off" },
+  { value: "medium", label: "On" },
+]
+
+/**
+ * Resolves a model's thinking menu. `capabilities` is the `capabilities` array
+ * from Ollama's `/api/show`, which lists `thinking` for a reasoning model.
+ * When it is missing, falls back to the {@link supportsThinking} name check so
+ * an older Ollama or an imported GGUF still behaves. The graded-versus-binary
+ * split comes from {@link supportsReasoningEffort}.
+ */
+export function deriveModelThinking(
+  model: string,
+  capabilities?: string[],
+): ModelThinking {
+  const thinks = capabilities
+    ? capabilities.includes("thinking")
+    : supportsThinking(model)
+  if (!thinks) return { mode: "none", options: [], default: "off" }
+  if (supportsReasoningEffort(model)) {
+    return { mode: "graded", options: GRADED_OPTIONS, default: "medium" }
+  }
+  return { mode: "binary", options: BINARY_OPTIONS, default: "medium" }
 }
 
 /**
@@ -77,7 +129,7 @@ function ollamaCompat(id: string): OpenAICompletionsCompat {
   if (lower.includes("qwen3")) {
     compat.thinkingFormat = "qwen-chat-template"
     compat.supportsReasoningEffort = false
-  } else if (lower.includes("gpt-oss")) {
+  } else if (supportsReasoningEffort(id)) {
     compat.supportsReasoningEffort = true
   }
   return compat

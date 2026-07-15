@@ -247,7 +247,7 @@ export function useRowNode(
 
   // Show Node Types debug mode tints the row's icon and label by node type:
   // user variants use the Punch swatch and instances a lighter tint. Boards and
-  // default variants keep the default color. VMNode applies this onto the icon
+  // default variants keep the default color. NodeController applies this onto the icon
   // and label refs only, so borders, buttons, and the disclosure arrow are
   // unaffected.
   function getNodeTypeColor(): string | undefined {

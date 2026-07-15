@@ -158,8 +158,8 @@ The editor classifies what the user selected into a `SelectionScope` and passes 
 | Scope | Context the model sees | Edit behavior |
 | --- | --- | --- |
 | `workspace` | Every board, walked shallow | Broad, cross-board edits, no permission ask |
-| `board` | The selected board and its variants | Prefer the default variant or source so edits cascade |
-| `variant` | The variant subtree | Global within the variant, `set_properties` scope `all` |
+| `board` | The selected board and its variants | Edit the board's own default to cascade to its variants; styling a child stays a local override |
+| `variant` | The variant subtree | Global within the variant with `set_properties` scope `all`, or one node with scope `instance` |
 | `instance` | The selected node and its descendants | Local override, `set_properties` scope `instance` |
 | `theme` | The selected theme entry or its board's entries | `set_theme_override` on token values |
 | `fontCollection` | The selected collection or its board's entries | Font family and weight tools |
@@ -167,6 +167,8 @@ The editor classifies what the user selected into a `SelectionScope` and passes 
 | `media` | None | The agent does not edit media |
 
 The context starts at the narrowest useful scope and stays small. An instance turn sees only the selected node's subtree, a variant turn only that variant's tree, and a board turn only that board. The model widens one level at a time when it needs more. See [Finding A Target](#finding-a-target).
+
+`set_properties` writes a local override by default. Scope `all` writes the node's shared source so every instance follows, but only when that source sits on the active board. When `all` would write a source on another board, the tool makes no edit and returns a directive to confirm the reach by targeting the source id directly. This keeps a child edit, such as one card's title, from silently restyling every instance of a shared element. Workspace scope is exempt, since the user chose to act across the file.
 
 ---
 
@@ -195,11 +197,13 @@ The model never writes the workspace. All file tools are off, and each mutation 
 
 1. Run the deterministic shape repair from [repair/normalize-actions.ts](./repair/normalize-actions.ts).
 2. Dry-run the action against the working copy through the same reducer the editor uses.
-3. On a reducer rejection, throw so Pi feeds the exact error text back to the model, which is how the model self-corrects.
-4. On a validated action that changes nothing, report it without recording it, so the model retargets instead of the caller applying a no-op.
+3. On a reducer rejection, record it on the turn state and throw, so Pi feeds the exact error text back to the model, which is how the model self-corrects.
+4. On a validated action that changes nothing, record it as ineffective and report it without recording the action, so the model retargets instead of the caller applying a no-op.
 5. On a real change, advance the working copy and record the action.
 
-The reducer validates every payload again when the editor applies the returned actions, so an invalid action never changes real state.
+The turn returns the working copy it built, not just the actions. The editor adopts that workspace with one `set_workspace` dispatch, so an id a create tool minted mid-turn stays stable and a follow-on edit that targets it lands. Re-applying the actions would re-mint those random ids and drop the follow-on edit.
+
+Adopting is guarded twice. The `set_workspace` dispatch runs the store's verification middleware, which throws on any dangling or duplicate ref. Before that, `checkTurnIntegrity` in the editor confirms the mutation only changed what its actions changed: a removed board key, or a removed node id with no `remove_instance` in the turn, discards the turn. Either failure keeps the current workspace and shows an error turn.
 
 ---
 
@@ -212,15 +216,15 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | Tool | Proposes |
 | --- | --- |
 | `set_properties` | Property values on a node or its component source |
-| `add_component` | Add a catalog component to the workspace as its own board |
-| `insert_component` | Insert a catalog component under a parent, creating its board if needed |
-| `insert_variant_instance` | Insert an instance of a specific existing variant |
-| `duplicate_component` | Paste a copy under a parent, or duplicate a node in place |
+| `add_component` | Add a catalog component to the workspace as its own board; reports the new board key and node id |
+| `insert_component` | Insert a catalog component under a parent, creating its board if needed; reports the new node id |
+| `insert_variant_instance` | Insert an instance of a specific existing variant; reports the new node id |
+| `duplicate_component` | Paste a copy under a parent, or duplicate a node in place; reports the new node id |
 | `move_component` | Relocate an instance under a new parent in the same variant |
 | `reorder_component` | Reposition an instance among its siblings |
 | `remove_instance` | Delete an instance |
 | `set_board_label` | Rename a board |
-| `apply_actions` | A batch of raw actions, the escape hatch for the long tail |
+| `apply_actions` | A batch of raw actions, the escape hatch for the long tail. Workspace scope only, since raw actions skip the dedicated tools' field checks, target resolution, and scope guardrail |
 | `set_theme_override` | A theme token value |
 | `set_font_collection_family_preset` / `set_font_collection_family_variant` | Toggle families and weights |
 | `set_icon_set_subcategory_preset` / `set_icon_set_override` | Toggle a subcategory or a single icon |
@@ -235,6 +239,7 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | `get_component_vocabulary` | Settable properties and value shapes for a component |
 | `list_theme_tokens`, `search_theme_tokens` | Theme token ids and paths |
 | `search_icons` | Enabled icon ids for the symbol property |
+| `search_fonts` | Enabled font family values for the font.family facet |
 | `list_catalog_ids` | Component catalog ids |
 | `list_action_types`, `get_action_spec`, `suggest_action` | Action reference for `apply_actions` |
 

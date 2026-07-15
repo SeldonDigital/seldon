@@ -7,7 +7,9 @@ import { Type } from "typebox"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import type { PiTurnState } from "../turn-state"
+import { resolveCatalogId } from "./catalog-ids"
 import { commit, textResult } from "./commit"
+import { withCreatedIdentity } from "./created-nodes"
 
 /**
  * Inserts a catalog component's default instance under an existing parent node.
@@ -34,11 +36,15 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
       ),
     }),
     execute: async (_id, params) => {
-      const action: WorkspaceAction = state.workspace.boards[params.catalogId]
+      const resolved = resolveCatalogId(params.catalogId)
+      if (!resolved.id)
+        return textResult(resolved.message ?? "Unknown catalog id.")
+      const catalogId = resolved.id
+      const action: WorkspaceAction = state.workspace.boards[catalogId]
         ? ({
             type: "insert_default_instance",
             payload: {
-              boardKey: params.catalogId,
+              boardKey: catalogId,
               parentId: params.parentId,
               index: params.index,
             },
@@ -46,11 +52,14 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
         : ({
             type: "add_component_and_insert_default_instance",
             payload: {
-              boardKey: params.catalogId,
+              boardKey: catalogId,
               target: { parentId: params.parentId, index: params.index },
             },
           } as WorkspaceAction)
-      return textResult(commit(state, action))
+      const before = state.workspace
+      const applied = commit(state, action)
+      const message = resolved.note ? `${resolved.note}\n${applied}` : applied
+      return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })
 }

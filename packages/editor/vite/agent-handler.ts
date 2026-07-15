@@ -3,10 +3,13 @@ import {
   type AgentMetrics,
   type AgentStreamEvent,
   type ChatMessage,
+  type ModelThinking,
+  type RejectedActionResult,
   type SelectionScope,
-  THINKING_LEVEL_OPTIONS,
   type ThinkingLevelOption,
   chatToActions,
+  clampedThinkingLevel,
+  deriveModelThinking,
   resolvePiModelId,
   warmModel,
 } from "@seldon/ai"
@@ -28,12 +31,17 @@ export type AgentRequestBody = {
   resourceTargetId?: string
   model?: string
   thinkingLevel?: ThinkingLevelOption
+  thinkingCapable?: boolean
   noThink?: boolean
 }
 
 export type AgentResult = {
   actions: WorkspaceAction[]
+  /** Workspace the turn built, adopted directly by the editor as one undo step. */
+  workspace: Workspace
   reply: string
+  ineffective: string[]
+  rejected: RejectedActionResult[]
   debug: AgentDebug
 }
 
@@ -56,41 +64,47 @@ export async function runAgent(
     throw new Error("Missing message in request body.")
   }
 
-  const { actions, reply, debug } = await chatToActions({
-    workspace: body.workspace,
-    message: body.message,
-    history: body.history,
-    activeBoardKey: body.activeBoardKey,
-    selectedNodeId: body.selectedNodeId,
-    selectedNodeRootId: body.selectedNodeRootId,
-    selectedBoardId: body.selectedBoardId,
-    scope: body.scope,
-    resourceTargetId: body.resourceTargetId,
-    model: body.model,
-    thinkingLevel: body.thinkingLevel,
-    noThink: body.noThink,
-    onEvent,
-    signal,
-  })
+  const { actions, workspace, reply, ineffective, rejected, debug } =
+    await chatToActions({
+      workspace: body.workspace,
+      message: body.message,
+      history: body.history,
+      activeBoardKey: body.activeBoardKey,
+      selectedNodeId: body.selectedNodeId,
+      selectedNodeRootId: body.selectedNodeRootId,
+      selectedBoardId: body.selectedBoardId,
+      scope: body.scope,
+      resourceTargetId: body.resourceTargetId,
+      model: body.model,
+      thinkingLevel: body.thinkingLevel,
+      thinkingCapable: body.thinkingCapable,
+      noThink: body.noThink,
+      onEvent,
+      signal,
+    })
 
-  return { actions, reply, debug }
+  return { actions, workspace, reply, ineffective, rejected, debug }
 }
 
 /** Session-config choices the Hari palette renders. */
 export type AgentConfig = {
   models: string[]
-  thinkingLevels: ThinkingLevelOption[]
+  /** Thinking menu per model, resolved from each model's Ollama capabilities. */
+  thinkingByModel: Record<string, ModelThinking>
+  /** The level Clamp resolves to per model: `off` where reasoning can be turned off, else the lowest effort. */
+  clampedLevels: Record<string, ThinkingLevelOption>
   defaults: {
     model: string
     thinkingLevel: ThinkingLevelOption
   }
 }
 
+const OLLAMA_HOST = process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434"
+
 /** Lists the local Ollama models, best-effort. Empty when Ollama is unreachable. */
 async function listOllamaModels(): Promise<string[]> {
-  const host = process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434"
   try {
-    const response = await fetch(`${host}/api/tags`)
+    const response = await fetch(`${OLLAMA_HOST}/api/tags`)
     if (!response.ok) return []
     const data = (await response.json()) as {
       models?: { name?: string; model?: string }[]
@@ -105,19 +119,56 @@ async function listOllamaModels(): Promise<string[]> {
 }
 
 /**
+ * The capabilities Ollama reports for a model through `/api/show`, such as
+ * `thinking` for a reasoning model. Best-effort: returns undefined when the
+ * server is unreachable or omits the field, so the caller falls back to the
+ * name-based thinking check.
+ */
+async function showModelCapabilities(
+  model: string,
+): Promise<string[] | undefined> {
+  try {
+    const response = await fetch(`${OLLAMA_HOST}/api/show`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model }),
+    })
+    if (!response.ok) return undefined
+    const data = (await response.json()) as { capabilities?: string[] }
+    return Array.isArray(data.capabilities) ? data.capabilities : undefined
+  } catch {
+    return undefined
+  }
+}
+
+/**
  * Returns the session-config choices for the Hari palette: the locally available
- * models, the thinking levels, and the current defaults. The model list is
- * best-effort and comes from the local Ollama server.
+ * models, the thinking menu resolved per model from Ollama's reported
+ * capabilities, and the current defaults. The model list and capabilities are
+ * best-effort and come from the local Ollama server.
  */
 export async function agentConfig(): Promise<AgentConfig> {
   const defaultModel = resolvePiModelId()
-  const models = await listOllamaModels()
+  const discovered = await listOllamaModels()
+  const models = discovered.includes(defaultModel)
+    ? discovered
+    : [defaultModel, ...discovered]
+  const thinkingByModel: Record<string, ModelThinking> = {}
+  const clampedLevels: Record<string, ThinkingLevelOption> = {}
+  await Promise.all(
+    models.map(async (model) => {
+      const capabilities = await showModelCapabilities(model)
+      thinkingByModel[model] = deriveModelThinking(model, capabilities)
+      clampedLevels[model] = clampedThinkingLevel(model)
+    }),
+  )
   return {
-    models: models.includes(defaultModel) ? models : [defaultModel, ...models],
-    thinkingLevels: THINKING_LEVEL_OPTIONS,
+    models,
+    thinkingByModel,
+    clampedLevels,
     defaults: {
       model: defaultModel,
-      thinkingLevel: "minimal",
+      thinkingLevel: thinkingByModel[defaultModel]?.default ?? "off",
     },
   }
 }

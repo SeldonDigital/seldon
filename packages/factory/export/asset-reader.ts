@@ -16,6 +16,23 @@ export type ExportAssetReader = {
   listNativeComponentFileStems(): string[]
 }
 
+/**
+ * A file stem must name a single file, never a path. Reject separators and `..`
+ * so a stem cannot traverse out of its base directory when joined.
+ */
+function isSafeFileStem(fileStem: string): boolean {
+  return !/[\\/]/.test(fileStem) && !fileStem.includes("..")
+}
+
+/** True when `candidate` resolves to `root` itself or a path inside it. */
+function isInside(root: string, candidate: string): boolean {
+  const resolvedRoot = path.resolve(root)
+  const resolved = path.resolve(candidate)
+  return (
+    resolved === resolvedRoot || resolved.startsWith(resolvedRoot + path.sep)
+  )
+}
+
 export function createNodeExportAssetReader(
   rootDirectory: string,
 ): ExportAssetReader {
@@ -30,7 +47,7 @@ export function createNodeExportAssetReader(
 
   return {
     readNativeComponent(fileStem: string): string | undefined {
-      if (!fs.existsSync(nativeReactPath)) {
+      if (!isSafeFileStem(fileStem) || !fs.existsSync(nativeReactPath)) {
         return undefined
       }
       const filePath = path.join(nativeReactPath, `${fileStem}.tsx`)
@@ -40,7 +57,7 @@ export function createNodeExportAssetReader(
       return fs.readFileSync(filePath, "utf8")
     },
     readCustomComponent(fileStem: string): string | undefined {
-      if (!fs.existsSync(customReactPath)) {
+      if (!isSafeFileStem(fileStem) || !fs.existsSync(customReactPath)) {
         return undefined
       }
       const filePath = path.join(customReactPath, `${fileStem}.tsx`)
@@ -50,7 +67,13 @@ export function createNodeExportAssetReader(
       return fs.readFileSync(filePath, "utf8")
     },
     readIconFile(absolutePath: string): Buffer | undefined {
-      if (!fs.existsSync(absolutePath)) {
+      // Only read files inside the repo root. The path is derived from the
+      // workspace, so containment stops a crafted workspace from reading and
+      // embedding arbitrary files from disk.
+      if (
+        !isInside(rootDirectory, absolutePath) ||
+        !fs.existsSync(absolutePath)
+      ) {
         return undefined
       }
       return fs.readFileSync(absolutePath)

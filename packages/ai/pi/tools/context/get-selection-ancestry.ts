@@ -6,13 +6,15 @@ import { Type } from "typebox"
 
 import { ancestrySection } from "../../../prompt/context-sections/ancestry"
 import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
 /** Returns a node's parent chain to its variant root, for inherited color reasoning. */
 export function createGetSelectionAncestryTool(
+  state: PiTurnState,
   resolved: ResolvedContext,
 ): ToolDefinition {
-  const { workspace, selectedNodeId } = resolved
+  const { selectedNodeId } = resolved
   return defineTool({
     name: "get_selection_ancestry",
     label: "Get Selection Ancestry",
@@ -35,7 +37,7 @@ export function createGetSelectionAncestryTool(
       }
       return textResult(
         joinOrEmpty(
-          ancestrySection(workspace, targetId),
+          ancestrySection(state.workspace, targetId),
           `No node found for id "${targetId}".`,
         ),
       )

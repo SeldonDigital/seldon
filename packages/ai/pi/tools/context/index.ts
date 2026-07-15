@@ -1,6 +1,7 @@
 import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { createBoardSummaryTool } from "./board-summary"
 import { createDescribeNodeTool } from "./describe-node"
 import { createFindNodesTool } from "./find-nodes"
@@ -14,6 +15,7 @@ import { createListActionTypesTool } from "./list-action-types"
 import { createListBoardsTool } from "./list-boards"
 import { createListCatalogIdsTool } from "./list-catalog-ids"
 import { createListThemeTokensTool } from "./list-theme-tokens"
+import { createSearchFontsTool } from "./search-fonts"
 import { createSearchIconsTool } from "./search-icons"
 import { createSearchThemeTokensTool } from "./search-theme-tokens"
 import { createSuggestActionTool } from "./suggest-action"
@@ -24,27 +26,35 @@ import { createWidenScopeTool } from "./widen-scope"
  * heavier lists (per-component vocabulary, theme tokens, catalog ids) behind
  * tools rather than in every prompt keeps the turn small and the system-prompt
  * cache warm, and the model pulls only what a given edit needs.
+ *
+ * Node and board tools take the turn state so they read the live working copy,
+ * not the turn-start snapshot. That lets the model inspect and target a node it
+ * created earlier in the same turn. Selection identity (which node or board is
+ * selected, the scope) still comes from `resolved`, since the selection does not
+ * change mid-turn.
  */
 export function createContextTools(
+  state: PiTurnState,
   resolved: ResolvedContext,
 ): ToolDefinition[] {
   return [
-    createGetActiveBoardTool(resolved),
-    createGetSelectionTool(resolved),
-    createDescribeNodeTool(resolved),
-    createGetNodePropertiesTool(resolved),
-    createGetSelectionAncestryTool(resolved),
-    createWidenScopeTool(resolved),
-    createBoardSummaryTool(resolved),
+    createGetActiveBoardTool(state, resolved),
+    createGetSelectionTool(state, resolved),
+    createDescribeNodeTool(state),
+    createGetNodePropertiesTool(state),
+    createGetSelectionAncestryTool(state, resolved),
+    createWidenScopeTool(state, resolved),
+    createBoardSummaryTool(state, resolved),
     createGetComponentVocabularyTool(resolved),
     createListThemeTokensTool(resolved),
     createSearchThemeTokensTool(resolved),
     createSearchIconsTool(resolved),
+    createSearchFontsTool(resolved),
     createListCatalogIdsTool(),
     createListActionTypesTool(),
     createGetActionSpecTool(),
     createSuggestActionTool(),
-    createListBoardsTool(resolved),
-    createFindNodesTool(resolved),
+    createListBoardsTool(state),
+    createFindNodesTool(state),
   ]
 }

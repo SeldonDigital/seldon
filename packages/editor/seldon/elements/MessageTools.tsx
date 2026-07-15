@@ -11,6 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame, FrameProps } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import {
@@ -25,6 +26,7 @@ export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
   frame?: FrameProps | null
+  buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   textDescription?: TextDescriptionProps | null
   frame2?: FrameProps | null
@@ -44,6 +46,7 @@ export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
  * <MessageTools
  *   aria-hidden="false"
  *   frame="{}"
+ *   buttonIconic={() => {}}
  *   icon="material-star"
  *   textDescription="{}"
  *   frame2="{}"
@@ -53,7 +56,8 @@ export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
 export function MessageTools({
   className = "",
   frame = sdn.frame,
-  icon,
+  buttonIconic,
+  icon = sdn.icon,
   textDescription,
   frame2 = sdn.frame2,
   icon2,
@@ -74,6 +78,19 @@ export function MessageTools({
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
+    buttonIconic === null
+      ? null
+      : {
+          ...sdn.buttonIconic,
+          ...buttonIconic,
+          className: combineClassNames(
+            sdn.buttonIconic?.className,
+            buttonIconic?.className,
+          ),
         },
   )
   const iconProps = applyRef(
@@ -147,7 +164,9 @@ export function MessageTools({
       ) : (
         <>
           <Frame {...frameProps}>
-            {icon && iconProps && <Icon {...iconProps} />}
+            {buttonIconic && buttonIconicProps && (
+              <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+            )}
             {textDescription && textDescriptionProps && (
               <TextDescription {...textDescriptionProps} />
             )}
@@ -173,23 +192,29 @@ const sdn: MessageToolsProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--sv6r",
+    className: "sdn-frame sdn-frame--ieew",
+  },
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--iklu",
   },
   icon: {
-    className: "sdn-icon sdn-icon--9ouj",
+    icon: "material-chevronDown",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--bmas",
   },
   textDescription: {
-    className: "sdn-text sdn-text-description--hqun",
+    className: "sdn-text-description sdn-text-description--71gg",
   },
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--sv6r",
+    className: "sdn-frame sdn-frame--rstc",
+    "data-seldon-ref": "tool",
   },
   icon2: {
     className: "sdn-icon sdn-icon--9ouj",
   },
   textDescription2: {
-    className: "sdn-text sdn-text-description--hqun",
+    className: "sdn-text-description sdn-text-description--hqun",
   },
 }

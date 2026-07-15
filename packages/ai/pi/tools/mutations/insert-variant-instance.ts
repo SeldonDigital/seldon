@@ -8,6 +8,7 @@ import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+import { withCreatedIdentity } from "./created-nodes"
 
 /** Inserts an instance of an existing variant under an existing parent node. */
 export function createInsertVariantInstanceTool(
@@ -29,15 +30,16 @@ export function createInsertVariantInstanceTool(
         }),
       ),
     }),
-    execute: async (_id, params) =>
-      textResult(
-        commit(state, {
-          type: "insert_variant_instance",
-          payload: {
-            variantId: params.variantId,
-            target: { parentId: params.parentId, index: params.index },
-          },
-        } as WorkspaceAction),
-      ),
+    execute: async (_id, params) => {
+      const before = state.workspace
+      const message = commit(state, {
+        type: "insert_variant_instance",
+        payload: {
+          variantId: params.variantId,
+          target: { parentId: params.parentId, index: params.index },
+        },
+      } as WorkspaceAction)
+      return textResult(withCreatedIdentity(before, state.workspace, message))
+    },
   })
 }

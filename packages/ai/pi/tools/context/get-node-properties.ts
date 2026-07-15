@@ -5,14 +5,13 @@ import {
 import { Type } from "typebox"
 
 import { nodePropertiesSection } from "../../../prompt/context-sections/node-properties"
-import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
 /** Returns the effective, merged property values for one node. */
 export function createGetNodePropertiesTool(
-  resolved: ResolvedContext,
+  state: PiTurnState,
 ): ToolDefinition {
-  const { workspace } = resolved
   return defineTool({
     name: "get_node_properties",
     label: "Get Node Properties",
@@ -26,7 +25,7 @@ export function createGetNodePropertiesTool(
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(
-          nodePropertiesSection(workspace, params.nodeId),
+          nodePropertiesSection(state.workspace, params.nodeId),
           `No properties found for node "${params.nodeId}".`,
         ),
       ),

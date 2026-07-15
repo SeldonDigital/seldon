@@ -1,15 +1,17 @@
-// BESPOKE-VIEW: hand-authored drag image for object/layer drag-and-drop.
+// View-model for the drag image shown while reordering object/layer rows. Binds
+// the dragged row's label and icon to the generated ItemNode and applies the
+// floating drag-chip chrome from Seldon tokens. The imperative mount into the
+// native drag preview lives in the drag hook that renders this.
 import { CSSProperties } from "react"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
 
 const previewStyle: CSSProperties = {
   backgroundColor:
-    "color-mix(in srgb, var(--sdn-swatch-black) 80%, transparent)",
-  color: "var(--sdn-swatch-white)",
-  padding: "0.5rem",
-  borderRadius: "4px",
-  minWidth: "200px",
+    "color-mix(in srgb, var(--sdn-swatch-offBlack) 80%, transparent)",
+  color: "var(--sdn-swatch-offWhite)",
+  padding: "var(--sdn-paddings-compact)",
+  borderRadius: "var(--sdn-corners-tight)",
 }
 
 interface DragNodePreviewProps {
@@ -18,15 +20,15 @@ interface DragNodePreviewProps {
 }
 
 export function DragNodePreview({ label, icon }: DragNodePreviewProps) {
-  const icon2 = { icon }
-  const input = { value: label, readOnly: true }
+  const iconSlot = { icon }
+  const inputSlot = { value: label, readOnly: true }
 
   return (
     <ItemNode
       buttonIconic={null}
       comboboxField={{}}
-      icon2={icon2}
-      input={input}
+      icon2={iconSlot}
+      input={inputSlot}
       buttonIconic2={null}
       style={previewStyle}
     />

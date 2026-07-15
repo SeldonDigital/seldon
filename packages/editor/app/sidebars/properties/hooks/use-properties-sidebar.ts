@@ -23,7 +23,7 @@ import {
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { buildPropertyTreeLayout } from "../helpers/build-property-tree-layout"
-import type { PropertyTreeProps } from "../VMPropertiesSidebar"
+import type { PropertyTreeProps } from "../PropertiesSidebar"
 import type {
   FontCollectionEditingContext,
   IconSetEditingContext,

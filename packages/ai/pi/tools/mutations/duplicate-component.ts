@@ -8,6 +8,7 @@ import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+import { withCreatedIdentity } from "./created-nodes"
 
 /**
  * Duplicates an existing node. With a parent, it pastes a copy of an instance
@@ -53,7 +54,9 @@ export function createDuplicateComponentTool(
               type: "duplicate_node",
               payload: { nodeId: params.nodeId },
             } as WorkspaceAction)
-      return textResult(commit(state, action))
+      const before = state.workspace
+      const message = commit(state, action)
+      return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })
 }

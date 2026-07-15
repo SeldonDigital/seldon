@@ -8,13 +8,15 @@ import type {
   Workspace,
 } from "@seldon/core/workspace/types"
 
-import { nodeStringsSummary } from "./node-strings"
+import { nodeSummaryTail } from "./node-line"
 
 /**
  * Every workspace action targets a node by id, so the model can only act on ids
  * it has seen. This serializes a variant subtree into indented lines that pair
- * each id with its level and resolved catalog id, the exact handle the model
- * needs to map a node to its property vocabulary. It lives here because the
+ * each id with its level, resolved catalog id, and node type (default, variant,
+ * or instance). For an instance it also prints its source id, the node a
+ * scope-all edit writes and the handle that tells title-variant nodes apart from
+ * label-variant nodes that share the same catalog id. It lives here because the
  * active-board section is its only caller: the tree it prints and the id set it
  * gathers are two views of the same walk.
  */
@@ -29,20 +31,8 @@ function walkTree(
   for (const ref of refs) {
     const node = workspace.nodes[ref.id]
     const indent = "  ".repeat(depth)
-    if (node) {
-      visited.push(node)
-      const catalogId = getNodeCatalogId(node, workspace)
-      const kind = catalogId ? `${node.level} ${catalogId}` : node.level
-      const label = node.label ? ` label="${node.label}"` : ""
-      const stateKeys = node.states ? Object.keys(node.states) : []
-      const states =
-        stateKeys.length > 0 ? ` states=[${stateKeys.join(", ")}]` : ""
-      const summary = nodeStringsSummary(workspace, ref.id)
-      const values = summary ? ` {${summary}}` : ""
-      lines.push(`${indent}- ${ref.id} [${kind}]${label}${states}${values}`)
-    } else {
-      lines.push(`${indent}- ${ref.id} (no node entry)`)
-    }
+    if (node) visited.push(node)
+    lines.push(`${indent}- ${ref.id}${nodeSummaryTail(workspace, ref.id)}`)
     if (depth < maxDepth && ref.children && ref.children.length > 0) {
       walkTree(ref.children, workspace, depth + 1, lines, visited, maxDepth)
     }

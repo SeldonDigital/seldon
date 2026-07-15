@@ -1,11 +1,11 @@
 export {
-  VMMenu,
-  type VMMenuProps,
+  MenuController,
+  type MenuControllerProps,
   type DropdownRenderTriggerArgs,
   type DropdownTriggerProps,
-} from "./VMMenu"
-export { VMCombobox } from "./VMCombobox"
-export { VMComboboxListbox } from "./VMComboboxListbox"
+} from "./MenuController"
+export { ComboboxController } from "./ComboboxController"
+export { ComboboxListbox } from "./ComboboxListbox"
 export { useComboboxState } from "./use-combobox-state"
 export type {
   MenuAlign,

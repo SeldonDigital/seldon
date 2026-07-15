@@ -16,6 +16,7 @@ import {
   resourceBoardEntriesSection,
 } from "../../../prompt/context-sections/resource-board"
 import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
 /**
@@ -26,12 +27,11 @@ import { joinOrEmpty, textResult } from "./shared"
  * the target.
  */
 export function createWidenScopeTool(
+  state: PiTurnState,
   resolved: ResolvedContext,
 ): ToolDefinition {
   const {
-    workspace,
     resolvedKey,
-    activeBoard,
     selectedNodeId,
     selectedBoardId,
     scope,
@@ -50,6 +50,9 @@ export function createWidenScopeTool(
       ),
     }),
     execute: async (_id, params) => {
+      const workspace = state.workspace
+      const activeBoard =
+        resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
       const emptyWorkspace = "No workspace boards available."
       const workspaceResult = () =>
         textResult(

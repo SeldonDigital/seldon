@@ -241,7 +241,7 @@ const sdn: ItemToDoItemProps = {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text--svkr",
+    className: "sdn-text-label sdn-text--s4kj",
   },
   chip: {
     "aria-hidden": "false",
