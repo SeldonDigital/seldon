@@ -29,6 +29,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "List item",
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     width: { type: Sdn.ValueType.EMPTY, value: null },
     height: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {

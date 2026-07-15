@@ -17,9 +17,9 @@ describe("getPaddingStyles", () => {
     } as unknown as Properties
     expect(getPaddingStyles({ properties, theme: defaultTheme })).toEqual({
       paddingTop: "1px",
-      paddingRight: "2px",
+      paddingInlineEnd: "2px",
       paddingBottom: "3px",
-      paddingLeft: "4px",
+      paddingInlineStart: "4px",
     })
   })
 
@@ -28,7 +28,7 @@ describe("getPaddingStyles", () => {
       padding: { left: px(4), right: { type: ValueType.EMPTY, value: null } },
     } as unknown as Properties
     expect(getPaddingStyles({ properties, theme: defaultTheme })).toEqual({
-      paddingLeft: "4px",
+      paddingInlineStart: "4px",
     })
   })
 

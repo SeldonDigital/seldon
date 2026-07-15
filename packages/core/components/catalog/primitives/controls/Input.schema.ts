@@ -30,6 +30,7 @@ export const schema = {
     checked: { type: Sdn.ValueType.EMPTY, value: null },
     buttonSize: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: { type: Sdn.ValueType.EMPTY, value: null },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,

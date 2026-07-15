@@ -15,6 +15,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Citation",
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,
       value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,

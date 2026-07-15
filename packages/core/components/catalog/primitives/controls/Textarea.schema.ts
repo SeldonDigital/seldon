@@ -24,6 +24,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Placeholder text",
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,

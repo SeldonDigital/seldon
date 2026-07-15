@@ -9,12 +9,15 @@ import { CSSObject } from "./types"
 export function toCSSShorthands(base: CSSObject): CSSObject {
   const styles = { ...base }
 
+  // The inline sides are emitted as logical keys, but when all four sides are
+  // equal the physical `padding` shorthand renders identically under LTR and
+  // RTL, so collapsing stays safe.
   if (
     areAllValuesEqual([
       styles.paddingTop,
-      styles.paddingRight,
+      styles.paddingInlineEnd,
       styles.paddingBottom,
-      styles.paddingLeft,
+      styles.paddingInlineStart,
     ])
   ) {
     // Only create shorthand if padding doesn't already exist
@@ -22,17 +25,17 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
       styles.padding = styles.paddingTop
     }
     delete styles.paddingTop
-    delete styles.paddingRight
+    delete styles.paddingInlineEnd
     delete styles.paddingBottom
-    delete styles.paddingLeft
+    delete styles.paddingInlineStart
   }
 
   if (
     areAllValuesEqual([
       styles.marginTop,
-      styles.marginRight,
+      styles.marginInlineEnd,
       styles.marginBottom,
-      styles.marginLeft,
+      styles.marginInlineStart,
     ])
   ) {
     // Only create shorthand if margin doesn't already exist
@@ -40,9 +43,9 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
       styles.margin = styles.marginTop
     }
     delete styles.marginTop
-    delete styles.marginRight
+    delete styles.marginInlineEnd
     delete styles.marginBottom
-    delete styles.marginLeft
+    delete styles.marginInlineStart
   }
 
   if (

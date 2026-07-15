@@ -30,7 +30,7 @@ export function getMarginStyles({
       )
     }
     if (right) {
-      styles.marginRight = getAbsoluteSizeCssValue(
+      styles.marginInlineEnd = getAbsoluteSizeCssValue(
         right,
         theme,
         useThemeVariableReferences,
@@ -44,7 +44,7 @@ export function getMarginStyles({
       )
     }
     if (left) {
-      styles.marginLeft = getAbsoluteSizeCssValue(
+      styles.marginInlineStart = getAbsoluteSizeCssValue(
         left,
         theme,
         useThemeVariableReferences,

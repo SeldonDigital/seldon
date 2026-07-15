@@ -15,6 +15,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Legend",
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     margin: {

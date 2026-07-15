@@ -14,7 +14,7 @@ describe("getTableStyles", () => {
       cellAlign: { type: ValueType.OPTION, value: Align.BOTTOM_RIGHT },
     })
     expect(getTableStyles({ properties, theme: defaultTheme })).toEqual({
-      textAlign: "right",
+      textAlign: "end",
       verticalAlign: "bottom",
     })
   })

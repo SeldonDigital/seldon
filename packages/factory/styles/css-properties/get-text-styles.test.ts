@@ -23,7 +23,7 @@ describe("getTextStyles", () => {
     const properties = {
       textAlign: { type: ValueType.OPTION, value: TextAlign.RIGHT },
     } as unknown as Properties
-    expect(getTextStyles(context(properties))).toEqual({ textAlign: "right" })
+    expect(getTextStyles(context(properties))).toEqual({ textAlign: "end" })
   })
 
   it("maps auto alignment to start", () => {
