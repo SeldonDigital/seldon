@@ -22,7 +22,10 @@ import { CSSObject } from "./types"
  * become start and end so a cascaded direction flips them, while center and
  * justify are direction-neutral.
  */
-const LOGICAL_TEXT_ALIGN: Record<TextAlign, "start" | "end" | "center" | "justify"> = {
+const LOGICAL_TEXT_ALIGN: Record<
+  TextAlign,
+  "start" | "end" | "center" | "justify"
+> = {
   [TextAlign.AUTO]: "start",
   [TextAlign.LEFT]: "start",
   [TextAlign.RIGHT]: "end",
