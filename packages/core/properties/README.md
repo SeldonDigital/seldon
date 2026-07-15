@@ -236,7 +236,7 @@ Properties that are specific to the selected component type and define its core 
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `display` | `atomic` | `empty` \| `inherit` \| `option: show, hide, exclude` |
+| `display` | `atomic` | `empty` \| `inherit` \| `option: show, hide, stub, mock, exclude` |
 | `htmlElement` | `atomic` | `empty` \| `inherit` \| `option: a, h1, h2, h3, h4, h5, h6, p, span, label, div, section, article, header, footer, main, nav, aside, figure, figcaption, form, fieldset, menu, option, optgroup, li, ol, ul` \| `exact: string` |
 | `wrapperElement` | `atomic` | `empty` \| `inherit` \| `option: div, section, article, aside, main, nav, header, footer, ul, ol, li, form, fieldset, figure, menu, blockquote, thead, tbody, tfoot, tr` \| `exact: string` (Frame catalog only) |
 | `content` | `atomic` | `empty` \| `inherit` \| `exact: string` |

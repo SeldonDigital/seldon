@@ -85,7 +85,7 @@ const NodeInner = function NodeInner({
     properties,
     isExcluded,
     isHidden,
-    isPlaceholder,
+    isStub,
     nodeTypeColor,
     isPrimaryShared,
     isSecondaryShared,
@@ -195,23 +195,23 @@ const NodeInner = function NodeInner({
     },
   }
 
-  // A hidden, placeholder, or excluded node reads as disabled. Excluded rows
+  // A hidden, stub, or excluded node reads as disabled. Excluded rows
   // italicize and strike through the name shown in the combobox input;
-  // placeholder rows italicize it.
-  const isDimmed = isHidden || isPlaceholder || isExcluded
+  // stub rows italicize it.
+  const isDimmed = isHidden || isStub || isExcluded
   const excludedLabelStyle = {
     ...nameInput.style,
     fontStyle: "italic" as const,
     textDecoration: "line-through" as const,
   }
-  const placeholderLabelStyle = {
+  const stubLabelStyle = {
     ...nameInput.style,
     fontStyle: "italic" as const,
   }
   const nodeLabel = isExcluded
     ? { ...nameInput, style: excludedLabelStyle }
-    : isPlaceholder
-      ? { ...nameInput, style: placeholderLabelStyle }
+    : isStub
+      ? { ...nameInput, style: stubLabelStyle }
       : nameInput
 
   // Disabled is not owned by the combobox-field, so it never cascades from the

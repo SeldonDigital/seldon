@@ -52,7 +52,7 @@ The code is grouped by pipeline stage:
 `getComponentsToExport` collects every variant on a component board, skips `Frame`, and maps each one to a `ComponentToExport`. It sets the output path from the pluralized component level, such as `elements/Button.tsx`. It builds the JSON tree with `getJsonTreeFromChildren` and attaches the export config.
 
 **JSON tree** (`discovery/get-json-tree-from-children.ts`)
-`getJsonTreeFromChildren` walks the component children into a `JSONTreeNode` tree. It drops children with `display: EXCLUDE`, guards against circular references, numbers repeated component names, records the CSS class names per node, escapes text content, and resolves prop options for icons and HTML elements. Icon prop options include every icon enabled in the workspace icon sets, so the generated `IconProps["icon"]` union covers every exported icon.
+`getJsonTreeFromChildren` walks the component children into a `JSONTreeNode` tree. It drops children with `display: EXCLUDE` or `display: MOCK`, flags `display: STUB` children as opt-in slots through `isStub`, guards against circular references, numbers repeated component names, records the CSS class names per node, escapes text content, and resolves prop options for icons and HTML elements. Icon prop options include every icon enabled in the workspace icon sets, so the generated `IconProps["icon"]` union covers every exported icon.
 
 **Other discovery helpers**
 
