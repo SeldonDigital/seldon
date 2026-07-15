@@ -18,19 +18,20 @@ The editor groups these areas:
 | **Project** | Active workspace id and dirty sync status | [lib/project/](./lib/project) |
 | **Storage** | IndexedDB read and write for stored workspaces | [lib/storage/workspace-store.ts](./lib/storage/workspace-store.ts) |
 | **Export** | Browser folder export through the local export route | [lib/export/](./lib/export) |
+| **Hari, an AI Assistant** | Chat client that runs the local agent and applies its actions | [lib/ai/](./lib/ai), [app/palettes/hari/](./app/palettes/hari) |
 
-The editor imports and exports code directly from `@seldon/core` and `@seldon/factory`. It does not fork their logic. The package name is `@seldon/editor`.
+The editor imports and exports code directly from `@seldon/core`, `@seldon/factory`, and `@seldon/ai`. It does not fork their logic. The package name is `@seldon/editor`.
 
 ### Stack
 
 - **Vite 8** with **React 19**. The app is a single-page client. `src/main.tsx` mounts a `react-router` browser router with two routes: `/` for the home page and `/:id` for the editor. The editor route is lazy-loaded behind `Suspense`.
 - **Zustand** holds runtime state. There is no Redux or React context store.
 - **IndexedDB** through `idb-keyval` persists workspaces. The database is `seldon-editor-local` and the object store is `workspaces`.
-- Imports use the path aliases `@app` for `app/`, `@lib` for `lib/`, and `@seldon/components` for `seldon/`, alongside `@seldon/core` and `@seldon/factory`.
+- Imports use the path aliases `@app` for `app/`, `@lib` for `lib/`, and `@seldon/components` for `seldon/`, alongside `@seldon/core`, `@seldon/factory`, and `@seldon/ai`.
 
 ### Run Steps
 
-- `npm run dev` first appends the Chrome font fallback and copies font licenses and font files, then starts the Vite dev server. Third-party notices are generated separately by `npm run notices:thirdparty`, which `npm run build:release` runs before building. They are not produced by `dev` or `build`.
+- `npm run dev` copies font licenses and font files, ensures a local Ollama server is running for the AI agent through `scripts/ensure-ollama.mjs`, then starts the Vite dev server. Third-party notices are generated separately by `npm run notices:thirdparty`, which `npm run build:release` runs before building. They are not produced by `dev` or `build`.
 - `npm run build` builds the production bundle. `npm start` serves the build with `vite preview`.
 - `npm run quality` type-checks with `tsc`. `npm run lint` runs ESLint.
 
@@ -98,6 +99,102 @@ A debounced autosave in [lib/persistence/hooks/use-workspace-autosave.ts](./lib/
 
 ---
 
+### Hari, an AI Assistant
+
+The editor ships a local AI assistant that edits the workspace through the same action contract. The **Hari** palette in [app/palettes/hari/](./app/palettes/hari) is the chat surface. It posts the message and current workspace to the local `/api/agent` route through [lib/ai/run-agent-chat.ts](./lib/ai/run-agent-chat.ts).
+
+The route is served by the Vite plugin [vite/agent-api-plugin.ts](./vite/agent-api-plugin.ts), which bundles the handler in [vite/agent-handler.ts](./vite/agent-handler.ts). The handler runs the agent from `@seldon/ai` in Node against a local Ollama model and streams its events back as newline-delimited JSON for live rendering.
+
+The agent grounds on the workspace but does not mutate it. The turn returns typed **workspace actions**, and the editor applies them through the one reducer as a single undo step, exactly like a manual edit. Extra endpoints cover session config (`/api/agent/config`) and model warm-up (`/api/agent/warm`).
+
+---
+
+## Editor MVVM
+
+The editor is a standalone application. It uses MVVM to keep its interface separate from its logic. This document defines the three layers, the rules for each, and the reasoning behind the choice. Use it as the shared reference for editor UI code.
+
+MVVM splits the app into three layers:
+
+- **Model**: the app's data and domain logic. It does not know about the UI.
+- **View**: the interface. It binds to a ViewModel and renders. It holds no logic.
+- **ViewModel**: the layer between them. It owns UI state, derives display values, exposes commands, and is the only layer that talks to the Model.
+
+---
+
+### Model
+
+The Model is the editor's data and domain logic. It owns the in-memory workspace, the actions and reducer that change it, selection, history, and the domain services the app depends on.
+
+The Model does not import from the View or the ViewModel. It runs without React.
+
+Note: This codebase backs much of the Model with `@seldon/core` services. That is an implementation detail of this app, not part of MVVM. In another app the Model would be different code. Treat the Model as "the editor's domain," not as one package.
+
+---
+
+### View
+
+The View is the interface. A View receives named values and renders element tags. It computes nothing. Views live in three places:
+
+- `seldon/`: the generated design components. This is the reusable View library that the app binds to. Raw markup lives here, sourced from `seldon/native-react/`. These files are generated, so do not hand-edit them.
+- `lib/`: editor chrome Views such as overlays and windows. Reusable UI that is not a design component.
+- `app/`: some screen-level Views where Seldon when does not have a screen component. They compose ViewModels and bind the result to the reusable Views in `seldon/` and `lib/`.
+
+View rules for `app/` and `lib/`:
+
+- Compute nothing inside returned JSX. No ternaries, `&&`, comparisons, inline `style` objects, template literals, inline handlers, or value-building calls.
+- Hoist every value into a named `const`, `useMemo`, or `useCallback` above the `return`, then reference the name.
+- Author no raw DOM. A View may not open a lowercase HTML tag such as `<div>` or a `motion.*` tag. Put markup in a reusable View. Use `seldon/` for design components and `lib/` for editor chrome.
+- Mark a genuinely hand-authored view as `*.bespoke.*`. A bespoke view opts out of the raw-markup rule.
+- Keep bare literal slot enablers inline. A positional `{}`, `null`, or `undefined` that only turns a slot on or off carries no logic.
+
+`seldon/` design components are generated and are the markup they render, so the raw-markup rule does not apply to them.
+
+---
+
+### ViewModel
+
+ViewModels are `use-*.ts` hooks. Some controller components act as view-models too. They compose hooks and bind the result to a generated View shell.
+
+A ViewModel owns UI state, derives display values, wires interaction commands, and assembles the props the View binds to. It is the only layer that reaches domain services.
+
+As an example, `PanelPaletteController` shows this shape in action. It owns drag, resize, and escape state through `useDraggableWindow`, assembles the props, then binds them to the `PanelPalette` View.
+
+---
+
+## Enforced Boundaries
+
+The layers are lint rules in `eslint.config.mjs`, not convention.
+
+- A View cannot import domain services. This warns across `app/`, resulting in a hard error.
+- A View cannot author raw DOM or `motion.*` markup unless it is named `*.bespoke.*`.
+- Hooks, helpers, and `use-*` modules are logic, so the raw-markup rule does not apply to them.
+
+JSX authoring rules for AI Agents live in `.cursor/rules/editor-jsx.mdc`.
+
+---
+
+## Why MVVM
+
+1. **The interface changes often and late.** Design tools iterate on the UI heavily. MVVM lets us redesign a panel or swap a control without touching the ViewModel or Model, because the View only binds names.
+
+2. **Logic stays testable.** The interface of an application is often the hardest part to test. Pushing derivation and commands into `use-*` hooks lets us test the hard parts as plain hooks. The Model runs without React, so its logic tests without needing the user interface.
+
+3. **One place for each concern.** State goes in a hook. Markup goes in a View. Domain logic goes in the Model. A new feature has an obvious home, and reviewers know where to look.
+
+4. **Reuse across surfaces.** Shared view-models feed many surfaces. `useDraggableWindow` and the panel and dialog controllers drive different View shells from the same behavior.
+
+5. **The boundary holds.** Because lint enforces the layers, the separation does not decay as the app grows. A View that reaches into the Model fails the build.
+
+---
+
+### The Trade-Off
+
+MVVM adds a layer and a binding step. A trivial component can cost a bit more code than inlining its logic. We accept that cost. The Editor is large and long-lived, and tangled interface styling, logic, and exceptions cost far more over time, accumulating technical debt at a compounded rate.
+
+Logic lives in the Model and in testable `use-*` hooks. Views stay simple binding shells. Lint keeps the layers apart.
+
+---
+
 ## The Editor At A Glance
 
 ### Canvas
@@ -106,7 +203,7 @@ The canvas is the design surface. `Canvas` handles zoom and pan, `CanvasWorkspac
 
 ### Objects sidebar
 
-The left sidebar shows the tree of boards, nodes, and themes. Selecting an entry sets the active target for the rest of the editor.
+The left sidebar shows the tree of boards and nodes, along with themes, font collections, icon sets, and media. Selecting an entry sets the active target for the rest of the editor.
 
 ### Properties sidebar
 
@@ -124,9 +221,14 @@ The topbar holds the menus and tools. Panels cover catalog inserts and image upl
 - **Open workspace.json**: import a file from disk into a new stored workspace.
 - **Export workspace JSON**: download the current workspace from the File menu.
 - **Export code to a folder**: generate React and CSS files into a chosen directory.
-- **Debug mode**: use the **Dev** menu to toggle canvas profiling, node id, type, and property-type overlays, and dispatch, verbose, and workspace logging.
+- **Ask the AI assistant**: open the Hari chat, describe a change, and let the agent apply workspace actions as one undo step.
+- **Debug mode**: use the **Dev** menu to toggle canvas profiling, node id, type, and property-type overlays, and dispatch, verbose, workspace, and AI logging.
 
-Folder export runs through the local export route. [lib/export/run-local-export.ts](./lib/export/run-local-export.ts) posts the workspace to `/api/export`, which the Vite plugin [vite/export-api-plugin.ts](./vite/export-api-plugin.ts) serves by bundling the Factory export handler. [lib/export/write-export-to-directory.ts](./lib/export/write-export-to-directory.ts) then writes the returned files to the folder the browser picks. The JSON download stays available as the version-control handoff artifact.
+Folder export runs through the local export route.
+
+[lib/export/run-local-export.ts](./lib/export/run-local-export.ts) posts the workspace to `/api/export`, which the Vite plugin [vite/export-api-plugin.ts](./vite/export-api-plugin.ts) serves by bundling the Factory export handler. 
+
+[lib/export/write-export-to-directory.ts](./lib/export/write-export-to-directory.ts) then writes the returned files to the folder the browser picks. The JSON download stays available as the version-control handoff artifact.
 
 ---
 
