@@ -70,7 +70,13 @@ function userBlock(turn: HariTurn): ReactNode {
 
 function statusBlock(turn: HariTurn): ReactNode {
   const textLabel = { children: "Working..." }
-  return <MessageStatus key={`${turn.id}-status`} textLabel={textLabel} />
+  return (
+    <MessageStatus
+      key={`${turn.id}-status`}
+      className="hari-status-working"
+      textLabel={textLabel}
+    />
+  )
 }
 
 function stoppedBlock(turn: HariTurn): ReactNode {

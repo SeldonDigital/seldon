@@ -45,3 +45,42 @@
   color: var(--sdn-swatch-offBlack);
   font-style: italic;
 }
+
+/*
+ * The "Working..." status line renders only while a turn is pending, so this
+ * shimmer runs for the life of that block and stops when it unmounts. A lighter
+ * band of the same offBlack sweeps left across the text by animating the clipped
+ * gradient's position, so the effect stays monochrome with no accent color.
+ * Reduced-motion drops the animation to a static offBlack label.
+ */
+.hari-status-working .sdn-text-label {
+  background: linear-gradient(
+    90deg,
+    var(--sdn-swatch-offBlack) 0%,
+    var(--sdn-swatch-offBlack) 40%,
+    color-mix(in srgb, var(--sdn-swatch-offBlack) 30%, transparent) 50%,
+    var(--sdn-swatch-offBlack) 60%,
+    var(--sdn-swatch-offBlack) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hari-shimmer 8s linear infinite;
+}
+
+@keyframes hari-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hari-status-working .sdn-text-label {
+    animation: none;
+    color: var(--sdn-swatch-offBlack);
+  }
+}
