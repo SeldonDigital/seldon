@@ -13,9 +13,10 @@ import { migrateV11PositionDropDimensionOrdinal } from "./steps/migrate-00011-po
 import { migrateV12DialogToPanels } from "./steps/migrate-00012-dialog-to-panels"
 import { migrateV13BooleanClipWrapChildren } from "./steps/migrate-00013-boolean-clip-wrapchildren"
 import { migrateV14EnumBooleanOption } from "./steps/migrate-00014-enum-boolean-option"
+import { migrateV15DisplayPlaceholderToStub } from "./steps/migrate-00015-display-placeholder-to-stub"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 14
+export const CURRENT_WORKSPACE_VERSION = 15
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -34,6 +35,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   12: migrateV12DialogToPanels,
   13: migrateV13BooleanClipWrapChildren,
   14: migrateV14EnumBooleanOption,
+  15: migrateV15DisplayPlaceholderToStub,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {

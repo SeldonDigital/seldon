@@ -628,12 +628,12 @@ export function useRowNode(
     return false
   }
 
-  function checkIfPlaceholder(): boolean {
+  function checkIfStub(): boolean {
     if (!nodeExistsInWorkspace) {
       return false
     }
 
-    if (properties?.display?.value === Display.PLACEHOLDER) return true
+    if (properties?.display?.value === Display.STUB) return true
 
     if (!typeCheckingService.isInstance(node)) {
       return false
@@ -645,7 +645,7 @@ export function useRowNode(
         currentParent as EntryNode,
         workspace,
       )
-      if (parentProps?.display?.value === Display.PLACEHOLDER) {
+      if (parentProps?.display?.value === Display.STUB) {
         return true
       }
       if (typeCheckingService.isInstance(currentParent)) {
@@ -662,16 +662,16 @@ export function useRowNode(
   }
 
   // Excluded rows (own display or an excluded ancestor) read as italic with a
-  // strikethrough. Placeholder rows (own display or a placeholder ancestor) read
-  // as italic. Hidden rows use the node's own display only. All three drive the
-  // disabled look.
+  // strikethrough. Stub rows (own display or a stub ancestor) read as italic.
+  // Hidden rows use the node's own display only. All three drive the disabled
+  // look.
   const isExcluded = checkIfExcluded()
   const isHidden = properties?.display?.value === Display.HIDE
-  const isPlaceholder = checkIfPlaceholder()
+  const isStub = checkIfStub()
 
   const baseLabelStyle: CSSProperties | undefined = isExcluded
     ? { fontStyle: "italic", textDecoration: "line-through" }
-    : isPlaceholder
+    : isStub
       ? { fontStyle: "italic" }
       : undefined
   const labelStyle: CSSProperties | undefined = isEcho
@@ -715,7 +715,7 @@ export function useRowNode(
     properties,
     isExcluded,
     isHidden,
-    isPlaceholder,
+    isStub,
     nodeTypeColor,
     isPrimaryShared,
     isSecondaryShared,

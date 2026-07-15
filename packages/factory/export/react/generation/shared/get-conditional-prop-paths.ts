@@ -46,9 +46,9 @@ export function getConditionalPropPaths(
       return
     }
 
-    // Placeholder nodes render as opt-in slots, so route them through the same
+    // Stub nodes render as opt-in slots, so route them through the same
     // conditional path as inline extras: no default, guarded render.
-    if (node.isPlaceholder || !isValidIn(node, parentValidation)) {
+    if (node.isStub || !isValidIn(node, parentValidation)) {
       conditional.add(node.dataBinding.path)
     }
 
