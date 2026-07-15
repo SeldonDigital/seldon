@@ -50,11 +50,11 @@ export const schema = {
     gap: { type: Sdn.ValueType.EMPTY, value: null },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     clip: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
     color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -140,7 +140,7 @@ export const schema = {
     },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
   },
@@ -623,7 +623,7 @@ export const schema = {
               component: Seldon.ComponentId.INPUT,
               variant: "checkbox",
               overrides: {
-                checked: { type: Sdn.ValueType.EXACT, value: false },
+                checked: { type: Sdn.ValueType.OPTION, value: false },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 color: {
@@ -722,7 +722,7 @@ export const schema = {
               component: Seldon.ComponentId.INPUT,
               variant: "checkbox",
               overrides: {
-                checked: { type: Sdn.ValueType.EXACT, value: true },
+                checked: { type: Sdn.ValueType.OPTION, value: true },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 color: {
@@ -793,7 +793,7 @@ export const schema = {
               component: Seldon.ComponentId.INPUT,
               variant: "checkbox",
               overrides: {
-                checked: { type: Sdn.ValueType.EXACT, value: false },
+                checked: { type: Sdn.ValueType.OPTION, value: false },
                 align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 color: {

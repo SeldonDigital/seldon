@@ -22,11 +22,10 @@ export type AriaLiveValue = EmptyValue | AriaLiveOptionValue
 export const ariaLiveSchema: PropertySchema = {
   name: "ariaLive",
   description: "How a live region announces updates to assistive technologies",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(AriaLive) as string[]).includes(value),

@@ -8,32 +8,22 @@ export enum Direction {
   RTL = "rtl",
 }
 
-/** Stores a reading direction as a freeform exact value. */
-export interface DirectionExactValue {
-  type: ValueType.EXACT
-  value: Direction
-}
-
 /** Picks left-to-right or right-to-left as an option value. */
 export interface DirectionOptionValue {
   type: ValueType.OPTION
   value: Direction
 }
 
-/** Unset, a freeform exact value, or a picked preset reading direction. */
-export type DirectionValue =
-  | EmptyValue
-  | DirectionExactValue
-  | DirectionOptionValue
+/** Unset or a picked preset reading direction. */
+export type DirectionValue = EmptyValue | DirectionOptionValue
 
 export const directionSchema: PropertySchema = {
   name: "direction",
-  description: "Sets left-to-right or right-to-left reading order for text.",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  description: "Sets left-to-right or right-to-left reading and layout order.",
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Direction) as string[]).includes(value),

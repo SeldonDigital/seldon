@@ -26,7 +26,7 @@ export const schema = {
     },
     srcLang: { type: Sdn.ValueType.EMPTY, value: null },
     trackLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    trackDefault: { type: Sdn.ValueType.EXACT, value: false },
+    trackDefault: { type: Sdn.ValueType.OPTION, value: false },
   },
 } as const satisfies ComponentSchema
 

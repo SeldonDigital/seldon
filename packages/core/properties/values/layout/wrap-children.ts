@@ -4,9 +4,8 @@ export const wrapChildrenSchema: PropertySchema = {
   name: "wrapChildren",
   description:
     "Sets whether children move to the next line or row instead of overflowing.",
-  supports: ["exact", "option"] as const,
+  supports: ["option"] as const,
   validation: {
-    exact: (value: unknown) => typeof value === "boolean",
     option: (value: unknown) => typeof value === "boolean",
   },
   presetOptions: () => [true, false],

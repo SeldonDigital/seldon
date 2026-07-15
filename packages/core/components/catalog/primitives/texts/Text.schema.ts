@@ -128,7 +128,7 @@ export const schema = {
     },
     textAlign: { type: Sdn.ValueType.OPTION, value: Sdn.TextAlign.LEFT },
     wrapText: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },
@@ -149,7 +149,7 @@ export const schema = {
       },
     ],
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
   variants: [
     {
@@ -283,7 +283,7 @@ export const schema = {
             value: "@font.label",
           },
         },
-        wrapText: { type: Sdn.ValueType.EXACT, value: false },
+        wrapText: { type: Sdn.ValueType.OPTION, value: false },
       },
     },
     {

@@ -64,7 +64,7 @@ export const schema = {
     },
     textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     wrapText: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },
@@ -85,7 +85,7 @@ export const schema = {
       },
     ],
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
 } as const satisfies ComponentSchema
 

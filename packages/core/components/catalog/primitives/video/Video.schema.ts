@@ -12,10 +12,10 @@ export const schema = {
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     source: { type: Sdn.ValueType.EMPTY, value: null },
-    controls: { type: Sdn.ValueType.EXACT, value: true },
-    autoPlay: { type: Sdn.ValueType.EXACT, value: false },
-    loop: { type: Sdn.ValueType.EXACT, value: false },
-    muted: { type: Sdn.ValueType.EXACT, value: false },
+    controls: { type: Sdn.ValueType.OPTION, value: true },
+    autoPlay: { type: Sdn.ValueType.OPTION, value: false },
+    loop: { type: Sdn.ValueType.OPTION, value: false },
+    muted: { type: Sdn.ValueType.OPTION, value: false },
     poster: { type: Sdn.ValueType.EMPTY, value: null },
     preload: {
       type: Sdn.ValueType.OPTION,
@@ -30,7 +30,7 @@ export const schema = {
       value: Sdn.Resize.FILL,
     },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
 } as const satisfies ComponentSchema
 

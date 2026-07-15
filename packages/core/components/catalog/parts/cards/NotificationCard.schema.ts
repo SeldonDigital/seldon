@@ -57,11 +57,11 @@ export const schema = {
     },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     clip: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -159,7 +159,7 @@ export const schema = {
     role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.STATUS },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     ariaLive: { type: Sdn.ValueType.EMPTY, value: null },

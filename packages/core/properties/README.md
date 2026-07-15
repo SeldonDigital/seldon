@@ -226,7 +226,7 @@ Below are all property values and their fields. They are grouped into categories
 | `<percent>` | `exact: %, 0–100` |
 | `<length>` | `exact: px, rem` |
 | `<length%>` | `exact: px, rem, %` |
-| `<bool>` | `exact: boolean` \| `option: true, false` |
+| `<bool>` | `option: true, false` |
 
 ---
 
@@ -236,15 +236,15 @@ Properties that are specific to the selected component type and define its core 
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `display` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: show, hide, exclude` |
+| `display` | `atomic` | `empty` \| `inherit` \| `option: show, hide, exclude` |
 | `htmlElement` | `atomic` | `empty` \| `inherit` \| `option: a, h1, h2, h3, h4, h5, h6, p, span, label, div, section, article, header, footer, main, nav, aside, figure, figcaption, form, fieldset, menu, option, optgroup, li, ol, ul` \| `exact: string` |
 | `wrapperElement` | `atomic` | `empty` \| `inherit` \| `option: div, section, article, aside, main, nav, header, footer, ul, ol, li, form, fieldset, figure, menu, blockquote, thead, tbody, tfoot, tr` \| `exact: string` (Frame catalog only) |
 | `content` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | `symbol` | `atomic` | `empty` \| `inherit` \| `option: iconId` \| `exact: string` |
 | `source` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `imageFit` | `atomic` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `exact: string` |
+| `imageFit` | `atomic` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` |
 | `altText` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `inputType` | `atomic` | `empty` \| `inherit` \| `option: text, number, email, password, search, tel, url, date, datetime-local, checkbox, radio` \| `exact: string` |
+| `inputType` | `atomic` | `empty` \| `inherit` \| `option: text, number, email, password, search, tel, url, date, datetime-local, checkbox, radio` |
 | `placeholder` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | `checked` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @size.*` \| `computed: autoFit` |
@@ -271,9 +271,9 @@ Properties that control the positioning, sizing, and spatial relationships of co
 | └ `position.right` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | └ `position.left` | `atomic` | `empty` \| `inherit` \| `<length%>` |
-| `direction` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl` |
-| `orientation` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: horizontal, vertical` |
-| `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
+| `direction` | `atomic` | `empty` \| `inherit` \| `option: ltr, rtl` |
+| `orientation` | `atomic` | `empty` \| `inherit` \| `option: horizontal, vertical` |
+| `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` |
 | `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
 | `height` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
 | `margin` | `shorthand` | `margin.top, margin.right, margin.bottom, margin.left` |
@@ -296,10 +296,10 @@ Properties that control the positioning, sizing, and spatial relationships of co
 | `columnSpan` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `rowStart` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `rowSpan` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
-| `cellAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
+| `cellAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` |
 | `dimension` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
-| `resize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: fit, fill` |
-| `screenSize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: desktop, laptop, tablet, mobile, watch, television` |
+| `resize` | `atomic` | `empty` \| `inherit` \| `option: fit, fill` |
+| `screenSize` | `atomic` | `empty` \| `inherit` \| `option: desktop, laptop, tablet, mobile, watch, television` |
 
 These three keys are **auxiliary layout** fields. They appear on the `Properties` type and in `PROPERTY_SCHEMAS` after the primary layout table keys. See [`schemas/README.md`](./schemas/README.md).
 
@@ -409,7 +409,7 @@ Properties that control text styling, fonts, and typography.
 | `font` | `compound` | `preset, family, style, weight, size, lineHeight, textCase, letterSpacing` |
 | └ `font.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @font.*` (built-in `@font.normal`) |
 | └ `font.family` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @fontFamily.*` \| `option: string` \| `exact: string` |
-| └ `font.style` | `atomic` | `empty` \| `inherit` \| `option: normal, italic, oblique` \| `exact: string` |
+| └ `font.style` | `atomic` | `empty` \| `inherit` \| `option: normal, italic, oblique` |
 | └ `font.weight` | `atomic` | `empty` \| `inherit` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*` |
 | └ `font.size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit` |
 | └ `font.lineHeight` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
@@ -465,20 +465,20 @@ Properties that expose ARIA semantics to assistive technologies. They are plain 
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `role` | `atomic` | `empty` \| `inherit` \| `option: none, presentation, img, button, link, heading, list, listitem, navigation, main, banner, contentinfo, complementary, region, search, form, dialog, alertdialog, alert, status, tooltip, tab, tablist, tabpanel, menu, menubar, menuitem, listbox, option, combobox, checkbox, radio, radiogroup, switch, slider, progressbar, separator, toolbar, group, article, note, table, row, cell, columnheader, rowheader, grid, tree, treeitem` \| `exact: string` |
+| `role` | `atomic` | `empty` \| `inherit` \| `option: none, presentation, img, button, link, heading, list, listitem, navigation, main, banner, contentinfo, complementary, region, search, form, dialog, alertdialog, alert, status, tooltip, tab, tablist, tabpanel, menu, menubar, menuitem, listbox, option, combobox, checkbox, radio, radiogroup, switch, slider, progressbar, separator, toolbar, group, article, note, table, row, cell, columnheader, rowheader, grid, tree, treeitem` |
 | `ariaLabel` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | `ariaHidden` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `ariaDisabled` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `ariaExpanded` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `ariaSelected` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `ariaChecked` | `atomic` | `empty` \| `inherit` \| `option: true, false, mixed` \| `exact: string` |
-| `ariaPressed` | `atomic` | `empty` \| `inherit` \| `option: true, false, mixed` \| `exact: string` |
-| `ariaCurrent` | `atomic` | `empty` \| `inherit` \| `option: false, true, page, step, location, date, time` \| `exact: string` |
-| `ariaHasPopup` | `atomic` | `empty` \| `inherit` \| `option: false, true, menu, listbox, tree, grid, dialog` \| `exact: string` |
-| `ariaInvalid` | `atomic` | `empty` \| `inherit` \| `option: false, true, grammar, spelling` \| `exact: string` |
+| `ariaChecked` | `atomic` | `empty` \| `inherit` \| `option: true, false, mixed` |
+| `ariaPressed` | `atomic` | `empty` \| `inherit` \| `option: true, false, mixed` |
+| `ariaCurrent` | `atomic` | `empty` \| `inherit` \| `option: false, true, page, step, location, date, time` |
+| `ariaHasPopup` | `atomic` | `empty` \| `inherit` \| `option: false, true, menu, listbox, tree, grid, dialog` |
+| `ariaInvalid` | `atomic` | `empty` \| `inherit` \| `option: false, true, grammar, spelling` |
 | `ariaRequired` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `ariaReadonly` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `ariaLive` | `atomic` | `empty` \| `inherit` \| `option: off, polite, assertive` \| `exact: string` |
+| `ariaLive` | `atomic` | `empty` \| `inherit` \| `option: off, polite, assertive` |
 
 Id-reference attributes such as `aria-labelledby` and `aria-controls`, and focus order via `tabIndex`, are intentionally excluded. Seldon ids are generated, so the editor's runtime layer wires those.
 

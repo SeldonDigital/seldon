@@ -41,7 +41,7 @@ export const schema = {
     },
     gap: { type: Sdn.ValueType.EMPTY, value: null },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    clip: { type: Sdn.ValueType.EXACT, value: false },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
     columns: {
       type: Sdn.ValueType.EXACT,
       value: { unit: Sdn.Unit.NUMBER, value: 1 },
@@ -122,7 +122,7 @@ export const schema = {
     role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
   },

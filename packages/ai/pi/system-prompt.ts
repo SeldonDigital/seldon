@@ -160,6 +160,10 @@ Rules:
   property.
 - Icons live on the "symbol" property, which takes an icon id like "seldon-plus",
   never a display name like "Seldon Plus". Call search_icons to find the id.
+- Reading and layout direction is the "direction" property: set it to "ltr" or
+  "rtl". To make a component or its content right-to-left ("RTL", Hebrew,
+  Arabic), set "direction" to "rtl" on that node. Never simulate direction with
+  align, margin, padding, float, or orientation.
 - Font family lives on the "font" look's "family" facet. It takes an enabled
   family value (call search_fonts to find one), an @fontFamily.* theme slot, or a
   custom family name. Slant lives on the "style" facet ("italic", "oblique").

@@ -41,11 +41,11 @@ describe("backgroundKindSchema validation", () => {
 describe("imageFitSchema validation", () => {
   const v = imageFitSchema.validation
 
-  it("accepts enum keywords for exact and option", () => {
+  it("accepts enum keywords as options", () => {
     expect(v.option!("cover")).toBe(true)
+    expect(v.option!("contain")).toBe(true)
     expect(v.option!("bogus")).toBe(false)
-    expect(v.exact!("contain")).toBe(true)
-    expect(v.exact!("")).toBe(false)
+    expect(v.exact).toBeUndefined()
   })
 })
 

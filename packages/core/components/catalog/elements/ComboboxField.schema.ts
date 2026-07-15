@@ -32,8 +32,8 @@ export const schema = {
       left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
     },
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
-    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
-    clip: { type: Sdn.ValueType.EXACT, value: false },
+    wrapChildren: { type: Sdn.ValueType.OPTION, value: false },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
     color: {
       type: Sdn.ValueType.COMPUTED,
       value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
@@ -130,7 +130,7 @@ export const schema = {
     ],
     role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
   default: {
     children: [

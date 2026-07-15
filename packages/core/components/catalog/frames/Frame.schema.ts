@@ -61,10 +61,10 @@ export const schema = {
     gap: { type: Sdn.ValueType.EMPTY, value: null },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EXACT, value: false },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
     columnStart: { type: Sdn.ValueType.EMPTY, value: null },
     columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
     rowStart: { type: Sdn.ValueType.EMPTY, value: null },
@@ -152,7 +152,7 @@ export const schema = {
     role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
   },

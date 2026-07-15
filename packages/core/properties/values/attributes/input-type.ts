@@ -30,11 +30,10 @@ export type InputTypeValue = EmptyValue | InputTypeOptionValue
 export const inputTypeSchema: PropertySchema = {
   name: "inputType",
   description: "Input type for form components (text, email, password, etc.)",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(InputType) as string[]).includes(value),

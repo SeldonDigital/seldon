@@ -117,7 +117,7 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.UNDERLINE,
     },
-    wrapText: { type: Sdn.ValueType.EXACT, value: true },
+    wrapText: { type: Sdn.ValueType.OPTION, value: true },
     lines: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
@@ -137,7 +137,7 @@ export const schema = {
     ],
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },

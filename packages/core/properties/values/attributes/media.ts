@@ -2,7 +2,7 @@ import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 import { ContentValue } from "../shared/exact/string"
-import { BooleanValue } from "../shared/option/boolean"
+import { BooleanOptionValue } from "../shared/option/boolean"
 import { ImageSourceValue } from "../shared/utilities/image-source"
 
 /** How much of a media resource the browser should preload before playback. */
@@ -40,16 +40,16 @@ export interface TrackKindOptionValue {
 export type TrackKindValue = EmptyValue | TrackKindOptionValue
 
 /** Empty or a boolean toggling native media playback controls. */
-export type ControlsValue = EmptyValue | BooleanValue
+export type ControlsValue = EmptyValue | BooleanOptionValue
 
 /** Empty or a boolean toggling automatic playback on load. */
-export type AutoPlayValue = EmptyValue | BooleanValue
+export type AutoPlayValue = EmptyValue | BooleanOptionValue
 
 /** Empty or a boolean toggling repeated playback. */
-export type LoopValue = EmptyValue | BooleanValue
+export type LoopValue = EmptyValue | BooleanOptionValue
 
 /** Empty or a boolean toggling muted playback. */
-export type MutedValue = EmptyValue | BooleanValue
+export type MutedValue = EmptyValue | BooleanOptionValue
 
 /** Empty or a poster image source shown before playback. */
 export type PosterValue = ImageSourceValue
@@ -61,7 +61,7 @@ export type SrcLangValue = ContentValue
 export type TrackLabelValue = ContentValue
 
 /** Empty or a boolean marking a track as the default. */
-export type TrackDefaultValue = EmptyValue | BooleanValue
+export type TrackDefaultValue = EmptyValue | BooleanOptionValue
 
 /** Empty or the MIME type string for a media source. */
 export type MediaTypeValue = ContentValue
@@ -72,7 +72,7 @@ export type MediaQueryValue = ContentValue
 const booleanValidation = {
   empty: () => true,
   inherit: () => true,
-  exact: (value: unknown) => typeof value === "boolean",
+  option: (value: unknown) => typeof value === "boolean",
 } as const
 
 const stringValidation = {
@@ -85,32 +85,36 @@ const stringValidation = {
 export const controlsSchema: PropertySchema = {
   name: "controls",
   description: "Whether native playback controls are shown for media",
-  supports: ["empty", "inherit", "exact"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: booleanValidation,
+  presetOptions: () => [true, false],
 }
 
 /** Defines labels, allowed shapes, and checks for `autoPlay`. */
 export const autoPlaySchema: PropertySchema = {
   name: "autoPlay",
   description: "Whether media begins playback automatically on load",
-  supports: ["empty", "inherit", "exact"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: booleanValidation,
+  presetOptions: () => [true, false],
 }
 
 /** Defines labels, allowed shapes, and checks for `loop`. */
 export const loopSchema: PropertySchema = {
   name: "loop",
   description: "Whether media restarts after reaching the end",
-  supports: ["empty", "inherit", "exact"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: booleanValidation,
+  presetOptions: () => [true, false],
 }
 
 /** Defines labels, allowed shapes, and checks for `muted`. */
 export const mutedSchema: PropertySchema = {
   name: "muted",
   description: "Whether media plays without sound",
-  supports: ["empty", "inherit", "exact"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: booleanValidation,
+  presetOptions: () => [true, false],
 }
 
 /** Defines labels, allowed shapes, and checks for `poster`. */
@@ -125,11 +129,10 @@ export const posterSchema: PropertySchema = {
 export const preloadSchema: PropertySchema = {
   name: "preload",
   description: "How much media to preload before playback",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Preload) as string[]).includes(value),
@@ -141,11 +144,10 @@ export const preloadSchema: PropertySchema = {
 export const trackKindSchema: PropertySchema = {
   name: "trackKind",
   description: "Kind of timed text a track carries",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(TrackKind) as string[]).includes(value),
@@ -173,8 +175,9 @@ export const trackLabelSchema: PropertySchema = {
 export const trackDefaultSchema: PropertySchema = {
   name: "trackDefault",
   description: "Whether a track is enabled by default",
-  supports: ["empty", "inherit", "exact"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: booleanValidation,
+  presetOptions: () => [true, false],
 }
 
 /** Defines labels, allowed shapes, and checks for `mediaType`. */

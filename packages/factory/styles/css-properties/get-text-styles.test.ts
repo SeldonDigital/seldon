@@ -57,7 +57,7 @@ describe("getTextStyles", () => {
 
   it("clamps non-wrapping text with ellipsis", () => {
     const properties = {
-      wrapText: { type: ValueType.EXACT, value: false },
+      wrapText: { type: ValueType.OPTION, value: false },
     } as unknown as Properties
     expect(getTextStyles(context(properties))).toEqual({
       whiteSpace: "nowrap",

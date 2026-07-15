@@ -721,17 +721,18 @@ export function serializeValue(
         presetOptions.every((v) => typeof v === "boolean")
 
       if (isBooleanProperty) {
-        // Convert "On"/"Off" or "true"/"false" strings to boolean
+        // Convert "On"/"Off" or "true"/"false" strings to boolean. On/off
+        // booleans are option-only in core, so tag the pick as OPTION.
         const lowerValue = value.toLowerCase()
         if (lowerValue === "on" || lowerValue === "true") {
           return {
-            type: ValueType.EXACT,
+            type: ValueType.OPTION,
             value: true,
           }
         }
         if (lowerValue === "off" || lowerValue === "false") {
           return {
-            type: ValueType.EXACT,
+            type: ValueType.OPTION,
             value: false,
           }
         }

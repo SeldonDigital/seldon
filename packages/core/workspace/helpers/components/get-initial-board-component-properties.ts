@@ -22,11 +22,11 @@ export function getInitialBoardComponentProperties(
         value: Orientation.HORIZONTAL,
       },
       wrapChildren: {
-        type: ValueType.EXACT,
+        type: ValueType.OPTION,
         value: true,
       },
       clip: {
-        type: ValueType.EXACT,
+        type: ValueType.OPTION,
         value: false,
       },
     }

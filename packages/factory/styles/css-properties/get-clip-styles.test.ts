@@ -5,7 +5,7 @@ import { Properties, ValueType } from "@seldon/core"
 import { getClipStyles } from "./get-clip-styles"
 
 const clip = (value: unknown): Properties =>
-  ({ clip: { type: ValueType.EXACT, value } }) as unknown as Properties
+  ({ clip: { type: ValueType.OPTION, value } }) as unknown as Properties
 
 describe("getClipStyles", () => {
   it("hides overflow when clip is boolean true", () => {

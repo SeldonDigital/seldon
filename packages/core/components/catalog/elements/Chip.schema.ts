@@ -168,7 +168,7 @@ export const schema = {
     ],
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     ariaPressed: { type: Sdn.ValueType.EMPTY, value: null },

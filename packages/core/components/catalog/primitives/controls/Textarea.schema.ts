@@ -162,7 +162,7 @@ export const schema = {
       value: Sdn.TextDecoration.NONE,
     },
     wrapText: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: true,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },

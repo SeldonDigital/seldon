@@ -23,11 +23,10 @@ export type AriaInvalidValue = EmptyValue | AriaInvalidOptionValue
 export const ariaInvalidSchema: PropertySchema = {
   name: "ariaInvalid",
   description: "Validity state reported for an input",
-  supports: ["empty", "inherit", "exact", "option"] as const,
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(AriaInvalid) as string[]).includes(value),

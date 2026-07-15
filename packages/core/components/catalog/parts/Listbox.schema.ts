@@ -34,8 +34,8 @@ export const schema = {
     },
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
-    clip: { type: Sdn.ValueType.EXACT, value: false },
+    wrapChildren: { type: Sdn.ValueType.OPTION, value: false },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -127,7 +127,7 @@ export const schema = {
     scroll: { type: Sdn.ValueType.EMPTY, value: null },
     role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.LISTBOX },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
   },
   default: {
     children: [

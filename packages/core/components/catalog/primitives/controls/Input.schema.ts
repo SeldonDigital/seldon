@@ -169,7 +169,7 @@ export const schema = {
       value: Sdn.TextDecoration.NONE,
     },
     wrapText: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.OPTION,
       value: false,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },
@@ -208,7 +208,7 @@ export const schema = {
           type: Sdn.ValueType.OPTION,
           value: Sdn.InputType.CHECKBOX,
         },
-        checked: { type: Sdn.ValueType.EXACT, value: false },
+        checked: { type: Sdn.ValueType.OPTION, value: false },
         buttonSize: {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@fontSize.medium",
@@ -267,7 +267,7 @@ export const schema = {
           type: Sdn.ValueType.OPTION,
           value: Sdn.InputType.RADIO,
         },
-        checked: { type: Sdn.ValueType.EXACT, value: false },
+        checked: { type: Sdn.ValueType.OPTION, value: false },
         buttonSize: {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@fontSize.medium",
