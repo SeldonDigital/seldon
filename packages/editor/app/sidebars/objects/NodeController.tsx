@@ -2,6 +2,7 @@ import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import {
   buildDisabledRefProps,
   buildFieldStateProps,
+  buildInvalidRefProps,
   buildRepeatFieldStyleProps,
   mergeStateProps,
 } from "@lib/views/state-props"
@@ -86,6 +87,7 @@ const NodeInner = function NodeInner({
     isExcluded,
     isHidden,
     isStub,
+    isDuplicateLabel,
     nodeTypeColor,
     isPrimaryShared,
     isSecondaryShared,
@@ -219,6 +221,11 @@ const NodeInner = function NodeInner({
   // own `[aria-disabled]` styles dim the row.
   const disabledRef = buildDisabledRefProps(isDimmed)
 
+  // A duplicate variant label is an error state. The name label sits outside
+  // the combobox-field, so forward `aria-invalid` onto the icon and label leaves
+  // and drive their own `[aria-invalid]` negative-swatch styles.
+  const invalidRef = buildInvalidRefProps(isDuplicateLabel)
+
   // Show Node Types debug tint. Applied inline to the icon and label refs only,
   // so it wins over the field's selection and state cascade there while leaving
   // the disclosure arrow, buttons, border, and background untinted.
@@ -232,8 +239,8 @@ const NodeInner = function NodeInner({
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
-    nodeIcon: mergeStateProps(icon2, disabledRef, nodeTypeStyle),
-    nodeLabel: mergeStateProps(nodeLabel, disabledRef, nodeTypeStyle),
+    nodeIcon: mergeStateProps(icon2, disabledRef, nodeTypeStyle, invalidRef),
+    nodeLabel: mergeStateProps(nodeLabel, disabledRef, nodeTypeStyle, invalidRef),
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
@@ -271,6 +278,7 @@ const NodeInner = function NodeInner({
   const itemNodeState = {
     "aria-selected": isSelected || undefined,
     "aria-disabled": isDimmed || undefined,
+    "aria-invalid": isDuplicateLabel || undefined,
   }
 
   return (

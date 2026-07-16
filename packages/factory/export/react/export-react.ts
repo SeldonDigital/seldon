@@ -15,6 +15,7 @@ import { getFontsComponent } from "./assets/get-fonts-component"
 import { getIcons } from "./assets/get-icons"
 import { getImagesToExport } from "./assets/get-images-to-export"
 import { replaceImagesWithRelativePaths } from "./assets/transform-image-paths"
+import { assertUniqueVariantNames } from "./discovery/assert-unique-variant-names"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
 import { getUsedIconIds } from "./discovery/get-used-icon-ids"
 import { format } from "./format"
@@ -31,6 +32,10 @@ export async function exportReact(
 ): Promise<FileToExport[]> {
   const filesToExport: FileToExport[] = []
   let workspace = input
+
+  // Block export when any board has duplicate variant names, which would emit
+  // colliding component files. The editor catches this and alerts the user.
+  assertUniqueVariantNames(workspace)
 
   const { parentIndex } = buildExportContext(workspace)
 

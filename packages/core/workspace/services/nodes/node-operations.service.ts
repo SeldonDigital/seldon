@@ -414,7 +414,9 @@ export class NodeOperationsService {
         const located = findBoardContainingTreeNodeId(draft, node.id)
         invariant(located, ErrorMessages.componentNotFoundForVariant(node.id))
         invariant(
-          isComponentBoard(located.board) || isPlaygroundBoard(located.board),
+          isComponentBoard(located.board) ||
+            isAuthoredBoard(located.board) ||
+            isPlaygroundBoard(located.board),
           `duplicateNode: unsupported board type for ${node.id}`,
         )
 
@@ -428,8 +430,12 @@ export class NodeOperationsService {
           `duplicateNode: missing catalog template for variant ${node.id}`,
         )
 
+        // Use the board key, not the catalog template id, so uniqueness is
+        // scoped to this board's own variants. For catalog component boards the
+        // key equals the catalog id, so this is identical to before; for
+        // authored boards it fixes label collisions like duplicate "Frame 01".
         const label = workspaceMutationService.getInitialVariantLabel(
-          componentId,
+          located.boardKey as ComponentId,
           draft,
         )
         const plan = buildDuplicateEntryVariantSubtreePlan(

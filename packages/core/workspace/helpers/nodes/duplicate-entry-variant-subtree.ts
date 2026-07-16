@@ -1,7 +1,15 @@
 import { current, isDraft } from "immer"
 
-import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
-import { isEntryNodeDefault, isEntryNodeVariant } from "../../model/entry-node"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+  isPlaygroundBoard,
+} from "../../model/components"
+import {
+  isEntryNodeAuthored,
+  isEntryNodeDefault,
+  isEntryNodeVariant,
+} from "../../model/entry-node"
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
 import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
@@ -96,7 +104,12 @@ export function buildDuplicateEntryVariantSubtreePlan(
   sourceRootId: string,
   newVariantLabel: string,
 ): DuplicateEntryVariantPlan | null {
-  if (!isComponentBoard(board) && !isPlaygroundBoard(board)) return null
+  if (
+    !isComponentBoard(board) &&
+    !isAuthoredBoard(board) &&
+    !isPlaygroundBoard(board)
+  )
+    return null
 
   const liveNodes = getWorkspaceNodes(workspace)
   const nodes = isDraft(liveNodes) ? current(liveNodes) : liveNodes
@@ -110,7 +123,13 @@ export function buildDuplicateEntryVariantSubtreePlan(
   const idMap = new Map<string, string>()
   const newRootId = componentBoardUniqueNodeId(boardKey)
 
-  if (isEntryNodeDefault(sourceNode)) {
+  // An authored root is the schema-free base of an authored board. Duplicating
+  // it creates a user variant chained to it, exactly like duplicating a
+  // catalog default variant.
+  const sourceIsBase =
+    isEntryNodeDefault(sourceNode) || isEntryNodeAuthored(sourceNode)
+
+  if (sourceIsBase) {
     for (const id of subtreeIds) {
       if (id === sourceRootId) continue
       idMap.set(id, componentBoardUniqueNodeId(boardKey))
@@ -142,7 +161,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
   const newRootTreeRef = remapTreeRef(tree)
   const newNodes: Record<string, EntryNode> = {}
 
-  if (isEntryNodeDefault(sourceNode)) {
+  if (sourceIsBase) {
     newNodes[newRootId] = stripRef({
       ...structuredClone(sourceNode),
       id: newRootId,
@@ -154,8 +173,8 @@ export function buildDuplicateEntryVariantSubtreePlan(
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]
       if (!row) continue
-      // Chain the new child from the default variant's matching child so edits
-      // to the default child propagate into the user variant. Start with empty
+      // Chain the new child from the base variant's matching child so edits
+      // to the base child propagate into the user variant. Start with empty
       // overrides so inherited values are not shadowed by a copy.
       let template = formatNodeLink(oldId)
       const link = parseNodeLink(row.template)
@@ -202,6 +221,6 @@ export function buildDuplicateEntryVariantSubtreePlan(
     newRootId,
     newNodes,
     newRootTreeRef,
-    sourceWasDefault: isEntryNodeDefault(sourceNode),
+    sourceWasDefault: sourceIsBase,
   }
 }
