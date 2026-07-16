@@ -225,12 +225,7 @@ export function getNodeIdAddedByAction(
     case "stubs_set_media_field":
     case "stubs_duplicate_media_row":
     case "set_workspace":
-    case "remove_component":
-    case "remove_font_collection":
-    case "remove_media":
-    case "remove_icon_set":
-    case "remove_theme":
-    case "remove_playground":
+    case "remove_board":
     case "reorder_board":
     case "set_node_properties":
     case "reset_node_property":

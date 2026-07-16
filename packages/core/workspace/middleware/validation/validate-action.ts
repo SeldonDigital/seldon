@@ -128,14 +128,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "duplicate_component":
       validateDuplicateComponent(workspace, action)
       return
-    case "remove_playground":
-      boardValidators.playgroundExists(workspace, action.payload.boardKey)
-      return
-    case "remove_component":
-    case "remove_font_collection":
-    case "remove_media":
-    case "remove_icon_set":
-    case "remove_theme":
+    case "remove_board":
       validateRemoveBoard(workspace, action)
       return
     case "add_component_and_insert_default_instance":

@@ -28,6 +28,7 @@ import {
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import {
+  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
@@ -194,26 +195,15 @@ export class NodeOperationsService {
   }
 
   public deleteBoardByKey(boardKey: BoardKey, workspace: Workspace): Workspace {
+    if (workspace.playgrounds?.[boardKey]) {
+      return this.deletePlaygroundByKey(boardKey, workspace)
+    }
+
     const board = workspace.boards[boardKey]
     if (!board) return workspace
 
-    if (isComponentBoard(board)) {
+    if (isComponentBoard(board) || isAuthoredBoard(board)) {
       return this.deleteBoard(boardKey as ComponentId, workspace)
-    }
-
-    if (isPlaygroundBoard(board)) {
-      const workspaceAfterDeletion = mutateWorkspace(workspace, (draft) => {
-        const b = draft.boards[boardKey]
-        if (!b || !isPlaygroundBoard(b)) return
-
-        for (const rootId of getBoardVariantRootIds(b)) {
-          this._deleteVariantFromDraft(rootId as VariantId, draft)
-        }
-
-        delete draft.boards[boardKey]
-      })
-
-      return boardOrderService.realignBoardOrder(workspaceAfterDeletion)
     }
 
     if (isThemeBoard(board)) {

@@ -12,12 +12,10 @@ import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-de
 import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/seed/seed-default-theme-board"
 import {
-  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
   isMediaBoard,
-  isPlaygroundBoard,
   isThemeBoard,
 } from "../../../model/components"
 import type { Action, Board, Workspace } from "../../../types"
@@ -119,111 +117,65 @@ export function validateDuplicateComponent(
   }
 }
 
-interface RemoveBoardRule {
-  /** Payload field that holds the board key. */
-  keyField: "boardKey" | "catalogId"
-  typeGuard: (board: Board) => boolean
-  /** Article + label used in the wrong-type message, such as "a theme board". */
-  expectedLabel: string
-  /** Protected default board key that may never be removed. */
-  protectedKey?: string
-  protectedMessage?: string
-  buildInUseError: (key: string, action: Action) => Error
+/** Protected default boards that may never be removed, keyed by board type. */
+const PROTECTED_BOARDS: Partial<
+  Record<Board["type"], { key: string; message: string }>
+> = {
+  theme: {
+    key: DEFAULT_THEME_BOARD_KEY,
+    message:
+      "Cannot remove the Seldon theme board. Every workspace requires the Seldon theme, so this board is always kept.",
+  },
+  "font-collection": {
+    key: DEFAULT_FONT_COLLECTION_BOARD_KEY,
+    message:
+      "Cannot remove the System font collection board. Every workspace requires the system fonts and the Seldon theme, so this board is always kept.",
+  },
+  "icon-set": {
+    key: DEFAULT_ICON_SET_BOARD_KEY,
+    message:
+      "Cannot remove the Seldon icon set board. Every workspace requires the Seldon icon set, so this board is always kept.",
+  },
 }
 
-const REMOVE_BOARD_RULES: Record<string, RemoveBoardRule> = {
-  remove_component: {
-    keyField: "boardKey",
-    typeGuard: (board: Board) =>
-      isComponentBoard(board) || isAuthoredBoard(board),
-    expectedLabel: "a component or authored board",
-    buildInUseError: (key) =>
-      new Error(ErrorMessages.componentVariantsInUse(key as ComponentId)),
-  },
-  remove_playground: {
-    keyField: "boardKey",
-    typeGuard: isPlaygroundBoard,
-    expectedLabel: "a playground board",
-    buildInUseError: (_key, action) =>
-      new WorkspaceValidationError(
-        "Playground board is still referenced by another catalog",
-        action,
-      ),
-  },
-  remove_font_collection: {
-    keyField: "catalogId",
-    typeGuard: isFontCollectionBoard,
-    expectedLabel: "a font collection board",
-    protectedKey: DEFAULT_FONT_COLLECTION_BOARD_KEY,
-    protectedMessage:
-      "Cannot remove the System font collection board. Every workspace requires the system fonts and the Seldon theme, so this board is always kept.",
-    buildInUseError: (_key, action) =>
-      new WorkspaceValidationError(
-        "Font collection catalog rows are still referenced in another board",
-        action,
-      ),
-  },
-  remove_media: {
-    keyField: "catalogId",
-    typeGuard: isMediaBoard,
-    expectedLabel: "a media board",
-    buildInUseError: (_key, action) =>
-      new WorkspaceValidationError(
-        "Media catalog rows are still referenced in another board",
-        action,
-      ),
-  },
-  remove_icon_set: {
-    keyField: "catalogId",
-    typeGuard: isIconSetBoard,
-    expectedLabel: "an icon set board",
-    protectedKey: DEFAULT_ICON_SET_BOARD_KEY,
-    protectedMessage:
-      "Cannot remove the Seldon icon set board. Every workspace requires the Seldon icon set, so this board is always kept.",
-    buildInUseError: (_key, action) =>
-      new WorkspaceValidationError(
-        "Icon set catalog rows are still referenced in another board",
-        action,
-      ),
-  },
-  remove_theme: {
-    keyField: "boardKey",
-    typeGuard: isThemeBoard,
-    expectedLabel: "a theme board",
-    protectedKey: DEFAULT_THEME_BOARD_KEY,
-    protectedMessage:
-      "Cannot remove the Seldon theme board. Every workspace requires the Seldon theme, so this board is always kept.",
-    buildInUseError: (_key, action) =>
-      new WorkspaceValidationError(
-        "Theme catalog rows are still referenced in another board",
-        action,
-      ),
-  },
-}
+/** Message thrown when a board's variants are still referenced elsewhere. */
+const IN_USE_MESSAGES: Partial<Record<Board["type"], (key: string) => string>> =
+  {
+    component: (key) => ErrorMessages.componentVariantsInUse(key as ComponentId),
+    "authored-component": (key) =>
+      ErrorMessages.componentVariantsInUse(key as ComponentId),
+    theme: () => "Theme catalog rows are still referenced in another board",
+    "font-collection": () =>
+      "Font collection catalog rows are still referenced in another board",
+    media: () => "Media catalog rows are still referenced in another board",
+    "icon-set": () =>
+      "Icon set catalog rows are still referenced in another board",
+    playground: () => "Playground board is still referenced by another catalog",
+  }
 
 export function validateRemoveBoard(
   workspace: Workspace,
   action: Action,
 ): void {
-  const rule = REMOVE_BOARD_RULES[action.type]
-  if (!rule) return
-
-  const key = (action.payload as Record<string, string>)[rule.keyField]
-  boardValidators.exists(workspace, key)
-
-  const board = workspace.boards[key]
-  if (!board || !rule.typeGuard(board)) {
+  const key = (action.payload as { boardKey: string }).boardKey
+  const board = workspace.boards[key] ?? workspace.playgrounds?.[key]
+  if (!board) {
     throw new WorkspaceValidationError(
-      `Expected ${rule.expectedLabel} at ${key}`,
+      ErrorMessages.componentNotFound(key),
       action,
     )
   }
 
-  if (rule.protectedKey && key === rule.protectedKey) {
-    throw new WorkspaceValidationError(rule.protectedMessage!, action)
+  const protectedBoard = PROTECTED_BOARDS[board.type]
+  if (protectedBoard && key === protectedBoard.key) {
+    throw new WorkspaceValidationError(protectedBoard.message, action)
   }
 
   if (shouldBlockDeletableBoardRemoval(board, workspace, key)) {
-    throw rule.buildInUseError(key, action)
+    const buildMessage = IN_USE_MESSAGES[board.type]
+    throw new WorkspaceValidationError(
+      buildMessage ? buildMessage(key) : ErrorMessages.componentNotFound(key),
+      action,
+    )
   }
 }

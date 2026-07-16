@@ -15,10 +15,7 @@ import { addPlayground } from "./add/add-playground"
 import { addTheme } from "./add/add-theme"
 import { duplicateTheme } from "./duplicate/duplicate-theme"
 import { deleteTheme } from "./remove/delete-theme"
-import { removeComponent } from "./remove/remove-component"
-import { removeMedia } from "./remove/remove-media"
-import { removePlayground } from "./remove/remove-playground"
-import { removeTheme } from "./remove/remove-theme"
+import { removeBoard } from "./remove/remove-board"
 
 const empty = () => createEmptyWorkspace()
 const freeId = (ids: Iterable<string>, ws: Workspace) =>
@@ -101,8 +98,8 @@ describe("addMedia / removeMedia", () => {
     expect(added.boards[catalogId]?.type).toBe("media")
     expect(added.boards[catalogId]?.variants).toHaveLength(2)
 
-    const removed = removeMedia(
-      { catalogId } as ExtractPayload<"remove_media">,
+    const removed = removeBoard(
+      { boardKey: catalogId } as ExtractPayload<"remove_board">,
       added,
     )
     expect(removed.boards[catalogId]).toBeUndefined()
@@ -118,8 +115,8 @@ describe("addPlayground / removePlayground", () => {
     )
     expect(added.playgrounds[boardKey]).toBeDefined()
 
-    const removed = removePlayground(
-      { boardKey } as ExtractPayload<"remove_playground">,
+    const removed = removeBoard(
+      { boardKey } as ExtractPayload<"remove_board">,
       added,
     )
     expect(removed.playgrounds[boardKey]).toBeUndefined()
@@ -133,8 +130,8 @@ describe("removeComponent", () => {
       { boardKey } as ExtractPayload<"add_component">,
       empty(),
     )
-    const removed = removeComponent(
-      { boardKey } as ExtractPayload<"remove_component">,
+    const removed = removeBoard(
+      { boardKey } as ExtractPayload<"remove_board">,
       added,
     )
     expect(removed.boards[boardKey]).toBeUndefined()
@@ -146,8 +143,8 @@ describe("removeTheme", () => {
     const ws = empty()
     const boardKey = freeId(THEME_BOARD_CATALOG_IDS, ws)
     const added = addTheme({ boardKey } as ExtractPayload<"add_theme">, ws)
-    const removed = removeTheme(
-      { boardKey } as ExtractPayload<"remove_theme">,
+    const removed = removeBoard(
+      { boardKey } as ExtractPayload<"remove_board">,
       added,
     )
     expect(removed.boards[boardKey]).toBeUndefined()

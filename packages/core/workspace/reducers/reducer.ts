@@ -37,16 +37,11 @@ import { normalizeMetadataVersion } from "./handlers/normalize/normalize-metadat
 import { deleteFontCollection } from "./handlers/remove/delete-font-collection"
 import { deleteIconSet } from "./handlers/remove/delete-icon-set"
 import { deleteTheme } from "./handlers/remove/delete-theme"
-import { removeComponent } from "./handlers/remove/remove-component"
+import { removeBoard } from "./handlers/remove/remove-board"
 import { removeCustomState } from "./handlers/remove/remove-custom-state"
-import { removeFontCollection } from "./handlers/remove/remove-font-collection"
 import { removeFontCollectionCustomFamily } from "./handlers/remove/remove-font-collection-custom-family"
-import { removeIconSet } from "./handlers/remove/remove-icon-set"
 import { removeInstance } from "./handlers/remove/remove-instance"
-import { removeMedia } from "./handlers/remove/remove-media"
 import { removeNodeLayer } from "./handlers/remove/remove-node-layer"
-import { removePlayground } from "./handlers/remove/remove-playground"
-import { removeTheme } from "./handlers/remove/remove-theme"
 import { removeThemeCustomSwatch } from "./handlers/remove/remove-theme-custom-swatch"
 import { removeThemeCustomToken } from "./handlers/remove/remove-theme-custom-token"
 import { removeVariant } from "./handlers/remove/remove-variant"
@@ -208,18 +203,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       )
     }
 
-    case "remove_component":
-      return removeComponent(action.payload, workspace)
-    case "remove_font_collection":
-      return removeFontCollection(action.payload, workspace)
-    case "remove_media":
-      return removeMedia(action.payload, workspace)
-    case "remove_icon_set":
-      return removeIconSet(action.payload, workspace)
-    case "remove_theme":
-      return removeTheme(action.payload, workspace)
-    case "remove_playground":
-      return removePlayground(action.payload, workspace)
+    case "remove_board":
+      return removeBoard(action.payload, workspace)
     case "duplicate_component":
       return duplicateComponent(action.payload, workspace)
     case "duplicate_playground":

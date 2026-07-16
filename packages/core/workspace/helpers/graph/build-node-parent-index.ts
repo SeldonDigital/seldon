@@ -50,7 +50,11 @@ function walkContainer(
 }
 
 function isCompositionComponentRow(board: CompositionComponentRow): boolean {
-  return board.type === "component" || board.type === "playground"
+  return (
+    board.type === "component" ||
+    board.type === "authored-component" ||
+    board.type === "playground"
+  )
 }
 
 function walkRows(

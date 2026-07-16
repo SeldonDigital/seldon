@@ -5,11 +5,7 @@ import { InstanceId, VariantId } from "@seldon/core/index"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import {
-  isAuthoredBoard,
-  isComponentBoard,
-  isFontCollectionBoard,
   isIconSetBoard,
-  isMediaBoard,
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
@@ -254,41 +250,9 @@ export function useAddRemoveCommands() {
         workspace.boards[boardKey] ?? workspace.playgrounds?.[boardKey]
       if (!board) return
 
-      // Dispatch the removal that matches the board type. The default Seldon
-      // theme board and icon-set boards are rejected by validation with an
-      // explanatory toast.
-      let result
-      if (isComponentBoard(board) || isAuthoredBoard(board)) {
-        result = dispatch({
-          type: "remove_component",
-          payload: { boardKey: boardKey as ComponentId },
-        })
-      } else if (isPlaygroundBoard(board)) {
-        result = dispatch({
-          type: "remove_playground",
-          payload: { boardKey },
-        })
-      } else if (isFontCollectionBoard(board)) {
-        result = dispatch({
-          type: "remove_font_collection",
-          payload: { catalogId: boardKey },
-        })
-      } else if (isMediaBoard(board)) {
-        result = dispatch({
-          type: "remove_media",
-          payload: { catalogId: boardKey },
-        })
-      } else if (isThemeBoard(board)) {
-        result = dispatch({
-          type: "remove_theme",
-          payload: { boardKey },
-        })
-      } else if (isIconSetBoard(board)) {
-        result = dispatch({
-          type: "remove_icon_set",
-          payload: { catalogId: boardKey },
-        })
-      }
+      // A single action removes any board type. The default Seldon theme and
+      // icon-set boards are rejected by validation with an explanatory toast.
+      const result = dispatch({ type: "remove_board", payload: { boardKey } })
 
       // Only clear the selection when the board was actually removed. A rejected
       // removal (e.g. the Seldon theme board) leaves the selection unchanged.
