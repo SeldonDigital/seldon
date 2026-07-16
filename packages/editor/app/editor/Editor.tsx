@@ -10,6 +10,7 @@ import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { BoardsDialog } from "../dialogs/boards/BoardsDialog"
 import { ComponentsDialog } from "../dialogs/components/ComponentsDialog"
+import { CreateComponentDialogController } from "../dialogs/create-component/CreateComponentDialogController"
 import { FontCollectionsDialog } from "../dialogs/font-collections/FontCollectionsDialog"
 import { IconSetsDialog } from "../dialogs/icon-sets/IconSetsDialog"
 import { ImageUploadDialogController } from "../dialogs/image-upload/ImageUploadDialogController"
@@ -59,6 +60,7 @@ export default function Editor() {
       <ImageUploadDialogController />
       <ComponentsDialog />
       <BoardsDialog />
+      <CreateComponentDialogController />
       <ThemesDialog />
       <FontCollectionsDialog />
       <IconSetsDialog />

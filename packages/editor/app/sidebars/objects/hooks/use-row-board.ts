@@ -4,6 +4,7 @@ import { MouseEvent, useState } from "react"
 import { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"
 import {
+  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
@@ -123,6 +124,10 @@ export function useRowBoard(
   function onDoubleClick() {
     if (isPlayground) {
       setEditingName(true)
+    } else if (isAuthoredBoard(board)) {
+      // Authored board renaming is not wired yet, so the gesture is a no-op
+      // rather than showing the catalog-specific rename message.
+      return
     } else {
       // Component, screen, and resource board names mirror the catalog, so the
       // rename gesture is rejected with the same feedback an instance edit gives.
@@ -243,6 +248,26 @@ export function useRowBoard(
   function buildBoardActions(): MenuEntry[] {
     if (!boardIsActive) return []
 
+    // Authored boards have no catalog schema, so the menu offers add-variant and
+    // delete but never reset-to-catalog or apply-to-all-boards.
+    if (isAuthoredBoard(board)) {
+      return [
+        {
+          id: "add-variant",
+          label: `Add ${board.label} Variant`,
+          onSelect: () => onAddVariant(),
+          testId: `objects-sidebar-board-${boardKey}-add-variant`,
+        },
+        "separator",
+        {
+          id: "delete",
+          label: `Delete ${board.label}`,
+          onSelect: () => removeBoard(boardKey),
+          testId: `objects-sidebar-board-${boardKey}-delete`,
+        },
+      ]
+    }
+
     // Playgrounds have no catalog to reset to, so the menu only offers duplicate,
     // add sandbox, and delete.
     if (isPlaygroundBoard(board)) {
@@ -334,9 +359,11 @@ export function useRowBoard(
   // contains the selected node or resource entry).
   const actions = buildBoardActions()
 
-  // Label: colors applied in component via tracking system
+  // Label: colors applied in component via tracking system. Authored boards get
+  // a trailing bullet as a display-only marker; it never enters the stored name.
+  const isAuthored = isAuthoredBoard(board)
   const label = {
-    children: board.label,
+    children: isAuthored ? `${board.label} •` : board.label,
   }
 
   return {

@@ -16,7 +16,9 @@ Values live in [`config/rules.config.ts`](./config/rules.config.ts).
 
 ## `mutations`
 
-`MutationRules` holds thirteen mutation keys: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `setStateProperties`, `reset`, `setTheme`, `rename`, `setRef`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
+`MutationRules` holds thirteen mutation keys: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `setStateProperties`, `reset`, `setTheme`, `rename`, `setRef`, `reorder`, and `move`. Each key indexes five [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, `authoredVariant`, and `instance`.
+
+The `authoredVariant` row governs the schema-free root of an authored component board. It mirrors `userVariant` for structural operations, so an authored root accepts create, insert, delete, reorder, move, duplicate, and rename. It has no catalog schema, so reset operations no-op the same way and there is no default-lock.
 
 Every row has `allowed` and `propagation`. The `delete` instance row also sets `removalBehavior` for hide versus delete. The hide branch applies to schema-origin instances inside the default variant. All other instances delete outright, including schema-origin instances in user variants. The other delete rows always delete outright.
 
@@ -68,7 +70,7 @@ flowchart TD
 ## Notes
 
 - Import `rules` from [`config/rules.config.ts`](./config/rules.config.ts). There is no `@seldon/core/rules` package export today.
-- Serialized [`EntryNode`](../workspace/model/entry-node.ts) `type` values differ from `Entity` keys. Map `default` → `defaultVariant` and `variant` → `userVariant` with [`mapEntryNodeTypeToRulesEntity`](../workspace/helpers/rules/map-entry-node-type-to-rules-entity.ts).
+- Serialized [`EntryNode`](../workspace/model/entry-node.ts) `type` values differ from `Entity` keys. Map `default` → `defaultVariant`, `variant` → `userVariant`, and `authored` → `authoredVariant` with [`mapEntryNodeTypeToRulesEntity`](../workspace/helpers/rules/map-entry-node-type-to-rules-entity.ts).
 - [`rules-node-subject`](../workspace/helpers/rules/rules-node-subject.ts) and `TypeCheckingService` classify boards and entry nodes before policy lookup.
 - `Propagation` includes `bidirectional`, but every row in [`config/rules.config.ts`](./config/rules.config.ts) today uses `none` or `downstream` only.
 - `setProperties` uses `propagation: "none"` for all entities. Instance overrides still merge at read time when resolving node properties.

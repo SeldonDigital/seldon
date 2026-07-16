@@ -100,6 +100,16 @@ export function useEditorShortcuts() {
   )
   useHotkeys("shift+a", addVariant, { preventDefault: true })
 
+  // Create authored component (opens the create-component dialog)
+  useHotkeys(
+    "t",
+    () => {
+      openPanel("create-component")
+      setActiveTool("select")
+    },
+    { preventDefault: true },
+  )
+
   // Toggle the Hari chat palette
   useHotkeys(
     "`",

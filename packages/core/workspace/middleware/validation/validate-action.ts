@@ -13,6 +13,7 @@ import {
   validateSetNodeLayerKind,
 } from "./action-groups/node-layers"
 import {
+  validateAddAuthoredComponent,
   validateAddVariant,
   validateDuplicateNode,
   validateInsertMutation,
@@ -92,6 +93,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
       return
     case "add_playground":
       boardValidators.playgroundKeyIsFree(workspace, action.payload.boardKey)
+      return
+    case "add_authored_component":
+      validateAddAuthoredComponent(workspace, action)
       return
     case "add_sandbox":
       boardValidators.playgroundExists(workspace, action.payload.playgroundKey)

@@ -6,7 +6,11 @@ import {
   VariantId,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { ComponentId, isComponentId } from "@seldon/core/components/constants"
+import {
+  ComponentId,
+  ComponentLevel,
+  isComponentId,
+} from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
 import { IconId } from "@seldon/core/icon-sets"
 import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
@@ -17,9 +21,12 @@ import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-ch
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { isComponentBoard } from "@seldon/core/workspace/model/components"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
+import type { Board, EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 import {
   getTemplateSourceNodeId,
@@ -32,13 +39,18 @@ import { getNodeOriginChain } from "./get-node-origin-chain"
 import { getUsedIconIds } from "./get-used-icon-ids"
 import { HTML_ELEMENT_OPTIONS } from "./html-element-options"
 
+/** Composition boards that own exportable node trees. */
+function isExportableCompositionBoard(board: Board): boolean {
+  return isComponentBoard(board) || isAuthoredBoard(board)
+}
+
 export function getJsonTreeFromChildren(
-  variant: EntryNode & { type: "default" | "variant" },
+  variant: EntryNode & { type: "default" | "variant" | "authored" },
   workspace: Workspace,
   nodeIdToClass: Record<string, string>,
 ): JSONTreeNode {
   const board = getBoardByNodeId(workspace, variant.id)
-  if (!board || !isComponentBoard(board)) {
+  if (!board || !isExportableCompositionBoard(board)) {
     throw new Error(`Component board not found for variant ${variant.id}`)
   }
 
@@ -54,7 +66,11 @@ export function getJsonTreeFromChildren(
 
   const componentId = getComponentIdOrThrow(variant, workspace)
   const schema = getComponentSchema(componentId)
-  const componentLevel = schema.level
+  // An authored root's declared board level overrides its Container/Frame
+  // template level so the exported component keeps its authored level.
+  const componentLevel = isAuthoredBoard(board)
+    ? (board.level as ComponentLevel)
+    : schema.level
   const schemaVariantId = getSchemaVariantId(variant, componentId, workspace)
 
   const tree = {
@@ -148,7 +164,7 @@ export function getJsonTreeFromChildren(
 
     const nodeBoard = getBoardByNodeId(workspace, node.id)
     let children: JSONTreeNode[] | null = null
-    if (nodeBoard && isComponentBoard(nodeBoard)) {
+    if (nodeBoard && isExportableCompositionBoard(nodeBoard)) {
       const childReferenceMap: Record<string, string[]> = {}
       const childIds = getChildrenIds(nodeBoard, node.id)
       children = childIds

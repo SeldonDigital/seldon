@@ -10,6 +10,7 @@ export type { ComponentTreeRef } from "../model"
 export type {
   Board,
   ComponentBoard,
+  AuthoredComponentBoard,
   FontCollectionBoard,
   IconSetBoard,
   BoardKey,
@@ -20,6 +21,7 @@ export type {
 } from "../model"
 export {
   isComponentBoard,
+  isAuthoredBoard,
   isFontCollectionBoard,
   isIconSetBoard,
   isMediaBoard,
@@ -37,6 +39,7 @@ export type {
   NodeOrigin,
 } from "../model"
 export {
+  isEntryNodeAuthored,
   isEntryNodeDefault,
   isEntryNodeInstance,
   isEntryNodeVariant,

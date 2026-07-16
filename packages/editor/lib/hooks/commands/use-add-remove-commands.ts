@@ -3,7 +3,9 @@ import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
+import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import {
+  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
@@ -11,6 +13,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
+import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
@@ -108,6 +111,20 @@ export function useAddRemoveCommands() {
         payload: { catalogId },
       })
       selectBoard(catalogId)
+    },
+    [dispatch, selectBoard],
+  )
+
+  const addAuthoredComponent = useCallback(
+    (payload: {
+      name: string
+      rootKind: "container" | "frame"
+      level: EntryNodeLevel
+      intent?: string
+      tags?: string[]
+    }) => {
+      dispatch({ type: "add_authored_component", payload })
+      selectBoard(authoredBoardKeyFromName(payload.name))
     },
     [dispatch, selectBoard],
   )
@@ -241,7 +258,7 @@ export function useAddRemoveCommands() {
       // theme board and icon-set boards are rejected by validation with an
       // explanatory toast.
       let result
-      if (isComponentBoard(board)) {
+      if (isComponentBoard(board) || isAuthoredBoard(board)) {
         result = dispatch({
           type: "remove_component",
           payload: { boardKey: boardKey as ComponentId },
@@ -403,6 +420,7 @@ export function useAddRemoveCommands() {
     addTheme,
     addFontCollection,
     addIconSet,
+    addAuthoredComponent,
     addPlayground,
     duplicatePlayground,
     addVariant,

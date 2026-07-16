@@ -12,6 +12,7 @@ import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-de
 import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/seed/seed-default-theme-board"
 import {
+  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
@@ -133,8 +134,9 @@ interface RemoveBoardRule {
 const REMOVE_BOARD_RULES: Record<string, RemoveBoardRule> = {
   remove_component: {
     keyField: "boardKey",
-    typeGuard: isComponentBoard,
-    expectedLabel: "a component board",
+    typeGuard: (board: Board) =>
+      isComponentBoard(board) || isAuthoredBoard(board),
+    expectedLabel: "a component or authored board",
     buildInUseError: (key) =>
       new Error(ErrorMessages.componentVariantsInUse(key as ComponentId)),
   },

@@ -11,6 +11,7 @@ import type { EntryNodeType } from "../../model/entry-node"
  * | ---------------- | -------- |
  * | `default`        | `defaultVariant` |
  * | `variant`        | `userVariant` |
+ * | `authored`       | `authoredVariant` |
  * | `instance`       | `instance` |
  */
 export function mapEntryNodeTypeToRulesEntity(type: EntryNodeType): Entity {
@@ -19,6 +20,8 @@ export function mapEntryNodeTypeToRulesEntity(type: EntryNodeType): Entity {
       return "defaultVariant"
     case "variant":
       return "userVariant"
+    case "authored":
+      return "authoredVariant"
     case "instance":
       return "instance"
     default: {

@@ -8,6 +8,7 @@ import {
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { sortThemeBoardsForDisplay } from "@seldon/core/workspace/helpers/themes/sort-theme-boards"
 import {
+  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
@@ -48,6 +49,11 @@ export interface BoardSection {
 function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
   if (isComponentBoard(board) && isComponentId(board.catalogId)) {
     return getComponentSchema(board.catalogId).level
+  }
+  // Authored boards declare their own level, so they group under that level's
+  // section alongside catalog components.
+  if (isAuthoredBoard(board)) {
+    return board.level as ComponentLevel
   }
   return null
 }

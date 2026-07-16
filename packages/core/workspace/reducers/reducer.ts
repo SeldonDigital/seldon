@@ -9,6 +9,7 @@ import type {
   VariantId,
   WorkspaceAction,
 } from "../types"
+import { addAuthoredComponent } from "./handlers/add/add-authored-component"
 import { addComponent } from "./handlers/add/add-component"
 import { addCustomState } from "./handlers/add/add-custom-state"
 import { addFontCollection } from "./handlers/add/add-font-collection"
@@ -182,6 +183,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addTheme(action.payload, workspace)
     case "add_playground":
       return addPlayground(action.payload, workspace)
+    case "add_authored_component":
+      return addAuthoredComponent(action.payload, workspace)
     case "add_sandbox":
       return addSandbox(action.payload, workspace)
     case "add_component_and_insert_default_instance": {

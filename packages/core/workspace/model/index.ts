@@ -9,6 +9,7 @@ export type {
 } from "./component-tree"
 export type {
   ComponentBoard,
+  AuthoredComponentBoard,
   Board,
   BoardKey,
   FontCollectionBoard,
@@ -20,6 +21,7 @@ export type {
 } from "./components"
 export {
   isComponentBoard,
+  isAuthoredBoard,
   isFontCollectionBoard,
   isIconSetBoard,
   isMediaBoard,
@@ -38,6 +40,7 @@ export type {
   NodeOrigin,
 } from "./entry-node"
 export {
+  isEntryNodeAuthored,
   isEntryNodeDefault,
   isEntryNodeInstance,
   isEntryNodeVariant,

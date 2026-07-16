@@ -445,12 +445,21 @@ export function useMenuConfig(): MenuConfig {
   const selectionMenuItems = useMemo(() => {
     const items = [
       {
+        id: "create-component",
+        label: "Create Component",
+        action: () => {
+          openPanel("create-component")
+          setActiveTool("select")
+        },
+        shortcut: "T",
+      },
+      "separator",
+      {
         id: "insert-component",
         label: "Insert Component",
         action: () => setActiveTool("component"),
         shortcut: "I",
       },
-      "separator",
       {
         id: "add-component",
         label: "Add Component",

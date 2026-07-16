@@ -18,6 +18,11 @@ export function componentBoardUniqueNodeId(boardKey: string): string {
   return `component-${boardKey}-${createNodeId()}`
 }
 
+/** Authored root node id for an authored board (`component-{boardKey}-authored`). */
+export function authoredBoardRootNodeId(boardKey: string): string {
+  return `component-${boardKey}-authored`
+}
+
 /** New Sandbox root node id for a playground (`playground-{playgroundKey}-{suffix}`). */
 export function playgroundSandboxNodeId(playgroundKey: string): string {
   return `playground-${playgroundKey}-${createNodeId()}`

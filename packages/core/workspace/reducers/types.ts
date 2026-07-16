@@ -7,6 +7,7 @@
  * | set_workspace_owner, set_workspace_label, set_workspace_version, set_workspace_last_update, set_workspace_intent, set_workspace_tags, set_workspace_license | metadata |
  * | reset_workspace_owner, reset_workspace_label, normalize_metadata_version, reset_workspace_last_update, reset_workspace_intent, reset_workspace_tags, reset_workspace_license | metadata |
  * | add_component, remove_component, reorder_board, duplicate_component | components (+ nodes/themes/resources per type) |
+ * | add_authored_component | components (authored board + authored root node) |
  * | duplicate_playground | playgrounds (+ nodes) |
  * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground, set_playground_label | components + section rows / playgrounds |
  * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, reset_component_board, apply_component_properties_to_all_boards, set_component_theme | components |
@@ -56,7 +57,7 @@ import {
 import type { RepeatEditorData } from "../helpers/nodes/node-repeat"
 import type { InstanceId, VariantId } from "../helpers/rules/workspace-node-ids"
 import type { BoardKey } from "../model/components"
-import type { EntryNodeId } from "../model/entry-node"
+import type { EntryNodeId, EntryNodeLevel } from "../model/entry-node"
 import type { NodeState } from "../model/node-state"
 import type { WorkspaceStringMap } from "../model/string-maps"
 import type { Workspace } from "../model/workspace"
@@ -320,6 +321,19 @@ export type WorkspaceAction =
       type: "add_playground"
       payload: {
         boardKey: BoardKey
+      }
+    }
+  | {
+      type: "add_authored_component"
+      payload: {
+        /** Human-entered component name; the board key and export name derive from it. */
+        name: string
+        /** Root template: a flex Container or a Frame. Both are opaque at the declared level. */
+        rootKind: "container" | "frame"
+        /** Declared component level, enforced for containment and export folder. */
+        level: EntryNodeLevel
+        intent?: string
+        tags?: string[]
       }
     }
   | {
