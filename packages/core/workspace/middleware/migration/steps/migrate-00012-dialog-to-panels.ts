@@ -1,6 +1,10 @@
 import { REPEAT_EDITOR_KEY } from "../../../helpers/nodes/node-repeat"
 import type { ComponentTreeRef } from "../../../model/component-tree"
-import { isComponentBoard, isPlaygroundBoard } from "../../../model/components"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+  isPlaygroundBoard,
+} from "../../../model/components"
 import type { EntryNode } from "../../../model/entry-node"
 import type { Workspace } from "../../../model/workspace"
 
@@ -59,6 +63,15 @@ function remapTreeRefs(refs: ComponentTreeRef[]): void {
   }
 }
 
+/** True when a tree ref or any descendant still points at a Dialog node id. */
+function treeRefsReferenceOldPrefix(refs: ComponentTreeRef[]): boolean {
+  for (const ref of refs) {
+    if (ref.id.startsWith(OLD_NODE_PREFIX)) return true
+    if (ref.children && treeRefsReferenceOldPrefix(ref.children)) return true
+  }
+  return false
+}
+
 /** Remaps repeat data keys, which reference descendant node ids, in place. */
 function remapRepeatData(node: EntryNode): void {
   const editor = node.__editor
@@ -97,6 +110,17 @@ function migrationApplies(workspace: Workspace): boolean {
     if (isComponentBoard(board) && board.catalogId === OLD_CATALOG_ID) {
       return true
     }
+    // A tree ref still pointing at a Dialog node id needs repair even when the
+    // node itself was already re-keyed to Panels. This self-heals authored
+    // boards, whose tree refs an earlier build skipped.
+    if (
+      (isComponentBoard(board) ||
+        isPlaygroundBoard(board) ||
+        isAuthoredBoard(board)) &&
+      treeRefsReferenceOldPrefix(board.variants)
+    ) {
+      return true
+    }
   }
   return false
 }
@@ -125,7 +149,16 @@ export function migrateV12DialogToPanels(workspace: Workspace): Workspace {
 
   const boards = next.boards
   for (const [key, board] of Object.entries(boards)) {
-    if (!isComponentBoard(board) && !isPlaygroundBoard(board)) continue
+    // Remap tree refs for every board that owns a node tree, authored boards
+    // included, so a Dialog node referenced from an authored tree is repointed
+    // to its Panels id and never dangles after the node re-key.
+    if (
+      !isComponentBoard(board) &&
+      !isPlaygroundBoard(board) &&
+      !isAuthoredBoard(board)
+    ) {
+      continue
+    }
     remapTreeRefs(board.variants)
     if (!isComponentBoard(board)) continue
 

@@ -10,22 +10,30 @@ import type { AuthoredComponentBoard, EntryNode } from "@seldon/core/workspace/t
 import { resolveSourceVariantId } from "../../../helpers/workspace-nodes"
 import { pascalCase } from "../utils/case-utils"
 
-/** Name for a variant that belongs to an authored board: root uses the board label alone. */
+/**
+ * Name for a variant that belongs to an authored board. Export and code names
+ * stay singular, so the base is the authored root node's singular label, not
+ * the board label, which is a plural grouping convention such as "Dialogs".
+ */
 function authoredVariantName(
   node: EntryNode,
   board: AuthoredComponentBoard,
+  workspace: Workspace,
 ): string {
+  const rootId = board.variants[0]?.id
+  const root = rootId ? workspace.nodes[rootId] : undefined
+  const base = pascalCase(root?.label ?? board.label)
   if (node.type === "authored") {
-    return pascalCase(board.label)
+    return base
   }
-  return `${pascalCase(board.label)}${pascalCase(node.label)}`
+  return `${base}${pascalCase(node.label)}`
 }
 
 export function getComponentName(node: EntryNode, workspace: Workspace) {
   if (isVariantNode(node)) {
     const board = getBoardByNodeId(workspace, node.id)
     if (board && isAuthoredBoard(board)) {
-      return authoredVariantName(node, board)
+      return authoredVariantName(node, board, workspace)
     }
     const catalogId = getNodeCatalogId(node, workspace) ?? node.id
     if (isDefaultVariant(node)) {
@@ -43,7 +51,7 @@ export function getComponentName(node: EntryNode, workspace: Workspace) {
   const variant = getVariantById(sourceId, workspace)
   const variantBoard = getBoardByNodeId(workspace, variant.id)
   if (variantBoard && isAuthoredBoard(variantBoard)) {
-    return authoredVariantName(variant, variantBoard)
+    return authoredVariantName(variant, variantBoard, workspace)
   }
   const catalogId = getNodeCatalogId(variant, workspace) ?? variant.id
   if (isDefaultVariant(variant)) {

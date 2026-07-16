@@ -12,6 +12,7 @@ import { authoredBoardRootNodeId } from "../../../helpers/components/entry-node-
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatNodeCatalog } from "../../../model/template-ref"
+import { workspaceMutationService } from "../../../services"
 import type { AuthoredComponentBoard, EntryNode } from "../../../types"
 
 /**
@@ -63,7 +64,11 @@ export function addAuthoredComponent(
       type: "authored-component",
       id: boardKey,
       level: payload.level,
-      label: payload.name,
+      // Board label is a plural grouping convention ("Dialogs"); the root node
+      // keeps the singular name that export and code names read.
+      label: workspaceMutationService.getInitialAuthoredComponentLabel(
+        payload.name,
+      ),
       intent: payload.intent,
       tags: payload.tags,
       componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
