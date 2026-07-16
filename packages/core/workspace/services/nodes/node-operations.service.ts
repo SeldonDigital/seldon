@@ -92,6 +92,11 @@ function cloneEntryNodeAsInstance(
   clone.origin = "user"
   // A ref must stay globally unique; never carry it onto a copy.
   delete clone.ref
+  // Born linked: an instance inherits its source's properties and states through
+  // the template link, so it starts with none of its own. Copying them would
+  // freeze the source's values and shadow later edits to the source.
+  clone.overrides = {}
+  delete clone.states
   const link = parseNodeLink(row.template)
   if (link?.kind === "node" && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
@@ -636,7 +641,9 @@ export class NodeOperationsService {
       label: source.label,
       theme: source.theme,
       template: formatNodeLink(nodeId),
-      overrides: structuredClone((source as EntryNode).overrides),
+      // Born linked: inherit the source variant through the template link rather
+      // than baking a copy of its overrides, so later source edits stay live.
+      overrides: {},
       origin: "user",
     }
 
@@ -673,9 +680,13 @@ export class NodeOperationsService {
       id: newRootId,
       type: "instance",
       template: formatNodeLink(nodeId),
+      // Born linked: inherit the source instance through the template link, so
+      // the copy tracks it live instead of freezing its current values.
+      overrides: {},
       origin: "user",
     }
     delete newNodes[newRootId].ref
+    delete newNodes[newRootId].states
 
     let newTreeRef: ComponentTreeRef = { id: newRootId }
 

@@ -90,7 +90,10 @@ function migrationApplies(workspace: Workspace): boolean {
       return true
     }
   }
-  for (const board of Object.values(workspace.boards)) {
+  for (const [key, board] of Object.entries(workspace.boards)) {
+    // A board still stored under the old `dialog` key needs repair even when an
+    // earlier partial migration already flipped its `catalogId` to `panel`.
+    if (key === OLD_CATALOG_ID) return true
     if (isComponentBoard(board) && board.catalogId === OLD_CATALOG_ID) {
       return true
     }
@@ -124,10 +127,23 @@ export function migrateV12DialogToPanels(workspace: Workspace): Workspace {
   for (const [key, board] of Object.entries(boards)) {
     if (!isComponentBoard(board) && !isPlaygroundBoard(board)) continue
     remapTreeRefs(board.variants)
-    if (!isComponentBoard(board) || board.catalogId !== OLD_CATALOG_ID) continue
+    if (!isComponentBoard(board)) continue
+
+    // Treat a board as Dialog-family when it still carries the old catalog id or
+    // is still stored under the old `dialog` key. Keying off the board key too
+    // catches a board an earlier partial migration flipped to `catalogId: panel`
+    // but left keyed `dialog`, which renders a `data-board-id="dialog"` that no
+    // catalog id resolves.
+    const isDialogFamily =
+      board.catalogId === OLD_CATALOG_ID || key === OLD_CATALOG_ID
+    if (!isDialogFamily) continue
+
     board.catalogId = NEW_CATALOG_ID
     board.label = NEW_BOARD_LABEL
-    if (key === OLD_CATALOG_ID && !boards[NEW_CATALOG_ID]) {
+
+    // Re-key the converted board onto `panel` and remove the stale `dialog` key
+    // so no `dialog` key or catalog id survives the migration.
+    if (key === OLD_CATALOG_ID) {
       boards[NEW_CATALOG_ID] = board
       delete boards[key]
     }
