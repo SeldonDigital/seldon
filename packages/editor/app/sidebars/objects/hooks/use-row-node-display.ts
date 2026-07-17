@@ -1,5 +1,5 @@
-import { CSSProperties } from "react"
 import { ComboboxOptionItem, OptionIconRender } from "@lib/menus"
+import { CSSProperties } from "react"
 import { Display, Properties, Value, ValueType, VariantId } from "@seldon/core"
 import {
   PROPERTY_ICONS,

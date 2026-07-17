@@ -1,5 +1,6 @@
 import { MenuEntry, MenuItem } from "@lib/menus"
 import { useMemo } from "react"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import {
   type CustomState,
   NORMAL_STATE,
@@ -9,13 +10,12 @@ import {
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { walkComponentTree } from "@lib/workspace/component-tree"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { walkComponentTree } from "@lib/workspace/component-tree"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import {
   useActiveBoardState,
   useBoardStateStore,

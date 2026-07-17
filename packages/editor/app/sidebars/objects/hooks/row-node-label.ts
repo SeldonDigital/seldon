@@ -25,7 +25,12 @@ interface NodeLabelOptions {
 export function getNodeLabel(
   node: EntryNode,
   workspace: Workspace,
-  { showNodeIds, showCodeNames, nodeExistsInWorkspace, properties }: NodeLabelOptions,
+  {
+    showNodeIds,
+    showCodeNames,
+    nodeExistsInWorkspace,
+    properties,
+  }: NodeLabelOptions,
 ): string {
   if (showNodeIds) {
     return `${node.id} | ${node.template}`

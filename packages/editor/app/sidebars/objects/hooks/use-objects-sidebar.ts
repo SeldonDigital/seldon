@@ -5,7 +5,10 @@ import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { BoardSection, getBoardSections } from "../../helpers/get-board-sections"
+import {
+  BoardSection,
+  getBoardSections,
+} from "../../helpers/get-board-sections"
 
 /** Section levels that belong to the Resources view of the objects sidebar. */
 const RESOURCE_SECTION_LEVELS: ReadonlySet<BoardSection["level"]> = new Set([

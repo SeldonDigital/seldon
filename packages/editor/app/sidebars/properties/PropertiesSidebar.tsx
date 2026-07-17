@@ -23,13 +23,13 @@ import {
 import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import { useBoardStateMenu } from "./hooks/use-board-state-menu"
 import {
   useBorderSideVisibility,
   useRevealedBorderSides,
 } from "./hooks/use-border-side-visibility"
 import { useFilterInput } from "./hooks/use-filter-input"
 import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
-import { useBoardStateMenu } from "./hooks/use-board-state-menu"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"

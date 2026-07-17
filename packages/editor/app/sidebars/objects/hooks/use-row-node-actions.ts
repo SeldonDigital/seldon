@@ -19,11 +19,11 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { hasNode } from "@lib/workspace/workspace-accessors"
 import { usePropertiesClipboard } from "@lib/workspace/hooks/use-properties-clipboard"
 import { useSelectionActions } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
+import { hasNode } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 type Workspace = ReturnType<typeof useWorkspace>["workspace"]

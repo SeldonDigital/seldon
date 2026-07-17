@@ -1,15 +1,22 @@
 "use client"
 
-import { CSSProperties, MouseEvent, RefObject, useCallback, useRef, useState } from "react"
 import {
   ComboboxOptionItem,
   ComboboxPosition,
   OptionIconRender,
   useComboboxPosition,
 } from "@lib/menus"
+import {
+  CSSProperties,
+  MouseEvent,
+  RefObject,
+  useCallback,
+  useRef,
+  useState,
+} from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 
-// Fixed panel width for the floating display picker. 
+// Fixed panel width for the floating display picker.
 const PANEL_WIDTH = 200
 
 interface DisplayPickerInput {
