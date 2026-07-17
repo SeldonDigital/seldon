@@ -11,7 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { ButtonIconicProps } from "../elements/ButtonIconic"
 import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
 import {
   ComboboxFieldProject,
@@ -19,8 +19,8 @@ import {
 } from "../elements/ComboboxFieldProject"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
+import { IconProps } from "../primitives/Icon"
+import { InputProps } from "../primitives/Input"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
@@ -28,17 +28,18 @@ export interface SidebarObjectsProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
+  frame?: FrameProps | null
   comboboxFieldProject?: ComboboxFieldProjectProps | null
   icon?: IconProps | null
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
   icon2?: IconProps | null
-  frame?: FrameProps | null
+  frame2?: FrameProps | null
   buttonToggle?: ButtonToggleProps | null
   icon3?: IconProps | null
   buttonToggle2?: ButtonToggleProps | null
   icon4?: IconProps | null
-  frame2?: FrameProps | null
+  frame3?: FrameProps | null
 }
 
 /*****
@@ -58,17 +59,18 @@ export interface SidebarObjectsProps extends HTMLAttributes<HTMLElement> {
  *****/
 export function SidebarObjects({
   className = "",
+  frame = sdn.frame,
   comboboxFieldProject,
   icon = sdn.icon,
   input = sdn.input,
   buttonIconic = sdn.buttonIconic,
   icon2 = sdn.icon2,
-  frame = sdn.frame,
+  frame2 = sdn.frame2,
   buttonToggle,
   icon3 = sdn.icon3,
   buttonToggle2,
   icon4 = sdn.icon4,
-  frame2 = sdn.frame2,
+  frame3 = sdn.frame3,
   children,
   seldonRefs,
   ...props
@@ -76,6 +78,16 @@ export function SidebarObjects({
   const sidebarObjectsClassName = combineClassNames(
     "sdn-sidebar-objects",
     className,
+  )
+  const frameProps = applyRef(
+    seldonRefs,
+    frame === null
+      ? null
+      : {
+          ...sdn.frame,
+          ...frame,
+          className: combineClassNames(sdn.frame?.className, frame?.className),
+        },
   )
   const comboboxFieldProjectProps = applyRef(
     seldonRefs,
@@ -133,14 +145,17 @@ export function SidebarObjects({
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
         },
   )
-  const frameProps = applyRef(
+  const frame2Props = applyRef(
     seldonRefs,
-    frame === null
+    frame2 === null
       ? null
       : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
+          ...sdn.frame2,
+          ...frame2,
+          className: combineClassNames(
+            sdn.frame2?.className,
+            frame2?.className,
+          ),
         },
   )
   const buttonToggleProps = applyRef(
@@ -189,16 +204,16 @@ export function SidebarObjects({
           className: combineClassNames(sdn.icon4?.className, icon4?.className),
         },
   )
-  const frame2Props = applyRef(
+  const frame3Props = applyRef(
     seldonRefs,
-    frame2 === null
+    frame3 === null
       ? null
       : {
-          ...sdn.frame2,
-          ...frame2,
+          ...sdn.frame3,
+          ...frame3,
           className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
+            sdn.frame3?.className,
+            frame3?.className,
           ),
         },
   )
@@ -214,24 +229,26 @@ export function SidebarObjects({
         children
       ) : (
         <>
-          {comboboxFieldProject && comboboxFieldProjectProps && (
-            <ComboboxFieldProject {...comboboxFieldProjectProps}>
-              {icon && iconProps && <Icon {...iconProps} />}
-              {input && inputProps && <Input {...inputProps} />}
-              {buttonIconic && buttonIconicProps && (
-                <ButtonIconic {...buttonIconicProps} icon={icon2Props} />
+          <Frame {...frameProps}>
+            {comboboxFieldProject && comboboxFieldProjectProps && (
+              <ComboboxFieldProject
+                {...comboboxFieldProjectProps}
+                icon={iconProps}
+                input={inputProps}
+                buttonIconic={buttonIconicProps}
+                icon2={icon2Props}
+              />
+            )}
+            <Frame {...frame2Props}>
+              {buttonToggle && buttonToggleProps && (
+                <ButtonToggle {...buttonToggleProps} icon={icon3Props} />
               )}
-              <Frame {...frameProps}>
-                {buttonToggle && buttonToggleProps && (
-                  <ButtonToggle {...buttonToggleProps} icon={icon3Props} />
-                )}
-                {buttonToggle2 && buttonToggle2Props && (
-                  <ButtonToggle {...buttonToggle2Props} icon={icon4Props} />
-                )}
-              </Frame>
-            </ComboboxFieldProject>
-          )}
-          <Frame {...frame2Props}></Frame>
+              {buttonToggle2 && buttonToggle2Props && (
+                <ButtonToggle {...buttonToggle2Props} icon={icon4Props} />
+              )}
+            </Frame>
+          </Frame>
+          <Frame {...frame3Props}></Frame>
         </>
       )}
     </HTMLDiv>
@@ -245,6 +262,11 @@ const sdn: SidebarObjectsProps = {
   role: "complementary",
   "aria-hidden": "false",
   className: "sdn-sidebar-objects sdn-sidebar",
+  frame: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--p4y0",
+  },
   comboboxFieldProject: {
     className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
   },
@@ -270,7 +292,7 @@ const sdn: SidebarObjectsProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
   },
-  frame: {
+  frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--ma6i",
@@ -293,7 +315,7 @@ const sdn: SidebarObjectsProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--ovkd",
   },
-  frame2: {
+  frame3: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--enpy",

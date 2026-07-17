@@ -343,7 +343,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   propertiesContainer: {
     component: "Frame",
     nodeId: "component-sidebar-evMwxVOP",
-    className: "sdn-frame sdn-frame--enpy",
+    className: "sdn-frame sdn-frame--evmw",
   },
   propertyActions: {
     component: "ButtonIconic",

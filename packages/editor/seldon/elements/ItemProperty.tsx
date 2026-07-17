@@ -295,7 +295,7 @@ const sdn: ItemPropertyProps = {
   icon3: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--xi68",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -304,6 +304,6 @@ const sdn: ItemPropertyProps = {
   icon4: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--xi68",
   },
 }

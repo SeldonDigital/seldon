@@ -258,6 +258,6 @@ const sdn: ItemPropertyToggleProps = {
   icon3: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--xi68",
   },
 }

@@ -195,7 +195,7 @@ const sdn: SidebarPropertiesProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--enpy",
+    className: "sdn-frame sdn-frame--evmw",
     "data-seldon-ref": "propertiesContainer",
   },
 }
