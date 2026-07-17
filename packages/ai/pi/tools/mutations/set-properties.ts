@@ -6,6 +6,10 @@ import { Type } from "typebox"
 
 import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 import type {
   BoardKey,
   Workspace,
@@ -23,7 +27,7 @@ function boardKeyOfNode(
   nodeId: string,
 ): BoardKey | undefined {
   for (const [key, board] of Object.entries(workspace.boards)) {
-    if (board.type !== "component") continue
+    if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
     let found = false
     walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id !== nodeId) return

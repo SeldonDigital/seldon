@@ -5,6 +5,10 @@ import {
 import { Type } from "typebox"
 
 import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/components/get-node-parent-id"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 
 import {
   activeBoardSection,
@@ -82,7 +86,7 @@ export function createWidenScopeTool(
 
       if (
         !activeBoard ||
-        activeBoard.type !== "component" ||
+        (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard)) ||
         resolvedKey === undefined
       ) {
         return workspaceResult()

@@ -1,5 +1,9 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 /**
@@ -9,17 +13,19 @@ import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
  * the distinct catalog ids present, with no ids or property detail. It lets the
  * model confirm which variant holds a target before it pulls the full tree with
  * get_active_board or expands a branch with describe_node. Returns nothing for a
- * non-component board, so the caller can report a clean miss.
+ * board that owns no variant tree, so the caller can report a clean miss.
  */
 export function boardSummarySection(
   workspace: Workspace,
   resolvedKey: BoardKey,
   activeBoard: Board,
 ): string[] {
-  if (activeBoard.type !== "component") return []
+  if (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard)) return []
 
+  const catalogLabel =
+    "catalogId" in activeBoard ? activeBoard.catalogId : "authored"
   const lines: string[] = [
-    `Board summary: ${resolvedKey} -> ${activeBoard.catalogId} -> "${activeBoard.label}"`,
+    `Board summary: ${resolvedKey} -> ${catalogLabel} -> "${activeBoard.label}"`,
   ]
 
   const boardCatalogIds = new Set<string>()

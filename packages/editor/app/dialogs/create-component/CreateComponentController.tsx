@@ -2,7 +2,6 @@
 
 import { MenuController } from "@lib/menus/MenuController"
 import { MenuEntry } from "@lib/menus/types"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
 import {
   CSSProperties,
@@ -15,6 +14,7 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
 import {
   AUTHORED_LEVEL_OPTIONS,
   useCreateComponentPanel,

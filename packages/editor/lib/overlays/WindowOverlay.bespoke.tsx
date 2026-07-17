@@ -2,7 +2,13 @@
 // It renders either a draggable, resizable window or a centered, content-sized
 // modal. No generated component covers this chrome.
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
-import { CSSProperties, MouseEvent, ReactNode, useCallback, useRef } from "react"
+import {
+  CSSProperties,
+  MouseEvent,
+  ReactNode,
+  useCallback,
+  useRef,
+} from "react"
 import { createPortal } from "react-dom"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
@@ -95,8 +101,16 @@ export function WindowOverlay({
     // does not.
     const contentSurfaceStyle = { x, y, ...styles.contentSurface }
     return createPortal(
-      <div data-theme={chromeTheme} data-mode={resolvedMode} style={styles.scope}>
-        <div ref={overlayRef} onClick={backdropClick} style={styles.centerOverlay}>
+      <div
+        data-theme={chromeTheme}
+        data-mode={resolvedMode}
+        style={styles.scope}
+      >
+        <div
+          ref={overlayRef}
+          onClick={backdropClick}
+          style={styles.centerOverlay}
+        >
           <motion.div
             drag
             dragControls={moveControls}

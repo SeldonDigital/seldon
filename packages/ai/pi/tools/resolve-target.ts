@@ -1,5 +1,9 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import { activeBoardSection } from "../../prompt/context-sections/active-board"
@@ -37,7 +41,8 @@ const MATCH_LIMIT = 10
 function boardNodeIds(workspace: Workspace, boardKey: BoardKey): Set<string> {
   const ids = new Set<string>()
   const board = workspace.boards[boardKey]
-  if (!board || board.type !== "component") return ids
+  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
+    return ids
   walkBoardTreeRefs(board.variants, (ref) => {
     ids.add(ref.id)
   })
@@ -51,7 +56,8 @@ function boardCatalogIds(
 ): Set<string> {
   const ids = new Set<string>()
   const board = workspace.boards[boardKey]
-  if (!board || board.type !== "component") return ids
+  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
+    return ids
   walkBoardTreeRefs(board.variants, (ref) => {
     const node = workspace.nodes[ref.id]
     if (!node) return
@@ -74,7 +80,7 @@ function tierTwoBlock(
 ): string {
   if (activeKey === undefined) return ""
   const board = workspace.boards[activeKey]
-  if (!board || board.type !== "component") return ""
+  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return ""
   const block = [
     ...activeBoardSection(workspace, activeKey, board).lines,
     ...componentValuesSection(boardCatalogIds(workspace, activeKey), workspace),
@@ -106,7 +112,8 @@ function subtreeNodeIds(
 ): Set<string> {
   const ids = new Set<string>()
   const board = workspace.boards[boardKey]
-  if (!board || board.type !== "component") return ids
+  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
+    return ids
 
   const root = findRef(board.variants, rootId)
   if (!root) return ids
@@ -163,7 +170,7 @@ function searchWorkspace(
 
   const matches: NodeMatch[] = []
   for (const [key, board] of Object.entries(workspace.boards)) {
-    if (board.type !== "component") continue
+    if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
     walkBoardTreeRefs(board.variants, (ref) => {
       const node = workspace.nodes[ref.id]
       if (!node) return
