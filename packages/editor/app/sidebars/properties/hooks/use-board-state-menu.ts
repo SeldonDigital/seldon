@@ -1,7 +1,5 @@
-"use client"
-
-import { MenuController, MenuEntry, MenuItem } from "@lib/menus"
-import { CSSProperties, useMemo } from "react"
+import { MenuEntry, MenuItem } from "@lib/menus"
+import { useMemo } from "react"
 import {
   type CustomState,
   NORMAL_STATE,
@@ -11,36 +9,21 @@ import {
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { walkComponentTree } from "@lib/workspace/component-tree"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import {
   useActiveBoardState,
   useBoardStateStore,
-} from "../hooks/use-board-state-store"
-import { walkComponentTree } from "@lib/workspace/component-tree"
-import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
-import { Frame } from "@seldon/components/frames/Frame"
+} from "@app/canvas/hooks/use-board-state-store"
 
-// bespoke: marks board states whose override lives only on a child. Remove once
-// a generated View owns this canvas overlay treatment.
+// Marks board states whose override lives only on a child, matching the punch
+// accent the canvas switcher used.
 const CHILD_OVERRIDE_COLOR = "var(--sdn-swatch-punch)"
-
-interface BoardStateSwitcherProps {
-  boardKey: string
-}
-
-const wrapperStyle: CSSProperties = {
-  position: "absolute",
-  top: -28,
-  left: 0,
-  zIndex: 5,
-}
-
-function stopClickPropagation(event: React.MouseEvent) {
-  event.stopPropagation()
-}
 
 function stateLabel(state: NodeState, customStates: CustomState[]): string {
   if (state === NORMAL_STATE) return "Normal"
@@ -50,22 +33,37 @@ function stateLabel(state: NodeState, customStates: CustomState[]): string {
   return customStates.find((entry) => entry.key === state)?.label ?? state
 }
 
+export interface BoardStateMenu {
+  /** Menu rows for the shared `MenuController`. */
+  items: MenuEntry[]
+  /** Trigger label: the current active state name. */
+  label: string
+  /** True when the selection has no component board to hold state. */
+  disabled: boolean
+}
+
 /**
- * On-canvas interaction-state switcher. Sits just above the board and selects
- * the active state for the whole board tree. The dropdown chrome, positioning,
- * keyboard navigation, and dismissal come from the shared `MenuController`. Adding a
- * custom state creates it with a sticky default name through a core action.
- * Custom-state names are not editable yet.
+ * Interaction-state menu for the properties sidebar. Selects the active state
+ * for the selected node's whole board tree through the shared board-state store,
+ * the same store the canvas renders from and the `⌥1..0` hotkeys drive. The menu
+ * rows, override indicators, hotkey labels, and "Add custom state" match the
+ * former on-canvas switcher; only the location changed.
  */
-export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
+export function useBoardStateMenu(): BoardStateMenu {
   const { workspace, dispatch } = useWorkspace()
-  // The canvas root pins data-theme to the default chrome theme so board
-  // rendering reads authored swatch values. The switcher is chrome, so it
-  // re-scopes to the live chrome theme and mode, matching the topbar.
-  const { chromeTheme } = useEditorConfig()
-  const resolvedMode = useResolvedInterfaceMode()
-  const activeState = useActiveBoardState(boardKey)
+  const { selection } = useSelection()
   const setActiveState = useBoardStateStore((store) => store.setActiveState)
+
+  // Resolve the board key the same way `useNodeActiveState` does, so the menu
+  // writes to the key the canvas and sidebar read from.
+  const boardKey = useMemo<string | undefined>(() => {
+    if (!selection) return undefined
+    if (isBoard(selection)) return getComponentKey(selection)
+    const board = nodeRelationshipService.findBoardForNode(selection, workspace)
+    return board ? getComponentKey(board) : undefined
+  }, [selection, workspace])
+
+  const activeState = useActiveBoardState(boardKey ?? "")
 
   const customStates = useMemo(
     () => workspace.metadata.customStates ?? [],
@@ -94,7 +92,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   const { ownOverrideStates, childOverrideStates } = useMemo(() => {
     const ownOverride = new Set<NodeState>()
     const childOverride = new Set<NodeState>()
-    const board = workspace.boards[boardKey]
+    const board = boardKey ? workspace.boards[boardKey] : undefined
     if (!board)
       return {
         ownOverrideStates: ownOverride,
@@ -126,7 +124,10 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     }
   }, [workspace.boards, workspace.nodes, boardKey])
 
-  const select = (state: NodeState) => setActiveState(boardKey, state)
+  const select = (state: NodeState) => {
+    if (!boardKey) return
+    setActiveState(boardKey, state)
+  }
 
   // Creates a custom state with a sticky default name. Names are not editable
   // yet, so the next free `Custom N` label is assigned automatically.
@@ -185,27 +186,9 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     testId: "board-state-add",
   })
 
-  // Chrome wrapper for the on-canvas state switcher. Re-scopes the switcher to
-  // the live chrome theme and mode via data-theme/data-mode.
-  return (
-    <Frame
-      style={wrapperStyle}
-      onClick={stopClickPropagation}
-      data-theme={chromeTheme}
-      data-mode={resolvedMode}
-    >
-      <MenuController
-        items={items}
-        renderTrigger={({ ref, triggerProps }) => (
-          <ButtonMenu
-            ref={ref}
-            type="button"
-            {...triggerProps}
-            textLabel={{ children: stateLabel(activeState, customStates) }}
-            data-testid="board-state-trigger"
-          />
-        )}
-      />
-    </Frame>
-  )
+  return {
+    items,
+    label: stateLabel(activeState, customStates),
+    disabled: !boardKey,
+  }
 }

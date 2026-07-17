@@ -47,6 +47,7 @@ export type SeldonRef =
   | "menuFile"
   | "menuMode"
   | "menus"
+  | "menuState"
   | "menuTheme"
   | "menuView"
   | "nodeActions"
@@ -269,6 +270,11 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "Frame",
     nodeId: "component-bar-DrSavE9B",
     className: "sdn-frame sdn-frame--drsa",
+  },
+  menuState: {
+    component: "ButtonMenu",
+    nodeId: "component-button-t1A2Kxjz",
+    className: "sdn-button-menu sdn-button-menu--t1a2",
   },
   menuTheme: {
     component: "ButtonMenu",
