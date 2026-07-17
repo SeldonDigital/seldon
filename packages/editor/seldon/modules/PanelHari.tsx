@@ -540,7 +540,7 @@ const sdn: PanelHariProps = {
   icon: {
     icon: "material-outputCircle",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ovkd",
+    className: "sdn-icon sdn-icon--vsau",
   },
   buttonToggle2: {
     className: "sdn-button-toggle sdn-button-iconic--pgsr",
@@ -549,7 +549,7 @@ const sdn: PanelHariProps = {
   icon2: {
     icon: "material-buildCircle",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ovkd",
+    className: "sdn-icon sdn-icon--vsau",
   },
   buttonToggle3: {
     className: "sdn-button-toggle sdn-button-iconic--pgsr",
@@ -558,7 +558,7 @@ const sdn: PanelHariProps = {
   icon3: {
     icon: "material-neurology",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ovkd",
+    className: "sdn-icon sdn-icon--vsau",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

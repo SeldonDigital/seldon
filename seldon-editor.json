@@ -54308,17 +54308,14 @@
         "border": {
           "color": {
             "type": "theme.categorical",
-            "value": "@swatch.primary"
+            "value": "@swatch.offBlack"
           }
         },
         "background": [
           {
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 75
-              }
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offWhite"
             }
           }
         ]
@@ -54347,55 +54344,14 @@
       },
       "states": {
         "active": {
-          "border": {
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 60
-              }
-            }
-          },
+          "border": {},
           "background": [
-            {
-              "color": {
-                "type": "theme.categorical",
-                "value": "@swatch.primary"
-              },
-              "opacity": {
-                "type": "exact",
-                "value": {
-                  "unit": "%",
-                  "value": 40
-                }
-              }
-            }
+            {}
           ]
         },
         "hover": {
-          "border": {
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 80
-              }
-            }
-          },
           "background": [
-            {
-              "color": {
-                "type": "theme.categorical",
-                "value": "@swatch.primary"
-              },
-              "opacity": {
-                "type": "exact",
-                "value": {
-                  "unit": "%",
-                  "value": 20
-                }
-              }
-            }
+            {}
           ]
         },
         "disabled": {
@@ -54445,13 +54401,6 @@
               "color": {
                 "type": "theme.categorical",
                 "value": "@swatch.offWhite"
-              },
-              "brightness": {
-                "type": "exact",
-                "value": {
-                  "unit": "%",
-                  "value": 0
-                }
               }
             }
           ]
@@ -54463,6 +54412,16 @@
               "value": "@swatch.negative"
             }
           }
+        },
+        "dragged": {
+          "background": [
+            {
+              "color": {
+                "type": "theme.categorical",
+                "value": "@swatch.primary"
+              }
+            }
+          ]
         }
       }
     },

@@ -304,7 +304,7 @@ const sdn: SidebarObjectsProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ovkd",
+    className: "sdn-icon sdn-icon--vsau",
   },
   buttonToggle2: {
     className: "sdn-button-toggle sdn-button-iconic--pgsr",
@@ -313,7 +313,7 @@ const sdn: SidebarObjectsProps = {
   icon4: {
     icon: "seldon-theme",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ovkd",
+    className: "sdn-icon sdn-icon--vsau",
   },
   frame3: {
     wrapperElement: "div",

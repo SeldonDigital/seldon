@@ -1,36 +1,4 @@
 /*
- * Suppresses the hover highlight on the Hari header toggle buttons while
- * leaving every other state intact. On hover the button keeps its resting
- * appearance, which differs between the default and activated states. The
- * `:not(:active):not(:focus-visible)` guards keep the press and keyboard-focus
- * states working.
- */
-
-.sdn-button-toggle.hari-toggle-no-hover:hover:not(:active):not(:focus-visible) {
-  background-color: var(--sdn-swatch-primary-b75);
-  border: var(--hairline) solid var(--sdn-swatch-primary);
-}
-
-.sdn-button-toggle.hari-toggle-no-hover:hover:not(:active):not(:focus-visible)
-  .sdn-icon--ovkd {
-  opacity: 1;
-  color: var(--sdn-hc-on-primary-b75);
-}
-
-.sdn-button-toggle.hari-toggle-no-hover.sdn-state-activated:hover:not(
-    :active
-  ):not(:focus-visible) {
-  background-color: var(--sdn-swatch-offWhite);
-}
-
-.sdn-button-toggle.hari-toggle-no-hover.sdn-state-activated:hover:not(
-    :active
-  ):not(:focus-visible)
-  .sdn-icon--ovkd {
-  color: var(--sdn-swatch-active);
-}
-
-/*
  * While a turn streams, its reply is provisional: the model may still be
  * emitting mid-turn commentary before the final result. Mark it as in-progress
  * with italic offBlack text at half opacity. When the turn finishes the class

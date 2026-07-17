@@ -570,7 +570,7 @@ body {
 }
 
 .sdn-button-toggle {
-  background-color: var(--sdn-swatch-primary-b75);
+  background-color: var(--sdn-swatch-offWhite);
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -583,7 +583,7 @@ body {
   font-size: var(--sdn-font-size-medium);
   padding: var(--sdn-paddings-tight);
   border-radius: 99999px;
-  border: var(--hairline) solid var(--sdn-swatch-primary);
+  border: var(--hairline) solid var(--sdn-swatch-offBlack);
 }
 
 .sdn-button-tools {
@@ -2947,11 +2947,6 @@ body {
 .sdn-icon--nlt7 {
   font-size: var(--sdn-cmp-auto-fit-font-size-medium);
   color: var(--sdn-hc-on-white);
-}
-
-.sdn-icon--ovkd {
-  font-size: var(--sdn-cmp-auto-fit-font-size-medium);
-  color: var(--sdn-hc-on-primary-b75);
 }
 
 .sdn-icon--pbp5 {
@@ -6295,22 +6290,22 @@ body {
 .sdn-button-toggle:has(:focus-visible) {
   background-color: color-mix(
     in srgb,
-    var(--sdn-swatch-punch-b75) 20%,
+    var(--sdn-swatch-punch) 20%,
     transparent
   );
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
-.sdn-button-toggle:focus-visible .sdn-icon--ovkd,
-.sdn-button-toggle:has(:focus-visible) .sdn-icon--ovkd {
+.sdn-button-toggle:focus-visible .sdn-icon--vsau,
+.sdn-button-toggle:has(:focus-visible) .sdn-icon--vsau {
   color: var(--sdn-swatch-punch);
 }
 
 .sdn-button-toggle[aria-selected="true"] {
-  background-color: var(--sdn-swatch-offWhite-b75);
+  border: var(--hairline) solid var(--sdn-swatch-primary);
 }
 
-.sdn-button-toggle[aria-selected="true"] .sdn-icon--ovkd {
+.sdn-button-toggle[aria-selected="true"] .sdn-icon--vsau {
   color: var(--sdn-swatch-active);
 }
 
@@ -6320,66 +6315,60 @@ body {
   border: var(--hairline) solid var(--sdn-swatch-gray);
 }
 
-.sdn-button-toggle:disabled .sdn-icon--ovkd,
-.sdn-button-toggle[aria-disabled="true"] .sdn-icon--ovkd {
+.sdn-button-toggle:disabled .sdn-icon--vsau,
+.sdn-button-toggle[aria-disabled="true"] .sdn-icon--vsau {
   color: var(--sdn-swatch-gray);
 }
 
 .sdn-button-toggle[aria-invalid="true"] {
   background-color: color-mix(
     in srgb,
-    var(--sdn-swatch-negative-b75) 20%,
+    var(--sdn-swatch-negative) 20%,
     transparent
   );
   border: var(--hairline) solid var(--sdn-swatch-negative);
 }
 
-.sdn-button-toggle[aria-invalid="true"] .sdn-icon--ovkd {
+.sdn-button-toggle[aria-invalid="true"] .sdn-icon--vsau {
   color: var(--sdn-swatch-negative);
 }
 
 .sdn-button-toggle.sdn-state-activated {
-  background-color: var(--sdn-swatch-offWhite);
+  border: var(--hairline) solid var(--sdn-swatch-primary);
 }
 
-.sdn-button-toggle.sdn-state-activated .sdn-icon--ovkd {
+.sdn-button-toggle.sdn-state-activated .sdn-icon--vsau {
   color: var(--sdn-swatch-active);
 }
 
 .sdn-button-toggle:hover {
   background-color: color-mix(
     in srgb,
-    var(--sdn-swatch-primary-b75) 20%,
+    var(--sdn-swatch-offWhite) 80%,
     transparent
   );
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
-.sdn-button-toggle:hover .sdn-icon--ovkd {
+.sdn-button-toggle:hover .sdn-icon--vsau {
   opacity: 0.8;
-  color: var(--sdn-hc-on-offWhite);
 }
 
 .sdn-button-toggle:active {
   background-color: color-mix(
     in srgb,
-    var(--sdn-swatch-primary-b75) 40%,
+    var(--sdn-swatch-offWhite) 60%,
     transparent
   );
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
-.sdn-button-toggle:active .sdn-icon--ovkd {
+.sdn-button-toggle:active .sdn-icon--vsau {
   opacity: 0.6;
-  color: var(--sdn-hc-on-offWhite);
 }
 
 .sdn-button-toggle.sdn-state-dragged {
   background-color: var(--sdn-swatch-primary-bn20);
 }
 
-.sdn-button-toggle.sdn-state-dragged .sdn-icon--ovkd {
+.sdn-button-toggle.sdn-state-dragged .sdn-icon--vsau {
   color: var(--sdn-hc-on-primary-bn20);
 }
