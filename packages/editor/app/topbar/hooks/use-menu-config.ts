@@ -224,12 +224,6 @@ export function useMenuConfig(): MenuConfig {
       },
       "separator",
       {
-        id: "import-web",
-        label: "Import Web…",
-        action: importWeb,
-        visibleIn: ["edit", "preview"],
-      },
-      {
         id: "export-folder",
         label: "Export Components…",
         action: exportToFolder,
@@ -257,11 +251,16 @@ export function useMenuConfig(): MenuConfig {
     exportWorkspaceToFile,
     goToProjects,
     importWorkspaceFromFile,
-    importWeb,
   ])
 
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
+      {
+        id: "import-web",
+        label: "Import Web…",
+        action: importWeb,
+        visibleIn: ["edit", "preview"],
+      },
       {
         id: "show-playground",
         label: "Show Playgrounds",
@@ -357,6 +356,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     addToast,
+    importWeb,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     showPlayground,
