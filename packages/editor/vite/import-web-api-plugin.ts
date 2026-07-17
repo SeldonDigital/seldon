@@ -4,7 +4,10 @@ import type { IncomingMessage, ServerResponse } from "node:http"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import type { Connect, Plugin } from "vite"
-import type { ImportWebRequestBody, runImportWebHandler } from "./import-web-handler"
+import type {
+  ImportWebRequestBody,
+  runImportWebHandler,
+} from "./import-web-handler"
 
 const ROUTE = "/api/import-web"
 
@@ -50,7 +53,10 @@ async function loadHandler(): Promise<RunImportWebHandler> {
 
   const outputDir = path.join(repoRoot, "node_modules", ".seldon-import-web")
   await fs.mkdir(outputDir, { recursive: true })
-  const outputFile = path.join(outputDir, `import-web-handler-${process.pid}.mjs`)
+  const outputFile = path.join(
+    outputDir,
+    `import-web-handler-${process.pid}.mjs`,
+  )
   await fs.writeFile(outputFile, result.outputFiles[0].text)
   const mod = (await import(pathToFileURL(outputFile).href)) as {
     runImportWebHandler: RunImportWebHandler
@@ -65,7 +71,9 @@ function getHandler(): Promise<RunImportWebHandler> {
   return cachedHandler
 }
 
-async function readJsonBody(req: IncomingMessage): Promise<ImportWebRequestBody> {
+async function readJsonBody(
+  req: IncomingMessage,
+): Promise<ImportWebRequestBody> {
   const chunks: Buffer[] = []
   for await (const chunk of req) {
     chunks.push(chunk as Buffer)

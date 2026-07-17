@@ -2,16 +2,16 @@ import { nanoid } from "nanoid"
 import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
-import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
+import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import {
   isIconSetBoard,
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
+import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import {
   nodeRelationshipService,

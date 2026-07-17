@@ -18,7 +18,9 @@ function heuristicId(node: FunctionalNode): string {
 }
 
 /** The recognized catalog children a suggested schema can compose. */
-function resolvableChildren(node: FunctionalNode): Array<{ component: string }> {
+function resolvableChildren(
+  node: FunctionalNode,
+): Array<{ component: string }> {
   const children: Array<{ component: string }> = []
   for (const child of node.children) {
     if (child.seededComponent && findComponentSchema(child.seededComponent)) {
@@ -29,9 +31,7 @@ function resolvableChildren(node: FunctionalNode): Array<{ component: string }> 
 }
 
 /** Builds the evidence block carried on every suggestion for review. */
-function toEvidence(
-  result: MatchResult,
-): SuggestedSchema["evidence"] {
+function toEvidence(result: MatchResult): SuggestedSchema["evidence"] {
   const { sample } = result.piece
   return {
     tag: sample.tag,

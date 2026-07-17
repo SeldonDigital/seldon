@@ -1,6 +1,6 @@
+import type { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { nodeOperationsService } from "../../../services"
-import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Removes any board by its key after the delete rule gate. Routes component,

@@ -152,7 +152,11 @@ function getForwardedSlotNames(
     }
     parent.children.forEach(collectDropped)
   }
-  collectDropped({ nodeId: node.nodeId, name: node.name, children: sourceChildren })
+  collectDropped({
+    nodeId: node.nodeId,
+    name: node.name,
+    children: sourceChildren,
+  })
 
   return { slotNames: result, droppedSlots }
 }

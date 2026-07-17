@@ -5,7 +5,10 @@ import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-defa
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
 import { isAuthoredBoard } from "@seldon/core/workspace/model/components"
-import type { AuthoredComponentBoard, EntryNode } from "@seldon/core/workspace/types"
+import type {
+  AuthoredComponentBoard,
+  EntryNode,
+} from "@seldon/core/workspace/types"
 
 import { resolveSourceVariantId } from "../../../helpers/workspace-nodes"
 import { pascalCase } from "../utils/case-utils"

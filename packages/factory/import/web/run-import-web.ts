@@ -34,12 +34,15 @@ export async function runImportWeb(
   const rawNodeCount = countNodes(root)
   const pieces = dedupe(root)
   const results = matchPieces(pieces)
-  const matchedCount = results.filter((result) => result.matched !== null).length
+  const matchedCount = results.filter(
+    (result) => result.matched !== null,
+  ).length
   const unmatched = results.filter((result) => result.matched === null)
 
   let classifications: Array<PieceClassification | null> = []
   if (options.classify !== false) {
-    const classifyOptions = options.classify === undefined ? {} : options.classify
+    const classifyOptions =
+      options.classify === undefined ? {} : options.classify
     classifications = await classifyPieces(
       unmatched.map((result) => result.piece),
       classifyOptions,

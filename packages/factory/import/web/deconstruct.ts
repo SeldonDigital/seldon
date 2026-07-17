@@ -170,7 +170,9 @@ function resolveLevel(
     if (seed === ComponentId.BUTTON) return ComponentLevel.ELEMENT
     return ComponentLevel.PRIMITIVE
   }
-  const childMax = Math.max(...childLevels.map((level) => LEVEL_RANK[level] ?? 0))
+  const childMax = Math.max(
+    ...childLevels.map((level) => LEVEL_RANK[level] ?? 0),
+  )
   // A wrapper around a single child is the same tier as that child, not a step
   // up, so a plain container such as <main> around one region does not inflate
   // toward screen. Multiple children make a genuine composite one tier higher.
@@ -208,7 +210,11 @@ function toFunctionalNode(element: Element): FunctionalNode | null {
   return {
     tag,
     role: resolveRole(tag, element),
-    level: resolveLevel(tag, seed, children.map((child) => child.level)),
+    level: resolveLevel(
+      tag,
+      seed,
+      children.map((child) => child.level),
+    ),
     seededComponent: seed,
     hasText: hasOwnText(element),
     children,

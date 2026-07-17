@@ -6,9 +6,9 @@ import {
   authoredExportNameFromName,
 } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { usePanel } from "@lib/hooks/use-panel"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export type AuthoredRootKind = "container" | "frame"
 
@@ -101,7 +101,16 @@ export function useCreateComponentPanel() {
       tags: parsedTags.length > 0 ? parsedTags : undefined,
     })
     close()
-  }, [canSubmit, tags, intent, addAuthoredComponent, trimmedName, rootKind, level, close])
+  }, [
+    canSubmit,
+    tags,
+    intent,
+    addAuthoredComponent,
+    trimmedName,
+    rootKind,
+    level,
+    close,
+  ])
 
   return {
     isOpen,

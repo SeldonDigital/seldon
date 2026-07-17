@@ -141,7 +141,8 @@ const PROTECTED_BOARDS: Partial<
 /** Message thrown when a board's variants are still referenced elsewhere. */
 const IN_USE_MESSAGES: Partial<Record<Board["type"], (key: string) => string>> =
   {
-    component: (key) => ErrorMessages.componentVariantsInUse(key as ComponentId),
+    component: (key) =>
+      ErrorMessages.componentVariantsInUse(key as ComponentId),
     "authored-component": (key) =>
       ErrorMessages.componentVariantsInUse(key as ComponentId),
     theme: () => "Theme catalog rows are still referenced in another board",

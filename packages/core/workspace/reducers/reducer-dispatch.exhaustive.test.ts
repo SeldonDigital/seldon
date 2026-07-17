@@ -219,10 +219,7 @@ function buildBase() {
 
   // Every font collection catalog id is already a board, so `add_font_collection`
   // needs a base where one removable collection board has been dropped first.
-  const baseNoFc = dispatch(
-    ws,
-    act("remove_board", { boardKey: removableFc }),
-  )
+  const baseNoFc = dispatch(ws, act("remove_board", { boardKey: removableFc }))
 
   return {
     base: ws,

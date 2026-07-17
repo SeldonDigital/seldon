@@ -240,7 +240,12 @@ const NodeInner = function NodeInner({
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
     nodeIcon: mergeStateProps(icon2, disabledRef, nodeTypeStyle, invalidRef),
-    nodeLabel: mergeStateProps(nodeLabel, disabledRef, nodeTypeStyle, invalidRef),
+    nodeLabel: mergeStateProps(
+      nodeLabel,
+      disabledRef,
+      nodeTypeStyle,
+      invalidRef,
+    ),
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 

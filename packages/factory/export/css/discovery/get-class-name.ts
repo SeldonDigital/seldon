@@ -70,7 +70,9 @@ function getAuthoredRootClassName(
   if (!board || !isAuthoredBoard(board)) return null
 
   const rootId = board.variants[0]?.id
-  const isTopLevelNode = board.variants.some((variant) => variant.id === node.id)
+  const isTopLevelNode = board.variants.some(
+    (variant) => variant.id === node.id,
+  )
   if (!rootId || !isTopLevelNode) return null
 
   const root = workspace.nodes[rootId]

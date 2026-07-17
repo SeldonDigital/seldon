@@ -16,7 +16,9 @@ function suggestionDetail(suggestion: SuggestedSchema): string[] {
   lines.push("")
   lines.push(`- File: \`schemas/${suggestion.id}.schema.json\``)
   lines.push(`- Level: ${suggestion.level}`)
-  lines.push(`- Named by: ${suggestion.source === "model" ? "model" : "heuristic"}`)
+  lines.push(
+    `- Named by: ${suggestion.source === "model" ? "model" : "heuristic"}`,
+  )
   lines.push(`- Intent: ${suggestion.intent}`)
   const evidence = suggestion.evidence
   if (evidence.classes?.length) {

@@ -1,5 +1,8 @@
 "use client"
 
+import { DEFAULT_CHROME_THEME } from "@lib/chrome/chrome-themes"
+import { MenuController } from "@lib/menus/MenuController"
+import { MenuEntry } from "@lib/menus/types"
 import { motion, useDragControls } from "framer-motion"
 import {
   CSSProperties,
@@ -14,14 +17,11 @@ import {
 } from "react"
 import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
-import { DEFAULT_CHROME_THEME } from "@lib/chrome/chrome-themes"
-import { MenuController } from "@lib/menus/MenuController"
-import { MenuEntry } from "@lib/menus/types"
-import { DialogCreateComponent } from "@seldon/components/modules/DialogCreateComponent"
 import {
   AUTHORED_LEVEL_OPTIONS,
   useCreateComponentPanel,
 } from "./hooks/use-create-component-panel"
+import { DialogCreateComponent } from "@seldon/components/modules/DialogCreateComponent"
 
 /**
  * Gate for the Create Component dialog. Mounts the dialog only while the

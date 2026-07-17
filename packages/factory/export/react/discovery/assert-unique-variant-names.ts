@@ -1,6 +1,6 @@
 import { Workspace } from "@seldon/core"
-import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getDuplicateVariantLabelNodeIds } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
+import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 
 /**
  * Error thrown when a workspace cannot be exported because two variants on the

@@ -1,5 +1,5 @@
-import { runImportWeb } from "@seldon/factory/import/web"
 import type { FileToExport } from "@seldon/factory/export/types"
+import { runImportWeb } from "@seldon/factory/import/web"
 
 export type WireFile = {
   path: string

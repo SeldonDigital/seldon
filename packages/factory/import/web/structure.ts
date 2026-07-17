@@ -2,7 +2,9 @@ import type { FunctionalNode } from "./types"
 
 /** A one-line descriptor for a node: tag, first class, role, and catalog seed. */
 function describeNode(node: FunctionalNode): string {
-  const cls = node.evidence.classes?.length ? `.${node.evidence.classes[0]}` : ""
+  const cls = node.evidence.classes?.length
+    ? `.${node.evidence.classes[0]}`
+    : ""
   const role = node.role ? `[${node.role}]` : ""
   const seed = node.seededComponent ? ` -> ${node.seededComponent}` : ""
   return `${node.tag}${cls}${role}${seed}`

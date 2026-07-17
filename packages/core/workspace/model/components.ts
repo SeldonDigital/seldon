@@ -139,9 +139,7 @@ export function isComponentBoard(entry: Board): entry is ComponentBoard {
   return entry.type === "component"
 }
 
-export function isAuthoredBoard(
-  entry: Board,
-): entry is AuthoredComponentBoard {
+export function isAuthoredBoard(entry: Board): entry is AuthoredComponentBoard {
   return entry.type === "authored-component"
 }
 

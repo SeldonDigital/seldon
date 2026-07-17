@@ -11,9 +11,7 @@ async function writeFile(baseDir: string, file: FileToExport): Promise<void> {
   const target = path.join(baseDir, file.path)
   await fs.mkdir(path.dirname(target), { recursive: true })
   const content =
-    typeof file.content === "string"
-      ? file.content
-      : Buffer.from(file.content)
+    typeof file.content === "string" ? file.content : Buffer.from(file.content)
   await fs.writeFile(target, content)
 }
 

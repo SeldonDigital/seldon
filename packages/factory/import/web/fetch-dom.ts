@@ -21,7 +21,9 @@ export async function fetchDom(url: string): Promise<Document> {
     redirect: "follow",
   })
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to fetch ${url}: ${response.status} ${response.statusText}`,
+    )
   }
   const html = await response.text()
   const window = new Window({ url })
