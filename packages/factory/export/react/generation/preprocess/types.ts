@@ -24,6 +24,10 @@ export type JSXNode = {
     // caller supplies it, e.g. `textLabel={textLabel && textLabelProps}`. Absent
     // for canonical leaves, which forward unconditionally.
     guard?: string
+    // Present when the authored instance dropped this canonical slot. The
+    // attribute forwards `null` so the embedded element suppresses its own
+    // default child, e.g. `icon={null}`.
+    nullLiteral?: boolean
   }> // For grandchildren passed as props
 }
 

@@ -1,24 +1,27 @@
 "use client"
 
-import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
-import { CSSProperties, PointerEvent, useCallback, useMemo } from "react"
+import { motion, useDragControls } from "framer-motion"
+import {
+  CSSProperties,
+  ChangeEvent,
+  MouseEvent,
+  PointerEvent,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
+import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
-import { PanelDialog } from "@seldon/components/modules/PanelDialog"
-import { ResizeSide } from "@seldon/components/utils/resize"
-import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { CreateComponentForm } from "./CreateComponentForm.bespoke"
-import { useCreateComponentPanel } from "./hooks/use-create-component-panel"
-
-// The title bar owns the top edge for dragging, so the dialog resizes from the
-// side and bottom edges plus the two bottom corners.
-const DIALOG_RESIZE_SIDES: readonly ResizeSide[] = [
-  "left",
-  "right",
-  "bottom",
-  "bottom-left",
-  "bottom-right",
-]
+import { DEFAULT_CHROME_THEME } from "@lib/chrome/chrome-themes"
+import { MenuController } from "@lib/menus/MenuController"
+import { MenuEntry } from "@lib/menus/types"
+import { DialogCreateComponent } from "@seldon/components/modules/DialogCreateComponent"
+import {
+  AUTHORED_LEVEL_OPTIONS,
+  useCreateComponentPanel,
+} from "./hooks/use-create-component-panel"
 
 /**
  * Gate for the Create Component dialog. Mounts the dialog only while the
@@ -36,9 +39,12 @@ export function CreateComponentDialogController() {
 type CreateComponentDialogProps = ReturnType<typeof useCreateComponentPanel>
 
 /**
- * View-model for the Create Component dialog. Feeds the generated `PanelDialog`
- * shell with the search field hidden: the title bar drags, the content frame
- * holds the authored component form, and the footer buttons cancel and create.
+ * View-model for the Create Component dialog. Renders the authored
+ * `DialogCreateComponent`, which supplies all copy, icons, and placeholders as
+ * baked defaults. This controller only wires behavior: the root-kind items act
+ * as a radio pair, the name/intent/tags inputs are controlled, the level field
+ * opens a menu of the declarable levels, and the footer buttons cancel and
+ * create. The dialog keeps its authored size and is not resizable.
  */
 function CreateComponentDialog({
   name,
@@ -56,130 +62,244 @@ function CreateComponentDialog({
   save,
   close,
 }: CreateComponentDialogProps) {
-  const {
-    x,
-    y,
-    width,
-    height,
-    onResizeStart,
-    onResize,
-    getRect,
-    moveControls,
-    dragConstraints,
-    minWidth,
-    minHeight,
-  } = useDraggableWindow({
-    initialPosition: {
-      x: 0.5 * window.innerWidth - 0.5 * PANEL_INITIAL_WIDTH,
-      y: 0.5 * window.innerHeight - 0.5 * PANEL_INITIAL_HEIGHT,
-    },
-    initialSize: { width: PANEL_INITIAL_WIDTH, height: PANEL_INITIAL_HEIGHT },
-    handleClose: close,
-    closeOnEscape: false,
-  })
-
   useHotkeys("esc", close)
 
+  const dragControls = useDragControls()
   const startDrag = useCallback(
-    (event: PointerEvent) => moveControls.start(event),
-    [moveControls],
+    (event: PointerEvent) => dragControls.start(event),
+    [dragControls],
   )
 
-  const content = useMemo(
-    () => (
-      <CreateComponentForm
-        name={name}
-        setName={setName}
-        rootKind={rootKind}
-        setRootKind={setRootKind}
-        level={level}
-        setLevel={setLevel}
-        intent={intent}
-        setIntent={setIntent}
-        tags={tags}
-        setTags={setTags}
-        nameError={nameError}
-      />
-    ),
-    [
-      name,
-      setName,
-      rootKind,
-      setRootKind,
-      level,
-      setLevel,
-      intent,
-      setIntent,
-      tags,
-      setTags,
-      nameError,
-    ],
+  const [levelOpen, setLevelOpen] = useState(false)
+  const levelAnchorRef = useRef<HTMLElement | null>(null)
+
+  const onNameChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => setName(event.target.value),
+    [setName],
+  )
+  const onIntentChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => setIntent(event.target.value),
+    [setIntent],
+  )
+  const onTagsChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => setTags(event.target.value),
+    [setTags],
+  )
+  const selectFrame = useCallback(() => setRootKind("frame"), [setRootKind])
+  const selectContainer = useCallback(
+    () => setRootKind("container"),
+    [setRootKind],
+  )
+  const openLevel = useCallback((event: MouseEvent) => {
+    levelAnchorRef.current = event.currentTarget as HTMLElement
+    setLevelOpen(true)
+  }, [])
+  const closeLevel = useCallback(() => setLevelOpen(false), [])
+
+  const levelLabel = useMemo(
+    () =>
+      AUTHORED_LEVEL_OPTIONS.find((option) => option.value === level)?.label ??
+      "",
+    [level],
+  )
+  const levelItems = useMemo<MenuEntry[]>(
+    () =>
+      AUTHORED_LEVEL_OPTIONS.map((option) => ({
+        id: option.value,
+        label: option.label,
+        selected: option.value === level,
+        active: option.value === level,
+        activeMarker: "bullet",
+        onSelect: () => setLevel(option.value),
+      })),
+    [level, setLevel],
   )
 
-  const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
-  const dialogTitle = { children: "Create component" }
-  const cancelLabel = { children: "Cancel" }
-  const confirmLabel = { children: "Create component" }
+  const frameSelected = rootKind === "frame"
+  const containerSelected = rootKind === "container"
+  const frameItemStyle = frameSelected ? styles.optionSelected : styles.option
+  const containerItemStyle = containerSelected
+    ? styles.optionSelected
+    : styles.option
+  const nameInvalid = nameError ? "true" : undefined
   const confirmStyle = canSubmit ? undefined : styles.disabled
+
+  // The title bar is the drag handle; the surface itself is not resizable.
+  const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
+  const cancelButton = { onClick: close }
+  const confirmButton = {
+    onClick: save,
+    "aria-disabled": !canSubmit,
+    style: confirmStyle,
+  }
+  // The level field is read-only display; the value comes from the menu.
+  const levelInput = {
+    value: levelLabel,
+    readOnly: true,
+    style: styles.levelInput,
+  }
+
+  // Each of these slots gates its subtree and ships baked authored content but
+  // no signature default, so an empty object turns the slot on and renders that
+  // authored copy, icon, or placeholder. Interactive behavior rides in through
+  // `seldonRefs`.
+  const showSlot = {}
+
   const seldonRefs = {
-    dialogContent: { style: styles.content, children: content },
-    dialogCancel: { onClick: close },
-    dialogConfirm: {
-      onClick: save,
-      "aria-disabled": !canSubmit,
-      style: confirmStyle,
+    createComponentFrame: {
+      onClick: selectFrame,
+      role: "radio",
+      "aria-checked": frameSelected ? "true" : "false",
+      "aria-selected": frameSelected || undefined,
+      style: frameItemStyle,
+    },
+    createComponentContainer: {
+      onClick: selectContainer,
+      role: "radio",
+      "aria-checked": containerSelected ? "true" : "false",
+      "aria-selected": containerSelected || undefined,
+      style: containerItemStyle,
+    },
+    createComponentName: {
+      value: name,
+      onChange: onNameChange,
+      autoFocus: true,
+      "aria-invalid": nameInvalid,
+    },
+    createComponentLevel: {
+      onClick: openLevel,
+      "aria-expanded": levelOpen,
+      style: styles.levelField,
+    },
+    createComponentIntent: {
+      value: intent,
+      onChange: onIntentChange,
+    },
+    createComponentTags: {
+      value: tags,
+      onChange: onTagsChange,
     },
   }
 
   return (
-    <WindowOverlay
-      modal
-      onClose={close}
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      moveControls={moveControls}
-      dragConstraints={dragConstraints}
-      onResizeStart={onResizeStart}
-      onResize={onResize}
-      getRect={getRect}
-      resizeSides={DIALOG_RESIZE_SIDES}
-      minWidth={minWidth}
-      minHeight={minHeight}
-    >
-      <PanelDialog
+    <ModalPortal onClose={close} dragControls={dragControls}>
+      <DialogCreateComponent
         data-testid="create-component-dialog"
         bar={barHandle}
-        textTitle={dialogTitle}
-        comboboxFieldSearch={null}
-        button4={{}}
-        textLabel4={cancelLabel}
-        button5={{}}
-        textLabel5={confirmLabel}
+        textTitle={showSlot}
+        itemCatalog={showSlot}
+        icon={showSlot}
+        textTitle2={showSlot}
+        textSubtitle={showSlot}
+        itemCatalog2={showSlot}
+        icon2={showSlot}
+        textTitle3={showSlot}
+        textSubtitle2={showSlot}
+        formControl={showSlot}
+        textLabel={showSlot}
+        formControlCombobox={showSlot}
+        textLabel2={showSlot}
+        input2={levelInput}
+        formControl2={showSlot}
+        textLabel3={showSlot}
+        formControl3={showSlot}
+        textLabel4={showSlot}
+        button={cancelButton}
+        textLabel5={showSlot}
+        button2={confirmButton}
+        textLabel6={showSlot}
         seldonRefs={seldonRefs}
-        style={styles.dialog}
       />
-    </WindowOverlay>
+      <MenuController
+        open={levelOpen}
+        anchorRef={levelAnchorRef}
+        onClose={closeLevel}
+        items={levelItems}
+      />
+    </ModalPortal>
+  )
+}
+
+interface ModalPortalProps {
+  onClose: () => void
+  dragControls: ReturnType<typeof useDragControls>
+  children: ReactNode
+}
+
+/**
+ * Centered, draggable, non-resizable modal surface. Portals to the document
+ * body and pins the canvas theme via `data-theme`, matching `Canvas`, so the
+ * authored dialog resolves the same swatch and high-contrast palette as the
+ * board on the canvas. It deliberately omits `data-mode`: the editor chrome's
+ * light/dark mode never applies to authored design content, only to chrome. The
+ * surface drags from its title bar through `dragControls` and sizes to its
+ * content, so it is not resizable. Clicking the backdrop closes.
+ */
+function ModalPortal({ onClose, dragControls, children }: ModalPortalProps) {
+  const stopPropagation = useCallback(
+    (event: MouseEvent) => event.stopPropagation(),
+    [],
+  )
+
+  return createPortal(
+    <div data-theme={DEFAULT_CHROME_THEME} style={styles.scope}>
+      <div onClick={onClose} style={styles.overlay}>
+        <motion.div
+          drag
+          dragControls={dragControls}
+          dragListener={false}
+          dragMomentum={false}
+          dragElastic={false}
+          onClick={stopPropagation}
+          style={styles.surface}
+        >
+          {children}
+        </motion.div>
+      </div>
+    </div>,
+    document.body,
   )
 }
 
 const styles: Record<string, CSSProperties> = {
-  dialog: {
-    width: "100%",
-    height: "100%",
+  scope: {
+    display: "contents",
+  },
+  overlay: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 30,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  surface: {
+    // Sizes to the dialog's authored width and fit height; no resize.
+    width: "fit-content",
+    height: "fit-content",
+    // Match the canvas: portaled design content sits outside the chrome frame,
+    // so it misses the chrome's antialiased smoothing. Pin the darker subpixel
+    // rendering so authored text and icons read high-contrast like the board.
+    WebkitFontSmoothing: "auto",
   },
   dragHandle: {
     cursor: "grab",
     userSelect: "none",
     touchAction: "none",
   },
-  content: {
-    flex: 1,
-    minHeight: 0,
-    overflowY: "auto",
-    overflowX: "hidden",
-    display: "flex",
+  option: {
+    cursor: "pointer",
+    opacity: 0.55,
+  },
+  optionSelected: {
+    cursor: "pointer",
+    opacity: 1,
+  },
+  levelField: {
+    cursor: "pointer",
+  },
+  levelInput: {
+    cursor: "pointer",
   },
   disabled: {
     opacity: 0.5,

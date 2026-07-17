@@ -197,6 +197,7 @@ const sdn: ItemNodeProps = {
     "data-seldon-ref": "nodeIcon",
   },
   input: {
+    placeholder: "Component Name",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

@@ -97,7 +97,7 @@ export function ChipInput({
 //
 const sdn: ChipInputProps = {
   "aria-hidden": "false",
-  className: "sdn-chip sdn-chip",
+  className: "sdn-chip",
   textLabel: {
     className: "sdn-text-label sdn-text-label--lug5",
   },

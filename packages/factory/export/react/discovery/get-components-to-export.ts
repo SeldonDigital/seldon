@@ -6,8 +6,13 @@ import {
 import {
   ComponentId,
   ComponentLevel,
+  NATIVE_REACT_PRIMITIVES,
   isComponentId,
 } from "@seldon/core/components/constants"
+import {
+  ComponentExport,
+  NativeReactPrimitive,
+} from "@seldon/core/components/types"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getAllVariants } from "@seldon/core/workspace/helpers/general/get-all-variants"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
@@ -23,12 +28,30 @@ import type {
 } from "@seldon/core/workspace/types"
 
 import { NodeIdToClass } from "../../css/types"
-import { ComponentToExport, ExportOptions } from "../../types"
+import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../types"
 import { pluralizeLevel } from "../utils/pluralize-level"
 import { getComponentName } from "./get-component-name"
 import { getJsonTreeFromChildren } from "./get-json-tree-from-children"
 
 const SKIP_EXPORT_CATALOG_IDS = new Set<ComponentId>([ComponentId.FRAME])
+
+/**
+ * Return primitive for an authored component's root element, derived from its
+ * `wrapperElement`. Authored roots template a Container or Frame, whose export
+ * config is a passthrough wrapper that drops the composed subtree. Returning a
+ * native primitive routes generation through the slot-tree path so the authored
+ * children compose, matching how catalog modules export.
+ */
+function getAuthoredReturnPrimitive(tree: JSONTreeNode): NativeReactPrimitive {
+  const wrapper = tree.dataBinding.props?.wrapperElement?.defaultValue
+  if (typeof wrapper === "string") {
+    const hit = Object.entries(NATIVE_REACT_PRIMITIVES).find(
+      ([, meta]) => meta.wrapperElementOption === wrapper,
+    )
+    if (hit) return hit[0] as NativeReactPrimitive
+  }
+  return "HTMLDiv"
+}
 
 export function getComponentsToExport(
   workspace: Workspace,
@@ -66,12 +89,28 @@ export function getComponentsToExport(
 
     if (isAuthoredBoard(board)) {
       const outputPath = `${options.output.componentsFolder}/${pluralizeLevel(board.level as ComponentLevel)}/${name}.tsx`
+      // Authored roots template a Container or Frame, whose passthrough export
+      // config drops the composed subtree. Synthesize a composing config and
+      // carry the board's own level, intent, and tags for the generated docs.
+      const authoredConfig: ComponentExport = {
+        react: { returns: getAuthoredReturnPrimitive(tree) },
+      }
+      // The root now renders a fixed primitive tag, so the inherited
+      // `wrapperElement` root prop is dead surface. Drop it to flatten the root
+      // like a normal component, whose Part or Module root never exposes it.
+      // Child Frames keep their own `wrapperElement`, matching normal output.
+      delete tree.dataBinding.props.wrapperElement
       return {
         componentId,
         variantId: variantId as VariantId,
         defaultVariantId: board.variants[0]!.id as VariantId,
         name,
-        config,
+        config: authoredConfig,
+        authored: {
+          level: board.level as ComponentLevel,
+          intent: board.intent,
+          tags: board.tags,
+        },
         output: {
           path: outputPath,
         },

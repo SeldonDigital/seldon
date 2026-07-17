@@ -101,7 +101,7 @@ export function MenuItemCheckbox({
 const sdn: MenuItemCheckboxProps = {
   role: "menuitemcheckbox",
   "aria-hidden": "false",
-  className: "sdn-menu-item sdn-menu-item",
+  className: "sdn-menu-item",
   icon: {
     icon: "material-check",
     "aria-hidden": "true",

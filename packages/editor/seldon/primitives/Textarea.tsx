@@ -17,6 +17,7 @@ import { combineClassNames } from "../utils/class-name"
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string
   "data-seldon-ref"?: string
+  placeholder?: string
 }
 
 /*****
@@ -29,15 +30,33 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
  * @example
  * ```tsx
  * <Textarea
-
+ *   placeholder="Placeholder text"
  * />
  * ```
  *****/
-export function Textarea({ className = "", ...props }: TextareaProps) {
+export function Textarea({
+  className = "",
+  placeholder = sdn.placeholder,
+  ...props
+}: TextareaProps) {
   const textareaClassName = combineClassNames("sdn-textarea", className)
 
   //
   // React JSX component with merged default and custom properties
   //
-  return <HTMLTextarea className={textareaClassName} {...props} />
+  return (
+    <HTMLTextarea
+      className={textareaClassName}
+      placeholder={placeholder}
+      {...props}
+    />
+  )
+}
+
+//
+// Default property values
+//
+const sdn: TextareaProps = {
+  placeholder: "Placeholder text",
+  className: "sdn-textarea",
 }

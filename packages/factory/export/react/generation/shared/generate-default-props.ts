@@ -45,18 +45,36 @@ export function generateDefaultProps(
     }
 
     if (conditionalPaths.has(node.dataBinding.path)) {
-      const className = getClassName(node, nodeIdToClass)
-      const entry: DefaultPropsValue = {}
-      if (className) {
-        entry.className = className
-      }
-      // A child instance has no literal JSX attribute site; its ref rides the
-      // sdn default props through the `{...props}` spread onto the child root.
-      if (node.ref) {
-        entry["data-seldon-ref"] = node.ref
-      }
-      if (Object.keys(entry).length > 0) {
+      // Authored components bake their conditional leaves' content (text, icon,
+      // placeholder) as default props so the generated component renders its
+      // authored copy without a controller. The props stay overridable through
+      // the `{...sdn.x, ...x}` merge. Catalog components keep className-only
+      // conditional defaults so their inline extras remain consumer-supplied.
+      if (component.authored) {
+        const entry = flattenProps(
+          node.dataBinding.props,
+          node.nodeId,
+          nodeIdToClass,
+          node.classNames,
+        )
+        if (node.ref) {
+          entry["data-seldon-ref"] = node.ref
+        }
         defaultProps[propName] = entry
+      } else {
+        const className = getClassName(node, nodeIdToClass)
+        const entry: DefaultPropsValue = {}
+        if (className) {
+          entry.className = className
+        }
+        // A child instance has no literal JSX attribute site; its ref rides the
+        // sdn default props through the `{...props}` spread onto the child root.
+        if (node.ref) {
+          entry["data-seldon-ref"] = node.ref
+        }
+        if (Object.keys(entry).length > 0) {
+          defaultProps[propName] = entry
+        }
       }
     } else {
       const entry = flattenProps(

@@ -18,6 +18,7 @@ export interface InputCheckboxProps extends InputHTMLAttributes<HTMLInputElement
   className?: string
   "data-seldon-ref"?: string
   ref?: Ref<HTMLInputElement>
+  placeholder?: string
   type?: string
 }
 
@@ -31,12 +32,14 @@ export interface InputCheckboxProps extends InputHTMLAttributes<HTMLInputElement
  * @example
  * ```tsx
  * <InputCheckbox
+ *   placeholder="Placeholder text"
  *   type="checkbox"
  * />
  * ```
  *****/
 export function InputCheckbox({
   className = "",
+  placeholder = sdn.placeholder,
   type = sdn.type,
   ...props
 }: InputCheckboxProps) {
@@ -48,13 +51,21 @@ export function InputCheckbox({
   //
   // React JSX component with merged default and custom properties
   //
-  return <HTMLInput className={inputCheckboxClassName} type={type} {...props} />
+  return (
+    <HTMLInput
+      className={inputCheckboxClassName}
+      placeholder={placeholder}
+      type={type}
+      {...props}
+    />
+  )
 }
 
 //
 // Default property values
 //
 const sdn: InputCheckboxProps = {
+  placeholder: "Placeholder text",
   type: "checkbox",
   className: "sdn-input-checkbox sdn-input",
 }

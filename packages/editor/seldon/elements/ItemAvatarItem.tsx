@@ -226,7 +226,7 @@ export function ItemAvatarItem({
 //
 const sdn: ItemAvatarItemProps = {
   "aria-hidden": "false",
-  className: "sdn-item sdn-item",
+  className: "sdn-item",
   inputCheckbox: {
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },

@@ -204,7 +204,7 @@ export function TopbarInlineLinks({
 const sdn: TopbarInlineLinksProps = {
   role: "banner",
   "aria-hidden": "false",
-  className: "sdn-topbar sdn-topbar",
+  className: "sdn-topbar",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",

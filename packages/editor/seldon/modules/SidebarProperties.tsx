@@ -176,6 +176,7 @@ const sdn: SidebarPropertiesProps = {
     className: "sdn-icon sdn-icon--xi68",
   },
   input: {
+    placeholder: "Filter...",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

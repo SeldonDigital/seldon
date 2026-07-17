@@ -91,9 +91,13 @@ export function getJsonTreeFromChildren(
       ),
     },
     children: children.length > 0 ? children : null,
-    classNames: getNodeOriginChain(variant, workspace)
-      .map((node) => nodeIdToClass[node.id])
-      .filter(Boolean),
+    classNames: [
+      ...new Set(
+        getNodeOriginChain(variant, workspace)
+          .map((node) => nodeIdToClass[node.id])
+          .filter(Boolean),
+      ),
+    ],
     isStub: variantIsStub,
   }
 
@@ -227,7 +231,7 @@ export function getJsonTreeFromChildren(
         },
       },
       children,
-      classNames: classNamesArray,
+      classNames: [...new Set(classNamesArray)],
       isStub,
     }
   }
@@ -284,13 +288,23 @@ function getSchemaVariantId(
 
 function getChildNodeProps(properties: Properties) {
   const props: DataBinding["props"] = {}
-  const { content, symbol, source, htmlElement, wrapperElement, inputType } =
-    properties
+  const {
+    content,
+    symbol,
+    source,
+    htmlElement,
+    wrapperElement,
+    inputType,
+    placeholder,
+  } = properties
   if (content?.value) {
     props.children = { defaultValue: escapeHtml(content.value) }
   }
   if (symbol?.value) {
     props.icon = { defaultValue: symbol.value }
+  }
+  if (placeholder?.value) {
+    props.placeholder = { defaultValue: escapeHtml(placeholder.value) }
   }
   if (source?.value) {
     props.src = { defaultValue: source.value }

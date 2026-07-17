@@ -28,7 +28,7 @@ import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface PanelDialogProps extends HTMLAttributes<HTMLElement> {
+export interface DialogProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
@@ -61,21 +61,33 @@ export interface PanelDialogProps extends HTMLAttributes<HTMLElement> {
 }
 
 /*****
- * Panel: PanelDialog
+ * Module: Dialog
  * Level: Module
- * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
- * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
+ * Intent:
+ * Tags:
  * Type: Inline
  *
  * @example
  * ```tsx
- * <PanelDialog
- *   role="dialog"
+ * <Dialog
  *   aria-hidden="false"
+ *   bar="{}"
+ *   textTitle="Product Title"
+ *   comboboxFieldSearch="{}"
+ *   icon="material-star"
+ *   input="{}"
+ *   buttonIconic={() => {}}
+ *   frame="{}"
+ *   barButtons2="{}"
+ *   button={() => {}}
+ *   textLabel="{}"
+ *   button2={() => {}}
+ *   button3={() => {}}
+ *   frame2="{}"
  * />
  * ```
  *****/
-export function PanelDialog({
+export function Dialog({
   className = "",
   bar = sdn.bar,
   textTitle,
@@ -106,8 +118,8 @@ export function PanelDialog({
   children,
   seldonRefs,
   ...props
-}: PanelDialogProps) {
-  const panelDialogClassName = combineClassNames("sdn-panel-dialog", className)
+}: DialogProps) {
+  const dialogClassName = combineClassNames("sdn-dialog", className)
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -419,8 +431,7 @@ export function PanelDialog({
 
   return (
     <HTMLDiv
-      className={panelDialogClassName}
-      role={sdn["role"]}
+      className={dialogClassName}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
     >
@@ -500,19 +511,21 @@ export function PanelDialog({
 //
 // Default property values
 //
-const sdn: PanelDialogProps = {
-  role: "dialog",
+const sdn: DialogProps = {
   "aria-hidden": "false",
-  className: "sdn-panel-dialog sdn-panel",
+  className: "sdn-dialog",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--zhvk",
   },
   textTitle: {
+    children: "Dialog",
+    htmlElement: "h4",
+    "aria-hidden": "false",
     className: "sdn-text-title sdn-text-title--eodu",
-    "data-seldon-ref": "dialogTitle",
   },
   comboboxFieldSearch: {
+    "aria-hidden": "false",
     className: "sdn-combobox-field-search sdn-combobox-field-search--9jd5",
   },
   icon: {
@@ -538,8 +551,7 @@ const sdn: PanelDialogProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--2wwo",
-    "data-seldon-ref": "dialogContent",
+    className: "sdn-frame sdn-frame--rbpu",
   },
   barButtons: {
     "aria-hidden": "false",
@@ -554,9 +566,14 @@ const sdn: PanelDialogProps = {
     className: "sdn-button sdn-button--wjtm",
   },
   icon3: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel: {
+    children: "Button",
+    htmlElement: "label",
+    "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
@@ -568,6 +585,9 @@ const sdn: PanelDialogProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel2: {
+    children: "Button",
+    htmlElement: "label",
+    "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button3: {
@@ -579,6 +599,9 @@ const sdn: PanelDialogProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel3: {
+    children: "Button",
+    htmlElement: "label",
+    "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   frame3: {
@@ -588,7 +611,6 @@ const sdn: PanelDialogProps = {
   },
   button4: {
     className: "sdn-button sdn-button--wjtm",
-    "data-seldon-ref": "dialogCancel",
   },
   icon6: {
     icon: "seldon-none",
@@ -596,11 +618,13 @@ const sdn: PanelDialogProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel4: {
+    children: "Cancel",
+    htmlElement: "label",
+    "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button5: {
     className: "sdn-button sdn-button--upjl",
-    "data-seldon-ref": "dialogConfirm",
   },
   icon7: {
     icon: "material-check",
@@ -608,6 +632,9 @@ const sdn: PanelDialogProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel5: {
+    children: "OK",
+    htmlElement: "label",
+    "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
 }

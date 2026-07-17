@@ -129,7 +129,7 @@ export function ComboboxFieldProject({
 //
 const sdn: ComboboxFieldProjectProps = {
   "aria-hidden": "false",
-  className: "sdn-combobox-field sdn-combobox-field",
+  className: "sdn-combobox-field",
   icon: {
     icon: "material-dataObject",
     "aria-hidden": "true",
@@ -137,6 +137,7 @@ const sdn: ComboboxFieldProjectProps = {
     "data-seldon-ref": "projectIcon",
   },
   input: {
+    placeholder: "Project Name",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

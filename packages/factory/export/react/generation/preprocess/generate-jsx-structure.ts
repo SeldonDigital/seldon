@@ -1,8 +1,13 @@
 import { ComponentLevel } from "@seldon/core/components/constants"
+import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
+import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
+import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { Workspace } from "@seldon/core/workspace/types"
 
+import { getTemplateSourceNodeId } from "../../../../helpers/workspace-nodes"
 import { NodeIdToClass } from "../../../css/types"
 import { ComponentToExport, JSONTreeNode } from "../../../types"
+import { getComponentName } from "../../discovery/get-component-name"
 import {
   validateExportedComponentProps,
   validateTreeNodeProps,
@@ -30,6 +35,139 @@ function canForwardLosslessly(node: JSONTreeNode): boolean {
   })
 }
 
+interface MinimalTreeNode {
+  nodeId: string
+  name: string
+  children: MinimalTreeNode[]
+}
+
+interface ForwardedSlots {
+  /** Instance descendant node id to the child component's slot name. */
+  slotNames: Map<string, string>
+  /**
+   * Canonical slot names the authored instance dropped. The parent forwards
+   * these as `null` so the embedded element suppresses its own default child
+   * instead of rendering it, matching the authored tree.
+   */
+  droppedSlots: string[]
+}
+
+/**
+ * Slot names for a child component's forwarded descendants, numbered from the
+ * child's template-source subtree rather than the authored instance subtree.
+ *
+ * The instance may drop schema children, such as a combobox field with its
+ * leading icon removed. Numbering the instance directly shifts same-typed
+ * siblings and wires a descendant to the wrong slot, so the button chevron lands
+ * in the leading `icon` slot instead of `icon2`. The template source keeps the
+ * full canonical structure, so numbering it and mapping each instance descendant
+ * back through its template lineage yields the child component's real slot names,
+ * which match how the child component numbers its own props.
+ *
+ * A canonical slot the instance never fills is reported in `droppedSlots` so the
+ * caller can forward it as `null` and hide the embedded element's default child.
+ *
+ * Falls back to instance numbering when the child templates straight from the
+ * catalog, where no node source subtree exists.
+ */
+function getForwardedSlotNames(
+  node: JSONTreeNode,
+  workspace: Workspace,
+): ForwardedSlots {
+  const instanceChildren = Array.isArray(node.children) ? node.children : []
+  const instanceNode = workspace.nodes[node.nodeId]
+  const sourceId = instanceNode ? getTemplateSourceNodeId(instanceNode) : null
+  const sourceBoard = sourceId ? getBoardByNodeId(workspace, sourceId) : null
+  if (!sourceId || !sourceBoard) {
+    return { slotNames: assignPropNames(instanceChildren), droppedSlots: [] }
+  }
+
+  const buildSourceNode = (id: string): MinimalTreeNode => ({
+    nodeId: id,
+    name: getComponentName(getNodeById(id, workspace), workspace),
+    children: getChildrenIds(sourceBoard, id).map(buildSourceNode),
+  })
+  const sourceChildren = getChildrenIds(sourceBoard, sourceId).map(
+    buildSourceNode,
+  )
+  const sourceSlotNames = assignPropNames(
+    sourceChildren as unknown as JSONTreeNode[],
+  )
+
+  const resolveSlot = (nodeId: string): string | undefined => {
+    const seen = new Set<string>()
+    let current = workspace.nodes[nodeId]
+    while (current) {
+      const srcId = getTemplateSourceNodeId(current)
+      if (!srcId || seen.has(srcId)) return undefined
+      seen.add(srcId)
+      const slot = sourceSlotNames.get(srcId)
+      if (slot) return slot
+      current = workspace.nodes[srcId]
+    }
+    return undefined
+  }
+
+  const result = new Map<string, string>()
+  const mapChildren = (children: JSONTreeNode[]) => {
+    for (const child of children) {
+      const slot = resolveSlot(child.nodeId)
+      if (slot) result.set(child.nodeId, slot)
+      if (Array.isArray(child.children)) mapChildren(child.children)
+    }
+  }
+  mapChildren(instanceChildren)
+
+  // If the source mapping missed any descendant, fall back to instance
+  // numbering so every forwarded node still resolves a slot name.
+  if (result.size < countDescendants(instanceChildren)) {
+    return { slotNames: assignPropNames(instanceChildren), droppedSlots: [] }
+  }
+
+  // A slot is a genuine sibling-drop only when the authored instance kept at
+  // least one sibling under the same parent and removed this one. That matches
+  // an embedded field whose leading icon was deleted while its input and button
+  // stayed. It excludes structural wrappers whose descendants are used, such as
+  // a button-group frame that still holds its buttons, and excludes fully unused
+  // branches the author never touched. Nulling only genuine sibling-drops
+  // suppresses the element's default child without breaking wrapper layout.
+  const filled = new Set(result.values())
+  const isFilled = (n: MinimalTreeNode): boolean => {
+    const slot = sourceSlotNames.get(n.nodeId)
+    return slot ? filled.has(slot) : false
+  }
+  const hasFilledDescendant = (n: MinimalTreeNode): boolean =>
+    isFilled(n) || n.children.some(hasFilledDescendant)
+
+  const droppedSlots: string[] = []
+  const collectDropped = (parent: MinimalTreeNode) => {
+    const parentHasFilledChild = parent.children.some(isFilled)
+    if (parentHasFilledChild) {
+      parent.children.forEach((child) => {
+        const slot = sourceSlotNames.get(child.nodeId)
+        if (slot && !filled.has(slot) && !hasFilledDescendant(child)) {
+          droppedSlots.push(slot)
+        }
+      })
+    }
+    parent.children.forEach(collectDropped)
+  }
+  collectDropped({ nodeId: node.nodeId, name: node.name, children: sourceChildren })
+
+  return { slotNames: result, droppedSlots }
+}
+
+function countDescendants(children: JSONTreeNode[]): number {
+  let count = 0
+  for (const child of children) {
+    count += 1
+    if (Array.isArray(child.children)) {
+      count += countDescendants(child.children)
+    }
+  }
+  return count
+}
+
 /**
  * Generates the JSX structure for a component along with its prop name map.
  *
@@ -46,7 +184,7 @@ function canForwardLosslessly(node: JSONTreeNode): boolean {
 export function generateJSXStructure(
   component: ComponentToExport,
   _nodeIdToClass: NodeIdToClass,
-  _workspace: Workspace,
+  workspace: Workspace,
 ): JSXStructure {
   const { tree } = component
 
@@ -126,6 +264,7 @@ export function generateJSXStructure(
       propKeyName: string
       propVarName: string
       guard?: string
+      nullLiteral?: boolean
     }> = []
 
     if (Array.isArray(node.children)) {
@@ -141,7 +280,8 @@ export function generateJSXStructure(
         // Grandchildren are passed as props to this child component. The JSX
         // attribute name is the child component's own slot name for each
         // grandchild, derived from the child's own numbering.
-        const childSlotNames = assignPropNames(node.children)
+        const { slotNames: childSlotNames, droppedSlots } =
+          getForwardedSlotNames(node, workspace)
 
         // Forward every hoisted descendant whose ancestor chain (up to this
         // node) is itself flattened into props, not only direct children. This
@@ -188,6 +328,18 @@ export function generateJSXStructure(
         }
 
         forwardDescendants(node.children)
+
+        // A canonical child the authored instance dropped is forwarded as
+        // `null` so the embedded element suppresses its own default child
+        // instead of rendering it. Example: removing a combobox field's leading
+        // icon should hide it, not fall back to the element's default icon.
+        droppedSlots.forEach((slotName) => {
+          grandchildProps.push({
+            propKeyName: slotName,
+            propVarName: "",
+            nullLiteral: true,
+          })
+        })
       } else {
         // Children should be rendered as JSX children
         node.children.forEach((child) => {

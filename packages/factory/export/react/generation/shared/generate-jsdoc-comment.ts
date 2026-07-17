@@ -31,6 +31,13 @@ export function generateJSDocComment(
     return generateFallbackJSDocComment(component)
   }
 
+  // Authored components resolve their `componentId` to the Container/Frame root
+  // template, so its schema would report the wrong level, intent, and tags. Use
+  // the board's own metadata carried on the component instead.
+  if (component.authored) {
+    return generateAuthoredJSDocComment(component, workspace)
+  }
+
   const schema = getComponentSchema(component.componentId)
   const { tree } = component
 
@@ -59,6 +66,41 @@ export function generateJSDocComment(
 
   return `/*****
  * ${formattedComponentName}: ${shortName}
+ * Level: ${level}
+ * Intent: ${intent}
+ * Tags: ${tags}
+ * Type: ${componentType}
+ *
+ * @example
+ * \`\`\`tsx
+ * <${tree.name}
+${propsExample}
+ * />
+ * \`\`\`
+ *****/`
+}
+
+/**
+ * Generates a JSDoc comment for an authored component from the board metadata
+ * carried on the component, rather than the root template's schema.
+ */
+function generateAuthoredJSDocComment(
+  component: ComponentToExport,
+  workspace: Workspace,
+): string {
+  const { tree, authored } = component
+  const level = getLevelString(authored!.level)
+  const intent = authored!.intent ?? ""
+  const tags = authored!.tags?.join(", ") ?? ""
+
+  const isInline = isInlineComponent(component)
+  const isCustom = isCustomComponent(component, workspace)
+  const componentType = isInline ? "Inline" : isCustom ? "Custom" : "Default"
+
+  const propsExample = generatePropsExample(tree.dataBinding.props, component)
+
+  return `/*****
+ * ${level}: ${tree.name}
  * Level: ${level}
  * Intent: ${intent}
  * Tags: ${tags}

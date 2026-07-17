@@ -150,7 +150,7 @@ export function BarSearchBar({
 //
 const sdn: BarSearchBarProps = {
   "aria-hidden": "false",
-  className: "sdn-bar sdn-bar",
+  className: "sdn-bar",
   comboboxFieldSearch: {
     "aria-hidden": "false",
     className: "sdn-combobox-field-search sdn-combobox-field-search--vbyg",
@@ -161,6 +161,7 @@ const sdn: BarSearchBarProps = {
     className: "sdn-icon sdn-icon--ucf5",
   },
   input: {
+    placeholder: "Search for...",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

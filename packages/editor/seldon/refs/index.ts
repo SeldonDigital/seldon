@@ -17,6 +17,12 @@ export type SeldonRef =
   | "catalogItems"
   | "catalogLabel"
   | "catalogVariant"
+  | "createComponentContainer"
+  | "createComponentFrame"
+  | "createComponentIntent"
+  | "createComponentLevel"
+  | "createComponentName"
+  | "createComponentTags"
   | "Default"
   | "dialogCancel"
   | "dialogConfirm"
@@ -106,6 +112,36 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "TextSubtitle",
     nodeId: "component-text-R4oTaXSN",
     className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
+  },
+  createComponentContainer: {
+    component: "ItemCatalog",
+    nodeId: "component-panel-eFZLmrJg",
+    className: "sdn-item-catalog sdn-item-catalog--xhyo",
+  },
+  createComponentFrame: {
+    component: "ItemCatalog",
+    nodeId: "component-item-xhYOpZp3",
+    className: "sdn-item-catalog sdn-item-catalog--xhyo",
+  },
+  createComponentIntent: {
+    component: "Input",
+    nodeId: "component-panel-WC2KRJFl",
+    className: "sdn-input sdn-input--qirj",
+  },
+  createComponentLevel: {
+    component: "ComboboxField",
+    nodeId: "component-formControl-HdymRu7r",
+    className: "sdn-combobox-field sdn-combobox-field--hdym",
+  },
+  createComponentName: {
+    component: "Input",
+    nodeId: "component-formControl-QiRj1M64",
+    className: "sdn-input sdn-input--qirj",
+  },
+  createComponentTags: {
+    component: "Input",
+    nodeId: "component-panel-1YblVT7S",
+    className: "sdn-input sdn-input--qirj",
   },
   Default: {
     component: "ItemCatalog",

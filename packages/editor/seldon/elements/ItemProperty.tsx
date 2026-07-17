@@ -281,6 +281,7 @@ const sdn: ItemPropertyProps = {
     "data-seldon-ref": "valueIcon",
   },
   input2: {
+    placeholder: "Value",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

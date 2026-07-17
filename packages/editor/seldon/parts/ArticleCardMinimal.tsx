@@ -155,7 +155,7 @@ export function ArticleCardMinimal({
 //
 const sdn: ArticleCardMinimalProps = {
   "aria-hidden": "false",
-  className: "sdn-article-card sdn-article-card",
+  className: "sdn-article-card",
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",

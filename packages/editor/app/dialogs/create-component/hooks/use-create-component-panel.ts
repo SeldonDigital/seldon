@@ -42,7 +42,7 @@ export function useCreateComponentPanel() {
   const { addAuthoredComponent } = useAddRemoveCommands()
 
   const [name, setName] = useState("")
-  const [rootKind, setRootKind] = useState<AuthoredRootKind>("container")
+  const [rootKind, setRootKind] = useState<AuthoredRootKind>("frame")
   const [level, setLevel] = useState<EntryNodeLevel>("element")
   const [intent, setIntent] = useState("")
   const [tags, setTags] = useState("")
@@ -75,7 +75,7 @@ export function useCreateComponentPanel() {
 
   const reset = useCallback(() => {
     setName("")
-    setRootKind("container")
+    setRootKind("frame")
     setLevel("element")
     setIntent("")
     setTags("")

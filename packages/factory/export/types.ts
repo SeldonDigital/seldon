@@ -47,6 +47,16 @@ export type ComponentToExport = {
   variantId: VariantId
   defaultVariantId: VariantId
   config: ComponentExport
+  /**
+   * Present only for authored components. Carries the board's own display
+   * metadata so generated docs report the board's level, intent, and tags
+   * rather than the Container/Frame template the root resolves to.
+   */
+  authored?: {
+    level: ComponentLevel
+    intent?: string
+    tags?: string[]
+  }
   output: {
     path: string
   }

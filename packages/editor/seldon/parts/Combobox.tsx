@@ -321,6 +321,7 @@ const sdn: ComboboxProps = {
     className: "sdn-icon sdn-icon--xi68",
   },
   input: {
+    placeholder: "Placeholder text",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

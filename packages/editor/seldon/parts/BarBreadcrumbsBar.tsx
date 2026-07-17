@@ -178,7 +178,7 @@ export function BarBreadcrumbsBar({
 const sdn: BarBreadcrumbsBarProps = {
   role: "navigation",
   "aria-hidden": "false",
-  className: "sdn-bar sdn-bar",
+  className: "sdn-bar",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },

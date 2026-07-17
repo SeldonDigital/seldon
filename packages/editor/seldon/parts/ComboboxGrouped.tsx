@@ -457,7 +457,7 @@ export function ComboboxGrouped({
 //
 const sdn: ComboboxGroupedProps = {
   "aria-hidden": "false",
-  className: "sdn-combobox sdn-combobox",
+  className: "sdn-combobox",
   comboboxField: {
     "aria-hidden": "false",
     className: "sdn-combobox-field sdn-combobox-field--z3a0",
@@ -468,6 +468,7 @@ const sdn: ComboboxGroupedProps = {
     className: "sdn-icon sdn-icon--xi68",
   },
   input: {
+    placeholder: "Placeholder text",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
