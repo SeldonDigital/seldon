@@ -1,21 +1,19 @@
 "use client"
 
-import { DEFAULT_CHROME_THEME } from "@lib/chrome/chrome-themes"
 import { MenuController } from "@lib/menus/MenuController"
 import { MenuEntry } from "@lib/menus/types"
-import { motion, useDragControls } from "framer-motion"
+import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
 import {
   CSSProperties,
   ChangeEvent,
   MouseEvent,
   PointerEvent,
-  ReactNode,
   useCallback,
   useMemo,
   useRef,
   useState,
 } from "react"
-import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
 import {
   AUTHORED_LEVEL_OPTIONS,
@@ -64,10 +62,16 @@ function CreateComponentDialog({
 }: CreateComponentDialogProps) {
   useHotkeys("esc", close)
 
-  const dragControls = useDragControls()
+  // A centered, content-sized modal: it hugs the authored dialog size, drags
+  // from the title bar, and does not resize. Escape is handled above.
+  const { x, y, moveControls } = useDraggableWindow({
+    handleClose: close,
+    contentSized: true,
+    closeOnEscape: false,
+  })
   const startDrag = useCallback(
-    (event: PointerEvent) => dragControls.start(event),
-    [dragControls],
+    (event: PointerEvent) => moveControls.start(event),
+    [moveControls],
   )
 
   const [levelOpen, setLevelOpen] = useState(false)
@@ -182,7 +186,14 @@ function CreateComponentDialog({
   }
 
   return (
-    <ModalPortal onClose={close} dragControls={dragControls}>
+    <WindowOverlay
+      modal
+      contentSized
+      onClose={close}
+      x={x}
+      y={y}
+      moveControls={moveControls}
+    >
       <DialogCreateComponent
         data-testid="create-component-dialog"
         bar={barHandle}
@@ -216,68 +227,11 @@ function CreateComponentDialog({
         onClose={closeLevel}
         items={levelItems}
       />
-    </ModalPortal>
-  )
-}
-
-interface ModalPortalProps {
-  onClose: () => void
-  dragControls: ReturnType<typeof useDragControls>
-  children: ReactNode
-}
-
-/**
- * Centered, draggable, non-resizable modal surface. Portals to the document
- * body and pins the canvas theme via `data-theme`, matching `Canvas`, so the
- * authored dialog resolves the same swatch and high-contrast palette as the
- * board on the canvas. It deliberately omits `data-mode`: the editor chrome's
- * light/dark mode never applies to authored design content, only to chrome. The
- * surface drags from its title bar through `dragControls` and sizes to its
- * content, so it is not resizable. Clicking the backdrop closes.
- */
-function ModalPortal({ onClose, dragControls, children }: ModalPortalProps) {
-  const stopPropagation = useCallback(
-    (event: MouseEvent) => event.stopPropagation(),
-    [],
-  )
-
-  return createPortal(
-    <div data-theme={DEFAULT_CHROME_THEME} style={styles.scope}>
-      <div onClick={onClose} style={styles.overlay}>
-        <motion.div
-          drag
-          dragControls={dragControls}
-          dragListener={false}
-          dragMomentum={false}
-          dragElastic={false}
-          onClick={stopPropagation}
-          style={styles.surface}
-        >
-          {children}
-        </motion.div>
-      </div>
-    </div>,
-    document.body,
+    </WindowOverlay>
   )
 }
 
 const styles: Record<string, CSSProperties> = {
-  scope: {
-    display: "contents",
-  },
-  overlay: {
-    position: "fixed",
-    inset: 0,
-    zIndex: 30,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  surface: {
-    width: "fit-content",
-    height: "fit-content",
-    WebkitFontSmoothing: "auto",
-  },
   dragHandle: {
     cursor: "grab",
     userSelect: "none",

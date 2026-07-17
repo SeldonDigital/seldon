@@ -57,7 +57,6 @@ const IGNORED_TAGS = new Set<string>([
   "path",
 ])
 
-const ELEMENT_NODE = 1
 const TEXT_NODE = 3
 
 const LEVEL_RANK: Record<string, number> = {
