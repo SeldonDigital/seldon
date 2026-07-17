@@ -4,11 +4,22 @@ import {
 } from "@lib/copy-schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { removeNewLines } from "@lib/helpers/new-lines"
-import { MenuEntry } from "@lib/menus"
+import { ComboboxOptionItem, MenuEntry, OptionIconRender } from "@lib/menus"
 import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
 import { getComponentName } from "@seldon/factory/export/react/discovery/get-component-name"
 import { CSSProperties } from "react"
-import { Display, InstanceId, Properties, VariantId } from "@seldon/core"
+import {
+  Display,
+  InstanceId,
+  Properties,
+  Value,
+  ValueType,
+  VariantId,
+} from "@seldon/core"
+import {
+  PROPERTY_ICONS,
+  PROPERTY_OPTION_ICONS,
+} from "@seldon/core/properties/schemas/data/property-icons"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"
@@ -53,6 +64,7 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
+import { resolveRowDisplayDecoration } from "./row-display-style"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
@@ -60,6 +72,10 @@ import {
   useIsAncestorOfSelection,
   useIsParentOfSelection,
 } from "./use-selection-relations"
+
+// Neutral Display glyph for the row picker trigger and the Default/Inherit
+// options, matching the properties Display control's property icon.
+const DISPLAY_NEUTRAL_ICON: string = PROPERTY_ICONS.display
 
 /**
  * Hook that provides all state and handlers for rendering a node row in the objects sidebar.
@@ -604,27 +620,116 @@ export function useRowNode(
 
   const actions: MenuEntry[] = isEcho ? [] : buildNodeActions()
 
-  function checkIfExcluded(): boolean {
+  const ownDisplayValue = properties?.display
+  // `display` also stores an inherit value at runtime, which its narrow
+  // `DisplayValue` type does not model, so read the tag as a plain string.
+  const ownDisplayType: string | undefined = ownDisplayValue?.type
+  const currentDisplayKey =
+    !ownDisplayValue || ownDisplayType === ValueType.EMPTY
+      ? "default"
+      : ownDisplayType === ValueType.INHERIT
+        ? "inherit"
+        : String(ownDisplayValue.value)
+
+  function setDisplay(value: Value) {
+    dispatch({
+      type: "set_node_properties",
+      payload: {
+        nodeId: node.id as VariantId,
+        properties: { display: value } as Properties,
+      },
+    })
+  }
+
+  function resetDisplay() {
+    dispatch({
+      type: "reset_node_property",
+      payload: { nodeId: node.id as VariantId, propertyKey: "display" },
+    })
+  }
+
+  // Selecting a display value from the row's picker. "default" clears the
+  // override, "inherit" stores an inherit value, and every other value stores
+  // the matching option. Mirrors the Display control in the properties sidebar.
+  function selectDisplay(value: string) {
+    if (value === "default") {
+      resetDisplay()
+    } else if (value === "inherit") {
+      setDisplay({ type: ValueType.INHERIT, value: null })
+    } else {
+      setDisplay({ type: ValueType.OPTION, value: value as Display })
+    }
+  }
+
+  // The row Display picker reuses the same floating `ComboboxListbox` as the
+  // properties Display control. Two sections: Default/Inherit, then the concrete
+  // states. Option values match `currentDisplayKey`.
+  const displayOptionGroups: ComboboxOptionItem[][] = isEcho
+    ? []
+    : [
+        [
+          { value: "default", name: "Default" },
+          { value: "inherit", name: "Inherit" },
+        ],
+        [
+          { value: Display.SHOW, name: "Show" },
+          { value: Display.HIDE, name: "Hide" },
+          { value: Display.STUB, name: "Stub" },
+          { value: Display.MOCK, name: "Mock" },
+          { value: Display.EXCLUDE, name: "Exclude" },
+        ],
+      ]
+
+  // Trigger glyph and every option glyph resolve to a Material icon from the
+  // shared property-icon catalog. Default and Inherit use the neutral display
+  // icon, so the trigger never swaps icon families (and apparent size) between
+  // states, matching the properties Display control.
+  function resolveDisplayGlyph(key: string): string {
+    if (key === "default" || key === "inherit") {
+      return DISPLAY_NEUTRAL_ICON
+    }
+    return PROPERTY_OPTION_ICONS.display[key] ?? DISPLAY_NEUTRAL_ICON
+  }
+
+  function resolveDisplayOptionIcon(option?: {
+    value: string
+    name: string
+  }): OptionIconRender {
+    return {
+      kind: "iconId",
+      icon: resolveDisplayGlyph(option?.value ?? "default"),
+    }
+  }
+
+  const displayIcon: IconProps = {
+    icon: resolveDisplayGlyph(currentDisplayKey) as IconProps["icon"],
+  }
+
+  // Collects the node's own display plus every display inherited from its
+  // instance-ancestor chain. The walk climbs while each parent is an instance
+  // and includes the first non-instance parent, so a variant root's state still
+  // reaches its instance children. Non-instance rows reflect only their own
+  // display.
+  function collectDisplayChainStates(): Display[] {
     if (!nodeExistsInWorkspace) {
-      return false
+      return []
     }
 
-    const isExcluded = properties?.display?.value === Display.EXCLUDE
-    if (isExcluded) return true
+    const states: Display[] = []
+    const ownDisplay = properties?.display?.value
+    if (ownDisplay) states.push(ownDisplay)
 
     if (!typeCheckingService.isInstance(node)) {
-      return false
+      return states
     }
 
     let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
     while (currentParent) {
-      const parentProps = getNodeProperties(
+      const parentDisplay = getNodeProperties(
         currentParent as EntryNode,
         workspace,
-      )
-      if (parentProps?.display?.value === Display.EXCLUDE) {
-        return true
-      }
+      )?.display?.value
+      if (parentDisplay) states.push(parentDisplay)
       if (typeCheckingService.isInstance(currentParent)) {
         currentParent = nodeTraversalService.findParentNode(
           currentParent.id,
@@ -635,58 +740,21 @@ export function useRowNode(
       }
     }
 
-    return false
+    return states
   }
 
-  function checkIfStub(): boolean {
-    if (!nodeExistsInWorkspace) {
-      return false
-    }
+  // Row notation for the node's display, composed across its ancestor chain:
+  // dimmed for hide/stub/mock/exclude, italic for stub/exclude. Dimmed rows read
+  // as gray at 50% opacity. See `resolveRowDisplayDecoration`.
+  const {
+    isDimmed,
+    dimStyle,
+    labelStyle: labelDecorationStyle,
+  } = resolveRowDisplayDecoration(collectDisplayChainStates())
 
-    if (properties?.display?.value === Display.STUB) return true
-
-    if (!typeCheckingService.isInstance(node)) {
-      return false
-    }
-
-    let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
-    while (currentParent) {
-      const parentProps = getNodeProperties(
-        currentParent as EntryNode,
-        workspace,
-      )
-      if (parentProps?.display?.value === Display.STUB) {
-        return true
-      }
-      if (typeCheckingService.isInstance(currentParent)) {
-        currentParent = nodeTraversalService.findParentNode(
-          currentParent.id,
-          workspace,
-        )
-      } else {
-        break
-      }
-    }
-
-    return false
-  }
-
-  // Excluded rows (own display or an excluded ancestor) read as italic with a
-  // strikethrough. Stub rows (own display or a stub ancestor) read as italic.
-  // Hidden rows use the node's own display only. All three drive the disabled
-  // look.
-  const isExcluded = checkIfExcluded()
-  const isHidden = properties?.display?.value === Display.HIDE
-  const isStub = checkIfStub()
-
-  const baseLabelStyle: CSSProperties | undefined = isExcluded
-    ? { fontStyle: "italic", textDecoration: "line-through" }
-    : isStub
-      ? { fontStyle: "italic" }
-      : undefined
   const labelStyle: CSSProperties | undefined = isEcho
-    ? { ...baseLabelStyle, fontStyle: "italic", opacity: 0.7 }
-    : baseLabelStyle
+    ? { ...labelDecorationStyle, fontStyle: "italic", opacity: 0.7 }
+    : labelDecorationStyle
 
   const label = {
     children: getNodeLabel(),
@@ -710,6 +778,11 @@ export function useRowNode(
     icon,
     icon2,
     actions,
+    displayOptionGroups,
+    displayValue: currentDisplayKey,
+    selectDisplay,
+    resolveDisplayOptionIcon,
+    displayIcon,
     onClick,
     onDoubleClick: handleDoubleClick,
     isExpanded: isExpandedState,
@@ -723,9 +796,9 @@ export function useRowNode(
     dragging,
     ref,
     properties,
-    isExcluded,
-    isHidden,
-    isStub,
+    isDimmed,
+    dimStyle,
+    labelDecorationStyle,
     isDuplicateLabel,
     nodeTypeColor,
     isPrimaryShared,

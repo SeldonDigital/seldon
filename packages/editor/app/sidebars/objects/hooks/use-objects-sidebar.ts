@@ -5,7 +5,15 @@ import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { getBoardSections } from "../../helpers/get-board-sections"
+import { BoardSection, getBoardSections } from "../../helpers/get-board-sections"
+
+/** Section levels that belong to the Resources view of the objects sidebar. */
+const RESOURCE_SECTION_LEVELS: ReadonlySet<BoardSection["level"]> = new Set([
+  "THEME",
+  "FONT_COLLECTION",
+  "ICON_SET",
+  "MEDIA",
+])
 
 /**
  * Boards list, section grouping, and default-board selection for the objects
@@ -14,7 +22,7 @@ import { getBoardSections } from "../../helpers/get-board-sections"
 export function useObjectsSidebar() {
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
-  const { showPlayground } = useEditorConfig()
+  const { showPlayground, objectsView } = useEditorConfig()
   const {
     selectBoard,
     selectedNodeId,
@@ -34,9 +42,14 @@ export function useObjectsSidebar() {
 
   const sections = useMemo(() => {
     const allSections = getBoardSections(boards, playgrounds)
-    if (showPlayground) return allSections
-    return allSections.filter((section) => section.level !== "PLAYGROUND")
-  }, [boards, playgrounds, showPlayground])
+    const viewSections = allSections.filter((section) =>
+      objectsView === "resources"
+        ? RESOURCE_SECTION_LEVELS.has(section.level)
+        : !RESOURCE_SECTION_LEVELS.has(section.level),
+    )
+    if (showPlayground) return viewSections
+    return viewSections.filter((section) => section.level !== "PLAYGROUND")
+  }, [boards, playgrounds, showPlayground, objectsView])
 
   useEffect(() => {
     if (

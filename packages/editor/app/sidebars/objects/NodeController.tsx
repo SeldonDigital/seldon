@@ -1,3 +1,4 @@
+import { ComboboxListbox } from "@lib/menus"
 import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import {
   buildDisabledRefProps,
@@ -13,6 +14,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
+import { useRowDisplayPicker } from "./hooks/use-row-display-picker"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
@@ -71,6 +73,11 @@ const NodeInner = function NodeInner({
     icon,
     icon2,
     actions,
+    displayOptionGroups,
+    displayValue,
+    selectDisplay,
+    resolveDisplayOptionIcon,
+    displayIcon,
     onClick,
     onDoubleClick,
     isExpanded,
@@ -84,9 +91,9 @@ const NodeInner = function NodeInner({
     dragging,
     ref,
     properties,
-    isExcluded,
-    isHidden,
-    isStub,
+    isDimmed,
+    dimStyle,
+    labelDecorationStyle,
     isDuplicateLabel,
     nodeTypeColor,
     isPrimaryShared,
@@ -102,6 +109,16 @@ const NodeInner = function NodeInner({
 
   const actionsMenu = useRowActionsMenu(actions, {
     focusTargetRef: ref,
+  })
+
+  // The row Display picker reuses the same floating `ComboboxListbox` widget as
+  // the properties Display control. Its trigger stays visible (unlike the
+  // on-demand actions menu), so a row's display is always one click away.
+  const displayPicker = useRowDisplayPicker({
+    optionGroups: displayOptionGroups,
+    value: displayValue,
+    onSelect: selectDisplay,
+    resolveIcon: resolveDisplayOptionIcon,
   })
 
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
@@ -197,29 +214,22 @@ const NodeInner = function NodeInner({
     },
   }
 
-  // A hidden, stub, or excluded node reads as disabled. Excluded rows
-  // italicize and strike through the name shown in the combobox input;
-  // stub rows italicize it.
-  const isDimmed = isHidden || isStub || isExcluded
-  const excludedLabelStyle = {
-    ...nameInput.style,
-    fontStyle: "italic" as const,
-    textDecoration: "line-through" as const,
-  }
-  const stubLabelStyle = {
-    ...nameInput.style,
-    fontStyle: "italic" as const,
-  }
-  const nodeLabel = isExcluded
-    ? { ...nameInput, style: excludedLabelStyle }
-    : isStub
-      ? { ...nameInput, style: stubLabelStyle }
-      : nameInput
+  // Hide, stub, mock, and exclude dim the row. The row's italic label
+  // decoration comes from the hook, so the name shown in the combobox input
+  // matches the row label.
+  const renameStyle = labelDecorationStyle
+    ? { ...nameInput.style, ...labelDecorationStyle }
+    : nameInput.style
+  const nodeLabel = { ...nameInput, style: renameStyle }
 
   // Disabled is not owned by the combobox-field, so it never cascades from the
   // field to these leaves. Forward `aria-disabled` onto each leaf ref so their
   // own `[aria-disabled]` styles dim the row.
   const disabledRef = buildDisabledRefProps(isDimmed)
+
+  // Dimmed rows read as gray (from `aria-disabled`) at 50% opacity. The fade
+  // applies to the same icon and label leaves that carry the gray.
+  const dimRef = dimStyle ? { style: dimStyle } : undefined
 
   // A duplicate variant label is an error state. The name label sits outside
   // the combobox-field, so forward `aria-invalid` onto the icon and label leaves
@@ -239,13 +249,21 @@ const NodeInner = function NodeInner({
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
-    nodeIcon: mergeStateProps(icon2, disabledRef, nodeTypeStyle, invalidRef),
-    nodeLabel: mergeStateProps(
-      nodeLabel,
+    nodeIcon: mergeStateProps(
+      icon2,
       disabledRef,
+      dimRef,
       nodeTypeStyle,
       invalidRef,
     ),
+    nodeLabel: mergeStateProps(
+      nodeLabel,
+      disabledRef,
+      dimRef,
+      nodeTypeStyle,
+      invalidRef,
+    ),
+    nodeDisplay: { ...displayPicker.buttonProps },
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
@@ -278,6 +296,11 @@ const NodeInner = function NodeInner({
       : {}),
   }
 
+  // Echo rows are stripped leaves with no display of their own, so their
+  // nodeDisplay slot is removed. Real rows keep the slot on its generated
+  // default and drive it through the `nodeDisplay` ref.
+  const displayButtonSlot = isEcho ? null : undefined
+
   // Root-level row state. Selection lives on the combobox-field and disabled on
   // the leaves; these mirror the row's logical state for selectors and tests.
   const itemNodeState = {
@@ -305,6 +328,9 @@ const NodeInner = function NodeInner({
           <ItemNode
             buttonIconic={{}}
             comboboxField={comboboxField}
+            buttonIconic2={displayButtonSlot}
+            icon3={displayIcon}
+            buttonIconic3={{}}
             seldonRefs={seldonRefs}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
@@ -320,6 +346,7 @@ const NodeInner = function NodeInner({
           />
         </SidebarTracking>
       </RowSelectionTarget>
+      <ComboboxListbox {...displayPicker.listbox} />
       {actionsMenu.menu}
 
       {childrenSection}

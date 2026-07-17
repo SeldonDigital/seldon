@@ -181,9 +181,11 @@ const sdn: SidebarPropertiesProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--twyx",
+    "data-seldon-ref": "propertyFilter",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "propertyFilterClear",
   },
   icon2: {
     icon: "material-close",
@@ -193,7 +195,7 @@ const sdn: SidebarPropertiesProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--evmw",
+    className: "sdn-frame sdn-frame--enpy",
     "data-seldon-ref": "propertiesContainer",
   },
 }

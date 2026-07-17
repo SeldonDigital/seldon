@@ -109,9 +109,14 @@ export function ResourceEntry({
         selectionId={entryId}
         selectionKind={config.selectionKind}
       >
+        {/* Resource entries have no `display` property, so the nodeDisplay slot
+        is off (`buttonIconic2={null}`) and only the actions menu
+        (`buttonIconic3`) renders. */}
         <ItemNode
           buttonIconic={{}}
           comboboxField={comboboxField}
+          buttonIconic2={null}
+          buttonIconic3={{}}
           seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}

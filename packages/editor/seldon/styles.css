@@ -1071,7 +1071,7 @@ body {
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 0;
-  padding-inline-end: 0;
+  padding-inline-end: var(--sdn-paddings-tight);
   padding-bottom: 0;
   padding-inline-start: var(--sdn-paddings-tight);
   align-self: stretch;
@@ -2016,6 +2016,10 @@ body {
   padding: var(--sdn-paddings-compact);
 }
 
+.sdn-bar-buttons--ftcm {
+  border-radius: 0px;
+}
+
 .sdn-bar-buttons--ymyq {
   border-radius: unset;
   border-top-right-radius: 0px;
@@ -2306,6 +2310,10 @@ body {
   border: var(--hairline) solid var(--sdn-hc-on-primary);
 }
 
+.sdn-combobox-field-project--rzdy {
+  gap: var(--sdn-gaps-cozy);
+}
+
 .sdn-combobox-field-search--9jd5 {
   align-self: unset;
   flex-shrink: unset;
@@ -2540,15 +2548,7 @@ body {
 .sdn-frame--enpy {
   overflow-x: hidden;
   overflow-y: auto;
-  flex-wrap: wrap;
-  min-height: 0;
-  padding: 0;
-  margin: 0;
-}
-
-.sdn-frame--evmw {
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   min-height: 0;
   padding: 0;
   margin: 0;
@@ -2635,6 +2635,28 @@ body {
   margin-top: var(--sdn-margins-cozy);
   height: fit-content;
   flex-shrink: 0;
+}
+
+.sdn-frame--ma6i {
+  align-self: unset;
+  flex: unset;
+  border-left-width: var(--hairline);
+  border-left-style: solid;
+  border-left-color: color-mix(
+    in srgb,
+    var(--sdn-swatch-primary) 50%,
+    transparent
+  );
+  flex-direction: row;
+  gap: var(--sdn-gaps-tight);
+  padding-top: 0;
+  padding-inline-end: 0;
+  padding-bottom: 0;
+  padding-inline-start: var(--sdn-paddings-cozy);
+  width: fit-content;
+  flex-shrink: 0;
+  height: 100%;
+  margin: 0;
 }
 
 .sdn-frame--mclm {

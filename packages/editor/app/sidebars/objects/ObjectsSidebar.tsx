@@ -14,6 +14,7 @@ import {
   useStore as useSelectionStore,
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useTool } from "@lib/hooks/use-tool"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
@@ -31,6 +32,9 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { BoardSection } from "../helpers/get-board-sections"
 import { BoardController } from "./BoardController"
 import { Section } from "./Section"
+
+/** Class that renders a header ButtonToggle in its activated (on) state. */
+const ACTIVE_TOGGLE_CLASS = "sdn-state-activated"
 
 /**
  * View-model for the objects sidebar. Feeds the generated `SidebarObjects`
@@ -50,6 +54,7 @@ export function ObjectsSidebar() {
   const { activeBoard } = useActiveBoard()
   const { selectWorkspace } = useSelectionActions()
   const { activeTool } = useTool()
+  const { objectsView, setObjectsView } = useEditorConfig()
   const workspaceSelected = useSelectionStore(
     (state) => state.workspaceSelected,
   )
@@ -119,6 +124,31 @@ export function ObjectsSidebar() {
   }
   const projectActions = { onClick: handleForceSave }
 
+  // Header view toggles behave as a radio pair: one is always active. The
+  // activated state renders through the generated button-toggle `on` styling.
+  const showComponents = useCallback(
+    () => setObjectsView("components"),
+    [setObjectsView],
+  )
+  const showResources = useCallback(
+    () => setObjectsView("resources"),
+    [setObjectsView],
+  )
+  const componentsActive = objectsView === "components"
+  const resourcesActive = objectsView === "resources"
+  const componentsToggle = {
+    onClick: showComponents,
+    className: componentsActive ? ACTIVE_TOGGLE_CLASS : undefined,
+    "aria-pressed": componentsActive,
+    title: "Components",
+  }
+  const resourcesToggle = {
+    onClick: showResources,
+    className: resourcesActive ? ACTIVE_TOGGLE_CLASS : undefined,
+    "aria-pressed": resourcesActive,
+    title: "Resources",
+  }
+
   const sectionGroups = sections.map((section) => (
     <ObjectsSectionGroup key={section.label} section={section} />
   ))
@@ -151,6 +181,8 @@ export function ObjectsSidebar() {
       comboboxFieldProject={projectField}
       input={nameInput}
       buttonIconic={projectActions}
+      buttonToggle={componentsToggle}
+      buttonToggle2={resourcesToggle}
       seldonRefs={seldonRefs}
       style={styles.sidebar}
     />
