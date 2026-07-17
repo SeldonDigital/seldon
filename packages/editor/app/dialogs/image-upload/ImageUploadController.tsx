@@ -32,7 +32,7 @@ const DIALOG_RESIZE_SIDES: readonly ResizeSide[] = [
  * "image-upload" dialog is active so it recenters on each open, matching the
  * catalog dialogs.
  */
-export function ImageUploadDialogController() {
+export function ImageUploadController() {
   const {
     isOpen,
     currentFile,

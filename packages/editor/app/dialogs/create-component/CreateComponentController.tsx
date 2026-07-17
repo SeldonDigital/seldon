@@ -28,7 +28,7 @@ import {
  * "create-component" panel is active so it recenters on each open, matching the
  * catalog dialogs.
  */
-export function CreateComponentDialogController() {
+export function CreateComponentController() {
   const panel = useCreateComponentPanel()
 
   if (!panel.isOpen) return null
@@ -274,12 +274,8 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "center",
   },
   surface: {
-    // Sizes to the dialog's authored width and fit height; no resize.
     width: "fit-content",
     height: "fit-content",
-    // Match the canvas: portaled design content sits outside the chrome frame,
-    // so it misses the chrome's antialiased smoothing. Pin the darker subpixel
-    // rendering so authored text and icons read high-contrast like the board.
     WebkitFontSmoothing: "auto",
   },
   dragHandle: {
@@ -289,11 +285,9 @@ const styles: Record<string, CSSProperties> = {
   },
   option: {
     cursor: "pointer",
-    opacity: 0.55,
   },
   optionSelected: {
     cursor: "pointer",
-    opacity: 1,
   },
   levelField: {
     cursor: "pointer",
