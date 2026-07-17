@@ -1,10 +1,11 @@
 import { findComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
+import { ComponentId, ComponentLevel } from "../../../components/constants"
 import { rules } from "../../../rules/config/rules.config"
 import type { Entity } from "../../../rules/types/rule-config-types"
 import { canNodeHaveChildren } from "../../helpers/nodes/can-node-have-children"
 import { mapEntryNodeTypeToRulesEntity } from "../../helpers/rules/map-entry-node-type-to-rules-entity"
 import {
+  type Authored,
   type DefaultVariant,
   type Instance,
   type RulesNodeOrComponent,
@@ -52,8 +53,26 @@ export class TypeCheckingService {
     if (node === undefined) return false
     if (this.isBoard(node)) return false
     if (isEntryNodeForRules(node)) {
-      return node.type === "default" || node.type === "variant"
+      return (
+        node.type === "default" ||
+        node.type === "variant" ||
+        node.type === "authored"
+      )
     }
+    return false
+  }
+
+  /**
+   * Type guard for an authored root. Authored roots are schema-free base
+   * variants of an authored component board. They are variants structurally but
+   * carry their own rules entity, so they never resolve to a default variant.
+   * @param node - The node to check
+   * @returns True if the node is an authored root
+   */
+  public isAuthored(node: RulesNodeOrComponent | undefined): node is Authored {
+    if (node === undefined) return false
+    if (this.isBoard(node)) return false
+    if (isEntryNodeForRules(node)) return node.type === "authored"
     return false
   }
 
@@ -142,6 +161,21 @@ export class TypeCheckingService {
     return rules.componentLevels[parentSchema.level].mayContain.includes(
       childSchema.level,
     )
+  }
+
+  /**
+   * Validates containment by component level. Used for authored-aware checks
+   * where a node's effective level may come from an authored board rather than
+   * a catalog schema.
+   * @param parentLevel - The parent component level
+   * @param childLevel - The child component level
+   * @returns True if the parent level may contain the child level
+   */
+  public canLevelContainLevel(
+    parentLevel: ComponentLevel,
+    childLevel: ComponentLevel,
+  ): boolean {
+    return rules.componentLevels[parentLevel].mayContain.includes(childLevel)
   }
 }
 

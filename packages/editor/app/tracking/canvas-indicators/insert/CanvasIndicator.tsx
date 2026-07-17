@@ -1,7 +1,7 @@
 import { InsertIndicatorLine } from "@lib/overlays"
 import { Placement } from "@lib/types"
 import { CSSProperties } from "react"
-import { ComponentId, isComponentId } from "@seldon/core/components/constants"
+import { ComponentId } from "@seldon/core/components/constants"
 import { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
 import {
   nodeRetrievalService,
@@ -30,10 +30,11 @@ export function CanvasIndicator({
 }: CanvasIndicatorProps) {
   const { workspace } = useWorkspace()
 
-  const isBoardObject = isComponentId(objectId)
-  const object = isBoardObject
-    ? nodeRetrievalService.getBoard(objectId, workspace)
-    : nodeRetrievalService.getNode(objectId, workspace)
+  // Let core resolve and classify the id. Board keys and node ids share no
+  // namespace, so `getObject` finds boards by key and everything else as a
+  // node. This stays resilient to board keys that are not catalog ids.
+  const object = nodeRetrievalService.getObject(objectId, workspace)
+  const isBoardObject = typeCheckingService.isBoard(object)
 
   const canHaveChildren =
     !isBoardObject &&

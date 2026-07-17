@@ -1,4 +1,4 @@
-import { ComponentId, isComponentId } from "../../../components/constants"
+import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
@@ -55,7 +55,9 @@ export class NodeRetrievalService {
     objectId: InstanceId | VariantId | ComponentId,
     workspace: Workspace,
   ): Variant | Instance | Board {
-    if (isComponentId(objectId)) {
+    // Board keys and node ids share no namespace, so a hit in `boards` means a
+    // board. This resolves authored board keys, which are not catalog ids.
+    if (workspace.boards[objectId]) {
       return this.getBoard(objectId, workspace)
     }
     return this.getNode(objectId, workspace)

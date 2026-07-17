@@ -77,7 +77,7 @@ export function AvatarSquared({
 //
 const sdn: AvatarSquaredProps = {
   "aria-hidden": "false",
-  className: "sdn-avatar sdn-avatar",
+  className: "sdn-avatar",
   image: {
     src: "/avatar-user.png",
     "aria-hidden": "false",

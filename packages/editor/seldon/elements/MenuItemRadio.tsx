@@ -98,7 +98,7 @@ export function MenuItemRadio({
 const sdn: MenuItemRadioProps = {
   role: "menuitemradio",
   "aria-hidden": "false",
-  className: "sdn-menu-item sdn-menu-item",
+  className: "sdn-menu-item",
   icon: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",

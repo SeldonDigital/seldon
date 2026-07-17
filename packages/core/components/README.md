@@ -20,6 +20,8 @@ When a designer places a button on a screen, that placed button is a _variant_ o
 
 Every placed variant and every customization a user has made are managed by the workspace. This directory only describes the catalog the workspace draws from.
 
+The workspace can also hold **authored components**, which have no schema in this catalog. An authored component is defined only in the workspace on an `authored-component` board. It composes from the same catalog schemas and declares a `level` from the same hierarchy, so containment and export treat it like a catalog component of that level. See the workspace README for the board shape and rules. This directory does not describe authored components.
+
 ---
 
 ## Component Hierarchy

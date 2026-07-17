@@ -100,6 +100,7 @@ export function useMenuConfig(): MenuConfig {
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
+    importWeb,
     exportToFolder,
   } = useImportExport()
   const { addVariant, deleteSelection, duplicateSelection } =
@@ -221,17 +222,18 @@ export function useMenuConfig(): MenuConfig {
         },
         visibleIn: ["edit", "preview"], // Not visible in project view
       },
-      {
-        id: "export-workspace",
-        label: "Save Workspace As…",
-        action: exportWorkspaceToFile,
-        visibleIn: ["edit", "preview"],
-      },
       "separator",
       {
         id: "export-folder",
         label: "Export Components…",
         action: exportToFolder,
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
+        id: "export-workspace",
+        label: "Save Workspace As…",
+        action: exportWorkspaceToFile,
         visibleIn: ["edit", "preview"],
       },
       "separator",
@@ -253,6 +255,12 @@ export function useMenuConfig(): MenuConfig {
 
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
+      {
+        id: "import-web",
+        label: "Import Web…",
+        action: importWeb,
+        visibleIn: ["edit", "preview"],
+      },
       {
         id: "show-playground",
         label: "Show Playgrounds",
@@ -348,6 +356,7 @@ export function useMenuConfig(): MenuConfig {
     return items
   }, [
     addToast,
+    importWeb,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     showPlayground,
@@ -436,12 +445,21 @@ export function useMenuConfig(): MenuConfig {
   const selectionMenuItems = useMemo(() => {
     const items = [
       {
+        id: "create-component",
+        label: "Create Component",
+        action: () => {
+          openPanel("create-component")
+          setActiveTool("select")
+        },
+        shortcut: "T",
+      },
+      "separator",
+      {
         id: "insert-component",
         label: "Insert Component",
         action: () => setActiveTool("component"),
         shortcut: "I",
       },
-      "separator",
       {
         id: "add-component",
         label: "Add Component",

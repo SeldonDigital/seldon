@@ -1,5 +1,9 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import {
@@ -45,9 +49,21 @@ export interface ResolvedContext {
 }
 
 /**
+ * Boards the agent edits as component trees: catalog-backed component boards and
+ * authored component boards. Both own a variant tree and are targeted the same
+ * way, so every board-facing path treats them alike.
+ */
+function isEditableComponentBoard(board: Board | undefined): board is Board {
+  return (
+    board !== undefined && (isComponentBoard(board) || isAuthoredBoard(board))
+  )
+}
+
+/**
  * Resolves the board the agent should act on: the requested board when it
- * exists, otherwise the first component board, so the agent is always scoped to
- * one board on screen. The rest of the selection passes through unchanged.
+ * exists, otherwise the first component or authored board, so the agent is
+ * always scoped to one board on screen. The rest of the selection passes
+ * through unchanged.
  */
 export function resolveContext(input: EditorContextInput): ResolvedContext {
   const {
@@ -59,13 +75,13 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
     scope,
     resourceTargetId,
   } = input
-  const componentBoards = Object.entries(workspace.boards).filter(
-    ([, board]) => board.type === "component",
+  const editableBoards = Object.entries(workspace.boards).filter(([, board]) =>
+    isEditableComponentBoard(board),
   )
   const resolvedKey =
     activeBoardKey && workspace.boards[activeBoardKey]
       ? activeBoardKey
-      : componentBoards[0]?.[0]
+      : editableBoards[0]?.[0]
   const activeBoard =
     resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
   return {
@@ -92,7 +108,7 @@ function resolveActiveVariantId(
   selectedNodeId?: string,
   selectedNodeRootId?: string,
 ): string | undefined {
-  if (board.type !== "component") return undefined
+  if (!isEditableComponentBoard(board)) return undefined
   const rootIds = new Set(board.variants.map((ref) => ref.id))
 
   if (selectedNodeRootId) {
@@ -240,11 +256,7 @@ function componentScopeContext(resolved: ResolvedContext): string[] {
   } = resolved
   const lines: string[] = []
 
-  if (
-    activeBoard &&
-    activeBoard.type === "component" &&
-    resolvedKey !== undefined
-  ) {
+  if (isEditableComponentBoard(activeBoard) && resolvedKey !== undefined) {
     // Instance scope hands the model only the selected node's own subtree, so a
     // local override edit carries no sibling noise. It falls back to the variant
     // when the node is not on the active board.
@@ -322,7 +334,7 @@ function selectedComponentValues(resolved: ResolvedContext): string[] {
     ? getNodeCatalogId(selectedNode, workspace)
     : undefined
   if (!selectedCatalogId) {
-    return activeBoard?.type === "component"
+    return isEditableComponentBoard(activeBoard)
       ? themeTokensSection(workspace)
       : []
   }

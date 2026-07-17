@@ -10,9 +10,10 @@ import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { BoardsDialog } from "../dialogs/boards/BoardsDialog"
 import { ComponentsDialog } from "../dialogs/components/ComponentsDialog"
+import { CreateComponentController } from "../dialogs/create-component/CreateComponentController"
 import { FontCollectionsDialog } from "../dialogs/font-collections/FontCollectionsDialog"
 import { IconSetsDialog } from "../dialogs/icon-sets/IconSetsDialog"
-import { ImageUploadDialogController } from "../dialogs/image-upload/ImageUploadDialogController"
+import { ImageUploadController } from "../dialogs/image-upload/ImageUploadController"
 import { ThemesDialog } from "../dialogs/themes/ThemesDialog"
 import { FocusRingOverlay } from "../focus/FocusRingOverlay"
 import { HariController } from "../palettes/hari/HariController"
@@ -56,9 +57,10 @@ export default function Editor() {
         </Allotment>
       </EditorCrossfade>
 
-      <ImageUploadDialogController />
+      <ImageUploadController />
       <ComponentsDialog />
       <BoardsDialog />
+      <CreateComponentController />
       <ThemesDialog />
       <FontCollectionsDialog />
       <IconSetsDialog />

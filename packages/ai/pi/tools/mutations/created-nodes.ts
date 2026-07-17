@@ -4,11 +4,15 @@ import type { ComponentTreeRef, Workspace } from "@seldon/core/workspace/types"
 
 import { nodeSummaryTail } from "../../../prompt/context-sections/node-line"
 
-/** Variant tree roots across component and playground boards, the only rows with child refs. */
+/** Variant tree roots across component, authored, and playground boards, the only rows with child refs. */
 function compositionRoots(workspace: Workspace): ComponentTreeRef[] {
   const roots: ComponentTreeRef[] = []
   for (const board of getCompositionContainers(workspace)) {
-    if (board.type === "component" || board.type === "playground") {
+    if (
+      board.type === "component" ||
+      board.type === "authored-component" ||
+      board.type === "playground"
+    ) {
       roots.push(...board.variants)
     }
   }

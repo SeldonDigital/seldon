@@ -1609,7 +1609,7 @@ export function CalendarEventMarkers({
 //
 const sdn: CalendarEventMarkersProps = {
   "aria-hidden": "false",
-  className: "sdn-calendar sdn-calendar",
+  className: "sdn-calendar",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",

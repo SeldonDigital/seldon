@@ -129,7 +129,7 @@ export function ComboboxFieldFilter({
 //
 const sdn: ComboboxFieldFilterProps = {
   "aria-hidden": "false",
-  className: "sdn-combobox-field sdn-combobox-field",
+  className: "sdn-combobox-field",
   icon: {
     icon: "material-filterList",
     "aria-hidden": "true",
@@ -137,6 +137,7 @@ const sdn: ComboboxFieldFilterProps = {
     "data-seldon-ref": "filterIcon",
   },
   input: {
+    placeholder: "Filter...",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

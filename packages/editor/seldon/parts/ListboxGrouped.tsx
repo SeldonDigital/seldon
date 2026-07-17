@@ -349,7 +349,7 @@ export function ListboxGrouped({
 const sdn: ListboxGroupedProps = {
   role: "listbox",
   "aria-hidden": "false",
-  className: "sdn-listbox sdn-listbox",
+  className: "sdn-listbox",
   frame: {
     wrapperElement: "div",
     role: "group",

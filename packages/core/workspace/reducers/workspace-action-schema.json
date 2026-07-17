@@ -1695,6 +1695,46 @@
         "payload": {
           "additionalProperties": false,
           "properties": {
+            "intent": {
+              "type": "string"
+            },
+            "level": {
+              "$ref": "#/definitions/EntryNodeLevel",
+              "description": "Declared component level, enforced for containment and export folder."
+            },
+            "name": {
+              "description": "Human-entered component name; the board key and export name derive from it.",
+              "type": "string"
+            },
+            "rootKind": {
+              "description": "Root template: a flex Container or a Frame. Both are opaque at the declared level.",
+              "enum": ["container", "frame"],
+              "type": "string"
+            },
+            "tags": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": ["level", "name", "rootKind"],
+          "type": "object"
+        },
+        "type": {
+          "const": "add_authored_component",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
             "playgroundKey": {
               "type": "string"
             }
@@ -1724,112 +1764,7 @@
           "type": "object"
         },
         "type": {
-          "const": "remove_component",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "properties": {
-            "catalogId": {
-              "type": "string"
-            }
-          },
-          "required": ["catalogId"],
-          "type": "object"
-        },
-        "type": {
-          "const": "remove_font_collection",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "properties": {
-            "catalogId": {
-              "type": "string"
-            }
-          },
-          "required": ["catalogId"],
-          "type": "object"
-        },
-        "type": {
-          "const": "remove_media",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "properties": {
-            "catalogId": {
-              "type": "string"
-            }
-          },
-          "required": ["catalogId"],
-          "type": "object"
-        },
-        "type": {
-          "const": "remove_icon_set",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "properties": {
-            "boardKey": {
-              "type": "string"
-            }
-          },
-          "required": ["boardKey"],
-          "type": "object"
-        },
-        "type": {
-          "const": "remove_theme",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "properties": {
-            "boardKey": {
-              "type": "string"
-            }
-          },
-          "required": ["boardKey"],
-          "type": "object"
-        },
-        "type": {
-          "const": "remove_playground",
+          "const": "remove_board",
           "type": "string"
         }
       },
@@ -1903,7 +1838,7 @@
               "type": "boolean"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>",
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>",
               "description": "Every catalog property key and the stored value shape for that key on a node.\nKeys follow the same category sequence editors use when grouping fields.\nThe type is partial so each component only declares the keys it supports."
             }
           },
@@ -2192,7 +2127,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
             }
           },
           "required": ["nodeId", "properties"],
@@ -2326,7 +2261,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
             },
             "state": {
               "description": "A state name key used inside a node's `states` map. It is either a reserved\nname or a workspace custom-state key. Never `normal`, which lives in\n`overrides`.",
@@ -2652,7 +2587,7 @@
               "type": "string"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
             }
           },
           "required": ["boardKey", "properties"],
@@ -4532,21 +4467,6 @@
       ],
       "type": "string"
     },
-    "AlignExactValue": {
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "const": "exact",
-          "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/Align"
-        }
-      },
-      "required": ["type", "value"],
-      "type": "object"
-    },
     "AlignOptionValue": {
       "additionalProperties": false,
       "properties": {
@@ -5023,22 +4943,6 @@
                 },
                 "value": {
                   "type": "null"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
                 }
               },
               "required": ["type", "value"],
@@ -6175,9 +6079,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/ImageFitExactValue"
             },
             {
               "$ref": "#/definitions/ImageFitOptionValue"
@@ -8072,22 +7973,6 @@
       "enum": ["ltr", "rtl"],
       "type": "string"
     },
-    "DirectionExactValue": {
-      "additionalProperties": false,
-      "description": "Stores a reading direction as a freeform exact value.",
-      "properties": {
-        "type": {
-          "const": "exact",
-          "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/Direction"
-        }
-      },
-      "required": ["type", "value"],
-      "type": "object"
-    },
     "DirectionOptionValue": {
       "additionalProperties": false,
       "description": "Picks left-to-right or right-to-left as an option value.",
@@ -8105,25 +7990,9 @@
       "type": "object"
     },
     "Display": {
-      "description": "Whether the node appears in the workspace, stays hidden, or drops out of the tree.",
-      "enum": ["show", "hide", "exclude"],
+      "description": "Whether the node appears on the canvas, stays hidden, renders as an opt-in\nslot, shows only while authoring, or drops out of the tree.\n\n- `SHOW`: shown on the canvas and emitted by the factory.\n- `HIDE`: hidden on the canvas and emitted by the factory as `visibility:\n  hidden`, so it still occupies layout space.\n- `STUB`: shown on the canvas; emitted as an opt-in slot that renders nothing\n  by default and can be populated by a caller.\n- `MOCK`: shown on the canvas but not emitted by the factory, so it exists\n  only while authoring.\n- `EXCLUDE`: hidden on the canvas and not emitted by the factory.",
+      "enum": ["show", "hide", "stub", "mock", "exclude"],
       "type": "string"
-    },
-    "DisplayExactValue": {
-      "additionalProperties": false,
-      "description": "Stores show, hide, or exclude as a freeform exact value from the Display enum.",
-      "properties": {
-        "type": {
-          "const": "exact",
-          "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/Display"
-        }
-      },
-      "required": ["type", "value"],
-      "type": "object"
     },
     "DisplayOptionValue": {
       "additionalProperties": false,
@@ -8140,6 +8009,10 @@
       },
       "required": ["type", "value"],
       "type": "object"
+    },
+    "EntryNodeLevel": {
+      "enum": ["element", "frame", "module", "part", "primitive", "screen"],
+      "type": "string"
     },
     "FontFamilyOptionValue": {
       "additionalProperties": false,
@@ -8889,22 +8762,6 @@
                 },
                 "value": {
                   "type": "null"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
                 }
               },
               "required": ["type", "value"],
@@ -9861,22 +9718,6 @@
       "enum": ["original", "contain", "cover", "stretch"],
       "type": "string"
     },
-    "ImageFitExactValue": {
-      "additionalProperties": false,
-      "description": "Stores an image fit keyword as a freeform exact value from the ImageFit enum.",
-      "properties": {
-        "type": {
-          "const": "exact",
-          "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/ImageFit"
-        }
-      },
-      "required": ["type", "value"],
-      "type": "object"
-    },
     "ImageFitOptionValue": {
       "additionalProperties": false,
       "properties": {
@@ -10550,22 +10391,6 @@
       "enum": ["horizontal", "vertical"],
       "type": "string"
     },
-    "OrientationExactValue": {
-      "additionalProperties": false,
-      "description": "Stores a horizontal or vertical orientation as a freeform exact value.",
-      "properties": {
-        "type": {
-          "const": "exact",
-          "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-          "type": "string"
-        },
-        "value": {
-          "$ref": "#/definitions/Orientation"
-        }
-      },
-      "required": ["type", "value"],
-      "type": "object"
-    },
     "OrientationOptionValue": {
       "additionalProperties": false,
       "description": "Picks horizontal or vertical layout as an option value.",
@@ -11138,7 +10963,7 @@
       },
       "type": "object"
     },
-    "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>": {
+    "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>": {
       "additionalProperties": false,
       "properties": {
         "accentColor": {
@@ -11233,9 +11058,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/AlignExactValue"
             },
             {
               "$ref": "#/definitions/AlignOptionValue"
@@ -11346,22 +11168,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
@@ -11377,7 +11183,7 @@
               "type": "object"
             }
           ],
-          "description": "Not set, a freeform boolean, or a picked boolean for the disabled state exposed to assistive technologies."
+          "description": "Not set, or a picked boolean for the disabled state exposed to assistive technologies."
         },
         "ariaExpanded": {
           "anyOf": [
@@ -11399,22 +11205,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
@@ -11430,7 +11220,7 @@
               "type": "object"
             }
           ],
-          "description": "Not set, a freeform boolean, or a picked boolean for the expanded state of an expandable node."
+          "description": "Not set, or a picked boolean for the expanded state of an expandable node."
         },
         "ariaHasPopup": {
           "anyOf": [
@@ -11476,11 +11266,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -11620,22 +11410,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
@@ -11651,7 +11425,7 @@
               "type": "object"
             }
           ],
-          "description": "Not set, a freeform boolean, or a picked boolean for the read only state."
+          "description": "Not set, or a picked boolean for the read only state."
         },
         "ariaRequired": {
           "anyOf": [
@@ -11673,22 +11447,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
@@ -11704,7 +11462,7 @@
               "type": "object"
             }
           ],
-          "description": "Not set, a freeform boolean, or a picked boolean for whether input is required."
+          "description": "Not set, or a picked boolean for whether input is required."
         },
         "ariaSelected": {
           "anyOf": [
@@ -11726,22 +11484,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
@@ -11757,7 +11499,7 @@
               "type": "object"
             }
           ],
-          "description": "Not set, a freeform boolean, or a picked boolean for the selected state of a selectable node."
+          "description": "Not set, or a picked boolean for the selected state of a selectable node."
         },
         "autoPlay": {
           "anyOf": [
@@ -11779,11 +11521,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -12193,9 +11935,6 @@
               "type": "object"
             },
             {
-              "$ref": "#/definitions/AlignExactValue"
-            },
-            {
               "$ref": "#/definitions/AlignOptionValue"
             }
           ]
@@ -12220,22 +11959,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
@@ -12251,7 +11974,7 @@
               "type": "object"
             }
           ],
-          "description": "Not set, a freeform boolean, or a picked boolean option for toggles, checkboxes, and similar controls."
+          "description": "Not set, or a picked boolean option for toggles, checkboxes, and similar controls."
         },
         "clip": {
           "anyOf": [
@@ -12273,11 +11996,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -12582,11 +12305,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -12801,9 +12524,6 @@
               "type": "object"
             },
             {
-              "$ref": "#/definitions/DirectionExactValue"
-            },
-            {
               "$ref": "#/definitions/DirectionOptionValue"
             }
           ]
@@ -12825,9 +12545,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/DisplayExactValue"
             },
             {
               "$ref": "#/definitions/DisplayOptionValue"
@@ -13635,9 +13352,6 @@
               "type": "object"
             },
             {
-              "$ref": "#/definitions/ImageFitExactValue"
-            },
-            {
               "$ref": "#/definitions/ImageFitOptionValue"
             }
           ]
@@ -13785,11 +13499,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -13900,11 +13614,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -13981,9 +13695,6 @@
               },
               "required": ["type", "value"],
               "type": "object"
-            },
-            {
-              "$ref": "#/definitions/OrientationExactValue"
             },
             {
               "$ref": "#/definitions/OrientationOptionValue"
@@ -14148,22 +13859,6 @@
                 },
                 "value": {
                   "type": "null"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "description": "Exact string payload on a node.",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14531,22 +14226,6 @@
                 },
                 "value": {
                   "type": "null"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "description": "Exact string payload on a node.",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -15008,11 +14687,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -15230,11 +14909,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {
@@ -15266,11 +14945,11 @@
             },
             {
               "additionalProperties": false,
-              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
               "properties": {
                 "type": {
-                  "const": "exact",
-                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
                   "type": "string"
                 },
                 "value": {

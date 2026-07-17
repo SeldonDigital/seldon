@@ -6,7 +6,12 @@
  */
 import { ComponentLevel } from "../../components/constants"
 
-export type Entity = "board" | "userVariant" | "defaultVariant" | "instance"
+export type Entity =
+  | "board"
+  | "userVariant"
+  | "defaultVariant"
+  | "authoredVariant"
+  | "instance"
 
 /**
  * Maps each policy entity to its rule row. Shape for non-delete mutation rules.
@@ -15,6 +20,7 @@ export interface Config {
   board: EntityConfig
   userVariant: EntityConfig
   defaultVariant: EntityConfig
+  authoredVariant: EntityConfig
   instance: EntityConfig
 }
 
@@ -55,6 +61,7 @@ export interface DeleteConfig {
   board: EntityConfig
   userVariant: EntityConfig
   defaultVariant: EntityConfig
+  authoredVariant: EntityConfig
   instance: DeleteInstanceConfig
 }
 

@@ -137,6 +137,7 @@ const sdn: ComboboxFieldSearchProps = {
     "data-seldon-ref": "searchIcon",
   },
   input: {
+    placeholder: "Search for...",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

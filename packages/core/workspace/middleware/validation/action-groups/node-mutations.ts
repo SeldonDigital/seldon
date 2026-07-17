@@ -1,4 +1,6 @@
+import { catalog } from "../../../../components/catalog"
 import type { ComponentId } from "../../../../components/constants"
+import { isComponentId } from "../../../../components/constants"
 import { isMatchColorValue } from "../../../../helpers/type-guards/value/is-computed-value"
 import {
   COLOR_SIBLING_COMPOUND_KEYS,
@@ -10,6 +12,10 @@ import { mergeProperties } from "../../../../properties/helpers/merge-properties
 import { rules } from "../../../../rules/config/rules.config"
 import { getComputedTheme } from "../../../compute"
 import { DEFAULT_THEME_ID, ErrorMessages } from "../../../constants"
+import {
+  authoredBoardKeyFromName,
+  authoredExportNameFromName,
+} from "../../../helpers/components/authored-board-key"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
@@ -30,7 +36,12 @@ import {
 } from "../../../helpers/nodes/sandbox"
 import { getEffectiveProperties } from "../../../helpers/properties"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
-import { isComponentBoard, isPlaygroundBoard } from "../../../model/components"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+  isPlaygroundBoard,
+} from "../../../model/components"
+import type { EntryNodeLevel } from "../../../model/entry-node"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import {
   nodeRelationshipService,
@@ -227,6 +238,10 @@ export function validateNodeMutation(
         !typeCheckingService.isDefaultVariant(node),
         "Cannot remove a default catalog variant",
       )
+      check(
+        !typeCheckingService.isAuthored(node),
+        "Cannot remove an authored root; remove the authored board instead",
+      )
       break
     }
     case "set_node_properties": {
@@ -355,6 +370,11 @@ export function validateResetComponentToCatalog(
   action: Extract<Action, { type: "reset_component_to_catalog" }>,
 ): void {
   boardValidators.exists(workspace, action.payload.boardKey)
+  const board = workspace.boards[action.payload.boardKey]
+  check(
+    !board || !isAuthoredBoard(board),
+    "Authored boards have no catalog schema to reset to",
+  )
   const usages = collectExternalVariantUsage(action.payload.boardKey, workspace)
   if (usages.length > 0) {
     throw new WorkspaceValidationError(
@@ -371,8 +391,61 @@ export function validateAddVariant(
   boardValidators.exists(workspace, action.payload.boardKey)
   const board = workspace.boards[action.payload.boardKey]
   check(
-    board && (isComponentBoard(board) || isPlaygroundBoard(board)),
-    "add_variant requires a component or playground board",
+    board &&
+      (isComponentBoard(board) ||
+        isAuthoredBoard(board) ||
+        isPlaygroundBoard(board)),
+    "add_variant requires a component, authored, or playground board",
+  )
+}
+
+/** Levels an authored component may declare. Primitives and frames are not authorable. */
+const AUTHORED_COMPONENT_LEVELS: readonly EntryNodeLevel[] = [
+  "element",
+  "part",
+  "module",
+  "screen",
+]
+
+/** Cached set of catalog schema names, used to reject colliding authored names. */
+const CATALOG_COMPONENT_NAMES = new Set<string>(
+  Object.values(catalog)
+    .flat()
+    .map((schema) => schema.name),
+)
+
+export function validateAddAuthoredComponent(
+  workspace: Workspace,
+  action: Extract<Action, { type: "add_authored_component" }>,
+): void {
+  const { name, level } = action.payload
+
+  const boardKey = authoredBoardKeyFromName(name)
+  check(
+    boardKey.length > 0,
+    "Authored component name must contain a letter or number",
+  )
+
+  // Reject a key already used by a board or playground so the new authored
+  // board never shadows an existing row.
+  boardValidators.playgroundKeyIsFree(workspace, boardKey)
+
+  check(
+    AUTHORED_COMPONENT_LEVELS.includes(level),
+    "Authored component level must be element, part, module, or screen",
+  )
+
+  // Reject a key that is a catalog component id or a name that matches a catalog
+  // component, so authored boards never shadow a catalog board key or collide
+  // with an exported component filename.
+  check(
+    !isComponentId(boardKey),
+    `Authored component name collides with catalog component id "${boardKey}"`,
+  )
+  const exportName = authoredExportNameFromName(name)
+  check(
+    !CATALOG_COMPONENT_NAMES.has(exportName),
+    `Authored component name collides with catalog component "${exportName}"`,
   )
 }
 

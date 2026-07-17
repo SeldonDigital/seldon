@@ -219,10 +219,7 @@ function buildBase() {
 
   // Every font collection catalog id is already a board, so `add_font_collection`
   // needs a base where one removable collection board has been dropped first.
-  const baseNoFc = dispatch(
-    ws,
-    act("remove_font_collection", { catalogId: removableFc }),
-  )
+  const baseNoFc = dispatch(ws, act("remove_board", { boardKey: removableFc }))
 
   return {
     base: ws,
@@ -332,17 +329,20 @@ const CASES: Array<[string, WorkspaceAction, Workspace?]> = [
       target: { parentId: ids.uv1Id },
     }),
   ],
-  ["remove_component", act("remove_component", { boardKey: BOARD })],
-  ["remove_playground", act("remove_playground", { boardKey: "pg-1" })],
+  ["remove_board (component)", act("remove_board", { boardKey: BOARD })],
+  ["remove_board (playground)", act("remove_board", { boardKey: "pg-1" })],
   [
-    "remove_font_collection",
-    act("remove_font_collection", { catalogId: ids.removableFc }),
+    "remove_board (font_collection)",
+    act("remove_board", { boardKey: ids.removableFc }),
   ],
   [
-    "remove_icon_set",
-    act("remove_icon_set", { catalogId: ids.removableIconSet }),
+    "remove_board (icon_set)",
+    act("remove_board", { boardKey: ids.removableIconSet }),
   ],
-  ["remove_theme", act("remove_theme", { boardKey: ids.removableTheme })],
+  [
+    "remove_board (theme)",
+    act("remove_board", { boardKey: ids.removableTheme }),
+  ],
   [
     "duplicate_playground",
     act("duplicate_playground", {

@@ -85,6 +85,10 @@ export const rules: RulesConfig = {
         allowed: false,
         propagation: "none",
       },
+      authoredVariant: {
+        allowed: true,
+        propagation: "none",
+      },
       instance: {
         allowed: true,
         propagation: "downstream",
@@ -107,6 +111,10 @@ export const rules: RulesConfig = {
         allowed: false,
         propagation: "downstream",
       },
+      authoredVariant: {
+        allowed: true,
+        propagation: "downstream",
+      },
       instance: {
         allowed: true,
         propagation: "downstream",
@@ -126,6 +134,10 @@ export const rules: RulesConfig = {
         propagation: "downstream",
       },
       defaultVariant: {
+        allowed: true,
+        propagation: "downstream",
+      },
+      authoredVariant: {
         allowed: true,
         propagation: "downstream",
       },
@@ -151,6 +163,10 @@ export const rules: RulesConfig = {
         allowed: true,
         propagation: "none",
       },
+      authoredVariant: {
+        allowed: true,
+        propagation: "none",
+      },
       instance: {
         allowed: true,
         propagation: "downstream",
@@ -171,6 +187,10 @@ export const rules: RulesConfig = {
       },
       defaultVariant: {
         allowed: false,
+        propagation: "downstream",
+      },
+      authoredVariant: {
+        allowed: true,
         propagation: "downstream",
       },
       instance: {
@@ -204,6 +224,10 @@ export const rules: RulesConfig = {
         allowed: true,
         propagation: "none",
       },
+      authoredVariant: {
+        allowed: true,
+        propagation: "none",
+      },
       instance: {
         allowed: true,
         propagation: "none",
@@ -228,6 +252,10 @@ export const rules: RulesConfig = {
         propagation: "none",
       },
       defaultVariant: {
+        allowed: true,
+        propagation: "none",
+      },
+      authoredVariant: {
         allowed: true,
         propagation: "none",
       },
@@ -257,6 +285,10 @@ export const rules: RulesConfig = {
         allowed: true,
         propagation: "none",
       },
+      authoredVariant: {
+        allowed: true,
+        propagation: "none",
+      },
       instance: {
         allowed: true,
         propagation: "none",
@@ -276,6 +308,10 @@ export const rules: RulesConfig = {
         propagation: "downstream",
       },
       defaultVariant: {
+        allowed: true,
+        propagation: "downstream",
+      },
+      authoredVariant: {
         allowed: true,
         propagation: "downstream",
       },
@@ -301,6 +337,10 @@ export const rules: RulesConfig = {
         allowed: false,
         propagation: "downstream",
       },
+      authoredVariant: {
+        allowed: true,
+        propagation: "downstream",
+      },
       instance: {
         allowed: false,
         propagation: "downstream",
@@ -322,6 +362,10 @@ export const rules: RulesConfig = {
       },
       defaultVariant: {
         allowed: false,
+        propagation: "none",
+      },
+      authoredVariant: {
+        allowed: true,
         propagation: "none",
       },
       instance: {
@@ -346,6 +390,10 @@ export const rules: RulesConfig = {
         allowed: false,
         propagation: "none",
       },
+      authoredVariant: {
+        allowed: true,
+        propagation: "none",
+      },
       instance: {
         allowed: true,
         propagation: "downstream",
@@ -365,6 +413,10 @@ export const rules: RulesConfig = {
         propagation: "none",
       },
       defaultVariant: {
+        allowed: false,
+        propagation: "none",
+      },
+      authoredVariant: {
         allowed: false,
         propagation: "none",
       },

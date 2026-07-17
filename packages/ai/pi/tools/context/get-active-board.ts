@@ -4,6 +4,11 @@ import {
 } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
+
 import { activeBoardSection } from "../../../prompt/context-sections/active-board"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
@@ -27,7 +32,7 @@ export function createGetActiveBoardTool(
         resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
       if (
         !activeBoard ||
-        activeBoard.type !== "component" ||
+        (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard)) ||
         resolvedKey === undefined
       ) {
         return textResult("No active component board is selected.")

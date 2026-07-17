@@ -1,4 +1,5 @@
 import {
+  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isMediaBoard,
@@ -76,7 +77,11 @@ export function shouldBlockDeletableBoardRemoval(
   workspace: Workspace,
   boardKey: BoardKey,
 ): boolean {
-  if (isComponentBoard(board) || isPlaygroundBoard(board)) {
+  if (
+    isComponentBoard(board) ||
+    isAuthoredBoard(board) ||
+    isPlaygroundBoard(board)
+  ) {
     if (areBoardVariantsInUse(board, workspace)) return true
     return false
   }

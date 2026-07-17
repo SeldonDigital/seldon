@@ -58,20 +58,23 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-neurology"
     | "material-outputCircle"
     | "material-buildCircle"
+    | "seldon-iconSocialTwitter"
+    | "seldon-iconSocialLinkedin"
+    | "seldon-iconSocialInstagram"
+    | "material-notifications"
+    | "seldon-frame"
+    | "material-gridOn"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
     | "seldon-iconSocialTiktok"
     | "seldon-iconSocialWhatsapp"
-    | "seldon-iconSocialLinkedin"
     | "seldon-iconSocialSpotify"
     | "seldon-iconSocialTwitch"
     | "seldon-iconSocialYoutube"
     | "seldon-iconSocialDiscord"
-    | "seldon-iconSocialTwitter"
     | "seldon-iconSocialMedium"
     | "seldon-iconSocialTelegram"
-    | "seldon-iconSocialInstagram"
     | "seldon-iconSocialGithub"
     | "seldon-deviceCustom"
     | "seldon-codeCube"
@@ -115,7 +118,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-cursor"
     | "seldon-default"
     | "seldon-edited"
-    | "seldon-frame"
     | "seldon-missing"
     | "seldon-size"
     | "seldon-sketchCircle"
@@ -171,7 +173,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-workOutline"
     | "material-battery_0Bar"
     | "material-filterListOff"
-    | "material-gridOn"
     | "material-gridView"
     | "material-storage"
     | "material-tablet"
@@ -411,7 +412,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-margin"
     | "material-nearMeDisabled"
     | "material-networkCheck"
-    | "material-notifications"
     | "material-notificationsActive"
     | "material-notificationsNone"
     | "material-opacity"
@@ -590,20 +590,23 @@ const iconMap = {
   "material-neurology": Icons.IconMaterialNeurology,
   "material-outputCircle": Icons.IconMaterialOutputCircle,
   "material-buildCircle": Icons.IconMaterialBuildCircle,
+  "seldon-iconSocialTwitter": Icons.IconSocialTwitter,
+  "seldon-iconSocialLinkedin": Icons.IconSocialLinkedin,
+  "seldon-iconSocialInstagram": Icons.IconSocialInstagram,
+  "material-notifications": Icons.IconMaterialNotifications,
+  "seldon-frame": Icons.IconSeldonFrame,
+  "material-gridOn": Icons.IconMaterialGridOn,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
   "seldon-iconSocialTiktok": Icons.IconSocialTiktok,
   "seldon-iconSocialWhatsapp": Icons.IconSocialWhatsapp,
-  "seldon-iconSocialLinkedin": Icons.IconSocialLinkedin,
   "seldon-iconSocialSpotify": Icons.IconSocialSpotify,
   "seldon-iconSocialTwitch": Icons.IconSocialTwitch,
   "seldon-iconSocialYoutube": Icons.IconSocialYoutube,
   "seldon-iconSocialDiscord": Icons.IconSocialDiscord,
-  "seldon-iconSocialTwitter": Icons.IconSocialTwitter,
   "seldon-iconSocialMedium": Icons.IconSocialMedium,
   "seldon-iconSocialTelegram": Icons.IconSocialTelegram,
-  "seldon-iconSocialInstagram": Icons.IconSocialInstagram,
   "seldon-iconSocialGithub": Icons.IconSocialGithub,
   "seldon-deviceCustom": Icons.IconSeldonDeviceCustom,
   "seldon-codeCube": Icons.IconSeldonCodeCube,
@@ -647,7 +650,6 @@ const iconMap = {
   "seldon-cursor": Icons.IconSeldonCursor,
   "seldon-default": Icons.IconSeldonDefault,
   "seldon-edited": Icons.IconSeldonEdited,
-  "seldon-frame": Icons.IconSeldonFrame,
   "seldon-missing": Icons.IconSeldonMissing,
   "seldon-size": Icons.IconSeldonSize,
   "seldon-sketchCircle": Icons.IconSeldonSketchCircle,
@@ -703,7 +705,6 @@ const iconMap = {
   "material-workOutline": Icons.IconMaterialWorkOutline,
   "material-battery_0Bar": Icons.IconMaterialBattery_0Bar,
   "material-filterListOff": Icons.IconMaterialFilterListOff,
-  "material-gridOn": Icons.IconMaterialGridOn,
   "material-gridView": Icons.IconMaterialGridView,
   "material-storage": Icons.IconMaterialStorage,
   "material-tablet": Icons.IconMaterialTablet,
@@ -945,7 +946,6 @@ const iconMap = {
   "material-margin": Icons.IconMaterialMargin,
   "material-nearMeDisabled": Icons.IconMaterialNearMeDisabled,
   "material-networkCheck": Icons.IconMaterialNetworkCheck,
-  "material-notifications": Icons.IconMaterialNotifications,
   "material-notificationsActive": Icons.IconMaterialNotificationsActive,
   "material-notificationsNone": Icons.IconMaterialNotificationsNone,
   "material-opacity": Icons.IconMaterialOpacity,

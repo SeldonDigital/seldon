@@ -80,7 +80,7 @@ export function ChipSuggestion({
 //
 const sdn: ChipSuggestionProps = {
   "aria-hidden": "false",
-  className: "sdn-chip sdn-chip",
+  className: "sdn-chip",
   textLabel: {
     className: "sdn-text-label sdn-text-label--lug5",
   },

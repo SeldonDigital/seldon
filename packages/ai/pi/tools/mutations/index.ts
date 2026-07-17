@@ -3,7 +3,9 @@ import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
 import { createAddComponentTool } from "./add-component"
+import { createAddVariantTool } from "./add-variant"
 import { createApplyActionsTool } from "./apply-actions"
+import { createCreateAuthoredComponentTool } from "./create-authored-component"
 import { createDuplicateComponentTool } from "./duplicate-component"
 import { createInsertComponentTool } from "./insert-component"
 import { createInsertVariantInstanceTool } from "./insert-variant-instance"
@@ -41,9 +43,11 @@ export function createMutationTools(
   const tools: ToolDefinition[] = [
     createSetPropertiesTool(state, resolved),
     createAddComponentTool(state),
+    createCreateAuthoredComponentTool(state),
     createInsertComponentTool(state),
     createInsertVariantInstanceTool(state),
     createDuplicateComponentTool(state),
+    createAddVariantTool(state),
     createMoveComponentTool(state),
     createReorderComponentTool(state),
     createRemoveInstanceTool(state),

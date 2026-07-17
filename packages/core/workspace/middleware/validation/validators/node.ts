@@ -9,6 +9,10 @@ import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
 import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
 import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
 import { collectTreeRefIds } from "../../../helpers/nodes/collect-tree-ref-ids"
+import {
+  getEffectiveNodeLevel,
+  isEffectivelyAuthoredNode,
+} from "../../../helpers/nodes/get-effective-node-level"
 import type {
   Instance,
   Variant,
@@ -182,23 +186,46 @@ export const nodeValidators = {
     parentId: InstanceId | VariantId | ComponentId,
     childId: InstanceId | VariantId,
   ) => {
+    const parentNode = isComponentId(parentId)
+      ? undefined
+      : nodeRetrievalService.getNode(parentId, workspace)
     const parentComponentId = isComponentId(parentId)
       ? parentId
-      : getNodeComponentId(
-          nodeRetrievalService.getNode(parentId, workspace),
-          workspace,
-        )
+      : getNodeComponentId(parentNode!, workspace)
 
     const childNode = nodeRetrievalService.getNode(childId, workspace)
     const childComponent = getNodeComponentId(childNode, workspace)
+
+    const parentAuthored = parentNode
+      ? isEffectivelyAuthoredNode(parentNode, workspace)
+      : false
+    const childAuthored = isEffectivelyAuthoredNode(childNode, workspace)
+
+    const parentSchema = getComponentSchema(parentComponentId)
+    const childSchema = getComponentSchema(childComponent)
+
+    // When either side is an authored component, containment routes through the
+    // declared level, so a Container/Frame root does not turn it into a
+    // place-anywhere wildcard.
+    if (parentAuthored || childAuthored) {
+      const parentLevel = parentNode
+        ? getEffectiveNodeLevel(parentNode, workspace)
+        : parentSchema.level
+      const childLevel = getEffectiveNodeLevel(childNode, workspace)
+      const parentName = parentAuthored ? parentNode!.label : parentSchema.name
+      const childName = childAuthored ? childNode.label : childSchema.name
+      check(
+        typeCheckingService.canLevelContainLevel(parentLevel, childLevel),
+        ErrorMessages.invalidParentChildRelationship(parentName, childName),
+      )
+      return
+    }
 
     const canBeParent = typeCheckingService.canComponentBeParentOf(
       parentComponentId,
       childComponent,
     )
 
-    const parentSchema = getComponentSchema(parentComponentId)
-    const childSchema = getComponentSchema(childComponent)
     check(
       canBeParent,
       ErrorMessages.invalidParentChildRelationship(
@@ -280,18 +307,26 @@ export function validateComponentCanBeInserted(
       return { isValid: false, errors }
     }
 
-    const canBeParent = typeCheckingService.canComponentBeParentOf(
-      getNodeComponentId(targetParent, workspace),
-      componentId,
-    )
+    const parentComponentId = getNodeComponentId(targetParent, workspace)
+    const parentAuthored = isEffectivelyAuthoredNode(targetParent, workspace)
+    const childSchema = getComponentSchema(componentId)
+
+    const canBeParent = parentAuthored
+      ? typeCheckingService.canLevelContainLevel(
+          getEffectiveNodeLevel(targetParent, workspace),
+          childSchema.level,
+        )
+      : typeCheckingService.canComponentBeParentOf(
+          parentComponentId,
+          componentId,
+        )
     if (!canBeParent) {
-      const parentSchema = getComponentSchema(
-        getNodeComponentId(targetParent, workspace),
-      )
-      const childSchema = getComponentSchema(componentId)
+      const parentName = parentAuthored
+        ? targetParent.label
+        : getComponentSchema(parentComponentId).name
       errors.push(
         ErrorMessages.invalidParentChildRelationship(
-          parentSchema.name,
+          parentName,
           childSchema.name,
         ),
       )

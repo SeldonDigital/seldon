@@ -18,6 +18,7 @@ export interface InputRadioButtonProps extends InputHTMLAttributes<HTMLInputElem
   className?: string
   "data-seldon-ref"?: string
   ref?: Ref<HTMLInputElement>
+  placeholder?: string
   type?: string
 }
 
@@ -31,12 +32,14 @@ export interface InputRadioButtonProps extends InputHTMLAttributes<HTMLInputElem
  * @example
  * ```tsx
  * <InputRadioButton
+ *   placeholder="Placeholder text"
  *   type="radio"
  * />
  * ```
  *****/
 export function InputRadioButton({
   className = "",
+  placeholder = sdn.placeholder,
   type = sdn.type,
   ...props
 }: InputRadioButtonProps) {
@@ -49,7 +52,12 @@ export function InputRadioButton({
   // React JSX component with merged default and custom properties
   //
   return (
-    <HTMLInput className={inputRadioButtonClassName} type={type} {...props} />
+    <HTMLInput
+      className={inputRadioButtonClassName}
+      placeholder={placeholder}
+      type={type}
+      {...props}
+    />
   )
 }
 
@@ -57,6 +65,7 @@ export function InputRadioButton({
 // Default property values
 //
 const sdn: InputRadioButtonProps = {
+  placeholder: "Placeholder text",
   type: "radio",
   className: "sdn-input-checkbox sdn-input",
 }

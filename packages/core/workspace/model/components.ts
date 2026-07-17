@@ -28,6 +28,31 @@ export interface ComponentBoard {
   __editor?: Record<string, unknown>
 }
 
+/**
+ * A workspace-authored component board with no catalog schema. Its root node is
+ * an `authored` entry that templates from a Container or Frame catalog id, but
+ * the board owns identity, name, and declared `level`. The declared level is
+ * enforced for containment and picks the export folder. Authored boards support
+ * user variants and instances the same way component boards do, but they have
+ * no reset-to-catalog for the board, the authored root, or its variants.
+ */
+export interface AuthoredComponentBoard {
+  type: "authored-component"
+  /** Mirrors the board's map key so a row resolves its own key. */
+  id?: BoardKey
+  /** Declared component level, enforced for containment and export folder. */
+  level: EntryNodeLevel
+  label: string
+  author?: string
+  intent?: string
+  tags?: string[]
+  license?: WorkspaceStringMap
+  componentTheme: ComponentThemeRef
+  componentProperties: Properties
+  variants: ComponentTreeRef[]
+  __editor?: Record<string, unknown>
+}
+
 export interface PlaygroundBoard {
   type: "playground"
   /** Mirrors the playground container's map key so a row resolves its own key. */
@@ -103,6 +128,7 @@ export interface MediaBoard {
 
 export type Board =
   | ComponentBoard
+  | AuthoredComponentBoard
   | PlaygroundBoard
   | ThemeBoard
   | FontCollectionBoard
@@ -111,6 +137,10 @@ export type Board =
 
 export function isComponentBoard(entry: Board): entry is ComponentBoard {
   return entry.type === "component"
+}
+
+export function isAuthoredBoard(entry: Board): entry is AuthoredComponentBoard {
+  return entry.type === "authored-component"
 }
 
 export function isPlaygroundBoard(entry: Board): entry is PlaygroundBoard {

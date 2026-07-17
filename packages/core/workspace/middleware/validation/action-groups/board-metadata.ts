@@ -1,8 +1,11 @@
 import { ComponentId } from "../../../../components/constants"
+import { isComponentId } from "../../../../components/constants"
 import { invariant } from "../../../../index"
 import { ValueType } from "../../../../properties"
 import { isResourceType } from "../../../helpers/components/is-resource-type"
-import type { Action, Board, Workspace } from "../../../types"
+import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
+import { isAuthoredBoard } from "../../../model/components"
+import type { Action, Board, EntryNode, Workspace } from "../../../types"
 import {
   boardValidators,
   propertyValidators,
@@ -29,15 +32,33 @@ function assertBoardHasAllowedKind(
 
 /**
  * Schema id used to validate a board's properties. Resource boards key by their
- * resource id rather than a ComponentId, so they validate against the BOARD schema.
+ * resource id rather than a ComponentId, so they validate against the BOARD
+ * schema. Authored boards have no catalog schema of their own, so they validate
+ * against their ghost root component (Container or Frame): the authored
+ * component's property vocabulary is that root's, even though the root is not
+ * the board's template or catalogId.
  */
 function resolvePropertySchemaId(
   board: Board | undefined,
   boardKey: string,
+  workspace: Workspace,
 ): ComponentId {
-  return board && isResourceType(board)
-    ? ComponentId.BOARD
-    : (boardKey as ComponentId)
+  if (board && isResourceType(board)) {
+    return ComponentId.BOARD
+  }
+  if (board && isAuthoredBoard(board)) {
+    const rootId = board.variants[0]?.id
+    const rootNode = rootId
+      ? (workspace.nodes[rootId] as EntryNode | undefined)
+      : undefined
+    const catalogId = rootNode ? getNodeCatalogId(rootNode, workspace) : null
+    invariant(
+      catalogId && isComponentId(catalogId),
+      `Authored board ${boardKey} has no resolvable ghost component`,
+    )
+    return catalogId
+  }
+  return boardKey as ComponentId
 }
 
 const LICENSE_BOARDS = [
@@ -124,7 +145,7 @@ export function validateBoardMetadata(
       const boardKey = action.payload.boardKey
       boardValidators.exists(workspace, boardKey)
       const board = workspace.boards[boardKey]
-      const schemaId = resolvePropertySchemaId(board, boardKey)
+      const schemaId = resolvePropertySchemaId(board, boardKey, workspace)
       propertyValidators.keys(action.payload.properties, schemaId, board, {
         rejectDottedKeys: true,
       })
@@ -143,7 +164,7 @@ export function validateBoardMetadata(
         {
           [action.payload.propertyKey]: { type: ValueType.EMPTY, value: null },
         },
-        resolvePropertySchemaId(board, boardKey),
+        resolvePropertySchemaId(board, boardKey, workspace),
         board,
       )
       return

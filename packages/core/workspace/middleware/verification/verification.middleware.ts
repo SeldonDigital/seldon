@@ -20,6 +20,7 @@ import {
 } from "../../helpers/nodes/sandbox"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
+  isAuthoredBoard,
   isFontCollectionBoard,
   isIconSetBoard,
   isThemeBoard,
@@ -172,7 +173,8 @@ const validators = {
       if (
         isIconSetBoard(board) ||
         isThemeBoard(board) ||
-        isFontCollectionBoard(board)
+        isFontCollectionBoard(board) ||
+        isAuthoredBoard(board)
       ) {
         return
       }
@@ -206,6 +208,48 @@ const validators = {
         )
       }
     })
+  },
+
+  /**
+   * Validates authored board roots. An authored board has exactly one `authored`
+   * root at `variants[0]`, and an `authored` node never appears as a variant
+   * root of a component or playground board. Authored components reused inside
+   * other boards appear as `instance` nodes, so this stays a root-level check.
+   */
+  authoredRootsAreValid: (workspace: Workspace) => {
+    const nodes = getWorkspaceNodes(workspace)
+
+    for (const board of Object.values(workspace.boards)) {
+      if (!isAuthoredBoard(board)) continue
+      check(
+        board.variants.length > 0,
+        "Authored board is missing its authored root.",
+      )
+      const rootId = board.variants[0]?.id
+      const rootNode = rootId ? nodes[rootId] : undefined
+      check(
+        Boolean(rootNode) && rootNode!.type === "authored",
+        `Authored board root ${rootId} must be an authored node.`,
+      )
+      for (let index = 1; index < board.variants.length; index++) {
+        const variant = nodes[board.variants[index]!.id]
+        check(
+          !variant || variant.type !== "authored",
+          `Authored board ${rootId} has more than one authored root.`,
+        )
+      }
+    }
+
+    for (const board of getCompositionContainers(workspace)) {
+      if (isAuthoredBoard(board) || isResourceType(board)) continue
+      for (const ref of board.variants) {
+        const variant = nodes[ref.id]
+        check(
+          !variant || variant.type !== "authored",
+          `Authored node ${ref.id} may only be an authored board root.`,
+        )
+      }
+    }
   },
 
   /**
@@ -345,6 +389,10 @@ const VERIFICATION_CHECKS: Array<[string, (workspace: Workspace) => void]> = [
   [
     "One default variant per board",
     (w) => validators.oneDefaultVariantPerBoard(w),
+  ],
+  [
+    "Authored board roots are valid",
+    (w) => validators.authoredRootsAreValid(w),
   ],
   ["All node map IDs are unique", (w) => validators.uniqueIds(w)],
   ["No dangling variants", (w) => validators.noDanglingVariants(w)],

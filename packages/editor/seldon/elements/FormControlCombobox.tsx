@@ -168,7 +168,7 @@ export function FormControlCombobox({
 //
 const sdn: FormControlComboboxProps = {
   "aria-hidden": "false",
-  className: "sdn-form-control sdn-form-control",
+  className: "sdn-form-control",
   textLabel: {
     className: "sdn-text-label sdn-text-label--fwkw",
   },
@@ -182,6 +182,7 @@ const sdn: FormControlComboboxProps = {
     className: "sdn-icon sdn-icon--xi68",
   },
   input: {
+    placeholder: "Placeholder text",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

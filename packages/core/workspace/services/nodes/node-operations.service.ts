@@ -28,6 +28,7 @@ import {
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import {
+  isAuthoredBoard,
   isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
@@ -91,6 +92,11 @@ function cloneEntryNodeAsInstance(
   clone.origin = "user"
   // A ref must stay globally unique; never carry it onto a copy.
   delete clone.ref
+  // Born linked: an instance inherits its source's properties and states through
+  // the template link, so it starts with none of its own. Copying them would
+  // freeze the source's values and shadow later edits to the source.
+  clone.overrides = {}
+  delete clone.states
   const link = parseNodeLink(row.template)
   if (link?.kind === "node" && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
@@ -194,26 +200,15 @@ export class NodeOperationsService {
   }
 
   public deleteBoardByKey(boardKey: BoardKey, workspace: Workspace): Workspace {
+    if (workspace.playgrounds?.[boardKey]) {
+      return this.deletePlaygroundByKey(boardKey, workspace)
+    }
+
     const board = workspace.boards[boardKey]
     if (!board) return workspace
 
-    if (isComponentBoard(board)) {
+    if (isComponentBoard(board) || isAuthoredBoard(board)) {
       return this.deleteBoard(boardKey as ComponentId, workspace)
-    }
-
-    if (isPlaygroundBoard(board)) {
-      const workspaceAfterDeletion = mutateWorkspace(workspace, (draft) => {
-        const b = draft.boards[boardKey]
-        if (!b || !isPlaygroundBoard(b)) return
-
-        for (const rootId of getBoardVariantRootIds(b)) {
-          this._deleteVariantFromDraft(rootId as VariantId, draft)
-        }
-
-        delete draft.boards[boardKey]
-      })
-
-      return boardOrderService.realignBoardOrder(workspaceAfterDeletion)
     }
 
     if (isThemeBoard(board)) {
@@ -424,7 +419,9 @@ export class NodeOperationsService {
         const located = findBoardContainingTreeNodeId(draft, node.id)
         invariant(located, ErrorMessages.componentNotFoundForVariant(node.id))
         invariant(
-          isComponentBoard(located.board) || isPlaygroundBoard(located.board),
+          isComponentBoard(located.board) ||
+            isAuthoredBoard(located.board) ||
+            isPlaygroundBoard(located.board),
           `duplicateNode: unsupported board type for ${node.id}`,
         )
 
@@ -438,8 +435,12 @@ export class NodeOperationsService {
           `duplicateNode: missing catalog template for variant ${node.id}`,
         )
 
+        // Use the board key, not the catalog template id, so uniqueness is
+        // scoped to this board's own variants. For catalog component boards the
+        // key equals the catalog id, so this is identical to before; for
+        // authored boards it fixes label collisions like duplicate "Frame 01".
         const label = workspaceMutationService.getInitialVariantLabel(
-          componentId,
+          located.boardKey as ComponentId,
           draft,
         )
         const plan = buildDuplicateEntryVariantSubtreePlan(
@@ -640,7 +641,9 @@ export class NodeOperationsService {
       label: source.label,
       theme: source.theme,
       template: formatNodeLink(nodeId),
-      overrides: structuredClone((source as EntryNode).overrides),
+      // Born linked: inherit the source variant through the template link rather
+      // than baking a copy of its overrides, so later source edits stay live.
+      overrides: {},
       origin: "user",
     }
 
@@ -677,9 +680,13 @@ export class NodeOperationsService {
       id: newRootId,
       type: "instance",
       template: formatNodeLink(nodeId),
+      // Born linked: inherit the source instance through the template link, so
+      // the copy tracks it live instead of freezing its current values.
+      overrides: {},
       origin: "user",
     }
     delete newNodes[newRootId].ref
+    delete newNodes[newRootId].states
 
     let newTreeRef: ComponentTreeRef = { id: newRootId }
 

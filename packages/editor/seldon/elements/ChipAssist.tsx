@@ -97,7 +97,7 @@ export function ChipAssist({
 //
 const sdn: ChipAssistProps = {
   "aria-hidden": "false",
-  className: "sdn-chip sdn-chip",
+  className: "sdn-chip",
   icon: {
     icon: "material-calendarToday",
     "aria-hidden": "true",

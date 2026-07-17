@@ -17,6 +17,7 @@ import {
   Workspace,
 } from "../../types"
 import {
+  getInitialAuthoredComponentLabel,
   getInitialComponentLabel,
   getInitialVariantLabel,
   setNodeEditorData,
@@ -96,6 +97,10 @@ export class WorkspaceMutationService {
 
   public getInitialComponentLabel(componentId: ComponentId): string {
     return getInitialComponentLabel(componentId)
+  }
+
+  public getInitialAuthoredComponentLabel(name: string): string {
+    return getInitialAuthoredComponentLabel(name)
   }
 
   public setNodeProperties(

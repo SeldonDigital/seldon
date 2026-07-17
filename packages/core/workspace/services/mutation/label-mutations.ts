@@ -11,7 +11,6 @@ import {
   applyNodeRepeat,
 } from "../../helpers/nodes/node-repeat"
 import { Board, InstanceId, VariantId, Workspace } from "../../types"
-import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { withNodeMutation } from "../shared/workspace-operation-helpers"
 import { typeCheckingService } from "../type-checking/type-checking.service"
 
@@ -98,21 +97,26 @@ export function getInitialVariantLabel(
       .map((node) => node.label),
   )
 
-  const defaultVariant = board
-    ? nodeRetrievalService.getDefaultVariant(componentId, workspace)
-    : undefined
-  const base =
-    defaultVariant?.label && defaultVariant.label !== "Default"
-      ? defaultVariant.label
-      : (board?.label ?? defaultVariant?.label ?? "Variant")
-
-  return getNextVariantLabel(base, existingLabels)
+  // Use a neutral base so the label never repeats the board or catalog name.
+  // The export code name prepends that name already, so basing the label on it
+  // produced a doubled name such as "DialogDialog_01"; "Variant NN" yields the
+  // clean "DialogVariant_01" for both authored and component variants.
+  return getNextVariantLabel("Variant", existingLabels)
 }
 
 /** Pluralizes the component schema name for a new board label, such as "Buttons". */
 export function getInitialComponentLabel(componentId: ComponentId): string {
   const schema = findComponentSchema(componentId)
   return schema ? plural(schema.name) : `Unknown Component (${componentId})`
+}
+
+/**
+ * Pluralizes an authored component's name for its board label, such as
+ * "Dialogs". The board label is a plural grouping convention; the authored root
+ * node keeps the singular name that export and code names read.
+ */
+export function getInitialAuthoredComponentLabel(name: string): string {
+  return plural(name)
 }
 
 function collectVariantNodeIdsOnBoard(board: Board): Set<string> {

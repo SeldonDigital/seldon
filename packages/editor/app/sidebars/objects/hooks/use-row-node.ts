@@ -14,6 +14,7 @@ import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { rules } from "@seldon/core/rules/config/rules.config"
+import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
@@ -106,6 +107,11 @@ export function useRowNode(
   const properties: Properties = nodeExistsInWorkspace
     ? getNodeProperties(node, workspace)
     : {}
+
+  // A user variant that repeats a sibling's label reads as an error: it exports
+  // under a colliding component name and blocks factory export.
+  const isDuplicateLabel =
+    nodeExistsInWorkspace && isDuplicateVariantLabel(workspace, node.id)
   const expandedId = node.id
   const isExpandedState = useIsExpanded(expandedId)
 
@@ -458,6 +464,7 @@ export function useRowNode(
     const isDefault = typeCheckingService.isDefaultVariant(node)
     const isUser = typeCheckingService.isUserVariant(node)
     const isInstance = typeCheckingService.isInstance(node)
+    const isAuthored = typeCheckingService.isAuthored(node)
 
     // Sandbox roots have no catalog default and are not exported, so they skip
     // Copy JSON and Reset. Their child instances keep the standard menus below.
@@ -528,9 +535,9 @@ export function useRowNode(
       ]
     }
 
-    // Only the selected default or user variant row gets the full action menu.
-    // Unselected rows keep the reset-only menu below.
-    if (isSelected && (isDefault || isUser)) {
+    // Only the selected default, user, or authored variant row gets the full
+    // action menu. Unselected rows keep the reset-only menu below.
+    if (isSelected && (isDefault || isUser || isAuthored)) {
       const entries: MenuEntry[] = [
         {
           id: "duplicate",
@@ -585,7 +592,10 @@ export function useRowNode(
         )
       }
 
-      entries.push(buildVariantResetAction())
+      // Authored roots are schema-free, so reset-to-catalog does not apply.
+      if (!isAuthored) {
+        entries.push(buildVariantResetAction())
+      }
       return entries
     }
 
@@ -716,6 +726,7 @@ export function useRowNode(
     isExcluded,
     isHidden,
     isStub,
+    isDuplicateLabel,
     nodeTypeColor,
     isPrimaryShared,
     isSecondaryShared,

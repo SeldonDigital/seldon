@@ -102,6 +102,7 @@ const sdn: FormControlProps = {
     className: "sdn-text-label sdn-text-label--fwkw",
   },
   input: {
+    placeholder: "Placeholder text",
     type: "text",
     className: "sdn-input sdn-input--8ux3",
   },

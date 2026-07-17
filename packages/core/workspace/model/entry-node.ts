@@ -3,7 +3,7 @@ import type { EntryNodeStates } from "./node-state"
 
 export type EntryNodeId = string
 
-export type EntryNodeType = "default" | "variant" | "instance"
+export type EntryNodeType = "default" | "variant" | "instance" | "authored"
 
 export type EntryNodePropertyOverrides = Properties
 
@@ -65,4 +65,15 @@ export function isEntryNodeInstance(
   entry: EntryNode,
 ): entry is EntryNode & { type: "instance" } {
   return entry.type === "instance"
+}
+
+/**
+ * True for an authored root node. An authored root is the base variant of an
+ * authored component board. It is schema-free and freely editable, so it is
+ * neither catalog-locked like a default variant nor reset-to-catalog capable.
+ */
+export function isEntryNodeAuthored(
+  entry: EntryNode,
+): entry is EntryNode & { type: "authored" } {
+  return entry.type === "authored"
 }

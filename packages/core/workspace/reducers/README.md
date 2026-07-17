@@ -180,26 +180,21 @@ Every `add_theme_custom_*` action routes through one generic handler. The reduce
 
 | Action | Handler | File |
 | --- | --- | --- |
-| `remove_component` | `removeComponent` | `remove-component.ts` |
-| `remove_playground` | `removePlayground` | `remove-playground.ts` |
+| `remove_board` | `removeBoard` | `remove-board.ts` |
 | `remove_instance` | `removeInstance` | `remove-instance.ts` |
 | `remove_variant` | `removeVariant` | `remove-variant.ts` |
 | `remove_node_layer` | `removeNodeLayer` | `remove-node-layer.ts` |
 | `remove_custom_state` | `removeCustomState` | `remove-custom-state.ts` |
-| `remove_theme` | `removeTheme` | `remove-theme.ts` |
 | `delete_theme` | `deleteTheme` | `delete-theme.ts` |
-| `remove_font_collection` | `removeFontCollection` | `remove-font-collection.ts` |
 | `remove_font_collection_custom_family` | `removeFontCollectionCustomFamily` | `remove-font-collection-custom-family.ts` |
 | `delete_font_collection` | `deleteFontCollection` | `delete-font-collection.ts` |
-| `remove_icon_set` | `removeIconSet` | `remove-icon-set.ts` |
 | `delete_icon_set` | `deleteIconSet` | `delete-icon-set.ts` |
-| `remove_media` | `removeMedia` | `remove-media.ts` |
 | `remove_theme_custom_swatch` | `removeThemeCustomSwatch` | `remove-theme-custom-swatch.ts` |
 | `remove_theme_custom_*` (every other custom-token section) | `removeThemeCustomToken` | `remove-theme-custom-token.ts` |
 
 Every non-swatch `remove_theme_custom_*` action routes through one generic handler that derives the section from the action type. Swatch removal keeps its own handler because it first inlines the swatch's resolved color into referencing nodes.
 
-`remove_theme`, `remove_icon_set`, `remove_font_collection`, and `remove_media` delete a catalog board with `removeBoardByKey`. Validation blocks removal of a required default board, such as the Seldon theme or icon set board. The `delete_*` handlers remove one variant entry and drop its ref from the owning board. They keep the default entry.
+`remove_board` deletes any board by its key. The handler gates on the delete rule, then calls `nodeOperationsService.deleteBoardByKey`, which resolves the board type. Component and authored boards drop their variant subtrees, resource boards drop their entries from the matching resource map, and playground keys route to `deletePlaygroundByKey`. Validation blocks removal of a required default board, such as the Seldon theme or icon set board. The `delete_*` handlers remove one variant entry and drop its ref from the owning board. They keep the default entry.
 
 ---
 
@@ -266,7 +261,7 @@ Every non-swatch `remove_theme_custom_*` action routes through one generic handl
 | `removeCustomFamily` | `font-collection-custom-family.ts` | Removes a user family from a font collection entry. Used by `removeFontCollectionCustomFamily`. |
 | `randomSuffix` | `random-suffix.ts` | Returns a short random base36 suffix for generated entry ids. Used by the resource duplicate handlers. |
 
-`removeBoardByKey` in `handlers/remove/remove-board-by-key.ts` deletes a board by its key. The component and resource removal handlers share it.
+`removeBoard` in `handlers/remove/remove-board.ts` deletes any board by its key. It gates on the delete rule, then delegates to `nodeOperationsService.deleteBoardByKey`, which resolves the board type.
 
 ---
 

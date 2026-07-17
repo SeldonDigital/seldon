@@ -368,6 +368,7 @@ const sdn: PanelModalProps = {
     className: "sdn-icon sdn-icon--ucf5",
   },
   input: {
+    placeholder: "Search for...",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",

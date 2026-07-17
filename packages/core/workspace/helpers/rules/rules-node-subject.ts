@@ -11,13 +11,20 @@ export function isEntryNodeForRules(
     return false
   }
   const kind = (node as { type?: unknown }).type
-  return kind === "default" || kind === "variant" || kind === "instance"
+  return (
+    kind === "default" ||
+    kind === "variant" ||
+    kind === "instance" ||
+    kind === "authored"
+  )
 }
 
 export type DefaultVariant = EntryNode & { type: "default" }
 
 export type UserVariant = EntryNode & { type: "variant" }
 
-export type Variant = DefaultVariant | UserVariant
+export type Authored = EntryNode & { type: "authored" }
+
+export type Variant = DefaultVariant | UserVariant | Authored
 
 export type Instance = EntryNode & { type: "instance" }

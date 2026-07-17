@@ -18,19 +18,27 @@ export function useDraggableWindow({
   closeOnEscape = true,
   minWidth = DEFAULT_MIN_WINDOW_WIDTH,
   minHeight = DEFAULT_MIN_WINDOW_HEIGHT,
+  contentSized = false,
 }: {
-  initialPosition: { x: number; y: number }
-  initialSize: { width: number; height: number }
+  initialPosition?: { x: number; y: number }
+  initialSize?: { width: number; height: number }
   handleClose: () => void
   closeOnEscape?: boolean
   minWidth?: number
   minHeight?: number
+  contentSized?: boolean
 }) {
   const moveControls = useDragControls()
-  const x = useMotionValue(initialPosition.x)
-  const y = useMotionValue(initialPosition.y)
-  const width = useMotionValue(initialSize.width)
-  const height = useMotionValue(initialSize.height)
+  // A content-sized window centers itself with flexbox and drags as an offset
+  // from that center, so its motion values start at zero and it carries no
+  // explicit size. A resizable window drives absolute position and size, so it
+  // seeds the motion values from the caller's position and size.
+  const startPosition = initialPosition ?? { x: 0, y: 0 }
+  const startSize = initialSize ?? { width: 0, height: 0 }
+  const x = useMotionValue(startPosition.x)
+  const y = useMotionValue(startPosition.y)
+  const width = useMotionValue(startSize.width)
+  const height = useMotionValue(startSize.height)
 
   const { width: windowWidth, height: windowHeight } = getWindowInnerSize()
   const [dragConstraints, setDragConstraints] = useState<BoundingBox>({
@@ -137,5 +145,6 @@ export function useDraggableWindow({
     dragConstraints,
     minWidth,
     minHeight,
+    contentSized,
   }
 }

@@ -171,11 +171,12 @@ Programs change catalog row header fields with `set_board_label`, `set_board_int
 
 ### Board types
 
-There are five catalog row types:
+There are six catalog row types:
 
 | Board type | Description | Example rows |
 | --- | --- | --- |
 | `component` | A component based on a `core/components/` component schema. Only one catalog row is used per component, with variants and instances of that component stored as references from `nodes`. | `button`, `searchField`, `productCard`, `calendar` |
+| `authored-component` | A component defined only in the workspace, with no catalog schema. Its root is an `authored` node that templates from a Container or Frame, but the board owns the name and declared `level`. There is no reset-to-catalog for the board, its root, or its variants. | `pricingPanel`, `heroBanner` |
 | `theme` | A theme definition including its design tokens. A base `seldon` theme defined in the workspace is initially created from `core/themes/` and is non-deletable. | `seldon`, `earth` |
 | `font-collection` | A set of fonts, including font families, weights, and emphasis. A base `system` font collection in the workspace is initially created from `core/font-collections/` and is non-deletable. | `system`, `googleFonts` |
 | `icon-set` | A set of icons, with all icons in that set created using SVG. A base `seldonIcons` set defined in the workspace is initially created from `core/icon-sets/` and is non-deletable. | `seldonIcons`, `googleMaterial`, `ibmCarbon` |
@@ -258,6 +259,53 @@ When placing or pasting a component from another workspace, the rules are:
         ]
       },
       /* ...other button variants */
+    ]
+  }
+}
+```
+
+---
+
+#### Authored component board (`type: "authored-component"`)
+
+Authored component boards define a component that lives only in the workspace. They have no `core/components/` schema. The board is created through `add_authored_component` from a name, a root kind, a declared level, and optional intent and tags. The root node is an `authored` node that templates from `catalog:container` or `catalog:frame`, so it inherits that property vocabulary, but the board owns the name and the declared `level`.
+
+The declared `level` is enforced for containment the same way a catalog component's level is. A module-level authored component cannot be placed inside an element, and an element-level authored component only accepts element, primitive, and frame children. Container versus Frame only decides flex versus grid and the exported element; both are opaque at the declared level.
+
+Authored boards support user variants and instances the same way component boards do. There is no reset-to-catalog for the board, the authored root, or its variants, because there is no schema to reset to. Instances placed inside an authored component still reset to their source or original.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `type` | `string` | `authored-component` |
+| `id` | `string` | Mirrors the board's map key so a row can resolve its own key. |
+| `level` | `string` | Declared level as one of `screen`, `module`, `part`, or `element`. Enforced for containment and used to pick the export folder. |
+| `label` | `string` | Display name for the component. The board key and export name derive from it. |
+| `author` | `string` | Optional party that created this component. |
+| `intent` | `string` | Optional short description of the component's purpose. |
+| `tags` | `string[]` | Optional labels for search or filtering. |
+| `license` | `object` | Optional component licensing metadata. |
+| `componentTheme` | `string` | The theme applied to this board and inherited by its variants. |
+| `componentProperties` | `Properties` | Overrides on the editor board shell. These do not affect exported code. |
+| `variants` | `{ "id", "children"? }` | An ordered array of variant entries. The first entry is always the `authored` root. Later entries are user variants. |
+| `__editor` | `object` | Optional editor-only metadata for this board. |
+
+```json
+"boards": {
+  "pricingPanel": {
+    "type": "authored-component",
+    "id": "pricingPanel",
+    "level": "module",
+    "label": "Pricing Panel",
+    "componentTheme": "theme-seldon-default",
+    "componentProperties": {},
+    "variants": [
+      { /* Authored root. Templates from a Container. */
+        "id": "component-pricingPanel-authored",
+        "children": [
+          { "id": "component-header-aGKJQ7Wr" },
+          { "id": "component-button-Rsf23yHq" }
+        ]
+      }
     ]
   }
 }
@@ -561,8 +609,8 @@ The result of this is that an editor's properties panel will display and edit al
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `string` | Unique node identifier; must equal the key used for this node in the `nodes` map. |
-| `type` | `string` | Node type discriminator. One of: `"default"`, `"variant"`, `"instance"`. |
-| `level` | `string` | Identifies the atomic level of the component as one of `screen`, `module`, `part`, `element`, `primitive`, or `frame`. This value must match the level value found in its template. |
+| `type` | `string` | Node type discriminator. One of: `"default"`, `"variant"`, `"instance"`, `"authored"`. An `authored` node is the schema-free root of an authored component board; it is freely editable and never resets to a catalog schema. |
+| `level` | `string` | Identifies the atomic level of the component as one of `screen`, `module`, `part`, `element`, `primitive`, or `frame`. For catalog nodes this matches the level in the template. For an `authored` root it is the authored board's declared level, which may differ from the Container/Frame template level. |
 | `label` | `string` | Display name for the node. |
 | `theme` | `ThemeInstanceId` or `null` | The theme used for this node, or `null` to inherit from its parent. |
 | `template` | `string` | Where the node gets its metadata, along with its list of **properties** and subsequent default values which are resolved before `overrides` are applied. This value is either `catalog:{ComponentId}` or `node:{nodeId}`. See **Default Node**, **Variant Node**, and **Instance Node** below. |
@@ -572,7 +620,7 @@ The result of this is that an editor's properties panel will display and edit al
 | `ref` | `string` | Optional stable, user-assigned reference handle. Unique across the whole workspace and never inherited or merged, so generated code and app logic can target a specific node regardless of position. Absent until set via `set_node_ref`. |
 | `__editor` | `object` | Editor-only metadata. |
 
-When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts); see [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
+When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, `authoredVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts); see [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
 
 ---
 
@@ -1171,12 +1219,15 @@ For each catalog row, every **`id`** that appears in **`variants`** and, for `co
 | Board `type` | Map that must contain each collected `id` |
 | --- | --- |
 | `component` | `nodes` |
+| `authored-component` | `nodes` |
 | `theme` | `themes` |
 | `font-collection` | `font-collections` |
 | `icon-set` | `icon-sets` |
 | `media` | `media` |
 
-For `theme`, `font-collection`, `icon-set`, and `media` boards, each entry in **`variants`** is an object **`{ "id" }`** only: it must not use **`children`**. For `component` boards, each entry may use **`{ "id", "children"? }`** as documented in the catalog row sections.
+For `theme`, `font-collection`, `icon-set`, and `media` boards, each entry in **`variants`** is an object **`{ "id" }`** only: it must not use **`children`**. For `component` and `authored-component` boards, each entry may use **`{ "id", "children"? }`** as documented in the catalog row sections.
+
+An `authored-component` board holds exactly one `authored` node at **`variants[0]`**, and an `authored` node appears only as an authored board's root. An authored component reused inside another board appears as an `instance` whose `template` is `node:{authoredRootId}`, so it follows the same placement rules as any instance.
 
 Each **`playgrounds`** container follows the same rule as a `component` board: every **`id`** in its **`variants`** and nested **`children`** must be a key in **`nodes`**. Playground containers may use **`{ "id", "children"? }`**.
 

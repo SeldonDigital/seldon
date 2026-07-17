@@ -1,6 +1,10 @@
 import { REPEAT_EDITOR_KEY } from "../../../helpers/nodes/node-repeat"
 import type { ComponentTreeRef } from "../../../model/component-tree"
-import { isComponentBoard, isPlaygroundBoard } from "../../../model/components"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+  isPlaygroundBoard,
+} from "../../../model/components"
 import type { EntryNode } from "../../../model/entry-node"
 import type { Workspace } from "../../../model/workspace"
 
@@ -59,6 +63,15 @@ function remapTreeRefs(refs: ComponentTreeRef[]): void {
   }
 }
 
+/** True when a tree ref or any descendant still points at a Dialog node id. */
+function treeRefsReferenceOldPrefix(refs: ComponentTreeRef[]): boolean {
+  for (const ref of refs) {
+    if (ref.id.startsWith(OLD_NODE_PREFIX)) return true
+    if (ref.children && treeRefsReferenceOldPrefix(ref.children)) return true
+  }
+  return false
+}
+
 /** Remaps repeat data keys, which reference descendant node ids, in place. */
 function remapRepeatData(node: EntryNode): void {
   const editor = node.__editor
@@ -90,8 +103,22 @@ function migrationApplies(workspace: Workspace): boolean {
       return true
     }
   }
-  for (const board of Object.values(workspace.boards)) {
+  for (const [key, board] of Object.entries(workspace.boards)) {
+    // A board still stored under the old `dialog` key needs repair even when an
+    // earlier partial migration already flipped its `catalogId` to `panel`.
+    if (key === OLD_CATALOG_ID) return true
     if (isComponentBoard(board) && board.catalogId === OLD_CATALOG_ID) {
+      return true
+    }
+    // A tree ref still pointing at a Dialog node id needs repair even when the
+    // node itself was already re-keyed to Panels. This self-heals authored
+    // boards, whose tree refs an earlier build skipped.
+    if (
+      (isComponentBoard(board) ||
+        isPlaygroundBoard(board) ||
+        isAuthoredBoard(board)) &&
+      treeRefsReferenceOldPrefix(board.variants)
+    ) {
       return true
     }
   }
@@ -122,12 +149,34 @@ export function migrateV12DialogToPanels(workspace: Workspace): Workspace {
 
   const boards = next.boards
   for (const [key, board] of Object.entries(boards)) {
-    if (!isComponentBoard(board) && !isPlaygroundBoard(board)) continue
+    // Remap tree refs for every board that owns a node tree, authored boards
+    // included, so a Dialog node referenced from an authored tree is repointed
+    // to its Panels id and never dangles after the node re-key.
+    if (
+      !isComponentBoard(board) &&
+      !isPlaygroundBoard(board) &&
+      !isAuthoredBoard(board)
+    ) {
+      continue
+    }
     remapTreeRefs(board.variants)
-    if (!isComponentBoard(board) || board.catalogId !== OLD_CATALOG_ID) continue
+    if (!isComponentBoard(board)) continue
+
+    // Treat a board as Dialog-family when it still carries the old catalog id or
+    // is still stored under the old `dialog` key. Keying off the board key too
+    // catches a board an earlier partial migration flipped to `catalogId: panel`
+    // but left keyed `dialog`, which renders a `data-board-id="dialog"` that no
+    // catalog id resolves.
+    const isDialogFamily =
+      board.catalogId === OLD_CATALOG_ID || key === OLD_CATALOG_ID
+    if (!isDialogFamily) continue
+
     board.catalogId = NEW_CATALOG_ID
     board.label = NEW_BOARD_LABEL
-    if (key === OLD_CATALOG_ID && !boards[NEW_CATALOG_ID]) {
+
+    // Re-key the converted board onto `panel` and remove the stale `dialog` key
+    // so no `dialog` key or catalog id survives the migration.
+    if (key === OLD_CATALOG_ID) {
       boards[NEW_CATALOG_ID] = board
       delete boards[key]
     }

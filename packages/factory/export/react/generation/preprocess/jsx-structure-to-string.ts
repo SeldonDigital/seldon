@@ -12,6 +12,7 @@ type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
  * omitted caller value keeps the slot empty; canonical leaves forward directly.
  */
 function grandchildPropAttr(gp: GrandchildProp): string {
+  if (gp.nullLiteral) return `${gp.propKeyName}={null}`
   const value = gp.guard ? `${gp.guard} && ${gp.propVarName}` : gp.propVarName
   return `${gp.propKeyName}={${value}}`
 }

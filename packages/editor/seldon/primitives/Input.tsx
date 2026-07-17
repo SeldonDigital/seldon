@@ -18,6 +18,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
   "data-seldon-ref"?: string
   ref?: Ref<HTMLInputElement>
+  placeholder?: string
   type?: string
 }
 
@@ -31,12 +32,14 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * @example
  * ```tsx
  * <Input
+ *   placeholder="Placeholder text"
  *   type="text"
  * />
  * ```
  *****/
 export function Input({
   className = "",
+  placeholder = sdn.placeholder,
   type = sdn.type,
   ...props
 }: InputProps) {
@@ -45,13 +48,21 @@ export function Input({
   //
   // React JSX component with merged default and custom properties
   //
-  return <HTMLInput className={inputClassName} type={type} {...props} />
+  return (
+    <HTMLInput
+      className={inputClassName}
+      placeholder={placeholder}
+      type={type}
+      {...props}
+    />
+  )
 }
 
 //
 // Default property values
 //
 const sdn: InputProps = {
+  placeholder: "Placeholder text",
   type: "text",
   className: "sdn-input",
 }

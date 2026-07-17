@@ -248,7 +248,7 @@ export function TopbarMenu({
 const sdn: TopbarMenuProps = {
   role: "banner",
   "aria-hidden": "false",
-  className: "sdn-topbar sdn-topbar",
+  className: "sdn-topbar",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",

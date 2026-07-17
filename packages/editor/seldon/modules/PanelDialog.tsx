@@ -521,6 +521,7 @@ const sdn: PanelDialogProps = {
     className: "sdn-icon sdn-icon--xi68",
   },
   input: {
+    placeholder: "Search for...",
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
