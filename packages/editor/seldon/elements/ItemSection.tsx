@@ -227,7 +227,7 @@ const sdn: ItemSectionProps = {
   icon2: {
     icon: "material-add",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--0qvc",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -236,6 +236,6 @@ const sdn: ItemSectionProps = {
   icon3: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--0qvc",
   },
 }

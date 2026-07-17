@@ -76,6 +76,6 @@ const sdn: ButtonToggleProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ovkd",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

@@ -1,6 +1,14 @@
-import { MenuEntry } from "@lib/menus"
+import { MenuController, MenuEntry } from "@lib/menus"
 import { LayoutGroup } from "framer-motion"
-import { Fragment, useCallback, useDeferredValue, useMemo } from "react"
+import {
+  Fragment,
+  type MouseEvent as ReactMouseEvent,
+  useCallback,
+  useDeferredValue,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import {
   Board,
   Instance,
@@ -15,6 +23,7 @@ import {
 import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import { useBoardStateMenu } from "./hooks/use-board-state-menu"
 import {
   useBorderSideVisibility,
   useRevealedBorderSides,
@@ -100,15 +109,51 @@ export function PropertiesSidebar() {
     [deferredState, filter.query],
   )
 
+  // The header State menu selects the active interaction state for the selected
+  // node's board tree. Its trigger is the generated `menuState` ButtonMenu; the
+  // dropdown anchors to it through the shared MenuController.
+  const stateMenu = useBoardStateMenu()
+  const [stateMenuOpen, setStateMenuOpen] = useState(false)
+  const stateMenuAnchor = useRef<HTMLElement | null>(null)
+  const openStateMenu = useCallback(
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
+      stateMenuAnchor.current = event.currentTarget
+      setStateMenuOpen((open) => !open)
+    },
+    [],
+  )
+  const closeStateMenu = useCallback(() => setStateMenuOpen(false), [])
+
+  const menuStateSlot = {
+    onClick: openStateMenu,
+    disabled: stateMenu.disabled,
+    "data-testid": "board-state-trigger",
+  }
+  const stateLabelSlot = { children: stateMenu.label }
+  const stateMenuController = (
+    <MenuController
+      open={stateMenuOpen}
+      anchorRef={stateMenuAnchor}
+      onClose={closeStateMenu}
+      items={stateMenu.items}
+      align="end"
+    />
+  )
+
   if (deferredState.kind === "empty") {
     return (
-      <SidebarProperties
-        data-testid="properties-sidebar"
-        comboboxFieldFilter={filter.comboboxField}
-        input={filter.input}
-        buttonIconic={filter.buttonIconic}
-        style={styles.sidebar}
-      />
+      <>
+        <SidebarProperties
+          data-testid="properties-sidebar"
+          comboboxFieldFilter={filter.comboboxField}
+          input={filter.input}
+          buttonIconic={filter.buttonIconic}
+          buttonMenu={menuStateSlot}
+          textLabel={stateLabelSlot}
+          style={styles.sidebar}
+        />
+        {stateMenuController}
+      </>
     )
   }
 
@@ -122,14 +167,19 @@ export function PropertiesSidebar() {
   }
 
   return (
-    <SidebarProperties
-      data-testid="properties-sidebar"
-      comboboxFieldFilter={filter.comboboxField}
-      input={filter.input}
-      buttonIconic={filter.buttonIconic}
-      seldonRefs={seldonRefs}
-      style={styles.sidebar}
-    />
+    <>
+      <SidebarProperties
+        data-testid="properties-sidebar"
+        comboboxFieldFilter={filter.comboboxField}
+        input={filter.input}
+        buttonIconic={filter.buttonIconic}
+        buttonMenu={menuStateSlot}
+        textLabel={stateLabelSlot}
+        seldonRefs={seldonRefs}
+        style={styles.sidebar}
+      />
+      {stateMenuController}
+    </>
   )
 }
 

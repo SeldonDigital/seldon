@@ -537,7 +537,7 @@ const sdn: SidebarProps = {
   },
   barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar-buttons sdn-bar-tabs-bar--qtpt",
+    className: "sdn-bar-buttons sdn-bar-buttons--ftcm",
   },
   frame2: {
     wrapperElement: "div",

@@ -1,12 +1,12 @@
 import {
   type ComboboxOptionItem,
   type ComboboxOptionItems,
+  useComboboxPosition,
   useComboboxState,
 } from "@lib/menus"
 import { RefObject, useCallback, useEffect, useMemo, useRef } from "react"
 import type { PropertyPickerResult } from "../helpers/options-utils"
 import { FlatProperty } from "../helpers/properties-data"
-import { useComboboxPosition } from "./use-combobox-position"
 
 type ControlType = FlatProperty["controlType"]
 

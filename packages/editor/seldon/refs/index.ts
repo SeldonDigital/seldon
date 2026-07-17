@@ -47,9 +47,11 @@ export type SeldonRef =
   | "menuFile"
   | "menuMode"
   | "menus"
+  | "menuState"
   | "menuTheme"
   | "menuView"
   | "nodeActions"
+  | "nodeDisplay"
   | "nodeIcon"
   | "nodeLabel"
   | "nodeToggle"
@@ -62,6 +64,8 @@ export type SeldonRef =
   | "projectLabel"
   | "propertiesContainer"
   | "propertyActions"
+  | "propertyFilter"
+  | "propertyFilterClear"
   | "propertyLabel"
   | "propertyToggle"
   | "propertyToggleIcon"
@@ -73,6 +77,8 @@ export type SeldonRef =
   | "sectionLabel"
   | "sectionToggle"
   | "sectionToggleIcon"
+  | "sidebarComponents"
+  | "sidebarResources"
   | "toggleIcon"
   | "toggleValue"
   | "tool"
@@ -80,6 +86,8 @@ export type SeldonRef =
   | "valueIcon"
   | "valueLabel"
   | "valueOptionsMenu"
+  | "workspaceName"
+  | "workspaceSave"
 
 export interface SeldonRefEntry {
   component: string
@@ -263,6 +271,11 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-bar-DrSavE9B",
     className: "sdn-frame sdn-frame--drsa",
   },
+  menuState: {
+    component: "ButtonMenu",
+    nodeId: "component-button-t1A2Kxjz",
+    className: "sdn-button-menu sdn-button-menu--t1a2",
+  },
   menuTheme: {
     component: "ButtonMenu",
     nodeId: "component-button-trucC1Xo",
@@ -276,6 +289,11 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   nodeActions: {
     component: "ButtonIconic",
     nodeId: "component-item-CeZRPCDC",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  nodeDisplay: {
+    component: "ButtonIconic",
+    nodeId: "component-item-A2qQLKuh",
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
   nodeIcon: {
@@ -338,6 +356,16 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-button-CGRbb6mm",
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
+  propertyFilter: {
+    component: "Input",
+    nodeId: "component-comboboxField-Lg6E5jtv",
+    className: "sdn-input sdn-input--twyx",
+  },
+  propertyFilterClear: {
+    component: "ButtonIconic",
+    nodeId: "component-comboboxField-xvQW1VQq",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
   propertyLabel: {
     component: "Input",
     nodeId: "component-item-JvSW6JpE",
@@ -393,6 +421,16 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-item-7MKLAjub",
     className: "sdn-icon sdn-icon--umgs",
   },
+  sidebarComponents: {
+    component: "ButtonToggle",
+    nodeId: "component-button-f2yi4eeO",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  },
+  sidebarResources: {
+    component: "ButtonToggle",
+    nodeId: "component-sidebar-9VESc1Om",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  },
   toggleIcon: {
     component: "Icon",
     nodeId: "component-item-YzeMLx3R",
@@ -426,6 +464,16 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   valueOptionsMenu: {
     component: "ButtonIconic",
     nodeId: "component-button-HqmnST2I",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  workspaceName: {
+    component: "Input",
+    nodeId: "component-comboboxField-spqmpmg5",
+    className: "sdn-input sdn-input--twyx",
+  },
+  workspaceSave: {
+    component: "ButtonIconic",
+    nodeId: "component-comboboxField-o9tr7uLV",
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
 }

@@ -64,6 +64,8 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-notifications"
     | "seldon-frame"
     | "material-gridOn"
+    | "seldon-theme"
+    | "seldon-display"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -83,7 +85,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-color"
     | "seldon-computed"
     | "seldon-custom"
-    | "seldon-display"
     | "seldon-empty"
     | "seldon-frameColumns"
     | "seldon-frameRows"
@@ -105,7 +106,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-spread"
     | "seldon-step"
     | "seldon-stub"
-    | "seldon-theme"
     | "seldon-valuePx"
     | "seldon-valueRem"
     | "seldon-orientationHorizontal"
@@ -596,6 +596,8 @@ const iconMap = {
   "material-notifications": Icons.IconMaterialNotifications,
   "seldon-frame": Icons.IconSeldonFrame,
   "material-gridOn": Icons.IconMaterialGridOn,
+  "seldon-theme": Icons.IconSeldonTheme,
+  "seldon-display": Icons.IconSeldonDisplay,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -615,7 +617,6 @@ const iconMap = {
   "seldon-color": Icons.IconSeldonColor,
   "seldon-computed": Icons.IconSeldonComputed,
   "seldon-custom": Icons.IconSeldonCustom,
-  "seldon-display": Icons.IconSeldonDisplay,
   "seldon-empty": Icons.IconSeldonEmpty,
   "seldon-frameColumns": Icons.IconSeldonFrameColumns,
   "seldon-frameRows": Icons.IconSeldonFrameRows,
@@ -637,7 +638,6 @@ const iconMap = {
   "seldon-spread": Icons.IconSeldonSpread,
   "seldon-step": Icons.IconSeldonStep,
   "seldon-stub": Icons.IconSeldonStub,
-  "seldon-theme": Icons.IconSeldonTheme,
   "seldon-valuePx": Icons.IconSeldonValuePx,
   "seldon-valueRem": Icons.IconSeldonValueRem,
   "seldon-orientationHorizontal": Icons.IconSeldonOrientationHorizontal,

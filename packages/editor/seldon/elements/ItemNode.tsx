@@ -30,6 +30,8 @@ export interface ItemNodeProps extends LiHTMLAttributes<HTMLLIElement> {
   input?: InputProps | null
   buttonIconic2?: ButtonIconicProps | null
   icon3?: IconProps | null
+  buttonIconic3?: ButtonIconicProps | null
+  icon4?: IconProps | null
 }
 
 /*****
@@ -56,6 +58,8 @@ export function ItemNode({
   input = sdn.input,
   buttonIconic2 = sdn.buttonIconic2,
   icon3 = sdn.icon3,
+  buttonIconic3,
+  icon4 = sdn.icon4,
   children,
   seldonRefs,
   ...props
@@ -140,6 +144,29 @@ export function ItemNode({
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
         },
   )
+  const buttonIconic3Props = applyRef(
+    seldonRefs,
+    buttonIconic3 === null
+      ? null
+      : {
+          ...sdn.buttonIconic3,
+          ...buttonIconic3,
+          className: combineClassNames(
+            sdn.buttonIconic3?.className,
+            buttonIconic3?.className,
+          ),
+        },
+  )
+  const icon4Props = applyRef(
+    seldonRefs,
+    icon4 === null
+      ? null
+      : {
+          ...sdn.icon4,
+          ...icon4,
+          className: combineClassNames(sdn.icon4?.className, icon4?.className),
+        },
+  )
 
   return (
     <HTMLLi
@@ -163,6 +190,9 @@ export function ItemNode({
               buttonIconic={buttonIconic2Props}
               icon2={icon3Props}
             />
+          )}
+          {buttonIconic3 && buttonIconic3Props && (
+            <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
           )}
         </>
       )}
@@ -206,11 +236,20 @@ const sdn: ItemNodeProps = {
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "nodeActions",
+    "data-seldon-ref": "nodeDisplay",
   },
   icon3: {
+    icon: "seldon-display",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--xi68",
+  },
+  buttonIconic3: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "nodeActions",
+  },
+  icon4: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--xi68",
   },
 }

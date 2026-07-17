@@ -7,6 +7,10 @@ export {
 export { ComboboxController } from "./ComboboxController"
 export { ComboboxListbox } from "./ComboboxListbox"
 export { useComboboxState } from "./use-combobox-state"
+export {
+  useComboboxPosition,
+  type ComboboxPosition,
+} from "./use-combobox-position"
 export type {
   MenuAlign,
   MenuEntry,

@@ -1,28 +1,32 @@
 /**
- * Hook for calculating combobox options position
+ * Hook for calculating a floating list's position from an anchor element.
+ * Shared by the properties combobox and the objects-sidebar display picker.
  */
 import { RefObject, useEffect, useState } from "react"
 
-interface Position {
+export interface ComboboxPosition {
   x: number
   y: number
   w: number
-  positionAbove?: boolean // Flag to indicate menu should render above the control
+  /** True when the list should render above the anchor (anchor near viewport bottom). */
+  positionAbove?: boolean
 }
 
 interface UseComboboxPositionOptions {
   open: boolean
-  frameRef?: RefObject<HTMLDivElement | null>
+  frameRef?: RefObject<HTMLElement | null>
 }
 
 /**
- * Calculates and updates the position of combobox options dropdown
+ * Calculates and updates the position of a floating option list anchored to
+ * `frameRef`. Returns the anchor's left/width and a y below it, flipping to
+ * render above when the anchor sits in the bottom 40% of the viewport.
  */
 export function useComboboxPosition({
   open,
   frameRef,
-}: UseComboboxPositionOptions): Position {
-  const [optionsPosition, setOptionsPosition] = useState<Position>({
+}: UseComboboxPositionOptions): ComboboxPosition {
+  const [optionsPosition, setOptionsPosition] = useState<ComboboxPosition>({
     x: 0,
     y: 0,
     w: 0,

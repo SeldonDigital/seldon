@@ -12,14 +12,16 @@
  *****/
 import { HTMLAttributes } from "react"
 import { ButtonIconicProps } from "../elements/ButtonIconic"
+import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
 import {
   ComboboxFieldFilter,
   ComboboxFieldFilterProps,
 } from "../elements/ComboboxFieldFilter"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { IconProps } from "../primitives/Icon"
+import { Icon, IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
@@ -27,12 +29,16 @@ export interface SidebarPropertiesProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
+  frame?: FrameProps | null
   comboboxFieldFilter?: ComboboxFieldFilterProps | null
   icon?: IconProps | null
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
   icon2?: IconProps | null
-  frame?: FrameProps | null
+  buttonMenu?: ButtonMenuProps | null
+  textLabel?: TextLabelProps | null
+  icon3?: IconProps | null
+  frame2?: FrameProps | null
 }
 
 /*****
@@ -52,12 +58,16 @@ export interface SidebarPropertiesProps extends HTMLAttributes<HTMLElement> {
  *****/
 export function SidebarProperties({
   className = "",
+  frame = sdn.frame,
   comboboxFieldFilter,
   icon = sdn.icon,
   input = sdn.input,
   buttonIconic = sdn.buttonIconic,
   icon2 = sdn.icon2,
-  frame = sdn.frame,
+  buttonMenu,
+  textLabel,
+  icon3 = sdn.icon3,
+  frame2 = sdn.frame2,
   children,
   seldonRefs,
   ...props
@@ -65,6 +75,16 @@ export function SidebarProperties({
   const sidebarPropertiesClassName = combineClassNames(
     "sdn-sidebar-objects",
     className,
+  )
+  const frameProps = applyRef(
+    seldonRefs,
+    frame === null
+      ? null
+      : {
+          ...sdn.frame,
+          ...frame,
+          className: combineClassNames(sdn.frame?.className, frame?.className),
+        },
   )
   const comboboxFieldFilterProps = applyRef(
     seldonRefs,
@@ -122,14 +142,53 @@ export function SidebarProperties({
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
         },
   )
-  const frameProps = applyRef(
+  const buttonMenuProps = applyRef(
     seldonRefs,
-    frame === null
+    buttonMenu === null
       ? null
       : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
+          ...sdn.buttonMenu,
+          ...buttonMenu,
+          className: combineClassNames(
+            sdn.buttonMenu?.className,
+            buttonMenu?.className,
+          ),
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(
+            sdn.textLabel?.className,
+            textLabel?.className,
+          ),
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
+    icon3 === null
+      ? null
+      : {
+          ...sdn.icon3,
+          ...icon3,
+          className: combineClassNames(sdn.icon3?.className, icon3?.className),
+        },
+  )
+  const frame2Props = applyRef(
+    seldonRefs,
+    frame2 === null
+      ? null
+      : {
+          ...sdn.frame2,
+          ...frame2,
+          className: combineClassNames(
+            sdn.frame2?.className,
+            frame2?.className,
+          ),
         },
   )
 
@@ -144,16 +203,26 @@ export function SidebarProperties({
         children
       ) : (
         <>
-          {comboboxFieldFilter && comboboxFieldFilterProps && (
-            <ComboboxFieldFilter
-              {...comboboxFieldFilterProps}
-              icon={iconProps}
-              input={inputProps}
-              buttonIconic={buttonIconicProps}
-              icon2={icon2Props}
-            />
-          )}
-          <Frame {...frameProps}></Frame>
+          <Frame {...frameProps}>
+            {comboboxFieldFilter && comboboxFieldFilterProps && (
+              <ComboboxFieldFilter
+                {...comboboxFieldFilterProps}
+                icon={iconProps}
+                input={inputProps}
+                buttonIconic={buttonIconicProps}
+                icon2={icon2Props}
+              />
+            )}
+            {buttonMenu && buttonMenuProps && (
+              <ButtonMenu {...buttonMenuProps}>
+                {textLabel && textLabelProps && (
+                  <TextLabel {...textLabelProps} />
+                )}
+                {icon3 && icon3Props && <Icon {...icon3Props} />}
+              </ButtonMenu>
+            )}
+          </Frame>
+          <Frame {...frame2Props}></Frame>
         </>
       )}
     </HTMLDiv>
@@ -167,8 +236,13 @@ const sdn: SidebarPropertiesProps = {
   role: "complementary",
   "aria-hidden": "false",
   className: "sdn-sidebar-objects sdn-sidebar",
+  frame: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--uief",
+  },
   comboboxFieldFilter: {
-    className: "sdn-combobox-field sdn-combobox-field--z3a0",
+    className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
   },
   icon: {
     icon: "material-filterList",
@@ -181,16 +255,30 @@ const sdn: SidebarPropertiesProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--twyx",
+    "data-seldon-ref": "propertyFilter",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "propertyFilterClear",
   },
   icon2: {
     icon: "material-close",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
   },
-  frame: {
+  buttonMenu: {
+    className: "sdn-button-menu sdn-button-menu--t1a2",
+    "data-seldon-ref": "menuState",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--sa6t",
+  },
+  icon3: {
+    icon: "material-chevronDown",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--y2ct",
+  },
+  frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--evmw",

@@ -18,6 +18,14 @@ export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
  */
 export type InterfaceMode = "system" | "light" | "dark"
 
+/**
+ * Objects sidebar content view. `"components"` lists Playground, Screens,
+ * Modules, Parts, Elements, and Primitives; `"resources"` lists Themes, Font
+ * Collections, and Icon Sets. Toggled from the sidebar header, defaulting to
+ * components.
+ */
+export type ObjectsView = "components" | "resources"
+
 interface EditorConfigState {
   // Canvas selection and hover overlay boxes in select mode
   showSelection: boolean
@@ -66,6 +74,10 @@ interface EditorConfigState {
   // Objects sidebar: show export component (code) names instead of labels
   showCodeNames: boolean
   setShowCodeNames: (enabled: boolean) => void
+
+  // Objects sidebar: components vs resources content view
+  objectsView: ObjectsView
+  setObjectsView: (view: ObjectsView) => void
 
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
@@ -150,6 +162,11 @@ const useStore = create<EditorConfigState>()(
       setShowCodeNames: (enabled) =>
         set((state) => ({ ...state, showCodeNames: enabled })),
 
+      // Objects sidebar content view (components by default)
+      objectsView: "components",
+      setObjectsView: (view) =>
+        set((state) => ({ ...state, objectsView: view })),
+
       // Sidebar refactor settings
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
@@ -180,6 +197,7 @@ const useStore = create<EditorConfigState>()(
         showUnusedIcons: state.showUnusedIcons,
         showPlayground: state.showPlayground,
         showCodeNames: state.showCodeNames,
+        objectsView: state.objectsView,
         useRefactoredSidebars: state.useRefactoredSidebars,
         chromeTheme: state.chromeTheme,
         interfaceMode: state.interfaceMode,
@@ -214,6 +232,8 @@ export function useEditorConfig() {
     setShowPlayground,
     showCodeNames,
     setShowCodeNames,
+    objectsView,
+    setObjectsView,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
     chromeTheme,
@@ -246,6 +266,8 @@ export function useEditorConfig() {
       setShowPlayground: state.setShowPlayground,
       showCodeNames: state.showCodeNames,
       setShowCodeNames: state.setShowCodeNames,
+      objectsView: state.objectsView,
+      setObjectsView: state.setObjectsView,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
       chromeTheme: state.chromeTheme,
@@ -356,6 +378,10 @@ export function useEditorConfig() {
     showCodeNames,
     setShowCodeNames,
     toggleShowCodeNames,
+
+    // Objects sidebar content view
+    objectsView,
+    setObjectsView,
 
     // Sidebar refactor methods
     useRefactoredSidebars,
