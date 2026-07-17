@@ -9,9 +9,7 @@ import {
 } from "@lib/menus"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 
-// Fixed panel width for the floating display picker. The trigger is a small
-// icon button near the right edge of the row, so the panel is right-aligned to
-// it at a comfortable reading width.
+// Fixed panel width for the floating display picker. 
 const PANEL_WIDTH = 200
 
 interface DisplayPickerInput {
