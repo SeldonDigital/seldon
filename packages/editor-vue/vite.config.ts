@@ -2,10 +2,11 @@ import vue from "@vitejs/plugin-vue"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { defineConfig } from "vite"
-import { workspaceApiPlugin } from "./vite/workspace-api-plugin"
+import { workspaceApiPlugin } from "../editor/vite/workspace-api-plugin"
 
 const editorRoot = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.join(editorRoot, "../..")
+const sharedRoot = path.join(editorRoot, "../editor")
 const corePackageRoot = path.join(editorRoot, "../core")
 const factoryPackageRoot = path.join(editorRoot, "../factory")
 const aiPackageEntry = path.join(editorRoot, "../ai/index.ts")
@@ -23,6 +24,7 @@ export default defineConfig(({ mode }) => ({
     alias: [
       { find: "@app", replacement: path.join(editorRoot, "app") },
       { find: "@lib", replacement: path.join(editorRoot, "lib") },
+      { find: "@seldon/editor", replacement: sharedRoot },
       {
         find: "@seldon/components",
         replacement: path.join(editorRoot, "seldon"),

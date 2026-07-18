@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Workspace } from "@lib/core"
 import { useSelectionStore } from "@lib/stores/selection-store"
-import { getBoardVariantRootIds } from "@lib/workspace/workspace-accessors"
+import { getBoardVariantRootIds } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
 import { computed } from "vue"
 import NodeRow from "./NodeRow.vue"
@@ -18,11 +18,17 @@ type BoardEntry = {
 }
 
 const boards = computed<BoardEntry[]>(() =>
-  Object.entries(props.workspace.boards).map(([key, board]) => ({
-    key,
-    name: (board as { name?: string }).name ?? key,
-    rootIds: getBoardVariantRootIds(board),
-  })),
+  Object.entries(props.workspace.boards)
+    .filter(
+      ([, board]) =>
+        (board as { type?: string }).type === "component" ||
+        (board as { type?: string }).type === "playground",
+    )
+    .map(([key, board]) => ({
+      key,
+      name: (board as { name?: string }).name ?? key,
+      rootIds: getBoardVariantRootIds(board),
+    })),
 )
 </script>
 

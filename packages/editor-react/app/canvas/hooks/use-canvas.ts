@@ -21,7 +21,7 @@ import { useTool } from "@lib/hooks/use-tool"
 import {
   HoverState,
   useCanvasHoverState,
-} from "../../../lib/hooks/use-canvas-hover-state"
+} from "@lib/hooks/use-canvas-hover-state"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import {

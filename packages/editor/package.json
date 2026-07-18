@@ -1,0 +1,14 @@
+{
+  "name": "@seldon/editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared, framework-neutral code for the Seldon editors (React and Vue): domain lib helpers, dev-server Vite plugins (including the shared workspace store), and shared assets. Consumed as source via path aliases; not a runnable app.",
+  "dependencies": {
+    "@seldon/core": "file:../core",
+    "@seldon/factory": "file:../factory"
+  },
+  "volta": {
+    "node": "22.18.0"
+  }
+}

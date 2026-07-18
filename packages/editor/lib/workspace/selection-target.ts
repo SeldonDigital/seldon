@@ -1,23 +1,9 @@
 import { InstanceId, VariantId } from "@seldon/core"
 import type { BoardKey } from "@seldon/core/workspace/types"
-import {
-  type ResourceEntryKind,
-  useStore as useSelectionStore,
-} from "./hooks/use-selection"
+import { useStore as useSelectionStore } from "./hooks/use-selection"
+import type { ResourceEntryKind, SelectionKind } from "./selection-kind"
 
-/**
- * The kinds of object a single click or hover can target. Every selectable
- * canvas element and sidebar row tags itself with one of these plus its id, so
- * one code path resolves selection and highlight for all of them.
- */
-export type SelectionKind =
-  | "node"
-  | "board"
-  | "theme"
-  | "fontCollection"
-  | "iconSet"
-  | "media"
-  | "resourceItem"
+export type { ResourceEntryKind, SelectionKind } from "./selection-kind"
 
 /** Maps a resource-entry selection kind to the unified resource entry kind. */
 const RESOURCE_ENTRY_KIND_BY_SELECTION_KIND: Partial<

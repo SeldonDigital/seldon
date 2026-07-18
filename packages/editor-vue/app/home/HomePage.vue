@@ -5,7 +5,7 @@ import {
   deleteStoredWorkspace,
   listStoredWorkspaces,
   type StoredWorkspace,
-} from "@lib/storage/workspace-store"
+} from "@seldon/editor/lib/storage/workspace-store"
 import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 

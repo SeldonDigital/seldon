@@ -4,7 +4,7 @@ import { useSelectionStore } from "@lib/stores/selection-store"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
+} from "@seldon/editor/lib/workspace/node-tree"
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 

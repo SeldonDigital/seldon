@@ -17,6 +17,7 @@ import {
 import type { Board } from "@seldon/core/workspace/model/components"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
+import type { ResourceEntryKind } from "../selection-kind"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import {
@@ -61,8 +62,7 @@ export function getCurrentSelection(): Variant | Instance | Board | null {
 /** Resource board kinds whose rows are selectable items (families, icons, media). */
 export type ResourceItemKind = "font-collection" | "icon-set" | "media"
 
-/** Resource board kinds whose variant entries are selectable as a unit. */
-export type ResourceEntryKind = "theme" | "fontCollection" | "iconSet" | "media"
+export type { ResourceEntryKind }
 
 /** A selected resource board variant entry, identified by its kind and entry id. */
 export type SelectedResourceEntry = { kind: ResourceEntryKind; id: string }

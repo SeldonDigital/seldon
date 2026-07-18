@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { getStoredWorkspace } from "@lib/storage/workspace-store"
+import { getStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
+import { useEditorShortcuts } from "@lib/commands/use-editor-shortcuts"
 import { useHistoryStore } from "@lib/stores/history-store"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { computed, ref, watch } from "vue"
@@ -12,6 +13,8 @@ import TopBar from "@app/topbar/TopBar.vue"
 const route = useRoute()
 const history = useHistoryStore()
 const { workspace } = useWorkspace()
+
+useEditorShortcuts()
 
 const status = ref<"loading" | "ready" | "missing">("loading")
 const title = ref("Workspace")

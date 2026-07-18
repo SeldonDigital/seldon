@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Icon from "@seldon/components/primitives/Icon.vue"
 import {
+  ComponentId,
   Display,
   Workspace,
   EntryNodeId,
@@ -8,13 +9,16 @@ import {
   getCssFromProperties,
   getNodeProperties,
 } from "@lib/core"
+import { getPropertyHtmlAttributes } from "@lib/canvas/property-html-attributes"
 import { resolveCanvasTag } from "@lib/canvas/resolve-canvas-tag"
 import { useSelectionStore } from "@lib/stores/selection-store"
+import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import {
+  findComponentForNode,
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
-import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
+} from "@seldon/editor/lib/workspace/node-tree"
+import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
 import { computed } from "vue"
 
 const props = defineProps<{
@@ -75,7 +79,11 @@ const css = computed(() => {
 
 const tag = computed(() =>
   catalogComponentId.value
-    ? resolveCanvasTag(catalogComponentId.value, context.value!.properties)
+    ? resolveCanvasTag(
+        catalogComponentId.value,
+        context.value!.properties,
+        renderAsDiv.value,
+      )
     : null,
 )
 
@@ -92,6 +100,38 @@ const iconSymbol = computed(() => {
 const childIds = computed(() =>
   node.value ? getNodeChildIds(node.value, props.workspace) : [],
 )
+
+// A Button nested inside another Button renders as a div on the canvas to avoid
+// invalid nested interactive markup. Mirrors React Node.tsx renderAsDiv.
+const renderAsDiv = computed(() => {
+  if (!node.value || catalogComponentId.value !== ComponentId.BUTTON) {
+    return false
+  }
+  const board = findComponentForNode(node.value, props.workspace)
+  if (!board) return false
+  return collectDescendantNodeIds(board, props.nodeId).some((descendantId) => {
+    const descendant = props.workspace.nodes[descendantId]
+    if (!descendant) return false
+    return (
+      getNodeCatalogComponentId(descendant, props.workspace) ===
+      ComponentId.BUTTON
+    )
+  })
+})
+
+const htmlAttributes = computed(() => {
+  const base: Record<string, string | number | boolean> = {
+    "data-canvas-node-id": props.nodeId,
+    "data-selection-id": props.nodeId,
+    "data-selection-kind": "node",
+    "data-selection-root-id": selfPath.value,
+    "data-component-id": catalogComponentId.value ?? "",
+  }
+  if (context.value) {
+    Object.assign(base, getPropertyHtmlAttributes(context.value.properties))
+  }
+  return base
+})
 
 const themeId = computed(() => node.value?.theme || props.initialThemeId)
 
@@ -110,14 +150,14 @@ const visible = computed(
       v-if="tag?.kind === 'icon'"
       :icon="iconSymbol"
       :className="className"
-      :data-node-id="nodeId"
+      v-bind="htmlAttributes"
     />
 
     <component
       v-else-if="tag && tag.void"
       :is="tag.tag"
       :class="className"
-      :data-node-id="nodeId"
+      v-bind="htmlAttributes"
       @click="select"
     />
 
@@ -125,7 +165,7 @@ const visible = computed(
       v-else-if="tag"
       :is="tag.tag"
       :class="className"
-      :data-node-id="nodeId"
+      v-bind="htmlAttributes"
       @click="select"
     >
       <template v-if="content">{{ content }}</template>

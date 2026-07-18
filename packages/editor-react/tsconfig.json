@@ -15,7 +15,7 @@
     "incremental": true,
     "paths": {
       "@app/*": ["./app/*"],
-      "@lib/*": ["./lib/*"],
+      "@lib/*": ["../editor/lib/*"],
       "@seldon/components/*": ["./seldon/*"],
       "@seldon/core/*": ["../../packages/core/*"],
       "@seldon/factory/*": ["../../packages/factory/*"],
