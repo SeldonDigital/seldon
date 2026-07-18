@@ -12,6 +12,7 @@ import {
 import type { Placement } from "@seldon/editor/lib/types"
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
+import ItemNode from "@seldon/components/elements/ItemNode.vue"
 
 const props = defineProps<{
   workspace: Workspace
@@ -28,10 +29,60 @@ const { selectedNodeId } = storeToRefs(selection)
 const { hoveredId } = storeToRefs(hover)
 
 const dropZone = ref<Placement | null>(null)
+const expanded = ref(true)
+
+const node = computed(() => props.workspace.nodes[props.nodeId])
 
 const isInstance = computed(() =>
   node.value ? typeCheckingService.isInstance(node.value) : false,
 )
+
+const catalogComponentId = computed(() =>
+  node.value ? getNodeCatalogComponentId(node.value, props.workspace) : null,
+)
+
+const schema = computed(() => {
+  if (!catalogComponentId.value) return null
+  try {
+    return getComponentSchema(catalogComponentId.value)
+  } catch {
+    return null
+  }
+})
+
+const label = computed(() => {
+  const nodeName = (node.value as { name?: string } | undefined)?.name
+  if (nodeName) return nodeName
+  return schema.value?.name ?? props.nodeId
+})
+
+const iconId = computed(() => schema.value?.icon ?? "seldon-component")
+
+const childIds = computed(() =>
+  node.value ? getNodeChildIds(node.value, props.workspace) : [],
+)
+const hasChildren = computed(() => childIds.value.length > 0)
+const isSelected = computed(() => selectedNodeId.value === props.nodeId)
+const isHovered = computed(() => hoveredId.value === props.nodeId)
+
+function select(): void {
+  selection.selectNode(
+    props.nodeId as never,
+    props.nodeId === props.rootId ? null : props.rootId,
+  )
+}
+
+function toggle(): void {
+  expanded.value = !expanded.value
+}
+
+function onEnter(): void {
+  hover.setHoveredId(props.nodeId, "node", props.rootId)
+}
+
+function onLeave(): void {
+  hover.setHoveredId(null)
+}
 
 function onDragStart(event: DragEvent): void {
   if (!isInstance.value) {
@@ -85,72 +136,57 @@ function onDrop(event: DragEvent): void {
   drag.endDrag()
 }
 
-const isHovered = computed(() => hoveredId.value === props.nodeId)
-
-function onEnter(): void {
-  hover.setHoveredId(props.nodeId, "node", props.rootId)
-}
-
-function onLeave(): void {
-  hover.setHoveredId(null)
-}
-
-const expanded = ref(true)
-
-const node = computed(() => props.workspace.nodes[props.nodeId])
-
-const catalogComponentId = computed(() =>
-  node.value ? getNodeCatalogComponentId(node.value, props.workspace) : null,
+// Slot props for the generated ItemNode. The chevron button shows only when the
+// row has children; the field carries selection state; the label input shows the
+// resting name; display and actions slots stay off for now.
+const toggleButton = computed(() =>
+  hasChildren.value ? { onClick: withStop(toggle) } : null,
 )
+const toggleIcon = computed(() => ({
+  style: {
+    transition: "transform 0.2s ease",
+    transform: expanded.value ? "rotate(90deg)" : "none",
+    opacity: hasChildren.value ? 1 : 0,
+  },
+}))
+const fieldProps = computed(() => ({
+  "aria-selected": isSelected.value || undefined,
+}))
+const nodeIconProps = computed(() => ({ icon: iconId.value }))
+const labelProps = computed(() => ({ value: label.value, readonly: true }))
+const rootStyle = computed(() => ({ paddingLeft: `${props.depth * 12}px` }))
 
-const label = computed(() => {
-  const nodeName = (node.value as { name?: string } | undefined)?.name
-  if (nodeName) return nodeName
-  if (!catalogComponentId.value) return props.nodeId
-  try {
-    return getComponentSchema(catalogComponentId.value).name
-  } catch {
-    return props.nodeId
+function withStop(fn: () => void) {
+  return (event: Event) => {
+    event.stopPropagation()
+    fn()
   }
-})
-
-const childIds = computed(() =>
-  node.value ? getNodeChildIds(node.value, props.workspace) : [],
-)
-
-const hasChildren = computed(() => childIds.value.length > 0)
-
-const isSelected = computed(() => selectedNodeId.value === props.nodeId)
-
-function select(): void {
-  selection.selectNode(
-    props.nodeId as never,
-    props.nodeId === props.rootId ? null : props.rootId,
-  )
-}
-
-function toggle(event: MouseEvent): void {
-  event.stopPropagation()
-  expanded.value = !expanded.value
 }
 </script>
 
 <template>
-  <div v-if="node" class="node-row-group">
-    <button
-      class="node-row"
+  <template v-if="node">
+    <ItemNode
+      class="objects-node"
       :class="{
-        'node-row--selected': isSelected,
-        'node-row--hovered': isHovered && !isSelected,
-        'node-row--drop-before': dropZone === 'before',
-        'node-row--drop-after': dropZone === 'after',
-        'node-row--drop-inside': dropZone === 'inside',
+        'objects-node--hovered': isHovered && !isSelected,
+        'objects-node--drop-before': dropZone === 'before',
+        'objects-node--drop-after': dropZone === 'after',
+        'objects-node--drop-inside': dropZone === 'inside',
       }"
-      :style="{ paddingLeft: `${depth * 14 + 8}px` }"
+      :style="rootStyle"
+      :aria-selected="isSelected || undefined"
       :data-selection-id="nodeId"
       data-selection-kind="node"
       :data-selection-root-id="rootId"
       :draggable="isInstance"
+      :button-iconic="toggleButton"
+      :icon="toggleIcon"
+      :combobox-field="fieldProps"
+      :icon2="nodeIconProps"
+      :input="labelProps"
+      :button-iconic2="null"
+      :button-iconic3="null"
       @click="select"
       @mouseenter="onEnter"
       @mouseleave="onLeave"
@@ -159,18 +195,7 @@ function toggle(event: MouseEvent): void {
       @dragover="onDragOver"
       @dragleave="onDragLeave"
       @drop="onDrop"
-    >
-      <span
-        v-if="hasChildren"
-        class="node-row__caret"
-        :class="{ 'node-row__caret--open': expanded }"
-        @click="toggle"
-        >▸</span
-      >
-      <span v-else class="node-row__caret node-row__caret--empty" />
-      <span class="node-row__label">{{ label }}</span>
-    </button>
-
+    />
     <template v-if="expanded && hasChildren">
       <NodeRow
         v-for="childId in childIds"
@@ -181,60 +206,18 @@ function toggle(event: MouseEvent): void {
         :depth="depth + 1"
       />
     </template>
-  </div>
+  </template>
 </template>
 
 <style scoped>
-.node-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  width: 100%;
-  border: none;
-  background: transparent;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  color: #d4d4d8;
-  text-align: left;
-}
-.node-row:hover {
-  background: #27272a;
-}
-.node-row--selected {
-  background: #3730a3;
-  color: #fff;
-}
-.node-row--hovered {
-  background: #27272a;
-}
-.node-row--drop-inside {
-  outline: 1px solid #6366f1;
+.objects-node--drop-inside {
+  outline: 1px solid var(--sdn-swatch-active, #6366f1);
   outline-offset: -1px;
-  background: #312e81;
 }
-.node-row--drop-before {
-  box-shadow: inset 0 2px 0 #6366f1;
+.objects-node--drop-before {
+  box-shadow: inset 0 2px 0 var(--sdn-swatch-active, #6366f1);
 }
-.node-row--drop-after {
-  box-shadow: inset 0 -2px 0 #6366f1;
-}
-.node-row__caret {
-  width: 12px;
-  display: inline-block;
-  transition: transform 0.1s ease;
-  color: #71717a;
-  font-size: 0.7rem;
-}
-.node-row__caret--open {
-  transform: rotate(90deg);
-}
-.node-row__caret--empty {
-  visibility: hidden;
-}
-.node-row__label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.objects-node--drop-after {
+  box-shadow: inset 0 -2px 0 var(--sdn-swatch-active, #6366f1);
 }
 </style>

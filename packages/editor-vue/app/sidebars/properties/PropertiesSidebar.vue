@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import Combobox from "@app/menus/Combobox.vue"
-import ColorField from "@app/menus/ColorField.vue"
-import {
-  isHex,
-  isHSLString,
-  isLCHString,
-  isRGBString,
-} from "@seldon/core/helpers/validation"
 import { Workspace, getNodeProperties } from "@lib/core"
 import type { Value } from "@seldon/core"
 import type { Variant, Instance } from "@seldon/core"
@@ -15,20 +7,22 @@ import { BackgroundKind } from "@seldon/core/properties/values/appearance/backgr
 import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
 import {
   useEditableProperties,
-  type PropertyRow,
+  type PropertyRow as NodeRow,
 } from "@lib/properties/use-editable-properties"
 import { useThemeProperties } from "@lib/properties/use-theme-properties"
 import {
   useResourceProperties,
   type SelectedResource,
 } from "@lib/properties/use-resource-properties"
-import type { ThemeTokenRow } from "@seldon/editor/lib/themes/build-theme-token-rows"
-import type { ResourceRow } from "@seldon/editor/lib/resources/resource-rows"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { useSelectionStore } from "@lib/stores/selection-store"
 import { useDispatch } from "@lib/workspace/use-dispatch"
 import { storeToRefs } from "pinia"
 import { computed } from "vue"
+import SidebarProperties from "@seldon/components/modules/SidebarProperties.vue"
+import Frame from "@seldon/components/frames/Frame.vue"
+import ItemSection from "@seldon/components/elements/ItemSection.vue"
+import PropertyRow from "./PropertyRow.vue"
 
 const props = defineProps<{ workspace: Workspace }>()
 
@@ -38,28 +32,62 @@ const dispatch = useDispatch()
 
 const workspaceRef = computed(() => props.workspace)
 
+type ControlKind = "text" | "option" | "readonly" | "link"
+type RowOption = { label: string; value: string }
+
+/** Normalizes a row control's kind onto the PropertyRow control kinds. */
+function rowKind(kind: unknown): ControlKind {
+  if (kind === "text") return "text"
+  if (kind === "option") return "option"
+  if (kind === "link") return "link"
+  return "readonly"
+}
+
+/** Normalizes control options to the `{ label, value }` PropertyRow shape. */
+function toOptions(options: unknown): RowOption[] {
+  if (!Array.isArray(options)) return []
+  return options.map((option) => {
+    const record = option as { label?: string; name?: string; value: string }
+    return {
+      label: record.label ?? record.name ?? record.value,
+      value: record.value,
+    }
+  })
+}
+
+// Row-control accessors. Kept in script so the template stays free of inline
+// type casts, which the Vue template compiler cannot parse.
+type RowControl = { kind?: unknown; value?: unknown; options?: unknown; href?: string }
+
+function controlKind(control: RowControl): ControlKind {
+  return rowKind(control.kind)
+}
+function controlValue(control: RowControl): string {
+  return String(control.value ?? "")
+}
+function controlOptions(control: RowControl): RowOption[] {
+  return toOptions(control.options)
+}
+function controlHref(control: RowControl): string | undefined {
+  return control.href
+}
+
+// -- Theme editing --------------------------------------------------------
+
 const themeEntryId = computed<EntryThemeId | null>(() => {
   const entry = selectedResourceEntry.value
   if (!entry || entry.kind !== "theme") return null
   const id = entry.id as EntryThemeId
   return props.workspace.themes[id] ? id : null
 })
-
 const isThemeEditing = computed(() => Boolean(themeEntryId.value))
-
 const {
   sections: themeSections,
   commit: commitTheme,
   reset: resetTheme,
 } = useThemeProperties(themeEntryId, workspaceRef)
 
-function onThemeText(row: ThemeTokenRow, event: Event): void {
-  commitTheme(row.key, (event.target as HTMLInputElement).value)
-}
-
-function onThemeSelect(row: ThemeTokenRow, value: unknown): void {
-  commitTheme(row.key, String(value))
-}
+// -- Font/icon resource editing ------------------------------------------
 
 const selectedResource = computed<SelectedResource>(() => {
   const entry = selectedResourceEntry.value
@@ -69,36 +97,31 @@ const selectedResource = computed<SelectedResource>(() => {
   }
   return null
 })
-
 const isResourceEditing = computed(() => selectedResource.value !== null)
-
 const { sections: resourceSections, commit: commitResource } =
   useResourceProperties(selectedResource, workspaceRef)
 
-function onResourceSelect(row: ResourceRow, value: unknown): void {
-  commitResource(row.key, String(value))
-}
+// -- Node property editing ------------------------------------------------
 
 const node = computed(() =>
   selectedNodeId.value ? props.workspace.nodes[selectedNodeId.value] : undefined,
 )
-
 const properties = computed<Record<string, unknown>>(() =>
   node.value ? (getNodeProperties(node.value, props.workspace) ?? {}) : {},
 )
-
 const overrideKeys = computed<Set<string>>(() => {
   const overrides = (node.value as { overrides?: Record<string, unknown> })
     ?.overrides
   return new Set(overrides ? Object.keys(overrides) : [])
 })
-
 const sections = useEditableProperties(properties, workspaceRef, overrideKeys)
 
-// Commit a raw editor string through the shared `serializeValue`, which coerces
-// it into the correct typed value (unit dimensions, theme keys, colors, presets,
-// booleans). An empty string serializes to EMPTY, clearing the override. A
-// facet key (e.g. `margin.top`) writes a partial compound merged by facet.
+const showEmpty = computed(
+  () => !node.value && !isThemeEditing.value && !isResourceEditing.value,
+)
+
+// Commit a raw editor string through the shared `serializeValue`, coercing it
+// into the correct typed value and dispatching a scoped or facet-merged update.
 function commitRaw(key: string, raw: string): void {
   if (!selectedNodeId.value || !node.value) return
   const current = properties.value[key] as Value | undefined
@@ -108,8 +131,6 @@ function commitRaw(key: string, raw: string): void {
     node.value as Variant | Instance,
     key,
   )
-  // Layered paint facet: `root.<index>.<facet>`. Pad lower slots with empty
-  // bags so the slot-merge writes only this layer, matching React.
   const layered = key.match(/^([a-zA-Z]+)\.(\d+)\.([a-zA-Z]+)$/)
   if (layered) {
     const [, root, indexStr, facet] = layered
@@ -127,7 +148,6 @@ function commitRaw(key: string, raw: string): void {
     } as never)
     return
   }
-
   const dotIndex = key.indexOf(".")
   if (dotIndex !== -1) {
     const root = key.slice(0, dotIndex)
@@ -144,14 +164,11 @@ function commitRaw(key: string, raw: string): void {
   }
   dispatch({
     type: "set_node_properties",
-    payload: {
-      nodeId: selectedNodeId.value,
-      properties: { [key]: value },
-    },
+    payload: { nodeId: selectedNodeId.value, properties: { [key]: value } },
   } as never)
 }
 
-function resetProperty(row: PropertyRow): void {
+function resetProperty(row: NodeRow): void {
   if (!selectedNodeId.value) return
   dispatch({
     type: "reset_node_property",
@@ -161,8 +178,6 @@ function resetProperty(row: PropertyRow): void {
 
 function addLayer(property: string): void {
   if (!selectedNodeId.value) return
-  // Background layers seed a color fill so they render and expose facets; other
-  // stacks (shadow) start from the reducer's empty-bag default.
   const seed =
     property === "background"
       ? (backgroundLayerForKind(BackgroundKind.COLOR) ?? undefined)
@@ -180,335 +195,144 @@ function removeLayer(property: string, index: number): void {
     payload: { nodeId: selectedNodeId.value, property, index },
   } as never)
 }
-
-function onText(row: PropertyRow, event: Event): void {
-  commitRaw(row.key, (event.target as HTMLInputElement).value)
-}
-
-function onNodeSelect(row: PropertyRow, value: unknown): void {
-  commitRaw(row.key, String(value))
-}
-
-/**
- * Whether a display string reads as a color, so its row shows the color picker.
- * Covers hex, rgb, hsl, lch, and `@swatch.*` theme refs; other text values keep
- * the plain input.
- */
-function isColorLike(value: unknown): boolean {
-  if (typeof value !== "string" || value === "") return false
-  return (
-    value.startsWith("@swatch.") ||
-    isHex(value) ||
-    isHSLString(value) ||
-    isRGBString(value) ||
-    isLCHString(value)
-  )
-}
 </script>
 
 <template>
-  <aside class="properties-sidebar">
-    <header class="properties-sidebar__title">Properties</header>
+  <SidebarProperties class="properties-sidebar">
+    <Frame class="properties-sidebar__scroll">
+      <p v-if="showEmpty" class="properties-sidebar__empty">
+        Select a node or resource to edit its properties.
+      </p>
 
-    <div
-      v-if="!node && !isThemeEditing && !isResourceEditing"
-      class="properties-sidebar__empty"
-    >
-      Select a node or resource to edit its properties.
-    </div>
-
-    <div v-else-if="isResourceEditing" class="properties-sidebar__scroll">
-      <section
-        v-for="section in resourceSections"
-        :key="section.section"
-        class="prop-section"
-      >
-        <h4 class="prop-section__title">{{ section.label }}</h4>
-        <div
-          v-for="row in section.rows"
-          :key="row.key"
-          class="prop-field"
-          :class="{
-            'prop-field--facet': row.isSubProperty,
-            'prop-field--dimmed': row.isDimmed,
-          }"
-        >
-          <div class="prop-field__labelrow">
-            <label class="prop-field__label">{{ row.label }}</label>
-          </div>
-
-          <Combobox
-            v-if="row.control.kind === 'option'"
-            :model-value="row.control.value"
-            :options="row.control.options"
-            @select="onResourceSelect(row, $event)"
+      <template v-else-if="isResourceEditing">
+        <template v-for="section in resourceSections" :key="section.section">
+          <ItemSection
+            class="properties-sidebar__section"
+            :button-iconic="null"
+            :form-control-combobox="{}"
+            :text-label="{ children: section.label }"
+            :button-iconic2="null"
+            :button-iconic3="null"
           />
+          <PropertyRow
+            v-for="row in section.rows"
+            :key="row.key"
+            :label="row.label"
+            :kind="controlKind(row.control)"
+            :value="controlValue(row.control)"
+            :options="controlOptions(row.control)"
+            :href="controlHref(row.control)"
+            :is-facet="row.isSubProperty"
+            :dimmed="row.isDimmed"
+            @commit="commitResource(row.key, $event)"
+          />
+        </template>
+      </template>
 
-          <a
-            v-else-if="row.control.kind === 'link'"
-            class="prop-field__link"
-            :href="row.control.href"
-            target="_blank"
-            rel="noreferrer"
-            >{{ row.control.value }}</a
-          >
-
-          <span v-else class="prop-field__readonly">{{
-            row.control.value
-          }}</span>
-        </div>
-      </section>
-    </div>
-
-    <div v-else-if="isThemeEditing" class="properties-sidebar__scroll">
-      <section
-        v-for="section in themeSections"
-        :key="section.section"
-        class="prop-section"
-      >
-        <h4 class="prop-section__title">{{ section.label }}</h4>
-        <div
-          v-for="row in section.rows"
-          :key="row.key"
-          class="prop-field"
-          :class="{
-            'prop-field--facet': row.isSubProperty,
-            'prop-field--dimmed': row.isDimmed,
-          }"
-        >
-          <div class="prop-field__labelrow">
-            <label class="prop-field__label">
-              <span
-                v-if="row.iconColorValue"
-                class="prop-field__swatch"
-                :style="{ background: row.iconColorValue }"
-              />
-              {{ row.label }}
-            </label>
-            <button
-              v-if="row.isOverridden"
-              type="button"
-              class="prop-field__reset"
-              title="Reset to default"
-              @click="resetTheme(row.key)"
-            >
-              ↺
-            </button>
-          </div>
-
-          <ColorField
-            v-if="row.control.kind === 'text' && isColorLike(row.control.value)"
-            :value="row.control.value"
+      <template v-else-if="isThemeEditing">
+        <template v-for="section in themeSections" :key="section.section">
+          <ItemSection
+            class="properties-sidebar__section"
+            :button-iconic="null"
+            :form-control-combobox="{}"
+            :text-label="{ children: section.label }"
+            :button-iconic2="null"
+            :button-iconic3="null"
+          />
+          <PropertyRow
+            v-for="row in section.rows"
+            :key="row.key"
+            :label="row.label"
+            :kind="controlKind(row.control)"
+            :value="controlValue(row.control)"
+            :options="controlOptions(row.control)"
+            :can-reset="row.isOverridden"
+            :is-facet="row.isSubProperty"
+            :dimmed="row.isDimmed"
             @commit="commitTheme(row.key, $event)"
+            @reset="resetTheme(row.key)"
           />
+        </template>
+      </template>
 
-          <input
-            v-else-if="row.control.kind === 'text'"
-            class="prop-field__input"
-            :value="row.control.value"
-            @change="onThemeText(row, $event)"
+      <template v-else>
+        <template v-for="section in sections" :key="section.category">
+          <ItemSection
+            class="properties-sidebar__section"
+            :button-iconic="null"
+            :form-control-combobox="{}"
+            :text-label="{ children: section.label }"
+            :button-iconic2="null"
+            :button-iconic3="null"
           />
-
-          <Combobox
-            v-else-if="row.control.kind === 'option'"
-            :model-value="row.control.value"
-            :options="row.control.options"
-            @select="onThemeSelect(row, $event)"
-          />
-
-          <span
-            v-else-if="!row.isLookParent"
-            class="prop-field__readonly"
-            >{{ row.control.value }}</span
-          >
-        </div>
-      </section>
-    </div>
-
-    <div v-else class="properties-sidebar__scroll">
-      <section
-        v-for="section in sections"
-        :key="section.category"
-        class="prop-section"
-      >
-        <h4 class="prop-section__title">{{ section.label }}</h4>
-        <div
-          v-for="row in section.rows"
-          :key="row.key"
-          class="prop-field"
-          :class="{ 'prop-field--facet': row.isFacet }"
-        >
-          <div class="prop-field__labelrow">
-            <label class="prop-field__label">{{ row.label }}</label>
-            <button
-              v-if="row.layerAdd"
-              type="button"
-              class="prop-field__reset"
-              title="Add layer"
-              @click="addLayer(row.layerAdd)"
-            >
-              +
-            </button>
-            <button
-              v-if="row.layerRemove"
-              type="button"
-              class="prop-field__reset"
-              title="Remove layer"
-              @click="removeLayer(row.layerRemove.property, row.layerRemove.index)"
-            >
-              ×
-            </button>
-            <button
-              v-if="row.canReset"
-              type="button"
-              class="prop-field__reset"
-              title="Reset to default"
-              @click="resetProperty(row)"
-            >
-              ↺
-            </button>
-          </div>
-
-          <ColorField
-            v-if="row.control.kind === 'text' && isColorLike(row.control.value)"
-            :value="row.control.value"
-            @commit="commitRaw(row.key, $event)"
-          />
-
-          <input
-            v-else-if="row.control.kind === 'text'"
-            class="prop-field__input"
-            :value="row.control.value"
-            @change="onText(row, $event)"
-          />
-
-          <Combobox
-            v-else-if="row.control.kind === 'option'"
-            :model-value="row.control.value"
-            :options="row.control.options"
-            @select="onNodeSelect(row, $event)"
-          />
-
-          <span
-            v-else-if="!row.isHeader"
-            class="prop-field__readonly"
-            >{{ row.control.value }}</span
-          >
-        </div>
-      </section>
-    </div>
-  </aside>
+          <template v-for="row in section.rows" :key="row.key">
+            <PropertyRow
+              v-if="!row.isHeader"
+              :label="row.label"
+              :kind="controlKind(row.control)"
+              :value="controlValue(row.control)"
+              :options="controlOptions(row.control)"
+              :can-reset="row.canReset"
+              :is-facet="row.isFacet"
+              @commit="commitRaw(row.key, $event)"
+              @reset="resetProperty(row)"
+            />
+            <div v-if="row.layerAdd || row.layerRemove" class="properties-sidebar__layer">
+              <button
+                v-if="row.layerAdd"
+                type="button"
+                @click="addLayer(row.layerAdd)"
+              >
+                + Add layer
+              </button>
+              <button
+                v-if="row.layerRemove"
+                type="button"
+                @click="removeLayer(row.layerRemove.property, row.layerRemove.index)"
+              >
+                × Remove layer
+              </button>
+            </div>
+          </template>
+        </template>
+      </template>
+    </Frame>
+  </SidebarProperties>
 </template>
 
 <style scoped>
 .properties-sidebar {
   width: 300px;
   height: 100%;
-  background: #18181b;
-  border-left: 1px solid #27272a;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  color: #d4d4d8;
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
-.properties-sidebar__title {
-  padding: 0.75rem 1rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #71717a;
-  border-bottom: 1px solid #27272a;
+.properties-sidebar__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .properties-sidebar__empty {
   padding: 1rem;
   font-size: 0.8rem;
-  color: #71717a;
+  color: var(--sdn-swatch-gray, #71717a);
 }
-.properties-sidebar__scroll {
-  flex: 1;
-  overflow: auto;
-  padding: 0.5rem 0.75rem 1rem;
-}
-.prop-section {
-  margin-top: 0.75rem;
-}
-.prop-section__title {
-  margin: 0 0 0.5rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #71717a;
-}
-.prop-field {
+.properties-sidebar__layer {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 0.6rem;
-}
-.prop-field--facet {
-  padding-left: 0.75rem;
-  margin-bottom: 0.4rem;
-}
-.prop-field__labelrow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.prop-field__label {
-  font-size: 0.7rem;
-  color: #a1a1aa;
-}
-.prop-field__reset {
-  border: none;
-  background: transparent;
-  color: #71717a;
-  cursor: pointer;
-  font-size: 0.8rem;
-  line-height: 1;
-  padding: 0 2px;
-}
-.prop-field__reset:hover {
-  color: #e4e4e7;
-}
-.prop-field__input {
-  background: #27272a;
-  border: 1px solid #3f3f46;
-  border-radius: 4px;
-  padding: 6px 8px;
-  color: #fafafa;
-  font-size: 0.8rem;
-}
-.prop-field__input:focus {
-  outline: none;
-  border-color: #6366f1;
-}
-.prop-field__checkbox {
-  display: flex;
-  align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
-  color: #e4e4e7;
+  padding: 2px 8px 6px;
 }
-.prop-field__readonly {
-  font-size: 0.75rem;
-  color: #71717a;
-  word-break: break-word;
-}
-.prop-field--dimmed {
-  opacity: 0.55;
-}
-.prop-field__swatch {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin-right: 4px;
-  vertical-align: middle;
-}
-.prop-field__link {
-  font-size: 0.75rem;
-  color: #a5b4fc;
+.properties-sidebar__layer button {
+  background: transparent;
+  border: 1px solid var(--sdn-swatch-gray, #3f3f46);
+  color: var(--sdn-swatch-gray, #a1a1aa);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.72rem;
+  cursor: pointer;
 }
 </style>

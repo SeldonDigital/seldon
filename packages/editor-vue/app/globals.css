@@ -1,8 +1,11 @@
 /*
- * Global editor styles. The generated theme CSS from seldon/styles is imported
- * by the chrome once the Vue chrome is generated (W-gen-chrome). This file holds
- * only base resets and app-shell rules.
+ * Global editor styles. Import the generated seldon theme tokens and component
+ * class rules first so the generated chrome components render with their design.
+ * Mirrors the React editor's globals.css.
  */
+@import "../seldon/styles/seldon.css";
+@import "../seldon/styles.css";
+
 * {
   box-sizing: border-box;
 }
