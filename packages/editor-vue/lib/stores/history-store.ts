@@ -2,6 +2,7 @@ import { createEmptyWorkspace } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
+import { useDirtyStore } from "./dirty-store"
 
 const REVISION_LIMIT = 50
 
@@ -29,16 +30,23 @@ export const useHistoryStore = defineStore("history", () => {
   }
 
   function undo(): void {
-    if (currentIndex.value > 0) currentIndex.value -= 1
+    if (currentIndex.value > 0) {
+      currentIndex.value -= 1
+      useDirtyStore().setDirty(true)
+    }
   }
 
   function redo(): void {
-    if (currentIndex.value < history.value.length - 1) currentIndex.value += 1
+    if (currentIndex.value < history.value.length - 1) {
+      currentIndex.value += 1
+      useDirtyStore().setDirty(true)
+    }
   }
 
   function reset(state: Workspace): void {
     history.value = [state]
     currentIndex.value = 0
+    useDirtyStore().setDirty(false)
   }
 
   return { history, currentIndex, current, canUndo, canRedo, push, undo, redo, reset }

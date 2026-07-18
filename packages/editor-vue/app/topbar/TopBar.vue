@@ -2,15 +2,18 @@
 import FloatingMenu from "@app/menus/FloatingMenu.vue"
 import { useAddRemoveCommands } from "@lib/commands/use-add-remove-commands"
 import { useMoveCommands } from "@lib/commands/use-move-commands"
+import { useImportExport } from "@lib/io/use-import-export"
 import { useMenu } from "@lib/menus/use-menu"
 import { getCurrentWorkspace, useHistoryStore } from "@lib/stores/history-store"
+import { useDirtyStore } from "@lib/stores/dirty-store"
 import { usePanelStore } from "@lib/stores/panel-store"
 import { usePreviewModeStore } from "@lib/stores/preview-mode-store"
 import { useSelectionStore } from "@lib/stores/selection-store"
 import { useToolStore } from "@lib/stores/tool-store"
+import { useWorkspaceSaveStore } from "@lib/stores/workspace-save-store"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { storeToRefs } from "pinia"
-import { computed } from "vue"
+import { computed, ref } from "vue"
 
 defineProps<{ title?: string }>()
 
@@ -19,6 +22,8 @@ const panel = usePanelStore()
 const selection = useSelectionStore()
 const tool = useToolStore()
 const previewMode = usePreviewModeStore()
+const dirty = useDirtyStore()
+const save = useWorkspaceSaveStore()
 const { addVariant, addPlayground, duplicateSelection, deleteSelection } =
   useAddRemoveCommands()
 const {
@@ -27,6 +32,8 @@ const {
   moveSelectionToFront,
   moveSelectionToBack,
 } = useMoveCommands()
+const { exportWorkspaceToFile, importWorkspaceFromFile, importWeb } =
+  useImportExport()
 
 const { canUndo, canRedo } = storeToRefs(history)
 const { selectedNodeId, selectedBoardId } = storeToRefs(selection)
@@ -39,6 +46,13 @@ function toggleInsertTool(): void {
   tool.setActiveTool(isInsertTool.value ? "select" : "component")
 }
 
+const { isDirty } = storeToRefs(dirty)
+const saveLabel = computed(() => (isDirty.value ? "Save" : "Saved"))
+
+function saveWorkspace(): void {
+  void save.saveNow(getCurrentWorkspace())
+}
+
 const hasSelection = computed(
   () => Boolean(selectedNodeId.value) || Boolean(selectedBoardId.value),
 )
@@ -46,6 +60,8 @@ const hasSelection = computed(
 const addMenu = useMenu()
 const editMenu = useMenu()
 const resourceMenu = useMenu()
+const fileMenu = useMenu()
+const fileInput = ref<HTMLInputElement | null>(null)
 
 function toggleAdd(event: MouseEvent): void {
   addMenu.toggle(event.currentTarget as HTMLElement)
@@ -57,6 +73,22 @@ function toggleEdit(event: MouseEvent): void {
 
 function toggleResource(event: MouseEvent): void {
   resourceMenu.toggle(event.currentTarget as HTMLElement)
+}
+
+function toggleFile(event: MouseEvent): void {
+  fileMenu.toggle(event.currentTarget as HTMLElement)
+}
+
+function chooseImportFile(): void {
+  fileMenu.hide()
+  fileInput.value?.click()
+}
+
+async function onImportFileChange(event: Event): Promise<void> {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ""
+  if (file) await importWorkspaceFromFile(file)
 }
 
 function run(action: () => void, menu: ReturnType<typeof useMenu>): void {
@@ -193,9 +225,49 @@ function insertIntoSelection(): void {
           Add icon set…
         </button>
       </FloatingMenu>
+
+      <button class="topbar__btn" @click="toggleFile">File ▾</button>
+      <FloatingMenu
+        :open="fileMenu.open.value"
+        :anchor="fileMenu.anchor.value"
+        @close="fileMenu.hide()"
+      >
+        <button class="menu-item" @click="chooseImportFile">
+          Import workspace…
+        </button>
+        <button
+          class="menu-item"
+          @click="run(exportWorkspaceToFile, fileMenu)"
+        >
+          Export workspace JSON
+        </button>
+        <div class="menu-divider" />
+        <button class="menu-item" @click="run(importWeb, fileMenu)">
+          Import from web…
+        </button>
+      </FloatingMenu>
+
+      <input
+        ref="fileInput"
+        type="file"
+        accept="application/json"
+        class="topbar__file-input"
+        @change="onImportFileChange"
+      />
     </div>
 
     <div class="topbar__right">
+      <button
+        class="topbar__btn"
+        :disabled="!isDirty"
+        title="Save workspace"
+        @click="saveWorkspace"
+      >
+        {{ saveLabel }}
+      </button>
+      <button class="topbar__btn" title="AI chat ( ` )" @click="panel.openPanel('ai-chat')">
+        Hari
+      </button>
       <button class="topbar__btn" @click="panel.openPanel('export-components')">
         Export…
       </button>
@@ -244,6 +316,9 @@ function insertIntoSelection(): void {
   color: #71717a;
   font-size: 0.8rem;
   margin-right: 0.5rem;
+}
+.topbar__file-input {
+  display: none;
 }
 .topbar__right {
   display: flex;

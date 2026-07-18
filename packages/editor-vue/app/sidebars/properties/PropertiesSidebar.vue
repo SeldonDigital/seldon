@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import Combobox from "@app/menus/Combobox.vue"
+import ColorField from "@app/menus/ColorField.vue"
+import {
+  isHex,
+  isHSLString,
+  isLCHString,
+  isRGBString,
+} from "@seldon/core/helpers/validation"
 import { Workspace, getNodeProperties } from "@lib/core"
 import type { Value } from "@seldon/core"
 import type { Variant, Instance } from "@seldon/core"
@@ -49,19 +57,8 @@ function onThemeText(row: ThemeTokenRow, event: Event): void {
   commitTheme(row.key, (event.target as HTMLInputElement).value)
 }
 
-function onThemeOption(row: ThemeTokenRow, event: Event): void {
-  if (row.control.kind !== "option") return
-  const index = Number((event.target as HTMLSelectElement).value)
-  const option = row.control.options[index]
-  if (!option) return
-  commitTheme(row.key, String(option.value))
-}
-
-function themeOptionIndex(row: ThemeTokenRow): number {
-  if (row.control.kind !== "option") return -1
-  return row.control.options.findIndex(
-    (option) => String(option.value) === String(row.control.value),
-  )
+function onThemeSelect(row: ThemeTokenRow, value: unknown): void {
+  commitTheme(row.key, String(value))
 }
 
 const selectedResource = computed<SelectedResource>(() => {
@@ -78,19 +75,8 @@ const isResourceEditing = computed(() => selectedResource.value !== null)
 const { sections: resourceSections, commit: commitResource } =
   useResourceProperties(selectedResource, workspaceRef)
 
-function onResourceOption(row: ResourceRow, event: Event): void {
-  if (row.control.kind !== "option") return
-  const index = Number((event.target as HTMLSelectElement).value)
-  const option = row.control.options[index]
-  if (!option) return
-  commitResource(row.key, option.value)
-}
-
-function resourceOptionIndex(row: ResourceRow): number {
-  if (row.control.kind !== "option") return -1
-  return row.control.options.findIndex(
-    (option) => option.value === row.control.value,
-  )
+function onResourceSelect(row: ResourceRow, value: unknown): void {
+  commitResource(row.key, String(value))
 }
 
 const node = computed(() =>
@@ -199,18 +185,23 @@ function onText(row: PropertyRow, event: Event): void {
   commitRaw(row.key, (event.target as HTMLInputElement).value)
 }
 
-function onOption(row: PropertyRow, event: Event): void {
-  if (row.control.kind !== "option") return
-  const index = Number((event.target as HTMLSelectElement).value)
-  const option = row.control.options[index]
-  if (!option) return
-  commitRaw(row.key, String(option.value))
+function onNodeSelect(row: PropertyRow, value: unknown): void {
+  commitRaw(row.key, String(value))
 }
 
-function optionIndex(row: PropertyRow): number {
-  if (row.control.kind !== "option") return -1
-  return row.control.options.findIndex(
-    (option) => option.value === row.control.value,
+/**
+ * Whether a display string reads as a color, so its row shows the color picker.
+ * Covers hex, rgb, hsl, lch, and `@swatch.*` theme refs; other text values keep
+ * the plain input.
+ */
+function isColorLike(value: unknown): boolean {
+  if (typeof value !== "string" || value === "") return false
+  return (
+    value.startsWith("@swatch.") ||
+    isHex(value) ||
+    isHSLString(value) ||
+    isRGBString(value) ||
+    isLCHString(value)
   )
 }
 </script>
@@ -246,21 +237,12 @@ function optionIndex(row: PropertyRow): number {
             <label class="prop-field__label">{{ row.label }}</label>
           </div>
 
-          <select
+          <Combobox
             v-if="row.control.kind === 'option'"
-            class="prop-field__input"
-            :value="resourceOptionIndex(row)"
-            @change="onResourceOption(row, $event)"
-          >
-            <option value="-1" disabled>—</option>
-            <option
-              v-for="(option, index) in row.control.options"
-              :key="index"
-              :value="index"
-            >
-              {{ option.label }}
-            </option>
-          </select>
+            :model-value="row.control.value"
+            :options="row.control.options"
+            @select="onResourceSelect(row, $event)"
+          />
 
           <a
             v-else-if="row.control.kind === 'link'"
@@ -314,28 +296,25 @@ function optionIndex(row: PropertyRow): number {
             </button>
           </div>
 
+          <ColorField
+            v-if="row.control.kind === 'text' && isColorLike(row.control.value)"
+            :value="row.control.value"
+            @commit="commitTheme(row.key, $event)"
+          />
+
           <input
-            v-if="row.control.kind === 'text'"
+            v-else-if="row.control.kind === 'text'"
             class="prop-field__input"
             :value="row.control.value"
             @change="onThemeText(row, $event)"
           />
 
-          <select
+          <Combobox
             v-else-if="row.control.kind === 'option'"
-            class="prop-field__input"
-            :value="themeOptionIndex(row)"
-            @change="onThemeOption(row, $event)"
-          >
-            <option value="-1" disabled>—</option>
-            <option
-              v-for="(option, index) in row.control.options"
-              :key="index"
-              :value="index"
-            >
-              {{ option.label }}
-            </option>
-          </select>
+            :model-value="row.control.value"
+            :options="row.control.options"
+            @select="onThemeSelect(row, $event)"
+          />
 
           <span
             v-else-if="!row.isLookParent"
@@ -390,28 +369,25 @@ function optionIndex(row: PropertyRow): number {
             </button>
           </div>
 
+          <ColorField
+            v-if="row.control.kind === 'text' && isColorLike(row.control.value)"
+            :value="row.control.value"
+            @commit="commitRaw(row.key, $event)"
+          />
+
           <input
-            v-if="row.control.kind === 'text'"
+            v-else-if="row.control.kind === 'text'"
             class="prop-field__input"
             :value="row.control.value"
             @change="onText(row, $event)"
           />
 
-          <select
+          <Combobox
             v-else-if="row.control.kind === 'option'"
-            class="prop-field__input"
-            :value="optionIndex(row)"
-            @change="onOption(row, $event)"
-          >
-            <option value="-1" disabled>—</option>
-            <option
-              v-for="(option, index) in row.control.options"
-              :key="index"
-              :value="index"
-            >
-              {{ option.label }}
-            </option>
-          </select>
+            :model-value="row.control.value"
+            :options="row.control.options"
+            @select="onNodeSelect(row, $event)"
+          />
 
           <span
             v-else-if="!row.isHeader"

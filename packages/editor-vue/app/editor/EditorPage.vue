@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { getStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 import { useEditorShortcuts } from "@lib/commands/use-editor-shortcuts"
+import { useWorkspaceAutosave } from "@lib/persistence/use-workspace-autosave"
+import { useEditorConfigStore } from "@lib/stores/editor-config-store"
 import { useHistoryStore } from "@lib/stores/history-store"
+import { usePreviewModeStore } from "@lib/stores/preview-mode-store"
+import { useWorkspaceSaveStore } from "@lib/stores/workspace-save-store"
 import { useWorkspace } from "@lib/workspace/use-workspace"
+import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 import Canvas from "@app/canvas/Canvas.vue"
 import LoadEditorFonts from "@app/editor/LoadEditorFonts.vue"
+import AiChatPanel from "@app/palettes/AiChatPanel.vue"
 import BoardsDialog from "@app/dialogs/BoardsDialog.vue"
 import ComponentsDialog from "@app/dialogs/ComponentsDialog.vue"
 import CreateComponentDialog from "@app/dialogs/CreateComponentDialog.vue"
@@ -18,9 +24,19 @@ import TopBar from "@app/topbar/TopBar.vue"
 
 const route = useRoute()
 const history = useHistoryStore()
+const save = useWorkspaceSaveStore()
+const config = useEditorConfigStore()
+const previewMode = usePreviewModeStore()
 const { workspace } = useWorkspace()
 
+const { showPanels } = storeToRefs(config)
+const { isInPreviewMode } = storeToRefs(previewMode)
+
+// Panels hide when the user collapses chrome (`\`) or enters device preview (`p`).
+const showSidebars = computed(() => showPanels.value && !isInPreviewMode.value)
+
 useEditorShortcuts()
+useWorkspaceAutosave()
 
 const status = ref<"loading" | "ready" | "missing">("loading")
 const title = ref("Workspace")
@@ -35,6 +51,7 @@ async function load(id: string): Promise<void> {
     return
   }
   title.value = record.name
+  save.setRecord(record)
   history.reset(record.workspace)
   status.value = "ready"
 }
@@ -55,11 +72,11 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
       </p>
       <template v-else>
         <LoadEditorFonts :workspace="workspace" />
-        <ObjectsSidebar :workspace="workspace" />
+        <ObjectsSidebar v-if="showSidebars" :workspace="workspace" />
         <div class="editor-canvas">
           <Canvas :workspace="workspace" />
         </div>
-        <PropertiesSidebar :workspace="workspace" />
+        <PropertiesSidebar v-if="showSidebars" :workspace="workspace" />
       </template>
     </div>
     <BoardsDialog />
@@ -67,6 +84,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
     <CreateComponentDialog />
     <ResourceDialog />
     <ExportDialog />
+    <AiChatPanel />
   </div>
 </template>
 

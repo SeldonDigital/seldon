@@ -3,7 +3,10 @@ import type { Workspace } from "@lib/core"
 import { usePanZoom } from "@lib/canvas/use-pan-zoom"
 import { useCanvasTracking } from "@lib/canvas/use-canvas-tracking"
 import { useBoardStateStore } from "@lib/stores/board-state-store"
+import { useEditorConfigStore } from "@lib/stores/editor-config-store"
+import { usePreviewModeStore } from "@lib/stores/preview-mode-store"
 import { getBoardVariantRootIds } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 import CanvasNode from "./CanvasNode.vue"
 import HoverOverlay from "./HoverOverlay.vue"
@@ -13,8 +16,19 @@ import ZoomControls from "./ZoomControls.vue"
 const props = defineProps<{ workspace: Workspace }>()
 
 const boardState = useBoardStateStore()
+const config = useEditorConfigStore()
+const previewMode = usePreviewModeStore()
 const { onCanvasClick, onCanvasPointerMove, onCanvasPointerLeave } =
   useCanvasTracking()
+
+const { showSelection } = storeToRefs(config)
+const { isInPreviewMode } = storeToRefs(previewMode)
+
+// Selection and hover chrome hide when the user turns them off (`h`) or enters
+// device preview (`p`), so the canvas shows the design without editor overlays.
+const showOverlays = computed(
+  () => showSelection.value && !isInPreviewMode.value,
+)
 
 const scrollEl = ref<HTMLElement | null>(null)
 const {
@@ -88,8 +102,8 @@ const boards = computed<BoardEntry[]>(() =>
         </div>
       </section>
     </div>
-    <SelectionOverlay :container="scrollEl" />
-    <HoverOverlay :container="scrollEl" />
+    <SelectionOverlay v-if="showOverlays" :container="scrollEl" />
+    <HoverOverlay v-if="showOverlays" :container="scrollEl" />
     <ZoomControls />
   </div>
 </template>
