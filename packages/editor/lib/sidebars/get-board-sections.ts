@@ -1,10 +1,10 @@
-import { Board as BoardType } from "@seldon/core"
-import { getComponentSchema } from "@seldon/core/components/catalog"
 import {
+  Board as BoardType,
   ComponentLevel,
   ORDERED_COMPONENT_LEVELS,
+  getComponentSchema,
   isComponentId,
-} from "@seldon/core/components/constants"
+} from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { sortThemeBoardsForDisplay } from "@seldon/core/workspace/helpers/themes/sort-theme-boards"
 import {
@@ -14,7 +14,7 @@ import {
   isIconSetBoard,
   isMediaBoard,
   isThemeBoard,
-} from "@seldon/core/workspace/model"
+} from "@seldon/core/workspace/model/components"
 import { getComponentKey } from "../workspace/workspace-accessors"
 
 const SECTION_LABELS: Record<ComponentLevel, string> = {
