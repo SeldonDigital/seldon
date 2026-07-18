@@ -3,15 +3,22 @@ import Icon from "@seldon/components/primitives/Icon.vue"
 import {
   ComponentId,
   Display,
+  MAX_REPEAT_COUNT,
   Workspace,
   EntryNodeId,
   buildContext,
   getCssFromProperties,
   getNodeProperties,
+  resolveNodeRepeat,
 } from "@lib/core"
+import {
+  NORMAL_STATE,
+  type NodeState,
+} from "@seldon/core/workspace/model/node-state"
 import { getPropertyHtmlAttributes } from "@lib/canvas/property-html-attributes"
 import { resolveCanvasTag } from "@lib/canvas/resolve-canvas-tag"
 import { useSelectionStore } from "@lib/stores/selection-store"
+import { storeToRefs } from "pinia"
 import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import {
   findComponentForNode,
@@ -21,21 +28,49 @@ import {
 import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
 import { computed } from "vue"
 
-const props = defineProps<{
-  workspace: Workspace
-  nodeId: EntryNodeId
-  rootPath?: string
-  initialThemeId?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    workspace: Workspace
+    nodeId: EntryNodeId
+    rootPath?: string
+    initialThemeId?: string
+    activeState?: NodeState
+    repeatOverrides?: Record<string, string>
+    isRepeatCopy?: boolean
+  }>(),
+  { activeState: () => NORMAL_STATE },
+)
 
-const selection = useSelectionStore()
-
-function select(event: MouseEvent): void {
-  event.stopPropagation()
-  selection.selectNode(props.nodeId as never, props.rootPath ?? null)
+/** Per-echo override values for a repeated child's text/icon descendants. */
+function buildEchoOverrides(
+  data: Record<string, string[]> | undefined,
+  echoIndex: number,
+): Record<string, string> {
+  const result: Record<string, string> = {}
+  if (!data) return result
+  for (const [descendantId, values] of Object.entries(data)) {
+    const value = values[echoIndex - 1]
+    if (value != null && value !== "") result[descendantId] = value
+  }
+  return result
 }
 
+type ChildRender = {
+  key: string
+  nodeId: string
+  rootPath: string
+  repeatOverrides?: Record<string, string>
+  isRepeatCopy: boolean
+}
+
+const selection = useSelectionStore()
+const { selectedNodeId } = storeToRefs(selection)
+
+const isSelectedNode = computed(() => selectedNodeId.value === props.nodeId)
+
 const node = computed(() => props.workspace.nodes[props.nodeId])
+
+const repeatValue = computed(() => props.repeatOverrides?.[props.nodeId])
 
 const catalogComponentId = computed(() =>
   node.value ? getNodeCatalogComponentId(node.value, props.workspace) : null,
@@ -60,7 +95,12 @@ const className = computed(() => `node-${styleScopeId.value}`)
 const context = computed(() => {
   if (!node.value) return null
   const parentIndex = buildRenderParentIndex(selfPath.value)
-  return buildContext(node.value, props.workspace, parentIndex)
+  return buildContext(
+    node.value,
+    props.workspace,
+    parentIndex,
+    props.activeState,
+  )
 })
 
 const css = computed(() => {
@@ -87,19 +127,61 @@ const tag = computed(() =>
     : null,
 )
 
+const isIcon = computed(() => catalogComponentId.value === ComponentId.ICON)
+
 const content = computed(() => {
+  if (repeatValue.value != null && !isIcon.value) {
+    return repeatValue.value.replace(/\r?\n/g, " ")
+  }
   const raw = context.value?.properties.content?.value
   return typeof raw === "string" ? raw.replace(/\r?\n/g, " ") : null
 })
 
 const iconSymbol = computed(() => {
+  if (repeatValue.value != null && isIcon.value) return repeatValue.value
   const raw = context.value?.properties.symbol?.value
   return typeof raw === "string" ? raw : undefined
 })
 
-const childIds = computed(() =>
-  node.value ? getNodeChildIds(node.value, props.workspace) : [],
-)
+// Children with repeat echoes expanded: a repeated child renders `count` times,
+// echoes (index > 0) carry per-index text/icon overrides and a dashed outline.
+const childRenders = computed<ChildRender[]>(() => {
+  if (!node.value) return []
+  const result: ChildRender[] = []
+  for (const childId of getNodeChildIds(node.value, props.workspace)) {
+    const childNode = props.workspace.nodes[childId]
+    const childRepeat = childNode
+      ? resolveNodeRepeat(childId, props.workspace)
+      : undefined
+    const childRootPath = `${selfPath.value}/${childId}`
+
+    if (!childRepeat || childRepeat.count <= 1) {
+      result.push({
+        key: childId,
+        nodeId: childId,
+        rootPath: childRootPath,
+        repeatOverrides: props.repeatOverrides,
+        isRepeatCopy: false,
+      })
+      continue
+    }
+
+    const total = Math.min(childRepeat.count, MAX_REPEAT_COUNT)
+    for (let echoIndex = 0; echoIndex < total; echoIndex++) {
+      const isEcho = echoIndex > 0
+      result.push({
+        key: isEcho ? `${childId}#echo${echoIndex}` : childId,
+        nodeId: childId,
+        rootPath: childRootPath,
+        repeatOverrides: isEcho
+          ? { ...props.repeatOverrides, ...buildEchoOverrides(childRepeat.data, echoIndex) }
+          : props.repeatOverrides,
+        isRepeatCopy: isEcho,
+      })
+    }
+  }
+  return result
+})
 
 // A Button nested inside another Button renders as a div on the canvas to avoid
 // invalid nested interactive markup. Mirrors React Node.tsx renderAsDiv.
@@ -133,6 +215,18 @@ const htmlAttributes = computed(() => {
   return base
 })
 
+// Dashed outline marking repeat echo copies, shown only while the repeated
+// child (index 0) is selected. Editor preview only. Mirrors React Node.tsx.
+const styleOverrides = computed<Record<string, string> | undefined>(() => {
+  if (props.isRepeatCopy && isSelectedNode.value) {
+    return {
+      outline: "1px dashed var(--sdn-swatch-primary)",
+      outlineOffset: "1px",
+    }
+  }
+  return undefined
+})
+
 const themeId = computed(() => node.value?.theme || props.initialThemeId)
 
 const visible = computed(
@@ -150,6 +244,7 @@ const visible = computed(
       v-if="tag?.kind === 'icon'"
       :icon="iconSymbol"
       :className="className"
+      :style="styleOverrides"
       v-bind="htmlAttributes"
     />
 
@@ -157,26 +252,29 @@ const visible = computed(
       v-else-if="tag && tag.void"
       :is="tag.tag"
       :class="className"
+      :style="styleOverrides"
       v-bind="htmlAttributes"
-      @click="select"
     />
 
     <component
       v-else-if="tag"
       :is="tag.tag"
       :class="className"
+      :style="styleOverrides"
       v-bind="htmlAttributes"
-      @click="select"
     >
       <template v-if="content">{{ content }}</template>
       <template v-else>
         <CanvasNode
-          v-for="childId in childIds"
-          :key="childId"
+          v-for="child in childRenders"
+          :key="child.key"
           :workspace="workspace"
-          :node-id="childId"
-          :root-path="`${selfPath}/${childId}`"
+          :node-id="child.nodeId"
+          :root-path="child.rootPath"
           :initial-theme-id="themeId"
+          :active-state="activeState"
+          :repeat-overrides="child.repeatOverrides"
+          :is-repeat-copy="child.isRepeatCopy"
         />
       </template>
     </component>

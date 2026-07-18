@@ -6,6 +6,12 @@ import { useWorkspace } from "@lib/workspace/use-workspace"
 import { computed, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 import Canvas from "@app/canvas/Canvas.vue"
+import LoadEditorFonts from "@app/editor/LoadEditorFonts.vue"
+import BoardsDialog from "@app/dialogs/BoardsDialog.vue"
+import ComponentsDialog from "@app/dialogs/ComponentsDialog.vue"
+import CreateComponentDialog from "@app/dialogs/CreateComponentDialog.vue"
+import ExportDialog from "@app/dialogs/ExportDialog.vue"
+import ResourceDialog from "@app/dialogs/ResourceDialog.vue"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
 import PropertiesSidebar from "@app/sidebars/properties/PropertiesSidebar.vue"
 import TopBar from "@app/topbar/TopBar.vue"
@@ -48,6 +54,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
         <RouterLink to="/">Back to home</RouterLink>
       </p>
       <template v-else>
+        <LoadEditorFonts :workspace="workspace" />
         <ObjectsSidebar :workspace="workspace" />
         <div class="editor-canvas">
           <Canvas :workspace="workspace" />
@@ -55,6 +62,11 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
         <PropertiesSidebar :workspace="workspace" />
       </template>
     </div>
+    <BoardsDialog />
+    <ComponentsDialog />
+    <CreateComponentDialog />
+    <ResourceDialog />
+    <ExportDialog />
   </div>
 </template>
 

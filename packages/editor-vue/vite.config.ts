@@ -2,6 +2,7 @@ import vue from "@vitejs/plugin-vue"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { defineConfig } from "vite"
+import { exportApiPlugin } from "../editor/vite/export-api-plugin"
 import { workspaceApiPlugin } from "../editor/vite/workspace-api-plugin"
 
 const editorRoot = path.dirname(fileURLToPath(import.meta.url))
@@ -15,7 +16,7 @@ const aiPackageEntry = path.join(editorRoot, "../ai/index.ts")
 // editor. Both share workspace state through the filesystem workspace store.
 export default defineConfig(({ mode }) => ({
   root: editorRoot,
-  plugins: [vue(), workspaceApiPlugin()],
+  plugins: [vue(), workspaceApiPlugin(), exportApiPlugin()],
   define: {
     "process.env.NODE_ENV": JSON.stringify(mode),
     "process.env.DEBUG_MODE": JSON.stringify(process.env.DEBUG_MODE ?? ""),
@@ -37,6 +38,7 @@ export default defineConfig(({ mode }) => ({
   },
   server: {
     port: 5174,
+    strictPort: true,
     fs: { allow: [repoRoot] },
   },
 }))

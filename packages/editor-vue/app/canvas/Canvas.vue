@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import type { Workspace } from "@lib/core"
 import { usePanZoom } from "@lib/canvas/use-pan-zoom"
+import { useCanvasTracking } from "@lib/canvas/use-canvas-tracking"
+import { useBoardStateStore } from "@lib/stores/board-state-store"
 import { getBoardVariantRootIds } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { computed, ref } from "vue"
 import CanvasNode from "./CanvasNode.vue"
+import HoverOverlay from "./HoverOverlay.vue"
 import SelectionOverlay from "./SelectionOverlay.vue"
 import ZoomControls from "./ZoomControls.vue"
 
 const props = defineProps<{ workspace: Workspace }>()
+
+const boardState = useBoardStateStore()
+const { onCanvasClick, onCanvasPointerMove, onCanvasPointerLeave } =
+  useCanvasTracking()
 
 const scrollEl = ref<HTMLElement | null>(null)
 const {
@@ -56,21 +63,33 @@ const boards = computed<BoardEntry[]>(() =>
     @pointerdown="onPointerDown"
     @pointermove="onPointerMove"
     @pointerup="onPointerUp"
+    @pointerleave="onCanvasPointerLeave"
   >
-    <div class="canvas-content" :style="contentStyle">
+    <div
+      class="canvas-content"
+      :style="contentStyle"
+      @click="onCanvasClick"
+      @pointermove="onCanvasPointerMove"
+    >
       <section v-for="board in boards" :key="board.key" class="canvas-board">
         <header class="canvas-board__label">{{ board.name }}</header>
-        <div class="canvas-board__surface">
+        <div
+          class="canvas-board__surface"
+          :data-selection-id="board.key"
+          data-selection-kind="board"
+        >
           <CanvasNode
             v-for="rootId in board.rootIds"
             :key="rootId"
             :workspace="workspace"
             :node-id="rootId"
+            :active-state="boardState.getActiveState(board.key)"
           />
         </div>
       </section>
     </div>
     <SelectionOverlay :container="scrollEl" />
+    <HoverOverlay :container="scrollEl" />
     <ZoomControls />
   </div>
 </template>
