@@ -40,15 +40,19 @@ export async function getFontsComponent(
       links.push(`    <link rel="stylesheet" href="${url}" />`)
     }
 
-    // 1. Enabled remote families on font collection boards.
-    const families =
-      workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
-    for (const family of families) {
-      if (family.origin !== "remote") continue
-      const enabled = enabledByFamily[family.name]
-      // An explicit empty selection (preset None) requests no weights, so skip.
-      if (enabled && enabled.length === 0) continue
-      pushFamily(family.name, enabled)
+    // 1. Enabled remote families on font collection boards. On by default; when
+    //    `exportAllFontCollections` is off, skip this source so only families a
+    //    theme references (source 2) emit a link.
+    if (options.exportAllFontCollections !== false) {
+      const families =
+        workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
+      for (const family of families) {
+        if (family.origin !== "remote") continue
+        const enabled = enabledByFamily[family.name]
+        // An explicit empty selection (preset None) requests no weights, so skip.
+        if (enabled && enabled.length === 0) continue
+        pushFamily(family.name, enabled)
+      }
     }
 
     // 2. Remote families referenced by a theme's font slots. These load even when

@@ -1,4 +1,4 @@
-import type { FileToExport } from "@seldon/factory/export/types"
+import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 type WireFile = {
@@ -30,14 +30,18 @@ function fromWireFile(file: WireFile): FileToExport {
  * Runs the factory export against the workspace via the local Next server route.
  * The route reads icon and native-react source from disk and formats the output,
  * then returns files the browser writes to the chosen folder.
+ *
+ * `options` overrides the server defaults (folders, remote fonts, hidden
+ * components, icon/theme/font scope). Omitting it keeps the current behavior.
  */
 export async function runLocalExport(
   workspace: Workspace,
+  options?: Partial<ExportOptions>,
 ): Promise<FileToExport[]> {
   const response = await fetch("/api/export", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ workspace }),
+    body: JSON.stringify(options ? { workspace, options } : { workspace }),
   })
 
   if (!response.ok) {

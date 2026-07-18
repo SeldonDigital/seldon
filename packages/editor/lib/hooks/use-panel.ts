@@ -6,6 +6,7 @@ import { useTool } from "./use-tool"
 export type PanelType =
   | "add-board"
   | "create-component"
+  | "export-components"
   | "add-theme"
   | "add-font-collection"
   | "add-icon-set"
@@ -17,6 +18,7 @@ export type PanelType =
 type OpenPanelArgs =
   | [activePanel: "add-board", options?: { level?: ComponentLevel }]
   | [activePanel: "create-component", options?: undefined]
+  | [activePanel: "export-components", options?: undefined]
   | [activePanel: "add-theme", options?: undefined]
   | [activePanel: "add-font-collection", options?: undefined]
   | [activePanel: "add-icon-set", options?: undefined]
@@ -50,6 +52,7 @@ const useStore = create<PanelState>((set) => ({
         })
         break
       case "create-component":
+      case "export-components":
       case "add-theme":
       case "add-font-collection":
       case "add-icon-set":

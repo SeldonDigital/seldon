@@ -48,6 +48,7 @@ export function getJsonTreeFromChildren(
   variant: EntryNode & { type: "default" | "variant" | "authored" },
   workspace: Workspace,
   nodeIdToClass: Record<string, string>,
+  includeHidden: boolean = false,
 ): JSONTreeNode {
   const board = getBoardByNodeId(workspace, variant.id)
   if (!board || !isExportableCompositionBoard(board)) {
@@ -105,6 +106,7 @@ export function getJsonTreeFromChildren(
 
   function shouldExportChild(child: InstanceId | VariantId) {
     try {
+      if (includeHidden) return true
       const childNode = getNodeById(child, workspace)
       const childProperties = getNodeProperties(childNode, workspace)
       const displayValue = childProperties.display?.value

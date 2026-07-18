@@ -11,6 +11,7 @@ import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { BoardsDialog } from "../dialogs/boards/BoardsDialog"
 import { ComponentsDialog } from "../dialogs/components/ComponentsDialog"
 import { CreateComponentController } from "../dialogs/create-component/CreateComponentController"
+import { ExportComponentsController } from "../dialogs/export-components/ExportComponentsController"
 import { FontCollectionsDialog } from "../dialogs/font-collections/FontCollectionsDialog"
 import { IconSetsDialog } from "../dialogs/icon-sets/IconSetsDialog"
 import { ImageUploadController } from "../dialogs/image-upload/ImageUploadController"
@@ -61,6 +62,7 @@ export default function Editor() {
       <ComponentsDialog />
       <BoardsDialog />
       <CreateComponentController />
+      <ExportComponentsController />
       <ThemesDialog />
       <FontCollectionsDialog />
       <IconSetsDialog />

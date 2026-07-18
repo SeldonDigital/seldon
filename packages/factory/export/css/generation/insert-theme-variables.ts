@@ -264,13 +264,34 @@ export type ThemeStylesheetFile = {
   content: string
 }
 
+/** Theme entry ids referenced by any node's `theme` field. */
+function getUsedThemeIds(workspace: Workspace): Set<string> {
+  const used = new Set<string>()
+  for (const node of Object.values(workspace.nodes ?? {})) {
+    if (node.theme) used.add(node.theme)
+  }
+  return used
+}
+
 export async function generateThemeStylesheetFiles(
   workspace: Workspace,
   componentsFolder: string,
+  exportAllThemes: boolean = true,
 ): Promise<ThemeStylesheetFile[]> {
-  const themeIds = Object.keys(workspace.themes ?? {})
+  let themeIds = Object.keys(workspace.themes ?? {})
   if (themeIds.length === 0) {
     themeIds.push("seldon")
+  }
+
+  // Off by default; when on, emit only themes a node references, always keeping
+  // the default `seldon` theme so unscoped subtrees still resolve.
+  if (!exportAllThemes) {
+    const usedThemeIds = getUsedThemeIds(workspace)
+    themeIds = themeIds.filter(
+      (themeId) =>
+        getThemeSlug(themeId, workspace) === "seldon" ||
+        usedThemeIds.has(themeId),
+    )
   }
 
   const files: ThemeStylesheetFile[] = []

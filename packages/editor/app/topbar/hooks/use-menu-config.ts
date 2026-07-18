@@ -101,7 +101,6 @@ export function useMenuConfig(): MenuConfig {
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
     importWeb,
-    exportToFolder,
   } = useImportExport()
   const { addVariant, deleteSelection, duplicateSelection } =
     useAddRemoveCommands()
@@ -226,7 +225,10 @@ export function useMenuConfig(): MenuConfig {
       {
         id: "export-folder",
         label: "Export Components…",
-        action: exportToFolder,
+        action: () => {
+          openPanel("export-components")
+          setActiveTool("select")
+        },
         visibleIn: ["edit", "preview"],
       },
       "separator",
@@ -247,7 +249,8 @@ export function useMenuConfig(): MenuConfig {
 
     return items
   }, [
-    exportToFolder,
+    openPanel,
+    setActiveTool,
     exportWorkspaceToFile,
     goToProjects,
     importWorkspaceFromFile,

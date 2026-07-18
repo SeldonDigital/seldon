@@ -13,6 +13,7 @@ import {
 import { triggerDownload } from "@lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
+import type { ExportOptions } from "@seldon/factory/export/types"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { parseWorkspace } from "@seldon/core/workspace/helpers/parse-workspace"
 import type { Workspace } from "@seldon/core/workspace/types"
@@ -108,25 +109,31 @@ export function useImportExport() {
     [addToast, importWorkspace],
   )
 
-  const exportToFolder = useCallback(async () => {
-    const { setExporting } = useExportStatusStore.getState()
-    try {
-      const directory = await pickExportDirectory()
-      if (!directory) {
-        addToast("Folder picker is not supported in this browser")
-        return
+  const exportToFolder = useCallback(
+    async (
+      options?: Partial<ExportOptions>,
+      preselectedDirectory?: FileSystemDirectoryHandle,
+    ) => {
+      const { setExporting } = useExportStatusStore.getState()
+      try {
+        const directory = preselectedDirectory ?? (await pickExportDirectory())
+        if (!directory) {
+          addToast("Folder picker is not supported in this browser")
+          return
+        }
+        setExporting(true)
+        const { runLocalExport } = await import("@lib/export/run-local-export")
+        const files = await runLocalExport(workspace, options)
+        const count = await writeExportToDirectory(directory, files)
+        addToast(`Exported ${count} files`)
+      } catch (error) {
+        addToast(error instanceof Error ? error.message : "Export failed")
+      } finally {
+        setExporting(false)
       }
-      setExporting(true)
-      const { runLocalExport } = await import("@lib/export/run-local-export")
-      const files = await runLocalExport(workspace)
-      const count = await writeExportToDirectory(directory, files)
-      addToast(`Exported ${count} files`)
-    } catch (error) {
-      addToast(error instanceof Error ? error.message : "Export failed")
-    } finally {
-      setExporting(false)
-    }
-  }, [addToast, workspace])
+    },
+    [addToast, workspace],
+  )
 
   const importWeb = useCallback(async () => {
     const { setExporting } = useExportStatusStore.getState()

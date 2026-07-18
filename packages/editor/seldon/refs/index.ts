@@ -28,6 +28,20 @@ export type SeldonRef =
   | "dialogConfirm"
   | "dialogContent"
   | "dialogTitle"
+  | "exportAllFontsNo"
+  | "exportAllFontsYes"
+  | "exportAllIconsNo"
+  | "exportAllIconsYes"
+  | "exportAllThemesNo"
+  | "exportAllThemesYes"
+  | "exportCancel"
+  | "exportConfirm"
+  | "exportFontLinksNo"
+  | "exportFontLinksYes"
+  | "exportHiddenNo"
+  | "exportHiddenYes"
+  | "exportPlatform"
+  | "exportRootPath"
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
@@ -175,6 +189,76 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     component: "TextTitle",
     nodeId: "component-panel-j8D9mUx4",
     className: "sdn-text-title sdn-text-title--eodu",
+  },
+  exportAllFontsNo: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-yVKBdxqz",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllFontsYes: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-e48Xe2Fa",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllIconsNo: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-rugVimbb",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllIconsYes: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-6ZzKEgPL",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllThemesNo: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-dHhbJMnp",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllThemesYes: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-Ll8MAURr",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportCancel: {
+    component: "Button",
+    nodeId: "component-dialog-0g7dRdqO",
+    className: "sdn-button sdn-button--wjtm",
+  },
+  exportConfirm: {
+    component: "Button",
+    nodeId: "component-dialog-Zd52I5RB",
+    className: "sdn-button sdn-button--upjl",
+  },
+  exportFontLinksNo: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-ckamBjyC",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportFontLinksYes: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-lKDfX83Z",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportHiddenNo: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-cM5q9shs",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportHiddenYes: {
+    component: "MenuItemRadio",
+    nodeId: "component-dialog-wIfMpjAU",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportPlatform: {
+    component: "Input",
+    nodeId: "component-comboboxField-DsXk84N6",
+    className: "sdn-input sdn-input--twyx",
+  },
+  exportRootPath: {
+    component: "Input",
+    nodeId: "component-formControl-j1rONFyf",
+    className: "sdn-input sdn-input--qirj",
   },
   filterActions: {
     component: "ButtonIconic",

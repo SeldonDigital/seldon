@@ -4,7 +4,10 @@ import { isGradientBackgroundKind } from "@seldon/core/properties/values/appeara
 
 import { getComputedCssValue } from "../computed-variables"
 import { StyleGenerationContext } from "../types"
-import { getColorCSSValue } from "./get-color-css-value"
+import {
+  applyTransformsToColorReference,
+  getColorCSSValue,
+} from "./get-color-css-value"
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"
 import { CSSObject } from "./types"
 
@@ -49,7 +52,16 @@ export function getColorStyles({
               context: computeContext,
             })
           : null
-      styles.color = themed ?? colorValue
+      // A computed color themes through its `var(--sdn-...)` reference, which
+      // carries no brightness. Ride the same brightness transform onto the
+      // reference so a brightness override still applies while the color swaps
+      // per theme, matching the resolved `colorValue` and the canvas render.
+      const brightnessNum =
+        resolveValue(properties.brightness)?.value.value ?? 0
+      const themedColor = themed
+        ? applyTransformsToColorReference(themed, brightnessNum, 100)
+        : null
+      styles.color = themedColor ?? colorValue
     }
   }
 

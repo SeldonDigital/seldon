@@ -1,6 +1,6 @@
 import { Workspace } from "@seldon/core"
 
-import { exportReact } from "./react/export-react"
+import { PLATFORMS } from "./platforms/registry"
 import { ExportOptions, FileToExport } from "./types"
 
 /**
@@ -34,9 +34,15 @@ export async function exportWorkspace(
     .replaceAll("//", "/")
     .replace(/\/$/, "") // Remove trailing slash
 
-  if (options.target.framework === "react") {
-    return await exportReact(workspace, options)
+  const platform = PLATFORMS[options.target.framework]
+  if (!platform) {
+    throw new Error(`Unknown export platform: ${options.target.framework}`)
+  }
+  if (!platform.export) {
+    throw new Error(
+      `Platform "${platform.label}" is planned but not available yet.`,
+    )
   }
 
-  throw new Error(`Unsupported target.framework: ${options.target.framework}`)
+  return await platform.export(workspace, options)
 }
