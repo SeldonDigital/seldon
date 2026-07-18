@@ -1,0 +1,60 @@
+<script setup lang="ts">
+import { computed } from "vue"
+import { combineClassNames, mergeSlot } from "../utils/class-names"
+import ButtonIconic from "../elements/ButtonIconic.vue"
+import Icon from "../primitives/Icon.vue"
+import Input from "../primitives/Input.vue"
+
+const props = defineProps<{
+  className?: string
+  icon?: Record<string, unknown> | null
+  input?: Record<string, unknown> | null
+  buttonIconic?: Record<string, unknown> | null
+  icon2?: Record<string, unknown> | null
+}>()
+
+const sdn: Record<string, any> = {
+  "aria-hidden": "false",
+  "className": "sdn-combobox-field",
+  "icon": {
+    "icon": "material-dataObject",
+    "aria-hidden": "true",
+    "className": "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "projectIcon"
+  },
+  "input": {
+    "placeholder": "Project Name",
+    "type": "text",
+    "role": "combobox",
+    "aria-haspopup": "listbox",
+    "className": "sdn-input sdn-input--twyx",
+    "data-seldon-ref": "projectLabel"
+  },
+  "buttonIconic": {
+    "className": "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "projectActions"
+  },
+  "icon2": {
+    "icon": "material-save",
+    "aria-hidden": "true",
+    "className": "sdn-icon sdn-icon--vsau"
+  }
+}
+
+const rootClassName = computed(() => combineClassNames("sdn-combobox-field", props.className))
+const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
+</script>
+
+<template>
+    <div :class="rootClassName" v-bind="rootAttrs">
+      <slot>
+        <Icon v-if="iconProps !== null" v-bind="iconProps" />
+        <Input v-if="inputProps !== null" v-bind="inputProps" />
+        <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="icon2Props" />
+      </slot>
+    </div>
+</template>

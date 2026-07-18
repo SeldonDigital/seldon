@@ -1,0 +1,78 @@
+<script setup lang="ts">
+import { computed } from "vue"
+import { combineClassNames, mergeSlot } from "../utils/class-names"
+import Frame from "../frames/Frame.vue"
+import Button from "../elements/Button.vue"
+import Icon from "../primitives/Icon.vue"
+import InputCheckbox from "../primitives/InputCheckbox.vue"
+import TextLabel from "../primitives/TextLabel.vue"
+import TextSubtitle from "../primitives/TextSubtitle.vue"
+import TextTitle from "../primitives/TextTitle.vue"
+
+const props = defineProps<{
+  className?: string
+  inputCheckbox?: Record<string, unknown> | null
+  frame?: Record<string, unknown> | null
+  textTitle?: Record<string, unknown> | null
+  textSubtitle?: Record<string, unknown> | null
+  button?: Record<string, unknown> | null
+  icon?: Record<string, unknown> | null
+  textLabel?: Record<string, unknown> | null
+}>()
+
+const sdn: Record<string, any> = {
+  "aria-hidden": "false",
+  "className": "sdn-item",
+  "inputCheckbox": {
+    "className": "sdn-input-checkbox sdn-input-checkbox--vajr"
+  },
+  "frame": {
+    "wrapperElement": "div",
+    "aria-hidden": "false",
+    "className": "sdn-frame sdn-frame--nhfs"
+  },
+  "textTitle": {
+    "className": "sdn-text-title sdn-text-title--ulqm"
+  },
+  "textSubtitle": {
+    "className": "sdn-text-subtitle sdn-text-subtitle--nxwj"
+  },
+  "button": {
+    "className": "sdn-button sdn-button-iconic--pgsr"
+  },
+  "icon": {
+    "icon": "seldon-component",
+    "aria-hidden": "true",
+    "className": "sdn-icon sdn-icon--umgs"
+  },
+  "textLabel": {
+    "className": "sdn-text-label sdn-text-label--ylte"
+  }
+}
+
+const rootClassName = computed(() => combineClassNames("sdn-item", props.className))
+const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
+const inputCheckboxProps = computed(() => mergeSlot(sdn.inputCheckbox, props.inputCheckbox))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
+const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
+const textSubtitleProps = computed(() => mergeSlot(sdn.textSubtitle, props.textSubtitle))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
+const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+</script>
+
+<template>
+    <li :class="rootClassName" v-bind="rootAttrs">
+      <slot>
+        <InputCheckbox v-if="inputCheckbox && inputCheckboxProps" v-bind="inputCheckboxProps" />
+        <Frame v-bind="frameProps">
+          <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
+          <TextSubtitle v-if="textSubtitle && textSubtitleProps" v-bind="textSubtitleProps" />
+        </Frame>
+        <Button v-if="buttonProps !== null" v-bind="buttonProps">
+          <Icon v-if="icon && iconProps" v-bind="iconProps" />
+          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        </Button>
+      </slot>
+    </li>
+</template>

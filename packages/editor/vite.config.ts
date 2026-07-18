@@ -5,6 +5,7 @@ import { defineConfig } from "vite"
 import { agentApiPlugin } from "./vite/agent-api-plugin"
 import { exportApiPlugin } from "./vite/export-api-plugin"
 import { importWebApiPlugin } from "./vite/import-web-api-plugin"
+import { workspaceApiPlugin } from "./vite/workspace-api-plugin"
 
 const editorRoot = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.join(editorRoot, "../..")
@@ -14,7 +15,13 @@ const aiPackageEntry = path.join(editorRoot, "../ai/index.ts")
 
 export default defineConfig(({ mode }) => ({
   root: editorRoot,
-  plugins: [react(), exportApiPlugin(), agentApiPlugin(), importWebApiPlugin()],
+  plugins: [
+    react(),
+    workspaceApiPlugin(),
+    exportApiPlugin(),
+    agentApiPlugin(),
+    importWebApiPlugin(),
+  ],
   define: {
     // @seldon/core reads process.env in browser code. Statically replace
     // NODE_ENV so prod/dev branches and dead-code elimination work. A minimal

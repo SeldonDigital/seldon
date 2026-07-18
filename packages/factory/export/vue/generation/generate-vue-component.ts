@@ -1,0 +1,236 @@
+import { Workspace } from "@seldon/core/workspace/types"
+
+import { NodeIdToClass } from "../../css/types"
+import { generateJSXStructure } from "../../react/generation/preprocess/generate-jsx-structure"
+import { JSXNode } from "../../react/generation/preprocess/types"
+import { isAttributeKey } from "../../react/generation/shared/attribute-props"
+import { generateDefaultProps } from "../../react/generation/shared/generate-default-props"
+import { getVariantClassNames } from "../../react/utils/class-name"
+import { pluralizeLevel } from "../../react/utils/pluralize-level"
+import { ComponentToExport, JSONTreeNode } from "../../types"
+import { getVueRootTag, resolveVueReturns } from "../shared/vue-native-tags"
+import { nodeToTemplate } from "./vue-template"
+
+type ChildImport = { name: string; path: string }
+
+/**
+ * Builds a full Vue single-file component for one exported component.
+ *
+ * Reuses the framework-neutral discovery and default-prop machinery from the
+ * React target, then emits `<script setup lang="ts">` (typed props, the `sdn`
+ * default object, and per-slot merged `computed` values) plus a `<template>`
+ * rendered by {@link nodeToTemplate}. Styling comes from the shared stylesheet,
+ * so no scoped styles are emitted here.
+ */
+export function generateVueComponent(
+  component: ComponentToExport,
+  nodeIdToClass: NodeIdToClass,
+  workspace: Workspace,
+): string {
+  const { tree } = component
+  const { root: jsxRoot, propNames } = generateJSXStructure(
+    component,
+    nodeIdToClass,
+    workspace,
+  )
+  const defaults = generateDefaultProps(component, nodeIdToClass, propNames)
+
+  const hasChildren = Array.isArray(tree.children) && tree.children.length > 0
+
+  const pathToLevel = new Map<string, string>()
+  function indexLevels(node: JSONTreeNode) {
+    pathToLevel.set(node.dataBinding.path, pluralizeLevel(node.level))
+    if (Array.isArray(node.children)) node.children.forEach(indexLevels)
+  }
+  if (Array.isArray(tree.children)) tree.children.forEach(indexLevels)
+
+  const childImports = collectChildImports(jsxRoot, pathToLevel)
+  const propDeclarations = collectPropDeclarations(component, propNames)
+  const mergedDeclarations = collectMergedDeclarations(propNames)
+
+  const variantClassNames = getVariantClassNames(component, nodeIdToClass)
+  const rootAttrs = buildRootAttrs(component)
+
+  const usesMergeSlot = mergedDeclarations.length > 0
+
+  const importLines: string[] = []
+  // `rootClassName` is always a computed value, so `computed` is always needed.
+  importLines.push(`import { computed } from "vue"`)
+  importLines.push(
+    usesMergeSlot
+      ? `import { combineClassNames, mergeSlot } from "../utils/class-names"`
+      : `import { combineClassNames } from "../utils/class-names"`,
+  )
+  const usesFrame = treeHasFrame(jsxRoot)
+  if (usesFrame) importLines.push(`import Frame from "../frames/Frame.vue"`)
+  for (const imp of childImports) {
+    importLines.push(`import ${imp.name} from "${imp.path}"`)
+  }
+
+  const scriptLines: string[] = []
+  scriptLines.push(...importLines)
+  scriptLines.push("")
+  scriptLines.push(`const props = defineProps<{`)
+  scriptLines.push(`  className?: string`)
+  for (const decl of propDeclarations) scriptLines.push(`  ${decl}`)
+  scriptLines.push(`}>()`)
+  scriptLines.push("")
+  scriptLines.push(
+    `const sdn: Record<string, any> = ${JSON.stringify(defaults, null, 2)}`,
+  )
+  scriptLines.push("")
+  scriptLines.push(
+    `const rootClassName = computed(() => combineClassNames(${JSON.stringify(
+      variantClassNames,
+    )}, props.className))`,
+  )
+  if (rootAttrs) scriptLines.push(`const rootAttrs = ${rootAttrs}`)
+  for (const decl of mergedDeclarations) scriptLines.push(decl)
+
+  const template = buildTemplate(component, jsxRoot, hasChildren, rootAttrs)
+
+  return `<script setup lang="ts">
+${scriptLines.join("\n")}
+</script>
+
+<template>
+${template}
+</template>
+`
+}
+
+function collectPropDeclarations(
+  component: ComponentToExport,
+  propNames: Map<string, string>,
+): string[] {
+  const decls: string[] = []
+  const seen = new Set<string>(["className"])
+
+  for (const key of Object.keys(component.tree.dataBinding.props)) {
+    if (isAttributeKey(key)) continue
+    if (!isValidIdentifier(key)) continue
+    if (seen.has(key)) continue
+    seen.add(key)
+    decls.push(`${key}?: unknown`)
+  }
+
+  for (const propName of propNames.values()) {
+    if (seen.has(propName)) continue
+    seen.add(propName)
+    decls.push(`${propName}?: Record<string, unknown> | null`)
+  }
+
+  return decls
+}
+
+function collectMergedDeclarations(propNames: Map<string, string>): string[] {
+  const decls: string[] = []
+  const seen = new Set<string>()
+  for (const propName of propNames.values()) {
+    if (seen.has(propName)) continue
+    seen.add(propName)
+    decls.push(
+      `const ${propName}Props = computed(() => mergeSlot(sdn.${propName}, props.${propName}))`,
+    )
+  }
+  return decls
+}
+
+function collectChildImports(
+  jsxRoot: JSXNode,
+  pathToLevel: Map<string, string>,
+): ChildImport[] {
+  const imports = new Map<string, ChildImport>()
+  function visit(node: JSXNode) {
+    if (!node.children) return
+    for (const child of node.children) {
+      if (child.type !== "frame") {
+        const level = pathToLevel.get(child.path) ?? "primitives"
+        const path = `../${level}/${child.name}.vue`
+        imports.set(child.name, { name: child.name, path })
+      }
+      visit(child)
+    }
+  }
+  visit(jsxRoot)
+  return Array.from(imports.values()).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )
+}
+
+function treeHasFrame(jsxRoot: JSXNode): boolean {
+  let found = false
+  function visit(node: JSXNode) {
+    if (node.type === "frame") found = true
+    node.children?.forEach(visit)
+  }
+  visit(jsxRoot)
+  return found
+}
+
+function buildRootAttrs(component: ComponentToExport): string | null {
+  const keys = Object.keys(component.tree.dataBinding.props).filter(
+    isAttributeKey,
+  )
+  if (keys.length === 0) return null
+  const entries = keys
+    .map((key) => `${JSON.stringify(key)}: sdn[${JSON.stringify(key)}]`)
+    .join(", ")
+  return `{ ${entries} }`
+}
+
+function buildTemplate(
+  component: ComponentToExport,
+  jsxRoot: JSXNode,
+  hasChildren: boolean,
+  rootAttrs: string | null,
+): string {
+  const returns = resolveVueReturns(component).returns
+  const rootTag = getVueRootTag(component)
+  const attrBind = rootAttrs ? ` v-bind="rootAttrs"` : ""
+  const refAttr = jsxRoot.ref ? ` data-seldon-ref=${JSON.stringify(jsxRoot.ref)}` : ""
+
+  const childMarkup =
+    jsxRoot.children && jsxRoot.children.length > 0
+      ? jsxRoot.children.map((child) => nodeToTemplate(child, 8)).join("")
+      : ""
+
+  // Dynamic element components resolve their tag from a prop at runtime.
+  if (returns === "htmlElement" || returns === "wrapperElement") {
+    const propKey = returns === "htmlElement" ? "htmlElement" : "wrapperElement"
+    const contentExpr = componentContentExpr(component)
+    const defaultSlot = hasChildren
+      ? `${childMarkup}\n      `
+      : contentExpr
+        ? `{{ ${contentExpr} }}`
+        : ""
+    const inner = `<slot>${defaultSlot}</slot>`
+    return `    <component :is="(props.${propKey} as string) ?? sdn.${propKey} ?? 'div'" :class="rootClassName"${attrBind}${refAttr}>${inner}</component>`
+  }
+
+  const tag = rootTag ?? "div"
+
+  if (!hasChildren) {
+    const contentExpr = componentContentExpr(component)
+    const body = contentExpr ? `{{ ${contentExpr} }}` : `<slot />`
+    return `    <${tag} :class="rootClassName"${attrBind}${refAttr}>${body}</${tag}>`
+  }
+
+  return `    <${tag} :class="rootClassName"${attrBind}${refAttr}>
+      <slot>${childMarkup}
+      </slot>
+    </${tag}>`
+}
+
+function componentContentExpr(component: ComponentToExport): string | null {
+  const props = component.tree.dataBinding.props
+  if ("content" in props) return `(props.content ?? sdn.content)`
+  if ("text" in props) return `(props.text ?? sdn.text)`
+  // Text primitives carry their copy in a `children` default prop.
+  if ("children" in props) return `(props.children ?? sdn.children)`
+  return null
+}
+
+function isValidIdentifier(key: string): boolean {
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key)
+}

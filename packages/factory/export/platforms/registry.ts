@@ -1,6 +1,7 @@
 import { Workspace } from "@seldon/core"
 
 import { exportReact } from "../react/export-react"
+import { exportVue } from "../vue/export-vue"
 import type {
   ExportOptions,
   ExportStyleId,
@@ -47,8 +48,9 @@ export const PLATFORMS: Record<PlatformId, PlatformDefinition> = {
   vue: {
     id: "vue",
     label: "Vue",
-    status: "planned",
+    status: "available",
     styles: "css-properties",
+    export: exportVue,
   },
   svelte: {
     id: "svelte",

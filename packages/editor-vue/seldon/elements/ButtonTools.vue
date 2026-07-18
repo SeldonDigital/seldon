@@ -1,0 +1,86 @@
+<script setup lang="ts">
+import { computed } from "vue"
+import { combineClassNames, mergeSlot } from "../utils/class-names"
+import Button from "../elements/Button.vue"
+import Icon from "../primitives/Icon.vue"
+import TextLabel from "../primitives/TextLabel.vue"
+
+const props = defineProps<{
+  className?: string
+  button?: Record<string, unknown> | null
+  icon?: Record<string, unknown> | null
+  textLabel?: Record<string, unknown> | null
+  button2?: Record<string, unknown> | null
+  icon2?: Record<string, unknown> | null
+  textLabel2?: Record<string, unknown> | null
+  button3?: Record<string, unknown> | null
+  icon3?: Record<string, unknown> | null
+  textLabel3?: Record<string, unknown> | null
+}>()
+
+const sdn: Record<string, any> = {
+  "button": {
+    "className": "sdn-button sdn-button--ivvu"
+  },
+  "icon": {
+    "icon": "seldon-component",
+    "aria-hidden": "true",
+    "className": "sdn-icon sdn-icon--umgs"
+  },
+  "textLabel": {
+    "className": "sdn-text-label sdn-text-label--7mza"
+  },
+  "button2": {
+    "className": "sdn-button sdn-button--ivvu"
+  },
+  "icon2": {
+    "icon": "seldon-component",
+    "aria-hidden": "true",
+    "className": "sdn-icon sdn-icon--umgs"
+  },
+  "textLabel2": {
+    "className": "sdn-text-label sdn-text-label--7mza"
+  },
+  "button3": {
+    "className": "sdn-button sdn-button--ivvu"
+  },
+  "icon3": {
+    "icon": "seldon-component",
+    "aria-hidden": "true",
+    "className": "sdn-icon sdn-icon--umgs"
+  },
+  "textLabel3": {
+    "className": "sdn-text-label sdn-text-label--7mza"
+  }
+}
+
+const rootClassName = computed(() => combineClassNames("sdn-button-tools", props.className))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
+const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+const button2Props = computed(() => mergeSlot(sdn.button2, props.button2))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
+const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
+const button3Props = computed(() => mergeSlot(sdn.button3, props.button3))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
+const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
+</script>
+
+<template>
+    <button :class="rootClassName">
+      <slot>
+        <Button v-if="buttonProps !== null" v-bind="buttonProps">
+          <Icon v-if="icon && iconProps" v-bind="iconProps" />
+          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        </Button>
+        <Button v-if="button2Props !== null" v-bind="button2Props">
+          <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
+          <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+        </Button>
+        <Button v-if="button3Props !== null" v-bind="button3Props">
+          <Icon v-if="icon3 && icon3Props" v-bind="icon3Props" />
+          <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+        </Button>
+      </slot>
+    </button>
+</template>

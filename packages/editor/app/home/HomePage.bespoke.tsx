@@ -24,8 +24,8 @@ export function HomeView({
       <header>
         <h1 className="home-title">Seldon · Editor</h1>
         <p className="home-subtitle">
-          Workspaces are stored in this browser only. Open a workspace.json file
-          or create a new workspace.
+          Workspaces are stored on your machine and shared with the Vue editor.
+          Open a workspace.json file or create a new workspace.
         </p>
       </header>
 

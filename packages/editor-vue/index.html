@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      Minimal process.env shim. @seldon/core reads process.env in browser code
+      (e.g. DEBUG_MODE); Vite replaces process.env.NODE_ENV via define but does
+      not provide a process global, so guard against a ReferenceError.
+    -->
+    <script>
+      window.process = window.process || { env: {} }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seldon | Local Editor (Vue)</title>
+    <meta
+      name="description"
+      content="Local Seldon design editor, Vue experiment. Workspaces stay on your machine."
+    />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

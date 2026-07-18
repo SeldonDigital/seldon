@@ -15,7 +15,13 @@
     "format": "node scripts/format.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "dev:vue": "npm run dev --workspace @seldon/editor-vue",
+    "build:vue": "npm run build --workspace @seldon/editor-vue",
+    "start:vue": "npm run start --workspace @seldon/editor-vue",
+    "lint:vue": "npm run lint --workspace @seldon/editor-vue",
+    "quality:vue": "npm run quality --workspace @seldon/editor-vue",
+    "export:seldon:vue": "npm run export:seldon --workspace @seldon/editor-vue"
   },
   "repository": {
     "type": "git",
@@ -30,6 +36,7 @@
   "homepage": "https://github.com/SeldonDigital/seldon#readme",
   "workspaces": [
     "packages/editor",
+    "packages/editor-vue",
     "packages/core",
     "packages/factory",
     "packages/ai"

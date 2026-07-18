@@ -1,0 +1,49 @@
+{
+  "name": "@seldon/editor-vue",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fonts:licenses": "node scripts/copy-font-licenses.mjs",
+    "fonts:files": "node scripts/copy-font-files.mjs",
+    "export:seldon": "node scripts/export-seldon.mjs",
+    "dev": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite",
+    "build": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vue-tsc -b && vite build",
+    "start": "vite preview",
+    "lint": "eslint .",
+    "quality": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
+    "@seldon/core": "file:../core",
+    "@seldon/factory": "file:../factory",
+    "@vueuse/core": "^11.3.0",
+    "change-case": "^5.4.4",
+    "hotkeys-js": "^3.13.7",
+    "idb-keyval": "^6.2.1",
+    "immer": "^10.1.1",
+    "markdown-it": "^14.1.0",
+    "nanoid": "^5.1.5",
+    "panzoom": "^9.4.3",
+    "pinia": "^2.2.6",
+    "shiki": "^1.24.0",
+    "splitpanes": "^3.1.5",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.19.9",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "esbuild": "^0.28.1",
+    "eslint": "^9.39.4",
+    "prettier": "^3.4.2",
+    "typescript": "^5.8.3",
+    "vite": "^8.0.0",
+    "vue-tsc": "^2.1.10"
+  },
+  "volta": {
+    "node": "22.18.0"
+  }
+}

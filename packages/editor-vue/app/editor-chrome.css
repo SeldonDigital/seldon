@@ -1,0 +1,17 @@
+/*
+ * Editor chrome layout styles. Mirrors packages/editor/app/editor-chrome.css.
+ * Kept minimal here; the generated chrome supplies component-level styling.
+ */
+.editor-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.editor-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+}
