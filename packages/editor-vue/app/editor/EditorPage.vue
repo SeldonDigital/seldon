@@ -20,7 +20,8 @@ import ExportDialog from "@app/dialogs/ExportDialog.vue"
 import ResourceDialog from "@app/dialogs/ResourceDialog.vue"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
 import PropertiesSidebar from "@app/sidebars/properties/PropertiesSidebar.vue"
-import TopBar from "@app/topbar/TopBar.vue"
+import TopbarController from "@app/topbar/TopbarController.vue"
+import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 
 const route = useRoute()
 const history = useHistoryStore()
@@ -29,8 +30,9 @@ const config = useEditorConfigStore()
 const previewMode = usePreviewModeStore()
 const { workspace } = useWorkspace()
 
-const { showPanels } = storeToRefs(config)
+const { showPanels, chromeTheme } = storeToRefs(config)
 const { isInPreviewMode } = storeToRefs(previewMode)
+const resolvedMode = useResolvedInterfaceMode()
 
 // Panels hide when the user collapses chrome (`\`) or enters device preview (`p`).
 const showSidebars = computed(() => showPanels.value && !isInPreviewMode.value)
@@ -60,8 +62,8 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
 </script>
 
 <template>
-  <div class="editor-shell">
-    <TopBar :title="title" />
+  <div class="editor-shell" :data-theme="chromeTheme" :data-mode="resolvedMode">
+    <TopbarController v-if="showPanels" />
     <div class="editor-body">
       <p v-if="status === 'loading'" class="editor-message">
         Loading workspace…
@@ -94,6 +96,8 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
   height: 100vh;
   display: flex;
   flex-direction: column;
+  color: var(--sdn-swatch-white);
+  background-color: var(--sdn-swatch-black);
 }
 .editor-body {
   flex: 1;

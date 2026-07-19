@@ -1,17 +1,49 @@
 /*
- * Editor chrome layout styles. Mirrors packages/editor/app/editor-chrome.css.
- * Kept minimal here; the generated chrome supplies component-level styling.
+ * Permanent editor chrome that has no workspace-generated View equivalent.
+ * Mirrors the topbar-relevant rules from the React editor's editor-chrome.css.
+ * Do NOT add component-level styling here.
  */
-.editor-shell {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+
+/*
+ * Topbar rainbow strip. The resting strip is a static interface gradient. During
+ * a local export the strip grows and `useTopbarGradientAnimation` repaints the
+ * `background-image` each frame, cross-fading the stops in place. The resting
+ * stops here must match TOPBAR_RESTING_TOKENS so the handoff back to CSS is
+ * seamless when the animation clears its inline paint.
+ */
+.topbar-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
   width: 100%;
-  overflow: hidden;
+  background-image: linear-gradient(
+    90deg,
+    var(--sdn-swatch-negative) 0%,
+    var(--sdn-swatch-warning) 20%,
+    var(--sdn-swatch-positive) 40%,
+    var(--sdn-swatch-active) 70%,
+    var(--sdn-swatch-negative) 100%
+  );
+  transition: height 0.3s ease;
 }
 
-.editor-body {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
+/* Grows the strip while an export animates; transitions back when it ends. */
+.topbar-gradient--active {
+  height: 3px;
+}
+
+/*
+ * The topbar wordmark ships as an <img> with a hardcoded fill, so it cannot
+ * follow the interface mode on its own. Repaint it through a mask filled with
+ * the offWhite swatch: the neutral swatches invert per mode, so the letters
+ * render off-white on the dark logo pill in light mode and off-black on the
+ * light pill in dark mode. object-position pushes the img's own pixels out of
+ * the content box so only the painted mask shows.
+ */
+[data-seldon-ref="logo"] img[src="/wordmark-light.svg"] {
+  -webkit-mask: url("/wordmark-light.svg") no-repeat left center / contain;
+  mask: url("/wordmark-light.svg") no-repeat left center / contain;
+  background-color: var(--sdn-swatch-offWhite);
+  object-position: -10000px 0;
 }

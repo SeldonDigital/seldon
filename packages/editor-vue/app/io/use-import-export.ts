@@ -6,8 +6,14 @@ import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@seldon/editor/lib/export/write-export-to-directory"
+import {
+  buildDefaultSnippet,
+  buildVariantSnippet,
+} from "@seldon/editor/lib/schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { useToastStore } from "@app/toaster/toast-store"
+import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { useDispatch } from "@app/workspace/use-dispatch"
 
@@ -33,6 +39,7 @@ export function useImportExport() {
   const dispatch = useDispatch()
   const toast = useToastStore()
   const exportStatus = useExportStatusStore()
+  const { selectedItem, selectedNode } = useSelection()
 
   function exportWorkspaceToFile(): void {
     const name = window.prompt("Enter a name for the exported file", "workspace")
@@ -42,6 +49,41 @@ export function useImportExport() {
       type: "application/json",
     })
     triggerDownload(blob, `${slugify(name)}.json`)
+  }
+
+  async function exportSelectionToClipboard(): Promise<void> {
+    const selection = selectedItem.value
+    if (!selection) {
+      toast.addToast("Nothing selected")
+      return
+    }
+    await navigator.clipboard.writeText(JSON.stringify(selection, null, 2))
+    toast.addToast("Selection copied to clipboard")
+  }
+
+  async function copySchemaJsonToClipboard(): Promise<void> {
+    const node = selectedNode.value
+    if (!node) {
+      toast.addToast("Select a default or variant to copy schema JSON")
+      return
+    }
+    if (node.type === "instance") {
+      toast.addToast("Nested children cannot be copied as schema JSON")
+      return
+    }
+
+    const snippet =
+      node.type === "default"
+        ? buildDefaultSnippet(node, workspace.value)
+        : buildVariantSnippet(node, workspace.value)
+
+    if (!snippet) {
+      toast.addToast("Could not resolve a catalog component for the selection")
+      return
+    }
+
+    await navigator.clipboard.writeText(serializeSchemaSnippet(snippet))
+    toast.addToast("Schema JSON copied to clipboard")
   }
 
   async function importWorkspaceFromFile(file: File): Promise<void> {
@@ -81,5 +123,11 @@ export function useImportExport() {
     }
   }
 
-  return { exportWorkspaceToFile, importWorkspaceFromFile, importWeb }
+  return {
+    exportWorkspaceToFile,
+    exportSelectionToClipboard,
+    copySchemaJsonToClipboard,
+    importWorkspaceFromFile,
+    importWeb,
+  }
 }

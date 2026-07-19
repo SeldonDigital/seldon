@@ -18,5 +18,5 @@ const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 </script>
 
 <template>
-    <img :class="rootClassName" v-bind="rootAttrs"><slot /></img>
+    <img :class="rootClassName" :src="(props.src as string) ?? sdn.src" v-bind="rootAttrs"><slot /></img>
 </template>

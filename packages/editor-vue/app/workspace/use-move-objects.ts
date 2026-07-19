@@ -1,4 +1,4 @@
-import { InstanceId, VariantId, invariant } from "@seldon/core"
+import { Instance, InstanceId, Variant, VariantId, invariant } from "@seldon/core"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
@@ -98,5 +98,45 @@ export function useMoveObjects() {
     )
   }
 
-  return { moveChildTo, moveNodeNextTo, moveNodeInside }
+  // Shared duplicate primitive. Holds the only variant-vs-instance branch so
+  // paste stays in lockstep: a variant subject is instantiated, an instance
+  // subject is duplicated, both into the same (parentId, index). Returns the
+  // resulting workspace so callers can resolve the freshly created node.
+  function duplicateNodeInto(
+    subjectNode: Instance | Variant,
+    parentId: VariantId | InstanceId,
+    index: number,
+  ) {
+    if (typeCheckingService.isVariant(subjectNode)) {
+      return dispatch({
+        type: "insert_variant_instance",
+        payload: {
+          variantId: subjectNode.id as VariantId,
+          target: { parentId, index },
+        },
+      })
+    }
+    return dispatch({
+      type: "insert_duplicate_instance",
+      payload: {
+        instanceId: subjectNode.id as InstanceId,
+        target: { parentId, index },
+      },
+    })
+  }
+
+  function duplicateVariantOnBoard(variantId: VariantId) {
+    return dispatch({
+      type: "duplicate_node",
+      payload: { nodeId: variantId },
+    })
+  }
+
+  return {
+    moveChildTo,
+    moveNodeNextTo,
+    moveNodeInside,
+    duplicateNodeInto,
+    duplicateVariantOnBoard,
+  }
 }

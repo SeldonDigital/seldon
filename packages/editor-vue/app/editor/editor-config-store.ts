@@ -82,6 +82,46 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         : "off")
   }
 
+  function togglePanels(): void {
+    showPanels.value = !showPanels.value
+  }
+  function toggleShowSelection(): void {
+    showSelection.value = !showSelection.value
+  }
+  function toggleShowFocus(): void {
+    showFocus.value = !showFocus.value
+  }
+  function toggleAutoExpandOnSelection(): void {
+    autoExpandOnSelection.value = !autoExpandOnSelection.value
+  }
+  function toggleAutoScrollToSelection(): void {
+    autoScrollToSelection.value = !autoScrollToSelection.value
+  }
+  function toggleShowCodeNames(): void {
+    showCodeNames.value = !showCodeNames.value
+  }
+  function toggleShowUnusedProperties(): void {
+    showUnusedProperties.value = !showUnusedProperties.value
+  }
+  function toggleShowUnusedFonts(): void {
+    showUnusedFonts.value = !showUnusedFonts.value
+  }
+  function toggleShowUnusedIcons(): void {
+    showUnusedIcons.value = !showUnusedIcons.value
+  }
+  function toggleShowPlayground(): void {
+    showPlayground.value = !showPlayground.value
+  }
+  function setComponentHighlightMode(mode: ComponentHighlightMode): void {
+    componentHighlightMode.value = mode
+  }
+  function setChromeTheme(slug: string): void {
+    chromeTheme.value = slug
+  }
+  function setInterfaceMode(mode: InterfaceMode): void {
+    interfaceMode.value = mode
+  }
+
   watch(
     [
       showSelection,
@@ -144,5 +184,18 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     chromeTheme,
     interfaceMode,
     toggleWireframeMode,
+    togglePanels,
+    toggleShowSelection,
+    toggleShowFocus,
+    toggleAutoExpandOnSelection,
+    toggleAutoScrollToSelection,
+    toggleShowCodeNames,
+    toggleShowUnusedProperties,
+    toggleShowUnusedFonts,
+    toggleShowUnusedIcons,
+    toggleShowPlayground,
+    setComponentHighlightMode,
+    setChromeTheme,
+    setInterfaceMode,
   }
 })
