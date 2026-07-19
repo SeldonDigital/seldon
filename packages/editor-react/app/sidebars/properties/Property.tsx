@@ -125,7 +125,14 @@ function PropertyInner(props: RowPropertyProps) {
     propertyToggle: { ...listItemProps.buttonIconic },
     propertyToggleIcon: { ...listItemProps.icon },
     propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
-    valueLabel: mergeStateProps(view.valueLabelProps, stateRef),
+    // Look-parent group rows own no value. The generated value input still
+    // renders (kept for row-height alignment), so clear its "Value" placeholder
+    // so the group row reads blank instead of showing placeholder text.
+    valueLabel: mergeStateProps(
+      view.valueLabelProps,
+      props.property.isLookParent ? { placeholder: "" } : undefined,
+      stateRef,
+    ),
     valueOptionsMenu: { ...listItemProps.buttonIconic2 },
     propertyActions: { ...optionsMenu.buttonIconic },
   }

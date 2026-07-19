@@ -1,6 +1,6 @@
 "use client"
 
-import { getChromeThemes } from "@seldon/editor/lib/chrome/chrome-themes"
+import { getChromeThemes } from "./chrome-themes"
 import { useExportStatusStore } from "@app/export/export-status-store"
 import { MenuAlign, MenuController, MenuEntry } from "@app/menus"
 import {
