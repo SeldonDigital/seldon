@@ -5,8 +5,8 @@ import {
   useComboboxState,
 } from "@app/menus"
 import { RefObject, useCallback, useEffect, useMemo, useRef } from "react"
-import type { PropertyPickerResult } from "../helpers/options-utils"
-import { FlatProperty } from "../helpers/properties-data"
+import type { PropertyPickerResult } from "@seldon/editor/lib/properties/inspector/options-utils"
+import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 type ControlType = FlatProperty["controlType"]
 

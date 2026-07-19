@@ -12,7 +12,7 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { getComboboxStoredValue } from "./combobox-stored-value"
+import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
 import { PropertyPickerResult, generatePropertyOptions } from "./options-utils"
 import { FlatProperty } from "./properties-data"
 import { getRepeatSymbolDescendant } from "./repeat-display"

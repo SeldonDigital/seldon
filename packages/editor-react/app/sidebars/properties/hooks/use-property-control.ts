@@ -8,8 +8,8 @@ import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
-} from "../helpers/editing-contexts"
-import { FlatProperty } from "../helpers/properties-data"
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import {
   OptionIconRender,
   createPropertyOptionIconResolver,

@@ -14,7 +14,7 @@ import {
 } from "@seldon/core/helpers/validation"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getUnitsForProperty } from "@seldon/core/properties"
-import { FlatProperty } from "../helpers/properties-data"
+import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 interface UsePropertyValidationResult {
   validationFunction: ((value: string) => boolean) | undefined

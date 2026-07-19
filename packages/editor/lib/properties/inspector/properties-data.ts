@@ -20,7 +20,7 @@ import {
   ControlType,
   getPropertyRegistryEntry,
 } from "@seldon/editor/lib/icons/icons-registry"
-import { THEME_TOKEN_ICON } from "@app/icons/resolve-option-icon"
+import { THEME_TOKEN_ICON } from "@seldon/editor/lib/icons/resolve-option-icon"
 import {
   childPathsUnderCompoundParent,
   getCompoundLayerValue,
@@ -81,12 +81,12 @@ import {
   type PropertyType,
   isCompoundProperty,
   isShorthandProperty,
-} from "./property-types"
+} from "@seldon/editor/lib/properties/property-types"
 import {
   createSubPropertyLabel,
   formatPropertyLabel,
   getValueType,
-} from "./shared-utils"
+} from "@seldon/editor/lib/properties/shared-utils"
 
 const UNKNOWN_VALUE = "unknown"
 const UNKNOWN_DISPLAY = "Error"

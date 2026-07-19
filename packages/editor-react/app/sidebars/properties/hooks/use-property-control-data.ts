@@ -1,6 +1,6 @@
 import { Value, ValueType } from "@seldon/core"
-import { FlatProperty } from "../helpers/properties-data"
-import { isPresetProperty } from "../helpers/property-types"
+import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
 
 interface UsePropertyControlDataOptions {
   property: FlatProperty

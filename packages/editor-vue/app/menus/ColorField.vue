@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue"
 
-const props = defineProps<{ value: string }>()
+const props = defineProps<{ value: string; swatch?: string }>()
 
 const emit = defineEmits<{ (event: "commit", raw: string): void }>()
 
@@ -30,6 +30,15 @@ function cssColorToHex(input: string): string | null {
 const hex = computed(() => cssColorToHex(props.value) ?? "#000000")
 const hasHex = computed(() => cssColorToHex(props.value) !== null)
 
+/**
+ * Non-editable preview color for values the native picker cannot parse, such as
+ * theme token refs (`@swatch.primary`). Uses the resolved swatch color when the
+ * caller supplies one, so a token still shows its color chip.
+ */
+const tokenSwatch = computed(() =>
+  !hasHex.value && props.swatch ? props.swatch : null,
+)
+
 function onSwatch(event: Event): void {
   emit("commit", (event.target as HTMLInputElement).value)
 }
@@ -41,7 +50,14 @@ function onText(event: Event): void {
 
 <template>
   <div class="color-field">
+    <span
+      v-if="tokenSwatch"
+      class="color-field__chip"
+      :style="{ background: tokenSwatch }"
+      :title="value"
+    />
     <input
+      v-else
       type="color"
       class="color-field__swatch"
       :class="{ 'color-field__swatch--muted': !hasHex }"
@@ -75,6 +91,14 @@ function onText(event: Event): void {
 }
 .color-field__swatch--muted {
   opacity: 0.4;
+}
+.color-field__chip {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #3f3f46;
+  border-radius: 4px;
+  display: inline-block;
 }
 .color-field__text {
   flex: 1;

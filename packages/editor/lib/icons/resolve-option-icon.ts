@@ -1,8 +1,8 @@
 import { Theme } from "@seldon/core"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-registry"
-import { getComboboxStoredValue } from "@app/sidebars/properties/helpers/combobox-stored-value"
-import { getThemeTokenIconColor } from "@app/sidebars/properties/helpers/theme-token-icon-color"
+import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
+import { getThemeTokenIconColor } from "@seldon/editor/lib/themes/theme-token-icon-color"
 import {
   EDITOR_OPTION_ICON_OVERLAY,
   getPropertyRegistryEntry,

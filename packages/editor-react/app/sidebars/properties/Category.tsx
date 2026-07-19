@@ -4,8 +4,8 @@ import { Fragment, type MouseEvent } from "react"
 import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { useRowCategory } from "./hooks/use-row-category"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { PropertySection } from "./helpers/get-property-sections"
-import { ThemePropertySection } from "./helpers/get-theme-property-sections"
+import { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
+import { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
 
 interface CategoryProps {
   section: PropertySection | ThemePropertySection

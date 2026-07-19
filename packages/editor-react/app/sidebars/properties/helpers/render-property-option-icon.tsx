@@ -3,7 +3,7 @@ import { IconCustomColorValue, ThemeSwatches } from "@app/icons/custom"
 import {
   type OptionIconDescriptor,
   getOptionIcon,
-} from "@app/icons/resolve-option-icon"
+} from "@seldon/editor/lib/icons/resolve-option-icon"
 import { type OptionIconRender } from "@app/menus"
 import React from "react"
 import { Theme, Workspace } from "@seldon/core"
@@ -12,9 +12,9 @@ import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-in
 import { useThemes } from "@app/themes/hooks/use-themes"
 import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
-import { FlatProperty } from "./properties-data"
-import { getRepeatSymbolDescendant } from "./repeat-display"
-import { resolveThemeSwatchColors } from "./resolve-theme-swatch-colors"
+import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getRepeatSymbolDescendant } from "@seldon/editor/lib/properties/inspector/repeat-display"
+import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
 
 type OptionIcon = { value: string; name: string } | undefined
 

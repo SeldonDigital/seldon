@@ -1,7 +1,7 @@
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { useEffect, useRef, useState } from "react"
 import { LayeredPaintKey, invariant } from "@seldon/core"
-import type { LayerPlacement } from "../helpers/layer-reorder"
+import type { LayerPlacement } from "@seldon/editor/lib/properties/layer-reorder"
 import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
 
 /**

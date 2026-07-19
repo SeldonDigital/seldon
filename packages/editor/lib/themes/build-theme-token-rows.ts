@@ -1,5 +1,4 @@
 import { getFamilyNameByValue } from "@seldon/core"
-import { findInObject } from "@seldon/core/helpers"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
@@ -11,73 +10,21 @@ import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
 import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { THEME_TOKEN_SECTIONS } from "@seldon/core/themes/schemas"
 import type { Theme } from "@seldon/core/themes/types"
-import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
-import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeOverrides } from "@seldon/core/workspace/types"
-
-const VALUE_TYPES = new Set<unknown>(Object.values(ValueType))
-
-/** Top-level group keys in the Computed section; their facets read from `parameters`. */
-const COMPUTED_GROUP_KEYS = new Set([
-  "modulation",
-  "colorHarmony",
-  "displayMode",
-  "fontFamily",
-  "matchColor",
-  "highContrast",
-  "opticalPadding",
-  "autoFit",
-])
-
-// Sections whose `.step` slot reads `parameters.step`. `lineHeight` has its own
-// dedicated branch that handles every `lineHeight.*.step` key first.
-const MODULATION_STEP_SECTIONS = new Set([
-  "size",
-  "dimension",
-  "margin",
-  "padding",
-  "gap",
-  "fontSize",
-  "borderWidth",
-  "corners",
-  "blur",
-  "spread",
-])
-
-/** Look-token sections whose facets read from `parameters[facet]`. */
-const PARAMETER_SECTIONS = new Set([
-  "shadow",
-  "border",
-  "gradient",
-  "background",
-  "font",
-  "scrollbar",
-])
-
-/** Read-only harmony swatch rows resolved from the theme's color computation. */
-const CALCULATED_SWATCHES = new Set([
-  "swatch.harmony.white",
-  "swatch.harmony.gray",
-  "swatch.harmony.black",
-  "swatch.harmony.primary",
-  "swatch.harmony.swatch1",
-  "swatch.harmony.swatch2",
-  "swatch.harmony.swatch3",
-  "swatch.harmony.swatch4",
-])
-
-/** Color-point keys mapped to the computed swatch that fills their preview. */
-const COLOR_POINT_SWATCHES: Record<string, "white" | "gray" | "black"> = {
-  "colorHarmony.whitePoint": "white",
-  "colorHarmony.grayPoint": "gray",
-  "colorHarmony.blackPoint": "black",
-}
+import {
+  CALCULATED_SWATCHES,
+  COLOR_POINT_SWATCHES,
+  asTaggedValue,
+  getThemeValueByKey,
+  isHslObject,
+  isRecord,
+  isThemeKeyOverridden,
+  themeUnitsFromSchema,
+} from "./theme-token-values"
 
 const SECTION_LABELS = new Map(
   THEME_TOKEN_SECTIONS.map((section) => [section.id, section.label]),
 )
-
-type HslObject = { hue: number; saturation: number; lightness: number }
 
 /** A single editable theme token, framework neutral. */
 export type ThemeTokenControl =
@@ -108,141 +55,6 @@ export interface ThemeTokenSectionRows {
   section: string
   label: string
   rows: ThemeTokenRow[]
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return value != null && typeof value === "object"
-}
-
-function isHslObject(value: unknown): value is HslObject {
-  return isRecord(value) && "hue" in value
-}
-
-/** Tells whether a raw theme value is already a property-style tagged value. */
-function asTaggedValue(value: unknown): Value | null {
-  if (isRecord(value) && "type" in value && VALUE_TYPES.has(value.type)) {
-    return value as Value
-  }
-  return null
-}
-
-/** Resolves allowed unit suffixes for a numeric row from its token schema. */
-function themeUnitsFromSchema(schema: ThemeTokenSchema): string[] | undefined {
-  if (schema.controlType !== "number") return undefined
-  switch (schema.unit?.type) {
-    case "none":
-      return []
-    case "%":
-      return ["%"]
-    case "deg":
-      return ["deg"]
-    case "px":
-      return ["px"]
-    case "rem":
-      return ["px", "rem"]
-    default:
-      return undefined
-  }
-}
-
-/**
- * Reads a theme value by its dot-notation schema key, e.g.:
- * - "modulation.ratio" -> theme.modulation.parameters.ratio
- * - "swatch.primary" -> theme.swatch.primary.value
- * - "size.medium.step" -> theme.size.medium.parameters.step
- * - "shadow.moderate.offsetX" -> theme.shadow.moderate.parameters.offset.x
- *
- * Returns undefined for keys with no backing value so callers can skip them.
- */
-function getThemeValueByKey(theme: Theme, key: string): unknown {
-  const [section, id, facet] = key.split(".")
-  const themeObj = theme as unknown as Record<string, unknown>
-
-  if (COMPUTED_GROUP_KEYS.has(section)) {
-    if (!id) return undefined
-    const params = findInObject(themeObj, `${section}.parameters`)
-    if (!isRecord(params)) return undefined
-    const facetValue = params[id]
-    if (
-      section === "fontFamily" &&
-      isRecord(facetValue) &&
-      "parameters" in facetValue
-    ) {
-      return facetValue.parameters
-    }
-    return facetValue
-  }
-
-  if (section === "swatch") {
-    const swatchId = key.split(".").slice(2).join(".")
-    if (!swatchId) return undefined
-    const swatchTable = themeObj["swatch"]
-    const swatch = isRecord(swatchTable) ? swatchTable[swatchId] : undefined
-    if (isRecord(swatch)) {
-      if ("value" in swatch) return swatch.value
-      if (isRecord(swatch.parameters) && "value" in swatch.parameters) {
-        return swatch.parameters.value
-      }
-    }
-    return undefined
-  }
-
-  if (section === "fontWeight" && id) {
-    const fontWeight = findInObject(themeObj, `fontWeight.${id}`)
-    if (isRecord(fontWeight) && isRecord(fontWeight.parameters)) {
-      return fontWeight.parameters.value
-    }
-    return undefined
-  }
-
-  if (section === "lineHeight" && id && facet === "step") {
-    const item = findInObject(themeObj, `${section}.${id}`)
-    if (isRecord(item) && isRecord(item.parameters)) {
-      return item.parameters.value
-    }
-    return undefined
-  }
-
-  if (MODULATION_STEP_SECTIONS.has(section) && id && facet === "step") {
-    const item = findInObject(themeObj, `${section}.${id}`)
-    if (isRecord(item) && isRecord(item.parameters)) {
-      if ("step" in item.parameters) {
-        return item.parameters.step
-      }
-      if ("unit" in item.parameters && "value" in item.parameters) {
-        return { type: ValueType.EXACT, value: item.parameters }
-      }
-    }
-    return undefined
-  }
-
-  if (PARAMETER_SECTIONS.has(section) && id && facet) {
-    const item = findInObject(themeObj, `${section}.${id}`)
-    if (!isRecord(item) || !isRecord(item.parameters)) return undefined
-    const params = item.parameters
-    if (facet in params) return params[facet]
-    return { type: ValueType.EMPTY, value: null }
-  }
-
-  return undefined
-}
-
-/** Tells whether the theme entry's own overrides contain a value for this row. */
-function isThemeKeyOverridden(
-  key: string,
-  overrides: EntryThemeOverrides,
-  baseSwatchIds: ReadonlySet<string> | undefined,
-): boolean {
-  const path = getThemeOverridePath(key)
-  if (!path) return false
-  if (getOverrideAtPath(overrides as Record<string, unknown>, path) === undefined) {
-    return false
-  }
-  if (key.startsWith("swatch.")) {
-    const swatchId = key.split(".").slice(2).join(".")
-    return baseSwatchIds?.has(swatchId) ?? false
-  }
-  return true
 }
 
 /** Updates schema labels with actual names from the theme (modulation values). */
@@ -342,7 +154,11 @@ function buildControl(
   }
 
   if (isCalculatedSwatch) {
-    return { control: { kind: "readonly", value: actualValue }, isDimmed: true, iconColorValue }
+    return {
+      control: { kind: "readonly", value: actualValue },
+      isDimmed: true,
+      iconColorValue,
+    }
   }
 
   // Enumerated tokens (menu/combo) render as a select.
@@ -381,13 +197,18 @@ function buildControl(
     }
   }
 
-  return { control: { kind: "text", value: actualValue }, isDimmed: false, iconColorValue }
+  return {
+    control: { kind: "text", value: actualValue },
+    isDimmed: false,
+    iconColorValue,
+  }
 }
 
 /**
- * Flattens a computed theme into editable token rows grouped by section. Mirrors
- * the React `flattenThemeProperties` read side but produces framework-neutral
- * rows, so both editors present the same theme token list.
+ * Flattens a computed theme into editable token rows grouped by section. Shares
+ * the read side ({@link getThemeValueByKey}, {@link isThemeKeyOverridden}) with
+ * the React `flattenThemeProperties` builder, then shapes framework-neutral rows
+ * so both editors present the same theme token list.
  */
 export function buildThemeTokenRows(
   theme: Theme,

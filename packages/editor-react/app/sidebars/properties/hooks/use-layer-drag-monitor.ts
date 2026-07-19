@@ -5,7 +5,7 @@ import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
 import {
   type LayerPlacement,
   computeLayerToIndex,
-} from "../helpers/layer-reorder"
+} from "@seldon/editor/lib/properties/layer-reorder"
 import { useLayerDragStateStore } from "./use-layer-drag-state"
 import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
 

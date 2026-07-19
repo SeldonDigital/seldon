@@ -3,7 +3,7 @@ import {
   FlatProperty,
   getCompoundChildRows,
   getPropertiesSubjectId,
-} from "./properties-data"
+} from "@seldon/editor/lib/properties/inspector/properties-data"
 
 /** Structural equality for plain JSON-like values (FlatProperty fields). */
 function deepEqual(a: unknown, b: unknown): boolean {

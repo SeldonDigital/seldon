@@ -1,7 +1,7 @@
 import { MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { PropertySection } from "../helpers/get-property-sections"
-import { ThemePropertySection } from "../helpers/get-theme-property-sections"
+import { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
+import { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
 import {
   useIsCategoryExpanded,
   usePropertyExpansion,

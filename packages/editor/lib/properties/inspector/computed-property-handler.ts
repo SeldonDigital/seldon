@@ -8,7 +8,7 @@ import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/co
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import { canApplyComputedSafely, createComputedValue } from "./computed-utils"
 import { FlatProperty, getPropertiesSubjectId } from "./properties-data"
-import { getSubPropertyKeys } from "./property-types"
+import { getSubPropertyKeys } from "@seldon/editor/lib/properties/property-types"
 
 interface HandleComputedValueOptions {
   property: FlatProperty

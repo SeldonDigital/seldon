@@ -25,25 +25,25 @@ import {
   cleanCompoundValue,
   compoundPresetPropertyKey,
   dispatchPropertyReset,
-} from "../helpers/commit-helpers"
-import { createPresetPropertyUpdate } from "../helpers/compound-properties"
-import { handleComputedValueChange } from "../helpers/computed-property-handler"
-import { isComputedFunctionOption } from "../helpers/computed-utils"
+} from "@seldon/editor/lib/properties/commit-helpers"
+import { createPresetPropertyUpdate } from "@seldon/editor/lib/properties/inspector/compound-properties"
+import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
+import { isComputedFunctionOption } from "@seldon/editor/lib/properties/inspector/computed-utils"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
-} from "../helpers/editing-contexts"
-import type { PropertyPickerResult } from "../helpers/options-utils"
-import { getPropertiesSubjectId } from "../helpers/properties-data"
-import { FlatProperty } from "../helpers/properties-data"
-import { RESET_VALUES } from "../helpers/property-control-constants"
-import { isPresetProperty } from "../helpers/property-types"
-import { updateProperty } from "../helpers/property-update-handler"
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { PropertyPickerResult } from "@seldon/editor/lib/properties/inspector/options-utils"
+import { getPropertiesSubjectId } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
+import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
+import { updateProperty } from "@seldon/editor/lib/properties/inspector/property-update-handler"
 import {
   REPEAT_ROW_KEY,
   parseRepeatDataRowKey,
-} from "../helpers/repeat-display"
+} from "@seldon/editor/lib/properties/inspector/repeat-display"
 import { useSetNodeRepeat } from "./use-set-node-repeat"
 import { useSetObjectReference } from "./use-set-object-reference"
 import { useSetObjectTheme } from "./use-set-object-theme"

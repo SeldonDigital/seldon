@@ -45,16 +45,16 @@ import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
-} from "./helpers/editing-contexts"
-import { filterPropertySections } from "./helpers/filter-property-sections"
-import { PropertySection } from "./helpers/get-property-sections"
-import { ThemePropertySection } from "./helpers/get-theme-property-sections"
-import { getIconRowCategory } from "./helpers/icon-set-properties-data"
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import { filterPropertySections } from "@seldon/editor/lib/properties/inspector/filter-property-sections"
+import { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
+import { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
+import { getIconRowCategory } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
 import {
   FlatProperty,
   getAllowedBorderSides,
   getPropertiesSubjectId,
-} from "./helpers/properties-data"
+} from "@seldon/editor/lib/properties/inspector/properties-data"
 
 const PROPERTIES_TREE_GAP = "var(--sdn-gaps-tight)"
 

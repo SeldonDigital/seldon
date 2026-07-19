@@ -1,7 +1,7 @@
 import {
   getCurrentOptionValue,
   getOptionIcon,
-} from "@app/icons/resolve-option-icon"
+} from "@seldon/editor/lib/icons/resolve-option-icon"
 import { MenuEntry } from "@app/menus"
 import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
 import { ICONIC_BUTTON_SELECTOR } from "@app/menus/iconic-button"
@@ -40,27 +40,27 @@ import {
   useImageUploadPanel,
 } from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { buildPropertyOptions } from "../helpers/build-property-options"
+import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import type { LayerDragContext } from "../LayerDragRow"
-import { dispatchPropertyReset } from "../helpers/commit-helpers"
-import { getDisplayValue } from "../helpers/display-value-utils"
+import { dispatchPropertyReset } from "@seldon/editor/lib/properties/commit-helpers"
+import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
-} from "../helpers/editing-contexts"
-import { FlatProperty, getCompoundChildRows } from "../helpers/properties-data"
-import { getPropertyDebugColor } from "../helpers/property-styling"
-import { resolveThemeSwatchColors } from "../helpers/resolve-theme-swatch-colors"
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import { FlatProperty, getCompoundChildRows } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getPropertyDebugColor } from "@seldon/editor/lib/properties/property-styling"
+import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
-} from "../helpers/theme-token-icon-color"
+} from "@seldon/editor/lib/themes/theme-token-icon-color"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {

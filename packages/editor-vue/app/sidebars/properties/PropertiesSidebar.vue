@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Workspace, getNodeProperties } from "@app/core"
-import type { Value } from "@seldon/core"
+import type { Value, Theme } from "@seldon/core"
 import type { Variant, Instance } from "@seldon/core"
+import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
@@ -32,7 +34,7 @@ const dispatch = useDispatch()
 
 const workspaceRef = computed(() => props.workspace)
 
-type ControlKind = "text" | "option" | "readonly" | "link"
+type ControlKind = "text" | "option" | "readonly" | "link" | "color"
 type RowOption = { label: string; value: string }
 
 /** Normalizes a row control's kind onto the PropertyRow control kinds. */
@@ -40,6 +42,7 @@ function rowKind(kind: unknown): ControlKind {
   if (kind === "text") return "text"
   if (kind === "option") return "option"
   if (kind === "link") return "link"
+  if (kind === "color") return "color"
   return "readonly"
 }
 
@@ -57,7 +60,13 @@ function toOptions(options: unknown): RowOption[] {
 
 // Row-control accessors. Kept in script so the template stays free of inline
 // type casts, which the Vue template compiler cannot parse.
-type RowControl = { kind?: unknown; value?: unknown; options?: unknown; href?: string }
+type RowControl = {
+  kind?: unknown
+  value?: unknown
+  options?: unknown
+  href?: string
+  swatch?: string
+}
 
 function controlKind(control: RowControl): ControlKind {
   return rowKind(control.kind)
@@ -70,6 +79,9 @@ function controlOptions(control: RowControl): RowOption[] {
 }
 function controlHref(control: RowControl): string | undefined {
   return control.href
+}
+function controlSwatch(control: RowControl): string | undefined {
+  return control.swatch
 }
 
 // -- Theme editing --------------------------------------------------------
@@ -103,32 +115,38 @@ const { sections: resourceSections, commit: commitResource } =
 
 // -- Node property editing ------------------------------------------------
 
-const node = computed(() =>
-  selectedNodeId.value ? props.workspace.nodes[selectedNodeId.value] : undefined,
+const nodeModel = computed<Variant | Instance | null>(() =>
+  selectedNodeId.value
+    ? ((getNode(props.workspace, selectedNodeId.value) as
+        | Variant
+        | Instance
+        | undefined) ?? null)
+    : null,
+)
+const nodeTheme = computed<Theme | undefined>(() =>
+  nodeModel.value
+    ? (workspaceThemeService.getObjectTheme(nodeModel.value, props.workspace) ??
+      undefined)
+    : undefined,
 )
 const properties = computed<Record<string, unknown>>(() =>
-  node.value ? (getNodeProperties(node.value, props.workspace) ?? {}) : {},
+  nodeModel.value ? (getNodeProperties(nodeModel.value, props.workspace) ?? {}) : {},
 )
-const overrideKeys = computed<Set<string>>(() => {
-  const overrides = (node.value as { overrides?: Record<string, unknown> })
-    ?.overrides
-  return new Set(overrides ? Object.keys(overrides) : [])
-})
-const sections = useEditableProperties(properties, workspaceRef, overrideKeys)
+const sections = useEditableProperties(nodeModel, workspaceRef, nodeTheme)
 
 const showEmpty = computed(
-  () => !node.value && !isThemeEditing.value && !isResourceEditing.value,
+  () => !nodeModel.value && !isThemeEditing.value && !isResourceEditing.value,
 )
 
 // Commit a raw editor string through the shared `serializeValue`, coercing it
 // into the correct typed value and dispatching a scoped or facet-merged update.
 function commitRaw(key: string, raw: string): void {
-  if (!selectedNodeId.value || !node.value) return
+  if (!selectedNodeId.value || !nodeModel.value) return
   const current = properties.value[key] as Value | undefined
   const value = serializeValue(
     raw,
     { currentValue: current, workspace: props.workspace },
-    node.value as Variant | Instance,
+    nodeModel.value,
     key,
   )
   const layered = key.match(/^([a-zA-Z]+)\.(\d+)\.([a-zA-Z]+)$/)
@@ -272,8 +290,11 @@ function removeLayer(property: string, index: number): void {
               :kind="controlKind(row.control)"
               :value="controlValue(row.control)"
               :options="controlOptions(row.control)"
+              :href="controlHref(row.control)"
+              :swatch="controlSwatch(row.control)"
               :can-reset="row.canReset"
               :is-facet="row.isFacet"
+              :dimmed="row.dimmed"
               @commit="commitRaw(row.key, $event)"
               @reset="resetProperty(row)"
             />
