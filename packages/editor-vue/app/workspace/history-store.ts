@@ -1,7 +1,7 @@
 import { createEmptyWorkspace } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { defineStore } from "pinia"
-import { computed, ref } from "vue"
+import { computed, shallowRef } from "vue"
 import { useDirtyStore } from "@app/persistence/dirty-store"
 
 const REVISION_LIMIT = 50
@@ -14,8 +14,14 @@ export const INITIAL_WORKSPACE: Workspace = createEmptyWorkspace()
  * and `redo` move the index; `reset` replaces the stack with a single revision.
  */
 export const useHistoryStore = defineStore("history", () => {
-  const history = ref<Workspace[]>([INITIAL_WORKSPACE])
-  const currentIndex = ref(0)
+  // Workspaces are immutable snapshots produced by the core reducer (Immer,
+  // auto-freeze on). A deep `ref` would make Vue proxy these frozen graphs,
+  // which breaks the JS Proxy invariant when frozen array elements are read
+  // back and also corrupts Immer if a proxied workspace is fed into `produce`.
+  // A `shallowRef` keeps each snapshot raw; reactivity still fires because every
+  // dispatch replaces the whole array by reference.
+  const history = shallowRef<Workspace[]>([INITIAL_WORKSPACE])
+  const currentIndex = shallowRef(0)
 
   const current = computed(() => history.value[currentIndex.value])
   const canUndo = computed(() => currentIndex.value > 0)
