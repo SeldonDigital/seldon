@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 
 /**
  * Runs the factory export on `seldon-editor.json` and writes the generated
- * components into `packages/editor/seldon/`.
+ * components into `packages/editor-react/seldon/`.
  *
  * The export handler (`vite/export-handler.ts`) imports `@seldon/core` and
  * `@seldon/factory` through workspace aliases, so it is bundled with esbuild
@@ -54,9 +54,9 @@ async function main() {
     workspace,
     options: {
       output: {
+        // Asset paths default to nest under this folder (`seldon/assets`),
+        // keeping the generated library self-contained.
         componentsFolder: "seldon",
-        assetsFolder: "assets",
-        assetPublicPath: "/assets",
       },
     },
   })

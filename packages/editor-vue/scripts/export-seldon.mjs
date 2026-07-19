@@ -17,7 +17,7 @@ const editorRoot = path.dirname(scriptDir)
 const repoRoot = path.join(editorRoot, "../..")
 const coreRoot = path.join(editorRoot, "../core")
 const factoryRoot = path.join(editorRoot, "../factory")
-const handlerEntry = path.join(editorRoot, "vite/export-handler.ts")
+const handlerEntry = path.join(editorRoot, "../editor/vite/export-handler.ts")
 const workspaceFile = path.join(repoRoot, "seldon-editor.json")
 
 async function loadRunExport() {
@@ -52,10 +52,13 @@ async function main() {
   const { files } = await runExport({
     workspace,
     options: {
+      // The shared handler defaults to React; target Vue explicitly so this
+      // editor regenerates its own `.vue` chrome.
+      target: { framework: "vue", styles: "css-properties" },
       output: {
+        // Asset paths default to nest under this folder (`seldon/assets`),
+        // keeping the generated library self-contained.
         componentsFolder: "seldon",
-        assetsFolder: "assets",
-        assetPublicPath: "/assets",
       },
     },
   })
