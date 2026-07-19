@@ -5,7 +5,7 @@ import {
   buildVariantSnippet,
 } from "@seldon/editor/lib/schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
-import { useExportStatusStore } from "@app/export/export-status-store"
+import { useExportStatusStore } from "@app/io/export-status-store"
 import {
   pickExportDirectory,
   writeExportToDirectory,
