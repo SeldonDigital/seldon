@@ -3,7 +3,7 @@
  * served static assets so the properties sidebar can link to it.
  *
  * Source: `packages/core/font-collections/catalog/google/<slug>/{OFL,LICENSE}.txt`
- * Destination: `packages/editor-vue/public/font-licenses/<slug>.txt`
+ * Destination: `packages/editor/public/font-licenses/<slug>.txt`
  *
  * Idempotent: files with matching contents are skipped, so re-running does not
  * rewrite unchanged files or touch their mtimes.
@@ -21,7 +21,7 @@ import { fileURLToPath } from "node:url"
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
 const sourceRoot = join(editorRoot, "../core/font-collections/catalog/google")
-const destRoot = join(editorRoot, "public/font-licenses")
+const destRoot = join(editorRoot, "../editor/public/font-licenses")
 
 const LICENSE_FILES = ["OFL.txt", "LICENSE.txt", "UFL.txt"]
 

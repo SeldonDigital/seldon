@@ -3,7 +3,7 @@
  * served static assets so the canvas can self-host them through @font-face.
  *
  * Source: `packages/core/font-collections/catalog/google/<slug>/<slug>-<variant>.woff2`
- * Destination: `packages/editor-vue/public/font-files/<slug>/<slug>-<variant>.woff2`
+ * Destination: `packages/editor/public/font-files/<slug>/<slug>-<variant>.woff2`
  *
  * Idempotent: files with a matching size are skipped, so re-running is fast.
  */
@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url"
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
 const sourceRoot = join(editorRoot, "../core/font-collections/catalog/google")
-const destRoot = join(editorRoot, "public/font-files")
+const destRoot = join(editorRoot, "../editor/public/font-files")
 
 if (!existsSync(sourceRoot)) {
   console.warn(`Font file source not found: ${sourceRoot}`)

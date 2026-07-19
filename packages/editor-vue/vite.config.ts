@@ -18,6 +18,8 @@ const aiPackageEntry = path.join(editorRoot, "../ai/index.ts")
 // editor. Both share workspace state through the filesystem workspace store.
 export default defineConfig(({ mode }) => ({
   root: editorRoot,
+  // Both editors serve the same static assets from the shared editor package.
+  publicDir: path.join(sharedRoot, "public"),
   plugins: [
     vue(),
     workspaceApiPlugin(),

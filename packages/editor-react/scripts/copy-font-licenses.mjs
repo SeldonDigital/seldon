@@ -21,7 +21,7 @@ import { fileURLToPath } from "node:url"
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
 const sourceRoot = join(editorRoot, "../core/font-collections/catalog/google")
-const destRoot = join(editorRoot, "public/font-licenses")
+const destRoot = join(editorRoot, "../editor/public/font-licenses")
 
 const LICENSE_FILES = ["OFL.txt", "LICENSE.txt", "UFL.txt"]
 

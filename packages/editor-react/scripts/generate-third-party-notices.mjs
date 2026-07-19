@@ -28,7 +28,7 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
-const destDir = join(editorRoot, "public")
+const destDir = join(editorRoot, "../editor/public")
 const destFile = join(destDir, "THIRD-PARTY-NOTICES.txt")
 
 const LICENSE_FILENAME = /^(license|licence|copying|unlicense)([.-].*)?$/i

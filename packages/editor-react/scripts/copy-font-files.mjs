@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url"
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
 const sourceRoot = join(editorRoot, "../core/font-collections/catalog/google")
-const destRoot = join(editorRoot, "public/font-files")
+const destRoot = join(editorRoot, "../editor/public/font-files")
 
 if (!existsSync(sourceRoot)) {
   console.warn(`Font file source not found: ${sourceRoot}`)
