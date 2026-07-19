@@ -1,351 +1,191 @@
 <script setup lang="ts">
-import { Workspace, getNodeProperties } from "@app/core"
-import type { Value, Theme } from "@seldon/core"
-import type { Variant, Instance } from "@seldon/core"
-import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { cleanCompoundValue } from "@seldon/editor/lib/properties/commit-helpers"
-import { isComputedFunctionOption } from "@seldon/editor/lib/properties/inspector/computed-utils"
-import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
-import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
-import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
-import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
-import {
-  useEditableProperties,
-  type PropertyRow as NodeRow,
-} from "@app/properties/use-editable-properties"
-import { useThemeProperties } from "@app/properties/use-theme-properties"
-import {
-  useResourceProperties,
-  type SelectedResource,
-} from "@app/properties/use-resource-properties"
-import type { EntryThemeId } from "@seldon/core/workspace/types"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { storeToRefs } from "pinia"
-import { computed } from "vue"
+import { computed, ref } from "vue"
+import type { Workspace } from "@seldon/core"
+import { isThemeCustomTokenSection } from "@seldon/core"
+import { filterPropertySections } from "@seldon/editor/lib/properties/inspector/filter-property-sections"
+import { getIconRowCategory } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
+import { getPropertiesSubjectId } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
 import SidebarProperties from "@seldon/components/modules/SidebarProperties.vue"
 import Frame from "@seldon/components/frames/Frame.vue"
-import ItemSection from "@seldon/components/elements/ItemSection.vue"
-import PropertyRow from "./PropertyRow.vue"
+import MenuController from "@app/menus/MenuController.vue"
+import type { MenuEntry } from "@app/menus/types"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useToastStore } from "@app/toaster/toast-store"
+import Category from "./Category.vue"
+import Property from "./Property.vue"
+import CssBlock from "./CssBlock.vue"
+import { buildSectionActions } from "./helpers/build-section-actions"
+import { useBoardStateMenu } from "./hooks/use-board-state-menu"
+import { useBorderSideVisibilityStore } from "./hooks/use-border-side-visibility"
+import { useFilterInput } from "./hooks/use-filter-input"
+import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
+import { providePropertyEditNavigation } from "./use-property-edit-navigation"
+import type { PropertySection } from "./types"
 
-const props = defineProps<{ workspace: Workspace }>()
+defineProps<{ workspace?: Workspace }>()
 
-const selection = useSelectionStore()
-const { selectedNodeId, selectedResourceEntry } = storeToRefs(selection)
+providePropertyEditNavigation()
+
+const state = usePropertiesSidebar()
+const filter = useFilterInput()
+const stateMenu = useBoardStateMenu()
 const dispatch = useDispatch()
+const toast = useToastStore()
+const borderSides = useBorderSideVisibilityStore()
 
-const workspaceRef = computed(() => props.workspace)
+const tree = computed(() =>
+  state.value.kind === "tree" ? state.value.tree : null,
+)
+const isEmpty = computed(() => state.value.kind === "empty")
 
-type ControlKind = "text" | "option" | "readonly" | "link" | "color"
-type RowOption = { label: string; value: string }
+const filteredSections = computed<PropertySection[]>(() =>
+  tree.value ? filterPropertySections(tree.value.sections, filter.query.value) : [],
+)
 
-/** Normalizes a row control's kind onto the PropertyRow control kinds. */
-function rowKind(kind: unknown): ControlKind {
-  if (kind === "text") return "text"
-  if (kind === "option") return "option"
-  if (kind === "link") return "link"
-  if (kind === "color") return "color"
-  return "readonly"
+// ---- Header State menu ----
+const stateMenuOpen = ref(false)
+const stateMenuAnchor = ref<HTMLElement | null>(null)
+function openStateMenu(event: MouseEvent): void {
+  stateMenuAnchor.value = event.currentTarget as HTMLElement
+  stateMenuOpen.value = !stateMenuOpen.value
+}
+function closeStateMenu(): void {
+  stateMenuOpen.value = false
+}
+const menuStateSlot = computed(() => ({
+  onClick: openStateMenu,
+  disabled: stateMenu.value.disabled,
+  "data-testid": "board-state-trigger",
+}))
+const stateLabelSlot = computed(() => ({ children: stateMenu.value.label }))
+
+// ---- Per-section helpers ----
+function isCssSection(section: PropertySection): boolean {
+  return section.category === "css"
+}
+function isFamiliesSection(section: PropertySection): boolean {
+  return section.category === "families"
+}
+function isIconCategorySection(section: PropertySection): boolean {
+  return (
+    Boolean(tree.value?.iconProperties) &&
+    getIconRowCategory(`icon.${section.category}`) !== null
+  )
 }
 
-/** Normalizes control options to the `{ label, value }` PropertyRow shape. */
-function toOptions(options: unknown): RowOption[] {
-  if (!Array.isArray(options)) return []
-  return options.map((option) => {
-    const record = option as { label?: string; name?: string; value: string }
-    return {
-      label: record.label ?? record.name ?? record.value,
-      value: record.value,
-    }
+function rowAllProperties(section: PropertySection): FlatProperty[] {
+  const current = tree.value
+  if (!current) return []
+  if (isFamiliesSection(section) && current.familyProperties) {
+    return current.familyProperties
+  }
+  if (isIconCategorySection(section) && current.iconProperties) {
+    return current.iconProperties
+  }
+  return current.allProperties
+}
+function rowFontContext(
+  section: PropertySection,
+): FontCollectionEditingContext | null {
+  return isFamiliesSection(section)
+    ? (tree.value?.fontCollectionEditingContext ?? null)
+    : null
+}
+function rowIconContext(
+  section: PropertySection,
+): IconSetEditingContext | null {
+  return isIconCategorySection(section)
+    ? (tree.value?.iconSetEditingContext ?? null)
+    : null
+}
+
+function sectionActions(section: PropertySection): MenuEntry[] | undefined {
+  const current = tree.value
+  if (!current) return undefined
+  const inEditingContext =
+    Boolean(current.themeEditingContext?.isThemeEditing) ||
+    Boolean(current.fontCollectionEditingContext?.isFontCollectionEditing) ||
+    Boolean(current.iconSetEditingContext?.isIconSetEditing)
+  return buildSectionActions({
+    section,
+    node: current.node,
+    workspace: current.workspace,
+    cssStrings: current.cssStrings,
+    cssSelector: current.cssSelector,
+    inEditingContext,
+    shownBorderSides: borderSides.revealed(getPropertiesSubjectId(current.node)),
+    toggleBorderSide: (subjectId, side) =>
+      borderSides.toggle(subjectId, side),
+    dispatch: (action) => dispatch(action as never),
+    addToast: toast.addToast,
   })
 }
 
-// Row-control accessors. Kept in script so the template stays free of inline
-// type casts, which the Vue template compiler cannot parse.
-type RowControl = {
-  kind?: unknown
-  value?: unknown
-  options?: unknown
-  href?: string
-  swatch?: string
-}
-
-function controlKind(control: RowControl): ControlKind {
-  return rowKind(control.kind)
-}
-function controlValue(control: RowControl): string {
-  return String(control.value ?? "")
-}
-function controlOptions(control: RowControl): RowOption[] {
-  return toOptions(control.options)
-}
-function controlHref(control: RowControl): string | undefined {
-  return control.href
-}
-function controlSwatch(control: RowControl): string | undefined {
-  return control.swatch
-}
-
-// -- Theme editing --------------------------------------------------------
-
-const themeEntryId = computed<EntryThemeId | null>(() => {
-  const entry = selectedResourceEntry.value
-  if (!entry || entry.kind !== "theme") return null
-  const id = entry.id as EntryThemeId
-  return props.workspace.themes[id] ? id : null
-})
-const isThemeEditing = computed(() => Boolean(themeEntryId.value))
-const {
-  sections: themeSections,
-  commit: commitTheme,
-  reset: resetTheme,
-} = useThemeProperties(themeEntryId, workspaceRef)
-
-// -- Font/icon resource editing ------------------------------------------
-
-const selectedResource = computed<SelectedResource>(() => {
-  const entry = selectedResourceEntry.value
-  if (!entry) return null
-  if (entry.kind === "fontCollection" || entry.kind === "iconSet") {
-    return { kind: entry.kind, id: entry.id }
-  }
-  return null
-})
-const isResourceEditing = computed(() => selectedResource.value !== null)
-const { sections: resourceSections, commit: commitResource } =
-  useResourceProperties(selectedResource, workspaceRef)
-
-// -- Node property editing ------------------------------------------------
-
-const nodeModel = computed<Variant | Instance | null>(() =>
-  selectedNodeId.value
-    ? ((getNode(props.workspace, selectedNodeId.value) as
-        | Variant
-        | Instance
-        | undefined) ?? null)
-    : null,
-)
-const nodeTheme = computed<Theme | undefined>(() =>
-  nodeModel.value
-    ? (workspaceThemeService.getObjectTheme(nodeModel.value, props.workspace) ??
-      undefined)
-    : undefined,
-)
-const properties = computed<Record<string, unknown>>(() =>
-  nodeModel.value ? (getNodeProperties(nodeModel.value, props.workspace) ?? {}) : {},
-)
-const sections = useEditableProperties(nodeModel, workspaceRef, nodeTheme)
-
-const showEmpty = computed(
-  () => !nodeModel.value && !isThemeEditing.value && !isResourceEditing.value,
-)
-
-// Commit a raw editor string through the shared `serializeValue`, coercing it
-// into the correct typed value and dispatching a scoped or facet-merged update.
-function commitRaw(row: NodeRow, raw: string): void {
-  if (!selectedNodeId.value || !nodeModel.value) return
-  const key = row.key
-
-  // Computed-function selections write a COMPUTED value through the shared
-  // handler so layered, compound, and shorthand shapes stay correct.
-  if (isComputedFunctionOption(raw)) {
-    const handled = handleComputedValueChange({
-      property: row.flat,
-      newValue: raw,
-      workspace: props.workspace,
-      selection: nodeModel.value,
-      setProperties: (nextProperties, nextOptions) =>
-        dispatch({
-          type: "set_node_properties",
-          payload: {
-            nodeId: selectedNodeId.value,
-            properties: nextProperties,
-            options: nextOptions,
-          },
-        } as never),
-      cleanCompoundValue,
-    })
-    if (handled) return
-  }
-
-  const current = properties.value[key] as Value | undefined
-  const value = serializeValue(
-    raw,
-    { currentValue: current, workspace: props.workspace },
-    nodeModel.value,
-    key,
-  )
-  const layered = key.match(/^([a-zA-Z]+)\.(\d+)\.([a-zA-Z]+)$/)
-  if (layered) {
-    const [, root, indexStr, facet] = layered
-    const index = Number(indexStr)
-    const layers = Array.from({ length: index + 1 }, (_, i) =>
-      i === index ? { [facet]: value } : {},
-    )
-    dispatch({
-      type: "set_node_properties",
-      payload: {
-        nodeId: selectedNodeId.value,
-        properties: { [root]: layers },
-        options: { mergeSubProperties: true },
-      },
-    } as never)
-    return
-  }
-  const dotIndex = key.indexOf(".")
-  if (dotIndex !== -1) {
-    const root = key.slice(0, dotIndex)
-    const facet = key.slice(dotIndex + 1)
-    dispatch({
-      type: "set_node_properties",
-      payload: {
-        nodeId: selectedNodeId.value,
-        properties: { [root]: { [facet]: value } },
-        options: { mergeSubProperties: true },
-      },
-    } as never)
-    return
-  }
-  dispatch({
-    type: "set_node_properties",
-    payload: { nodeId: selectedNodeId.value, properties: { [key]: value } },
-  } as never)
-}
-
-function resetProperty(row: NodeRow): void {
-  if (!selectedNodeId.value) return
-  dispatch({
-    type: "reset_node_property",
-    payload: { nodeId: selectedNodeId.value, propertyKey: row.key },
-  } as never)
-}
-
-function addLayer(property: string): void {
-  if (!selectedNodeId.value) return
-  const seed =
-    property === "background"
-      ? (backgroundLayerForKind(BackgroundKind.COLOR) ?? undefined)
-      : undefined
-  dispatch({
-    type: "add_node_layer",
-    payload: { nodeId: selectedNodeId.value, property, seed },
-  } as never)
-}
-
-function removeLayer(property: string, index: number): void {
-  if (!selectedNodeId.value) return
-  dispatch({
-    type: "remove_node_layer",
-    payload: { nodeId: selectedNodeId.value, property, index },
-  } as never)
+function sectionAddCustom(section: PropertySection): (() => void) | undefined {
+  const themeCtx = tree.value?.themeEditingContext
+  if (!themeCtx?.isThemeEditing || !themeCtx.canAddCustom) return undefined
+  if (!isThemeCustomTokenSection(section.category)) return undefined
+  const target = section.category
+  return () => themeCtx.addCustomToken(target)
 }
 </script>
 
 <template>
-  <SidebarProperties class="properties-sidebar">
-    <Frame class="properties-sidebar__scroll">
-      <p v-if="showEmpty" class="properties-sidebar__empty">
-        Select a node or resource to edit its properties.
-      </p>
-
-      <template v-else-if="isResourceEditing">
-        <template v-for="section in resourceSections" :key="section.section">
-          <ItemSection
-            class="properties-sidebar__section"
-            :button-iconic="null"
-            :form-control-combobox="{}"
-            :text-label="{ children: section.label }"
-            :button-iconic2="null"
-            :button-iconic3="null"
-          />
-          <PropertyRow
-            v-for="row in section.rows"
-            :key="row.key"
-            :label="row.label"
-            :kind="controlKind(row.control)"
-            :value="controlValue(row.control)"
-            :options="controlOptions(row.control)"
-            :href="controlHref(row.control)"
-            :is-facet="row.isSubProperty"
-            :dimmed="row.isDimmed"
-            @commit="commitResource(row.key, $event)"
-          />
-        </template>
-      </template>
-
-      <template v-else-if="isThemeEditing">
-        <template v-for="section in themeSections" :key="section.section">
-          <ItemSection
-            class="properties-sidebar__section"
-            :button-iconic="null"
-            :form-control-combobox="{}"
-            :text-label="{ children: section.label }"
-            :button-iconic2="null"
-            :button-iconic3="null"
-          />
-          <PropertyRow
-            v-for="row in section.rows"
-            :key="row.key"
-            :label="row.label"
-            :kind="controlKind(row.control)"
-            :value="controlValue(row.control)"
-            :options="controlOptions(row.control)"
-            :can-reset="row.isOverridden"
-            :is-facet="row.isSubProperty"
-            :dimmed="row.isDimmed"
-            @commit="commitTheme(row.key, $event)"
-            @reset="resetTheme(row.key)"
-          />
-        </template>
-      </template>
-
-      <template v-else>
-        <template v-for="section in sections" :key="section.category">
-          <ItemSection
-            class="properties-sidebar__section"
-            :button-iconic="null"
-            :form-control-combobox="{}"
-            :text-label="{ children: section.label }"
-            :button-iconic2="null"
-            :button-iconic3="null"
-          />
-          <template v-for="row in section.rows" :key="row.key">
-            <PropertyRow
-              v-if="!row.isHeader || row.layerRemove"
-              :label="row.label"
-              :kind="controlKind(row.control)"
-              :value="controlValue(row.control)"
-              :options="controlOptions(row.control)"
-              :href="controlHref(row.control)"
-              :swatch="controlSwatch(row.control)"
-              :can-reset="row.canReset"
-              :is-facet="row.isFacet"
-              :dimmed="row.dimmed"
-              @commit="commitRaw(row, $event)"
-              @reset="resetProperty(row)"
+  <SidebarProperties
+    class="properties-sidebar"
+    data-testid="properties-sidebar"
+    :combobox-field-filter="filter.comboboxField.value"
+    :input="filter.input.value"
+    :button-iconic="filter.buttonIconic.value"
+    :button-menu="menuStateSlot"
+    :text-label="stateLabelSlot"
+    :frame2="{}"
+  >
+    <template v-if="!isEmpty" #properties>
+      <Frame class="properties-sidebar__scroll">
+        <Frame class="properties-sidebar__tree">
+          <template v-for="section in filteredSections" :key="section.category">
+            <Category
+              :section="section"
+              :actions="sectionActions(section)"
+              :on-add-custom="sectionAddCustom(section)"
             />
-            <div v-if="row.layerAdd || row.layerRemove" class="properties-sidebar__layer">
-              <button
-                v-if="row.layerAdd"
-                type="button"
-                @click="addLayer(row.layerAdd)"
-              >
-                + Add layer
-              </button>
-              <button
-                v-if="row.layerRemove"
-                type="button"
-                @click="removeLayer(row.layerRemove.property, row.layerRemove.index)"
-              >
-                × Remove layer
-              </button>
-            </div>
+            <CssBlock
+              v-if="isCssSection(section)"
+              :css-properties="tree!.cssStrings"
+            />
+            <template v-else>
+              <Property
+                v-for="property in section.properties"
+                :key="property.key"
+                :property="property"
+                :workspace="tree!.workspace"
+                :node="tree!.node"
+                :theme="tree!.theme"
+                :all-properties="rowAllProperties(section)"
+                :theme-editing-context="tree!.themeEditingContext"
+                :font-collection-editing-context="rowFontContext(section)"
+                :icon-set-editing-context="rowIconContext(section)"
+              />
+            </template>
           </template>
-        </template>
-      </template>
-    </Frame>
+        </Frame>
+      </Frame>
+    </template>
   </SidebarProperties>
+
+  <MenuController
+    :open="stateMenuOpen"
+    :anchor="stateMenuAnchor"
+    :items="stateMenu.items"
+    align="end"
+    @close="closeStateMenu"
+  />
 </template>
 
 <style scoped>
@@ -364,23 +204,10 @@ function removeLayer(property: string, index: number): void {
   display: flex;
   flex-direction: column;
 }
-.properties-sidebar__empty {
-  padding: 1rem;
-  font-size: 0.8rem;
-  color: var(--sdn-swatch-gray, #71717a);
-}
-.properties-sidebar__layer {
+.properties-sidebar__tree {
+  padding: var(--sdn-paddings-tight) 0 var(--sdn-paddings-cozy) 0;
   display: flex;
-  gap: 6px;
-  padding: 2px 8px 6px;
-}
-.properties-sidebar__layer button {
-  background: transparent;
-  border: 1px solid var(--sdn-swatch-gray, #3f3f46);
-  color: var(--sdn-swatch-gray, #a1a1aa);
-  border-radius: 4px;
-  padding: 2px 6px;
-  font-size: 0.72rem;
-  cursor: pointer;
+  flex-direction: column;
+  gap: var(--sdn-gaps-tight);
 }
 </style>
