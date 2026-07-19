@@ -1,7 +1,7 @@
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { useEffect } from "react"
 import { LayeredPaintKey } from "@seldon/core"
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
 import {
   type LayerPlacement,
   computeLayerToIndex,

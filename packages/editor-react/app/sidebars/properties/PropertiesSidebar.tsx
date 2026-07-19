@@ -1,4 +1,4 @@
-import { MenuController, MenuEntry } from "@lib/menus"
+import { MenuController, MenuEntry } from "@app/menus"
 import { LayoutGroup } from "framer-motion"
 import {
   Fragment,
@@ -22,7 +22,7 @@ import {
 } from "@seldon/core"
 import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
 import { useBoardStateMenu } from "./hooks/use-board-state-menu"
 import {
   useBorderSideVisibility,

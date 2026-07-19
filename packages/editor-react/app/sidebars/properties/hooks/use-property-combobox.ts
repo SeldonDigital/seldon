@@ -3,7 +3,7 @@ import {
   type ComboboxOptionItems,
   useComboboxPosition,
   useComboboxState,
-} from "@lib/menus"
+} from "@app/menus"
 import { RefObject, useCallback, useEffect, useMemo, useRef } from "react"
 import type { PropertyPickerResult } from "../helpers/options-utils"
 import { FlatProperty } from "../helpers/properties-data"

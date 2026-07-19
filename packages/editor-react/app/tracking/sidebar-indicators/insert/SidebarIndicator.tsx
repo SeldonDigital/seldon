@@ -1,5 +1,5 @@
 import { COLORS } from "@lib/helpers/colors"
-import { InsertLine } from "@lib/overlays"
+import { InsertLine } from "@app/overlays"
 import { Placement } from "@lib/types"
 import { FC } from "react"
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"

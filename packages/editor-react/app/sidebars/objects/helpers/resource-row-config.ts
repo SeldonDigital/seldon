@@ -10,8 +10,8 @@ import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { ResourceEntryKind } from "@lib/workspace/hooks/use-selection"
-import { SelectionKind } from "@lib/workspace/selection-target"
+import { ResourceEntryKind } from "@app/workspace/hooks/use-selection"
+import { SelectionKind } from "@app/workspace/selection-target"
 import { IconProps } from "@seldon/components/primitives/Icon"
 
 type ResolvedEntry = {

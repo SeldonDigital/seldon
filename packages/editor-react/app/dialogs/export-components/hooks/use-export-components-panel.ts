@@ -2,8 +2,8 @@ import { useCallback, useState } from "react"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
 import type { PlatformId } from "@seldon/factory/export/types"
 import { pickExportDirectory } from "@lib/export/write-export-to-directory"
-import { useImportExport } from "@lib/hooks/use-import-export"
-import { usePanel } from "@lib/hooks/use-panel"
+import { useImportExport } from "@app/hooks/use-import-export"
+import { usePanel } from "@app/hooks/use-panel"
 
 /** Platforms shown in the dialog picker, in registry order. */
 export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({

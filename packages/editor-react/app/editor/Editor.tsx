@@ -2,9 +2,9 @@
 
 import { Allotment, LayoutPriority } from "allotment"
 import { CSSProperties } from "react"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useEditorShortcuts } from "@lib/hooks/use-editor-shortcuts"
-import { usePreview } from "@lib/hooks/use-preview"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { useEditorShortcuts } from "@app/hooks/use-editor-shortcuts"
+import { usePreview } from "@app/hooks/use-preview"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"

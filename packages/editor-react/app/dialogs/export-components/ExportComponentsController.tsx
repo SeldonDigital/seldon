@@ -1,8 +1,8 @@
 "use client"
 
-import { MenuController } from "@lib/menus/MenuController"
-import { MenuEntry } from "@lib/menus/types"
-import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
+import { MenuController } from "@app/menus/MenuController"
+import { MenuEntry } from "@app/menus/types"
+import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
 import {
   CSSProperties,
   MouseEvent,
@@ -13,7 +13,7 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import { useDraggableWindow } from "@app/hooks/use-draggable-window"
 import {
   EXPORT_PLATFORM_OPTIONS,
   useExportComponentsPanel,

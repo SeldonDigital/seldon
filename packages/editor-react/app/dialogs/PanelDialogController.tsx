@@ -1,6 +1,6 @@
 "use client"
 
-import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
+import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
 import {
   CSSProperties,
   ChangeEvent,
@@ -10,7 +10,7 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+import { useDraggableWindow } from "@app/hooks/use-draggable-window"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Container } from "@seldon/components/frames/Container"
 import { PanelDialog } from "@seldon/components/modules/PanelDialog"

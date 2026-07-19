@@ -1,8 +1,8 @@
 "use client"
 
 import type { CSSProperties } from "react"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useCanvasHoverState } from "@app/hooks/use-canvas-hover-state"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import { Frame } from "@seldon/components/frames/Frame"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"

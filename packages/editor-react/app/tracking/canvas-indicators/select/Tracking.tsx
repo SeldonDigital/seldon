@@ -1,7 +1,7 @@
 "use client"
 
 import { COLORS } from "@lib/helpers/colors"
-import { CanvasOutline } from "@lib/overlays"
+import { CanvasOutline } from "@app/overlays"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"

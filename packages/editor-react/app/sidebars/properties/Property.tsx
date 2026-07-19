@@ -1,5 +1,5 @@
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
-import { mergeStateProps } from "@lib/views/state-props"
+import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import { mergeStateProps } from "@app/views/state-props"
 import { ChangeEvent, memo, useCallback } from "react"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"

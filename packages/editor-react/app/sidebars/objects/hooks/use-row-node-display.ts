@@ -1,4 +1,4 @@
-import { ComboboxOptionItem, OptionIconRender } from "@lib/menus"
+import { ComboboxOptionItem, OptionIconRender } from "@app/menus"
 import { CSSProperties } from "react"
 import { Display, Properties, Value, ValueType, VariantId } from "@seldon/core"
 import {
@@ -11,7 +11,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { resolveRowDisplayDecoration } from "./row-display-style"
 

@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from "react"
 import { boardOrderService } from "@seldon/core/workspace/services"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import {
   BoardSection,

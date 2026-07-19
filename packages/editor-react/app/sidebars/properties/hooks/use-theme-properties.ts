@@ -22,7 +22,7 @@ import {
 } from "@seldon/core/helpers/color/convert-color"
 import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
-import { useThemeEntryEditor } from "@lib/themes/hooks/use-theme-entry-editor"
+import { useThemeEntryEditor } from "@app/themes/hooks/use-theme-entry-editor"
 import { FlatProperty } from "../helpers/properties-data"
 
 /** Scale sections whose `.step` row edits route through `set_theme_scale_slot`. */

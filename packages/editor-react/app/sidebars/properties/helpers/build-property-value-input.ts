@@ -1,7 +1,7 @@
 import {
   buildDisplayInputProps,
   buildEditingRefProps,
-} from "@lib/views/state-props"
+} from "@app/views/state-props"
 import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
 import { PropertyControlView } from "../hooks/use-property-control"
 import { InputProps } from "@seldon/components/primitives/Input"

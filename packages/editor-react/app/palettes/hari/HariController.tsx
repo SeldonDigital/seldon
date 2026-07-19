@@ -1,8 +1,8 @@
 "use client"
 
 import type { AgentConfig } from "@lib/ai/run-agent-chat"
-import { MenuController, type MenuEntry } from "@lib/menus"
-import { WindowOverlay } from "@lib/overlays/WindowOverlay.bespoke"
+import { MenuController, type MenuEntry } from "@app/menus"
+import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
 import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
 import {
   type CSSProperties,
@@ -21,10 +21,10 @@ import {
 import {
   type SelectionScope,
   useSelectionScope,
-} from "@lib/workspace/hooks/use-selection-scope"
-import { type HariStatus, type HariTurn, useHari } from "@lib/hooks/use-ai-chat"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useDraggableWindow } from "@lib/hooks/use-draggable-window"
+} from "@app/workspace/hooks/use-selection-scope"
+import { type HariStatus, type HariTurn, useHari } from "@app/hooks/use-ai-chat"
+import { useDebugMode } from "@app/hooks/use-debug-mode"
+import { useDraggableWindow } from "@app/hooks/use-draggable-window"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
 import { HariTranscript } from "./HariTranscript"
 import "./hari.css"

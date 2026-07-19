@@ -1,9 +1,9 @@
 import { useRef, useState } from "react"
 import { create } from "zustand"
 import { BackgroundKind, ValueType } from "@seldon/core/properties"
-import { useImageUpload } from "@lib/api/hooks/use-image-upload"
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
-import { usePanel } from "@lib/hooks/use-panel"
+import { useImageUpload } from "@app/api/hooks/use-image-upload"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import { usePanel } from "@app/hooks/use-panel"
 
 export type ImageUploadTarget = "source" | "background-image"
 

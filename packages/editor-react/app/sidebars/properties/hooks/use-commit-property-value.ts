@@ -14,9 +14,9 @@ import { getCompoundSelectorFacet } from "@seldon/core/properties/constants/shar
 import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
 import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,

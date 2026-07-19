@@ -1,9 +1,9 @@
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
 import {
   buildActivatedRefProps,
   buildFieldStateProps,
   mergeStateProps,
-} from "@lib/views/state-props"
+} from "@app/views/state-props"
 import { memo, useCallback, useRef } from "react"
 import { Board as BoardType } from "@seldon/core"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"

@@ -1,4 +1,4 @@
-import { MenuEntry, MenuItem } from "@lib/menus"
+import { MenuEntry, MenuItem } from "@app/menus"
 import { useMemo } from "react"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import {
@@ -12,8 +12,8 @@ import {
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import {

@@ -1,15 +1,15 @@
 import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
-import { IconCustomColorValue, ThemeSwatches } from "@lib/icons/custom"
+import { IconCustomColorValue, ThemeSwatches } from "@app/icons/custom"
 import {
   type OptionIconDescriptor,
   getOptionIcon,
-} from "@lib/icons/resolve-option-icon"
-import { type OptionIconRender } from "@lib/menus"
+} from "@app/icons/resolve-option-icon"
+import { type OptionIconRender } from "@app/menus"
 import React from "react"
 import { Theme, Workspace } from "@seldon/core"
 import { IconId, defaultIconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
-import { useThemes } from "@lib/themes/hooks/use-themes"
+import { useThemes } from "@app/themes/hooks/use-themes"
 import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { FlatProperty } from "./properties-data"
@@ -25,7 +25,7 @@ interface RenderPropertyOptionIconDeps {
   themes: ReturnType<typeof useThemes>
 }
 
-export type { OptionIconRender } from "@lib/menus"
+export type { OptionIconRender } from "@app/menus"
 
 /**
  * Builds the per-option icon resolver for a property combobox. The theme

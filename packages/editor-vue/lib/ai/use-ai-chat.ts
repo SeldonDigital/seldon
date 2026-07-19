@@ -15,10 +15,10 @@ import {
 import {
   buildTurnReport,
   findActiveBoardKey,
-} from "@seldon/editor/lib/hooks/ai-chat/apply-report"
-import { checkTurnIntegrity } from "@seldon/editor/lib/hooks/ai-chat/check-turn-integrity"
-import { describeChanges } from "@seldon/editor/lib/hooks/ai-chat/change-summary"
-import { collectVocabularyWarnings } from "@seldon/editor/lib/hooks/ai-chat/vocabulary-warnings"
+} from "@seldon/editor/lib/ai/apply-report"
+import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
+import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
+import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
 import { resolveSelectionScope } from "@seldon/editor/lib/workspace/selection-scope"
 import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {

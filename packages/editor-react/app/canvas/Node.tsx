@@ -25,9 +25,9 @@ import {
   NORMAL_STATE,
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
-import { useThemeById } from "@lib/themes/hooks/use-theme-by-id"
-import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useThemeById } from "@app/themes/hooks/use-theme-by-id"
+import { useIsNodeSelected } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import {

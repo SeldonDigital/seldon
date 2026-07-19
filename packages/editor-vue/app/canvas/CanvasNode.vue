@@ -15,8 +15,8 @@ import {
   NORMAL_STATE,
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
-import { getPropertyHtmlAttributes } from "@lib/canvas/property-html-attributes"
-import { resolveCanvasTag } from "@lib/canvas/resolve-canvas-tag"
+import { getPropertyHtmlAttributes } from "@seldon/editor/lib/canvas/property-html-attributes"
+import { resolveCanvasTag } from "@seldon/editor/lib/canvas/resolve-canvas-tag"
 import { useSelectionStore } from "@lib/stores/selection-store"
 import { storeToRefs } from "pinia"
 import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"

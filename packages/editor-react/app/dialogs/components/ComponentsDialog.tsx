@@ -4,10 +4,10 @@ import { useCallback } from "react"
 import { invariant } from "@seldon/core"
 import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers/helpers/validation"
 import { InstanceId, VariantId } from "@seldon/core/workspace/types"
-import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { usePanel } from "@lib/hooks/use-panel"
-import { useTool } from "@lib/hooks/use-tool"
+import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { usePanel } from "@app/hooks/use-panel"
+import { useTool } from "@app/hooks/use-tool"
 import {
   CatalogComponentItem,
   FilterComponentPredicate,

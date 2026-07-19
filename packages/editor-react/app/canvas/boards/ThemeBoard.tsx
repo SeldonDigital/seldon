@@ -1,6 +1,6 @@
 "use client"
 
-import { MenuController, type MenuEntry } from "@lib/menus"
+import { MenuController, type MenuEntry } from "@app/menus"
 import { getThemeSpecPreviewBase } from "@lib/themes/build-theme-spec-preview"
 import {
   ORDINAL_SCALES,
@@ -29,10 +29,10 @@ import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { usePreview } from "@lib/hooks/use-preview"
+import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { usePreview } from "@app/hooks/use-preview"
 import {
   useOrdinalPreviewStore,
   useOrdinalSelection,

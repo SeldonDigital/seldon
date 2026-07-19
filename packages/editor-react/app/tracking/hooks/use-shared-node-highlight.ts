@@ -1,9 +1,9 @@
 import { useMemo } from "react"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useStore as useSelectionStore } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
 
 const EMPTY_IDS: ReadonlySet<string> = new Set()
 

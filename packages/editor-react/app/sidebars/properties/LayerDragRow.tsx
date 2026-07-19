@@ -1,5 +1,5 @@
 import { COLORS } from "@lib/helpers/colors"
-import { InsertLine, OverlayLayer, PlacementZoneSurface } from "@lib/overlays"
+import { InsertLine, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { CSSProperties, ReactNode } from "react"
 import { LayeredPaintKey } from "@seldon/core"
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"

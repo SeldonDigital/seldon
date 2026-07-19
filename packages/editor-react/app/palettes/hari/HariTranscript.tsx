@@ -5,8 +5,8 @@
 // the turn reads as a single "Tools Applied" section. Assistant replies render
 // through HariMarkdown.
 import { type CSSProperties, type ReactNode, useMemo } from "react"
-import type { HariTurn } from "@lib/hooks/use-ai-chat"
-import { useDebugStore } from "@lib/hooks/use-debug-mode"
+import type { HariTurn } from "@app/hooks/use-ai-chat"
+import { useDebugStore } from "@app/hooks/use-debug-mode"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
 import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"

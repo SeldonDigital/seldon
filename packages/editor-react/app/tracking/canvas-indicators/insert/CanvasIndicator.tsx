@@ -1,4 +1,4 @@
-import { InsertIndicatorLine } from "@lib/overlays"
+import { InsertIndicatorLine } from "@app/overlays"
 import { Placement } from "@lib/types"
 import { CSSProperties } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
@@ -7,7 +7,7 @@ import {
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import { Frame } from "@seldon/components/frames/Frame"

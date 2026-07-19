@@ -10,6 +10,7 @@
     "build": "npm run build --workspace @seldon/editor-react",
     "start": "npm run start --workspace @seldon/editor-react",
     "lint": "npm run lint --workspace @seldon/editor-react",
+    "lint:editor": "npm run lint --workspace @seldon/editor",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs}\"",
     "quality": "npm run format:check && npm run quality --workspace @seldon/editor-react",
     "format": "node scripts/format.mjs",

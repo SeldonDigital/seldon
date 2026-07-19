@@ -4,9 +4,9 @@ import {
   nodeRelationshipService,
   nodeRetrievalService,
 } from "@seldon/core/workspace/services"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useCanvasHoverState } from "@app/hooks/use-canvas-hover-state"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 
 export type BelongsToActiveBoardResult = {

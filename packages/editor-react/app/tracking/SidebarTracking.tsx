@@ -1,4 +1,4 @@
-import { OverlayLayer, PlacementZoneSurface } from "@lib/overlays"
+import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { Placement } from "@lib/types"
 import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
 import { Instance, Variant } from "@seldon/core"
@@ -6,10 +6,10 @@ import {
   nodeRelationshipService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useDragStateStore } from "@lib/hooks/use-drag-state"
-import { usePanel } from "@lib/hooks/use-panel"
-import { useTool } from "@lib/hooks/use-tool"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useDragStateStore } from "@app/hooks/use-drag-state"
+import { usePanel } from "@app/hooks/use-panel"
+import { useTool } from "@app/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
 import { Frame } from "@seldon/components/frames/Frame"

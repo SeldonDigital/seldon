@@ -7,17 +7,17 @@ import type { EntryNode } from "@seldon/core/workspace/types"
 import {
   useSelectionActions,
   useStore as useSelectionStore,
-} from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useTool } from "@lib/hooks/use-tool"
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useDebugMode } from "@app/hooks/use-debug-mode"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { useTool } from "@app/hooks/use-tool"
 import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
 import {
   getSelectionTarget,
   selectFromTarget,
-} from "@lib/workspace/selection-target"
+} from "@app/workspace/selection-target"
 import { hasNode } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"

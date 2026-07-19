@@ -1,5 +1,5 @@
-import { MenuEntry } from "@lib/menus"
-import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
+import { MenuEntry } from "@app/menus"
+import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
 import { MouseEvent, useState } from "react"
 import { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"
@@ -11,14 +11,14 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
+import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
 import {
   useSelectionActions,
   useStore as useSelectionStore,
-} from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { useTool } from "@lib/hooks/use-tool"
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useAddRemoveCommands } from "@app/hooks/commands/use-add-remove-commands"
+import { useTool } from "@app/hooks/use-tool"
 import { getVariantRootIds } from "@lib/workspace/component-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"

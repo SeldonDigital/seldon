@@ -1,16 +1,16 @@
 "use client"
 
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useSelectedNodeId } from "@lib/workspace/hooks/use-selection"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import {
   useCanvasHoverState,
   useHasHoverState,
-} from "@lib/hooks/use-canvas-hover-state"
-import { useDragStateStore } from "@lib/hooks/use-drag-state"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { usePreview } from "@lib/hooks/use-preview"
-import { useTool } from "@lib/hooks/use-tool"
+} from "@app/hooks/use-canvas-hover-state"
+import { useDragStateStore } from "@app/hooks/use-drag-state"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { usePreview } from "@app/hooks/use-preview"
+import { useTool } from "@app/hooks/use-tool"
 import { useCanvasRemeasureStore } from "../canvas/hooks/use-canvas-remeasure-store"
 import { useNodeBelongsToActiveBoard } from "./hooks/use-belongs-to-active-board"
 import { useTrackNodeRects } from "./hooks/use-track-node-rects"

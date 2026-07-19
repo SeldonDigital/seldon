@@ -6,9 +6,9 @@ import {
   authoredExportNameFromName,
 } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { usePanel } from "@lib/hooks/use-panel"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useAddRemoveCommands } from "@app/hooks/commands/use-add-remove-commands"
+import { usePanel } from "@app/hooks/use-panel"
 
 export type AuthoredRootKind = "container" | "frame"
 

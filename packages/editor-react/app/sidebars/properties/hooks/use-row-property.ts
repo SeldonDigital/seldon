@@ -1,16 +1,16 @@
 import {
   getCurrentOptionValue,
   getOptionIcon,
-} from "@lib/icons/resolve-option-icon"
-import { MenuEntry } from "@lib/menus"
-import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
-import { ICONIC_BUTTON_SELECTOR } from "@lib/menus/iconic-button"
+} from "@app/icons/resolve-option-icon"
+import { MenuEntry } from "@app/menus"
+import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
+import { ICONIC_BUTTON_SELECTOR } from "@app/menus/iconic-button"
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import {
   buildActivatedRefProps,
   buildDisabledRefProps,
   buildInvalidRefProps,
-} from "@lib/views/state-props"
+} from "@app/views/state-props"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Board,
@@ -31,9 +31,9 @@ import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import {
   INSTANCE_STATE_EDIT_MESSAGE,
   useNodeActiveState,
-} from "@lib/workspace/hooks/use-node-active-state"
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
+} from "@app/workspace/hooks/use-node-active-state"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import { useDebugMode } from "@app/hooks/use-debug-mode"
 import { useRenameInput } from "../../hooks/use-rename-input"
 import {
   imageUploadTargetForKey,

@@ -1,7 +1,7 @@
 import {
   buildDisplayInputProps,
   buildEditingRefProps,
-} from "@lib/views/state-props"
+} from "@app/views/state-props"
 import {
   type ChangeEvent,
   type KeyboardEvent,

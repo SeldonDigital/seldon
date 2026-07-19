@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 import { ComponentLevel } from "@seldon/core/components/constants"
-import type { Target } from "@seldon/editor/lib/hooks/use-target"
+import type { Target } from "@seldon/editor/lib/workspace/target"
 import { useToolStore } from "./tool-store"
 
 export type PanelType =

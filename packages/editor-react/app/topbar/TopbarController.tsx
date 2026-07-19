@@ -1,8 +1,8 @@
 "use client"
 
 import { getChromeThemes } from "@lib/chrome/chrome-themes"
-import { useExportStatusStore } from "@lib/export/export-status-store"
-import { MenuAlign, MenuController, MenuEntry } from "@lib/menus"
+import { useExportStatusStore } from "@app/export/export-status-store"
+import { MenuAlign, MenuController, MenuEntry } from "@app/menus"
 import {
   CSSProperties,
   MouseEvent,
@@ -12,8 +12,8 @@ import {
   useRef,
   useState,
 } from "react"
-import { AppState, useAppState } from "@lib/hooks/use-app-state"
-import { InterfaceMode, useEditorConfig } from "@lib/hooks/use-editor-config"
+import { AppState, useAppState } from "@app/hooks/use-app-state"
+import { InterfaceMode, useEditorConfig } from "@app/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
 import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"

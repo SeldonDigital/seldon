@@ -8,7 +8,7 @@
  * current selection through this single attribute, so nodes, theme variants,
  * font families, and font-collection variants all use the exact same path.
  */
-import { SELECTION_ROOT_ID_ATTR } from "@lib/workspace/selection-target"
+import { SELECTION_ROOT_ID_ATTR } from "@app/workspace/selection-target"
 
 export const CANVAS_SELECTION_ID_ATTR = "data-canvas-selection-id"
 

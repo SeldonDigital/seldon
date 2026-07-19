@@ -8,23 +8,23 @@ import type {
   VariantId,
   Workspace,
 } from "@seldon/core/workspace/types"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import {
   useHoveredId,
   useHoveredKind,
   useHoveredRootId,
-} from "@lib/workspace/hooks/use-object-hover"
+} from "@app/workspace/hooks/use-object-hover"
 import {
   useSelectedNodeId,
   useSelectedNodeRootId,
-} from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useTool } from "@lib/hooks/use-tool"
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useTool } from "@app/hooks/use-tool"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
 import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
 import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
-import { useSelectedId } from "@lib/workspace/selection-target"
+import { useSelectedId } from "@app/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { DEFAULT_OUTLINE_COLORS } from "../tracking/helpers/resolve-outline-surface"
 import type { OutlineColors } from "../tracking/helpers/resolve-outline-surface"

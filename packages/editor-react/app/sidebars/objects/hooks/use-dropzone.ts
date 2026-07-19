@@ -8,7 +8,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 
 type DropzoneParams = {

@@ -1,9 +1,9 @@
 import { MouseEvent, useMemo } from "react"
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
-import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { usePanel } from "@lib/hooks/use-panel"
-import { useTool } from "@lib/hooks/use-tool"
+import { useAddRemoveCommands } from "@app/hooks/commands/use-add-remove-commands"
+import { usePanel } from "@app/hooks/use-panel"
+import { useTool } from "@app/hooks/use-tool"
 import {
   useIsSectionExpanded,
   useSectionExpansion,

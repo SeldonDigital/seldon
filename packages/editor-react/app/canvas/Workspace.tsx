@@ -9,9 +9,9 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { usePreview } from "@lib/hooks/use-preview"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useDebugMode } from "@app/hooks/use-debug-mode"
+import { usePreview } from "@app/hooks/use-preview"
 import { useCanvas } from "./hooks/use-canvas"
 import { Frame } from "@seldon/components/frames/Frame"
 import { ComponentBoard } from "./boards/ComponentBoard"

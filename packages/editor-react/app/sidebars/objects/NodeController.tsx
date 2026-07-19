@@ -1,16 +1,16 @@
-import { ComboboxListbox } from "@lib/menus"
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import { ComboboxListbox } from "@app/menus"
+import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
 import {
   buildDisabledRefProps,
   buildFieldStateProps,
   buildInvalidRefProps,
   buildRepeatFieldStyleProps,
   mergeStateProps,
-} from "@lib/views/state-props"
+} from "@app/views/state-props"
 import { type ReactElement, memo } from "react"
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"

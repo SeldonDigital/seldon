@@ -15,13 +15,13 @@ import {
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useNodeActiveState } from "@lib/workspace/hooks/use-node-active-state"
+import { useNodeActiveState } from "@app/workspace/hooks/use-node-active-state"
 import {
   useSelectedNodeRootId,
   useSelection,
-} from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
 import { buildPropertyTreeLayout } from "../helpers/build-property-tree-layout"
 import type { PropertyTreeProps } from "../PropertiesSidebar"
 import type {

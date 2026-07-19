@@ -2,8 +2,8 @@ import { useCallback } from "react"
 import { Board, Instance, Variant } from "@seldon/core"
 import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 
 /**

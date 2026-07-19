@@ -1,14 +1,14 @@
 "use client"
 
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
-import { buildFieldStateProps } from "@lib/views/state-props"
+import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import { buildFieldStateProps } from "@app/views/state-props"
 import { useCallback, useRef } from "react"
 import {
   useIsResourceEntrySelected,
   useSelection,
-} from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useTool } from "@lib/hooks/use-tool"
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useTool } from "@app/hooks/use-tool"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"

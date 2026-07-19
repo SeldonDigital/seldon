@@ -1,9 +1,9 @@
 "use client"
 
 import { CSSProperties, PropsWithChildren } from "react"
-import { useAppState } from "@lib/hooks/use-app-state"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
+import { useAppState } from "@app/hooks/use-app-state"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@app/hooks/use-system-color-scheme"
 import { Frame } from "@seldon/components/frames/Frame"
 import { TopbarController } from "./topbar/TopbarController"
 

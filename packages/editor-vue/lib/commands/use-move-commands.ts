@@ -8,14 +8,17 @@ import {
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { canMoveInstance } from "@seldon/core/workspace/services/nodes/node-move-navigation.service"
+import {
+  getBoardMoveIndex,
+  getMoveCapabilities,
+  getVariantMoveIndex,
+  type MoveDirection,
+} from "@seldon/editor/lib/commands/move-decisions"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useToastStore } from "@lib/stores/toast-store"
 import { useDispatch } from "@lib/workspace/use-dispatch"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-
-type MoveDirection = "forward" | "backward" | "front" | "back"
 
 /**
  * Commands for moving the current selection. Instances move through the core
@@ -34,15 +37,7 @@ export function useMoveCommands() {
     const board = nodeRetrievalService.getBoard(boardId, ws)
     const order = getBoardOrder(board)
     const count = Object.keys(ws.boards).length
-
-    const newIndex =
-      direction === "forward"
-        ? order - 1
-        : direction === "backward"
-          ? order + 2
-          : direction === "front"
-            ? 0
-            : count
+    const newIndex = getBoardMoveIndex(order, count, direction)
 
     dispatch({
       type: "reorder_board",
@@ -64,19 +59,8 @@ export function useMoveCommands() {
     const variantRootIds = getBoardVariantRootIds(board)
     const currentIndex = variantRootIds.indexOf(variantId)
     const lastIndex = variantRootIds.length - 1
-
-    const newIndex =
-      direction === "forward"
-        ? currentIndex - 1
-        : direction === "backward"
-          ? currentIndex + 1
-          : direction === "front"
-            ? 1
-            : lastIndex
-
-    if (newIndex < 1 || newIndex > lastIndex || newIndex === currentIndex) {
-      return
-    }
+    const newIndex = getVariantMoveIndex(currentIndex, lastIndex, direction)
+    if (newIndex === null) return
 
     dispatch({
       type: "reorder_variant_in_board",
@@ -107,42 +91,9 @@ export function useMoveCommands() {
     }
   }
 
-  const can = computed(() => {
-    const none = { forward: false, backward: false, front: false, back: false }
-    const selection = selectedItem.value
-    const ws = workspace.value
-    if (!selection) return none
-
-    if (typeCheckingService.isBoard(selection)) {
-      const order = getBoardOrder(selection)
-      const count = Object.keys(ws.boards).length
-      const notFirst = order > 0
-      const notLast = order < count - 1
-      return { forward: notFirst, backward: notLast, front: notFirst, back: notLast }
-    }
-
-    if (typeCheckingService.isInstance(selection)) {
-      return {
-        forward: canMoveInstance(ws, selection.id, "forward"),
-        backward: canMoveInstance(ws, selection.id, "backward"),
-        front: canMoveInstance(ws, selection.id, "front"),
-        back: canMoveInstance(ws, selection.id, "back"),
-      }
-    }
-
-    if (typeCheckingService.isVariant(selection)) {
-      if (typeCheckingService.isDefaultVariant(selection)) return none
-      const board = nodeRelationshipService.findBoardForVariant(selection, ws)
-      if (!board) return none
-      const variantRootIds = getBoardVariantRootIds(board)
-      const index = variantRootIds.indexOf(selection.id)
-      const notFirst = index > 1
-      const notLast = index >= 1 && index < variantRootIds.length - 1
-      return { forward: notFirst, backward: notLast, front: notFirst, back: notLast }
-    }
-
-    return none
-  })
+  const can = computed(() =>
+    getMoveCapabilities(workspace.value, selectedItem.value),
+  )
 
   return {
     moveSelectionForward: () => move("forward"),

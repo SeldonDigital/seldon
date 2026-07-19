@@ -2,9 +2,9 @@
 
 import { useMemo } from "react"
 import { invariant } from "@seldon/core/index"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
-import { useTool } from "@lib/hooks/use-tool"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useCanvasHoverState } from "@app/hooks/use-canvas-hover-state"
+import { useTool } from "@app/hooks/use-tool"
 import { useBelongsToActiveBoard } from "../../hooks/use-belongs-to-active-board"
 import { checkInsertionPoint } from "../../helpers/check-insertion-point"
 import { CanvasIndicator } from "./CanvasIndicator"

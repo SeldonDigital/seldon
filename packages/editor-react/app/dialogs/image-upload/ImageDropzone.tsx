@@ -1,5 +1,5 @@
 import { CSSProperties, useState } from "react"
-import { useObjectURL } from "@lib/hooks/use-object-url"
+import { useObjectURL } from "@app/hooks/use-object-url"
 import { Frame } from "@seldon/components/frames/Frame"
 import { IconMaterialUpload } from "@seldon/components/icons"
 import { Text } from "@seldon/components/primitives/Text"

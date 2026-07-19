@@ -2,9 +2,9 @@
 
 import { useCallback, useMemo } from "react"
 import { STOCK_THEMES } from "@seldon/core/themes/catalog"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { usePanel } from "@lib/hooks/use-panel"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useAddRemoveCommands } from "@app/hooks/commands/use-add-remove-commands"
+import { usePanel } from "@app/hooks/use-panel"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
 import { PanelDialogController } from "../PanelDialogController"
 import { CatalogDialogItem } from "../types"

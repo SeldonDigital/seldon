@@ -5,7 +5,7 @@ import {
   ComboboxPosition,
   OptionIconRender,
   useComboboxPosition,
-} from "@lib/menus"
+} from "@app/menus"
 import {
   CSSProperties,
   MouseEvent,

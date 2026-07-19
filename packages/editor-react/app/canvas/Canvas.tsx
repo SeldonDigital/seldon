@@ -9,15 +9,15 @@ import {
   useTransformContext,
 } from "react-zoom-pan-pinch"
 import { useThrottledCallback } from "use-debounce"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import {
   useSelection,
   useStore as useSelectionStore,
-} from "@lib/workspace/hooks/use-selection"
-import { useSetHoverState } from "@lib/hooks/use-canvas-hover-state"
-import { usePanel } from "@lib/hooks/use-panel"
-import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
-import { useTool } from "@lib/hooks/use-tool"
+} from "@app/workspace/hooks/use-selection"
+import { useSetHoverState } from "@app/hooks/use-canvas-hover-state"
+import { usePanel } from "@app/hooks/use-panel"
+import { useResolvedInterfaceMode } from "@app/hooks/use-system-color-scheme"
+import { useTool } from "@app/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CanvasTracking } from "../tracking/CanvasTracking"

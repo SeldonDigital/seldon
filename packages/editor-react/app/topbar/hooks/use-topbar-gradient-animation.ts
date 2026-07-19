@@ -1,6 +1,6 @@
 "use client"
 
-import { useExportStatus } from "@lib/export/export-status-store"
+import { useExportStatus } from "@app/export/export-status-store"
 import { useEffect, useRef } from "react"
 import {
   INTERFACE_SWATCH_TOKENS,

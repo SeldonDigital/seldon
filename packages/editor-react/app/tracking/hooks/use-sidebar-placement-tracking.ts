@@ -8,15 +8,15 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
   getHoverStateSnapshot,
   useHoverStateForObjects,
   useSetHoverState,
-} from "@lib/hooks/use-canvas-hover-state"
-import { useTool } from "@lib/hooks/use-tool"
-import { isInsertionAllowed } from "@lib/workspace/is-insertion-allowed"
+} from "@app/hooks/use-canvas-hover-state"
+import { useTool } from "@app/hooks/use-tool"
+import { isInsertionAllowed } from "@app/workspace/is-insertion-allowed"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 

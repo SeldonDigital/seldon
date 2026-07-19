@@ -3,19 +3,19 @@
 import {
   useSaveWorkspace,
   useWorkspaceName,
-} from "@lib/persistence/workspace-save-store"
-import { buildFieldStateProps } from "@lib/views/state-props"
+} from "@app/persistence/workspace-save-store"
+import { buildFieldStateProps } from "@app/views/state-props"
 import { LayoutGroup } from "framer-motion"
 import { CSSProperties, PointerEvent, useCallback, useState } from "react"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useSetHoveredId } from "@app/workspace/hooks/use-object-hover"
 import {
   useSelectionActions,
   useStore as useSelectionStore,
-} from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useTool } from "@lib/hooks/use-tool"
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { useTool } from "@app/hooks/use-tool"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
@@ -23,7 +23,7 @@ import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
 import { useRowClick } from "./hooks/use-row-click"
 import { useScrollSelection } from "./hooks/use-scroll-selection"
 import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
-import { getSelectionTarget } from "@lib/workspace/selection-target"
+import { getSelectionTarget } from "@app/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"

@@ -1,15 +1,15 @@
 "use client"
 
-import { CanvasOutline } from "@lib/overlays"
+import { CanvasOutline } from "@app/overlays"
 import type { CSSProperties } from "react"
 import {
   useHoveredId,
   useHoveredRootId,
-} from "@lib/workspace/hooks/use-object-hover"
-import { useSelectedNodeRootId } from "@lib/workspace/hooks/use-selection"
+} from "@app/workspace/hooks/use-object-hover"
+import { useSelectedNodeRootId } from "@app/workspace/hooks/use-selection"
 import { useCanvasOverlayStore } from "../../../canvas/hooks/use-canvas-overlay-store"
 import type { NodeRect } from "../../hooks/use-node-rects-store"
-import { useSelectedId } from "@lib/workspace/selection-target"
+import { useSelectedId } from "@app/workspace/selection-target"
 import {
   getSelectionMode,
   getSelectionOutlineStyle,

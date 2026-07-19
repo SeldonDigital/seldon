@@ -1,5 +1,5 @@
 import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
-import { THEME_TOKEN_ICON } from "@lib/icons/resolve-option-icon"
+import { THEME_TOKEN_ICON } from "@app/icons/resolve-option-icon"
 import {
   Board,
   Instance,

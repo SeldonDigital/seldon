@@ -11,7 +11,7 @@ import "../app/fonts/plex/fonts.css"
 import "../app/editor-chrome.css"
 // Side-effect import: registers editor-only, prop-driven `icon-custom-*` icons
 // with the generated `Icon`'s runtime registry at load.
-import "@lib/icons/register-dynamic-icons"
+import "@app/icons/register-dynamic-icons"
 
 const loadingFallbackStyle: CSSProperties = {
   padding: "2rem",
