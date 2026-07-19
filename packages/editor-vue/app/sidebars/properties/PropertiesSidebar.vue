@@ -4,6 +4,9 @@ import type { Value, Theme } from "@seldon/core"
 import type { Variant, Instance } from "@seldon/core"
 import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { cleanCompoundValue } from "@seldon/editor/lib/properties/commit-helpers"
+import { isComputedFunctionOption } from "@seldon/editor/lib/properties/inspector/computed-utils"
+import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
 import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
@@ -140,8 +143,32 @@ const showEmpty = computed(
 
 // Commit a raw editor string through the shared `serializeValue`, coercing it
 // into the correct typed value and dispatching a scoped or facet-merged update.
-function commitRaw(key: string, raw: string): void {
+function commitRaw(row: NodeRow, raw: string): void {
   if (!selectedNodeId.value || !nodeModel.value) return
+  const key = row.key
+
+  // Computed-function selections write a COMPUTED value through the shared
+  // handler so layered, compound, and shorthand shapes stay correct.
+  if (isComputedFunctionOption(raw)) {
+    const handled = handleComputedValueChange({
+      property: row.flat,
+      newValue: raw,
+      workspace: props.workspace,
+      selection: nodeModel.value,
+      setProperties: (nextProperties, nextOptions) =>
+        dispatch({
+          type: "set_node_properties",
+          payload: {
+            nodeId: selectedNodeId.value,
+            properties: nextProperties,
+            options: nextOptions,
+          },
+        } as never),
+      cleanCompoundValue,
+    })
+    if (handled) return
+  }
+
   const current = properties.value[key] as Value | undefined
   const value = serializeValue(
     raw,
@@ -285,7 +312,7 @@ function removeLayer(property: string, index: number): void {
           />
           <template v-for="row in section.rows" :key="row.key">
             <PropertyRow
-              v-if="!row.isHeader"
+              v-if="!row.isHeader || row.layerRemove"
               :label="row.label"
               :kind="controlKind(row.control)"
               :value="controlValue(row.control)"
@@ -295,7 +322,7 @@ function removeLayer(property: string, index: number): void {
               :can-reset="row.canReset"
               :is-facet="row.isFacet"
               :dimmed="row.dimmed"
-              @commit="commitRaw(row.key, $event)"
+              @commit="commitRaw(row, $event)"
               @reset="resetProperty(row)"
             />
             <div v-if="row.layerAdd || row.layerRemove" class="properties-sidebar__layer">

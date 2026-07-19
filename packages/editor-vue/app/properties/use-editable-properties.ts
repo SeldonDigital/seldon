@@ -42,6 +42,8 @@ export type PropertyRow = {
   layerAdd?: string
   /** Layered-paint layer this row can remove. */
   layerRemove?: { property: string; index: number }
+  /** Source row, so the commit path can reuse the shared computed handler. */
+  flat: FlatProperty
 }
 
 export type PropertySection = {
@@ -155,6 +157,7 @@ function toRow(
     layerRemove: isLayeredParent
       ? { property: root, index: property.layerIndex ?? 0 }
       : undefined,
+    flat: property,
   }
 }
 
