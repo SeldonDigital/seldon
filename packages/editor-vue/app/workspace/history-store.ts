@@ -2,7 +2,7 @@ import { createEmptyWorkspace } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
-import { useDirtyStore } from "./dirty-store"
+import { useDirtyStore } from "@app/persistence/dirty-store"
 
 const REVISION_LIMIT = 50
 

@@ -13,7 +13,7 @@ import {
   buildIconSetRows,
   type ResourceRowSection,
 } from "@seldon/editor/lib/resources/resource-rows"
-import { useEditorConfigStore } from "@app/stores/editor-config-store"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { storeToRefs } from "pinia"
 

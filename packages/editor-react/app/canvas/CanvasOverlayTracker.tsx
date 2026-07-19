@@ -19,7 +19,7 @@ import {
   useSelectedNodeRootId,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useTool } from "@app/hooks/use-tool"
+import { useTool } from "@app/editor/hooks/use-tool"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
 import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
 import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"

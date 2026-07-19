@@ -20,7 +20,7 @@ import {
   type SelectedResource,
 } from "@app/properties/use-resource-properties"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { storeToRefs } from "pinia"
 import { computed } from "vue"

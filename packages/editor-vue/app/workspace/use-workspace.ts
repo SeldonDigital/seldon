@@ -1,6 +1,6 @@
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useHistoryStore } from "@app/stores/history-store"
-import { usePreviewStore } from "@app/stores/preview-store"
+import { useHistoryStore } from "@app/workspace/history-store"
+import { usePreviewStore } from "@app/workspace/preview-store"
 import { storeToRefs } from "pinia"
 import { computed, type ComputedRef } from "vue"
 

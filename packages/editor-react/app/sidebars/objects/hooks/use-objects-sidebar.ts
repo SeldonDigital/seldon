@@ -3,7 +3,7 @@ import { boardOrderService } from "@seldon/core/workspace/services"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   BoardSection,

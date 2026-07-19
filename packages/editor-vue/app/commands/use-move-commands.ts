@@ -15,7 +15,7 @@ import {
   type MoveDirection,
 } from "@seldon/editor/lib/commands/move-decisions"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useToastStore } from "@app/stores/toast-store"
+import { useToastStore } from "@app/toaster/toast-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"

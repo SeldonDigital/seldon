@@ -22,7 +22,7 @@ import type { BoardKey } from "@seldon/core/workspace/types"
 import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useTool } from "@app/hooks/use-tool"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
 import {
   findFontCollectionBoard,
@@ -34,7 +34,7 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   getHoverStateSnapshot,
   useSetHoverState,
-} from "../use-canvas-hover-state"
+} from "@app/canvas/hooks/use-canvas-hover-state"
 
 /**
  * Commands for adding and removing nodes and boards

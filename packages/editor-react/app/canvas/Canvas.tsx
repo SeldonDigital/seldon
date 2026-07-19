@@ -14,10 +14,10 @@ import {
   useSelection,
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
-import { useSetHoverState } from "@app/hooks/use-canvas-hover-state"
-import { usePanel } from "@app/hooks/use-panel"
-import { useResolvedInterfaceMode } from "@app/hooks/use-system-color-scheme"
-import { useTool } from "@app/hooks/use-tool"
+import { useSetHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CanvasTracking } from "../tracking/CanvasTracking"

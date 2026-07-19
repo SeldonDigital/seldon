@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import type { CSSProperties } from "react"
 import { create } from "zustand"
-import { useTool } from "@app/hooks/use-tool"
+import { useTool } from "@app/editor/hooks/use-tool"
 import type { SelectionKind } from "@app/workspace/selection-target"
 
 /**

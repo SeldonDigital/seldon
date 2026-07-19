@@ -17,8 +17,8 @@ import {
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useAddRemoveCommands } from "@app/hooks/commands/use-add-remove-commands"
-import { useTool } from "@app/hooks/use-tool"
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"

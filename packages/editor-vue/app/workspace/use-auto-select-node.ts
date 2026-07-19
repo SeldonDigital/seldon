@@ -1,6 +1,6 @@
 import type { Action } from "@seldon/core"
 import { getNodeIdAddedByAction } from "@seldon/core/workspace/helpers/nodes/get-node-id-added-by-action"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 
 /**

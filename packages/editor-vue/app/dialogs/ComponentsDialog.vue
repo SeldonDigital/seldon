@@ -6,8 +6,8 @@ import {
   useCatalogDialog,
   type CatalogItem,
 } from "@app/dialogs/use-catalog-dialog"
-import { usePanelStore } from "@app/stores/panel-store"
-import { useToolStore } from "@app/stores/tool-store"
+import { usePanelStore } from "@app/editor/panel-store"
+import { useToolStore } from "@app/editor/tool-store"
 import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"

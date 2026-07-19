@@ -15,13 +15,13 @@ import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@app/workspace/hooks/use-object-hover"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { usePanel } from "@app/hooks/use-panel"
-import { usePreview } from "@app/hooks/use-preview"
-import { useTool } from "@app/hooks/use-tool"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { usePreview } from "@app/editor/hooks/use-preview"
+import { useTool } from "@app/editor/hooks/use-tool"
 import {
   HoverState,
   useCanvasHoverState,
-} from "@app/hooks/use-canvas-hover-state"
+} from "@app/canvas/hooks/use-canvas-hover-state"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
 import {

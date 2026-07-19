@@ -8,7 +8,7 @@ import {
   useSelection,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useTool } from "@app/hooks/use-tool"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"

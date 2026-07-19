@@ -10,8 +10,8 @@ import {
   useState,
 } from "react"
 import { createPortal } from "react-dom"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
-import { useResolvedInterfaceMode } from "@app/hooks/use-system-color-scheme"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import { MenuItem } from "@seldon/components/elements/MenuItem"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Menu } from "@seldon/components/parts/Menu"

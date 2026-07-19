@@ -3,7 +3,7 @@ import { create } from "zustand"
 import { BackgroundKind, ValueType } from "@seldon/core/properties"
 import { useImageUpload } from "@app/api/hooks/use-image-upload"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import { usePanel } from "@app/hooks/use-panel"
+import { usePanel } from "@app/editor/hooks/use-panel"
 
 export type ImageUploadTarget = "source" | "background-image"
 

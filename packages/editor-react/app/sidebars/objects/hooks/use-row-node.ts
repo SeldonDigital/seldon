@@ -9,9 +9,9 @@ import {
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useDebugMode } from "@app/hooks/use-debug-mode"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
-import { useTool } from "@app/hooks/use-tool"
+import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import {

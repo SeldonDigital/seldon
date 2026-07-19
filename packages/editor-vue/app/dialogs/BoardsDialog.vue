@@ -6,7 +6,7 @@ import {
   useCatalogDialog,
   type CatalogItem,
 } from "@app/dialogs/use-catalog-dialog"
-import { usePanelStore } from "@app/stores/panel-store"
+import { usePanelStore } from "@app/editor/panel-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"

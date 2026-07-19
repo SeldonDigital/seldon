@@ -13,7 +13,7 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { Tool } from "@app/hooks/use-tool"
+import { Tool } from "@app/editor/hooks/use-tool"
 
 /**
  * Checks if insertion is allowed for a given tool, object, and placement.

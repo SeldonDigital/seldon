@@ -14,8 +14,8 @@ import {
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
-import { useTool } from "@app/hooks/use-tool"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"

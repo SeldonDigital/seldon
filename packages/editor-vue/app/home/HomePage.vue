@@ -7,7 +7,7 @@ import {
   listStoredWorkspaces,
   type StoredWorkspace,
 } from "@seldon/editor/lib/storage/workspace-store"
-import { useToastStore } from "@app/stores/toast-store"
+import { useToastStore } from "@app/toaster/toast-store"
 import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 

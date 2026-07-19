@@ -6,8 +6,8 @@ import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers
 import { InstanceId, VariantId } from "@seldon/core/workspace/types"
 import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { usePanel } from "@app/hooks/use-panel"
-import { useTool } from "@app/hooks/use-tool"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { useTool } from "@app/editor/hooks/use-tool"
 import {
   CatalogComponentItem,
   FilterComponentPredicate,

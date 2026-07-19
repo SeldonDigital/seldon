@@ -7,9 +7,9 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useDragStateStore } from "@app/hooks/use-drag-state"
-import { usePanel } from "@app/hooks/use-panel"
-import { useTool } from "@app/hooks/use-tool"
+import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
 import { Frame } from "@seldon/components/frames/Frame"

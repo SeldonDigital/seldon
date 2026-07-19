@@ -7,7 +7,7 @@ import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useEditorFonts } from "@app/hooks/use-editor-fonts"
+import { useEditorFonts } from "@app/fonts/use-editor-fonts"
 
 /**
  * Adds the nodes used font family to the editor fonts

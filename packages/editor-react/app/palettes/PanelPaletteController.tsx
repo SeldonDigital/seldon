@@ -2,7 +2,7 @@
 
 import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
 import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
-import { useDraggableWindow } from "@app/hooks/use-draggable-window"
+import { useDraggableWindow } from "@app/menus/use-draggable-window"
 import { PanelPalette } from "@seldon/components/modules/PanelPalette"
 
 interface PanelPaletteControllerProps {

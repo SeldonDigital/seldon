@@ -10,8 +10,8 @@ import {
   useRef,
 } from "react"
 import { createPortal } from "react-dom"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
-import { useResolvedInterfaceMode } from "@app/hooks/use-system-color-scheme"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import {
   RESIZE_SIDES,
   Rect,

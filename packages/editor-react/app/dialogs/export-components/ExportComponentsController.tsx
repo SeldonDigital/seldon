@@ -13,7 +13,7 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@app/hooks/use-draggable-window"
+import { useDraggableWindow } from "@app/menus/use-draggable-window"
 import {
   EXPORT_PLATFORM_OPTIONS,
   useExportComponentsPanel,

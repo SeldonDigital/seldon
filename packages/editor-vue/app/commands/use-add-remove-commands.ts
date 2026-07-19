@@ -25,13 +25,13 @@ import {
   findThemeBoard,
 } from "@seldon/editor/lib/workspace/resource-boards"
 import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useCanvasHoverStore } from "@app/stores/canvas-hover-store"
-import { useToastStore } from "@app/stores/toast-store"
+import { useCanvasHoverStore } from "@app/canvas/canvas-hover-store"
+import { useToastStore } from "@app/toaster/toast-store"
 import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
-import { useToolStore } from "@app/stores/tool-store"
+import { useToolStore } from "@app/editor/tool-store"
 
 /**
  * Commands for adding and removing nodes and boards. Mirrors the React

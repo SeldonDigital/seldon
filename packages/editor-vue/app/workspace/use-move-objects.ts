@@ -3,8 +3,8 @@ import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import type { Placement } from "@seldon/editor/lib/types"
-import { getCurrentWorkspace } from "@app/stores/history-store"
-import { useToastStore } from "@app/stores/toast-store"
+import { getCurrentWorkspace } from "@app/workspace/history-store"
+import { useToastStore } from "@app/toaster/toast-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 
 /**

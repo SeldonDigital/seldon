@@ -18,7 +18,7 @@ import type { Board } from "@seldon/core/workspace/model/components"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
 import type { ResourceEntryKind } from "@seldon/editor/lib/workspace/selection-kind"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import {
   getComponent,

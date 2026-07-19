@@ -8,7 +8,7 @@ import {
   resolvePreviousSiblingNodeId,
   resolveSourceNodeId,
 } from "@seldon/core/workspace/services/nodes/node-navigation.service"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 
 /**

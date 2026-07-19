@@ -1,7 +1,7 @@
 /**
  * Types for the menu system
  */
-import { AppState } from "@app/hooks/use-app-state"
+import { AppState } from "@app/editor/hooks/use-app-state"
 
 export type MenuItemId = string
 

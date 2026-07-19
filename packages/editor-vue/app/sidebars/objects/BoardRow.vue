@@ -8,7 +8,7 @@ import {
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 import ItemNode from "@seldon/components/elements/ItemNode.vue"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import NodeRow from "./NodeRow.vue"
 
 type ResourceKind = "theme" | "fontCollection" | "iconSet" | "media"

@@ -32,7 +32,7 @@ import type { Workspace } from "@seldon/core/workspace/types"
 import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { usePreview } from "@app/hooks/use-preview"
+import { usePreview } from "@app/editor/hooks/use-preview"
 import {
   useOrdinalPreviewStore,
   useOrdinalSelection,

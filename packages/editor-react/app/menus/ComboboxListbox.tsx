@@ -11,8 +11,8 @@
  */
 import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
 import { createPortal } from "react-dom"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
-import { useResolvedInterfaceMode } from "@app/hooks/use-system-color-scheme"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Listbox } from "@seldon/components/parts/Listbox"

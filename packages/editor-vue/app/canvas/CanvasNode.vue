@@ -17,7 +17,7 @@ import {
 } from "@seldon/core/workspace/model/node-state"
 import { getPropertyHtmlAttributes } from "@seldon/editor/lib/canvas/property-html-attributes"
 import { resolveCanvasTag } from "@seldon/editor/lib/canvas/resolve-canvas-tag"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { storeToRefs } from "pinia"
 import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import {

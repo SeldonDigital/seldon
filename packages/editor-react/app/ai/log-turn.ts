@@ -4,7 +4,7 @@ import type {
   Workspace,
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
-import { useDebugStore } from "@app/hooks/use-debug-mode"
+import { useDebugStore } from "@app/editor/hooks/use-debug-mode"
 import { changedProperties, targetIdWithParentOf } from "@seldon/editor/lib/ai/action-helpers"
 import type { ApplyReport } from "@seldon/editor/lib/ai/apply-report"
 

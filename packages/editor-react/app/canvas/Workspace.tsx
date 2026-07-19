@@ -10,8 +10,8 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import { useDebugMode } from "@app/hooks/use-debug-mode"
-import { usePreview } from "@app/hooks/use-preview"
+import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
+import { usePreview } from "@app/editor/hooks/use-preview"
 import { useCanvas } from "./hooks/use-canvas"
 import { Frame } from "@seldon/components/frames/Frame"
 import { ComponentBoard } from "./boards/ComponentBoard"

@@ -12,8 +12,8 @@ import {
   useRef,
   useState,
 } from "react"
-import { AppState, useAppState } from "@app/hooks/use-app-state"
-import { InterfaceMode, useEditorConfig } from "@app/hooks/use-editor-config"
+import { AppState, useAppState } from "@app/editor/hooks/use-app-state"
+import { InterfaceMode, useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
 import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"

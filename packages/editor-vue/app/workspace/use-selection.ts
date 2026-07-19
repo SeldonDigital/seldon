@@ -7,7 +7,7 @@ import {
   getComponent,
   getNode,
 } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 
 /**

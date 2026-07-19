@@ -7,7 +7,7 @@ import {
 } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import { usePanelStore } from "@app/stores/panel-store"
+import { usePanelStore } from "@app/editor/panel-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"

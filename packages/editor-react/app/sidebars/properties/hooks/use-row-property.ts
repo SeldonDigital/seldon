@@ -33,7 +33,7 @@ import {
   useNodeActiveState,
 } from "@app/workspace/hooks/use-node-active-state"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import { useDebugMode } from "@app/hooks/use-debug-mode"
+import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
 import { useRenameInput } from "../../hooks/use-rename-input"
 import {
   imageUploadTargetForKey,

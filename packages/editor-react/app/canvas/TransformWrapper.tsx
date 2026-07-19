@@ -4,9 +4,9 @@ import {
   TransformWrapper as ReactTransformWrapper,
   useControls,
 } from "react-zoom-pan-pinch"
-import { usePreview } from "@app/hooks/use-preview"
-import { useTextFieldFocus } from "@app/hooks/use-text-field-focus"
-import { useZoomControlsStore } from "@app/hooks/use-zoom-controls"
+import { usePreview } from "@app/editor/hooks/use-preview"
+import { useTextFieldFocus } from "@app/canvas/hooks/use-text-field-focus"
+import { useZoomControlsStore } from "@app/canvas/hooks/use-zoom-controls"
 import { CanvasOverlayTracker } from "./CanvasOverlayTracker"
 import { CanvasScrollToSelection } from "./CanvasScrollToSelection"
 import { CanvasTransformRemeasure } from "./CanvasTransformRemeasure"

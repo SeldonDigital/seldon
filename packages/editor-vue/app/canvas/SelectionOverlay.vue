@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRectStore } from "@app/stores/rect-store"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useRectStore } from "@app/tracking/rect-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { storeToRefs } from "pinia"
 import { onBeforeUnmount, onMounted, ref, watch } from "vue"
 

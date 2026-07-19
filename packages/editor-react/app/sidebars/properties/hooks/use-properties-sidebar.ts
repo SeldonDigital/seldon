@@ -21,7 +21,7 @@ import {
   useSelection,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@app/hooks/use-editor-config"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
 import type { PropertyTreeProps } from "../PropertiesSidebar"
 import type {

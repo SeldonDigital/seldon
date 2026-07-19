@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Workspace, EntryNodeId, getComponentSchema } from "@app/core"
-import { useDragStore } from "@app/stores/drag-store"
-import { useObjectHoverStore } from "@app/stores/object-hover-store"
-import { useSelectionStore } from "@app/stores/selection-store"
+import { useDragStore } from "@app/canvas/drag-store"
+import { useObjectHoverStore } from "@app/workspace/object-hover-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { useMoveObjects } from "@app/workspace/use-move-objects"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import {

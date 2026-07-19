@@ -8,7 +8,7 @@ import { useEffect } from "react"
 import { Instance, Variant, invariant } from "@seldon/core"
 import { useMoveObjects } from "@app/workspace/hooks/use-move-objects"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useDragStateStore } from "@app/hooks/use-drag-state"
+import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 
 /**
  * How long the hovered target must stay settled before the canvas preview is

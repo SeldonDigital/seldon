@@ -27,10 +27,10 @@ import {
 } from "@seldon/editor/lib/ai/apply-report"
 import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
 import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
-import { isLoggingEnabled, logAiTurn, logWarm } from "./ai-chat/log-turn"
+import { isLoggingEnabled, logAiTurn, logWarm } from "./log-turn"
 import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
-import { useDebugStore } from "./use-debug-mode"
-import { usePanel } from "./use-panel"
+import { useDebugStore } from "@app/editor/hooks/use-debug-mode"
+import { usePanel } from "@app/editor/hooks/use-panel"
 
 export type AiChatRole = "user" | "assistant"
 
