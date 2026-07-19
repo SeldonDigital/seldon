@@ -17,6 +17,18 @@ export type WireframeMode = "auto" | "on" | "off"
 
 const STORAGE_KEY = "editor-config"
 
+/** Objects sidebar width bounds, matching the React Allotment pane. */
+export const OBJECTS_SIDEBAR_MIN_WIDTH = 280
+export const OBJECTS_SIDEBAR_MAX_WIDTH = 600
+export const OBJECTS_SIDEBAR_INITIAL_WIDTH = 360
+
+function clampObjectsWidth(width: number): number {
+  return Math.min(
+    OBJECTS_SIDEBAR_MAX_WIDTH,
+    Math.max(OBJECTS_SIDEBAR_MIN_WIDTH, Math.round(width)),
+  )
+}
+
 type PersistedConfig = {
   showSelection: boolean
   componentHighlightMode: ComponentHighlightMode
@@ -31,6 +43,7 @@ type PersistedConfig = {
   showPlayground: boolean
   showCodeNames: boolean
   objectsView: ObjectsView
+  objectsWidth: number
   useRefactoredSidebars: boolean
   chromeTheme: string
   interfaceMode: InterfaceMode
@@ -70,6 +83,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const showPlayground = ref(persisted.showPlayground ?? false)
   const showCodeNames = ref(persisted.showCodeNames ?? false)
   const objectsView = ref<ObjectsView>(persisted.objectsView ?? "components")
+  const objectsWidth = ref(
+    clampObjectsWidth(persisted.objectsWidth ?? OBJECTS_SIDEBAR_INITIAL_WIDTH),
+  )
   const useRefactoredSidebars = ref(persisted.useRefactoredSidebars ?? false)
   const chromeTheme = ref(persisted.chromeTheme ?? "seldon")
   const interfaceMode = ref<InterfaceMode>(persisted.interfaceMode ?? "light")
@@ -115,6 +131,12 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   function setComponentHighlightMode(mode: ComponentHighlightMode): void {
     componentHighlightMode.value = mode
   }
+  function setObjectsView(view: ObjectsView): void {
+    objectsView.value = view
+  }
+  function setObjectsWidth(width: number): void {
+    objectsWidth.value = clampObjectsWidth(width)
+  }
   function setChromeTheme(slug: string): void {
     chromeTheme.value = slug
   }
@@ -137,6 +159,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
       showPlayground,
       showCodeNames,
       objectsView,
+      objectsWidth,
       useRefactoredSidebars,
       chromeTheme,
       interfaceMode,
@@ -157,6 +180,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         showPlayground: showPlayground.value,
         showCodeNames: showCodeNames.value,
         objectsView: objectsView.value,
+        objectsWidth: objectsWidth.value,
         useRefactoredSidebars: useRefactoredSidebars.value,
         chromeTheme: chromeTheme.value,
         interfaceMode: interfaceMode.value,
@@ -180,6 +204,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     showPlayground,
     showCodeNames,
     objectsView,
+    objectsWidth,
     useRefactoredSidebars,
     chromeTheme,
     interfaceMode,
@@ -195,6 +220,8 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     toggleShowUnusedIcons,
     toggleShowPlayground,
     setComponentHighlightMode,
+    setObjectsView,
+    setObjectsWidth,
     setChromeTheme,
     setInterfaceMode,
   }

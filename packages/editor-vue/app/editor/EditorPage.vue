@@ -30,12 +30,35 @@ const config = useEditorConfigStore()
 const previewMode = usePreviewModeStore()
 const { workspace } = useWorkspace()
 
-const { showPanels, chromeTheme } = storeToRefs(config)
+const { showPanels, chromeTheme, objectsWidth } = storeToRefs(config)
 const { isInPreviewMode } = storeToRefs(previewMode)
 const resolvedMode = useResolvedInterfaceMode()
 
 // Panels hide when the user collapses chrome (`\`) or enters device preview (`p`).
 const showSidebars = computed(() => showPanels.value && !isInPreviewMode.value)
+
+// Resizable objects sidebar, matching the React Allotment pane. The handle
+// drags the panel width, which the config store clamps and persists.
+const objectsPane = ref<HTMLElement | null>(null)
+const objectsStyle = computed(() => ({ width: `${objectsWidth.value}px` }))
+const isResizing = ref(false)
+
+function onResizeMove(event: PointerEvent): void {
+  const pane = objectsPane.value
+  if (!pane) return
+  config.setObjectsWidth(event.clientX - pane.getBoundingClientRect().left)
+}
+function stopResize(): void {
+  isResizing.value = false
+  window.removeEventListener("pointermove", onResizeMove)
+  window.removeEventListener("pointerup", stopResize)
+}
+function startResize(event: PointerEvent): void {
+  event.preventDefault()
+  isResizing.value = true
+  window.addEventListener("pointermove", onResizeMove)
+  window.addEventListener("pointerup", stopResize)
+}
 
 useEditorShortcuts()
 useWorkspaceAutosave()
@@ -74,7 +97,18 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
       </p>
       <template v-else>
         <LoadEditorFonts :workspace="workspace" />
-        <ObjectsSidebar v-if="showSidebars" :workspace="workspace" />
+        <template v-if="showSidebars">
+          <div ref="objectsPane" class="editor-objects" :style="objectsStyle">
+            <ObjectsSidebar :workspace="workspace" />
+          </div>
+          <div
+            class="editor-resizer"
+            :class="{ 'editor-resizer--active': isResizing }"
+            role="separator"
+            aria-orientation="vertical"
+            @pointerdown="startResize"
+          />
+        </template>
         <div class="editor-canvas">
           <Canvas :workspace="workspace" />
         </div>
@@ -103,6 +137,23 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
   flex: 1;
   min-height: 0;
   display: flex;
+}
+.editor-objects {
+  flex: none;
+  height: 100%;
+  min-height: 0;
+  background-color: var(--sdn-swatch-offBlack);
+}
+.editor-resizer {
+  flex: none;
+  width: 4px;
+  cursor: col-resize;
+  background-color: transparent;
+  transition: background-color 0.15s ease;
+}
+.editor-resizer:hover,
+.editor-resizer--active {
+  background-color: var(--sdn-swatch-active);
 }
 .editor-canvas {
   flex: 1;

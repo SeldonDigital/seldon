@@ -132,11 +132,42 @@ export function useMoveObjects() {
     })
   }
 
+  // Alt-duplicate a subject next to a target (before/after). An instance
+  // subject is duplicated into the target's parent at the computed slot; a
+  // variant subject has no next-to duplicate and duplicates on its board.
+  function duplicateNodeNextTo(
+    targetId: string,
+    subjectId: string,
+    position: Exclude<Placement, "inside">,
+  ): void {
+    const workspace = getCurrentWorkspace()
+    const subject = workspace.nodes[subjectId as InstanceId]
+    if (!subject) return
+
+    if (typeCheckingService.isVariant(subject)) {
+      duplicateVariantOnBoard(subject.id as VariantId)
+      return
+    }
+
+    const parent = findParentNode(targetId as InstanceId, workspace)
+    invariant(parent, "Parent not found")
+    const childIds = getNodeChildIds(parent, workspace)
+    const targetIndex = childIds.indexOf(targetId)
+    const newIndex = position === "before" ? targetIndex : targetIndex + 1
+
+    duplicateNodeInto(
+      subject as Instance | Variant,
+      parent.id as VariantId | InstanceId,
+      newIndex,
+    )
+  }
+
   return {
     moveChildTo,
     moveNodeNextTo,
     moveNodeInside,
     duplicateNodeInto,
+    duplicateNodeNextTo,
     duplicateVariantOnBoard,
   }
 }

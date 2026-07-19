@@ -112,7 +112,8 @@ const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
             <ButtonToggle v-if="buttonToggle2 && buttonToggle2Props" v-bind="buttonToggle2Props" :icon="icon4Props" />
           </Frame>
         </Frame>
-        <Frame v-bind="frame3Props" v-if="frame3">
+        <Frame v-bind="frame3Props" v-if="frame3 || $slots.objects">
+          <slot name="objects" />
         </Frame>
       </slot>
     </div>
