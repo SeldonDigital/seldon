@@ -4,7 +4,9 @@ import { NodeIdToClass } from "../../css/types"
 import { generateJSXStructure } from "../../react/generation/preprocess/generate-jsx-structure"
 import { JSXNode } from "../../react/generation/preprocess/types"
 import { isAttributeKey } from "../../react/generation/shared/attribute-props"
+import { LICENSE_HEADER } from "../../react/generation/inserts/insert-license"
 import { generateDefaultProps } from "../../react/generation/shared/generate-default-props"
+import { generateJSDocComment } from "../../react/generation/shared/generate-jsdoc-comment"
 import { getVariantClassNames } from "../../react/utils/class-name"
 import { pluralizeLevel } from "../../react/utils/pluralize-level"
 import { ComponentToExport, JSONTreeNode } from "../../types"
@@ -75,6 +77,9 @@ export function generateVueComponent(
   for (const decl of propDeclarations) scriptLines.push(`  ${decl}`)
   scriptLines.push(`}>()`)
   scriptLines.push("")
+  scriptLines.push("//")
+  scriptLines.push("// Default property values")
+  scriptLines.push("//")
   scriptLines.push(
     `const sdn: Record<string, any> = ${JSON.stringify(defaults, null, 2)}`,
   )
@@ -89,7 +94,22 @@ export function generateVueComponent(
 
   const template = buildTemplate(component, jsxRoot, hasChildren, rootAttrs)
 
-  return `<script setup lang="ts">
+  // Vue Language Tools surfaces component-level JSDoc on hover only when it sits
+  // on an `export default` in a plain `<script>` block, so the doc comment lives
+  // there rather than in `<script setup>`. The example fence is switched from
+  // `tsx` to `vue` to match the emitted single-file component.
+  const jsDoc = generateJSDocComment(component, workspace).replace(
+    "```tsx",
+    "```vue",
+  )
+
+  return `<script lang="ts">
+${LICENSE_HEADER}
+${jsDoc}
+export default {}
+</script>
+
+<script setup lang="ts">
 ${scriptLines.join("\n")}
 </script>
 
