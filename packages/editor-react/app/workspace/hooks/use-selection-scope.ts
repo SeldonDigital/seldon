@@ -6,11 +6,11 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { getComponent } from "@lib/workspace/workspace-accessors"
+import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   type SelectionSnapshot,
   resolveSelectionScope,
-} from "@lib/workspace/selection-scope"
+} from "@seldon/editor/lib/workspace/selection-scope"
 import { getCurrentWorkspace } from "./use-history"
 import { useStore as useSelectionStore } from "./use-selection"
 import { useWorkspace } from "./use-workspace"

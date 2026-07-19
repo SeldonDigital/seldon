@@ -4,7 +4,7 @@ import {
   type StoredWorkspace,
   getStoredWorkspace,
   saveStoredWorkspace,
-} from "@lib/storage/workspace-store"
+} from "@seldon/editor/lib/storage/workspace-store"
 import { useCallback, useEffect, useState } from "react"
 
 export function useWorkspaceRecord(workspaceId: string | null) {

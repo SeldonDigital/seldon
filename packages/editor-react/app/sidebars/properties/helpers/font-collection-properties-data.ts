@@ -1,4 +1,4 @@
-import { getFontLicenseHref } from "@lib/font-collections/font-license"
+import { getFontLicenseHref } from "@seldon/editor/lib/font-collections/font-license"
 import {
   type VariantSelection,
   deriveVariantPreset,

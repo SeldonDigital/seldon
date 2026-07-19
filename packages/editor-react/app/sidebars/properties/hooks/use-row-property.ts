@@ -5,7 +5,7 @@ import {
 import { MenuEntry } from "@app/menus"
 import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
 import { ICONIC_BUTTON_SELECTOR } from "@app/menus/iconic-button"
-import { parsePropertyPath } from "@lib/properties/property-paths"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import {
   buildActivatedRefProps,
   buildDisabledRefProps,

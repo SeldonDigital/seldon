@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useObjectHoverStore } from "@lib/stores/object-hover-store"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useToolStore } from "@lib/stores/tool-store"
+import { useObjectHoverStore } from "@app/stores/object-hover-store"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useToolStore } from "@app/stores/tool-store"
 import { storeToRefs } from "pinia"
 import { computed, onBeforeUnmount, onMounted, ref } from "vue"
 

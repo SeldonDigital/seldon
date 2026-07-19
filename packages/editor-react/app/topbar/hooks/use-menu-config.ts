@@ -1,6 +1,6 @@
 "use client"
 
-import { selectFile } from "@lib/helpers/select-file"
+import { selectFile } from "@seldon/editor/lib/helpers/select-file"
 import { useCallback, useMemo } from "react"
 import { useNavigate } from "react-router"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
@@ -32,7 +32,7 @@ import { usePanel } from "@app/hooks/use-panel"
 import { usePreview } from "@app/hooks/use-preview"
 import { useTool } from "@app/hooks/use-tool"
 import { useZoomControls } from "@app/hooks/use-zoom-controls"
-import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { MenuConfig, MenuItem } from "../menus/types"
 

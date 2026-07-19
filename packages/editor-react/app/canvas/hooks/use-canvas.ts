@@ -22,17 +22,17 @@ import {
   HoverState,
   useCanvasHoverState,
 } from "@app/hooks/use-canvas-hover-state"
-import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
-import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
+import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
+import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
+} from "@seldon/editor/lib/workspace/node-tree"
 import {
   getSelectionTarget,
   selectFromTarget,
 } from "@app/workspace/selection-target"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"

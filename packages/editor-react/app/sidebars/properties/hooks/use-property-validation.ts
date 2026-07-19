@@ -4,7 +4,7 @@
 import {
   isColorProperty,
   isFreeTextProperty,
-} from "@lib/properties/serialize-value"
+} from "@seldon/editor/lib/properties/serialize-value"
 import {
   isNumber,
   isPercentage,

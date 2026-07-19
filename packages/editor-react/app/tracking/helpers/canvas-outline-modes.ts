@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/helpers/colors"
+import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import type { CSSProperties } from "react"
 import type { NodeRect } from "../hooks/use-node-rects-store"
 

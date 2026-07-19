@@ -1,5 +1,5 @@
-import { DEVICE_VIEWS } from "@lib/devices/constants"
-import { DeviceId } from "@lib/devices/types"
+import { DEVICE_VIEWS } from "@seldon/editor/lib/devices/constants"
+import { DeviceId } from "@seldon/editor/lib/devices/types"
 import { create } from "zustand"
 
 interface PreviewState {

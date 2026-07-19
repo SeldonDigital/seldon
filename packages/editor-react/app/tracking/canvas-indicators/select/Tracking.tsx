@@ -1,6 +1,6 @@
 "use client"
 
-import { COLORS } from "@lib/helpers/colors"
+import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { CanvasOutline } from "@app/overlays"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"

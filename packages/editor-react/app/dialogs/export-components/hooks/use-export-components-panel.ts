@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
 import type { PlatformId } from "@seldon/factory/export/types"
-import { pickExportDirectory } from "@lib/export/write-export-to-directory"
+import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { useImportExport } from "@app/hooks/use-import-export"
 import { usePanel } from "@app/hooks/use-panel"
 

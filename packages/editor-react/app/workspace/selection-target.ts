@@ -3,7 +3,7 @@ import { useStore as useSelectionStore } from "@app/workspace/hooks/use-selectio
 export type {
   ResourceEntryKind,
   SelectionKind,
-} from "@lib/workspace/selection-kind"
+} from "@seldon/editor/lib/workspace/selection-kind"
 export {
   SELECTION_ID_ATTR,
   SELECTION_KIND_ATTR,
@@ -11,7 +11,7 @@ export {
   getSelectionTarget,
   selectFromTarget,
   type SelectionTarget,
-} from "@lib/workspace/selection-dom"
+} from "@seldon/editor/lib/workspace/selection-dom"
 
 /**
  * The id of the object whose canvas representation should be highlighted and

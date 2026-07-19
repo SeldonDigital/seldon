@@ -1,8 +1,8 @@
 import {
   buildDefaultSnippet,
   buildVariantSnippet,
-} from "@lib/copy-schema/build-schema-snippet"
-import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
+} from "@seldon/editor/lib/copy-schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@seldon/editor/lib/copy-schema/serialize-schema-ts"
 import { MenuEntry } from "@app/menus"
 import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
 import { InstanceId, VariantId } from "@seldon/core"
@@ -22,8 +22,8 @@ import type { EntryNode } from "@seldon/core/workspace/types"
 import { usePropertiesClipboard } from "@app/workspace/hooks/use-properties-clipboard"
 import { useSelectionActions } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { hasNode } from "@lib/workspace/workspace-accessors"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 type Workspace = ReturnType<typeof useWorkspace>["workspace"]

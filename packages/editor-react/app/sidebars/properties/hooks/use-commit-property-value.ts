@@ -1,5 +1,5 @@
-import { parsePropertyPath } from "@lib/properties/property-paths"
-import { serializeValue } from "@lib/properties/serialize-value"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
 import { useCallback } from "react"
 import {
   Board,

@@ -1,5 +1,5 @@
 // BESPOKE-VIEW: hand-authored home screen markup. Styling comes from home.css.
-import { type StoredWorkspace } from "@lib/storage/workspace-store"
+import { type StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 import { Link } from "react-router"
 import "./home.css"
 

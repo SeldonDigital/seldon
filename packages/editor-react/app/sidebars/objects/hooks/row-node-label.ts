@@ -1,4 +1,4 @@
-import { removeNewLines } from "@lib/helpers/new-lines"
+import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getComponentName } from "@seldon/factory/export/react/discovery/get-component-name"
 import { Properties } from "@seldon/core"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"

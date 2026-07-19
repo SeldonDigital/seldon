@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Workspace, getComponentSchema } from "@lib/core"
+import { Workspace, getComponentSchema } from "@app/core"
 import { isComponentId } from "@seldon/core/components/constants"
 import {
   getBoardVariantRootIds,
@@ -8,7 +8,7 @@ import {
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 import ItemNode from "@seldon/components/elements/ItemNode.vue"
-import { useSelectionStore } from "@lib/stores/selection-store"
+import { useSelectionStore } from "@app/stores/selection-store"
 import NodeRow from "./NodeRow.vue"
 
 type ResourceKind = "theme" | "fontCollection" | "iconSet" | "media"

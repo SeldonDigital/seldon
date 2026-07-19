@@ -1,10 +1,10 @@
-import { selectFile } from "@lib/helpers/select-file"
+import { selectFile } from "@seldon/editor/lib/helpers/select-file"
 import {
   type StoredWorkspace,
   createStoredWorkspace,
   deleteStoredWorkspace,
   listStoredWorkspaces,
-} from "@lib/storage/workspace-store"
+} from "@seldon/editor/lib/storage/workspace-store"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { createEmptyWorkspace } from "@seldon/core"

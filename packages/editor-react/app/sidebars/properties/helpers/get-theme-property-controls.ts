@@ -1,4 +1,4 @@
-import { ControlType } from "@lib/icons/icons-registry"
+import { ControlType } from "@seldon/editor/lib/icons/icons-registry"
 import { getThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { FlatProperty } from "./properties-data"
 

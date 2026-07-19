@@ -1,5 +1,5 @@
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { useEffect, useRef, useState } from "react"
 import { Instance, Variant, Workspace, invariant } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
@@ -9,7 +9,7 @@ import {
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 
 type DropzoneParams = {
   target: Variant | Instance | EntryNode

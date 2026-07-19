@@ -2,7 +2,7 @@ import {
   isLayeredPaintRoot,
   layeredFacetPath,
   parsePropertyPath,
-} from "@lib/properties/property-paths"
+} from "@seldon/editor/lib/properties/property-paths"
 import type {
   LayeredPaintKey,
   PropertyKey,

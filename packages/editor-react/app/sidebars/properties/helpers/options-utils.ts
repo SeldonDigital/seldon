@@ -1,4 +1,4 @@
-import { parsePropertyPath } from "@lib/properties/property-paths"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { ComponentId, ComponentLevel, Theme, Workspace } from "@seldon/core"
 import {
   type PropertyPickerInput,
@@ -7,7 +7,7 @@ import {
 } from "@seldon/core/helpers/properties/properties-bridge"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 
 export type { PropertyPickerResult }

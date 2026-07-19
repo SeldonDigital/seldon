@@ -3,7 +3,7 @@ import {
   monitorForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import type { DropTargetRecord } from "@atlaskit/pragmatic-drag-and-drop/types"
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { useEffect } from "react"
 import { Instance, Variant, invariant } from "@seldon/core"
 import { useMoveObjects } from "@app/workspace/hooks/use-move-objects"

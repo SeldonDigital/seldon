@@ -8,7 +8,7 @@ import {
   useIsSectionExpanded,
   useSectionExpansion,
 } from "../../hooks/use-section-expansion"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { BoardSection } from "../../helpers/get-board-sections"

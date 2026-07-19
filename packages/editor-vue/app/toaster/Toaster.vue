@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useToastStore } from "@lib/stores/toast-store"
+import { useToastStore } from "@app/stores/toast-store"
 import { storeToRefs } from "pinia"
 
 const toastStore = useToastStore()

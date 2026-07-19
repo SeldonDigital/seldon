@@ -1,4 +1,4 @@
-import { parsePropertyPath } from "@lib/properties/property-paths"
+import { parsePropertyPath } from "../properties/property-paths"
 import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {

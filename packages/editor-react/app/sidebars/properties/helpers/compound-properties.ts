@@ -1,8 +1,8 @@
 import {
   getCompoundLayerValue,
   isLayeredPaintRoot,
-} from "@lib/properties/property-paths"
-import { getParentPathForPreset } from "@lib/properties/property-paths"
+} from "@seldon/editor/lib/properties/property-paths"
+import { getParentPathForPreset } from "@seldon/editor/lib/properties/property-paths"
 import { Theme, ValueType, Workspace } from "@seldon/core"
 import { applyCompoundPreset as coreApplyCompoundPreset } from "@seldon/core/helpers/properties/properties-bridge"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"

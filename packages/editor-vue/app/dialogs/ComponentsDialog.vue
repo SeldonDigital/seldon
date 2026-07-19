@@ -5,11 +5,11 @@ import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
 import {
   useCatalogDialog,
   type CatalogItem,
-} from "@lib/dialogs/use-catalog-dialog"
-import { usePanelStore } from "@lib/stores/panel-store"
-import { useToolStore } from "@lib/stores/tool-store"
-import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+} from "@app/dialogs/use-catalog-dialog"
+import { usePanelStore } from "@app/stores/panel-store"
+import { useToolStore } from "@app/stores/tool-store"
+import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"

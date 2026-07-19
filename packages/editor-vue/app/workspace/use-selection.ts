@@ -7,8 +7,8 @@ import {
   getComponent,
   getNode,
 } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 
 /**
  * Preview-aware, derived selection. Exposes the raw selection state plus the

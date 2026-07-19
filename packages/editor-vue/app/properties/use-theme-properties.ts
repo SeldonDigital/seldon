@@ -11,7 +11,7 @@ import {
   groupThemeTokenRows,
   type ThemeTokenSectionRows,
 } from "@seldon/editor/lib/themes/build-theme-token-rows"
-import { useDispatch } from "@lib/workspace/use-dispatch"
+import { useDispatch } from "@app/workspace/use-dispatch"
 
 /**
  * Theme token editing for the properties sidebar. Given the selected theme

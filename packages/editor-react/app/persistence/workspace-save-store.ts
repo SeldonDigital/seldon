@@ -3,7 +3,7 @@
 import {
   type StoredWorkspace,
   saveStoredWorkspace,
-} from "@lib/storage/workspace-store"
+} from "@seldon/editor/lib/storage/workspace-store"
 import { create } from "zustand"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { setIsLocalWorkspaceDirty } from "@app/project/hooks/use-workspace-sync-status"

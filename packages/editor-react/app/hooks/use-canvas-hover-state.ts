@@ -1,4 +1,4 @@
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { create } from "zustand"
 import { InstanceId, VariantId } from "@seldon/core"
 import type { BoardKey } from "@seldon/core/workspace/types"

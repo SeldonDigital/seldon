@@ -1,6 +1,6 @@
-import { COLORS } from "@lib/helpers/colors"
+import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { InsertLine } from "@app/overlays"
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { FC } from "react"
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"

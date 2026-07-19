@@ -32,7 +32,6 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: [
       { find: "@app", replacement: path.join(editorRoot, "app") },
-      { find: "@lib", replacement: path.join(editorRoot, "lib") },
       { find: "@seldon/editor", replacement: sharedRoot },
       {
         find: "@seldon/components",

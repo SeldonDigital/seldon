@@ -5,7 +5,7 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
   getChildNodeIds,
   getVariantRootIds,
-} from "@lib/workspace/component-tree"
+} from "@seldon/editor/lib/workspace/component-tree"
 
 export interface VisibleNode {
   id: VariantId | InstanceId

@@ -1,6 +1,6 @@
 "use client"
 
-import { removeNewLines } from "@lib/helpers/new-lines"
+import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import React, { CSSProperties, RefObject, useMemo } from "react"
 import {

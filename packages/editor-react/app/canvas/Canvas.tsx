@@ -1,6 +1,6 @@
 "use client"
 
-import { DEFAULT_CHROME_THEME } from "@lib/chrome/chrome-themes"
+import { DEFAULT_CHROME_THEME } from "@seldon/editor/lib/chrome/chrome-themes"
 import React, { CSSProperties, useEffect, useRef } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
@@ -18,7 +18,7 @@ import { useSetHoverState } from "@app/hooks/use-canvas-hover-state"
 import { usePanel } from "@app/hooks/use-panel"
 import { useResolvedInterfaceMode } from "@app/hooks/use-system-color-scheme"
 import { useTool } from "@app/hooks/use-tool"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CanvasTracking } from "../tracking/CanvasTracking"
 import {

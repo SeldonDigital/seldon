@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/helpers/colors"
+import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { InsertLine, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { CSSProperties, ReactNode } from "react"
 import { LayeredPaintKey } from "@seldon/core"

@@ -1,4 +1,4 @@
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { useCallback, useMemo } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
@@ -17,8 +17,8 @@ import {
 } from "@app/hooks/use-canvas-hover-state"
 import { useTool } from "@app/hooks/use-tool"
 import { isInsertionAllowed } from "@app/workspace/is-insertion-allowed"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 
 /**
  * Hook that handles granular placement zone tracking for sidebar rows (nodes).

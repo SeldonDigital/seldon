@@ -3,7 +3,7 @@ import {
   getAgentConfig,
   runAgentChat,
   warmAgent,
-} from "@lib/ai/run-agent-chat"
+} from "@seldon/editor/lib/ai/run-agent-chat"
 import type {
   ActionRepair,
   AgentStreamEvent,
@@ -24,11 +24,11 @@ import {
   type RejectedAction,
   buildTurnReport,
   findActiveBoardKey,
-} from "@lib/ai/apply-report"
-import { describeChanges } from "@lib/ai/change-summary"
-import { checkTurnIntegrity } from "@lib/ai/check-turn-integrity"
+} from "@seldon/editor/lib/ai/apply-report"
+import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
+import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
 import { isLoggingEnabled, logAiTurn, logWarm } from "./ai-chat/log-turn"
-import { collectVocabularyWarnings } from "@lib/ai/vocabulary-warnings"
+import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
 import { useDebugStore } from "./use-debug-mode"
 import { usePanel } from "./use-panel"
 

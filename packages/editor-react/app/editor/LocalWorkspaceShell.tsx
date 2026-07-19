@@ -1,6 +1,6 @@
 "use client"
 
-import type { StoredWorkspace } from "@lib/storage/workspace-store"
+import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 import { useWorkspaceAutosave } from "@app/persistence/hooks/use-workspace-autosave"
 import { useWorkspaceSyncStatus } from "@app/project/hooks/use-workspace-sync-status"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"

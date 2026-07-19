@@ -6,7 +6,7 @@ import { getThemeTokenIconColor } from "@app/sidebars/properties/helpers/theme-t
 import {
   EDITOR_OPTION_ICON_OVERLAY,
   getPropertyRegistryEntry,
-} from "@lib/icons/icons-registry"
+} from "@seldon/editor/lib/icons/icons-registry"
 
 /** Icon id rendered for theme token values that are not swatch colors. */
 export const THEME_TOKEN_ICON = "seldon-theme"

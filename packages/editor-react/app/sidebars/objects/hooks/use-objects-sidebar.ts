@@ -4,7 +4,7 @@ import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@app/hooks/use-editor-config"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   BoardSection,
   getBoardSections,

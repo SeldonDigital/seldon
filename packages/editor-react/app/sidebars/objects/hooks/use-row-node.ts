@@ -13,12 +13,12 @@ import { useDebugMode } from "@app/hooks/use-debug-mode"
 import { useEditorConfig } from "@app/hooks/use-editor-config"
 import { useTool } from "@app/hooks/use-tool"
 import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
-import { getNodeChildIds } from "@lib/workspace/node-tree"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import {
   getSelectionTarget,
   selectFromTarget,
 } from "@app/workspace/selection-target"
-import { hasNode } from "@lib/workspace/workspace-accessors"
+import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"

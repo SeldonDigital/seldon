@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Workspace, getNodeProperties } from "@lib/core"
+import { Workspace, getNodeProperties } from "@app/core"
 import type { Value } from "@seldon/core"
 import type { Variant, Instance } from "@seldon/core"
 import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
@@ -8,15 +8,15 @@ import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
 import {
   useEditableProperties,
   type PropertyRow as NodeRow,
-} from "@lib/properties/use-editable-properties"
-import { useThemeProperties } from "@lib/properties/use-theme-properties"
+} from "@app/properties/use-editable-properties"
+import { useThemeProperties } from "@app/properties/use-theme-properties"
 import {
   useResourceProperties,
   type SelectedResource,
-} from "@lib/properties/use-resource-properties"
+} from "@app/properties/use-resource-properties"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useDispatch } from "@lib/workspace/use-dispatch"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 import { storeToRefs } from "pinia"
 import { computed } from "vue"
 import SidebarProperties from "@seldon/components/modules/SidebarProperties.vue"

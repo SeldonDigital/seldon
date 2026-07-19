@@ -8,7 +8,7 @@ import {
   useSetHoverState,
 } from "@app/hooks/use-canvas-hover-state"
 import { useTool } from "@app/hooks/use-tool"
-import { getComponentKey, hasNode } from "@lib/workspace/workspace-accessors"
+import { getComponentKey, hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { checkInsertionPoint } from "../helpers/check-insertion-point"
 
 /**

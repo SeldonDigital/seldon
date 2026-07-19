@@ -1,4 +1,4 @@
-import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
+import { isWorkspaceIconUnavailable } from "@seldon/editor/lib/icon-sets/icon-availability"
 import { IconCustomColorValue, ThemeSwatches } from "@app/icons/custom"
 import {
   type OptionIconDescriptor,

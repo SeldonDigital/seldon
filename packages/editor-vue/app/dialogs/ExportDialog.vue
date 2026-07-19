@@ -6,10 +6,10 @@ import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@seldon/editor/lib/export/write-export-to-directory"
-import { usePanelStore } from "@lib/stores/panel-store"
-import { useExportStatusStore } from "@lib/stores/export-status-store"
-import { useToastStore } from "@lib/stores/toast-store"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { usePanelStore } from "@app/stores/panel-store"
+import { useExportStatusStore } from "@app/stores/export-status-store"
+import { useToastStore } from "@app/stores/toast-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed, ref } from "vue"
 

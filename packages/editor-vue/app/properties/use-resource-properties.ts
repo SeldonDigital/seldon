@@ -13,8 +13,8 @@ import {
   buildIconSetRows,
   type ResourceRowSection,
 } from "@seldon/editor/lib/resources/resource-rows"
-import { useEditorConfigStore } from "@lib/stores/editor-config-store"
-import { useDispatch } from "@lib/workspace/use-dispatch"
+import { useEditorConfigStore } from "@app/stores/editor-config-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 import { storeToRefs } from "pinia"
 
 export type ResourceEditKind = "fontCollection" | "iconSet"

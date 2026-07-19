@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/helpers/colors"
+import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { CSSProperties } from "react"
 import { InsertIndicatorLine } from "./InsertIndicatorLine"
 import { Pointer } from "./Pointer"

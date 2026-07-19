@@ -3,9 +3,9 @@ import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import type { Placement } from "@seldon/editor/lib/types"
-import { getCurrentWorkspace } from "@lib/stores/history-store"
-import { useToastStore } from "@lib/stores/toast-store"
-import { useDispatch } from "@lib/workspace/use-dispatch"
+import { getCurrentWorkspace } from "@app/stores/history-store"
+import { useToastStore } from "@app/stores/toast-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 
 /**
  * Instance drag-and-drop moves for the objects tree. Index math reads the

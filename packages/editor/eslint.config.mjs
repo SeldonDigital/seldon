@@ -29,9 +29,10 @@ const REACT_BAN = {
     "zustand",
     "zustand/*",
     "@app/*",
+    "@lib/*",
   ],
   message:
-    "@seldon/editor is framework-neutral. Keep React, store, and app-layer bindings in packages/editor-react.",
+    "@seldon/editor is framework-neutral. Import within it relatively; keep React, store, and app-layer bindings in packages/editor-react. The @lib/@app aliases belong to the editor packages.",
 }
 
 export default defineConfig([

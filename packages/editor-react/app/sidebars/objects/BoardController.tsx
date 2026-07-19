@@ -10,7 +10,7 @@ import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useRowBoard } from "./hooks/use-row-board"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { NodeController } from "./NodeController"

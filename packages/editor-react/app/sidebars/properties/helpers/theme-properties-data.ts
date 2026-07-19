@@ -1,4 +1,4 @@
-import { type ControlType } from "@lib/icons/icons-registry"
+import { type ControlType } from "@seldon/editor/lib/icons/icons-registry"
 import { getFamilyNameByValue } from "@seldon/core"
 import { findInObject } from "@seldon/core/helpers"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Workspace, EntryNodeId, getComponentSchema } from "@lib/core"
-import { useDragStore } from "@lib/stores/drag-store"
-import { useObjectHoverStore } from "@lib/stores/object-hover-store"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useMoveObjects } from "@lib/workspace/use-move-objects"
+import { Workspace, EntryNodeId, getComponentSchema } from "@app/core"
+import { useDragStore } from "@app/stores/drag-store"
+import { useObjectHoverStore } from "@app/stores/object-hover-store"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useMoveObjects } from "@app/workspace/use-move-objects"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import {
   getNodeCatalogComponentId,

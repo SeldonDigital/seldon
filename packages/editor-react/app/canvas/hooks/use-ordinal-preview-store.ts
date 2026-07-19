@@ -1,4 +1,4 @@
-import { ORDINAL_SCALES, type OrdinalScale } from "@lib/themes/ordinal-preview"
+import { ORDINAL_SCALES, type OrdinalScale } from "@seldon/editor/lib/themes/ordinal-preview"
 import { create } from "zustand"
 
 /**

@@ -1,4 +1,4 @@
-import { convertBlobToBase64 } from "@lib/helpers/convert-blob-to-base64"
+import { convertBlobToBase64 } from "@seldon/editor/lib/helpers/convert-blob-to-base64"
 import { useCallback, useState } from "react"
 
 type UploadStatus = "idle" | "pending" | "success" | "error"

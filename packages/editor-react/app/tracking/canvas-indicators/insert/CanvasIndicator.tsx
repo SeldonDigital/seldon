@@ -1,5 +1,5 @@
 import { InsertIndicatorLine } from "@app/overlays"
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
@@ -8,8 +8,8 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
-import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
+import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
+import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
 import { Frame } from "@seldon/components/frames/Frame"
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"

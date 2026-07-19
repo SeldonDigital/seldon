@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import type { ComponentSchema } from "@seldon/core/components/types"
-import { useAddRemoveCommands } from "@lib/commands/use-add-remove-commands"
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import {
   useCatalogDialog,
   type CatalogItem,
-} from "@lib/dialogs/use-catalog-dialog"
-import { usePanelStore } from "@lib/stores/panel-store"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+} from "@app/dialogs/use-catalog-dialog"
+import { usePanelStore } from "@app/stores/panel-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 

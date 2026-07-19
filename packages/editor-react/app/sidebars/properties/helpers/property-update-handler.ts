@@ -1,7 +1,7 @@
 /**
  * Handles property value updates (non-computed values)
  */
-import { parsePropertyPath } from "@lib/properties/property-paths"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { Properties, Value } from "@seldon/core"
 import { FlatProperty } from "./properties-data"
 import { getSubPropertyKeys, isShorthandProperty } from "./property-types"

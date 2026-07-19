@@ -5,8 +5,8 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 import { useDebugStore } from "@app/hooks/use-debug-mode"
-import { changedProperties, targetIdWithParentOf } from "@lib/ai/action-helpers"
-import type { ApplyReport } from "@lib/ai/apply-report"
+import { changedProperties, targetIdWithParentOf } from "@seldon/editor/lib/ai/action-helpers"
+import type { ApplyReport } from "@seldon/editor/lib/ai/apply-report"
 
 /** Human-readable label/level for a target id, resolved as a node then a board. */
 function describeTarget(workspace: Workspace, id: string | undefined): string {

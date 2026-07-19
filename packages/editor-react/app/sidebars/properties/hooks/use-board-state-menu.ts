@@ -14,8 +14,8 @@ import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { walkComponentTree } from "@lib/workspace/component-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { walkComponentTree } from "@seldon/editor/lib/workspace/component-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   useActiveBoardState,
   useBoardStateStore,

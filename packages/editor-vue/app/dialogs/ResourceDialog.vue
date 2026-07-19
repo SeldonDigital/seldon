@@ -2,9 +2,9 @@
 import { STOCK_THEMES } from "@seldon/core/themes/catalog"
 import { STOCK_FONT_COLLECTIONS } from "@seldon/core/font-collections/catalog"
 import { STOCK_ICON_SETS } from "@seldon/core/icon-sets/catalog"
-import { useAddRemoveCommands } from "@lib/commands/use-add-remove-commands"
-import { usePanelStore } from "@lib/stores/panel-store"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
+import { usePanelStore } from "@app/stores/panel-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 

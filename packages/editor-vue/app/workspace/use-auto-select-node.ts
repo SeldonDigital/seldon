@@ -1,7 +1,7 @@
 import type { Action } from "@seldon/core"
 import { getNodeIdAddedByAction } from "@seldon/core/workspace/helpers/nodes/get-node-id-added-by-action"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useDispatch } from "@lib/workspace/use-dispatch"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 
 /**
  * Dispatches an action and selects the node it added. Mirrors the React

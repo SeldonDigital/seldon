@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Combobox from "@app/menus/Combobox.vue"
-import { useAiChat } from "@lib/ai/use-ai-chat"
-import { useAiChatStore } from "@lib/stores/ai-chat-store"
-import { useDebugStore } from "@lib/stores/debug-store"
-import { usePanelStore } from "@lib/stores/panel-store"
+import { useAiChat } from "@app/ai/use-ai-chat"
+import { useAiChatStore } from "@app/stores/ai-chat-store"
+import { useDebugStore } from "@app/stores/debug-store"
+import { usePanelStore } from "@app/stores/panel-store"
 import type { ThinkingLevelOption } from "@seldon/ai"
 import { storeToRefs } from "pinia"
 import { computed, nextTick, ref, watch } from "vue"

@@ -5,12 +5,12 @@ import {
   getSelectionTarget,
   selectFromTarget,
 } from "@seldon/editor/lib/workspace/selection-dom"
-import { getCurrentWorkspace } from "@lib/stores/history-store"
-import { useObjectHoverStore } from "@lib/stores/object-hover-store"
-import { usePanelStore } from "@lib/stores/panel-store"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useToastStore } from "@lib/stores/toast-store"
-import { useToolStore } from "@lib/stores/tool-store"
+import { getCurrentWorkspace } from "@app/stores/history-store"
+import { useObjectHoverStore } from "@app/stores/object-hover-store"
+import { usePanelStore } from "@app/stores/panel-store"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useToastStore } from "@app/stores/toast-store"
+import { useToolStore } from "@app/stores/tool-store"
 
 /**
  * Canvas pointer tracking: resolves the selection target from the DOM through

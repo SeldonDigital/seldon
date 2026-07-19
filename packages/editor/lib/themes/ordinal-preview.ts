@@ -12,7 +12,7 @@ import type { Workspace } from "@seldon/core/workspace/types"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
+} from "../workspace/node-tree"
 import { getThemeSpecPreviewBase } from "./build-theme-spec-preview"
 
 /** The five ordinal scales the specimen legend and chips expose. */

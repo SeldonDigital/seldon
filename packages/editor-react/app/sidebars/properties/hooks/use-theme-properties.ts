@@ -1,5 +1,5 @@
-import { serializeColor } from "@lib/properties/serialize-color"
-import { serializeValue } from "@lib/properties/serialize-value"
+import { serializeColor } from "@seldon/editor/lib/properties/serialize-color"
+import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
 import { useCallback } from "react"
 import {
   HSL,

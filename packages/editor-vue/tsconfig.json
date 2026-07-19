@@ -16,7 +16,6 @@
     "types": ["vite/client"],
     "paths": {
       "@app/*": ["./app/*"],
-      "@lib/*": ["./lib/*"],
       "@seldon/editor/*": ["../../packages/editor/*"],
       "@seldon/components/*": ["./seldon/*"],
       "@seldon/core/*": ["../../packages/core/*"],

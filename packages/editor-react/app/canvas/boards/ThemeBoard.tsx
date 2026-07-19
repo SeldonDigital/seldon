@@ -1,7 +1,7 @@
 "use client"
 
 import { MenuController, type MenuEntry } from "@app/menus"
-import { getThemeSpecPreviewBase } from "@lib/themes/build-theme-spec-preview"
+import { getThemeSpecPreviewBase } from "@seldon/editor/lib/themes/build-theme-spec-preview"
 import {
   ORDINAL_SCALES,
   type OrdinalScale,
@@ -9,7 +9,7 @@ import {
   ordinalStepName,
   ordinalStepRef,
   ordinalStepValueText,
-} from "@lib/themes/ordinal-preview"
+} from "@seldon/editor/lib/themes/ordinal-preview"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import {
   type CSSProperties,
@@ -40,8 +40,8 @@ import {
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+} from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"

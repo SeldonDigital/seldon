@@ -13,7 +13,7 @@ import {
   FilterComponentPredicate,
   useDialog,
 } from "../hooks/use-dialog"
-import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
+import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
 import { PanelDialogController } from "../PanelDialogController"
 
 /**

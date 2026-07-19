@@ -25,11 +25,11 @@ import {
   useAiChatStore,
   type HariTurn,
   type TurnOutcome,
-} from "@lib/stores/ai-chat-store"
-import { useDebugStore } from "@lib/stores/debug-store"
-import { getCurrentWorkspace } from "@lib/stores/history-store"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useDispatch } from "@lib/workspace/use-dispatch"
+} from "@app/stores/ai-chat-store"
+import { useDebugStore } from "@app/stores/debug-store"
+import { getCurrentWorkspace } from "@app/stores/history-store"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 
 type ChatMessage = { role: "user" | "assistant"; content: string }
 

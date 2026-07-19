@@ -7,8 +7,8 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
-import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
+} from "@seldon/editor/lib/workspace/node-tree"
+import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
 import { ComponentRenderer } from "../ComponentRenderer"
 import { getPropertyHtmlAttributes } from "../property-html-attributes"
 

@@ -9,8 +9,8 @@ import type { BoardKey, EntryNode } from "@seldon/core/workspace/types"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
-import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
+} from "./node-tree"
+import { getComponentKey, getNode } from "./workspace-accessors"
 
 /**
  * Where a paste should land, resolved from the clipboard subject and the current

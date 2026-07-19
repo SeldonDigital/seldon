@@ -1,7 +1,7 @@
 import { onBeforeUnmount, onMounted, watch } from "vue"
-import { useDirtyStore } from "@lib/stores/dirty-store"
-import { useHistoryStore } from "@lib/stores/history-store"
-import { useWorkspaceSaveStore } from "@lib/stores/workspace-save-store"
+import { useDirtyStore } from "@app/stores/dirty-store"
+import { useHistoryStore } from "@app/stores/history-store"
+import { useWorkspaceSaveStore } from "@app/stores/workspace-save-store"
 
 /** Debounce window before a committed edit is persisted, matching React. */
 const AUTOSAVE_DELAY_MS = 1000

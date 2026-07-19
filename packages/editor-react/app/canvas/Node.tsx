@@ -1,6 +1,6 @@
 "use client"
 
-import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
+import { isWorkspaceIconUnavailable } from "@seldon/editor/lib/icon-sets/icon-availability"
 import { buildContext } from "@seldon/factory/helpers/compute-workspace"
 import { memo, useMemo } from "react"
 import {
@@ -29,13 +29,13 @@ import { useThemeById } from "@app/themes/hooks/use-theme-by-id"
 import { useIsNodeSelected } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
-import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
+import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import {
   findComponentForNode,
   getNodeCatalogComponentId,
   getNodeChildIds,
-} from "@lib/workspace/node-tree"
-import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
+} from "@seldon/editor/lib/workspace/node-tree"
+import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
 import { CanvasHtmlAttributes, ComponentRenderer } from "./ComponentRenderer"
 import { getPropertyHtmlAttributes } from "./property-html-attributes"
 

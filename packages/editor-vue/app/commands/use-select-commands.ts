@@ -8,8 +8,8 @@ import {
   resolvePreviousSiblingNodeId,
   resolveSourceNodeId,
 } from "@seldon/core/workspace/services/nodes/node-navigation.service"
-import { useSelectionStore } from "@lib/stores/selection-store"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelectionStore } from "@app/stores/selection-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 
 /**
  * Tree-navigation commands for the Select menu. Traversal lives in core

@@ -12,7 +12,7 @@ import {
   Variant,
   Workspace,
 } from "@seldon/core/workspace/types"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 
 /**
  * Determines the appropriate icon for a node based on its type.

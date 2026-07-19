@@ -17,14 +17,14 @@ import {
 import type { Board } from "@seldon/core/workspace/model/components"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
-import type { ResourceEntryKind } from "@lib/workspace/selection-kind"
+import type { ResourceEntryKind } from "@seldon/editor/lib/workspace/selection-kind"
 import { useEditorConfig } from "@app/hooks/use-editor-config"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import {
   getComponent,
   getComponentKey,
   getNode,
-} from "@lib/workspace/workspace-accessors"
+} from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   ExpandableSection,
   useSectionExpansion,

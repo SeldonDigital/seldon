@@ -1,4 +1,4 @@
-import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
+import { getPropertyRegistryEntry } from "@seldon/editor/lib/icons/icons-registry"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 
 /**

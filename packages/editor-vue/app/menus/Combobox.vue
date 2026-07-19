@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import FloatingMenu from "@app/menus/FloatingMenu.vue"
-import { useMenu } from "@lib/menus/use-menu"
+import { useMenu } from "@app/menus/use-menu"
 import { computed, nextTick, ref } from "vue"
 
 type Option = { label: string; value: unknown }

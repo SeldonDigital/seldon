@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useZoomControlsStore } from "@lib/stores/zoom-controls-store"
+import { useZoomControlsStore } from "@app/stores/zoom-controls-store"
 
 const zoom = useZoomControlsStore()
 </script>

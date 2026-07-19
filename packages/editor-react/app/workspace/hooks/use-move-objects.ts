@@ -1,4 +1,4 @@
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { useCallback } from "react"
 import {
   Instance,
@@ -18,8 +18,8 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { Board } from "@seldon/core/workspace/types"
-import { getNodeChildIds } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useWorkspace } from "./use-workspace"
 

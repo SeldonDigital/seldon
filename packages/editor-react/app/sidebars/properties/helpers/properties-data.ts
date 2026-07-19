@@ -19,7 +19,7 @@
 import {
   ControlType,
   getPropertyRegistryEntry,
-} from "@lib/icons/icons-registry"
+} from "@seldon/editor/lib/icons/icons-registry"
 import { THEME_TOKEN_ICON } from "@app/icons/resolve-option-icon"
 import {
   childPathsUnderCompoundParent,
@@ -27,7 +27,7 @@ import {
   isLayeredPaintRoot,
   layeredFacetPath,
   layeredParentPath,
-} from "@lib/properties/property-paths"
+} from "@seldon/editor/lib/properties/property-paths"
 import {
   BORDER_SIDE_KEYS,
   Board,
@@ -75,8 +75,8 @@ import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/com
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   type PropertyType,
   isCompoundProperty,

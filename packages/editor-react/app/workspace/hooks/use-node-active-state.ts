@@ -5,7 +5,7 @@ import {
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { getCurrentWorkspace } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"

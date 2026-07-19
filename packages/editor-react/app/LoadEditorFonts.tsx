@@ -1,6 +1,6 @@
 "use client"
 
-import { buildFontFaceCss } from "@lib/font-collections/build-font-face-css"
+import { buildFontFaceCss } from "@seldon/editor/lib/font-collections/build-font-face-css"
 import { useMemo } from "react"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"

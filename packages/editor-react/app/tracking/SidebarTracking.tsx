@@ -1,5 +1,5 @@
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
-import { Placement } from "@lib/types"
+import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
 import { Instance, Variant } from "@seldon/core"
 import {

@@ -7,9 +7,9 @@ import {
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { getCurrentWorkspace } from "@app/workspace/hooks/use-history"
-import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
-import { findComponentForNode } from "@lib/workspace/node-tree"
-import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
+import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
+import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
 const useStore = create<{
   expandedObjects: Set<string>

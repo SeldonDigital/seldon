@@ -13,10 +13,10 @@ import {
   getMoveCapabilities,
   getVariantMoveIndex,
   type MoveDirection,
-} from "@lib/commands/move-decisions"
+} from "@seldon/editor/lib/commands/move-decisions"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 /**

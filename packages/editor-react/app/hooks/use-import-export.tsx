@@ -3,14 +3,14 @@
 import {
   buildDefaultSnippet,
   buildVariantSnippet,
-} from "@lib/copy-schema/build-schema-snippet"
-import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
+} from "@seldon/editor/lib/copy-schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@seldon/editor/lib/copy-schema/serialize-schema-ts"
 import { useExportStatusStore } from "@app/export/export-status-store"
 import {
   pickExportDirectory,
   writeExportToDirectory,
-} from "@lib/export/write-export-to-directory"
-import { triggerDownload } from "@lib/helpers/trigger-download"
+} from "@seldon/editor/lib/export/write-export-to-directory"
+import { triggerDownload } from "@seldon/editor/lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
 import type { ExportOptions } from "@seldon/factory/export/types"
@@ -122,7 +122,7 @@ export function useImportExport() {
           return
         }
         setExporting(true)
-        const { runLocalExport } = await import("@lib/export/run-local-export")
+        const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
         const files = await runLocalExport(workspace, options)
         const count = await writeExportToDirectory(directory, files)
         addToast(`Exported ${count} files`)
@@ -146,7 +146,7 @@ export function useImportExport() {
         return
       }
       setExporting(true)
-      const { runImportWeb } = await import("@lib/import-web/run-import-web")
+      const { runImportWeb } = await import("@seldon/editor/lib/import-web/run-import-web")
       const { files, summary } = await runImportWeb(url)
       const reportFiles = files.map((file) => ({
         path: `Components Report/${file.path}`,

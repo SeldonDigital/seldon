@@ -23,13 +23,13 @@ import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useTool } from "@app/hooks/use-tool"
-import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
+import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
 import {
   findFontCollectionBoard,
   findIconSetBoard,
   findThemeBoard,
-} from "@lib/workspace/resource-boards"
-import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
+} from "@seldon/editor/lib/workspace/resource-boards"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   getHoverStateSnapshot,

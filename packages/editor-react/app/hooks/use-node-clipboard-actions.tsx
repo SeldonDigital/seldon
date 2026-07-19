@@ -6,9 +6,9 @@ import { useMoveObjects } from "@app/workspace/hooks/use-move-objects"
 import { useObjectClipboard } from "@app/workspace/hooks/use-object-clipboard"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { getNodeChildIds } from "@lib/workspace/node-tree"
-import { resolvePasteTarget } from "@lib/workspace/paste-target"
-import { getNode } from "@lib/workspace/workspace-accessors"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
+import { resolvePasteTarget } from "@seldon/editor/lib/workspace/paste-target"
+import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 export function useNodeClipboardActions() {

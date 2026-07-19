@@ -15,10 +15,10 @@ import {
   type MoveDirection,
 } from "@seldon/editor/lib/commands/move-decisions"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useToastStore } from "@lib/stores/toast-store"
-import { useDispatch } from "@lib/workspace/use-dispatch"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useToastStore } from "@app/stores/toast-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useSelection } from "@app/workspace/use-selection"
+import { useWorkspace } from "@app/workspace/use-workspace"
 
 /**
  * Commands for moving the current selection. Instances move through the core
