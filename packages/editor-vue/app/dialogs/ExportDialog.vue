@@ -28,7 +28,7 @@ const platformOptions = PLATFORM_LIST.map((p) => ({
   available: p.status === "available",
 }))
 
-const platform = ref<PlatformId>("react")
+const platform = ref<PlatformId>("vue")
 const includeHidden = ref(false)
 const allThemes = ref(true)
 const allFonts = ref(true)
