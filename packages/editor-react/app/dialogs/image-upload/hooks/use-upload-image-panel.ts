@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { create } from "zustand"
 import { BackgroundKind, ValueType } from "@seldon/core/properties"
-import { useImageUpload } from "@app/api/hooks/use-image-upload"
+import { useImageUpload } from "./use-image-upload"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
 import { usePanel } from "@app/editor/hooks/use-panel"
 

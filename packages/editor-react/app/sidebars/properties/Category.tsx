@@ -1,5 +1,5 @@
 import { MenuEntry } from "@app/menus"
-import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { Fragment, type MouseEvent } from "react"
 import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { useRowCategory } from "./hooks/use-row-category"

@@ -1,10 +1,10 @@
 import {
   buildDefaultSnippet,
   buildVariantSnippet,
-} from "@seldon/editor/lib/copy-schema/build-schema-snippet"
-import { serializeSchemaSnippet } from "@seldon/editor/lib/copy-schema/serialize-schema-ts"
+} from "@seldon/editor/lib/schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
 import { MenuEntry } from "@app/menus"
-import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { InstanceId, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"

@@ -10,9 +10,9 @@ import {
 } from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { MenuController } from "./MenuController"
-import { ICONIC_BUTTON_ATTR } from "./iconic-button"
-import { MenuAlign, MenuEntry } from "./types"
+import { MenuController } from "../MenuController"
+import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
+import { MenuAlign, MenuEntry } from "../types"
 
 interface UseRowActionsMenuOptions {
   align?: MenuAlign

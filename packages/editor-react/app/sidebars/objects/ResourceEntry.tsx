@@ -1,6 +1,6 @@
 "use client"
 
-import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { buildFieldStateProps } from "@app/views/state-props"
 import { useCallback, useRef } from "react"
 import {

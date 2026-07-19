@@ -9,7 +9,7 @@ import {
   useMemo,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@app/menus/use-draggable-window"
+import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
 import { PanelDialog } from "@seldon/components/modules/PanelDialog"
 import { IconProps } from "@seldon/components/primitives/Icon"

@@ -27,9 +27,12 @@ import {
 } from "@seldon/editor/lib/ai/apply-report"
 import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
 import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
-import { isLoggingEnabled, logAiTurn, logWarm } from "./log-turn"
+import { logAiTurn, logWarm } from "@seldon/editor/lib/ai/log-turn"
 import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
-import { useDebugStore } from "@app/editor/hooks/use-debug-mode"
+import {
+  isAiLoggingEnabled,
+  useDebugStore,
+} from "@app/editor/hooks/use-debug-mode"
 import { usePanel } from "@app/editor/hooks/use-panel"
 
 export type AiChatRole = "user" | "assistant"
@@ -287,7 +290,8 @@ export function useHari() {
           ineffective,
           rejected,
         )
-        logAiTurn(message, debug, actions, report, current, activeBoardKey)
+        if (isAiLoggingEnabled())
+          logAiTurn(message, debug, actions, report, current, activeBoardKey)
 
         // Records an error turn and stops. Used when the turn built a workspace
         // we refuse to adopt, so a bad turn surfaces plainly and never lands.
@@ -383,7 +387,7 @@ export function useHari() {
         if (config) useStore.getState().setConfig(config)
         const { model } = useStore.getState()
         const { metrics } = await warmAgent({ model })
-        if (isLoggingEnabled()) logWarm(metrics)
+        if (isAiLoggingEnabled()) logWarm(metrics)
       } catch {
         // Warm-up is best-effort; a failure just means the first turn loads cold.
       } finally {

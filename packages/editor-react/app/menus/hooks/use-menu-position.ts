@@ -1,14 +1,13 @@
 "use client"
 
 import { RefObject, useLayoutEffect, useState } from "react"
-import { MenuAlign } from "./types"
+import {
+  computeMenuPosition,
+  type MenuPosition,
+} from "@seldon/editor/lib/menus/anchor-position"
+import { MenuAlign } from "../types"
 
-export interface MenuPosition {
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
-}
+export type { MenuPosition }
 
 interface UseMenuPositionOptions {
   open: boolean
@@ -36,26 +35,13 @@ export function useMenuPosition({
     const update = () => {
       const element = anchorRef.current
       if (!element) return
-
-      const rect = element.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
-      const positionAbove = rect.bottom >= viewportHeight * 0.6
-
-      const next: MenuPosition = {}
-
-      if (align === "end") {
-        next.right = Math.max(0, window.innerWidth - rect.right)
-      } else {
-        next.left = rect.left
-      }
-
-      if (positionAbove) {
-        next.bottom = Math.max(0, viewportHeight - rect.top + gap)
-      } else {
-        next.top = rect.bottom + gap
-      }
-
-      setPosition(next)
+      setPosition(
+        computeMenuPosition(
+          element.getBoundingClientRect(),
+          { width: window.innerWidth, height: window.innerHeight },
+          { align, gap },
+        ),
+      )
     }
 
     update()

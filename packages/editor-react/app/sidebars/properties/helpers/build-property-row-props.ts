@@ -1,4 +1,4 @@
-import { ICONIC_BUTTON_ATTR } from "@app/menus/iconic-button"
+import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
 import { MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"

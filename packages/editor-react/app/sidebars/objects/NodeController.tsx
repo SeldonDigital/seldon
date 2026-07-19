@@ -1,5 +1,5 @@
 import { ComboboxListbox } from "@app/menus"
-import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import {
   buildDisabledRefProps,
   buildFieldStateProps,

@@ -4,7 +4,6 @@ import type {
   Workspace,
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
-import { useDebugStore } from "@app/editor/hooks/use-debug-mode"
 import { changedProperties, targetIdWithParentOf } from "@seldon/editor/lib/ai/action-helpers"
 import type { ApplyReport } from "@seldon/editor/lib/ai/apply-report"
 
@@ -213,14 +212,10 @@ function logContextSizes(context: string): void {
   console.groupEnd()
 }
 
-/** True when AI Logging is on in the Dev menu. */
-export function isLoggingEnabled(): boolean {
-  return useDebugStore.getState().aiLogging
-}
-
 /**
  * Logs a one-line warm-up summary when the panel loads the model ahead of the
- * first turn: model load time, tokens prefilled, and memory. Gated by AI Logging.
+ * first turn: model load time, tokens prefilled, and memory. Callers gate this
+ * on the AI Logging toggle.
  */
 export function logWarm(metrics: AgentMetrics): void {
   const parts = [
@@ -233,10 +228,10 @@ export function logWarm(metrics: AgentMetrics): void {
 }
 
 /**
- * Emits one collapsed console group per turn when AI Logging is enabled. Groups
- * keep the console tidy: the summary line shows collapsed, and the grounding
- * context and raw model response are nested groups the user can expand on
- * demand.
+ * Emits one collapsed console group per turn. Groups keep the console tidy: the
+ * summary line shows collapsed, and the grounding context and raw model response
+ * are nested groups the user can expand on demand. Callers gate this on the AI
+ * Logging toggle.
  */
 /** The single-glyph outcome badge for the turn header. */
 function outcomeIcon(report: ApplyReport): string {
@@ -305,8 +300,6 @@ export function logAiTurn(
   before: Workspace,
   activeBoardKey: BoardKey | undefined,
 ): void {
-  if (!isLoggingEnabled()) return
-
   console.groupCollapsed(`${AI_TAG} 💬 ${message}`, AI_TAG_STYLE, "")
   logWorkspaceSnapshot("🗂 Workspace before", before, activeBoardKey)
   if (debug) logDebug(debug)

@@ -1,5 +1,5 @@
 import { MenuEntry } from "@app/menus"
-import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { useMemo } from "react"
 import { Variant } from "@seldon/core"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"

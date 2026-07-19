@@ -24,7 +24,7 @@ import {
 } from "@app/workspace/hooks/use-selection-scope"
 import { type HariStatus, type HariTurn, useHari } from "@app/ai/use-ai-chat"
 import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
-import { useDraggableWindow } from "@app/menus/use-draggable-window"
+import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
 import { HariTranscript } from "./HariTranscript"
 import "./hari.css"

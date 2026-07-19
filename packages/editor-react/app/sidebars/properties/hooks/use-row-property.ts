@@ -3,8 +3,8 @@ import {
   getOptionIcon,
 } from "@seldon/editor/lib/icons/resolve-option-icon"
 import { MenuEntry } from "@app/menus"
-import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
-import { ICONIC_BUTTON_SELECTOR } from "@app/menus/iconic-button"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import { ICONIC_BUTTON_SELECTOR } from "@seldon/editor/lib/menus/iconic-button"
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import {
   buildActivatedRefProps,

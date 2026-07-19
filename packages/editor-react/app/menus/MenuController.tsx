@@ -18,7 +18,7 @@ import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
-import { useMenuPosition } from "./use-menu-position"
+import { useMenuPosition } from "./hooks/use-menu-position"
 
 function focusReturnTarget(element: HTMLElement | null | undefined): void {
   if (!element?.isConnected) return

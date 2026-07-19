@@ -1,5 +1,5 @@
 import { MenuEntry } from "@app/menus"
-import { buildResetMenuEntry } from "@app/menus/build-reset-menu-entry"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { MouseEvent, useState } from "react"
 import { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"

@@ -3,8 +3,8 @@
 import {
   buildDefaultSnippet,
   buildVariantSnippet,
-} from "@seldon/editor/lib/copy-schema/build-schema-snippet"
-import { serializeSchemaSnippet } from "@seldon/editor/lib/copy-schema/serialize-schema-ts"
+} from "@seldon/editor/lib/schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
 import { useExportStatusStore } from "@app/export/export-status-store"
 import {
   pickExportDirectory,
@@ -146,7 +146,7 @@ export function useImportExport() {
         return
       }
       setExporting(true)
-      const { runImportWeb } = await import("@seldon/editor/lib/import-web/run-import-web")
+      const { runImportWeb } = await import("@seldon/editor/lib/import/web/run-import-web")
       const { files, summary } = await runImportWeb(url)
       const reportFiles = files.map((file) => ({
         path: `Components Report/${file.path}`,

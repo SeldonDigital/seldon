@@ -1,7 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { HSL } from "@seldon/core"
+import {
+  filterOptions,
+  findOptionByName,
+  findOptionByValue,
+  flattenOptions,
+  isNavigableOption,
+  stepHighlight,
+  type OptionsType,
+} from "@seldon/editor/lib/menus/combobox-selection"
 
-export type OptionsType<ItemT> = ItemT[] | Array<ItemT[]>
+export type { OptionsType }
 
 interface ComboboxStateProps<ItemT> {
   value?: string
@@ -26,26 +35,15 @@ export function useComboboxState<
   const [highlightedValue, setHighlightedValue] = useState<string | undefined>(
     undefined,
   )
-  const hasSections = Array.isArray(options[0])
   const isManualSubmit = useRef(false)
   // True while the highlight is being driven by Arrow-key navigation, so Enter
   // selects the highlighted option instead of matching the typed text.
   const keyboardNavRef = useRef(false)
 
-  const flatten = useCallback(
-    (opts: OptionsType<ItemT>) =>
-      hasSections ? (opts as Array<ItemT[]>).flat() : (opts as ItemT[]),
-    [hasSections],
-  )
-
-  const flatOptions = useMemo(() => flatten(options), [flatten, options])
-
-  const isNavigable = (option: ItemT) =>
-    !("hidden" in option && option.hidden) &&
-    !("disabled" in option && option.disabled)
+  const flatOptions = useMemo(() => flattenOptions(options), [options])
 
   const navigableOptions = useMemo(
-    () => flatOptions.filter(isNavigable),
+    () => flatOptions.filter(isNavigableOption),
     [flatOptions],
   )
 
@@ -53,25 +51,14 @@ export function useComboboxState<
 
   const filteredOptions = useMemo(() => {
     if (!inputValue || !shouldFilter) return options
-
-    function filterGroup(group: ItemT[]) {
-      return group.filter(function (option) {
-        return option.name.toLowerCase().includes(inputValue.toLowerCase())
-      })
-    }
-
-    if (hasSections) {
-      return (options as Array<ItemT[]>).map(filterGroup)
-    } else {
-      return filterGroup(options as ItemT[])
-    }
-  }, [options, inputValue, shouldFilter, hasSections])
+    return filterOptions(options, inputValue)
+  }, [options, inputValue, shouldFilter])
 
   // The currently visible, selectable options. Arrow navigation walks these so a
   // filtered combo only steps through results that are actually on screen.
   const navigableFilteredOptions = useMemo(
-    () => flatten(filteredOptions).filter(isNavigable),
-    [flatten, filteredOptions],
+    () => flattenOptions(filteredOptions).filter(isNavigableOption),
+    [filteredOptions],
   )
 
   useEffect(() => {
@@ -95,15 +82,7 @@ export function useComboboxState<
       if (items.length === 0) return
       keyboardNavRef.current = true
       if (!open) setOpen(true)
-      setHighlightedValue((current) => {
-        const currentIndex = items.findIndex((o) => o.value === current)
-        if (currentIndex === -1) {
-          return items[direction === 1 ? 0 : items.length - 1]?.value
-        }
-        const nextIndex =
-          (currentIndex + direction + items.length) % items.length
-        return items[nextIndex]?.value
-      })
+      setHighlightedValue((current) => stepHighlight(items, current, direction))
     },
     [navigableFilteredOptions, open],
   )
@@ -169,13 +148,8 @@ export function useComboboxState<
       }
     }
 
-    const nextSelectedOption = flatOptions.find(
-      (o) => o.name.toLowerCase() === inputValue.toLowerCase(),
-    )
-
-    const currentlySelectedOption = flatOptions.find(
-      (o) => o.value.toLowerCase() === value?.toLowerCase(),
-    )
+    const nextSelectedOption = findOptionByName(flatOptions, inputValue)
+    const currentlySelectedOption = findOptionByValue(flatOptions, value)
 
     if (nextSelectedOption) {
       onValueChange(nextSelectedOption.value)

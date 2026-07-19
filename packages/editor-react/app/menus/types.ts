@@ -1,52 +1,21 @@
 import { CSSProperties, ReactNode } from "react"
-import { HSL } from "@seldon/core"
+import {
+  MenuEntry as MenuEntryBase,
+  MenuItem as MenuItemBase,
+} from "@seldon/editor/lib/menus/types"
 
-export type MenuItemId = string
+export type {
+  MenuItemId,
+  MenuAlign,
+  ComboboxOptionItem,
+  ComboboxOptionItems,
+} from "@seldon/editor/lib/menus/types"
 
-/**
- * A single actionable row in a menu. Framework-agnostic: consumers map their
- * own item shapes onto this and run side effects through `onSelect`.
- */
-export interface MenuItem {
-  id: MenuItemId
-  label: string
-  onSelect?: () => void
-  disabled?: boolean
-  /** Renders the activated accent color (blue tint) on the label. */
-  active?: boolean
-  /**
-   * Renders the leading marker for the chosen item in a radio or checkbox set.
-   * Independent of `active` so an item can be tinted without a marker, or
-   * marked without a tint. When omitted, the marker follows `active`.
-   */
-  selected?: boolean
-  /** Marker glyph when marked. Defaults to a check; `"bullet"` for radio sets. */
-  activeMarker?: "check" | "bullet"
-  /** Extra style applied to the item label, e.g. an accent text color. */
-  labelStyle?: CSSProperties
-  shortcut?: string
-  icon?: ReactNode
-  /** Optional value for the rendered item's `data-testid`. */
-  testId?: string
-}
+/** React binding of the shared menu item: icon is a node, label style is CSS. */
+export type MenuItem = MenuItemBase<ReactNode, CSSProperties>
 
 /** An entry in a menu list: either an item or a divider. */
-export type MenuEntry = MenuItem | "separator"
-
-/** Horizontal alignment of the menu against its trigger. */
-export type MenuAlign = "start" | "end"
-
-/** A single selectable option in a combobox list. */
-export type ComboboxOptionItem = {
-  value: string
-  name: string
-  hidden?: boolean
-  disabled?: boolean
-  color?: HSL
-}
-
-/** A flat option list, or a list of sections. */
-export type ComboboxOptionItems = ComboboxOptionItem[] | ComboboxOptionItem[][]
+export type MenuEntry = MenuEntryBase<ReactNode, CSSProperties>
 
 /**
  * How an option's leading icon renders: a theme icon id the generated `Icon`

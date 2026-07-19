@@ -6,11 +6,11 @@ export {
 } from "./MenuController"
 export { ComboboxController } from "./ComboboxController"
 export { ComboboxListbox } from "./ComboboxListbox"
-export { useComboboxState } from "./use-combobox-state"
+export { useComboboxState } from "./hooks/use-combobox-state"
 export {
   useComboboxPosition,
   type ComboboxPosition,
-} from "./use-combobox-position"
+} from "./hooks/use-combobox-position"
 export type {
   MenuAlign,
   MenuEntry,

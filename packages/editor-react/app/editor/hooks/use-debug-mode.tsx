@@ -103,6 +103,11 @@ export const useDebugStore = create<DebugState>()(
   ),
 )
 
+/** True when the "AI Logging" Dev-menu toggle is on. Read imperatively. */
+export function isAiLoggingEnabled(): boolean {
+  return useDebugStore.getState().aiLogging
+}
+
 export function useDebugMode() {
   const {
     canvasProfiling,

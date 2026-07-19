@@ -1,6 +1,6 @@
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { parseWorkspace } from "@seldon/core/workspace/helpers/parse-workspace"
-import { runImportWeb } from "@seldon/editor/lib/import-web/run-import-web"
+import { runImportWeb } from "@seldon/editor/lib/import/web/run-import-web"
 import { triggerDownload } from "@seldon/editor/lib/helpers/trigger-download"
 import {
   pickExportDirectory,
