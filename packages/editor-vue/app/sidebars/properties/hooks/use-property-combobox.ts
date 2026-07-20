@@ -39,6 +39,10 @@ export function usePropertyCombobox({
   const inputValue = ref("")
   const highlightedValue = ref<string | undefined>(undefined)
   const originalValue = ref<string | undefined>(undefined)
+  // Filtering only begins once the user types. On open the input is seeded with
+  // the current value, so filtering immediately would collapse the list to the
+  // one selected option. Mirrors React `useComboboxState`'s `shouldFilter`.
+  const shouldFilter = ref(false)
   let hasSelection = false
 
   const isMenuOrCombo = computed(
@@ -63,7 +67,7 @@ export function usePropertyCombobox({
 
   const filteredGroups = computed<ComboboxOptionItem[][]>(() => {
     const query = inputValue.value.trim()
-    if (!query) return optionGroups.value
+    if (!query || !shouldFilter.value) return optionGroups.value
     return filterOptions(optionGroups.value, query) as ComboboxOptionItem[][]
   })
 
@@ -92,6 +96,8 @@ export function usePropertyCombobox({
     } else if (!isOpen) {
       originalValue.value = undefined
       hasSelection = false
+      // Reset so the next open shows the full list before the user types.
+      shouldFilter.value = false
     }
   })
 
@@ -100,6 +106,7 @@ export function usePropertyCombobox({
   }
 
   function handleInputChange(value: string): void {
+    shouldFilter.value = true
     inputValue.value = value
     if (!open.value) open.value = true
   }

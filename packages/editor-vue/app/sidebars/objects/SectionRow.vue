@@ -2,6 +2,7 @@
 import { computed } from "vue"
 import { ComponentLevel } from "@seldon/core/components/constants"
 import ItemSection from "@seldon/components/elements/ItemSection.vue"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import type { BoardSection } from "@seldon/editor/lib/sidebars/get-board-sections"
 import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
@@ -86,7 +87,7 @@ const addButton = computed(() =>
     :button-iconic3="null"
     @click="onToggleWithSection"
   />
-  <template v-if="isExpanded">
+  <FramerExpandable :is-expanded="isExpanded">
     <slot />
-  </template>
+  </FramerExpandable>
 </template>
