@@ -1,14 +1,16 @@
 "use client"
 
-import { Display, VariantId, type Workspace } from "@seldon/core"
-import { getComponentSchema } from "@seldon/core/components/catalog"
-import { getNodeComputeContext } from "@seldon/core/workspace/compute"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
 } from "@seldon/editor/lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
+
+import { Display, VariantId, type Workspace } from "@seldon/core"
+import { getComponentSchema } from "@seldon/core/components/catalog"
+import { getNodeComputeContext } from "@seldon/core/workspace/compute"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+
 import { ComponentRenderer } from "../ComponentRenderer"
 import { getPropertyHtmlAttributes } from "../property-html-attributes"
 

@@ -1,13 +1,15 @@
 "use client"
 
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { Frame } from "@seldon/components/frames/Frame"
+import { TextLabel } from "@seldon/components/primitives/TextLabel"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { CSSProperties } from "react"
+
 import { Board } from "@seldon/core"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
-import { TextLabel } from "@seldon/components/primitives/TextLabel"
+
 import { CanvasNode } from "../Node"
 import { PlaceholderBox } from "./PlaceholderBox"
 

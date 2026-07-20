@@ -8,8 +8,8 @@ import {
 } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
-import { getComponent, getNode } from "./workspace-accessors"
 import type { ResourceEntryKind } from "./selection-kind"
+import { getComponent, getNode } from "./workspace-accessors"
 
 export type { SelectionScope }
 

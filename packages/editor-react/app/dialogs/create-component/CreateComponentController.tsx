@@ -1,8 +1,10 @@
 "use client"
 
 import { MenuController } from "@app/menus/MenuController"
+import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { MenuEntry } from "@app/menus/types"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { DialogCreateComponent } from "@seldon/components/modules/DialogCreateComponent"
 import {
   CSSProperties,
   ChangeEvent,
@@ -14,12 +16,11 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
+
 import {
   AUTHORED_LEVEL_OPTIONS,
   useCreateComponentPanel,
 } from "./hooks/use-create-component-panel"
-import { DialogCreateComponent } from "@seldon/components/modules/DialogCreateComponent"
 
 /**
  * Gate for the Create Component dialog. Mounts the dialog only while the

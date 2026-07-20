@@ -2,9 +2,12 @@
  * Handles property value updates (non-computed values)
  */
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import {
+  getSubPropertyKeys,
+  isShorthandProperty,
+} from "@seldon/editor/lib/properties/property-types"
 import { Properties, Value } from "@seldon/core"
 import { FlatProperty } from "./properties-data"
-import { getSubPropertyKeys, isShorthandProperty } from "@seldon/editor/lib/properties/property-types"
 
 interface UpdatePropertyOptions {
   property: FlatProperty

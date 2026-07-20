@@ -1,7 +1,7 @@
 // Rewrites @app/* and @lib/* import specifiers in editor-react so the prefix
 // matches where the target file actually lives: .ts logic under lib/, .tsx
 // views under app/. Idempotent; run after moving files between app/ and lib/.
-import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
+import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs"
 import { dirname, join, normalize, relative } from "node:path"
 import { fileURLToPath } from "node:url"
 

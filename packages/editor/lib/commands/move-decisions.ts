@@ -1,8 +1,8 @@
 import { type Workspace } from "@seldon/core"
-import type { Board } from "@seldon/core/workspace/model/components"
-import type { EntryNode } from "@seldon/core/workspace/model/entry-node"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
+import type { Board } from "@seldon/core/workspace/model/components"
+import type { EntryNode } from "@seldon/core/workspace/model/entry-node"
 import {
   nodeRelationshipService,
   typeCheckingService,
@@ -88,7 +88,12 @@ export function getMoveCapabilities(
     const count = Object.keys(workspace.boards).length
     const notFirst = order > 0
     const notLast = order < count - 1
-    return { forward: notFirst, backward: notLast, front: notFirst, back: notLast }
+    return {
+      forward: notFirst,
+      backward: notLast,
+      front: notFirst,
+      back: notLast,
+    }
   }
 
   if (typeCheckingService.isInstance(selection)) {
@@ -111,7 +116,12 @@ export function getMoveCapabilities(
     const index = variantRootIds.indexOf(selection.id)
     const notFirst = index > 1
     const notLast = index >= 1 && index < variantRootIds.length - 1
-    return { forward: notFirst, backward: notLast, front: notFirst, back: notLast }
+    return {
+      forward: notFirst,
+      backward: notLast,
+      front: notFirst,
+      back: notLast,
+    }
   }
 
   return NO_MOVE

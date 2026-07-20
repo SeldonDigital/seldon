@@ -1,9 +1,17 @@
 "use client"
 
-import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
+import { type HariStatus, type HariTurn, useHari } from "@app/ai/use-ai-chat"
+import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
 import { MenuController, type MenuEntry } from "@app/menus"
+import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import {
+  type SelectionScope,
+  useSelectionScope,
+} from "@app/workspace/hooks/use-selection-scope"
 import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
+import { PanelHari } from "@seldon/components/modules/PanelHari"
+import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
 import {
   type CSSProperties,
   type ChangeEvent,
@@ -18,15 +26,9 @@ import {
   useRef,
   useState,
 } from "react"
-import {
-  type SelectionScope,
-  useSelectionScope,
-} from "@app/workspace/hooks/use-selection-scope"
-import { type HariStatus, type HariTurn, useHari } from "@app/ai/use-ai-chat"
-import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
-import { PanelHari } from "@seldon/components/modules/PanelHari"
+
 import { HariTranscript } from "./HariTranscript"
+
 import "./hari.css"
 
 const HARI_INITIAL_WIDTH = 420

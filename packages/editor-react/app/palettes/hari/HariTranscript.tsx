@@ -4,7 +4,6 @@
 // error. Tool activity renders as one collapsible HariTools block per turn, so
 // the turn reads as a single "Tools Applied" section. Assistant replies render
 // through HariMarkdown.
-import { type CSSProperties, type ReactNode, useMemo } from "react"
 import type { HariTurn } from "@app/ai/use-ai-chat"
 import { useDebugStore } from "@app/editor/hooks/use-debug-mode"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
@@ -13,6 +12,8 @@ import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
 import { MessageStatus } from "@seldon/components/elements/MessageStatus"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
 import type { IconProps } from "@seldon/components/primitives/Icon"
+import { type CSSProperties, type ReactNode, useMemo } from "react"
+
 import { HariMarkdown } from "./HariMarkdown"
 import { HariThinking } from "./HariThinking"
 import { HariTools, type ToolRow } from "./HariTools"

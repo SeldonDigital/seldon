@@ -1,8 +1,9 @@
-import { createEmptyWorkspace } from "@seldon/core"
-import type { Workspace } from "@seldon/core/workspace/types"
+import { useDirtyStore } from "@app/persistence/dirty-store"
 import { defineStore } from "pinia"
 import { computed, shallowRef } from "vue"
-import { useDirtyStore } from "@app/persistence/dirty-store"
+
+import { createEmptyWorkspace } from "@seldon/core"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 const REVISION_LIMIT = 50
 
@@ -55,7 +56,17 @@ export const useHistoryStore = defineStore("history", () => {
     useDirtyStore().setDirty(false)
   }
 
-  return { history, currentIndex, current, canUndo, canRedo, push, undo, redo, reset }
+  return {
+    history,
+    currentIndex,
+    current,
+    canUndo,
+    canRedo,
+    push,
+    undo,
+    redo,
+    reset,
+  }
 })
 
 /**

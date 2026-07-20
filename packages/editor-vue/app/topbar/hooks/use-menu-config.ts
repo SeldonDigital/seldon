@@ -1,6 +1,24 @@
-import { computed, type ComputedRef } from "vue"
-import { useRouter } from "vue-router"
+import { useAiChatStore } from "@app/ai/ai-chat-store"
+import { useZoomControlsStore } from "@app/canvas/zoom-controls-store"
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
+import { useMoveCommands } from "@app/commands/use-move-commands"
+import { useSelectCommands } from "@app/commands/use-select-commands"
+import { useDebugStore } from "@app/editor/debug-store"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { usePanelStore } from "@app/editor/panel-store"
+import { usePreviewModeStore } from "@app/editor/preview-mode-store"
+import { useToolStore } from "@app/editor/tool-store"
+import { useImportExport } from "@app/io/use-import-export"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useHistoryStore } from "@app/workspace/history-store"
+import { useNodeClipboardActions } from "@app/workspace/use-node-clipboard-actions"
+import { useSelection } from "@app/workspace/use-selection"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import { selectFile } from "@seldon/editor/lib/helpers/select-file"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { type ComputedRef, computed } from "vue"
+import { useRouter } from "vue-router"
+
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-theme-board"
@@ -15,23 +33,7 @@ import {
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
-import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useEditorConfigStore } from "@app/editor/editor-config-store"
-import { useDebugStore } from "@app/editor/debug-store"
-import { usePanelStore } from "@app/editor/panel-store"
-import { usePreviewModeStore } from "@app/editor/preview-mode-store"
-import { useToolStore } from "@app/editor/tool-store"
-import { useHistoryStore } from "@app/workspace/history-store"
-import { useSelection } from "@app/workspace/use-selection"
-import { useWorkspace } from "@app/workspace/use-workspace"
-import { useNodeClipboardActions } from "@app/workspace/use-node-clipboard-actions"
-import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import { useMoveCommands } from "@app/commands/use-move-commands"
-import { useSelectCommands } from "@app/commands/use-select-commands"
-import { useZoomControlsStore } from "@app/canvas/zoom-controls-store"
-import { useImportExport } from "@app/io/use-import-export"
-import { useAiChatStore } from "@app/ai/ai-chat-store"
-import { useToastStore } from "@app/toaster/toast-store"
+
 import type { MenuConfig, MenuDropdown, MenuItem } from "../menus/types"
 
 /**
@@ -110,7 +112,10 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         return true
       }
       if (isThemeBoard(board)) {
-        return resolveComponentKey(board, workspace.value) !== DEFAULT_THEME_BOARD_KEY
+        return (
+          resolveComponentKey(board, workspace.value) !==
+          DEFAULT_THEME_BOARD_KEY
+        )
       }
       if (isFontCollectionBoard(board)) {
         return (
@@ -120,7 +125,8 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       }
       if (isIconSetBoard(board)) {
         return (
-          resolveComponentKey(board, workspace.value) !== DEFAULT_ICON_SET_BOARD_KEY
+          resolveComponentKey(board, workspace.value) !==
+          DEFAULT_ICON_SET_BOARD_KEY
         )
       }
       return false
@@ -181,8 +187,18 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   ])
 
   const editMenuItems = computed<(MenuItem | "separator")[]>(() => [
-    { id: "undo", label: "Undo", action: () => history.undo(), shortcut: "⌘ Z" },
-    { id: "redo", label: "Redo", action: () => history.redo(), shortcut: "⌘ ⇧ Z" },
+    {
+      id: "undo",
+      label: "Undo",
+      action: () => history.undo(),
+      shortcut: "⌘ Z",
+    },
+    {
+      id: "redo",
+      label: "Redo",
+      action: () => history.redo(),
+      shortcut: "⌘ ⇧ Z",
+    },
     "separator",
     { id: "cut", label: "Cut", action: cutNode, shortcut: "⌘ X" },
     { id: "copy", label: "Copy", action: copyNode, shortcut: "⌘ C" },
@@ -568,7 +584,12 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       shortcut: "⌘ 0",
     },
     { id: "zoom-in", label: "Zoom In", action: zoom.zoomIn, shortcut: "⌘ +" },
-    { id: "zoom-out", label: "Zoom Out", action: zoom.zoomOut, shortcut: "⌘ -" },
+    {
+      id: "zoom-out",
+      label: "Zoom Out",
+      action: zoom.zoomOut,
+      shortcut: "⌘ -",
+    },
   ])
 
   return computed<MenuConfig>(() => [
@@ -597,6 +618,10 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       visibleIn: ["edit", "preview"],
       items: viewMenuItems.value,
     },
-    { id: "dev", label: "Dev", items: devMenuItems.value } satisfies MenuDropdown,
+    {
+      id: "dev",
+      label: "Dev",
+      items: devMenuItems.value,
+    } satisfies MenuDropdown,
   ])
 }

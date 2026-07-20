@@ -1,8 +1,9 @@
-import type { Workspace } from "@seldon/core/workspace/types"
 import { useHistoryStore } from "@app/workspace/history-store"
 import { usePreviewStore } from "@app/workspace/preview-store"
 import { storeToRefs } from "pinia"
-import { computed, type ComputedRef } from "vue"
+import { type ComputedRef, computed } from "vue"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * The workspace the editor renders: the transient preview overlay when a

@@ -114,7 +114,9 @@ function buildControl(
 
   // A font look's family facet references a font slot, e.g. `@fontFamily.secondary`.
   const fontFamilyRefValue =
-    taggedValue && "value" in taggedValue && typeof taggedValue.value === "string"
+    taggedValue &&
+    "value" in taggedValue &&
+    typeof taggedValue.value === "string"
       ? taggedValue.value
       : typeof value === "string"
         ? value

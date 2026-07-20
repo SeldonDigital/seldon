@@ -1,8 +1,5 @@
 "use client"
 
-import { isThemeBoard } from "@seldon/core/workspace/model/components"
-import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import {
   useCanvasHoverState,
   useHasHoverState,
@@ -11,16 +8,21 @@ import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePreview } from "@app/editor/hooks/use-preview"
 import { useTool } from "@app/editor/hooks/use-tool"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
+
+import { isThemeBoard } from "@seldon/core/workspace/model/components"
+
 import { useCanvasRemeasureStore } from "../canvas/hooks/use-canvas-remeasure-store"
-import { useNodeBelongsToActiveBoard } from "./hooks/use-belongs-to-active-board"
-import { useTrackNodeRects } from "./hooks/use-track-node-rects"
-import { useVisibleNodes } from "./hooks/use-visible-nodes"
 import { InsertTracking } from "./canvas-indicators/insert/Tracking"
 import {
   CanvasHoverOutline,
   CanvasSelectionOutline,
 } from "./canvas-indicators/select/SelectionOverlays"
 import { SelectTracking } from "./canvas-indicators/select/Tracking"
+import { useNodeBelongsToActiveBoard } from "./hooks/use-belongs-to-active-board"
+import { useTrackNodeRects } from "./hooks/use-track-node-rects"
+import { useVisibleNodes } from "./hooks/use-visible-nodes"
 
 export function CanvasTracking() {
   const selectedNodeId = useSelectedNodeId()

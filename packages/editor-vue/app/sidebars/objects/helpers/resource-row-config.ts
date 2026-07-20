@@ -1,3 +1,5 @@
+import type { ResourceEntryKind } from "@app/workspace/selection-store"
+
 import type { Action, Board as BoardType } from "@seldon/core"
 import {
   isFontCollectionBoard,
@@ -9,7 +11,6 @@ import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import type { Workspace } from "@seldon/core/workspace/types"
-import type { ResourceEntryKind } from "@app/workspace/selection-store"
 
 type ResolvedEntry = {
   label: string

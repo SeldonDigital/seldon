@@ -1,6 +1,7 @@
-import { useCallback } from "react"
-import { Instance, Variant } from "@seldon/core"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useCallback } from "react"
+
+import { Instance, Variant } from "@seldon/core"
 
 /**
  * Reference-assignment command. Sets a node's unique `ref` handle. Owns the

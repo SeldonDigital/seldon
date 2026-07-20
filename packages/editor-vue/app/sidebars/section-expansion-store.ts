@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
+
 import type { ComponentLevel } from "@seldon/core/components/constants"
 
 export type ExpandableSection =
@@ -35,9 +36,8 @@ function loadOverrides(): Partial<Record<ExpandableSection, boolean>> {
 export const useSectionExpansionStore = defineStore(
   "objects-section-expansion",
   () => {
-    const overrides = ref<Partial<Record<ExpandableSection, boolean>>>(
-      loadOverrides(),
-    )
+    const overrides =
+      ref<Partial<Record<ExpandableSection, boolean>>>(loadOverrides())
 
     function isSectionExpanded(section: ExpandableSection): boolean {
       return overrides.value[section] ?? false

@@ -7,9 +7,11 @@ import {
 } from "@seldon/editor/lib/storage/workspace-store"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router"
+
 import { createEmptyWorkspace } from "@seldon/core"
-import { useParseWorkspace } from "./hooks/use-parse-workspace"
+
 import { HomeView } from "./HomePage.bespoke"
+import { useParseWorkspace } from "./hooks/use-parse-workspace"
 
 export default function HomePage() {
   const navigate = useNavigate()

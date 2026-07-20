@@ -2,8 +2,6 @@
 // components. react-markdown parses the string and each node maps to a catalog
 // primitive that carries its own Seldon typography and spacing via classNames,
 // so no styles are hand-authored here.
-import ReactMarkdown, { type Components } from "react-markdown"
-import remarkGfm from "remark-gfm"
 import { HTMLOl } from "@seldon/components/native-react/HTML.Ol"
 import { HTMLUl } from "@seldon/components/native-react/HTML.Ul"
 import { Blockquote } from "@seldon/components/primitives/Blockquote"
@@ -13,6 +11,8 @@ import { ListItem } from "@seldon/components/primitives/ListItem"
 import { Text } from "@seldon/components/primitives/Text"
 import { TextCodeblock } from "@seldon/components/primitives/TextCodeblock"
 import { TextHeading } from "@seldon/components/primitives/TextHeading"
+import ReactMarkdown, { type Components } from "react-markdown"
+import remarkGfm from "remark-gfm"
 
 interface HariMarkdownProps {
   content: string

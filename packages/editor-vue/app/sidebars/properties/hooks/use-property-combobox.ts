@@ -1,4 +1,4 @@
-import { computed, ref, watch, type ComputedRef, type Ref } from "vue"
+import type { ComboboxOptionItem } from "@app/menus/types"
 import {
   filterOptions,
   findOptionByValue,
@@ -6,7 +6,7 @@ import {
   stepHighlight,
 } from "@seldon/editor/lib/menus/combobox-selection"
 import { resolveComboboxSubmit } from "@seldon/editor/lib/menus/combobox-submit"
-import type { ComboboxOptionItem } from "@app/menus/types"
+import { type ComputedRef, type Ref, computed, ref, watch } from "vue"
 
 interface UsePropertyComboboxInput {
   controlType: ComputedRef<string | undefined>
@@ -119,7 +119,9 @@ export function usePropertyCombobox({
   function handleSelect(value: string): void {
     hasSelection = true
     commit(value)
-    const option = flatOptions.value.find((candidate) => candidate.value === value)
+    const option = flatOptions.value.find(
+      (candidate) => candidate.value === value,
+    )
     if (option) inputValue.value = option.name
     if (controlType.value === "menu") {
       open.value = false

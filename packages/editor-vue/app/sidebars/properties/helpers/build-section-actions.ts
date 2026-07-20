@@ -1,3 +1,10 @@
+import type { MenuEntry } from "@app/menus/types"
+import {
+  getAllowedBorderSides,
+  getPropertiesSubjectId,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+
 import {
   type Board,
   type BorderSideKey,
@@ -9,12 +16,7 @@ import {
 } from "@seldon/core"
 import { getLayerAddOptions } from "@seldon/core/properties/helpers/layer-add-options"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import {
-  getAllowedBorderSides,
-  getPropertiesSubjectId,
-} from "@seldon/editor/lib/properties/inspector/properties-data"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import type { MenuEntry } from "@app/menus/types"
+
 import type { PropertySection } from "../types"
 
 interface SectionActionsDeps {
@@ -30,7 +32,11 @@ interface SectionActionsDeps {
   addToast: (message: string) => void
 }
 
-async function copyText(text: string, addToast: (m: string) => void, label: string) {
+async function copyText(
+  text: string,
+  addToast: (m: string) => void,
+  label: string,
+) {
   try {
     await navigator.clipboard.writeText(text)
     addToast(`${label} copied to clipboard`)

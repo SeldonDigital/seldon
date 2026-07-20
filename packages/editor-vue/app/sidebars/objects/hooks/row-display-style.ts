@@ -1,4 +1,5 @@
 import type { CSSProperties } from "vue"
+
 import { Display } from "@seldon/core"
 
 /**

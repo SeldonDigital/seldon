@@ -1,6 +1,11 @@
 "use client"
 
+import { usePreview } from "@app/editor/hooks/use-preview"
 import { MenuController, type MenuEntry } from "@app/menus"
+import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { Frame } from "@seldon/components/frames/Frame"
 import { getThemeSpecPreviewBase } from "@seldon/editor/lib/themes/build-theme-spec-preview"
 import {
   ORDINAL_SCALES,
@@ -10,6 +15,11 @@ import {
   ordinalStepRef,
   ordinalStepValueText,
 } from "@seldon/editor/lib/themes/ordinal-preview"
+import {
+  getNodeCatalogComponentId,
+  getNodeChildIds,
+} from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import {
   type CSSProperties,
@@ -19,6 +29,7 @@ import {
   useRef,
   useState,
 } from "react"
+
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { colorValueToDisplayStrings } from "@seldon/core/helpers/color"
@@ -29,22 +40,13 @@ import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { usePreview } from "@app/editor/hooks/use-preview"
+
+import { CssPortal } from "../CssPortal"
+import { StyleTag } from "../StyleTag.bespoke"
 import {
   useOrdinalPreviewStore,
   useOrdinalSelection,
 } from "../hooks/use-ordinal-preview-store"
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "@seldon/editor/lib/workspace/node-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
-import { CssPortal } from "../CssPortal"
-import { StyleTag } from "../StyleTag.bespoke"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper"
 

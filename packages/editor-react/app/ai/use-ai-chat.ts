@@ -1,17 +1,8 @@
 import {
-  type AgentConfig,
-  getAgentConfig,
-  runAgentChat,
-  warmAgent,
-} from "@seldon/editor/lib/ai/run-agent-chat"
-import type {
-  ActionRepair,
-  AgentStreamEvent,
-  AgentToolCall,
-  ThinkingLevelOption,
-} from "@seldon/ai"
-import { useCallback } from "react"
-import { create } from "zustand"
+  isAiLoggingEnabled,
+  useDebugStore,
+} from "@app/editor/hooks/use-debug-mode"
+import { usePanel } from "@app/editor/hooks/use-panel"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useDispatch } from "@app/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace } from "@app/workspace/hooks/use-history"
@@ -20,6 +11,12 @@ import {
   getResourceTargetId,
   getSelectionScope,
 } from "@app/workspace/hooks/use-selection-scope"
+import type {
+  ActionRepair,
+  AgentStreamEvent,
+  AgentToolCall,
+  ThinkingLevelOption,
+} from "@seldon/ai"
 import {
   type RejectedAction,
   buildTurnReport,
@@ -28,12 +25,15 @@ import {
 import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
 import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
 import { logAiTurn, logWarm } from "@seldon/editor/lib/ai/log-turn"
-import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
 import {
-  isAiLoggingEnabled,
-  useDebugStore,
-} from "@app/editor/hooks/use-debug-mode"
-import { usePanel } from "@app/editor/hooks/use-panel"
+  type AgentConfig,
+  getAgentConfig,
+  runAgentChat,
+  warmAgent,
+} from "@seldon/editor/lib/ai/run-agent-chat"
+import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
+import { useCallback } from "react"
+import { create } from "zustand"
 
 export type AiChatRole = "user" | "assistant"
 

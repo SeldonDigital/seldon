@@ -1,8 +1,10 @@
 import { MenuEntry } from "@app/menus"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { useMemo } from "react"
+
 import { Variant } from "@seldon/core"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+
 import type { ResourceRowConfig } from "../helpers/resource-row-config"
 import { useEditState } from "./use-edit-state"
 

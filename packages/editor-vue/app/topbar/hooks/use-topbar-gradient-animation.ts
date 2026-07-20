@@ -1,6 +1,7 @@
-import { onBeforeUnmount, ref, watch, type Ref } from "vue"
-import { storeToRefs } from "pinia"
 import { useExportStatusStore } from "@app/io/export-status-store"
+import { storeToRefs } from "pinia"
+import { type Ref, onBeforeUnmount, ref, watch } from "vue"
+
 import {
   INTERFACE_SWATCH_TOKENS,
   TOPBAR_GRADIENT_ACTIVE_CLASS,

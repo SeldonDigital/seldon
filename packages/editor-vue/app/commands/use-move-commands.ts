@@ -1,6 +1,18 @@
+import { useToastStore } from "@app/toaster/toast-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useSelection } from "@app/workspace/use-selection"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import {
+  type MoveDirection,
+  getBoardMoveIndex,
+  getMoveCapabilities,
+  getVariantMoveIndex,
+} from "@seldon/editor/lib/commands/move-decisions"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { computed } from "vue"
-import { ComponentId } from "@seldon/core/components/constants"
+
 import { VariantId, invariant } from "@seldon/core"
+import { ComponentId } from "@seldon/core/components/constants"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import {
@@ -8,17 +20,6 @@ import {
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import {
-  getBoardMoveIndex,
-  getMoveCapabilities,
-  getVariantMoveIndex,
-  type MoveDirection,
-} from "@seldon/editor/lib/commands/move-decisions"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useToastStore } from "@app/toaster/toast-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useSelection } from "@app/workspace/use-selection"
-import { useWorkspace } from "@app/workspace/use-workspace"
 
 /**
  * Commands for moving the current selection. Instances move through the core

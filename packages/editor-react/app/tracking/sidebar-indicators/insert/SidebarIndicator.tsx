@@ -1,7 +1,8 @@
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { DropIndicator } from "@app/overlays"
+import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { Placement } from "@seldon/editor/lib/types"
 import { FC } from "react"
+
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 

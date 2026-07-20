@@ -1,7 +1,7 @@
-import { computed, type ComputedRef } from "vue"
-import { useRoute } from "vue-router"
-import { storeToRefs } from "pinia"
 import { usePreviewModeStore } from "@app/editor/preview-mode-store"
+import { storeToRefs } from "pinia"
+import { type ComputedRef, computed } from "vue"
+import { useRoute } from "vue-router"
 
 /** Which top-level screen the app shows. Drives `visibleIn` menu filtering. */
 export type AppState = "project" | "edit" | "preview"

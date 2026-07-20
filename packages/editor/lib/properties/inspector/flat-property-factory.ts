@@ -13,6 +13,15 @@ import {
   layeredFacetPath,
 } from "@seldon/editor/lib/properties/property-paths"
 import {
+  isCompoundProperty,
+  isShorthandProperty,
+} from "@seldon/editor/lib/properties/property-types"
+import {
+  createSubPropertyLabel,
+  formatPropertyLabel,
+  getValueType,
+} from "@seldon/editor/lib/properties/shared-utils"
+import {
   Board,
   Instance,
   Properties,
@@ -43,15 +52,6 @@ import {
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
-import {
-  isCompoundProperty,
-  isShorthandProperty,
-} from "@seldon/editor/lib/properties/property-types"
-import {
-  createSubPropertyLabel,
-  formatPropertyLabel,
-  getValueType,
-} from "@seldon/editor/lib/properties/shared-utils"
 import { getPropertiesSubjectId } from "./flat-property"
 import type { FlatProperty, PropertyStatus } from "./flat-property"
 import { resolveMatchSiblingLock } from "./match-color-lock"

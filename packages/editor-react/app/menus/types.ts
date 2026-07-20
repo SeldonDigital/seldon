@@ -1,8 +1,8 @@
-import { CSSProperties, ReactNode } from "react"
 import {
   MenuEntry as MenuEntryBase,
   MenuItem as MenuItemBase,
 } from "@seldon/editor/lib/menus/types"
+import { CSSProperties, ReactNode } from "react"
 
 export type {
   MenuItemId,

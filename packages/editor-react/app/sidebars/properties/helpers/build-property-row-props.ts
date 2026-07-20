@@ -1,7 +1,12 @@
-import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
-import { MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import {
+  getPropertyIcon2Color,
+  isMenuOrComboControl,
+} from "@seldon/editor/lib/properties/inspector/property-value-display"
+import { MouseEvent } from "react"
+
 import {
   getDisclosureButtonStyle,
   getDisclosureIconStyle,
@@ -10,10 +15,6 @@ import {
   getNameLabelStyle,
   getValueIconStyle,
 } from "./property-row-state-styles"
-import {
-  getPropertyIcon2Color,
-  isMenuOrComboControl,
-} from "@seldon/editor/lib/properties/inspector/property-value-display"
 
 const CHEVRON_ICON = "material-chevronRight" as const
 

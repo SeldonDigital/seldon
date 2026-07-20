@@ -1,7 +1,7 @@
+import { Rect } from "@seldon/components/utils/resize"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
 import { BoundingBox, useDragControls, useMotionValue } from "framer-motion"
 import { useCallback, useEffect, useState } from "react"
-import { Rect } from "@seldon/components/utils/resize"
 
 const DEFAULT_MIN_WINDOW_WIDTH = 300
 const DEFAULT_MIN_WINDOW_HEIGHT = 300

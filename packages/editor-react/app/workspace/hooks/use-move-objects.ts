@@ -1,5 +1,9 @@
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { Placement } from "@seldon/editor/lib/types"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
+
 import {
   Instance,
   InstanceId,
@@ -18,9 +22,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { Board } from "@seldon/core/workspace/types"
-import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+
 import { useWorkspace } from "./use-workspace"
 
 export function useMoveObjects() {

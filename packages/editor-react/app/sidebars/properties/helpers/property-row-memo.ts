@@ -1,9 +1,10 @@
-import { RowPropertyProps } from "../hooks/use-row-property"
 import {
   FlatProperty,
   getCompoundChildRows,
   getPropertiesSubjectId,
 } from "@seldon/editor/lib/properties/inspector/properties-data"
+
+import { RowPropertyProps } from "../hooks/use-row-property"
 
 /** Structural equality for plain JSON-like values (FlatProperty fields). */
 function deepEqual(a: unknown, b: unknown): boolean {

@@ -6,12 +6,12 @@
  * the flatten implementation lets consumers import the type without pulling the
  * inspector's compute dependency graph.
  */
-import type { Board, Instance, ValueType, Variant } from "@seldon/core"
 import type { ControlType } from "@seldon/editor/lib/icons/icons-registry"
-import type { PropertyType } from "@seldon/editor/lib/properties/property-types"
 import { childPathsUnderCompoundParent } from "@seldon/editor/lib/properties/property-paths"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import type { PropertyType } from "@seldon/editor/lib/properties/property-types"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import type { Board, Instance, ValueType, Variant } from "@seldon/core"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 export type PropertyStatus = "set" | "unset" | "override" | "not used" | "error"
 

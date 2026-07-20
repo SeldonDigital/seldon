@@ -1,11 +1,13 @@
-import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { useEffect } from "react"
-import { LayeredPaintKey } from "@seldon/core"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import {
   type LayerPlacement,
   computeLayerToIndex,
 } from "@seldon/editor/lib/properties/layer-reorder"
+import { useEffect } from "react"
+
+import { LayeredPaintKey } from "@seldon/core"
+
 import { useLayerDragStateStore } from "./use-layer-drag-state"
 import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
 

@@ -1,8 +1,9 @@
+import App from "@app/App.vue"
+import { router } from "@app/router"
 import { configureWorkspaceStore } from "@seldon/editor/lib/storage/workspace-store"
 import { createPinia } from "pinia"
 import { createApp } from "vue"
-import App from "@app/App.vue"
-import { router } from "@app/router"
+
 import "@app/globals.css"
 import "@app/editor-chrome.css"
 

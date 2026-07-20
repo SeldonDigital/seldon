@@ -2,6 +2,7 @@ import {
   buildDisplayInputProps,
   buildEditingRefProps,
 } from "@app/sidebars/state-props"
+
 import type { PropertyControl } from "../hooks/use-property-control"
 
 interface BuildPropertyValueInputArgs {

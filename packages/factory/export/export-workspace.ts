@@ -40,7 +40,9 @@ export async function exportWorkspace(
   const componentsFolder = opts.output.componentsFolder
     .replaceAll("//", "/")
     .replace(/\/$/, "")
-  const assetsFolder = (opts.output.assetsFolder ?? `${componentsFolder}/assets`)
+  const assetsFolder = (
+    opts.output.assetsFolder ?? `${componentsFolder}/assets`
+  )
     .replaceAll("//", "/")
     .replace(/\/$/, "")
   const assetPublicPath = (

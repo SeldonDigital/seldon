@@ -1,6 +1,6 @@
+import type { SelectionKind } from "@seldon/editor/lib/workspace/selection-kind"
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import type { SelectionKind } from "@seldon/editor/lib/workspace/selection-kind"
 
 /**
  * The single hovered object across the editor. Both the objects sidebar and the

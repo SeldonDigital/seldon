@@ -1,5 +1,5 @@
-import { onBeforeUnmount, onMounted, ref, watch, type Ref } from "vue"
 import { useZoomControlsStore } from "@app/canvas/zoom-controls-store"
+import { type Ref, onBeforeUnmount, onMounted, ref, watch } from "vue"
 
 const MIN_SCALE = 0.1
 const MAX_SCALE = 4

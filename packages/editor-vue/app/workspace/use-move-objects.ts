@@ -1,11 +1,18 @@
-import { Instance, InstanceId, Variant, VariantId, invariant } from "@seldon/core"
+import { useToastStore } from "@app/toaster/toast-store"
+import { getCurrentWorkspace } from "@app/workspace/history-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import type { Placement } from "@seldon/editor/lib/types"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
+
+import {
+  Instance,
+  InstanceId,
+  Variant,
+  VariantId,
+  invariant,
+} from "@seldon/core"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
-import type { Placement } from "@seldon/editor/lib/types"
-import { getCurrentWorkspace } from "@app/workspace/history-store"
-import { useToastStore } from "@app/toaster/toast-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
 
 /**
  * Instance drag-and-drop moves for the objects tree. Index math reads the

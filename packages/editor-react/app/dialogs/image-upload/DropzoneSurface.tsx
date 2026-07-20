@@ -1,6 +1,6 @@
-import { CSSProperties, ChangeEvent, DragEvent, ReactNode, Ref } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Input } from "@seldon/components/primitives/Input"
+import { CSSProperties, ChangeEvent, DragEvent, ReactNode, Ref } from "react"
 
 interface DropzoneSurfaceProps {
   fileInputRef: Ref<HTMLInputElement>

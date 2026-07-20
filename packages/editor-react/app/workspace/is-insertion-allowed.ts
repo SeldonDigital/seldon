@@ -1,4 +1,6 @@
+import { Tool } from "@app/editor/hooks/use-tool"
 import { Placement } from "@seldon/editor/lib/types"
+
 import {
   Instance,
   InstanceId,
@@ -13,7 +15,6 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { Tool } from "@app/editor/hooks/use-tool"
 
 /**
  * Checks if insertion is allowed for a given tool, object, and placement.

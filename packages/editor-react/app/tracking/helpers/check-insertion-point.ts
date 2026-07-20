@@ -1,8 +1,9 @@
-import { Placement } from "@seldon/editor/lib/types"
-import { Workspace } from "@seldon/core"
-import { InstanceId, VariantId } from "@seldon/core/index"
 import { Tool } from "@app/editor/hooks/use-tool"
 import { isInsertionAllowed } from "@app/workspace/is-insertion-allowed"
+import { Placement } from "@seldon/editor/lib/types"
+
+import { Workspace } from "@seldon/core"
+import { InstanceId, VariantId } from "@seldon/core/index"
 
 /**
  * Checks if insertion is allowed for a given object, placement, and tool.

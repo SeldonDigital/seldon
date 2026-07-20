@@ -1,7 +1,8 @@
+import { ItemSection } from "@seldon/components/elements/ItemSection"
+
+import { BoardSection } from "../helpers/get-board-sections"
 import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { useRowSection } from "./hooks/use-row-section"
-import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { BoardSection } from "../helpers/get-board-sections"
 
 interface SectionProps {
   section: BoardSection

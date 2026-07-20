@@ -1,10 +1,10 @@
-import { parsePropertyPath } from "../properties/property-paths"
 import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
   getCompoundSubPropertySchema,
   getPropertySchema,
 } from "@seldon/core/properties/schemas/helpers"
+import { parsePropertyPath } from "../properties/property-paths"
 
 export type ControlType =
   | "combo"

@@ -1,5 +1,5 @@
-import { CSSProperties, ReactNode } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
+import { CSSProperties, ReactNode } from "react"
 
 interface OverlayLayerProps {
   style?: CSSProperties

@@ -1,7 +1,7 @@
-import { defineStore } from "pinia"
-import { computed, ref } from "vue"
 import { DEVICE_VIEWS } from "@seldon/editor/lib/devices/constants"
 import type { DeviceId } from "@seldon/editor/lib/devices/types"
+import { defineStore } from "pinia"
+import { computed, ref } from "vue"
 
 /**
  * Device-preview mode: whether the canvas renders a device frame and which

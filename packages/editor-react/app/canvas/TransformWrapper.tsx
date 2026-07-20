@@ -1,12 +1,13 @@
+import { useTextFieldFocus } from "@app/canvas/hooks/use-text-field-focus"
+import { useZoomControlsStore } from "@app/canvas/hooks/use-zoom-controls"
+import { usePreview } from "@app/editor/hooks/use-preview"
 import React, { FC, useCallback, useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import {
   TransformWrapper as ReactTransformWrapper,
   useControls,
 } from "react-zoom-pan-pinch"
-import { usePreview } from "@app/editor/hooks/use-preview"
-import { useTextFieldFocus } from "@app/canvas/hooks/use-text-field-focus"
-import { useZoomControlsStore } from "@app/canvas/hooks/use-zoom-controls"
+
 import { CanvasOverlayTracker } from "./CanvasOverlayTracker"
 import { CanvasScrollToSelection } from "./CanvasScrollToSelection"
 import { CanvasTransformRemeasure } from "./CanvasTransformRemeasure"

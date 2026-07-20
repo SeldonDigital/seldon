@@ -1,11 +1,12 @@
 "use client"
 
-import { Allotment, LayoutPriority } from "allotment"
-import { CSSProperties } from "react"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePreview } from "@app/editor/hooks/use-preview"
 import { Frame } from "@seldon/components/frames/Frame"
+import { Allotment, LayoutPriority } from "allotment"
+import { CSSProperties } from "react"
+
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { BoardsDialog } from "../dialogs/boards/BoardsDialog"

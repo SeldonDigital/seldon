@@ -1,3 +1,7 @@
+import { ResourceEntryKind } from "@app/workspace/hooks/use-selection"
+import { SelectionKind } from "@app/workspace/selection-target"
+import { IconProps } from "@seldon/components/primitives/Icon"
+
 import { Board as BoardType } from "@seldon/core"
 import { Action } from "@seldon/core/index"
 import {
@@ -10,9 +14,6 @@ import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { ResourceEntryKind } from "@app/workspace/hooks/use-selection"
-import { SelectionKind } from "@app/workspace/selection-target"
-import { IconProps } from "@seldon/components/primitives/Icon"
 
 type ResolvedEntry = {
   label: string

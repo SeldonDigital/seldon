@@ -1,8 +1,18 @@
 "use client"
 
-import { getChromeThemes } from "./chrome-themes"
+import { AppState, useAppState } from "@app/editor/hooks/use-app-state"
+import {
+  InterfaceMode,
+  useEditorConfig,
+} from "@app/editor/hooks/use-editor-config"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { MenuAlign, MenuController, MenuEntry } from "@app/menus"
+import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
+import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
+import { Frame } from "@seldon/components/frames/Frame"
+import { BarTopbar } from "@seldon/components/parts/BarTopbar"
+import { ImageProps } from "@seldon/components/primitives/Image"
+import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import {
   CSSProperties,
   MouseEvent,
@@ -12,16 +22,10 @@ import {
   useRef,
   useState,
 } from "react"
-import { AppState, useAppState } from "@app/editor/hooks/use-app-state"
-import { InterfaceMode, useEditorConfig } from "@app/editor/hooks/use-editor-config"
+
+import { getChromeThemes } from "./chrome-themes"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
-import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
-import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
-import { Frame } from "@seldon/components/frames/Frame"
-import { BarTopbar } from "@seldon/components/parts/BarTopbar"
-import { ImageProps } from "@seldon/components/primitives/Image"
-import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { MenuDropdown } from "./menus/types"
 import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
 

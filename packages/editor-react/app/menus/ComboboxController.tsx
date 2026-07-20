@@ -6,9 +6,9 @@
  * fields. Option-list rendering lives in `ComboboxListbox`; the selection and
  * filter engine lives in `useComboboxState`.
  */
-import { CSSProperties, RefObject, useEffect, useRef } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Input } from "@seldon/components/primitives/Input"
+import { CSSProperties, RefObject, useEffect, useRef } from "react"
 
 // Functional resets so the generated `Input` primitive blends into a property
 // row. Appearance theming still comes from authored CSS; these only strip the

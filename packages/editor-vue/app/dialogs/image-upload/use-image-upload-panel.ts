@@ -1,14 +1,16 @@
-import { computed, ref } from "vue"
-import { storeToRefs } from "pinia"
-import { BackgroundKind, ValueType } from "@seldon/core/properties"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { convertBlobToBase64 } from "@seldon/editor/lib/helpers/convert-blob-to-base64"
-import type { ImageUploadTarget } from "@seldon/editor/lib/dialogs/image-upload-target"
-import { useImageUploadStore } from "./image-upload-store"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
+import type { ImageUploadTarget } from "@seldon/editor/lib/dialogs/image-upload-target"
+import { convertBlobToBase64 } from "@seldon/editor/lib/helpers/convert-blob-to-base64"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { storeToRefs } from "pinia"
+import { computed, ref } from "vue"
+
+import { BackgroundKind, ValueType } from "@seldon/core/properties"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+
+import { useImageUploadStore } from "./image-upload-store"
 
 type UploadStatus = "idle" | "pending" | "success" | "error"
 

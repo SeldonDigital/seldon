@@ -1,12 +1,14 @@
 "use client"
 
-import { useCallback, useMemo } from "react"
-import { STOCK_THEMES } from "@seldon/core/themes/catalog"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanel } from "@app/editor/hooks/use-panel"
-import { useStockCatalog } from "../hooks/use-stock-catalog"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useCallback, useMemo } from "react"
+
+import { STOCK_THEMES } from "@seldon/core/themes/catalog"
+
 import { PanelDialogController } from "../PanelDialogController"
+import { useStockCatalog } from "../hooks/use-stock-catalog"
 import { CatalogDialogItem } from "../types"
 
 const THEME_ICON = "seldon-theme"

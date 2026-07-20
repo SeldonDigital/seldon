@@ -1,10 +1,17 @@
+import { MenuEntry } from "@app/menus"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { usePropertiesClipboard } from "@app/workspace/hooks/use-properties-clipboard"
+import { useSelectionActions } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import {
   buildDefaultSnippet,
   buildVariantSnippet,
 } from "@seldon/editor/lib/schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
-import { MenuEntry } from "@app/menus"
-import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+
 import { InstanceId, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
@@ -19,12 +26,6 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { usePropertiesClipboard } from "@app/workspace/hooks/use-properties-clipboard"
-import { useSelectionActions } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
-import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 type Workspace = ReturnType<typeof useWorkspace>["workspace"]
 type Dispatch = ReturnType<typeof useWorkspace>["dispatch"]

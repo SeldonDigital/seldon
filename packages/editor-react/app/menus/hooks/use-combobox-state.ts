@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { HSL } from "@seldon/core"
 import {
+  type OptionsType,
   filterOptions,
   flattenOptions,
   isNavigableOption,
   stepHighlight,
-  type OptionsType,
 } from "@seldon/editor/lib/menus/combobox-selection"
 import { resolveComboboxSubmit } from "@seldon/editor/lib/menus/combobox-submit"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
+import { HSL } from "@seldon/core"
 
 export type { OptionsType }
 

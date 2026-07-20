@@ -1,10 +1,34 @@
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useNodeActiveState } from "@app/workspace/hooks/use-node-active-state"
+import {
+  useSelectedNodeRootId,
+  useSelection,
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { resolveActiveFontCollectionEntryId } from "@seldon/editor/lib/font-collections/resolve-active-font-collection-entry-id"
 import { isFontCollectionEditingSelection } from "@seldon/editor/lib/font-collections/resolve-active-font-collection-entry-id"
 import { resolveActiveIconSetEntryId } from "@seldon/editor/lib/icon-sets/resolve-active-icon-set-entry-id"
 import { isIconSetEditingSelection } from "@seldon/editor/lib/icon-sets/resolve-active-icon-set-entry-id"
+import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
+import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
+import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
+import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
+import {
+  FlatProperty,
+  flattenNodeProperties,
+  getPropertiesSubjectId,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { flattenThemeProperties } from "@seldon/editor/lib/properties/inspector/theme-properties-data"
 import { resolveActiveThemeEntryId } from "@seldon/editor/lib/themes/resolve-active-theme-entry-id"
 import { isThemeEditingSelection } from "@seldon/editor/lib/themes/resolve-active-theme-entry-id"
 import { useMemo } from "react"
+
 import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import {
@@ -15,31 +39,9 @@ import {
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useNodeActiveState } from "@app/workspace/hooks/use-node-active-state"
-import {
-  useSelectedNodeRootId,
-  useSelection,
-} from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
+
 import type { PropertyTreeProps } from "../PropertiesSidebar"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
 import { useCssStrings } from "../helpers/get-calculated-properties"
-import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
-import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
-import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
-import {
-  FlatProperty,
-  flattenNodeProperties,
-  getPropertiesSubjectId,
-} from "@seldon/editor/lib/properties/inspector/properties-data"
-import { flattenThemeProperties } from "@seldon/editor/lib/properties/inspector/theme-properties-data"
 import { useRevealedBorderSides } from "./use-border-side-visibility"
 import { useFontCollectionProperties } from "./use-font-collection-properties"
 import { useIconSetProperties } from "./use-icon-set-properties"

@@ -1,5 +1,5 @@
-import { CSSProperties } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
+import { CSSProperties } from "react"
 
 interface FocusRingProps {
   style: CSSProperties

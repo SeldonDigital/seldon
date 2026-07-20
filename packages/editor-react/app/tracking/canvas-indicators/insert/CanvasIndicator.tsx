@@ -1,16 +1,18 @@
 import { IndicatorLine } from "@app/overlays"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { Frame } from "@seldon/components/frames/Frame"
 import { Placement } from "@seldon/editor/lib/types"
+import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
+import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
 import { CSSProperties } from "react"
+
 import { ComponentId } from "@seldon/core/components/constants"
 import { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
 import {
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
-import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
-import { Frame } from "@seldon/components/frames/Frame"
+
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"

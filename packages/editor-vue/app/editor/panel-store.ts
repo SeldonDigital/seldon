@@ -1,7 +1,9 @@
+import type { Target } from "@seldon/editor/lib/workspace/target"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
+
 import { ComponentLevel } from "@seldon/core/components/constants"
-import type { Target } from "@seldon/editor/lib/workspace/target"
+
 import { useToolStore } from "./tool-store"
 
 export type PanelType =
@@ -43,8 +45,9 @@ export const usePanelStore = defineStore("panel", () => {
     if (panel === "add-board") {
       activePanel.value = panel
       targetRef.value = undefined
-      dialogLevelRef.value = (options as { level?: ComponentLevel } | undefined)
-        ?.level
+      dialogLevelRef.value = (
+        options as { level?: ComponentLevel } | undefined
+      )?.level
       return
     }
     if (panel === null) {

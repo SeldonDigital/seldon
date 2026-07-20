@@ -1,6 +1,17 @@
 "use client"
 
+import { useSetHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
+import { useTool } from "@app/editor/hooks/use-tool"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import {
+  useSelection,
+  useStore as useSelectionStore,
+} from "@app/workspace/hooks/use-selection"
+import { Frame } from "@seldon/components/frames/Frame"
 import { DEFAULT_CHROME_THEME } from "@seldon/editor/lib/chrome/chrome-themes"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import React, { CSSProperties, useEffect, useRef } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
@@ -9,17 +20,7 @@ import {
   useTransformContext,
 } from "react-zoom-pan-pinch"
 import { useThrottledCallback } from "use-debounce"
-import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import {
-  useSelection,
-  useStore as useSelectionStore,
-} from "@app/workspace/hooks/use-selection"
-import { useSetHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
-import { usePanel } from "@app/editor/hooks/use-panel"
-import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
-import { useTool } from "@app/editor/hooks/use-tool"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
+
 import { CanvasTracking } from "../tracking/CanvasTracking"
 import {
   TRANSFORM_WRAPPER_INITIAL_POSITION_X,

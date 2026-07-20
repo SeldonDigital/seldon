@@ -1,6 +1,6 @@
+import type { ImageUploadTarget } from "@seldon/editor/lib/dialogs/image-upload-target"
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import type { ImageUploadTarget } from "@seldon/editor/lib/dialogs/image-upload-target"
 
 /**
  * Holds which image target the upload dialog writes to: the `source` attribute

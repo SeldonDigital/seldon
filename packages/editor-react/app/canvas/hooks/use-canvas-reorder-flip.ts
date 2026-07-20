@@ -1,7 +1,9 @@
 "use client"
 
 import { RefObject, useLayoutEffect, useRef } from "react"
+
 import { Workspace } from "@seldon/core"
+
 import { useCanvasRemeasureStore } from "./use-canvas-remeasure-store"
 
 const FLIP_DURATION_MS = 200

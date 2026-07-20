@@ -1,10 +1,11 @@
 "use client"
 
-import type { CSSProperties } from "react"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useCanvasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
-import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
+import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
+import type { CSSProperties } from "react"
+
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import {
   pickOutlineColorsFromSurface,

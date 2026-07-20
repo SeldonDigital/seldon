@@ -1,6 +1,6 @@
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
 import { useDragControls, useMotionValue } from "motion-v"
-import { onBeforeUnmount, onMounted, ref, type Ref } from "vue"
+import { type Ref, onBeforeUnmount, onMounted, ref } from "vue"
 
 const DEFAULT_MIN_WINDOW_WIDTH = 300
 const DEFAULT_MIN_WINDOW_HEIGHT = 300

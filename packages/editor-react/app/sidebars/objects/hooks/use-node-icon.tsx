@@ -1,3 +1,5 @@
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+
 import { getComponentIcon, getNodeKindIcon } from "@seldon/core/icon-registry"
 import { IconId } from "@seldon/core/icon-sets"
 import {
@@ -12,7 +14,6 @@ import {
   Variant,
   Workspace,
 } from "@seldon/core/workspace/types"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 
 /**
  * Determines the appropriate icon for a node based on its type.

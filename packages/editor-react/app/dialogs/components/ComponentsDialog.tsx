@@ -1,20 +1,22 @@
 "use client"
 
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { useTool } from "@app/editor/hooks/use-tool"
+import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
 import { useCallback } from "react"
+
 import { invariant } from "@seldon/core"
 import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers/helpers/validation"
 import { InstanceId, VariantId } from "@seldon/core/workspace/types"
-import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { usePanel } from "@app/editor/hooks/use-panel"
-import { useTool } from "@app/editor/hooks/use-tool"
+
+import { PanelDialogController } from "../PanelDialogController"
 import {
   CatalogComponentItem,
   FilterComponentPredicate,
   useDialog,
 } from "../hooks/use-dialog"
-import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
-import { PanelDialogController } from "../PanelDialogController"
 
 /**
  * Dialog for inserting an existing variant into the selected target node.

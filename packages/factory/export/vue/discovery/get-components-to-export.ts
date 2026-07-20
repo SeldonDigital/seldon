@@ -15,7 +15,11 @@ export function getComponentsToExport(
   options: ExportOptions,
   nodeIdToClass: NodeIdToClass,
 ): ComponentToExport[] {
-  const components = getReactComponentsToExport(workspace, options, nodeIdToClass)
+  const components = getReactComponentsToExport(
+    workspace,
+    options,
+    nodeIdToClass,
+  )
   return components.map((component) => ({
     ...component,
     output: {

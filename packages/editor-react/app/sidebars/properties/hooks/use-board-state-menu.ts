@@ -1,5 +1,14 @@
+import {
+  useActiveBoardState,
+  useBoardStateStore,
+} from "@app/canvas/hooks/use-board-state-store"
 import { MenuEntry, MenuItem } from "@app/menus"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { walkComponentTree } from "@seldon/editor/lib/workspace/component-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useMemo } from "react"
+
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import {
   type CustomState,
@@ -12,14 +21,6 @@ import {
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { walkComponentTree } from "@seldon/editor/lib/workspace/component-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import {
-  useActiveBoardState,
-  useBoardStateStore,
-} from "@app/canvas/hooks/use-board-state-store"
 
 // Marks board states whose override lives only on a child, matching the punch
 // accent the canvas switcher used.

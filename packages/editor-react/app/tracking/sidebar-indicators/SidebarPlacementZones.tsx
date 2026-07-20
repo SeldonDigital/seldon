@@ -1,13 +1,15 @@
 "use client"
 
+import { useTool } from "@app/editor/hooks/use-tool"
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
+import { Frame } from "@seldon/components/frames/Frame"
 import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties } from "react"
+
 import { Instance, Variant } from "@seldon/core"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import { useTool } from "@app/editor/hooks/use-tool"
+
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
-import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarIndicator } from "./insert/SidebarIndicator"
 
 interface SidebarPlacementZonesProps {

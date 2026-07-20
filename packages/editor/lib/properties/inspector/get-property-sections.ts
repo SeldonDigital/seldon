@@ -1,4 +1,5 @@
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
@@ -10,7 +11,6 @@ import {
   getCatalogKeyForPropertyPath,
 } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { FlatProperty } from "./properties-data"
 
 /**

@@ -1,8 +1,9 @@
+import type { Placement } from "@seldon/editor/lib/types"
 import { defineStore } from "pinia"
 import { ref } from "vue"
+
 import { InstanceId, VariantId } from "@seldon/core"
 import type { BoardKey } from "@seldon/core/workspace/types"
-import type { Placement } from "@seldon/editor/lib/types"
 
 interface BaseHoverState {
   /** Whether the cursor is over the top/left half of the object. */

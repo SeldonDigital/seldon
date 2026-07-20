@@ -1,14 +1,15 @@
 "use client"
 
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { OutlineBox } from "@app/overlays"
+import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
-import { useNodeRect } from "../../hooks/use-node-rect"
+
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateClippingBox } from "../../helpers/calculate-clipping-box"
 import { calculateSelectionOutline } from "../../helpers/calculate-selection-outline"
 import { getWireframeMode } from "../../helpers/canvas-outline-modes"
+import { useNodeRect } from "../../hooks/use-node-rect"
 
 export type SelectTrackingProps = {
   nodeId: string

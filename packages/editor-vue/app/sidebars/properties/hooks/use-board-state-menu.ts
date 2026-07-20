@@ -1,4 +1,12 @@
-import { computed, type ComputedRef } from "vue"
+import { useBoardStateStore } from "@app/canvas/board-state-store"
+import type { MenuEntry, MenuItem } from "@app/menus/types"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useSelection } from "@app/workspace/use-selection"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import { walkComponentTree } from "@seldon/editor/lib/workspace/component-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { type ComputedRef, computed } from "vue"
+
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import {
   type CustomState,
@@ -11,13 +19,6 @@ import {
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { walkComponentTree } from "@seldon/editor/lib/workspace/component-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import type { MenuEntry, MenuItem } from "@app/menus/types"
-import { useBoardStateStore } from "@app/canvas/board-state-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useSelection } from "@app/workspace/use-selection"
-import { useWorkspace } from "@app/workspace/use-workspace"
 
 const CHILD_OVERRIDE_COLOR = "var(--sdn-swatch-punch)"
 
@@ -56,7 +57,10 @@ export function useBoardStateMenu(): ComputedRef<BoardStateMenu> {
       : isBoard(selection)
         ? getComponentKey(selection)
         : (() => {
-            const board = nodeRelationshipService.findBoardForNode(selection, ws)
+            const board = nodeRelationshipService.findBoardForNode(
+              selection,
+              ws,
+            )
             return board ? getComponentKey(board) : undefined
           })()
 

@@ -1,7 +1,14 @@
 "use client"
 
+import { usePreview } from "@app/editor/hooks/use-preview"
+import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { Frame } from "@seldon/components/frames/Frame"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { CSSProperties, ReactNode, useMemo, useRef } from "react"
+
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
@@ -10,17 +17,12 @@ import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { usePreview } from "@app/editor/hooks/use-preview"
-import { useActiveBoardState } from "../hooks/use-board-state-store"
-import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
-import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
+
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
 import { StyleTag } from "../StyleTag.bespoke"
+import { useActiveBoardState } from "../hooks/use-board-state-store"
+import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 
 export type ComponentBoardProps = {
   board: Board

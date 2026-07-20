@@ -1,3 +1,6 @@
+import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   ComponentId,
   ComponentLevel,
@@ -10,9 +13,6 @@ import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
 import { PropertyPickerResult, generatePropertyOptions } from "./options-utils"
 import { FlatProperty } from "./properties-data"
 import { getRepeatSymbolDescendant } from "./repeat-display"

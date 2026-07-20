@@ -1,4 +1,5 @@
 import { create } from "zustand"
+
 import { Properties } from "@seldon/core"
 
 type PropertiesClipboardState = {

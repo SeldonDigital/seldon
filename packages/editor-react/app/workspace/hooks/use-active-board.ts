@@ -1,6 +1,8 @@
 import { useMemo } from "react"
+
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
+
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
 

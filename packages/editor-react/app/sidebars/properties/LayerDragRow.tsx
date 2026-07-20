@@ -1,12 +1,18 @@
+import {
+  DropIndicator,
+  OverlayLayer,
+  PlacementZoneSurface,
+} from "@app/overlays"
+import { Frame } from "@seldon/components/frames/Frame"
 import { COLORS } from "@seldon/editor/lib/helpers/colors"
-import { DropIndicator, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
+import type { LayerPlacement } from "@seldon/editor/lib/properties/layer-reorder"
 import { CSSProperties, ReactNode } from "react"
+
 import { LayeredPaintKey } from "@seldon/core"
+
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import { useLayerDraggable } from "./hooks/use-layer-draggable"
 import { useLayerDropzone } from "./hooks/use-layer-dropzone"
-import { Frame } from "@seldon/components/frames/Frame"
-import type { LayerPlacement } from "@seldon/editor/lib/properties/layer-reorder"
 
 /** A row's layer-reorder context: which paint stack it belongs to and where. */
 export interface LayerDragContext {

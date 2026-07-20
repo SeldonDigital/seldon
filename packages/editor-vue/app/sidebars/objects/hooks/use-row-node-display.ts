@@ -1,4 +1,7 @@
-import { computed, type ComputedRef, type CSSProperties } from "vue"
+import type { ComboboxOptionItem } from "@app/menus/types"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { type CSSProperties, type ComputedRef, computed } from "vue"
+
 import { Display, Properties, Value, ValueType, VariantId } from "@seldon/core"
 import {
   PROPERTY_ICONS,
@@ -10,8 +13,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import type { ComboboxOptionItem } from "@app/menus/types"
+
 import { resolveRowDisplayDecoration } from "./row-display-style"
 
 /** Neutral Display glyph for the picker trigger and the Default/Inherit options. */

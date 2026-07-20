@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react"
 import { create } from "zustand"
 import { useShallow } from "zustand/react/shallow"
+
 import { createEmptyWorkspace } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
 

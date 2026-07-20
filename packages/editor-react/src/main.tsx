@@ -1,11 +1,15 @@
 import { CSSProperties, StrictMode, Suspense, lazy } from "react"
 import { createRoot } from "react-dom/client"
 import { RouterProvider, createBrowserRouter } from "react-router"
+
 import "allotment/dist/style.css"
+
 import { LoadEditorFonts } from "@app/LoadEditorFonts"
 import { Providers } from "@app/Providers"
 import { Toasts } from "@app/toaster/Toaster"
+
 import HomePage from "../app/home/HomePage"
+
 import "../app/globals.css"
 import "../app/fonts/plex/fonts.css"
 import "../app/editor-chrome.css"

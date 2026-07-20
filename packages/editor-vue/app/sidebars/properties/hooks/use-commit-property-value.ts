@@ -1,3 +1,36 @@
+import { useBoardStateStore } from "@app/canvas/board-state-store"
+import { useImageUploadStore } from "@app/dialogs/image-upload/image-upload-store"
+import { usePanelStore } from "@app/editor/panel-store"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import { imageUploadTargetForKey } from "@seldon/editor/lib/dialogs/image-upload-target"
+import {
+  cleanCompoundValue,
+  compoundPresetPropertyKey,
+} from "@seldon/editor/lib/properties/commit-helpers"
+import { createPresetPropertyUpdate } from "@seldon/editor/lib/properties/inspector/compound-properties"
+import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
+import { isComputedFunctionOption } from "@seldon/editor/lib/properties/inspector/computed-utils"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import {
+  type FlatProperty,
+  getPropertiesSubjectId,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { updateProperty } from "@seldon/editor/lib/properties/inspector/property-update-handler"
+import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
+import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
+import {
+  getComponentKey,
+  resolveComponentKey,
+} from "@seldon/editor/lib/workspace/workspace-accessors"
+
 import {
   type Board,
   type Instance,
@@ -17,38 +50,6 @@ import {
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
-import {
-  cleanCompoundValue,
-  compoundPresetPropertyKey,
-} from "@seldon/editor/lib/properties/commit-helpers"
-import { createPresetPropertyUpdate } from "@seldon/editor/lib/properties/inspector/compound-properties"
-import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
-import { isComputedFunctionOption } from "@seldon/editor/lib/properties/inspector/computed-utils"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import {
-  type FlatProperty,
-  getPropertiesSubjectId,
-} from "@seldon/editor/lib/properties/inspector/properties-data"
-import { updateProperty } from "@seldon/editor/lib/properties/inspector/property-update-handler"
-import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
-import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
-import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
-import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
-import {
-  getComponentKey,
-  resolveComponentKey,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
-import { imageUploadTargetForKey } from "@seldon/editor/lib/dialogs/image-upload-target"
-import { useBoardStateStore } from "@app/canvas/board-state-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useWorkspace } from "@app/workspace/use-workspace"
-import { useToastStore } from "@app/toaster/toast-store"
-import { usePanelStore } from "@app/editor/panel-store"
-import { useImageUploadStore } from "@app/dialogs/image-upload/image-upload-store"
 
 /** Shown when an instance edit is attempted while a non-Normal state is active. */
 const INSTANCE_STATE_EDIT_MESSAGE =
@@ -82,9 +83,14 @@ export function useCommitPropertyValue(deps: CommitDeps) {
   // Resolves the active interaction state for the selection's board. Boards and
   // nodes with no owning board resolve to Normal. Mirrors React
   // `getActiveStateForNode`.
-  function getActiveState(subject: Variant | Instance | Board | null): NodeState {
+  function getActiveState(
+    subject: Variant | Instance | Board | null,
+  ): NodeState {
     if (!subject || isBoard(subject)) return NORMAL_STATE
-    const board = nodeRelationshipService.findBoardForNode(subject, workspace.value)
+    const board = nodeRelationshipService.findBoardForNode(
+      subject,
+      workspace.value,
+    )
     const boardKey = board ? getComponentKey(board) : undefined
     return boardKey ? boardState.getActiveState(boardKey) : NORMAL_STATE
   }
@@ -234,8 +240,9 @@ export function useCommitPropertyValue(deps: CommitDeps) {
           theme,
         )
         layerValue =
-          (presetSource[baseKey] as Array<Record<string, unknown>> | undefined)?.[0] ??
-          {}
+          (
+            presetSource[baseKey] as Array<Record<string, unknown>> | undefined
+          )?.[0] ?? {}
       }
 
       const current = coreGetEffectiveProperties(
@@ -250,9 +257,13 @@ export function useCommitPropertyValue(deps: CommitDeps) {
       while (layers.length <= layerIndex) layers.push({})
       layers[layerIndex] = layerValue
 
-      setProperties(subject.id, { [baseKey]: layers }, {
-        mergeSubProperties: false,
-      })
+      setProperties(
+        subject.id,
+        { [baseKey]: layers },
+        {
+          mergeSubProperties: false,
+        },
+      )
       deps.onDone()
       return
     }
@@ -332,7 +343,13 @@ export function useCommitPropertyValue(deps: CommitDeps) {
     }
 
     const writePresetUpdate = (presetKey: string, value: string): boolean => {
-      const update = createPresetPropertyUpdate(presetKey, value, ws, subject, theme)
+      const update = createPresetPropertyUpdate(
+        presetKey,
+        value,
+        ws,
+        subject,
+        theme,
+      )
       if (Object.keys(update).length === 0) return false
       setProperties(nodeId, update, { mergeSubProperties: false })
       return true

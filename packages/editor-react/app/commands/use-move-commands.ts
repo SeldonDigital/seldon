@@ -1,4 +1,15 @@
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import {
+  type MoveDirection,
+  getBoardMoveIndex,
+  getMoveCapabilities,
+  getVariantMoveIndex,
+} from "@seldon/editor/lib/commands/move-decisions"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback, useMemo } from "react"
+
 import { ComponentId } from "@seldon/core/components/constants"
 import { VariantId, invariant } from "@seldon/core/index"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
@@ -8,16 +19,6 @@ import {
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import {
-  getBoardMoveIndex,
-  getMoveCapabilities,
-  getVariantMoveIndex,
-  type MoveDirection,
-} from "@seldon/editor/lib/commands/move-decisions"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 /**
  * Commands for moving the current selection. Instances move through the core

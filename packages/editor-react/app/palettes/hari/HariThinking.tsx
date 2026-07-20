@@ -2,9 +2,9 @@
 // MessageThinking supplies the frame, label, and toggle button; this adapter
 // owns the runtime pieces a static schema cannot: the expand/collapse state,
 // the dynamic header label, and the collapsed/expanded body text treatment.
-import { type CSSProperties, useState } from "react"
 import { MessageThinking } from "@seldon/components/elements/MessageThinking"
 import type { IconProps } from "@seldon/components/primitives/Icon"
+import { type CSSProperties, useState } from "react"
 
 interface HariThinkingProps {
   text: string

@@ -1,7 +1,9 @@
-import vue from "@vitejs/plugin-vue"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
+
+import vue from "@vitejs/plugin-vue"
 import { defineConfig } from "vite"
+
 import { agentApiPlugin } from "../editor/vite/agent-api-plugin"
 import { exportApiPlugin } from "../editor/vite/export-api-plugin"
 import { importWebApiPlugin } from "../editor/vite/import-web-api-plugin"

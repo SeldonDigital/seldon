@@ -1,17 +1,19 @@
-import { MouseEvent, useMemo } from "react"
-import { ComponentLevel } from "@seldon/core/components/constants"
-import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
+import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import { IconProps } from "@seldon/components/primitives/Icon"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { MouseEvent, useMemo } from "react"
+
+import { ComponentLevel } from "@seldon/core/components/constants"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
+
+import { BoardSection } from "../../helpers/get-board-sections"
 import {
   useIsSectionExpanded,
   useSectionExpansion,
 } from "../../hooks/use-section-expansion"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { BoardSection } from "../../helpers/get-board-sections"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"
 

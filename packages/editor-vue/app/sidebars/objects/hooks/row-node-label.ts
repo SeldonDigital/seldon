@@ -1,5 +1,6 @@
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getComponentName } from "@seldon/factory/export/react/discovery/get-component-name"
+
 import { Properties } from "@seldon/core"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
@@ -24,7 +25,12 @@ interface NodeLabelOptions {
 export function getNodeLabel(
   node: EntryNode,
   workspace: Workspace,
-  { showNodeIds, showCodeNames, nodeExistsInWorkspace, properties }: NodeLabelOptions,
+  {
+    showNodeIds,
+    showCodeNames,
+    nodeExistsInWorkspace,
+    properties,
+  }: NodeLabelOptions,
 ): string {
   if (showNodeIds) {
     return `${node.id} | ${node.template}`
@@ -57,8 +63,10 @@ export function getNodeLabel(
 /** Icon id for the node's entity type shown left of the row label. */
 export function getComponentTypeIcon(node: EntryNode): string {
   if (typeCheckingService.isVariant(node)) {
-    if (typeCheckingService.isDefaultVariant(node)) return "seldon-componentDefault"
-    if (typeCheckingService.isUserVariant(node)) return "seldon-componentVariant"
+    if (typeCheckingService.isDefaultVariant(node))
+      return "seldon-componentDefault"
+    if (typeCheckingService.isUserVariant(node))
+      return "seldon-componentVariant"
   }
   return "seldon-stub"
 }

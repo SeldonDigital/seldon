@@ -1,13 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import { useTransformContext } from "react-zoom-pan-pinch"
-import { nodeRetrievalService } from "@seldon/core/workspace/services"
-import type {
-  InstanceId,
-  VariantId,
-  Workspace,
-} from "@seldon/core/workspace/types"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import {
   useHoveredId,
@@ -19,13 +12,19 @@ import {
   useSelectedNodeRootId,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useTool } from "@app/editor/hooks/use-tool"
-import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
-import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
-import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
-import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { useSelectedId } from "@app/workspace/selection-target"
+import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { useEffect, useRef } from "react"
+import { useTransformContext } from "react-zoom-pan-pinch"
+
+import { nodeRetrievalService } from "@seldon/core/workspace/services"
+import type {
+  InstanceId,
+  VariantId,
+  Workspace,
+} from "@seldon/core/workspace/types"
+
 import { DEFAULT_OUTLINE_COLORS } from "../tracking/helpers/resolve-outline-surface"
 import type { OutlineColors } from "../tracking/helpers/resolve-outline-surface"
 import {
@@ -33,11 +32,14 @@ import {
   resolveOutlineSurfaceForBoard,
   resolveOutlineSurfaceForNode,
 } from "../tracking/helpers/resolve-outline-surface"
+import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
 import {
   getCanvasSelectionElements,
   getScopedSelectionElement,
   getUnionRect,
 } from "./helpers/canvas-selection-target"
+import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
+import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30

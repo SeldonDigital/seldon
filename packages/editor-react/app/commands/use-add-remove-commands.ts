@@ -1,5 +1,22 @@
+import {
+  getHoverStateSnapshot,
+  useSetHoverState,
+} from "@app/canvas/hooks/use-canvas-hover-state"
+import { useTool } from "@app/editor/hooks/use-tool"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
+import {
+  findFontCollectionBoard,
+  findIconSetBoard,
+  findThemeBoard,
+} from "@seldon/editor/lib/workspace/resource-boards"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { nanoid } from "nanoid"
 import { useCallback } from "react"
+
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
@@ -19,22 +36,6 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
-import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useTool } from "@app/editor/hooks/use-tool"
-import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
-import {
-  findFontCollectionBoard,
-  findIconSetBoard,
-  findThemeBoard,
-} from "@seldon/editor/lib/workspace/resource-boards"
-import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  getHoverStateSnapshot,
-  useSetHoverState,
-} from "@app/canvas/hooks/use-canvas-hover-state"
 
 /**
  * Commands for adding and removing nodes and boards

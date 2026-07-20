@@ -1,6 +1,4 @@
 import type { ComboboxOptionItems } from "@app/menus"
-import { RefObject, useCallback, useEffect, useState } from "react"
-import { Board, Instance, Theme, Variant } from "@seldon/core"
 import { useThemes } from "@app/themes/hooks/use-themes"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
@@ -10,6 +8,10 @@ import {
   ThemeEditingContext,
 } from "@seldon/editor/lib/properties/inspector/editing-contexts"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { RefObject, useCallback, useEffect, useState } from "react"
+
+import { Board, Instance, Theme, Variant } from "@seldon/core"
+
 import {
   OptionIconRender,
   createPropertyOptionIconResolver,

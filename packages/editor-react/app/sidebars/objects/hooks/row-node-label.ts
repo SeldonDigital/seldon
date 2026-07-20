@@ -1,11 +1,12 @@
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getComponentName } from "@seldon/factory/export/react/discovery/get-component-name"
+
 import { Properties } from "@seldon/core"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { IconProps } from "@seldon/components/primitives/Icon"
 
 type Workspace = Parameters<typeof getComponentName>[1]
 

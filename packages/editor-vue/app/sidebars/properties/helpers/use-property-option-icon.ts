@@ -1,6 +1,7 @@
-import type { Theme, Workspace } from "@seldon/core"
 import { resolvePropertyOptionIconBinding } from "@seldon/editor/lib/icons/property-option-icon"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+
+import type { Theme, Workspace } from "@seldon/core"
 
 interface ResolverDeps {
   property: FlatProperty

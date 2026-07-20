@@ -1,6 +1,8 @@
-import { create } from "zustand"
-import { ComponentLevel } from "@seldon/core/components/constants"
 import { Target } from "@seldon/editor/lib/workspace/target"
+import { create } from "zustand"
+
+import { ComponentLevel } from "@seldon/core/components/constants"
+
 import { useTool } from "./use-tool"
 
 export type PanelType =

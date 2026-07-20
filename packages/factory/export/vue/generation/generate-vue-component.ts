@@ -1,13 +1,13 @@
 import { Workspace } from "@seldon/core/workspace/types"
 
 import { NodeIdToClass } from "../../css/types"
+import { LICENSE_HEADER } from "../../react/generation/inserts/insert-license"
 import { generateJSXStructure } from "../../react/generation/preprocess/generate-jsx-structure"
 import { JSXNode } from "../../react/generation/preprocess/types"
 import { isAttributeKey } from "../../react/generation/shared/attribute-props"
-import { getConditionalPropPaths } from "../../react/generation/shared/get-conditional-prop-paths"
-import { LICENSE_HEADER } from "../../react/generation/inserts/insert-license"
 import { generateDefaultProps } from "../../react/generation/shared/generate-default-props"
 import { generateJSDocComment } from "../../react/generation/shared/generate-jsdoc-comment"
+import { getConditionalPropPaths } from "../../react/generation/shared/get-conditional-prop-paths"
 import { getVariantClassNames } from "../../react/utils/class-name"
 import { pluralizeLevel } from "../../react/utils/pluralize-level"
 import { ComponentToExport, JSONTreeNode } from "../../types"
@@ -253,7 +253,9 @@ function buildTemplate(
   const returns = resolveVueReturns(component).returns
   const rootTag = getVueRootTag(component)
   const attrBind = rootAttrs ? ` v-bind="rootAttrs"` : ""
-  const refAttr = jsxRoot.ref ? ` data-seldon-ref=${JSON.stringify(jsxRoot.ref)}` : ""
+  const refAttr = jsxRoot.ref
+    ? ` data-seldon-ref=${JSON.stringify(jsxRoot.ref)}`
+    : ""
 
   const childMarkup =
     jsxRoot.children && jsxRoot.children.length > 0

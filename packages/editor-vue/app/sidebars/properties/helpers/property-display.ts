@@ -1,10 +1,18 @@
-import type { Board, Instance, Theme, Value, Variant, Workspace } from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
 import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
 import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
-import { getBoardThemeRef } from "@seldon/editor/lib/properties/inspector/theme-assignment-display"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getBoardThemeRef } from "@seldon/editor/lib/properties/inspector/theme-assignment-display"
+
+import type {
+  Board,
+  Instance,
+  Theme,
+  Value,
+  Variant,
+  Workspace,
+} from "@seldon/core"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 export interface PropertyDisplay {
   options: ReturnType<typeof buildPropertyOptions>

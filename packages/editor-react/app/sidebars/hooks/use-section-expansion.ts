@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+
 import { ComponentLevel } from "@seldon/core/components/constants"
 
 export type ExpandableSection =

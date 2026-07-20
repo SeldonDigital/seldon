@@ -1,15 +1,17 @@
-import { computed, ref, watch, type ComputedRef, type Ref } from "vue"
-import type { Board, Instance, Theme, Variant } from "@seldon/core"
+import type { ComboboxOptionItem } from "@app/menus/types"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import type {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
 } from "@seldon/editor/lib/properties/inspector/editing-contexts"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import type { ComboboxOptionItem } from "@app/menus/types"
-import { useWorkspace } from "@app/workspace/use-workspace"
-import { buildPropertyDisplay } from "../helpers/property-display"
+import { type ComputedRef, type Ref, computed, ref, watch } from "vue"
+
+import type { Board, Instance, Theme, Variant } from "@seldon/core"
+
 import { getPropertyValueForDisplay } from "../helpers/property-control-data"
+import { buildPropertyDisplay } from "../helpers/property-display"
 import { getValidationFunction } from "../helpers/property-validation"
 import { createPropertyOptionIconResolver } from "../helpers/use-property-option-icon"
 import { useCommitPropertyValue } from "./use-commit-property-value"

@@ -6,6 +6,7 @@ import {
   OptionIconRender,
   useComboboxPosition,
 } from "@app/menus"
+import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import {
   CSSProperties,
   MouseEvent,
@@ -14,7 +15,6 @@ import {
   useRef,
   useState,
 } from "react"
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 
 // Fixed panel width for the floating display picker.
 const PANEL_WIDTH = 200

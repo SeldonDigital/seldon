@@ -1,6 +1,6 @@
-import { CSSProperties } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Image } from "@seldon/components/primitives/Image"
+import { CSSProperties } from "react"
 
 interface ImagePreviewProps {
   src: string

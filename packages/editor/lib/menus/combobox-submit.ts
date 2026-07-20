@@ -49,7 +49,9 @@ export function resolveComboboxSubmit<T extends OptionLike>({
 }: ResolveComboboxSubmitArgs<T>): ComboboxSubmitResolution {
   if (useHighlighted && highlightedValue) {
     const source = highlightSource ?? flatOptions
-    const option = source.find((candidate) => candidate.value === highlightedValue)
+    const option = source.find(
+      (candidate) => candidate.value === highlightedValue,
+    )
     if (option) {
       return {
         kind: "select",
@@ -62,7 +64,12 @@ export function resolveComboboxSubmit<T extends OptionLike>({
 
   const byName = findOptionByName(flatOptions, inputValue)
   if (byName) {
-    return { kind: "select", value: byName.value, name: byName.name, fromHighlight: false }
+    return {
+      kind: "select",
+      value: byName.value,
+      name: byName.name,
+      fromHighlight: false,
+    }
   }
 
   if (allowCustom(inputValue)) {

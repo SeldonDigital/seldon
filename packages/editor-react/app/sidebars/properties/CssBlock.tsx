@@ -1,3 +1,5 @@
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
+import { Frame } from "@seldon/components/frames/Frame"
 import { CSSProperties, memo } from "react"
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter"
 import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
@@ -5,8 +7,6 @@ import {
   atomOneDarkReasonable,
   atomOneLight,
 } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
-import { Frame } from "@seldon/components/frames/Frame"
 
 const CSS_BLOCK_PADDING =
   "var(--sdn-paddings-tight) var(--sdn-paddings-compact) var(--sdn-paddings-tight) var(--sdn-paddings-comfortable)"

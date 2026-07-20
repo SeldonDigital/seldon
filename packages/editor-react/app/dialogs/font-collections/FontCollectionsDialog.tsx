@@ -1,13 +1,15 @@
 "use client"
 
-import { useCallback, useMemo } from "react"
-import { STOCK_FONT_COLLECTIONS } from "@seldon/core/font-collections/catalog"
-import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanel } from "@app/editor/hooks/use-panel"
-import { useStockCatalog } from "../hooks/use-stock-catalog"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useCallback, useMemo } from "react"
+
+import { STOCK_FONT_COLLECTIONS } from "@seldon/core/font-collections/catalog"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
+
 import { PanelDialogController } from "../PanelDialogController"
+import { useStockCatalog } from "../hooks/use-stock-catalog"
 import { CatalogDialogItem } from "../types"
 
 const FONT_COLLECTION_ICON = "material-fontDownload"

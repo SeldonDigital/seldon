@@ -1,3 +1,6 @@
+import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
+import { useMoveObjects } from "@app/workspace/hooks/use-move-objects"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
   ElementDragPayload,
   monitorForElements,
@@ -5,10 +8,8 @@ import {
 import type { DropTargetRecord } from "@atlaskit/pragmatic-drag-and-drop/types"
 import { Placement } from "@seldon/editor/lib/types"
 import { useEffect } from "react"
+
 import { Instance, Variant, invariant } from "@seldon/core"
-import { useMoveObjects } from "@app/workspace/hooks/use-move-objects"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 
 /**
  * How long the hovered target must stay settled before the canvas preview is

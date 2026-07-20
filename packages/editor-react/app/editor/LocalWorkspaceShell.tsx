@@ -1,10 +1,10 @@
 "use client"
 
-import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
+import { Layout as LayoutComponent } from "@app/Layout"
 import { useWorkspaceAutosave } from "@app/persistence/hooks/use-workspace-autosave"
 import { useWorkspaceSyncStatus } from "@app/project/hooks/use-workspace-sync-status"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { Layout as LayoutComponent } from "@app/Layout"
+import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
 export function LocalWorkspaceShell({
   record,

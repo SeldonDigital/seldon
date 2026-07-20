@@ -1,6 +1,7 @@
 import { useEffect } from "react"
-import { useCanvasRemeasureStore } from "../../canvas/hooks/use-canvas-remeasure-store"
+
 import { getHtmlElementByNodeId } from "../../canvas/helpers/get-html-element-by-node-id"
+import { useCanvasRemeasureStore } from "../../canvas/hooks/use-canvas-remeasure-store"
 import { calculateSelectionOutline } from "../helpers/calculate-selection-outline"
 import { useNodeRectsStore } from "./use-node-rects-store"
 

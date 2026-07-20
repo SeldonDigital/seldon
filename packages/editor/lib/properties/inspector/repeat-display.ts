@@ -1,5 +1,11 @@
 import { getPropertyRegistryEntry } from "@seldon/editor/lib/icons/icons-registry"
 import { THEME_TOKEN_ICON } from "@seldon/editor/lib/icons/resolve-option-icon"
+import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
+import {
+  findComponentForNode,
+  getNodeCatalogComponentId,
+} from "@seldon/editor/lib/workspace/node-tree"
+import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import {
   Board,
   Instance,
@@ -14,12 +20,6 @@ import { ComponentId } from "@seldon/core/components/constants"
 import { EMPTY_VALUE } from "@seldon/core/properties"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
-import {
-  findComponentForNode,
-  getNodeCatalogComponentId,
-} from "@seldon/editor/lib/workspace/node-tree"
-import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 
 /** Synthetic compound key for the editor-only Repeat row. */

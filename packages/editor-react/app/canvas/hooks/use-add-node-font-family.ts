@@ -1,13 +1,14 @@
+import { useEditorFonts } from "@app/fonts/use-editor-fonts"
+import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useEffect } from "react"
+
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useEditorFonts } from "@app/fonts/use-editor-fonts"
 
 /**
  * Adds the nodes used font family to the editor fonts

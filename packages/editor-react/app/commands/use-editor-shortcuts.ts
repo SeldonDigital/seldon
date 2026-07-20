@@ -1,22 +1,24 @@
+import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { usePreview } from "@app/editor/hooks/use-preview"
+import { useTool } from "@app/editor/hooks/use-tool"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useHistory } from "@app/workspace/hooks/use-history"
+import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useNavigate } from "react-router"
+
 import {
   NORMAL_STATE,
   RESERVED_STATE_GROUPS,
 } from "@seldon/core/workspace/model/node-state"
-import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import { useHistory } from "@app/workspace/hooks/use-history"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
+
 import { useAddRemoveCommands } from "./use-add-remove-commands"
 import { useMoveCommands } from "./use-move-commands"
 import { useSelectCommands } from "./use-select-commands"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
-import { usePanel } from "@app/editor/hooks/use-panel"
-import { usePreview } from "@app/editor/hooks/use-preview"
-import { useTool } from "@app/editor/hooks/use-tool"
 
 /**
  * Reserved states in menu order, matching `useBoardStateMenu`. Index 0 is

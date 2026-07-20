@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
+
 import { BORDER_SIDE_KEYS, type BorderSideKey } from "@seldon/core"
 
 /**

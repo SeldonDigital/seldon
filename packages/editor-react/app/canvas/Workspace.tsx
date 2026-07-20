@@ -1,6 +1,11 @@
 "use client"
 
+import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
+import { usePreview } from "@app/editor/hooks/use-preview"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { Frame } from "@seldon/components/frames/Frame"
 import React, { Profiler } from "react"
+
 import { Board } from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import {
@@ -9,16 +14,13 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
-import { usePreview } from "@app/editor/hooks/use-preview"
-import { useCanvas } from "./hooks/use-canvas"
-import { Frame } from "@seldon/components/frames/Frame"
+
 import { ComponentBoard } from "./boards/ComponentBoard"
 import { FontCollectionBoard } from "./boards/FontCollectionBoard"
 import { IconSetBoard } from "./boards/IconSetBoard"
 import { SandboxCanvas } from "./boards/SandboxCanvas"
 import { ThemeBoard } from "./boards/ThemeBoard"
+import { useCanvas } from "./hooks/use-canvas"
 
 export function CanvasWorkspace() {
   const { onCanvasMouseMove, onCanvasMouseLeave, onCanvasClick } = useCanvas()

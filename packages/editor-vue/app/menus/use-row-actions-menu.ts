@@ -1,5 +1,6 @@
-import { computed, ref, toValue, type MaybeRefOrGetter } from "vue"
 import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
+import { type MaybeRefOrGetter, computed, ref, toValue } from "vue"
+
 import type { MenuEntry } from "./types"
 
 interface UseRowActionsMenuOptions {

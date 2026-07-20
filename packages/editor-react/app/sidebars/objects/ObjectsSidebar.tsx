@@ -1,12 +1,14 @@
 "use client"
 
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useTool } from "@app/editor/hooks/use-tool"
 import {
   useSaveWorkspace,
   useWorkspaceName,
 } from "@app/persistence/workspace-save-store"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildFieldStateProps } from "@app/views/state-props"
-import { LayoutGroup } from "framer-motion"
-import { CSSProperties, PointerEvent, useCallback, useState } from "react"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@app/workspace/hooks/use-object-hover"
 import {
@@ -14,24 +16,23 @@ import {
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { useTool } from "@app/editor/hooks/use-tool"
+import { getSelectionTarget } from "@app/workspace/selection-target"
+import { Frame } from "@seldon/components/frames/Frame"
+import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { LayoutGroup } from "framer-motion"
+import { CSSProperties, PointerEvent, useCallback, useState } from "react"
+
+import { BoardSection } from "../helpers/get-board-sections"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
+import { BoardController } from "./BoardController"
+import { Section } from "./Section"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
 import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
 import { useRowClick } from "./hooks/use-row-click"
 import { useScrollSelection } from "./hooks/use-scroll-selection"
 import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
-import { getSelectionTarget } from "@app/workspace/selection-target"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
-import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { BoardSection } from "../helpers/get-board-sections"
-import { BoardController } from "./BoardController"
-import { Section } from "./Section"
 
 /** Class that renders a header ButtonToggle in its activated (on) state. */
 const ACTIVE_TOGGLE_CLASS = "sdn-state-activated"

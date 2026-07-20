@@ -1,12 +1,13 @@
-import { computed, ref } from "vue"
-import { catalog } from "@seldon/core/components/catalog"
-import { ComponentId } from "@seldon/core/components/constants"
-import type { ComponentSchema } from "@seldon/core/components/types"
-import { getComponentIcon } from "@seldon/core/icon-registry"
 import type {
   CatalogDialogCategory,
   CatalogDialogItem,
 } from "@app/dialogs/types"
+import { computed, ref } from "vue"
+
+import { catalog } from "@seldon/core/components/catalog"
+import { ComponentId } from "@seldon/core/components/constants"
+import type { ComponentSchema } from "@seldon/core/components/types"
+import { getComponentIcon } from "@seldon/core/icon-registry"
 
 export type CatalogItem = CatalogDialogItem & {
   componentId: ComponentId

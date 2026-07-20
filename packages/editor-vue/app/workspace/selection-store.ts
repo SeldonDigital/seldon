@@ -1,7 +1,8 @@
-import type { InstanceId, VariantId } from "@seldon/core"
-import type { BoardKey } from "@seldon/core/workspace/types"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
+
+import type { InstanceId, VariantId } from "@seldon/core"
+import type { BoardKey } from "@seldon/core/workspace/types"
 
 export type ResourceEntryKind = "theme" | "fontCollection" | "iconSet" | "media"
 export type SelectedResourceEntry = { kind: ResourceEntryKind; id: string }

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+
 import { CatalogDialogCategory, CatalogDialogItem } from "../types"
 
 /**

@@ -1,17 +1,47 @@
 import {
-  getCurrentOptionValue,
-  getOptionIcon,
-} from "@seldon/editor/lib/icons/resolve-option-icon"
+  imageUploadTargetForKey,
+  useImageUploadPanel,
+} from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
+import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
 import { MenuEntry } from "@app/menus"
-import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
-import { ICONIC_BUTTON_SELECTOR } from "@seldon/editor/lib/menus/iconic-button"
-import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   buildActivatedRefProps,
   buildDisabledRefProps,
   buildInvalidRefProps,
 } from "@app/views/state-props"
+import {
+  INSTANCE_STATE_EDIT_MESSAGE,
+  useNodeActiveState,
+} from "@app/workspace/hooks/use-node-active-state"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import {
+  getCurrentOptionValue,
+  getOptionIcon,
+} from "@seldon/editor/lib/icons/resolve-option-icon"
+import { ICONIC_BUTTON_SELECTOR } from "@seldon/editor/lib/menus/iconic-button"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import { dispatchPropertyReset } from "@seldon/editor/lib/properties/commit-helpers"
+import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
+import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
+import {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import {
+  FlatProperty,
+  getCompoundChildRows,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import { getPropertyDebugColor } from "@seldon/editor/lib/properties/property-styling"
+import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
+import {
+  getThemeTokenIconColorFromPropertyValue,
+  isSwatchIconPropertyKey,
+} from "@seldon/editor/lib/themes/theme-token-icon-color"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
 import {
   Board,
   Instance,
@@ -28,39 +58,14 @@ import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-k
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
-import {
-  INSTANCE_STATE_EDIT_MESSAGE,
-  useNodeActiveState,
-} from "@app/workspace/hooks/use-node-active-state"
-import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
+
 import { useRenameInput } from "../../hooks/use-rename-input"
-import {
-  imageUploadTargetForKey,
-  useImageUploadPanel,
-} from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
+import type { LayerDragContext } from "../LayerDragRow"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
-import type { LayerDragContext } from "../LayerDragRow"
-import { dispatchPropertyReset } from "@seldon/editor/lib/properties/commit-helpers"
-import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
-import {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import { FlatProperty, getCompoundChildRows } from "@seldon/editor/lib/properties/inspector/properties-data"
-import { getPropertyDebugColor } from "@seldon/editor/lib/properties/property-styling"
-import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
-import {
-  getThemeTokenIconColorFromPropertyValue,
-  isSwatchIconPropertyKey,
-} from "@seldon/editor/lib/themes/theme-token-icon-color"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {

@@ -1,6 +1,7 @@
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 
 /**
  * Resolves a theme by its id against the active workspace.

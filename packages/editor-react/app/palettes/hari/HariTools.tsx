@@ -7,12 +7,12 @@
 // The class names below mirror the generated MessageTools defaults so the
 // rebuilt header and rows keep the design's styling. They track re-exports of
 // MessageTools.tsx: if that file's slot classes change, update them here.
-import { useState } from "react"
 import { ButtonIconic } from "@seldon/components/elements/ButtonIconic"
 import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Icon, type IconProps } from "@seldon/components/primitives/Icon"
 import { TextDescription } from "@seldon/components/primitives/TextDescription"
+import { useState } from "react"
 
 /** One tool-activity line: a status icon and its label. */
 export interface ToolRow {

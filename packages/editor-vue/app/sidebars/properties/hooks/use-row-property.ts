@@ -1,11 +1,44 @@
+import type { MenuEntry } from "@app/menus/types"
 import {
+  buildActivatedRefProps,
+  buildDisabledRefProps,
+  buildInvalidRefProps,
+  mergeStateProps,
+} from "@app/sidebars/state-props"
+import { useRenameInput } from "@app/sidebars/use-rename-input"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import {
+  getCurrentOptionValue,
+  getOptionIcon,
+} from "@seldon/editor/lib/icons/resolve-option-icon"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
+import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import {
+  type FlatProperty,
+  getCompoundChildRows,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
+import {
+  getThemeTokenIconColorFromPropertyValue,
+  isSwatchIconPropertyKey,
+} from "@seldon/editor/lib/themes/theme-token-icon-color"
+import {
+  type ComputedRef,
   computed,
   nextTick,
   onBeforeUnmount,
   ref,
   watch,
-  type ComputedRef,
 } from "vue"
+
 import {
   type Board,
   type Instance,
@@ -20,39 +53,11 @@ import {
 } from "@seldon/core"
 import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+
 import {
-  getCurrentOptionValue,
-  getOptionIcon,
-} from "@seldon/editor/lib/icons/resolve-option-icon"
-import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
-import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
-import {
-  type FlatProperty,
-  getCompoundChildRows,
-} from "@seldon/editor/lib/properties/inspector/properties-data"
-import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
-import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
-import {
-  getThemeTokenIconColorFromPropertyValue,
-  isSwatchIconPropertyKey,
-} from "@seldon/editor/lib/themes/theme-token-icon-color"
-import type { MenuEntry } from "@app/menus/types"
-import {
-  buildActivatedRefProps,
-  buildDisabledRefProps,
-  buildInvalidRefProps,
-  mergeStateProps,
-} from "@app/sidebars/state-props"
-import { useRenameInput } from "@app/sidebars/use-rename-input"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useToastStore } from "@app/toaster/toast-store"
-import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
+  FRAME_REF_SELECTOR,
+  buildPropertyRowProps,
+} from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import {
   getPropertyValueForDisplay,
@@ -220,16 +225,17 @@ export function useRowProperty(input: RowPropertyInput) {
     return { section: section as ThemeCustomTokenSection, key: id }
   })
 
-  const layerTarget = computed<{ property: LayeredPaintKey; index: number } | null>(
-    () => {
-      if (input.themeEditingContext.value?.isThemeEditing) return null
-      const parsed = parsePropertyPath(property.value.key)
-      if (parsed.kind === "layered-parent" && parsed.index >= 1) {
-        return { property: parsed.root, index: parsed.index }
-      }
-      return null
-    },
-  )
+  const layerTarget = computed<{
+    property: LayeredPaintKey
+    index: number
+  } | null>(() => {
+    if (input.themeEditingContext.value?.isThemeEditing) return null
+    const parsed = parsePropertyPath(property.value.key)
+    if (parsed.kind === "layered-parent" && parsed.index >= 1) {
+      return { property: parsed.root, index: parsed.index }
+    }
+    return null
+  })
 
   const iconId = computed(() => {
     const descriptor = getOptionIcon(
@@ -282,7 +288,10 @@ export function useRowProperty(input: RowPropertyInput) {
     if (!theme.value || !isSwatchIconPropertyKey(property.value.key)) {
       return undefined
     }
-    return getThemeTokenIconColorFromPropertyValue(property.value.value, theme.value)
+    return getThemeTokenIconColorFromPropertyValue(
+      property.value.value,
+      theme.value,
+    )
   })
 
   const themeSwatchColors = computed(() => {
@@ -430,7 +439,9 @@ export function useRowProperty(input: RowPropertyInput) {
   })
 
   const resetActions = computed<MenuEntry[]>(() =>
-    isBoard(node.value) && property.value.key === "board" ? [] : rowActions.value,
+    isBoard(node.value) && property.value.key === "board"
+      ? []
+      : rowActions.value,
   )
 
   const listItemProps = computed(() =>
@@ -466,7 +477,9 @@ export function useRowProperty(input: RowPropertyInput) {
   })
 
   const nameLabelProps = computed(() =>
-    mergeStateProps(nameInput.value, { style: listItemProps.value.nameLabelStyle }),
+    mergeStateProps(nameInput.value, {
+      style: listItemProps.value.nameLabelStyle,
+    }),
   )
 
   const valueLabelProps = computed(() =>

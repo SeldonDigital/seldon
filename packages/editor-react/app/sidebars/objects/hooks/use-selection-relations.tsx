@@ -1,11 +1,15 @@
-import { type ReactNode, useEffect } from "react"
-import { create } from "zustand"
-import { nodeTraversalService } from "@seldon/core/workspace/services"
-import type { Workspace } from "@seldon/core/workspace/types"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
-import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+import {
+  getComponentKey,
+  getNode,
+} from "@seldon/editor/lib/workspace/workspace-accessors"
+import { type ReactNode, useEffect } from "react"
+import { create } from "zustand"
+
+import { nodeTraversalService } from "@seldon/core/workspace/services"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Selection facts that are identical for every row in the objects tree.

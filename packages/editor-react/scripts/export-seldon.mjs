@@ -1,9 +1,10 @@
-import { build } from "esbuild"
 import fs from "node:fs"
 import fsp from "node:fs/promises"
 import os from "node:os"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
+
+import { build } from "esbuild"
 
 /**
  * Runs the factory export on `seldon-editor.json` and writes the generated

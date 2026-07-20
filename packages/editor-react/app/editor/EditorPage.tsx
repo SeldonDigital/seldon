@@ -1,10 +1,10 @@
-import type { CSSProperties } from "react"
-import { useWorkspaceRecord } from "@app/persistence/hooks/use-workspace-record"
-import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
-import { Frame } from "@seldon/components/frames/Frame"
 import Editor from "@app/editor/Editor"
 import { LocalWorkspaceShell } from "@app/editor/LocalWorkspaceShell"
 import { ProjectInitialize } from "@app/editor/ProjectInitialize"
+import { useWorkspaceRecord } from "@app/persistence/hooks/use-workspace-record"
+import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
+import { Frame } from "@seldon/components/frames/Frame"
+import type { CSSProperties } from "react"
 
 const message: CSSProperties = {
   padding: "2rem",

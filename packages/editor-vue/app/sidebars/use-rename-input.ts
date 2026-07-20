@@ -1,8 +1,8 @@
-import { computed, ref, toValue, watch, type MaybeRefOrGetter } from "vue"
 import {
   buildDisplayInputProps,
   buildEditingRefProps,
 } from "@app/sidebars/state-props"
+import { type MaybeRefOrGetter, computed, ref, toValue, watch } from "vue"
 
 interface UseRenameInputOptions {
   label: MaybeRefOrGetter<string>

@@ -1,6 +1,7 @@
-import { type Value, ValueType } from "@seldon/core"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
+
+import { type Value, ValueType } from "@seldon/core"
 
 /**
  * The value shown for a property row, resolving dimmed/compound/shorthand/preset

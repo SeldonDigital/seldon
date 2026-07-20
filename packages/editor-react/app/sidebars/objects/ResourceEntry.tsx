@@ -1,21 +1,22 @@
 "use client"
 
+import { useTool } from "@app/editor/hooks/use-tool"
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { buildFieldStateProps } from "@app/views/state-props"
-import { useCallback, useRef } from "react"
 import {
   useIsResourceEntrySelected,
   useSelection,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useTool } from "@app/editor/hooks/use-tool"
-import { useRenameInput } from "../hooks/use-rename-input"
-import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
-import { useRowClick } from "./hooks/use-row-click"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { useCallback, useRef } from "react"
+
+import { useRenameInput } from "../hooks/use-rename-input"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import type { ResourceRowConfig } from "./helpers/resource-row-config"
+import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
+import { useRowClick } from "./hooks/use-row-click"
 
 type ResourceEntryProps = {
   config: ResourceRowConfig

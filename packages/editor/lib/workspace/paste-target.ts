@@ -6,10 +6,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { BoardKey, EntryNode } from "@seldon/core/workspace/types"
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "./node-tree"
+import { getNodeCatalogComponentId, getNodeChildIds } from "./node-tree"
 import { getComponentKey, getNode } from "./workspace-accessors"
 
 /**

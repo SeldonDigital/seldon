@@ -1,4 +1,35 @@
-import { computed, type ComputedRef } from "vue"
+import { useBoardStateStore } from "@app/canvas/board-state-store"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useSelection } from "@app/workspace/use-selection"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
+import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
+import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
+import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
+import {
+  type FlatProperty,
+  flattenNodeProperties,
+  getPropertiesSubjectId,
+} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { flattenThemeProperties } from "@seldon/editor/lib/properties/inspector/theme-properties-data"
+import {
+  buildFontCollectionEditAction,
+  buildIconSetEditAction,
+} from "@seldon/editor/lib/resources/build-resource-edit-actions"
+import {
+  buildThemeEditActions,
+  buildThemeResetAction,
+} from "@seldon/editor/lib/themes/build-theme-edit-actions"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { type ComputedRef, computed } from "vue"
+
 import {
   type Board,
   type Instance,
@@ -20,39 +51,10 @@ import { workspaceFontCollectionService } from "@seldon/core/workspace/services/
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
-import {
-  buildThemeEditActions,
-  buildThemeResetAction,
-} from "@seldon/editor/lib/themes/build-theme-edit-actions"
-import {
-  buildFontCollectionEditAction,
-  buildIconSetEditAction,
-} from "@seldon/editor/lib/resources/build-resource-edit-actions"
-import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
-import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
-import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
-import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
-import {
-  type FlatProperty,
-  flattenNodeProperties,
-  getPropertiesSubjectId,
-} from "@seldon/editor/lib/properties/inspector/properties-data"
-import { flattenThemeProperties } from "@seldon/editor/lib/properties/inspector/theme-properties-data"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useBoardStateStore } from "@app/canvas/board-state-store"
-import { useEditorConfigStore } from "@app/editor/editor-config-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useSelection } from "@app/workspace/use-selection"
-import { useWorkspace } from "@app/workspace/use-workspace"
+
 import { getScopedNodeCss } from "../helpers/get-calculated-properties"
-import { useBorderSideVisibilityStore } from "./use-border-side-visibility"
 import type { PropertySection } from "../types"
+import { useBorderSideVisibilityStore } from "./use-border-side-visibility"
 
 export interface PropertiesSidebarTree {
   workspace: Workspace
@@ -79,7 +81,10 @@ function findBoardForEntry<T extends Board>(
   entryId: string,
 ): T | undefined {
   for (const board of Object.values(workspace.boards)) {
-    if (guard(board) && board.variants.some((variant) => variant.id === entryId)) {
+    if (
+      guard(board) &&
+      board.variants.some((variant) => variant.id === entryId)
+    ) {
       return board
     }
   }
@@ -115,7 +120,9 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
     const iconEntryId = selectedIconSetEntryId.value
 
     const isThemeEditing = Boolean(themeEntryId && ws.themes[themeEntryId])
-    const isFontEditing = Boolean(fontEntryId && ws["font-collections"][fontEntryId])
+    const isFontEditing = Boolean(
+      fontEntryId && ws["font-collections"][fontEntryId],
+    )
     const isIconEditing = Boolean(iconEntryId && ws["icon-sets"][iconEntryId])
 
     // ---- Theme editing ----
@@ -133,7 +140,10 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
       const boardKey = isBoard(selection)
         ? getComponentKey(selection)
         : (() => {
-            const board = nodeRelationshipService.findBoardForNode(selection, ws)
+            const board = nodeRelationshipService.findBoardForNode(
+              selection,
+              ws,
+            )
             return board ? getComponentKey(board) : undefined
           })()
       const activeState = boardKey
@@ -165,7 +175,8 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
         baseSwatchIds,
       ).map((property) => ({
         ...property,
-        controlType: property.controlType || getThemePropertyControlType(property),
+        controlType:
+          property.controlType || getThemePropertyControlType(property),
       }))
       metadataVariantLabel = entry.label
       const board = findBoardForEntry(ws, isThemeBoard, themeEntryId)
@@ -275,7 +286,11 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
         iconSetEditingContext = {
           isIconSetEditing: true,
           updateIconSetProperty: (property, value) => {
-            const action = buildIconSetEditAction(iconEntryId, property.key, value)
+            const action = buildIconSetEditAction(
+              iconEntryId,
+              property.key,
+              value,
+            )
             if (action) dispatch(action as never)
           },
         }

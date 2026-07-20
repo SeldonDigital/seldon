@@ -1,8 +1,9 @@
 // Editor chrome: renders a computed theme's palette as an overlapping swatch
 // cluster. Prop-driven and factory-inert, so it lives in the editor rather than
 // the generated View layer.
-import { CSSProperties } from "react"
 import { Frame } from "@seldon/components/frames/Frame"
+import { CSSProperties } from "react"
+
 import { SwatchDot } from "./SwatchDot"
 
 interface ThemeSwatchesProps {

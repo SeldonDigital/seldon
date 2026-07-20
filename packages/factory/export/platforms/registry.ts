@@ -1,7 +1,6 @@
 import { Workspace } from "@seldon/core"
 
 import { exportReact } from "../react/export-react"
-import { exportVue } from "../vue/export-vue"
 import type {
   ExportOptions,
   ExportStyleId,
@@ -9,6 +8,7 @@ import type {
   PlatformId,
   PlatformStatus,
 } from "../types"
+import { exportVue } from "../vue/export-vue"
 
 /**
  * A single export platform. `export` is present only when the platform can

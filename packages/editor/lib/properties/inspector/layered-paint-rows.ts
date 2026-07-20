@@ -3,16 +3,23 @@
  * parent row plus facet children per layer. Rows come out in reverse index
  * order, so the highest index renders at the top and index 0 renders last.
  */
-import type { Board, Instance, Properties, Theme, Variant, Workspace } from "@seldon/core"
-import { EMPTY_VALUE } from "@seldon/core/properties"
-import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { getPropertyRegistryEntry } from "@seldon/editor/lib/icons/icons-registry"
 import {
   getCompoundLayerValue,
   layeredParentPath,
 } from "@seldon/editor/lib/properties/property-paths"
 import { formatPropertyLabel } from "@seldon/editor/lib/properties/shared-utils"
+import type {
+  Board,
+  Instance,
+  Properties,
+  Theme,
+  Variant,
+  Workspace,
+} from "@seldon/core"
+import { EMPTY_VALUE } from "@seldon/core/properties"
+import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import type { FlatProperty, PropertyStatus } from "./flat-property"
 import { createFlatProperty, getSubProperties } from "./flat-property-factory"
 

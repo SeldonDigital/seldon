@@ -1,6 +1,7 @@
-import type { Workspace } from "@seldon/core/workspace/types"
 import { defineStore } from "pinia"
 import { shallowRef } from "vue"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Holds a transient preview workspace during drag/insert gestures. Preview

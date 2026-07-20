@@ -1,8 +1,8 @@
-import type { CSSProperties } from "vue"
 import {
   MenuEntry as MenuEntryBase,
   MenuItem as MenuItemBase,
 } from "@seldon/editor/lib/menus/types"
+import type { CSSProperties } from "vue"
 
 export type {
   MenuItemId,

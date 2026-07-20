@@ -2,9 +2,9 @@
 // the dragged row's label and icon to the generated ItemNode and applies the
 // floating drag-chip chrome from Seldon tokens. The imperative mount into the
 // native drag preview lives in the drag hook that renders this.
-import { CSSProperties } from "react"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { CSSProperties } from "react"
 
 const previewStyle: CSSProperties = {
   backgroundColor:

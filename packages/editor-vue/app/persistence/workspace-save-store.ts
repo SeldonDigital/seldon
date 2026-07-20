@@ -1,10 +1,12 @@
+import {
+  type StoredWorkspace,
+  saveStoredWorkspace,
+} from "@seldon/editor/lib/storage/workspace-store"
 import { defineStore } from "pinia"
 import { ref } from "vue"
+
 import type { Workspace } from "@seldon/core/workspace/types"
-import {
-  saveStoredWorkspace,
-  type StoredWorkspace,
-} from "@seldon/editor/lib/storage/workspace-store"
+
 import { useDirtyStore } from "./dirty-store"
 
 /** Optional record fields a save may patch alongside the workspace snapshot. */
@@ -23,7 +25,10 @@ export const useWorkspaceSaveStore = defineStore("workspace-save", () => {
     record.value = next
   }
 
-  async function saveNow(workspace: Workspace, patch?: SavePatch): Promise<void> {
+  async function saveNow(
+    workspace: Workspace,
+    patch?: SavePatch,
+  ): Promise<void> {
     const current = record.value
     if (!current) return
     const next: StoredWorkspace = {

@@ -1,6 +1,6 @@
-import { useCallback } from "react"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { useCallback } from "react"
 
 /**
  * Maps font collection family property edits to workspace actions on the active

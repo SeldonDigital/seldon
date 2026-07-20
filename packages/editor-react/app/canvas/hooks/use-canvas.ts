@@ -1,6 +1,30 @@
+import {
+  HoverState,
+  useCanvasHoverState,
+} from "@app/canvas/hooks/use-canvas-hover-state"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { usePreview } from "@app/editor/hooks/use-preview"
+import { useTool } from "@app/editor/hooks/use-tool"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useSetHoveredId } from "@app/workspace/hooks/use-object-hover"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import {
+  getSelectionTarget,
+  selectFromTarget,
+} from "@app/workspace/selection-target"
+import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
+import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
+import {
+  getNodeCatalogComponentId,
+  getNodeChildIds,
+} from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { MouseEventHandler, useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useThrottledCallback } from "use-debounce"
+
 import { InstanceId, VariantId, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
@@ -11,29 +35,7 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import { useSetHoveredId } from "@app/workspace/hooks/use-object-hover"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { usePanel } from "@app/editor/hooks/use-panel"
-import { usePreview } from "@app/editor/hooks/use-preview"
-import { useTool } from "@app/editor/hooks/use-tool"
-import {
-  HoverState,
-  useCanvasHoverState,
-} from "@app/canvas/hooks/use-canvas-hover-state"
-import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
-import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getSelectionTarget,
-  selectFromTarget,
-} from "@app/workspace/selection-target"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"

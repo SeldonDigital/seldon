@@ -1,18 +1,20 @@
+import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { Frame } from "@seldon/components/frames/Frame"
 import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
+
 import { Instance, Variant } from "@seldon/core"
 import {
   nodeRelationshipService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
-import { usePanel } from "@app/editor/hooks/use-panel"
-import { useTool } from "@app/editor/hooks/use-tool"
+
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
-import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
 

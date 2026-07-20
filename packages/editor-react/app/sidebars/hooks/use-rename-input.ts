@@ -2,6 +2,7 @@ import {
   buildDisplayInputProps,
   buildEditingRefProps,
 } from "@app/views/state-props"
+import { InputProps } from "@seldon/components/primitives/Input"
 import {
   type ChangeEvent,
   type KeyboardEvent,
@@ -9,7 +10,7 @@ import {
   useEffect,
   useRef,
 } from "react"
-import { InputProps } from "@seldon/components/primitives/Input"
+
 import { useRenameValue } from "./use-rename-value"
 
 interface UseRenameInputOptions {

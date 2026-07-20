@@ -1,16 +1,15 @@
-import type { Board } from "@seldon/core"
-import type { BoardKey } from "@seldon/core/workspace/types"
-import {
-  findComponentForNode,
-} from "@seldon/editor/lib/workspace/node-tree"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
 import {
   getComponentKey,
   getNode,
 } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
-import { computed, type ComputedRef } from "vue"
+import { type ComputedRef, computed } from "vue"
+
+import type { Board } from "@seldon/core"
+import type { BoardKey } from "@seldon/core/workspace/types"
 
 type BoardVariants = { variants?: { id: string }[] }
 

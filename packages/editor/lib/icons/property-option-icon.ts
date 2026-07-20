@@ -1,9 +1,9 @@
-import type { Theme, Workspace } from "@seldon/core"
-import { type IconId, defaultIconId } from "@seldon/core/icon-sets"
 import { isWorkspaceIconUnavailable } from "@seldon/editor/lib/icon-sets/icon-availability"
 import { getOptionIcon } from "@seldon/editor/lib/icons/resolve-option-icon"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { getRepeatSymbolDescendant } from "@seldon/editor/lib/properties/inspector/repeat-display"
+import type { Theme, Workspace } from "@seldon/core"
+import { type IconId, defaultIconId } from "@seldon/core/icon-sets"
 
 /**
  * Framework-neutral decision for a property option's icon. `iconId` values flow
@@ -78,7 +78,12 @@ export function resolvePropertyOptionIconBinding({
     return { kind: "iconId", icon: property.icon }
   }
 
-  const descriptor = getOptionIcon(property.key, option.value, theme, property.icon)
+  const descriptor = getOptionIcon(
+    property.key,
+    option.value,
+    theme,
+    property.icon,
+  )
   switch (descriptor.kind) {
     case "swatchColor":
       return { kind: "swatchColor", color: descriptor.color }

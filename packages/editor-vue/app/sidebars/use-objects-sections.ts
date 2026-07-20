@@ -1,12 +1,13 @@
-import { boardOrderService } from "@seldon/core/workspace/services"
-import type { Workspace } from "@seldon/core/workspace/types"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import {
   type BoardSection,
   getBoardSections,
 } from "@seldon/editor/lib/sidebars/get-board-sections"
 import { storeToRefs } from "pinia"
-import { computed, type Ref } from "vue"
-import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { type Ref, computed } from "vue"
+
+import { boardOrderService } from "@seldon/core/workspace/services"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /** Section levels that belong to the Resources view of the objects sidebar. */
 const RESOURCE_SECTION_LEVELS: ReadonlySet<BoardSection["level"]> = new Set([

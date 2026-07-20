@@ -1,4 +1,6 @@
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useMemo, useState } from "react"
+
 import { catalog } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ComponentSchema } from "@seldon/core/components/types"
@@ -8,7 +10,7 @@ import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/component
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/general/is-special-board-variant"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+
 import { CatalogDialogCategory, CatalogDialogItem } from "../types"
 
 export type CatalogComponentItem = CatalogDialogItem & {

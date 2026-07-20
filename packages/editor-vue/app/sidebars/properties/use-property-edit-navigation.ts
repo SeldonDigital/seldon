@@ -1,4 +1,4 @@
-import { inject, provide, type Ref } from "vue"
+import { type Ref, inject, provide } from "vue"
 
 type Direction = 1 | -1
 

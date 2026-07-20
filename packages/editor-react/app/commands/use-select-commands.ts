@@ -1,4 +1,7 @@
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useCallback, useMemo } from "react"
+
 import {
   resolveFirstChildNodeId,
   resolveNextSiblingNodeId,
@@ -7,8 +10,6 @@ import {
   resolvePreviousSiblingNodeId,
   resolveSourceNodeId,
 } from "@seldon/core/workspace/services/nodes/node-navigation.service"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 
 /**
  * Tree-navigation commands for the Select menu. Traversal lives in core resolvers

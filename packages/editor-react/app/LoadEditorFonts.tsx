@@ -1,10 +1,11 @@
 "use client"
 
-import { buildFontFaceCss } from "@seldon/editor/lib/font-collections/build-font-face-css"
-import { useMemo } from "react"
-import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
+import { buildFontFaceCss } from "@seldon/editor/lib/font-collections/build-font-face-css"
+import { useMemo } from "react"
+
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
 
 /**
  * Self-hosts every enabled font-collection family for the canvas. The enabled

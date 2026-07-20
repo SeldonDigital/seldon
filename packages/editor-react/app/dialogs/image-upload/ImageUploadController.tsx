@@ -1,6 +1,11 @@
 "use client"
 
+import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
+import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { PanelDialog } from "@seldon/components/modules/PanelDialog"
+import { IconProps } from "@seldon/components/primitives/Icon"
+import { ResizeSide } from "@seldon/components/utils/resize"
 import {
   CSSProperties,
   PointerEvent,
@@ -9,13 +14,9 @@ import {
   useMemo,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
-import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
-import { PanelDialog } from "@seldon/components/modules/PanelDialog"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { ResizeSide } from "@seldon/components/utils/resize"
-import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
+
 import { ImageDropzone } from "./ImageDropzone"
+import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
 // side and bottom edges plus the two bottom corners.

@@ -5,8 +5,8 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { getNodeCatalogComponentId } from "./node-tree"
 import type { Placement } from "../types"
+import { getNodeCatalogComponentId } from "./node-tree"
 
 /**
  * Whether `subject` can be dropped at `placement` relative to `target`. Pure and

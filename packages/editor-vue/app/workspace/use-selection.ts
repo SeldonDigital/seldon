@@ -1,14 +1,15 @@
-import { storeToRefs } from "pinia"
-import { computed } from "vue"
-import type { Instance, InstanceId, Variant, VariantId } from "@seldon/core"
-import type { Board } from "@seldon/core/workspace/model/components"
-import type { BoardKey } from "@seldon/core/workspace/types"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import {
   getComponent,
   getNode,
 } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useWorkspace } from "@app/workspace/use-workspace"
+import { storeToRefs } from "pinia"
+import { computed } from "vue"
+
+import type { Instance, InstanceId, Variant, VariantId } from "@seldon/core"
+import type { Board } from "@seldon/core/workspace/model/components"
+import type { BoardKey } from "@seldon/core/workspace/types"
 
 /**
  * Preview-aware, derived selection. Exposes the raw selection state plus the

@@ -1,9 +1,10 @@
-import { computed, type ComputedRef } from "vue"
-import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import type { MenuEntry } from "@app/menus/types"
 import { useDispatch } from "@app/workspace/use-dispatch"
-import { useEditState } from "./use-edit-state"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import { type ComputedRef, computed } from "vue"
+
 import type { ResourceRowConfig } from "../helpers/resource-row-config"
+import { useEditState } from "./use-edit-state"
 
 type EntrySnapshot = {
   label: string

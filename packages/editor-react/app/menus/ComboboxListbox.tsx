@@ -9,8 +9,6 @@
  * Only functional placement (fixed position, scroll) is applied inline; all
  * appearance comes from the authored component CSS.
  */
-import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
-import { createPortal } from "react-dom"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
@@ -19,6 +17,9 @@ import { Listbox } from "@seldon/components/parts/Listbox"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
+import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
+import { createPortal } from "react-dom"
+
 import { ComboboxOptionItem, OptionIconRender } from "./types"
 
 interface Position {

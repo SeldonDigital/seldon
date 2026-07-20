@@ -1,11 +1,3 @@
-import { defineStore } from "pinia"
-import { ref } from "vue"
-import type { InstanceId, VariantId } from "@seldon/core"
-import {
-  nodeTraversalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import type { EntryNode } from "@seldon/core/workspace/types"
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
@@ -13,6 +5,15 @@ import {
   getComponentKey,
   getNode,
 } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { defineStore } from "pinia"
+import { ref } from "vue"
+
+import type { InstanceId, VariantId } from "@seldon/core"
+import {
+  nodeTraversalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
+import type { EntryNode } from "@seldon/core/workspace/types"
 
 /**
  * Node- and board-level expansion for the objects tree, keyed by board key or

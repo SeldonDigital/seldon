@@ -1,8 +1,8 @@
 /**
  * Hook for property validation logic
  */
-import { getValidationFunction } from "@seldon/editor/lib/properties/inspector/property-validation"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getValidationFunction } from "@seldon/editor/lib/properties/inspector/property-validation"
 
 interface UsePropertyValidationResult {
   validationFunction: ((value: string) => boolean) | undefined

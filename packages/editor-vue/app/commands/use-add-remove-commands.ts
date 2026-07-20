@@ -1,6 +1,21 @@
+import { useCanvasHoverStore } from "@app/canvas/canvas-hover-store"
+import { useToolStore } from "@app/editor/tool-store"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useSelection } from "@app/workspace/use-selection"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
+import {
+  findFontCollectionBoard,
+  findIconSetBoard,
+  findThemeBoard,
+} from "@seldon/editor/lib/workspace/resource-boards"
+import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { nanoid } from "nanoid"
-import { ComponentId } from "@seldon/core/components/constants"
+
 import { InstanceId, VariantId } from "@seldon/core"
+import { ComponentId } from "@seldon/core/components/constants"
 import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import {
@@ -18,20 +33,6 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
-import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
-import {
-  findFontCollectionBoard,
-  findIconSetBoard,
-  findThemeBoard,
-} from "@seldon/editor/lib/workspace/resource-boards"
-import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useCanvasHoverStore } from "@app/canvas/canvas-hover-store"
-import { useToastStore } from "@app/toaster/toast-store"
-import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useSelection } from "@app/workspace/use-selection"
-import { useWorkspace } from "@app/workspace/use-workspace"
-import { useToolStore } from "@app/editor/tool-store"
 
 /**
  * Commands for adding and removing nodes and boards. Mirrors the React
@@ -124,7 +125,10 @@ export function useAddRemoveCommands() {
     if (isThemeBoard(board)) {
       const defaultThemeId = board.variants[0]?.id
       if (!defaultThemeId) return
-      dispatch({ type: "duplicate_theme", payload: { themeId: defaultThemeId } })
+      dispatch({
+        type: "duplicate_theme",
+        payload: { themeId: defaultThemeId },
+      })
       tool.setActiveTool("select")
       return
     }

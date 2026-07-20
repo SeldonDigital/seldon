@@ -1,4 +1,5 @@
 import type { Properties } from "@seldon/core"
+
 import type { CanvasHtmlAttributes } from "./ComponentRenderer"
 
 /**

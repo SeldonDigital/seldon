@@ -1,6 +1,6 @@
-import { create } from "zustand"
 import { PropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-property-sections"
 import { ThemePropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
+import { create } from "zustand"
 
 type AllCategoryType = PropertyCategoryType | ThemePropertyCategoryType
 

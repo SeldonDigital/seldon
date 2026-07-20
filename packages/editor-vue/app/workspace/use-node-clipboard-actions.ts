@@ -1,15 +1,16 @@
-import { InstanceId, VariantId } from "@seldon/core"
-import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
-import { typeCheckingService } from "@seldon/core/workspace/services"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useObjectClipboardStore } from "@app/workspace/object-clipboard-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useMoveObjects } from "@app/workspace/use-move-objects"
+import { useSelection } from "@app/workspace/use-selection"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { resolvePasteTarget } from "@seldon/editor/lib/workspace/paste-target"
 import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useSelection } from "@app/workspace/use-selection"
-import { useWorkspace } from "@app/workspace/use-workspace"
-import { useMoveObjects } from "@app/workspace/use-move-objects"
-import { useObjectClipboardStore } from "@app/workspace/object-clipboard-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useToastStore } from "@app/toaster/toast-store"
+
+import { InstanceId, VariantId } from "@seldon/core"
+import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
+import { typeCheckingService } from "@seldon/core/workspace/services"
 
 /**
  * Cut/copy/paste for the selected object. The clipboard holds a node id only;

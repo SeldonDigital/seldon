@@ -1,4 +1,5 @@
-import { computed, type ComputedRef } from "vue"
+import { type ComputedRef, computed } from "vue"
+
 import { usePropertyExpansionStore } from "../property-expansion-store"
 import type { PropertySection } from "../types"
 

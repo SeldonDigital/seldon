@@ -1,15 +1,16 @@
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { mergeStateProps } from "@app/views/state-props"
-import { ChangeEvent, memo, useCallback } from "react"
-import { IndentationLevel } from "../hooks/use-indentation"
-import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
 import { ItemPropertyToggle } from "@seldon/components/elements/ItemPropertyToggle"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
+import { ChangeEvent, memo, useCallback } from "react"
+
+import { IndentationLevel } from "../hooks/use-indentation"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
+import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 
 /**
  * View-model for a property row. Value rows bind the generated `ItemProperty`.

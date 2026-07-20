@@ -1,5 +1,6 @@
-import { computed, ref, type ComputedRef } from "vue"
 import { storeToRefs } from "pinia"
+import { type ComputedRef, computed, ref } from "vue"
+
 import { useEditorConfigStore } from "./editor-config-store"
 
 /** Resolved appearance after mapping `"system"` to the OS preference. */

@@ -1,22 +1,24 @@
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import {
   buildActivatedRefProps,
   buildFieldStateProps,
   mergeStateProps,
 } from "@app/views/state-props"
+import { ItemNode } from "@seldon/components/elements/ItemNode"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { memo, useCallback, useRef } from "react"
+
 import { Board as BoardType } from "@seldon/core"
+
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
-import { useRowBoard } from "./hooks/use-row-board"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { NodeController } from "./NodeController"
 import { ResourceEntry } from "./ResourceEntry"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
+import { useRowBoard } from "./hooks/use-row-board"
 
 const BOARD_SELECTION_KIND = "board"
 

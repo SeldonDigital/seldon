@@ -1,13 +1,15 @@
+import { usePanel } from "@app/editor/hooks/use-panel"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import {
+  type ImageUploadTarget,
+  imageUploadTargetForKey,
+} from "@seldon/editor/lib/dialogs/image-upload-target"
 import { useRef, useState } from "react"
 import { create } from "zustand"
+
 import { BackgroundKind, ValueType } from "@seldon/core/properties"
-import {
-  imageUploadTargetForKey,
-  type ImageUploadTarget,
-} from "@seldon/editor/lib/dialogs/image-upload-target"
+
 import { useImageUpload } from "./use-image-upload"
-import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import { usePanel } from "@app/editor/hooks/use-panel"
 
 export { imageUploadTargetForKey, type ImageUploadTarget }
 

@@ -56,8 +56,12 @@ export async function exportVue(
 
   const levelOrder = ORDERED_COMPONENT_LEVELS.slice().reverse()
   componentsToExport = componentsToExport.sort((a, b) => {
-    const aLevelIndex = levelOrder.indexOf(getComponentSchema(a.componentId).level)
-    const bLevelIndex = levelOrder.indexOf(getComponentSchema(b.componentId).level)
+    const aLevelIndex = levelOrder.indexOf(
+      getComponentSchema(a.componentId).level,
+    )
+    const bLevelIndex = levelOrder.indexOf(
+      getComponentSchema(b.componentId).level,
+    )
     return aLevelIndex - bLevelIndex
   })
 
@@ -158,7 +162,14 @@ export async function exportVue(
   return filesToExport
 }
 
-const FORMATTABLE_SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
+const FORMATTABLE_SOURCE_EXTENSIONS = [
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+]
 
 function isFormattableSource(path: string): boolean {
   return FORMATTABLE_SOURCE_EXTENSIONS.some((ext) => path.endsWith(ext))

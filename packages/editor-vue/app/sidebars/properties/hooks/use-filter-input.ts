@@ -1,8 +1,8 @@
-import { computed, nextTick, ref } from "vue"
 import {
   buildDisplayInputProps,
   buildEditingRefProps,
 } from "@app/sidebars/state-props"
+import { computed, nextTick, ref } from "vue"
 
 const PLACEHOLDER = "Filter..."
 
@@ -44,7 +44,10 @@ export function useFilterInput() {
 
   const input = computed<Record<string, unknown>>(() => {
     if (!isEditing.value) {
-      return { ...buildDisplayInputProps(query.value), placeholder: PLACEHOLDER }
+      return {
+        ...buildDisplayInputProps(query.value),
+        placeholder: PLACEHOLDER,
+      }
     }
     return {
       ref: (el: unknown) => (inputEl.value = el as HTMLInputElement | null),

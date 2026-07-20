@@ -1,11 +1,15 @@
-import type { Action } from "@seldon/core"
-import type { Workspace } from "@seldon/core/workspace/types"
 import { WorkspaceValidationError, workspaceReducer } from "@app/core"
 import { useDebugStore } from "@app/editor/debug-store"
 import { useDirtyStore } from "@app/persistence/dirty-store"
-import { getCurrentWorkspace, useHistoryStore } from "@app/workspace/history-store"
-import { usePreviewStore } from "@app/workspace/preview-store"
 import { useToastStore } from "@app/toaster/toast-store"
+import {
+  getCurrentWorkspace,
+  useHistoryStore,
+} from "@app/workspace/history-store"
+import { usePreviewStore } from "@app/workspace/preview-store"
+
+import type { Action } from "@seldon/core"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Returns a `dispatch` that reduces from the committed workspace and routes the

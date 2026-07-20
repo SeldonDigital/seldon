@@ -1,4 +1,9 @@
+import {
+  IconDefault,
+  IconSeldonMissing as IconMissing,
+} from "@seldon/components/icons"
 import { SVGAttributes } from "react"
+
 import { IconId } from "@seldon/core/icon-sets"
 import * as CarbonIcons from "@seldon/core/icon-sets/catalog/carbon"
 import * as CarbonIconsAll from "@seldon/core/icon-sets/catalog/carbon/index-all"
@@ -8,10 +13,6 @@ import * as MaterialIcons from "@seldon/core/icon-sets/catalog/material"
 import * as MaterialIconsAll from "@seldon/core/icon-sets/catalog/material/index-all"
 import * as SeldonIcons from "@seldon/core/icon-sets/catalog/seldon"
 import * as SeldonIconsAll from "@seldon/core/icon-sets/catalog/seldon/index-all"
-import {
-  IconDefault,
-  IconSeldonMissing as IconMissing,
-} from "@seldon/components/icons"
 
 /**
  * A workspace icon id chosen by the user (a `symbol` property value).

@@ -1,5 +1,6 @@
 import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { CSSProperties } from "react"
+
 import { IndicatorDot } from "./IndicatorDot"
 import { IndicatorLine } from "./IndicatorLine"
 

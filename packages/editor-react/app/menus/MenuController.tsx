@@ -1,5 +1,12 @@
 "use client"
 
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
+import { MenuItem } from "@seldon/components/elements/MenuItem"
+import { Frame } from "@seldon/components/frames/Frame"
+import { Menu } from "@seldon/components/parts/Menu"
+import { Hr } from "@seldon/components/primitives/Hr"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import {
   CSSProperties,
   ReactNode,
@@ -10,15 +17,9 @@ import {
   useState,
 } from "react"
 import { createPortal } from "react-dom"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
-import { MenuItem } from "@seldon/components/elements/MenuItem"
-import { Frame } from "@seldon/components/frames/Frame"
-import { Menu } from "@seldon/components/parts/Menu"
-import { Hr } from "@seldon/components/primitives/Hr"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
+
 import { useMenuPosition } from "./hooks/use-menu-position"
+import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
 
 function focusReturnTarget(element: HTMLElement | null | undefined): void {
   if (!element?.isConnected) return

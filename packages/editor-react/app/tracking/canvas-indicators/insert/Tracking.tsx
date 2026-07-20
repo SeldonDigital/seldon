@@ -1,12 +1,14 @@
 "use client"
 
-import { useMemo } from "react"
-import { invariant } from "@seldon/core/index"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useCanvasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { useBelongsToActiveBoard } from "../../hooks/use-belongs-to-active-board"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useMemo } from "react"
+
+import { invariant } from "@seldon/core/index"
+
 import { checkInsertionPoint } from "../../helpers/check-insertion-point"
+import { useBelongsToActiveBoard } from "../../hooks/use-belongs-to-active-board"
 import { CanvasIndicator } from "./CanvasIndicator"
 import { InsertGapSiblings } from "./InsertGapSiblings"
 

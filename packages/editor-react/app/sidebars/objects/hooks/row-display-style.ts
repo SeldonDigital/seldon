@@ -1,4 +1,5 @@
 import { CSSProperties } from "react"
+
 import { Display } from "@seldon/core"
 
 /**

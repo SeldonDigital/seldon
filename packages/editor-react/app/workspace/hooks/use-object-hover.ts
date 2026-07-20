@@ -1,8 +1,8 @@
+import { useTool } from "@app/editor/hooks/use-tool"
+import type { SelectionKind } from "@app/workspace/selection-target"
 import { useMemo } from "react"
 import type { CSSProperties } from "react"
 import { create } from "zustand"
-import { useTool } from "@app/editor/hooks/use-tool"
-import type { SelectionKind } from "@app/workspace/selection-target"
 
 /**
  * The single hovered object across the editor. Both the Objects sidebar and the

@@ -1,8 +1,9 @@
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useMemo } from "react"
+
 import { Board } from "@seldon/core"
 import { isIconSetBoard } from "@seldon/core/workspace/model/components"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 
 /**
  * Derives the flat list of icons rendered on an icon set board, pairing each

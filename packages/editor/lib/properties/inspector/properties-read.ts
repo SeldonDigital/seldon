@@ -3,16 +3,22 @@
  * display. Both are leaf helpers shared by the row factory, the border-side
  * rows, and the flatten orchestrator.
  */
-import type { Board, Instance, Properties, Variant, Workspace } from "@seldon/core"
-import { findInObject } from "@seldon/core/helpers"
+import { getCompoundLayerValue } from "@seldon/editor/lib/properties/property-paths"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import type {
+  Board,
+  Instance,
+  Properties,
+  Variant,
+  Workspace,
+} from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
+import { findInObject } from "@seldon/core/helpers"
 import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import type { PropertyKey as CorePropertyKey } from "@seldon/core/properties/types/property-keys"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getCompoundLayerValue } from "@seldon/editor/lib/properties/property-paths"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 
 export function getSchemaPropertyKeysForSubject(
   node: Variant | Instance | Board,

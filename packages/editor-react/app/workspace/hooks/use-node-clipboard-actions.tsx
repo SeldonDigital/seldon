@@ -1,7 +1,4 @@
-import { useCallback } from "react"
-import { InstanceId, VariantId } from "@seldon/core/index"
-import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
-import { typeCheckingService } from "@seldon/core/workspace/services"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useMoveObjects } from "@app/workspace/hooks/use-move-objects"
 import { useObjectClipboard } from "@app/workspace/hooks/use-object-clipboard"
 import { useSelection } from "@app/workspace/hooks/use-selection"
@@ -9,7 +6,11 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { resolvePasteTarget } from "@seldon/editor/lib/workspace/paste-target"
 import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useCallback } from "react"
+
+import { InstanceId, VariantId } from "@seldon/core/index"
+import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
+import { typeCheckingService } from "@seldon/core/workspace/services"
 
 export function useNodeClipboardActions() {
   const addToast = useAddToast()

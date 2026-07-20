@@ -1,4 +1,18 @@
-import { computed, type ComputedRef } from "vue"
+import type { MenuEntry } from "@app/menus/types"
+import { useToastStore } from "@app/toaster/toast-store"
+import { usePropertiesClipboardStore } from "@app/workspace/properties-clipboard-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useSelection } from "@app/workspace/use-selection"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import {
+  buildDefaultSnippet,
+  buildVariantSnippet,
+} from "@seldon/editor/lib/schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { type ComputedRef, computed } from "vue"
+
 import { InstanceId, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
@@ -13,21 +27,6 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
-import {
-  buildDefaultSnippet,
-  buildVariantSnippet,
-} from "@seldon/editor/lib/schema/build-schema-snippet"
-import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
-import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
-import {
-  getNodeCatalogComponentId,
-} from "@seldon/editor/lib/workspace/node-tree"
-import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import type { MenuEntry } from "@app/menus/types"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useSelection } from "@app/workspace/use-selection"
-import { usePropertiesClipboardStore } from "@app/workspace/properties-clipboard-store"
-import { useToastStore } from "@app/toaster/toast-store"
 
 interface RowNodeActionsInput {
   node: () => EntryNode
@@ -183,7 +182,9 @@ export function useRowNodeActions(
         ? buildDefaultSnippet(node, workspace)
         : buildVariantSnippet(node, workspace)
       if (!snippet) {
-        toast.addToast("Could not resolve a catalog component for the selection")
+        toast.addToast(
+          "Could not resolve a catalog component for the selection",
+        )
         return
       }
       await navigator.clipboard.writeText(serializeSchemaSnippet(snippet))
@@ -221,7 +222,8 @@ export function useRowNodeActions(
       }
       const subject = nodeRetrievalService.getNode(node.id, workspace)
       const adjacentId =
-        nodeRelationshipService.findAdjacent(subject, "before", workspace)?.id ??
+        nodeRelationshipService.findAdjacent(subject, "before", workspace)
+          ?.id ??
         nodeRelationshipService.findAdjacent(subject, "after", workspace)?.id ??
         null
       if (isVariant) {

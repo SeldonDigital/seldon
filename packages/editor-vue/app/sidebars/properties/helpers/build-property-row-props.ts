@@ -1,10 +1,11 @@
-import type { CSSProperties } from "vue"
 import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import {
   getPropertyIcon2Color,
   isMenuOrComboControl,
 } from "@seldon/editor/lib/properties/inspector/property-value-display"
+import type { CSSProperties } from "vue"
+
 import {
   getDisclosureButtonStyle,
   getDisclosureIconStyle,
@@ -94,7 +95,10 @@ export function buildPropertyRowProps({
     hasChildren,
   })
 
-  const valueIconStyle = getValueIconStyle({ hidden: false, labelColor: undefined })
+  const valueIconStyle = getValueIconStyle({
+    hidden: false,
+    labelColor: undefined,
+  })
 
   const chipColor = getPropertyIcon2Color(property, swatchChipColor, undefined)
 

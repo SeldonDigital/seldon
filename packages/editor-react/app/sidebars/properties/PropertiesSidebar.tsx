@@ -1,46 +1,9 @@
 import { MenuController, MenuEntry } from "@app/menus"
-import { LayoutGroup } from "framer-motion"
-import {
-  Fragment,
-  type MouseEvent as ReactMouseEvent,
-  useCallback,
-  useDeferredValue,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-import {
-  Board,
-  Instance,
-  type LayeredPaintKey,
-  Theme,
-  Variant,
-  Workspace,
-  getBorderSideOptions,
-  getLayerAddOptions,
-  isThemeCustomTokenSection,
-} from "@seldon/core"
-import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import { useBoardStateMenu } from "./hooks/use-board-state-menu"
-import {
-  useBorderSideVisibility,
-  useRevealedBorderSides,
-} from "./hooks/use-border-side-visibility"
-import { useFilterInput } from "./hooks/use-filter-input"
-import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
-import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
-import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
-import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
-import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { Category } from "./Category"
-import { CssBlock } from "./CssBlock"
-import { Property } from "./Property"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import { Frame } from "@seldon/components/frames/Frame"
+import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -55,6 +18,45 @@ import {
   getAllowedBorderSides,
   getPropertiesSubjectId,
 } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { LayoutGroup } from "framer-motion"
+import {
+  Fragment,
+  type MouseEvent as ReactMouseEvent,
+  useCallback,
+  useDeferredValue,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
+
+import {
+  Board,
+  Instance,
+  type LayeredPaintKey,
+  Theme,
+  Variant,
+  Workspace,
+  getBorderSideOptions,
+  getLayerAddOptions,
+  isThemeCustomTokenSection,
+} from "@seldon/core"
+import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+
+import { Category } from "./Category"
+import { CssBlock } from "./CssBlock"
+import { Property } from "./Property"
+import { useBoardStateMenu } from "./hooks/use-board-state-menu"
+import {
+  useBorderSideVisibility,
+  useRevealedBorderSides,
+} from "./hooks/use-border-side-visibility"
+import { useFilterInput } from "./hooks/use-filter-input"
+import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
+import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
+import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
+import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 
 const PROPERTIES_TREE_GAP = "var(--sdn-gaps-tight)"
 

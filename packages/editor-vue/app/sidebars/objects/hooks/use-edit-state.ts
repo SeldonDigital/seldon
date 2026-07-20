@@ -1,9 +1,9 @@
 import {
+  type MaybeRefOrGetter,
   onBeforeUnmount,
   ref,
   toValue,
   watch,
-  type MaybeRefOrGetter,
 } from "vue"
 
 /**

@@ -1,4 +1,8 @@
 import {
+  isColorProperty,
+  isFreeTextProperty,
+} from "@seldon/editor/lib/properties/serialize-value"
+import {
   isNumber,
   isPercentage,
   isPx,
@@ -7,10 +11,6 @@ import {
 } from "@seldon/core/helpers/validation"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getUnitsForProperty } from "@seldon/core/properties"
-import {
-  isColorProperty,
-  isFreeTextProperty,
-} from "@seldon/editor/lib/properties/serialize-value"
 import type { FlatProperty } from "./properties-data"
 
 /**
@@ -48,7 +48,9 @@ export function getValidationFunction(
     if (units.length > 0) {
       return (value: string) => {
         if (isThemeValueKey(value)) return true
-        return units.some((unit) => value.endsWith(unit)) || !isNaN(Number(value))
+        return (
+          units.some((unit) => value.endsWith(unit)) || !isNaN(Number(value))
+        )
       }
     }
     // Free-text combos (image source url) accept any non-empty custom value.
@@ -69,7 +71,11 @@ export function getValidationFunction(
           if (unit === "rem" && isRem(value)) return true
           // `isPercentage` above rejects negatives, so a signed percentage
           // (e.g. a `-5%` chroma shift) is accepted here.
-          if (unit === "%" && value.endsWith("%") && !isNaN(parseFloat(value))) {
+          if (
+            unit === "%" &&
+            value.endsWith("%") &&
+            !isNaN(parseFloat(value))
+          ) {
             return true
           }
           if (

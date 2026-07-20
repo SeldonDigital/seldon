@@ -1,16 +1,17 @@
-import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
+import { usePanelStore } from "@app/editor/panel-store"
+import { useToolStore } from "@app/editor/tool-store"
+import { useToastStore } from "@app/toaster/toast-store"
+import { getCurrentWorkspace } from "@app/workspace/history-store"
+import { useObjectHoverStore } from "@app/workspace/object-hover-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import {
   getSelectionTarget,
   selectFromTarget,
 } from "@seldon/editor/lib/workspace/selection-dom"
-import { getCurrentWorkspace } from "@app/workspace/history-store"
-import { useObjectHoverStore } from "@app/workspace/object-hover-store"
-import { usePanelStore } from "@app/editor/panel-store"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useToastStore } from "@app/toaster/toast-store"
-import { useToolStore } from "@app/editor/tool-store"
+
+import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
 
 /**
  * Canvas pointer tracking: resolves the selection target from the DOM through

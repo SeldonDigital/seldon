@@ -1,15 +1,19 @@
+import { getCurrentWorkspace } from "@app/workspace/hooks/use-history"
+import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
+import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
+import {
+  getComponentKey,
+  getNode,
+} from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
 import { create } from "zustand"
+
 import { InstanceId, VariantId, Workspace } from "@seldon/core"
 import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { getCurrentWorkspace } from "@app/workspace/hooks/use-history"
-import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
-import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
-import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
 const useStore = create<{
   expandedObjects: Set<string>

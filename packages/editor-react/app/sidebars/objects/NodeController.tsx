@@ -1,5 +1,6 @@
 import { ComboboxListbox } from "@app/menus"
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import {
   buildDisabledRefProps,
   buildFieldStateProps,
@@ -7,21 +8,22 @@ import {
   buildRepeatFieldStyleProps,
   mergeStateProps,
 } from "@app/views/state-props"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { ItemNode } from "@seldon/components/elements/ItemNode"
+import { Frame } from "@seldon/components/frames/Frame"
+import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { type ReactElement, memo } from "react"
+
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+
+import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 import { useRowDisplayPicker } from "./hooks/use-row-display-picker"
 import { useRowNode } from "./hooks/use-row-node"
-import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { Frame } from "@seldon/components/frames/Frame"
-import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
-import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { RowSelectionTarget } from "./RowSelectionTarget"
 
 const NODE_SELECTION_KIND = "node"
 

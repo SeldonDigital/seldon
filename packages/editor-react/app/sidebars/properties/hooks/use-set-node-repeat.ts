@@ -1,4 +1,6 @@
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useCallback } from "react"
+
 import {
   type InstanceId,
   type RepeatEditorData,
@@ -6,7 +8,6 @@ import {
   getNodeRepeat,
   resolveNodeRepeat,
 } from "@seldon/core"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 
 type NodeId = VariantId | InstanceId
 

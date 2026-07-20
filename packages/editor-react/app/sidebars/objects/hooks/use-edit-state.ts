@@ -1,7 +1,8 @@
+import { useIsNodeSelected } from "@app/workspace/hooks/use-selection"
 import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
+
 import { Instance, Variant } from "@seldon/core"
-import { useIsNodeSelected } from "@app/workspace/hooks/use-selection"
 
 /**
  * Centralized edit state management for objects panel.

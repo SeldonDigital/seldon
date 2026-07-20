@@ -1,10 +1,11 @@
-import { useMemo } from "react"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import {
   getCurrentWorkspace,
   useHistoryStore,
 } from "@app/workspace/hooks/use-history"
 import { usePreviewStore } from "@app/workspace/hooks/use-preview-store"
+import { useMemo } from "react"
+
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 
 /**
  * Computed themes for the active workspace. Subscribes only to the `themes`

@@ -1,9 +1,9 @@
 "use client"
 
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { FocusRing } from "@app/overlays"
 import { CSSProperties, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 
 interface RingRect {
   top: number

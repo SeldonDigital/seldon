@@ -1,8 +1,8 @@
-import { computed, ref, toValue, type MaybeRefOrGetter } from "vue"
 import type {
   CatalogDialogCategory,
   CatalogDialogItem,
 } from "@app/dialogs/types"
+import { type MaybeRefOrGetter, computed, ref, toValue } from "vue"
 
 /**
  * Shared picker state for the stock board dialogs (themes, font collections,
@@ -16,16 +16,18 @@ export function useStockCatalog(input: {
 }) {
   const query = ref("")
 
-  const categories = computed<CatalogDialogCategory<CatalogDialogItem>[]>(() => {
-    const queryLower = query.value.toLowerCase()
-    const filtered = toValue(input.items).filter(
-      (item) =>
-        query.value.length === 0 ||
-        item.name.toLowerCase().includes(queryLower) ||
-        item.description.toLowerCase().includes(queryLower),
-    )
-    return [{ category: input.category, items: filtered }]
-  })
+  const categories = computed<CatalogDialogCategory<CatalogDialogItem>[]>(
+    () => {
+      const queryLower = query.value.toLowerCase()
+      const filtered = toValue(input.items).filter(
+        (item) =>
+          query.value.length === 0 ||
+          item.name.toLowerCase().includes(queryLower) ||
+          item.description.toLowerCase().includes(queryLower),
+      )
+      return [{ category: input.category, items: filtered }]
+    },
+  )
 
   return { categories, query }
 }

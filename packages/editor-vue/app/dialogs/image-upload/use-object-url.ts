@@ -1,4 +1,4 @@
-import { onUnmounted, ref, watch, type Ref } from "vue"
+import { type Ref, onUnmounted, ref, watch } from "vue"
 
 /**
  * Reactive object URL for a file, revoked when the file changes or the owner

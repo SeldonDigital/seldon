@@ -2,10 +2,11 @@
  * Reads authored CSS for the selected canvas copy in the CSS section of the
  * properties sidebar.
  */
+import { getScopedSelectionElement } from "@app/canvas/helpers/canvas-selection-target"
 import { useMemo } from "react"
+
 import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getScopedSelectionElement } from "@app/canvas/helpers/canvas-selection-target"
 
 /**
  * Drops declarations the browser cannot apply. `CSS.supports` returns false for

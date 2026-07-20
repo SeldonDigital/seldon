@@ -1,5 +1,17 @@
+import {
+  getHoverStateSnapshot,
+  useHoverStateForObjects,
+  useSetHoverState,
+} from "@app/canvas/hooks/use-canvas-hover-state"
+import { useTool } from "@app/editor/hooks/use-tool"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { isInsertionAllowed } from "@app/workspace/is-insertion-allowed"
 import { Placement } from "@seldon/editor/lib/types"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback, useMemo } from "react"
+
 import { Instance, Variant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { rules } from "@seldon/core/rules/config/rules.config"
@@ -8,17 +20,6 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
-import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  getHoverStateSnapshot,
-  useHoverStateForObjects,
-  useSetHoverState,
-} from "@app/canvas/hooks/use-canvas-hover-state"
-import { useTool } from "@app/editor/hooks/use-tool"
-import { isInsertionAllowed } from "@app/workspace/is-insertion-allowed"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 
 /**
  * Hook that handles granular placement zone tracking for sidebar rows (nodes).

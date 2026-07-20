@@ -1,16 +1,18 @@
 import type { SelectionScope } from "@seldon/ai"
 import {
+  type SelectionSnapshot,
+  resolveSelectionScope,
+} from "@seldon/editor/lib/workspace/selection-scope"
+import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
+
+import {
   isFontCollectionBoard,
   isIconSetBoard,
   isMediaBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
-import {
-  type SelectionSnapshot,
-  resolveSelectionScope,
-} from "@seldon/editor/lib/workspace/selection-scope"
+
 import { getCurrentWorkspace } from "./use-history"
 import { useStore as useSelectionStore } from "./use-selection"
 import { useWorkspace } from "./use-workspace"

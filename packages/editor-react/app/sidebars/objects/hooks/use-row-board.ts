@@ -1,6 +1,19 @@
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
+import { useTool } from "@app/editor/hooks/use-tool"
 import { MenuEntry } from "@app/menus"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
+import {
+  useSelectionActions,
+  useStore as useSelectionStore,
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { MouseEvent, useState } from "react"
+
 import { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"
 import {
@@ -11,18 +24,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
-import {
-  useSelectionActions,
-  useStore as useSelectionStore,
-} from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import { useTool } from "@app/editor/hooks/use-tool"
-import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"

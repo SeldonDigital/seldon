@@ -2,9 +2,10 @@ import {
   buildDisplayInputProps,
   buildEditingRefProps,
 } from "@app/views/state-props"
-import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
-import { PropertyControlView } from "../hooks/use-property-control"
 import { InputProps } from "@seldon/components/primitives/Input"
+import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
+
+import { PropertyControlView } from "../hooks/use-property-control"
 
 export type ValueInputProps = InputProps & { ref?: Ref<HTMLInputElement> }
 

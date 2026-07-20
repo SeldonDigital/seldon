@@ -1,5 +1,29 @@
-import { computed } from "vue"
+import {
+  type HariTurn,
+  type TurnOutcome,
+  useAiChatStore,
+} from "@app/ai/ai-chat-store"
+import { useDebugStore } from "@app/editor/debug-store"
+import { getCurrentWorkspace } from "@app/workspace/history-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 import type { AgentStreamEvent } from "@seldon/ai"
+import {
+  buildTurnReport,
+  findActiveBoardKey,
+} from "@seldon/editor/lib/ai/apply-report"
+import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
+import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
+import {
+  getAgentConfig,
+  runAgentChat,
+  warmAgent,
+} from "@seldon/editor/lib/ai/run-agent-chat"
+import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
+import { resolveSelectionScope } from "@seldon/editor/lib/workspace/selection-scope"
+import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { computed } from "vue"
+
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -7,29 +31,6 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
-import {
-  getAgentConfig,
-  runAgentChat,
-  warmAgent,
-} from "@seldon/editor/lib/ai/run-agent-chat"
-import {
-  buildTurnReport,
-  findActiveBoardKey,
-} from "@seldon/editor/lib/ai/apply-report"
-import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
-import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
-import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
-import { resolveSelectionScope } from "@seldon/editor/lib/workspace/selection-scope"
-import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
-import {
-  useAiChatStore,
-  type HariTurn,
-  type TurnOutcome,
-} from "@app/ai/ai-chat-store"
-import { useDebugStore } from "@app/editor/debug-store"
-import { getCurrentWorkspace } from "@app/workspace/history-store"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
 
 type ChatMessage = { role: "user" | "assistant"; content: string }
 
@@ -110,7 +111,10 @@ export function useAiChat() {
       case "tool":
         store.mutateTurn(turnId, (turn) => ({
           ...turn,
-          toolCalls: [...(turn.toolCalls ?? []), { name: event.name, ok: true }],
+          toolCalls: [
+            ...(turn.toolCalls ?? []),
+            { name: event.name, ok: true },
+          ],
         }))
         break
       case "toolResult":
@@ -161,26 +165,32 @@ export function useAiChat() {
       const resourceTargetId = resolveResourceTargetId(current)
       const noThink = debug.noThink
 
-      const { actions, workspace, reply, ineffective, rejected, debug: turnDebug } =
-        await runAgentChat(
-          {
-            workspace: current,
-            message,
-            history,
-            activeBoardKey,
-            selectedNodeId: selection.selectedNodeId ?? undefined,
-            selectedNodeRootId: selection.selectedNodeRootId ?? undefined,
-            selectedBoardId: selection.selectedBoardId ?? undefined,
-            scope,
-            resourceTargetId,
-            model,
-            thinkingLevel,
-            thinkingCapable,
-            noThink,
-          },
-          (event) => applyTurnEvent(turnId, event),
-          controller.signal,
-        )
+      const {
+        actions,
+        workspace,
+        reply,
+        ineffective,
+        rejected,
+        debug: turnDebug,
+      } = await runAgentChat(
+        {
+          workspace: current,
+          message,
+          history,
+          activeBoardKey,
+          selectedNodeId: selection.selectedNodeId ?? undefined,
+          selectedNodeRootId: selection.selectedNodeRootId ?? undefined,
+          selectedBoardId: selection.selectedBoardId ?? undefined,
+          scope,
+          resourceTargetId,
+          model,
+          thinkingLevel,
+          thinkingCapable,
+          noThink,
+        },
+        (event) => applyTurnEvent(turnId, event),
+        controller.signal,
+      )
 
       const report = buildTurnReport(workspace, actions, ineffective, rejected)
 
@@ -284,7 +294,10 @@ export function useAiChat() {
     const model = store.model
     if (!model) return []
     const options = store.config?.thinkingByModel?.[model]?.options ?? []
-    return options.map((option) => ({ label: option.label, value: option.value }))
+    return options.map((option) => ({
+      label: option.label,
+      value: option.value,
+    }))
   })
 
   return {

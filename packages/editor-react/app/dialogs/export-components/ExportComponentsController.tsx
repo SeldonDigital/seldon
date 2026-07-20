@@ -1,8 +1,11 @@
 "use client"
 
 import { MenuController } from "@app/menus/MenuController"
+import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { MenuEntry } from "@app/menus/types"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { DialogExportComponent } from "@seldon/components/modules/DialogExportComponent"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import {
   CSSProperties,
   MouseEvent,
@@ -13,13 +16,11 @@ import {
   useState,
 } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
+
 import {
   EXPORT_PLATFORM_OPTIONS,
   useExportComponentsPanel,
 } from "./hooks/use-export-components-panel"
-import { DialogExportComponent } from "@seldon/components/modules/DialogExportComponent"
-import { IconProps } from "@seldon/components/primitives/Icon"
 
 /**
  * Gate for the Export Components dialog. Mounts the dialog only while the

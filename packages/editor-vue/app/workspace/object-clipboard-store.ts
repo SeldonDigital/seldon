@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
+
 import { InstanceId, VariantId } from "@seldon/core"
 
 export type ClipboardMode = "copy" | "cut"

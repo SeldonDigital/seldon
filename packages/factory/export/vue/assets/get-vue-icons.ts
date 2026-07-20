@@ -2,7 +2,10 @@ import fs from "node:fs"
 
 import { IconId } from "@seldon/core/icon-sets"
 
-import { getIconSourcePath, resolveIconExport } from "../../react/utils/find-icon-path"
+import {
+  getIconSourcePath,
+  resolveIconExport,
+} from "../../react/utils/find-icon-path"
 import { IconGeometry, parseIconSource } from "../../shared/parse-icon-source"
 import { ExportOptions, FileToExport } from "../../types"
 

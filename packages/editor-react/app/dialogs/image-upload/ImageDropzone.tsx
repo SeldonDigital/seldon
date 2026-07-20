@@ -1,9 +1,10 @@
-import { CSSProperties, useState } from "react"
 import { useObjectURL } from "@app/dialogs/image-upload/hooks/use-object-url"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { Frame } from "@seldon/components/frames/Frame"
 import { IconMaterialUpload } from "@seldon/components/icons"
 import { Text } from "@seldon/components/primitives/Text"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { CSSProperties, useState } from "react"
+
 import { DropzoneSurface } from "./DropzoneSurface"
 import { ImagePreview } from "./ImagePreview"
 

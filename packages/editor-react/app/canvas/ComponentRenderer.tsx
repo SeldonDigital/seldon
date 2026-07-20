@@ -1,8 +1,10 @@
 "use client"
 
+import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import React, { CSSProperties, RefObject, useMemo } from "react"
+
 import {
   Display,
   InstanceId,
@@ -71,7 +73,7 @@ import { HTMLVideo } from "@seldon/core/components/native-react/HTML.Video"
 import { NativeReactPrimitive } from "@seldon/core/components/types"
 import { WrapperElement } from "@seldon/core/properties"
 import type { ComputeContext } from "@seldon/core/properties/compute"
-import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
+
 import { CssPortal } from "./CssPortal"
 import { StyleTag } from "./StyleTag.bespoke"
 

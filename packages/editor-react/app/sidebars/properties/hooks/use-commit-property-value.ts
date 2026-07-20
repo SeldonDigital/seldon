@@ -1,26 +1,10 @@
-import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
-import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
-import { useCallback } from "react"
-import {
-  Board,
-  Instance,
-  Properties,
-  Theme,
-  Value,
-  Variant,
-} from "@seldon/core"
-import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
-import { getCompoundSelectorFacet } from "@seldon/core/properties/constants/shared/compound-properties"
-import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
-import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,
 } from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
+import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
+import { useSelection } from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
   cleanCompoundValue,
   compoundPresetPropertyKey,
@@ -37,13 +21,31 @@ import {
 import type { PropertyPickerResult } from "@seldon/editor/lib/properties/inspector/options-utils"
 import { getPropertiesSubjectId } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
-import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
 import { updateProperty } from "@seldon/editor/lib/properties/inspector/property-update-handler"
 import {
   REPEAT_ROW_KEY,
   parseRepeatDataRowKey,
 } from "@seldon/editor/lib/properties/inspector/repeat-display"
+import { RESET_VALUES } from "@seldon/editor/lib/properties/property-control-constants"
+import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
+import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
+import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
+import { useCallback } from "react"
+
+import {
+  Board,
+  Instance,
+  Properties,
+  Theme,
+  Value,
+  Variant,
+} from "@seldon/core"
+import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
+import { getCompoundSelectorFacet } from "@seldon/core/properties/constants/shared/compound-properties"
+import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
+import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+
 import { useSetNodeRepeat } from "./use-set-node-repeat"
 import { useSetObjectReference } from "./use-set-object-reference"
 import { useSetObjectTheme } from "./use-set-object-theme"

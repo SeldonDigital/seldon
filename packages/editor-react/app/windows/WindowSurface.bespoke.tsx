@@ -3,15 +3,6 @@
 // modal. No generated component covers this chrome. framer-motion has no 1:1
 // equivalent on other platforms, so this shell is reimplemented per platform
 // rather than ported like the class-free overlay primitives.
-import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
-import {
-  CSSProperties,
-  MouseEvent,
-  ReactNode,
-  useCallback,
-  useRef,
-} from "react"
-import { createPortal } from "react-dom"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import {
@@ -21,6 +12,15 @@ import {
   createResizeHandle,
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
+import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
+import {
+  CSSProperties,
+  MouseEvent,
+  ReactNode,
+  useCallback,
+  useRef,
+} from "react"
+import { createPortal } from "react-dom"
 
 interface WindowSurfaceProps {
   x: MotionValue<number>

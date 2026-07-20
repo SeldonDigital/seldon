@@ -1,11 +1,12 @@
+import { DragNodePreview } from "@app/sidebars/DragNodePreview"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview"
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
+
 import { LayeredPaintKey } from "@seldon/core"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { DragNodePreview } from "@app/sidebars/DragNodePreview"
 
 export const LAYER_DRAG_ACTION = "properties-reorder-layer"
 

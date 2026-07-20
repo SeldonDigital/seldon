@@ -1,4 +1,5 @@
 import { ComboboxListbox } from "@app/menus"
+
 import { PropertyControlView } from "./hooks/use-property-control"
 
 interface PropertyOptionsListboxProps {

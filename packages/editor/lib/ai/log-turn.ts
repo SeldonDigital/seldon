@@ -1,11 +1,14 @@
 import type { AgentDebug, AgentMetrics } from "@seldon/ai"
+import {
+  changedProperties,
+  targetIdWithParentOf,
+} from "@seldon/editor/lib/ai/action-helpers"
+import type { ApplyReport } from "@seldon/editor/lib/ai/apply-report"
 import type {
   BoardKey,
   Workspace,
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
-import { changedProperties, targetIdWithParentOf } from "@seldon/editor/lib/ai/action-helpers"
-import type { ApplyReport } from "@seldon/editor/lib/ai/apply-report"
 
 /** Human-readable label/level for a target id, resolved as a node then a board. */
 function describeTarget(workspace: Workspace, id: string | undefined): string {

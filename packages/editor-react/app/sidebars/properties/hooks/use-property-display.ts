@@ -1,12 +1,13 @@
-import { useMemo } from "react"
-import { Board, Instance, Theme, Value, Variant, Workspace } from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
 import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
 import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
+import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
 import type { PropertyPickerResult } from "@seldon/editor/lib/properties/inspector/options-utils"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { getBoardThemeRef } from "@seldon/editor/lib/properties/inspector/theme-assignment-display"
+import { useMemo } from "react"
+
+import { Board, Instance, Theme, Value, Variant, Workspace } from "@seldon/core"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 interface UsePropertyDisplayInput {
   property: FlatProperty

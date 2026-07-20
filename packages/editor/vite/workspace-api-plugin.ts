@@ -1,7 +1,7 @@
 import fs from "node:fs/promises"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import type { Connect, Plugin, ViteDevServer, PreviewServer } from "vite"
+import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
 
 /**
  * Filesystem-backed workspace store shared by the React and Vue editors.
@@ -82,7 +82,11 @@ async function readBody(req: Connect.IncomingMessage): Promise<string> {
   return Buffer.concat(chunks).toString("utf8")
 }
 
-function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown): void {
+function sendJson(
+  res: import("node:http").ServerResponse,
+  status: number,
+  body: unknown,
+): void {
   const payload = JSON.stringify(body)
   res.statusCode = status
   res.setHeader("Content-Type", "application/json")
@@ -130,7 +134,9 @@ async function handle(
     }
     sendJson(res, 405, { error: "Method not allowed" })
   } catch (error) {
-    sendJson(res, 500, { error: error instanceof Error ? error.message : "Unknown error" })
+    sendJson(res, 500, {
+      error: error instanceof Error ? error.message : "Unknown error",
+    })
   }
 }
 

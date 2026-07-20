@@ -2,11 +2,11 @@
  * Hook for calculating a floating list's position from an anchor element.
  * Shared by the properties combobox and the objects-sidebar display picker.
  */
-import { RefObject, useEffect, useState } from "react"
 import {
-  computeListPosition,
   type ListPosition,
+  computeListPosition,
 } from "@seldon/editor/lib/menus/anchor-position"
+import { RefObject, useEffect, useState } from "react"
 
 export type ComboboxPosition = ListPosition
 

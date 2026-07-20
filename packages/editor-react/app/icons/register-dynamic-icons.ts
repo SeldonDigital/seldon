@@ -1,4 +1,3 @@
-import type { ComponentType } from "react"
 import {
   IconMaterialComputer,
   IconMaterialLaptop,
@@ -11,6 +10,8 @@ import {
   RegisteredIconProps,
   registerIcon,
 } from "@seldon/components/utils/icon-registry"
+import type { ComponentType } from "react"
+
 import {
   IconCustomBooleanValue,
   IconCustomColorValue,

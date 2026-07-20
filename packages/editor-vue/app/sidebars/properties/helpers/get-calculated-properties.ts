@@ -67,7 +67,8 @@ export function getScopedNodeCss(
   nodeId: string,
   rootId?: string | null,
 ): ScopedNodeCss {
-  if (typeof document === "undefined") return { declarations: [], selector: null }
+  if (typeof document === "undefined")
+    return { declarations: [], selector: null }
 
   const elements = Array.from(
     document.querySelectorAll<HTMLElement>(`[data-canvas-node-id="${nodeId}"]`),

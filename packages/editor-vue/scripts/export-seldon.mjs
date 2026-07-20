@@ -1,9 +1,10 @@
-import { build } from "esbuild"
 import fs from "node:fs"
 import fsp from "node:fs/promises"
 import os from "node:os"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
+
+import { build } from "esbuild"
 
 /**
  * Runs the factory Vue export on `seldon-editor.json` and writes the generated
@@ -35,7 +36,10 @@ async function loadRunExport() {
     },
   })
 
-  const outputFile = path.join(os.tmpdir(), `seldon-vue-export-${process.pid}.mjs`)
+  const outputFile = path.join(
+    os.tmpdir(),
+    `seldon-vue-export-${process.pid}.mjs`,
+  )
   await fsp.writeFile(outputFile, result.outputFiles[0].text)
   try {
     const mod = await import(pathToFileURL(outputFile).href)

@@ -1,4 +1,7 @@
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
+
 import {
   ExtractPayload,
   LayeredPaintKey,
@@ -10,8 +13,7 @@ import {
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+
 import { useDispatch } from "./use-dispatch"
 import {
   INSTANCE_STATE_EDIT_MESSAGE,

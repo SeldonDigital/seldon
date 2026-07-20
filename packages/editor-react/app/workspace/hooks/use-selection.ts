@@ -1,5 +1,19 @@
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import {
+  ExpandableSection,
+  useSectionExpansion,
+} from "@app/sidebars/hooks/use-section-expansion"
+import { useExpansion } from "@app/sidebars/objects/hooks/use-expansion"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
+import type { ResourceEntryKind } from "@seldon/editor/lib/workspace/selection-kind"
+import {
+  getComponent,
+  getComponentKey,
+  getNode,
+} from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
 import { create } from "zustand"
+
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import {
   ComponentLevel,
@@ -17,19 +31,7 @@ import {
 import type { Board } from "@seldon/core/workspace/model/components"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
-import type { ResourceEntryKind } from "@seldon/editor/lib/workspace/selection-kind"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getComponent,
-  getComponentKey,
-  getNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
-import {
-  ExpandableSection,
-  useSectionExpansion,
-} from "@app/sidebars/hooks/use-section-expansion"
-import { useExpansion } from "@app/sidebars/objects/hooks/use-expansion"
+
 import { getCurrentWorkspace } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
 import { useWorkspace } from "./use-workspace"

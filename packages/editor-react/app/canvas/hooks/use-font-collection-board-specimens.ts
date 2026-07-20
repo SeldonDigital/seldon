@@ -1,10 +1,11 @@
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useMemo } from "react"
+
 import { Board } from "@seldon/core"
 import { getEnabledVariants } from "@seldon/core/font-collections"
 import { fontVariantDisplayLabel } from "@seldon/core/helpers/utils/font-variant"
 import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 
 /**
  * Derives the type specimens rendered on a font collection board, one per

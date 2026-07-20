@@ -1,5 +1,8 @@
+import { useSelectionStore } from "@app/workspace/selection-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed } from "vue"
+
 import {
   resolveFirstChildNodeId,
   resolveNextSiblingNodeId,
@@ -8,8 +11,6 @@ import {
   resolvePreviousSiblingNodeId,
   resolveSourceNodeId,
 } from "@seldon/core/workspace/services/nodes/node-navigation.service"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useWorkspace } from "@app/workspace/use-workspace"
 
 /**
  * Tree-navigation commands for the Select menu. Traversal lives in core

@@ -1,17 +1,18 @@
+import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { IconCustomColorValue, ThemeSwatches } from "@app/icons/custom"
+import { type OptionIconRender } from "@app/menus"
+import { useThemes } from "@app/themes/hooks/use-themes"
+import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
 import {
   type PropertyOptionIconBinding,
   resolvePropertyOptionIconBinding,
 } from "@seldon/editor/lib/icons/property-option-icon"
-import { type OptionIconRender } from "@app/menus"
-import React from "react"
-import { Theme, Workspace } from "@seldon/core"
-import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
-import { useThemes } from "@app/themes/hooks/use-themes"
-import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
-import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
+import React from "react"
+
+import { Theme, Workspace } from "@seldon/core"
+import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 
 type OptionIcon = { value: string; name: string } | undefined
 
@@ -71,7 +72,9 @@ function renderBinding(
       if (optionTheme) {
         return {
           kind: "node",
-          node: <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />,
+          node: (
+            <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />
+          ),
         }
       }
       return { kind: "node", node: null }
@@ -80,7 +83,12 @@ function renderBinding(
       // Icon turned off in its workspace set renders as a red Missing icon.
       return {
         kind: "node",
-        node: <LoadEditorIcons iconId={asSymbolIconId(binding.iconId)} unavailable />,
+        node: (
+          <LoadEditorIcons
+            iconId={asSymbolIconId(binding.iconId)}
+            unavailable
+          />
+        ),
       }
     case "symbolUnused":
       return { kind: "node", node: <IconSeldonMissing /> }

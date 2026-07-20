@@ -1,5 +1,3 @@
-import { defineStore } from "pinia"
-import { ref } from "vue"
 import type {
   ActionRepair,
   AgentToolCall,
@@ -7,6 +5,8 @@ import type {
   ThinkingLevelOption,
 } from "@seldon/ai"
 import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
+import { defineStore } from "pinia"
+import { ref } from "vue"
 
 export type HariStatus = "idle" | "pending" | "error"
 

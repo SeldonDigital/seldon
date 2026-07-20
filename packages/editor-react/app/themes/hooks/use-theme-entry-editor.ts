@@ -1,4 +1,6 @@
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useCallback, useMemo } from "react"
+
 import {
   Colorspace,
   type HSL,
@@ -25,7 +27,6 @@ import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 
 function mergeRecord(
   base: Record<string, unknown>,

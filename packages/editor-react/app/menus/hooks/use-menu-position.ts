@@ -1,10 +1,11 @@
 "use client"
 
-import { RefObject, useLayoutEffect, useState } from "react"
 import {
-  computeMenuPosition,
   type MenuPosition,
+  computeMenuPosition,
 } from "@seldon/editor/lib/menus/anchor-position"
+import { RefObject, useLayoutEffect, useState } from "react"
+
 import { MenuAlign } from "../types"
 
 export type { MenuPosition }

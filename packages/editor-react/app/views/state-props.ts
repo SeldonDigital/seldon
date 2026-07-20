@@ -1,5 +1,5 @@
-import { CSSProperties, Ref } from "react"
 import { InputProps } from "@seldon/components/primitives/Input"
+import { CSSProperties, Ref } from "react"
 
 /**
  * Editing-field outline for inline rename/value inputs. The generated input

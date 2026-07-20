@@ -1,27 +1,29 @@
+import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useTool } from "@app/editor/hooks/use-tool"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import {
+  useSelectionActions,
+  useStore as useSelectionStore,
+} from "@app/workspace/hooks/use-selection"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import {
+  getSelectionTarget,
+  selectFromTarget,
+} from "@app/workspace/selection-target"
+import { IconProps } from "@seldon/components/primitives/Icon"
+import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
+import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+
 import { Properties, VariantId } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import {
-  useSelectionActions,
-  useStore as useSelectionStore,
-} from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
-import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { useTool } from "@app/editor/hooks/use-tool"
+
 import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
-import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getSelectionTarget,
-  selectFromTarget,
-} from "@app/workspace/selection-target"
-import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   getComponentTypeIcon,
   getNodeLabel,

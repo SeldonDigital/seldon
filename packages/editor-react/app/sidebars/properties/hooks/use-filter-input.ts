@@ -2,6 +2,9 @@ import {
   buildDisplayInputProps,
   buildEditingRefProps,
 } from "@app/views/state-props"
+import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import { ComboboxFieldFilterProps } from "@seldon/components/elements/ComboboxFieldFilter"
+import { InputProps } from "@seldon/components/primitives/Input"
 import {
   type ChangeEvent,
   type KeyboardEvent,
@@ -12,9 +15,6 @@ import {
   useRef,
   useState,
 } from "react"
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import { ComboboxFieldFilterProps } from "@seldon/components/elements/ComboboxFieldFilter"
-import { InputProps } from "@seldon/components/primitives/Input"
 
 const PLACEHOLDER = "Filter..."
 

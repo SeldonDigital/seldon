@@ -14,7 +14,10 @@ import {
   isBridgedLookFacet,
   isLookSection,
 } from "@seldon/core"
-import { parseHSLString, toHSLString } from "@seldon/core/helpers/color/convert-color"
+import {
+  parseHSLString,
+  toHSLString,
+} from "@seldon/core/helpers/color/convert-color"
 import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
 import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
@@ -171,7 +174,11 @@ export function buildThemeEditActions(
   // Modulation group.
   if (key === "modulation.ratio") {
     return only(
-      setOverride(themeId, "modulation.parameters.ratio", Number(rawValue) as Ratio),
+      setOverride(
+        themeId,
+        "modulation.parameters.ratio",
+        Number(rawValue) as Ratio,
+      ),
     )
   }
   if (key === "modulation.baseFontSize") {
@@ -290,9 +297,14 @@ export function buildThemeEditActions(
 
     if (section === "lineHeight") {
       return only(
-        mergeOverride(themeId, workspace, `lineHeight.${subKey as ThemeLineHeightId}.parameters`, {
-          step: Number(rawValue),
-        }),
+        mergeOverride(
+          themeId,
+          workspace,
+          `lineHeight.${subKey as ThemeLineHeightId}.parameters`,
+          {
+            step: Number(rawValue),
+          },
+        ),
       )
     }
     if (isScaleSlotSection(section)) {
@@ -321,7 +333,12 @@ export function buildThemeEditActions(
 
     let serialized: unknown
     if (isBridgedLookFacet(entry)) {
-      serialized = serializeValue(rawValue, undefined, undefined, entry.propertyKey)
+      serialized = serializeValue(
+        rawValue,
+        undefined,
+        undefined,
+        entry.propertyKey,
+      )
     } else if (entry.valueType === "color") {
       serialized = serializeColor(rawValue)
     } else if (entry.valueType === "boolean") {

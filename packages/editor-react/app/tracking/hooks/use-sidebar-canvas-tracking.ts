@@ -1,14 +1,19 @@
-import { useCallback } from "react"
-import { Board, Instance, Variant } from "@seldon/core"
-import { nodeRelationshipService } from "@seldon/core/workspace/services"
-import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
   getHoverStateSnapshot,
   useSetHoverState,
 } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { getComponentKey, hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import {
+  getComponentKey,
+  hasNode,
+} from "@seldon/editor/lib/workspace/workspace-accessors"
+import { useCallback } from "react"
+
+import { Board, Instance, Variant } from "@seldon/core"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
+
 import { checkInsertionPoint } from "../helpers/check-insertion-point"
 
 /**

@@ -68,11 +68,7 @@ function presetDisplayValue(preset: "all" | "none" | "custom"): string {
 
 /** Title-cases a hyphenated or slashed token, e.g. `user-interface` -> `User Interface`. */
 function titleCase(token: string): string {
-  return token
-    .split(/[-/]/)
-    .filter(Boolean)
-    .map(capitalize)
-    .join(" ")
+  return token.split(/[-/]/).filter(Boolean).map(capitalize).join(" ")
 }
 
 /**
@@ -140,7 +136,11 @@ export function buildFontCollectionRows(
       rows.push({
         key: `family.${slot}.license`,
         label: "License",
-        control: { kind: "link", value: "View", href: getFontLicenseHref(slot) },
+        control: {
+          kind: "link",
+          value: "View",
+          href: getFontLicenseHref(slot),
+        },
         isSubProperty: true,
         isOverridden: false,
         isDimmed: true,

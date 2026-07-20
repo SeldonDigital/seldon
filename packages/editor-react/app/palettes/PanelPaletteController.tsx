@@ -1,9 +1,9 @@
 "use client"
 
-import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
-import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
 import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { PanelPalette } from "@seldon/components/modules/PanelPalette"
+import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
 
 interface PanelPaletteControllerProps {
   title: string
