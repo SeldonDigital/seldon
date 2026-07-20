@@ -6,12 +6,26 @@ import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@seldon/editor/lib/export/write-export-to-directory"
+import DialogExportComponent from "@seldon/components/modules/DialogExportComponent.vue"
+import WindowSurface from "@app/windows/WindowSurface.vue"
+import MenuController from "@app/menus/MenuController.vue"
+import type { MenuEntry } from "@app/menus/types"
+import { useDraggableWindow } from "@app/menus/use-draggable-window"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
-import { computed, ref } from "vue"
+import { computed, ref, watch, type CSSProperties } from "vue"
+
+const ICON_CHECKED = "material-radioButtonChecked"
+const ICON_UNCHECKED = "material-radioButtonUnchecked"
+
+const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
+  id: platform.id,
+  label: platform.label,
+  available: platform.status === "available",
+}))
 
 const panel = usePanelStore()
 const { activePanel } = storeToRefs(panel)
@@ -22,12 +36,6 @@ const { isExporting } = storeToRefs(exportStatus)
 
 const isOpen = computed(() => activePanel.value === "export-components")
 
-const platformOptions = PLATFORM_LIST.map((p) => ({
-  id: p.id,
-  label: p.label,
-  available: p.status === "available",
-}))
-
 const platform = ref<PlatformId>("vue")
 const includeHidden = ref(false)
 const allThemes = ref(true)
@@ -36,8 +44,48 @@ const fontLinks = ref(false)
 const allIcons = ref(true)
 const directory = ref<FileSystemDirectoryHandle | null>(null)
 
-const directoryLabel = computed(() => directory.value?.name ?? "No folder chosen")
-const canExport = computed(() => directory.value !== null && !isExporting.value)
+const directoryLabel = computed(() => directory.value?.name ?? "")
+const canExport = computed(
+  () => directory.value !== null && !isExporting.value,
+)
+const platformLabel = computed(
+  () =>
+    EXPORT_PLATFORM_OPTIONS.find((option) => option.id === platform.value)
+      ?.label ?? "",
+)
+
+const { x, y, moveControls } = useDraggableWindow({
+  handleClose: close,
+  contentSized: true,
+})
+
+const platformOpen = ref(false)
+const platformAnchor = ref<HTMLElement | null>(null)
+
+const platformItems = computed<MenuEntry[]>(() =>
+  EXPORT_PLATFORM_OPTIONS.map((option) => ({
+    id: option.id,
+    label: option.available ? option.label : `${option.label} (soon)`,
+    selected: option.id === platform.value,
+    active: option.id === platform.value,
+    activeMarker: "bullet",
+    disabled: !option.available,
+    onSelect: () => {
+      platform.value = option.id
+    },
+  })),
+)
+
+function startDrag(event: PointerEvent): void {
+  moveControls.start(event)
+}
+function openPlatform(event: MouseEvent): void {
+  platformAnchor.value = event.currentTarget as HTMLElement
+  platformOpen.value = true
+}
+function closePlatform(): void {
+  platformOpen.value = false
+}
 
 async function chooseDirectory(): Promise<void> {
   const picked = await pickExportDirectory()
@@ -76,189 +124,182 @@ function close(): void {
   panel.closePanel()
 }
 
-function onKeydown(event: KeyboardEvent): void {
-  if (event.key === "Escape") close()
+watch(isOpen, (open) => {
+  if (open) {
+    x.set(0)
+    y.set(0)
+  }
+})
+
+const styles: Record<string, CSSProperties> = {
+  dragHandle: { cursor: "grab", userSelect: "none", touchAction: "none" },
+  pointer: { cursor: "pointer" },
+  disabled: { opacity: 0.5, pointerEvents: "none" },
 }
+
+// Display-only slots ship baked authored copy, so an empty object turns them on.
+const showSlot = {}
+
+// Wires a Yes/No radio item: checked state, role, and its select handler.
+function radioProps(checked: boolean, onSelect: () => void) {
+  return {
+    onClick: onSelect,
+    role: "radio",
+    "aria-checked": checked ? "true" : "false",
+    "aria-selected": checked || undefined,
+    style: styles.pointer,
+  }
+}
+function iconFor(checked: boolean) {
+  return { icon: checked ? ICON_CHECKED : ICON_UNCHECKED }
+}
+
+const barHandle = computed(() => ({
+  onPointerdown: startDrag,
+  style: styles.dragHandle,
+}))
+const rootPathInput = computed(() => ({
+  value: directoryLabel.value,
+  placeholder: "Choose a folder…",
+  readonly: true,
+  onClick: chooseDirectory,
+  style: styles.pointer,
+}))
+const platformField = computed(() => ({
+  onClick: openPlatform,
+  "aria-expanded": platformOpen.value,
+  style: styles.pointer,
+}))
+const platformInput = computed(() => ({
+  value: platformLabel.value,
+  readonly: true,
+  style: styles.pointer,
+}))
+const cancelButton = { onClick: close }
+const confirmButton = computed(() => ({
+  onClick: runExport,
+  "aria-disabled": !canExport.value,
+  style: canExport.value ? undefined : styles.disabled,
+}))
+
+const hiddenYes = computed(() =>
+  radioProps(includeHidden.value, () => (includeHidden.value = true)),
+)
+const hiddenNo = computed(() =>
+  radioProps(!includeHidden.value, () => (includeHidden.value = false)),
+)
+const themesYes = computed(() =>
+  radioProps(allThemes.value, () => (allThemes.value = true)),
+)
+const themesNo = computed(() =>
+  radioProps(!allThemes.value, () => (allThemes.value = false)),
+)
+const fontsYes = computed(() =>
+  radioProps(allFonts.value, () => (allFonts.value = true)),
+)
+const fontsNo = computed(() =>
+  radioProps(!allFonts.value, () => (allFonts.value = false)),
+)
+const fontLinksYes = computed(() =>
+  radioProps(fontLinks.value, () => (fontLinks.value = true)),
+)
+const fontLinksNo = computed(() =>
+  radioProps(!fontLinks.value, () => (fontLinks.value = false)),
+)
+const iconsYes = computed(() =>
+  radioProps(allIcons.value, () => (allIcons.value = true)),
+)
+const iconsNo = computed(() =>
+  radioProps(!allIcons.value, () => (allIcons.value = false)),
+)
 </script>
 
 <template>
-  <div v-if="isOpen" class="dialog-overlay" @click="close" @keydown="onKeydown">
-    <div class="dialog" role="dialog" aria-modal="true" @click.stop>
-      <header class="dialog__header">
-        <span class="dialog__title">Export components</span>
-        <button type="button" class="dialog__close" @click="close">×</button>
-      </header>
-
-      <div class="dialog__body">
-        <label class="field">
-          <span class="field__label">Platform</span>
-          <select v-model="platform" class="field__input">
-            <option
-              v-for="option in platformOptions"
-              :key="option.id"
-              :value="option.id"
-              :disabled="!option.available"
-            >
-              {{ option.available ? option.label : `${option.label} (soon)` }}
-            </option>
-          </select>
-        </label>
-
-        <label class="toggle">
-          <input type="checkbox" v-model="includeHidden" />
-          <span>Include hidden components</span>
-        </label>
-        <label class="toggle">
-          <input type="checkbox" v-model="allThemes" />
-          <span>Export all themes</span>
-        </label>
-        <label class="toggle">
-          <input type="checkbox" v-model="allFonts" />
-          <span>Export all font collections</span>
-        </label>
-        <label class="toggle">
-          <input type="checkbox" v-model="fontLinks" />
-          <span>Enable remote font links</span>
-        </label>
-        <label class="toggle">
-          <input type="checkbox" v-model="allIcons" />
-          <span>Export all icon set icons</span>
-        </label>
-
-        <div class="field">
-          <span class="field__label">Destination folder</span>
-          <div class="folder">
-            <span class="folder__name">{{ directoryLabel }}</span>
-            <button type="button" class="btn" @click="chooseDirectory">
-              Choose…
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <footer class="dialog__footer">
-        <button type="button" class="btn" @click="close">Cancel</button>
-        <button
-          type="button"
-          class="btn btn--primary"
-          :disabled="!canExport"
-          @click="runExport"
-        >
-          {{ isExporting ? "Exporting…" : "Export" }}
-        </button>
-      </footer>
-    </div>
-  </div>
+  <WindowSurface
+    v-if="isOpen"
+    modal
+    content-sized
+    :on-close="close"
+    :x="x"
+    :y="y"
+    :move-controls="moveControls"
+  >
+    <DialogExportComponent
+      data-testid="export-components-dialog"
+      :bar="barHandle"
+      :text-title="showSlot"
+      :form-control="showSlot"
+      :text-label="showSlot"
+      :input="rootPathInput"
+      :form-control2="showSlot"
+      :text-label2="showSlot"
+      :combobox-field="platformField"
+      :input2="platformInput"
+      :form-control-radio="showSlot"
+      :frame2="showSlot"
+      :text-label3="showSlot"
+      :text-description="showSlot"
+      :frame3="showSlot"
+      :menu-item-radio="hiddenYes"
+      :icon2="iconFor(includeHidden)"
+      :text-label4="showSlot"
+      :menu-item-radio2="hiddenNo"
+      :icon3="iconFor(!includeHidden)"
+      :text-label5="showSlot"
+      :form-control-radio2="showSlot"
+      :frame4="showSlot"
+      :text-label6="showSlot"
+      :text-description2="showSlot"
+      :frame5="showSlot"
+      :menu-item-radio3="themesYes"
+      :icon4="iconFor(allThemes)"
+      :text-label7="showSlot"
+      :menu-item-radio4="themesNo"
+      :icon5="iconFor(!allThemes)"
+      :text-label8="showSlot"
+      :form-control-radio3="showSlot"
+      :frame6="showSlot"
+      :text-label9="showSlot"
+      :text-description3="showSlot"
+      :frame7="showSlot"
+      :menu-item-radio5="fontsYes"
+      :icon6="iconFor(allFonts)"
+      :text-label10="showSlot"
+      :menu-item-radio6="fontsNo"
+      :icon7="iconFor(!allFonts)"
+      :text-label11="showSlot"
+      :form-control-radio4="showSlot"
+      :frame8="showSlot"
+      :text-label12="showSlot"
+      :text-description4="showSlot"
+      :frame9="showSlot"
+      :menu-item-radio7="fontLinksYes"
+      :icon8="iconFor(fontLinks)"
+      :text-label13="showSlot"
+      :menu-item-radio8="fontLinksNo"
+      :icon9="iconFor(!fontLinks)"
+      :text-label14="showSlot"
+      :form-control-radio5="showSlot"
+      :frame10="showSlot"
+      :text-label15="showSlot"
+      :text-description5="showSlot"
+      :frame11="showSlot"
+      :menu-item-radio9="iconsYes"
+      :icon10="iconFor(allIcons)"
+      :text-label16="showSlot"
+      :menu-item-radio10="iconsNo"
+      :icon11="iconFor(!allIcons)"
+      :text-label17="showSlot"
+      :button="cancelButton"
+      :text-label18="showSlot"
+      :button2="confirmButton"
+      :text-label19="showSlot"
+    />
+    <MenuController
+      :open="platformOpen"
+      :anchor="platformAnchor"
+      :items="platformItems"
+      @close="closePlatform"
+    />
+  </WindowSurface>
 </template>
-
-<style scoped>
-.dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 10vh;
-  z-index: 100;
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-}
-.dialog {
-  width: 440px;
-  background: #18181b;
-  border: 1px solid #27272a;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-}
-.dialog__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #27272a;
-}
-.dialog__title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #fafafa;
-}
-.dialog__close {
-  border: none;
-  background: transparent;
-  color: #a1a1aa;
-  font-size: 1.2rem;
-  cursor: pointer;
-  line-height: 1;
-}
-.dialog__body {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.field__label {
-  font-size: 0.72rem;
-  color: #a1a1aa;
-}
-.field__input {
-  background: #27272a;
-  border: 1px solid #3f3f46;
-  border-radius: 4px;
-  padding: 6px 8px;
-  color: #fafafa;
-  font-size: 0.82rem;
-}
-.toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.82rem;
-  color: #e4e4e7;
-}
-.folder {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.folder__name {
-  flex: 1;
-  font-size: 0.8rem;
-  color: #d4d4d8;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.dialog__footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border-top: 1px solid #27272a;
-}
-.btn {
-  background: #27272a;
-  border: 1px solid #3f3f46;
-  color: #d4d4d8;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-.btn--primary {
-  background: #4338ca;
-  border-color: #6366f1;
-  color: #fff;
-}
-.btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-</style>

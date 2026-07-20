@@ -42,10 +42,13 @@ import {
   getComponentKey,
   resolveComponentKey,
 } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { imageUploadTargetForKey } from "@seldon/editor/lib/dialogs/image-upload-target"
 import { useBoardStateStore } from "@app/canvas/board-state-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { useToastStore } from "@app/toaster/toast-store"
+import { usePanelStore } from "@app/editor/panel-store"
+import { useImageUploadStore } from "@app/dialogs/image-upload/image-upload-store"
 
 /** Shown when an instance edit is attempted while a non-Normal state is active. */
 const INSTANCE_STATE_EDIT_MESSAGE =
@@ -73,6 +76,8 @@ export function useCommitPropertyValue(deps: CommitDeps) {
   const { workspace } = useWorkspace()
   const boardState = useBoardStateStore()
   const toast = useToastStore()
+  const panel = usePanelStore()
+  const imageUploadStore = useImageUploadStore()
 
   // Resolves the active interaction state for the selection's board. Boards and
   // nodes with no owning board resolve to Normal. Mirrors React
@@ -300,8 +305,13 @@ export function useCommitPropertyValue(deps: CommitDeps) {
     }
     const nodeId = getPropertiesSubjectId(subject)
 
-    // Image upload is not wired in the Vue editor yet; ignore the sentinel.
+    // Open the image upload dialog for the row's image target.
     if (newValue === "__upload__") {
+      const uploadTarget = imageUploadTargetForKey(property.key)
+      if (uploadTarget) {
+        imageUploadStore.setProperty(uploadTarget)
+        panel.openPanel("image-upload")
+      }
       deps.onDone()
       return
     }

@@ -2,17 +2,17 @@ import { computed, ref } from "vue"
 import { catalog } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import type { ComponentSchema } from "@seldon/core/components/types"
+import { getComponentIcon } from "@seldon/core/icon-registry"
+import type {
+  CatalogDialogCategory,
+  CatalogDialogItem,
+} from "@app/dialogs/types"
 
-export type CatalogItem = {
+export type CatalogItem = CatalogDialogItem & {
   componentId: ComponentId
-  name: string
-  description: string
 }
 
-export type CatalogCategory = {
-  category: string
-  items: CatalogItem[]
-}
+export type CatalogCategory = CatalogDialogCategory<CatalogItem>
 
 export type CatalogPredicate = (schema: ComponentSchema) => boolean
 
@@ -40,7 +40,9 @@ export function useCatalogDialog(shouldShow: CatalogPredicate) {
       const items = schemas
         .filter((schema) => shouldShow(schema))
         .map((schema) => ({
+          id: schema.id,
           componentId: schema.id,
+          icon: getComponentIcon(schema.id),
           name: schema.name,
           description: "Default",
         }))

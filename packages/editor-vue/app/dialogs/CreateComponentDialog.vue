@@ -6,11 +6,16 @@ import {
   authoredExportNameFromName,
 } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
+import DialogCreateComponent from "@seldon/components/modules/DialogCreateComponent.vue"
+import WindowSurface from "@app/windows/WindowSurface.vue"
+import MenuController from "@app/menus/MenuController.vue"
+import type { MenuEntry } from "@app/menus/types"
+import { useDraggableWindow } from "@app/menus/use-draggable-window"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
-import { computed, ref, watch } from "vue"
+import { computed, ref, watch, type CSSProperties } from "vue"
 
 type AuthoredRootKind = "container" | "frame"
 
@@ -43,8 +48,6 @@ const level = ref<EntryNodeLevel>("element")
 const intent = ref("")
 const tags = ref("")
 
-const nameInput = ref<HTMLInputElement | null>(null)
-
 const trimmedName = computed(() => name.value.trim())
 const boardKey = computed(() =>
   trimmedName.value ? authoredBoardKeyFromName(trimmedName.value) : "",
@@ -69,8 +72,69 @@ const nameError = computed<string | null>(() => {
 })
 
 const canSubmit = computed(
-  () => trimmedName.value.length > 0 && boardKey.value.length > 0 && !nameError.value,
+  () =>
+    trimmedName.value.length > 0 &&
+    boardKey.value.length > 0 &&
+    !nameError.value,
 )
+
+// A centered, content-sized modal: it hugs the authored dialog size, drags from
+// the title bar, and does not resize.
+const { x, y, moveControls } = useDraggableWindow({
+  handleClose: close,
+  contentSized: true,
+})
+
+const levelOpen = ref(false)
+const levelAnchor = ref<HTMLElement | null>(null)
+
+const levelLabel = computed(
+  () =>
+    AUTHORED_LEVEL_OPTIONS.find((option) => option.value === level.value)
+      ?.label ?? "",
+)
+
+const levelItems = computed<MenuEntry[]>(() =>
+  AUTHORED_LEVEL_OPTIONS.map((option) => ({
+    id: option.value,
+    label: option.label,
+    selected: option.value === level.value,
+    active: option.value === level.value,
+    activeMarker: "bullet",
+    onSelect: () => {
+      level.value = option.value
+    },
+  })),
+)
+
+const frameSelected = computed(() => rootKind.value === "frame")
+const containerSelected = computed(() => rootKind.value === "container")
+
+function startDrag(event: PointerEvent): void {
+  moveControls.start(event)
+}
+function selectFrame(): void {
+  rootKind.value = "frame"
+}
+function selectContainer(): void {
+  rootKind.value = "container"
+}
+function openLevel(event: MouseEvent): void {
+  levelAnchor.value = event.currentTarget as HTMLElement
+  levelOpen.value = true
+}
+function closeLevel(): void {
+  levelOpen.value = false
+}
+function onNameInput(event: Event): void {
+  name.value = (event.target as HTMLInputElement).value
+}
+function onIntentInput(event: Event): void {
+  intent.value = (event.target as HTMLInputElement).value
+}
+function onTagsInput(event: Event): void {
+  tags.value = (event.target as HTMLInputElement).value
+}
 
 function reset(): void {
   name.value = ""
@@ -102,199 +166,118 @@ function save(): void {
   close()
 }
 
-function onKeydown(event: KeyboardEvent): void {
-  if (event.key === "Escape") close()
+// Recenter on each open by clearing the drag offset from center.
+watch(isOpen, (open) => {
+  if (open) {
+    x.set(0)
+    y.set(0)
+  }
+})
+
+const styles: Record<string, CSSProperties> = {
+  dragHandle: { cursor: "grab", userSelect: "none", touchAction: "none" },
+  option: { cursor: "pointer" },
+  levelField: { cursor: "pointer" },
+  levelInput: { cursor: "pointer" },
+  disabled: { opacity: 0.5, pointerEvents: "none" },
 }
 
-watch(isOpen, (open) => {
-  if (open) requestAnimationFrame(() => nameInput.value?.focus())
-})
+// Each display-only slot ships baked authored copy, icons, and placeholders, so
+// an empty object turns the slot on and renders that content. Interactive slots
+// carry handlers and values.
+const showSlot = {}
+
+const barHandle = computed(() => ({
+  onPointerdown: startDrag,
+  style: styles.dragHandle,
+}))
+const frameItem = computed(() => ({
+  onClick: selectFrame,
+  role: "radio",
+  "aria-checked": frameSelected.value ? "true" : "false",
+  "aria-selected": frameSelected.value || undefined,
+  style: styles.option,
+}))
+const containerItem = computed(() => ({
+  onClick: selectContainer,
+  role: "radio",
+  "aria-checked": containerSelected.value ? "true" : "false",
+  "aria-selected": containerSelected.value || undefined,
+  style: styles.option,
+}))
+const nameInput = computed(() => ({
+  value: name.value,
+  onInput: onNameInput,
+  autofocus: true,
+  "aria-invalid": nameError.value ? "true" : undefined,
+}))
+const levelField = computed(() => ({
+  onClick: openLevel,
+  "aria-expanded": levelOpen.value,
+  style: styles.levelField,
+}))
+const levelInput = computed(() => ({
+  value: levelLabel.value,
+  readonly: true,
+  style: styles.levelInput,
+}))
+const intentInput = computed(() => ({ value: intent.value, onInput: onIntentInput }))
+const tagsInput = computed(() => ({ value: tags.value, onInput: onTagsInput }))
+const cancelButton = { onClick: close }
+const confirmButton = computed(() => ({
+  onClick: save,
+  "aria-disabled": !canSubmit.value,
+  style: canSubmit.value ? undefined : styles.disabled,
+}))
 </script>
 
 <template>
-  <div v-if="isOpen" class="dialog-overlay" @click="close" @keydown="onKeydown">
-    <div class="dialog" role="dialog" aria-modal="true" @click.stop>
-      <header class="dialog__header">
-        <span class="dialog__title">Create component</span>
-        <button type="button" class="dialog__close" @click="close">×</button>
-      </header>
-
-      <div class="dialog__body">
-        <label class="field">
-          <span class="field__label">Name</span>
-          <input
-            ref="nameInput"
-            v-model="name"
-            class="field__input"
-            :aria-invalid="Boolean(nameError)"
-            @keydown="onKeydown"
-          />
-          <span v-if="nameError" class="field__error">{{ nameError }}</span>
-        </label>
-
-        <div class="field">
-          <span class="field__label">Root</span>
-          <div class="field__radios">
-            <label class="radio">
-              <input type="radio" value="frame" v-model="rootKind" />
-              <span>Frame</span>
-            </label>
-            <label class="radio">
-              <input type="radio" value="container" v-model="rootKind" />
-              <span>Container</span>
-            </label>
-          </div>
-        </div>
-
-        <label class="field">
-          <span class="field__label">Level</span>
-          <select v-model="level" class="field__input">
-            <option
-              v-for="option in AUTHORED_LEVEL_OPTIONS"
-              :key="option.value"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </label>
-
-        <label class="field">
-          <span class="field__label">Intent (optional)</span>
-          <input v-model="intent" class="field__input" @keydown="onKeydown" />
-        </label>
-
-        <label class="field">
-          <span class="field__label">Tags (comma separated, optional)</span>
-          <input v-model="tags" class="field__input" @keydown="onKeydown" />
-        </label>
-      </div>
-
-      <footer class="dialog__footer">
-        <button type="button" class="btn" @click="close">Cancel</button>
-        <button
-          type="button"
-          class="btn btn--primary"
-          :disabled="!canSubmit"
-          @click="save"
-        >
-          Create component
-        </button>
-      </footer>
-    </div>
-  </div>
+  <WindowSurface
+    v-if="isOpen"
+    modal
+    content-sized
+    :on-close="close"
+    :x="x"
+    :y="y"
+    :move-controls="moveControls"
+  >
+    <DialogCreateComponent
+      data-testid="create-component-dialog"
+      :bar="barHandle"
+      :text-title="showSlot"
+      :item-catalog="frameItem"
+      :icon="showSlot"
+      :frame2="showSlot"
+      :text-title2="showSlot"
+      :text-subtitle="showSlot"
+      :item-catalog2="containerItem"
+      :icon2="showSlot"
+      :frame3="showSlot"
+      :text-title3="showSlot"
+      :text-subtitle2="showSlot"
+      :form-control="showSlot"
+      :text-label="showSlot"
+      :input="nameInput"
+      :form-control-combobox="showSlot"
+      :text-label2="showSlot"
+      :combobox-field="levelField"
+      :input2="levelInput"
+      :form-control2="showSlot"
+      :text-label3="showSlot"
+      :input3="intentInput"
+      :form-control3="showSlot"
+      :text-label4="showSlot"
+      :input4="tagsInput"
+      :button="cancelButton"
+      :text-label5="showSlot"
+      :button2="confirmButton"
+      :text-label6="showSlot"
+    />
+    <MenuController
+      :open="levelOpen"
+      :anchor="levelAnchor"
+      :items="levelItems"
+      @close="closeLevel"
+    />
+  </WindowSurface>
 </template>
-
-<style scoped>
-.dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 10vh;
-  z-index: 100;
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-}
-.dialog {
-  width: 440px;
-  background: #18181b;
-  border: 1px solid #27272a;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-}
-.dialog__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #27272a;
-}
-.dialog__title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #fafafa;
-}
-.dialog__close {
-  border: none;
-  background: transparent;
-  color: #a1a1aa;
-  font-size: 1.2rem;
-  cursor: pointer;
-  line-height: 1;
-}
-.dialog__body {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.field__label {
-  font-size: 0.72rem;
-  color: #a1a1aa;
-}
-.field__input {
-  background: #27272a;
-  border: 1px solid #3f3f46;
-  border-radius: 4px;
-  padding: 6px 8px;
-  color: #fafafa;
-  font-size: 0.82rem;
-}
-.field__input:focus {
-  outline: none;
-  border-color: #6366f1;
-}
-.field__input[aria-invalid="true"] {
-  border-color: #ef4444;
-}
-.field__error {
-  font-size: 0.72rem;
-  color: #f87171;
-}
-.field__radios {
-  display: flex;
-  gap: 1rem;
-}
-.radio {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.82rem;
-  color: #e4e4e7;
-}
-.dialog__footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border-top: 1px solid #27272a;
-}
-.btn {
-  background: #27272a;
-  border: 1px solid #3f3f46;
-  color: #d4d4d8;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-.btn--primary {
-  background: #4338ca;
-  border-color: #6366f1;
-  color: #fff;
-}
-.btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-</style>

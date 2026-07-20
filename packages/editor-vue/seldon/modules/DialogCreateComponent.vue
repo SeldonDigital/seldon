@@ -376,7 +376,7 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
             <Input v-if="input4Props !== null" v-bind="input4Props" />
           </FormControl>
         </Frame>
-        <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps" :button4="buttonProps" :icon4="icon4Props" :textLabel4="textLabel5 && textLabel5Props" :button5="button2Props" :icon5="icon5Props" :textLabel5="textLabel6 && textLabel6Props" />
+        <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps" :frame2="{}" :button4="buttonProps" :icon4="icon4Props" :textLabel4="textLabel5 && textLabel5Props" :button5="button2Props" :icon5="icon5Props" :textLabel5="textLabel6 && textLabel6Props" />
       </slot>
     </div>
 </template>

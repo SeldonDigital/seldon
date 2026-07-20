@@ -225,6 +225,7 @@ const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel
           <ComboboxFieldSearch v-if="comboboxFieldSearch && comboboxFieldSearchProps" v-bind="comboboxFieldSearchProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
         </Bar>
         <Frame v-bind="frameProps">
+          <slot name="content" />
         </Frame>
         <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps">
           <Frame v-bind="frame2Props" v-if="frame2">

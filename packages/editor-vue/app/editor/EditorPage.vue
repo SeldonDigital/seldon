@@ -17,7 +17,10 @@ import BoardsDialog from "@app/dialogs/BoardsDialog.vue"
 import ComponentsDialog from "@app/dialogs/ComponentsDialog.vue"
 import CreateComponentDialog from "@app/dialogs/CreateComponentDialog.vue"
 import ExportDialog from "@app/dialogs/ExportDialog.vue"
-import ResourceDialog from "@app/dialogs/ResourceDialog.vue"
+import ThemesDialog from "@app/dialogs/ThemesDialog.vue"
+import FontCollectionsDialog from "@app/dialogs/FontCollectionsDialog.vue"
+import IconSetsDialog from "@app/dialogs/IconSetsDialog.vue"
+import ImageUploadController from "@app/dialogs/image-upload/ImageUploadController.vue"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
 import PropertiesSidebar from "@app/sidebars/properties/PropertiesSidebar.vue"
 import TopbarController from "@app/topbar/TopbarController.vue"
@@ -157,8 +160,11 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
     <BoardsDialog />
     <ComponentsDialog />
     <CreateComponentDialog />
-    <ResourceDialog />
+    <ThemesDialog />
+    <FontCollectionsDialog />
+    <IconSetsDialog />
     <ExportDialog />
+    <ImageUploadController />
     <AiChatPanel />
     <FocusRingOverlay />
   </div>

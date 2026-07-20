@@ -722,7 +722,7 @@ const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLab
             </Frame>
           </FormControlRadio>
         </Frame>
-        <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps" :button4="buttonProps" :icon4="icon12Props" :textLabel4="textLabel18 && textLabel18Props" :button5="button2Props" :icon5="icon13Props" :textLabel5="textLabel19 && textLabel19Props" />
+        <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps" :frame2="{}" :button4="buttonProps" :icon4="icon12Props" :textLabel4="textLabel18 && textLabel18Props" :button5="button2Props" :icon5="icon13Props" :textLabel5="textLabel19 && textLabel19Props" />
       </slot>
     </div>
 </template>
