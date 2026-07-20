@@ -1,0 +1,2 @@
+export const PANEL_INITIAL_WIDTH = 520
+export const PANEL_INITIAL_HEIGHT = 520

@@ -31,11 +31,41 @@ export type ExportOptions = {
    * default. Set to `false` to tree-shake to only the icons components use.
    */
   exportAllIconSetIcons?: boolean
+  /**
+   * Include components hidden with `Display.EXCLUDE` or `Display.MOCK` in the
+   * exported trees. Off by default, matching the editor where hidden components
+   * do not render.
+   */
+  includeHiddenComponents?: boolean
+  /**
+   * Export every workspace theme, even when no node references it. On by
+   * default. Set to `false` to emit only themes a node uses, always keeping the
+   * default `seldon` theme.
+   */
+  exportAllThemes?: boolean
+  /**
+   * Emit remote font links for every enabled font collection family, even when
+   * no theme references it. On by default. Set to `false` to emit only families
+   * referenced by a theme. Only has an effect when `enableRemoteFonts` is on.
+   */
+  exportAllFontCollections?: boolean
 }
 
+/**
+ * Identifier for an export platform. Adding a platform means adding an id here
+ * and a matching entry in the platform registry (`platforms/registry.ts`).
+ */
+export type PlatformId = "react" | "swift" | "vue" | "svelte"
+
+/** Whether a platform can export today or is registered for a future release. */
+export type PlatformStatus = "available" | "planned"
+
+/** Styling strategy a platform emits. */
+export type ExportStyleId = "css-properties"
+
 type ExportTarget = {
-  framework: "react"
-  styles: "css-properties"
+  framework: PlatformId
+  styles: ExportStyleId
 }
 
 /**

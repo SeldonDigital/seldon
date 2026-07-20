@@ -1,0 +1,57 @@
+{
+  "name": "@seldon/editor-react",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "fonts:licenses": "node scripts/copy-font-licenses.mjs",
+    "fonts:files": "node scripts/copy-font-files.mjs",
+    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs",
+    "export:seldon": "node scripts/export-seldon.mjs",
+    "dev": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && node scripts/ensure-ollama.mjs && vite",
+    "build": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite build",
+    "build:release": "npm run notices:thirdparty && npm run build",
+    "start": "vite preview",
+    "lint": "eslint .",
+    "format": "node ../../scripts/format.mjs",
+    "quality": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
+    "@seldon/core": "file:../core",
+    "@seldon/factory": "file:../factory",
+    "allotment": "^1.20.4",
+    "change-case": "^5.4.4",
+    "framer-motion": "^12.23.12",
+    "idb-keyval": "^6.2.1",
+    "immer": "^10.1.1",
+    "nanoid": "^5.1.5",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-hotkeys-hook": "^4.6.2",
+    "react-markdown": "^10.1.0",
+    "react-router": "^7.16.0",
+    "react-syntax-highlighter": "^16.1.1",
+    "react-zoom-pan-pinch": "^3.7.0",
+    "remark-gfm": "^4.0.1",
+    "use-debounce": "^10.0.5",
+    "zod": "^3.25.76",
+    "zustand": "^4.5.7"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.0",
+    "@trivago/prettier-plugin-sort-imports": "4.3.0",
+    "@types/node": "^20.19.9",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@vitejs/plugin-react": "^6.0.0",
+    "esbuild": "^0.28.1",
+    "eslint": "^9.39.4",
+    "prettier": "^3.4.2",
+    "typescript": "^5.8.3",
+    "vite": "^8.0.0"
+  },
+  "volta": {
+    "node": "22.18.0"
+  }
+}

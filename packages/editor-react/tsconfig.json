@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "noErrorTruncation": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@seldon/editor/lib/*": ["../editor/lib/*"],
+      "@seldon/components/*": ["./seldon/*"],
+      "@seldon/core/*": ["../../packages/core/*"],
+      "@seldon/factory/*": ["../../packages/factory/*"],
+      "@seldon/ai": ["../../packages/ai/index.ts"],
+      "@seldon/ai/*": ["../../packages/ai/*"]
+    },
+    "target": "ES2017"
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "node_modules",
+    "**/generated-ai-action-schema.json",
+    ".next",
+    "dist"
+  ]
+}

@@ -162,6 +162,13 @@ export type NativeReactPrimitive =
 export type CustomReactTemplate = "toggleSwitch"
 
 /**
+ * Identifies a bespoke, hand-authored Vue template, mirroring
+ * {@link CustomReactTemplate}. The Vue factory renders these SFCs for components
+ * whose markup cannot be derived from a schema.
+ */
+export type CustomVueTemplate = "toggleSwitch"
+
+/**
  * Type-only export descriptors for future Swift and Android factories. These
  * carry the platform-native control name a factory would render for the
  * component. No factory consumes them yet.
@@ -200,6 +207,28 @@ export interface ComponentExport {
      * components; not for `htmlElement`, `wrapperElement`, or `iconMap`.
      */
     forwardRef?: string
+  }
+  /**
+   * Optional Vue export descriptor, mirroring {@link ComponentExport.react}. The
+   * Vue factory defaults every field from `react` when this block is absent, so
+   * schemas only author it to diverge from the React shape. The `returns`
+   * semantics (native primitive, `Frame`, `wrapperElement`, `htmlElement`,
+   * `iconMap`, `custom`) are framework-neutral and shared with React.
+   */
+  vue?: {
+    returns:
+      | NativeReactPrimitive
+      | "htmlElement"
+      | "wrapperElement"
+      | "iconMap"
+      | "Frame"
+      | "custom"
+    custom?: {
+      base: NativeReactPrimitive
+      template: CustomVueTemplate
+    }
+    /** Root element the SFC exposes via `defineExpose` for caller refs. */
+    expose?: string
   }
   /** Type-only descriptor for a future Swift factory. */
   swift?: SwiftComponentExport

@@ -67,8 +67,8 @@ export async function runExport(
     target: { framework: "react", styles: "css-properties" },
     output: {
       componentsFolder: "seldon",
-      assetsFolder: "assets",
-      assetPublicPath: "/assets",
+      assetsFolder: "seldon/assets",
+      assetPublicPath: "/seldon/assets",
     },
     assetReader: createNodeExportAssetReader(rootDirectory),
     // Default off so exports stay request-free. Flip to true (or override via

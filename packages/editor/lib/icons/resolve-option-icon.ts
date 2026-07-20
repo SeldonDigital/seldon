@@ -1,12 +1,12 @@
-import { Theme } from "@seldon/core"
-import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
-import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-registry"
-import { getComboboxStoredValue } from "@app/sidebars/properties/helpers/combobox-stored-value"
-import { getThemeTokenIconColor } from "@app/sidebars/properties/helpers/theme-token-icon-color"
 import {
   EDITOR_OPTION_ICON_OVERLAY,
   getPropertyRegistryEntry,
-} from "./icons-registry"
+} from "@seldon/editor/lib/icons/icons-registry"
+import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
+import { getThemeTokenIconColor } from "@seldon/editor/lib/themes/theme-token-icon-color"
+import { Theme } from "@seldon/core"
+import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
+import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-registry"
 
 /** Icon id rendered for theme token values that are not swatch colors. */
 export const THEME_TOKEN_ICON = "seldon-theme"

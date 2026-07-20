@@ -1,0 +1,28 @@
+/*
+ * Global editor styles. Import the generated seldon theme tokens and component
+ * class rules first so the generated chrome components render with their design.
+ * Mirrors the React editor's globals.css.
+ */
+@import "../seldon/styles/seldon.css";
+@import "../seldon/styles.css";
+@import "./editor-chrome.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family:
+    "IBM Plex Sans",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}

@@ -1,0 +1,80 @@
+import { useDirtyStore } from "@app/persistence/dirty-store"
+import { defineStore } from "pinia"
+import { computed, shallowRef } from "vue"
+
+import { createEmptyWorkspace } from "@seldon/core"
+import type { Workspace } from "@seldon/core/workspace/types"
+
+const REVISION_LIMIT = 50
+
+export const INITIAL_WORKSPACE: Workspace = createEmptyWorkspace()
+
+/**
+ * Undo/redo history of committed workspace revisions. Mirrors the React history
+ * store: `push` truncates any redo tail and appends, capping the stack; `undo`
+ * and `redo` move the index; `reset` replaces the stack with a single revision.
+ */
+export const useHistoryStore = defineStore("history", () => {
+  // Workspaces are immutable snapshots produced by the core reducer (Immer,
+  // auto-freeze on). A deep `ref` would make Vue proxy these frozen graphs,
+  // which breaks the JS Proxy invariant when frozen array elements are read
+  // back and also corrupts Immer if a proxied workspace is fed into `produce`.
+  // A `shallowRef` keeps each snapshot raw; reactivity still fires because every
+  // dispatch replaces the whole array by reference.
+  const history = shallowRef<Workspace[]>([INITIAL_WORKSPACE])
+  const currentIndex = shallowRef(0)
+
+  const current = computed(() => history.value[currentIndex.value])
+  const canUndo = computed(() => currentIndex.value > 0)
+  const canRedo = computed(() => currentIndex.value < history.value.length - 1)
+
+  function push(workspace: Workspace): void {
+    const next = history.value.slice(0, currentIndex.value + 1)
+    next.push(workspace)
+    if (next.length > REVISION_LIMIT) next.shift()
+    history.value = next
+    currentIndex.value = next.length - 1
+  }
+
+  function undo(): void {
+    if (currentIndex.value > 0) {
+      currentIndex.value -= 1
+      useDirtyStore().setDirty(true)
+    }
+  }
+
+  function redo(): void {
+    if (currentIndex.value < history.value.length - 1) {
+      currentIndex.value += 1
+      useDirtyStore().setDirty(true)
+    }
+  }
+
+  function reset(state: Workspace): void {
+    history.value = [state]
+    currentIndex.value = 0
+    useDirtyStore().setDirty(false)
+  }
+
+  return {
+    history,
+    currentIndex,
+    current,
+    canUndo,
+    canRedo,
+    push,
+    undo,
+    redo,
+    reset,
+  }
+})
+
+/**
+ * Reads the current committed workspace without a component subscription, for
+ * event handlers and command callbacks that need the latest workspace at call
+ * time. Requires an active Pinia instance.
+ */
+export function getCurrentWorkspace(): Workspace {
+  const store = useHistoryStore()
+  return store.current
+}

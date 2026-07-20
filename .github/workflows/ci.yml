@@ -33,7 +33,7 @@ jobs:
           node-version: 22.18.0
           cache: npm
       - run: npm ci
-      - run: npm run lint --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/editor
+      - run: npm run lint --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/editor --workspace @seldon/editor-react --workspace @seldon/editor-vue
 
   typecheck:
     name: Type-check (tsc)
@@ -47,7 +47,8 @@ jobs:
       - run: npm ci
       - run: npx tsc --build packages/core/tsconfig.json
       - run: npx tsc -p packages/factory/tsconfig.json
-      - run: npx tsc -p packages/editor/tsconfig.json
+      - run: npm run quality --workspace @seldon/editor-react
+      - run: npm run quality --workspace @seldon/editor-vue
 
   test:
     name: Unit tests (core, factory)

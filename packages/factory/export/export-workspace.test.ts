@@ -33,19 +33,18 @@ const options: ExportOptions = {
 }
 
 describe("exportWorkspace", () => {
-  it("throws for an unsupported framework", async () => {
+  it("throws for a planned but unavailable platform", async () => {
     await expect(
       exportWorkspace(workspace, {
         ...options,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        target: { framework: "vue" } as any,
+        target: { framework: "swift", styles: "css-properties" },
         assetReader: {
           readNativeComponent: () => undefined,
           readIconFile: () => undefined,
           listNativeComponentFileStems: () => [],
         },
       }),
-    ).rejects.toThrow(/Unsupported target\.framework/)
+    ).rejects.toThrow(/planned but not available/)
   })
 
   it("returns a non-empty list of files", async () => {

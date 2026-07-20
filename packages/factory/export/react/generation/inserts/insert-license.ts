@@ -3,8 +3,7 @@ import {
   transformSource,
 } from "../../utils/transform-source"
 
-export function insertLicense(source: string) {
-  const license = `/*****
+export const LICENSE_HEADER = `/*****
  *
  * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
  *
@@ -18,9 +17,10 @@ export function insertLicense(source: string) {
  *****/
 `
 
+export function insertLicense(source: string) {
   return transformSource({
     source,
     strategy: TransformStrategy.PREPEND,
-    content: license,
+    content: LICENSE_HEADER,
   })
 }

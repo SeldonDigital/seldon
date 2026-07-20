@@ -1,0 +1,382 @@
+import { ComboboxListbox } from "@app/menus"
+import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
+import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
+import {
+  buildDisabledRefProps,
+  buildFieldStateProps,
+  buildInvalidRefProps,
+  buildRepeatFieldStyleProps,
+  mergeStateProps,
+} from "@app/views/state-props"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { ItemNode } from "@seldon/components/elements/ItemNode"
+import { Frame } from "@seldon/components/frames/Frame"
+import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { type ReactElement, memo } from "react"
+
+import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
+import type { EntryNode } from "@seldon/core/workspace/types"
+
+import { SidebarTracking } from "../../tracking/SidebarTracking"
+import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
+import { IndentationLevel } from "../hooks/use-indentation"
+import { useRenameInput } from "../hooks/use-rename-input"
+import { RowSelectionTarget } from "./RowSelectionTarget"
+import { useRowDisplayPicker } from "./hooks/use-row-display-picker"
+import { useRowNode } from "./hooks/use-row-node"
+
+const NODE_SELECTION_KIND = "node"
+
+/** Most echo rows to list before collapsing the remainder into a summary row. */
+const ECHO_ROW_LIMIT = 6
+
+interface NodeControllerProps {
+  nodeId: string
+  /**
+   * Node-id path of this copy, from the variant-root down to this row, joined
+   * by "/". Threaded so selection resolves the clicked copy of a child id that
+   * is shared across variant columns.
+   */
+  rootId: string
+  show?: boolean
+  parentIsSelected?: boolean
+  disableReordering?: boolean
+  /**
+   * Render this row as a repeat echo: a stripped leaf with an italic label that
+   * routes selection to the underlying node (index 0 of the repeat).
+   */
+  isEcho?: boolean
+}
+
+/** Summary row standing in for echo rows beyond {@link ECHO_ROW_LIMIT}. */
+function RepeatEchoSummaryRow({ count }: { count: number }) {
+  return <Frame>+{count} more</Frame>
+}
+
+const NodeInner = function NodeInner({
+  node,
+  rootId,
+  show,
+  parentIsSelected,
+  disableReordering,
+  isEcho,
+}: {
+  node: EntryNode
+  rootId: string
+  show: boolean
+  parentIsSelected: boolean
+  disableReordering: boolean
+  isEcho: boolean
+}) {
+  const { workspace } = useWorkspace({ usePreview: false })
+  const {
+    label: baseLabel,
+    buttonIconic,
+    icon,
+    icon2,
+    actions,
+    displayOptionGroups,
+    displayValue,
+    selectDisplay,
+    resolveDisplayOptionIcon,
+    displayIcon,
+    onClick,
+    onDoubleClick,
+    isExpanded,
+    isSelected,
+    isNodeActive,
+    isEditingName,
+    setEditingName,
+    setNodeLabel,
+    hasChildren,
+    children,
+    dragging,
+    ref,
+    properties,
+    isDimmed,
+    dimStyle,
+    labelDecorationStyle,
+    isDuplicateLabel,
+    nodeTypeColor,
+    isPrimaryShared,
+    isSecondaryShared,
+    dataNodeType,
+  } = useRowNode(node, {
+    rootId,
+    show,
+    parentIsSelected,
+    disableReordering,
+    isEcho,
+  })
+
+  const actionsMenu = useRowActionsMenu(actions, {
+    focusTargetRef: ref,
+  })
+
+  // The row Display picker reuses the same floating `ComboboxListbox` widget as
+  // the properties Display control. Its trigger stays visible (unlike the
+  // on-demand actions menu), so a row's display is always one click away.
+  const displayPicker = useRowDisplayPicker({
+    optionGroups: displayOptionGroups,
+    value: displayValue,
+    onSelect: selectDisplay,
+    resolveIcon: resolveDisplayOptionIcon,
+  })
+
+  const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
+    useSidebarCanvasTracking(node)
+
+  // Display shows the row label (which may be a transformed code name), but
+  // inline rename always edits and commits the underlying node label.
+  const nameInput = useRenameInput({
+    label: String(baseLabel.children),
+    editLabel: node.label,
+    isEditing: isEditingName,
+    setEditing: setEditingName,
+    onSubmit: setNodeLabel,
+  })
+
+  const dataTestId = `object-panel-node-${node.id}`
+  const dataNodeId = node.id
+  const dataDisplay =
+    properties && "display" in properties
+      ? properties.display?.value
+      : undefined
+
+  // Expand a repeated child into its index-0 row plus stripped echo rows.
+  function renderChildRows(childNodeId: string): ReactElement[] {
+    const childRootId = `${rootId}/${childNodeId}`
+    const indexZeroRow = (
+      <NodeController
+        key={childNodeId}
+        nodeId={childNodeId}
+        rootId={childRootId}
+        show={show}
+        parentIsSelected={isSelected}
+      />
+    )
+
+    const childNode = workspace.nodes[childNodeId]
+    const repeat = childNode
+      ? resolveNodeRepeat(childNodeId, workspace)
+      : undefined
+    if (!repeat || repeat.count <= 1) return [indexZeroRow]
+
+    const total = Math.min(repeat.count, MAX_REPEAT_COUNT)
+    const echoCount = total - 1
+    const shownEchoes = Math.min(echoCount, ECHO_ROW_LIMIT)
+
+    const hasSummary = echoCount > shownEchoes
+    const rows: ReactElement[] = [indexZeroRow]
+    for (let echoIndex = 1; echoIndex <= shownEchoes; echoIndex++) {
+      const echoKey = `${childNodeId}#echo${echoIndex}`
+      rows.push(
+        <NodeController
+          key={echoKey}
+          nodeId={childNodeId}
+          rootId={childRootId}
+          show={show}
+          parentIsSelected={isSelected}
+          isEcho
+        />,
+      )
+    }
+    if (hasSummary) {
+      const summaryCount = echoCount - shownEchoes
+      rows.push(
+        <RepeatEchoSummaryRow
+          key={`${childNodeId}#more`}
+          count={summaryCount}
+        />,
+      )
+    }
+    return rows
+  }
+
+  const childrenSection = hasChildren ? (
+    <FramerExpandable isExpanded={isExpanded}>
+      <IndentationLevel>
+        {children.flatMap((childNodeId) => renderChildRows(childNodeId))}
+      </IndentationLevel>
+    </FramerExpandable>
+  ) : null
+
+  // The nodeToggle chevron rotates 90° when the row is expanded. Leaf rows have
+  // no children to disclose, so the chevron is hidden. Color, hover, and
+  // selection tints come from the generated component CSS.
+  const toggleIcon = {
+    ...icon,
+    style: {
+      transition: "transform 0.2s ease",
+      ...(hasChildren
+        ? isExpanded
+          ? { transform: "rotate(90deg)" }
+          : {}
+        : { opacity: 0 }),
+    },
+  }
+
+  // Hide, stub, mock, and exclude dim the row. The row's italic label
+  // decoration comes from the hook, so the name shown in the combobox input
+  // matches the row label.
+  const renameStyle = labelDecorationStyle
+    ? { ...nameInput.style, ...labelDecorationStyle }
+    : nameInput.style
+  const nodeLabel = { ...nameInput, style: renameStyle }
+
+  // Disabled is not owned by the combobox-field, so it never cascades from the
+  // field to these leaves. Forward `aria-disabled` onto each leaf ref so their
+  // own `[aria-disabled]` styles dim the row.
+  const disabledRef = buildDisabledRefProps(isDimmed)
+
+  // Dimmed rows read as gray (from `aria-disabled`) at 50% opacity. The fade
+  // applies to the same icon and label leaves that carry the gray.
+  const dimRef = dimStyle ? { style: dimStyle } : undefined
+
+  // A duplicate variant label is an error state. The name label sits outside
+  // the combobox-field, so forward `aria-invalid` onto the icon and label leaves
+  // and drive their own `[aria-invalid]` negative-swatch styles.
+  const invalidRef = buildInvalidRefProps(isDuplicateLabel)
+
+  // Show Node Types debug tint. Applied inline to the icon and label refs only,
+  // so it wins over the field's selection and state cascade there while leaving
+  // the disclosure arrow, buttons, border, and background untinted.
+  const nodeTypeStyle = nodeTypeColor
+    ? { style: { color: nodeTypeColor } }
+    : undefined
+
+  // Drive every slot through its stable workspace ref. The trailing actions icon
+  // has no ref; it stays on the generated `seldon-more` default and is hidden by
+  // the actions button placeholder (visibility cascades), so it needs none.
+  const seldonRefs = {
+    nodeToggle: { ...buttonIconic },
+    nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
+    nodeIcon: mergeStateProps(
+      icon2,
+      disabledRef,
+      dimRef,
+      nodeTypeStyle,
+      invalidRef,
+    ),
+    nodeLabel: mergeStateProps(
+      nodeLabel,
+      disabledRef,
+      dimRef,
+      nodeTypeStyle,
+      invalidRef,
+    ),
+    nodeDisplay: { ...displayPicker.buttonProps },
+    nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
+  // Show Leaves / Branch / Tree lineage fill from the View menu. Primary rows
+  // read as a strong accent fill (they change when the selection is edited);
+  // secondary rows read faintly (related lineage that does not change). The fill
+  // uses the same `--sdn-swatch-active` accent as selection, so the selected row
+  // border and these fills stay in one color family.
+  const sharedHighlightBackground = isPrimaryShared
+    ? "color-mix(in srgb, var(--sdn-swatch-active) 35%, transparent)"
+    : isSecondaryShared
+      ? "color-mix(in srgb, var(--sdn-swatch-active) 12%, transparent)"
+      : undefined
+
+  // The row's selection is styled on its combobox-field child. Repeat echo rows
+  // also carry a dashed base border so every field state renders dashed. Merge
+  // the echo border and the lineage fill into one style so neither clobbers the
+  // other.
+  const echoFieldProps = buildRepeatFieldStyleProps(isEcho)
+  const comboboxFieldStyle = {
+    ...(echoFieldProps.style ?? {}),
+    ...(sharedHighlightBackground
+      ? { backgroundColor: sharedHighlightBackground }
+      : {}),
+  }
+  const comboboxField = {
+    ...buildFieldStateProps({ selected: isSelected }),
+    ...(Object.keys(comboboxFieldStyle).length > 0
+      ? { style: comboboxFieldStyle }
+      : {}),
+  }
+
+  // Echo rows are stripped leaves with no display of their own, so their
+  // nodeDisplay slot is removed. Real rows keep the slot on its generated
+  // default and drive it through the `nodeDisplay` ref.
+  const displayButtonSlot = isEcho ? null : undefined
+
+  // Root-level row state. Selection lives on the combobox-field and disabled on
+  // the leaves; these mirror the row's logical state for selectors and tests.
+  const itemNodeState = {
+    "aria-selected": isSelected || undefined,
+    "aria-disabled": isDimmed || undefined,
+    "aria-invalid": isDuplicateLabel || undefined,
+  }
+
+  return (
+    <>
+      <RowSelectionTarget
+        ref={ref}
+        selectionId={node.id}
+        selectionKind={NODE_SELECTION_KIND}
+        selectionRootId={rootId}
+      >
+        <SidebarTracking
+          node={node}
+          isExpanded={isExpanded}
+          onRowClick={onClick}
+          onRowDoubleClick={onDoubleClick}
+          onCanvasTrackingEnter={handleCanvasTrackingEnter}
+          onCanvasTrackingLeave={handleCanvasTrackingLeave}
+        >
+          <ItemNode
+            buttonIconic={{}}
+            comboboxField={comboboxField}
+            buttonIconic2={displayButtonSlot}
+            icon3={displayIcon}
+            buttonIconic3={{}}
+            seldonRefs={seldonRefs}
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
+            onMouseEnter={handleCanvasTrackingEnter}
+            onMouseLeave={handleCanvasTrackingLeave}
+            {...itemNodeState}
+            data-testid={dataTestId}
+            data-nodeid={dataNodeId}
+            data-node-type={dataNodeType}
+            data-display={dataDisplay}
+            data-dragging={dragging}
+            data-active={isNodeActive}
+          />
+        </SidebarTracking>
+      </RowSelectionTarget>
+      <ComboboxListbox {...displayPicker.listbox} />
+      {actionsMenu.menu}
+
+      {childrenSection}
+    </>
+  )
+}
+
+export const NodeController = memo(function NodeController({
+  nodeId,
+  rootId,
+  show = true,
+  parentIsSelected = false,
+  disableReordering = false,
+  isEcho = false,
+}: NodeControllerProps) {
+  const { workspace } = useWorkspace({ usePreview: false })
+  const node = getNode(workspace, nodeId)
+
+  if (!node) return null
+
+  return (
+    <NodeInner
+      node={node}
+      rootId={rootId}
+      show={show}
+      parentIsSelected={parentIsSelected}
+      disableReordering={disableReordering}
+      isEcho={isEcho}
+    />
+  )
+})

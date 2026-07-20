@@ -37,11 +37,11 @@ const files = await exportWorkspace(workspace, {
   target: { framework: "react", styles: "css-properties" },
   output: {
     componentsFolder: "/src/components",
-    assetsFolder: "/public/assets",
-    assetPublicPath: "/assets",
   },
 })
 ```
+
+`assetsFolder` and `assetPublicPath` are optional. When omitted they default to nest under `componentsFolder`, so image assets land in `${componentsFolder}/assets` and generated components reference them at `/${componentsFolder}/assets`. Set them explicitly to place assets elsewhere. Keeping the default keeps a generated library self-contained and avoids emitting a stray top-level `assets/` folder.
 
 Factory has no `exports` field and no top-level barrel. Import the concrete file paths shown here, not a bare `@seldon/factory` specifier.
 

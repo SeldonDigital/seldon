@@ -1,26 +1,16 @@
 /**
  * Editor chrome themes.
  *
- * Eagerly imports every exported theme stylesheet so each theme's
- * `[data-theme="{slug}"]` block is present in the document. Setting `data-theme`
- * on the chrome root swaps the interface theme. The canvas never reads these
- * variables.
+ * The switcher's option list comes only from the editor's exported
+ * `styles/{slug}.css` files, not from the workspace. Each file contributes one
+ * option; its slug is the file name and its label is the stock theme's authored
+ * name when the slug matches a stock theme, otherwise the slug in Title Case.
  *
- * The switcher's option list comes only from the exported `styles/{slug}.css`
- * files, not from the workspace. Each file contributes one option; its slug is
- * the file name and its label is the stock theme's authored name when the slug
- * matches a stock theme, otherwise the slug in Title Case.
+ * Discovering and eagerly loading those stylesheets is build-relative and
+ * belongs to each editor package, so the exported slugs are passed in. See the
+ * per-editor `chrome-themes` module that globs its own `seldon/styles`.
  */
 import { STOCK_THEMES_BY_ID } from "@seldon/core/themes"
-
-const themeStylesheets = import.meta.glob("../../seldon/styles/*.css", {
-  eager: true,
-})
-
-/** Slugs that have an exported `styles/{slug}.css` file. */
-const EXPORTED_SLUGS = Object.keys(themeStylesheets)
-  .map((path) => path.match(/([^/]+)\.css$/)?.[1])
-  .filter((slug): slug is string => Boolean(slug))
 
 export interface ChromeTheme {
   slug: string
@@ -56,16 +46,20 @@ const STOCK_NAMES_BY_SLUG: Record<string, string> = Object.fromEntries(
 )
 
 /**
- * The chrome switcher's themes, one per exported `styles/{slug}.css` file. The
+ * The chrome switcher's themes, one per exported `styles/{slug}.css` slug. The
  * default `seldon` theme sorts first; the rest follow alphabetically by label.
+ *
+ * @param slugs - Slugs discovered from the editor's own `seldon/styles` folder
  */
-export function getChromeThemes(): ChromeTheme[] {
-  return EXPORTED_SLUGS.map((slug) => ({
-    slug,
-    label: STOCK_NAMES_BY_SLUG[slug] ?? slugToLabel(slug),
-  })).sort((a, b) => {
-    if (a.slug === DEFAULT_CHROME_THEME) return -1
-    if (b.slug === DEFAULT_CHROME_THEME) return 1
-    return a.label.localeCompare(b.label)
-  })
+export function getChromeThemes(slugs: string[]): ChromeTheme[] {
+  return slugs
+    .map((slug) => ({
+      slug,
+      label: STOCK_NAMES_BY_SLUG[slug] ?? slugToLabel(slug),
+    }))
+    .sort((a, b) => {
+      if (a.slug === DEFAULT_CHROME_THEME) return -1
+      if (b.slug === DEFAULT_CHROME_THEME) return 1
+      return a.label.localeCompare(b.label)
+    })
 }

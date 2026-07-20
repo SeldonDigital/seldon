@@ -83,7 +83,12 @@ export function getComponentsToExport(
     const componentId = getNodeCatalogId(variant, workspace) as ComponentId
     const variantId = variant.id
     const name = getComponentName(variant, workspace)
-    const tree = getJsonTreeFromChildren(variant, workspace, nodeIdToClass)
+    const tree = getJsonTreeFromChildren(
+      variant,
+      workspace,
+      nodeIdToClass,
+      options.includeHiddenComponents === true,
+    )
     const config = getComponentExportConfig(componentId)
     invariant(config, `Config of component ${componentId} not found`)
 

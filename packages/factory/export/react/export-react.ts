@@ -93,6 +93,7 @@ export async function exportReact(
   const themeStylesheets = await generateThemeStylesheetFiles(
     workspace,
     options.output.componentsFolder,
+    options.exportAllThemes !== false,
   )
   filesToExport.push(
     ...themeStylesheets.map((file) => ({
