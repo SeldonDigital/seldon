@@ -35,6 +35,7 @@ import {
   mergeStateProps,
 } from "@app/sidebars/state-props"
 import { useRenameInput } from "@app/sidebars/use-rename-input"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import { useObjectsExpansionStore } from "./objects-expansion-store"
 import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
@@ -414,7 +415,7 @@ const labelSlot = computed(() => {
       @close="closeActions"
     />
 
-    <template v-if="isExpanded">
+    <FramerExpandable :is-expanded="isExpanded">
       <template v-if="resourceRowConfig">
         <ResourceEntry
           v-for="entryId in variantRootIds"
@@ -437,6 +438,6 @@ const labelSlot = computed(() => {
           :disable-reordering="index === 0"
         />
       </template>
-    </template>
+    </FramerExpandable>
   </template>
 </template>

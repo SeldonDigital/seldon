@@ -1,11 +1,11 @@
 import { computed, ref, watch, type ComputedRef, type Ref } from "vue"
 import {
   filterOptions,
-  findOptionByName,
   findOptionByValue,
   flattenOptions,
   stepHighlight,
 } from "@seldon/editor/lib/menus/combobox-selection"
+import { resolveComboboxSubmit } from "@seldon/editor/lib/menus/combobox-submit"
 import type { ComboboxOptionItem } from "@app/menus/types"
 
 interface UsePropertyComboboxInput {
@@ -43,6 +43,18 @@ export function usePropertyCombobox({
 
   const isMenuOrCombo = computed(
     () => controlType.value === "menu" || controlType.value === "combo",
+  )
+
+  // Open the option list as soon as a menu/combo row enters edit mode. The row
+  // also focuses the input (which opens via `onFocus`); this is the resilient
+  // path so the list still appears if focus timing shifts. Mirrors React's
+  // `openComboboxWithFocus` effect keyed on `isEditing`.
+  watch(
+    [isEditing, isMenuOrCombo],
+    ([editing, menuOrCombo]) => {
+      if (editing && menuOrCombo) open.value = true
+    },
+    { immediate: true },
   )
 
   const flatOptions = computed<ComboboxOptionItem[]>(() =>
@@ -107,17 +119,21 @@ export function usePropertyCombobox({
 
   function handleSubmit(options?: { keepFocus?: boolean }): void {
     const query = inputValue.value.trim()
-    const highlighted = highlightedValue.value
-      ? flatOptions.value.find((o) => o.value === highlightedValue.value)
-      : undefined
-    const byName = findOptionByName(flatOptions.value, query)
-    const match = highlighted ?? byName
+    const resolution = resolveComboboxSubmit({
+      inputValue: query,
+      highlightedValue: highlightedValue.value,
+      useHighlighted: true,
+      flatOptions: flatOptions.value,
+      allowCustom: (candidate) =>
+        controlType.value === "combo" &&
+        (!validate.value || validate.value(candidate)),
+    })
 
-    if (match) {
-      handleSelect(match.value)
-    } else if (controlType.value === "combo" && (!validate.value || validate.value(query))) {
+    if (resolution.kind === "select") {
+      handleSelect(resolution.value)
+    } else if (resolution.kind === "custom") {
       hasSelection = true
-      commit(query)
+      commit(resolution.value)
       open.value = false
     } else {
       restoreInput()

@@ -2,13 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { HSL } from "@seldon/core"
 import {
   filterOptions,
-  findOptionByName,
-  findOptionByValue,
   flattenOptions,
   isNavigableOption,
   stepHighlight,
   type OptionsType,
 } from "@seldon/editor/lib/menus/combobox-selection"
+import { resolveComboboxSubmit } from "@seldon/editor/lib/menus/combobox-submit"
 
 export type { OptionsType }
 
@@ -134,29 +133,26 @@ export function useComboboxState<
     isManualSubmit.current = true
     const keepFocus = options?.keepFocus ?? false
 
-    // After Arrow navigation, Enter commits the highlighted option even when the
-    // input still shows the previously selected name.
-    if (keyboardNavRef.current && highlightedValue) {
-      const highlightedOption = navigableFilteredOptions.find(
-        (o) => o.value === highlightedValue,
-      )
-      if (highlightedOption) {
-        setInputValue(highlightedOption.name)
-        onValueChange(highlightedOption.value)
-        finishSubmit(keepFocus)
-        return
-      }
-    }
+    const resolution = resolveComboboxSubmit({
+      inputValue,
+      currentValue: value,
+      highlightedValue,
+      // After Arrow navigation, Enter commits the highlighted option even when
+      // the input still shows the previously selected name.
+      useHighlighted: keyboardNavRef.current,
+      flatOptions,
+      highlightSource: navigableFilteredOptions,
+      allowCustom: (candidate) =>
+        !!validateCustomValue && validateCustomValue(candidate),
+    })
 
-    const nextSelectedOption = findOptionByName(flatOptions, inputValue)
-    const currentlySelectedOption = findOptionByValue(flatOptions, value)
-
-    if (nextSelectedOption) {
-      onValueChange(nextSelectedOption.value)
-    } else if (validateCustomValue && validateCustomValue(inputValue)) {
-      onValueChange(inputValue)
+    if (resolution.kind === "select") {
+      if (resolution.fromHighlight) setInputValue(resolution.name)
+      onValueChange(resolution.value)
+    } else if (resolution.kind === "custom") {
+      onValueChange(resolution.value)
     } else {
-      setInputValue(currentlySelectedOption?.name || "")
+      setInputValue(resolution.name)
     }
 
     finishSubmit(keepFocus)

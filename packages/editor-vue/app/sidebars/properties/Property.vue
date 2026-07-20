@@ -17,6 +17,7 @@ import ItemProperty from "@seldon/components/elements/ItemProperty.vue"
 import ItemPropertyToggle from "@seldon/components/elements/ItemPropertyToggle.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import type { ComboboxOptionItem } from "@app/menus/types"
 import { mergeStateProps } from "@app/sidebars/state-props"
 import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
@@ -279,7 +280,10 @@ function onDrop(event: DragEvent): void {
     @close="onCloseOptions"
   />
 
-  <template v-if="view.hasChildren.value && view.isExpanded.value">
+  <FramerExpandable
+    v-if="view.hasChildren.value"
+    :is-expanded="view.isExpanded.value"
+  >
     <Property
       v-for="child in view.children.value"
       :key="child.key"
@@ -293,7 +297,7 @@ function onDrop(event: DragEvent): void {
       :icon-set-editing-context="iconSetEditingContext"
       :depth="depth + 1"
     />
-  </template>
+  </FramerExpandable>
 </template>
 
 <style scoped>

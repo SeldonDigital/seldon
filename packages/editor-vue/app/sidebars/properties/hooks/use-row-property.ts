@@ -1,5 +1,6 @@
 import {
   computed,
+  nextTick,
   onBeforeUnmount,
   ref,
   watch,
@@ -482,6 +483,26 @@ export function useRowProperty(input: RowPropertyInput) {
   const layerDrag = computed(() =>
     resolveLayerDrag(property.value, node.value, input.allProperties.value),
   )
+
+  // Focus the freshly-rendered edit input when a row enters edit or rename mode.
+  // React focuses imperatively through its `autoFocus` prop; Vue's `autofocus`
+  // attribute is not honored on dynamic insertion, so query the input the same
+  // way the objects-sidebar rename does. Focusing the value input fires its
+  // `onFocus`, which opens the combobox for menu/combo controls.
+  watch([isEditing, isRenaming], async ([editing, renaming]) => {
+    if (!editing && !renaming) return
+    await nextTick()
+    const el = rowEl.value
+    if (!el) return
+    const ref = renaming ? "propertyLabel" : "valueLabel"
+    const inputEl = el.querySelector<HTMLInputElement>(
+      `input[data-seldon-ref="${ref}"]`,
+    )
+    if (inputEl) {
+      inputEl.focus()
+      inputEl.select()
+    }
+  })
 
   // Register with the edit-navigation coordinator for Tab-between-rows.
   watch(

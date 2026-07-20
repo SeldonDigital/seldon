@@ -64,3 +64,153 @@
   background-color: var(--sdn-swatch-offWhite);
   object-position: -10000px 0;
 }
+
+/*
+ * Focus visuals are drawn by the FocusRingOverlay, not the browser. Suppress
+ * native focus rings everywhere so nothing double-draws. Programmatic and
+ * keyboard focus still work; the overlay shows the ring when Show Focus is on.
+ */
+:focus,
+:focus-visible {
+  outline: none;
+}
+
+/*
+ * Generated components paint a visible-focus border (e.g. the combobox field
+ * outline). That is a focus visual, so gate it behind Show Focus like the
+ * overlay ring. With the toggle off, neutralize the border so focus paints
+ * nothing on its own. The selectors mirror the generated focused-state binding
+ * (`:focus-visible` on the element or a descendant) and out-specify its rules.
+ */
+html:not(.sdn-show-focus)
+  .sdn-combobox-field:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  .sdn-item-section:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  .sdn-button-menu:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  .sdn-button-iconic:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ) {
+  border-color: transparent;
+}
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  .sdn-button-iconic:not([aria-invalid="true"]),
+html:not(.sdn-show-focus)
+  .sdn-item-section:is(:focus-visible, :has(:focus-visible))
+  .sdn-button-iconic:not([aria-invalid="true"]) {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+/*
+ * The combobox field's input and icons paint their own visible-focus color and
+ * border. Gate these like the field border: restore the resting color and
+ * neutralize the border so focus paints nothing when the toggle is off.
+ */
+html:not(.sdn-show-focus)
+  .sdn-input:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ),
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-input"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
+  border-color: transparent;
+}
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"]:not([aria-invalid="true"]) {
+  color: var(--sdn-hc-on-offWhite);
+}
+
+/*
+ * Menus and listboxes author a focused state that exports as a visible-focus
+ * cascade (punch border on the surface, punch tint on every item leaf). Gate
+ * it like the other focus visuals. Activated and disabled leaves keep their
+ * own state tint.
+ */
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ) {
+  border-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
+}
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"],
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"] {
+  color: inherit;
+}
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"].sdn-state-activated,
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"].sdn-state-activated,
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"].sdn-state-activated,
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"].sdn-state-activated {
+  color: var(--sdn-swatch-active);
+}
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-disabled="true"],
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-disabled="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-disabled="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-disabled="true"] {
+  color: var(--sdn-swatch-gray);
+}
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-invalid="true"],
+html:not(.sdn-show-focus)
+  .sdn-menu:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-invalid="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-text-label"][aria-invalid="true"],
+html:not(.sdn-show-focus)
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible))
+  [class*="sdn-icon"][aria-invalid="true"] {
+  color: var(--sdn-swatch-negative);
+}
+
+/* Unified focus ring drawn by FocusRingOverlay. Geometry is set inline. */
+.editor-focus-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483000;
+  border: 1px solid var(--sdn-swatch-punch);
+  box-sizing: border-box;
+}

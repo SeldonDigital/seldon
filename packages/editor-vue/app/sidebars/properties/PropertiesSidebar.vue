@@ -16,6 +16,7 @@ import MenuController from "@app/menus/MenuController.vue"
 import type { MenuEntry } from "@app/menus/types"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useToastStore } from "@app/toaster/toast-store"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import Category from "./Category.vue"
 import Property from "./Property.vue"
 import CssBlock from "./CssBlock.vue"
@@ -24,6 +25,7 @@ import { useBoardStateMenu } from "./hooks/use-board-state-menu"
 import { useBorderSideVisibilityStore } from "./hooks/use-border-side-visibility"
 import { useFilterInput } from "./hooks/use-filter-input"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
+import { usePropertyExpansionStore } from "./property-expansion-store"
 import { providePropertyEditNavigation } from "./use-property-edit-navigation"
 import type { PropertySection } from "./types"
 
@@ -37,6 +39,7 @@ const stateMenu = useBoardStateMenu()
 const dispatch = useDispatch()
 const toast = useToastStore()
 const borderSides = useBorderSideVisibilityStore()
+const expansion = usePropertyExpansionStore()
 
 const tree = computed(() =>
   state.value.kind === "tree" ? state.value.tree : null,
@@ -155,24 +158,28 @@ function sectionAddCustom(section: PropertySection): (() => void) | undefined {
               :actions="sectionActions(section)"
               :on-add-custom="sectionAddCustom(section)"
             />
-            <CssBlock
-              v-if="isCssSection(section)"
-              :css-properties="tree!.cssStrings"
-            />
-            <template v-else>
-              <Property
-                v-for="property in section.properties"
-                :key="property.key"
-                :property="property"
-                :workspace="tree!.workspace"
-                :node="tree!.node"
-                :theme="tree!.theme"
-                :all-properties="rowAllProperties(section)"
-                :theme-editing-context="tree!.themeEditingContext"
-                :font-collection-editing-context="rowFontContext(section)"
-                :icon-set-editing-context="rowIconContext(section)"
+            <FramerExpandable
+              :is-expanded="expansion.isCategoryExpanded(section.category)"
+            >
+              <CssBlock
+                v-if="isCssSection(section)"
+                :css-properties="tree!.cssStrings"
               />
-            </template>
+              <template v-else>
+                <Property
+                  v-for="property in section.properties"
+                  :key="property.key"
+                  :property="property"
+                  :workspace="tree!.workspace"
+                  :node="tree!.node"
+                  :theme="tree!.theme"
+                  :all-properties="rowAllProperties(section)"
+                  :theme-editing-context="tree!.themeEditingContext"
+                  :font-collection-editing-context="rowFontContext(section)"
+                  :icon-set-editing-context="rowIconContext(section)"
+                />
+              </template>
+            </FramerExpandable>
           </template>
         </Frame>
       </Frame>

@@ -21,6 +21,7 @@ import ResourceDialog from "@app/dialogs/ResourceDialog.vue"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
 import PropertiesSidebar from "@app/sidebars/properties/PropertiesSidebar.vue"
 import TopbarController from "@app/topbar/TopbarController.vue"
+import FocusRingOverlay from "@app/focus/FocusRingOverlay.vue"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 
 const route = useRoute()
@@ -159,6 +160,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
     <ResourceDialog />
     <ExportDialog />
     <AiChatPanel />
+    <FocusRingOverlay />
   </div>
 </template>
 

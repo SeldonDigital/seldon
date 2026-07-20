@@ -66,17 +66,42 @@ export function computeMenuPosition(
 }
 
 /**
- * Position for a floating option list anchored to a trigger. Returns the
- * anchor's left/width and a y below it, flipping to render above when the
- * anchor sits in the bottom 40% of the viewport.
+ * Position for a floating option list anchored to a trigger. Returns the list's
+ * x/width and a y line, plus `positionAbove` so the caller flips the panel above
+ * the anchor (render at `y` and translate up by its own height).
+ *
+ * Defaults match a left-aligned list the width of the anchor that flips when the
+ * anchor sits in the bottom 40% of the viewport. Pass `width` with `align: "end"`
+ * to right-align a fixed-width panel to the anchor, and `minSpaceBelow` to flip
+ * only when the room below is smaller than that and there is more room above.
  */
 export function computeListPosition(
   rect: AnchorRect,
   viewport: Viewport,
-  options?: { gap?: number },
+  options?: {
+    gap?: number
+    width?: number
+    align?: "start" | "end"
+    minSpaceBelow?: number
+  },
 ): ListPosition {
   const gap = options?.gap ?? 2
-  const positionAbove = rect.top >= viewport.height * 0.6
+  const align = options?.align ?? "start"
+  const width = options?.width
+  const w = width ?? rect.width
+
+  let positionAbove: boolean
+  if (options?.minSpaceBelow !== undefined) {
+    const spaceBelow = viewport.height - rect.bottom
+    positionAbove = spaceBelow < options.minSpaceBelow && rect.top > spaceBelow
+  } else {
+    positionAbove = rect.top >= viewport.height * 0.6
+  }
+
+  const x =
+    align === "end" && width !== undefined
+      ? Math.max(8, rect.right - width)
+      : rect.left
   const y = positionAbove ? rect.top - gap : rect.top + rect.height + gap
-  return { x: rect.left, y, w: rect.width, positionAbove }
+  return { x, y, w, positionAbove }
 }

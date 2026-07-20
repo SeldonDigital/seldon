@@ -23,6 +23,7 @@
     "idb-keyval": "^6.2.1",
     "immer": "^10.1.1",
     "markdown-it": "^14.1.0",
+    "motion-v": "^2.3.0",
     "nanoid": "^5.1.5",
     "panzoom": "^9.4.3",
     "pinia": "^2.2.6",

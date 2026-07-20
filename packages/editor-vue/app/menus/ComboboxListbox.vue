@@ -11,6 +11,10 @@ import { storeToRefs } from "pinia"
 import Listbox from "@seldon/components/parts/Listbox.vue"
 import ListboxOption from "@seldon/components/elements/ListboxOption.vue"
 import Hr from "@seldon/components/primitives/Hr.vue"
+import {
+  computeListPosition,
+  type ListPosition,
+} from "@seldon/editor/lib/menus/anchor-position"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 import type { ComboboxOptionItem } from "./types"
@@ -48,11 +52,7 @@ const { chromeTheme } = storeToRefs(useEditorConfigStore())
 const resolvedMode = useResolvedInterfaceMode()
 
 const panelRef = ref<HTMLElement | null>(null)
-const position = ref<{
-  left: number
-  top?: number
-  bottom?: number
-}>({ left: 0 })
+const position = ref<ListPosition>({ x: 0, y: 0, w: props.width })
 const highlightedValue = ref<string | undefined>(undefined)
 
 const flatOptions = computed<ComboboxOptionItem[]>(() =>
@@ -61,26 +61,26 @@ const flatOptions = computed<ComboboxOptionItem[]>(() =>
 
 function place(): void {
   if (!props.anchor) return
-  const rect = props.anchor.getBoundingClientRect()
-  const spaceBelow = window.innerHeight - rect.bottom
-  const positionAbove = spaceBelow < MIN_SPACE_BELOW && rect.top > spaceBelow
-  const left = Math.max(8, rect.right - props.width)
-  position.value = positionAbove
-    ? { left, bottom: window.innerHeight - rect.top + PANEL_GAP }
-    : { left, top: rect.bottom + PANEL_GAP }
+  position.value = computeListPosition(
+    props.anchor.getBoundingClientRect(),
+    { width: window.innerWidth, height: window.innerHeight },
+    {
+      gap: PANEL_GAP,
+      width: props.width,
+      align: "end",
+      minSpaceBelow: MIN_SPACE_BELOW,
+    },
+  )
 }
 
 const panelStyle = computed(() => ({
   position: "fixed" as const,
   zIndex: 60,
-  width: `${props.width}px`,
+  width: `${position.value.w}px`,
   outline: "none",
-  left: `${position.value.left}px`,
-  top: position.value.top === undefined ? undefined : `${position.value.top}px`,
-  bottom:
-    position.value.bottom === undefined
-      ? undefined
-      : `${position.value.bottom}px`,
+  left: `${position.value.x}px`,
+  top: `${position.value.y}px`,
+  transform: position.value.positionAbove ? "translateY(-100%)" : undefined,
 }))
 
 function iconSlot(option: ComboboxOptionItem): Record<string, unknown> {

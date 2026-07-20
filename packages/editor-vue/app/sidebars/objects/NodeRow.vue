@@ -23,6 +23,7 @@ import ItemNode from "@seldon/components/elements/ItemNode.vue"
 import Frame from "@seldon/components/frames/Frame.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDebugStore } from "@app/editor/debug-store"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
@@ -506,7 +507,7 @@ function childRootId(childId: EntryNodeId): string {
       @close="displayOpen = false"
     />
 
-    <template v-if="isExpanded && hasChildren">
+    <FramerExpandable v-if="hasChildren" :is-expanded="isExpanded">
       <template v-for="entry in childRenderList" :key="entry.key">
         <NodeRow
           v-if="entry.type !== 'summary'"
@@ -521,7 +522,7 @@ function childRootId(childId: EntryNodeId): string {
           +{{ entry.count }} more
         </Frame>
       </template>
-    </template>
+    </FramerExpandable>
   </template>
 </template>
 
