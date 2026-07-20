@@ -1,3 +1,35 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Panel: PanelHari
+ * Level: Module
+ * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
+ * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <PanelHari
+ *   role="dialog"
+ *   aria-hidden="false"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -44,6 +76,9 @@ const props = defineProps<{
   icon8?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "role": "dialog",
   "aria-hidden": "false",
@@ -213,7 +248,7 @@ const icon8Props = computed(() => mergeSlot(sdn.icon8, props.icon8))
             <ButtonToggle v-if="buttonToggle2 && buttonToggle2Props" v-bind="buttonToggle2Props" :icon="icon2Props" />
             <ButtonToggle v-if="buttonToggle3 && buttonToggle3Props" v-bind="buttonToggle3Props" :icon="icon3Props" />
           </Frame>
-          <ButtonIconic v-if="buttonIconic && buttonIconicProps" v-bind="buttonIconicProps" :icon="icon4Props" />
+          <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="icon4Props" />
           <ButtonIconic v-if="buttonIconic2 && buttonIconic2Props" v-bind="buttonIconic2Props" :icon="icon5Props" />
         </Bar>
         <Frame v-bind="frame2Props">
@@ -225,11 +260,11 @@ const icon8Props = computed(() => mergeSlot(sdn.icon8, props.icon8))
           <Frame v-bind="frame5Props" v-if="frame5">
             <ButtonMenu v-if="buttonMenu && buttonMenuProps" v-bind="buttonMenuProps">
               <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-              <Icon v-if="icon6 && icon6Props" v-bind="icon6Props" />
+              <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
             </ButtonMenu>
             <ButtonMenu v-if="buttonMenu2 && buttonMenu2Props" v-bind="buttonMenu2Props">
               <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
-              <Icon v-if="icon7 && icon7Props" v-bind="icon7Props" />
+              <Icon v-if="icon7Props !== null" v-bind="icon7Props" />
             </ButtonMenu>
             <Chip v-if="chip && chipProps" v-bind="chipProps">
               <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />

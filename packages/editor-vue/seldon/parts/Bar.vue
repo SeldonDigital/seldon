@@ -1,3 +1,39 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Bar: Bar
+ * Level: Part
+ * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
+ * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
+ * Type: Default
+ *
+ * @example
+ * ```vue
+ * <Bar
+ *   aria-hidden="false"
+ *   textTitle="Product Title"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
+ *   button2={() => {}}
+ *   textLabel="{}"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -17,6 +53,9 @@ const props = defineProps<{
   textLabel?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-bar",
@@ -60,7 +99,7 @@ const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
         <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
         <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
         <Button v-if="buttonProps !== null" v-bind="buttonProps">
-          <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
+          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
           <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
         </Button>
       </slot>

@@ -1,3 +1,35 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Sidebar: SidebarProperties
+ * Level: Module
+ * Intent: Provides a structured sidebar panel with tabbed navigation, content area, and status footer for application interfaces.
+ * Tags: sidebar, panel, module, ui, layout, navigation, tabs, structured
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <SidebarProperties
+ *   role="complementary"
+ *   aria-hidden="false"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -21,6 +53,9 @@ const props = defineProps<{
   frame2?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "role": "complementary",
   "aria-hidden": "false",
@@ -96,7 +131,7 @@ const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
           <ComboboxFieldFilter v-if="comboboxFieldFilter && comboboxFieldFilterProps" v-bind="comboboxFieldFilterProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
           <ButtonMenu v-if="buttonMenu && buttonMenuProps" v-bind="buttonMenuProps">
             <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-            <Icon v-if="icon3 && icon3Props" v-bind="icon3Props" />
+            <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
           </ButtonMenu>
         </Frame>
         <Frame v-bind="frame2Props" v-if="frame2">

@@ -1,3 +1,35 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Panel: Panel
+ * Level: Module
+ * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
+ * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <Panel
+ *   role="dialog"
+ *   aria-hidden="false"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -40,6 +72,9 @@ const props = defineProps<{
   textLabel6?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "role": "dialog",
   "aria-hidden": "false",
@@ -175,9 +210,9 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
       <slot>
         <Bar v-if="barProps !== null" v-bind="barProps">
           <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
-          <ButtonIconic v-if="buttonIconic && buttonIconicProps" v-bind="buttonIconicProps" :icon="iconProps" />
-          <Button v-if="button && buttonProps" v-bind="buttonProps">
-            <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
+          <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
+          <Button v-if="buttonProps !== null" v-bind="buttonProps">
+            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
             <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
           </Button>
         </Bar>
@@ -200,11 +235,11 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
           </Frame>
           <Frame v-bind="frame3Props" v-if="frame3">
             <Button v-if="button5 && button5Props" v-bind="button5Props">
-              <Icon v-if="icon6 && icon6Props" v-bind="icon6Props" />
+              <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
               <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
             </Button>
             <Button v-if="button6 && button6Props" v-bind="button6Props">
-              <Icon v-if="icon7 && icon7Props" v-bind="icon7Props" />
+              <Icon v-if="icon7Props !== null" v-bind="icon7Props" />
               <TextLabel v-if="textLabel6 && textLabel6Props" v-bind="textLabel6Props" />
             </Button>
           </Frame>

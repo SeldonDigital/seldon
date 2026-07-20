@@ -1,3 +1,35 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Bar: BarTopbar
+ * Level: Part
+ * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
+ * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <BarTopbar
+ *   role="menubar"
+ *   aria-hidden="false"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -36,6 +68,9 @@ const props = defineProps<{
   icon2?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "role": "menubar",
   "aria-hidden": "false",
@@ -195,11 +230,11 @@ const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
         <Frame v-bind="frame4Props" v-if="frame4">
           <ButtonMenu v-if="buttonMenu && buttonMenuProps" v-bind="buttonMenuProps">
             <TextLabel v-if="textLabel7 && textLabel7Props" v-bind="textLabel7Props" />
-            <Icon v-if="icon && iconProps" v-bind="iconProps" />
+            <Icon v-if="iconProps !== null" v-bind="iconProps" />
           </ButtonMenu>
           <ButtonMenu v-if="buttonMenu2 && buttonMenu2Props" v-bind="buttonMenu2Props">
             <TextLabel v-if="textLabel8 && textLabel8Props" v-bind="textLabel8Props" />
-            <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
+            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
           </ButtonMenu>
         </Frame>
       </slot>

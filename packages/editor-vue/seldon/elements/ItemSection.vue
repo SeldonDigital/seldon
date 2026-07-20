@@ -1,3 +1,40 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Item: ItemSection
+ * Level: Element
+ * Intent: Default list item used for general content with flexible layout.
+ * Tags: list, item, standard, default, row, UI, layout, general
+ * Type: Custom
+ *
+ * @example
+ * ```vue
+ * <ItemSection
+ *   aria-hidden="false"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
+ *   formControlCombobox="{}"
+ *   textLabel="{}"
+ *   buttonIconic2={() => {}}
+ *   buttonIconic3={() => {}}
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -17,6 +54,9 @@ const props = defineProps<{
   icon3?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-item-section sdn-item",

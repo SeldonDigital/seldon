@@ -1,3 +1,43 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Item: ItemAvatarItem
+ * Level: Element
+ * Intent: Default list item used for general content with flexible layout.
+ * Tags: list, item, standard, default, row, UI, layout, general
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <ItemAvatarItem
+ *   aria-hidden="false"
+ *   inputCheckbox="{}"
+ *   avatarRounded="/image.jpg"
+ *   image="/image.jpg"
+ *   frame="{}"
+ *   textTitle="Product Title"
+ *   textSubtitle2="Product Title"
+ *   button={() => {}}
+ *   icon="material-star"
+ *   textLabel="{}"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -23,6 +63,9 @@ const props = defineProps<{
   textLabel?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-item",
@@ -85,7 +128,7 @@ const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
           <TextSubtitle v-if="textSubtitle && textSubtitleProps" v-bind="textSubtitleProps" />
         </Frame>
         <Button v-if="buttonProps !== null" v-bind="buttonProps">
-          <Icon v-if="icon && iconProps" v-bind="iconProps" />
+          <Icon v-if="iconProps !== null" v-bind="iconProps" />
           <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
         </Button>
       </slot>

@@ -4,6 +4,7 @@ import { NodeIdToClass } from "../../css/types"
 import { generateJSXStructure } from "../../react/generation/preprocess/generate-jsx-structure"
 import { JSXNode } from "../../react/generation/preprocess/types"
 import { isAttributeKey } from "../../react/generation/shared/attribute-props"
+import { getConditionalPropPaths } from "../../react/generation/shared/get-conditional-prop-paths"
 import { LICENSE_HEADER } from "../../react/generation/inserts/insert-license"
 import { generateDefaultProps } from "../../react/generation/shared/generate-default-props"
 import { generateJSDocComment } from "../../react/generation/shared/generate-jsdoc-comment"
@@ -39,6 +40,18 @@ const VOID_HTML_TAGS = new Set([
 ])
 
 /**
+ * Prop keys whose value is rendered as element text content, not as an
+ * attribute. Excluded from native attribute bindings.
+ */
+const CONTENT_KEYS = new Set(["content", "text", "children"])
+
+/**
+ * Prop keys that select the root tag at runtime through `:is`. Excluded from
+ * native attribute bindings.
+ */
+const ELEMENT_TAG_KEYS = new Set(["htmlElement", "wrapperElement"])
+
+/**
  * Builds a full Vue single-file component for one exported component.
  *
  * Reuses the framework-neutral discovery and default-prop machinery from the
@@ -58,6 +71,7 @@ export function generateVueComponent(
     nodeIdToClass,
     workspace,
   )
+  applyVueGuards(jsxRoot, getConditionalPropPaths(component))
   const defaults = generateDefaultProps(component, nodeIdToClass, propNames)
 
   const hasChildren = Array.isArray(tree.children) && tree.children.length > 0
@@ -115,7 +129,14 @@ export function generateVueComponent(
   if (rootAttrs) scriptLines.push(`const rootAttrs = ${rootAttrs}`)
   for (const decl of mergedDeclarations) scriptLines.push(decl)
 
-  const template = buildTemplate(component, jsxRoot, hasChildren, rootAttrs)
+  const nativeAttrs = buildNativeAttrBindings(component, propNames)
+  const template = buildTemplate(
+    component,
+    jsxRoot,
+    hasChildren,
+    rootAttrs,
+    nativeAttrs,
+  )
 
   // Vue Language Tools surfaces component-level JSDoc on hover only when it sits
   // on an `export default` in a plain `<script>` block, so the doc comment lives
@@ -227,6 +248,7 @@ function buildTemplate(
   jsxRoot: JSXNode,
   hasChildren: boolean,
   rootAttrs: string | null,
+  nativeAttrs: string,
 ): string {
   const returns = resolveVueReturns(component).returns
   const rootTag = getVueRootTag(component)
@@ -248,24 +270,74 @@ function buildTemplate(
         ? `{{ ${contentExpr} }}`
         : ""
     const inner = `<slot>${defaultSlot}</slot>`
-    return `    <component :is="(props.${propKey} as string) ?? sdn.${propKey} ?? 'div'" :class="rootClassName"${attrBind}${refAttr}>${inner}</component>`
+    return `    <component :is="(props.${propKey} as string) ?? sdn.${propKey} ?? 'div'" :class="rootClassName"${nativeAttrs}${attrBind}${refAttr}>${inner}</component>`
   }
 
   const tag = rootTag ?? "div"
 
   if (!hasChildren) {
     if (VOID_HTML_TAGS.has(tag)) {
-      return `    <${tag} :class="rootClassName"${attrBind}${refAttr} />`
+      return `    <${tag} :class="rootClassName"${nativeAttrs}${attrBind}${refAttr} />`
     }
     const contentExpr = componentContentExpr(component)
     const body = contentExpr ? `{{ ${contentExpr} }}` : `<slot />`
-    return `    <${tag} :class="rootClassName"${attrBind}${refAttr}>${body}</${tag}>`
+    return `    <${tag} :class="rootClassName"${nativeAttrs}${attrBind}${refAttr}>${body}</${tag}>`
   }
 
-  return `    <${tag} :class="rootClassName"${attrBind}${refAttr}>
+  return `    <${tag} :class="rootClassName"${nativeAttrs}${attrBind}${refAttr}>
       <slot>${childMarkup}
       </slot>
     </${tag}>`
+}
+
+/**
+ * React renders a canonical nested leaf by defaulting its slot prop to `sdn`
+ * in the function signature while keeping the `X && XProps` guard, so an
+ * omitted decoration such as a chevron still renders. Vue has no signature
+ * default, so the raw prop is `undefined` and the guard hides the leaf.
+ *
+ * Rewrite the guard for every non-conditional child to render from its merged
+ * sdn default, which matches React. Conditional leaves (inline extras and
+ * stubs) keep the opt-in guard so they render only when the caller passes them.
+ */
+function applyVueGuards(node: JSXNode, conditionalPaths: Set<string>): void {
+  if (
+    node.condition &&
+    node.propKeyName &&
+    node.condition === `${node.propKeyName} && ${node.propVarName}` &&
+    !conditionalPaths.has(node.path)
+  ) {
+    node.condition = `${node.propVarName} !== null`
+  }
+  if (node.children) {
+    for (const child of node.children) applyVueGuards(child, conditionalPaths)
+  }
+}
+
+/**
+ * Builds bound attributes for a native element root's own scalar props, such
+ * as `type` and `placeholder` on an input or `src` on an image. Each attribute
+ * falls back to its `sdn` default so authored defaults still apply, mirroring
+ * React's `{...props}` spread over the element. Content, element-tag, slot, and
+ * `role`/`aria-*` keys are handled elsewhere and excluded here.
+ */
+function buildNativeAttrBindings(
+  component: ComponentToExport,
+  propNames: Map<string, string>,
+): string {
+  const slotNames = new Set(propNames.values())
+  const keys = Object.keys(component.tree.dataBinding.props).filter(
+    (key) =>
+      key !== "className" &&
+      !isAttributeKey(key) &&
+      isValidIdentifier(key) &&
+      !CONTENT_KEYS.has(key) &&
+      !ELEMENT_TAG_KEYS.has(key) &&
+      !slotNames.has(key),
+  )
+  return keys
+    .map((key) => ` :${key}="(props.${key} as string) ?? sdn.${key}"`)
+    .join("")
 }
 
 function componentContentExpr(component: ComponentToExport): string | null {

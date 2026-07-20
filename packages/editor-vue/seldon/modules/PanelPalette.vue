@@ -1,3 +1,35 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Panel: PanelPalette
+ * Level: Module
+ * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
+ * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <PanelPalette
+ *   role="dialog"
+ *   aria-hidden="false"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -15,6 +47,9 @@ const props = defineProps<{
   frame?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "role": "dialog",
   "aria-hidden": "false",
@@ -55,7 +90,7 @@ const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
       <slot>
         <Bar v-if="barProps !== null" v-bind="barProps">
           <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
-          <ButtonIconic v-if="buttonIconic && buttonIconicProps" v-bind="buttonIconicProps" :icon="iconProps" />
+          <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
         </Bar>
         <Frame v-bind="frameProps">
         </Frame>

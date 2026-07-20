@@ -1,3 +1,66 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Calendar: CalendarRange
+ * Level: Module
+ * Intent: Month calendar with a navigable header, weekday labels, and a day grid. The default shows a single bordered month; variants cover a two-month range picker and a single month with event markers.
+ * Tags: calendar, ui, month, date, navigation, selection, range, events
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <CalendarRange
+ *   aria-hidden="false"
+ *   frame="{}"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
+ *   textTitle="Product Title"
+ *   container="{}"
+ *   textLabel="{}"
+ *   textLabel2="{}"
+ *   textLabel3="{}"
+ *   textLabel4="{}"
+ *   textLabel5="{}"
+ *   textLabel6="{}"
+ *   textLabel7="{}"
+ *   frame2="{}"
+ *   calendarDay="{}"
+ *   calendarDayMuted2="{}"
+ *   calendarDayMuted3="{}"
+ *   calendarDayMuted4="{}"
+ *   calendarDayMuted5="{}"
+ *   container2="{}"
+ *   calendarDayMuted="{}"
+ *   calendarDay6="{}"
+ *   calendarDay7="{}"
+ *   container3="{}"
+ *   calendarDay2="{}"
+ *   calendarDay3="{}"
+ *   calendarDay4="{}"
+ *   calendarDaySelected5="{}"
+ *   calendarDaySelected7="{}"
+ *   container4="{}"
+ *   calendarDay5="{}"
+ *   container5="{}"
+ *   container6="{}"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -182,6 +245,9 @@ const props = defineProps<{
   textLabel79?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-calendar-range sdn-calendar",

@@ -1,3 +1,35 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Topbar: TopbarSpread
+ * Level: Part
+ * Intent: Site header that pairs a brand logo and wordmark with primary navigation and a call-to-action.
+ * Tags: topbar, navbar, header, navigation, brand, menu, part, UI
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <TopbarSpread
+ *   role="banner"
+ *   aria-hidden="false"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -21,6 +53,9 @@ const props = defineProps<{
   linkPlain5?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "role": "banner",
   "aria-hidden": "false",

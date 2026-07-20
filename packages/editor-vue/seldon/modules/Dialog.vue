@@ -1,3 +1,47 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Module: Dialog
+ * Level: Module
+ * Intent: 
+ * Tags: 
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <Dialog
+ *   aria-hidden="false"
+ *   bar="{}"
+ *   textTitle="Product Title"
+ *   comboboxFieldSearch="{}"
+ *   icon="material-star"
+ *   input="{}"
+ *   buttonIconic={() => {}}
+ *   frame="{}"
+ *   barButtons2="{}"
+ *   button={() => {}}
+ *   textLabel="{}"
+ *   button2={() => {}}
+ *   button3={() => {}}
+ *   frame2="{}"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -40,6 +84,9 @@ const props = defineProps<{
   textLabel5?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-dialog",
@@ -214,21 +261,21 @@ const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel
               <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
             </Button>
             <Button v-if="button2 && button2Props" v-bind="button2Props">
-              <Icon v-if="icon4 && icon4Props" v-bind="icon4Props" />
+              <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
               <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
             </Button>
             <Button v-if="button3 && button3Props" v-bind="button3Props">
-              <Icon v-if="icon5 && icon5Props" v-bind="icon5Props" />
+              <Icon v-if="icon5Props !== null" v-bind="icon5Props" />
               <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
             </Button>
           </Frame>
           <Frame v-bind="frame3Props" v-if="frame3">
             <Button v-if="button4 && button4Props" v-bind="button4Props">
-              <Icon v-if="icon6 && icon6Props" v-bind="icon6Props" />
+              <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
               <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
             </Button>
             <Button v-if="button5 && button5Props" v-bind="button5Props">
-              <Icon v-if="icon7 && icon7Props" v-bind="icon7Props" />
+              <Icon v-if="icon7Props !== null" v-bind="icon7Props" />
               <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
             </Button>
           </Frame>

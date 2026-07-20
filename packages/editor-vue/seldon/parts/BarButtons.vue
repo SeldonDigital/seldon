@@ -1,3 +1,41 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Bar: BarButtons
+ * Level: Part
+ * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
+ * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <BarButtons
+ *   aria-hidden="false"
+ *   frame="{}"
+ *   button={() => {}}
+ *   icon="material-star"
+ *   textLabel="{}"
+ *   button2={() => {}}
+ *   button3={() => {}}
+ *   frame2="{}"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -27,6 +65,9 @@ const props = defineProps<{
   textLabel5?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-bar-buttons sdn-bar",
@@ -131,11 +172,11 @@ const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel
         </Frame>
         <Frame v-bind="frame2Props" v-if="frame2">
           <Button v-if="button4 && button4Props" v-bind="button4Props">
-            <Icon v-if="icon4 && icon4Props" v-bind="icon4Props" />
+            <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
             <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
           </Button>
           <Button v-if="button5 && button5Props" v-bind="button5Props">
-            <Icon v-if="icon5 && icon5Props" v-bind="icon5Props" />
+            <Icon v-if="icon5Props !== null" v-bind="icon5Props" />
             <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
           </Button>
         </Frame>

@@ -1,3 +1,35 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * List: boxGrouped
+ * Level: Part
+ * Intent: Floating list of selectable options for a combobox or select.
+ * Tags: listbox, options, select, combobox, part, overlay, UI
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <ListboxGrouped
+ *   role="listbox"
+ *   aria-hidden="false"
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -28,6 +60,9 @@ const props = defineProps<{
   textLabel6?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "role": "listbox",
   "aria-hidden": "false",
@@ -127,11 +162,11 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
         <Frame v-bind="frameProps">
           <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
           <ListboxOption v-if="listboxOption && listboxOptionProps" v-bind="listboxOptionProps">
-            <Icon v-if="icon && iconProps" v-bind="iconProps" />
+            <Icon v-if="iconProps !== null" v-bind="iconProps" />
             <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
           </ListboxOption>
           <ListboxOption v-if="listboxOption2 && listboxOption2Props" v-bind="listboxOption2Props">
-            <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
+            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
             <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
           </ListboxOption>
         </Frame>
@@ -139,11 +174,11 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
         <Frame v-bind="frame2Props">
           <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
           <ListboxOption v-if="listboxOption3 && listboxOption3Props" v-bind="listboxOption3Props">
-            <Icon v-if="icon3 && icon3Props" v-bind="icon3Props" />
+            <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
             <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
           </ListboxOption>
           <ListboxOption v-if="listboxOption4 && listboxOption4Props" v-bind="listboxOption4Props">
-            <Icon v-if="icon4 && icon4Props" v-bind="icon4Props" />
+            <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
             <TextLabel v-if="textLabel6 && textLabel6Props" v-bind="textLabel6Props" />
           </ListboxOption>
         </Frame>

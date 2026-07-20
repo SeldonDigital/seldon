@@ -1,3 +1,39 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Section: SectionSocial
+ * Level: Element
+ * Intent: Navigation section containing links to important pages. Can be used in footers, headers, sidebars, or any other layout context. Follows Material Design navigation patterns.
+ * Tags: section, navigation, links, menu, element, layout, header, footer, sidebar
+ * Type: Custom
+ *
+ * @example
+ * ```vue
+ * <SectionSectionSocial
+ *   aria-hidden="false"
+ *   button={() => {}}
+ *   icon="material-star"
+ *   textLabel="{}"
+ *   button2={() => {}}
+ *   button3={() => {}}
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -18,6 +54,9 @@ const props = defineProps<{
   textLabel3?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-section",
@@ -73,15 +112,15 @@ const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Button v-if="buttonProps !== null" v-bind="buttonProps">
-          <Icon v-if="icon && iconProps" v-bind="iconProps" />
+          <Icon v-if="iconProps !== null" v-bind="iconProps" />
           <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
         </Button>
         <Button v-if="button2Props !== null" v-bind="button2Props">
-          <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
+          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
           <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
         </Button>
         <Button v-if="button3Props !== null" v-bind="button3Props">
-          <Icon v-if="icon3 && icon3Props" v-bind="icon3Props" />
+          <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
           <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
         </Button>
       </slot>

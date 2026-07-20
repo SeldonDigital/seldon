@@ -1,3 +1,53 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Module: DialogCreateComponent
+ * Level: Module
+ * Intent: 
+ * Tags: 
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <DialogCreateComponent
+ *   aria-hidden="false"
+ *   bar="{}"
+ *   textTitle="Product Title"
+ *   frame="{}"
+ *   itemCatalog="{}"
+ *   icon="material-star"
+ *   textSubtitle2="Product Title"
+ *   itemCatalog2="{}"
+ *   frame2="{}"
+ *   formControl="{}"
+ *   textLabel="{}"
+ *   input="{}"
+ *   formControlCombobox2="{}"
+ *   comboboxField="{}"
+ *   buttonIconic={() => {}}
+ *   formControl3="{}"
+ *   formControl4="{}"
+ *   barButtons2="{}"
+ *   button={() => {}}
+ *   button2={() => {}}
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -54,6 +104,9 @@ const props = defineProps<{
   textLabel6?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-dialog",
@@ -308,19 +361,19 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
         <Frame v-bind="frame4Props">
           <FormControl v-if="formControl && formControlProps" v-bind="formControlProps">
             <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-            <Input v-if="input && inputProps" v-bind="inputProps" />
+            <Input v-if="inputProps !== null" v-bind="inputProps" />
           </FormControl>
           <FormControlCombobox v-if="formControlCombobox && formControlComboboxProps" v-bind="formControlComboboxProps">
             <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
-            <ComboboxField v-if="comboboxField && comboboxFieldProps" v-bind="comboboxFieldProps" :input="input2Props" :buttonIconic="buttonIconicProps" :icon2="icon3Props" :icon="null" />
+            <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :input="input2Props" :buttonIconic="buttonIconicProps" :icon2="icon3Props" :icon="null" />
           </FormControlCombobox>
           <FormControl v-if="formControl2 && formControl2Props" v-bind="formControl2Props">
             <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
-            <Input v-if="input3 && input3Props" v-bind="input3Props" />
+            <Input v-if="input3Props !== null" v-bind="input3Props" />
           </FormControl>
           <FormControl v-if="formControl3 && formControl3Props" v-bind="formControl3Props">
             <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
-            <Input v-if="input4 && input4Props" v-bind="input4Props" />
+            <Input v-if="input4Props !== null" v-bind="input4Props" />
           </FormControl>
         </Frame>
         <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps" :button4="buttonProps" :icon4="icon4Props" :textLabel4="textLabel5 && textLabel5Props" :button5="button2Props" :icon5="icon5Props" :textLabel5="textLabel6 && textLabel6Props" />

@@ -1,3 +1,56 @@
+<script lang="ts">
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
+
+/*****
+ * Module: DialogExportComponent
+ * Level: Module
+ * Intent: 
+ * Tags: 
+ * Type: Inline
+ *
+ * @example
+ * ```vue
+ * <DialogExportComponent
+ *   aria-hidden="false"
+ *   bar="{}"
+ *   textTitle="Product Title"
+ *   frame="{}"
+ *   formControl="{}"
+ *   textLabel="{}"
+ *   input="{}"
+ *   formControl2="{}"
+ *   comboboxField="{}"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
+ *   formControlRadio3="{}"
+ *   textDescription2="{}"
+ *   frame2="{}"
+ *   menuItemRadio="{}"
+ *   menuItemRadio2="{}"
+ *   formControlRadio4="{}"
+ *   formControlRadio5="{}"
+ *   formControlRadio6="{}"
+ *   formControlRadio7="{}"
+ *   barButtons2="{}"
+ *   button={() => {}}
+ *   button2={() => {}}
+ * />
+ * ```
+ *****/
+export default {}
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue"
 import { combineClassNames, mergeSlot } from "../utils/class-names"
@@ -92,6 +145,9 @@ const props = defineProps<{
   textLabel19?: Record<string, unknown> | null
 }>()
 
+//
+// Default property values
+//
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "className": "sdn-dialog-export-component sdn-dialog",
@@ -579,7 +635,7 @@ const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLab
         <Frame v-bind="frameProps">
           <FormControl v-if="formControl && formControlProps" v-bind="formControlProps">
             <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-            <Input v-if="input && inputProps" v-bind="inputProps" />
+            <Input v-if="inputProps !== null" v-bind="inputProps" />
           </FormControl>
           <FormControl v-if="formControl2 && formControl2Props" v-bind="formControl2Props">
             <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
@@ -592,11 +648,11 @@ const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLab
             </Frame>
             <Frame v-bind="frame3Props" v-if="frame3">
               <MenuItemRadio v-if="menuItemRadio && menuItemRadioProps" v-bind="menuItemRadioProps">
-                <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
+                <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
                 <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
               </MenuItemRadio>
               <MenuItemRadio v-if="menuItemRadio2 && menuItemRadio2Props" v-bind="menuItemRadio2Props">
-                <Icon v-if="icon3 && icon3Props" v-bind="icon3Props" />
+                <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
                 <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
               </MenuItemRadio>
             </Frame>
@@ -608,11 +664,11 @@ const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLab
             </Frame>
             <Frame v-bind="frame5Props" v-if="frame5">
               <MenuItemRadio v-if="menuItemRadio3 && menuItemRadio3Props" v-bind="menuItemRadio3Props">
-                <Icon v-if="icon4 && icon4Props" v-bind="icon4Props" />
+                <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
                 <TextLabel v-if="textLabel7 && textLabel7Props" v-bind="textLabel7Props" />
               </MenuItemRadio>
               <MenuItemRadio v-if="menuItemRadio4 && menuItemRadio4Props" v-bind="menuItemRadio4Props">
-                <Icon v-if="icon5 && icon5Props" v-bind="icon5Props" />
+                <Icon v-if="icon5Props !== null" v-bind="icon5Props" />
                 <TextLabel v-if="textLabel8 && textLabel8Props" v-bind="textLabel8Props" />
               </MenuItemRadio>
             </Frame>
@@ -624,11 +680,11 @@ const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLab
             </Frame>
             <Frame v-bind="frame7Props" v-if="frame7">
               <MenuItemRadio v-if="menuItemRadio5 && menuItemRadio5Props" v-bind="menuItemRadio5Props">
-                <Icon v-if="icon6 && icon6Props" v-bind="icon6Props" />
+                <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
                 <TextLabel v-if="textLabel10 && textLabel10Props" v-bind="textLabel10Props" />
               </MenuItemRadio>
               <MenuItemRadio v-if="menuItemRadio6 && menuItemRadio6Props" v-bind="menuItemRadio6Props">
-                <Icon v-if="icon7 && icon7Props" v-bind="icon7Props" />
+                <Icon v-if="icon7Props !== null" v-bind="icon7Props" />
                 <TextLabel v-if="textLabel11 && textLabel11Props" v-bind="textLabel11Props" />
               </MenuItemRadio>
             </Frame>
@@ -640,11 +696,11 @@ const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLab
             </Frame>
             <Frame v-bind="frame9Props" v-if="frame9">
               <MenuItemRadio v-if="menuItemRadio7 && menuItemRadio7Props" v-bind="menuItemRadio7Props">
-                <Icon v-if="icon8 && icon8Props" v-bind="icon8Props" />
+                <Icon v-if="icon8Props !== null" v-bind="icon8Props" />
                 <TextLabel v-if="textLabel13 && textLabel13Props" v-bind="textLabel13Props" />
               </MenuItemRadio>
               <MenuItemRadio v-if="menuItemRadio8 && menuItemRadio8Props" v-bind="menuItemRadio8Props">
-                <Icon v-if="icon9 && icon9Props" v-bind="icon9Props" />
+                <Icon v-if="icon9Props !== null" v-bind="icon9Props" />
                 <TextLabel v-if="textLabel14 && textLabel14Props" v-bind="textLabel14Props" />
               </MenuItemRadio>
             </Frame>
@@ -656,11 +712,11 @@ const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLab
             </Frame>
             <Frame v-bind="frame11Props" v-if="frame11">
               <MenuItemRadio v-if="menuItemRadio9 && menuItemRadio9Props" v-bind="menuItemRadio9Props">
-                <Icon v-if="icon10 && icon10Props" v-bind="icon10Props" />
+                <Icon v-if="icon10Props !== null" v-bind="icon10Props" />
                 <TextLabel v-if="textLabel16 && textLabel16Props" v-bind="textLabel16Props" />
               </MenuItemRadio>
               <MenuItemRadio v-if="menuItemRadio10 && menuItemRadio10Props" v-bind="menuItemRadio10Props">
-                <Icon v-if="icon11 && icon11Props" v-bind="icon11Props" />
+                <Icon v-if="icon11Props !== null" v-bind="icon11Props" />
                 <TextLabel v-if="textLabel17 && textLabel17Props" v-bind="textLabel17Props" />
               </MenuItemRadio>
             </Frame>
