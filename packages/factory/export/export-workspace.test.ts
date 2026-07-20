@@ -37,7 +37,7 @@ describe("exportWorkspace", () => {
     await expect(
       exportWorkspace(workspace, {
         ...options,
-        target: { framework: "vue", styles: "css-properties" },
+        target: { framework: "swift", styles: "css-properties" },
         assetReader: {
           readNativeComponent: () => undefined,
           readIconFile: () => undefined,
