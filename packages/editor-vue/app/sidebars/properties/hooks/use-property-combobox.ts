@@ -75,7 +75,12 @@ export function usePropertyCombobox({
     filteredGroups.value.some((group) => group.length > 0),
   )
 
-  // Mirror the stored value into the closed input when not editing.
+  // Mirror the current value into the closed input when not editing. The field
+  // must show what the row currently displays, so seed from `displayValue`. Enum
+  // and theme rows format to their option name, so this equals the option-name
+  // lookup; a compound row's stored value collapses to the empty "Default" slot,
+  // so an option lookup would paint "Default" while the row actually shows e.g.
+  // "Color". Seeding from the display value keeps the current value on open.
   watch(
     [open, isEditing, storedValue, displayValue, flatOptions],
     () => {
@@ -83,7 +88,7 @@ export function usePropertyCombobox({
         const option = flatOptions.value.find(
           (candidate) => candidate.value === storedValue.value,
         )
-        inputValue.value = option ? option.name : displayValue.value || ""
+        inputValue.value = displayValue.value || option?.name || ""
       }
     },
     { immediate: true },

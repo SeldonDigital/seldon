@@ -83,6 +83,14 @@ const panelStyle = computed(() => ({
   transform: position.value.positionAbove ? "translateY(-100%)" : undefined,
 }))
 
+// The scroll cap lives on the Listbox itself, which owns the border, radius, and
+// shadow, so the bordered box hugs the visible panel instead of being clipped by
+// an outer wrapper. Matches React, which applies these to the Listbox element.
+const listboxStyle = {
+  maxHeight: "24rem",
+  overflowY: "auto" as const,
+}
+
 function iconSlot(option: ComboboxOptionItem): Record<string, unknown> {
   return { icon: props.resolveIcon?.(option.value) ?? "seldon-component" }
 }
@@ -191,7 +199,7 @@ onBeforeUnmount(() => {
       :data-mode="resolvedMode"
       @keydown="onKeydown"
     >
-      <Listbox>
+      <Listbox :style="listboxStyle">
         <template
           v-for="(group, groupIndex) in optionGroups"
           :key="`group-${groupIndex}`"
