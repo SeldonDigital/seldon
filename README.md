@@ -20,7 +20,7 @@ Factory owns export and production code generation. It can be extended beyond on
 
 ---
 
-The [Seldon Editor](packages/editor/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and stores workspaces, and needs no API, database, auth, or cloud service. The Editor runs as a single app on `localhost:5173`.
+The [Seldon Editor](packages/editor/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and stores workspaces, and needs no API, database, auth, or cloud service. It ships as two mirrored apps that share the same underlying logic and workspace files: a [React build](packages/editor-react/README.md) on `localhost:5173` and a [Vue build](packages/editor-vue/README.md) on `localhost:5174`.
 
 A user opens a workspace with the Editor, edits components, and each action flows through the same Core reducer engine that an AI agent would use.
 
