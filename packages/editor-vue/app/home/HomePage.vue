@@ -76,7 +76,7 @@ onMounted(refresh)
 
 <template>
   <main class="home">
-    <h1>Seldon Editor (Vue)</h1>
+    <h1 class="home-title">Seldon Editor (Vue)</h1>
     <p class="home-subtitle">
       Workspaces are stored on your machine and shared with the React editor.
     </p>
@@ -117,35 +117,46 @@ onMounted(refresh)
 
 <style scoped>
 .home {
-  padding: 3rem;
-  max-width: 720px;
   margin: 0 auto;
-  color: #18181b;
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  min-height: 100vh;
+  max-width: 42rem;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2.5rem;
+  color: #fff;
+}
+.home-title {
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 .home-subtitle {
-  color: #52525b;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 .home-actions {
   display: flex;
-  gap: 0.5rem;
-  margin: 1rem 0 2rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 .home-create {
+  border-radius: 0.25rem;
   padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: #fff;
+  color: #000;
   border: none;
-  border-radius: 6px;
-  background: #18181b;
-  color: #fff;
   cursor: pointer;
 }
 .home-import {
+  border-radius: 0.25rem;
   padding: 0.5rem 1rem;
-  border: 1px solid #e4e4e7;
-  border-radius: 6px;
-  background: #fff;
-  color: #18181b;
+  font-size: 0.8125rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: inherit;
   cursor: pointer;
 }
 .home-file {
@@ -153,49 +164,65 @@ onMounted(refresh)
 }
 .home-item__action {
   padding: 0 0.75rem;
-  border: 1px solid #e4e4e7;
-  border-radius: 6px;
-  background: #fff;
-  color: #18181b;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: inherit;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 .home-empty {
-  color: #a1a1aa;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.6);
 }
 .home-list {
   list-style: none;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .home-item {
   display: flex;
   align-items: stretch;
   gap: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+.home-item + .home-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 .home-item__open {
   flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e4e4e7;
-  border-radius: 6px;
-  background: #fff;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
   cursor: pointer;
   text-align: left;
 }
+.home-item__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
 .home-item__meta {
   font-size: 0.75rem;
-  color: #a1a1aa;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
 }
 .home-item__delete {
   padding: 0 0.75rem;
-  border: 1px solid #e4e4e7;
-  border-radius: 6px;
-  background: #fff;
-  color: #b91c1c;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
   cursor: pointer;
+}
+.home-item__delete:hover {
+  color: #fff;
 }
 </style>
