@@ -37,6 +37,7 @@ function open(id: string): void {
 }
 
 async function remove(id: string): Promise<void> {
+  if (!confirm(HOME_CONTENT.deleteConfirm)) return
   await deleteStoredWorkspace(id)
   await refresh()
 }
