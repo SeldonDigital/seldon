@@ -1,5 +1,5 @@
 import { COLORS } from "@seldon/editor/lib/helpers/colors"
-import { InsertLine, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
+import { DropIndicator, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { CSSProperties, ReactNode } from "react"
 import { LayeredPaintKey } from "@seldon/core"
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
@@ -164,5 +164,5 @@ function LayerInsertIndicator({ placement }: { placement: LayerPlacement }) {
     ...(placement === "before" ? { top: -0.5 } : { bottom: -0.5 }),
   }
 
-  return <InsertLine color={COLORS.primary[600]} position={position} />
+  return <DropIndicator color={COLORS.primary[600]} position={position} />
 }

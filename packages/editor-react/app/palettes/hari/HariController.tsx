@@ -2,7 +2,7 @@
 
 import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
 import { MenuController, type MenuEntry } from "@app/menus"
-import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
 import {
   type CSSProperties,
@@ -381,7 +381,7 @@ function Hari({
     : undefined
 
   return (
-    <WindowOverlay
+    <WindowSurface
       onClose={close}
       testId="ai-chat-dialog"
       closeOnClickOutside={false}
@@ -429,7 +429,7 @@ function Hari({
         onClose={closeThinkingMenu}
         items={thinkingItems}
       />
-    </WindowOverlay>
+    </WindowSurface>
   )
 }
 

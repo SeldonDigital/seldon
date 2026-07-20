@@ -1,6 +1,6 @@
 "use client"
 
-import { CanvasOutline } from "@app/overlays"
+import { OutlineBox } from "@app/overlays"
 import type { CSSProperties } from "react"
 import {
   useHoveredId,
@@ -50,7 +50,7 @@ export function CanvasSelectionOutline({
   )
   if (!rect) return null
   return (
-    <CanvasOutline
+    <OutlineBox
       style={outlineStyle(
         rect,
         "selection",
@@ -84,7 +84,7 @@ export function CanvasHoverOutline({
     hoveredRootId === selectedRootId
   if (!rect || coincidesWithSelection) return null
   return (
-    <CanvasOutline
+    <OutlineBox
       style={outlineStyle(rect, "hover", wireframe, outlineColors?.hover)}
     />
   )

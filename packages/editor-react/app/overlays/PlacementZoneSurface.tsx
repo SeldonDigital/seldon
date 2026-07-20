@@ -14,7 +14,8 @@ interface PlacementZoneSurfaceProps {
 
 /**
  * Interactive drop-zone band. Hit area and behavior arrive via props; the View
- * only renders the surface and forwards pointer events.
+ * only renders the surface and forwards pointer events. The higher-level
+ * `PlacementZone` feature component composes this primitive.
  */
 export function PlacementZoneSurface({
   style,

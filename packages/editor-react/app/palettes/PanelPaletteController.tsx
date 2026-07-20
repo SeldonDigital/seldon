@@ -1,6 +1,6 @@
 "use client"
 
-import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
 import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { PanelPalette } from "@seldon/components/modules/PanelPalette"
@@ -20,7 +20,7 @@ interface PanelPaletteControllerProps {
  * shell: it wires the title, drag handle, and close button, and injects the
  * caller's content into the shell's content frame. It owns the drag, resize,
  * and escape wiring through `useDraggableWindow`, then renders `PanelPalette`
- * inside a non-modal `WindowOverlay`. Mirrors `PanelDialogController`, but the panel
+ * inside a non-modal `WindowSurface`. Mirrors `PanelDialogController`, but the panel
  * stays non-modal so the canvas remains usable.
  */
 export function PanelPaletteController({
@@ -64,7 +64,7 @@ export function PanelPaletteController({
   const contentFrame = { style: styles.content, children }
 
   return (
-    <WindowOverlay
+    <WindowSurface
       onClose={onClose}
       testId={testId}
       closeOnClickOutside={closeOnClickOutside}
@@ -87,7 +87,7 @@ export function PanelPaletteController({
         frame={contentFrame}
         style={styles.dialog}
       />
-    </WindowOverlay>
+    </WindowSurface>
   )
 }
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import {
   CSSProperties,
   PointerEvent,
@@ -74,7 +74,7 @@ interface ImageUploadDialogProps {
  * shell with the search field hidden: the title bar drags, the content frame
  * holds the dropzone, and the footer buttons clear, cancel, and upload. The
  * shell is a complete modal surface, so it renders inside a modal
- * `WindowOverlay`, a backdrop-backed portal that drags from the title bar and
+ * `WindowSurface`, a backdrop-backed portal that drags from the title bar and
  * resizes from the left, right, and bottom edges plus the bottom corners.
  */
 function ImageUploadDialog({
@@ -144,7 +144,7 @@ function ImageUploadDialog({
   }
 
   return (
-    <WindowOverlay
+    <WindowSurface
       modal
       onClose={onClose}
       x={x}
@@ -175,7 +175,7 @@ function ImageUploadDialog({
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />
-    </WindowOverlay>
+    </WindowSurface>
   )
 }
 

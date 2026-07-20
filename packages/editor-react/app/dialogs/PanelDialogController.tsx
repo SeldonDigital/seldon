@@ -1,6 +1,6 @@
 "use client"
 
-import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import {
   CSSProperties,
   ChangeEvent,
@@ -46,7 +46,7 @@ interface PanelDialogControllerProps<T extends CatalogDialogItem> {
  * shell: it wires the title, search field, and cancel/confirm buttons, and
  * injects the category list into the shell's content frame via `seldonRefs`.
  * `PanelDialog` is a complete modal surface, so it renders inside a modal
- * `WindowOverlay`, a backdrop-backed portal that the title bar drags and the
+ * `WindowSurface`, a backdrop-backed portal that the title bar drags and the
  * left, right, and bottom edges plus bottom corners resize.
  */
 export function PanelDialogController<T extends CatalogDialogItem>({
@@ -180,7 +180,7 @@ export function PanelDialogController<T extends CatalogDialogItem>({
   }
 
   return (
-    <WindowOverlay
+    <WindowSurface
       modal
       onClose={onClose}
       x={x}
@@ -210,7 +210,7 @@ export function PanelDialogController<T extends CatalogDialogItem>({
         seldonRefs={seldonRefs}
         style={styles.dialog}
       />
-    </WindowOverlay>
+    </WindowSurface>
   )
 }
 

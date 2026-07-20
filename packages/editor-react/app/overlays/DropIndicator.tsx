@@ -1,11 +1,11 @@
 import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { CSSProperties } from "react"
-import { InsertIndicatorLine } from "./InsertIndicatorLine"
-import { Pointer } from "./Pointer"
+import { IndicatorDot } from "./IndicatorDot"
+import { IndicatorLine } from "./IndicatorLine"
 
 const DOT_SIZE = "var(--sdn-sizes-xsmall)"
 
-interface InsertLineProps {
+interface DropIndicatorProps {
   /** Accent color for both the line and the leading dot border. */
   color: string
   /** Positioning for the line, merged over the shared line base. */
@@ -14,15 +14,15 @@ interface InsertLineProps {
 }
 
 /**
- * Insertion indicator: a colored line with a leading circular dot. The line and
- * dot share one recipe; callers pass the accent color and the line's position.
- * Used by the sidebar insert/select indicators and the layer-reorder drop bands.
+ * Drop indicator: a colored line with a leading circular dot. The line and dot
+ * share one recipe; callers pass the accent color and the line's position. Used
+ * by the sidebar insert/select indicators and the layer-reorder drop bands.
  */
-export function InsertLine({
+export function DropIndicator({
   color,
   position,
   dotSize = DOT_SIZE,
-}: InsertLineProps) {
+}: DropIndicatorProps) {
   const lineStyle: CSSProperties = {
     position: "absolute",
     zIndex: 20,
@@ -46,8 +46,8 @@ export function InsertLine({
   }
 
   return (
-    <InsertIndicatorLine style={lineStyle}>
-      <Pointer style={dotStyle} />
-    </InsertIndicatorLine>
+    <IndicatorLine style={lineStyle}>
+      <IndicatorDot style={dotStyle} />
+    </IndicatorLine>
   )
 }

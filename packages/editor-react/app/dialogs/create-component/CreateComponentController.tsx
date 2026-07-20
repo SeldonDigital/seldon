@@ -2,7 +2,7 @@
 
 import { MenuController } from "@app/menus/MenuController"
 import { MenuEntry } from "@app/menus/types"
-import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import {
   CSSProperties,
   ChangeEvent,
@@ -186,7 +186,7 @@ function CreateComponentDialog({
   }
 
   return (
-    <WindowOverlay
+    <WindowSurface
       modal
       contentSized
       onClose={close}
@@ -227,7 +227,7 @@ function CreateComponentDialog({
         onClose={closeLevel}
         items={levelItems}
       />
-    </WindowOverlay>
+    </WindowSurface>
   )
 }
 

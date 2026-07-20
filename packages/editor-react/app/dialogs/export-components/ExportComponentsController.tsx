@@ -2,7 +2,7 @@
 
 import { MenuController } from "@app/menus/MenuController"
 import { MenuEntry } from "@app/menus/types"
-import { WindowOverlay } from "@app/overlays/WindowOverlay.bespoke"
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import {
   CSSProperties,
   MouseEvent,
@@ -198,7 +198,7 @@ function ExportComponentsDialog({
   )
 
   return (
-    <WindowOverlay
+    <WindowSurface
       modal
       contentSized
       onClose={close}
@@ -290,7 +290,7 @@ function ExportComponentsDialog({
         onClose={closePlatform}
         items={platformItems}
       />
-    </WindowOverlay>
+    </WindowSurface>
   )
 }
 

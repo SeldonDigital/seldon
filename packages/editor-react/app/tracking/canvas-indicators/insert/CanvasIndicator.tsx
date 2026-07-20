@@ -1,4 +1,4 @@
-import { InsertIndicatorLine } from "@app/overlays"
+import { IndicatorLine } from "@app/overlays"
 import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
@@ -89,7 +89,7 @@ export function CanvasIndicator({
 
   return (
     <Frame style={containerStyle}>
-      <InsertIndicatorLine style={lineStyle} />
+      <IndicatorLine style={lineStyle} />
     </Frame>
   )
 }

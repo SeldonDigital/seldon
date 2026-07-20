@@ -1,6 +1,8 @@
 // BESPOKE-VIEW: hand-authored framer-motion floating window built on motion.div.
 // It renders either a draggable, resizable window or a centered, content-sized
-// modal. No generated component covers this chrome.
+// modal. No generated component covers this chrome. framer-motion has no 1:1
+// equivalent on other platforms, so this shell is reimplemented per platform
+// rather than ported like the class-free overlay primitives.
 import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
 import {
   CSSProperties,
@@ -20,7 +22,7 @@ import {
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
 
-interface WindowOverlayProps {
+interface WindowSurfaceProps {
   x: MotionValue<number>
   y: MotionValue<number>
   moveControls: DragControls
@@ -60,7 +62,7 @@ interface WindowOverlayProps {
  * from its title bar without resizing, for authored dialogs that carry their own
  * size.
  */
-export function WindowOverlay({
+export function WindowSurface({
   x,
   y,
   moveControls,
@@ -80,7 +82,7 @@ export function WindowOverlay({
   minWidth,
   minHeight,
   contentSized = false,
-}: WindowOverlayProps) {
+}: WindowSurfaceProps) {
   // The portal mounts on document.body, outside the chrome root that scopes the
   // editor theme and mode, so re-apply both here to match the editor interface.
   const { chromeTheme } = useEditorConfig()

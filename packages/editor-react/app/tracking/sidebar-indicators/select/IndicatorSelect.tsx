@@ -1,5 +1,5 @@
 import { COLORS } from "@seldon/editor/lib/helpers/colors"
-import { CanvasOutline, InsertLine } from "@app/overlays"
+import { DropIndicator, OutlineBox } from "@app/overlays"
 import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties, FC } from "react"
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
@@ -28,10 +28,10 @@ export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
   // "inside" nests the dragged object, so outline the whole target row like a
   // selection instead of drawing an edge line.
   if (placement === "inside") {
-    return <CanvasOutline style={insideOutlineStyle} />
+    return <OutlineBox style={insideOutlineStyle} />
   }
 
   const position = calculateIndicatorPosition(placement, indentation)
 
-  return <InsertLine color={COLORS.primary[600]} position={position} />
+  return <DropIndicator color={COLORS.primary[600]} position={position} />
 }
