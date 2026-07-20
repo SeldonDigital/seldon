@@ -16,6 +16,29 @@ import { nodeToTemplate } from "./vue-template"
 type ChildImport = { name: string; path: string }
 
 /**
+ * Void HTML elements cannot hold children. A `<slot />` inside one makes Vue
+ * treat the slot as a second root node, which turns the component into a
+ * fragment and disables attribute fallthrough, so caller attrs such as `value`
+ * never reach the element. Void roots must render as a single self-closing tag.
+ */
+const VOID_HTML_TAGS = new Set([
+  "area",
+  "base",
+  "br",
+  "col",
+  "embed",
+  "hr",
+  "img",
+  "input",
+  "link",
+  "meta",
+  "param",
+  "source",
+  "track",
+  "wbr",
+])
+
+/**
  * Builds a full Vue single-file component for one exported component.
  *
  * Reuses the framework-neutral discovery and default-prop machinery from the
@@ -231,6 +254,9 @@ function buildTemplate(
   const tag = rootTag ?? "div"
 
   if (!hasChildren) {
+    if (VOID_HTML_TAGS.has(tag)) {
+      return `    <${tag} :class="rootClassName"${attrBind}${refAttr} />`
+    }
     const contentExpr = componentContentExpr(component)
     const body = contentExpr ? `{{ ${contentExpr} }}` : `<slot />`
     return `    <${tag} :class="rootClassName"${attrBind}${refAttr}>${body}</${tag}>`

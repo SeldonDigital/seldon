@@ -18,5 +18,5 @@ const rootClassName = computed(() => combineClassNames("sdn-input-checkbox", pro
 </script>
 
 <template>
-    <input :class="rootClassName"><slot /></input>
+    <input :class="rootClassName" />
 </template>

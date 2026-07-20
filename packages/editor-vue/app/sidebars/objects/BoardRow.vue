@@ -358,6 +358,7 @@ const toggleButtonSlot = computed(() => ({
   "aria-label": isExpanded.value ? "Collapse" : "Expand",
 }))
 const toggleIconSlot = computed(() => ({
+  icon: "material-chevronRight",
   style: {
     transition: "transform 0.2s ease",
     ...(hasVariantChildren.value

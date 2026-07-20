@@ -354,6 +354,7 @@ const toggleButtonSlot = computed(() => ({
 const toggleIconSlot = computed(() =>
   mergeStateProps(
     {
+      icon: "material-chevronRight",
       style: {
         transition: "transform 0.2s ease",
         ...(hasChildren.value

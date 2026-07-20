@@ -16,5 +16,5 @@ const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 </script>
 
 <template>
-    <hr :class="rootClassName" v-bind="rootAttrs"><slot /></hr>
+    <hr :class="rootClassName" v-bind="rootAttrs" />
 </template>
