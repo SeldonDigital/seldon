@@ -1,4 +1,5 @@
 // BESPOKE-VIEW: hand-authored home screen markup. Styling comes from home.css.
+import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import { type StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 import { Link } from "react-router"
 
@@ -23,11 +24,8 @@ export function HomeView({
   return (
     <main className="home">
       <header>
-        <h1 className="home-title">Seldon · Editor</h1>
-        <p className="home-subtitle">
-          Workspaces are stored on your machine and shared with the Vue editor.
-          Open a workspace.json file or create a new workspace.
-        </p>
+        <h1 className="home-title">{HOME_CONTENT.title}</h1>
+        <p className="home-subtitle">{HOME_CONTENT.subtitle("Vue")}</p>
       </header>
 
       <div className="home-actions">
@@ -36,23 +34,25 @@ export function HomeView({
           className="home-button home-button-primary"
           onClick={onNew}
         >
-          New workspace
+          {HOME_CONTENT.newWorkspaceButton}
         </button>
         <button
           type="button"
           className="home-button home-button-secondary"
           onClick={onImport}
         >
-          Open workspace.json
+          {HOME_CONTENT.openWorkspaceButton}
         </button>
       </div>
 
       <section>
-        <h2 className="home-section-title">Recent workspaces</h2>
+        <h2 className="home-section-title">
+          {HOME_CONTENT.recentWorkspacesHeading}
+        </h2>
         {loading ? (
-          <p className="home-muted">Loading…</p>
+          <p className="home-muted">{HOME_CONTENT.loading}</p>
         ) : workspaces.length === 0 ? (
-          <p className="home-muted">No workspaces yet.</p>
+          <p className="home-muted">{HOME_CONTENT.noWorkspaces}</p>
         ) : (
           <ul className="home-list">
             {workspaces.map((ws) => (
@@ -68,7 +68,7 @@ export function HomeView({
                   className="home-delete"
                   onClick={() => onDelete(ws.id)}
                 >
-                  Delete
+                  {HOME_CONTENT.deleteButton}
                 </button>
               </li>
             ))}

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { createEmptyWorkspace } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
+import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import {
   createStoredWorkspace,
   deleteStoredWorkspace,
@@ -24,7 +25,10 @@ async function refresh(): Promise<void> {
 }
 
 async function create(): Promise<void> {
-  const record = await createStoredWorkspace("Untitled", createEmptyWorkspace())
+  const record = await createStoredWorkspace(
+    HOME_CONTENT.defaultWorkspaceName,
+    createEmptyWorkspace(),
+  )
   router.push(`/${record.id}`)
 }
 
@@ -76,14 +80,16 @@ onMounted(refresh)
 
 <template>
   <main class="home">
-    <h1 class="home-title">Seldon Editor (Vue)</h1>
-    <p class="home-subtitle">
-      Workspaces are stored on your machine and shared with the React editor.
-    </p>
+    <h1 class="home-title">{{ HOME_CONTENT.title }}</h1>
+    <p class="home-subtitle">{{ HOME_CONTENT.subtitle("React") }}</p>
 
     <div class="home-actions">
-      <button class="home-create" @click="create">New workspace</button>
-      <button class="home-import" @click="triggerImport">Import…</button>
+      <button class="home-create" @click="create">
+        {{ HOME_CONTENT.newWorkspaceButton }}
+      </button>
+      <button class="home-import" @click="triggerImport">
+        {{ HOME_CONTENT.openWorkspaceButton }}
+      </button>
       <input
         ref="fileInput"
         type="file"
@@ -93,9 +99,12 @@ onMounted(refresh)
       />
     </div>
 
-    <p v-if="loading" class="home-empty">Loading…</p>
+    <h2 class="home-section-title">
+      {{ HOME_CONTENT.recentWorkspacesHeading }}
+    </h2>
+    <p v-if="loading" class="home-empty">{{ HOME_CONTENT.loading }}</p>
     <p v-else-if="workspaces.length === 0" class="home-empty">
-      No workspaces yet.
+      {{ HOME_CONTENT.noWorkspaces }}
     </p>
 
     <ul v-else class="home-list">
@@ -109,7 +118,9 @@ onMounted(refresh)
         <button class="home-item__action" @click="duplicate(ws)">
           Duplicate
         </button>
-        <button class="home-item__delete" @click="remove(ws.id)">Delete</button>
+        <button class="home-item__delete" @click="remove(ws.id)">
+          {{ HOME_CONTENT.deleteButton }}
+        </button>
       </li>
     </ul>
   </main>
@@ -139,6 +150,14 @@ onMounted(refresh)
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+.home-section-title {
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.5);
 }
 .home-create {
   border-radius: 0.25rem;

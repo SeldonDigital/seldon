@@ -1,4 +1,5 @@
 import { selectFile } from "@seldon/editor/lib/helpers/select-file"
+import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import {
   type StoredWorkspace,
   createStoredWorkspace,
@@ -29,7 +30,11 @@ export default function HomePage() {
   }, [refresh])
 
   const handleNew = useCallback(async () => {
-    const name = prompt("Workspace name", "Untitled") ?? "Untitled"
+    const name =
+      prompt(
+        HOME_CONTENT.newWorkspaceNamePrompt,
+        HOME_CONTENT.defaultWorkspaceName,
+      ) ?? HOME_CONTENT.defaultWorkspaceName
     const record = await createStoredWorkspace(name, createEmptyWorkspace())
     navigate(`/${record.id}`)
   }, [navigate])
@@ -47,7 +52,7 @@ export default function HomePage() {
 
   const handleDelete = useCallback(
     async (id: string) => {
-      if (!confirm("Delete this workspace?")) return
+      if (!confirm(HOME_CONTENT.deleteConfirm)) return
       await deleteStoredWorkspace(id)
       await refresh()
     },
