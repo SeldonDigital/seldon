@@ -21,6 +21,10 @@
   );
 }
 
+body {
+  background: var(--sdn-swatch-black);
+}
+
 /*
  * Topbar rainbow strip. The resting strip is a static interface gradient. During
  * a local export the strip grows and `useTopbarGradientAnimation` repaints the
