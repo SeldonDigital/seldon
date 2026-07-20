@@ -190,7 +190,7 @@ function sectionAddCustom(section: PropertySection): (() => void) | undefined {
 
 <style scoped>
 .properties-sidebar {
-  width: 300px;
+  width: 100%;
   height: 100%;
   min-height: 0;
   display: flex;

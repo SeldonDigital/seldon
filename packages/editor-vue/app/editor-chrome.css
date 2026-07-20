@@ -5,6 +5,23 @@
  */
 
 /*
+ * Pane separator color shown between the sidebars and the canvas. React's
+ * Allotment draws OffBlack at 20% alpha over its flush light panes. Our 1px
+ * separator is a thin flex item with the dark editor shell behind it, so a
+ * translucent value would composite down to near-black. Compositing OffBlack
+ * 20% over the OffWhite pane color yields the same rendered gray but opaque.
+ * The theme mode block inverts the neutral swatches, so this one reference
+ * stays subtle in both light and dark mode.
+ */
+[data-theme] {
+  --separator-border: color-mix(
+    in srgb,
+    var(--sdn-swatch-offBlack) 20%,
+    var(--sdn-swatch-offWhite)
+  );
+}
+
+/*
  * Topbar rainbow strip. The resting strip is a static interface gradient. During
  * a local export the strip grows and `useTopbarGradientAnimation` repaints the
  * `background-image` each frame, cross-fading the stops in place. The resting

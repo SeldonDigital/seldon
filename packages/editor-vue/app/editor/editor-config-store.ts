@@ -17,15 +17,15 @@ export type WireframeMode = "auto" | "on" | "off"
 
 const STORAGE_KEY = "editor-config"
 
-/** Objects sidebar width bounds, matching the React Allotment pane. */
-export const OBJECTS_SIDEBAR_MIN_WIDTH = 280
-export const OBJECTS_SIDEBAR_MAX_WIDTH = 600
-export const OBJECTS_SIDEBAR_INITIAL_WIDTH = 360
+/** Sidebar width bounds, matching the React Allotment panes. */
+export const SIDEBAR_MIN_WIDTH = 280
+export const SIDEBAR_MAX_WIDTH = 600
+export const SIDEBAR_INITIAL_WIDTH = 360
 
-function clampObjectsWidth(width: number): number {
+function clampSidebarWidth(width: number): number {
   return Math.min(
-    OBJECTS_SIDEBAR_MAX_WIDTH,
-    Math.max(OBJECTS_SIDEBAR_MIN_WIDTH, Math.round(width)),
+    SIDEBAR_MAX_WIDTH,
+    Math.max(SIDEBAR_MIN_WIDTH, Math.round(width)),
   )
 }
 
@@ -44,6 +44,7 @@ type PersistedConfig = {
   showCodeNames: boolean
   objectsView: ObjectsView
   objectsWidth: number
+  propertiesWidth: number
   useRefactoredSidebars: boolean
   chromeTheme: string
   interfaceMode: InterfaceMode
@@ -84,7 +85,10 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const showCodeNames = ref(persisted.showCodeNames ?? false)
   const objectsView = ref<ObjectsView>(persisted.objectsView ?? "components")
   const objectsWidth = ref(
-    clampObjectsWidth(persisted.objectsWidth ?? OBJECTS_SIDEBAR_INITIAL_WIDTH),
+    clampSidebarWidth(persisted.objectsWidth ?? SIDEBAR_INITIAL_WIDTH),
+  )
+  const propertiesWidth = ref(
+    clampSidebarWidth(persisted.propertiesWidth ?? SIDEBAR_INITIAL_WIDTH),
   )
   const useRefactoredSidebars = ref(persisted.useRefactoredSidebars ?? false)
   const chromeTheme = ref(persisted.chromeTheme ?? "seldon")
@@ -135,7 +139,10 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     objectsView.value = view
   }
   function setObjectsWidth(width: number): void {
-    objectsWidth.value = clampObjectsWidth(width)
+    objectsWidth.value = clampSidebarWidth(width)
+  }
+  function setPropertiesWidth(width: number): void {
+    propertiesWidth.value = clampSidebarWidth(width)
   }
   function setChromeTheme(slug: string): void {
     chromeTheme.value = slug
@@ -160,6 +167,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
       showCodeNames,
       objectsView,
       objectsWidth,
+      propertiesWidth,
       useRefactoredSidebars,
       chromeTheme,
       interfaceMode,
@@ -181,6 +189,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         showCodeNames: showCodeNames.value,
         objectsView: objectsView.value,
         objectsWidth: objectsWidth.value,
+        propertiesWidth: propertiesWidth.value,
         useRefactoredSidebars: useRefactoredSidebars.value,
         chromeTheme: chromeTheme.value,
         interfaceMode: interfaceMode.value,
@@ -205,6 +214,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     showCodeNames,
     objectsView,
     objectsWidth,
+    propertiesWidth,
     useRefactoredSidebars,
     chromeTheme,
     interfaceMode,
@@ -222,6 +232,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     setComponentHighlightMode,
     setObjectsView,
     setObjectsWidth,
+    setPropertiesWidth,
     setChromeTheme,
     setInterfaceMode,
   }
