@@ -24,7 +24,11 @@ import {
 } from "@seldon/editor/lib/ai/apply-report"
 import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
 import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
-import { logAiTurn, logAiWarning, logWarm } from "@seldon/editor/lib/ai/log-turn"
+import {
+  logAiTurn,
+  logAiWarning,
+  logWarm,
+} from "@seldon/editor/lib/ai/log-turn"
 import {
   type AgentConfig,
   getAgentConfig,
