@@ -79,7 +79,9 @@ export const useAiChatStore = defineStore("ai-chat", () => {
 
   function setConfig(next: AgentConfig): void {
     config.value = next
-    if (model.value === undefined) model.value = next.defaults.model
+    if (model.value === undefined || !next.models.includes(model.value)) {
+      model.value = next.defaults.model
+    }
     if (thinkingLevel.value === undefined) {
       thinkingLevel.value = next.defaults.thinkingLevel
     }

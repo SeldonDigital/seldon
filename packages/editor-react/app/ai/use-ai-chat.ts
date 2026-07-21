@@ -24,7 +24,11 @@ import {
 } from "@seldon/editor/lib/ai/apply-report"
 import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
 import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
-import { logAiTurn, logWarm } from "@seldon/editor/lib/ai/log-turn"
+import {
+  logAiTurn,
+  logAiWarning,
+  logWarm,
+} from "@seldon/editor/lib/ai/log-turn"
 import {
   type AgentConfig,
   getAgentConfig,
@@ -133,7 +137,10 @@ const useStore = create<AiChatState>((set) => ({
   setConfig: (config) =>
     set((state) => ({
       config,
-      model: state.model ?? config.defaults.model,
+      model:
+        state.model && config.models.includes(state.model)
+          ? state.model
+          : config.defaults.model,
       thinkingLevel: state.thinkingLevel ?? config.defaults.thinkingLevel,
     })),
   setModel: (model) => set({ model }),
@@ -388,7 +395,10 @@ export function useHari() {
         const { model } = useStore.getState()
         const { metrics } = await warmAgent({ model })
         if (isAiLoggingEnabled()) logWarm(metrics)
-      } catch {
+      } catch (error) {
+        logAiWarning(
+          error instanceof Error ? error.message : "Agent warm-up failed.",
+        )
         // Warm-up is best-effort; a failure just means the first turn loads cold.
       } finally {
         warmInFlight = null
