@@ -2,6 +2,7 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useCallback, useMemo } from "react"
 
 import {
+  type BoardKey,
   Colorspace,
   type HSL,
   type Harmony,
@@ -26,7 +27,11 @@ import {
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
+import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
+
+/** Metadata fields an authored theme can edit from the properties panel. */
+type ThemeMetadataField = "name" | "description" | "intent" | "author"
 
 function mergeRecord(
   base: Record<string, unknown>,
@@ -88,6 +93,66 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
       })
     },
     [dispatch, themeEntryId],
+  )
+
+  /** Board key that owns this theme entry, used for board-level metadata edits. */
+  const boardKey = useMemo<BoardKey | undefined>(() => {
+    if (!themeEntryId) return undefined
+    for (const [key, board] of Object.entries(workspace.boards)) {
+      if (
+        isThemeBoard(board) &&
+        board.variants.some((variant) => variant.id === themeEntryId)
+      ) {
+        return key as BoardKey
+      }
+    }
+    return undefined
+  }, [workspace, themeEntryId])
+
+  /**
+   * Writes an authored theme's own metadata. Name maps to the entry label,
+   * author to the owning board, and intent/description to the entry's values.
+   */
+  const setMetadataValue = useCallback(
+    (field: ThemeMetadataField, value: string) => {
+      if (!themeEntryId) return
+      // Name and author are the theme's identity, owned by the board. The board
+      // label is the theme name shown and renamed in the objects sidebar.
+      if (field === "name") {
+        if (!boardKey) return
+        dispatch({ type: "set_board_label", payload: { boardKey, label: value } })
+        return
+      }
+      if (field === "author") {
+        if (!boardKey) return
+        dispatch({
+          type: "set_board_author",
+          payload: { boardKey, author: value },
+        })
+        return
+      }
+      setOverride(`metadata.${field}`, value)
+    },
+    [dispatch, themeEntryId, boardKey, setOverride],
+  )
+
+  /** Clears an authored theme metadata field back to its default. */
+  const resetMetadataValue = useCallback(
+    (field: ThemeMetadataField) => {
+      if (!themeEntryId) return
+      if (field === "name") {
+        if (!boardKey) return
+        dispatch({ type: "reset_board_label", payload: { boardKey } })
+        return
+      }
+      if (field === "author") {
+        if (!boardKey) return
+        dispatch({ type: "reset_board_author", payload: { boardKey } })
+        return
+      }
+      resetOverride(`metadata.${field}`)
+    },
+    [dispatch, themeEntryId, boardKey, resetOverride],
   )
 
   const mergeOverride = useCallback(
@@ -398,6 +463,8 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     themeEntryId,
     setOverride,
     resetOverride,
+    setMetadataValue,
+    resetMetadataValue,
     setCoreRatio,
     setCoreSize,
     setCoreFontSize,

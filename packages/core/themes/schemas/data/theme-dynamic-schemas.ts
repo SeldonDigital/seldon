@@ -189,7 +189,11 @@ export function generateSwatchSchemas(
     })
   }
 
-  const pushSwatchRow = (group: string, swatchId: string) => {
+  const pushSwatchRow = (
+    group: string,
+    swatchId: string,
+    controlType?: "color",
+  ) => {
     const swatch = swatchTable[swatchId]
     if (!swatch) return
     schemas.push({
@@ -199,6 +203,7 @@ export function generateSwatchSchemas(
       section: "swatch",
       order: order++,
       isSubProperty: true,
+      ...(controlType ? { controlType } : {}),
     })
   }
 
@@ -207,9 +212,11 @@ export function generateSwatchSchemas(
     pushSwatchRow("harmony", swatchId)
   }
 
+  // Interface swatches are author-fixed colors, so their rows edit the raw color
+  // value directly instead of picking a theme token.
   pushGroup("interface", "Interface")
   for (const swatchId of interfaceSlots) {
-    pushSwatchRow("interface", swatchId)
+    pushSwatchRow("interface", swatchId, "color")
   }
 
   pushGroup("custom", "Custom")

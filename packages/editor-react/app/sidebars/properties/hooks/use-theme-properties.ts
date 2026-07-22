@@ -119,11 +119,27 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     removeCustomToken,
     renameCustomToken,
     resetOverride,
+    setMetadataValue,
+    resetMetadataValue,
   } = useThemeEntryEditor(themeEntryId)
 
   const updateThemeProperty = useCallback(
     (property: FlatProperty, newValue: string) => {
       const key = property.key
+
+      // Authored theme metadata rows (name, description, intent, author).
+      if (key.startsWith("metadata.")) {
+        const field = key.split(".")[1]
+        if (
+          field === "name" ||
+          field === "description" ||
+          field === "intent" ||
+          field === "author"
+        ) {
+          setMetadataValue(field, newValue)
+        }
+        return
+      }
 
       // Modulation group
       if (key === "modulation.ratio") {
@@ -317,16 +333,29 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       setScaleSlot,
       setLookParameter,
       setSwatchValue,
+      setMetadataValue,
     ],
   )
 
   const resetThemeProperty = useCallback(
     (property: FlatProperty) => {
+      if (property.key.startsWith("metadata.")) {
+        const field = property.key.split(".")[1]
+        if (
+          field === "name" ||
+          field === "description" ||
+          field === "intent" ||
+          field === "author"
+        ) {
+          resetMetadataValue(field)
+        }
+        return
+      }
       const path = getThemeOverridePath(property.key)
       if (!path) return
       resetOverride(path)
     },
-    [resetOverride],
+    [resetOverride, resetMetadataValue],
   )
 
   return {
