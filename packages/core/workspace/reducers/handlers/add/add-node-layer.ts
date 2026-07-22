@@ -21,7 +21,6 @@ export function addNodeLayer(
   if (!node || !isEntryNodeForRules(node)) return workspace
 
   const layers = readNodeLayerArray(
-    node,
     payload.nodeId,
     payload.property,
     workspace,

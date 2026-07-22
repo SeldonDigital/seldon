@@ -411,11 +411,27 @@ export function useCommitPropertyValue(deps: CommitDeps) {
 
     if (applyPresetPropertyUpdate(newValue)) return
 
+    // A layered facet edit materializes the whole effective stack so the node
+    // owns the layer count and order; pass it through to the update handler.
+    const parsedForUpdate = parsePropertyPath(property.key)
+    let effectiveLayers: Record<string, unknown>[] | undefined
+    if (parsedForUpdate.kind === "layered-facet") {
+      const current = coreGetEffectiveProperties(nodeId, ws)[
+        parsedForUpdate.root as keyof Properties
+      ]
+      effectiveLayers = Array.isArray(current)
+        ? (current as Record<string, unknown>[])
+        : current
+          ? [current as Record<string, unknown>]
+          : undefined
+    }
+
     updateProperty({
       property,
       value: serializedValue,
       setProperties: (nextProperties, nextOptions) =>
         setProperties(nodeId, nextProperties, nextOptions),
+      effectiveLayers,
     })
 
     deps.onDone()

@@ -16,6 +16,12 @@ interface UpdatePropertyOptions {
     properties: Record<string, unknown>,
     options?: { mergeSubProperties?: boolean },
   ) => void
+  /**
+   * The node's current effective layered stack for the edited paint property.
+   * A layered facet edit materializes this whole stack and sets the one facet,
+   * so the node takes ownership of the layer count and order.
+   */
+  effectiveLayers?: Record<string, unknown>[]
 }
 
 /**
@@ -25,19 +31,35 @@ export function updateProperty({
   property,
   value,
   setProperties,
+  effectiveLayers,
 }: UpdatePropertyOptions): void {
   if (property.isSubProperty) {
     const parsed = parsePropertyPath(property.key)
     if (parsed.kind === "layered-facet") {
-      // Pad lower slots with empty bags so the slot-merge writes only this layer.
-      const layers = Array.from({ length: parsed.index + 1 }, (_, i) =>
-        i === parsed.index ? { [parsed.facet]: value } : {},
-      )
+      // Materialize the whole effective stack and set just this facet, so the
+      // node owns the layer count and order and the edit never truncates or
+      // reorders sibling layers. Falls back to a padded array when no effective
+      // stack is available.
+      const base =
+        effectiveLayers && effectiveLayers.length > parsed.index
+          ? effectiveLayers.map((layer) =>
+              layer && typeof layer === "object" && !Array.isArray(layer)
+                ? { ...layer }
+                : {},
+            )
+          : Array.from({ length: parsed.index + 1 }, () => ({}) as Record<
+              string,
+              unknown
+            >)
+      base[parsed.index] = {
+        ...base[parsed.index],
+        [parsed.facet]: value,
+      }
       setProperties(
         {
-          [parsed.root]: layers,
+          [parsed.root]: base,
         } as Properties,
-        { mergeSubProperties: true },
+        { mergeSubProperties: false },
       )
       return
     }

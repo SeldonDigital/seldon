@@ -2,7 +2,10 @@ import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
 import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
-import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
+import {
+  type LayeredPaintKey,
+  isLayeredPaintProperty,
+} from "../../../properties/types/property-keys"
 import {
   getEffectiveNodeProperties,
   getInheritedNodeProperties,
@@ -16,10 +19,14 @@ import {
   pruneRedundantOverrides,
   stripPatchFacets,
 } from "../../helpers/nodes/prune-redundant-overrides"
-import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
+import {
+  getBaselineLayerCount,
+  resolveNodePropertyResetPatch,
+} from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
   BoardKey,
+  EntryNode,
   InstanceId,
   NodeState,
   VariantId,
@@ -308,7 +315,7 @@ function resetObjectProperty(
     if (!isEntryNodeForRules(node)) return
 
     if (!subpropertyKey && isLayerSlotReset(propertyKey, layerIndex)) {
-      resetLayerSlot(node.overrides, propertyKey, layerIndex!)
+      resetNodeLayer(node, draft, propertyKey as LayeredPaintKey, layerIndex!)
       return
     }
 
@@ -329,11 +336,95 @@ function resetObjectProperty(
       return
     }
     if (patch.action === "set") {
+      // A whole-property layered reset replaces the stack outright so no owned
+      // facet lingers under the shorter baseline. Other resets merge by facet.
+      if (!subpropertyKey && isLayeredPaintProperty(propertyKey)) {
+        ;(node.overrides as Record<string, unknown>)[propertyKey] =
+          patch.properties[propertyKey]
+        return
+      }
       node.overrides = mergeProperties(node.overrides, patch.properties, {
         mergeSubProperties: true,
       })
     }
   })
+}
+
+function toLayerBags(value: unknown): Record<string, unknown>[] {
+  if (Array.isArray(value)) return value as Record<string, unknown>[]
+  if (value && typeof value === "object") {
+    return [value as Record<string, unknown>]
+  }
+  return []
+}
+
+function cloneLayer(slot: unknown): Record<string, unknown> {
+  return slot && typeof slot === "object" && !Array.isArray(slot)
+    ? { ...(slot as Record<string, unknown>) }
+    : {}
+}
+
+function isEmptyLayer(layer: unknown): boolean {
+  return (
+    !layer ||
+    (typeof layer === "object" &&
+      Object.keys(layer as Record<string, unknown>).length === 0)
+  )
+}
+
+/** Serializes with sorted object keys so key order never affects equality. */
+function stableLayers(layers: Record<string, unknown>[]): string {
+  return JSON.stringify(layers, (_key, val) => {
+    if (val && typeof val === "object" && !Array.isArray(val)) {
+      const record = val as Record<string, unknown>
+      return Object.keys(record)
+        .sort()
+        .reduce<Record<string, unknown>>((sorted, key) => {
+          sorted[key] = record[key]
+          return sorted
+        }, {})
+    }
+    return val
+  })
+}
+
+/**
+ * Resets one upper paint layer. A layer beyond the baseline count was added by
+ * the node, so it is removed from the owned stack. A layer within the baseline
+ * is reverted to an empty bag so it inherits the aligned baseline slot again.
+ * When the resulting stack matches the inherited stack, the whole override is
+ * dropped so the node fully inherits again.
+ */
+function resetNodeLayer(
+  node: EntryNode,
+  workspace: Workspace,
+  propertyKey: LayeredPaintKey,
+  layerIndex: number,
+): void {
+  const baselineCount = getBaselineLayerCount(node, workspace, propertyKey)
+  const inherited = toLayerBags(
+    getInheritedNodeProperties(node.id, workspace)[propertyKey],
+  )
+
+  let layers: Record<string, unknown>[]
+  if (layerIndex >= baselineCount) {
+    layers = toLayerBags(
+      getEffectiveNodeProperties(node.id, workspace)[propertyKey],
+    ).map(cloneLayer)
+    if (layerIndex >= layers.length) return
+    layers.splice(layerIndex, 1)
+  } else {
+    const own = toLayerBags((node.overrides as Record<string, unknown>)[propertyKey])
+    if (layerIndex >= own.length) return
+    layers = own.map((slot, index) => (index === layerIndex ? {} : cloneLayer(slot)))
+  }
+
+  const overrides = node.overrides as Record<string, unknown>
+  if (layers.every(isEmptyLayer) || stableLayers(layers) === stableLayers(inherited)) {
+    delete overrides[propertyKey]
+    return
+  }
+  overrides[propertyKey] = layers
 }
 
 /**

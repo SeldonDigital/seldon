@@ -24,7 +24,6 @@ export function setNodeLayerKind(
 
   const layerIndex = payload.layerIndex ?? 0
   const layers = readNodeLayerArray(
-    node,
     payload.nodeId,
     payload.property,
     workspace,

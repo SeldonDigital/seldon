@@ -19,7 +19,6 @@ export function removeNodeLayer(
   if (!node || !isEntryNodeForRules(node)) return workspace
 
   const layers = readNodeLayerArray(
-    node,
     payload.nodeId,
     payload.property,
     workspace,
