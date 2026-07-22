@@ -3,6 +3,7 @@ import {
   useSetHoverState,
 } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useTool } from "@app/editor/hooks/use-tool"
+import { usePendingRenameStore } from "@app/sidebars/objects/hooks/use-pending-rename"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@app/workspace/hooks/use-selection"
@@ -56,6 +57,9 @@ export function useAddRemoveCommands() {
   const { setActiveTool } = useTool()
   const setHoverState = useSetHoverState()
   const addToast = useAddToast()
+  const requestPendingRename = usePendingRenameStore(
+    (state) => state.requestRename,
+  )
 
   const addBoard = useCallback(
     async (componentId: ComponentId) => {
@@ -89,6 +93,16 @@ export function useAddRemoveCommands() {
     },
     [dispatch, selectBoard],
   )
+
+  const newTheme = useCallback(() => {
+    const boardKey = `custom-theme-${nanoid(8)}` as BoardKey
+    dispatch({
+      type: "add_authored_theme",
+      payload: { boardKey },
+    })
+    selectBoard(boardKey)
+    requestPendingRename(boardKey)
+  }, [dispatch, selectBoard, requestPendingRename])
 
   const addFontCollection = useCallback(
     (catalogId: string) => {
@@ -383,6 +397,7 @@ export function useAddRemoveCommands() {
   return {
     addBoard,
     addTheme,
+    newTheme,
     addFontCollection,
     addIconSet,
     addAuthoredComponent,

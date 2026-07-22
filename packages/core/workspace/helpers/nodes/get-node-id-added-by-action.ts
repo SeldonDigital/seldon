@@ -55,6 +55,7 @@ export function getNodeIdAddedByAction(
 
     case "add_variant":
     case "add_theme":
+    case "add_authored_theme":
     case "add_playground": {
       const board = workspace.boards[payload.boardKey]
       if (!board) return null

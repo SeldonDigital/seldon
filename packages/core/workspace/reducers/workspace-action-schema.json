@@ -1682,6 +1682,27 @@
           "type": "object"
         },
         "type": {
+          "const": "add_authored_theme",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "boardKey": {
+              "type": "string"
+            }
+          },
+          "required": ["boardKey"],
+          "type": "object"
+        },
+        "type": {
           "const": "add_playground",
           "type": "string"
         }

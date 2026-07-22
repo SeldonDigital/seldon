@@ -30,6 +30,8 @@ export const ErrorMessages = {
   variantNotFound: (id: VariantId) => `Variant ${id} not found.`,
   variantLabelNotUnique: (label: string) =>
     `A variant that is called ${label} already exists. Please choose another name.`,
+  themeLabelNotUnique: (label: string) =>
+    `A theme that is called ${label} already exists. Please choose another name.`,
   refNotUnique: (ref: string) =>
     `The reference "${ref}" is already in use. Please choose another reference.`,
   defaultVariantNotFound: (id: ComponentId) =>

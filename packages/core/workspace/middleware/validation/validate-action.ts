@@ -91,6 +91,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "add_theme":
       validateAddResourceCatalog(workspace, action)
       return
+    case "add_authored_theme":
+      boardValidators.doesNotExist(workspace, action.payload.boardKey)
+      return
     case "add_playground":
       boardValidators.playgroundKeyIsFree(workspace, action.payload.boardKey)
       return

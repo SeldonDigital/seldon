@@ -1,3 +1,4 @@
+import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
 
 import { BoardSection } from "../helpers/get-board-sections"
@@ -14,10 +15,25 @@ interface SectionProps {
  * the canvas tracking system.
  */
 export function Section({ section }: SectionProps) {
-  const { label, icon, buttonIconic, buttonIconic2, onToggle } =
-    useRowSection(section)
+  const {
+    label,
+    icon,
+    buttonIconic,
+    buttonIconic2,
+    sectionMenuItems,
+    onToggle,
+  } = useRowSection(section)
   const { handleClick, handleMouseEnter, handleMouseLeave } =
     useSectionHeaderRow({ onToggle })
+
+  // Sections with menu items (THEME) drive the add slot as a menu trigger; the
+  // rest keep their single add button. The hook runs unconditionally with an
+  // empty list for non-menu sections, so its placeholder output stays unused.
+  const sectionMenu = useRowActionsMenu(sectionMenuItems, {
+    "aria-label": "Add",
+  })
+  const useMenu = sectionMenuItems.length > 0
+  const addProps = useMenu ? sectionMenu.buttonIconic : buttonIconic2
 
   // Drive each slot through its stable workspace ref. Conditional slots still
   // need a positional enabler to render (`{}` to show, `null` to hide); their
@@ -27,22 +43,25 @@ export function Section({ section }: SectionProps) {
     sectionToggleIcon: { icon },
     sectionLabel: { children: label },
   }
-  if (buttonIconic2) seldonRefs.sectionAdd = { ...buttonIconic2 }
+  if (addProps) seldonRefs.sectionAdd = { ...addProps }
 
   // Positional enabler: render the add slot only when the section exposes one.
-  const addSlot = buttonIconic2 ? {} : null
+  const addSlot = addProps ? {} : null
 
   return (
-    <ItemSection
-      buttonIconic={{}}
-      formControlCombobox={{}}
-      textLabel={{}}
-      buttonIconic2={addSlot}
-      buttonIconic3={null}
-      seldonRefs={seldonRefs}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    />
+    <>
+      <ItemSection
+        buttonIconic={{}}
+        formControlCombobox={{}}
+        textLabel={{}}
+        buttonIconic2={addSlot}
+        buttonIconic3={null}
+        seldonRefs={seldonRefs}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+      />
+      {sectionMenu.menu}
+    </>
   )
 }

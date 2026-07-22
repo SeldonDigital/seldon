@@ -7,7 +7,7 @@ import {
 } from "@app/views/state-props"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { memo, useCallback, useRef } from "react"
+import { memo, useCallback, useEffect, useRef } from "react"
 
 import { Board as BoardType } from "@seldon/core"
 
@@ -18,6 +18,7 @@ import { NodeController } from "./NodeController"
 import { ResourceEntry } from "./ResourceEntry"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
+import { usePendingRenameStore } from "./hooks/use-pending-rename"
 import { useRowBoard } from "./hooks/use-row-board"
 
 const BOARD_SELECTION_KIND = "board"
@@ -83,7 +84,7 @@ function BoardRow({
     onDoubleClick,
     isEditingName,
     setEditingName,
-    setPlaygroundLabel,
+    submitBoardLabel,
     isExpanded,
     isBoardSelected,
     boardIsActive,
@@ -96,6 +97,19 @@ function BoardRow({
   const isActivated = boardIsActive && !isBoardSelected
 
   const boardKey = getComponentKey(board)
+
+  // A create command can request that this board open its inline rename as soon
+  // as its row mounts. Read the pending key once, enter edit mode, then clear it.
+  const pendingBoardKey = usePendingRenameStore(
+    (state) => state.pendingBoardKey,
+  )
+  const clearPendingRename = usePendingRenameStore((state) => state.clear)
+  useEffect(() => {
+    if (pendingBoardKey === boardKey) {
+      setEditingName(true)
+      clearPendingRename()
+    }
+  }, [pendingBoardKey, boardKey, setEditingName, clearPendingRename])
 
   // Trailing "..." actions menu for the board row.
   const rowRef = useRef<HTMLDivElement>(null)
@@ -123,7 +137,7 @@ function BoardRow({
     label: String(baseLabel.children),
     isEditing: isEditingName,
     setEditing: setEditingName,
-    onSubmit: setPlaygroundLabel,
+    onSubmit: submitBoardLabel,
   })
 
   // Data attributes

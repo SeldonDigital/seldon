@@ -10,6 +10,7 @@ import type {
   WorkspaceAction,
 } from "../types"
 import { addAuthoredComponent } from "./handlers/add/add-authored-component"
+import { addAuthoredTheme } from "./handlers/add/add-authored-theme"
 import { addComponent } from "./handlers/add/add-component"
 import { addCustomState } from "./handlers/add/add-custom-state"
 import { addFontCollection } from "./handlers/add/add-font-collection"
@@ -176,6 +177,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addIconSet(action.payload, workspace)
     case "add_theme":
       return addTheme(action.payload, workspace)
+    case "add_authored_theme":
+      return addAuthoredTheme(action.payload, workspace)
     case "add_playground":
       return addPlayground(action.payload, workspace)
     case "add_authored_component":

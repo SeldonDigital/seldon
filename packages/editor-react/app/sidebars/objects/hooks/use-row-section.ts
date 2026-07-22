@@ -1,6 +1,7 @@
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
+import { MenuEntry } from "@app/menus"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
@@ -31,7 +32,7 @@ export function useRowSection(section: BoardSection) {
     useExpansion()
   const { openPanel } = usePanel()
   const { setActiveTool } = useTool()
-  const { addPlayground } = useAddRemoveCommands()
+  const { addPlayground, newTheme } = useAddRemoveCommands()
 
   // Section expansion state
   const isExpanded = useIsSectionExpanded(section.level)
@@ -119,11 +120,37 @@ export function useRowSection(section: BoardSection) {
     }
   }, [section.level, openPanel, setActiveTool, addPlayground])
 
+  // The THEME section add control is a menu, not a single button: "New theme..."
+  // creates an authored theme, "Add theme..." opens the stock theme dialog. Other
+  // sections keep their single add button, so their menu list stays empty.
+  const sectionMenuItems = useMemo<MenuEntry[]>(() => {
+    if (section.level !== "THEME") return []
+    return [
+      {
+        id: "new-theme",
+        label: "New theme...",
+        onSelect: () => {
+          newTheme()
+          setActiveTool("select")
+        },
+      },
+      {
+        id: "add-theme",
+        label: "Add theme...",
+        onSelect: () => {
+          openPanel("add-theme")
+          setActiveTool("select")
+        },
+      },
+    ]
+  }, [section.level, newTheme, openPanel, setActiveTool])
+
   return {
     label: section.label,
     icon: iconId,
     buttonIconic,
     buttonIconic2,
+    sectionMenuItems,
     onToggle: onToggleSection,
   }
 }

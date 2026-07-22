@@ -318,6 +318,13 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "add_authored_theme"
+      payload: {
+        /** Caller-generated unique board key so the UI can select the new theme. */
+        boardKey: BoardKey
+      }
+    }
+  | {
       type: "add_playground"
       payload: {
         boardKey: BoardKey
