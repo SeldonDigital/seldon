@@ -146,6 +146,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "remove_instance":
     case "remove_variant":
     case "set_node_properties":
+    case "paste_node_properties":
     case "reset_node_property":
     case "reset_node":
       validateNodeMutation(workspace, action)

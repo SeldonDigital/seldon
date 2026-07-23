@@ -449,6 +449,10 @@ const CASES: Array<[string, WorkspaceAction, Workspace?]> = [
     act("set_node_properties", { nodeId: ids.uv1Id, properties: {} }),
   ],
   [
+    "paste_node_properties",
+    act("paste_node_properties", { nodeId: ids.uv1Id, properties: {} }),
+  ],
+  [
     "reset_node_property",
     act("reset_node_property", {
       nodeId: ids.uv1Id,

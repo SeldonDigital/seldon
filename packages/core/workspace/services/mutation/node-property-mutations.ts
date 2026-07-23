@@ -1,5 +1,5 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
+import { ComponentId, isComponentId } from "../../../components/constants"
 import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import {
@@ -14,6 +14,7 @@ import { DEFAULT_THEME_ID } from "../../constants"
 import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import { getComponentPropertyDefaults } from "../../helpers/components/get-component-property-defaults"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
+import { getNodeCatalogId } from "../../helpers/nodes/get-node-catalog-id"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import {
   pruneRedundantOverrides,
@@ -65,6 +66,58 @@ export function setNodeProperties(
       properties,
       getInheritedNodeProperties(node.id, workspace),
     )
+  })
+}
+
+/**
+ * Pastes a copied effective look onto a node, keeping only the properties the
+ * node's schema exposes. Non-layered keys adopt the pasted value wholesale and
+ * then drop facets equal to the node's inherited baseline. Layered paint keys
+ * (`background`, `shadow`) adopt the pasted concrete stack exactly: the array
+ * is written straight into overrides so the count, order, and per-layer kind
+ * match the source and extra target layers drop. Prune is skipped for layered
+ * keys so a shorter adopted stack is not re-expanded back to the baseline.
+ */
+export function pasteNodeProperties(
+  nodeId: VariantId | InstanceId,
+  properties: Properties,
+  workspace: Workspace,
+): Workspace {
+  return withNodeMutation(nodeId, workspace, (node) => {
+    if (!isEntryNodeForRules(node)) return
+
+    const catalogId = getNodeCatalogId(node, workspace)
+    if (!catalogId || !isComponentId(catalogId)) return
+
+    const allowedKeys = new Set(
+      Object.keys(getComponentSchema(catalogId).properties),
+    )
+    const filtered = filterPropertiesToAllowedKeys(properties, allowedKeys)
+
+    const layered: Record<string, unknown> = {}
+    const rest: Record<string, unknown> = {}
+    for (const [key, value] of Object.entries(filtered)) {
+      if (isLayeredPaintProperty(key as PropertyKey)) {
+        layered[key] = value
+      } else {
+        rest[key] = value
+      }
+    }
+
+    if (Object.keys(rest).length > 0) {
+      node.overrides = mergeProperties(node.overrides, rest, {
+        mergeSubProperties: false,
+      })
+      pruneRedundantOverrides(
+        node.overrides,
+        rest,
+        getInheritedNodeProperties(node.id, workspace),
+      )
+    }
+
+    for (const [key, value] of Object.entries(layered)) {
+      ;(node.overrides as Record<string, unknown>)[key] = value
+    }
   })
 }
 

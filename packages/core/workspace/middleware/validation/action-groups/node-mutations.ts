@@ -269,6 +269,17 @@ export function validateNodeMutation(
       }
       break
     }
+    case "paste_node_properties": {
+      // Keep this lenient on keys: the handler filters the pasted properties to
+      // the target's vocabulary, so a key the target does not expose is dropped
+      // rather than rejected. Only assert existence and valid value shapes.
+      const nodeId = action.payload.nodeId as InstanceId | VariantId
+      nodeValidators.exists(workspace, nodeId)
+      const node = nodeRetrievalService.getNode(nodeId, workspace)
+      const themeId = workspaceMutationService.getNodeTheme(node, workspace)
+      propertyValidators.values(action.payload.properties, workspace, themeId)
+      break
+    }
     case "reset_node_property": {
       const nodeId = action.payload.nodeId as InstanceId | VariantId
       nodeValidators.exists(workspace, nodeId)

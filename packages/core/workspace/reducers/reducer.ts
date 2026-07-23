@@ -89,6 +89,7 @@ import { resetWorkspaceLicense } from "./handlers/reset/reset-workspace-license"
 import { resetWorkspaceOwner } from "./handlers/reset/reset-workspace-owner"
 import { resetWorkspaceTags } from "./handlers/reset/reset-workspace-tags"
 import { applyComponentPropertiesToAllBoards } from "./handlers/set/apply-component-properties-to-all-boards"
+import { pasteNodeProperties } from "./handlers/set/paste-node-properties"
 import { renameCustomState } from "./handlers/set/rename-custom-state"
 import { setBoardAuthor } from "./handlers/set/set-board-author"
 import { setBoardCredentials } from "./handlers/set/set-board-credentials"
@@ -267,6 +268,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
 
     case "set_node_properties":
       return setNodeProperties(action.payload, workspace)
+    case "paste_node_properties":
+      return pasteNodeProperties(action.payload, workspace)
     case "reset_node_property":
       return resetNodeProperty(action.payload, workspace)
     case "reset_node":
