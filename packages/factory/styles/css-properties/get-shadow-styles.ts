@@ -19,10 +19,16 @@ export function getShadowStyles({
 }: StyleGenerationContext): CSSObject {
   const layers = getLayeredPaintLayers(properties, "shadow")
   const isText = !!properties.content
+  // An icon renders as a vector shape, so a box shadow would paint the frame
+  // around it. It shadows the shape through `filter: drop-shadow` instead, which
+  // follows the icon's alpha like a text shadow follows glyphs.
+  const isIcon = !isText && !!properties.symbol
+  // Text and icon shadows are flat: no spread and no inset placement.
+  const flat = isText || isIcon
 
   const shadows = layers
     .map((layer) =>
-      resolveShadowLayer(layer, theme, isText, useThemeVariableReferences),
+      resolveShadowLayer(layer, theme, flat, useThemeVariableReferences),
     )
     .filter((shadow): shadow is string => shadow !== undefined)
 
@@ -30,18 +36,23 @@ export function getShadowStyles({
 
   // Index 0 is the bottom layer. CSS paints the first shadow in the list on top,
   // so emit the highest index first and index 0 last to keep index 0 at the back.
-  const joined = shadows.reverse().join(", ")
-  return isText ? { textShadow: joined } : { boxShadow: joined }
+  const ordered = shadows.reverse()
+  if (isText) return { textShadow: ordered.join(", ") }
+  if (isIcon) {
+    return { filter: ordered.map((shadow) => `drop-shadow(${shadow})`).join(" ") }
+  }
+  return { boxShadow: ordered.join(", ") }
 }
 
 /**
  * Resolves a single shadow layer to a CSS shadow string, or undefined when the
- * layer is missing required offsets, color, or blur. Text shadows omit spread.
+ * layer is missing required offsets, color, or blur. Flat shadows (text and
+ * icon) omit spread and inset.
  */
 function resolveShadowLayer(
   shadow: ShadowCompound,
   theme: Theme,
-  isText: boolean,
+  flat: boolean,
   useThemeVariableReferences?: boolean,
 ): string | undefined {
   const preset = resolveValue(shadow.preset)
@@ -49,10 +60,10 @@ function resolveShadowLayer(
 
   const { offsetX, offsetY, opacity, blur, spread, brightness, color } = shadow
 
-  // Inset placement only applies to box shadows; text shadows have no inset.
+  // Inset placement only applies to box shadows; flat shadows have no inset.
   const resolvedStyle = resolveValue(shadow.style)
   const insetPrefix =
-    !isText && resolvedStyle?.value === ShadowStyle.INNER ? "inset " : ""
+    !flat && resolvedStyle?.value === ShadowStyle.INNER ? "inset " : ""
 
   const resolvedOffsetX =
     resolveValue(offsetX) || resolveValue(themeShadow?.parameters.offsetX)
@@ -88,8 +99,8 @@ function resolveShadowLayer(
     useThemeVariableReferences,
   })
 
-  // Text shadows do not support a spread value.
-  if (isText || !spread || !resolvedSpread) {
+  // Flat shadows (text and icon) do not support a spread value.
+  if (flat || !spread || !resolvedSpread) {
     return `${insetPrefix}${offsetXString} ${offsetYString} ${blurString} ${colorString}`
   }
 
