@@ -38,3 +38,6 @@ __exports__
 # Shared filesystem workspace store used by both editors
 /.seldon
 
+# Local scratch workspace export used for manual testing
+/seldon-pen-bk.json
+

@@ -467,13 +467,20 @@ function resetNodeLayer(
     if (layerIndex >= layers.length) return
     layers.splice(layerIndex, 1)
   } else {
-    const own = toLayerBags((node.overrides as Record<string, unknown>)[propertyKey])
+    const own = toLayerBags(
+      (node.overrides as Record<string, unknown>)[propertyKey],
+    )
     if (layerIndex >= own.length) return
-    layers = own.map((slot, index) => (index === layerIndex ? {} : cloneLayer(slot)))
+    layers = own.map((slot, index) =>
+      index === layerIndex ? {} : cloneLayer(slot),
+    )
   }
 
   const overrides = node.overrides as Record<string, unknown>
-  if (layers.every(isEmptyLayer) || stableLayers(layers) === stableLayers(inherited)) {
+  if (
+    layers.every(isEmptyLayer) ||
+    stableLayers(layers) === stableLayers(inherited)
+  ) {
     delete overrides[propertyKey]
     return
   }

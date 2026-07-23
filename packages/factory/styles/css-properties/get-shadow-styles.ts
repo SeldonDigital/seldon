@@ -39,7 +39,9 @@ export function getShadowStyles({
   const ordered = shadows.reverse()
   if (isText) return { textShadow: ordered.join(", ") }
   if (isIcon) {
-    return { filter: ordered.map((shadow) => `drop-shadow(${shadow})`).join(" ") }
+    return {
+      filter: ordered.map((shadow) => `drop-shadow(${shadow})`).join(" "),
+    }
   }
   return { boxShadow: ordered.join(", ") }
 }

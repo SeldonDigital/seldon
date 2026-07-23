@@ -72,7 +72,12 @@ export function migrateV16LayeredOverrideLength(
         effectiveLengths[key] = stackLength(effective[key])
       }
       for (const stateBag of Object.values(node.states)) {
-        if (padLayeredArrays(stateBag as Record<string, unknown>, effectiveLengths)) {
+        if (
+          padLayeredArrays(
+            stateBag as Record<string, unknown>,
+            effectiveLengths,
+          )
+        ) {
           changed = true
         }
       }

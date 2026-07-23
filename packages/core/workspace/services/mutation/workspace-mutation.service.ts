@@ -27,13 +27,13 @@ import {
 } from "./label-mutations"
 import {
   applyComponentPropertiesToAllBoards,
+  pasteNodeProperties,
   resetComponentBoard,
   resetComponentProperty,
   resetNodeOverrides,
   resetNodeProperty,
   resetNodeState,
   resetNodeStateProperty,
-  pasteNodeProperties,
   setComponentProperties,
   setNodeProperties,
   setNodeStateProperties,
