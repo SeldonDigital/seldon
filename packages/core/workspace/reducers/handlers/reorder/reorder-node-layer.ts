@@ -18,11 +18,7 @@ export function reorderNodeLayer(
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
   if (!node || !isEntryNodeForRules(node)) return workspace
 
-  const layers = readNodeLayerArray(
-    payload.nodeId,
-    payload.property,
-    workspace,
-  )
+  const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
 
   const { fromIndex, toIndex } = payload
   if (fromIndex === toIndex) return workspace

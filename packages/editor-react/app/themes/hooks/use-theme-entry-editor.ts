@@ -120,7 +120,10 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
       // label is the theme name shown and renamed in the objects sidebar.
       if (field === "name") {
         if (!boardKey) return
-        dispatch({ type: "set_board_label", payload: { boardKey, label: value } })
+        dispatch({
+          type: "set_board_label",
+          payload: { boardKey, label: value },
+        })
         return
       }
       if (field === "author") {

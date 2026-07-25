@@ -18,11 +18,7 @@ export function removeNodeLayer(
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
   if (!node || !isEntryNodeForRules(node)) return workspace
 
-  const layers = readNodeLayerArray(
-    payload.nodeId,
-    payload.property,
-    workspace,
-  )
+  const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
   if (payload.index < 1 || payload.index >= layers.length) return workspace
   layers.splice(payload.index, 1)
 

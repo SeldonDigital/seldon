@@ -47,10 +47,10 @@ export function updateProperty({
                 ? { ...layer }
                 : {},
             )
-          : Array.from({ length: parsed.index + 1 }, () => ({}) as Record<
-              string,
-              unknown
-            >)
+          : Array.from(
+              { length: parsed.index + 1 },
+              () => ({}) as Record<string, unknown>,
+            )
       base[parsed.index] = {
         ...base[parsed.index],
         [parsed.facet]: value,

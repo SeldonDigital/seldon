@@ -49,7 +49,13 @@ export function buildMetadataProperties(
   editable = false,
 ): FlatProperty[] {
   const rows: FlatProperty[] = [
-    createMetadataRow("name", "Name", metadata.name, "material-style", editable),
+    createMetadataRow(
+      "name",
+      "Name",
+      metadata.name,
+      "material-style",
+      editable,
+    ),
     createMetadataRow(
       "description",
       "Description",

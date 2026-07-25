@@ -23,11 +23,7 @@ export function setNodeLayerKind(
   if (!seed) return workspace
 
   const layerIndex = payload.layerIndex ?? 0
-  const layers = readNodeLayerArray(
-    payload.nodeId,
-    payload.property,
-    workspace,
-  )
+  const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
   while (layers.length <= layerIndex) layers.push({})
   layers[layerIndex] = { ...seed }
 
