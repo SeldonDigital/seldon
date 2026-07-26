@@ -91,6 +91,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "add_theme":
       validateAddResourceCatalog(workspace, action)
       return
+    case "add_authored_theme":
+      boardValidators.doesNotExist(workspace, action.payload.boardKey)
+      return
     case "add_playground":
       boardValidators.playgroundKeyIsFree(workspace, action.payload.boardKey)
       return
@@ -143,6 +146,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "remove_instance":
     case "remove_variant":
     case "set_node_properties":
+    case "paste_node_properties":
     case "reset_node_property":
     case "reset_node":
       validateNodeMutation(workspace, action)

@@ -7,10 +7,7 @@ import { isShorthandCatalogProperty } from "../../constants/shared/shorthand-pro
 import { ValueType } from "../../constants/shared/value-types"
 import type { PropertyValueType } from "../../types/schema"
 import { getPropertySchema } from "./get-property-schema"
-import {
-  getCatalogKeyForPropertyPath,
-  joinCompoundFacetKey,
-} from "./property-path"
+import { getCatalogKeyForPropertyPath } from "./property-path"
 
 /** True when a compound parent stores its node value as an ordered layer array. */
 function isLayeredCompound(propertyKey: string): boolean {
@@ -92,7 +89,15 @@ function validateSingle(
   return []
 }
 
-/** Validates one compound or layer facet by flattening it to its schema key. */
+/**
+ * Validates one compound or layer facet by resolving it to its schema key.
+ * Resolution mirrors {@link getCatalogKeyForPropertyPath}: it first tries the
+ * flattened `parent<Facet>` key, then falls back to the bare `facet` key. The
+ * fallback matches how a dotted path such as `background.0.gradientType`
+ * resolves, so a facet that a look expansion writes onto a layer (for example
+ * `gradientType`, which is registered on its own but not as
+ * `backgroundGradientType`) validates the same way in both forms.
+ */
 function validateFacet(
   parent: string,
   facet: string,
@@ -100,8 +105,8 @@ function validateFacet(
   theme: Theme | undefined,
   path: string,
 ): PropertyValueError[] {
-  const schemaKey = joinCompoundFacetKey(parent, facet)
-  if (!getPropertySchema(schemaKey)) {
+  const schemaKey = getCatalogKeyForPropertyPath(path)
+  if (!schemaKey) {
     return [{ path, reason: `unknown facet "${facet}" on ${parent}` }]
   }
   return validateSingle(schemaKey, value, theme, path)

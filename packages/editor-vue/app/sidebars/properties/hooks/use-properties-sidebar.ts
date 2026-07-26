@@ -41,6 +41,7 @@ import {
 } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -166,12 +167,18 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
       const entry = ws.themes[themeEntryId]
       const computedTheme = getComputedTheme(themeEntryId, ws)
       theme = computedTheme
+      const board = findBoardForEntry(ws, isThemeBoard, themeEntryId)
+      const isAuthoredTheme = board ? isAuthoredThemeBoard(board) : false
+      // An authored theme's default variant owns its values: Seldon only seeds
+      // the starting tokens, so its stored map is the theme's base, not
+      // overrides. A custom variant of it still layers overrides.
+      const isAuthoredDefaultEntry = isAuthoredTheme && entry.type === "default"
       const baseSwatchIds = new Set(
         Object.keys(getComputedTheme(entry.template, ws).swatch),
       )
       flatProperties = flattenThemeProperties(
         computedTheme,
-        entry.overrides,
+        isAuthoredDefaultEntry ? undefined : entry.overrides,
         baseSwatchIds,
       ).map((property) => ({
         ...property,
@@ -179,7 +186,6 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
           property.controlType || getThemePropertyControlType(property),
       }))
       metadataVariantLabel = entry.label
-      const board = findBoardForEntry(ws, isThemeBoard, themeEntryId)
       metadataProperties = buildMetadataProperties({
         name: entry.label ?? computedTheme.metadata.name,
         description: computedTheme.metadata.description,

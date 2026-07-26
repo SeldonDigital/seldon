@@ -16,6 +16,7 @@ import { MouseEvent, useState } from "react"
 
 import { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"
+import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
   isAuthoredBoard,
   isComponentBoard,
@@ -126,6 +127,9 @@ export function useRowBoard(
   function onDoubleClick() {
     if (isPlayground) {
       setEditingName(true)
+    } else if (isAuthoredThemeBoard(board)) {
+      // Authored themes own their name, so double-click opens inline rename.
+      setEditingName(true)
     } else if (isAuthoredBoard(board)) {
       // Authored board renaming is not wired yet, so the gesture is a no-op
       // rather than showing the catalog-specific rename message.
@@ -137,10 +141,19 @@ export function useRowBoard(
     }
   }
 
-  function setPlaygroundLabel(label: string) {
+  function submitBoardLabel(label: string) {
     const trimmed = label.trim()
     setEditingName(false)
     if (!trimmed || trimmed === board.label) return
+    // Authored theme names are the board `label`; a duplicate is rejected by
+    // validation and the input reverts to the previous name.
+    if (isThemeBoard(board)) {
+      dispatch({
+        type: "set_board_label",
+        payload: { boardKey, label: trimmed },
+      })
+      return
+    }
     dispatch({
       type: "set_playground_label",
       payload: { playgroundKey: boardKey, label: trimmed },
@@ -270,6 +283,26 @@ export function useRowBoard(
       ]
     }
 
+    // Authored themes own their tokens with no catalog to reset to, so the menu
+    // offers add-variant and delete but never reset-to-catalog.
+    if (isAuthoredThemeBoard(board)) {
+      return [
+        {
+          id: "add-variant",
+          label: `Add ${board.label} Variant`,
+          onSelect: () => onAddVariant(),
+          testId: `objects-sidebar-board-${boardKey}-add-variant`,
+        },
+        "separator",
+        {
+          id: "delete",
+          label: `Delete ${board.label}`,
+          onSelect: () => removeBoard(boardKey),
+          testId: `objects-sidebar-board-${boardKey}-delete`,
+        },
+      ]
+    }
+
     // Playgrounds have no catalog to reset to, so the menu only offers duplicate,
     // add sandbox, and delete.
     if (isPlaygroundBoard(board)) {
@@ -378,7 +411,7 @@ export function useRowBoard(
     onDoubleClick,
     isEditingName,
     setEditingName,
-    setPlaygroundLabel,
+    submitBoardLabel,
     isExpanded: isExpandedState,
     isBoardSelected,
     boardIsActive,

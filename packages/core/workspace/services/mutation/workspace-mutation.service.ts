@@ -27,6 +27,7 @@ import {
 } from "./label-mutations"
 import {
   applyComponentPropertiesToAllBoards,
+  pasteNodeProperties,
   resetComponentBoard,
   resetComponentProperty,
   resetNodeOverrides,
@@ -110,6 +111,14 @@ export class WorkspaceMutationService {
     options?: { mergeSubProperties?: boolean },
   ): Workspace {
     return setNodeProperties(nodeId, properties, workspace, options)
+  }
+
+  public pasteNodeProperties(
+    nodeId: VariantId | InstanceId,
+    properties: Properties,
+    workspace: Workspace,
+  ): Workspace {
+    return pasteNodeProperties(nodeId, properties, workspace)
   }
 
   public resetNodeProperty(

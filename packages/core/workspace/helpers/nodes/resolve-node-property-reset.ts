@@ -37,6 +37,27 @@ function getBaselineProperties(
 }
 
 /**
+ * The number of layers a node's paint stack has before its own overrides. Used
+ * to tell an added layer (index beyond the baseline count) from a layer that
+ * exists in the baseline, so a per-layer reset can remove the former and revert
+ * the latter.
+ */
+export function getBaselineLayerCount(
+  node: EntryNode,
+  workspace: Workspace,
+  propertyKey: PropertyKey,
+): number {
+  const catalogId = getNodeCatalogId(node, workspace)
+  const baseline =
+    catalogId && isComponentId(catalogId)
+      ? getBaselineProperties(node, workspace, catalogId)
+      : getInheritedNodeProperties(node.id, workspace)
+  const value = baseline[propertyKey as keyof Properties]
+  if (Array.isArray(value)) return value.length
+  return value ? 1 : 0
+}
+
+/**
  * Reads the value of one property facet from a properties bag. Handles atomic
  * top-level keys, compound and shorthand sub-keys, and layered-paint facets
  * targeted at a layer slot.

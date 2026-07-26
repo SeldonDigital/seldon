@@ -1682,6 +1682,27 @@
           "type": "object"
         },
         "type": {
+          "const": "add_authored_theme",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "boardKey": {
+              "type": "string"
+            }
+          },
+          "required": ["boardKey"],
+          "type": "object"
+        },
+        "type": {
           "const": "add_playground",
           "type": "string"
         }
@@ -2135,6 +2156,30 @@
         },
         "type": {
           "const": "set_node_properties",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "nodeId": {
+              "type": "string"
+            },
+            "properties": {
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+            }
+          },
+          "required": ["nodeId", "properties"],
+          "type": "object"
+        },
+        "type": {
+          "const": "paste_node_properties",
           "type": "string"
         }
       },

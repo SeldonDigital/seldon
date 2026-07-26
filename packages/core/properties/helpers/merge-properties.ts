@@ -8,18 +8,22 @@ import {
 } from "../types/property-keys"
 import { mergeTaggedValues } from "./merge-tagged-value"
 
-/** Aligns two paint stacks by index and merges plain layer objects when asked. */
+/**
+ * Aligns two paint stacks by index and merges plain layer objects when asked.
+ * The patch (`next`) stack is authoritative for length: a node override defines
+ * its own layer count and order, so a shorter override truncates the inherited
+ * tail and a longer one appends. Overlapping slots merge facet by facet, so an
+ * empty patch bag inherits the aligned base layer.
+ */
 function mergeLayerArrays<T extends Record<string, unknown>>(
   base: T[],
   next: T[],
   mergeSubProperties: boolean,
 ): T[] {
   if (!mergeSubProperties) return next
-  const len = Math.max(base.length, next.length)
-  return Array.from({ length: len }, (_, i) => {
+  return Array.from({ length: next.length }, (_, i) => {
     const a = base[i]
     const b = next[i]
-    if (b === undefined) return a as T
     if (a === undefined) return b as T
     if (
       a &&

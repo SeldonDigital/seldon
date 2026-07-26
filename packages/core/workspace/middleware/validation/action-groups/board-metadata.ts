@@ -2,9 +2,11 @@ import { ComponentId } from "../../../../components/constants"
 import { isComponentId } from "../../../../components/constants"
 import { invariant } from "../../../../index"
 import { ValueType } from "../../../../properties"
+import { ErrorMessages } from "../../../constants"
 import { isResourceType } from "../../../helpers/components/is-resource-type"
 import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
-import { isAuthoredBoard } from "../../../model/components"
+import { isThemeBoardLabelTaken } from "../../../helpers/themes/theme-label"
+import { isAuthoredBoard, isThemeBoard } from "../../../model/components"
 import type { Action, Board, EntryNode, Workspace } from "../../../types"
 import {
   boardValidators,
@@ -95,7 +97,22 @@ export function validateBoardMetadata(
   action: Action,
 ): void {
   switch (action.type) {
-    case "set_board_label":
+    case "set_board_label": {
+      const boardKey = action.payload.boardKey
+      boardValidators.exists(workspace, boardKey)
+      const board = workspace.boards[boardKey]
+      if (
+        board &&
+        isThemeBoard(board) &&
+        isThemeBoardLabelTaken(workspace, action.payload.label, boardKey)
+      ) {
+        throw new WorkspaceValidationError(
+          ErrorMessages.themeLabelNotUnique(action.payload.label),
+          action,
+        )
+      }
+      return
+    }
     case "set_board_intent":
     case "set_board_tags":
     case "set_board_editor_data":

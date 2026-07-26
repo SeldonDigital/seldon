@@ -31,6 +31,7 @@ import { useMemo } from "react"
 
 import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
+import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -168,11 +169,25 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     return getComputedTheme(activeThemeEntryId, workspace)
   }, [isThemeEditingMode, activeThemeEntryId, workspace])
 
+  const activeThemeBoard = useMemo(() => {
+    if (!isThemeEditingMode || !activeThemeEntryId) return undefined
+    return findBoardForEntry(workspace, isThemeBoard, activeThemeEntryId)
+  }, [isThemeEditingMode, activeThemeEntryId, workspace])
+
+  const isAuthoredTheme = activeThemeBoard
+    ? isAuthoredThemeBoard(activeThemeBoard)
+    : false
+
   const themeProperties = useMemo(() => {
     if (!isThemeEditingMode || !editedTheme) return []
     const entry = activeThemeEntryId
       ? workspace.themes[activeThemeEntryId]
       : undefined
+    // An authored theme's default variant owns its values: Seldon only seeds the
+    // starting tokens, so its stored map is the theme's base, not overrides. Skip
+    // the override map for that entry so its rows read as set. A custom variant of
+    // the authored theme still layers overrides, so it keeps its override map.
+    const isAuthoredDefaultEntry = isAuthoredTheme && entry?.type === "default"
     // Swatches the template theme defines. A swatch missing here was added on
     // the entry itself, so its row is base state rather than an override.
     const baseSwatchIds = entry
@@ -180,14 +195,20 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       : undefined
     const flatProps = flattenThemeProperties(
       editedTheme,
-      entry?.overrides,
+      isAuthoredDefaultEntry ? undefined : entry?.overrides,
       baseSwatchIds,
     )
     return flatProps.map((prop) => ({
       ...prop,
       controlType: prop.controlType || getThemePropertyControlType(prop),
     }))
-  }, [isThemeEditingMode, editedTheme, activeThemeEntryId, workspace])
+  }, [
+    isThemeEditingMode,
+    editedTheme,
+    activeThemeEntryId,
+    workspace,
+    isAuthoredTheme,
+  ])
 
   const borderSideSubjectId =
     selection && !isThemeEditingMode ? getPropertiesSubjectId(selection) : ""
@@ -263,18 +284,22 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
   const metadataProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (isThemeEditingMode && editedTheme && activeThemeEntryId) {
       const entry = workspace.themes[activeThemeEntryId]
-      const board = findBoardForEntry(
-        workspace,
-        isThemeBoard,
-        activeThemeEntryId,
+      const author = activeThemeBoard?.author
+      // An authored theme owns its identity, so its metadata rows are editable
+      // and its Name is the board label shown in the objects sidebar. Stock
+      // themes mirror the shipped catalog, so they stay read-only.
+      const name = isAuthoredTheme
+        ? (activeThemeBoard?.label ?? editedTheme.metadata.name)
+        : (entry?.label ?? editedTheme.metadata.name)
+      return buildMetadataProperties(
+        {
+          name,
+          description: editedTheme.metadata.description,
+          intent: editedTheme.metadata.intent,
+          author,
+        },
+        isAuthoredTheme,
       )
-      const author = board?.author
-      return buildMetadataProperties({
-        name: entry?.label ?? editedTheme.metadata.name,
-        description: editedTheme.metadata.description,
-        intent: editedTheme.metadata.intent,
-        author,
-      })
     }
     if (
       isFontCollectionEditingMode &&
@@ -301,6 +326,8 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     isThemeEditingMode,
     editedTheme,
     activeThemeEntryId,
+    activeThemeBoard,
+    isAuthoredTheme,
     isFontCollectionEditingMode,
     editedFontCollection,
     activeFontCollectionEntryId,

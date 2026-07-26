@@ -16,6 +16,7 @@ import { type ComputedRef, computed } from "vue"
 import { InstanceId, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
+import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { isSandboxNode } from "@seldon/core/workspace/helpers/nodes/sandbox"
@@ -192,7 +193,8 @@ export function useRowNodeActions(
     }
 
     function handleCopyProperties(): void {
-      clipboard.setProperties(structuredClone(node.overrides))
+      const effective = coreGetEffectiveProperties(node.id, workspace)
+      clipboard.setProperties(structuredClone(effective))
       toast.addToast("Properties copied")
     }
 
@@ -203,11 +205,10 @@ export function useRowNodeActions(
         return
       }
       dispatch({
-        type: "set_node_properties",
+        type: "paste_node_properties",
         payload: {
           nodeId: node.id as VariantId,
           properties,
-          options: { mergeSubProperties: true },
         },
       })
     }

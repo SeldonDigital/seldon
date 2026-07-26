@@ -20,12 +20,7 @@ export function addNodeLayer(
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
   if (!node || !isEntryNodeForRules(node)) return workspace
 
-  const layers = readNodeLayerArray(
-    node,
-    payload.nodeId,
-    payload.property,
-    workspace,
-  )
+  const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
   layers.push(payload.seed ? { ...payload.seed } : {})
 
   return produce(workspace, (draft) => {

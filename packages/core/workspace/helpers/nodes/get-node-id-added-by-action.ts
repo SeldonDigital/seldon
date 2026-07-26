@@ -55,6 +55,7 @@ export function getNodeIdAddedByAction(
 
     case "add_variant":
     case "add_theme":
+    case "add_authored_theme":
     case "add_playground": {
       const board = workspace.boards[payload.boardKey]
       if (!board) return null
@@ -228,6 +229,7 @@ export function getNodeIdAddedByAction(
     case "remove_board":
     case "reorder_board":
     case "set_node_properties":
+    case "paste_node_properties":
     case "reset_node_property":
     case "reset_variant_to_catalog":
     case "reset_instance_to_source":

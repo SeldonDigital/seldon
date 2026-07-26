@@ -1,6 +1,8 @@
 import { packagedFontCollectionCatalogIds } from "../../../font-collections/catalog-ids"
 import { packagedIconSetCatalogIds } from "../../../icon-sets/catalog-ids"
 import { packagedThemeCatalogIds } from "../../../themes"
+import type { Board, ThemeBoard } from "../../model/components"
+import { isThemeBoard } from "../../model/components"
 
 /**
  * Packaged theme catalog ids from `core/themes`. Use for theme board `catalogId` validation.
@@ -32,3 +34,12 @@ export const MEDIA_BOARD_CATALOG_IDS: ReadonlySet<string> = new Set<string>([
   "seldonMedia",
   "adobeStockMedia",
 ])
+
+/**
+ * A workspace-authored theme board. It is a theme board whose `catalogId` is not
+ * a packaged stock theme, so it owns its name and tokens and is renamable, unlike
+ * stock theme boards that mirror the catalog.
+ */
+export function isAuthoredThemeBoard(entry: Board): entry is ThemeBoard {
+  return isThemeBoard(entry) && !THEME_BOARD_CATALOG_IDS.has(entry.catalogId)
+}
