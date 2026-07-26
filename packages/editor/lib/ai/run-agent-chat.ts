@@ -8,6 +8,7 @@ import type {
   SelectionScope,
   ThinkingLevelOption,
 } from "@seldon/ai"
+import { logAiWarning } from "@seldon/editor/lib/ai/log-turn"
 import type {
   BoardKey,
   Workspace,
@@ -41,6 +42,8 @@ export type AgentConfig = {
     model: string
     thinkingLevel: ThinkingLevelOption
   }
+  /** Set when the configured default model is not installed in Ollama. */
+  warnings?: string[]
 }
 
 export type AgentChatResponse = {
@@ -135,7 +138,9 @@ export async function getAgentConfig(): Promise<AgentConfig | undefined> {
   try {
     const response = await fetch("/api/agent/config")
     if (!response.ok) return undefined
-    return (await response.json()) as AgentConfig
+    const config = (await response.json()) as AgentConfig
+    for (const warning of config.warnings ?? []) logAiWarning(warning)
+    return config
   } catch {
     return undefined
   }
@@ -160,7 +165,14 @@ export async function warmAgent(warm?: {
     body: JSON.stringify(warm ?? {}),
   })
   if (!response.ok) {
-    throw new Error("Agent warm-up failed.")
+    let message = "Agent warm-up failed."
+    try {
+      const data = (await response.json()) as { error?: string }
+      if (data?.error) message = data.error
+    } catch {
+      // Response was not JSON; keep the default message.
+    }
+    throw new Error(message)
   }
   return (await response.json()) as WarmResponse
 }

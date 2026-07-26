@@ -14,6 +14,7 @@ import {
 } from "@seldon/editor/lib/ai/apply-report"
 import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
 import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
+import { logAiWarning } from "@seldon/editor/lib/ai/log-turn"
 import {
   getAgentConfig,
   runAgentChat,
@@ -277,7 +278,10 @@ export function useAiChat() {
         const config = await getAgentConfig()
         if (config) store.setConfig(config)
         await warmAgent({ model: store.model })
-      } catch {
+      } catch (error) {
+        logAiWarning(
+          error instanceof Error ? error.message : "Agent warm-up failed.",
+        )
         // Warm-up is best-effort; a failure just means the first turn loads cold.
       } finally {
         warmInFlight = null

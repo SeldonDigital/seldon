@@ -75,7 +75,7 @@ export async function runAgent(
       selectedBoardId: body.selectedBoardId,
       scope: body.scope,
       resourceTargetId: body.resourceTargetId,
-      model: body.model,
+      model: await resolveAvailableModel(body.model),
       thinkingLevel: body.thinkingLevel,
       thinkingCapable: body.thinkingCapable,
       noThink: body.noThink,
@@ -97,6 +97,8 @@ export type AgentConfig = {
     model: string
     thinkingLevel: ThinkingLevelOption
   }
+  /** Set when the configured default model is not installed in Ollama. */
+  warnings?: string[]
 }
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434"
@@ -141,6 +143,39 @@ async function showModelCapabilities(
   }
 }
 
+/** Message shown when a model is not installed in the local Ollama server. */
+function missingModelMessage(model: string, installed: string[]): string {
+  if (installed.length === 0) {
+    return `AI model "${model}" is not installed in Ollama. No local Ollama models are installed. Pull it with: ollama pull ${model}`
+  }
+  return `AI model "${model}" is not installed in Ollama. Available models: ${installed.join(", ")}. Pull it with: ollama pull ${model}`
+}
+
+/**
+ * Resolves the model a request should actually use. An explicitly requested
+ * model must be installed, or the request is rejected with a clear message
+ * instead of silently running (and likely failing) against a missing model.
+ * With no request, falls back to the configured default when installed, else
+ * the first discovered model. When Ollama reports no models at all, the
+ * request proceeds best-effort so the underlying Ollama error surfaces.
+ */
+async function resolveAvailableModel(
+  requestedModel: string | undefined,
+): Promise<string> {
+  const configuredDefaultModel = resolvePiModelId()
+  const discovered = await listOllamaModels()
+  if (discovered.length === 0) return requestedModel ?? configuredDefaultModel
+  if (requestedModel) {
+    if (!discovered.includes(requestedModel)) {
+      throw new Error(missingModelMessage(requestedModel, discovered))
+    }
+    return requestedModel
+  }
+  return discovered.includes(configuredDefaultModel)
+    ? configuredDefaultModel
+    : discovered[0]
+}
+
 /**
  * Returns the session-config choices for the Hari palette: the locally available
  * models, the thinking menu resolved per model from Ollama's reported
@@ -148,11 +183,16 @@ async function showModelCapabilities(
  * best-effort and come from the local Ollama server.
  */
 export async function agentConfig(): Promise<AgentConfig> {
-  const defaultModel = resolvePiModelId()
+  const configuredDefaultModel = resolvePiModelId()
   const discovered = await listOllamaModels()
-  const models = discovered.includes(defaultModel)
-    ? discovered
-    : [defaultModel, ...discovered]
+  const models = discovered.length > 0 ? discovered : [configuredDefaultModel]
+  const defaultModel = models.includes(configuredDefaultModel)
+    ? configuredDefaultModel
+    : models[0]
+  const warnings =
+    discovered.length > 0 && !discovered.includes(configuredDefaultModel)
+      ? [missingModelMessage(configuredDefaultModel, discovered)]
+      : undefined
   const thinkingByModel: Record<string, ModelThinking> = {}
   const clampedLevels: Record<string, ThinkingLevelOption> = {}
   await Promise.all(
@@ -170,6 +210,7 @@ export async function agentConfig(): Promise<AgentConfig> {
       model: defaultModel,
       thinkingLevel: thinkingByModel[defaultModel]?.default ?? "off",
     },
+    warnings,
   }
 }
 
@@ -186,6 +227,8 @@ export type WarmResult = {
 export async function warmAgent(body?: {
   model?: string
 }): Promise<WarmResult> {
-  const metrics = await warmModel({ model: body?.model })
+  const metrics = await warmModel({
+    model: await resolveAvailableModel(body?.model),
+  })
   return { ok: true, metrics }
 }

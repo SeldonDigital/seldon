@@ -19,6 +19,10 @@ import { spawn } from "node:child_process"
 
 const HOST = process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434"
 const PROBE_URL = `${HOST}/api/tags`
+// Mirrors the default in packages/ai/pi/model.ts's resolvePiModelId. Kept as a
+// literal here since this script runs under plain node, with no TS loader to
+// import that module directly.
+const DEFAULT_MODEL = process.env.SELDON_AI_MODEL ?? "gpt-oss:20b"
 const READY_TIMEOUT_MS = 20_000
 const POLL_INTERVAL_MS = 500
 
@@ -53,6 +57,39 @@ async function isRunning(timeoutMs = 1_000) {
 }
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+/** Returns local Ollama model names, best-effort. */
+async function getInstalledModels(timeoutMs = 2_000) {
+  try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), timeoutMs)
+    const response = await fetch(PROBE_URL, { signal: controller.signal })
+    clearTimeout(timer)
+    if (!response.ok) return []
+    const data = await response.json()
+    return (data.models ?? [])
+      .map((entry) => entry.model ?? entry.name)
+      .filter((name) => typeof name === "string")
+  } catch {
+    return []
+  }
+}
+
+/** Warns in the terminal when the configured default model is not installed. */
+async function warnIfDefaultModelMissing() {
+  const models = await getInstalledModels()
+  if (models.length === 0) {
+    console.warn(
+      `No Ollama models are installed. Pull one before using Hari, for example: ollama pull ${DEFAULT_MODEL}`,
+    )
+    return
+  }
+  if (!models.includes(DEFAULT_MODEL)) {
+    console.warn(
+      `Configured AI model "${DEFAULT_MODEL}" is not installed in Ollama. Available models: ${models.join(", ")}. Pull it with: ollama pull ${DEFAULT_MODEL}`,
+    )
+  }
+}
 
 /**
  * Spawns `ollama serve` detached so it outlives this short-lived script. The
@@ -95,6 +132,7 @@ async function main() {
     console.log(
       `Ollama already running at ${HOST}. Performance settings apply only to a server this script starts; run "npm run ollama:kill" then "npm run dev" to apply them.`,
     )
+    await warnIfDefaultModelMissing()
     return
   }
 
@@ -108,6 +146,7 @@ async function main() {
   while (Date.now() < deadline) {
     if (await isRunning()) {
       console.log(`Ollama is ready at ${HOST}.`)
+      await warnIfDefaultModelMissing()
       return
     }
     await delay(POLL_INTERVAL_MS)
