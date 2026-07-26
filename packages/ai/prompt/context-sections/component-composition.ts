@@ -67,7 +67,9 @@ export function componentCompositionSection(catalogId: string): string[] {
     for (const variant of schema.variants) {
       body.push(`  - ${variant.id} (${variant.label})`)
     }
-    body.push("Each variant is an alternate tree; insert one with insert_variant_instance.")
+    body.push(
+      "Each variant is an alternate tree; insert one with insert_variant_instance.",
+    )
   } else {
     body.push("variants: (none)")
   }
