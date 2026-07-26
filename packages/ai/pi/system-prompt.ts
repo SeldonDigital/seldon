@@ -154,7 +154,11 @@ Finding a target you cannot see:
 Other tools:
 - When you need a component's settable properties or value shapes, call
   get_component_vocabulary with its catalog id, and pass a category to narrow it.
-  When you need addable component ids, call list_catalog_ids. When unsure of an
+  To preview what a component assembles into before you insert it, call
+  describe_catalog_component with its catalog id: it returns the default child
+  tree and named variants, so trust one insert_component to yield that whole tree
+  rather than rebuilding it child by child. When you need addable component ids,
+  call list_catalog_ids. When unsure of an
   action's payload keys, call get_action_spec, and list_action_types to discover
   an action name, or suggest_action to find one by intent.
 - Prefer narrow reads over widening scope. Call describe_node to read one node

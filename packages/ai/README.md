@@ -237,6 +237,7 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | `widen_scope` | The next level up the hierarchy |
 | `list_boards`, `find_nodes`, `board_summary` | Boards and nodes across the workspace |
 | `get_component_vocabulary` | Settable properties and value shapes for a component |
+| `describe_catalog_component` | A component's composition: default child tree, named variants, and each child's baked overrides |
 | `list_theme_tokens`, `search_theme_tokens` | Theme token ids and paths |
 | `search_icons` | Enabled icon ids for the symbol property |
 | `search_fonts` | Enabled font family values for the font.family facet |
