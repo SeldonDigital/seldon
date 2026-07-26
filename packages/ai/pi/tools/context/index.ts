@@ -3,6 +3,7 @@ import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
 import { createBoardSummaryTool } from "./board-summary"
+import { createDescribeCatalogComponentTool } from "./describe-catalog-component"
 import { createDescribeNodeTool } from "./describe-node"
 import { createFindNodesTool } from "./find-nodes"
 import { createGetActionSpecTool } from "./get-action-spec"
@@ -46,6 +47,7 @@ export function createContextTools(
     createWidenScopeTool(state, resolved),
     createBoardSummaryTool(state, resolved),
     createGetComponentVocabularyTool(resolved),
+    createDescribeCatalogComponentTool(),
     createListThemeTokensTool(resolved),
     createSearchThemeTokensTool(resolved),
     createSearchIconsTool(resolved),
