@@ -1,9 +1,11 @@
 "use client"
 
+import {
+  bumpRemeasure,
+  setTransforming,
+} from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 import { useEffect, useRef } from "react"
 import { useTransformContext } from "react-zoom-pan-pinch"
-
-import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
 
 /** Trailing delay after a pan/zoom stops before re-measuring node rects. */
 const SETTLE_MS = 60
@@ -28,14 +30,13 @@ export function CanvasTransformRemeasure() {
     let raf = 0
 
     const schedule = () => {
-      useCanvasRemeasureStore.getState().setTransforming(true)
+      setTransforming(true)
       if (timer) clearTimeout(timer)
       timer = setTimeout(() => {
-        const store = useCanvasRemeasureStore.getState()
         // Re-measure while still hidden, then reveal on the next frame so the
         // boxes paint at the settled position rather than the stale one.
-        store.bump()
-        raf = requestAnimationFrame(() => store.setTransforming(false))
+        bumpRemeasure()
+        raf = requestAnimationFrame(() => setTransforming(false))
       }, SETTLE_MS)
     }
 
@@ -45,7 +46,7 @@ export function CanvasTransformRemeasure() {
       if (timer) clearTimeout(timer)
       cancelAnimationFrame(raf)
       unsubscribe()
-      useCanvasRemeasureStore.getState().setTransforming(false)
+      setTransforming(false)
     }
   }, [])
 

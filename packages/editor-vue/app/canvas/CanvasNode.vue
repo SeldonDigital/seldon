@@ -3,28 +3,27 @@ import Icon from "@seldon/components/primitives/Icon.vue"
 import {
   ComponentId,
   Display,
-  MAX_REPEAT_COUNT,
   Workspace,
   EntryNodeId,
   buildContext,
   getCssFromProperties,
   getNodeProperties,
-  resolveNodeRepeat,
 } from "@app/core"
 import {
   NORMAL_STATE,
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
+import {
+  type ChildRender,
+  buildChildRenders,
+} from "@seldon/editor/lib/canvas/node-render/build-child-renders"
+import { resolveRenderAsDiv } from "@seldon/editor/lib/canvas/node-render/resolve-render-as-div"
+import { buildCanvasSelectionAttributes } from "@seldon/editor/lib/canvas/node-render/selection-attributes"
 import { getPropertyHtmlAttributes } from "@seldon/editor/lib/canvas/property-html-attributes"
 import { resolveCanvasTag } from "@seldon/editor/lib/canvas/resolve-canvas-tag"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { storeToRefs } from "pinia"
-import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
-import {
-  findComponentForNode,
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "@seldon/editor/lib/workspace/node-tree"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
 import { computed } from "vue"
 
@@ -40,28 +39,6 @@ const props = withDefaults(
   }>(),
   { activeState: () => NORMAL_STATE },
 )
-
-/** Per-echo override values for a repeated child's text/icon descendants. */
-function buildEchoOverrides(
-  data: Record<string, string[]> | undefined,
-  echoIndex: number,
-): Record<string, string> {
-  const result: Record<string, string> = {}
-  if (!data) return result
-  for (const [descendantId, values] of Object.entries(data)) {
-    const value = values[echoIndex - 1]
-    if (value != null && value !== "") result[descendantId] = value
-  }
-  return result
-}
-
-type ChildRender = {
-  key: string
-  nodeId: string
-  rootPath: string
-  repeatOverrides?: Record<string, string>
-  isRepeatCopy: boolean
-}
 
 const selection = useSelectionStore()
 const { selectedNodeId } = storeToRefs(selection)
@@ -145,69 +122,37 @@ const iconSymbol = computed(() => {
 
 // Children with repeat echoes expanded: a repeated child renders `count` times,
 // echoes (index > 0) carry per-index text/icon overrides and a dashed outline.
-const childRenders = computed<ChildRender[]>(() => {
-  if (!node.value) return []
-  const result: ChildRender[] = []
-  for (const childId of getNodeChildIds(node.value, props.workspace)) {
-    const childNode = props.workspace.nodes[childId]
-    const childRepeat = childNode
-      ? resolveNodeRepeat(childId, props.workspace)
-      : undefined
-    const childRootPath = `${selfPath.value}/${childId}`
-
-    if (!childRepeat || childRepeat.count <= 1) {
-      result.push({
-        key: childId,
-        nodeId: childId,
-        rootPath: childRootPath,
-        repeatOverrides: props.repeatOverrides,
-        isRepeatCopy: false,
-      })
-      continue
-    }
-
-    const total = Math.min(childRepeat.count, MAX_REPEAT_COUNT)
-    for (let echoIndex = 0; echoIndex < total; echoIndex++) {
-      const isEcho = echoIndex > 0
-      result.push({
-        key: isEcho ? `${childId}#echo${echoIndex}` : childId,
-        nodeId: childId,
-        rootPath: childRootPath,
-        repeatOverrides: isEcho
-          ? { ...props.repeatOverrides, ...buildEchoOverrides(childRepeat.data, echoIndex) }
-          : props.repeatOverrides,
-        isRepeatCopy: isEcho,
-      })
-    }
-  }
-  return result
-})
+const childRenders = computed<ChildRender[]>(() =>
+  node.value
+    ? buildChildRenders(
+        node.value,
+        props.workspace,
+        selfPath.value,
+        props.repeatOverrides,
+      )
+    : [],
+)
 
 // A Button nested inside another Button renders as a div on the canvas to avoid
-// invalid nested interactive markup. Mirrors React Node.tsx renderAsDiv.
-const renderAsDiv = computed(() => {
-  if (!node.value || catalogComponentId.value !== ComponentId.BUTTON) {
-    return false
-  }
-  const board = findComponentForNode(node.value, props.workspace)
-  if (!board) return false
-  return collectDescendantNodeIds(board, props.nodeId).some((descendantId) => {
-    const descendant = props.workspace.nodes[descendantId]
-    if (!descendant) return false
-    return (
-      getNodeCatalogComponentId(descendant, props.workspace) ===
-      ComponentId.BUTTON
-    )
-  })
-})
+// invalid nested interactive markup.
+const renderAsDiv = computed(() =>
+  node.value
+    ? resolveRenderAsDiv(
+        node.value,
+        props.workspace,
+        props.nodeId,
+        catalogComponentId.value,
+      )
+    : false,
+)
 
 const htmlAttributes = computed(() => {
   const base: Record<string, string | number | boolean> = {
-    "data-canvas-node-id": props.nodeId,
-    "data-selection-id": props.nodeId,
-    "data-selection-kind": "node",
-    "data-selection-root-id": selfPath.value,
-    "data-component-id": catalogComponentId.value ?? "",
+    ...buildCanvasSelectionAttributes({
+      nodeId: props.nodeId,
+      selfPath: selfPath.value,
+      catalogComponentId: catalogComponentId.value,
+    }),
   }
   if (context.value) {
     Object.assign(base, getPropertyHtmlAttributes(context.value.properties))

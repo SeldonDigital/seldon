@@ -1,17 +1,19 @@
 "use client"
 
 import { OutlineBox } from "@app/overlays"
+import { getHtmlElementByNodeId } from "@seldon/editor/lib/canvas/dom/canvas-elements"
+import { getWireframeMode } from "@seldon/editor/lib/canvas/overlay/geometry"
+import {
+  calculateClippingBox,
+  calculateSelectionOutline,
+} from "@seldon/editor/lib/canvas/overlay/measure"
 import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 
-import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
-import { calculateClippingBox } from "../../helpers/calculate-clipping-box"
-import { calculateSelectionOutline } from "../../helpers/calculate-selection-outline"
-import { getWireframeMode } from "../../helpers/canvas-outline-modes"
-import { useNodeRect } from "../../hooks/use-node-rect"
+import { useNodeRect } from "../../hooks/use-node-rects"
 
-export type SelectTrackingProps = {
+export type NodeWireframeProps = {
   nodeId: string
   isSelected?: boolean
 }
@@ -21,10 +23,10 @@ export type SelectTrackingProps = {
  * are drawn by the single canvas overlays, so this is wireframe-only and the
  * selected node is skipped (its selection outline covers it).
  */
-export function SelectTracking({
+export function NodeWireframe({
   nodeId,
   isSelected = false,
-}: SelectTrackingProps) {
+}: NodeWireframeProps) {
   const trackedRect = useNodeRect(nodeId)
   const [directRect, setDirectRect] = useState<{
     top: number

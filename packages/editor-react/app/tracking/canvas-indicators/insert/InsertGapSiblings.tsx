@@ -6,11 +6,11 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
 import type { CSSProperties } from "react"
 
-import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
+import { getHtmlElementByNodeId } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import {
   pickOutlineColorsFromSurface,
   resolveOutlineSurfaceForNode,
-} from "../../helpers/resolve-outline-surface"
+} from "@seldon/editor/lib/canvas/overlay/outline-colors"
 
 /** Seldon accent token used for the edge touching the insertion gap. */
 const ACCENT_COLOR = "var(--sdn-swatch-accent)"

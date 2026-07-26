@@ -5,7 +5,6 @@ import { usePanZoom } from "@app/canvas/use-pan-zoom"
 import { useCanvasTracking } from "@app/canvas/use-canvas-tracking"
 import { useBoardStateStore } from "@app/canvas/board-state-store"
 import { useActiveBoard } from "@app/canvas/use-active-board"
-import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePreviewModeStore } from "@app/editor/preview-mode-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { getBoardVariantRootIds } from "@seldon/editor/lib/workspace/workspace-accessors"
@@ -15,21 +14,18 @@ import type { FontFamilyValue } from "@seldon/core/properties/values/typography/
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
 import CanvasNode from "./CanvasNode.vue"
-import HoverOverlay from "./HoverOverlay.vue"
-import SelectionOverlay from "./SelectionOverlay.vue"
+import CanvasTracking from "./CanvasTracking.vue"
 import ZoomControls from "./ZoomControls.vue"
 
 const props = defineProps<{ workspace: Workspace }>()
 
 const boardState = useBoardStateStore()
-const config = useEditorConfigStore()
 const previewMode = usePreviewModeStore()
 const selection = useSelectionStore()
 const { activeBoard, activeBoardKey } = useActiveBoard()
 const { onCanvasClick, onCanvasPointerMove, onCanvasPointerLeave } =
   useCanvasTracking()
 
-const { showSelection } = storeToRefs(config)
 const { isInPreviewMode } = storeToRefs(previewMode)
 const {
   selectedBoardId,
@@ -37,12 +33,6 @@ const {
   selectedResourceEntry,
   workspaceSelected,
 } = storeToRefs(selection)
-
-// Selection and hover chrome hide when the user turns them off (`h`) or enters
-// device preview (`p`), so the canvas shows the design without editor overlays.
-const showOverlays = computed(
-  () => showSelection.value && !isInPreviewMode.value,
-)
 
 const scrollEl = ref<HTMLElement | null>(null)
 const {
@@ -60,6 +50,20 @@ const contentStyle = computed(() => ({
   transform: `translate(${translateX.value}px, ${translateY.value}px) scale(${scale.value})`,
   transformOrigin: "0 0",
 }))
+
+// Bridges pan/zoom transform changes to the shared overlay tracker so the
+// selection, hover, and wireframe outlines stay glued while the canvas moves.
+// Phase 6 replaces this with the shared pan/zoom engine's own subscription.
+const transformListeners = new Set<() => void>()
+watch([scale, translateX, translateY], () => {
+  for (const listener of transformListeners) listener()
+})
+function subscribeTransform(listener: () => void): () => void {
+  transformListeners.add(listener)
+  return () => {
+    transformListeners.delete(listener)
+  }
+}
 
 // The board root carries the theme's primary font so canvas text that inherits
 // its family follows the active theme, matching React's ComponentBoard.
@@ -159,6 +163,7 @@ watch(
 
 <template>
   <div
+    id="canvas"
     ref="scrollEl"
     class="canvas-viewport"
     :class="{ 'is-panning': isPanning }"
@@ -197,8 +202,10 @@ watch(
         </div>
       </section>
     </div>
-    <SelectionOverlay v-if="showOverlays" :container="scrollEl" />
-    <HoverOverlay v-if="showOverlays" :container="scrollEl" />
+    <CanvasTracking
+      v-if="!isInPreviewMode"
+      :subscribe-transform="subscribeTransform"
+    />
     <ZoomControls />
   </div>
 </template>

@@ -17,7 +17,7 @@ import type { Workspace } from "@seldon/core/workspace/types"
 
 import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
-import { canvasSelectionId } from "../helpers/canvas-selection-target"
+import { canvasSelectionId } from "@seldon/editor/lib/canvas/overlay/selection-target"
 import { useFontCollectionBoardSpecimens } from "../hooks/use-font-collection-board-specimens"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper"

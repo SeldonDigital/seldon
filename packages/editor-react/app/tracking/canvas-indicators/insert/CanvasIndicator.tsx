@@ -13,8 +13,10 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 
-import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
-import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
+import {
+  getHtmlElementByBoardId,
+  getHtmlElementByNodeId,
+} from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 type CanvasIndicatorProps = {

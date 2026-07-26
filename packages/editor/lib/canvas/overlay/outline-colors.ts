@@ -1,6 +1,3 @@
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-
 import { isDarkBackgroundColor } from "@seldon/core/helpers/color/contrast"
 import { getEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { resolveColor } from "@seldon/core/helpers/resolution/resolve-color"
@@ -16,6 +13,9 @@ import type {
   EntryNodeId,
   Workspace,
 } from "@seldon/core/workspace/types"
+
+import { COLORS } from "../../helpers/colors"
+import { getComponentKey } from "../../workspace/workspace-accessors"
 
 export interface OutlineColors {
   hover: string

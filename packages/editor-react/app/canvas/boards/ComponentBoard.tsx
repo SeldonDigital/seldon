@@ -19,7 +19,7 @@ import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/component
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
 import { CssPortal } from "../CssPortal"
-import { CanvasNode } from "../Node"
+import { CanvasNode } from "../CanvasNode"
 import { StyleTag } from "../StyleTag.bespoke"
 import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"

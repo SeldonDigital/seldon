@@ -10,7 +10,7 @@ import { Board } from "@seldon/core"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 
-import { CanvasNode } from "../Node"
+import { CanvasNode } from "../CanvasNode"
 import { PlaceholderBox } from "./PlaceholderBox"
 
 export type SandboxCanvasProps = {

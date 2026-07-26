@@ -2,7 +2,7 @@
  * Reads authored CSS for the selected canvas copy in the CSS section of the
  * properties sidebar.
  */
-import { getScopedSelectionElement } from "@app/canvas/helpers/canvas-selection-target"
+import { getScopedSelectionElement } from "@seldon/editor/lib/canvas/overlay/selection-target"
 import { useMemo } from "react"
 
 import { Board, Instance, Variant } from "@seldon/core"

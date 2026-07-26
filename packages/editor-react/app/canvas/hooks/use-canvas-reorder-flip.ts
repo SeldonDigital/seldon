@@ -3,8 +3,7 @@
 import { RefObject, useLayoutEffect, useRef } from "react"
 
 import { Workspace } from "@seldon/core"
-
-import { useCanvasRemeasureStore } from "./use-canvas-remeasure-store"
+import { bumpRemeasure } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 
 const FLIP_DURATION_MS = 200
 const FLIP_EASING = "cubic-bezier(0.2, 0, 0, 1)"
@@ -58,7 +57,7 @@ export function useCanvasReorderFlip(
     // settle fires when previews arrive in quick succession.
     if (settleTimer.current) clearTimeout(settleTimer.current)
     settleTimer.current = setTimeout(() => {
-      useCanvasRemeasureStore.getState().bump()
+      bumpRemeasure()
     }, FLIP_DURATION_MS + SETTLE_BUFFER_MS)
 
     const prefersReducedMotion =

@@ -39,7 +39,7 @@ import {
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
-import { getNodeIdForEventTarget } from "../helpers/get-node-id-for-event-target"
+import { getNodeIdForEventTarget } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 
 export function useCanvas() {
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =

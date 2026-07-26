@@ -8,7 +8,7 @@ import { useControls, useTransformContext } from "react-zoom-pan-pinch"
 import {
   getCanvasSelectionElements,
   getUnionRect,
-} from "./helpers/canvas-selection-target"
+} from "@seldon/editor/lib/canvas/overlay/selection-target"
 
 /** Animation duration for the pan-to-selection move (ms). */
 const SCROLL_ANIMATION_MS = 300
