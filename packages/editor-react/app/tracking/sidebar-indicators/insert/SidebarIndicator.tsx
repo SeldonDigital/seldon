@@ -1,5 +1,4 @@
 import { DropIndicator } from "@app/overlays"
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { Placement } from "@seldon/editor/lib/types"
 import { FC } from "react"
 
@@ -21,5 +20,7 @@ export const SidebarIndicator: FC<SidebarIndicatorProps> = ({ placement }) => {
     placement === "inside" ? indentation + 1 : indentation
   const position = calculateIndicatorPosition(placement, effectiveIndentation)
 
-  return <DropIndicator color={COLORS.accent[500]} position={position} />
+  return (
+    <DropIndicator color="var(--sdn-swatch-accent)" position={position} />
+  )
 }

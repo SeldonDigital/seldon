@@ -1,10 +1,9 @@
-import { COLORS } from "../../helpers/colors"
-
 /** Default hover border color for canvas selection outlines. */
-export const DEFAULT_HOVER_OUTLINE_COLOR = COLORS.charcoal[400]
+export const DEFAULT_HOVER_OUTLINE_COLOR =
+  "color-mix(in srgb, var(--sdn-swatch-offBlack) 55%, var(--sdn-swatch-offWhite))"
 
 /** Default selection border color for canvas selection outlines. */
-export const DEFAULT_SELECTION_OUTLINE_COLOR = COLORS.charcoal[700]
+export const DEFAULT_SELECTION_OUTLINE_COLOR = "var(--sdn-swatch-offBlack)"
 
 export interface OutlineStyle {
   borderStyle: "dashed"

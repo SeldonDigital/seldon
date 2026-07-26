@@ -7,7 +7,6 @@ import {
   calculateClippingBox,
   calculateSelectionOutline,
 } from "@seldon/editor/lib/canvas/overlay/measure"
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 
@@ -98,7 +97,7 @@ export function NodeWireframe({
     pointerEvents: "none",
     boxSizing: box.boxSizing,
     borderStyle: "dashed",
-    borderColor: COLORS.primary[500],
+    borderColor: "var(--sdn-swatch-primary)",
     borderWidth: box.borderWidth,
     zIndex: 1,
   }

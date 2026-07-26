@@ -1,4 +1,3 @@
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { CSSProperties } from "react"
 
 import { IndicatorDot } from "./IndicatorDot"
@@ -43,7 +42,7 @@ export function DropIndicator({
     borderWidth: "1px",
     borderStyle: "solid",
     borderColor: color,
-    backgroundColor: COLORS.charcoal[500],
+    backgroundColor: "var(--sdn-swatch-offBlack)",
   }
 
   return (

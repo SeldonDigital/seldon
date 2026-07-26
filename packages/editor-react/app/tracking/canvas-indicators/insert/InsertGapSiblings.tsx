@@ -7,10 +7,7 @@ import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orient
 import type { CSSProperties } from "react"
 
 import { getHtmlElementByNodeId } from "@seldon/editor/lib/canvas/dom/canvas-elements"
-import {
-  pickOutlineColorsFromSurface,
-  resolveOutlineSurfaceForNode,
-} from "@seldon/editor/lib/canvas/overlay/outline-colors"
+import { resolveOutlineColorsForNode } from "@seldon/editor/lib/canvas/overlay/outline-colors"
 
 /** Seldon accent token used for the edge touching the insertion gap. */
 const ACCENT_COLOR = "var(--sdn-swatch-accent)"
@@ -58,18 +55,14 @@ export function InsertGapSiblings() {
   const orientation = getNodeOrientation(objectId, workspace)
   const canvasRect = canvasElement.getBoundingClientRect()
 
-  const fallbackContrast = pickOutlineColorsFromSurface(
-    resolveOutlineSurfaceForNode(objectId, workspace),
-  ).hover
+  const fallbackContrast = resolveOutlineColorsForNode(objectId).hover
 
   const contrastFor = (element: HTMLElement): string => {
     const id =
       element.getAttribute("data-canvas-node-id") ??
       element.getAttribute("data-node-id")
     if (!id) return fallbackContrast
-    return pickOutlineColorsFromSurface(
-      resolveOutlineSurfaceForNode(id, workspace),
-    ).hover
+    return resolveOutlineColorsForNode(id).hover
   }
 
   const toBox = (element: HTMLElement, accentSide: AccentSide): SiblingBox => {

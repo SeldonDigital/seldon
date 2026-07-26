@@ -4,7 +4,6 @@ import {
   PlacementZoneSurface,
 } from "@app/overlays"
 import { Frame } from "@seldon/components/frames/Frame"
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import type { LayerPlacement } from "@seldon/editor/lib/properties/layer-reorder"
 import { CSSProperties, ReactNode } from "react"
 
@@ -170,5 +169,7 @@ function LayerInsertIndicator({ placement }: { placement: LayerPlacement }) {
     ...(placement === "before" ? { top: -0.5 } : { bottom: -0.5 }),
   }
 
-  return <DropIndicator color={COLORS.primary[600]} position={position} />
+  return (
+    <DropIndicator color="var(--sdn-swatch-primary)" position={position} />
+  )
 }

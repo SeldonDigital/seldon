@@ -1,20 +1,11 @@
-import { isDarkBackgroundColor } from "@seldon/core/helpers/color/contrast"
-import { getEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
-import { resolveColor } from "@seldon/core/helpers/resolution/resolve-color"
-import { ValueType } from "@seldon/core/properties/constants"
-import type { Properties } from "@seldon/core/properties/types/properties"
-import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
-import type { ColorValue } from "@seldon/core/properties/values/appearance/color"
-import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
-import { nodeRelationshipService } from "@seldon/core/workspace/services"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import type {
-  Board,
-  EntryNodeId,
-  Workspace,
-} from "@seldon/core/workspace/types"
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { Board } from "@seldon/core/workspace/types"
 
-import { COLORS } from "../../helpers/colors"
+import {
+  getCanvasElement,
+  getHtmlElementByBoardId,
+  getHtmlElementByNodeId,
+} from "../dom/canvas-elements"
 import { getComponentKey } from "../../workspace/workspace-accessors"
 
 export interface OutlineColors {
@@ -22,148 +13,88 @@ export interface OutlineColors {
   selection: string
 }
 
-const FALLBACK_SURFACE: ColorValue = {
-  type: ValueType.EXACT,
-  value: "#FFFFFF",
-}
-
+/** Outline colors for a light surface: dark selection, muted dark hover. */
 export const DEFAULT_OUTLINE_COLORS: OutlineColors = {
-  hover: COLORS.charcoal[400],
-  selection: COLORS.charcoal[700],
+  hover:
+    "color-mix(in srgb, var(--sdn-swatch-offBlack) 55%, var(--sdn-swatch-offWhite))",
+  selection: "var(--sdn-swatch-offBlack)",
 }
 
-function readBackgroundLayerColor(
-  properties: Properties,
-): ColorValue | undefined {
-  const background = properties.background
-  if (!Array.isArray(background) || background.length === 0) {
-    return undefined
-  }
-  const layer = background[0] as BackgroundLayer | undefined
-  const color = layer?.color
-  // A COMPUTED background (Match Color) mirrors an ancestor surface at compute
-  // time. Skip it here so the surface walk falls through to the parent chain,
-  // which is the surface it would resolve to anyway. resolveColor throws on
-  // COMPUTED because effective properties are not run through compute.
-  if (
-    !color ||
-    color.type === ValueType.EMPTY ||
-    color.type === ValueType.COMPUTED
-  ) {
-    return undefined
-  }
-  return color as ColorValue
+/** Outline colors for a dark surface: light selection, muted light hover. */
+const DARK_SURFACE_OUTLINE_COLORS: OutlineColors = {
+  hover:
+    "color-mix(in srgb, var(--sdn-swatch-offWhite) 70%, var(--sdn-swatch-offBlack))",
+  selection: "var(--sdn-swatch-offWhite)",
 }
 
-function isOpaqueResolved(color: ReturnType<typeof resolveColor>): boolean {
-  if (color.type === ValueType.EMPTY) {
-    return false
-  }
-  if (color.type === ValueType.OPTION && color.value === "transparent") {
-    return false
-  }
-  return true
-}
-
-function resolveSurfaceForObjectId(
-  objectId: string,
-  workspace: Workspace,
-): ColorValue | null {
-  const node = workspace.nodes[objectId as EntryNodeId]
-  const board = workspace.boards[objectId]
-  const subject = node ?? board
-  if (!subject) {
-    return null
-  }
-
-  const theme = workspaceThemeService.getObjectTheme(subject, workspace)
-  const properties = getEffectiveProperties(objectId, workspace)
-  const authoredColor = readBackgroundLayerColor(properties)
-  if (!authoredColor) {
-    return null
-  }
-
-  const resolved = resolveColor({ color: authoredColor, theme })
-  return isOpaqueResolved(resolved) ? (resolved as ColorValue) : null
-}
-
-function resolveSurfaceForBoard(
-  board: Board,
-  workspace: Workspace,
-): ColorValue {
-  const boardKey = getComponentKey(board)
-  return resolveSurfaceForObjectId(boardKey, workspace) ?? FALLBACK_SURFACE
+interface Rgb {
+  r: number
+  g: number
+  b: number
 }
 
 /**
- * Resolves an opaque surface color for a node target. Checks the parent first
- * because selection outlines sit outside the node box, then the node, then the
- * owning board root.
+ * Parses a computed `background-color` string. Returns null for a transparent
+ * or fully see-through color so the surface walk keeps climbing to the painted
+ * ancestor.
  */
-export function resolveOutlineSurfaceForNode(
-  nodeId: string,
-  workspace: Workspace,
-): ColorValue {
-  const node = workspace.nodes[nodeId as EntryNodeId]
-  if (!node) {
-    return FALLBACK_SURFACE
+function parseOpaqueColor(value: string): Rgb | null {
+  const match = value.match(
+    /rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+))?/i,
+  )
+  if (!match) {
+    return null
   }
-
-  const candidateIds: string[] = []
-  const parent = findParentNode(nodeId as EntryNodeId, workspace)
-  if (parent) {
-    candidateIds.push(parent.id)
+  const alpha = match[4] === undefined ? 1 : Number(match[4])
+  if (alpha === 0) {
+    return null
   }
-  candidateIds.push(nodeId)
-
-  for (const id of candidateIds) {
-    const surface = resolveSurfaceForObjectId(id, workspace)
-    if (surface) {
-      return surface
-    }
-  }
-
-  let current = parent
-  while (current) {
-    const parentSurface = resolveSurfaceForObjectId(current.id, workspace)
-    if (parentSurface) {
-      return parentSurface
-    }
-    current = findParentNode(current.id, workspace)
-  }
-
-  const board = nodeRelationshipService.findBoardForNode(node, workspace)
-  if (board) {
-    return resolveSurfaceForBoard(board, workspace)
-  }
-
-  return FALLBACK_SURFACE
+  return { r: Number(match[1]), g: Number(match[2]), b: Number(match[3]) }
 }
 
 /**
- * Resolves the active board root surface for non-node canvas selections.
+ * Walks up from the element to the canvas root and returns the first opaque
+ * painted background color. This reads what is actually rendered, so resolved
+ * CSS variables and theme colors are already applied.
  */
-export function resolveOutlineSurfaceForBoard(
-  board: Board,
-  workspace: Workspace,
-): ColorValue {
-  return resolveSurfaceForBoard(board, workspace)
+function resolveSurfaceColor(start: HTMLElement | null): Rgb | null {
+  const canvas = getCanvasElement()
+  let current = start
+  while (current && current !== canvas) {
+    const color = parseOpaqueColor(getComputedStyle(current).backgroundColor)
+    if (color) {
+      return color
+    }
+    current = current.parentElement
+  }
+  return null
 }
 
-/** Maps a resolved surface to hover and selection outline border colors. */
-export function pickOutlineColorsFromSurface(
-  surface: ColorValue,
-): OutlineColors {
-  try {
-    const dark = isDarkBackgroundColor(surface)
-    if (dark) {
-      return {
-        hover: COLORS.pearl[400],
-        selection: COLORS.pearl[600],
-      }
-    }
-    return DEFAULT_OUTLINE_COLORS
-  } catch {
-    return DEFAULT_OUTLINE_COLORS
+/** Perceived brightness (YIQ). Below the midpoint reads as a dark surface. */
+function isDarkSurface(color: Rgb | null): boolean {
+  if (!color) {
+    return false
   }
+  const brightness = (color.r * 299 + color.g * 587 + color.b * 114) / 1000
+  return brightness < 128
+}
+
+function resolveOutlineColors(start: HTMLElement | null): OutlineColors {
+  return isDarkSurface(resolveSurfaceColor(start))
+    ? DARK_SURFACE_OUTLINE_COLORS
+    : DEFAULT_OUTLINE_COLORS
+}
+
+/**
+ * Resolves the hover and selection outline colors for a node from the painted
+ * surface behind its rendered element.
+ */
+export function resolveOutlineColorsForNode(nodeId: string): OutlineColors {
+  return resolveOutlineColors(getHtmlElementByNodeId(nodeId))
+}
+
+/** Resolves outline colors from the painted surface of the board root element. */
+export function resolveOutlineColorsForBoard(board: Board): OutlineColors {
+  const element = getHtmlElementByBoardId(getComponentKey(board) as ComponentId)
+  return resolveOutlineColors(element)
 }

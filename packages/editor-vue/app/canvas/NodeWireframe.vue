@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { getWireframeMode } from "@seldon/editor/lib/canvas/overlay/geometry"
 import { calculateClippingBox } from "@seldon/editor/lib/canvas/overlay/measure"
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import type { CSSProperties } from "vue"
 import { computed } from "vue"
 
@@ -28,7 +27,7 @@ const style = computed<CSSProperties | null>(() => {
     pointerEvents: "none",
     boxSizing: box.boxSizing,
     borderStyle: "dashed",
-    borderColor: COLORS.primary[500],
+    borderColor: "var(--sdn-swatch-primary)",
     borderWidth: `${box.borderWidth}px`,
     top: `${box.top}px`,
     left: `${box.left}px`,

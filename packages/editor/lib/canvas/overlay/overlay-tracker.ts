@@ -13,9 +13,8 @@ import { measureNode, measureSelection, rectsEqual } from "./measure"
 import {
   DEFAULT_OUTLINE_COLORS,
   type OutlineColors,
-  pickOutlineColorsFromSurface,
-  resolveOutlineSurfaceForBoard,
-  resolveOutlineSurfaceForNode,
+  resolveOutlineColorsForBoard,
+  resolveOutlineColorsForNode,
 } from "./outline-colors"
 import {
   overlayStore,
@@ -160,13 +159,12 @@ export function createOverlayTracker(
         setHoverOutlineColors(null)
       }
     } else {
-      const surface =
+      const colors =
         hovered.kind === "node"
-          ? resolveOutlineSurfaceForNode(hovered.id, workspace)
+          ? resolveOutlineColorsForNode(hovered.id)
           : activeBoard
-            ? resolveOutlineSurfaceForBoard(activeBoard, workspace)
+            ? resolveOutlineColorsForBoard(activeBoard)
             : null
-      const colors = surface ? pickOutlineColorsFromSurface(surface) : null
       const hoverColors =
         activeTool === "component" && hovered.kind === "node"
           ? resolveComponentHoverColors(hovered.id, workspace, colors)
@@ -179,12 +177,11 @@ export function createOverlayTracker(
         setSelectionOutlineColors(null)
       }
     } else {
-      const surface = selected.nodeId
-        ? resolveOutlineSurfaceForNode(selected.nodeId, workspace)
+      const colors = selected.nodeId
+        ? resolveOutlineColorsForNode(selected.nodeId)
         : activeBoard
-          ? resolveOutlineSurfaceForBoard(activeBoard, workspace)
+          ? resolveOutlineColorsForBoard(activeBoard)
           : null
-      const colors = surface ? pickOutlineColorsFromSurface(surface) : null
       setSelectionOutlineColors(colors)
     }
   }

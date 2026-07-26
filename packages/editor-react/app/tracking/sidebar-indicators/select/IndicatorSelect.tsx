@@ -1,7 +1,8 @@
 import { DropIndicator, OutlineBox } from "@app/overlays"
-import { COLORS } from "@seldon/editor/lib/helpers/colors"
 import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties, FC } from "react"
+
+const SELECT_INDICATOR_COLOR = "var(--sdn-swatch-primary)"
 
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
@@ -15,7 +16,7 @@ const insideOutlineStyle: CSSProperties = {
   inset: 0,
   zIndex: 20,
   pointerEvents: "none",
-  border: `1px solid ${COLORS.primary[600]}`,
+  border: `1px solid ${SELECT_INDICATOR_COLOR}`,
   borderRadius: "4px",
   boxSizing: "border-box",
 }
@@ -34,5 +35,5 @@ export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
 
   const position = calculateIndicatorPosition(placement, indentation)
 
-  return <DropIndicator color={COLORS.primary[600]} position={position} />
+  return <DropIndicator color={SELECT_INDICATOR_COLOR} position={position} />
 }
