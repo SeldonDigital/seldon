@@ -1,11 +1,10 @@
-import { nodeRetrievalService } from "@seldon/core/workspace/services"
-import type {
-  Board,
-  InstanceId,
-  VariantId,
-  Workspace,
-} from "@seldon/core/workspace/types"
-
+import {
+  nodeRetrievalService,
+  type Board,
+  type InstanceId,
+  type VariantId,
+  type Workspace,
+} from "@seldon/core"
 import { remeasureStore } from "../remeasure/remeasure-store"
 import { canNodeAcceptChildren } from "../../workspace/can-node-accept-children"
 import type { SelectionKind } from "../../workspace/selection-kind"
