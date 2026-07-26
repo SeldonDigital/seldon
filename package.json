@@ -36,9 +36,9 @@
   },
   "homepage": "https://github.com/SeldonDigital/seldon#readme",
   "workspaces": [
-    "packages/editor",
-    "packages/editor-react",
-    "packages/editor-vue",
+    "packages/editor/shared",
+    "packages/editor/apps/react",
+    "packages/editor/apps/vue",
     "packages/core",
     "packages/factory",
     "packages/ai"

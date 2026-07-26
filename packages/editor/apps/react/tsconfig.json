@@ -15,12 +15,12 @@
     "incremental": true,
     "paths": {
       "@app/*": ["./app/*"],
-      "@seldon/editor/lib/*": ["../editor/lib/*"],
+      "@seldon/editor/lib/*": ["../../shared/lib/*"],
       "@seldon/components/*": ["./seldon/*"],
-      "@seldon/core/*": ["../../packages/core/*"],
-      "@seldon/factory/*": ["../../packages/factory/*"],
-      "@seldon/ai": ["../../packages/ai/index.ts"],
-      "@seldon/ai/*": ["../../packages/ai/*"]
+      "@seldon/core/*": ["../../../core/*"],
+      "@seldon/factory/*": ["../../../factory/*"],
+      "@seldon/ai": ["../../../ai/index.ts"],
+      "@seldon/ai/*": ["../../../ai/*"]
     },
     "target": "ES2017"
   },

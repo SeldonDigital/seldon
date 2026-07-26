@@ -17,7 +17,7 @@ const config = {
   importOrderSideEffects: false,
   overrides: [
     {
-      files: ["packages/editor/**/*.{ts,tsx,js,mjs}"],
+      files: ["packages/editor/shared/**/*.{ts,tsx,js,mjs}"],
       options: {
         importOrderSeparation: false,
         importOrder: [

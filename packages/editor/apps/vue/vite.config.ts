@@ -4,17 +4,17 @@ import { fileURLToPath } from "node:url"
 import vue from "@vitejs/plugin-vue"
 import { defineConfig } from "vite"
 
-import { agentApiPlugin } from "../editor/vite/agent-api-plugin"
-import { exportApiPlugin } from "../editor/vite/export-api-plugin"
-import { importWebApiPlugin } from "../editor/vite/import-web-api-plugin"
-import { workspaceApiPlugin } from "../editor/vite/workspace-api-plugin"
+import { agentApiPlugin } from "../../shared/vite/agent-api-plugin"
+import { exportApiPlugin } from "../../shared/vite/export-api-plugin"
+import { importWebApiPlugin } from "../../shared/vite/import-web-api-plugin"
+import { workspaceApiPlugin } from "../../shared/vite/workspace-api-plugin"
 
 const editorRoot = path.dirname(fileURLToPath(import.meta.url))
-const repoRoot = path.join(editorRoot, "../..")
-const sharedRoot = path.join(editorRoot, "../editor")
-const corePackageRoot = path.join(editorRoot, "../core")
-const factoryPackageRoot = path.join(editorRoot, "../factory")
-const aiPackageEntry = path.join(editorRoot, "../ai/index.ts")
+const repoRoot = path.join(editorRoot, "../../../..")
+const sharedRoot = path.join(editorRoot, "../../shared")
+const corePackageRoot = path.join(editorRoot, "../../../core")
+const factoryPackageRoot = path.join(editorRoot, "../../../factory")
+const aiPackageEntry = path.join(editorRoot, "../../../ai/index.ts")
 
 // The Vue editor runs on a distinct port so it can run alongside the React
 // editor. Both share workspace state through the filesystem workspace store.

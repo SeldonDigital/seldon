@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
-    "@seldon/core": "file:../core",
-    "@seldon/factory": "file:../factory",
+    "@seldon/core": "file:../../../core",
+    "@seldon/factory": "file:../../../factory",
     "@vueuse/core": "^11.3.0",
     "change-case": "^5.4.4",
     "hotkeys-js": "^3.13.7",

@@ -15,10 +15,13 @@ import { build } from "esbuild"
  */
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const editorRoot = path.dirname(scriptDir)
-const repoRoot = path.join(editorRoot, "../..")
-const coreRoot = path.join(editorRoot, "../core")
-const factoryRoot = path.join(editorRoot, "../factory")
-const handlerEntry = path.join(editorRoot, "../editor/vite/export-handler.ts")
+const repoRoot = path.join(editorRoot, "../../../..")
+const coreRoot = path.join(editorRoot, "../../../core")
+const factoryRoot = path.join(editorRoot, "../../../factory")
+const handlerEntry = path.join(
+  editorRoot,
+  "../../shared/vite/export-handler.ts",
+)
 const workspaceFile = path.join(repoRoot, "seldon-editor.json")
 
 async function loadRunExport() {

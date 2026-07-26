@@ -8,8 +8,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@seldon/core": "file:../core",
-    "@seldon/factory": "file:../factory"
+    "@seldon/core": "file:../../core",
+    "@seldon/factory": "file:../../factory"
   },
   "volta": {
     "node": "22.18.0"

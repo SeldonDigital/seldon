@@ -16,12 +16,12 @@
     "types": ["vite/client"],
     "paths": {
       "@app/*": ["./app/*"],
-      "@seldon/editor/*": ["../../packages/editor/*"],
+      "@seldon/editor/*": ["../../shared/*"],
       "@seldon/components/*": ["./seldon/*"],
-      "@seldon/core/*": ["../../packages/core/*"],
-      "@seldon/factory/*": ["../../packages/factory/*"],
-      "@seldon/ai": ["../../packages/ai/index.ts"],
-      "@seldon/ai/*": ["../../packages/ai/*"]
+      "@seldon/core/*": ["../../../core/*"],
+      "@seldon/factory/*": ["../../../factory/*"],
+      "@seldon/ai": ["../../../ai/index.ts"],
+      "@seldon/ai/*": ["../../../ai/*"]
     },
     "target": "ES2017"
   },

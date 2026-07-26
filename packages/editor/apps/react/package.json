@@ -12,13 +12,13 @@
     "build:release": "npm run notices:thirdparty && npm run build",
     "start": "vite preview",
     "lint": "eslint .",
-    "format": "node ../../scripts/format.mjs",
+    "format": "node ../../../../scripts/format.mjs",
     "quality": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
-    "@seldon/core": "file:../core",
-    "@seldon/factory": "file:../factory",
+    "@seldon/core": "file:../../../core",
+    "@seldon/factory": "file:../../../factory",
     "allotment": "^1.20.4",
     "change-case": "^5.4.4",
     "framer-motion": "^12.23.12",
