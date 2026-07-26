@@ -1,17 +1,17 @@
 "use client"
 
-import { usePreview } from "@app/editor/hooks/use-preview"
 import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
 import { formatResourceItemKey } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
+import { canvasSelectionId } from "@seldon/editor/lib/canvas/overlay/selection-target"
 import { getIconSheetPreviewBase } from "@seldon/editor/lib/icon-sets/build-icon-sheet-preview"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { useMemo } from "react"
 
-import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
+import { Board, Properties, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import type { IconId } from "@seldon/core/icon-sets"
 import { iconLabels } from "@seldon/core/icon-sets"
@@ -20,7 +20,6 @@ import type { Workspace } from "@seldon/core/workspace/types"
 
 import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
-import { canvasSelectionId } from "@seldon/editor/lib/canvas/overlay/selection-target"
 import { useIconSetBoardIcons } from "../hooks/use-icon-set-board-icons"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper"
@@ -40,37 +39,15 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
   const boardKey = getComponentKey(board)
   const className = `board-${boardKey}`
   const properties = getNodeProperties(board, workspace)
-  const { device, isInPreviewMode } = usePreview()
 
   const boardTheme = useNodeTheme(board)
   const icons = useIconSetBoardIcons(board)
 
-  const computedProperties: Properties = isInPreviewMode
-    ? {
-        ...properties,
-        board: {
-          ...(properties.board ?? {}),
-          width: {
-            type: ValueType.EXACT,
-            value: { unit: Unit.PX, value: device.width },
-          },
-          height: {
-            type: ValueType.EXACT,
-            value: { unit: Unit.PX, value: device.height },
-          },
-        },
-        scroll: {
-          type: ValueType.OPTION,
-          value: Scroll.VERTICAL,
-        },
-      }
-    : properties
-
   const boardCss = getCssFromProperties(
-    computedProperties,
+    properties,
     {
       theme: boardTheme ?? undefined,
-      properties: computedProperties,
+      properties,
       parentContext: null,
     },
     className,

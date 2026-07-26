@@ -71,6 +71,16 @@ interface EditorConfigState {
   showPlayground: boolean
   setShowPlayground: (enabled: boolean) => void
 
+  // Isolation mode: freezes the sidebar and canvas to one board plus the
+  // components it uses. Sticky until disabled; deselection does not exit it.
+  // `isolatedVariantRootId` is the variant captured on enable, so the anchored
+  // board keeps showing that one variant regardless of later selection.
+  isolatedView: boolean
+  isolatedBoardKey: string | null
+  isolatedVariantRootId: string | null
+  enableIsolation: (boardKey: string, variantRootId: string | null) => void
+  disableIsolation: () => void
+
   // Objects sidebar: show export component (code) names instead of labels
   showCodeNames: boolean
   setShowCodeNames: (enabled: boolean) => void
@@ -157,6 +167,26 @@ const useStore = create<EditorConfigState>()(
       setShowPlayground: (enabled) =>
         set((state) => ({ ...state, showPlayground: enabled })),
 
+      // Isolation mode (off by default; the anchored board and its selected
+      // variant are captured on enable)
+      isolatedView: false,
+      isolatedBoardKey: null,
+      isolatedVariantRootId: null,
+      enableIsolation: (boardKey, variantRootId) =>
+        set((state) => ({
+          ...state,
+          isolatedView: true,
+          isolatedBoardKey: boardKey,
+          isolatedVariantRootId: variantRootId,
+        })),
+      disableIsolation: () =>
+        set((state) => ({
+          ...state,
+          isolatedView: false,
+          isolatedBoardKey: null,
+          isolatedVariantRootId: null,
+        })),
+
       // Objects sidebar code names (off by default)
       showCodeNames: false,
       setShowCodeNames: (enabled) =>
@@ -198,6 +228,9 @@ const useStore = create<EditorConfigState>()(
         showPlayground: state.showPlayground,
         showCodeNames: state.showCodeNames,
         objectsView: state.objectsView,
+        isolatedView: state.isolatedView,
+        isolatedBoardKey: state.isolatedBoardKey,
+        isolatedVariantRootId: state.isolatedVariantRootId,
         useRefactoredSidebars: state.useRefactoredSidebars,
         chromeTheme: state.chromeTheme,
         interfaceMode: state.interfaceMode,
@@ -234,6 +267,11 @@ export function useEditorConfig() {
     setShowCodeNames,
     objectsView,
     setObjectsView,
+    isolatedView,
+    isolatedBoardKey,
+    isolatedVariantRootId,
+    enableIsolation,
+    disableIsolation,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
     chromeTheme,
@@ -268,6 +306,11 @@ export function useEditorConfig() {
       setShowCodeNames: state.setShowCodeNames,
       objectsView: state.objectsView,
       setObjectsView: state.setObjectsView,
+      isolatedView: state.isolatedView,
+      isolatedBoardKey: state.isolatedBoardKey,
+      isolatedVariantRootId: state.isolatedVariantRootId,
+      enableIsolation: state.enableIsolation,
+      disableIsolation: state.disableIsolation,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
       chromeTheme: state.chromeTheme,
@@ -382,6 +425,13 @@ export function useEditorConfig() {
     // Objects sidebar content view
     objectsView,
     setObjectsView,
+
+    // Isolation mode
+    isolatedView,
+    isolatedBoardKey,
+    isolatedVariantRootId,
+    enableIsolation,
+    disableIsolation,
 
     // Sidebar refactor methods
     useRefactoredSidebars,

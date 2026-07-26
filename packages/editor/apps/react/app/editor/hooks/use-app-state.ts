@@ -2,23 +2,12 @@
 
 import { useLocation } from "react-router"
 
-import { usePreview } from "./use-preview"
-
-export type AppState = "project" | "edit" | "preview"
+export type AppState = "project" | "edit"
 
 export function useAppState() {
-  const { isInPreviewMode } = usePreview()
   const { pathname } = useLocation()
 
-  let appState: AppState = "edit"
-
-  const isProjectPage = pathname === "/"
-
-  if (isProjectPage) {
-    appState = "project"
-  } else if (isInPreviewMode) {
-    appState = "preview"
-  }
+  const appState: AppState = pathname === "/" ? "project" : "edit"
 
   return { appState }
 }

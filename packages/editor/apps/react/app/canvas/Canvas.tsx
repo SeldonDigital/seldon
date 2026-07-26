@@ -1,6 +1,7 @@
 "use client"
 
 import { useSetHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import { useTool } from "@app/editor/hooks/use-tool"
@@ -155,12 +156,19 @@ const CanvasContainer = () => {
   const { setTransform } = useControls()
   const { isPanning } = useTransformContext()
   const { activeBoard } = useActiveBoard()
+  const { isolatedView, isolatedBoardKey } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
 
   // Key the reset on the board's stable key, not the object reference. The
   // board entry is recreated on structural edits (delete, paste), and resetting
-  // on reference changes would snap the zoom back to actual size mid-edit.
-  const activeBoardKey = activeBoard ? getComponentKey(activeBoard) : null
+  // on reference changes would snap the zoom back to actual size mid-edit. In
+  // isolation the gallery is anchored to one board, so key on that to avoid
+  // resetting when selecting dependency boards.
+  const activeBoardKey = isolatedView
+    ? isolatedBoardKey
+    : activeBoard
+      ? getComponentKey(activeBoard)
+      : null
 
   // Reset the transform when the active board changes (e.g. switching boards
   // or loading another project).

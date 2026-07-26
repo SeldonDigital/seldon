@@ -1,7 +1,7 @@
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePanelStore } from "@app/editor/panel-store"
-import { usePreviewModeStore } from "@app/editor/preview-mode-store"
 import { useToolStore } from "@app/editor/tool-store"
+import { useToggleIsolation } from "@app/editor/use-toggle-isolation"
 import { useHistoryStore } from "@app/workspace/history-store"
 import { onMounted, onUnmounted } from "vue"
 import { useRouter } from "vue-router"
@@ -51,7 +51,7 @@ export function useEditorShortcuts(): void {
   const history = useHistoryStore()
   const tool = useToolStore()
   const config = useEditorConfigStore()
-  const preview = usePreviewModeStore()
+  const { toggleIsolation } = useToggleIsolation()
   const panel = usePanelStore()
   const router = useRouter()
 
@@ -90,10 +90,10 @@ export function useEditorShortcuts(): void {
 
     switch (key) {
       case "a":
-        if (shift) {
+        if (alt) {
           event.preventDefault()
           addVariant()
-        } else {
+        } else if (shift) {
           event.preventDefault()
           panel.openPanel("add-board")
           tool.setActiveTool("select")
@@ -140,36 +140,16 @@ export function useEditorShortcuts(): void {
         event.preventDefault()
         config.showPanels = !config.showPanels
         return
-      case "1":
-        event.preventDefault()
-        preview.setDevice("desktop")
-        return
-      case "2":
-        event.preventDefault()
-        preview.setDevice("laptop")
-        return
-      case "3":
-        event.preventDefault()
-        preview.setDevice("tablet")
-        return
-      case "4":
-        event.preventDefault()
-        preview.setDevice("phone")
-        return
       case "escape":
-        if (preview.isInPreviewMode) preview.togglePreviewMode(false)
-        else if (tool.activeTool === "component") tool.setActiveTool("select")
+        if (tool.activeTool === "component") tool.setActiveTool("select")
         return
       case "i":
         event.preventDefault()
-        tool.setActiveTool("component")
+        if (shift) tool.setActiveTool("component")
+        else toggleIsolation()
         return
       case "v":
         tool.setActiveTool("select")
-        return
-      case "p":
-        event.preventDefault()
-        preview.togglePreviewMode()
         return
       case "h":
         event.preventDefault()

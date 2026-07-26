@@ -1,35 +1,49 @@
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
-import { Workspace, ValueType, getNodeProperties, getCssFromProperties } from "@app/core"
-import { usePanZoom } from "@app/canvas/use-pan-zoom"
-import { useCanvasTracking } from "@app/canvas/use-canvas-tracking"
 import { useBoardStateStore } from "@app/canvas/board-state-store"
 import { useActiveBoard } from "@app/canvas/use-active-board"
-import { usePreviewModeStore } from "@app/editor/preview-mode-store"
+import { useCanvasTracking } from "@app/canvas/use-canvas-tracking"
+import { usePanZoom } from "@app/canvas/use-pan-zoom"
+import {
+  ValueType,
+  Workspace,
+  getCssFromProperties,
+  getNodeProperties,
+} from "@app/core"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
-import { getBoardVariantRootIds } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { getIsolationCanvasGroups } from "@seldon/editor/lib/canvas/get-isolation-canvas-groups"
+import { getVisibleVariantRootIds } from "@seldon/editor/lib/canvas/get-visible-variant-root-ids"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { storeToRefs } from "pinia"
+import type { CSSProperties } from "vue"
+import { computed, ref, watch } from "vue"
+
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
-import { storeToRefs } from "pinia"
-import { computed, ref, watch } from "vue"
+import { boardOrderService } from "@seldon/core/workspace/services"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
+import type { Board } from "@seldon/core/workspace/types"
+
 import CanvasNode from "./CanvasNode.vue"
 import CanvasTracking from "./CanvasTracking.vue"
+import IsolationBoard from "./IsolationBoard.vue"
 import ZoomControls from "./ZoomControls.vue"
 
 const props = defineProps<{ workspace: Workspace }>()
 
 const boardState = useBoardStateStore()
-const previewMode = usePreviewModeStore()
+const config = useEditorConfigStore()
 const selection = useSelectionStore()
 const { activeBoard, activeBoardKey } = useActiveBoard()
 const { onCanvasClick, onCanvasPointerMove, onCanvasPointerLeave } =
   useCanvasTracking()
 
-const { isInPreviewMode } = storeToRefs(previewMode)
+const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
+  storeToRefs(config)
 const {
   selectedBoardId,
   selectedNodeId,
+  selectedNodeRootId,
   selectedResourceEntry,
   workspaceSelected,
 } = storeToRefs(selection)
@@ -95,7 +109,12 @@ const boardThemeId = computed(() =>
 )
 
 const boardRootIds = computed(() =>
-  activeBoard.value ? getBoardVariantRootIds(activeBoard.value) : [],
+  activeBoard.value
+    ? getVisibleVariantRootIds(activeBoard.value, {
+        isolatedView: isolatedView.value,
+        selectedNodeRootId: selectedNodeRootId.value,
+      })
+    : [],
 )
 
 const boardCss = computed(() => {
@@ -118,8 +137,10 @@ const boardCss = computed(() => {
 
 const boardRootStyle = computed<CSSProperties>(() => {
   const family = boardTheme.value
-    ? resolveFontFamily({ fontFamily: PRIMARY_FONT_FAMILY, theme: boardTheme.value })
-        ?.value
+    ? resolveFontFamily({
+        fontFamily: PRIMARY_FONT_FAMILY,
+        theme: boardTheme.value,
+      })?.value
     : undefined
   const base: CSSProperties = { position: "static" }
   return family ? { ...base, fontFamily: family } : base
@@ -130,6 +151,44 @@ const boardActiveState = computed(() =>
     ? boardState.getActiveState(activeBoardKey.value)
     : undefined,
 )
+
+// Isolation gallery: the anchored board plus its used dependency boards,
+// grouped by component level (levels stack vertically, boards within a level
+// sit in a row). Mirrors the React IsolationBoards.
+const isolatedBoard = computed<Board | null>(() => {
+  const key = isolatedBoardKey.value
+  return key ? (props.workspace.boards[key] ?? null) : null
+})
+
+const showIsolationGallery = computed(
+  () => isolatedView.value && isolatedBoard.value !== null,
+)
+
+const isolationRows = computed(() => {
+  const board = isolatedBoard.value
+  if (!board) return []
+  const boards = boardOrderService.getBoards(props.workspace)
+  const groups = getIsolationCanvasGroups(
+    board,
+    isolatedVariantRootId.value,
+    props.workspace,
+    boards,
+  )
+  return groups.map((group) => ({
+    level: group.level,
+    boards: group.items.map((item) => ({
+      key: getComponentKey(item.board),
+      board: item.board,
+      // The anchored board renders only the variant frozen on enable, so
+      // selecting other components never brings its other variants back.
+      variantRootIds: item.isIsolatedBoard
+        ? isolatedVariantRootId.value
+          ? [isolatedVariantRootId.value]
+          : item.variantRootIds
+        : item.variantRootIds,
+    })),
+  }))
+})
 
 // Ordered component and playground boards, used to auto-select the first board
 // when nothing is selected so the canvas is never empty on load.
@@ -179,7 +238,22 @@ watch(
       @click="onCanvasClick"
       @pointermove="onCanvasPointerMove"
     >
-      <section v-if="activeBoard" class="canvas-board">
+      <div v-if="showIsolationGallery" class="isolation-gallery">
+        <div
+          v-for="row in isolationRows"
+          :key="row.level"
+          class="isolation-row"
+        >
+          <IsolationBoard
+            v-for="item in row.boards"
+            :key="item.key"
+            :workspace="workspace"
+            :board="item.board"
+            :variant-root-ids="item.variantRootIds"
+          />
+        </div>
+      </div>
+      <section v-else-if="activeBoard" class="canvas-board">
         <Teleport to="head">
           <component :is="'style'">{{ boardCss }}</component>
         </Teleport>
@@ -202,10 +276,7 @@ watch(
         </div>
       </section>
     </div>
-    <CanvasTracking
-      v-if="!isInPreviewMode"
-      :subscribe-transform="subscribeTransform"
-    />
+    <CanvasTracking :subscribe-transform="subscribeTransform" />
     <ZoomControls />
   </div>
 </template>
@@ -234,5 +305,18 @@ watch(
 }
 .canvas-board {
   position: relative;
+}
+.isolation-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4rem;
+}
+.isolation-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
 }
 </style>

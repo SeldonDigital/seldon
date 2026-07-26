@@ -2,7 +2,6 @@
 
 import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { usePreview } from "@app/editor/hooks/use-preview"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Allotment, LayoutPriority } from "allotment"
 import { CSSProperties } from "react"
@@ -25,13 +24,11 @@ import { EditorCrossfade } from "./EditorCrossfade.bespoke"
 
 export default function Editor() {
   const { showPanels } = useEditorConfig()
-  const { isInPreviewMode } = usePreview()
-  const showSidePanels = showPanels && !isInPreviewMode
-  const crossfadeKey = isInPreviewMode ? "preview" : "editor"
+  const showSidePanels = showPanels
 
   return (
     <Frame wrapperElement="main" style={styles.main}>
-      <EditorCrossfade transitionKey={crossfadeKey}>
+      <EditorCrossfade transitionKey="editor">
         <Allotment proportionalLayout={false}>
           <Allotment.Pane
             minSize={280}

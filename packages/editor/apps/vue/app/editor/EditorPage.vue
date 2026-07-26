@@ -4,7 +4,6 @@ import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
 import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useHistoryStore } from "@app/workspace/history-store"
-import { usePreviewModeStore } from "@app/editor/preview-mode-store"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
@@ -31,16 +30,14 @@ const route = useRoute()
 const history = useHistoryStore()
 const save = useWorkspaceSaveStore()
 const config = useEditorConfigStore()
-const previewMode = usePreviewModeStore()
 const { workspace } = useWorkspace()
 
 const { showPanels, chromeTheme, objectsWidth, propertiesWidth } =
   storeToRefs(config)
-const { isInPreviewMode } = storeToRefs(previewMode)
 const resolvedMode = useResolvedInterfaceMode()
 
-// Panels hide when the user collapses chrome (`\`) or enters device preview (`p`).
-const showSidebars = computed(() => showPanels.value && !isInPreviewMode.value)
+// Panels hide when the user collapses chrome (`\`).
+const showSidebars = computed(() => showPanels.value)
 
 // Resizable sidebars, matching the React Allotment panes. Each handle drags its
 // panel width, which the config store clamps and persists. The objects pane

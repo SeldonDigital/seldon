@@ -1,7 +1,7 @@
 import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
-import { usePreview } from "@app/editor/hooks/use-preview"
+import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useHistory } from "@app/workspace/hooks/use-history"
@@ -59,7 +59,7 @@ export function useEditorShortcuts() {
     toggleShowUnusedFonts,
     toggleShowUnusedIcons,
   } = useEditorConfig()
-  const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
+  const { toggleIsolation } = useToggleIsolation()
   const { activePanel, openPanel, closePanel } = usePanel()
   const navigate = useNavigate()
 
@@ -93,14 +93,14 @@ export function useEditorShortcuts() {
 
   // Add component (opens the add-board dialog) / add variant
   useHotkeys(
-    "a",
+    "shift+a",
     () => {
       openPanel("add-board")
       setActiveTool("select")
     },
     { preventDefault: true },
   )
-  useHotkeys("shift+a", addVariant, { preventDefault: true })
+  useHotkeys("alt+a", addVariant, { preventDefault: true })
 
   // Create authored component (opens the create-component dialog)
   useHotkeys(
@@ -160,26 +160,6 @@ export function useEditorShortcuts() {
   // Toggle panels
   useHotkeys("backslash", togglePanels, { preventDefault: true })
 
-  // Device view
-  useHotkeys("1", () => setDevice("desktop"), {
-    preventDefault: true,
-  })
-  useHotkeys("2", () => setDevice("laptop"), {
-    preventDefault: true,
-  })
-  useHotkeys("3", () => setDevice("tablet"), {
-    preventDefault: true,
-  })
-  useHotkeys("4", () => setDevice("phone"), {
-    preventDefault: true,
-  })
-  useHotkeys("5", () => setDevice("watch"), {
-    preventDefault: true,
-  })
-  useHotkeys("6", () => setDevice("tv"), {
-    preventDefault: true,
-  })
-
   // Interaction state, Option-1 (Normal) through Option-0 (Dragged).
   useHotkeys("alt+1", () => selectBoardState(0), { preventDefault: true })
   useHotkeys("alt+2", () => selectBoardState(1), { preventDefault: true })
@@ -192,23 +172,19 @@ export function useEditorShortcuts() {
   useHotkeys("alt+9", () => selectBoardState(8), { preventDefault: true })
   useHotkeys("alt+0", () => selectBoardState(9), { preventDefault: true })
 
-  useHotkeys("esc", () => togglePreviewMode(false), {
-    enabled: isInPreviewMode,
-  })
-
   // Exit the insert component tool
   useHotkeys("esc", () => setActiveTool("select"), {
     enabled: activeTool === "component",
   })
 
   // Header tools
-  useHotkeys("i", () => setActiveTool("component"), {
+  useHotkeys("shift+i", () => setActiveTool("component"), {
     preventDefault: true,
   }) // prevent the character from being typed after the trigger
   useHotkeys("v", () => setActiveTool("select"))
 
-  // Preview mode
-  useHotkeys("p", () => togglePreviewMode(), { preventDefault: true })
+  // Isolation mode
+  useHotkeys("i", toggleIsolation, { preventDefault: true })
 
   // Selection overlay visibility
   useHotkeys("h", () => toggleShowSelection(), { preventDefault: true })

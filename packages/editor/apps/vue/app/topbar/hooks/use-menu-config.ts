@@ -6,8 +6,8 @@ import { useSelectCommands } from "@app/commands/use-select-commands"
 import { useDebugStore } from "@app/editor/debug-store"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePanelStore } from "@app/editor/panel-store"
-import { usePreviewModeStore } from "@app/editor/preview-mode-store"
 import { useToolStore } from "@app/editor/tool-store"
+import { useToggleIsolation } from "@app/editor/use-toggle-isolation"
 import { useImportExport } from "@app/io/use-import-export"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useHistoryStore } from "@app/workspace/history-store"
@@ -48,7 +48,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const config = useEditorConfigStore()
   const debug = useDebugStore()
   const panel = usePanelStore()
-  const previewMode = usePreviewModeStore()
+  const { toggleIsolation, canToggleIsolation } = useToggleIsolation()
   const tool = useToolStore()
   const history = useHistoryStore()
   const aiChat = useAiChatStore()
@@ -158,7 +158,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         if (!result.success) return
         await importWorkspaceFromFile(result.file)
       },
-      visibleIn: ["edit", "preview"],
+      visibleIn: ["edit"],
     },
     "separator",
     {
@@ -168,14 +168,14 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         panel.openPanel("export-components")
         tool.setActiveTool("select")
       },
-      visibleIn: ["edit", "preview"],
+      visibleIn: ["edit"],
     },
     "separator",
     {
       id: "export-workspace",
       label: "Save Workspace As…",
       action: exportWorkspaceToFile,
-      visibleIn: ["edit", "preview"],
+      visibleIn: ["edit"],
     },
     "separator",
     {
@@ -218,6 +218,15 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       shortcut: "⌘ D",
       enabled: Boolean(selectedNode.value),
     },
+    "separator",
+    {
+      id: "isolated-view",
+      label: "Isolation Mode",
+      action: toggleIsolation,
+      active: config.isolatedView,
+      shortcut: "I",
+      enabled: canToggleIsolation.value,
+    },
   ])
 
   const selectionMenuItems = computed<(MenuItem | "separator")[]>(() => [
@@ -235,7 +244,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       id: "insert-component",
       label: "Insert Component",
       action: () => tool.setActiveTool("component"),
-      shortcut: "I",
+      shortcut: "⇧ I",
     },
     {
       id: "add-component",
@@ -244,13 +253,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         panel.openPanel("add-board")
         tool.setActiveTool("select")
       },
-      shortcut: "A",
+      shortcut: "⇧ A",
     },
     {
       id: "add-variant",
       label: "Add Variant",
       action: addVariant,
-      shortcut: "⇧ A",
+      shortcut: "⌥ A",
       enabled: Boolean(selectedBoard.value),
     },
     "separator",
@@ -370,27 +379,27 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         id: "import-web",
         label: "Import Web…",
         action: importWeb,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "show-playground",
         label: "Show Playgrounds",
         action: config.toggleShowPlayground,
         active: config.showPlayground,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
         id: "export-selected-node",
         label: "Copy Selection to Clipboard",
         action: exportSelectionToClipboard,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "copy-schema-json",
         label: "Copy Schema JSON",
         action: copySchemaJsonToClipboard,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
@@ -398,7 +407,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         label: "Canvas Profiling",
         action: debug.toggleCanvasProfiling,
         active: debug.canvasProfiling,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
@@ -406,21 +415,21 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         label: "Show Node IDs",
         action: debug.toggleShowNodeIds,
         active: debug.showNodeIds,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "show-node-types",
         label: "Show Node Types",
         action: debug.toggleShowNodeTypes,
         active: debug.showNodeTypes,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "show-property-types",
         label: "Show Property Types",
         action: debug.toggleShowPropertyTypes,
         active: debug.showPropertyTypes,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
@@ -428,28 +437,28 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         label: "Dispatch Logging",
         action: debug.toggleDispatchLogging,
         active: debug.dispatchLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "verbose-logging",
         label: "Verbose Logging",
         action: debug.toggleVerboseLogging,
         active: debug.verboseLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "workspace-logging",
         label: "Workspace Logging",
         action: debug.toggleWorkspaceLogging,
         active: debug.workspaceLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "ai-logging",
         label: "AI Logging",
         action: debug.toggleAiLogging,
         active: debug.aiLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
     ]
 
@@ -468,14 +477,6 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   })
 
   const viewMenuItems = computed<(MenuItem | "separator")[]>(() => [
-    {
-      id: "preview-mode",
-      label: "Preview Mode",
-      action: () => previewMode.togglePreviewMode(),
-      active: previewMode.isInPreviewMode,
-      shortcut: "P",
-      enabled: false,
-    },
     {
       id: "toggle-ui",
       label: config.showPanels ? "Hide Interface" : "Show Interface",
@@ -574,7 +575,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "Show Unused Icons",
       action: config.toggleShowUnusedIcons,
       active: config.showUnusedIcons,
-      shortcut: "I",
+      shortcut: "N",
     },
     "separator",
     {
@@ -597,25 +598,25 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     {
       id: "edit",
       label: "Edit",
-      visibleIn: ["edit", "preview"],
+      visibleIn: ["edit"],
       items: editMenuItems.value,
     },
     {
       id: "component",
       label: "Component",
-      visibleIn: ["edit", "preview"],
+      visibleIn: ["edit"],
       items: selectionMenuItems.value,
     },
     {
       id: "hari",
       label: "Hari",
-      visibleIn: ["edit", "preview"],
+      visibleIn: ["edit"],
       items: hariMenuItems.value,
     },
     {
       id: "view",
       label: "View",
-      visibleIn: ["edit", "preview"],
+      visibleIn: ["edit"],
       items: viewMenuItems.value,
     },
     {

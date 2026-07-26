@@ -1,4 +1,5 @@
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { MenuEntry } from "@app/menus"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
@@ -9,6 +10,7 @@ import {
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { getIsolationUsage } from "@seldon/editor/lib/isolation/get-isolation-usage"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
@@ -52,10 +54,25 @@ export function useRowBoard(
 ) {
   // Core workspace and tool state
   const { activeTool, setActiveTool } = useTool()
+  const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
+    useEditorConfig()
+  const { dispatch, workspace } = useWorkspace({ usePreview: false })
   const boardKey = getComponentKey(board)
-  const variantRootIds = getVariantRootIds(board)
+  const allVariantRootIds = getVariantRootIds(board)
+  // In isolation, every board lists only the variant roots the isolated
+  // variant's tree uses, so unused sibling variants are hidden in the sidebar,
+  // matching the canvas.
+  const isolatedBoard =
+    isolatedView && isolatedBoardKey ? workspace.boards[isolatedBoardKey] : null
+  const usedVariantRootIds = isolatedBoard
+    ? getIsolationUsage(isolatedBoard, isolatedVariantRootId, workspace).get(
+        boardKey,
+      )
+    : null
+  const variantRootIds = usedVariantRootIds
+    ? allVariantRootIds.filter((id) => usedVariantRootIds.has(id))
+    : allVariantRootIds
   const { selectBoard } = useSelectionActions()
-  const { dispatch } = useWorkspace({ usePreview: false })
   const { dispatchWithAutoSelect } = useAutoSelectNode()
   const { removeBoard, duplicatePlayground } = useAddRemoveCommands()
   const addToast = useAddToast()

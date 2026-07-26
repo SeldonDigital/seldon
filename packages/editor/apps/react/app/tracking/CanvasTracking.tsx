@@ -6,7 +6,6 @@ import {
 } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { usePreview } from "@app/editor/hooks/use-preview"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
@@ -28,7 +27,6 @@ import { useVisibleNodes } from "./hooks/use-visible-nodes"
 export function CanvasTracking() {
   const selectedNodeId = useSelectedNodeId()
   const { activeTool } = useTool()
-  const { isInPreviewMode } = usePreview()
   const { visibleNodes } = useVisibleNodes()
   const hasHoverState = useHasHoverState()
   const { hoverState } = useCanvasHoverState()
@@ -57,8 +55,6 @@ export function CanvasTracking() {
   const isSiblingGap = getIsSiblingGap(activeTool, hoverState)
 
   useTrackNodeRects(nodeIds)
-
-  if (isInPreviewMode) return null
 
   return (
     <>

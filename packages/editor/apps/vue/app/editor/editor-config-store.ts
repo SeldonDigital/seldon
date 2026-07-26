@@ -43,6 +43,9 @@ type PersistedConfig = {
   showPlayground: boolean
   showCodeNames: boolean
   objectsView: ObjectsView
+  isolatedView: boolean
+  isolatedBoardKey: string | null
+  isolatedVariantRootId: string | null
   objectsWidth: number
   propertiesWidth: number
   useRefactoredSidebars: boolean
@@ -84,6 +87,13 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const showPlayground = ref(persisted.showPlayground ?? false)
   const showCodeNames = ref(persisted.showCodeNames ?? false)
   const objectsView = ref<ObjectsView>(persisted.objectsView ?? "components")
+  const isolatedView = ref(persisted.isolatedView ?? false)
+  const isolatedBoardKey = ref<string | null>(
+    persisted.isolatedBoardKey ?? null,
+  )
+  const isolatedVariantRootId = ref<string | null>(
+    persisted.isolatedVariantRootId ?? null,
+  )
   const objectsWidth = ref(
     clampSidebarWidth(persisted.objectsWidth ?? SIDEBAR_INITIAL_WIDTH),
   )
@@ -132,6 +142,19 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   function toggleShowPlayground(): void {
     showPlayground.value = !showPlayground.value
   }
+  function enableIsolation(
+    boardKey: string,
+    variantRootId: string | null,
+  ): void {
+    isolatedView.value = true
+    isolatedBoardKey.value = boardKey
+    isolatedVariantRootId.value = variantRootId
+  }
+  function disableIsolation(): void {
+    isolatedView.value = false
+    isolatedBoardKey.value = null
+    isolatedVariantRootId.value = null
+  }
   function setComponentHighlightMode(mode: ComponentHighlightMode): void {
     componentHighlightMode.value = mode
   }
@@ -166,6 +189,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
       showPlayground,
       showCodeNames,
       objectsView,
+      isolatedView,
+      isolatedBoardKey,
+      isolatedVariantRootId,
       objectsWidth,
       propertiesWidth,
       useRefactoredSidebars,
@@ -188,6 +214,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         showPlayground: showPlayground.value,
         showCodeNames: showCodeNames.value,
         objectsView: objectsView.value,
+        isolatedView: isolatedView.value,
+        isolatedBoardKey: isolatedBoardKey.value,
+        isolatedVariantRootId: isolatedVariantRootId.value,
         objectsWidth: objectsWidth.value,
         propertiesWidth: propertiesWidth.value,
         useRefactoredSidebars: useRefactoredSidebars.value,
@@ -213,6 +242,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     showPlayground,
     showCodeNames,
     objectsView,
+    isolatedView,
+    isolatedBoardKey,
+    isolatedVariantRootId,
     objectsWidth,
     propertiesWidth,
     useRefactoredSidebars,
@@ -229,6 +261,8 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     toggleShowUnusedFonts,
     toggleShowUnusedIcons,
     toggleShowPlayground,
+    enableIsolation,
+    disableIsolation,
     setComponentHighlightMode,
     setObjectsView,
     setObjectsWidth,

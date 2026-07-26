@@ -8,7 +8,7 @@ import { useSelectCommands } from "@app/commands/use-select-commands"
 import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
-import { usePreview } from "@app/editor/hooks/use-preview"
+import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useImportExport } from "@app/io/use-import-export"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
@@ -44,7 +44,7 @@ import { MenuConfig, MenuItem } from "../menus/types"
 export function useMenuConfig(): MenuConfig {
   // Import all the necessary hooks for the menu actions
   const navigate = useNavigate()
-  const { isInPreviewMode, togglePreviewMode } = usePreview()
+  const { toggleIsolation, canToggleIsolation } = useToggleIsolation()
   const {
     showPanels,
     togglePanels,
@@ -70,6 +70,7 @@ export function useMenuConfig(): MenuConfig {
     toggleShowPlayground,
     showCodeNames,
     toggleShowCodeNames,
+    isolatedView,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const {
@@ -221,7 +222,7 @@ export function useMenuConfig(): MenuConfig {
           if (!result.success) return
           await importWorkspaceFromFile(result.file)
         },
-        visibleIn: ["edit", "preview"], // Not visible in project view
+        visibleIn: ["edit"], // Not visible in project view
       },
       "separator",
       {
@@ -231,14 +232,14 @@ export function useMenuConfig(): MenuConfig {
           openPanel("export-components")
           setActiveTool("select")
         },
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
         id: "export-workspace",
         label: "Save Workspace As…",
         action: exportWorkspaceToFile,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
@@ -264,27 +265,27 @@ export function useMenuConfig(): MenuConfig {
         id: "import-web",
         label: "Import Web…",
         action: importWeb,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "show-playground",
         label: "Show Playgrounds",
         action: toggleShowPlayground,
         active: showPlayground,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
         id: "export-selected-node",
         label: "Copy Selection to Clipboard",
         action: exportSelectionToClipboard,
-        visibleIn: ["edit", "preview"], // Not visible in project view
+        visibleIn: ["edit"], // Not visible in project view
       },
       {
         id: "copy-schema-json",
         label: "Copy Schema JSON",
         action: copySchemaJsonToClipboard,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
@@ -292,7 +293,7 @@ export function useMenuConfig(): MenuConfig {
         label: "Canvas Profiling",
         action: toggleCanvasProfiling,
         active: canvasProfiling,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
@@ -300,21 +301,21 @@ export function useMenuConfig(): MenuConfig {
         label: "Show Node IDs",
         action: toggleShowNodeIds,
         active: showNodeIds,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "show-node-types",
         label: "Show Node Types",
         action: toggleShowNodeTypes,
         active: showNodeTypes,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "show-property-types",
         label: "Show Property Types",
         action: toggleShowPropertyTypes,
         active: showPropertyTypes,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       "separator",
       {
@@ -322,28 +323,28 @@ export function useMenuConfig(): MenuConfig {
         label: "Dispatch Logging",
         action: toggleDispatchLogging,
         active: dispatchLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "verbose-logging",
         label: "Verbose Logging",
         action: toggleVerboseLogging,
         active: verboseLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "workspace-logging",
         label: "Workspace Logging",
         action: toggleWorkspaceLogging,
         active: workspaceLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
       {
         id: "ai-logging",
         label: "AI Logging",
         action: toggleAiLogging,
         active: aiLogging,
-        visibleIn: ["edit", "preview"],
+        visibleIn: ["edit"],
       },
     ]
 
@@ -432,6 +433,15 @@ export function useMenuConfig(): MenuConfig {
         shortcut: "⌘ D",
         enabled: Boolean(selectedNode),
       },
+      "separator",
+      {
+        id: "isolated-view",
+        label: "Isolation Mode",
+        action: toggleIsolation,
+        active: isolatedView,
+        shortcut: "I",
+        enabled: canToggleIsolation,
+      },
     ]
 
     return items
@@ -445,6 +455,9 @@ export function useMenuConfig(): MenuConfig {
     canDeleteSelection,
     duplicateSelection,
     selectedNode,
+    toggleIsolation,
+    isolatedView,
+    canToggleIsolation,
   ])
 
   const selectionMenuItems = useMemo(() => {
@@ -463,7 +476,7 @@ export function useMenuConfig(): MenuConfig {
         id: "insert-component",
         label: "Insert Component",
         action: () => setActiveTool("component"),
-        shortcut: "I",
+        shortcut: "⇧ I",
       },
       {
         id: "add-component",
@@ -472,13 +485,13 @@ export function useMenuConfig(): MenuConfig {
           openPanel("add-board")
           setActiveTool("select")
         },
-        shortcut: "A",
+        shortcut: "⇧ A",
       },
       {
         id: "add-variant",
         label: "Add Variant",
         action: addVariant,
-        shortcut: "⇧ A",
+        shortcut: "⌥ A",
         enabled: Boolean(selectedBoard),
       },
       "separator",
@@ -647,34 +660,26 @@ export function useMenuConfig(): MenuConfig {
       {
         id: "edit",
         label: "Edit",
-        visibleIn: ["edit", "preview"], // Not visible in project view
+        visibleIn: ["edit"], // Not visible in project view
         items: editMenuItems as MenuItem[],
       },
       {
         id: "component",
         label: "Component",
-        visibleIn: ["edit", "preview"], // Not visible in project view
+        visibleIn: ["edit"], // Not visible in project view
         items: selectionMenuItems as MenuItem[],
       },
       {
         id: "hari",
         label: "Hari",
-        visibleIn: ["edit", "preview"], // Not visible in project view
+        visibleIn: ["edit"], // Not visible in project view
         items: hariMenuItems as MenuItem[],
       },
       {
         id: "view",
         label: "View",
-        visibleIn: ["edit", "preview"], // Not visible in project view
+        visibleIn: ["edit"], // Not visible in project view
         items: [
-          {
-            id: "preview-mode",
-            label: "Preview Mode",
-            action: togglePreviewMode,
-            active: isInPreviewMode,
-            shortcut: "P",
-            enabled: false,
-          },
           {
             id: "toggle-ui",
             label: showPanels ? "Hide Interface" : "Show Interface",
@@ -773,7 +778,7 @@ export function useMenuConfig(): MenuConfig {
             label: "Show Unused Icons",
             action: toggleShowUnusedIcons,
             active: showUnusedIcons,
-            shortcut: "I",
+            shortcut: "N",
           },
           "separator",
           {
@@ -808,8 +813,6 @@ export function useMenuConfig(): MenuConfig {
       selectionMenuItems,
       hariMenuItems,
       devMenuItems,
-      togglePreviewMode,
-      isInPreviewMode,
       togglePanels,
       showPanels,
       toggleShowSelection,

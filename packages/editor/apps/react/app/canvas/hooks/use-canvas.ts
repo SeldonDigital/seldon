@@ -3,7 +3,6 @@ import {
   useCanvasHoverState,
 } from "@app/canvas/hooks/use-canvas-hover-state"
 import { usePanel } from "@app/editor/hooks/use-panel"
-import { usePreview } from "@app/editor/hooks/use-preview"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
@@ -14,6 +13,7 @@ import {
   getSelectionTarget,
   selectFromTarget,
 } from "@app/workspace/selection-target"
+import { getNodeIdForEventTarget } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
 import {
@@ -39,7 +39,6 @@ import {
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
-import { getNodeIdForEventTarget } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 
 export function useCanvas() {
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
@@ -50,7 +49,6 @@ export function useCanvas() {
   const { openPanel } = usePanel()
   const { hoverState, setHoverState } = useCanvasHoverState()
   const setHoveredId = useSetHoveredId()
-  const { isInPreviewMode } = usePreview()
   const addToast = useAddToast()
 
   /**
@@ -59,13 +57,6 @@ export function useCanvas() {
    */
   const handleMouseMove: MouseEventHandler<HTMLDivElement> = useCallback(
     (event) => {
-      // Don't show highlights in preview mode
-      if (isInPreviewMode) {
-        setHoverState(null)
-        setHoveredId(null)
-        return
-      }
-
       // Theme boards suppress the hover overlay. They are previews, not an
       // editable node tree, so silently clear hover and stop.
       if (activeBoard && isThemeBoard(activeBoard)) {
@@ -202,7 +193,6 @@ export function useCanvas() {
       }
     },
     [
-      isInPreviewMode,
       activeBoard,
       activeTool,
       workspace,

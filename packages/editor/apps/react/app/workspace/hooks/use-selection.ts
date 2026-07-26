@@ -408,6 +408,7 @@ export function useSelection() {
 
   const selectedBoardId = useStore((state) => state.selectedBoardId)
   const selectedNodeId = useStore((state) => state.selectedNodeId)
+  const selectedNodeRootId = useStore((state) => state.selectedNodeRootId)
   const selectedResourceEntry = useStore((state) => state.selectedResourceEntry)
   const selectedResourceItemKey = useStore(
     (state) => state.selectedResourceItemKey,
@@ -447,6 +448,7 @@ export function useSelection() {
     selectResourceItem,
     selectWorkspace,
     selectedNodeId,
+    selectedNodeRootId,
     selectedBoardId,
     selectedResourceEntry,
     selectedThemeEntryId,

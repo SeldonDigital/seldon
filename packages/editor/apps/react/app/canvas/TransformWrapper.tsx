@@ -1,6 +1,5 @@
 import { useTextFieldFocus } from "@app/canvas/hooks/use-text-field-focus"
 import { useZoomControlsStore } from "@app/canvas/hooks/use-zoom-controls"
-import { usePreview } from "@app/editor/hooks/use-preview"
 import React, { FC, useCallback, useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import {
@@ -22,8 +21,6 @@ type Props = {
 export const TransformWrapper: FC<Props> = ({ children }) => {
   const isTextFieldFocused = useTextFieldFocus()
   const [metaPressed, setMetaPressed] = useState(false)
-  const { isInPreviewMode } = usePreview()
-  const activateShortCuts = !isInPreviewMode
 
   useHotkeys("meta", (event) => setMetaPressed(event.type === "keydown"), {
     keyup: true,
@@ -35,8 +32,8 @@ export const TransformWrapper: FC<Props> = ({ children }) => {
       initialPositionY={TRANSFORM_WRAPPER_INITIAL_POSITION_Y}
       initialPositionX={TRANSFORM_WRAPPER_INITIAL_POSITION_X}
       initialScale={1}
-      minScale={isInPreviewMode ? 1 : 2 ** -5}
-      maxScale={isInPreviewMode ? 1 : 2 ** 5}
+      minScale={2 ** -5}
+      maxScale={2 ** 5}
       limitToBounds={false}
       zoomAnimation={{ disabled: true }}
       doubleClick={{ disabled: true }}
@@ -44,7 +41,7 @@ export const TransformWrapper: FC<Props> = ({ children }) => {
         wheelDisabled: !metaPressed,
       }}
       panning={{
-        lockAxisX: isInPreviewMode,
+        lockAxisX: false,
         wheelPanning: !metaPressed,
         activationKeys: [" "],
         allowMiddleClickPan: false,
@@ -54,10 +51,10 @@ export const TransformWrapper: FC<Props> = ({ children }) => {
     >
       <>
         {children}
-        {activateShortCuts && <ZoomControls />}
-        {!isInPreviewMode && <CanvasScrollToSelection />}
-        {!isInPreviewMode && <CanvasOverlayTracker />}
-        {!isInPreviewMode && <CanvasTransformRemeasure />}
+        <ZoomControls />
+        <CanvasScrollToSelection />
+        <CanvasOverlayTracker />
+        <CanvasTransformRemeasure />
       </>
     </ReactTransformWrapper>
   )

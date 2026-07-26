@@ -1,31 +1,41 @@
 "use client"
 
-import { usePreview } from "@app/editor/hooks/use-preview"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
+import { getVisibleVariantRootIds } from "@seldon/editor/lib/canvas/get-visible-variant-root-ids"
 import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { CSSProperties, ReactNode, useMemo, useRef } from "react"
 
-import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
+import { Board, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
-import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
-import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../CanvasNode"
+import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
 import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 
 export type ComponentBoardProps = {
   board: Board
+  /**
+   * Explicit variant roots to render. Isolation's dependency boards pass the
+   * used set; omit to fall back to the selection-driven visible variants.
+   */
+  variantRootIds?: string[]
+  /**
+   * Resolve the board key from `board` instead of the current selection. The
+   * isolation gallery renders many boards at once, so each must key off itself.
+   */
+  useOwnKey?: boolean
 }
 
 const boardRootStyle: CSSProperties = { position: "static" }
@@ -86,10 +96,17 @@ function wrapTablePartBoard(
   }
 }
 
-export function ComponentBoard({ board }: ComponentBoardProps) {
+export function ComponentBoard({
+  board,
+  variantRootIds: explicitVariantRootIds,
+  useOwnKey,
+}: ComponentBoardProps) {
   const { workspace } = useWorkspace()
-  const { selectedBoardId } = useSelection()
-  const boardKey = selectedBoardId ?? resolveComponentKey(board, workspace)
+  const { selectedBoardId, selectedNodeRootId } = useSelection()
+  const { isolatedView } = useEditorConfig()
+  const boardKey = useOwnKey
+    ? resolveComponentKey(board, workspace)
+    : (selectedBoardId ?? resolveComponentKey(board, workspace))
   const boardEntry = workspace.boards[boardKey] ?? board
   const theme = useNodeTheme(boardEntry)
   const className = `board-${boardKey}`
@@ -99,7 +116,6 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   const stateBoardKey = resolveComponentKey(board, workspace)
   const activeState = useActiveBoardState(stateBoardKey)
   const properties = getNodeProperties(boardEntry, workspace)
-  const { device, isInPreviewMode } = usePreview()
   const boardRootRef = useRef<HTMLDivElement>(null)
   useCanvasReorderFlip(boardRootRef, workspace)
 
@@ -115,36 +131,22 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
     [baseFontFamily],
   )
 
-  const patchedProperties: Properties = isInPreviewMode
-    ? {
-        ...properties,
-        board: {
-          ...(properties.board ?? {}),
-          width: {
-            type: ValueType.EXACT,
-            value: { unit: Unit.PX, value: device.width },
-          },
-          height: {
-            type: ValueType.EXACT,
-            value: { unit: Unit.PX, value: device.height },
-          },
-        },
-        scroll: {
-          type: ValueType.OPTION,
-          value: Scroll.VERTICAL,
-        },
-      }
-    : properties
+  const visibleVariantRootIds =
+    explicitVariantRootIds ??
+    getVisibleVariantRootIds(boardEntry, { isolatedView, selectedNodeRootId })
+  const tableWrapperKind = TABLE_PART_WRAPPERS[boardKey as ComponentId]
+  const initialThemeId = (getBoardThemeRef(boardEntry) ??
+    "default") as ThemeInstanceId
 
   return (
     <>
       <CssPortal>
         <StyleTag
           css={getCssFromProperties(
-            patchedProperties,
+            properties,
             {
               theme,
-              properties: patchedProperties,
+              properties,
               parentContext: null,
             },
             className,
@@ -159,16 +161,13 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
           style={rootStyle}
         >
           {wrapTablePartBoard(
-            TABLE_PART_WRAPPERS[boardKey as ComponentId],
-            getBoardVariantRootIds(boardEntry).map((variantId) => {
+            tableWrapperKind,
+            visibleVariantRootIds.map((variantId) => {
               return (
                 <CanvasNode
                   key={variantId}
                   nodeId={variantId}
-                  initialThemeId={
-                    (getBoardThemeRef(boardEntry) ??
-                      "default") as ThemeInstanceId
-                  }
+                  initialThemeId={initialThemeId}
                   parentNode={boardEntry}
                   rootPath={variantId}
                   isRoot

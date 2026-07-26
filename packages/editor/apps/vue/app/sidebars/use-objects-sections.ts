@@ -1,4 +1,5 @@
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { filterIsolatedSections } from "@seldon/editor/lib/sidebars/filter-isolated-sections"
 import {
   type BoardSection,
   getBoardSections,
@@ -26,7 +27,13 @@ export function useObjectsSections(
   workspace: Ref<Workspace>,
 ): Ref<BoardSection[]> {
   const config = useEditorConfigStore()
-  const { objectsView, showPlayground } = storeToRefs(config)
+  const {
+    objectsView,
+    showPlayground,
+    isolatedView,
+    isolatedBoardKey,
+    isolatedVariantRootId,
+  } = storeToRefs(config)
 
   return computed(() => {
     const boards = boardOrderService.getBoards(workspace.value)
@@ -37,7 +44,22 @@ export function useObjectsSections(
         ? RESOURCE_SECTION_LEVELS.has(section.level)
         : !RESOURCE_SECTION_LEVELS.has(section.level),
     )
-    if (showPlayground.value) return viewSections
-    return viewSections.filter((section) => section.level !== "PLAYGROUND")
+    const withPlayground = showPlayground.value
+      ? viewSections
+      : viewSections.filter((section) => section.level !== "PLAYGROUND")
+
+    const isolatedKey = isolatedBoardKey.value
+    const isolatedBoard = isolatedKey
+      ? workspace.value.boards[isolatedKey]
+      : null
+    if (isolatedView.value && isolatedBoard) {
+      return filterIsolatedSections(
+        withPlayground,
+        isolatedBoard,
+        isolatedVariantRootId.value,
+        workspace.value,
+      )
+    }
+    return withPlayground
   })
 }

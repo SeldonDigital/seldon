@@ -1,8 +1,9 @@
 "use client"
 
 import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
-import { usePreview } from "@app/editor/hooks/use-preview"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
+import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
 import React, { Profiler } from "react"
 
@@ -18,27 +19,35 @@ import {
 import { ComponentBoard } from "./boards/ComponentBoard"
 import { FontCollectionBoard } from "./boards/FontCollectionBoard"
 import { IconSetBoard } from "./boards/IconSetBoard"
+import { IsolationBoards } from "./boards/IsolationBoards"
 import { SandboxCanvas } from "./boards/SandboxCanvas"
 import { ThemeBoard } from "./boards/ThemeBoard"
 import { useCanvas } from "./hooks/use-canvas"
 
 export function CanvasWorkspace() {
   const { onCanvasMouseMove, onCanvasMouseLeave, onCanvasClick } = useCanvas()
+  const { isolatedView, isolatedBoardKey } = useEditorConfig()
+  const { workspace } = useWorkspace()
 
-  const { isInPreviewMode } = usePreview()
-
-  const handleClick = isInPreviewMode ? undefined : onCanvasClick
-  const handleMouseLeave = isInPreviewMode ? undefined : onCanvasMouseLeave
-  const handleMouseMove = isInPreviewMode ? undefined : onCanvasMouseMove
+  // Isolation renders a multi-board gallery of the anchored board and its used
+  // dependencies; otherwise the canvas shows the single active board.
+  const showIsolationGallery =
+    isolatedView &&
+    Boolean(isolatedBoardKey && workspace.boards[isolatedBoardKey])
+  const content = showIsolationGallery ? (
+    <IsolationBoards />
+  ) : (
+    <MemoizedActiveBoard />
+  )
 
   return (
     <Frame
       id="root-tree"
-      onClick={handleClick}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
+      onClick={onCanvasClick}
+      onMouseLeave={onCanvasMouseLeave}
+      onMouseMove={onCanvasMouseMove}
     >
-      <MemoizedActiveBoard />
+      {content}
     </Frame>
   )
 }

@@ -1,6 +1,34 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { useToolStore } from "@app/editor/tool-store"
+import MenuController from "@app/menus/MenuController.vue"
+import type { MenuEntry } from "@app/menus/types"
+import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
+import {
+  buildActivatedRefProps,
+  buildFieldStateProps,
+  mergeStateProps,
+} from "@app/sidebars/state-props"
+import { useRenameInput } from "@app/sidebars/use-rename-input"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useObjectHoverStore } from "@app/workspace/object-hover-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import ItemNode from "@seldon/components/elements/ItemNode.vue"
+import { getIsolationUsage } from "@seldon/editor/lib/isolation/get-isolation-usage"
+import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
+import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
+import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
+import {
+  getComponentKey,
+  getNode,
+} from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
+import { computed, ref } from "vue"
+
 import type { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"
 import {
@@ -12,35 +40,11 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
-import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
-import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getComponentKey,
-  getNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
-import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
-import ItemNode from "@seldon/components/elements/ItemNode.vue"
-import MenuController from "@app/menus/MenuController.vue"
-import type { MenuEntry } from "@app/menus/types"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useObjectHoverStore } from "@app/workspace/object-hover-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
-import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import { useToolStore } from "@app/editor/tool-store"
-import { useToastStore } from "@app/toaster/toast-store"
-import {
-  buildActivatedRefProps,
-  buildFieldStateProps,
-  mergeStateProps,
-} from "@app/sidebars/state-props"
-import { useRenameInput } from "@app/sidebars/use-rename-input"
-import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
-import { useObjectsExpansionStore } from "./objects-expansion-store"
-import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
-import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
+
 import NodeRow from "./NodeRow.vue"
 import ResourceEntry from "./ResourceEntry.vue"
+import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
+import { useObjectsExpansionStore } from "./objects-expansion-store"
 
 const RENAME_BOARD_BLOCKED_MESSAGE =
   "Component board names come from the catalog and can't be renamed"
@@ -58,15 +62,32 @@ const { removeBoard, duplicatePlayground } = useAddRemoveCommands()
 const tool = useToolStore()
 const toast = useToastStore()
 const expansion = useObjectsExpansionStore()
+const config = useEditorConfigStore()
 
-const {
-  selectedBoardId,
-  selectedNodeId,
-  selectedResourceEntry,
-} = storeToRefs(selection)
+const { selectedBoardId, selectedNodeId, selectedResourceEntry } =
+  storeToRefs(selection)
+const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
+  storeToRefs(config)
 
 const boardKey = computed(() => getComponentKey(props.board))
-const variantRootIds = computed(() => getVariantRootIds(props.board))
+// In isolation, every board lists only the variant roots the isolated variant's
+// tree uses, so unused sibling variants are hidden in the sidebar, matching the
+// canvas.
+const variantRootIds = computed(() => {
+  const rootIds = getVariantRootIds(props.board)
+  const isolatedKey = isolatedBoardKey.value
+  const isolatedBoard =
+    isolatedView.value && isolatedKey
+      ? props.workspace.boards[isolatedKey]
+      : null
+  if (!isolatedBoard) return rootIds
+  const used = getIsolationUsage(
+    isolatedBoard,
+    isolatedVariantRootId.value,
+    props.workspace,
+  ).get(boardKey.value)
+  return used ? rootIds.filter((id) => used.has(id)) : rootIds
+})
 const hasVariantChildren = computed(() => variantRootIds.value.length > 0)
 
 const isPlayground = computed(() => isPlaygroundBoard(props.board))
@@ -99,7 +120,9 @@ const boardIsActive = computed(
     boardContainsSelectedNode.value ||
     boardContainsSelectedResourceEntry.value,
 )
-const isActivated = computed(() => boardIsActive.value && !isBoardSelected.value)
+const isActivated = computed(
+  () => boardIsActive.value && !isBoardSelected.value,
+)
 
 const isExpanded = computed(() => expansion.isExpanded(boardKey.value))
 
@@ -210,7 +233,10 @@ function handleResetBoard(): void {
   if (isThemeBoard(props.board)) {
     const defaultThemeId = props.board.variants[0]?.id
     if (defaultThemeId) {
-      dispatch({ type: "reset_theme_tokens", payload: { themeId: defaultThemeId } })
+      dispatch({
+        type: "reset_theme_tokens",
+        payload: { themeId: defaultThemeId },
+      })
     }
     return
   }
@@ -347,7 +373,8 @@ const {
 function boardIconId(): string {
   if (isIconSetBoard(props.board)) return getNodeKindIcon("iconSet")
   if (isThemeBoard(props.board)) return getNodeKindIcon("theme")
-  if (isFontCollectionBoard(props.board)) return getNodeKindIcon("fontCollection")
+  if (isFontCollectionBoard(props.board))
+    return getNodeKindIcon("fontCollection")
   return getNodeKindIcon("component")
 }
 

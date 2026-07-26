@@ -1,6 +1,5 @@
 "use client"
 
-import { usePreview } from "@app/editor/hooks/use-preview"
 import { MenuController, type MenuEntry } from "@app/menus"
 import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
 import { useSelection } from "@app/workspace/hooks/use-selection"
@@ -30,7 +29,7 @@ import {
   useState,
 } from "react"
 
-import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
+import { Board, Properties, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { colorValueToDisplayStrings } from "@seldon/core/helpers/color"
 import { resolveColor } from "@seldon/core/helpers/resolution/resolve-color"
@@ -66,7 +65,6 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
   const boardKey = getComponentKey(board)
   const className = `board-${boardKey}`
   const properties = getNodeProperties(board, workspace)
-  const { device, isInPreviewMode } = usePreview()
 
   // The board chrome renders with the board's own theme so its background and
   // border resolve, independent of which variant (if any) is selected. The
@@ -86,32 +84,11 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
       : defaultVariantId
   const variantEntryIds = activeVariantId ? [activeVariantId] : []
 
-  const computedProperties: Properties = isInPreviewMode
-    ? {
-        ...properties,
-        board: {
-          ...(properties.board ?? {}),
-          width: {
-            type: ValueType.EXACT,
-            value: { unit: Unit.PX, value: device.width },
-          },
-          height: {
-            type: ValueType.EXACT,
-            value: { unit: Unit.PX, value: device.height },
-          },
-        },
-        scroll: {
-          type: ValueType.OPTION,
-          value: Scroll.VERTICAL,
-        },
-      }
-    : properties
-
   const boardCss = getCssFromProperties(
-    computedProperties,
+    properties,
     {
       theme: boardTheme ?? undefined,
-      properties: computedProperties,
+      properties,
       parentContext: null,
     },
     className,
