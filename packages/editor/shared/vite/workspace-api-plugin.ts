@@ -13,7 +13,7 @@ import type { Connect, Plugin, PreviewServer, ViteDevServer } from "vite"
  */
 
 const pluginDir = path.dirname(fileURLToPath(import.meta.url))
-const repoRoot = path.join(pluginDir, "../../..")
+const repoRoot = path.join(pluginDir, "../../../..")
 const workspacesDir = path.join(repoRoot, ".seldon", "workspaces")
 
 type StoredWorkspace = {

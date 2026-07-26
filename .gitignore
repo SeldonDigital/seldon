@@ -36,4 +36,4 @@ __exports__
 /packages/editor/public/font-licenses
 
 # Shared filesystem workspace store used by both editors
-/.seldon
+.seldon/
