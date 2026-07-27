@@ -1,5 +1,6 @@
 import { CURRENT_WORKSPACE_VERSION } from "../middleware/migration/middleware"
 import type { Workspace } from "../model/workspace"
+import { boardOrderService } from "../services/components/board-order.service"
 import { seedDefaultFontCollectionBoard } from "./seed/seed-default-font-collection-board"
 import { seedDefaultIconSetBoard } from "./seed/seed-default-icon-set-board"
 import { seedDefaultThemeBoard } from "./seed/seed-default-theme-board"
@@ -24,5 +25,7 @@ export function createEmptyWorkspace(): Workspace {
   seedDefaultThemeBoard(workspace)
   seedDefaultFontCollectionBoard(workspace)
   seedDefaultIconSetBoard(workspace)
-  return workspace
+  // Normalize the derived board order up front so the on-load repair is a no-op
+  // for a freshly created workspace.
+  return boardOrderService.realignBoardOrder(workspace)
 }

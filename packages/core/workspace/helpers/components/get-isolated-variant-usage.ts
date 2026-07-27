@@ -1,12 +1,6 @@
-import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
-import { parseNodeTemplate } from "../../types"
+import type { Board, ComponentTreeRef, Workspace } from "../../types"
+import { boardKey, createBoardRefResolver } from "./board-ref-resolver"
 import { walkBoardTreeRefs } from "./walk-board-tree-refs"
-
-/** Catalog id for a component board, or the map key for an authored board. */
-function boardKey(board: Board): string | undefined {
-  if ("catalogId" in board && board.catalogId) return board.catalogId
-  return (board as { id?: string }).id
-}
 
 /**
  * Maps each board reachable from one variant of the isolated board to the exact
@@ -27,46 +21,9 @@ export function getIsolatedVariantUsage(
   workspace: Workspace,
   boards: Board[],
 ): Map<string, Set<string>> {
-  const variantRootToBoardKey = new Map<string, string>()
-  const defaultVariantRootByBoardKey = new Map<string, string>()
-  const boardsByKey = new Map<string, Board>()
-
-  for (const board of boards) {
-    const key = boardKey(board)
-    if (!key) continue
-    boardsByKey.set(key, board)
-    const rootIds = board.variants.map((variant) => variant.id)
-    if (rootIds[0]) defaultVariantRootByBoardKey.set(key, rootIds[0])
-    for (const rootId of rootIds) variantRootToBoardKey.set(rootId, key)
-  }
+  const { boardsByKey, resolveRef } = createBoardRefResolver(workspace, boards)
 
   const usage = new Map<string, Set<string>>()
-
-  // Follows a node's template chain to the variant root of a board it uses. A
-  // chain ending at a catalog id resolves to that board's default variant.
-  const resolveRef = (
-    start: EntryNode,
-  ): { key: string; rootId: string } | null => {
-    const seen = new Set<string>()
-    let current: EntryNode | undefined = start
-    while (current && !seen.has(current.id)) {
-      seen.add(current.id)
-      const key = variantRootToBoardKey.get(current.id)
-      if (key) return { key, rootId: current.id }
-      const parsed = parseNodeTemplate(current.template)
-      if (!parsed) return null
-      if (parsed.kind === "catalog") {
-        const board = boardsByKey.get(parsed.componentId)
-        const boardId = board ? boardKey(board) : undefined
-        const rootId = boardId
-          ? defaultVariantRootByBoardKey.get(boardId)
-          : undefined
-        return boardId && rootId ? { key: boardId, rootId } : null
-      }
-      current = workspace.nodes?.[parsed.nodeId]
-    }
-    return null
-  }
 
   const visited = new Set<string>()
   const queue: { key: string; rootId: string }[] = []

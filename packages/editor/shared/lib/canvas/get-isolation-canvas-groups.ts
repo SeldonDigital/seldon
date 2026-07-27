@@ -58,9 +58,6 @@ export function getIsolationCanvasGroups(
     workspace,
   )
   const isolatedKey = getComponentKey(isolatedBoard)
-  const boardsByKey = new Map(
-    boards.map((board) => [getComponentKey(board), board]),
-  )
 
   const items: IsolationCanvasItem[] = [
     {
@@ -70,11 +67,14 @@ export function getIsolationCanvasGroups(
     },
   ]
 
-  for (const [key, usedRoots] of usage) {
+  // Iterate the shared, already-sorted board list so the canvas order matches the
+  // objects sidebar. Usage only gates inclusion and trims each board's variants.
+  for (const board of boards) {
+    const key = getComponentKey(board)
     if (key === isolatedKey) continue
     if (ISOLATION_EXCLUDED_CATALOG_IDS.has(key)) continue
-    const board = boardsByKey.get(key)
-    if (!board) continue
+    const usedRoots = usage.get(key)
+    if (!usedRoots) continue
     const orderedRoots = getBoardVariantRootIds(board).filter((id) =>
       usedRoots.has(id),
     )
