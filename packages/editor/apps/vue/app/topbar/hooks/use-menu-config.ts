@@ -220,6 +220,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     },
     "separator",
     {
+      id: "direct-select",
+      label: "Direct Select Mode",
+      action: config.toggleDirectSelect,
+      active: config.directSelect,
+      shortcut: "A",
+    },
+    {
       id: "isolated-view",
       label: "Isolation Mode",
       action: toggleIsolation,

@@ -38,6 +38,7 @@ const { activeBoard, activeBoardKey } = useActiveBoard()
 const {
   onCanvasClick,
   onCanvasDblClick,
+  onCanvasMouseDown,
   onCanvasPointerMove,
   onCanvasPointerLeave,
 } = useCanvasTracking()
@@ -241,6 +242,7 @@ watch(
       :style="contentStyle"
       @click="onCanvasClick"
       @dblclick="onCanvasDblClick"
+      @mousedown="onCanvasMouseDown"
       @pointermove="onCanvasPointerMove"
     >
       <div v-if="showIsolationGallery" class="isolation-gallery">
@@ -294,6 +296,9 @@ watch(
   overflow: hidden;
   background: #f4f4f5;
   touch-action: none;
+  /* Default (arrow) rather than auto so canvas nodes inheriting this cursor
+     never fall back to the text I-beam over text content. */
+  cursor: default;
 }
 .canvas-viewport.is-panning {
   cursor: grabbing;

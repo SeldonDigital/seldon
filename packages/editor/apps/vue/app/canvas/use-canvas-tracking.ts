@@ -1,9 +1,15 @@
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
 import { useToastStore } from "@app/toaster/toast-store"
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useObjectHoverStore } from "@app/workspace/object-hover-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
+import {
+  getEditableControl,
+  isEditableControlFocused,
+  isEditableControlNodeSelected,
+} from "@seldon/editor/lib/canvas/dom/editable-control"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
@@ -35,6 +41,7 @@ export function useCanvasTracking() {
   const tool = useToolStore()
   const panel = usePanelStore()
   const toast = useToastStore()
+  const config = useEditorConfigStore()
 
   // Pending deferred single-click selection. A double click clears it so the
   // single click never fires, letting the two gestures drive different behavior.
@@ -79,6 +86,13 @@ export function useCanvasTracking() {
       return
     }
 
+    // While an input is being edited, clicks inside it stay native (caret
+    // placement, text selection) and must not change the canvas selection.
+    const editing = getEditableControl(event.target as Element | null)
+    if (editing && isEditableControlFocused(editing)) {
+      return
+    }
+
     clearPendingSelect()
 
     // Clicking empty canvas keeps the current selection, matching the React
@@ -98,7 +112,9 @@ export function useCanvasTracking() {
     }
 
     const clickedRootId = target.rootId ?? target.id
-    if (event.metaKey || event.ctrlKey) {
+    // Direct select mode selects the exact node on a plain click, as if cmd/ctrl
+    // were held, restoring the pre-drill selection behavior.
+    if (event.metaKey || event.ctrlKey || config.directSelect) {
       const exact = resolveCanvasNodeSelection(
         clickedRootId,
         selection.selectedNodeRootId,
@@ -126,9 +142,51 @@ export function useCanvasTracking() {
     }, SINGLE_CLICK_DELAY_MS)
   }
 
+  function onCanvasMouseDown(event: MouseEvent): void {
+    const control = getEditableControl(event.target as Element | null)
+    if (!control) return
+
+    if (isEditableControlFocused(control)) return
+
+    const enteringEdit =
+      tool.activeTool === "select" &&
+      event.detail >= 2 &&
+      isEditableControlNodeSelected(
+        control,
+        selection.selectedNodeId,
+        selection.selectedNodeRootId,
+      )
+    if (enteringEdit) return
+
+    // Block native focus, caret, and the text cursor so the click selects the
+    // node instead. Editing is granted only by the guards above.
+    event.preventDefault()
+  }
+
   function onCanvasDblClick(event: MouseEvent): void {
     if (tool.activeTool !== "select") return
     if (event.metaKey || event.ctrlKey) return
+
+    // Double clicking a selected input enters edit instead of drilling. The
+    // focus was granted on mousedown; here we only cancel the pending single
+    // click so the selection stays on the input being edited.
+    const control = getEditableControl(event.target as Element | null)
+    if (
+      control &&
+      (isEditableControlFocused(control) ||
+        isEditableControlNodeSelected(
+          control,
+          selection.selectedNodeId,
+          selection.selectedNodeRootId,
+        ))
+    ) {
+      clearPendingSelect()
+      return
+    }
+
+    // Direct select mode selects the exact node on every click, so a double
+    // click has nothing deeper to drill into.
+    if (config.directSelect) return
 
     const target = getSelectionTarget(event.target as Element | null)
     if (!target || target.kind !== "node") return
@@ -162,10 +220,11 @@ export function useCanvasTracking() {
       return
     }
 
-    const mode = event.metaKey || event.ctrlKey ? "exact" : "root"
+    const mode =
+      event.metaKey || event.ctrlKey || config.directSelect ? "exact" : "root"
     const preview = resolveCanvasNodeSelection(
       target.rootId ?? target.id,
-      null,
+      selection.selectedNodeRootId,
       mode,
     )
     hover.setHoveredId(preview.id, "node", preview.rootId)
@@ -178,6 +237,7 @@ export function useCanvasTracking() {
   return {
     onCanvasClick,
     onCanvasDblClick,
+    onCanvasMouseDown,
     onCanvasPointerMove,
     onCanvasPointerLeave,
   }

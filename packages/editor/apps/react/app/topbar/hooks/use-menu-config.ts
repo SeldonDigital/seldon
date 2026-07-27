@@ -71,6 +71,8 @@ export function useMenuConfig(): MenuConfig {
     showCodeNames,
     toggleShowCodeNames,
     isolatedView,
+    directSelect,
+    toggleDirectSelect,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const {
@@ -435,6 +437,13 @@ export function useMenuConfig(): MenuConfig {
       },
       "separator",
       {
+        id: "direct-select",
+        label: "Direct Select Mode",
+        action: toggleDirectSelect,
+        active: directSelect,
+        shortcut: "A",
+      },
+      {
         id: "isolated-view",
         label: "Isolation Mode",
         action: toggleIsolation,
@@ -455,6 +464,8 @@ export function useMenuConfig(): MenuConfig {
     canDeleteSelection,
     duplicateSelection,
     selectedNode,
+    toggleDirectSelect,
+    directSelect,
     toggleIsolation,
     isolatedView,
     canToggleIsolation,

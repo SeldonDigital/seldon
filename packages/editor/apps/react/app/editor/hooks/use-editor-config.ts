@@ -81,6 +81,12 @@ interface EditorConfigState {
   enableIsolation: (boardKey: string, variantRootId: string | null) => void
   disableIsolation: () => void
 
+  // Direct select mode: every canvas click and hover targets the exact node
+  // under the cursor, as if cmd/ctrl were always held. This is the pre-drill
+  // selection behavior. Off by default.
+  directSelect: boolean
+  setDirectSelect: (enabled: boolean) => void
+
   // Objects sidebar: show export component (code) names instead of labels
   showCodeNames: boolean
   setShowCodeNames: (enabled: boolean) => void
@@ -187,6 +193,11 @@ const useStore = create<EditorConfigState>()(
           isolatedVariantRootId: null,
         })),
 
+      // Direct select mode (off by default)
+      directSelect: false,
+      setDirectSelect: (enabled) =>
+        set((state) => ({ ...state, directSelect: enabled })),
+
       // Objects sidebar code names (off by default)
       showCodeNames: false,
       setShowCodeNames: (enabled) =>
@@ -231,6 +242,7 @@ const useStore = create<EditorConfigState>()(
         isolatedView: state.isolatedView,
         isolatedBoardKey: state.isolatedBoardKey,
         isolatedVariantRootId: state.isolatedVariantRootId,
+        directSelect: state.directSelect,
         useRefactoredSidebars: state.useRefactoredSidebars,
         chromeTheme: state.chromeTheme,
         interfaceMode: state.interfaceMode,
@@ -272,6 +284,8 @@ export function useEditorConfig() {
     isolatedVariantRootId,
     enableIsolation,
     disableIsolation,
+    directSelect,
+    setDirectSelect,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
     chromeTheme,
@@ -311,6 +325,8 @@ export function useEditorConfig() {
       isolatedVariantRootId: state.isolatedVariantRootId,
       enableIsolation: state.enableIsolation,
       disableIsolation: state.disableIsolation,
+      directSelect: state.directSelect,
+      setDirectSelect: state.setDirectSelect,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
       chromeTheme: state.chromeTheme,
@@ -363,6 +379,10 @@ export function useEditorConfig() {
   const toggleRefactoredSidebars = useCallback(() => {
     setUseRefactoredSidebars(!useRefactoredSidebars)
   }, [setUseRefactoredSidebars, useRefactoredSidebars])
+
+  const toggleDirectSelect = useCallback(() => {
+    setDirectSelect(!directSelect)
+  }, [setDirectSelect, directSelect])
 
   return {
     showSelection,
@@ -432,6 +452,11 @@ export function useEditorConfig() {
     isolatedVariantRootId,
     enableIsolation,
     disableIsolation,
+
+    // Direct select mode
+    directSelect,
+    setDirectSelect,
+    toggleDirectSelect,
 
     // Sidebar refactor methods
     useRefactoredSidebars,

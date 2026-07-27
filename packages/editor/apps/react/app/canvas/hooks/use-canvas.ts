@@ -2,6 +2,7 @@ import {
   HoverState,
   useCanvasHoverState,
 } from "@app/canvas/hooks/use-canvas-hover-state"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
@@ -14,6 +15,11 @@ import {
   selectFromTarget,
 } from "@app/workspace/selection-target"
 import { getNodeIdForEventTarget } from "@seldon/editor/lib/canvas/dom/canvas-elements"
+import {
+  getEditableControl,
+  isEditableControlFocused,
+  isEditableControlNodeSelected,
+} from "@seldon/editor/lib/canvas/dom/editable-control"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
@@ -54,10 +60,12 @@ export function useCanvas() {
     selectBoard,
     selectResourceEntry,
     selectResourceItem,
+    selectedNodeId,
     selectedNodeRootId,
   } = useSelection()
   const { workspace } = useWorkspace()
   const { activeBoard } = useActiveBoard()
+  const { directSelect } = useEditorConfig()
   const { activeTool, setActiveTool } = useTool()
   const { openPanel } = usePanel()
   const { hoverState, setHoverState } = useCanvasHoverState()
@@ -98,10 +106,11 @@ export function useCanvas() {
       // resources) highlight as-is.
       if (activeTool === "select") {
         if (selectionTarget?.kind === "node") {
-          const mode = event.metaKey || event.ctrlKey ? "exact" : "root"
+          const mode =
+            event.metaKey || event.ctrlKey || directSelect ? "exact" : "root"
           const preview = resolveCanvasNodeSelection(
             selectionTarget.rootId ?? selectionTarget.id,
-            null,
+            selectedNodeRootId,
             mode,
           )
           setHoveredId(preview.id, "node", preview.rootId)
@@ -240,6 +249,8 @@ export function useCanvas() {
       activeBoard,
       activeTool,
       workspace,
+      directSelect,
+      selectedNodeRootId,
       hoverState?.objectId,
       hoverState?.objectType,
       hoverState?.placement,
@@ -381,6 +392,13 @@ export function useCanvas() {
       // tree, a double click drills one level, and cmd/ctrl click selects the
       // exact node under the cursor (the sidebar arrow behavior).
       if (activeTool === "select") {
+        // While an input is being edited, clicks inside it stay native (caret
+        // placement, text selection) and must not change the canvas selection.
+        const editing = getEditableControl(event.target as Element)
+        if (editing && isEditableControlFocused(editing)) {
+          return
+        }
+
         clearPendingSelect()
         const target = getSelectionTarget(event.target as Element)
 
@@ -406,7 +424,9 @@ export function useCanvas() {
         }
 
         const clickedRootId = target.rootId ?? target.id
-        const additive = event.metaKey || event.ctrlKey
+        // Direct select mode selects the exact node on a plain click, as if
+        // cmd/ctrl were held, restoring the pre-drill selection behavior.
+        const additive = event.metaKey || event.ctrlKey || directSelect
         if (additive) {
           const exact = resolveCanvasNodeSelection(
             clickedRootId,
@@ -458,6 +478,7 @@ export function useCanvas() {
       selectResourceEntry,
       selectResourceItem,
       selectedNodeRootId,
+      directSelect,
       clearPendingSelect,
       setHoveredId,
     ],
@@ -472,6 +493,27 @@ export function useCanvas() {
     (event) => {
       if (activeTool !== "select") return
       if (event.metaKey || event.ctrlKey) return
+
+      // Double clicking a selected input enters edit instead of drilling. The
+      // focus was granted on mousedown; here we only cancel the pending single
+      // click so the selection stays on the input being edited.
+      const control = getEditableControl(event.target as Element)
+      if (
+        control &&
+        (isEditableControlFocused(control) ||
+          isEditableControlNodeSelected(
+            control,
+            selectedNodeId,
+            selectedNodeRootId,
+          ))
+      ) {
+        clearPendingSelect()
+        return
+      }
+
+      // Direct select mode selects the exact node on every click, so a double
+      // click has nothing deeper to drill into.
+      if (directSelect) return
 
       const target = getSelectionTarget(event.target as Element)
       if (!target || target.kind !== "node") return
@@ -491,11 +533,41 @@ export function useCanvas() {
     },
     [
       activeTool,
+      selectedNodeId,
       selectedNodeRootId,
+      directSelect,
       selectNode,
       clearPendingSelect,
       setHoveredId,
     ],
+  )
+
+  /**
+   * Blocks native focus, caret, and the text cursor on canvas form controls so a
+   * click selects the node instead. Editing is allowed only when the control is
+   * already being edited, or when a double click lands on a control whose node is
+   * already selected. The insert tool never grants editing.
+   */
+  const handleMouseDown: MouseEventHandler<HTMLDivElement> = useCallback(
+    (event) => {
+      const control = getEditableControl(event.target as Element)
+      if (!control) return
+
+      if (isEditableControlFocused(control)) return
+
+      const enteringEdit =
+        activeTool === "select" &&
+        event.detail >= 2 &&
+        isEditableControlNodeSelected(
+          control,
+          selectedNodeId,
+          selectedNodeRootId,
+        )
+      if (enteringEdit) return
+
+      event.preventDefault()
+    },
+    [activeTool, selectedNodeId, selectedNodeRootId],
   )
 
   const handleMouseLeave: MouseEventHandler<HTMLDivElement> =
@@ -515,6 +587,7 @@ export function useCanvas() {
   return {
     onCanvasMouseLeave: handleMouseLeave,
     onCanvasMouseMove: throttledMouseMove,
+    onCanvasMouseDown: handleMouseDown,
     onCanvasClick: handleClick,
     onCanvasDoubleClick: handleDoubleClick,
   }

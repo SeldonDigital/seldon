@@ -97,6 +97,9 @@ export function useEditorShortcuts(): void {
           event.preventDefault()
           panel.openPanel("add-board")
           tool.setActiveTool("select")
+        } else if (!mod) {
+          event.preventDefault()
+          config.toggleDirectSelect()
         }
         return
       case "t":

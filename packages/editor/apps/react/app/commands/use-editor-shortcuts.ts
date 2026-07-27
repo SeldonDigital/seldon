@@ -58,6 +58,7 @@ export function useEditorShortcuts() {
     toggleShowUnusedProperties,
     toggleShowUnusedFonts,
     toggleShowUnusedIcons,
+    toggleDirectSelect,
   } = useEditorConfig()
   const { toggleIsolation } = useToggleIsolation()
   const { activePanel, openPanel, closePanel } = usePanel()
@@ -185,6 +186,9 @@ export function useEditorShortcuts() {
 
   // Isolation mode
   useHotkeys("i", toggleIsolation, { preventDefault: true })
+
+  // Direct select mode
+  useHotkeys("a", toggleDirectSelect, { preventDefault: true })
 
   // Selection overlay visibility
   useHotkeys("h", () => toggleShowSelection(), { preventDefault: true })

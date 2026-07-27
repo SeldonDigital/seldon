@@ -46,6 +46,7 @@ type PersistedConfig = {
   isolatedView: boolean
   isolatedBoardKey: string | null
   isolatedVariantRootId: string | null
+  directSelect: boolean
   objectsWidth: number
   propertiesWidth: number
   useRefactoredSidebars: boolean
@@ -94,6 +95,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const isolatedVariantRootId = ref<string | null>(
     persisted.isolatedVariantRootId ?? null,
   )
+  const directSelect = ref(persisted.directSelect ?? false)
   const objectsWidth = ref(
     clampSidebarWidth(persisted.objectsWidth ?? SIDEBAR_INITIAL_WIDTH),
   )
@@ -155,6 +157,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     isolatedBoardKey.value = null
     isolatedVariantRootId.value = null
   }
+  function toggleDirectSelect(): void {
+    directSelect.value = !directSelect.value
+  }
   function setComponentHighlightMode(mode: ComponentHighlightMode): void {
     componentHighlightMode.value = mode
   }
@@ -192,6 +197,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
       isolatedView,
       isolatedBoardKey,
       isolatedVariantRootId,
+      directSelect,
       objectsWidth,
       propertiesWidth,
       useRefactoredSidebars,
@@ -217,6 +223,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         isolatedView: isolatedView.value,
         isolatedBoardKey: isolatedBoardKey.value,
         isolatedVariantRootId: isolatedVariantRootId.value,
+        directSelect: directSelect.value,
         objectsWidth: objectsWidth.value,
         propertiesWidth: propertiesWidth.value,
         useRefactoredSidebars: useRefactoredSidebars.value,
@@ -245,6 +252,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     isolatedView,
     isolatedBoardKey,
     isolatedVariantRootId,
+    directSelect,
     objectsWidth,
     propertiesWidth,
     useRefactoredSidebars,
@@ -263,6 +271,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     toggleShowPlayground,
     enableIsolation,
     disableIsolation,
+    toggleDirectSelect,
     setComponentHighlightMode,
     setObjectsView,
     setObjectsWidth,

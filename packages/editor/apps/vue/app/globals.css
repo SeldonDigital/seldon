@@ -26,3 +26,19 @@ body {
     -apple-system,
     sans-serif;
 }
+
+/*
+ * Canvas nodes read as selectable objects, not live controls. Force the cursor
+ * to inherit the canvas cursor (arrow normally, grab while panning) so buttons,
+ * links, and inputs never show the pointer hand or a text I-beam. The cursor
+ * returns to text only while an input is focused, which the canvas allows only
+ * when the user enters edit on a selected node.
+ */
+.canvas-content [data-canvas-node-id] {
+  cursor: inherit;
+}
+.canvas-content input:focus,
+.canvas-content textarea:focus,
+.canvas-content [contenteditable]:not([contenteditable="false"]):focus {
+  cursor: text;
+}

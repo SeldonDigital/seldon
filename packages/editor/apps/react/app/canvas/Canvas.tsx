@@ -44,7 +44,9 @@ function getPanCursor(
 ): CSSProperties["cursor"] {
   if (isPanning) return "grabbing"
   if (isSpacebarPressed) return "grab"
-  return undefined
+  // Default (arrow) rather than auto so canvas nodes inheriting this cursor never
+  // fall back to the text I-beam over text content.
+  return "default"
 }
 
 export const Canvas = () => {

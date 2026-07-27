@@ -11,9 +11,13 @@ export type ResolvedNodeSelection = { id: string; rootId: string }
  * as stamped on `data-selection-root-id`. The current path is the same shape for
  * the active selection, or null when nothing is selected.
  *
- * - `root`: the top-most node of the clicked tree, for a single click.
+ * - `root`: the plain single-click and hover target. With nothing selected it is
+ *   the top-most node of the clicked tree. With a node selected it stays inside
+ *   that node's active container (its parent), so it can move to a sibling at the
+ *   selected level but never climbs above it. Hovering above the container keeps
+ *   the current selection. Going up the tree is reserved for `exact`.
  * - `exact`: the deepest node under the cursor, for a cmd/ctrl click. This is
- *   the plain selection the sidebar arrow produces.
+ *   the plain selection the sidebar arrow produces and the only way up the tree.
  * - `drill`: one level deeper than the current selection along the clicked path,
  *   for a double click. When the current selection is an ancestor on the path,
  *   the next node down that path is selected. Otherwise the gesture enters at the
@@ -32,7 +36,32 @@ export function resolveCanvasNodeSelection(
   }
 
   if (mode === "root") {
-    return { id: path[0], rootId: path[0] }
+    // Nothing selected: highlight the top-most node of the clicked tree.
+    if (!currentRootId) {
+      return { id: path[0], rootId: path[0] }
+    }
+
+    // A node is selected: clamp to its depth so a plain gesture stays within the
+    // active container instead of climbing to an ancestor. The container is the
+    // selected node's parent, i.e. the path prefix above the selected segment.
+    const selectionPath = currentRootId.split("/")
+    const selectedIndex = selectionPath.length - 1
+    const withinContainer =
+      deepestIndex >= selectedIndex &&
+      selectionPath
+        .slice(0, selectedIndex)
+        .every((segment, index) => path[index] === segment)
+
+    // Above or outside the active container: keep the selection so hover and a
+    // plain click never go up the tree.
+    if (!withinContainer) {
+      return { id: selectionPath[selectedIndex], rootId: currentRootId }
+    }
+
+    return {
+      id: path[selectedIndex],
+      rootId: path.slice(0, selectedIndex + 1).join("/"),
+    }
   }
 
   const selectionPath = currentRootId ? currentRootId.split("/") : []

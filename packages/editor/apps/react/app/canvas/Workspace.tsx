@@ -28,6 +28,7 @@ export function CanvasWorkspace() {
   const {
     onCanvasMouseMove,
     onCanvasMouseLeave,
+    onCanvasMouseDown,
     onCanvasClick,
     onCanvasDoubleClick,
   } = useCanvas()
@@ -50,6 +51,7 @@ export function CanvasWorkspace() {
       id="root-tree"
       onClick={onCanvasClick}
       onDoubleClick={onCanvasDoubleClick}
+      onMouseDown={onCanvasMouseDown}
       onMouseLeave={onCanvasMouseLeave}
       onMouseMove={onCanvasMouseMove}
     >

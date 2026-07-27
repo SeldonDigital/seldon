@@ -239,3 +239,19 @@ html,
 body .react-transform-wrapper img {
   pointer-events: auto;
 }
+
+/*
+ * Canvas nodes read as selectable objects, not live controls. Force the cursor
+ * to inherit the canvas cursor (arrow normally, grab while panning) so buttons,
+ * links, and inputs never show the pointer hand or a text I-beam. The cursor
+ * returns to text only while an input is focused, which the canvas allows only
+ * when the user enters edit on a selected node.
+ */
+#root-tree [data-canvas-node-id] {
+  cursor: inherit;
+}
+#root-tree input:focus,
+#root-tree textarea:focus,
+#root-tree [contenteditable]:not([contenteditable="false"]):focus {
+  cursor: text;
+}
