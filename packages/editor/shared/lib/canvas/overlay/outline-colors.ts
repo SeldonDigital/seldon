@@ -1,12 +1,11 @@
 import type { ComponentId } from "@seldon/core/components/constants"
 import type { Board } from "@seldon/core/workspace/types"
-
+import { getComponentKey } from "../../workspace/workspace-accessors"
 import {
   getCanvasElement,
   getHtmlElementByBoardId,
   getHtmlElementByNodeId,
 } from "../dom/canvas-elements"
-import { getComponentKey } from "../../workspace/workspace-accessors"
 
 export interface OutlineColors {
   hover: string

@@ -169,7 +169,5 @@ function LayerInsertIndicator({ placement }: { placement: LayerPlacement }) {
     ...(placement === "before" ? { top: -0.5 } : { bottom: -0.5 }),
   }
 
-  return (
-    <DropIndicator color="var(--sdn-swatch-primary)" position={position} />
-  )
+  return <DropIndicator color="var(--sdn-swatch-primary)" position={position} />
 }

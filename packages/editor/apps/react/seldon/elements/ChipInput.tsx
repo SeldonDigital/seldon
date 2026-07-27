@@ -11,6 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
+
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"

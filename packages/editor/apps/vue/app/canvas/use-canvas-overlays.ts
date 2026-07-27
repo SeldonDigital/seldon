@@ -118,7 +118,10 @@ export function useCanvasOverlays(
   return {
     selectionRect: useSharedStore(overlayStore, (s) => s.selectionRect),
     hoverRect: useSharedStore(overlayStore, (s) => s.hoverRect),
-    selectionColors: useSharedStore(overlayStore, (s) => s.selectionOutlineColors),
+    selectionColors: useSharedStore(
+      overlayStore,
+      (s) => s.selectionOutlineColors,
+    ),
     hoverColors: useSharedStore(overlayStore, (s) => s.hoverOutlineColors),
   }
 }

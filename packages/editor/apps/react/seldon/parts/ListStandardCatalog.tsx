@@ -11,6 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
+
 import { ItemCatalog, ItemCatalogProps } from "../elements/ItemCatalog"
 import { Container, ContainerProps } from "../frames/Container"
 import { Frame, FrameProps } from "../frames/Frame"

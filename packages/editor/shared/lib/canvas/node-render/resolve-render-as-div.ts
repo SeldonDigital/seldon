@@ -1,6 +1,5 @@
 import { ComponentId } from "@seldon/core/components/constants"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
-
 import { collectDescendantNodeIds } from "../../workspace/component-tree"
 import {
   findComponentForNode,

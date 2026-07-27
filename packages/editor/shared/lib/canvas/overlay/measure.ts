@@ -1,6 +1,8 @@
 import { invariant } from "@seldon/core/index"
-
-import { getCanvasElement, getHtmlElementByNodeId } from "../dom/canvas-elements"
+import {
+  getCanvasElement,
+  getHtmlElementByNodeId,
+} from "../dom/canvas-elements"
 import type { NodeRect } from "./geometry"
 import {
   getCanvasSelectionElements,

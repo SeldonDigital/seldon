@@ -2,10 +2,10 @@ import { DropIndicator, OutlineBox } from "@app/overlays"
 import { Placement } from "@seldon/editor/lib/types"
 import { CSSProperties, FC } from "react"
 
-const SELECT_INDICATOR_COLOR = "var(--sdn-swatch-primary)"
-
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
+
+const SELECT_INDICATOR_COLOR = "var(--sdn-swatch-primary)"
 
 type IndicatorSelectProps = {
   placement: Placement

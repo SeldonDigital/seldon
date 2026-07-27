@@ -1,8 +1,7 @@
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
-
-import { getNodeChildIds } from "../../workspace/node-tree"
 import { buildEchoOverrides } from "./build-echo-overrides"
+import { getNodeChildIds } from "../../workspace/node-tree"
 
 /** One rendered child slot, expanded for repeat echoes. */
 export interface ChildRender {
@@ -51,7 +50,10 @@ export function buildChildRenders(
         nodeId: childId,
         rootPath: childRootPath,
         repeatOverrides: isEcho
-          ? { ...repeatOverrides, ...buildEchoOverrides(childRepeat.data, echoIndex) }
+          ? {
+              ...repeatOverrides,
+              ...buildEchoOverrides(childRepeat.data, echoIndex),
+            }
           : repeatOverrides,
         isRepeatCopy: isEcho,
       })

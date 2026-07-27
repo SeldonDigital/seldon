@@ -2,13 +2,12 @@
 
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useSelection } from "@app/workspace/hooks/use-selection"
-import { useEffect, useRef } from "react"
-import { useControls, useTransformContext } from "react-zoom-pan-pinch"
-
 import {
   getCanvasSelectionElements,
   getUnionRect,
 } from "@seldon/editor/lib/canvas/overlay/selection-target"
+import { useEffect, useRef } from "react"
+import { useControls, useTransformContext } from "react-zoom-pan-pinch"
 
 /** Animation duration for the pan-to-selection move (ms). */
 const SCROLL_ANIMATION_MS = 300

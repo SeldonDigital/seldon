@@ -54775,14 +54775,10 @@
       "states": {
         "active": {
           "border": {},
-          "background": [
-            {}
-          ]
+          "background": [{}]
         },
         "hover": {
-          "background": [
-            {}
-          ]
+          "background": [{}]
         },
         "disabled": {
           "border": {},

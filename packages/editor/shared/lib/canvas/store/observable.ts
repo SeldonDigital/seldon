@@ -20,9 +20,7 @@ export function createStore<T extends object>(initial: T): Store<T> {
     return state
   }
 
-  function setState(
-    partial: Partial<T> | ((prev: T) => Partial<T>),
-  ): void {
+  function setState(partial: Partial<T> | ((prev: T) => Partial<T>)): void {
     const patch = typeof partial === "function" ? partial(state) : partial
     let changed = false
     for (const key in patch) {

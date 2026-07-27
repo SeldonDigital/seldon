@@ -18,7 +18,12 @@ export function SelectionOverlay({
   if (!rect) return null
   return (
     <OutlineBox
-      style={outlineBoxStyle(rect, "selection", wireframe, outlineColors?.selection)}
+      style={outlineBoxStyle(
+        rect,
+        "selection",
+        wireframe,
+        outlineColors?.selection,
+      )}
     />
   )
 }

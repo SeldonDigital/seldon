@@ -1,6 +1,8 @@
 import type { Board } from "@seldon/core/workspace/types"
-
-import { getChildNodeIds, getVariantRootIds } from "../../workspace/component-tree"
+import {
+  getChildNodeIds,
+  getVariantRootIds,
+} from "../../workspace/component-tree"
 
 /**
  * Flat list of every node id in a board's variant trees, in the same walk order

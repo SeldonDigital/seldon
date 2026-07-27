@@ -1,9 +1,9 @@
 "use client"
 
+import { bumpRemeasure } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 import { RefObject, useLayoutEffect, useRef } from "react"
 
 import { Workspace } from "@seldon/core"
-import { bumpRemeasure } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 
 const FLIP_DURATION_MS = 200
 const FLIP_EASING = "cubic-bezier(0.2, 0, 0, 1)"

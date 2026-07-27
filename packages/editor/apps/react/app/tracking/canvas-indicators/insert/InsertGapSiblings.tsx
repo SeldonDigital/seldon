@@ -3,11 +3,10 @@
 import { useCanvasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
-import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
-import type { CSSProperties } from "react"
-
 import { getHtmlElementByNodeId } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { resolveOutlineColorsForNode } from "@seldon/editor/lib/canvas/overlay/outline-colors"
+import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
+import type { CSSProperties } from "react"
 
 /** Seldon accent token used for the edge touching the insertion gap. */
 const ACCENT_COLOR = "var(--sdn-swatch-accent)"

@@ -1,13 +1,13 @@
 import {
-  nodeRetrievalService,
   type Board,
   type InstanceId,
   type VariantId,
   type Workspace,
+  nodeRetrievalService,
 } from "@seldon/core"
-import { remeasureStore } from "../remeasure/remeasure-store"
 import { canNodeAcceptChildren } from "../../workspace/can-node-accept-children"
 import type { SelectionKind } from "../../workspace/selection-kind"
+import { remeasureStore } from "../remeasure/remeasure-store"
 import { measureNode, measureSelection, rectsEqual } from "./measure"
 import {
   DEFAULT_OUTLINE_COLORS,

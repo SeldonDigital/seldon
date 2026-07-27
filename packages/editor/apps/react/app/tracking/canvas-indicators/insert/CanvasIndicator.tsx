@@ -1,6 +1,10 @@
 import { IndicatorLine } from "@app/overlays"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
+import {
+  getHtmlElementByBoardId,
+  getHtmlElementByNodeId,
+} from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { Placement } from "@seldon/editor/lib/types"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
@@ -13,10 +17,6 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 
-import {
-  getHtmlElementByBoardId,
-  getHtmlElementByNodeId,
-} from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 type CanvasIndicatorProps = {

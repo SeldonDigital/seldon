@@ -11,8 +11,8 @@ import {
   useSelectedNodeId,
   useSelectedNodeRootId,
 } from "@app/workspace/hooks/use-selection"
-import { useSelectedId } from "@app/workspace/selection-target"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { useSelectedId } from "@app/workspace/selection-target"
 import {
   type OverlayTracker,
   createOverlayTracker,
