@@ -1,6 +1,10 @@
 import { getPropertySchema } from "../../properties/schemas/helpers/get-property-schema"
 import { getPropertyOptions } from "../../properties/schemas/helpers/property-options"
 import type { Theme } from "../../themes/types"
+import {
+  RESERVED_STATE_NAMES,
+  type ReservedStateName,
+} from "../../workspace/model/node-state"
 import type {
   IntentCandidate,
   IntentRule,
@@ -67,13 +71,10 @@ export interface ResolvedToken {
 
 /**
  * Resolves a descriptive word to a real theme token for a property, or undefined
- * when nothing matches. It reads the property's live token list from the
- * computed theme, so it only ever returns a token that exists: a word matches a
- * token id directly, or through the scope's synonym map in the config. This lets
- * "make it big" become `@fontSize.xxlarge` and "primary" become `@swatch.primary`
- * without the model memorizing the scale, and never invents a token a theme does
- * not carry. It always returns the `@scope.id` reference the reducer expects,
- * whether the schema lists tokens prefixed or bare.
+ * when nothing matches. It reads the property's live token list from the computed
+ * theme, so it only returns a token that exists: a word matches a token id
+ * directly or through the scope's synonym map. It always returns the `@scope.id`
+ * reference the reducer expects, whether the schema lists tokens prefixed or bare.
  */
 export function resolveToken(
   word: string,
@@ -220,22 +221,19 @@ function guardState(
   return "fail"
 }
 
-/**
- * The property an intent resolves to for a specific target, its candidates when
- * the target exposes none, or an ambiguous set when several apply with no
- * discriminator. A concept like "size" is ambiguous until a target is known, so
- * this gates the ordered candidates against the component's exposed top-level
- * keys and guards. A guarded candidate that names the target's level or
- * component wins the tiebreak, for example text weight over stroke weight on a
- * bordered text box. Callers pass the target's settable keys and optional
- * level/component, so the same concept routes to `font.size` on text and
- * `width` on a frame without the config assuming one property.
- */
+/** The three outcomes of routing an intent against a target's exposed keys. */
 export type IntentPropertyResolution =
   | { status: "resolved"; propertyPath: string }
   | { status: "ambiguous"; candidates: readonly string[] }
   | { status: "unsupported"; candidates: readonly string[] }
 
+/**
+ * Routes an intent phrase to a property for a specific target. It gates the
+ * ordered candidates against the target's exposed top-level keys and guards, so
+ * "size" resolves to `font.size` on text but `width` on a frame. A guarded
+ * candidate that names the target's level or component wins the tiebreak;
+ * several applicable candidates with no discriminator return "ambiguous".
+ */
 export function resolveIntentProperty(
   phrase: string,
   exposedKeys: ReadonlySet<string>,
@@ -291,4 +289,52 @@ export function resolveSpacingFeel(
       candidate.phrases.some((phrase) => normalizeWord(phrase) === norm),
   )
   return feel ? { id: feel.id, baseSize: feel.baseSize } : undefined
+}
+
+/** One workspace custom state a spoken word can name. */
+export interface CustomStateChoice {
+  key: string
+  label: string
+}
+
+/** An interaction state a word resolves to: its stored key and where it comes from. */
+export interface ResolvedStateName {
+  key: string
+  kind: "reserved" | "custom"
+}
+
+/**
+ * The interaction-state key a spoken word names, or undefined. A word resolves
+ * to a reserved state directly, through a synonym (so "greyed out" -> disabled,
+ * "pressed" -> active), or to a workspace custom state by its key or label. The
+ * returned `key` is the value stored in a node's `states` map. Never resolves
+ * "normal", which is the base layer stored in `overrides`, not a state.
+ */
+export function resolveStateName(
+  word: string,
+  customStates: readonly CustomStateChoice[] = [],
+): ResolvedStateName | undefined {
+  const norm = normalizeWord(word)
+  if (!norm || norm === "normal") return undefined
+
+  const direct = RESERVED_STATE_NAMES.find(
+    (name) => normalizeWord(name) === norm,
+  )
+  if (direct) return { key: direct, kind: "reserved" }
+
+  const synonym = designSemantics.stateSynonyms[norm]
+  if (synonym) return { key: synonym as ReservedStateName, kind: "reserved" }
+
+  const custom = customStates.find(
+    (state) =>
+      normalizeWord(state.key) === norm || normalizeWord(state.label) === norm,
+  )
+  if (custom) return { key: custom.key, kind: "custom" }
+
+  return undefined
+}
+
+/** Every reserved interaction-state name, for tool choices and messages. */
+export function listReservedStateNames(): readonly string[] {
+  return RESERVED_STATE_NAMES
 }

@@ -53,13 +53,6 @@ export interface PropertyEditArgs {
  * scope, and returns a message describing which reach it used. Shared by the
  * `set_properties` tool and the intent verb tools so every property edit goes
  * through one target resolution, scope decision, and cascade guard.
- *
- * The write stays local by default. A cascade ("all") writes the node's shared
- * source, so it only becomes the default when the selection is broad and that
- * source sits on the active board. When "all" would write a source on another
- * board, the edit would change every instance of a shared element across the
- * workspace, so the tool stops and asks the model to confirm the reach instead
- * of bleeding the change silently.
  */
 export function applyPropertyEdit(
   state: PiTurnState,

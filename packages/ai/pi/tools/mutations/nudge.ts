@@ -173,12 +173,10 @@ function buildWrite(
 
 /**
  * Intent verb: step a concept up or down its ordinal scale. It reads the node's
- * current value, moves one step (or more) along the property's theme scale, and
- * writes the new token, so "more space" or "a bit tighter" resolves to a real
- * scale step instead of the model guessing an absolute token. The concept routes
- * to the property the target exposes, so "size" steps font size on text and
- * width on a frame. A bare relative verb like "tighten" carries its own
- * direction, so `direction` is optional when the concept names one.
+ * current token, moves one step (or more) along the property's theme scale, and
+ * writes the new token, so a relative request resolves to a real scale step
+ * rather than the model guessing an absolute one. The concept routes to whichever
+ * property the target exposes; a bare verb like "tighten" carries its direction.
  */
 export function createNudgeTool(
   state: PiTurnState,

@@ -62,13 +62,10 @@ function widthIsFill(workspace: Workspace, nodeId: string): boolean {
 
 /**
  * Intent verb: anchor a node within its container, or align its text. Seldon
- * layout is container-driven, so the property is not obvious: centering a Text
- * whose width fills its box is inline textAlign on the node, but centering a Text
- * that hugs its content, or placing any node at an edge, is the container's align
- * anchor on the parent. This reads the node's width and picks the right property,
- * so "center the title on the card" lands correctly either way. It does not
- * reorder: to move a node to the first or last position in a stack, use
- * reorder_component or move_component.
+ * layout is container-driven, so the property is not obvious: text that fills
+ * its box centers by inline textAlign, while text that hugs its content, or any
+ * node placed at an edge, anchors through the container's align on the parent.
+ * This reads the node's width and picks the right property. It does not reorder.
  */
 export function createSetAlignTool(
   state: PiTurnState,

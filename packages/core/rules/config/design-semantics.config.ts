@@ -3,21 +3,15 @@ import { DesignSemanticsConfig } from "../types/design-semantics-types"
 /**
  * Design Semantics Configuration
  *
- * The single source for how a spoken design concept maps to a concrete property
- * edit. `intents` route a concept to an ordered list of candidate property
- * paths. A concept is only deterministic once a target is known, so the resolver
- * picks the first candidate whose root key the target component exposes; "size"
- * becomes `font.size` on text but `width` on a frame. `tokenSynonyms` map
- * descriptive words to real theme token ids per scope, so a request like
- * "make it big" resolves to `@fontSize.xxlarge` deterministically instead of the
- * model guessing the scale. Magnitude words such as "big" and "bold" live only
- * here, not in intent `phrases`, since they are values on a scale, not concepts.
+ * The single source mapping a spoken design concept to a concrete property edit.
+ * The resolver in `design-semantics.resolve.ts` reads it; each field's contract
+ * lives on the types in `design-semantics-types.ts`.
  *
- * Synonym keys are pre-normalized (lowercase, alphanumerics only), matching the
- * normalization the resolver applies to the user's word. Synonym values are the
- * exact theme token ids from `themes/types/theme-token-ids.ts`; the resolver only
- * returns a token that exists in the live computed theme, so an id that a theme
- * drops never resolves.
+ * Two invariants the resolver relies on: magnitude words like "big" and "bold"
+ * live in `tokenSynonyms`, never in intent `phrases`, since they are values on a
+ * scale, not concepts; and synonym values are real theme token ids, so a word
+ * only resolves to a token the live theme carries. Synonym and state keys are
+ * pre-normalized to lowercase alphanumerics, matching the resolver.
  */
 export const designSemantics: DesignSemanticsConfig = {
   intents: [
@@ -44,7 +38,7 @@ export const designSemantics: DesignSemanticsConfig = {
         "left to right",
       ],
       candidates: ["direction"],
-      note: 'Reading direction is the "direction" property: "ltr" or "rtl". Never fake it with align, margin, padding, float, or orientation.',
+      note: 'Reading direction is the "direction" property: "ltr" or "rtl". Never fake it with align, margin, padding, or float. For laying a container\'s children in a row or column, use "orientation", not direction.',
     },
     {
       id: "weight",
@@ -102,6 +96,48 @@ export const designSemantics: DesignSemanticsConfig = {
       phrases: ["corners", "rounding", "radius", "corner radius", "roundness"],
       candidates: ["corners"],
       note: 'Corner rounding is the "corners" property, an @corners.* token (tight, cozy, open).',
+    },
+    {
+      id: "lineHeight",
+      phrases: ["line height", "leading", "line spacing", "line-height"],
+      candidates: ["font.lineHeight"],
+      note: 'Line height (leading) is the "font" look "lineHeight" facet: an @lineHeight.* token (tight, cozy, open) or a unitless multiplier. It is the space between lines, not the "gap" between elements.',
+    },
+    {
+      id: "letterSpacing",
+      phrases: ["letter spacing", "tracking", "character spacing", "kerning"],
+      candidates: ["font.letterSpacing"],
+      note: 'Letter spacing (tracking) is the "font" look "letterSpacing" facet: an exact px or rem length. There is no theme scale for it.',
+    },
+    {
+      id: "casing",
+      phrases: ["casing", "text case", "capitalization", "uppercase", "lowercase", "all caps", "caps", "capitalize"],
+      candidates: ["font.textCase"],
+      note: 'Casing is the "font" look "textCase" facet: an option "uppercase", "lowercase", "capitalize", or "normal". Do not retype the content to fake caps.',
+    },
+    {
+      id: "decoration",
+      phrases: ["decoration", "text decoration", "underline", "strikethrough", "strike through", "line through", "overline"],
+      candidates: ["textDecoration"],
+      note: 'Text decoration is the "textDecoration" property: an option "underline", "line-through", "overline", or "none".',
+    },
+    {
+      id: "opacity",
+      phrases: ["opacity", "transparency", "fade", "translucency", "see through"],
+      candidates: ["opacity"],
+      note: 'Opacity is the "opacity" property: an exact percentage from 0 to 100. Lower fades the whole element; it is not a color or a background change.',
+    },
+    {
+      id: "orientation",
+      phrases: ["orientation", "layout direction", "row", "column", "stack direction", "horizontal", "vertical"],
+      candidates: ["orientation"],
+      note: 'Layout orientation is the "orientation" property: an option "horizontal" or "vertical". It lays a container\'s children in a row or a column. It is not reading direction (see direction).',
+    },
+    {
+      id: "elevation",
+      phrases: ["elevation", "shadow", "drop shadow", "depth", "raised", "float"],
+      candidates: ["shadow"],
+      note: 'Elevation is a drop shadow, the "shadow" look: an @shadow.* token. Pick a named shadow look from the component vocabulary; do not fake depth with a border or a background.',
     },
   ],
 
@@ -276,6 +312,27 @@ export const designSemantics: DesignSemanticsConfig = {
         xlarge: "xlarge",
       },
     },
+    {
+      scope: "lineHeight",
+      synonyms: {
+        none: "none",
+        solid: "solid",
+        tight: "tight",
+        tightest: "tight",
+        compact: "compact",
+        cozy: "cozy",
+        normal: "cozy",
+        default: "cozy",
+        regular: "cozy",
+        comfortable: "comfortable",
+        relaxed: "comfortable",
+        roomy: "comfortable",
+        open: "open",
+        loose: "open",
+        spacious: "open",
+        airy: "open",
+      },
+    },
   ],
 
   operations: [
@@ -337,4 +394,40 @@ export const designSemantics: DesignSemanticsConfig = {
       baseSize: 1.5,
     },
   ],
+
+  stateSynonyms: {
+    hover: "hover",
+    hovered: "hover",
+    hovering: "hover",
+    mouseover: "hover",
+    onhover: "hover",
+    focus: "focused",
+    focused: "focused",
+    focussed: "focused",
+    onfocus: "focused",
+    active: "active",
+    pressed: "active",
+    press: "active",
+    pushed: "active",
+    mousedown: "active",
+    disabled: "disabled",
+    disable: "disabled",
+    greyedout: "disabled",
+    grayedout: "disabled",
+    inactive: "disabled",
+    selected: "selected",
+    select: "selected",
+    chosen: "selected",
+    checked: "checked",
+    ticked: "checked",
+    error: "error",
+    errored: "error",
+    invalid: "error",
+    dragged: "dragged",
+    dragging: "dragged",
+    drag: "dragged",
+    activated: "activated",
+    toggledon: "activated",
+    toggled: "activated",
+  },
 }

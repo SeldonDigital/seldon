@@ -101,4 +101,12 @@ export interface DesignSemanticsConfig {
   operations: readonly OperationRule[]
   /** Named theme-wide spacing densities, applied through modulation baseSize. */
   spacingFeels: readonly SpacingFeel[]
+  /**
+   * Spoken interaction-state words mapped to a reserved state name. Keys are
+   * normalized (lowercase, alphanumerics only). Values are reserved names from
+   * the workspace node-state model, so "greyed out" resolves to "disabled" and
+   * "pressed" to "active". A word that is already a reserved name or a workspace
+   * custom-state key needs no entry here.
+   */
+  stateSynonyms: Readonly<Record<string, string>>
 }

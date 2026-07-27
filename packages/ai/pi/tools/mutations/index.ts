@@ -23,6 +23,7 @@ import { createSetIconSetOverrideTool } from "./set-icon-set-override"
 import { createSetIconSetSubcategoryPresetTool } from "./set-icon-set-subcategory-preset"
 import { createSetPropertiesTool } from "./set-properties"
 import { createSetSpacingFeelTool } from "./set-spacing-feel"
+import { createSetStateStyleTool } from "./set-state-style"
 import { createSetTextRoleTool } from "./set-text-role"
 import { createSetThemeOverrideTool } from "./set-theme-override"
 
@@ -77,6 +78,7 @@ export function createMutationTools(
       createSetDirectionTool(state, resolved),
       createNudgeTool(state, resolved),
       createSetAlignTool(state, resolved),
+      createSetStateStyleTool(state, resolved),
     )
   }
 

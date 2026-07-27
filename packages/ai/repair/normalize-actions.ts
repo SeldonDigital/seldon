@@ -24,6 +24,7 @@ export interface NormalizeResult {
 const PROPERTY_ACTION_TYPES = new Set([
   "set_node_properties",
   "set_component_properties",
+  "set_node_state_properties",
 ])
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -31,22 +32,15 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * Wraps one loose leaf value into its tagged shape. Models often emit a bare
- * literal (`"italic"`, `12`) or a bare theme reference (`"@swatch.primary"`)
- * instead of the `{ type, value }` object the reducer expects. An `@` reference
- * becomes a theme value tagged by its scope; a bare value matching one of the
- * property's option keywords becomes an option, so a keyword like `"italic"` is
- * stored as the option the editor renders rather than an exact string it flags
- * as invalid; any other primitive becomes an exact value. `schemaKey` is the
- * flattened key the leaf resolves to, so options and theme tags read from the
- * right schema. `resolved` is false when the key could not be mapped to a schema
- * path, so an exact fallback is flagged as a distinct, higher-suspicion repair:
- * with no schema to consult, options and theme tags are invisible, so the exact
- * shape may be wrong. A value already tagged `exact` whose scalar matches one
- * of the property's option keywords is re-tagged to `option`, so a closed-set
- * property a model emits as `{ type: "exact", value: "rtl" }` passes the now
- * strict option-only validation. Other already-tagged and non-scalar values
- * pass through.
+ * Wraps one loose leaf value into its tagged `{ type, value }` shape, the form
+ * the reducer expects. A bare `@` reference becomes a theme value tagged by its
+ * scope; a scalar matching one of the property's option keywords becomes an
+ * option; any other scalar becomes an exact value. An already-tagged `exact`
+ * scalar that matches an option keyword is re-tagged to `option`, so a closed-set
+ * property passes option-only validation. `schemaKey` is the flattened key the
+ * leaf resolves to. When `resolved` is false the key mapped to no schema, so the
+ * exact fallback is flagged as higher-suspicion, since its shape may be wrong.
+ * Non-scalar values pass through unchanged.
  */
 function coerceLeaf(
   schemaKey: string,

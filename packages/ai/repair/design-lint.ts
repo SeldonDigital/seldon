@@ -8,7 +8,10 @@ import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import { isTaggedValue } from "../prompt/property-taxonomy"
 
 /** Actions that carry a `properties` map keyed by a node id the linter can check. */
-const PROPERTY_ACTION_TYPES = new Set(["set_node_properties"])
+const PROPERTY_ACTION_TYPES = new Set([
+  "set_node_properties",
+  "set_node_state_properties",
+])
 
 /** The component identity, level, and settable keys a design check needs. */
 interface Vocabulary {
