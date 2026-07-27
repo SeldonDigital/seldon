@@ -158,9 +158,9 @@ export function ComponentBoard({
     [labelColor],
   )
   const labelNode = boardLabel ? (
-    <div className="isolation-board-label" style={labelStyle}>
+    <Frame className="isolation-board-label" style={labelStyle}>
       {boardLabel}
-    </div>
+    </Frame>
   ) : null
 
   return (

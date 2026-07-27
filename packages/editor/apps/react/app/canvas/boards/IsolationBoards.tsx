@@ -58,7 +58,7 @@ export function IsolationBoards() {
       boards: group.items.map((item) => ({
         key: getComponentKey(item.board),
         board: item.board,
-        label: item.board.label,
+        label: item.label,
         // The anchored board renders only the variant frozen on enable, so
         // selecting other components never brings its other variants back.
         variantRootIds: item.isIsolatedBoard

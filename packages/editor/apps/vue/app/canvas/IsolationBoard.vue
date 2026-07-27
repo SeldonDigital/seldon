@@ -24,9 +24,11 @@ import CanvasNode from "./CanvasNode.vue"
 
 // `variantRootIds` overrides the rendered variants (isolation dependency
 // boards). Omit it for the anchored board, which shows its selected variant.
+// `boardLabel` is the caption from the shared isolation gallery groups.
 const props = defineProps<{
   workspace: Workspace
   board: Board
+  boardLabel: string
   variantRootIds?: string[]
 }>()
 
@@ -45,7 +47,6 @@ const resolvedMode = useResolvedInterfaceMode()
 
 const boardKey = computed(() => getComponentKey(props.board))
 const boardClassName = computed(() => `board-${boardKey.value}`)
-const boardLabel = computed(() => props.board.label)
 
 // The canvas is pinned to the default (light) theme, so its swatch variables
 // never invert. Pick the interface-mode foreground here so the chrome caption

@@ -184,6 +184,7 @@ const isolationRows = computed(() => {
     boards: group.items.map((item) => ({
       key: getComponentKey(item.board),
       board: item.board,
+      label: item.label,
       // The anchored board renders only the variant frozen on enable, so
       // selecting other components never brings its other variants back.
       variantRootIds: item.isIsolatedBoard
@@ -256,6 +257,7 @@ watch(
             :key="item.key"
             :workspace="workspace"
             :board="item.board"
+            :board-label="item.label"
             :variant-root-ids="item.variantRootIds"
           />
         </div>

@@ -2,6 +2,7 @@ import {
   Board,
   ComponentLevel,
   ORDERED_COMPONENT_LEVELS,
+  Workspace,
   getComponentSchema,
   isComponentId,
 } from "@seldon/core"
@@ -9,7 +10,7 @@ import {
   isAuthoredBoard,
   isComponentBoard,
 } from "@seldon/core/workspace/model/components"
-import type { Workspace } from "@seldon/core/workspace/types"
+
 import { ISOLATION_EXCLUDED_CATALOG_IDS } from "../isolation/excluded-boards"
 import { getIsolationUsage } from "../isolation/get-isolation-usage"
 import {
@@ -23,6 +24,11 @@ export interface IsolationCanvasItem {
   variantRootIds: string[]
   /** The anchored board renders its selected variant, not this explicit set. */
   isIsolatedBoard: boolean
+  /**
+   * Caption shown at the board's top-left. The anchored board reads
+   * `Isolation Mode: {variant} · {board}`; dependency boards use the board name.
+   */
+  label: string
 }
 
 export interface IsolationCanvasGroup {
@@ -59,11 +65,18 @@ export function getIsolationCanvasGroups(
   )
   const isolatedKey = getComponentKey(isolatedBoard)
 
+  const anchoredVariantRoot =
+    isolatedVariantRootId ?? getBoardVariantRootIds(isolatedBoard)[0] ?? null
+  const variantName =
+    (anchoredVariantRoot ? workspace.nodes[anchoredVariantRoot]?.label : null) ??
+    isolatedBoard.label
+
   const items: IsolationCanvasItem[] = [
     {
       board: isolatedBoard,
       variantRootIds: getBoardVariantRootIds(isolatedBoard),
       isIsolatedBoard: true,
+      label: `Isolation Mode · ${isolatedBoard.label} / ${variantName}`,
     },
   ]
 
@@ -79,7 +92,12 @@ export function getIsolationCanvasGroups(
       usedRoots.has(id),
     )
     if (orderedRoots.length === 0) continue
-    items.push({ board, variantRootIds: orderedRoots, isIsolatedBoard: false })
+    items.push({
+      board,
+      variantRootIds: orderedRoots,
+      isIsolatedBoard: false,
+      label: board.label,
+    })
   }
 
   const groups: IsolationCanvasGroup[] = []
