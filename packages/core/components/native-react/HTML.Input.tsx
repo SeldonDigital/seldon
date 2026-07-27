@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, Ref } from "react"
+import type { InputHTMLAttributes, Ref } from "react"
 
 export const HTMLInput = ({
   ref,

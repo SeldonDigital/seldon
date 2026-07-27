@@ -10,8 +10,6 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -26,6 +24,8 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface TextOptionProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -90,11 +90,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLParagraph
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLParagraph className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLParagraph>
       )
@@ -103,11 +99,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLSpan
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLSpan className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLSpan>
       )
@@ -116,11 +108,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLAnchor
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLAnchor className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLAnchor>
       )
@@ -129,11 +117,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLabel
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLabel className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLabel>
       )
@@ -142,11 +126,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading1
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading1 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading1>
       )
@@ -155,11 +135,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading2
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading2 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading2>
       )
@@ -168,11 +144,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading3
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading3 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading3>
       )
@@ -181,11 +153,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading4
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading4 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading4>
       )
@@ -194,11 +162,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading5
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading5 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading5>
       )
@@ -207,11 +171,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading6
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading6 className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading6>
       )
@@ -220,11 +180,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLPre
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLPre className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLPre>
       )
@@ -233,11 +189,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLCode
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLCode className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLCode>
       )
@@ -246,11 +198,7 @@ export function TextOption({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLOption
-          className={textOptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLOption className={textOptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLOption>
       )

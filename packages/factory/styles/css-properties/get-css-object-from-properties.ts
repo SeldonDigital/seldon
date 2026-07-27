@@ -1,8 +1,6 @@
-import { Properties } from "@seldon/core"
 import { computeProperties } from "@seldon/core/properties/compute"
 import { debugLog } from "@seldon/core/utils/debug-logger"
 
-import { StyleGenerationContext } from "../types"
 import { getBackgroundStyles } from "./get-background-styles"
 import { getBorderStyles } from "./get-border-styles"
 import { getClipStyles } from "./get-clip-styles"
@@ -27,7 +25,10 @@ import { getSizeStyles } from "./get-size-styles"
 import { getTableStyles } from "./get-table-styles"
 import { getTextStyles } from "./get-text-styles"
 import { toCSSShorthands } from "./to-css-shorthands"
-import { CSSObject } from "./types"
+
+import type { StyleGenerationContext } from "../types"
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
 
 export function getCssObjectFromProperties(
   propertiesSubset: Properties,
@@ -71,23 +72,17 @@ export function getCssObjectFromProperties(
       return styleFunction()
     } catch (error) {
       // Log the error for debugging but don't crash the CSS generation
-      debugLog(
-        "Factory",
-        "getCssObjectFromProperties",
-        "CSS generation error",
-        {
-          styleFunction: styleFunction.name,
-          error: error instanceof Error ? error.message : String(error),
-        },
-      )
+      debugLog("Factory", "getCssObjectFromProperties", "CSS generation error", {
+        styleFunction: styleFunction.name,
+        error: error instanceof Error ? error.message : String(error),
+      })
+
       return {}
     }
   }
 
   let styles: CSSObject = {
-    ...safeGetStyles(() =>
-      getDisplayStyles({ properties: computedProperties }),
-    ),
+    ...safeGetStyles(() => getDisplayStyles({ properties: computedProperties })),
     // styles.backgroundImage is based on multiple properties, so we need to pass in the nodeProperties
     ...safeGetStyles(() =>
       getBackgroundStyles({
@@ -135,9 +130,7 @@ export function getCssObjectFromProperties(
         useThemeVariableReferences,
       }),
     ),
-    ...safeGetStyles(() =>
-      getGridItemStyles({ properties: computedProperties }),
-    ),
+    ...safeGetStyles(() => getGridItemStyles({ properties: computedProperties })),
     ...safeGetStyles(() => getListStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
       getMarginStyles({
@@ -146,9 +139,7 @@ export function getCssObjectFromProperties(
         useThemeVariableReferences,
       }),
     ),
-    ...safeGetStyles(() =>
-      getOpacityStyles({ properties: computedProperties }),
-    ),
+    ...safeGetStyles(() => getOpacityStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
       getPaddingStyles({
         properties: computedProperties,
@@ -157,9 +148,7 @@ export function getCssObjectFromProperties(
         useThemeVariableReferences,
       }),
     ),
-    ...safeGetStyles(() =>
-      getRotationStyles({ properties: computedProperties }),
-    ),
+    ...safeGetStyles(() => getRotationStyles({ properties: computedProperties })),
     ...safeGetStyles(() => getRTLStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
       getShadowStyles({
@@ -196,9 +185,7 @@ export function getCssObjectFromProperties(
         useThemeVariableReferences,
       }),
     ),
-    ...safeGetStyles(() =>
-      getTableStyles({ properties: computedProperties, theme }),
-    ),
+    ...safeGetStyles(() => getTableStyles({ properties: computedProperties, theme })),
     ...safeGetStyles(() =>
       getPositionStyles({
         properties: computedProperties,
@@ -221,7 +208,5 @@ export function getCssObjectFromProperties(
  * @returns The styles object with undefined values filtered out
  */
 function removeUndefinedStyles(styles: CSSObject) {
-  return Object.fromEntries(
-    Object.entries(styles).filter(([_, value]) => value !== undefined),
-  )
+  return Object.fromEntries(Object.entries(styles).filter(([_, value]) => value !== undefined))
 }

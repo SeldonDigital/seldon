@@ -1,4 +1,4 @@
-import { ValueType } from "../../../constants"
+import type { ValueType } from "../../../constants"
 
 /**
  * Right now InheritValue is using the CSS inherit keyword.

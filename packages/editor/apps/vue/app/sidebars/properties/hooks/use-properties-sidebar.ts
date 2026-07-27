@@ -4,17 +4,11 @@ import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
 import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
 import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
 import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
 import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
 import {
-  type FlatProperty,
   flattenNodeProperties,
   getPropertiesSubjectId,
 } from "@seldon/editor/lib/properties/inspector/properties-data"
@@ -28,17 +22,9 @@ import {
   buildThemeResetAction,
 } from "@seldon/editor/lib/themes/build-theme-edit-actions"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 
-import {
-  type Board,
-  type Instance,
-  type Theme,
-  type ThemeCustomTokenSection,
-  type Variant,
-  type Workspace,
-  buildEmptyCustomTokenPayload,
-} from "@seldon/core"
+import { buildEmptyCustomTokenPayload } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
@@ -51,25 +37,41 @@ import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import type { EntryThemeId } from "@seldon/core/workspace/types"
 
 import { getScopedNodeCss } from "../helpers/get-calculated-properties"
-import type { PropertySection } from "../types"
 import { useBorderSideVisibilityStore } from "./use-border-side-visibility"
+
+import type { PropertySection } from "../types"
+import type {
+  Board,
+  Instance,
+  Theme,
+  ThemeCustomTokenSection,
+  Variant,
+  Workspace,
+} from "@seldon/core"
+import type { EntryThemeId } from "@seldon/core/workspace/types"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { ComputedRef } from "vue"
 
 export interface PropertiesSidebarTree {
   workspace: Workspace
   node: Variant | Instance | Board
-  theme?: Theme
   sections: PropertySection[]
   allProperties: FlatProperty[]
-  familyProperties?: FlatProperty[]
-  iconProperties?: FlatProperty[]
   cssStrings: string[]
   cssSelector: string | null
   themeEditingContext: ThemeEditingContext | null
   fontCollectionEditingContext: FontCollectionEditingContext | null
   iconSetEditingContext: IconSetEditingContext | null
+  theme?: Theme
+  familyProperties?: FlatProperty[]
+  iconProperties?: FlatProperty[]
 }
 
 export type PropertiesSidebarState =
@@ -82,13 +84,11 @@ function findBoardForEntry<T extends Board>(
   entryId: string,
 ): T | undefined {
   for (const board of Object.values(workspace.boards)) {
-    if (
-      guard(board) &&
-      board.variants.some((variant) => variant.id === entryId)
-    ) {
+    if (guard(board) && board.variants.some((variant) => variant.id === entryId)) {
       return board
     }
   }
+
   return undefined
 }
 
@@ -121,9 +121,7 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
     const iconEntryId = selectedIconSetEntryId.value
 
     const isThemeEditing = Boolean(themeEntryId && ws.themes[themeEntryId])
-    const isFontEditing = Boolean(
-      fontEntryId && ws["font-collections"][fontEntryId],
-    )
+    const isFontEditing = Boolean(fontEntryId && ws["font-collections"][fontEntryId])
     const isIconEditing = Boolean(iconEntryId && ws["icon-sets"][iconEntryId])
 
     // ---- Theme editing ----
@@ -141,31 +139,24 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
       const boardKey = isBoard(selection)
         ? getComponentKey(selection)
         : (() => {
-            const board = nodeRelationshipService.findBoardForNode(
-              selection,
-              ws,
-            )
+            const board = nodeRelationshipService.findBoardForNode(selection, ws)
+
             return board ? getComponentKey(board) : undefined
           })()
-      const activeState = boardKey
-        ? boardState.getActiveState(boardKey)
-        : undefined
-      const shownBorderSides = borderSides.revealed(
-        getPropertiesSubjectId(selection),
-      )
+      const activeState = boardKey ? boardState.getActiveState(boardKey) : undefined
+      const shownBorderSides = borderSides.revealed(getPropertiesSubjectId(selection))
+
       flatProperties = flattenNodeProperties(
         selection,
         ws,
         theme,
         shownBorderSides,
         activeState,
-      ).filter(
-        (property) =>
-          config.showUnusedProperties || property.status !== "not used",
-      )
+      ).filter((property) => config.showUnusedProperties || property.status !== "not used")
     } else if (isThemeEditing && themeEntryId) {
       const entry = ws.themes[themeEntryId]
       const computedTheme = getComputedTheme(themeEntryId, ws)
+
       theme = computedTheme
       const board = findBoardForEntry(ws, isThemeBoard, themeEntryId)
       const isAuthoredTheme = board ? isAuthoredThemeBoard(board) : false
@@ -173,17 +164,15 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
       // the starting tokens, so its stored map is the theme's base, not
       // overrides. A custom variant of it still layers overrides.
       const isAuthoredDefaultEntry = isAuthoredTheme && entry.type === "default"
-      const baseSwatchIds = new Set(
-        Object.keys(getComputedTheme(entry.template, ws).swatch),
-      )
+      const baseSwatchIds = new Set(Object.keys(getComputedTheme(entry.template, ws).swatch))
+
       flatProperties = flattenThemeProperties(
         computedTheme,
         isAuthoredDefaultEntry ? undefined : entry.overrides,
         baseSwatchIds,
       ).map((property) => ({
         ...property,
-        controlType:
-          property.controlType || getThemePropertyControlType(property),
+        controlType: property.controlType || getThemePropertyControlType(property),
       }))
       metadataVariantLabel = entry.label
       metadataProperties = buildMetadataProperties({
@@ -193,21 +182,18 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
         author: board?.author,
       })
       const canAddCustom = entry.type === "variant"
+
       themeEditingContext = {
         isThemeEditing: true,
         canAddCustom,
         updateThemeProperty: (property, value) => {
-          for (const action of buildThemeEditActions(
-            themeEntryId,
-            property.key,
-            value,
-            ws,
-          )) {
+          for (const action of buildThemeEditActions(themeEntryId, property.key, value, ws)) {
             dispatch(action as never)
           }
         },
         resetThemeProperty: (property) => {
           const action = buildThemeResetAction(themeEntryId, property.key)
+
           if (action) dispatch(action as never)
         },
         addCustomToken: (section: ThemeCustomTokenSection) =>
@@ -234,17 +220,14 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
 
     // ---- Font collection editing ----
     let fontCollectionEditingContext: FontCollectionEditingContext | null = null
+
     if (!selection && isFontEditing && fontEntryId) {
-      const collection = workspaceFontCollectionService.getFontCollection(
-        fontEntryId,
-        ws,
-      )
+      const collection = workspaceFontCollectionService.getFontCollection(fontEntryId, ws)
       const entry = ws["font-collections"][fontEntryId]
+
       if (collection) {
-        const selectionMap = workspaceFontCollectionService.getVariantSelection(
-          fontEntryId,
-          ws,
-        )
+        const selectionMap = workspaceFontCollectionService.getVariantSelection(fontEntryId, ws)
+
         familyProperties = flattenFontCollectionFamilies(
           collection,
           selectionMap,
@@ -259,11 +242,8 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
         fontCollectionEditingContext = {
           isFontCollectionEditing: true,
           updateFontCollectionProperty: (property, value) => {
-            const action = buildFontCollectionEditAction(
-              fontEntryId,
-              property.key,
-              value,
-            )
+            const action = buildFontCollectionEditAction(fontEntryId, property.key, value)
+
             if (action) dispatch(action as never)
           },
         }
@@ -273,16 +253,15 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
 
     // ---- Icon set editing ----
     let iconSetEditingContext: IconSetEditingContext | null = null
+
     if (!selection && isIconEditing && iconEntryId) {
       const set = workspaceIconSetService.getIconSet(iconEntryId, ws)
       const entry = ws["icon-sets"][iconEntryId]
+
       if (set) {
         const inclusion = workspaceIconSetService.getInclusion(iconEntryId, ws)
-        iconProperties = flattenIconSetCategories(
-          set,
-          inclusion,
-          config.showUnusedIcons,
-        )
+
+        iconProperties = flattenIconSetCategories(set, inclusion, config.showUnusedIcons)
         metadataVariantLabel = entry?.label
         metadataProperties = buildMetadataProperties({
           name: entry?.label ?? set.metadata.name,
@@ -292,11 +271,8 @@ export function usePropertiesSidebar(): ComputedRef<PropertiesSidebarState> {
         iconSetEditingContext = {
           isIconSetEditing: true,
           updateIconSetProperty: (property, value) => {
-            const action = buildIconSetEditAction(
-              iconEntryId,
-              property.key,
-              value,
-            )
+            const action = buildIconSetEditAction(iconEntryId, property.key, value)
+
             if (action) dispatch(action as never)
           },
         }

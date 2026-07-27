@@ -1,6 +1,6 @@
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { storeToRefs } from "pinia"
-import { type Ref, onBeforeUnmount, ref, watch } from "vue"
+import { onBeforeUnmount, ref, watch } from "vue"
 
 import {
   INTERFACE_SWATCH_TOKENS,
@@ -8,6 +8,8 @@ import {
   TOPBAR_RESTING_TOKENS,
   TOPBAR_STOP_POSITIONS,
 } from "../seldon-gradient"
+
+import type { Ref } from "vue"
 
 /** One running segment (one random color hop) lasts this long. */
 const SEGMENT_MS = 800
@@ -29,7 +31,9 @@ interface Stop {
 
 function parseRgb(color: string): [number, number, number] {
   const match = color.match(/rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/)
+
   if (!match) return [0, 0, 0]
+
   return [Number(match[1]), Number(match[2]), Number(match[3])]
 }
 
@@ -43,6 +47,7 @@ function rgbToHsl(r: number, g: number, b: number): Hsl {
   const l = (max + min) / 2
   let h = 0
   let s = 0
+
   if (delta !== 0) {
     s = delta / (1 - Math.abs(2 * l - 1))
     if (max === r) h = 60 * (((g - b) / delta) % 6)
@@ -50,6 +55,7 @@ function rgbToHsl(r: number, g: number, b: number): Hsl {
     else h = 60 * ((r - g) / delta + 4)
     if (h < 0) h += 360
   }
+
   return { h, s: s * 100, l: l * 100 }
 }
 
@@ -60,19 +66,24 @@ function rgbToHsl(r: number, g: number, b: number): Hsl {
  */
 function resolveHsl(tokens: readonly string[], element: HTMLElement): Hsl[] {
   const probe = document.createElement("span")
+
   probe.style.cssText = "position:absolute;left:-9999px;width:0;height:0;"
   element.appendChild(probe)
   const colors = tokens.map((token) => {
     probe.style.color = `var(${token})`
+
     return rgbToHsl(...parseRgb(getComputedStyle(probe).color))
   })
+
   element.removeChild(probe)
+
   return colors
 }
 
 /** Interpolates hue along the shortest arc, so colors stay saturated in transit. */
 function lerpHue(a: number, b: number, t: number): number {
   const delta = ((b - a + 540) % 360) - 180
+
   return (a + delta * t + 360) % 360
 }
 
@@ -91,8 +102,10 @@ function easeInOut(t: number): number {
 function buildGradient(colors: Hsl[]): string {
   const stops = colors.map((color, index) => {
     const position = TOPBAR_STOP_POSITIONS[index]
+
     return `hsl(${color.h.toFixed(1)} ${color.s.toFixed(1)}% ${color.l.toFixed(1)}%) ${position}%`
   })
+
   return `linear-gradient(90deg, ${stops.join(", ")})`
 }
 
@@ -101,18 +114,24 @@ function createIndexBag(length: number): () => number {
   let bag: number[] = []
   let pointer = 0
   let lastIndex = -1
+
   const reshuffle = () => {
     bag = Array.from({ length }, (_, index) => index)
+
     for (let i = length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
+
       ;[bag[i], bag[j]] = [bag[j], bag[i]]
     }
+
     if (length > 1 && bag[0] === lastIndex) [bag[0], bag[1]] = [bag[1], bag[0]]
     pointer = 0
   }
+
   return () => {
     if (pointer >= bag.length) reshuffle()
     lastIndex = bag[pointer++]
+
     return lastIndex
   }
 }
@@ -136,9 +155,7 @@ function createController(element: HTMLElement) {
   let nextIndex = createIndexBag(INTERFACE_SWATCH_TOKENS.length)
 
   const paint = () => {
-    element.style.backgroundImage = buildGradient(
-      stops.map((stop) => stop.current),
-    )
+    element.style.backgroundImage = buildGradient(stops.map((stop) => stop.current))
   }
 
   const beginSegment = (now: number, chooseTargets: () => void) => {
@@ -169,17 +186,23 @@ function createController(element: HTMLElement) {
   const frame = (now: number) => {
     const t = Math.min((now - segmentStart) / segmentMs, 1)
     const eased = easeInOut(t)
-    for (const stop of stops)
+
+    for (const stop of stops) {
       stop.current = lerpHsl(stop.start, stop.target, eased)
+    }
+
     paint()
+
     if (t >= 1) {
       if (phase === "running") {
         beginSegment(now, aimRandom)
       } else {
         finish()
+
         return
       }
     }
+
     raf = requestAnimationFrame(frame)
   }
 
@@ -187,6 +210,7 @@ function createController(element: HTMLElement) {
     palette = resolveHsl(INTERFACE_SWATCH_TOKENS, element)
     resting = resolveHsl(TOPBAR_RESTING_TOKENS, element)
     nextIndex = createIndexBag(INTERFACE_SWATCH_TOKENS.length)
+
     if (stops.length === 0) {
       stops = resting.map((color) => ({
         current: { ...color },
@@ -194,6 +218,7 @@ function createController(element: HTMLElement) {
         target: { ...color },
       }))
     }
+
     phase = "running"
     segmentMs = SEGMENT_MS
     element.classList.add(TOPBAR_GRADIENT_ACTIVE_CLASS)

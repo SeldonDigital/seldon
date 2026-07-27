@@ -1,10 +1,11 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
   typeCheckingService,
   workspaceMutationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Reverts an instance to the terminal of its template chain (its original).
@@ -21,12 +22,10 @@ export function resetInstanceToOriginal(
   }
 
   const node = nodeRetrievalService.getNode(payload.instanceId, workspace)
+
   if (!typeCheckingService.isInstance(node)) {
     return workspace
   }
 
-  return workspaceMutationService.resetInstanceToOriginal(
-    payload.instanceId,
-    workspace,
-  )
+  return workspaceMutationService.resetInstanceToOriginal(payload.instanceId, workspace)
 }

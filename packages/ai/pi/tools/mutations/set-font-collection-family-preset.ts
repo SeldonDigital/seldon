@@ -1,14 +1,12 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import { commit, textResult } from "./commit"
 
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
-import { commit, textResult } from "./commit"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** Turns a whole font family (slot) on or off in the selected font collection. */
 export function createSetFontCollectionFamilyPresetTool(
@@ -31,14 +29,14 @@ export function createSetFontCollectionFamilyPresetTool(
       }),
       preset: Type.Union([Type.Literal("all"), Type.Literal("none")]),
     }),
+
     execute: async (_id, params) => {
-      const fontCollectionId =
-        params.fontCollectionId ?? resolved.resourceTargetId
+      const fontCollectionId = params.fontCollectionId ?? resolved.resourceTargetId
+
       if (!fontCollectionId) {
-        return textResult(
-          "No font collection is selected. Pass fontCollectionId.",
-        )
+        return textResult("No font collection is selected. Pass fontCollectionId.")
       }
+
       return textResult(
         commit(state, {
           type: "set_font_collection_family_preset",

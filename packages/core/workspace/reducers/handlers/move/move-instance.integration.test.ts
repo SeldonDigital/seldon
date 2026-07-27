@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { moveInstance } from "./move-instance"
+
+import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 
 const buildButton = () =>
   addComponent(
@@ -32,6 +33,7 @@ describe("moveInstance", () => {
     )
 
     const after = (defaultTree(next).children ?? []).map((child) => child.id)
+
     expect(after[0]).toBe(moved)
     expect(after).toHaveLength(before.length)
     expect(next).not.toBe(workspace)

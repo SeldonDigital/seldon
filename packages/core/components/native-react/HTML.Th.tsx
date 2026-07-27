@@ -1,8 +1,5 @@
-import { ThHTMLAttributes } from "react"
+import type { ThHTMLAttributes } from "react"
 
-export const HTMLTh = ({
-  style,
-  ...props
-}: ThHTMLAttributes<HTMLTableCellElement>) => {
+export const HTMLTh = ({ style, ...props }: ThHTMLAttributes<HTMLTableCellElement>) => {
   return <th style={{ ...style }} {...props} />
 }

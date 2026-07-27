@@ -26,6 +26,7 @@ const GRADIENT_TYPE_TO_KIND: Record<string, string> = {
 function readOptionValue(cell: unknown): string | undefined {
   if (!cell || typeof cell !== "object") return undefined
   const value = (cell as { value?: unknown }).value
+
   return typeof value === "string" ? value : undefined
 }
 
@@ -34,9 +35,12 @@ function treeHasLegacyGradient(value: unknown): boolean {
   if (Array.isArray(value)) {
     return value.some(treeHasLegacyGradient)
   }
+
   if (!value || typeof value !== "object") return false
   const record = value as Record<string, unknown>
+
   if (readOptionValue(record.kind) === LEGACY_GRADIENT_KIND) return true
+
   return Object.values(record).some(treeHasLegacyGradient)
 }
 
@@ -44,14 +48,17 @@ function treeHasLegacyGradient(value: unknown): boolean {
 function rewriteGradientLayers(value: unknown): void {
   if (Array.isArray(value)) {
     for (const item of value) rewriteGradientLayers(item)
+
     return
   }
+
   if (!value || typeof value !== "object") return
   const record = value as Record<string, unknown>
 
   if (readOptionValue(record.kind) === LEGACY_GRADIENT_KIND) {
     const gradientType = readOptionValue(record.gradientType) ?? "linear"
     const nextKind = GRADIENT_TYPE_TO_KIND[gradientType] ?? "linearGradient"
+
     ;(record.kind as { value: unknown }).value = nextKind
     delete record.gradientType
   }
@@ -62,8 +69,8 @@ function rewriteGradientLayers(value: unknown): void {
 /** True when any board, node, or node state holds a legacy gradient layer. */
 function migrationApplies(workspace: Workspace): boolean {
   for (const board of Object.values(workspace.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties && treeHasLegacyGradient(componentProperties)) {
       return true
     }
@@ -83,8 +90,8 @@ export function migrateV10GradientKinds(workspace: Workspace): Workspace {
   const next = structuredClone(workspace)
 
   for (const board of Object.values(next.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties) rewriteGradientLayers(componentProperties)
   }
 

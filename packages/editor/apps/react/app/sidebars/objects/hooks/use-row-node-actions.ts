@@ -1,8 +1,6 @@
-import { MenuEntry } from "@app/menus"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { usePropertiesClipboard } from "@app/workspace/hooks/use-properties-clipboard"
 import { useSelectionActions } from "@app/workspace/hooks/use-selection"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import {
   buildDefaultSnippet,
@@ -12,7 +10,6 @@ import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-sche
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
-import { InstanceId, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
@@ -26,6 +23,10 @@ import {
   resolveSourceNodeId,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { MenuEntry } from "@app/menus"
+import type { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import type { InstanceId, VariantId } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
 type Workspace = ReturnType<typeof useWorkspace>["workspace"]
@@ -54,9 +55,7 @@ export function useRowNodeActions({
 }: RowNodeActionsInput): MenuEntry[] {
   const addToast = useAddToast()
   const { selectNode } = useSelectionActions()
-  const hasClipboardProperties = usePropertiesClipboard(
-    (state) => state.properties !== null,
-  )
+  const hasClipboardProperties = usePropertiesClipboard((state) => state.properties !== null)
 
   const nodeExistsInWorkspace = hasNode(workspace, node.id)
   const catalogComponentId = nodeExistsInWorkspace
@@ -71,22 +70,15 @@ export function useRowNodeActions({
     !!catalogComponentId &&
     isComponentId(catalogComponentId) &&
     (getComponentSchema(catalogComponentId).variants ?? []).some(
-      (variant) =>
-        componentBoardSchemaVariantNodeId(catalogComponentId, variant.id) ===
-        node.id,
+      (variant) => componentBoardSchemaVariantNodeId(catalogComponentId, variant.id) === node.id,
     )
 
   // Instance resets walk the template chain. Source is the node one hop up;
   // Original is the chain terminal. Disable a target that does not resolve to a
   // different node, and drop Original when it matches Source.
-  const isInstanceNode =
-    nodeExistsInWorkspace && typeCheckingService.isInstance(node)
-  const instanceSourceId = isInstanceNode
-    ? resolveSourceNodeId(workspace, node.id)
-    : null
-  const instanceOriginalId = isInstanceNode
-    ? resolveOriginalNodeId(workspace, node.id)
-    : null
+  const isInstanceNode = nodeExistsInWorkspace && typeCheckingService.isInstance(node)
+  const instanceSourceId = isInstanceNode ? resolveSourceNodeId(workspace, node.id) : null
+  const instanceOriginalId = isInstanceNode ? resolveOriginalNodeId(workspace, node.id) : null
   const canResetToSource = !!instanceSourceId && instanceSourceId !== node.id
   const canResetToOriginal =
     !!instanceOriginalId &&
@@ -150,6 +142,7 @@ export function useRowNodeActions({
         testId: `object-panel-node-${node.id}-reset-to-catalog`,
       })
     }
+
     return buildResetMenuEntry({
       id: "reset-to-catalog",
       label: "Reset to Catalog",
@@ -188,31 +181,40 @@ export function useRowNodeActions({
   async function handleCopyJson() {
     if (typeCheckingService.isInstance(node)) {
       addToast("Nested children cannot be copied as schema JSON")
+
       return
     }
+
     const snippet = typeCheckingService.isDefaultVariant(node)
       ? buildDefaultSnippet(node, workspace)
       : buildVariantSnippet(node, workspace)
+
     if (!snippet) {
       addToast("Could not resolve a catalog component for the selection")
+
       return
     }
+
     await navigator.clipboard.writeText(serializeSchemaSnippet(snippet))
     addToast("Schema JSON copied to clipboard")
   }
 
   function handleCopyProperties() {
     const effective = coreGetEffectiveProperties(node.id, workspace)
+
     usePropertiesClipboard.getState().setProperties(structuredClone(effective))
     addToast("Properties copied")
   }
 
   function handlePasteProperties() {
     const clipboard = usePropertiesClipboard.getState().properties
+
     if (!clipboard) {
       addToast("No properties to paste")
+
       return
     }
+
     dispatch({
       type: "paste_node_properties",
       payload: {
@@ -224,17 +226,21 @@ export function useRowNodeActions({
 
   function handleDelete() {
     const isVariant = typeCheckingService.isVariant(node)
+
     if (isVariant && isVariantInUse(node.id, workspace)) {
       const confirmed = window.confirm(
         "This variant is used in other components. Deleting it will also remove it from those components. Delete anyway?",
       )
+
       if (!confirmed) return
     }
+
     const subject = nodeRetrievalService.getNode(node.id, workspace)
     const adjacentId =
       nodeRelationshipService.findAdjacent(subject, "before", workspace)?.id ??
       nodeRelationshipService.findAdjacent(subject, "after", workspace)?.id ??
       null
+
     if (isVariant) {
       dispatch({
         type: "remove_variant",
@@ -246,6 +252,7 @@ export function useRowNodeActions({
         payload: { instanceId: node.id as InstanceId },
       })
     }
+
     selectNode(adjacentId as VariantId | InstanceId | null)
   }
 
@@ -330,9 +337,7 @@ export function useRowNodeActions({
       const entries: MenuEntry[] = [
         {
           id: "duplicate",
-          label: isDefault
-            ? `Duplicate ${node.label} Default`
-            : `Duplicate ${node.label}`,
+          label: isDefault ? `Duplicate ${node.label} Default` : `Duplicate ${node.label}`,
           onSelect: handleDuplicate,
           testId: `object-panel-node-${node.id}-duplicate`,
         },
@@ -385,6 +390,7 @@ export function useRowNodeActions({
       if (!isAuthored) {
         entries.push(buildVariantResetAction())
       }
+
       return entries
     }
 

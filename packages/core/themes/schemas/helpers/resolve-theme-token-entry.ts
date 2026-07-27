@@ -1,7 +1,8 @@
-import type { ThemeTokenSchema } from "../../types/schema"
-import type { ComputedTheme, StockTheme } from "../../types/theme"
 import { getAllThemeTokenSchemas } from "./get-all-theme-token-schemas"
 import { getThemeTokenSchema } from "./get-theme-token-schema"
+
+import type { ThemeTokenSchema } from "../../types/schema"
+import type { ComputedTheme, StockTheme } from "../../types/theme"
 
 /**
  * Resolves a theme token catalog entry by key: static catalog first (with property-key merge), then
@@ -12,7 +13,9 @@ export function resolveThemeTokenEntry(
   theme?: StockTheme | ComputedTheme,
 ): ThemeTokenSchema | undefined {
   const staticEntry = getThemeTokenSchema(key)
+
   if (staticEntry) return staticEntry
   if (!theme) return undefined
+
   return getAllThemeTokenSchemas(theme).find((entry) => entry.key === key)
 }

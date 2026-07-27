@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { EntryNode } from "../../types"
 import { getNextVariantLabel } from "./get-next-variant-label"
 import { isDefaultVariant } from "./is-default-variant"
 import { isUserVariant } from "./is-user-variant"
+
+import type { EntryNode } from "../../types"
 
 describe("getNextVariantLabel", () => {
   it("starts at zero-padded 01", () => {
@@ -11,13 +12,12 @@ describe("getNextVariantLabel", () => {
   })
 
   it("skips taken labels", () => {
-    expect(getNextVariantLabel("Base", new Set(["Base 01", "Base 02"]))).toBe(
-      "Base 03",
-    )
+    expect(getNextVariantLabel("Base", new Set(["Base 01", "Base 02"]))).toBe("Base 03")
   })
 
   it("drops padding past nine", () => {
     const taken = new Set(Array.from({ length: 9 }, (_, i) => `Base 0${i + 1}`))
+
     expect(getNextVariantLabel("Base", taken)).toBe("Base 10")
   })
 })

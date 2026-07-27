@@ -48,9 +48,7 @@ export function resolveCanvasNodeSelection(
     const selectedIndex = selectionPath.length - 1
     const withinContainer =
       deepestIndex >= selectedIndex &&
-      selectionPath
-        .slice(0, selectedIndex)
-        .every((segment, index) => path[index] === segment)
+      selectionPath.slice(0, selectedIndex).every((segment, index) => path[index] === segment)
 
     // Above or outside the active container: keep the selection so hover and a
     // plain click never go up the tree.
@@ -66,10 +64,10 @@ export function resolveCanvasNodeSelection(
 
   const selectionPath = currentRootId ? currentRootId.split("/") : []
   const selectionOnPath =
-    selectionPath.length > 0 &&
-    selectionPath.every((segment, index) => path[index] === segment)
+    selectionPath.length > 0 && selectionPath.every((segment, index) => path[index] === segment)
 
   let index: number
+
   if (selectionOnPath && selectionPath.length <= deepestIndex) {
     index = selectionPath.length
   } else if (selectionOnPath) {

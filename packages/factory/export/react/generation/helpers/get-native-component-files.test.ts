@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest"
 
-import { Workspace } from "@seldon/core"
 import { HtmlElement, WrapperElement } from "@seldon/core/properties"
 
-import { ExportAssetReader } from "../../../asset-reader"
-import { ComponentToExport, ExportOptions } from "../../../types"
 import { getNativeComponentFiles } from "./get-native-component-files"
 
-const emptyWorkspace = (): Workspace =>
-  ({ nodes: {}, playgrounds: {} }) as unknown as Workspace
+import type { ExportAssetReader } from "../../../asset-reader"
+import type { ComponentToExport, ExportOptions } from "../../../types"
+import type { Workspace } from "@seldon/core"
+
+const emptyWorkspace = (): Workspace => ({ nodes: {}, playgrounds: {} }) as unknown as Workspace
 
 const reader: ExportAssetReader = {
   readNativeComponent: (fileStem: string) => `// ${fileStem}`,
@@ -42,9 +42,7 @@ const stems = (component: ComponentToExport): string[] =>
 
 describe("getNativeComponentFiles", () => {
   it("always writes HTML.Div", () => {
-    expect(stems(wrapperComponent([WrapperElement.SECTION]))).toContain(
-      "HTML.Div",
-    )
+    expect(stems(wrapperComponent([WrapperElement.SECTION]))).toContain("HTML.Div")
   })
 
   it("writes a native wrapper for every wrapperElement switch option", () => {
@@ -56,20 +54,15 @@ describe("getNativeComponentFiles", () => {
         WrapperElement.FIELDSET,
       ]),
     )
+
     expect(written).toEqual(
-      expect.arrayContaining([
-        "HTML.Article",
-        "HTML.Section",
-        "HTML.Blockquote",
-        "HTML.Fieldset",
-      ]),
+      expect.arrayContaining(["HTML.Article", "HTML.Section", "HTML.Blockquote", "HTML.Fieldset"]),
     )
   })
 
   it("writes a native wrapper for every htmlElement switch option", () => {
-    const written = stems(
-      htmlElementComponent([HtmlElement.UL, HtmlElement.OL]),
-    )
+    const written = stems(htmlElementComponent([HtmlElement.UL, HtmlElement.OL]))
+
     expect(written).toEqual(expect.arrayContaining(["HTML.Ul", "HTML.Ol"]))
   })
 })

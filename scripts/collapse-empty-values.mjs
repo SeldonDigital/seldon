@@ -45,9 +45,7 @@ async function run() {
     }),
   )
 
-  console.info(
-    `collapse-empty-values: scanned ${files.length} schema file(s), updated ${changed}.`,
-  )
+  console.info(`collapse-empty-values: scanned ${files.length} schema file(s), updated ${changed}.`)
 }
 
 run().catch((error) => {

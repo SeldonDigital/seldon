@@ -1,21 +1,17 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentLevel, isComponentId } from "../../../components/constants"
+import { isComponentId } from "../../../components/constants"
 import { rules } from "../../../rules/config/rules.config"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
 import { getVariantTree } from "../../helpers/components/get-variant-tree"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeCatalogId } from "../../helpers/nodes/get-node-catalog-id"
-import type {
-  ComponentTreeRef,
-  EntryNodeId,
-  InstanceId,
-  VariantId,
-  Workspace,
-} from "../../types"
 import { typeCheckingService } from "../type-checking/type-checking.service"
 import { nodeRelationshipService } from "./node-relationship.service"
 import { nodeTraversalService } from "./node-traversal.service"
+
+import type { ComponentLevel } from "../../../components/constants"
+import type { ComponentTreeRef, EntryNodeId, InstanceId, VariantId, Workspace } from "../../types"
 
 /**
  * Directional moves for an instance, expressed as steps through a document-order
@@ -32,22 +28,19 @@ export interface MoveTarget {
 }
 
 /** Resolves a node's component level through `node:` links, or `null`. */
-function getNodeLevel(
-  workspace: Workspace,
-  nodeId: EntryNodeId,
-): ComponentLevel | null {
+function getNodeLevel(workspace: Workspace, nodeId: EntryNodeId): ComponentLevel | null {
   const node = getWorkspaceNodes(workspace)[nodeId]
+
   if (!node) return null
   const catalogId = getNodeCatalogId(node, workspace)
+
   if (!catalogId || !isComponentId(catalogId)) return null
+
   return getComponentSchema(catalogId).level
 }
 
 /** Whether a parent of `parentLevel` may contain a child of `childLevel`. */
-function levelAccepts(
-  parentLevel: ComponentLevel,
-  childLevel: ComponentLevel,
-): boolean {
+function levelAccepts(parentLevel: ComponentLevel, childLevel: ComponentLevel): boolean {
   return rules.componentLevels[parentLevel].mayContain.includes(childLevel)
 }
 
@@ -72,18 +65,19 @@ function buildSlots(
 
   function walk(ref: ComponentTreeRef): void {
     const level = getNodeLevel(workspace, ref.id)
+
     if (level === null) return
 
     const accepts = levelAccepts(level, selectedLevel)
-    const children = (ref.children ?? []).filter(
-      (child) => child.id !== selectedId,
-    )
+    const children = (ref.children ?? []).filter((child) => child.id !== selectedId)
 
     for (let index = 0; index <= children.length; index++) {
       if (accepts) slots.push({ parentId: ref.id, index })
+
       if (index < children.length) {
         const child = children[index]
         const childLevel = getNodeLevel(workspace, child.id)
+
         if (childLevel !== null && isContainerLevel(childLevel)) {
           walk(child)
         }
@@ -92,6 +86,7 @@ function buildSlots(
   }
 
   walk(rootRef)
+
   return slots
 }
 
@@ -108,29 +103,37 @@ export function resolveInstanceMoveTarget(
   direction: MoveDirection,
 ): MoveTarget | null {
   const node = getWorkspaceNodes(workspace)[instanceId]
+
   if (!node || !typeCheckingService.isInstance(node)) return null
 
   const rootVariant = nodeRelationshipService.getRootVariant(node, workspace)
+
   if (typeCheckingService.isDefaultVariant(rootVariant)) return null
 
   const board = getBoardByNodeId(workspace, instanceId)
+
   if (!board) return null
 
   const rootRef = getVariantTree(board, rootVariant.id)
+
   if (!rootRef) return null
 
   const selectedLevel = getNodeLevel(workspace, instanceId)
+
   if (selectedLevel === null) return null
 
   const parent = nodeTraversalService.findParentNode(instanceId, workspace)
+
   if (!parent) return null
   const currentIndex = getChildrenIds(board, parent.id).indexOf(instanceId)
+
   if (currentIndex === -1) return null
 
   const slots = buildSlots(workspace, rootRef, instanceId, selectedLevel)
   const currentPos = slots.findIndex(
     (slot) => slot.parentId === parent.id && slot.index === currentIndex,
   )
+
   if (currentPos === -1) return null
 
   switch (direction) {

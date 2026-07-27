@@ -1,9 +1,9 @@
-import { Tool } from "@app/editor/hooks/use-tool"
 import { isInsertionAllowed } from "@app/workspace/is-insertion-allowed"
-import { Placement } from "@seldon/editor/lib/types"
 
-import { Workspace } from "@seldon/core"
-import { InstanceId, VariantId } from "@seldon/core/index"
+import type { Tool } from "@app/editor/hooks/use-tool"
+import type { Workspace } from "@seldon/core"
+import type { InstanceId, VariantId } from "@seldon/core/index"
+import type { Placement } from "@seldon/editor/lib/types"
 
 /**
  * Checks if insertion is allowed for a given object, placement, and tool.
@@ -33,13 +33,8 @@ export function checkInsertionPoint(
   }
 
   try {
-    return isInsertionAllowed(
-      objectId as InstanceId | VariantId,
-      placement,
-      workspace,
-      tool,
-    )
-  } catch (error) {
+    return isInsertionAllowed(objectId as InstanceId | VariantId, placement, workspace, tool)
+  } catch {
     // Node doesn't exist in workspace (virtual node), insertion not allowed
     return false
   }

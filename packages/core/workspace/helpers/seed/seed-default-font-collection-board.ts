@@ -1,22 +1,23 @@
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../font-collections/catalog/google/default-enabled-families"
-import type { FontCollectionTemplateId } from "../../../font-collections/types"
-import type { Board, FontCollectionBoard } from "../../model/components"
 import { isFontCollectionBoard } from "../../model/components"
-import type { EntryFontCollection } from "../../model/entry-font-collection"
 import { formatFontCollectionCatalog } from "../../model/template-ref"
 import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-collection-variant-selection"
 import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
-import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
+import { nextBoardOrder } from "./seedable-workspace"
+
+import type { FontCollectionTemplateId } from "../../../font-collections/types"
+import type { Board, FontCollectionBoard } from "../../model/components"
+import type { EntryFontCollection } from "../../model/entry-font-collection"
+import type { SeedableWorkspace } from "./seedable-workspace"
 
 /** Catalog row key for the default font collection board (matches the `system` collection id). */
 export const DEFAULT_FONT_COLLECTION_BOARD_KEY = "system" as const
 
 /** Font collection entry id for the default board's default variant. */
-export const DEFAULT_FONT_COLLECTION_ENTRY_ID =
-  "font-collection-system-default" as const
+export const DEFAULT_FONT_COLLECTION_ENTRY_ID = "font-collection-system-default" as const
 
 /** Builds the default font collection entry (the default System variant row). */
 export function createDefaultFontCollectionEntry(): EntryFontCollection {
@@ -44,6 +45,7 @@ function createGoogleFontCollectionEntry(): EntryFontCollection {
   }
 
   const stock = STOCK_FONT_COLLECTIONS_BY_ID["googleFonts"]
+
   for (const [slot, family] of Object.entries(stock.families)) {
     if (
       family.variants &&
@@ -65,12 +67,11 @@ function createGoogleFontCollectionEntry(): EntryFontCollection {
  * Mutates the passed workspace in place. System is the protected base; the
  * extras are deletable like any added stock collection.
  */
-export function seedDefaultFontCollectionBoard(
-  workspace: SeedableWorkspace,
-): void {
+export function seedDefaultFontCollectionBoard(workspace: SeedableWorkspace): void {
   if (!workspace.boards) {
     workspace.boards = {}
   }
+
   if (!workspace["font-collections"]) {
     workspace["font-collections"] = {}
   }
@@ -81,11 +82,7 @@ export function seedDefaultFontCollectionBoard(
     createDefaultFontCollectionEntry(),
   )
 
-  seedFontCollectionBoard(
-    workspace,
-    "googleFonts",
-    createGoogleFontCollectionEntry(),
-  )
+  seedFontCollectionBoard(workspace, "googleFonts", createGoogleFontCollectionEntry())
 }
 
 /** Seeds one font collection board and its entry when the board is missing. */
@@ -95,6 +92,7 @@ function seedFontCollectionBoard(
   entry: EntryFontCollection,
 ): void {
   const existing = workspace.boards[boardKey] as Board | undefined
+
   if (existing && isFontCollectionBoard(existing)) {
     return
   }
@@ -110,6 +108,7 @@ function seedFontCollectionBoard(
     componentProperties: getInitialBoardComponentProperties("font-collection"),
     variants: [{ id: entry.id }],
   }
+
   setBoardOrder(board, nextBoardOrder(workspace.boards))
   workspace.boards[boardKey] = board
 }

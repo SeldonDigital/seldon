@@ -1,4 +1,4 @@
-import { PropertySchema } from "../../types/schema"
+import type { PropertySchema } from "../../types/schema"
 
 /** Defines labels, allowed shapes, and checks for `placeholder`. */
 export const placeholderSchema: PropertySchema = {

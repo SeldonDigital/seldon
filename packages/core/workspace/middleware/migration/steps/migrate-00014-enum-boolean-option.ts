@@ -57,6 +57,7 @@ const CONVERT_KEYS = new Set([
 /** True when a value is a tagged property cell of `exact` type. */
 function isExactCell(cell: unknown): boolean {
   if (!cell || typeof cell !== "object") return false
+
   return (cell as { type?: unknown }).type === "exact"
 }
 
@@ -65,6 +66,7 @@ function treeNeedsRewrite(value: unknown): boolean {
   if (Array.isArray(value)) {
     return value.some(treeNeedsRewrite)
   }
+
   if (!value || typeof value !== "object") return false
   const record = value as Record<string, unknown>
 
@@ -80,8 +82,10 @@ function treeNeedsRewrite(value: unknown): boolean {
 function rewriteTree(value: unknown): void {
   if (Array.isArray(value)) {
     for (const item of value) rewriteTree(item)
+
     return
   }
+
   if (!value || typeof value !== "object") return
   const record = value as Record<string, unknown>
 
@@ -90,6 +94,7 @@ function rewriteTree(value: unknown): void {
       record[key] = { ...(sub as object), type: "option" }
       continue
     }
+
     rewriteTree(sub)
   }
 }
@@ -97,8 +102,8 @@ function rewriteTree(value: unknown): void {
 /** True when any board, node, or node state holds a target cell to rewrite. */
 function migrationApplies(workspace: Workspace): boolean {
   for (const board of Object.values(workspace.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties && treeNeedsRewrite(componentProperties)) {
       return true
     }
@@ -118,8 +123,8 @@ export function migrateV14EnumBooleanOption(workspace: Workspace): Workspace {
   const next = structuredClone(workspace)
 
   for (const board of Object.values(next.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties) rewriteTree(componentProperties)
   }
 

@@ -1,9 +1,7 @@
-import {
-  type NodeRect,
-  getSelectionMode,
-  getWireframeMode,
-} from "@seldon/editor/lib/canvas/overlay/geometry"
+import { getSelectionMode, getWireframeMode } from "@seldon/editor/lib/canvas/overlay/geometry"
 import { getSelectionOutlineStyle } from "@seldon/editor/lib/canvas/overlay/outline-style"
+
+import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 import type { CSSProperties } from "vue"
 
 /** Absolute-positioned outline style for a selection or hover box. */
@@ -15,6 +13,7 @@ export function outlineBoxStyle(
 ): CSSProperties {
   const box = wireframe ? getWireframeMode(rect) : getSelectionMode(rect)
   const outline = getSelectionOutlineStyle(variant, borderColor)
+
   return {
     position: "absolute",
     pointerEvents: "none",

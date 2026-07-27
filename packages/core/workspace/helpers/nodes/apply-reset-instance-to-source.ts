@@ -1,9 +1,10 @@
 import { produce } from "immer"
 
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
-import type { ComponentTreeRef, EntryNodeId, Workspace } from "../../types"
 import { getVariantTree } from "../components/get-variant-tree"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
+
+import type { ComponentTreeRef, EntryNodeId, Workspace } from "../../types"
 
 interface SubtreeRepoint {
   id: EntryNodeId
@@ -27,12 +28,9 @@ function collectSubtreeRepoints(
 
   const instanceChildren = instanceRef.children ?? []
   const sourceChildren = sourceRef?.children ?? []
+
   for (let index = 0; index < instanceChildren.length; index++) {
-    collectSubtreeRepoints(
-      instanceChildren[index],
-      sourceChildren[index] ?? null,
-      out,
-    )
+    collectSubtreeRepoints(instanceChildren[index], sourceChildren[index] ?? null, out)
   }
 }
 
@@ -51,30 +49,35 @@ export function applyResetInstanceToSource(
   instanceId: EntryNodeId,
 ): Workspace {
   const instanceNode = workspace.nodes[instanceId]
+
   if (!instanceNode) return workspace
 
   const sourceLink = parseNodeLink(instanceNode.template)
+
   if (!sourceLink || !workspace.nodes[sourceLink.nodeId]) return workspace
   const sourceId = sourceLink.nodeId as EntryNodeId
 
   const instanceLocated = findBoardContainingTreeNodeId(workspace, instanceId)
+
   if (!instanceLocated) return workspace
   const instanceTree = getVariantTree(instanceLocated.board, instanceId)
+
   if (!instanceTree) return workspace
 
   const sourceLocated = findBoardContainingTreeNodeId(workspace, sourceId)
-  const sourceTree = sourceLocated
-    ? getVariantTree(sourceLocated.board, sourceId)
-    : null
+  const sourceTree = sourceLocated ? getVariantTree(sourceLocated.board, sourceId) : null
 
   const repoints: SubtreeRepoint[] = []
+
   collectSubtreeRepoints(instanceTree, sourceTree, repoints)
 
   return produce(workspace, (draft) => {
     for (const { id, sourceId: matchedSourceId } of repoints) {
       const node = draft.nodes[id]
+
       if (!node) continue
       node.overrides = {}
+
       if (matchedSourceId && matchedSourceId !== id) {
         node.template = formatNodeLink(matchedSourceId)
       }

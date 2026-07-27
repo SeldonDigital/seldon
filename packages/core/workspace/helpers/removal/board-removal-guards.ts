@@ -6,28 +6,25 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../../model/components"
-import type { Board, BoardKey, Workspace } from "../../types"
 import { areBoardVariantsInUse } from "../components/are-board-variants-in-use"
 import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { hasEffectiveThemeReference } from "./effective-theme-references"
 
+import type { Board, BoardKey, Workspace } from "../../types"
+
 /**
  * True when any theme-catalog row on this board is still referenced by effective theme.
  */
-function areThemeBoardRootsReferencedByEffectiveTheme(
-  board: Board,
-  workspace: Workspace,
-): boolean {
+function areThemeBoardRootsReferencedByEffectiveTheme(board: Board, workspace: Workspace): boolean {
   if (!isThemeBoard(board)) return false
+
   for (const rootId of getBoardVariantRootIds(board)) {
-    if (
-      workspace.themes[rootId] &&
-      hasEffectiveThemeReference(workspace, rootId)
-    ) {
+    if (workspace.themes[rootId] && hasEffectiveThemeReference(workspace, rootId)) {
       return true
     }
   }
+
   return false
 }
 
@@ -45,14 +42,17 @@ function areCatalogIdsUsedInOtherBoardTrees(
   for (const [key, other] of Object.entries(workspace.boards)) {
     if (key === excludeBoardKey || !other) continue
     let hit = false
+
     walkBoardTreeRefs(other.variants, (ref) => {
       if (candidateIds.has(ref.id)) {
         hit = true
+
         return true
       }
     })
     if (hit) return true
   }
+
   return false
 }
 
@@ -66,6 +66,7 @@ function areResourceBoardRowsUsedInTrees(
 ): boolean {
   if (!isFontCollectionBoard(board) && !isMediaBoard(board)) return false
   const ids = new Set(getBoardVariantRootIds(board))
+
   return areCatalogIdsUsedInOtherBoardTrees(workspace, boardKey, ids)
 }
 
@@ -77,12 +78,9 @@ export function shouldBlockDeletableBoardRemoval(
   workspace: Workspace,
   boardKey: BoardKey,
 ): boolean {
-  if (
-    isComponentBoard(board) ||
-    isAuthoredBoard(board) ||
-    isPlaygroundBoard(board)
-  ) {
+  if (isComponentBoard(board) || isAuthoredBoard(board) || isPlaygroundBoard(board)) {
     if (areBoardVariantsInUse(board, workspace)) return true
+
     return false
   }
 

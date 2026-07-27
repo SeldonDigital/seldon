@@ -1,6 +1,7 @@
+import { getPropertySchema } from "./get-property-schema"
+
 import type { Theme } from "../../../themes/types"
 import type { Workspace } from "../../../workspace/types"
-import { getPropertySchema } from "./get-property-schema"
 
 /**
  * Returns picker choices for `option`, `themeCategorical`, or `themeOrdinal`.
@@ -16,17 +17,14 @@ export function getPropertyOptions(
   workspace?: Workspace,
 ): unknown[] {
   const schema = getPropertySchema(propertyName)
+
   if (!schema) return []
 
   if (valueType === "option" && schema.presetOptions) {
     return schema.presetOptions(workspace)
   }
 
-  if (
-    valueType === "themeCategorical" &&
-    schema.themeCategoricalKeys &&
-    theme
-  ) {
+  if (valueType === "themeCategorical" && schema.themeCategoricalKeys && theme) {
     return schema.themeCategoricalKeys(theme)
   }
 
@@ -43,12 +41,10 @@ export function getPropertyOptions(
  * label/value pairs; this helper unwraps the `{ value, name }` form so callers always receive
  * primitive option values they can store on a property.
  */
-export function getPresetOptions(
-  propertyName: string,
-  workspace?: Workspace,
-): unknown[] {
+export function getPresetOptions(propertyName: string, workspace?: Workspace): unknown[] {
   const schema = getPropertySchema(propertyName)
   const raw = schema?.presetOptions?.(workspace) || []
+
   return raw.map((entry) => (isLabeledOption(entry) ? entry.value : entry))
 }
 
@@ -62,18 +58,18 @@ export function getPresetOptionsAsLabelValue(
 ): Array<{ label: string; value: unknown }> {
   const schema = getPropertySchema(propertyName)
   const raw = schema?.presetOptions?.(workspace) || []
+
   return raw.map((entry) => {
     if (isLabeledOption(entry)) {
       return { label: entry.name, value: entry.value }
     }
+
     return { label: formatLabel(entry), value: entry }
   })
 }
 
 /** True for `{ value, name }` schema entries that already carry their own display label. */
-function isLabeledOption(
-  entry: unknown,
-): entry is { value: unknown; name: string } {
+function isLabeledOption(entry: unknown): entry is { value: unknown; name: string } {
   return (
     typeof entry === "object" &&
     entry !== null &&
@@ -88,11 +84,13 @@ function formatLabel(value: unknown): string {
   if (typeof value === "boolean") {
     return value ? "On" : "Off"
   }
+
   if (typeof value === "string") {
     return value
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ")
   }
+
   return String(value)
 }

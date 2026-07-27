@@ -114,8 +114,7 @@ const useStore = create<EditorConfigState>()(
   persist(
     (set) => ({
       showSelection: true,
-      setShowSelection: (enabled) =>
-        set((state) => ({ ...state, showSelection: enabled })),
+      setShowSelection: (enabled) => set((state) => ({ ...state, showSelection: enabled })),
 
       componentHighlightMode: "selection",
       setComponentHighlightMode: (mode) =>
@@ -123,18 +122,14 @@ const useStore = create<EditorConfigState>()(
 
       // Focus ring visibility
       showFocus: true,
-      setShowFocus: (enabled) =>
-        set((state) => ({ ...state, showFocus: enabled })),
+      setShowFocus: (enabled) => set((state) => ({ ...state, showFocus: enabled })),
 
       // Wireframe settings
       wireframeMode: "auto",
       toggleWireframeMode: (mode) =>
         set((state) => {
           const newMode =
-            mode ??
-            (state.wireframeMode === "auto" || state.wireframeMode === "off"
-              ? "on"
-              : "off")
+            mode ?? (state.wireframeMode === "auto" || state.wireframeMode === "off" ? "on" : "off")
 
           return { ...state, wireframeMode: newMode }
         }),
@@ -160,18 +155,15 @@ const useStore = create<EditorConfigState>()(
 
       // Font collection settings
       showUnusedFonts: false,
-      setShowUnusedFonts: (enabled) =>
-        set((state) => ({ ...state, showUnusedFonts: enabled })),
+      setShowUnusedFonts: (enabled) => set((state) => ({ ...state, showUnusedFonts: enabled })),
 
       // Icon set settings
       showUnusedIcons: false,
-      setShowUnusedIcons: (enabled) =>
-        set((state) => ({ ...state, showUnusedIcons: enabled })),
+      setShowUnusedIcons: (enabled) => set((state) => ({ ...state, showUnusedIcons: enabled })),
 
       // Playground section visibility (off until enabled from the Dev menu)
       showPlayground: false,
-      setShowPlayground: (enabled) =>
-        set((state) => ({ ...state, showPlayground: enabled })),
+      setShowPlayground: (enabled) => set((state) => ({ ...state, showPlayground: enabled })),
 
       // Isolation mode (off by default; the anchored board and its selected
       // variant are captured on enable)
@@ -195,18 +187,15 @@ const useStore = create<EditorConfigState>()(
 
       // Direct select mode (off by default)
       directSelect: false,
-      setDirectSelect: (enabled) =>
-        set((state) => ({ ...state, directSelect: enabled })),
+      setDirectSelect: (enabled) => set((state) => ({ ...state, directSelect: enabled })),
 
       // Objects sidebar code names (off by default)
       showCodeNames: false,
-      setShowCodeNames: (enabled) =>
-        set((state) => ({ ...state, showCodeNames: enabled })),
+      setShowCodeNames: (enabled) => set((state) => ({ ...state, showCodeNames: enabled })),
 
       // Objects sidebar content view (components by default)
       objectsView: "components",
-      setObjectsView: (view) =>
-        set((state) => ({ ...state, objectsView: view })),
+      setObjectsView: (view) => set((state) => ({ ...state, objectsView: view })),
 
       // Sidebar refactor settings
       useRefactoredSidebars: false,
@@ -215,13 +204,11 @@ const useStore = create<EditorConfigState>()(
 
       // Editor chrome theme
       chromeTheme: "seldon",
-      setChromeTheme: (slug) =>
-        set((state) => ({ ...state, chromeTheme: slug })),
+      setChromeTheme: (slug) => set((state) => ({ ...state, chromeTheme: slug })),
 
       // Editor interface mode (defaults to light; persisted across sessions)
       interfaceMode: "light",
-      setInterfaceMode: (mode) =>
-        set((state) => ({ ...state, interfaceMode: mode })),
+      setInterfaceMode: (mode) => set((state) => ({ ...state, interfaceMode: mode })),
     }),
     {
       name: "editor-config",

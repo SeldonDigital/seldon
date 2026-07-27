@@ -1,44 +1,27 @@
 import reactHooks from "eslint-plugin-react-hooks"
 import { defineConfig, globalIgnores } from "eslint/config"
-import tseslint from "typescript-eslint"
+
+import { seldonBase } from "../../../../eslint.config.base.mjs"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =
   "app/ and lib/ should render Views only. Move raw DOM markup into a reusable View (seldon/ for design components, lib/ for editor chrome), or mark a genuinely hand-authored view as *.bespoke.*, and consume it from there."
 
 export default defineConfig([
-  globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
-  // Parse TypeScript and JSX. Rules stay opt-in below; the recommended
-  // typescript-eslint rulesets are intentionally not enabled here.
+  globalIgnores(["seldon/**", "dist/**", "node_modules/**"]),
+  ...seldonBase,
+  // Register react-hooks so existing inline eslint-disable directives resolve,
+  // and enable the console policy shared by the editor apps.
   {
     files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-      },
-    },
-    // Register plugins so existing inline eslint-disable directives resolve.
-    // No rules from these sets are enabled here.
     plugins: {
-      "@typescript-eslint": tseslint.plugin,
       "react-hooks": reactHooks,
     },
-  },
-  {
     rules: {
       "no-console": [
         "warn",
         {
-          allow: [
-            "warn",
-            "error",
-            "info",
-            "dir",
-            "group",
-            "groupCollapsed",
-            "groupEnd",
-          ],
+          allow: ["warn", "error", "info", "dir", "group", "groupCollapsed", "groupEnd"],
         },
       ],
     },
@@ -83,8 +66,7 @@ export default defineConfig([
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
         {
-          selector:
-            "JSXOpeningElement[name.type='JSXMemberExpression'][name.object.name='motion']",
+          selector: "JSXOpeningElement[name.type='JSXMemberExpression'][name.object.name='motion']",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
       ],

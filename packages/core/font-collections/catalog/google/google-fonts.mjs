@@ -68,9 +68,7 @@ async function fetchWithRetry(url, { binary = false, attempts = 3 } = {}) {
       if (!response.ok) {
         throw new Error(`HTTP ${response.status} for ${url}`)
       }
-      const body = binary
-        ? Buffer.from(await response.arrayBuffer())
-        : await response.text()
+      const body = binary ? Buffer.from(await response.arrayBuffer()) : await response.text()
       return { status: 200, body }
     } catch (error) {
       lastError = error
@@ -187,12 +185,8 @@ async function main() {
       const result = await downloadFamily(entry)
       results.push(result)
       if (result.status === "downloaded") {
-        const note = result.missing.length
-          ? ` (missing: ${result.missing.join(", ")})`
-          : ""
-        console.log(
-          `${result.license}, ${result.written} woff2 [${result.subset}]${note}`,
-        )
+        const note = result.missing.length ? ` (missing: ${result.missing.join(", ")})` : ""
+        console.log(`${result.license}, ${result.written} woff2 [${result.subset}]${note}`)
       } else {
         console.log(`SKIPPED: ${result.reason}`)
       }
@@ -209,9 +203,7 @@ async function main() {
   const downloaded = results.filter((r) => r.status === "downloaded")
   const skipped = results.filter((r) => r.status !== "downloaded")
 
-  console.log(
-    `\nDone. Downloaded ${downloaded.length}, skipped ${skipped.length}.`,
-  )
+  console.log(`\nDone. Downloaded ${downloaded.length}, skipped ${skipped.length}.`)
   if (skipped.length) {
     console.log("\nSkipped / errored families:")
     for (const r of skipped) console.log(`  - ${r.family}: ${r.reason}`)

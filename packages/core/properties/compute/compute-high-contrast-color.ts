@@ -6,8 +6,13 @@ import { resolveValue } from "../../helpers/resolution/resolve-value"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-value"
 import { InvariantError } from "../../helpers/utils/invariant"
-import type { ThemeSwatch } from "../../themes/types"
 import { ValueType } from "../constants"
+import { applyLayerOpacity, readAnchoredLayerPercentage } from "./compute-layer-color"
+import { resolveBasedOnWithAnchor } from "./get-based-on-value"
+import { parseBasedOnPath } from "./parse-based-on-path"
+import { resolveHighContrastSource } from "./resolve-high-contrast-source"
+
+import type { ThemeSwatch } from "../../themes/types"
 import type { AtomicValue } from "../types/value-atomic"
 import type { ColorValue } from "../values/appearance/color"
 import type { ComputedHighContrastValue } from "../values/shared/computed/high-contrast-color"
@@ -16,14 +21,7 @@ import type { HSL } from "../values/shared/exact/hsl"
 import type { LCH } from "../values/shared/exact/lch"
 import type { PercentageValue } from "../values/shared/exact/percentage"
 import type { RGB } from "../values/shared/exact/rgb"
-import {
-  applyLayerOpacity,
-  readAnchoredLayerPercentage,
-} from "./compute-layer-color"
-import { resolveBasedOnWithAnchor } from "./get-based-on-value"
-import { parseBasedOnPath } from "./parse-based-on-path"
-import { resolveHighContrastSource } from "./resolve-high-contrast-source"
-import { ComputeContext } from "./types"
+import type { ComputeContext } from "./types"
 
 /**
  * Reads the color at `basedOn`, optionally reads sibling `.brightness` and `.opacity` on the same
@@ -44,8 +42,10 @@ export function computeHighContrastColor(
 ) {
   const { fallbackColor } = context.theme.highContrast.parameters
 
-  const { basedOnValue, brightness, opacity, backdrop } =
-    resolveHighContrastInputs(context, fallbackColor)
+  const { basedOnValue, brightness, opacity, backdrop } = resolveHighContrastInputs(
+    context,
+    fallbackColor,
+  )
 
   const resolved = resolveValue(
     resolveColor({
@@ -54,27 +54,19 @@ export function computeHighContrastColor(
     }),
   )
 
-  const surface =
-    !resolved || resolved.value === "transparent" ? fallbackColor : resolved
+  const surface = !resolved || resolved.value === "transparent" ? fallbackColor : resolved
 
   let color: ColorValue | HexValue = surface
 
   if (brightness && surface.type === ValueType.EXACT) {
     color = {
       type: ValueType.EXACT as const,
-      value: convertAndApplyBrightness(
-        surface.value as Hex,
-        brightness.value.value,
-      ),
+      value: convertAndApplyBrightness(surface.value as Hex, brightness.value.value),
     }
   }
 
   if (opacity && color.type === ValueType.EXACT) {
-    color = applyLayerOpacity(
-      color.value as HSL | LCH | RGB | Hex,
-      opacity.value.value,
-      backdrop,
-    )
+    color = applyLayerOpacity(color.value as HSL | LCH | RGB | Hex, opacity.value.value, backdrop)
   }
 
   return resolveHighContrastForeground(color, context.theme)
@@ -105,10 +97,12 @@ export function resolveHighContrastForeground(
       useWhite ? "@swatch.white" : "@swatch.black",
       theme,
     ) as ThemeSwatch
+
     return themeSwatchToColorValue(themeOption)
   }
 
   const harmony = theme.colorHarmony.parameters
+
   return {
     type: ValueType.EXACT as const,
     value: {
@@ -131,10 +125,7 @@ function resolveHighContrastInputs(
   const basedOn = resolveHighContrastSource()
 
   try {
-    const { value: resolvedValue, facetSource } = resolveBasedOnWithAnchor(
-      basedOn,
-      context,
-    )
+    const { value: resolvedValue, facetSource } = resolveBasedOnWithAnchor(basedOn, context)
 
     // A `basedOn` color that is still `COMPUTED` (e.g. the surface uses `MATCH_COLOR`)
     // has no resolvable color yet, so fall back to the reference surface instead
@@ -167,20 +158,15 @@ function resolveHighContrastInputs(
 
     return {
       basedOnValue,
-      brightness: readAnchoredLayerPercentage(
-        facetSource,
-        basedOn,
-        "brightness",
-      ),
+      brightness: readAnchoredLayerPercentage(facetSource, basedOn, "brightness"),
       opacity,
-      backdrop: opacity
-        ? resolveBackdropColor(basedOn, facetSource, context.theme)
-        : undefined,
+      backdrop: opacity ? resolveBackdropColor(basedOn, facetSource, context.theme) : undefined,
     }
   } catch (error) {
     // An unresolved source falls back to the reference surface; an invariant
     // violation is an authoring bug and must surface.
     if (error instanceof InvariantError) throw error
+
     return {
       basedOnValue: fallbackColor as AtomicValue,
       brightness: undefined,
@@ -219,9 +205,7 @@ function resolveBackdropColor(
     return undefined
   }
 
-  const resolved = resolveValue(
-    resolveColor({ color: value as ColorValue, theme }),
-  )
+  const resolved = resolveValue(resolveColor({ color: value as ColorValue, theme }))
 
   if (!resolved || resolved.value === "transparent") {
     return undefined

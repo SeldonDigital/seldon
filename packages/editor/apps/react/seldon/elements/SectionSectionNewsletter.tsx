@@ -10,20 +10,23 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
+import { Button } from "../elements/Button"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface SectionSectionNewsletterProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -69,10 +72,7 @@ export function SectionSectionNewsletter({
   seldonRefs,
   ...props
 }: SectionSectionNewsletterProps) {
-  const sectionSectionNewsletterClassName = combineClassNames(
-    "sdn-section",
-    className,
-  )
+  const sectionSectionNewsletterClassName = combineClassNames("sdn-section", className)
   const textTitleProps = applyRef(
     seldonRefs,
     textTitle === null
@@ -80,10 +80,7 @@ export function SectionSectionNewsletter({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const textDescriptionProps = applyRef(
@@ -93,10 +90,7 @@ export function SectionSectionNewsletter({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
   const inputProps = applyRef(
@@ -116,10 +110,7 @@ export function SectionSectionNewsletter({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const iconProps = applyRef(
@@ -139,10 +130,7 @@ export function SectionSectionNewsletter({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
@@ -157,9 +145,7 @@ export function SectionSectionNewsletter({
       ) : (
         <>
           {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-          {textDescription && textDescriptionProps && (
-            <TextDescription {...textDescriptionProps} />
-          )}
+          {textDescription && textDescriptionProps && <TextDescription {...textDescriptionProps} />}
           {inputProps !== null && <Input {...inputProps} />}
           {buttonProps !== null && (
             <Button {...buttonProps}>

@@ -57,8 +57,10 @@ export function mergeStateProps(
   const merged: Record<string, unknown> = {}
   const classes: string[] = []
   let style: CSSProperties | undefined
+
   for (const part of parts) {
     if (!part) continue
+
     for (const [key, value] of Object.entries(part)) {
       if (key === "className") {
         if (typeof value === "string" && value) classes.push(value)
@@ -69,8 +71,10 @@ export function mergeStateProps(
       }
     }
   }
+
   if (classes.length > 0) merged.className = classes.join(" ")
   if (style) merged.style = style
+
   return merged
 }
 
@@ -86,9 +90,7 @@ export function buildActivatedRefProps(activated?: boolean): {
   className?: string
   style?: CSSProperties
 } {
-  return activated
-    ? { className: "sdn-state-activated", style: ACTIVATED_TINT_ONLY }
-    : {}
+  return activated ? { className: "sdn-state-activated", style: ACTIVATED_TINT_ONLY } : {}
 }
 
 /** Leaf-owned invalid state, forwarded onto each row leaf ref. */

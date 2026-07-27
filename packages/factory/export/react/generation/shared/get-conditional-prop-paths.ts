@@ -1,11 +1,12 @@
 import { ComponentLevel } from "@seldon/core/components/constants"
 
-import { ComponentToExport, JSONTreeNode } from "../../../types"
 import {
-  ComponentPropsValidation,
   validateExportedComponentProps,
   validateTreeNodeProps,
 } from "../../validation/validate-component-props"
+
+import type { ComponentToExport, JSONTreeNode } from "../../../types"
+import type { ComponentPropsValidation } from "../../validation/validate-component-props"
 
 /**
  * Collects the node paths that render conditionally (inline extras).
@@ -19,30 +20,21 @@ import {
  * that child's schema, so canonical children stay non-conditional and keep
  * their defaults.
  */
-export function getConditionalPropPaths(
-  component: ComponentToExport,
-): Set<string> {
+export function getConditionalPropPaths(component: ComponentToExport): Set<string> {
   const conditional = new Set<string>()
   const rootValidation = validateExportedComponentProps(component)
 
-  function isValidIn(
-    node: JSONTreeNode,
-    validation: ComponentPropsValidation,
-  ): boolean {
-    return validation.validProps.some(
-      (valid) => valid.dataBinding.path === node.dataBinding.path,
-    )
+  function isValidIn(node: JSONTreeNode, validation: ComponentPropsValidation): boolean {
+    return validation.validProps.some((valid) => valid.dataBinding.path === node.dataBinding.path)
   }
 
-  function walk(
-    node: JSONTreeNode,
-    parentValidation: ComponentPropsValidation,
-  ) {
+  function walk(node: JSONTreeNode, parentValidation: ComponentPropsValidation) {
     if (node.level === ComponentLevel.FRAME) {
       // Frame is structural: never conditional, and transparent to its children.
       if (Array.isArray(node.children)) {
         node.children.forEach((child) => walk(child, parentValidation))
       }
+
       return
     }
 
@@ -54,6 +46,7 @@ export function getConditionalPropPaths(
 
     if (Array.isArray(node.children)) {
       const childValidation = validateTreeNodeProps(node)
+
       node.children.forEach((child) => walk(child, childValidation))
     }
   }

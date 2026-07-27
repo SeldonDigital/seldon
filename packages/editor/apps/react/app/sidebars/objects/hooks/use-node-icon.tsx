@@ -1,19 +1,15 @@
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 
 import { getComponentIcon, getNodeKindIcon } from "@seldon/core/icon-registry"
-import { IconId } from "@seldon/core/icon-sets"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import {
-  Board,
-  Instance,
-  Variant,
-  Workspace,
-} from "@seldon/core/workspace/types"
+
+import type { IconId } from "@seldon/core/icon-sets"
+import type { Board, Instance, Variant, Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Determines the appropriate icon for a node based on its type.
@@ -22,20 +18,20 @@ import {
  * @param node - The board, variant, or instance to get icon for
  * @returns Icon ID to display for the node
  */
-export const useNodeIcon = (
-  node: Variant | Instance | Board,
-  workspace?: Workspace,
-): IconId => {
+export const useNodeIcon = (node: Variant | Instance | Board, workspace?: Workspace): IconId => {
   if (typeCheckingService.isBoard(node)) {
     if (isIconSetBoard(node)) {
       return getNodeKindIcon("iconSet")
     }
+
     if (isThemeBoard(node)) {
       return getNodeKindIcon("theme")
     }
+
     if (isFontCollectionBoard(node)) {
       return getNodeKindIcon("fontCollection")
     }
+
     return getNodeKindIcon("component")
   }
 
@@ -47,17 +43,16 @@ export const useNodeIcon = (
 
   try {
     const catalogId =
-      workspace && "template" in node
-        ? getNodeCatalogComponentId(node, workspace)
-        : null
+      workspace && "template" in node ? getNodeCatalogComponentId(node, workspace) : null
+
     if (!catalogId) {
       return "seldon-component"
     }
+
     return getComponentIcon(catalogId)
-  } catch (error) {
-    console.warn(
-      `Skipping node ${node.id} with invalid component ID in useNodeIcon`,
-    )
+  } catch {
+    console.warn(`Skipping node ${node.id} with invalid component ID in useNodeIcon`)
+
     return "seldon-component"
   }
 }

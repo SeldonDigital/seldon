@@ -6,9 +6,8 @@ export function useTextFieldFocus() {
   useEffect(() => {
     const handleFocus = (e: FocusEvent) => {
       const target = e.target as HTMLElement
-      setIsTextFieldFocused(
-        ["input", "textarea"].includes(target.tagName.toLowerCase()),
-      )
+
+      setIsTextFieldFocused(["input", "textarea"].includes(target.tagName.toLowerCase()))
     }
 
     const handleBlur = () => {

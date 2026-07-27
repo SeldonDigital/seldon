@@ -1,9 +1,10 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import { readNodeLayerArray } from "../shared/node-layers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Moves the paint layer at `fromIndex` to `toIndex` within a node's
@@ -16,20 +17,24 @@ export function reorderNodeLayer(
   workspace: Workspace,
 ): Workspace {
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
+
   if (!node || !isEntryNodeForRules(node)) return workspace
 
   const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
 
   const { fromIndex, toIndex } = payload
+
   if (fromIndex === toIndex) return workspace
   if (fromIndex < 0 || fromIndex >= layers.length) return workspace
   if (toIndex < 0 || toIndex >= layers.length) return workspace
 
   const [moved] = layers.splice(fromIndex, 1)
+
   layers.splice(toIndex, 0, moved)
 
   return produce(workspace, (draft) => {
     const draftNode = getWorkspaceNodes(draft)[payload.nodeId]
+
     if (!draftNode) return
     ;(draftNode.overrides as Record<string, unknown>)[payload.property] = layers
   })

@@ -1,4 +1,4 @@
-import { Board, EntryNode } from "../../types"
+import type { Board, EntryNode } from "../../types"
 
 /**
  * Tells whether this value is a catalog row or a node entry.

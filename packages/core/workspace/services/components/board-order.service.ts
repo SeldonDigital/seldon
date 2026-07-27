@@ -1,18 +1,13 @@
 import { findComponentSchema } from "../../../components/catalog"
-import {
-  ComponentId,
-  ComponentLevel,
-  ORDERED_COMPONENT_LEVELS,
-} from "../../../components/constants"
+import { ORDERED_COMPONENT_LEVELS } from "../../../components/constants"
 import { boardKey } from "../../helpers/components/board-ref-resolver"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../../helpers/components/board-sort-order"
+import { getBoardOrder, setBoardOrder } from "../../helpers/components/board-sort-order"
 import { getBoardUsageCounts } from "../../helpers/components/get-board-usage-counts"
 import { isComponentBoard } from "../../model/components"
-import { Board, Workspace } from "../../types"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
+
+import type { ComponentId, ComponentLevel } from "../../../components/constants"
+import type { Board, Workspace } from "../../types"
 
 /**
  * Orders the boards in `workspace.boards` by component level, then within a level
@@ -22,15 +17,9 @@ export class BoardOrderService {
   /** Sorts boards by level, then out-degree, then label, and stores the order. */
   public realignBoardOrder(workspace: Workspace): Workspace {
     return mutateWorkspace(workspace, (draft) => {
-      const usageCounts = getBoardUsageCounts(
-        draft,
-        Object.values(draft.boards),
-      )
+      const usageCounts = getBoardUsageCounts(draft, Object.values(draft.boards))
 
-      const boardEntries = Object.entries(draft.boards) as [
-        ComponentId,
-        Board,
-      ][]
+      const boardEntries = Object.entries(draft.boards) as [ComponentId, Board][]
 
       boardEntries.sort(([aId, aBoard], [bId, bBoard]) =>
         compareBoardOrder(aId, aBoard, bId, bBoard, usageCounts),
@@ -47,9 +36,7 @@ export class BoardOrderService {
 
   /** All boards sorted by their stored order. */
   public getBoards(workspace: Workspace): Board[] {
-    return Object.values(workspace.boards).sort(
-      (a, b) => getBoardOrder(a) - getBoardOrder(b),
-    )
+    return Object.values(workspace.boards).sort((a, b) => getBoardOrder(a) - getBoardOrder(b))
   }
 
   /** All playground containers sorted by their stored order. */
@@ -80,15 +67,19 @@ function compareBoardOrder(
   if (aSchema && bSchema) {
     const aLevelIndex = componentLevelIndex(aSchema.level)
     const bLevelIndex = componentLevelIndex(bSchema.level)
+
     if (aLevelIndex !== bLevelIndex) {
       return aLevelIndex - bLevelIndex
     }
+
     if (isComponentBoard(aBoard) && isComponentBoard(bBoard)) {
       const aUses = usageCounts.get(boardKey(aBoard) ?? aId) ?? 0
       const bUses = usageCounts.get(boardKey(bBoard) ?? bId) ?? 0
+
       if (aUses !== bUses) {
         return bUses - aUses
       }
+
       return aBoard.label.localeCompare(bBoard.label)
     }
   }
@@ -99,5 +90,6 @@ function compareBoardOrder(
 /** Position of a component level in the ordered hierarchy; unknown levels sort last. */
 function componentLevelIndex(level: ComponentLevel): number {
   const index = ORDERED_COMPONENT_LEVELS.indexOf(level)
+
   return index === -1 ? ORDERED_COMPONENT_LEVELS.length : index
 }

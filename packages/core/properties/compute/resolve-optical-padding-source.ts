@@ -1,4 +1,5 @@
 import { ValueType } from "../constants"
+
 import type { ComputeContext } from "./types"
 
 function hasValue(value: unknown): boolean {
@@ -23,6 +24,7 @@ export function resolveOpticalPaddingSource(context: ComputeContext): string {
   }
 
   const font = properties.font as Record<string, unknown> | undefined
+
   if (font && hasValue(font.size)) {
     return "#font.size"
   }

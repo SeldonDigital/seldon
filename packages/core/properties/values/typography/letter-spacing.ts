@@ -1,8 +1,9 @@
 import { Unit } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { PixelValue } from "../shared/exact/pixel"
-import { RemValue } from "../shared/exact/rem"
+
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { PixelValue } from "../shared/exact/pixel"
+import type { RemValue } from "../shared/exact/rem"
 
 /** Empty or horizontal gap between letters using pixel or rem lengths. */
 export type LetterSpacingValue = EmptyValue | PixelValue | RemValue
@@ -23,7 +24,9 @@ export const letterSpacingSchema: PropertySchema = {
     exact: (value: unknown) => {
       if (typeof value !== "object" || value === null) return false
       const m = value as { value?: unknown; unit?: unknown }
+
       if (typeof m.value !== "number" || !Number.isFinite(m.value)) return false
+
       return m.unit === Unit.PX || m.unit === Unit.REM
     },
   },

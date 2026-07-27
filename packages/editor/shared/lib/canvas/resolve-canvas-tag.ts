@@ -1,12 +1,12 @@
 import {
   ComponentId,
   NATIVE_REACT_PRIMITIVES,
-  type NativeReactPrimitive,
-  type Properties,
   WrapperElement,
   getComponentExportConfig,
   invariant,
 } from "@seldon/core"
+
+import type { NativeReactPrimitive, Properties } from "@seldon/core"
 
 /**
  * Native HTML tag for each React primitive key. A DOM canvas renders design
@@ -68,18 +68,9 @@ const NATIVE_HTML_TAGS: Record<NativeReactPrimitive, string> = {
   HTMLVideo: "video",
 }
 
-export const VOID_TAGS = new Set<string>([
-  "hr",
-  "img",
-  "input",
-  "source",
-  "textarea",
-  "track",
-])
+export const VOID_TAGS = new Set<string>(["hr", "img", "input", "source", "textarea", "track"])
 
-export type CanvasTag =
-  | { kind: "icon" }
-  | { kind: "tag"; tag: string; void: boolean }
+export type CanvasTag = { kind: "icon" } | { kind: "tag"; tag: string; void: boolean }
 
 /**
  * Resolves the DOM tag for a canvas node, mirroring the React component
@@ -118,18 +109,15 @@ export function resolveCanvasTag(
 
   if (returns === "wrapperElement") {
     const raw = properties.wrapperElement?.value
-    const tag =
-      typeof raw === "string" && raw.length > 0 ? raw : WrapperElement.DIV
+    const tag = typeof raw === "string" && raw.length > 0 ? raw : WrapperElement.DIV
     const item = Object.entries(NATIVE_REACT_PRIMITIVES).find(
-      ([, entry]) =>
-        entry.wrapperElementOption === tag || entry.htmlElementOption === tag,
+      ([, entry]) => entry.wrapperElementOption === tag || entry.htmlElementOption === tag,
     )
-    invariant(
-      item,
-      `Could not find a native primitive for ${componentId} wrapper element ${tag}`,
-    )
+
+    invariant(item, `Could not find a native primitive for ${componentId} wrapper element ${tag}`)
     const key = item[0] as NativeReactPrimitive
     const domTag = NATIVE_HTML_TAGS[key]
+
     return { kind: "tag", tag: domTag, void: VOID_TAGS.has(domTag) }
   }
 
@@ -137,16 +125,20 @@ export function resolveCanvasTag(
     const item = Object.entries(NATIVE_REACT_PRIMITIVES).find(
       ([, entry]) => entry.htmlElementOption === properties.htmlElement?.value,
     )
+
     invariant(
       item,
       `Could not find a native primitive for ${componentId} html element ${properties.htmlElement?.value}`,
     )
     const key = item[0] as NativeReactPrimitive
     const domTag = NATIVE_HTML_TAGS[key]
+
     return { kind: "tag", tag: domTag, void: VOID_TAGS.has(domTag) }
   }
 
   const domTag = NATIVE_HTML_TAGS[returns]
+
   invariant(domTag, `Could not find a native primitive for ${componentId}`)
+
   return { kind: "tag", tag: domTag, void: VOID_TAGS.has(domTag) }
 }

@@ -7,21 +7,12 @@
  *
  * Idempotent: files with a matching size are skipped, so re-running is fast.
  */
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  statSync,
-} from "node:fs"
+import { copyFileSync, existsSync, mkdirSync, readdirSync, statSync } from "node:fs"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
-const sourceRoot = join(
-  editorRoot,
-  "../../../core/font-collections/catalog/google",
-)
+const sourceRoot = join(editorRoot, "../../../core/font-collections/catalog/google")
 const destRoot = join(editorRoot, "../../shared/public/font-files")
 
 if (!existsSync(sourceRoot)) {
@@ -38,9 +29,7 @@ for (const slug of readdirSync(sourceRoot)) {
   const familyDir = join(sourceRoot, slug)
   if (!statSync(familyDir).isDirectory()) continue
 
-  const woff2Files = readdirSync(familyDir).filter((name) =>
-    name.endsWith(".woff2"),
-  )
+  const woff2Files = readdirSync(familyDir).filter((name) => name.endsWith(".woff2"))
   if (woff2Files.length === 0) continue
 
   const destFamilyDir = join(destRoot, slug)
@@ -58,6 +47,4 @@ for (const slug of readdirSync(sourceRoot)) {
   }
 }
 
-console.log(
-  `Copied ${copied} font file(s) to public/font-files (${skipped} up to date).`,
-)
+console.log(`Copied ${copied} font file(s) to public/font-files (${skipped} up to date).`)

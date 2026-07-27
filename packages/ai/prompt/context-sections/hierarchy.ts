@@ -15,11 +15,12 @@ const TITLE = "Hierarchy (level -> may contain):"
  */
 export function hierarchySection(): string[] {
   const body: string[] = []
+
   for (const [level, config] of Object.entries(rules.componentLevels)) {
     const mayContain = config.mayContain
-    body.push(
-      `- ${level}: ${mayContain.length > 0 ? mayContain.join(", ") : "(nothing)"}`,
-    )
+
+    body.push(`- ${level}: ${mayContain.length > 0 ? mayContain.join(", ") : "(nothing)"}`)
   }
+
   return section(TITLE, body)
 }

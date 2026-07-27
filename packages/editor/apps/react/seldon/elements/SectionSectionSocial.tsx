@@ -10,14 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
+import { Button } from "../elements/Button"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface SectionSectionSocialProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -68,10 +71,7 @@ export function SectionSectionSocial({
   seldonRefs,
   ...props
 }: SectionSectionSocialProps) {
-  const sectionSectionSocialClassName = combineClassNames(
-    "sdn-section",
-    className,
-  )
+  const sectionSectionSocialClassName = combineClassNames("sdn-section", className)
   const buttonProps = applyRef(
     seldonRefs,
     button === null
@@ -79,10 +79,7 @@ export function SectionSectionSocial({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const iconProps = applyRef(
@@ -102,10 +99,7 @@ export function SectionSectionSocial({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const button2Props = applyRef(
@@ -115,10 +109,7 @@ export function SectionSectionSocial({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -138,10 +129,7 @@ export function SectionSectionSocial({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const button3Props = applyRef(
@@ -151,10 +139,7 @@ export function SectionSectionSocial({
       : {
           ...sdn.button3,
           ...button3,
-          className: combineClassNames(
-            sdn.button3?.className,
-            button3?.className,
-          ),
+          className: combineClassNames(sdn.button3?.className, button3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -174,19 +159,12 @@ export function SectionSectionSocial({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
 
   return (
-    <Frame
-      className={sectionSectionSocialClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={sectionSectionSocialClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -200,17 +178,13 @@ export function SectionSectionSocial({
           {button2Props !== null && (
             <Button {...button2Props}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel2 && textLabel2Props && (
-                <TextLabel {...textLabel2Props} />
-              )}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
             </Button>
           )}
           {button3Props !== null && (
             <Button {...button3Props}>
               {icon3 && icon3Props && <Icon {...icon3Props} />}
-              {textLabel3 && textLabel3Props && (
-                <TextLabel {...textLabel3Props} />
-              )}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
             </Button>
           )}
         </>

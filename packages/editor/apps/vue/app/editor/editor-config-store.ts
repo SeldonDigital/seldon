@@ -23,10 +23,7 @@ export const SIDEBAR_MAX_WIDTH = 600
 export const SIDEBAR_INITIAL_WIDTH = 360
 
 function clampSidebarWidth(width: number): number {
-  return Math.min(
-    SIDEBAR_MAX_WIDTH,
-    Math.max(SIDEBAR_MIN_WIDTH, Math.round(width)),
-  )
+  return Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, Math.round(width)))
 }
 
 type PersistedConfig = {
@@ -56,8 +53,10 @@ type PersistedConfig = {
 
 function loadPersisted(): Partial<PersistedConfig> {
   if (typeof localStorage === "undefined") return {}
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
+
     return raw ? (JSON.parse(raw) as Partial<PersistedConfig>) : {}
   } catch {
     return {}
@@ -89,92 +88,96 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const showCodeNames = ref(persisted.showCodeNames ?? false)
   const objectsView = ref<ObjectsView>(persisted.objectsView ?? "components")
   const isolatedView = ref(persisted.isolatedView ?? false)
-  const isolatedBoardKey = ref<string | null>(
-    persisted.isolatedBoardKey ?? null,
-  )
-  const isolatedVariantRootId = ref<string | null>(
-    persisted.isolatedVariantRootId ?? null,
-  )
+  const isolatedBoardKey = ref<string | null>(persisted.isolatedBoardKey ?? null)
+  const isolatedVariantRootId = ref<string | null>(persisted.isolatedVariantRootId ?? null)
   const directSelect = ref(persisted.directSelect ?? false)
-  const objectsWidth = ref(
-    clampSidebarWidth(persisted.objectsWidth ?? SIDEBAR_INITIAL_WIDTH),
-  )
-  const propertiesWidth = ref(
-    clampSidebarWidth(persisted.propertiesWidth ?? SIDEBAR_INITIAL_WIDTH),
-  )
+  const objectsWidth = ref(clampSidebarWidth(persisted.objectsWidth ?? SIDEBAR_INITIAL_WIDTH))
+  const propertiesWidth = ref(clampSidebarWidth(persisted.propertiesWidth ?? SIDEBAR_INITIAL_WIDTH))
   const useRefactoredSidebars = ref(persisted.useRefactoredSidebars ?? false)
   const chromeTheme = ref(persisted.chromeTheme ?? "seldon")
   const interfaceMode = ref<InterfaceMode>(persisted.interfaceMode ?? "light")
 
   function toggleWireframeMode(mode?: "on" | "off"): void {
     wireframeMode.value =
-      mode ??
-      (wireframeMode.value === "auto" || wireframeMode.value === "off"
-        ? "on"
-        : "off")
+      mode ?? (wireframeMode.value === "auto" || wireframeMode.value === "off" ? "on" : "off")
   }
 
   function togglePanels(): void {
     showPanels.value = !showPanels.value
   }
+
   function toggleShowSelection(): void {
     showSelection.value = !showSelection.value
   }
+
   function toggleShowFocus(): void {
     showFocus.value = !showFocus.value
   }
+
   function toggleAutoExpandOnSelection(): void {
     autoExpandOnSelection.value = !autoExpandOnSelection.value
   }
+
   function toggleAutoScrollToSelection(): void {
     autoScrollToSelection.value = !autoScrollToSelection.value
   }
+
   function toggleShowCodeNames(): void {
     showCodeNames.value = !showCodeNames.value
   }
+
   function toggleShowUnusedProperties(): void {
     showUnusedProperties.value = !showUnusedProperties.value
   }
+
   function toggleShowUnusedFonts(): void {
     showUnusedFonts.value = !showUnusedFonts.value
   }
+
   function toggleShowUnusedIcons(): void {
     showUnusedIcons.value = !showUnusedIcons.value
   }
+
   function toggleShowPlayground(): void {
     showPlayground.value = !showPlayground.value
   }
-  function enableIsolation(
-    boardKey: string,
-    variantRootId: string | null,
-  ): void {
+
+  function enableIsolation(boardKey: string, variantRootId: string | null): void {
     isolatedView.value = true
     isolatedBoardKey.value = boardKey
     isolatedVariantRootId.value = variantRootId
   }
+
   function disableIsolation(): void {
     isolatedView.value = false
     isolatedBoardKey.value = null
     isolatedVariantRootId.value = null
   }
+
   function toggleDirectSelect(): void {
     directSelect.value = !directSelect.value
   }
+
   function setComponentHighlightMode(mode: ComponentHighlightMode): void {
     componentHighlightMode.value = mode
   }
+
   function setObjectsView(view: ObjectsView): void {
     objectsView.value = view
   }
+
   function setObjectsWidth(width: number): void {
     objectsWidth.value = clampSidebarWidth(width)
   }
+
   function setPropertiesWidth(width: number): void {
     propertiesWidth.value = clampSidebarWidth(width)
   }
+
   function setChromeTheme(slug: string): void {
     chromeTheme.value = slug
   }
+
   function setInterfaceMode(mode: InterfaceMode): void {
     interfaceMode.value = mode
   }
@@ -230,6 +233,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
         chromeTheme: chromeTheme.value,
         interfaceMode: interfaceMode.value,
       }
+
       localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))
     },
     { deep: false },

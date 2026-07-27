@@ -3,21 +3,12 @@
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
-import React, { CSSProperties, RefObject, useMemo } from "react"
+import React, { useMemo } from "react"
 
-import {
-  Display,
-  InstanceId,
-  Properties,
-  VariantId,
-  invariant,
-} from "@seldon/core"
+import { Display, invariant } from "@seldon/core"
 import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import { CUSTOM_REACT_TEMPLATE_COMPONENTS } from "@seldon/core/components/catalog/custom"
-import {
-  ComponentId,
-  NATIVE_REACT_PRIMITIVES,
-} from "@seldon/core/components/constants"
+import { ComponentId, NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 import { HTMLAnchor } from "@seldon/core/components/native-react/HTML.Anchor"
 import { HTMLArticle } from "@seldon/core/components/native-react/HTML.Article"
 import { HTMLAside } from "@seldon/core/components/native-react/HTML.Aside"
@@ -70,22 +61,25 @@ import { HTMLTr } from "@seldon/core/components/native-react/HTML.Tr"
 import { HTMLTrack } from "@seldon/core/components/native-react/HTML.Track"
 import { HTMLUl } from "@seldon/core/components/native-react/HTML.Ul"
 import { HTMLVideo } from "@seldon/core/components/native-react/HTML.Video"
-import { NativeReactPrimitive } from "@seldon/core/components/types"
 import { WrapperElement } from "@seldon/core/properties"
-import type { ComputeContext } from "@seldon/core/properties/compute"
 
 import { CssPortal } from "./CssPortal"
 import { StyleTag } from "./StyleTag.bespoke"
+
+import type { InstanceId, Properties, VariantId } from "@seldon/core"
+import type { NativeReactPrimitive } from "@seldon/core/components/types"
+import type { ComputeContext } from "@seldon/core/properties/compute"
+import type { CSSProperties, RefObject } from "react"
 
 export type CanvasHtmlAttributes = Record<string, string | boolean>
 
 type TemplateProps = {
   componentId: ComponentId
   nodeId: VariantId | InstanceId | ComponentId
+  computeContext: ComputeContext
   children?: React.ReactNode
   ref?: RefObject<HTMLElement | null>
   htmlAttributes?: CanvasHtmlAttributes
-  computeContext: ComputeContext
   styleOverrides?: CSSProperties
   /** Avoid invalid `<button>` inside `<button>` when a button groups other buttons. */
   renderAsDiv?: boolean
@@ -197,11 +191,7 @@ export const ComponentRenderer = ({
   }
 }
 
-function getComponent(
-  componentId: ComponentId,
-  properties: Properties,
-  renderAsDiv = false,
-) {
+function getComponent(componentId: ComponentId, properties: Properties, renderAsDiv = false) {
   if (renderAsDiv) {
     return PRIMITIVES.HTMLDiv
   }
@@ -215,17 +205,17 @@ function getComponent(
 
   if (config.react.returns === "wrapperElement") {
     const raw = properties.wrapperElement?.value
-    const tag =
-      typeof raw === "string" && raw.length > 0 ? raw : WrapperElement.DIV
+    const tag = typeof raw === "string" && raw.length > 0 ? raw : WrapperElement.DIV
     const item = Object.entries(NATIVE_REACT_PRIMITIVES).find(
-      ([_, entry]) =>
-        entry.wrapperElementOption === tag || entry.htmlElementOption === tag,
+      ([_, entry]) => entry.wrapperElementOption === tag || entry.htmlElementOption === tag,
     )
+
     invariant(
       item,
       `Could not find a native primitive for component ${componentId} with wrapper element ${tag}`,
     )
     const key = item[0] as NativeReactPrimitive
+
     return PRIMITIVES[key]
   }
 
@@ -234,11 +224,13 @@ function getComponent(
     const item = Object.entries(NATIVE_REACT_PRIMITIVES).find(
       ([_, item]) => item.htmlElementOption === properties.htmlElement?.value,
     )
+
     invariant(
       item,
       `Could not find a native primitive for component ${componentId} with html element ${properties.htmlElement?.value}`,
     )
     const key = item[0] as NativeReactPrimitive
+
     return PRIMITIVES[key]
   }
 
@@ -248,18 +240,16 @@ function getComponent(
 
   if (config.react.returns === "custom") {
     const template = config.react.custom?.template
-    invariant(
-      template,
-      `Custom component ${componentId} is missing react.custom.template`,
-    )
+
+    invariant(template, `Custom component ${componentId} is missing react.custom.template`)
+
     return CUSTOM_REACT_TEMPLATE_COMPONENTS[template]
   }
 
   const primitive = PRIMITIVES[config.react.returns]
-  invariant(
-    primitive,
-    `Could not find a native primitive for component ${componentId}`,
-  )
+
+  invariant(primitive, `Could not find a native primitive for component ${componentId}`)
+
   return primitive
 }
 
@@ -272,10 +262,7 @@ const VOID_NATIVE_REACT_PRIMITIVES = new Set<NativeReactPrimitive>([
   "HTMLTrack",
 ])
 
-function isVoidComponent(
-  componentId: ComponentId,
-  renderAsDiv = false,
-): boolean {
+function isVoidComponent(componentId: ComponentId, renderAsDiv = false): boolean {
   if (renderAsDiv) {
     return false
   }
@@ -300,6 +287,7 @@ function isVoidComponent(
 export const PRIMITIVES: Record<
   NativeReactPrimitive,
   // Primitives accept varying prop shapes, so the map is typed loosely.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   React.ComponentType<any>
 > = {
   HTMLAnchor: HTMLAnchor,

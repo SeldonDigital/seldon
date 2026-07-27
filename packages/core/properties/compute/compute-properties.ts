@@ -1,12 +1,18 @@
 import { ComputedFunction, ValueType } from "../constants"
+import { LAYERED_PAINT_KEYS, isObjectFacetMapProperty } from "../types/property-keys"
+import { computeAutoFit } from "./compute-auto-fit"
+import { computeHighContrastColor } from "./compute-high-contrast-color"
+import { computeLayeredPaintStack } from "./compute-layered-paint"
+import { computeMatchColor } from "./compute-match-color"
+import { applyMatchColorMirror } from "./compute-match-color-mirror"
+import { computeOpticalPadding } from "./compute-optical-padding"
+
 import type { Properties } from "../types/properties"
-import {
-  type CompoundPropertyKey,
-  LAYERED_PAINT_KEYS,
-  type LayeredPaintKey,
-  type PropertyKey,
-  type SubPropertyKey,
-  isObjectFacetMapProperty,
+import type {
+  CompoundPropertyKey,
+  LayeredPaintKey,
+  PropertyKey,
+  SubPropertyKey,
 } from "../types/property-keys"
 import type { Value } from "../types/value"
 import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
@@ -14,13 +20,7 @@ import type { ComputedValue } from "../values/shared/computed/computed-value"
 import type { ComputedHighContrastValue } from "../values/shared/computed/high-contrast-color"
 import type { ComputedMatchColorValue } from "../values/shared/computed/match-color"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
-import { computeAutoFit } from "./compute-auto-fit"
-import { computeHighContrastColor } from "./compute-high-contrast-color"
-import { computeLayeredPaintStack } from "./compute-layered-paint"
-import { computeMatchColor } from "./compute-match-color"
-import { applyMatchColorMirror } from "./compute-match-color-mirror"
-import { computeOpticalPadding } from "./compute-optical-padding"
-import { ComputeContext, ComputeKeys } from "./types"
+import type { ComputeContext, ComputeKeys } from "./types"
 
 function getCompoundPropertyValue<T extends CompoundPropertyKey>(
   target: Properties,
@@ -65,27 +65,28 @@ export function computeProperties(
   Object.entries(inputProperties).forEach(([k, value]) => {
     const propertyKey = k as PropertyKey
 
-    if (
-      LAYERED_PAINT_KEYS.has(propertyKey as LayeredPaintKey) &&
-      Array.isArray(value)
-    ) {
+    if (LAYERED_PAINT_KEYS.has(propertyKey as LayeredPaintKey) && Array.isArray(value)) {
       const resolvedLayers = computeLayeredPaintStack(
         propertyKey as LayeredPaintKey,
         value,
         context,
         dispatchComputed,
       )
+
       ;(computedProperties as Record<string, unknown>)[k] = resolvedLayers
+
       return
     }
 
     if (LAYERED_PAINT_KEYS.has(propertyKey as LayeredPaintKey)) {
       Object.assign(computedProperties, { [propertyKey]: value })
+
       return
     }
 
     if (isObjectFacetMapProperty(propertyKey)) {
       const compoundValue = value as Record<string, Value>
+
       Object.entries(compoundValue).forEach(([sk, subpropertyValue]) => {
         const subPropertyKey = sk as SubPropertyKey
 
@@ -108,28 +109,21 @@ export function computeProperties(
           "type" in subpropertyValue &&
           subpropertyValue.type === ValueType.COMPUTED
         ) {
-          const resolved = dispatchComputed(
-            subpropertyValue as ComputedValue,
-            context,
-            {
-              propertyKey,
-              subPropertyKey: subPropertyKey,
-            },
-          )
+          const resolved = dispatchComputed(subpropertyValue as ComputedValue, context, {
+            propertyKey,
+            subPropertyKey: subPropertyKey,
+          })
+
           setSubPropertyValue(currentCompoundValue, subPropertyKey, resolved)
         } else {
-          setSubPropertyValue(
-            currentCompoundValue,
-            subPropertyKey,
-            subpropertyValue as Value,
-          )
+          setSubPropertyValue(currentCompoundValue, subPropertyKey, subpropertyValue as Value)
         }
       })
 
-      const resolvedCompound = getCompoundPropertyValue(
-        computedProperties,
-        propertyKey,
-      ) as Record<string, Value> | undefined
+      const resolvedCompound = getCompoundPropertyValue(computedProperties, propertyKey) as
+        | Record<string, Value>
+        | undefined
+
       if (resolvedCompound) {
         applyMatchColorMirror(compoundValue, resolvedCompound, context)
       }
@@ -144,6 +138,7 @@ export function computeProperties(
         const computedResult = dispatchComputed(computedValue, context, {
           propertyKey,
         })
+
         Object.assign(computedProperties, { [propertyKey]: computedResult })
       } else {
         Object.assign(computedProperties, { [propertyKey]: value })
@@ -170,36 +165,22 @@ export function computeProperties(
  *
  * @throws When the value is not `COMPUTED` or the function key is unknown
  */
-function dispatchComputed(
-  value: ComputedValue,
-  context: ComputeContext,
-  keys: ComputeKeys,
-): Value {
+function dispatchComputed(value: ComputedValue, context: ComputeContext, keys: ComputeKeys): Value {
   if (value.type !== ValueType.COMPUTED) {
     throw new Error("Value is not a computed value")
   }
 
   const functionType = value.value
+
   switch (functionType) {
     case ComputedFunction.HIGH_CONTRAST_COLOR:
-      return computeHighContrastColor(
-        value as ComputedHighContrastValue,
-        context,
-      ) as Value
+      return computeHighContrastColor(value as ComputedHighContrastValue, context) as Value
     case ComputedFunction.OPTICAL_PADDING:
-      return computeOpticalPadding(
-        value as ComputedOpticalPaddingValue,
-        context,
-        keys,
-      ) as Value
+      return computeOpticalPadding(value as ComputedOpticalPaddingValue, context, keys) as Value
     case ComputedFunction.AUTO_FIT:
       return computeAutoFit(value as ComputedAutoFitValue, context) as Value
     case ComputedFunction.MATCH_COLOR:
-      return computeMatchColor(
-        value as ComputedMatchColorValue,
-        context,
-        keys,
-      ) as Value
+      return computeMatchColor(value as ComputedMatchColorValue, context, keys) as Value
     default:
       throw new Error(`Unknown computed function: ${functionType}`)
   }

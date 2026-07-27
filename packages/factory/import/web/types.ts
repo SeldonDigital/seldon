@@ -1,6 +1,5 @@
-import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-
 import type { FileToExport } from "../../export/types"
+import type { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 
 /**
  * A DOM element reduced to the parts that matter for component matching. Text
@@ -121,10 +120,10 @@ export interface SuggestedSchema {
     tag: string
     role: string | null
     count: number
+    childOutline: string[]
     text?: string
     classes?: string[]
     attrs?: Record<string, string>
-    childOutline: string[]
   }
 }
 

@@ -1,7 +1,4 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { PropertyDisplayCategory } from "@seldon/core/properties/constants/property-display"
@@ -10,26 +7,26 @@ import { componentValuesSection } from "../../../prompt/context-sections/compone
 import { propertyShapeSection } from "../../../prompt/context-sections/property-shape"
 import { propertyVocabularySection } from "../../../prompt/context-sections/property-vocabulary"
 import { themeTokensSection } from "../../../prompt/context-sections/theme-tokens"
-import type { ResolvedContext } from "../../editor-context"
 import { joinOrEmpty, textResult } from "./shared"
+
+import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 const PROPERTY_CATEGORY_VALUES = Object.values(PropertyDisplayCategory)
 
 /** Coerces a free-text category into a known display category, or undefined. */
-function toPropertyCategory(
-  value: string | undefined,
-): PropertyDisplayCategory | undefined {
+function toPropertyCategory(value: string | undefined): PropertyDisplayCategory | undefined {
   if (value === undefined) return undefined
+
   return PROPERTY_CATEGORY_VALUES.includes(value as PropertyDisplayCategory)
     ? (value as PropertyDisplayCategory)
     : undefined
 }
 
 /** Returns a component's settable keys, value shapes, and accepted choices. */
-export function createGetComponentVocabularyTool(
-  resolved: ResolvedContext,
-): ToolDefinition {
+export function createGetComponentVocabularyTool(resolved: ResolvedContext): ToolDefinition {
   const { workspace } = resolved
+
   return defineTool({
     name: "get_component_vocabulary",
     label: "Get Component Vocabulary",
@@ -46,6 +43,7 @@ export function createGetComponentVocabularyTool(
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const ids = new Set([params.catalogId])
       const category = toPropertyCategory(params.category)
@@ -55,6 +53,7 @@ export function createGetComponentVocabularyTool(
         ...themeTokensSection(workspace),
         ...componentValuesSection(ids, workspace),
       ]
+
       return textResult(
         joinOrEmpty(
           lines,

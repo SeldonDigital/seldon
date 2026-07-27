@@ -287,8 +287,7 @@ body {
   align-items: start;
   justify-content: center;
   gap: var(--sdn-gaps-tight);
-  box-shadow: 0px 1px 0.125rem 0.031rem
-    color-mix(in srgb, var(--sdn-swatch-black) 33%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 33%, transparent);
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
@@ -305,8 +304,7 @@ body {
   align-items: center;
   justify-content: start;
   gap: var(--sdn-gaps-tight);
-  box-shadow: 0px 1px 0.125rem 0.031rem
-    color-mix(in srgb, var(--sdn-swatch-black) 33%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 33%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -516,8 +514,7 @@ body {
   flex-shrink: 0;
   font-size: var(--sdn-font-size-small);
   border-radius: var(--sdn-corners-tight);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 40%, transparent);
 }
 
 .sdn-button-segmented {
@@ -802,8 +799,7 @@ body {
   height: fit-content;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-tight);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-offWhite) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 40%, transparent);
 }
 
 .sdn-container {
@@ -818,14 +814,12 @@ body {
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 1px 0.125rem 0.031rem
-    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
   width: 450px;
   height: fit-content;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-dialog-export-component {
@@ -833,14 +827,12 @@ body {
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 1px 0.125rem 0.031rem
-    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
   width: 550px;
   height: fit-content;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-form-control {
@@ -1058,8 +1050,7 @@ body {
   height: fit-content;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-tight);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-item-node {
@@ -1119,15 +1110,13 @@ body {
   box-shadow:
     inset -0.5px -0.5px 0.5px 0px hsl(0 0% 15% / 20%),
     inset 0.5px 0.5px 0.5px 0px hsl(0 0% 96% / 30%),
-    0px 0px 0.125rem 0.031rem
-      color-mix(in srgb, var(--sdn-swatch-primary) 30%, transparent);
+    0px 0px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-primary) 30%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
   padding: var(--sdn-paddings-tight);
   border-radius: var(--sdn-corners-tight);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-item-tree-item {
@@ -1274,8 +1263,7 @@ body {
   flex-shrink: 0;
   padding: var(--sdn-paddings-tight);
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-listbox-option {
@@ -1311,8 +1299,7 @@ body {
   flex-shrink: 0;
   padding: var(--sdn-paddings-tight);
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-menu-item {
@@ -1404,8 +1391,7 @@ body {
   flex-shrink: 0;
   padding: var(--sdn-paddings-compact);
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 30%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 30%, transparent);
 }
 
 .sdn-message-status {
@@ -1466,11 +1452,7 @@ body {
 }
 
 .sdn-message-user {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-offBlack) 10%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-offBlack) 10%, transparent);
   cursor: default;
   flex-wrap: nowrap;
   display: flex;
@@ -1494,8 +1476,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 1px 0.125rem 0.031rem
-    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
@@ -1516,8 +1497,7 @@ body {
   height: 350px;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-panel-hari {
@@ -1533,8 +1513,7 @@ body {
   height: 400px;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-panel-modal {
@@ -1545,8 +1524,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 1px 0.125rem 0.031rem
-    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
   align-self: stretch;
   height: 500px;
   flex-shrink: 0;
@@ -1562,8 +1540,7 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
-  box-shadow: 0px 1px 0.125rem 0.031rem
-    color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
+  box-shadow: 0px 1px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
@@ -1889,8 +1866,7 @@ body {
   white-space: normal;
   padding: var(--sdn-paddings-compact);
   border-radius: var(--sdn-corners-tight);
-  border: var(--hairline) solid
-    hsl(from var(--sdn-hc-on-white) h s calc(l + (100 - l) * 0.25));
+  border: var(--hairline) solid hsl(from var(--sdn-hc-on-white) h s calc(l + (100 - l) * 0.25));
 }
 
 .sdn-toggle-switch {
@@ -1905,8 +1881,7 @@ body {
   font-size: var(--sdn-font-size-xxsmall);
   padding: 2px;
   border-radius: 99999px;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-topbar {
@@ -1921,8 +1896,7 @@ body {
   padding-inline-end: var(--sdn-paddings-comfortable);
   padding-bottom: var(--sdn-paddings-compact);
   padding-inline-start: var(--sdn-paddings-comfortable);
-  box-shadow: 0px 2px 0.375rem 0.125rem
-    color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
+  box-shadow: 0px 2px 0.375rem 0.125rem color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1941,8 +1915,7 @@ body {
   padding-inline-end: var(--sdn-paddings-comfortable);
   padding-bottom: var(--sdn-paddings-cozy);
   padding-inline-start: var(--sdn-paddings-comfortable);
-  box-shadow: 0px 2px 0.375rem 0.125rem
-    color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
+  box-shadow: 0px 2px 0.375rem 0.125rem color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -2216,11 +2189,7 @@ body {
 .sdn-calendar-day--xk18 {
   align-self: unset;
   flex: unset;
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 25%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 25%, transparent);
   border-radius: 0px;
 }
 
@@ -2345,8 +2314,7 @@ body {
     color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
   flex: 1 0 0;
   min-width: 0;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-offWhite) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 50%, transparent);
 }
 
 .sdn-combobox-field-search--jaw4 {
@@ -2355,8 +2323,7 @@ body {
   color: var(--sdn-hc-on-primary-b50);
   flex: 1 0 0;
   min-width: 0;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-primary-b50) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-primary-b50) 50%, transparent);
 }
 
 .sdn-combobox-field-search--vbyg {
@@ -2365,8 +2332,7 @@ body {
   color: var(--sdn-hc-on-primary-b50);
   flex: 1 0 0;
   min-width: 0;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-primary-b50) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-primary-b50) 40%, transparent);
 }
 
 .sdn-container--edpm {
@@ -2505,17 +2471,14 @@ body {
   padding-bottom: var(--sdn-paddings-tight);
   padding-inline-start: var(--sdn-paddings-comfortable);
   box-shadow:
-    inset 0px 0px 0.125rem 0.031rem
-      color-mix(in srgb, var(--sdn-swatch-offWhite) 30%, transparent),
-    0px 0px 0.25rem 0.125rem
-      color-mix(in srgb, var(--sdn-swatch-offBlack) 20%, transparent);
+    inset 0px 0px 0.125rem 0.031rem color-mix(in srgb, var(--sdn-swatch-offWhite) 30%, transparent),
+    0px 0px 0.25rem 0.125rem color-mix(in srgb, var(--sdn-swatch-offBlack) 20%, transparent);
   width: fit-content;
   flex-shrink: 0;
   height: 100%;
   margin: 0;
   border-radius: var(--sdn-corners-tight);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offWhite) 85%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-offWhite) 85%, transparent);
 }
 
 .sdn-frame--az2m {
@@ -2623,11 +2586,7 @@ body {
 }
 
 .sdn-frame--hskv {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 10%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 10%, transparent);
   gap: var(--sdn-gaps-tight);
   padding: var(--sdn-paddings-tight);
 }
@@ -2693,11 +2652,7 @@ body {
   flex: unset;
   border-left-width: var(--hairline);
   border-left-style: solid;
-  border-left-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 50%,
-    transparent
-  );
+  border-left-color: color-mix(in srgb, var(--sdn-swatch-primary) 50%, transparent);
   flex-direction: row;
   align-items: center;
   justify-content: end;
@@ -3912,26 +3867,17 @@ body {
 .sdn-textarea--2upw {
   align-self: unset;
   flex-shrink: unset;
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-offWhite) 5%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-offWhite) 5%, transparent);
   color: var(--sdn-hc-on-offWhite);
   flex: 1 0 0;
   min-width: 0;
   font-size: var(--sdn-font-size-xsmall);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-offWhite) 25%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 25%, transparent);
 }
 
 .sdn-button:focus-visible,
 .sdn-button:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-button:focus-visible .sdn-text-label--ylte,
@@ -3974,11 +3920,7 @@ body {
 }
 
 .sdn-button[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-button[aria-invalid="true"] .sdn-text-label--ylte {
@@ -4003,11 +3945,7 @@ body {
 }
 
 .sdn-button:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-button:hover .sdn-text-label--ylte {
@@ -4019,11 +3957,7 @@ body {
 }
 
 .sdn-button:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-button:active .sdn-text-label--ylte {
@@ -4079,8 +4013,7 @@ body {
 }
 
 .sdn-combobox-field:active {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-combobox-field:active .sdn-icon--vsau {
@@ -4101,11 +4034,7 @@ body {
 
 .sdn-chip:focus-visible,
 .sdn-chip:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-chip:focus-visible .sdn-text-label--lug5,
@@ -4133,11 +4062,7 @@ body {
 }
 
 .sdn-chip[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-chip[aria-invalid="true"] .sdn-text-label--lug5 {
@@ -4154,11 +4079,7 @@ body {
 }
 
 .sdn-chip:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-chip:hover .sdn-text-label--lug5 {
@@ -4166,11 +4087,7 @@ body {
 }
 
 .sdn-chip:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-chip:active .sdn-text-label--lug5 {
@@ -4186,11 +4103,7 @@ body {
 }
 
 .sdn-listbox-option:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 40%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-listbox-option:hover .sdn-text-label--xohb {
@@ -4202,11 +4115,7 @@ body {
 }
 
 .sdn-listbox-option:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 20%, transparent);
 }
 
 .sdn-listbox-option:active .sdn-text-label--xohb {
@@ -4219,8 +4128,7 @@ body {
 
 .sdn-listbox:focus-visible,
 .sdn-listbox:has(:focus-visible) {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
 }
 
 .sdn-listbox:focus-visible .sdn-text-label--xohb,
@@ -4234,8 +4142,7 @@ body {
 }
 
 .sdn-listbox[aria-selected="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-listbox[aria-selected="true"] .sdn-text-label--xohb {
@@ -4248,8 +4155,7 @@ body {
 
 .sdn-listbox:disabled,
 .sdn-listbox[aria-disabled="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-gray) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-gray) 80%, transparent);
 }
 
 .sdn-listbox:disabled .sdn-text-label--xohb,
@@ -4263,8 +4169,7 @@ body {
 }
 
 .sdn-listbox[aria-invalid="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
 }
 
 .sdn-listbox[aria-invalid="true"] .sdn-text-label--xohb {
@@ -4276,8 +4181,7 @@ body {
 }
 
 .sdn-listbox.sdn-state-activated {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-listbox.sdn-state-activated .sdn-text-label--xohb {
@@ -4289,21 +4193,15 @@ body {
 }
 
 .sdn-listbox.sdn-state-dragged {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary-bn20) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary-bn20) 80%, transparent);
 }
 
 .sdn-listbox:has(:checked) {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-offWhite) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 80%, transparent);
 }
 
 .sdn-menu-item:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 40%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-menu-item:hover .sdn-text-label--fdei {
@@ -4319,11 +4217,7 @@ body {
 }
 
 .sdn-menu-item:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 20%, transparent);
 }
 
 .sdn-menu-item:active .sdn-text-label--xohb {
@@ -4336,8 +4230,7 @@ body {
 
 .sdn-menu:focus-visible,
 .sdn-menu:has(:focus-visible) {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
 }
 
 .sdn-menu:focus-visible .sdn-text-label--xohb,
@@ -4357,8 +4250,7 @@ body {
 
 .sdn-menu:disabled,
 .sdn-menu[aria-disabled="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-menu:disabled .sdn-text-label--xohb,
@@ -4377,8 +4269,7 @@ body {
 }
 
 .sdn-menu[aria-invalid="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
 }
 
 .sdn-menu[aria-invalid="true"] .sdn-text-label--xohb {
@@ -4394,8 +4285,7 @@ body {
 }
 
 .sdn-menu.sdn-state-activated {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-menu.sdn-state-activated .sdn-text-label--xohb {
@@ -4411,22 +4301,16 @@ body {
 }
 
 .sdn-menu.sdn-state-dragged {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary-bn20) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary-bn20) 80%, transparent);
 }
 
 .sdn-menu:has(:checked) {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-offWhite) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 80%, transparent);
 }
 
 .sdn-toggle-switch:focus-visible,
 .sdn-toggle-switch:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
   color: var(--sdn-swatch-punch);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
@@ -4434,8 +4318,7 @@ body {
 .sdn-toggle-switch[aria-selected="true"] {
   background-color: color-mix(in srgb, var(--sdn-swatch-gray) 20%, transparent);
   color: var(--sdn-swatch-active);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
 }
 
 .sdn-toggle-switch:disabled,
@@ -4446,25 +4329,15 @@ body {
 }
 
 .sdn-toggle-switch[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
   color: var(--sdn-swatch-negative);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-negative) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-negative) 50%, transparent);
 }
 
 .sdn-toggle-switch.sdn-state-activated {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-active) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-active) 20%, transparent);
   color: var(--sdn-swatch-active);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
 }
 
 .sdn-toggle-switch:hover {
@@ -4482,11 +4355,7 @@ body {
 
 .sdn-button-simple:focus-visible,
 .sdn-button-simple:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-button-simple:focus-visible .sdn-text-label--ylte,
@@ -4515,11 +4384,7 @@ body {
 }
 
 .sdn-button-simple[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-button-simple[aria-invalid="true"] .sdn-text-label--ylte {
@@ -4536,11 +4401,7 @@ body {
 }
 
 .sdn-button-simple:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-button-simple:hover .sdn-text-label--ylte {
@@ -4548,11 +4409,7 @@ body {
 }
 
 .sdn-button-simple:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-button-simple:active .sdn-text-label--ylte {
@@ -4569,11 +4426,7 @@ body {
 
 .sdn-button-iconic:focus-visible,
 .sdn-button-iconic:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -4594,11 +4447,7 @@ body {
 }
 
 .sdn-button-iconic[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-button-iconic[aria-invalid="true"] .sdn-icon--vsau {
@@ -4612,11 +4461,7 @@ body {
 
 .sdn-combobox-field-search:focus-visible .sdn-button-iconic--pgsr,
 .sdn-combobox-field-search:has(:focus-visible) .sdn-button-iconic--pgsr {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -4683,11 +4528,7 @@ body {
 }
 
 .sdn-combobox-field-search[aria-invalid="true"] .sdn-button-iconic--pgsr {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-combobox-field-search[aria-invalid="true"] .sdn-icon--vsau {
@@ -4737,8 +4578,7 @@ body {
 }
 
 .sdn-combobox-field-search:active {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-combobox-field-search:active .sdn-icon--vsau {
@@ -4763,11 +4603,7 @@ body {
 
 .sdn-chip-assist:focus-visible,
 .sdn-chip-assist:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-chip-assist:focus-visible .sdn-text-label--lug5,
@@ -4809,11 +4645,7 @@ body {
 }
 
 .sdn-chip-assist[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-chip-assist[aria-invalid="true"] .sdn-text-label--lug5 {
@@ -4838,11 +4670,7 @@ body {
 }
 
 .sdn-chip-assist:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-chip-assist:hover .sdn-text-label--lug5 {
@@ -4854,11 +4682,7 @@ body {
 }
 
 .sdn-chip-assist:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-chip-assist:active .sdn-text-label--lug5 {
@@ -4883,11 +4707,7 @@ body {
 
 .sdn-chip-iconic:focus-visible,
 .sdn-chip-iconic:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-chip-iconic:focus-visible .sdn-icon--gh8m,
@@ -4915,11 +4735,7 @@ body {
 }
 
 .sdn-chip-iconic[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-chip-iconic[aria-invalid="true"] .sdn-icon--gh8m {
@@ -4936,11 +4752,7 @@ body {
 }
 
 .sdn-chip-iconic:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-chip-iconic:hover .sdn-icon--gh8m {
@@ -4948,11 +4760,7 @@ body {
 }
 
 .sdn-chip-iconic:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-chip-iconic:active .sdn-icon--gh8m {
@@ -4969,11 +4777,7 @@ body {
 
 .sdn-chip-filter:focus-visible,
 .sdn-chip-filter:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-chip-filter:focus-visible .sdn-text-label--lug5,
@@ -5015,11 +4819,7 @@ body {
 }
 
 .sdn-chip-filter[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-chip-filter[aria-invalid="true"] .sdn-text-label--lug5 {
@@ -5044,11 +4844,7 @@ body {
 }
 
 .sdn-chip-filter:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-chip-filter:hover .sdn-text-label--lug5 {
@@ -5060,11 +4856,7 @@ body {
 }
 
 .sdn-chip-filter:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-chip-filter:active .sdn-text-label--lug5 {
@@ -5089,11 +4881,7 @@ body {
 
 .sdn-chip-input:focus-visible,
 .sdn-chip-input:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-chip-input:focus-visible .sdn-icon--eyw9,
@@ -5135,11 +4923,7 @@ body {
 }
 
 .sdn-chip-input[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-chip-input[aria-invalid="true"] .sdn-icon--eyw9 {
@@ -5164,11 +4948,7 @@ body {
 }
 
 .sdn-chip-input:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-chip-input:hover .sdn-icon--eyw9 {
@@ -5180,11 +4960,7 @@ body {
 }
 
 .sdn-chip-input:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-chip-input:active .sdn-icon--eyw9 {
@@ -5209,11 +4985,7 @@ body {
 
 .sdn-chip-suggestion:focus-visible,
 .sdn-chip-suggestion:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-chip-suggestion:focus-visible .sdn-text-label--lug5,
@@ -5241,11 +5013,7 @@ body {
 }
 
 .sdn-chip-suggestion[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-chip-suggestion[aria-invalid="true"] .sdn-text-label--lug5 {
@@ -5262,11 +5030,7 @@ body {
 }
 
 .sdn-chip-suggestion:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-chip-suggestion:hover .sdn-text-label--lug5 {
@@ -5274,11 +5038,7 @@ body {
 }
 
 .sdn-chip-suggestion:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-chip-suggestion:active .sdn-text-label--lug5 {
@@ -5295,13 +5055,8 @@ body {
 
 .sdn-item-catalog:focus-visible,
 .sdn-item-catalog:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 10%,
-    transparent
-  );
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-punch) 50%, transparent);
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 10%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-punch) 50%, transparent);
 }
 
 .sdn-item-catalog:focus-visible .sdn-text-subtitle--r4ot,
@@ -5320,8 +5075,7 @@ body {
 }
 
 .sdn-item-catalog[aria-selected="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
 }
 
 .sdn-item-catalog[aria-selected="true"] .sdn-text-subtitle--r4ot {
@@ -5338,8 +5092,7 @@ body {
 
 .sdn-item-catalog:disabled,
 .sdn-item-catalog[aria-disabled="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-gray) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-gray) 50%, transparent);
 }
 
 .sdn-item-catalog:disabled .sdn-text-subtitle--r4ot,
@@ -5358,8 +5111,7 @@ body {
 }
 
 .sdn-item-catalog[aria-invalid="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-negative) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-negative) 50%, transparent);
 }
 
 .sdn-item-catalog[aria-invalid="true"] .sdn-text-subtitle--r4ot {
@@ -5375,8 +5127,7 @@ body {
 }
 
 .sdn-item-catalog.sdn-state-activated {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
 }
 
 .sdn-item-catalog.sdn-state-activated .sdn-text-subtitle--r4ot {
@@ -5392,13 +5143,8 @@ body {
 }
 
 .sdn-item-catalog:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-active) 10%,
-    transparent
-  );
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
+  background-color: color-mix(in srgb, var(--sdn-swatch-active) 10%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
 }
 
 .sdn-item-catalog:hover .sdn-icon--mene {
@@ -5406,13 +5152,8 @@ body {
 }
 
 .sdn-item-catalog:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-active) 20%,
-    transparent
-  );
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
+  background-color: color-mix(in srgb, var(--sdn-swatch-active) 20%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 50%, transparent);
 }
 
 .sdn-item-catalog:active .sdn-icon--mene {
@@ -5438,22 +5179,13 @@ body {
 
 .sdn-item-section:focus-visible,
 .sdn-item-section:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
 }
 
 .sdn-item-section:focus-visible .sdn-button-iconic--pgsr,
 .sdn-item-section:has(:focus-visible) .sdn-button-iconic--pgsr {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -5464,11 +5196,7 @@ body {
 
 .sdn-item-section:focus-visible .sdn-button-iconic--sdjv,
 .sdn-item-section:has(:focus-visible) .sdn-button-iconic--sdjv {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -5496,8 +5224,7 @@ body {
 
 .sdn-item-section[aria-selected="true"] {
   background-color: transparent;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-item-section[aria-selected="true"] .sdn-icon--0qvc {
@@ -5565,21 +5292,12 @@ body {
 }
 
 .sdn-item-section[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
 }
 
 .sdn-item-section[aria-invalid="true"] .sdn-button-iconic--pgsr {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-item-section[aria-invalid="true"] .sdn-icon--0qvc {
@@ -5587,17 +5305,12 @@ body {
 }
 
 .sdn-item-section[aria-invalid="true"] .sdn-button-iconic--sdjv {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-item-section[aria-invalid="true"] .sdn-combobox-field--o7ct {
   color: var(--sdn-hc-on-offWhite);
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-offWhite) 50%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 50%, transparent);
 }
 
 .sdn-item-section[aria-invalid="true"] .sdn-icon--umgs {
@@ -5615,8 +5328,7 @@ body {
 
 .sdn-item-section.sdn-state-activated {
   background-color: transparent;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-item-section.sdn-state-activated .sdn-icon--0qvc {
@@ -5642,11 +5354,7 @@ body {
 }
 
 .sdn-item-section:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 90%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 90%, transparent);
 }
 
 .sdn-item-section:hover .sdn-icon--0qvc {
@@ -5670,11 +5378,7 @@ body {
 }
 
 .sdn-item-section:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-item-section:active .sdn-icon--0qvc {
@@ -5682,8 +5386,7 @@ body {
 }
 
 .sdn-item-section:active .sdn-combobox-field--o7ct {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-item-section:active .sdn-icon--umgs {
@@ -5756,8 +5459,7 @@ body {
 }
 
 .sdn-combobox-field-filter:active {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-combobox-field-filter:active .sdn-icon--vsau {
@@ -5809,8 +5511,7 @@ body {
 }
 
 .sdn-combobox-field-project:active {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-combobox-field-project:active .sdn-icon--vsau {
@@ -5831,8 +5532,7 @@ body {
 
 .sdn-listbox-grouped:focus-visible,
 .sdn-listbox-grouped:has(:focus-visible) {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-punch) 80%, transparent);
 }
 
 .sdn-listbox-grouped:focus-visible .sdn-text-label--xohb,
@@ -5856,8 +5556,7 @@ body {
 }
 
 .sdn-listbox-grouped[aria-selected="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-listbox-grouped[aria-selected="true"] .sdn-text-label--xohb {
@@ -5878,8 +5577,7 @@ body {
 
 .sdn-listbox-grouped:disabled,
 .sdn-listbox-grouped[aria-disabled="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-gray) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-gray) 80%, transparent);
 }
 
 .sdn-listbox-grouped:disabled .sdn-text-label--xohb,
@@ -5903,8 +5601,7 @@ body {
 }
 
 .sdn-listbox-grouped[aria-invalid="true"] {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-negative) 80%, transparent);
 }
 
 .sdn-listbox-grouped[aria-invalid="true"] .sdn-text-label--xohb {
@@ -5924,8 +5621,7 @@ body {
 }
 
 .sdn-listbox-grouped.sdn-state-activated {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 80%, transparent);
 }
 
 .sdn-listbox-grouped.sdn-state-activated .sdn-text-label--xohb {
@@ -5945,21 +5641,15 @@ body {
 }
 
 .sdn-listbox-grouped.sdn-state-dragged {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-primary-bn20) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-primary-bn20) 80%, transparent);
 }
 
 .sdn-listbox-grouped:has(:checked) {
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-hc-on-offWhite) 80%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-hc-on-offWhite) 80%, transparent);
 }
 
 .sdn-menu-item-checkbox:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 40%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-menu-item-checkbox:hover .sdn-text-label--xohb {
@@ -5971,11 +5661,7 @@ body {
 }
 
 .sdn-menu-item-checkbox:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 20%, transparent);
 }
 
 .sdn-menu-item-checkbox:active .sdn-text-label--xohb {
@@ -5987,11 +5673,7 @@ body {
 }
 
 .sdn-menu-item-radio:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 40%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 40%, transparent);
 }
 
 .sdn-menu-item-radio:hover .sdn-text-label--xohb {
@@ -6003,11 +5685,7 @@ body {
 }
 
 .sdn-menu-item-radio:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 20%, transparent);
 }
 
 .sdn-menu-item-radio:active .sdn-text-label--xohb {
@@ -6020,11 +5698,7 @@ body {
 
 .sdn-button-menu:focus-visible,
 .sdn-button-menu:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-button-menu:focus-visible .sdn-icon--y2ct,
@@ -6039,8 +5713,7 @@ body {
 
 .sdn-button-menu[aria-selected="true"] {
   background-color: transparent;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 40%, transparent);
 }
 
 .sdn-button-menu[aria-selected="true"] .sdn-icon--y2ct {
@@ -6054,8 +5727,7 @@ body {
 .sdn-button-menu:disabled,
 .sdn-button-menu[aria-disabled="true"] {
   background-color: unset;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-gray) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-gray) 40%, transparent);
 }
 
 .sdn-button-menu:disabled .sdn-icon--y2ct,
@@ -6069,11 +5741,7 @@ body {
 }
 
 .sdn-button-menu[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-button-menu[aria-invalid="true"] .sdn-icon--y2ct {
@@ -6086,8 +5754,7 @@ body {
 
 .sdn-button-menu.sdn-state-activated {
   background-color: transparent;
-  border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-active) 40%, transparent);
+  border: var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-active) 40%, transparent);
 }
 
 .sdn-button-menu.sdn-state-activated .sdn-icon--y2ct {
@@ -6099,11 +5766,7 @@ body {
 }
 
 .sdn-button-menu:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-offWhite) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-offWhite) 80%, transparent);
 }
 
 .sdn-button-menu:hover .sdn-icon--y2ct {
@@ -6115,11 +5778,7 @@ body {
 }
 
 .sdn-button-menu:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-offWhite) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-offWhite) 60%, transparent);
 }
 
 .sdn-button-menu:active .sdn-icon--y2ct {
@@ -6144,11 +5803,7 @@ body {
 
 .sdn-button-tools:focus-visible,
 .sdn-button-tools:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch-b50) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch-b50) 20%, transparent);
 }
 
 .sdn-button-tools:focus-visible .sdn-text-label--7mza,
@@ -6191,11 +5846,7 @@ body {
 }
 
 .sdn-button-tools[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative-b50) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative-b50) 20%, transparent);
 }
 
 .sdn-button-tools[aria-invalid="true"] .sdn-text-label--7mza {
@@ -6220,11 +5871,7 @@ body {
 }
 
 .sdn-button-tools:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-swatch4-b50) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-swatch4-b50) 80%, transparent);
 }
 
 .sdn-button-tools:hover .sdn-text-label--7mza {
@@ -6236,11 +5883,7 @@ body {
 }
 
 .sdn-button-tools:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-swatch4-b50) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-swatch4-b50) 60%, transparent);
 }
 
 .sdn-button-tools:active .sdn-text-label--7mza {
@@ -6265,11 +5908,7 @@ body {
 
 .sdn-button-segmented:focus-visible,
 .sdn-button-segmented:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
 }
 
 .sdn-button-segmented:focus-visible .sdn-text-label--ylte,
@@ -6312,11 +5951,7 @@ body {
 }
 
 .sdn-button-segmented[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
 }
 
 .sdn-button-segmented[aria-invalid="true"] .sdn-text-label--ylte {
@@ -6341,11 +5976,7 @@ body {
 }
 
 .sdn-button-segmented:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 
 .sdn-button-segmented:hover .sdn-text-label--ylte {
@@ -6357,11 +5988,7 @@ body {
 }
 
 .sdn-button-segmented:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-primary) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-primary) 60%, transparent);
 }
 
 .sdn-button-segmented:active .sdn-text-label--ylte {
@@ -6386,11 +6013,7 @@ body {
 
 .sdn-button-toggle:focus-visible,
 .sdn-button-toggle:has(:focus-visible) {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-punch) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-punch) 20%, transparent);
   border: var(--hairline) solid var(--sdn-swatch-punch);
 }
 
@@ -6419,11 +6042,7 @@ body {
 }
 
 .sdn-button-toggle[aria-invalid="true"] {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-negative) 20%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-negative) 20%, transparent);
   border: var(--hairline) solid var(--sdn-swatch-negative);
 }
 
@@ -6440,11 +6059,7 @@ body {
 }
 
 .sdn-button-toggle:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-offWhite) 80%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-offWhite) 80%, transparent);
 }
 
 .sdn-button-toggle:hover .sdn-icon--vsau {
@@ -6452,11 +6067,7 @@ body {
 }
 
 .sdn-button-toggle:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sdn-swatch-offWhite) 60%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--sdn-swatch-offWhite) 60%, transparent);
 }
 
 .sdn-button-toggle:active .sdn-icon--vsau {

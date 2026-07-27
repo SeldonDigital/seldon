@@ -1,4 +1,5 @@
 import { cloneBoard } from "../../../services"
+
 import type { ExtractPayload, Workspace } from "../../../types"
 
 /**
@@ -10,10 +11,5 @@ export function duplicateComponent(
   payload: ExtractPayload<"duplicate_component">,
   workspace: Workspace,
 ): Workspace {
-  return cloneBoard(
-    workspace,
-    payload.sourceBoardKey,
-    payload.newBoardKey,
-    payload.label,
-  )
+  return cloneBoard(workspace, payload.sourceBoardKey, payload.newBoardKey, payload.label)
 }

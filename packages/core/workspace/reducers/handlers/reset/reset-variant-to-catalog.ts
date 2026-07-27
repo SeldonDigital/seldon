@@ -1,10 +1,11 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
   typeCheckingService,
   workspaceMutationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Rebuilds a single schema-backed user variant to its catalog schema variant
@@ -21,12 +22,10 @@ export function resetVariantToCatalog(
   }
 
   const node = nodeRetrievalService.getNode(payload.variantRootId, workspace)
+
   if (!typeCheckingService.isUserVariant(node)) {
     return workspace
   }
 
-  return workspaceMutationService.resetSchemaVariantToCatalog(
-    payload.variantRootId,
-    workspace,
-  )
+  return workspaceMutationService.resetSchemaVariantToCatalog(payload.variantRootId, workspace)
 }

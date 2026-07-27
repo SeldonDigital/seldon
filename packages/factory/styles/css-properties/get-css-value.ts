@@ -1,23 +1,26 @@
 import {
   BorderWidth,
-  BorderWidthHairlineValue,
   Color,
   Corner,
+  Margin,
+  Padding,
+  Unit,
+  ValueType,
+  assertNever,
+} from "@seldon/core"
+
+import type {
+  BorderWidthHairlineValue,
   CornerValue,
   DegreesValue,
   EmptyValue,
-  Margin,
   MarginSideOptionValue,
   NumberValue,
-  Padding,
   PaddingSideOptionValue,
   PercentageValue,
   PixelValue,
   RemValue,
   TransparentValue,
-  Unit,
-  ValueType,
-  assertNever,
 } from "@seldon/core"
 
 /**
@@ -45,6 +48,7 @@ export function getCssValue(
       if (typeof value.value === "number") {
         return value.value
       }
+
       // Handle object values with units
       switch (value.value.unit) {
         case Unit.PX:
@@ -94,6 +98,7 @@ export function getCssValue(
 
     default: {
       const invalidValue = value as { type?: unknown; value?: unknown }
+
       throw new Error(
         `Invalid value type "${invalidValue.type}" ${invalidValue.value ? `with value "${invalidValue.value}"` : ""}. ` +
           `Expected EXACT, OPTION, or EMPTY. Theme values must be resolved before calling getCssValue().`,

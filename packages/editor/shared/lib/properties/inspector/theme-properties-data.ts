@@ -17,16 +17,14 @@ import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-na
 import { ValueType } from "@seldon/core/properties"
 import { capitalize } from "@seldon/core/themes/helpers/capitalize"
 import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
+
+import type { FlatProperty } from "./properties-data"
 import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
-import { Theme } from "@seldon/core/themes/types"
+import type { Theme } from "@seldon/core/themes/types"
 import type { EntryThemeOverrides } from "@seldon/core/workspace/types"
-import { FlatProperty } from "./properties-data"
 
 /** Maps schema control types to the subset supported by `FlatProperty`. */
-const CONTROL_TYPE_MAP: Record<
-  NonNullable<ThemeTokenSchema["controlType"]>,
-  ControlType
-> = {
+const CONTROL_TYPE_MAP: Record<NonNullable<ThemeTokenSchema["controlType"]>, ControlType> = {
   boolean: "menu",
   color: "text",
   number: "number",
@@ -73,8 +71,10 @@ function createFlatPropertyFromSchema(
   // property values, instead of wrapping them in another EXACT value (which the
   // stringifier rejects, e.g. EXACT wrapping EMPTY).
   const taggedValue = asTaggedValue(value)
+
   if (taggedValue) {
     actualValue = stringifyValue(taggedValue) ?? ""
+
     // Theme token references show their friendly name (e.g. `@swatch.white` ->
     // "White", `@fontWeight.medium` -> "Medium") instead of the raw token. The
     // fontFamily special cases below override this with the slot name.
@@ -96,9 +96,8 @@ function createFlatPropertyFromSchema(
     schema.options.length > 0
   ) {
     const valueString = String(value)
-    const matchingOption = schema.options.find(
-      (opt) => String(opt.value) === valueString,
-    )
+    const matchingOption = schema.options.find((opt) => String(opt.value) === valueString)
+
     if (matchingOption) {
       actualValue = matchingOption.label
     }
@@ -107,8 +106,7 @@ function createFlatPropertyFromSchema(
   // Font slot options come from the workspace at the picker layer, so they are not
   // on the static schema. Map the stored CSS token back to its friendly family name.
   if (
-    (schema.key === "fontFamily.primary" ||
-      schema.key === "fontFamily.secondary") &&
+    (schema.key === "fontFamily.primary" || schema.key === "fontFamily.secondary") &&
     typeof value === "string"
   ) {
     actualValue = getFamilyNameByValue(value) ?? value
@@ -117,23 +115,24 @@ function createFlatPropertyFromSchema(
   // A font look's family facet references a font slot, e.g. `@fontFamily.secondary`.
   // Show the slot's friendly name ("Secondary Font") instead of the raw token.
   const fontFamilyRefValue =
-    taggedValue &&
-    "value" in taggedValue &&
-    typeof taggedValue.value === "string"
+    taggedValue && "value" in taggedValue && typeof taggedValue.value === "string"
       ? taggedValue.value
       : typeof value === "string"
         ? value
         : null
+
   if (fontFamilyRefValue) {
     const slotMatch = /^@fontFamily\.(.+)$/.exec(fontFamilyRefValue)
+
     if (slotMatch) {
       const slot = slotMatch[1]!
+
       actualValue = `${capitalize(slot)} Font`
     }
   }
 
-  const isColorKey =
-    schema.key === "colorHarmony.baseColor" || schema.key.startsWith("swatch.")
+  const isColorKey = schema.key === "colorHarmony.baseColor" || schema.key.startsWith("swatch.")
+
   if (isColorKey && isHslObject(value)) {
     actualValue = HSLObjectToString(value)
   }
@@ -163,12 +162,11 @@ function createFlatPropertyFromSchema(
   // Color-filled icons for swatches and color points. Color-point swatches
   // already incorporate the bleed value; baseColor uses its HSL directly.
   let iconColorValue: string | undefined
+
   if (schema.key === "colorHarmony.baseColor" && isHslObject(value)) {
     iconColorValue = HSLObjectToString(value)
   } else if (schema.key in COLOR_POINT_SWATCHES) {
-    iconColorValue = themeSwatchToCssBackground(
-      theme.swatch[COLOR_POINT_SWATCHES[schema.key]],
-    )
+    iconColorValue = themeSwatchToCssBackground(theme.swatch[COLOR_POINT_SWATCHES[schema.key]])
   }
 
   const icon =
@@ -178,9 +176,7 @@ function createFlatPropertyFromSchema(
       ? "icon-custom-color-value"
       : (schema.icon ?? "seldon-component")
 
-  const controlType = schema.controlType
-    ? CONTROL_TYPE_MAP[schema.controlType]
-    : undefined
+  const controlType = schema.controlType ? CONTROL_TYPE_MAP[schema.controlType] : undefined
 
   const flatProperty: FlatProperty = {
     key: schema.key,
@@ -189,9 +185,7 @@ function createFlatPropertyFromSchema(
     icon,
     value: taggedValue ?? { type: ValueType.EXACT, value: formattedValue },
     actualValue,
-    valueType: taggedValue
-      ? (taggedValue as { type: ValueType }).type
-      : ValueType.EXACT,
+    valueType: taggedValue ? (taggedValue as { type: ValueType }).type : ValueType.EXACT,
     controlType,
     isCompound: false,
     isShorthand: false,
@@ -205,6 +199,7 @@ function createFlatPropertyFromSchema(
   }
 
   const units = themeUnitsFromSchema(schema)
+
   if (units) {
     flatProperty.units = units
   }
@@ -222,9 +217,10 @@ function updateSchemaLabelsWithThemeNames(
   return schemas.map((schema) => {
     if (schema.key.endsWith(".step")) {
       const [sectionKey, subKey] = schema.key.split(".")
-      const section = (
-        theme as unknown as Record<string, Record<string, { name: string }>>
-      )[sectionKey]
+      const section = (theme as unknown as Record<string, Record<string, { name: string }>>)[
+        sectionKey
+      ]
+
       if (section && section[subKey]?.name) {
         return { ...schema, label: section[subKey].name }
       }
@@ -232,8 +228,8 @@ function updateSchemaLabelsWithThemeNames(
 
     if (schema.key.startsWith("fontWeight.")) {
       const fontWeightKey = schema.key.split(".")[1]
-      const fontWeight =
-        theme.fontWeight[fontWeightKey as keyof typeof theme.fontWeight]
+      const fontWeight = theme.fontWeight[fontWeightKey as keyof typeof theme.fontWeight]
+
       if (fontWeight?.name) {
         return { ...schema, label: fontWeight.name }
       }
@@ -259,24 +255,22 @@ export function flattenThemeProperties(
 ): FlatProperty[] {
   const properties: FlatProperty[] = []
 
-  const schemasWithLabels = updateSchemaLabelsWithThemeNames(
-    getAllThemeTokenSchemas(theme),
-    theme,
-  )
+  const schemasWithLabels = updateSchemaLabelsWithThemeNames(getAllThemeTokenSchemas(theme), theme)
 
   for (const schema of schemasWithLabels) {
     const value = getThemeValueByKey(theme, schema.key)
+
     // Look parent rows have no backing value of their own; they exist to group
     // their facet rows under a disclosure arrow, so always keep them.
     if (value === undefined && !schema.isLookParent) {
       continue
     }
+
     const isOverridden = overrides
       ? isThemeKeyOverridden(schema.key, overrides, baseSwatchIds)
       : false
-    properties.push(
-      createFlatPropertyFromSchema(schema, value, theme, isOverridden),
-    )
+
+    properties.push(createFlatPropertyFromSchema(schema, value, theme, isOverridden))
   }
 
   return properties

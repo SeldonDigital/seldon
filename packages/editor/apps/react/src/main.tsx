@@ -1,6 +1,8 @@
-import { CSSProperties, StrictMode, Suspense, lazy } from "react"
+import { StrictMode, Suspense, lazy } from "react"
 import { createRoot } from "react-dom/client"
 import { RouterProvider, createBrowserRouter } from "react-router"
+
+import type { CSSProperties } from "react"
 
 import "allotment/dist/style.css"
 
@@ -37,6 +39,7 @@ const router = createBrowserRouter([
 ])
 
 const container = document.getElementById("root")
+
 if (!container) {
   throw new Error("Root container #root not found.")
 }

@@ -1,5 +1,6 @@
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { workspaceMutationService } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Sets or clears the editor-only repeat preview state on a single node. Repeat
@@ -11,9 +12,5 @@ export function setNodeRepeat(
   payload: ExtractPayload<"set_node_repeat">,
   workspace: Workspace,
 ): Workspace {
-  return workspaceMutationService.setNodeRepeat(
-    payload.nodeId,
-    payload.repeat,
-    workspace,
-  )
+  return workspaceMutationService.setNodeRepeat(payload.nodeId, payload.repeat, workspace)
 }

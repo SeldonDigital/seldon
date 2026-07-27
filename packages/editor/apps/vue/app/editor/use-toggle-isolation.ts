@@ -1,9 +1,11 @@
 import { useActiveBoard } from "@app/canvas/use-active-board"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useSelection } from "@app/workspace/use-selection"
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 
 import { isEntryNodeInstance } from "@seldon/core/workspace/model"
+
+import type { ComputedRef } from "vue"
 
 /**
  * Toggles isolation mode. Enabling requires a default or custom variant to be
@@ -32,10 +34,13 @@ export function useToggleIsolation(): {
   function toggleIsolation(): void {
     if (config.isolatedView) {
       config.disableIsolation()
+
       return
     }
+
     const variantRootId = selectedVariantRootId.value
     const key = activeBoardKey.value
+
     if (!variantRootId || !key) return
     config.enableIsolation(key, variantRootId)
   }

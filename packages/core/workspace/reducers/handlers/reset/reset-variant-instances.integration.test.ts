@@ -4,6 +4,12 @@ import { ComponentId } from "../../../../components/constants"
 import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { parseNodeLink } from "../../../model/template-ref"
+import { addComponent } from "../add/add-component"
+import { addVariant } from "../add/add-variant"
+import { insertVariantInstance } from "../insert/insert-variant-instance"
+import { setNodeProperties } from "../set/set-node-properties"
+import { resetVariantInstances } from "./reset-variant-instances"
+
 import type {
   ComponentBoard,
   ComponentTreeRef,
@@ -11,11 +17,6 @@ import type {
   ExtractPayload,
   Workspace,
 } from "../../../types"
-import { addComponent } from "../add/add-component"
-import { addVariant } from "../add/add-variant"
-import { insertVariantInstance } from "../insert/insert-variant-instance"
-import { setNodeProperties } from "../set/set-node-properties"
-import { resetVariantInstances } from "./reset-variant-instances"
 
 const boardKey = ComponentId.BUTTON
 
@@ -23,13 +24,12 @@ const overridesOf = (ws: Workspace, id: string) =>
   (ws.nodes[id] as EntryNode).overrides as Record<string, unknown>
 
 const variantIds = (ws: Workspace) =>
-  (ws.boards[boardKey] as ComponentBoard).variants.map(
-    (v: ComponentTreeRef) => v.id,
-  )
+  (ws.boards[boardKey] as ComponentBoard).variants.map((v: ComponentTreeRef) => v.id)
 
 const addUserVariant = (ws: Workspace): [Workspace, string] => {
   const prev = variantIds(ws)
   const next = addVariant({ boardKey } as ExtractPayload<"add_variant">, ws)
+
   return [next, variantIds(next).find((id) => !prev.includes(id))!]
 }
 
@@ -56,15 +56,13 @@ const setOpacity = (ws: Workspace, nodeId: string) =>
 
 /** Instantiates two distinct source variants into a third target variant. */
 function buildTwoInstances() {
-  let ws = addComponent(
-    { boardKey } as ExtractPayload<"add_component">,
-    createEmptyWorkspace(),
-  )
+  let ws = addComponent({ boardKey } as ExtractPayload<"add_component">, createEmptyWorkspace())
   const defaultRootId = variantIds(ws)[0]!
 
   const [wsAfterA, sourceA] = addUserVariant(ws)
   const [wsAfterB, sourceB] = addUserVariant(wsAfterA)
   const [wsAfterTarget, target] = addUserVariant(wsAfterB)
+
   ws = wsAfterTarget
 
   ws = insertVariantInstance(
@@ -84,6 +82,7 @@ function buildTwoInstances() {
 
   const instanceA = instanceOf(ws, sourceA)
   const instanceB = instanceOf(ws, sourceB)
+
   return { ws, defaultRootId, sourceA, sourceB, target, instanceA, instanceB }
 }
 
@@ -92,6 +91,7 @@ describe("resetVariantInstances", () => {
     const { ws, sourceA, instanceA, instanceB } = buildTwoInstances()
 
     let withOverrides = setOpacity(ws, instanceA)
+
     withOverrides = setOpacity(withOverrides, instanceB)
     expect(overridesOf(withOverrides, instanceA).opacity).toBeDefined()
     expect(overridesOf(withOverrides, instanceB).opacity).toBeDefined()
@@ -107,6 +107,7 @@ describe("resetVariantInstances", () => {
 
   it("is a no-op for a default variant root", () => {
     const { ws, defaultRootId } = buildTwoInstances()
+
     expect(
       resetVariantInstances(
         {
@@ -119,6 +120,7 @@ describe("resetVariantInstances", () => {
 
   it("is a no-op for a user variant with no instances", () => {
     const { ws, target } = buildTwoInstances()
+
     expect(
       resetVariantInstances(
         { variantRootId: target } as ExtractPayload<"reset_variant_instances">,

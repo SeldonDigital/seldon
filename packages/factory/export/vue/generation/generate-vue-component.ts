@@ -1,18 +1,18 @@
-import { Workspace } from "@seldon/core/workspace/types"
-
-import { NodeIdToClass } from "../../css/types"
 import { LICENSE_HEADER } from "../../react/generation/inserts/insert-license"
 import { generateJSXStructure } from "../../react/generation/preprocess/generate-jsx-structure"
-import { JSXNode } from "../../react/generation/preprocess/types"
 import { isAttributeKey } from "../../react/generation/shared/attribute-props"
 import { generateDefaultProps } from "../../react/generation/shared/generate-default-props"
 import { generateJSDocComment } from "../../react/generation/shared/generate-jsdoc-comment"
 import { getConditionalPropPaths } from "../../react/generation/shared/get-conditional-prop-paths"
 import { getVariantClassNames } from "../../react/utils/class-name"
 import { pluralizeLevel } from "../../react/utils/pluralize-level"
-import { ComponentToExport, JSONTreeNode } from "../../types"
 import { getVueRootTag, resolveVueReturns } from "../shared/vue-native-tags"
 import { nodeToTemplate } from "./vue-template"
+
+import type { NodeIdToClass } from "../../css/types"
+import type { JSXNode } from "../../react/generation/preprocess/types"
+import type { ComponentToExport, JSONTreeNode } from "../../types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 type ChildImport = { name: string; path: string }
 
@@ -66,21 +66,20 @@ export function generateVueComponent(
   workspace: Workspace,
 ): string {
   const { tree } = component
-  const { root: jsxRoot, propNames } = generateJSXStructure(
-    component,
-    nodeIdToClass,
-    workspace,
-  )
+  const { root: jsxRoot, propNames } = generateJSXStructure(component, nodeIdToClass, workspace)
+
   applyVueGuards(jsxRoot, getConditionalPropPaths(component))
   const defaults = generateDefaultProps(component, nodeIdToClass, propNames)
 
   const hasChildren = Array.isArray(tree.children) && tree.children.length > 0
 
   const pathToLevel = new Map<string, string>()
+
   function indexLevels(node: JSONTreeNode) {
     pathToLevel.set(node.dataBinding.path, pluralizeLevel(node.level))
     if (Array.isArray(node.children)) node.children.forEach(indexLevels)
   }
+
   if (Array.isArray(tree.children)) tree.children.forEach(indexLevels)
 
   const childImports = collectChildImports(jsxRoot, pathToLevel)
@@ -93,6 +92,7 @@ export function generateVueComponent(
   const usesMergeSlot = mergedDeclarations.length > 0
 
   const importLines: string[] = []
+
   // `rootClassName` is always a computed value, so `computed` is always needed.
   importLines.push(`import { computed } from "vue"`)
   importLines.push(
@@ -101,12 +101,15 @@ export function generateVueComponent(
       : `import { combineClassNames } from "../utils/class-names"`,
   )
   const usesFrame = treeHasFrame(jsxRoot)
+
   if (usesFrame) importLines.push(`import Frame from "../frames/Frame.vue"`)
+
   for (const imp of childImports) {
     importLines.push(`import ${imp.name} from "${imp.path}"`)
   }
 
   const scriptLines: string[] = []
+
   scriptLines.push(...importLines)
   scriptLines.push("")
   scriptLines.push(`const props = defineProps<{`)
@@ -117,9 +120,7 @@ export function generateVueComponent(
   scriptLines.push("//")
   scriptLines.push("// Default property values")
   scriptLines.push("//")
-  scriptLines.push(
-    `const sdn: Record<string, any> = ${JSON.stringify(defaults, null, 2)}`,
-  )
+  scriptLines.push(`const sdn: Record<string, any> = ${JSON.stringify(defaults, null, 2)}`)
   scriptLines.push("")
   scriptLines.push(
     `const rootClassName = computed(() => combineClassNames(${JSON.stringify(
@@ -130,22 +131,13 @@ export function generateVueComponent(
   for (const decl of mergedDeclarations) scriptLines.push(decl)
 
   const nativeAttrs = buildNativeAttrBindings(component, propNames)
-  const template = buildTemplate(
-    component,
-    jsxRoot,
-    hasChildren,
-    rootAttrs,
-    nativeAttrs,
-  )
+  const template = buildTemplate(component, jsxRoot, hasChildren, rootAttrs, nativeAttrs)
 
   // Vue Language Tools surfaces component-level JSDoc on hover only when it sits
   // on an `export default` in a plain `<script>` block, so the doc comment lives
   // there rather than in `<script setup>`. The example fence is switched from
   // `tsx` to `vue` to match the emitted single-file component.
-  const jsDoc = generateJSDocComment(component, workspace).replace(
-    "```tsx",
-    "```vue",
-  )
+  const jsDoc = generateJSDocComment(component, workspace).replace("```tsx", "```vue")
 
   return `<script lang="ts">
 ${LICENSE_HEADER}
@@ -190,6 +182,7 @@ function collectPropDeclarations(
 function collectMergedDeclarations(propNames: Map<string, string>): string[] {
   const decls: string[] = []
   const seen = new Set<string>()
+
   for (const propName of propNames.values()) {
     if (seen.has(propName)) continue
     seen.add(propName)
@@ -197,49 +190,54 @@ function collectMergedDeclarations(propNames: Map<string, string>): string[] {
       `const ${propName}Props = computed(() => mergeSlot(sdn.${propName}, props.${propName}))`,
     )
   }
+
   return decls
 }
 
-function collectChildImports(
-  jsxRoot: JSXNode,
-  pathToLevel: Map<string, string>,
-): ChildImport[] {
+function collectChildImports(jsxRoot: JSXNode, pathToLevel: Map<string, string>): ChildImport[] {
   const imports = new Map<string, ChildImport>()
+
   function visit(node: JSXNode) {
     if (!node.children) return
+
     for (const child of node.children) {
       if (child.type !== "frame") {
         const level = pathToLevel.get(child.path) ?? "primitives"
         const path = `../${level}/${child.name}.vue`
+
         imports.set(child.name, { name: child.name, path })
       }
+
       visit(child)
     }
   }
+
   visit(jsxRoot)
-  return Array.from(imports.values()).sort((a, b) =>
-    a.name.localeCompare(b.name),
-  )
+
+  return Array.from(imports.values()).sort((a, b) => a.name.localeCompare(b.name))
 }
 
 function treeHasFrame(jsxRoot: JSXNode): boolean {
   let found = false
+
   function visit(node: JSXNode) {
     if (node.type === "frame") found = true
     node.children?.forEach(visit)
   }
+
   visit(jsxRoot)
+
   return found
 }
 
 function buildRootAttrs(component: ComponentToExport): string | null {
-  const keys = Object.keys(component.tree.dataBinding.props).filter(
-    isAttributeKey,
-  )
+  const keys = Object.keys(component.tree.dataBinding.props).filter(isAttributeKey)
+
   if (keys.length === 0) return null
   const entries = keys
     .map((key) => `${JSON.stringify(key)}: sdn[${JSON.stringify(key)}]`)
     .join(", ")
+
   return `{ ${entries} }`
 }
 
@@ -253,9 +251,7 @@ function buildTemplate(
   const returns = resolveVueReturns(component).returns
   const rootTag = getVueRootTag(component)
   const attrBind = rootAttrs ? ` v-bind="rootAttrs"` : ""
-  const refAttr = jsxRoot.ref
-    ? ` data-seldon-ref=${JSON.stringify(jsxRoot.ref)}`
-    : ""
+  const refAttr = jsxRoot.ref ? ` data-seldon-ref=${JSON.stringify(jsxRoot.ref)}` : ""
 
   const childMarkup =
     jsxRoot.children && jsxRoot.children.length > 0
@@ -272,6 +268,7 @@ function buildTemplate(
         ? `{{ ${contentExpr} }}`
         : ""
     const inner = `<slot>${defaultSlot}</slot>`
+
     return `    <component :is="(props.${propKey} as string) ?? sdn.${propKey} ?? 'div'" :class="rootClassName"${nativeAttrs}${attrBind}${refAttr}>${inner}</component>`
   }
 
@@ -281,8 +278,10 @@ function buildTemplate(
     if (VOID_HTML_TAGS.has(tag)) {
       return `    <${tag} :class="rootClassName"${nativeAttrs}${attrBind}${refAttr} />`
     }
+
     const contentExpr = componentContentExpr(component)
     const body = contentExpr ? `{{ ${contentExpr} }}` : `<slot />`
+
     return `    <${tag} :class="rootClassName"${nativeAttrs}${attrBind}${refAttr}>${body}</${tag}>`
   }
 
@@ -311,6 +310,7 @@ function applyVueGuards(node: JSXNode, conditionalPaths: Set<string>): void {
   ) {
     node.condition = `${node.propVarName} !== null`
   }
+
   if (node.children) {
     for (const child of node.children) applyVueGuards(child, conditionalPaths)
   }
@@ -337,17 +337,18 @@ function buildNativeAttrBindings(
       !ELEMENT_TAG_KEYS.has(key) &&
       !slotNames.has(key),
   )
-  return keys
-    .map((key) => ` :${key}="(props.${key} as string) ?? sdn.${key}"`)
-    .join("")
+
+  return keys.map((key) => ` :${key}="(props.${key} as string) ?? sdn.${key}"`).join("")
 }
 
 function componentContentExpr(component: ComponentToExport): string | null {
   const props = component.tree.dataBinding.props
+
   if ("content" in props) return `(props.content ?? sdn.content)`
   if ("text" in props) return `(props.text ?? sdn.text)`
   // Text primitives carry their copy in a `children` default prop.
   if ("children" in props) return `(props.children ?? sdn.children)`
+
   return null
 }
 

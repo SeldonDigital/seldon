@@ -1,4 +1,5 @@
 import { isThemeBoard } from "../../model/components"
+
 import type { Workspace } from "../../types"
 
 /**
@@ -15,14 +16,14 @@ export function getThemeEntryDisplayName(
   const themeBoards = Object.values(workspace.boards ?? {}).filter(isThemeBoard)
 
   for (const board of themeBoards) {
-    const index = board.variants.findIndex(
-      (variantRef) => variantRef.id === entryId,
-    )
+    const index = board.variants.findIndex((variantRef) => variantRef.id === entryId)
+
     if (index === -1) {
       continue
     }
 
     const entry = workspace.themes?.[entryId]
+
     if (!entry) {
       return undefined
     }

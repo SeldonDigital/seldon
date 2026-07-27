@@ -39,6 +39,7 @@ describe("getColorCSSValue", () => {
       brightness: 20,
       theme: defaultTheme,
     })
+
     expect(result).toMatch(/^hsl/)
   })
 

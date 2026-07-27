@@ -1,5 +1,6 @@
 import { Frame } from "@seldon/components/frames/Frame"
-import { CSSProperties } from "react"
+
+import type { CSSProperties } from "react"
 
 interface SwatchDotProps {
   color: string
@@ -8,19 +9,13 @@ interface SwatchDotProps {
 }
 
 /** Overlap each dot except the last; selected rows overlap a little less. */
-function getSwatchMarginRight(
-  index: number,
-  isSelected: boolean,
-): string | undefined {
+function getSwatchMarginRight(index: number, isSelected: boolean): string | undefined {
   if (index >= 4) return undefined
+
   return isSelected ? "-7px" : "-10px"
 }
 
-export function SwatchDot({
-  color,
-  index,
-  isSelected = false,
-}: SwatchDotProps) {
+export function SwatchDot({ color, index, isSelected = false }: SwatchDotProps) {
   const dotStyle: CSSProperties = {
     zIndex: 5 - index,
     display: "block",
@@ -30,11 +25,6 @@ export function SwatchDot({
     backgroundColor: color,
     marginRight: getSwatchMarginRight(index, isSelected),
   }
-  return (
-    <Frame
-      wrapperElement="span"
-      className="shadow-dieter-rams-button"
-      style={dotStyle}
-    />
-  )
+
+  return <Frame wrapperElement="span" className="shadow-dieter-rams-button" style={dotStyle} />
 }

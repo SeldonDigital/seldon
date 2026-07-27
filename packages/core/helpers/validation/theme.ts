@@ -1,4 +1,4 @@
-import { ThemeValueKey } from "../../themes/types"
+import type { ThemeValueKey } from "../../themes/types"
 
 /**
  * Validates if a string is a valid theme value key (e.g., "@swatch.primary").

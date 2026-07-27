@@ -24,9 +24,7 @@ let devTools:
  * @param reducer - The workspace reducer to wrap with debugging capabilities
  * @returns A new reducer function that logs actions and state to Redux DevTools
  */
-export function debugMiddleware(
-  reducer: (workspace: Workspace, action: Action) => Workspace,
-) {
+export function debugMiddleware(reducer: (workspace: Workspace, action: Action) => Workspace) {
   if (typeof window !== "undefined" && window.__REDUX_DEVTOOLS_EXTENSION__) {
     devTools = window.__REDUX_DEVTOOLS_EXTENSION__.connect({
       name: "Workspace Reducer",

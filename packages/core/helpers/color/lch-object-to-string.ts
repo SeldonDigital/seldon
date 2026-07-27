@@ -1,4 +1,4 @@
-import { LCH } from "../../index"
+import type { LCH } from "../../index"
 
 /**
  * Converts an LCH object to an LCH string with optional opacity.

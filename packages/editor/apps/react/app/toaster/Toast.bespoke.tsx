@@ -1,7 +1,8 @@
 // BESPOKE-VIEW: hand-authored transitional View with inline token styling.
 // Replace with a generated workspace component once one covers the toast card.
 import { motion } from "framer-motion"
-import { CSSProperties } from "react"
+
+import type { CSSProperties } from "react"
 
 interface ToastProps {
   message: string
@@ -17,8 +18,7 @@ const toastStyle: CSSProperties = {
   padding: "1rem 1.5rem",
   backgroundColor: "var(--sdn-swatch-white)",
   borderRadius: "0.75rem",
-  boxShadow:
-    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+  boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
   outline: "1px solid var(--sdn-swatch-black)",
   color: "var(--sdn-swatch-black)",
 }

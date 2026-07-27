@@ -8,22 +8,12 @@
  * Idempotent: files with matching contents are skipped, so re-running does not
  * rewrite unchanged files or touch their mtimes.
  */
-import {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  readdirSync,
-  statSync,
-} from "node:fs"
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "node:fs"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
-const sourceRoot = join(
-  editorRoot,
-  "../../../core/font-collections/catalog/google",
-)
+const sourceRoot = join(editorRoot, "../../../core/font-collections/catalog/google")
 const destRoot = join(editorRoot, "../../shared/public/font-licenses")
 
 const LICENSE_FILES = ["OFL.txt", "LICENSE.txt", "UFL.txt"]
@@ -42,9 +32,7 @@ for (const slug of readdirSync(sourceRoot)) {
   const familyDir = join(sourceRoot, slug)
   if (!statSync(familyDir).isDirectory()) continue
 
-  const licenseName = LICENSE_FILES.find((name) =>
-    existsSync(join(familyDir, name)),
-  )
+  const licenseName = LICENSE_FILES.find((name) => existsSync(join(familyDir, name)))
   if (!licenseName) continue
 
   const source = join(familyDir, licenseName)

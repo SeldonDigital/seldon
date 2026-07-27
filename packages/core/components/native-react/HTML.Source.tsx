@@ -1,7 +1,5 @@
-import { SourceHTMLAttributes } from "react"
+import type { SourceHTMLAttributes } from "react"
 
-export const HTMLSource = ({
-  ...props
-}: SourceHTMLAttributes<HTMLSourceElement>) => {
+export const HTMLSource = ({ ...props }: SourceHTMLAttributes<HTMLSourceElement>) => {
   return <source {...props} />
 }

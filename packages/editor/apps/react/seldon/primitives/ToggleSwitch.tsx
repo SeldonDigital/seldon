@@ -10,10 +10,12 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { InputHTMLAttributes, Ref, forwardRef } from "react"
+import { forwardRef } from "react"
 
 import { SeldonToggle } from "../custom/SeldonToggle"
 import { combineClassNames } from "../utils/class-name"
+
+import type { InputHTMLAttributes, Ref } from "react"
 
 export interface ToggleSwitchProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
@@ -36,27 +38,25 @@ export interface ToggleSwitchProps extends InputHTMLAttributes<HTMLInputElement>
  * />
  * ```
  *****/
-export const ToggleSwitch = forwardRef<HTMLInputElement, ToggleSwitchProps>(
-  function ToggleSwitch({ className = "", ...props }, ref) {
-    const toggleSwitchClassName = combineClassNames(
-      "sdn-toggle-switch",
-      className,
-    )
+export const ToggleSwitch = forwardRef<HTMLInputElement, ToggleSwitchProps>(function ToggleSwitch(
+  { className = "", ...props },
+  ref,
+) {
+  const toggleSwitchClassName = combineClassNames("sdn-toggle-switch", className)
 
-    //
-    // React JSX component with merged default and custom properties
-    //
-    return (
-      <SeldonToggle
-        className={toggleSwitchClassName}
-        role={sdn["role"]}
-        aria-checked={sdn["aria-checked"]}
-        ref={ref}
-        {...props}
-      />
-    )
-  },
-)
+  //
+  // React JSX component with merged default and custom properties
+  //
+  return (
+    <SeldonToggle
+      className={toggleSwitchClassName}
+      role={sdn["role"]}
+      aria-checked={sdn["aria-checked"]}
+      ref={ref}
+      {...props}
+    />
+  )
+})
 
 //
 // Default property values

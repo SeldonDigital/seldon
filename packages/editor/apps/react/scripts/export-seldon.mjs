@@ -19,10 +19,7 @@ const editorRoot = path.dirname(scriptDir)
 const repoRoot = path.join(editorRoot, "../../../..")
 const coreRoot = path.join(editorRoot, "../../../core")
 const factoryRoot = path.join(editorRoot, "../../../factory")
-const handlerEntry = path.join(
-  editorRoot,
-  "../../shared/vite/export-handler.ts",
-)
+const handlerEntry = path.join(editorRoot, "../../shared/vite/export-handler.ts")
 const workspaceFile = path.join(repoRoot, "seldon-editor.json")
 
 async function loadRunExport() {
@@ -70,15 +67,11 @@ async function main() {
     fs.mkdirSync(path.dirname(target), { recursive: true })
     fs.writeFileSync(
       target,
-      file.encoding === "base64"
-        ? Buffer.from(file.content, "base64")
-        : file.content,
+      file.encoding === "base64" ? Buffer.from(file.content, "base64") : file.content,
     )
   }
 
-  console.log(
-    `Exported ${files.length} files into ${path.join(editorRoot, "seldon")}`,
-  )
+  console.log(`Exported ${files.length} files into ${path.join(editorRoot, "seldon")}`)
 }
 
 main().catch((error) => {

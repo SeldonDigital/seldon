@@ -1,6 +1,7 @@
 import { ValueType } from "../../../properties"
-import { ThemeValue, Value } from "../../../properties/types"
 import { isCompoundValue } from "../compound/is-compound-value"
+
+import type { ThemeValue, Value } from "../../../properties/types"
 
 /**
  * Type guard that checks if a value is a theme value (categorical or ordinal).
@@ -11,8 +12,5 @@ export function isThemeValue(value: Value): value is ThemeValue {
   if (isCompoundValue(value)) return false
   if (!value || typeof value !== "object" || !("type" in value)) return false
 
-  return (
-    value.type === ValueType.THEME_CATEGORICAL ||
-    value.type === ValueType.THEME_ORDINAL
-  )
+  return value.type === ValueType.THEME_CATEGORICAL || value.type === ValueType.THEME_ORDINAL
 }

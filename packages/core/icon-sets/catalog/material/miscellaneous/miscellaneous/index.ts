@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconMaterialDeveloperBoardOff } from "./../../system/devices/IconMaterialDeveloperBoardOff"
 export { IconMaterialPictureInPictureAlt } from "./../../user-interface/media/IconMaterialPictureInPictureAlt"

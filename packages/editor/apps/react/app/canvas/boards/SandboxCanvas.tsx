@@ -4,14 +4,15 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { CSSProperties } from "react"
 
-import { Board } from "@seldon/core"
-import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 
 import { CanvasNode } from "../CanvasNode"
 import { PlaceholderBox } from "./PlaceholderBox"
+
+import type { Board } from "@seldon/core"
+import type { ThemeInstanceId } from "@seldon/core/themes/types"
+import type { CSSProperties } from "react"
 
 export type SandboxCanvasProps = {
   board: Board
@@ -37,10 +38,7 @@ export function SandboxCanvas({ board }: SandboxCanvasProps) {
 
   if (playground.variants.length === 0) {
     return (
-      <PlaceholderBox
-        boardId={playgroundKey}
-        className={`board-${playgroundKey}`}
-      >
+      <PlaceholderBox boardId={playgroundKey} className={`board-${playgroundKey}`}>
         <TextLabel htmlElement="span">No Sandboxes</TextLabel>
       </PlaceholderBox>
     )

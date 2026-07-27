@@ -1,14 +1,12 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
-
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
+
+import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 /**
  * Duplicates an existing node. With a parent, it pastes a copy of an instance
@@ -16,9 +14,7 @@ import { withCreatedIdentity } from "./created-nodes"
  * source. The parent's level must allow the component, or the reducer rejects
  * the paste.
  */
-export function createDuplicateComponentTool(
-  state: PiTurnState,
-): ToolDefinition {
+export function createDuplicateComponentTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "duplicate_component",
     label: "Duplicate Component",
@@ -30,8 +26,7 @@ export function createDuplicateComponentTool(
       }),
       parentId: Type.Optional(
         Type.String({
-          description:
-            "Parent node id to paste the copy under. Omit to duplicate in place.",
+          description: "Parent node id to paste the copy under. Omit to duplicate in place.",
         }),
       ),
       index: Type.Optional(
@@ -40,6 +35,7 @@ export function createDuplicateComponentTool(
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const action: WorkspaceAction =
         params.parentId !== undefined
@@ -56,6 +52,7 @@ export function createDuplicateComponentTool(
             } as WorkspaceAction)
       const before = state.workspace
       const message = commit(state, action)
+
       return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })

@@ -51,13 +51,7 @@ export const DIMENSION_ORDER = [
   "huge",
 ] as const
 
-export const SPACING_ORDER = [
-  "tight",
-  "compact",
-  "cozy",
-  "comfortable",
-  "open",
-] as const
+export const SPACING_ORDER = ["tight", "compact", "cozy", "comfortable", "open"] as const
 
 export const LINE_HEIGHT_ORDER = [
   "solid",
@@ -69,10 +63,4 @@ export const LINE_HEIGHT_ORDER = [
   "none",
 ] as const
 
-export const BORDER_WIDTH_ORDER = [
-  "xsmall",
-  "small",
-  "medium",
-  "large",
-  "xlarge",
-] as const
+export const BORDER_WIDTH_ORDER = ["xsmall", "small", "medium", "large", "xlarge"] as const

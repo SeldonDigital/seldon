@@ -1,11 +1,8 @@
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
-import type {
-  Board,
-  ComponentTreeRef,
-  EntryNodeId,
-} from "@seldon/core/workspace/types"
 import { getBoardVariantRootIds } from "./workspace-accessors"
+
+import type { Board, ComponentTreeRef, EntryNodeId } from "@seldon/core/workspace/types"
 
 export type SidebarTreeRef = {
   id: EntryNodeId
@@ -18,27 +15,18 @@ export function getVariantRootIds(board: Board): EntryNodeId[] {
 }
 
 /** Direct child node ids from the board variant tree, not from `nodes`. */
-export function getChildNodeIds(
-  board: Board,
-  parentId: EntryNodeId,
-): EntryNodeId[] {
+export function getChildNodeIds(board: Board, parentId: EntryNodeId): EntryNodeId[] {
   return getChildrenIds(board, parentId)
 }
 
 export function walkComponentTree(
   board: Board,
-  visit: (
-    ref: ComponentTreeRef,
-    parent: ComponentTreeRef | null,
-  ) => boolean | void,
+  visit: (ref: ComponentTreeRef, parent: ComponentTreeRef | null) => boolean | void,
 ): void {
   walkBoardTreeRefs(board.variants, visit)
 }
 
-export function collectDescendantNodeIds(
-  board: Board,
-  rootId: EntryNodeId,
-): EntryNodeId[] {
+export function collectDescendantNodeIds(board: Board, rootId: EntryNodeId): EntryNodeId[] {
   const ids: EntryNodeId[] = []
 
   function collect(ref: ComponentTreeRef) {
@@ -51,6 +39,7 @@ export function collectDescendantNodeIds(
   walkComponentTree(board, (ref) => {
     if (ref.id === rootId) {
       collect(ref)
+
       return true
     }
   })

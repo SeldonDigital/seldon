@@ -33,6 +33,7 @@ describe("getLayeredPaintColor", () => {
       useThemeVariableReferences: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
+
     expect(result).toBe("var(--sdn-swatch-primary-b50)")
   })
 
@@ -44,6 +45,7 @@ describe("getLayeredPaintColor", () => {
       useThemeVariableReferences: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
+
     expect(result).toBe("var(--sdn-swatch-primary-bn20)")
   })
 })

@@ -14,19 +14,12 @@ export function isSectioned<ItemT>(options: OptionsType<ItemT>): boolean {
 
 /** Flattens sectioned options into a single list; returns a flat list as-is. */
 export function flattenOptions<ItemT>(options: OptionsType<ItemT>): ItemT[] {
-  return isSectioned(options)
-    ? (options as ItemT[][]).flat()
-    : (options as ItemT[])
+  return isSectioned(options) ? (options as ItemT[][]).flat() : (options as ItemT[])
 }
 
 /** A hidden or disabled option cannot be highlighted by keyboard navigation. */
-export function isNavigableOption<ItemT extends object>(
-  option: ItemT,
-): boolean {
-  return (
-    !("hidden" in option && option.hidden) &&
-    !("disabled" in option && option.disabled)
-  )
+export function isNavigableOption<ItemT extends object>(option: ItemT): boolean {
+  return !("hidden" in option && option.hidden) && !("disabled" in option && option.disabled)
 }
 
 /** Filters options by a case-insensitive name match, preserving section shape. */
@@ -54,10 +47,13 @@ export function stepHighlight<ItemT extends { value: string }>(
   direction: 1 | -1,
 ): string | undefined {
   const currentIndex = items.findIndex((option) => option.value === current)
+
   if (currentIndex === -1) {
     return items[direction === 1 ? 0 : items.length - 1]?.value
   }
+
   const nextIndex = (currentIndex + direction + items.length) % items.length
+
   return items[nextIndex]?.value
 }
 
@@ -66,9 +62,7 @@ export function findOptionByName<ItemT extends { name: string }>(
   options: ItemT[],
   name: string,
 ): ItemT | undefined {
-  return options.find(
-    (option) => option.name.toLowerCase() === name.toLowerCase(),
-  )
+  return options.find((option) => option.name.toLowerCase() === name.toLowerCase())
 }
 
 /** First option whose value matches `value` case-insensitively. */
@@ -76,7 +70,5 @@ export function findOptionByValue<ItemT extends { value: string }>(
   options: ItemT[],
   value: string | undefined,
 ): ItemT | undefined {
-  return options.find(
-    (option) => option.value.toLowerCase() === value?.toLowerCase(),
-  )
+  return options.find((option) => option.value.toLowerCase() === value?.toLowerCase())
 }

@@ -1,12 +1,10 @@
-import {
-  type ComboboxOptionItem,
-  type ComboboxOptionItems,
-  useComboboxPosition,
-  useComboboxState,
-} from "@app/menus"
+import { useComboboxPosition, useComboboxState } from "@app/menus"
+import { useCallback, useEffect, useMemo, useRef } from "react"
+
+import type { ComboboxOptionItem, ComboboxOptionItems } from "@app/menus"
 import type { PropertyPickerResult } from "@seldon/editor/lib/properties/inspector/options-utils"
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import { RefObject, useCallback, useEffect, useMemo, useRef } from "react"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { RefObject } from "react"
 
 type ControlType = FlatProperty["controlType"]
 
@@ -27,10 +25,10 @@ interface UsePropertyComboboxInput {
   validationFunction: ((value: string) => boolean) | undefined
   isEditing: boolean
   setIsEditing: (editing: boolean) => void
+  commit: (newValue: string) => void
   onEditChange?: (editing: boolean) => void
   onBlur?: () => void
   frameRef?: RefObject<HTMLDivElement | null>
-  commit: (newValue: string) => void
 }
 
 interface UsePropertyComboboxResult {
@@ -79,8 +77,7 @@ export function usePropertyCombobox({
   const originalValueRef = useRef<string | undefined>(undefined)
   const hasSelectionRef = useRef(false)
 
-  const isMenuOrComboType =
-    effectiveControlType === "menu" || effectiveControlType === "combo"
+  const isMenuOrComboType = effectiveControlType === "menu" || effectiveControlType === "combo"
 
   const comboOptions: ComboboxOptionItems = isMenuOrComboType
     ? ((options ?? []) as ComboboxOptionItem[][])
@@ -106,13 +103,13 @@ export function usePropertyCombobox({
     onValueChange: (value) => {
       hasSelectionRef.current = true
       commit(value)
+
       if (effectiveControlType === "menu") {
         onBlur?.()
       }
     },
     inputRef,
-    validateCustomValue:
-      effectiveControlType === "combo" ? validationFunction : undefined,
+    validateCustomValue: effectiveControlType === "combo" ? validationFunction : undefined,
   })
 
   useEffect(() => {
@@ -133,27 +130,20 @@ export function usePropertyCombobox({
   useEffect(() => {
     if (!comboboxOpen && !isEditing) {
       const option = flatOptions.find((o) => o.value === comboboxControlValue)
+
       setInputValue(option ? option.name : displayValue || "")
     }
-  }, [
-    comboboxControlValue,
-    displayValue,
-    flatOptions,
-    setInputValue,
-    comboboxOpen,
-    isEditing,
-  ])
+  }, [comboboxControlValue, displayValue, flatOptions, setInputValue, comboboxOpen, isEditing])
 
-  const hasSections =
-    filteredOptions.length > 0 && Array.isArray(filteredOptions[0])
+  const hasSections = filteredOptions.length > 0 && Array.isArray(filteredOptions[0])
 
   const hasFilteredOptions = useMemo(() => {
     if (!filteredOptions || filteredOptions.length === 0) return false
+
     if (hasSections) {
-      return (filteredOptions as ComboboxOptionItem[][]).some(
-        (group) => group.length > 0,
-      )
+      return (filteredOptions as ComboboxOptionItem[][]).some((group) => group.length > 0)
     }
+
     return (filteredOptions as ComboboxOptionItem[]).length > 0
   }, [filteredOptions, hasSections])
 
@@ -170,6 +160,7 @@ export function usePropertyCombobox({
           inputRef.current.focus()
           inputRef.current.select()
         }
+
         setComboboxOpen(true)
       })
     })
@@ -188,9 +179,8 @@ export function usePropertyCombobox({
 
   const restoreInputIfNeeded = () => {
     if (!hasSelectionRef.current && originalValueRef.current !== undefined) {
-      const option = flatOptions.find(
-        (o) => o.value === originalValueRef.current,
-      )
+      const option = flatOptions.find((o) => o.value === originalValueRef.current)
+
       setInputValue(option ? option.name : originalValueRef.current || "")
     }
   }
@@ -198,6 +188,7 @@ export function usePropertyCombobox({
   const handleComboboxClose = () => {
     restoreInputIfNeeded()
     setComboboxOpen(false)
+
     if (effectiveControlType === "menu") {
       onBlur?.()
     }

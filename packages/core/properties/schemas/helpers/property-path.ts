@@ -18,17 +18,21 @@ export function getCatalogKeyForPropertyPath(path: string): string | undefined {
   if (path in PROPERTY_SCHEMAS) return path
 
   const segments = path.split(".").filter(Boolean)
+
   if (segments.length < 2) return undefined
 
   const root = segments[0]!
 
   if (LAYERED_PAINT_ROOTS.has(root) && segments.length >= 3) {
     const maybeIndex = segments[1]!
+
     if (!/^\d+$/.test(maybeIndex)) return undefined
     const facet = segments[2]!
     const joined = joinCompoundFacetKey(root, facet)
+
     if (joined in PROPERTY_SCHEMAS) return joined
     if (facet in PROPERTY_SCHEMAS) return facet
+
     return undefined
   }
 
@@ -46,12 +50,15 @@ export function getCatalogKeyForPropertyPath(path: string): string | undefined {
   if (isCompoundCatalogProperty(root)) {
     const facet = segments[1]!
     const joined = joinCompoundFacetKey(root, facet)
+
     if (joined in PROPERTY_SCHEMAS) return joined
     if (facet in PROPERTY_SCHEMAS) return facet
+
     return undefined
   }
 
   const last = segments[segments.length - 1]!
+
   if (last in PROPERTY_SCHEMAS) return last
 
   return undefined

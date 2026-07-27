@@ -6,9 +6,8 @@
 import { produce } from "immer"
 
 import { getComponentSchema } from "../../../../components/catalog"
-import { ComponentId } from "../../../../components/constants"
 import { isComplexSchema } from "../../../../components/types"
-import { ExtractPayload, Workspace, invariant } from "../../../../index"
+import { invariant } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { setBoardOrder } from "../../../helpers/components/board-sort-order"
 import { DEFAULT_THEME_BOARD_AUTHOR } from "../../../helpers/components/default-board-metadata"
@@ -18,8 +17,6 @@ import {
 } from "../../../helpers/components/entry-node-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import {
-  type BuildContext,
-  type InstantiateComponentOptions,
   appendComplexSchemaVariant,
   buildVariantTree,
   makeEntryNode,
@@ -32,11 +29,14 @@ import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/works
 import { isComponentBoard } from "../../../model/components"
 import { formatNodeCatalog } from "../../../model/template-ref"
 import { boardOrderService, workspaceMutationService } from "../../../services"
+
+import type { ComponentId } from "../../../../components/constants"
+import type { ExtractPayload, Workspace } from "../../../../index"
 import type {
-  ComponentBoard,
-  ComponentTreeRef,
-  EntryNode,
-} from "../../../types"
+  BuildContext,
+  InstantiateComponentOptions,
+} from "../../../helpers/nodes/build-component-variants"
+import type { ComponentBoard, ComponentTreeRef, EntryNode } from "../../../types"
 
 function toVariantFallbackSet(
   variantFallbacks: string[] | undefined,
@@ -44,6 +44,7 @@ function toVariantFallbackSet(
   if (!variantFallbacks?.length) {
     return undefined
   }
+
   return new Set(variantFallbacks)
 }
 
@@ -62,6 +63,7 @@ function instantiateComponentInto(
   const schema = getComponentSchema(componentId)
   const defaultVariantRootId = componentBoardDefaultNodeId(componentId)
   const board = draft.boards[componentId]
+
   invariant(
     board && isComponentBoard(board),
     `Board shell for ${componentId} missing during instantiation`,
@@ -69,6 +71,7 @@ function instantiateComponentInto(
 
   if (!isComplexSchema(schema)) {
     const nodes: Record<string, EntryNode> = {}
+
     nodes[defaultVariantRootId] = makeEntryNode({
       id: defaultVariantRootId,
       type: "default",
@@ -80,20 +83,22 @@ function instantiateComponentInto(
     const variantTreeRefs: ComponentTreeRef[] = [{ id: defaultVariantRootId }]
 
     const primitiveVariantIds =
-      options.restrictedVariantIds ??
-      (schema.variants ?? []).map((variant) => variant.id)
+      options.restrictedVariantIds ?? (schema.variants ?? []).map((variant) => variant.id)
+
     for (const variantId of primitiveVariantIds) {
       const { id, node } = makePrimitiveVariantNode(
         componentId,
         schema,
         requireCatalogVariant(schema, componentId, variantId),
       )
+
       nodes[id] = node
       variantTreeRefs.push({ id })
     }
 
     draft.nodes = { ...draft.nodes, ...nodes }
     board.variants = variantTreeRefs
+
     return
   }
 
@@ -131,6 +136,7 @@ function instantiateComponentInto(
     ctx,
     undefined,
   )
+
   draft.nodes = { ...draft.nodes, ...ctx.newNodes }
   board.variants = [defaultRef]
   ctx.newNodes = {}
@@ -162,22 +168,20 @@ function reconcileComponentBoard(
   options: InstantiateComponentOptions,
 ): void {
   const board = draft.boards[componentId]
+
   if (!board || !isComponentBoard(board)) {
     return
   }
 
   const schema = getComponentSchema(componentId)
   const requiredVariantIds =
-    options.restrictedVariantIds ??
-    (schema.variants ?? []).map((variant) => variant.id)
+    options.restrictedVariantIds ?? (schema.variants ?? []).map((variant) => variant.id)
 
   const existingNodeIds = new Set(board.variants.map((ref) => ref.id))
   const missingVariantIds = requiredVariantIds.filter(
-    (variantId) =>
-      !existingNodeIds.has(
-        componentBoardSchemaVariantNodeId(componentId, variantId),
-      ),
+    (variantId) => !existingNodeIds.has(componentBoardSchemaVariantNodeId(componentId, variantId)),
   )
+
   if (!missingVariantIds.length) {
     return
   }
@@ -196,6 +200,7 @@ function reconcileComponentBoard(
         schema,
         requireCatalogVariant(schema, componentId, variantId),
       )
+
       ctx.newNodes[id] = node
       newRefs.push({ id })
     }
@@ -204,12 +209,9 @@ function reconcileComponentBoard(
     // Restricted boards have empty default trees, so there are no canonical
     // default children to share. An existing full default tree lets reconciled
     // variants share its children the same way a full build would.
-    const fallbackChildSlots = options.restrictedVariantIds?.length
-      ? []
-      : schema.default.children
-    const defaultRef = board.variants.find(
-      (ref) => ref.id === defaultVariantRootId,
-    )
+    const fallbackChildSlots = options.restrictedVariantIds?.length ? [] : schema.default.children
+    const defaultRef = board.variants.find((ref) => ref.id === defaultVariantRootId)
+
     for (const variantId of missingVariantIds) {
       appendComplexSchemaVariant(
         componentId,
@@ -239,8 +241,10 @@ export function ensureComponentBoards(
   rootId: ComponentId,
   variantFallbacks?: ReadonlySet<string>,
 ): void {
-  const { orderedComponentIds: components, plans: instantiationPlans } =
-    buildComponentAddPlan(rootId, variantFallbacks)
+  const { orderedComponentIds: components, plans: instantiationPlans } = buildComponentAddPlan(
+    rootId,
+    variantFallbacks,
+  )
 
   let order = -1
 
@@ -263,6 +267,7 @@ export function ensureComponentBoards(
         componentProperties: getInitialBoardComponentProperties("component"),
         variants: [],
       }
+
       setBoardOrder(board, order)
       draft.boards[componentId] = board
 
@@ -276,6 +281,7 @@ export function ensureComponentBoards(
   }
 
   const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
+
   Object.assign(draft.boards, updatedWorkspace.boards)
 }
 

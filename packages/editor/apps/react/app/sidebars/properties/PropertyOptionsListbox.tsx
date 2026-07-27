@@ -1,6 +1,6 @@
 import { ComboboxListbox } from "@app/menus"
 
-import { PropertyControlView } from "./hooks/use-property-control"
+import type { PropertyControlView } from "./hooks/use-property-control"
 
 interface PropertyOptionsListboxProps {
   control: PropertyControlView
@@ -12,14 +12,12 @@ interface PropertyOptionsListboxProps {
  * edits through a combobox control; every other control kind renders nothing.
  * Closing the list both dismisses it and ends the row's edit session.
  */
-export function PropertyOptionsListbox({
-  control,
-  onEndEdit,
-}: PropertyOptionsListboxProps) {
+export function PropertyOptionsListbox({ control, onEndEdit }: PropertyOptionsListboxProps) {
   if (control.kind !== "combobox") return null
 
   const { options, optionList } = control
   const { open, position, onPointerLeave } = options
+
   const handleClose = () => {
     options.handleClose()
     onEndEdit()

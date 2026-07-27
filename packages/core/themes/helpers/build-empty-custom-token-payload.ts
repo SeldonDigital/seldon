@@ -17,9 +17,7 @@ export type EmptyCustomTokenPayload = {
 } & Record<string, unknown>
 
 /** Builds the default add payload (minus `themeId`) for a custom token. */
-export function buildEmptyCustomTokenPayload(
-  section: string,
-): EmptyCustomTokenPayload {
+export function buildEmptyCustomTokenPayload(section: string): EmptyCustomTokenPayload {
   const name = "New Token"
 
   if (isLookSection(section)) {

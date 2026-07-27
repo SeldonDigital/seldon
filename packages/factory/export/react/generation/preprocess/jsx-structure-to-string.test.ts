@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import { ComponentToExport } from "../../../types"
 import { jsxStructureToString } from "./jsx-structure-to-string"
-import { JSXNode } from "./types"
+
+import type { ComponentToExport } from "../../../types"
+import type { JSXNode } from "./types"
 
 const component = (returns: string): ComponentToExport =>
   ({
@@ -22,23 +23,21 @@ const rootNode = (children?: JSXNode[]): JSXNode => ({
 describe("jsxStructureToString", () => {
   it("emits a return statement wrapping the configured element", () => {
     const out = jsxStructureToString(rootNode(), component("HTML.Div"), "cls")
+
     expect(out).toContain("return (")
     expect(out).toContain("<HTML.Div className={cls} {...props}>")
     expect(out).toContain("</HTML.Div>")
   })
 
   it("forwards a ref when requested", () => {
-    const out = jsxStructureToString(
-      rootNode(),
-      component("HTML.Div"),
-      "cls",
-      true,
-    )
+    const out = jsxStructureToString(rootNode(), component("HTML.Div"), "cls", true)
+
     expect(out).toContain("ref={ref}")
   })
 
   it("omits the ref binding by default", () => {
     const out = jsxStructureToString(rootNode(), component("HTML.Div"), "cls")
+
     expect(out).not.toContain("ref={ref}")
   })
 
@@ -49,11 +48,8 @@ describe("jsxStructureToString", () => {
       path: "button",
       propVarName: "buttonProps",
     }
-    const out = jsxStructureToString(
-      rootNode([child]),
-      component("HTML.Div"),
-      "cls",
-    )
+    const out = jsxStructureToString(rootNode([child]), component("HTML.Div"), "cls")
+
     expect(out).toContain("children !== undefined ?")
     expect(out).toContain("<Button {...buttonProps} />")
   })
@@ -64,15 +60,10 @@ describe("jsxStructureToString", () => {
       name: "Button",
       path: "button",
       propVarName: "buttonProps",
-      grandchildProps: [
-        { propKeyName: "icon", propVarName: "buttonIconProps" },
-      ],
+      grandchildProps: [{ propKeyName: "icon", propVarName: "buttonIconProps" }],
     }
-    const out = jsxStructureToString(
-      rootNode([child]),
-      component("HTML.Div"),
-      "cls",
-    )
+    const out = jsxStructureToString(rootNode([child]), component("HTML.Div"), "cls")
+
     expect(out).toContain("<Button {...buttonProps} icon={buttonIconProps} />")
   })
 
@@ -83,8 +74,9 @@ describe("jsxStructureToString", () => {
       path: "extra",
       propVarName: "extraProps",
     }
-    expect(() =>
-      jsxStructureToString(rootNode([child]), component("HTML.Div"), "cls"),
-    ).toThrow(/missing condition/)
+
+    expect(() => jsxStructureToString(rootNode([child]), component("HTML.Div"), "cls")).toThrow(
+      /missing condition/,
+    )
   })
 })

@@ -1,12 +1,14 @@
 import { useActiveBoard } from "@app/canvas/use-active-board"
-import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 import { remeasureStore } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 import { createNodeRectsTracker } from "@seldon/editor/lib/canvas/tracking/node-rects-tracker"
 import { getVisibleNodeIds } from "@seldon/editor/lib/canvas/tracking/visible-nodes"
-import { type Ref, computed, onScopeDispose, watch } from "vue"
+import { computed, onScopeDispose, watch } from "vue"
 
 import { useSharedStore } from "./use-shared-store"
+
+import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
+import type { Ref } from "vue"
 
 /** The tracked rect of a single node, relative to the canvas, or null. */
 export function useNodeRect(nodeId: string): Ref<NodeRect | null> {

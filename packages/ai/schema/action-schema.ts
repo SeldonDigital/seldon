@@ -16,8 +16,7 @@ interface RawActionEntry {
   }
 }
 
-const anyOf =
-  (rawActionSchema as unknown as { anyOf?: RawActionEntry[] }).anyOf ?? []
+const anyOf = (rawActionSchema as unknown as { anyOf?: RawActionEntry[] }).anyOf ?? []
 
 /**
  * Actions the agent must not emit. These are internal or meta operations: the
@@ -42,18 +41,17 @@ interface ActionMeta {
 const ACTION_META: ActionMeta[] = anyOf
   .map((entry): ActionMeta | null => {
     const type = entry.properties?.type?.const
+
     if (typeof type !== "string") return null
     const payload = entry.properties?.payload
+
     return {
       type,
       payloadKeys: payload?.properties ? Object.keys(payload.properties) : [],
       requiredKeys: payload?.required ?? [],
     }
   })
-  .filter(
-    (meta): meta is ActionMeta =>
-      meta !== null && !EXCLUDED_ACTION_TYPES.has(meta.type),
-  )
+  .filter((meta): meta is ActionMeta => meta !== null && !EXCLUDED_ACTION_TYPES.has(meta.type))
 
 /** The full set of action type strings the agent may emit. */
 export const ALL_ACTION_TYPES: string[] = ACTION_META.map((meta) => meta.type)
@@ -64,20 +62,20 @@ function actionDomain(type: string): string {
   if (type.includes("font_collection")) return "Fonts"
   if (type.includes("icon_set")) return "Icons"
   if (type.includes("media")) return "Media"
-  if (type.includes("playground") || type.includes("sandbox"))
-    return "Playgrounds"
-  if (type.includes("workspace") || type.includes("metadata"))
-    return "Workspace"
-  if (type.includes("board") || type.includes("component"))
-    return "Boards & Components"
+  if (type.includes("playground") || type.includes("sandbox")) return "Playgrounds"
+  if (type.includes("workspace") || type.includes("metadata")) return "Workspace"
+  if (type.includes("board") || type.includes("component")) return "Boards & Components"
+
   if (
     type.includes("node") ||
     type.includes("instance") ||
     type.includes("variant") ||
     type.includes("layer") ||
     type.includes("custom_state")
-  )
+  ) {
     return "Nodes, Variants & Instances"
+  }
+
   return "Other"
 }
 
@@ -102,19 +100,24 @@ const DOMAIN_ORDER = [
  */
 export function buildActionReference(): string {
   const byDomain = new Map<string, string[]>()
+
   for (const meta of ACTION_META) {
     const domain = actionDomain(meta.type)
     const list = byDomain.get(domain) ?? []
+
     list.push(meta.type)
     byDomain.set(domain, list)
   }
 
   const sections: string[] = []
+
   for (const domain of DOMAIN_ORDER) {
     const names = byDomain.get(domain)
+
     if (!names || names.length === 0) continue
     sections.push(`${domain}: ${names.join(", ")}`)
   }
+
   return sections.join("\n")
 }
 
@@ -133,10 +136,13 @@ const SEARCH_LIMIT = 12
  */
 export function searchActions(query: string): string[] {
   const needle = query.trim().toLowerCase().replace(/\s+/g, "_")
+
   if (needle === "") return []
-  const matches = ACTION_META.filter((meta) =>
-    meta.type.toLowerCase().includes(needle),
-  ).slice(0, SEARCH_LIMIT)
+  const matches = ACTION_META.filter((meta) => meta.type.toLowerCase().includes(needle)).slice(
+    0,
+    SEARCH_LIMIT,
+  )
+
   return buildActionPayloadSpecs(matches.map((meta) => meta.type))
 }
 
@@ -148,20 +154,20 @@ export function searchActions(query: string): string[] {
 export function buildActionPayloadSpecs(types: Iterable<string>): string[] {
   const seen = new Set<string>()
   const lines: string[] = []
+
   for (const type of types) {
     if (seen.has(type)) continue
     seen.add(type)
     const meta = ACTION_META_BY_TYPE.get(type)
+
     if (!meta) continue
     const required = meta.requiredKeys
-    const optional = meta.payloadKeys.filter(
-      (key) => !meta.requiredKeys.includes(key),
-    )
-    const parts = [
-      `required: ${required.length > 0 ? required.join(", ") : "(none)"}`,
-    ]
+    const optional = meta.payloadKeys.filter((key) => !meta.requiredKeys.includes(key))
+    const parts = [`required: ${required.length > 0 ? required.join(", ") : "(none)"}`]
+
     if (optional.length > 0) parts.push(`optional: ${optional.join(", ")}`)
     lines.push(`- ${meta.type} payload { ${parts.join("; ")} }`)
   }
+
   return lines
 }

@@ -4,7 +4,6 @@ import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId } from "../../../components/constants"
 import { isComponentBoard } from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
-import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import {
   componentBoardDefaultNodeId,
   componentBoardSchemaVariantNodeId,
@@ -13,21 +12,27 @@ import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { rebuildSchemaVariant } from "./rebuild-schema-variants"
 
+import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
+
 function collectTreeRefIds(ref: ComponentTreeRef): Set<string> {
   const ids = new Set<string>()
+
   walkBoardTreeRefs([ref], (current) => {
     ids.add(current.id)
   })
+
   return ids
 }
 
 function collectReferencedTreeNodeIds(workspace: Workspace): Set<string> {
   const ids = new Set<string>()
+
   for (const board of Object.values(workspace.boards)) {
     walkBoardTreeRefs(board.variants ?? [], (ref) => {
       ids.add(ref.id)
     })
   }
+
   return ids
 }
 
@@ -45,10 +50,12 @@ export function applyResetSchemaVariantToCatalog(
 ): Workspace {
   return produce(workspace, (draft) => {
     const located = findBoardContainingTreeNodeId(draft, variantRootId)
+
     if (!located || !isComponentBoard(located.board)) return
 
     const { board, boardKey } = located
     const targetIdx = board.variants.findIndex((v) => v.id === variantRootId)
+
     if (targetIdx <= 0) return
 
     const catalogId = board.catalogId as ComponentId
@@ -56,10 +63,9 @@ export function applyResetSchemaVariantToCatalog(
     const defaultVariantRootId = componentBoardDefaultNodeId(boardKey)
 
     const catalogVariant = (schema.variants ?? []).find(
-      (candidate) =>
-        componentBoardSchemaVariantNodeId(boardKey, candidate.id) ===
-        variantRootId,
+      (candidate) => componentBoardSchemaVariantNodeId(boardKey, candidate.id) === variantRootId,
     )
+
     if (!catalogVariant) return
 
     const oldRef = board.variants[targetIdx]
@@ -93,9 +99,11 @@ export function applyResetSchemaVariantToCatalog(
     )
 
     const templateTargetsOfSurvivors = new Set<string>()
+
     for (const [nodeId, node] of Object.entries(draft.nodes)) {
       if (removalCandidates.has(nodeId)) continue
       const link = parseNodeLink(node.template)
+
       if (link?.kind === "node") {
         templateTargetsOfSurvivors.add(link.nodeId)
       }

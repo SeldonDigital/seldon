@@ -26,9 +26,9 @@ describe("toCSSShorthands", () => {
   })
 
   it("collapses equal inset sides into an inset shorthand", () => {
-    expect(
-      toCSSShorthands({ top: "0", right: "0", bottom: "0", left: "0" }),
-    ).toEqual({ inset: "0" })
+    expect(toCSSShorthands({ top: "0", right: "0", bottom: "0", left: "0" })).toEqual({
+      inset: "0",
+    })
   })
 
   it("does not collapse when sides differ", () => {
@@ -38,6 +38,7 @@ describe("toCSSShorthands", () => {
       paddingBottom: "4px",
       paddingInlineStart: "8px",
     }
+
     expect(toCSSShorthands(input)).toEqual(input)
   })
 
@@ -47,6 +48,7 @@ describe("toCSSShorthands", () => {
       paddingInlineEnd: "4px",
       paddingBottom: "4px",
     }
+
     expect(toCSSShorthands(input)).toEqual(input)
   })
 
@@ -99,6 +101,7 @@ describe("toCSSShorthands", () => {
       paddingBottom: "4px",
       paddingInlineStart: "4px",
     }
+
     toCSSShorthands(input)
     expect(input.paddingTop).toBe("4px")
   })

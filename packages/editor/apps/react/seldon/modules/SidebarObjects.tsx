@@ -10,20 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
-import {
-  ComboboxFieldProject,
-  ComboboxFieldProjectProps,
-} from "../elements/ComboboxFieldProject"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonToggle } from "../elements/ButtonToggle"
+import { ComboboxFieldProject } from "../elements/ComboboxFieldProject"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ButtonToggleProps } from "../elements/ButtonToggle"
+import type { ComboboxFieldProjectProps } from "../elements/ComboboxFieldProject"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { HTMLAttributes } from "react"
 
 export interface SidebarObjectsProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -76,10 +76,7 @@ export function SidebarObjects({
   seldonRefs,
   ...props
 }: SidebarObjectsProps) {
-  const sidebarObjectsClassName = combineClassNames(
-    "sdn-sidebar-objects",
-    className,
-  )
+  const sidebarObjectsClassName = combineClassNames("sdn-sidebar-objects", className)
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -130,10 +127,7 @@ export function SidebarObjects({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon2Props = applyRef(
@@ -153,10 +147,7 @@ export function SidebarObjects({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const buttonToggleProps = applyRef(
@@ -166,10 +157,7 @@ export function SidebarObjects({
       : {
           ...sdn.buttonToggle,
           ...buttonToggle,
-          className: combineClassNames(
-            sdn.buttonToggle?.className,
-            buttonToggle?.className,
-          ),
+          className: combineClassNames(sdn.buttonToggle?.className, buttonToggle?.className),
         },
   )
   const icon3Props = applyRef(
@@ -189,10 +177,7 @@ export function SidebarObjects({
       : {
           ...sdn.buttonToggle2,
           ...buttonToggle2,
-          className: combineClassNames(
-            sdn.buttonToggle2?.className,
-            buttonToggle2?.className,
-          ),
+          className: combineClassNames(sdn.buttonToggle2?.className, buttonToggle2?.className),
         },
   )
   const icon4Props = applyRef(
@@ -212,10 +197,7 @@ export function SidebarObjects({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
 

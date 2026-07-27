@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 
 import { getScrollStyles } from "./get-scroll-styles"
+
+import type { Properties } from "@seldon/core"
 
 const scroll = (value: string): Properties =>
   ({ scroll: { type: ValueType.OPTION, value } }) as unknown as Properties
@@ -41,8 +43,6 @@ describe("getScrollStyles", () => {
   })
 
   it("returns no styles when scroll is unset", () => {
-    expect(
-      getScrollStyles({ properties: {} as unknown as Properties }),
-    ).toEqual({})
+    expect(getScrollStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 })

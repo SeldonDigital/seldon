@@ -1,10 +1,10 @@
-import { Workspace } from "@seldon/core"
-
-import { Classes, DescendantStateClasses, StateClasses } from "../types"
 import { format } from "../utils/format"
 import { insertBaseStyles } from "./insert-base-styles"
 import { insertNodeStyles } from "./insert-node-styles"
 import { insertResetStyles } from "./insert-reset-styles"
+
+import type { Classes, DescendantStateClasses, StateClasses } from "../types"
+import type { Workspace } from "@seldon/core"
 
 export async function generateComponentStylesheet(
   classes: Classes,

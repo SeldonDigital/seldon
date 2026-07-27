@@ -10,21 +10,26 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Avatar, AvatarProps } from "../elements/Avatar"
-import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
-import { Chip, ChipProps } from "../elements/Chip"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
-import { TextHeading, TextHeadingProps } from "../primitives/TextHeading"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Avatar } from "../elements/Avatar"
+import { ButtonSimple } from "../elements/ButtonSimple"
+import { Chip } from "../elements/Chip"
+import { Frame } from "../frames/Frame"
+import { Image } from "../primitives/Image"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextHeading } from "../primitives/TextHeading"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { AvatarProps } from "../elements/Avatar"
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { ChipProps } from "../elements/Chip"
+import type { FrameProps } from "../frames/Frame"
+import type { ImageProps } from "../primitives/Image"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextHeadingProps } from "../primitives/TextHeading"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface ArticleCardProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -127,10 +132,7 @@ export function ArticleCard({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const textHeadingProps = applyRef(
@@ -140,10 +142,7 @@ export function ArticleCard({
       : {
           ...sdn.textHeading,
           ...textHeading,
-          className: combineClassNames(
-            sdn.textHeading?.className,
-            textHeading?.className,
-          ),
+          className: combineClassNames(sdn.textHeading?.className, textHeading?.className),
         },
   )
   const textDescriptionProps = applyRef(
@@ -153,10 +152,7 @@ export function ArticleCard({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
   const frame2Props = applyRef(
@@ -166,10 +162,7 @@ export function ArticleCard({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const avatarProps = applyRef(
@@ -179,10 +172,7 @@ export function ArticleCard({
       : {
           ...sdn.avatar,
           ...avatar,
-          className: combineClassNames(
-            sdn.avatar?.className,
-            avatar?.className,
-          ),
+          className: combineClassNames(sdn.avatar?.className, avatar?.className),
         },
   )
   const image2Props = applyRef(
@@ -192,10 +182,7 @@ export function ArticleCard({
       : {
           ...sdn.image2,
           ...image2,
-          className: combineClassNames(
-            sdn.image2?.className,
-            image2?.className,
-          ),
+          className: combineClassNames(sdn.image2?.className, image2?.className),
         },
   )
   const frame3Props = applyRef(
@@ -205,10 +192,7 @@ export function ArticleCard({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -218,10 +202,7 @@ export function ArticleCard({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const textLabel3Props = applyRef(
@@ -231,10 +212,7 @@ export function ArticleCard({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const buttonSimpleProps = applyRef(
@@ -244,10 +222,7 @@ export function ArticleCard({
       : {
           ...sdn.buttonSimple,
           ...buttonSimple,
-          className: combineClassNames(
-            sdn.buttonSimple?.className,
-            buttonSimple?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
         },
   )
   const textLabel4Props = applyRef(
@@ -257,19 +232,12 @@ export function ArticleCard({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
 
   return (
-    <Frame
-      className={articleCardClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={articleCardClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -278,34 +246,22 @@ export function ArticleCard({
           <Frame {...frameProps}>
             {chip && chipProps && (
               <Chip {...chipProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
               </Chip>
             )}
-            {textHeading && textHeadingProps && (
-              <TextHeading {...textHeadingProps} />
-            )}
+            {textHeading && textHeadingProps && <TextHeading {...textHeadingProps} />}
             {textDescription && textDescriptionProps && (
               <TextDescription {...textDescriptionProps} />
             )}
             <Frame {...frame2Props}>
-              {avatar && avatarProps && (
-                <Avatar {...avatarProps} image={image2Props} />
-              )}
+              {avatar && avatarProps && <Avatar {...avatarProps} image={image2Props} />}
               <Frame {...frame3Props}>
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
-                {textLabel3 && textLabel3Props && (
-                  <TextLabel {...textLabel3Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
+                {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
               </Frame>
               {buttonSimple && buttonSimpleProps && (
                 <ButtonSimple {...buttonSimpleProps}>
-                  {textLabel4 && textLabel4Props && (
-                    <TextLabel {...textLabel4Props} />
-                  )}
+                  {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
                 </ButtonSimple>
               )}
             </Frame>

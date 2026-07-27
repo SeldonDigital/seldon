@@ -1,5 +1,6 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
+
 import type { Properties } from "../../../properties/types/properties"
 
 /**

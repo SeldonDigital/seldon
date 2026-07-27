@@ -1,5 +1,6 @@
 import { getIsolatedVariantUsage } from "@seldon/core/workspace/helpers/components/get-isolated-variant-usage"
 import { boardOrderService } from "@seldon/core/workspace/services"
+
 import type { Board, Workspace } from "@seldon/core/workspace/types"
 
 /**
@@ -18,6 +19,7 @@ let cache: {
 
 function boardKey(board: Board): string {
   if ("catalogId" in board && board.catalogId) return board.catalogId
+
   return (board as { id?: string }).id ?? ""
 }
 
@@ -38,12 +40,9 @@ export function getIsolationUsage(
   }
 
   const boards = boardOrderService.getBoards(workspace)
-  const usage = getIsolatedVariantUsage(
-    isolatedBoard,
-    isolatedVariantRootId,
-    workspace,
-    boards,
-  )
+  const usage = getIsolatedVariantUsage(isolatedBoard, isolatedVariantRootId, workspace, boards)
+
   cache = { workspace, isolatedBoardKey, isolatedVariantRootId, usage }
+
   return usage
 }

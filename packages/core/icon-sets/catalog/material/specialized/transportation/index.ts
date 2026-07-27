@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconMaterialCarRepair } from "./IconMaterialCarRepair"
 export { IconMaterialVapingRooms } from "./IconMaterialVapingRooms"

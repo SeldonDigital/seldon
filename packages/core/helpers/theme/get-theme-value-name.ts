@@ -1,9 +1,10 @@
-import { Theme } from "../../themes/types"
 import { isFontFamilyToken } from "../../themes/values"
 import { formatPresetValue } from "../properties/format-preset-value"
 import { isThemeValueKey } from "../validation/theme"
 import { parseThemeRef } from "./get-theme-key-components"
 import { getThemeOption } from "./get-theme-option"
+
+import type { Theme } from "../../themes/types"
 
 /**
  * Gets the friendly display name for a theme value
@@ -27,15 +28,18 @@ export function getThemeValueName(key: string, theme: Theme): string {
 
     if (isFontFamilyToken(option)) {
       const slot = parseThemeRef(key)?.optionId
+
       if (slot === "primary" || slot === "secondary") {
         return `${option.parameters} · ${formatRawValueName(slot)}`
       }
+
       return option.parameters
     }
 
     // All other theme options have name property
     if (typeof option === "object" && option !== null && "name" in option) {
       const name = (option as { name?: string }).name
+
       if (typeof name === "string") return name
     }
 

@@ -10,11 +10,8 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
+import type { HTMLAttributes } from "react"
 
-export const HTMLFooter = ({
-  style,
-  ...props
-}: HTMLAttributes<HTMLElement>) => {
+export const HTMLFooter = ({ style, ...props }: HTMLAttributes<HTMLElement>) => {
   return <footer style={{ ...style }} {...props} />
 }

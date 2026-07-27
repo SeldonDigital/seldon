@@ -1,4 +1,4 @@
-import { PropertySchema } from "../../types/schema"
+import type { PropertySchema } from "../../types/schema"
 
 /** Defines labels, allowed shapes, checks, and preset choices for `ariaHidden`. */
 export const ariaHiddenSchema: PropertySchema = {

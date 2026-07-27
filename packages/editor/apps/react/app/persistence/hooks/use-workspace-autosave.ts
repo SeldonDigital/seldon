@@ -1,11 +1,11 @@
 "use client"
 
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
-import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 import { useEffect } from "react"
 import { useDebounce } from "use-debounce"
 
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
 /**
  * Debounced and unload-time persistence for the local workspace. Seeds the
@@ -35,7 +35,9 @@ export function useWorkspaceAutosave(
     const flush = () => {
       if (workspace) void saveNow(workspace)
     }
+
     window.addEventListener("beforeunload", flush)
+
     return () => window.removeEventListener("beforeunload", flush)
   }, [workspace, saveNow])
 }

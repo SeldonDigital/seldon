@@ -6,13 +6,7 @@ import {
 } from "@seldon/core/properties/schemas/helpers"
 import { parsePropertyPath } from "../properties/property-paths"
 
-export type ControlType =
-  | "combo"
-  | "menu"
-  | "number"
-  | "text"
-  | "switch"
-  | "error"
+export type ControlType = "combo" | "menu" | "number" | "text" | "switch" | "error"
 
 export interface PropertyOption {
   value: string
@@ -78,10 +72,7 @@ const BOARD_PRESET_OPTION_ICONS: Record<string, string> = {
  * are not core ids (board preset device icons). Consulted before the core
  * registry in `getOptionIcon`.
  */
-export const EDITOR_OPTION_ICON_OVERLAY: Record<
-  string,
-  Record<string, string>
-> = {
+export const EDITOR_OPTION_ICON_OVERLAY: Record<string, Record<string, string>> = {
   board: BOARD_PRESET_OPTION_ICONS,
 }
 
@@ -90,9 +81,7 @@ export const EDITOR_OPTION_ICON_OVERLAY: Record<
  * keys first, then the core registry, then the generic token icon.
  */
 function resolveRowIcon(path: string): string {
-  return (
-    EDITOR_ROW_ICON_OVERLAY[path] ?? coreGetPropertyIcon(path) ?? "seldon-theme"
-  )
+  return EDITOR_ROW_ICON_OVERLAY[path] ?? coreGetPropertyIcon(path) ?? "seldon-theme"
 }
 
 /**
@@ -324,11 +313,10 @@ const UI_OVERRIDES: PropertyRegistry = {
   ariaLive: { control: "menu" },
 }
 
-function mapCategoryToType(
-  category?: string,
-): "atomic" | "compound" | "shorthand" {
+function mapCategoryToType(category?: string): "atomic" | "compound" | "shorthand" {
   if (category === "compound") return "compound"
   if (category === "shorthand") return "shorthand"
+
   return "atomic"
 }
 
@@ -341,27 +329,26 @@ function mergeEntry(
     label: override.label ?? base.label,
     icon: override.icon ?? base.icon,
     renderValueAsIcon: override.renderValueAsIcon ?? base.renderValueAsIcon,
-    control: override.hasOwnProperty("control")
-      ? override.control
-      : base.control,
+    control: override.hasOwnProperty("control") ? override.control : base.control,
   }
+
   if (base.subProperties || override.subProperties) {
     merged.subProperties = {}
     const keys = new Set<string>([
       ...Object.keys(base.subProperties ?? {}),
       ...Object.keys(override.subProperties ?? {}),
     ])
+
     keys.forEach((k) => {
       const b = base.subProperties?.[k]
       const o = override.subProperties?.[k]
+
       if (b || o) {
-        merged.subProperties![k] = mergeEntry(
-          b || (o as PropertyRegistryEntry),
-          o,
-        )
+        merged.subProperties![k] = mergeEntry(b || (o as PropertyRegistryEntry), o)
       }
     })
   }
+
   return merged
 }
 
@@ -375,19 +362,18 @@ function buildBaseEntry(propertyKey: string): PropertyRegistryEntry {
     override?.subProperties && !override?.hasOwnProperty("control")
   const base: PropertyRegistryEntry = {
     icon: resolveRowIcon(propertyKey),
-    control: hasSubPropertiesWithoutControl
-      ? undefined
-      : type === "atomic"
-        ? "combo"
-        : "text",
+    control: hasSubPropertiesWithoutControl ? undefined : type === "atomic" ? "combo" : "text",
   }
   // For compound/shorthand, infer sub-properties from overrides first for order
   const overrideSub = override?.subProperties
+
   if (type === "compound" || type === "shorthand") {
     const subMap: Record<string, PropertyRegistryEntry> = {}
+
     if (overrideSub) {
       Object.keys(overrideSub).forEach((subKey) => {
         const subOverride = overrideSub[subKey]
+
         subMap[subKey] = {
           label: subOverride?.label,
           icon: resolveRowIcon(`${propertyKey}.${subKey}`),
@@ -395,11 +381,11 @@ function buildBaseEntry(propertyKey: string): PropertyRegistryEntry {
         }
       })
     }
+
     // Ensure any missing subprops exist at least as atomic controls; actual existence is ensured by flatten
-    base.subProperties = Object.keys(subMap).length
-      ? subMap
-      : base.subProperties
+    base.subProperties = Object.keys(subMap).length ? subMap : base.subProperties
   }
+
   return mergeEntry(base, override)
 }
 
@@ -412,10 +398,12 @@ const __rootEntryCache = new Map<string, PropertyRegistryEntry>()
  */
 function getRootEntry(rootKey: string): PropertyRegistryEntry {
   let entry = __rootEntryCache.get(rootKey)
+
   if (!entry) {
     entry = buildBaseEntry(rootKey)
     __rootEntryCache.set(rootKey, entry)
   }
+
   return entry
 }
 
@@ -432,6 +420,7 @@ function isBooleanControlPath(propertyPath: string): boolean {
       ? getCompoundSubPropertySchema(parsed.root, parsed.facet)
       : getPropertySchema(propertyPath.split(".")[0]!)
   const presets = schema?.presetOptions?.()
+
   return (
     Array.isArray(presets) &&
     presets.length === 2 &&
@@ -439,30 +428,27 @@ function isBooleanControlPath(propertyPath: string): boolean {
   )
 }
 
-export function getPropertyRegistryEntry(
-  propertyPath: string,
-): PropertyRegistryEntry | undefined {
+export function getPropertyRegistryEntry(propertyPath: string): PropertyRegistryEntry | undefined {
   const parsed = parsePropertyPath(propertyPath)
 
   let entry: PropertyRegistryEntry | undefined
+
   if (parsed.kind === "layered-facet" || parsed.kind === "facet") {
     entry = getRootEntry(parsed.root).subProperties?.[parsed.facet]
   } else {
     const parts = propertyPath.split(".")
     let current: PropertyRegistryEntry | undefined = getRootEntry(parts[0]!)
+
     for (let i = 1; i < parts.length && current; i++) {
       current = current.subProperties?.[parts[i]!]
     }
+
     entry = current
   }
 
   // Route every binary on/off property to the toggle switch, overriding the
   // registry default. Copy so the cached entry is not mutated.
-  if (
-    entry &&
-    entry.control !== "switch" &&
-    isBooleanControlPath(propertyPath)
-  ) {
+  if (entry && entry.control !== "switch" && isBooleanControlPath(propertyPath)) {
     return { ...entry, control: "switch" }
   }
 

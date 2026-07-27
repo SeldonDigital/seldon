@@ -10,15 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ListboxOption, ListboxOptionProps } from "../elements/ListboxOption"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Hr, HrProps } from "../primitives/Hr"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { ListboxOption } from "../elements/ListboxOption"
+import { Frame } from "../frames/Frame"
+import { Hr } from "../primitives/Hr"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ListboxOptionProps } from "../elements/ListboxOption"
+import type { FrameProps } from "../frames/Frame"
+import type { HrProps } from "../primitives/Hr"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface ListboxGroupedProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -99,10 +104,7 @@ export function ListboxGrouped({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const listboxOptionProps = applyRef(
@@ -112,10 +114,7 @@ export function ListboxGrouped({
       : {
           ...sdn.listboxOption,
           ...listboxOption,
-          className: combineClassNames(
-            sdn.listboxOption?.className,
-            listboxOption?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption?.className, listboxOption?.className),
         },
   )
   const iconProps = applyRef(
@@ -135,10 +134,7 @@ export function ListboxGrouped({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const listboxOption2Props = applyRef(
@@ -148,10 +144,7 @@ export function ListboxGrouped({
       : {
           ...sdn.listboxOption2,
           ...listboxOption2,
-          className: combineClassNames(
-            sdn.listboxOption2?.className,
-            listboxOption2?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption2?.className, listboxOption2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -171,10 +164,7 @@ export function ListboxGrouped({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const hrProps = applyRef(
@@ -194,10 +184,7 @@ export function ListboxGrouped({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const textLabel4Props = applyRef(
@@ -207,10 +194,7 @@ export function ListboxGrouped({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const listboxOption3Props = applyRef(
@@ -220,10 +204,7 @@ export function ListboxGrouped({
       : {
           ...sdn.listboxOption3,
           ...listboxOption3,
-          className: combineClassNames(
-            sdn.listboxOption3?.className,
-            listboxOption3?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption3?.className, listboxOption3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -243,10 +224,7 @@ export function ListboxGrouped({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
   const listboxOption4Props = applyRef(
@@ -256,10 +234,7 @@ export function ListboxGrouped({
       : {
           ...sdn.listboxOption4,
           ...listboxOption4,
-          className: combineClassNames(
-            sdn.listboxOption4?.className,
-            listboxOption4?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption4?.className, listboxOption4?.className),
         },
   )
   const icon4Props = applyRef(
@@ -279,10 +254,7 @@ export function ListboxGrouped({
       : {
           ...sdn.textLabel6,
           ...textLabel6,
-          className: combineClassNames(
-            sdn.textLabel6?.className,
-            textLabel6?.className,
-          ),
+          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
         },
   )
 
@@ -302,39 +274,29 @@ export function ListboxGrouped({
             {listboxOption && listboxOptionProps && (
               <ListboxOption {...listboxOptionProps}>
                 {icon && iconProps && <Icon {...iconProps} />}
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
               </ListboxOption>
             )}
             {listboxOption2 && listboxOption2Props && (
               <ListboxOption {...listboxOption2Props}>
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {textLabel3 && textLabel3Props && (
-                  <TextLabel {...textLabel3Props} />
-                )}
+                {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
               </ListboxOption>
             )}
           </Frame>
           {hrProps !== null && <Hr {...hrProps} />}
           <Frame {...frame2Props}>
-            {textLabel4 && textLabel4Props && (
-              <TextLabel {...textLabel4Props} />
-            )}
+            {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
             {listboxOption3 && listboxOption3Props && (
               <ListboxOption {...listboxOption3Props}>
                 {icon3 && icon3Props && <Icon {...icon3Props} />}
-                {textLabel5 && textLabel5Props && (
-                  <TextLabel {...textLabel5Props} />
-                )}
+                {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
               </ListboxOption>
             )}
             {listboxOption4 && listboxOption4Props && (
               <ListboxOption {...listboxOption4Props}>
                 {icon4 && icon4Props && <Icon {...icon4Props} />}
-                {textLabel6 && textLabel6Props && (
-                  <TextLabel {...textLabel6Props} />
-                )}
+                {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
               </ListboxOption>
             )}
           </Frame>

@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest"
 import { ComponentId } from "../../../components/constants"
 import { ValueType } from "../../../properties"
 import { formatNodeCatalog } from "../../model/template-ref"
-import type { EntryNode } from "../../types"
 import {
   buildSandboxNode,
   getNextSandboxTop,
@@ -13,9 +12,12 @@ import {
   sandboxesOverlap,
 } from "./sandbox"
 
+import type { EntryNode } from "../../types"
+
 describe("buildSandboxNode", () => {
   it("builds a variant node templating from the Sandbox catalog", () => {
     const { id, node } = buildSandboxNode("pg", { top: 10, left: 20 })
+
     expect(node.type).toBe("variant")
     expect(isSandboxNode(node)).toBe(true)
     expect(id).toContain("playground-pg-")
@@ -34,6 +36,7 @@ describe("isSandboxNode", () => {
     const node = {
       template: formatNodeCatalog(ComponentId.BUTTON),
     } as EntryNode
+
     expect(isSandboxNode(node)).toBe(false)
   })
 })
@@ -41,9 +44,7 @@ describe("isSandboxNode", () => {
 describe("isExplicitSizeValue", () => {
   it("is true only for an exact value", () => {
     expect(isExplicitSizeValue({ type: ValueType.EXACT, value: 1 })).toBe(true)
-    expect(isExplicitSizeValue({ type: ValueType.OPTION, value: "fill" })).toBe(
-      false,
-    )
+    expect(isExplicitSizeValue({ type: ValueType.OPTION, value: "fill" })).toBe(false)
     expect(isExplicitSizeValue(null)).toBe(false)
   })
 })
@@ -52,6 +53,7 @@ describe("resolveSandboxRect", () => {
   it("resolves a rectangle from schema defaults and overrides", () => {
     const { node } = buildSandboxNode("pg", { top: 30, left: 40 })
     const rect = resolveSandboxRect(node)
+
     expect(rect).not.toBeNull()
     expect(rect!.top).toBe(30)
     expect(rect!.left).toBe(40)
@@ -65,6 +67,7 @@ describe("getNextSandboxTop", () => {
     const { id, node } = buildSandboxNode("pg", { top: 0 })
     const rect = resolveSandboxRect(node)!
     const next = getNextSandboxTop([{ id }], { [id]: node })
+
     expect(next).toBe(rect.height + 40)
   })
 

@@ -1,4 +1,3 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
@@ -6,6 +5,8 @@ import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Sets a node theme reference when rules allow, using configured propagation.
@@ -26,11 +27,7 @@ export function setNodeTheme(
     nodeId: payload.nodeId,
     propagation,
     apply: (node, workspace) => {
-      return workspaceMutationService.setNodeTheme(
-        node.id,
-        payload.theme,
-        workspace,
-      )
+      return workspaceMutationService.setNodeTheme(node.id, payload.theme, workspace)
     },
     workspace,
   })

@@ -1,29 +1,23 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
-import {
-  ComponentSchema,
-  SchemaChild,
-  isComplexSchema,
-} from "../../../components/types"
+import { isComplexSchema } from "../../../components/types"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { resolveSchemaChild } from "./resolve-schema-child"
+
+import type { ComponentId } from "../../../components/constants"
+import type { ComponentSchema, SchemaChild } from "../../../components/types"
 
 export function formatSchemaVariantLabel(variantId: string): string {
   if (!variantId.length) return variantId
   const spaced = variantId.replace(/([a-z])([A-Z])/g, "$1 $2")
+
   return spaced.charAt(0).toUpperCase() + spaced.slice(1)
 }
 
-export function getSchemaVariantSlotKey(
-  componentId: ComponentId,
-  variantId: string,
-): string {
+export function getSchemaVariantSlotKey(componentId: ComponentId, variantId: string): string {
   return `${componentId}:${variantId}`
 }
 
-export function getSchemaCompositionChildren(
-  schema: ComponentSchema,
-): SchemaChild[] {
+export function getSchemaCompositionChildren(schema: ComponentSchema): SchemaChild[] {
   const slots: SchemaChild[] = []
 
   if (!isComplexSchema(schema)) {
@@ -33,6 +27,7 @@ export function getSchemaCompositionChildren(
   if (schema.default.children?.length) {
     slots.push(...schema.default.children)
   }
+
   for (const variant of schema.variants ?? []) {
     if (variant.children?.length) {
       slots.push(...variant.children)
@@ -42,13 +37,9 @@ export function getSchemaCompositionChildren(
   return slots
 }
 
-export function getCompositionChildren(
-  component: ComponentSchema | SchemaChild,
-): SchemaChild[] {
+export function getCompositionChildren(component: ComponentSchema | SchemaChild): SchemaChild[] {
   if ("id" in component) {
-    return getSchemaCompositionChildren(
-      getComponentSchema(component.id as ComponentId),
-    )
+    return getSchemaCompositionChildren(getComponentSchema(component.id as ComponentId))
   }
 
   if (component.children?.length) {
@@ -67,11 +58,13 @@ export function applyVariantFallbackToSlot(
   }
 
   const slotKey = getSchemaVariantSlotKey(slot.component, slot.variant)
+
   if (!variantFallbacks.has(slotKey)) {
     return slot
   }
 
   const { variant: _variant, ...slotWithoutVariant } = slot
+
   return slotWithoutVariant
 }
 
@@ -103,9 +96,11 @@ function getDisplacedChildren(
   variantFallbacks?: ReadonlySet<string>,
 ): SchemaChild[] {
   const resolved = applyVariantFallbackToSlot(slot, variantFallbacks)
+
   if (resolved.children?.length) {
     return mergeSlot(resolved, null, variantFallbacks).children ?? []
   }
+
   return resolveSchemaChild(resolved).fallbackChildren
 }
 
@@ -116,14 +111,12 @@ function mergeSlot(
 ): SchemaChild {
   const slot = applyVariantFallbackToSlot(rawSlot, variantFallbacks)
   const overrides = displaced
-    ? mergeProperties(
-        structuredClone(displaced.overrides ?? {}),
-        slot.overrides ?? {},
-      )
+    ? mergeProperties(structuredClone(displaced.overrides ?? {}), slot.overrides ?? {})
     : slot.overrides
 
   if (!slot.children?.length) {
     if (!displaced && !overrides) return slot
+
     return { ...slot, ...(overrides ? { overrides } : {}) }
   }
 
@@ -140,10 +133,13 @@ function mergeSlot(
         applyVariantFallbackToSlot(candidate, variantFallbacks).component ===
           resolvedChild.component,
     )
+
     if (matchIndex === -1) {
       return mergeSlot(child, null, variantFallbacks)
     }
+
     usedDisplaced.add(matchIndex)
+
     return mergeSlot(child, displacedChildren[matchIndex], variantFallbacks)
   })
 
@@ -164,6 +160,7 @@ export function walkSchemaComposition(
   function walkComponent(component: ComponentSchema | SchemaChild): void {
     getCompositionChildren(component).forEach((childSlot) => {
       const slot = applyVariantFallbackToSlot(childSlot, variantFallbacks)
+
       visitSlot(slot)
       walkComponent(slot)
     })

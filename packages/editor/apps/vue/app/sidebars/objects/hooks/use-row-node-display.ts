@@ -1,20 +1,20 @@
-import type { ComboboxOptionItem } from "@app/menus/types"
 import { useDispatch } from "@app/workspace/use-dispatch"
-import { type CSSProperties, type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 
-import { Display, Properties, Value, ValueType, VariantId } from "@seldon/core"
+import { Display, ValueType } from "@seldon/core"
 import {
   PROPERTY_ICONS,
   PROPERTY_OPTION_ICONS,
 } from "@seldon/core/properties/schemas/data/property-icons"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import {
-  nodeTraversalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
+import { nodeTraversalService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import { resolveRowDisplayDecoration } from "./row-display-style"
+
+import type { ComboboxOptionItem } from "@app/menus/types"
+import type { Properties, Value, VariantId } from "@seldon/core"
+import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
+import type { CSSProperties, ComputedRef } from "vue"
 
 /** Neutral Display glyph for the picker trigger and the Default/Inherit options. */
 const DISPLAY_NEUTRAL_ICON: string = PROPERTY_ICONS.display
@@ -40,8 +40,10 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
   const currentDisplayKey = computed<string>(() => {
     const ownDisplayValue = input.properties()?.display
     const ownDisplayType: string | undefined = ownDisplayValue?.type
+
     if (!ownDisplayValue || ownDisplayType === ValueType.EMPTY) return "default"
     if (ownDisplayType === ValueType.INHERIT) return "inherit"
+
     return String(ownDisplayValue.value)
   })
 
@@ -94,6 +96,7 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
 
   function resolveDisplayGlyph(key: string): string {
     if (key === "default" || key === "inherit") return DISPLAY_NEUTRAL_ICON
+
     return PROPERTY_OPTION_ICONS.display[key] ?? DISPLAY_NEUTRAL_ICON
   }
 
@@ -101,9 +104,7 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
     return resolveDisplayGlyph(value)
   }
 
-  const displayIcon = computed<string>(() =>
-    resolveDisplayGlyph(currentDisplayKey.value),
-  )
+  const displayIcon = computed<string>(() => resolveDisplayGlyph(currentDisplayKey.value))
 
   // The node's own display plus every display inherited from its instance-
   // ancestor chain. Climbs while each parent is an instance and includes the
@@ -116,22 +117,20 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
     const workspace = input.workspace()
     const states: Display[] = []
     const ownDisplay = input.properties()?.display?.value
+
     if (ownDisplay) states.push(ownDisplay)
 
     if (!typeCheckingService.isInstance(node)) return states
 
     let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
+
     while (currentParent) {
-      const parentDisplay = getNodeProperties(
-        currentParent as EntryNode,
-        workspace,
-      )?.display?.value
+      const parentDisplay = getNodeProperties(currentParent as EntryNode, workspace)?.display?.value
+
       if (parentDisplay) states.push(parentDisplay)
+
       if (typeCheckingService.isInstance(currentParent)) {
-        currentParent = nodeTraversalService.findParentNode(
-          currentParent.id,
-          workspace,
-        )
+        currentParent = nodeTraversalService.findParentNode(currentParent.id, workspace)
       } else {
         break
       }
@@ -140,14 +139,10 @@ export function useRowNodeDisplay(input: RowNodeDisplayInput) {
     return states
   }
 
-  const decoration = computed(() =>
-    resolveRowDisplayDecoration(collectDisplayChainStates()),
-  )
+  const decoration = computed(() => resolveRowDisplayDecoration(collectDisplayChainStates()))
 
   const isDimmed = computed<boolean>(() => decoration.value.isDimmed)
-  const dimStyle = computed<CSSProperties | undefined>(
-    () => decoration.value.dimStyle,
-  )
+  const dimStyle = computed<CSSProperties | undefined>(() => decoration.value.dimStyle)
   const labelDecorationStyle = computed<CSSProperties | undefined>(
     () => decoration.value.labelStyle,
   )

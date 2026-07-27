@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import type { CSSProperties } from "react"
 
 /**
  * Per-slot state styles for a property row.
@@ -10,10 +10,7 @@ import { CSSProperties } from "react"
  * into the generated component as state data.
  */
 
-function iconStateStyle(
-  labelColor: string | undefined,
-  opacity?: number,
-): CSSProperties {
+function iconStateStyle(labelColor: string | undefined, opacity?: number): CSSProperties {
   return {
     ...(labelColor ? { color: labelColor } : {}),
     ...(opacity !== undefined ? { opacity } : {}),
@@ -85,6 +82,7 @@ export function getValueIconStyle({
   if (hidden) {
     return { display: "none" }
   }
+
   return iconStateStyle(labelColor)
 }
 
@@ -101,12 +99,15 @@ export function getMenuButtonStyle({
   if (supportsUpload) {
     return { pointerEvents: "auto" }
   }
+
   if (isCalculated) {
     return { display: "none" }
   }
+
   if (isMenuOrCombo) {
     return { pointerEvents: "auto" }
   }
+
   return { pointerEvents: "none" }
 }
 
@@ -130,6 +131,7 @@ export function getMenuIconStyle({
     hasControl,
     showMenuIcon,
   })
+
   return { fontSize: "0.6rem", ...iconStateStyle(labelColor, opacity) }
 }
 
@@ -147,5 +149,6 @@ function resolveMenuIconOpacity({
   if (isCalculated) return 0 // Hide chevron for calculated properties
   if (supportsUpload) return 1 // Always show upload icon for image properties
   if (!hasControl) return 0 // Read-only rows with no control
+
   return showMenuIcon ? 0 : 1
 }

@@ -1,4 +1,5 @@
 import { TokenType } from "../../../../themes/constants/token-type"
+
 import type { ThemeExact, ThemeModulation } from "../../../../themes/types"
 import type { ScaleTokenInput } from "../../types"
 
@@ -14,6 +15,7 @@ export function buildScaleCell(
       parameters: payload.parameters,
     }
   }
+
   return {
     type: TokenType.EXACT,
     name: payload.name,

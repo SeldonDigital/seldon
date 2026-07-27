@@ -1,13 +1,11 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  computeWorkspaceThemes,
-  getComputedTheme,
-} from "./compute-workspace-themes"
+import { computeWorkspaceThemes, getComputedTheme } from "./compute-workspace-themes"
 
 describe("computeWorkspaceThemes", () => {
   it("includes stock themes when the workspace has none", () => {
     const themes = computeWorkspaceThemes({})
+
     expect(themes.some((theme) => theme.id === "seldon")).toBe(true)
   })
 
@@ -18,6 +16,7 @@ describe("computeWorkspaceThemes", () => {
         b: { id: "b", template: "theme:a" },
       },
     }
+
     expect(() => computeWorkspaceThemes(workspace)).toThrow()
   })
 })
@@ -38,6 +37,7 @@ describe("getComputedTheme", () => {
       },
     }
     const computed = getComputedTheme("custom", workspace)
+
     expect(computed.id).toBe("custom")
     expect(computed.metadata.name).toBe("Custom")
   })

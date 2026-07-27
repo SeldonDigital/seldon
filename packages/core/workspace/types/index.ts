@@ -59,12 +59,7 @@ export {
   RESERVED_STATE_NAMES,
   isReservedStateName,
 } from "../model"
-export type {
-  EntryTheme,
-  EntryThemeId,
-  EntryThemeOverrides,
-  EntryThemeType,
-} from "../model"
+export type { EntryTheme, EntryThemeId, EntryThemeOverrides, EntryThemeType } from "../model"
 export { isEntryThemeDefault, isEntryThemeVariant } from "../model"
 export type { EntryFontCollection, EntryFontCollectionId } from "../model"
 export type { EntryIconSet, EntryIconSetId } from "../model"
@@ -88,11 +83,7 @@ export type {
   Variant,
 } from "../helpers/rules/rules-node-subject"
 export { isEntryNodeForRules } from "../helpers/rules/rules-node-subject"
-export type {
-  InstanceId,
-  NodePath,
-  VariantId,
-} from "../helpers/rules/workspace-node-ids"
+export type { InstanceId, NodePath, VariantId } from "../helpers/rules/workspace-node-ids"
 export type {
   ExtractPayload,
   InsertDefaultInstance,
@@ -101,8 +92,5 @@ export type {
   ThemeCustomTokenSection,
   WorkspaceAction,
 } from "../reducers/types"
-export {
-  THEME_CUSTOM_TOKEN_SECTIONS,
-  isThemeCustomTokenSection,
-} from "../reducers/types"
+export { THEME_CUSTOM_TOKEN_SECTIONS, isThemeCustomTokenSection } from "../reducers/types"
 export type { Action, Middleware } from "../middleware/compose/action-types"

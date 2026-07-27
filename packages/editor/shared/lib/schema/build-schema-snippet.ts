@@ -1,17 +1,15 @@
 import { camelCase } from "change-case"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import type { ComponentId } from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
 import { Display } from "@seldon/core/properties"
 import { mergeProperties } from "@seldon/core/properties/helpers/merge-properties"
-import type { Properties } from "@seldon/core/properties/types/properties"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
+import { getNodeCatalogComponentId, getNodeChildIds } from "../workspace/node-tree"
+
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { Properties } from "@seldon/core/properties/types/properties"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "../workspace/node-tree"
 
 export type SchemaChildSnippet = {
   component: ComponentId
@@ -39,6 +37,7 @@ export type SchemaSnippet = DefaultSchemaSnippet | VariantSchemaSnippet
 
 function isDisplayExcluded(properties: Properties): boolean {
   const display = (properties as Record<string, unknown>).display
+
   return !!(
     display &&
     typeof display === "object" &&
@@ -55,18 +54,15 @@ function hasProperties(properties: Properties): boolean {
  * Catalog variant id for a board-root variant node, or null when the node is a
  * user variant with no catalog counterpart.
  */
-function getCatalogVariantId(
-  variantNode: EntryNode,
-  workspace: Workspace,
-): string | null {
+function getCatalogVariantId(variantNode: EntryNode, workspace: Workspace): string | null {
   const componentId = getNodeCatalogComponentId(variantNode, workspace)
+
   if (!componentId) return null
   const schema = getComponentSchema(componentId)
   const match = (schema.variants ?? []).find(
-    (variant) =>
-      componentBoardSchemaVariantNodeId(componentId, variant.id) ===
-      variantNode.id,
+    (variant) => componentBoardSchemaVariantNodeId(componentId, variant.id) === variantNode.id,
   )
+
   return match?.id ?? null
 }
 
@@ -86,8 +82,10 @@ function collectChildOverrideSources(
 
   while (true) {
     const link = parseNodeLink(current.template)
+
     if (!link) break
     const target = workspace.nodes[link.nodeId]
+
     if (!target || visited.has(target.id)) break
     visited.add(target.id)
 
@@ -95,9 +93,11 @@ function collectChildOverrideSources(
 
     if (target.type === "variant") {
       const variantId = getCatalogVariantId(target, workspace)
+
       if (variantId) {
         return { sources, variantId }
       }
+
       sources.unshift(target.overrides)
       break
     }
@@ -109,11 +109,9 @@ function collectChildOverrideSources(
   return { sources }
 }
 
-function buildSchemaChild(
-  node: EntryNode,
-  workspace: Workspace,
-): SchemaChildSnippet | null {
+function buildSchemaChild(node: EntryNode, workspace: Workspace): SchemaChildSnippet | null {
   const component = getNodeCatalogComponentId(node, workspace)
+
   if (!component) return null
 
   const { sources, variantId } = collectChildOverrideSources(node, workspace)
@@ -127,23 +125,24 @@ function buildSchemaChild(
   const children = buildSchemaChildren(node, workspace)
 
   const child: SchemaChildSnippet = { component }
+
   if (variantId) child.variant = variantId
   if (hasProperties(overrides)) child.overrides = overrides
   if (children.length) child.children = children
+
   return child
 }
 
-function buildSchemaChildren(
-  parent: EntryNode,
-  workspace: Workspace,
-): SchemaChildSnippet[] {
+function buildSchemaChildren(parent: EntryNode, workspace: Workspace): SchemaChildSnippet[] {
   const childIds = getNodeChildIds(parent, workspace)
   const children: SchemaChildSnippet[] = []
 
   for (const childId of childIds) {
     const childNode = workspace.nodes[childId]
+
     if (!childNode) continue
     const child = buildSchemaChild(childNode, workspace)
+
     if (child) children.push(child)
   }
 
@@ -155,18 +154,17 @@ function buildSchemaChildren(
  * `node:` links through variant ancestors and stops at the default node, whose
  * overrides stay on the board and never join the variant snippet.
  */
-function collectVariantRootOverrideSources(
-  node: EntryNode,
-  workspace: Workspace,
-): Properties[] {
+function collectVariantRootOverrideSources(node: EntryNode, workspace: Workspace): Properties[] {
   const sources: Properties[] = [node.overrides]
   const visited = new Set<string>([node.id])
   let current: EntryNode = node
 
   while (true) {
     const link = parseNodeLink(current.template)
+
     if (!link) break
     const target = workspace.nodes[link.nodeId]
+
     if (!target || visited.has(target.id) || target.type !== "variant") break
     visited.add(target.id)
     sources.unshift(target.overrides)
@@ -182,6 +180,7 @@ export function buildDefaultSnippet(
   workspace: Workspace,
 ): DefaultSchemaSnippet | null {
   const componentId = getNodeCatalogComponentId(node, workspace)
+
   if (!componentId) return null
 
   const schema = getComponentSchema(componentId)
@@ -191,10 +190,13 @@ export function buildDefaultSnippet(
   )
 
   const snippet: DefaultSchemaSnippet = { kind: "default", properties }
+
   if (isComplexSchema(schema)) {
     const children = buildSchemaChildren(node, workspace)
+
     snippet.default = children.length ? { children } : {}
   }
+
   return snippet
 }
 
@@ -204,6 +206,7 @@ export function buildVariantSnippet(
   workspace: Workspace,
 ): VariantSchemaSnippet | null {
   const componentId = getNodeCatalogComponentId(node, workspace)
+
   if (!componentId) return null
 
   const sources = collectVariantRootOverrideSources(node, workspace)
@@ -219,7 +222,9 @@ export function buildVariantSnippet(
     label: node.label,
     intent: "TODO: describe the intent of this variant.",
   }
+
   if (hasProperties(overrides)) snippet.overrides = overrides
   if (children.length) snippet.children = children
+
   return snippet
 }

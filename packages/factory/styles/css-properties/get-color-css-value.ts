@@ -1,10 +1,4 @@
-import {
-  ColorValue,
-  EmptyValue,
-  PercentageValue,
-  ValueType,
-  assertNever,
-} from "@seldon/core"
+import { ValueType, assertNever } from "@seldon/core"
 import { applyBrightness } from "@seldon/core/helpers/color/apply-brightness"
 import {
   hexToHSLObject,
@@ -20,12 +14,7 @@ import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { isHSLObject } from "@seldon/core/helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "@seldon/core/helpers/type-guards/color/is-lch-object"
 import { isRGBObject } from "@seldon/core/helpers/type-guards/color/is-rgb-object"
-import {
-  isHSLString,
-  isHex,
-  isRGBString,
-} from "@seldon/core/helpers/validation"
-import { Theme } from "@seldon/core/themes/types"
+import { isHSLString, isHex, isRGBString } from "@seldon/core/helpers/validation"
 import { debugLog } from "@seldon/core/utils/debug-logger"
 
 import { recordBrightnessSwatch } from "../computed-variables/brightness-swatches"
@@ -34,6 +23,9 @@ import {
   getBrightnessSwatchVarReference,
   getThemeSwatchVarReference,
 } from "./get-theme-swatch-names"
+
+import type { ColorValue, EmptyValue, PercentageValue } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 /**
  * Wraps a CSS color reference (a `var(--sdn-...)` or any color expression) with
@@ -50,6 +42,7 @@ export function applyTransformsToColorReference(
 ): string {
   if (brightnessNum === 0) {
     if (opacityNum === 100) return reference
+
     return `color-mix(in srgb, ${reference} ${opacityNum}%, transparent)`
   }
 
@@ -61,6 +54,7 @@ export function applyTransformsToColorReference(
       ? `calc(l + (100 - l) * ${brightnessNum / 100})`
       : `calc(l + l * ${brightnessNum / 100})`
   const alpha = opacityNum === 100 ? "" : ` / ${opacityNum}%`
+
   return `hsl(from ${reference} h s ${lightness}${alpha})`
 }
 
@@ -82,36 +76,31 @@ export function applyTransformsToColorReference(
  */
 export function getColorCSSValue({
   color,
+  theme,
   opacity,
   brightness,
-  theme,
   useThemeVariableReferences = false,
 }: {
   color: ColorValue | EmptyValue
+  theme: Theme
   opacity?: PercentageValue | EmptyValue | number
   brightness?: PercentageValue | EmptyValue | number
-  theme: Theme
   useThemeVariableReferences?: boolean
 }): string {
   if (useThemeVariableReferences) {
     const brightnessNum =
-      typeof brightness === "number"
-        ? brightness
-        : (resolveValue(brightness)?.value.value ?? 0)
+      typeof brightness === "number" ? brightness : (resolveValue(brightness)?.value.value ?? 0)
     const opacityNum =
-      typeof opacity === "number"
-        ? opacity
-        : (resolveValue(opacity)?.value.value ?? 100)
+      typeof opacity === "number" ? opacity : (resolveValue(opacity)?.value.value ?? 100)
 
     const isSwatch =
-      !!color &&
-      typeof color === "object" &&
-      color.type === ValueType.THEME_CATEGORICAL
+      !!color && typeof color === "object" && color.type === ValueType.THEME_CATEGORICAL
 
     // Keep the swatch as a theme variable so it swaps with the active theme.
     if (isSwatch) {
       const swatchKey = String((color as { value: unknown }).value)
       const reference = getThemeSwatchVarReference(swatchKey, theme)
+
       if (reference) {
         // A brightness shift cannot ride the plain swatch variable as a real
         // color, so reference the dedicated brightness variable instead. It
@@ -122,35 +111,27 @@ export function getColorCSSValue({
             theme,
             brightnessNum,
           )
+
           if (brightnessReference) {
             const slot = swatchIdFromRef(swatchKey)
+
             if (slot) recordBrightnessSwatch(slot, brightnessNum)
-            return applyTransformsToColorReference(
-              brightnessReference,
-              0,
-              opacityNum,
-            )
+
+            return applyTransformsToColorReference(brightnessReference, 0, opacityNum)
           }
         }
-        return applyTransformsToColorReference(
-          reference,
-          brightnessNum,
-          opacityNum,
-        )
+
+        return applyTransformsToColorReference(reference, brightnessNum, opacityNum)
       }
     }
   }
 
   const resolvedColor = resolveColor({ color, theme })
   const resolvedOpacity =
-    typeof opacity === "number"
-      ? opacity
-      : (resolveValue(opacity)?.value.value ?? 100)
+    typeof opacity === "number" ? opacity : (resolveValue(opacity)?.value.value ?? 100)
 
   const resolvedBrightness =
-    typeof brightness === "number"
-      ? brightness
-      : (resolveValue(brightness)?.value.value ?? 0)
+    typeof brightness === "number" ? brightness : (resolveValue(brightness)?.value.value ?? 0)
 
   switch (resolvedColor.type) {
     case ValueType.OPTION:
@@ -167,6 +148,7 @@ export function getColorCSSValue({
 
           const hsl = hexToHSLObject(resolvedColor.value)
           const correctedHSL = applyBrightness(hsl, resolvedBrightness)
+
           return HSLObjectToString(correctedHSL, resolvedOpacity)
         } else if (isHSLString(resolvedColor.value)) {
           // brightness is undefined or 0: don't convert to HSL
@@ -176,6 +158,7 @@ export function getColorCSSValue({
 
           const hsl = parseHSLString(resolvedColor.value)
           const correctedHSL = applyBrightness(hsl, resolvedBrightness)
+
           return HSLObjectToString(correctedHSL, resolvedOpacity)
         } else if (isRGBString(resolvedColor.value)) {
           // brightness is undefined or 0: don't convert to HSL
@@ -186,6 +169,7 @@ export function getColorCSSValue({
           const hslString = toHSLString(resolvedColor.value)
           const hsl = parseHSLString(hslString)
           const correctedHSL = applyBrightness(hsl, resolvedBrightness)
+
           return HSLObjectToString(correctedHSL, resolvedOpacity)
         } else {
           // Handle invalid color strings gracefully - fall back to transparent
@@ -197,6 +181,7 @@ export function getColorCSSValue({
               colorValue: resolvedColor.value,
             },
           )
+
           return "transparent"
         }
       }
@@ -209,15 +194,14 @@ export function getColorCSSValue({
 
         const hsl = rgbToHSL(resolvedColor.value)
         const correctedHSL = applyBrightness(hsl, resolvedBrightness)
+
         return HSLObjectToString(correctedHSL, resolvedOpacity)
       }
 
       if (isHSLObject(resolvedColor.value)) {
         try {
-          const correctedHSL = applyBrightness(
-            resolvedColor.value,
-            resolvedBrightness,
-          )
+          const correctedHSL = applyBrightness(resolvedColor.value, resolvedBrightness)
+
           return HSLObjectToString(correctedHSL, resolvedOpacity)
         } catch (error) {
           debugLog(
@@ -229,16 +213,15 @@ export function getColorCSSValue({
               error: error instanceof Error ? error.message : String(error),
             },
           )
+
           return "transparent"
         }
       }
 
       if (isLCHObject(resolvedColor.value)) {
         try {
-          const correctedLCH = applyBrightness(
-            resolvedColor.value,
-            resolvedBrightness,
-          )
+          const correctedLCH = applyBrightness(resolvedColor.value, resolvedBrightness)
+
           return LCHObjectToString(correctedLCH, resolvedOpacity)
         } catch (error) {
           debugLog(
@@ -250,19 +233,16 @@ export function getColorCSSValue({
               error: error instanceof Error ? error.message : String(error),
             },
           )
+
           return "transparent"
         }
       }
 
       // Handle invalid exact colors gracefully - fall back to transparent
-      debugLog(
-        "Factory",
-        "getColorCSSValue",
-        "Invalid exact color, falling back to transparent",
-        {
-          resolvedColor: JSON.stringify(resolvedColor),
-        },
-      )
+      debugLog("Factory", "getColorCSSValue", "Invalid exact color, falling back to transparent", {
+        resolvedColor: JSON.stringify(resolvedColor),
+      })
+
       return "transparent"
     default:
       return assertNever(resolvedColor)

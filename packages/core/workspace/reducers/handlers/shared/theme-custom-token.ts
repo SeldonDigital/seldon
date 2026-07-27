@@ -6,13 +6,11 @@ function readSectionBag(
   section: ThemeCustomTokenSection,
 ): Record<string, unknown> {
   const current = (entry.overrides as Record<string, unknown>)[section]
-  if (
-    typeof current !== "object" ||
-    current === null ||
-    Array.isArray(current)
-  ) {
+
+  if (typeof current !== "object" || current === null || Array.isArray(current)) {
     return {}
   }
+
   return { ...(current as Record<string, unknown>) }
 }
 
@@ -24,10 +22,12 @@ export function appendCustomToken(
   cell: unknown,
 ): void {
   const bag = readSectionBag(entry, section)
+
   bag[id] = cell
   const overrides: Record<string, unknown> = {
     ...(entry.overrides as Record<string, unknown>),
   }
+
   overrides[section] = bag
   entry.overrides = overrides
 }
@@ -39,10 +39,12 @@ export function removeCustomToken(
   id: string,
 ): void {
   const bag = readSectionBag(entry, section)
+
   delete bag[id]
   const overrides: Record<string, unknown> = {
     ...(entry.overrides as Record<string, unknown>),
   }
+
   overrides[section] = bag
   entry.overrides = overrides
 }

@@ -1,16 +1,13 @@
-import { ComponentId } from "../../../../components/constants"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  debugGroup,
-  debugGroupEnd,
-  debugLog,
-} from "../../../../utils/debug-logger"
+import { debugGroup, debugGroupEnd, debugLog } from "../../../../utils/debug-logger"
 import {
   nodeOperationsService,
   nodeRetrievalService,
   typeCheckingService,
   workspacePropagationService,
 } from "../../../services"
+
+import type { ComponentId } from "../../../../components/constants"
 import type { InsertDefaultInstance, Workspace } from "../../../types"
 
 export function insertDefaultInstance(
@@ -41,24 +38,21 @@ export function insertDefaultInstance(
       "insertDefaultInstance",
       "Insert not allowed - cannot insert into default variant",
     )
+
     return workspace
   }
 
   debugGroup("Workspace", "insertDefaultInstance", "Inserting default instance")
-  debugLog(
-    "Workspace",
-    "insertDefaultInstance",
-    "Default variant to instantiate",
-    {
-      variantId: defaultVariant.id,
-    },
-  )
+  debugLog("Workspace", "insertDefaultInstance", "Default variant to instantiate", {
+    variantId: defaultVariant.id,
+  })
   debugLog("Workspace", "insertDefaultInstance", "Target parent", {
     parentId: payload.parentId,
     index: payload.index,
   })
 
   const targetEntityType = typeCheckingService.getEntityType(targetNode)
+
   if (!rules.mutations.insertInto[targetEntityType].allowed) {
     debugLog(
       "Workspace",
@@ -70,11 +64,13 @@ export function insertDefaultInstance(
       "insertDefaultInstance",
       "Insert not allowed - target cannot receive nodes",
     )
+
     return workspace
   }
 
   const entityType = typeCheckingService.getEntityType(defaultVariant)
   const { allowed, propagation } = rules.mutations.instantiate[entityType]
+
   if (!allowed) {
     debugLog(
       "Workspace",
@@ -86,17 +82,13 @@ export function insertDefaultInstance(
       "insertDefaultInstance",
       "Insert not allowed - default variant cannot be instantiated",
     )
+
     return workspace
   }
 
-  debugLog(
-    "Workspace",
-    "insertDefaultInstance",
-    "Insert allowed, applying with propagation",
-    {
-      propagation,
-    },
-  )
+  debugLog("Workspace", "insertDefaultInstance", "Insert allowed, applying with propagation", {
+    propagation,
+  })
 
   const result = workspacePropagationService.propagateNodeOperation<
     ReturnType<typeof nodeOperationsService.insertNode>
@@ -104,16 +96,11 @@ export function insertDefaultInstance(
     nodeId: payload.parentId,
     propagation,
     apply: (node, workspace, sourceResult) => {
-      debugLog(
-        "Workspace",
-        "insertDefaultInstance",
-        "Inserting default instance into parent",
-        {
-          nodeId: sourceResult ? sourceResult.createdNodeId : defaultVariant.id,
-          parentId: node.id,
-          index: payload.index,
-        },
-      )
+      debugLog("Workspace", "insertDefaultInstance", "Inserting default instance into parent", {
+        nodeId: sourceResult ? sourceResult.createdNodeId : defaultVariant.id,
+        parentId: node.id,
+        index: payload.index,
+      })
 
       return nodeOperationsService.insertNode(
         {
@@ -128,10 +115,7 @@ export function insertDefaultInstance(
   })
 
   debugLog("Workspace", "insertDefaultInstance", "Default instance inserted")
-  debugGroupEnd(
-    "Workspace",
-    "insertDefaultInstance",
-    "Default instance inserted",
-  )
+  debugGroupEnd("Workspace", "insertDefaultInstance", "Default instance inserted")
+
   return result
 }

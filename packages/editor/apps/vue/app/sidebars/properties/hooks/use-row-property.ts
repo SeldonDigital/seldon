@@ -1,4 +1,3 @@
-import type { MenuEntry } from "@app/menus/types"
 import {
   buildActivatedRefProps,
   buildDisabledRefProps,
@@ -8,64 +7,48 @@ import {
 import { useRenameInput } from "@app/sidebars/use-rename-input"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
-import {
-  getCurrentOptionValue,
-  getOptionIcon,
-} from "@seldon/editor/lib/icons/resolve-option-icon"
+import { getCurrentOptionValue, getOptionIcon } from "@seldon/editor/lib/icons/resolve-option-icon"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
 import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import {
-  type FlatProperty,
-  getCompoundChildRows,
-} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getCompoundChildRows } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "@seldon/editor/lib/themes/theme-token-icon-color"
-import {
-  type ComputedRef,
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  ref,
-  watch,
-} from "vue"
+import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue"
 
-import {
-  type Board,
-  type Instance,
-  type LayeredPaintKey,
-  type PropertyKey,
-  type Theme,
-  type ThemeCustomTokenSection,
-  ValueType,
-  type Variant,
-  type Workspace,
-  isReservedTokenName,
-} from "@seldon/core"
+import { ValueType, isReservedTokenName } from "@seldon/core"
 import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
-import {
-  FRAME_REF_SELECTOR,
-  buildPropertyRowProps,
-} from "../helpers/build-property-row-props"
+import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
-import {
-  getPropertyValueForDisplay,
-  shouldShowMenuIcon,
-} from "../helpers/property-control-data"
+import { getPropertyValueForDisplay, shouldShowMenuIcon } from "../helpers/property-control-data"
 import { usePropertyExpansionStore } from "../property-expansion-store"
 import { usePropertyEditNavigation } from "../use-property-edit-navigation"
 import { usePropertyControl } from "./use-property-control"
+
+import type { MenuEntry } from "@app/menus/types"
+import type {
+  Board,
+  Instance,
+  LayeredPaintKey,
+  PropertyKey,
+  Theme,
+  ThemeCustomTokenSection,
+  Variant,
+  Workspace,
+} from "@seldon/core"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { ComputedRef } from "vue"
 
 export interface RowPropertyInput {
   property: ComputedRef<FlatProperty>
@@ -95,6 +78,7 @@ function resolveLayerDrag(
   if (property.layerIndex === undefined) return null
 
   const root = property.key.split(".")[0]
+
   if (!isLayeredPaintProperty(root as PropertyKey)) return null
 
   const layerCount = allProperties.filter(
@@ -103,6 +87,7 @@ function resolveLayerDrag(
       !candidate.isSubProperty &&
       candidate.key.split(".")[0] === root,
   ).length
+
   if (layerCount < 2) return null
 
   return {
@@ -140,6 +125,7 @@ export function useRowProperty(input: RowPropertyInput) {
       clearTimeout(deferredTimer)
       deferredTimer = null
     }
+
     deferredBaseline = null
   }
 
@@ -147,8 +133,10 @@ export function useRowProperty(input: RowPropertyInput) {
     if (editing) {
       cancelDeferredClose()
       isEditing.value = true
+
       return
     }
+
     deferredBaseline = JSON.stringify(input.property.value.value ?? null)
     if (deferredTimer !== null) clearTimeout(deferredTimer)
     deferredTimer = setTimeout(() => {
@@ -163,6 +151,7 @@ export function useRowProperty(input: RowPropertyInput) {
     (value) => {
       if (deferredBaseline === null) return
       const currentKey = JSON.stringify(value ?? null)
+
       if (currentKey !== deferredBaseline) {
         cancelDeferredClose()
         isEditing.value = false
@@ -176,18 +165,15 @@ export function useRowProperty(input: RowPropertyInput) {
   const node = input.node
   const theme = input.theme
 
-  const isThemeAssignment = computed(
-    () => property.value.pickerVariant === "themeAssignment",
-  )
+  const isThemeAssignment = computed(() => property.value.pickerVariant === "themeAssignment")
 
   const children = computed<FlatProperty[]>(() => {
     if (!property.value.isCompound && !property.value.isShorthand) return []
+
     return getCompoundChildRows(property.value.key, input.allProperties.value)
   })
   const hasChildren = computed(() => children.value.length > 0)
-  const isExpanded = computed(() =>
-    expansion.isPropertyExpanded(property.value.key),
-  )
+  const isExpanded = computed(() => expansion.isPropertyExpanded(property.value.key))
   const labelText = computed(() => property.value.label)
 
   const isNavigable = computed(
@@ -201,6 +187,7 @@ export function useRowProperty(input: RowPropertyInput) {
   function handleTabNext(): boolean {
     return editNavigation?.moveFocus(property.value.key, 1) ?? false
   }
+
   function handleTabPrev(): boolean {
     return editNavigation?.moveFocus(property.value.key, -1) ?? false
   }
@@ -210,10 +197,12 @@ export function useRowProperty(input: RowPropertyInput) {
     key: string
   } | null>(() => {
     const themeCtx = input.themeEditingContext.value
+
     if (!themeCtx?.isThemeEditing || !themeCtx.canAddCustom) return null
     const parts = property.value.key.split(".")
     const section = parts[0]
     let id: string | undefined
+
     if (section === "swatch") {
       if (parts.length === 3 && parts[1] === "custom") id = parts[2]
     } else if (parts.length === 2) {
@@ -221,7 +210,9 @@ export function useRowProperty(input: RowPropertyInput) {
     } else if (parts.length === 3 && parts[2] === "step") {
       id = parts[1]
     }
+
     if (!section || !id || !/^custom\d+$/.test(id)) return null
+
     return { section: section as ThemeCustomTokenSection, key: id }
   })
 
@@ -231,9 +222,11 @@ export function useRowProperty(input: RowPropertyInput) {
   } | null>(() => {
     if (input.themeEditingContext.value?.isThemeEditing) return null
     const parsed = parsePropertyPath(property.value.key)
+
     if (parsed.kind === "layered-parent" && parsed.index >= 1) {
       return { property: parsed.root, index: parsed.index }
     }
+
     return null
   })
 
@@ -244,6 +237,7 @@ export function useRowProperty(input: RowPropertyInput) {
       theme.value,
       property.value.icon,
     )
+
     return descriptor.kind === "static" ? descriptor.icon : property.value.icon
   })
 
@@ -288,14 +282,13 @@ export function useRowProperty(input: RowPropertyInput) {
     if (!theme.value || !isSwatchIconPropertyKey(property.value.key)) {
       return undefined
     }
-    return getThemeTokenIconColorFromPropertyValue(
-      property.value.value,
-      theme.value,
-    )
+
+    return getThemeTokenIconColorFromPropertyValue(property.value.value, theme.value)
   })
 
   const themeSwatchColors = computed(() => {
     if (!isThemeAssignment.value || !theme.value) return undefined
+
     return resolveThemeSwatchColors(theme.value)
   })
 
@@ -333,11 +326,8 @@ export function useRowProperty(input: RowPropertyInput) {
   function handleMenuClick(event: MouseEvent): void {
     event.stopPropagation()
     const type = property.value.controlType
-    if (
-      !property.value.isDimmed &&
-      !isEditing.value &&
-      (type === "menu" || type === "combo")
-    ) {
+
+    if (!property.value.isDimmed && !isEditing.value && (type === "menu" || type === "combo")) {
       setEditing(true)
     }
   }
@@ -348,6 +338,7 @@ export function useRowProperty(input: RowPropertyInput) {
 
   function handleRowClick(event: MouseEvent): void {
     const target = event.target as HTMLElement
+
     if (
       target.closest("button") ||
       isEditing.value ||
@@ -356,6 +347,7 @@ export function useRowProperty(input: RowPropertyInput) {
     ) {
       return
     }
+
     if (target.closest(FRAME_REF_SELECTOR)) return
     if (hasChildren.value) expansion.toggleProperty(property.value.key)
   }
@@ -363,19 +355,27 @@ export function useRowProperty(input: RowPropertyInput) {
   function handleRenameSubmit(value: string): void {
     const target = customTokenTarget.value
     const themeCtx = input.themeEditingContext.value
+
     if (!target || !themeCtx?.isThemeEditing) {
       isRenaming.value = false
+
       return
     }
+
     const trimmed = value.trim()
+
     if (!trimmed) {
       isRenaming.value = false
+
       return
     }
+
     if (isReservedTokenName(target.section, trimmed)) {
       toast.addToast(`"${trimmed}" is a reserved ${target.section} name`)
+
       return
     }
+
     themeCtx.renameCustomToken(target.section, target.key, trimmed)
     isRenaming.value = false
   }
@@ -394,19 +394,21 @@ export function useRowProperty(input: RowPropertyInput) {
   const rowActions = computed<MenuEntry[]>(() => {
     const target = customTokenTarget.value
     const themeCtx = input.themeEditingContext.value
+
     if (target) {
       return [
         {
           id: "delete-custom-token",
           label: `Delete ${labelText.value}`,
-          onSelect: () =>
-            themeCtx?.removeCustomToken(target.section, target.key),
+          onSelect: () => themeCtx?.removeCustomToken(target.section, target.key),
           testId: `property-row-${property.value.key}-delete`,
         },
       ]
     }
+
     const entries: MenuEntry[] = []
     const layer = layerTarget.value
+
     if (layer) {
       entries.push({
         id: "delete-layer",
@@ -423,6 +425,7 @@ export function useRowProperty(input: RowPropertyInput) {
         testId: `property-row-${property.value.key}-delete`,
       })
     }
+
     if (canReset.value) {
       entries.push(
         buildResetMenuEntry({
@@ -435,13 +438,12 @@ export function useRowProperty(input: RowPropertyInput) {
         }),
       )
     }
+
     return entries
   })
 
   const resetActions = computed<MenuEntry[]>(() =>
-    isBoard(node.value) && property.value.key === "board"
-      ? []
-      : rowActions.value,
+    isBoard(node.value) && property.value.key === "board" ? [] : rowActions.value,
   )
 
   const listItemProps = computed(() =>
@@ -506,11 +508,11 @@ export function useRowProperty(input: RowPropertyInput) {
     if (!editing && !renaming) return
     await nextTick()
     const el = rowEl.value
+
     if (!el) return
     const ref = renaming ? "propertyLabel" : "valueLabel"
-    const inputEl = el.querySelector<HTMLInputElement>(
-      `input[data-seldon-ref="${ref}"]`,
-    )
+    const inputEl = el.querySelector<HTMLInputElement>(`input[data-seldon-ref="${ref}"]`)
+
     if (inputEl) {
       inputEl.focus()
       inputEl.select()

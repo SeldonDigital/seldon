@@ -2,9 +2,10 @@ import {
   getThemeTemplateThemeId,
   parseThemeTemplate,
 } from "@seldon/core/workspace/model/template-ref"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { kebabCase } from "../../react/utils/case-utils"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 type ThemeEntry = {
   id: string
@@ -21,9 +22,11 @@ type ThemeEntry = {
  */
 function getDefaultEntrySlug(entry: ThemeEntry): string {
   const parsed = parseThemeTemplate(entry.template ?? "")
+
   if (parsed?.kind === "catalog") {
     return kebabCase(parsed.themeCatalogId)
   }
+
   return kebabCase(entry.label || entry.id)
 }
 
@@ -31,10 +34,7 @@ function getDefaultEntrySlug(entry: ThemeEntry): string {
  * Walks a variant entry up its `theme:{id}` template chain to the root
  * default-type entry and returns that root's slug.
  */
-function getRootDefaultSlug(
-  entry: ThemeEntry,
-  themes: Record<string, ThemeEntry>,
-): string {
+function getRootDefaultSlug(entry: ThemeEntry, themes: Record<string, ThemeEntry>): string {
   const seen = new Set<string>()
   let current: ThemeEntry | undefined = entry
 
@@ -42,12 +42,14 @@ function getRootDefaultSlug(
     if (seen.has(current.id)) break
     seen.add(current.id)
     const parentId = getThemeTemplateThemeId(current.template ?? "")
+
     current = parentId ? themes[parentId] : undefined
   }
 
   if (current) {
     return getDefaultEntrySlug(current)
   }
+
   return "default"
 }
 
@@ -71,6 +73,7 @@ export function getThemeSlug(themeId: string, workspace: Workspace): string {
 
   if (entry.type === "variant") {
     const rootSlug = getRootDefaultSlug(entry, themes ?? {})
+
     return `${rootSlug}-${kebabCase(entry.label || entry.id)}`
   }
 

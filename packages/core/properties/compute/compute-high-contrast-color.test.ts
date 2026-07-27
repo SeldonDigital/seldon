@@ -4,6 +4,7 @@ import { STOCK_THEMES_BY_ID } from "../../themes/catalog"
 import { computeTheme } from "../../themes/helpers/compute-theme"
 import { ComputedFunction, ValueType } from "../constants"
 import { computeHighContrastColor } from "./compute-high-contrast-color"
+
 import type { ComputeContext } from "./types"
 
 const computed = computeTheme(STOCK_THEMES_BY_ID.seldon)
@@ -25,6 +26,7 @@ describe("computeHighContrastColor", () => {
     const result = computeHighContrastColor(marker, ctx({})) as {
       type: ValueType
     }
+
     expect(result.type).toBe(ValueType.EXACT)
   })
 

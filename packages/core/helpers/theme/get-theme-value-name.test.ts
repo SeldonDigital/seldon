@@ -19,6 +19,7 @@ describe("getThemeValueName", () => {
 
   it("resolves a real token to its friendly name", () => {
     const name = getThemeValueName("@fontSize.medium", defaultTheme)
+
     expect(typeof name).toBe("string")
     expect(name.length).toBeGreaterThan(0)
   })

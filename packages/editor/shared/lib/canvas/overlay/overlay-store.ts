@@ -1,4 +1,5 @@
 import { createStore } from "../store/observable"
+
 import type { NodeRect } from "./geometry"
 import type { OutlineColors } from "./outline-colors"
 
@@ -29,14 +30,10 @@ export function setSelectionRect(selectionRect: NodeRect | null): void {
   overlayStore.setState({ selectionRect })
 }
 
-export function setHoverOutlineColors(
-  hoverOutlineColors: OutlineColors | null,
-): void {
+export function setHoverOutlineColors(hoverOutlineColors: OutlineColors | null): void {
   overlayStore.setState({ hoverOutlineColors })
 }
 
-export function setSelectionOutlineColors(
-  selectionOutlineColors: OutlineColors | null,
-): void {
+export function setSelectionOutlineColors(selectionOutlineColors: OutlineColors | null): void {
   overlayStore.setState({ selectionOutlineColors })
 }

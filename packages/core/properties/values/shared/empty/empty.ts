@@ -1,4 +1,4 @@
-import { ValueType } from "../../../constants"
+import type { ValueType } from "../../../constants"
 
 /**
  * The value CAN be set but initially it is not.

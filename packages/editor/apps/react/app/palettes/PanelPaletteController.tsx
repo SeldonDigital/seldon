@@ -3,16 +3,18 @@
 import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { PanelPalette } from "@seldon/components/modules/PanelPalette"
-import { CSSProperties, PointerEvent, ReactNode, useCallback } from "react"
+import { useCallback } from "react"
+
+import type { CSSProperties, PointerEvent, ReactNode } from "react"
 
 interface PanelPaletteControllerProps {
   title: string
-  testId?: string
   initialWidth: number
   initialHeight: number
   onClose: () => void
-  closeOnClickOutside?: boolean
   children: ReactNode
+  testId?: string
+  closeOnClickOutside?: boolean
 }
 
 /**
@@ -53,10 +55,7 @@ export function PanelPaletteController({
     handleClose: onClose,
   })
 
-  const startDrag = useCallback(
-    (event: PointerEvent) => moveControls.start(event),
-    [moveControls],
-  )
+  const startDrag = useCallback((event: PointerEvent) => moveControls.start(event), [moveControls])
 
   const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
   const dialogTitle = { children: title }

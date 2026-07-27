@@ -95,32 +95,37 @@ function resolveThemeTemplateId(
   if (seen.has(entryId)) return undefined
   seen.add(entryId)
   const entry = themes[entryId]
+
   if (!entry) return undefined
   const [prefix, suffix] = entry.template.split(":")
+
   if (prefix === "catalog") return suffix
+
   if (prefix === "theme" && suffix) {
     return resolveThemeTemplateId(suffix, themes, seen)
   }
+
   return undefined
 }
 
 /** True when a value tree holds a `@swatch.customN` ref that `map` promotes. */
-function treeHasPromotableRef(
-  value: unknown,
-  map: Record<string, string>,
-): boolean {
+function treeHasPromotableRef(value: unknown, map: Record<string, string>): boolean {
   if (Array.isArray(value)) {
     return value.some((item) => treeHasPromotableRef(item, map))
   }
+
   if (!value || typeof value !== "object") return false
+
   for (const sub of Object.values(value as Record<string, unknown>)) {
     if (typeof sub === "string") {
       const match = SWATCH_REF.exec(sub)
+
       if (match && map[match[1]!]) return true
     } else if (treeHasPromotableRef(sub, map)) {
       return true
     }
   }
+
   return false
 }
 
@@ -130,12 +135,15 @@ function themeOverridesNeedRewrite(
   map: Record<string, string>,
 ): boolean {
   const swatch = overrides.swatch
+
   if (swatch && typeof swatch === "object" && !Array.isArray(swatch)) {
     const swatchRecord = swatch as Record<string, unknown>
+
     for (const oldId of Object.keys(map)) {
       if (oldId in swatchRecord) return true
     }
   }
+
   return treeHasPromotableRef(overrides, map)
 }
 
@@ -143,19 +151,25 @@ function themeOverridesNeedRewrite(
 function rewriteSwatchRefs(value: unknown, map: Record<string, string>): void {
   if (Array.isArray(value)) {
     for (const item of value) rewriteSwatchRefs(item, map)
+
     return
   }
+
   if (!value || typeof value !== "object") return
   const record = value as Record<string, unknown>
+
   for (const [key, sub] of Object.entries(record)) {
     if (typeof sub === "string") {
       const match = SWATCH_REF.exec(sub)
       const promoted = match && map[match[1]!]
+
       if (promoted) {
         record[key] = `@swatch.${promoted}`
       }
+
       continue
     }
+
     rewriteSwatchRefs(sub, map)
   }
 }
@@ -166,8 +180,10 @@ function renameThemeSwatchKeys(
   map: Record<string, string>,
 ): void {
   const swatch = overrides.swatch
+
   if (!swatch || typeof swatch !== "object" || Array.isArray(swatch)) return
   const swatchRecord = swatch as Record<string, unknown>
+
   for (const [oldId, newId] of Object.entries(map)) {
     if (oldId in swatchRecord) {
       swatchRecord[newId] = swatchRecord[oldId]
@@ -186,6 +202,7 @@ function boardPromotionMap(
     ? resolveThemeTemplateId(componentTheme, themes)
     : DEFAULT_THEME_TEMPLATE
   const map = templateId ? PROMOTION_MAPS[templateId] : undefined
+
   return map && Object.keys(map).length > 0 ? map : undefined
 }
 
@@ -198,6 +215,7 @@ function nodePromotionMap(
     ? resolveThemeTemplateId(node.theme, themes)
     : DEFAULT_THEME_TEMPLATE
   const map = templateId ? PROMOTION_MAPS[templateId] : undefined
+
   return map && Object.keys(map).length > 0 ? map : undefined
 }
 
@@ -208,6 +226,7 @@ function themePromotionMap(
 ): Record<string, string> | undefined {
   const templateId = resolveThemeTemplateId(entry.id, themes)
   const map = templateId ? PROMOTION_MAPS[templateId] : undefined
+
   return map && Object.keys(map).length > 0 ? map : undefined
 }
 
@@ -216,15 +235,17 @@ function migrationApplies(workspace: Workspace): boolean {
   const themes = workspace.themes
 
   for (const board of Object.values(workspace.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (!componentProperties) continue
     const map = boardPromotionMap(board, themes)
+
     if (map && treeHasPromotableRef(componentProperties, map)) return true
   }
 
   for (const node of Object.values(workspace.nodes)) {
     const map = nodePromotionMap(node, themes)
+
     if (!map) continue
     if (treeHasPromotableRef(node.overrides, map)) return true
     if (node.states && treeHasPromotableRef(node.states, map)) return true
@@ -232,6 +253,7 @@ function migrationApplies(workspace: Workspace): boolean {
 
   for (const entry of Object.values(themes)) {
     const map = themePromotionMap(entry, themes)
+
     if (map && themeOverridesNeedRewrite(entry.overrides, map)) return true
   }
 
@@ -248,15 +270,17 @@ export function migrateV2InterfaceSwatches(workspace: Workspace): Workspace {
   const themes = next.themes
 
   for (const board of Object.values(next.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (!componentProperties) continue
     const map = boardPromotionMap(board, themes)
+
     if (map) rewriteSwatchRefs(componentProperties, map)
   }
 
   for (const node of Object.values(next.nodes)) {
     const map = nodePromotionMap(node, themes)
+
     if (!map) continue
     // Walk the whole node so refs in the Normal `overrides` bag and any
     // per-state override bags are rewritten. Only `@swatch.customN` strings
@@ -267,6 +291,7 @@ export function migrateV2InterfaceSwatches(workspace: Workspace): Workspace {
 
   for (const entry of Object.values(themes)) {
     const map = themePromotionMap(entry, themes)
+
     if (!map) continue
     renameThemeSwatchKeys(entry.overrides, map)
     rewriteSwatchRefs(entry.overrides, map)

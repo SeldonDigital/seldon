@@ -32,11 +32,13 @@ export function isHSLString(value: string) {
       const match = value.match(
         /^hsl\(\s*(\d{1,3})(?:deg)?\s*[,]?\s*(\d{1,3})%?\s*[,]?\s*(\d{1,3})%?\s*\)$/i,
       )
+
       if (!match) return false
       const [, hue, saturation, lightness] = match
       const h = parseInt(hue)
       const s = parseInt(saturation)
       const l = parseInt(lightness)
+
       return h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100
     })()
   )
@@ -50,18 +52,18 @@ export function isHSLString(value: string) {
  */
 export function isRGBString(value: string) {
   return (
-    /^rgb\(\s*\d{1,3}(\s*,\s*|\s+)?\d{1,3}(\s*,\s*|\s+)?\d{1,3}\s*\)$/i.test(
-      value,
-    ) &&
+    /^rgb\(\s*\d{1,3}(\s*,\s*|\s+)?\d{1,3}(\s*,\s*|\s+)?\d{1,3}\s*\)$/i.test(value) &&
     (() => {
       const match = value.match(
         /^rgb\(\s*(\d{1,3})(\s*,\s*|\s+)(\d{1,3})(\s*,\s*|\s+)(\d{1,3})\s*\)$/i,
       )
+
       if (!match) return false
       const [, red, , green, , blue] = match
       const r = parseInt(red)
       const g = parseInt(green)
       const b = parseInt(blue)
+
       return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255
     })()
   )
@@ -82,11 +84,13 @@ export function isLCHString(value: string) {
       const match = value.match(
         /^lch\(\s*(\d+)%?\s*[,]?\s*(\d+(?:\.\d+)?)\s*[,]?\s*(\d+)(deg)?\s*\)$/i,
       )
+
       if (!match) return false
       const [, lightness, chroma, hue] = match
       const l = parseInt(lightness)
       const c = parseFloat(chroma)
       const h = parseInt(hue)
+
       return l >= 0 && l <= 100 && c >= 0 && c <= 150 && h >= 0 && h <= 360
     })()
   )

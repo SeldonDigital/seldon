@@ -3,10 +3,12 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { Frame } from "@seldon/components/frames/Frame"
 import { IconMaterialUpload } from "@seldon/components/icons"
 import { Text } from "@seldon/components/primitives/Text"
-import { CSSProperties, useState } from "react"
+import { useState } from "react"
 
 import { DropzoneSurface } from "./DropzoneSurface"
 import { ImagePreview } from "./ImagePreview"
+
+import type { CSSProperties } from "react"
 
 export interface ImageDropzoneProps {
   onFileChange: (file: File | null) => void
@@ -14,10 +16,7 @@ export interface ImageDropzoneProps {
   fileInputRef: React.RefObject<HTMLInputElement | null>
 }
 
-function getDropzoneStyle(
-  isDragging: boolean,
-  hasFile: boolean,
-): CSSProperties {
+function getDropzoneStyle(isDragging: boolean, hasFile: boolean): CSSProperties {
   return {
     ...dropzoneStyle,
     ...(isDragging
@@ -30,17 +29,14 @@ function getDropzoneStyle(
   }
 }
 
-export function ImageDropzone({
-  onFileChange,
-  currentFile,
-  fileInputRef,
-}: ImageDropzoneProps) {
+export function ImageDropzone({ onFileChange, currentFile, fileInputRef }: ImageDropzoneProps) {
   const [isDragging, setIsDragging] = useState(false)
   const previewUrl = useObjectURL(currentFile)
   const addToast = useAddToast()
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
+
     if (file && file.type.startsWith("image/")) {
       onFileChange(file)
     }
@@ -65,6 +61,7 @@ export function ImageDropzone({
     setIsDragging(false)
 
     const file = e.dataTransfer.files[0]
+
     if (file && file.type.startsWith("image/")) {
       onFileChange(file)
     }

@@ -13,6 +13,27 @@
  * This file also re-exports the shared `FlatProperty` model and its accessors,
  * so existing consumers keep a single import path.
  */
+import {
+  getEffectiveProperties as coreGetEffectiveProperties,
+  getPropertyStatus as coreGetPropertyStatus,
+} from "@seldon/core/helpers/properties/properties-bridge"
+import { EMPTY_VALUE } from "@seldon/core/properties"
+import { getInspectorRootPropertyKeys } from "@seldon/core/properties/schemas/helpers"
+import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
+import { flattenShownBorderSides } from "./border-side-rows"
+import { getPropertiesSubjectId } from "./flat-property"
+import {
+  createFlatProperty,
+  getShorthandSubProperties,
+  getSubProperties,
+} from "./flat-property-factory"
+import { flattenLayeredPaintProperty } from "./layered-paint-rows"
+import { resolveMatchSiblingLock } from "./match-color-lock"
+import { getSchemaPropertyKeysForSubject, resolvePropertyValueForDisplay } from "./properties-read"
+
+import type { FlatProperty, PropertyStatus } from "./flat-property"
 import type {
   Board,
   BorderSideKey,
@@ -22,34 +43,11 @@ import type {
   Variant,
   Workspace,
 } from "@seldon/core"
-import {
-  getEffectiveProperties as coreGetEffectiveProperties,
-  getPropertyStatus as coreGetPropertyStatus,
-} from "@seldon/core/helpers/properties/properties-bridge"
-import { EMPTY_VALUE } from "@seldon/core/properties"
-import { getInspectorRootPropertyKeys } from "@seldon/core/properties/schemas/helpers"
-import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import type {
   PropertyKey as CorePropertyKey,
   LayeredPaintKey,
 } from "@seldon/core/properties/types/property-keys"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
-import { flattenShownBorderSides } from "./border-side-rows"
-import { getPropertiesSubjectId } from "./flat-property"
-import type { FlatProperty, PropertyStatus } from "./flat-property"
-import {
-  createFlatProperty,
-  getShorthandSubProperties,
-  getSubProperties,
-} from "./flat-property-factory"
-import { flattenLayeredPaintProperty } from "./layered-paint-rows"
-import { resolveMatchSiblingLock } from "./match-color-lock"
-import {
-  getSchemaPropertyKeysForSubject,
-  resolvePropertyValueForDisplay,
-} from "./properties-read"
 
 export type { FlatProperty, PropertyStatus } from "./flat-property"
 export { getCompoundChildRows, getPropertiesSubjectId } from "./flat-property"
@@ -68,11 +66,10 @@ export function getNodePropertiesWithStatus(
 ): { properties: Properties; propertyStatus: Record<string, PropertyStatus> } {
   const subjectId = getPropertiesSubjectId(node)
   const properties = coreGetEffectiveProperties(subjectId, workspace, state)
-  const propertyStatus = coreGetPropertyStatus(
-    subjectId,
-    workspace,
-    state,
-  ) as Record<string, PropertyStatus>
+  const propertyStatus = coreGetPropertyStatus(subjectId, workspace, state) as Record<
+    string,
+    PropertyStatus
+  >
 
   return { properties, propertyStatus }
 }
@@ -92,8 +89,11 @@ export function flattenNodeProperties(
   }
 
   const properties: FlatProperty[] = []
-  const { properties: mergedProperties, propertyStatus } =
-    getNodePropertiesWithStatus(node, workspace, state)
+  const { properties: mergedProperties, propertyStatus } = getNodePropertiesWithStatus(
+    node,
+    workspace,
+    state,
+  )
 
   const schemaPropertyKeys = getSchemaPropertyKeysForSubject(node, workspace)
 
@@ -122,16 +122,11 @@ export function flattenNodeProperties(
       continue
     }
 
-    const propertyValue = resolvePropertyValueForDisplay(
-      mergedProperties,
-      propertyKey,
-    )
+    const propertyValue = resolvePropertyValueForDisplay(mergedProperties, propertyKey)
     // If property is not in schema, it should have status "not used"
     // Otherwise use the status from propertyStatus
     const isInSchema = schemaPropertyKeys.includes(propertyKey)
-    const status = isInSchema
-      ? propertyStatus[propertyKey] || "unset"
-      : "not used"
+    const status = isInSchema ? propertyStatus[propertyKey] || "unset" : "not used"
     const finalPropertyValue = propertyValue || EMPTY_VALUE
 
     // Lock a top-level `brightness`/`opacity` whose sibling `color` is Match Color,
@@ -168,6 +163,7 @@ export function flattenNodeProperties(
         theme,
         mergedProperties,
       )
+
       properties.push(...subProperties)
 
       // Shown border sides render as their own compound rows right after the
@@ -194,6 +190,7 @@ export function flattenNodeProperties(
         mergedProperties,
         theme,
       )
+
       properties.push(...subProperties)
     }
   }

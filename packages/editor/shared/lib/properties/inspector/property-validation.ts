@@ -1,16 +1,8 @@
-import {
-  isColorProperty,
-  isFreeTextProperty,
-} from "@seldon/editor/lib/properties/serialize-value"
-import {
-  isNumber,
-  isPercentage,
-  isPx,
-  isRem,
-  isValidColor,
-} from "@seldon/core/helpers/validation"
+import { isColorProperty, isFreeTextProperty } from "@seldon/editor/lib/properties/serialize-value"
+import { isNumber, isPercentage, isPx, isRem, isValidColor } from "@seldon/core/helpers/validation"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getUnitsForProperty } from "@seldon/core/properties"
+
 import type { FlatProperty } from "./properties-data"
 
 /**
@@ -30,8 +22,7 @@ export function getValidationFunction(
 
   // Scale `.step` rows accept a bare number (modulated step) or a px/rem length
   // (exact). `lineHeight` stays a unitless number, so it is excluded.
-  const isScaleStep =
-    property.key.endsWith(".step") && !property.key.startsWith("lineHeight.")
+  const isScaleStep = property.key.endsWith(".step") && !property.key.startsWith("lineHeight.")
 
   if (isScaleStep) {
     return (value: string) => isNumber(value) || isPx(value) || isRem(value)
@@ -45,19 +36,21 @@ export function getValidationFunction(
     if (isColorProperty(property.key)) {
       return (value: string) => isValidColor(value.trim())
     }
+
     if (units.length > 0) {
       return (value: string) => {
         if (isThemeValueKey(value)) return true
-        return (
-          units.some((unit) => value.endsWith(unit)) || !isNaN(Number(value))
-        )
+
+        return units.some((unit) => value.endsWith(unit)) || !isNaN(Number(value))
       }
     }
+
     // Free-text combos (image source url) accept any non-empty custom value.
     // Without a validator the combobox rejects typed input outright.
     if (isFreeTextProperty(property.key)) {
       return (value: string) => value.trim().length > 0
     }
+
     return undefined
   }
 
@@ -65,29 +58,26 @@ export function getValidationFunction(
     return (value: string) => {
       if (isNumber(value)) return true
       if (isPercentage(value)) return true
+
       if (units.length > 0) {
         return units.some((unit) => {
           if (unit === "px" && isPx(value)) return true
           if (unit === "rem" && isRem(value)) return true
+
           // `isPercentage` above rejects negatives, so a signed percentage
           // (e.g. a `-5%` chroma shift) is accepted here.
-          if (
-            unit === "%" &&
-            value.endsWith("%") &&
-            !isNaN(parseFloat(value))
-          ) {
+          if (unit === "%" && value.endsWith("%") && !isNaN(parseFloat(value))) {
             return true
           }
-          if (
-            unit === "deg" &&
-            value.toLowerCase().endsWith("deg") &&
-            !isNaN(parseFloat(value))
-          ) {
+
+          if (unit === "deg" && value.toLowerCase().endsWith("deg") && !isNaN(parseFloat(value))) {
             return true
           }
+
           return false
         })
       }
+
       return false
     }
   }

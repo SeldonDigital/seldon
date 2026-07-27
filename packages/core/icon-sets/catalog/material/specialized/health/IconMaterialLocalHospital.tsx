@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialLocalHospital(props: SVGAttributes<SVGSVGElement>) {
   return (

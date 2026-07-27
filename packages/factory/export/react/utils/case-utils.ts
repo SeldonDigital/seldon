@@ -21,6 +21,7 @@ export function pascalCase(str: string): string {
  */
 export function camelCase(str: string): string {
   const pascal = pascalCase(str)
+
   return pascal.charAt(0).toLowerCase() + pascal.slice(1)
 }
 

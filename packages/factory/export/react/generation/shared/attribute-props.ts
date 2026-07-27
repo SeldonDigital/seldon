@@ -1,4 +1,4 @@
-import { ComponentToExport } from "../../../types"
+import type { ComponentToExport } from "../../../types"
 
 /**
  * Whether a prop key is an HTML attribute that the element's `HTMLAttributes`
@@ -17,16 +17,12 @@ export function isAttributeKey(key: string): boolean {
  * root declares no attribute-style props. Emit this before `{...props}` so a
  * caller-passed value overrides the authored default.
  */
-export function generateRootAttributePropsString(
-  component: ComponentToExport,
-): string {
-  const keys = Object.keys(component.tree.dataBinding.props).filter(
-    isAttributeKey,
-  )
+export function generateRootAttributePropsString(component: ComponentToExport): string {
+  const keys = Object.keys(component.tree.dataBinding.props).filter(isAttributeKey)
+
   if (keys.length === 0) {
     return ""
   }
-  return (
-    " " + keys.map((key) => `${key}={sdn[${JSON.stringify(key)}]}`).join(" ")
-  )
+
+  return " " + keys.map((key) => `${key}={sdn[${JSON.stringify(key)}]}`).join(" ")
 }

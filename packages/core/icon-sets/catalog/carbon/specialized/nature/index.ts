@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconCarbonTreeViewAlt } from "./IconCarbonTreeViewAlt"
 export { IconCarbonTreeFallRisk } from "./IconCarbonTreeFallRisk"

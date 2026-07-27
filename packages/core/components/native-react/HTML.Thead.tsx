@@ -1,8 +1,5 @@
-import { HTMLAttributes } from "react"
+import type { HTMLAttributes } from "react"
 
-export const HTMLThead = ({
-  style,
-  ...props
-}: HTMLAttributes<HTMLTableSectionElement>) => {
+export const HTMLThead = ({ style, ...props }: HTMLAttributes<HTMLTableSectionElement>) => {
   return <thead style={{ ...style }} {...props} />
 }

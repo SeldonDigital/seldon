@@ -10,17 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { TextDescription } from "../primitives/TextDescription"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { HTMLAttributes } from "react"
 
 export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -67,10 +68,7 @@ export function MessageTools({
   seldonRefs,
   ...props
 }: MessageToolsProps) {
-  const messageToolsClassName = combineClassNames(
-    "sdn-message-tools",
-    className,
-  )
+  const messageToolsClassName = combineClassNames("sdn-message-tools", className)
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -88,10 +86,7 @@ export function MessageTools({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -111,10 +106,7 @@ export function MessageTools({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
   const frame2Props = applyRef(
@@ -124,10 +116,7 @@ export function MessageTools({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -155,11 +144,7 @@ export function MessageTools({
   )
 
   return (
-    <Frame
-      className={messageToolsClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={messageToolsClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

@@ -1,16 +1,13 @@
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  debugGroup,
-  debugGroupEnd,
-  debugLog,
-} from "../../../../utils/debug-logger"
+import { debugGroup, debugGroupEnd, debugLog } from "../../../../utils/debug-logger"
 import {
   nodeOperationsService,
   nodeRetrievalService,
   typeCheckingService,
   workspacePropagationService,
 } from "../../../services"
-import { ExtractPayload, Workspace } from "../../../types"
+
+import type { ExtractPayload, Workspace } from "../../../types"
 
 export function reorderInstanceInParent(
   payload: ExtractPayload<"reorder_instance_in_parent">,
@@ -30,50 +27,30 @@ export function reorderInstanceInParent(
   })
 
   if (!isInstance) {
-    debugLog(
-      "Workspace",
-      "reorderInstanceInParent",
-      "Reorder not allowed for non-instance",
-    )
-    debugGroupEnd(
-      "Workspace",
-      "reorderInstanceInParent",
-      "Reorder not allowed for non-instance",
-    )
+    debugLog("Workspace", "reorderInstanceInParent", "Reorder not allowed for non-instance")
+    debugGroupEnd("Workspace", "reorderInstanceInParent", "Reorder not allowed for non-instance")
+
     return workspace
   }
 
   const { allowed, propagation } = rules.mutations.reorder[entityType]
 
   if (allowed) {
-    debugLog(
-      "Workspace",
-      "reorderInstanceInParent",
-      "Reorder allowed, applying",
-      {
-        propagation,
-      },
-    )
+    debugLog("Workspace", "reorderInstanceInParent", "Reorder allowed, applying", {
+      propagation,
+    })
 
     const result = workspacePropagationService.propagateNodeOperation({
       nodeId: instanceId,
       propagation,
       apply: (node, workspace) => {
         if (typeCheckingService.isInstance(node)) {
-          debugLog(
-            "Workspace",
-            "reorderInstanceInParent",
-            "Moving instance to new index",
-            {
-              instanceId: node.id,
-              newIndex,
-            },
-          )
-          return nodeOperationsService.moveInstanceToIndex(
-            node,
+          debugLog("Workspace", "reorderInstanceInParent", "Moving instance to new index", {
+            instanceId: node.id,
             newIndex,
-            workspace,
-          )
+          })
+
+          return nodeOperationsService.moveInstanceToIndex(node, newIndex, workspace)
         }
 
         throw new Error(
@@ -83,28 +60,14 @@ export function reorderInstanceInParent(
       workspace,
     })
 
-    debugLog(
-      "Workspace",
-      "reorderInstanceInParent",
-      "Instance reorder complete",
-    )
-    debugGroupEnd(
-      "Workspace",
-      "reorderInstanceInParent",
-      "Instance reorder complete",
-    )
+    debugLog("Workspace", "reorderInstanceInParent", "Instance reorder complete")
+    debugGroupEnd("Workspace", "reorderInstanceInParent", "Instance reorder complete")
+
     return result
   }
 
-  debugLog(
-    "Workspace",
-    "reorderInstanceInParent",
-    "Reorder not allowed for entity type",
-  )
-  debugGroupEnd(
-    "Workspace",
-    "reorderInstanceInParent",
-    "Reorder not allowed for entity type",
-  )
+  debugLog("Workspace", "reorderInstanceInParent", "Reorder not allowed for entity type")
+  debugGroupEnd("Workspace", "reorderInstanceInParent", "Reorder not allowed for entity type")
+
   return workspace
 }

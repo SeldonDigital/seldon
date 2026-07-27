@@ -1,5 +1,6 @@
-import { PropertySchema } from "../../types/schema"
 import { Align } from "./align"
+
+import type { PropertySchema } from "../../types/schema"
 
 export const cellAlignSchema: PropertySchema = {
   name: "cellAlign",
@@ -9,8 +10,7 @@ export const cellAlignSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Align) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Align) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Align),
 }

@@ -1,21 +1,13 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Toggle Switch",
   id: Seldon.ComponentId.TOGGLE_SWITCH,
   intent: "Toggles a single setting on or off with a sliding thumb.",
-  tags: [
-    "toggle",
-    "switch",
-    "control",
-    "boolean",
-    "binary",
-    "on off",
-    "ui",
-    "form",
-  ],
+  tags: ["toggle", "switch", "control", "boolean", "binary", "on off", "ui", "form"],
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

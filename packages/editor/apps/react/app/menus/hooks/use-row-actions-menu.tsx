@@ -1,19 +1,14 @@
 "use client"
 
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
-import {
-  CSSProperties,
-  ReactNode,
-  Ref,
-  RefObject,
-  useRef,
-  useState,
-} from "react"
+import { useRef, useState } from "react"
 
 import { MenuController } from "../MenuController"
-import { MenuAlign, MenuEntry } from "../types"
+
+import type { MenuAlign, MenuEntry } from "../types"
+import type { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { CSSProperties, ReactNode, Ref, RefObject } from "react"
 
 interface UseRowActionsMenuOptions {
   align?: MenuAlign

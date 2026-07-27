@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-import { InstanceId, VariantId } from "@seldon/core/index"
+import type { InstanceId, VariantId } from "@seldon/core/index"
 
 export type ClipboardMode = "copy" | "cut"
 

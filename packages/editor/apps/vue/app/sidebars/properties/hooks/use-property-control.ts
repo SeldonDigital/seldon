@@ -1,14 +1,5 @@
-import type { ComboboxOptionItem } from "@app/menus/types"
 import { useWorkspace } from "@app/workspace/use-workspace"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue"
-
-import type { Board, Instance, Theme, Variant } from "@seldon/core"
+import { computed, ref, watch } from "vue"
 
 import { getPropertyValueForDisplay } from "../helpers/property-control-data"
 import { buildPropertyDisplay } from "../helpers/property-display"
@@ -17,6 +8,16 @@ import { createPropertyOptionIconResolver } from "../helpers/use-property-option
 import { useCommitPropertyValue } from "./use-commit-property-value"
 import { usePropertyCombobox } from "./use-property-combobox"
 
+import type { ComboboxOptionItem } from "@app/menus/types"
+import type { Board, Instance, Theme, Variant } from "@seldon/core"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { ComputedRef, Ref } from "vue"
+
 export type PropertyControlKind = "none" | "field" | "combobox" | "switch"
 
 interface UsePropertyControlInput {
@@ -24,10 +25,10 @@ interface UsePropertyControlInput {
   node: ComputedRef<Variant | Instance | Board | null>
   theme: ComputedRef<Theme | undefined>
   isEditing: Ref<boolean>
+  onDone: () => void
   themeEditingContext?: ComputedRef<ThemeEditingContext | null>
   fontCollectionEditingContext?: ComputedRef<FontCollectionEditingContext | null>
   iconSetEditingContext?: ComputedRef<IconSetEditingContext | null>
-  onDone: () => void
 }
 
 /**
@@ -61,37 +62,36 @@ export function usePropertyControl(input: UsePropertyControlInput) {
     property: () => input.property.value,
     theme: () => input.theme.value,
     options: () =>
-      display.value.options as
-        | Array<Array<{ name: string; value: string }>>
-        | undefined,
+      display.value.options as Array<Array<{ name: string; value: string }>> | undefined,
     subject: () => input.node.value,
     themeEditingContext: () => input.themeEditingContext?.value ?? null,
-    fontCollectionEditingContext: () =>
-      input.fontCollectionEditingContext?.value ?? null,
+    fontCollectionEditingContext: () => input.fontCollectionEditingContext?.value ?? null,
     iconSetEditingContext: () => input.iconSetEditingContext?.value ?? null,
     onDone: input.onDone,
   })
 
   const kind = computed<PropertyControlKind>(() => {
     const type = controlType.value
+
     if (!type) return "none"
     if (type === "switch") return "switch"
     if (type === "text" || type === "number") return "field"
+
     return "combobox"
   })
 
   // Field draft (text/number).
   const fieldDraft = ref(displayValue.value)
+
   watch([() => input.isEditing.value, displayValue], () => {
     if (!input.isEditing.value) fieldDraft.value = displayValue.value
   })
-  const fieldValue = computed(() =>
-    input.isEditing.value ? fieldDraft.value : displayValue.value,
-  )
+  const fieldValue = computed(() => (input.isEditing.value ? fieldDraft.value : displayValue.value))
 
   // Switch state.
   const switchState = computed(() => {
     const stored = storedValue.value
+
     return {
       checked: stored === "true",
       mixed: stored !== "true" && stored !== "false",
@@ -120,6 +120,7 @@ export function usePropertyControl(input: UsePropertyControlInput) {
 
   function submitField(value: string): void {
     const validator = validate.value
+
     if (validator && !validator(value)) {
       fieldDraft.value = displayValue.value
     } else {

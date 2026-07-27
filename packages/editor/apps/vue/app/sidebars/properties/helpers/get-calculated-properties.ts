@@ -17,6 +17,7 @@ export interface ScopedNodeCss {
  */
 function isValidDeclaration(declaration: string): boolean {
   const separatorIndex = declaration.indexOf(":")
+
   if (separatorIndex === -1) return false
 
   const property = declaration.slice(0, separatorIndex).trim()
@@ -24,18 +25,22 @@ function isValidDeclaration(declaration: string): boolean {
     .slice(separatorIndex + 1)
     .replace(/;$/, "")
     .trim()
+
   if (!property || !value) return false
 
   if (value.includes("var(")) return true
+
   if (typeof CSS === "undefined" || typeof CSS.supports !== "function") {
     return true
   }
+
   return CSS.supports(property, value)
 }
 
 /** Parses declaration lines from a Seldon-authored `.class { ... }` rule. */
 function parseAuthoredCssRule(cssText: string): string[] {
   const match = cssText.match(/\{([\s\S]*?)\}/)
+
   if (!match) return []
 
   return match[1]
@@ -49,12 +54,15 @@ function parseAuthoredCssRule(cssText: string): string[] {
 function getAuthoredCssForClass(className: string): string[] {
   const needle = `.${className}`
   const styles = document.querySelectorAll("style")
+
   for (const styleEl of Array.from(styles)) {
     const text = styleEl.textContent
+
     if (text && text.includes(needle)) {
       return parseAuthoredCssRule(text)
     }
   }
+
   return []
 }
 
@@ -63,16 +71,15 @@ function getAuthoredCssForClass(className: string): string[] {
  * node id, then reads only that copy's scoped style rule. Keeps declarations in
  * source order to match the browser inspector.
  */
-export function getScopedNodeCss(
-  nodeId: string,
-  rootId?: string | null,
-): ScopedNodeCss {
-  if (typeof document === "undefined")
+export function getScopedNodeCss(nodeId: string, rootId?: string | null): ScopedNodeCss {
+  if (typeof document === "undefined") {
     return { declarations: [], selector: null }
+  }
 
   const elements = Array.from(
     document.querySelectorAll<HTMLElement>(`[data-canvas-node-id="${nodeId}"]`),
   )
+
   if (elements.length === 0) return { declarations: [], selector: null }
 
   const scopeSuffix = rootId ? rootId.replace(/[^a-zA-Z0-9_-]/g, "-") : null
@@ -83,9 +90,8 @@ export function getScopedNodeCss(
       )) ||
     elements[0]
 
-  const className = Array.from(element.classList).find((cls) =>
-    cls.startsWith("node-"),
-  )
+  const className = Array.from(element.classList).find((cls) => cls.startsWith("node-"))
+
   if (!className) return { declarations: [], selector: null }
 
   return {

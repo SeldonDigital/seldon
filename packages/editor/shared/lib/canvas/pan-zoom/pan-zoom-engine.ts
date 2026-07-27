@@ -71,6 +71,7 @@ export function createPanZoomEngine(options: PanZoomOptions): PanZoomEngine {
   let lastY = 0
 
   const listeners = new Set<() => void>()
+
   const notify = (): void => {
     for (const listener of listeners) listener()
   }
@@ -92,20 +93,24 @@ export function createPanZoomEngine(options: PanZoomOptions): PanZoomEngine {
 
   function zoomAt(clientX: number, clientY: number, factor: number): void {
     const el = options.getViewport()
+
     if (!el) return
     const rect = el.getBoundingClientRect()
     const px = clientX - rect.left
     const py = clientY - rect.top
     const nextScale = clampScale(scale * factor)
     const ratio = nextScale / scale
+
     // Keep the point under the cursor fixed while scaling.
     commit(nextScale, px - (px - x) * ratio, py - (py - y) * ratio)
   }
 
   function zoomCentered(factor: number): void {
     const el = options.getViewport()
+
     if (!el) return
     const rect = el.getBoundingClientRect()
+
     zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, factor)
   }
 
@@ -120,20 +125,25 @@ export function createPanZoomEngine(options: PanZoomOptions): PanZoomEngine {
   function onWheel(event: WheelEvent): void {
     if (isDisabled()) return
     event.preventDefault()
+
     if (event.ctrlKey || event.metaKey) {
       const factor = event.deltaY < 0 ? zoomStep : 1 / zoomStep
+
       zoomAt(event.clientX, event.clientY, factor)
+
       return
     }
+
     const deltaX = isAxisXLocked() ? 0 : event.deltaX
+
     commit(scale, x - deltaX, y - event.deltaY)
   }
 
   function onPointerDown(event: PointerEvent): void {
     if (isDisabled()) return
     const panButton =
-      (allowMiddleClickPan && event.button === 1) ||
-      (event.button === 0 && spaceDown)
+      (allowMiddleClickPan && event.button === 1) || (event.button === 0 && spaceDown)
+
     if (!panButton) return
     event.preventDefault()
     panning = true
@@ -146,6 +156,7 @@ export function createPanZoomEngine(options: PanZoomOptions): PanZoomEngine {
   function onPointerMove(event: PointerEvent): void {
     if (!panning) return
     const deltaX = isAxisXLocked() ? 0 : event.clientX - lastX
+
     commit(scale, x + deltaX, y + (event.clientY - lastY))
     lastX = event.clientX
     lastY = event.clientY
@@ -160,6 +171,7 @@ export function createPanZoomEngine(options: PanZoomOptions): PanZoomEngine {
   function onKeyDown(event: KeyboardEvent): void {
     if (event.code === "Space") spaceDown = true
   }
+
   function onKeyUp(event: KeyboardEvent): void {
     if (event.code === "Space") spaceDown = false
   }
@@ -184,6 +196,7 @@ export function createPanZoomEngine(options: PanZoomOptions): PanZoomEngine {
     isPanning: () => panning,
     subscribe: (listener) => {
       listeners.add(listener)
+
       return () => {
         listeners.delete(listener)
       }

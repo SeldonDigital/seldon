@@ -1,5 +1,6 @@
-import type { NodeRect } from "../overlay/geometry"
 import { createStore } from "../store/observable"
+
+import type { NodeRect } from "../overlay/geometry"
 
 export interface NodeRectsState {
   rects: Record<string, NodeRect | null>

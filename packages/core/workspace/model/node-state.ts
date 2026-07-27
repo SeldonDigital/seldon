@@ -42,9 +42,7 @@ export const RESERVED_STATE_LABELS: Record<ReservedStateName, string> = {
 }
 
 /** Runtime list of every reserved state name. */
-export const RESERVED_STATE_NAMES = Object.keys(
-  RESERVED_STATE_LABELS,
-) as ReservedStateName[]
+export const RESERVED_STATE_NAMES = Object.keys(RESERVED_STATE_LABELS) as ReservedStateName[]
 
 /**
  * How a reserved state is expressed by web export targets. This is the shared
@@ -57,10 +55,7 @@ export const RESERVED_STATE_NAMES = Object.keys(
 export type StateExpression = "pseudo" | "aria" | "class"
 
 /** Expression kind for each reserved state. Web targets must honor this. */
-export const RESERVED_STATE_EXPRESSION: Record<
-  ReservedStateName,
-  StateExpression
-> = {
+export const RESERVED_STATE_EXPRESSION: Record<ReservedStateName, StateExpression> = {
   hover: "pseudo",
   focused: "pseudo",
   active: "pseudo",
@@ -125,13 +120,13 @@ export const NORMAL_STATE = "normal" as const
  * A workspace-defined custom state. Stored on `metadata.customStates` and shared
  * across the whole workspace. Target-agnostic: it carries no render data. Each
  * exporter derives its own binding from `key`.
+ *
+ * `key` is the stable identifier used as the key in a node's `states` map. `label` is the
+ * human-readable display name. `description` is optional text for menus and tooling.
  */
 export interface CustomState {
-  /** Stable identifier used as the key in a node's `states` map. */
   key: string
-  /** Human-readable display name. */
   label: string
-  /** Optional description for menus and tooling. */
   description?: string
 }
 

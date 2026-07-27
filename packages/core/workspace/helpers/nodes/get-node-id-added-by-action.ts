@@ -1,10 +1,11 @@
-import { WorkspaceAction } from "../../reducers/types"
-import { EntryNodeId, Workspace } from "../../types"
 import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 import { getChildrenIds } from "../components/get-children-ids"
 import { getImmediateParentId } from "../components/get-parent-ids"
 import { fontCollectionBoardKeyFromEntryId } from "../font-collections/font-collection-id"
+
+import type { WorkspaceAction } from "../../reducers/types"
+import type { EntryNodeId, Workspace } from "../../types"
 
 /**
  * Determines the ID of the node that was added by a workspace action.
@@ -17,125 +18,149 @@ export function getNodeIdAddedByAction(
   workspace: Workspace,
 ): EntryNodeId | null {
   const { type, payload } = action
+
   switch (type) {
     case "insert_variant_instance":
+
     case "insert_duplicate_instance": {
-      const board = getBoardByNodeId(
-        workspace,
-        payload.target.parentId as EntryNodeId,
-      )
+      const board = getBoardByNodeId(workspace, payload.target.parentId as EntryNodeId)
+
       if (!board) return null
-      const childIds = getChildrenIds(
-        board,
-        payload.target.parentId as EntryNodeId,
-      )
-      if (typeof payload.target.index === "number")
+      const childIds = getChildrenIds(board, payload.target.parentId as EntryNodeId)
+
+      if (typeof payload.target.index === "number") {
         return childIds[payload.target.index] ?? null
+      }
+
       return childIds.at(-1) ?? null
     }
 
     case "insert_default_instance": {
       const board = getBoardByNodeId(workspace, payload.parentId as EntryNodeId)
+
       if (!board) return null
       const childIds = getChildrenIds(board, payload.parentId as EntryNodeId)
-      if (typeof payload.index === "number")
+
+      if (typeof payload.index === "number") {
         return childIds[payload.index] ?? null
+      }
+
       return childIds.at(-1) ?? null
     }
 
     case "add_component": {
       const board = workspace.boards[payload.boardKey]
+
       if (!board) return null
       const lastVariant = getBoardVariantRootIds(board).at(-1)
+
       if (!lastVariant) {
         return null
       }
+
       return lastVariant
     }
 
     case "add_variant":
     case "add_theme":
     case "add_authored_theme":
+
     case "add_playground": {
       const board = workspace.boards[payload.boardKey]
+
       if (!board) return null
       const lastVariant = getBoardVariantRootIds(board).at(-1)
+
       if (!lastVariant) {
         return null
       }
+
       return lastVariant
     }
 
     case "add_component_and_insert_default_instance": {
-      const board = getBoardByNodeId(
-        workspace,
-        payload.target.parentId as EntryNodeId,
-      )
+      const board = getBoardByNodeId(workspace, payload.target.parentId as EntryNodeId)
+
       if (!board) return null
-      const childIds = getChildrenIds(
-        board,
-        payload.target.parentId as EntryNodeId,
-      )
-      if (typeof payload.target.index === "number")
+      const childIds = getChildrenIds(board, payload.target.parentId as EntryNodeId)
+
+      if (typeof payload.target.index === "number") {
         return childIds[payload.target.index] ?? null
+      }
+
       return childIds.at(-1) ?? null
     }
 
     case "duplicate_node": {
       const sourceId = payload.nodeId as EntryNodeId
       const board = getBoardByNodeId(workspace, sourceId)
+
       if (!board) return null
 
       const parentId = getImmediateParentId(board, sourceId)
+
       if (!parentId) {
         const variantIds = getBoardVariantRootIds(board)
         const sourceIndex = variantIds.indexOf(sourceId)
+
         if (sourceIndex < 0) return null
+
         return variantIds[sourceIndex + 1] ?? null
       }
 
       const siblingIds = getChildrenIds(board, parentId)
       const sourceIndex = siblingIds.indexOf(sourceId)
+
       if (sourceIndex < 0) return null
+
       return siblingIds[sourceIndex + 1] ?? null
     }
+
     case "duplicate_component": {
       const board = workspace.boards[payload.newBoardKey]
+
       if (!board) return null
+
       return getBoardVariantRootIds(board).at(-1) ?? null
     }
 
     case "add_font_collection":
     case "add_media":
+
     case "add_icon_set": {
       const board = workspace.boards[payload.catalogId]
+
       if (!board) return null
       const lastVariant = getBoardVariantRootIds(board).at(-1)
+
       if (!lastVariant) return null
+
       return lastVariant
     }
 
     case "duplicate_theme": {
       const id = payload.themeId
-      const afterTheme = id.startsWith("theme-")
-        ? id.slice("theme-".length)
-        : ""
+      const afterTheme = id.startsWith("theme-") ? id.slice("theme-".length) : ""
       const boardKey = afterTheme.includes("-")
         ? afterTheme.slice(0, afterTheme.lastIndexOf("-"))
         : null
+
       if (!boardKey) return null
       const board = workspace.boards[boardKey]
+
       if (!board || board.type !== "theme") return null
+
       return board.variants.at(-1)?.id ?? null
     }
 
     case "duplicate_font_collection": {
-      const boardKey = fontCollectionBoardKeyFromEntryId(
-        payload.fontCollectionId,
-      )
+      const boardKey = fontCollectionBoardKeyFromEntryId(payload.fontCollectionId)
+
       if (!boardKey) return null
       const board = workspace.boards[boardKey]
+
       if (!board || board.type !== "font-collection") return null
+
       return board.variants.at(-1)?.id ?? null
     }
 

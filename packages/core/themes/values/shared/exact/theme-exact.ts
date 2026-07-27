@@ -1,5 +1,5 @@
 import type { Unit } from "../../../../properties/constants/shared/units"
-import { TokenType } from "../../../constants/token-type"
+import type { TokenType } from "../../../constants/token-type"
 
 /**
  * Payload for a {@link TokenType.EXACT} cell. Holds a fixed length (`px` / `rem`),
@@ -18,7 +18,7 @@ export interface ThemeExactDimension {
 /** Exact token: fixed length or fixed unitless number on ordinal tables. */
 export interface ThemeExact {
   type: TokenType.EXACT
+  parameters: ThemeExactDimension
   name?: string
   intent?: string
-  parameters: ThemeExactDimension
 }

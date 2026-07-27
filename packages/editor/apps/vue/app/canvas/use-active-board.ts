@@ -1,15 +1,13 @@
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getComponentKey,
-  getNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
+import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 
 import type { Board } from "@seldon/core"
 import type { BoardKey } from "@seldon/core/workspace/types"
+import type { ComputedRef } from "vue"
 
 type BoardVariants = { variants?: { id: string }[] }
 
@@ -40,9 +38,7 @@ export function useActiveBoard(): {
     // Selecting the workspace row clears node and board selection but must not
     // switch the canvas. Keep rendering the board held in `frozenBoardKey`.
     if (workspaceSelected.value) {
-      return frozenBoardKey.value && ws.boards[frozenBoardKey.value]
-        ? frozenBoardKey.value
-        : null
+      return frozenBoardKey.value && ws.boards[frozenBoardKey.value] ? frozenBoardKey.value : null
     }
 
     if (selectedBoardId.value) {
@@ -51,8 +47,10 @@ export function useActiveBoard(): {
 
     if (selectedNodeId.value) {
       const node = getNode(ws, selectedNodeId.value)
+
       if (!node) return null
       const board = findComponentForNode(node, ws)
+
       return board ? getComponentKey(board) : null
     }
 
@@ -61,16 +59,16 @@ export function useActiveBoard(): {
     if (selectedResourceEntry.value) {
       const entryId = selectedResourceEntry.value.id
       const match = Object.entries(ws.boards).find(([, board]) =>
-        (board as BoardVariants).variants?.some(
-          (variant) => variant.id === entryId,
-        ),
+        (board as BoardVariants).variants?.some((variant) => variant.id === entryId),
       )
+
       return match ? (match[0] as BoardKey) : null
     }
 
     // A selected resource item keys as `${resource}:${boardKey}:${entryId}:${slot}`.
     if (selectedResourceItemKey.value) {
       const boardKey = selectedResourceItemKey.value.split(":")[1]
+
       return boardKey && ws.boards[boardKey] ? (boardKey as BoardKey) : null
     }
 
@@ -79,6 +77,7 @@ export function useActiveBoard(): {
 
   const activeBoard = computed<Board | null>(() => {
     const key = activeBoardKey.value
+
     return key ? ((workspace.value.boards[key] as Board) ?? null) : null
   })
 

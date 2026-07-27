@@ -1,6 +1,6 @@
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
 
 /** How color blends between stops along a line or from a center. */
 export enum GradientType {
@@ -21,15 +21,13 @@ export type GradientTypeValue = EmptyValue | GradientTypeOptionValue
 /** Validates stored gradient type values. */
 export const gradientTypeSchema: PropertySchema = {
   name: "gradientType",
-  description:
-    "Sets whether the fill runs along a line or spreads out from a center.",
+  description: "Sets whether the fill runs along a line or spreads out from a center.",
   supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(GradientType) as string[]).includes(value),
+      typeof value === "string" && (Object.values(GradientType) as string[]).includes(value),
   },
   presetOptions: () => Object.values(GradientType),
 }

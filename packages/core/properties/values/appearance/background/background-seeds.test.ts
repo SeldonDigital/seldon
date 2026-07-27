@@ -2,33 +2,17 @@ import { describe, expect, it } from "vitest"
 
 import { ValueType } from "../../../constants"
 import { BackgroundKind } from "./background-kind"
-import {
-  BACKGROUND_KIND_SEEDS,
-  backgroundLayerForKind,
-} from "./background-seeds"
+import { BACKGROUND_KIND_SEEDS, backgroundLayerForKind } from "./background-seeds"
 
 describe("BACKGROUND_KIND_SEEDS", () => {
   it("seeds every background kind", () => {
     expect(Object.keys(BACKGROUND_KIND_SEEDS).sort()).toEqual(
-      [
-        "color",
-        "conicGradient",
-        "image",
-        "linearGradient",
-        "none",
-        "radialGradient",
-      ].sort(),
+      ["color", "conicGradient", "image", "linearGradient", "none", "radialGradient"].sort(),
     )
     expect(BACKGROUND_KIND_SEEDS[BackgroundKind.COLOR].color).toBeDefined()
-    expect(
-      BACKGROUND_KIND_SEEDS[BackgroundKind.LINEAR_GRADIENT].preset,
-    ).toBeDefined()
-    expect(
-      BACKGROUND_KIND_SEEDS[BackgroundKind.RADIAL_GRADIENT].preset,
-    ).toBeDefined()
-    expect(
-      BACKGROUND_KIND_SEEDS[BackgroundKind.CONIC_GRADIENT].preset,
-    ).toBeDefined()
+    expect(BACKGROUND_KIND_SEEDS[BackgroundKind.LINEAR_GRADIENT].preset).toBeDefined()
+    expect(BACKGROUND_KIND_SEEDS[BackgroundKind.RADIAL_GRADIENT].preset).toBeDefined()
+    expect(BACKGROUND_KIND_SEEDS[BackgroundKind.CONIC_GRADIENT].preset).toBeDefined()
     expect(BACKGROUND_KIND_SEEDS[BackgroundKind.IMAGE].image).toBeDefined()
   })
 })

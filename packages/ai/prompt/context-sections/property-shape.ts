@@ -33,9 +33,12 @@ function isLook(key: string, facets: readonly string[]): boolean {
  */
 export function propertyShapeSection(catalogIds: Set<string>): string[] {
   const present = new Set<string>()
+
   for (const catalogId of catalogIds) {
     const schema = findComponentSchema(catalogId)
+
     if (!schema?.properties) continue
+
     for (const key of Object.keys(schema.properties)) {
       if (propertyShape(key) !== "atomic") present.add(key)
     }
@@ -43,11 +46,14 @@ export function propertyShapeSection(catalogIds: Set<string>): string[] {
 
   const body: string[] = []
   let hasLook = false
+
   for (const key of [...present].sort()) {
     const shape = propertyShape(key)
     const facets = COMPOUND_FACET_DISPLAY_ORDER[key] ?? []
     const look = isLook(key, facets)
+
     if (look) hasLook = true
+
     if (shape === "layered" && key === "background") {
       body.push(
         `- background: array of layers. Each layer picks a kind (${BACKGROUND_KIND_VALUES.join(", ")}), then that kind's facets. A color layer: [{ "kind": { "type": "option", "value": "color" }, "color": <theme.categorical or exact> }]`,
@@ -66,13 +72,16 @@ export function propertyShapeSection(catalogIds: Set<string>): string[] {
       )
     } else if (shape === "shorthand") {
       const sides = SHORTHAND_SIDES[key] ?? []
+
       body.push(`- ${key}: side object { ${sides.join(", ")} }`)
     }
   }
+
   if (hasLook) {
     body.push(
       'A look\'s "preset" applies a whole theme look (e.g. @font.body, @border.hairline). Set "preset" to switch looks. Set any other facet (size, weight, color, width) to override just it, which flips the look to custom so your value takes effect while unset facets keep the look. This differs from plain compound, shorthand, and atomic keys, which have no preset.',
     )
   }
+
   return section(TITLE, body)
 }

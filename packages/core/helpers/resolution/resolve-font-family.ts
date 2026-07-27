@@ -1,13 +1,14 @@
 import { ValueType } from "../../properties"
+import { TokenType } from "../../themes/constants/token-type"
+import { getThemeOption } from "../theme/get-theme-option"
+
 import type { ComputeContext } from "../../properties/compute/types"
-import { EmptyValue } from "../../properties/values/shared/empty/empty"
-import {
+import type { EmptyValue } from "../../properties/values/shared/empty/empty"
+import type {
   FontFamilyPresetValue,
   FontFamilyValue,
 } from "../../properties/values/typography/font/font-family"
-import { TokenType } from "../../themes/constants/token-type"
-import { Theme } from "../../themes/types"
-import { getThemeOption } from "../theme/get-theme-option"
+import type { Theme } from "../../themes/types"
 
 /**
  * Resolves font family values to concrete FontFamilyPresetValue or undefined.
@@ -50,25 +51,24 @@ export function resolveFontFamily({
         type: ValueType.OPTION,
         value: fontFamilyTyped.value as string,
       }
+
     case ValueType.THEME_CATEGORICAL: {
       const themeValue = getThemeOption(fontFamilyTyped.value as string, theme)
       const stack =
-        themeValue.type === TokenType.FONT_FAMILY
-          ? themeValue.parameters
-          : String(themeValue)
+        themeValue.type === TokenType.FONT_FAMILY ? themeValue.parameters : String(themeValue)
+
       return {
         type: ValueType.OPTION,
         value: stack,
       }
     }
+
     case ValueType.EXACT:
       return {
         type: ValueType.OPTION,
         value: fontFamilyTyped.value as string,
       }
     default:
-      throw new Error(
-        `Invalid font family type ${(fontFamilyTyped as { type: string }).type}`,
-      )
+      throw new Error(`Invalid font family type ${(fontFamilyTyped as { type: string }).type}`)
   }
 }

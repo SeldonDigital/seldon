@@ -3,6 +3,7 @@ import { create } from "zustand"
 import { useShallow } from "zustand/react/shallow"
 
 import { createEmptyWorkspace } from "@seldon/core"
+
 import type { Workspace } from "@seldon/core/workspace/types"
 
 const REVISION_LIMIT = 50
@@ -25,10 +26,13 @@ export const useHistoryStore = create<HistoryState>()((set) => ({
   push: (workspace: Workspace) =>
     set((store) => {
       const newHistory = store.history.slice(0, store.currentIndex + 1)
+
       newHistory.push(workspace)
+
       if (newHistory.length > REVISION_LIMIT) {
         newHistory.shift()
       }
+
       return {
         history: newHistory,
         currentIndex: newHistory.length - 1,
@@ -40,6 +44,7 @@ export const useHistoryStore = create<HistoryState>()((set) => ({
       if (store.currentIndex > 0) {
         return { currentIndex: store.currentIndex - 1 }
       }
+
       return store
     }),
 
@@ -48,6 +53,7 @@ export const useHistoryStore = create<HistoryState>()((set) => ({
       if (store.currentIndex < store.history.length - 1) {
         return { currentIndex: store.currentIndex + 1 }
       }
+
       return store
     }),
 
@@ -65,6 +71,7 @@ export const useHistoryStore = create<HistoryState>()((set) => ({
  */
 export function getCurrentWorkspace(): Workspace {
   const { history, currentIndex } = useHistoryStore.getState()
+
   return history[currentIndex]
 }
 
@@ -73,15 +80,10 @@ export function useHistory() {
   const undo = useHistoryStore((state) => state.undo)
   const redo = useHistoryStore((state) => state.redo)
   const storeReset = useHistoryStore((state) => state.reset)
-  const current = useHistoryStore(
-    useShallow((state) => state.history[state.currentIndex]),
-  )
+  const current = useHistoryStore(useShallow((state) => state.history[state.currentIndex]))
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      (window as { Cypress?: unknown }).Cypress
-    ) {
+    if (typeof window !== "undefined" && (window as { Cypress?: unknown }).Cypress) {
       ;(window as { workspace?: Workspace }).workspace = current
     }
   }, [current])

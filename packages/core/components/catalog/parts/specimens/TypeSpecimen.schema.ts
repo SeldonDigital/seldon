@@ -1,12 +1,12 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Type Specimen",
   id: Seldon.ComponentId.TYPE_SPECIMEN,
-  intent:
-    "Schema for a type specimen panel that shows typography for a specific font.",
+  intent: "Schema for a type specimen panel that shows typography for a specific font.",
   tags: ["typography", "type", "specimen", "font", "ui", "panel", "text"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
@@ -257,8 +257,7 @@ export const schema = {
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,
-            value:
-              "0123456789 ¿ ? ¡ ! & @ ‘ ’ “ ” « » % * ^ # $ £ € ¢ / ( ) [ ] { } . , ® ©",
+            value: "0123456789 ¿ ? ¡ ! & @ ‘ ’ “ ” « » % * ^ # $ £ € ¢ / ( ) [ ] { } . , ® ©",
           },
           color: {
             type: Sdn.ValueType.COMPUTED,

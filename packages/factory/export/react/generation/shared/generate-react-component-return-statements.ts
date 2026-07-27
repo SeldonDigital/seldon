@@ -1,14 +1,12 @@
 import { invariant } from "@seldon/core"
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
-import { NodeIdToClass } from "../../../css/types"
-import { ComponentToExport } from "../../../types"
-import {
-  generateRootAttributePropsString,
-  isAttributeKey,
-} from "./attribute-props"
+import { generateRootAttributePropsString, isAttributeKey } from "./attribute-props"
 import { getReactReturnTag } from "./custom-react"
 import { dataSeldonRefAttr } from "./data-ref-attr"
+
+import type { NodeIdToClass } from "../../../css/types"
+import type { ComponentToExport } from "../../../types"
 
 /**
  * Generate the return statement for an iconMap component
@@ -19,8 +17,8 @@ export function generateIconMapReturn(
   classNameVarName: string,
 ): string {
   const refAttr =
-    dataSeldonRefAttr(component.tree.ref) +
-    generateRootAttributePropsString(component)
+    dataSeldonRefAttr(component.tree.ref) + generateRootAttributePropsString(component)
+
   return `
     let Icon = iconMap[icon || "__default__"]
     if (!Icon) {
@@ -51,16 +49,13 @@ export function generateHtmlElementReturn(
   classNameVarName: string,
 ): string {
   const { tree } = component
-  const refAttr =
-    dataSeldonRefAttr(tree.ref) + generateRootAttributePropsString(component)
+  const refAttr = dataSeldonRefAttr(tree.ref) + generateRootAttributePropsString(component)
   const { options, defaultValue } = tree.dataBinding.props.htmlElement
 
   // Validate options and defaultValue
   invariant(options, "htmlElement.options is required to create a switch")
-  invariant(
-    defaultValue,
-    "htmlElement.defaultValue is required to create a switch",
-  )
+  invariant(defaultValue, "htmlElement.defaultValue is required to create a switch")
+
   if (typeof defaultValue !== "string") {
     throw new Error("defaultValue must be a string")
   }
@@ -80,6 +75,7 @@ export function generateHtmlElementReturn(
         ([_, value]) => value.htmlElementOption === option,
       )
       const Component = hit?.[0]
+
       invariant(Component, "Component is required to create a switch")
 
       if (hasChildrenProp) {
@@ -101,7 +97,9 @@ export function generateHtmlElementReturn(
     ([_, value]) => value.htmlElementOption === defaultValue,
   )
   const Component = hit?.[0]
+
   invariant(Component, `Could not find default component for ${defaultValue}`)
+
   if (hasChildrenProp) {
     content += `default: 
   //
@@ -115,6 +113,7 @@ export function generateHtmlElementReturn(
   //
   return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
   }
+
   content += `}`
 
   return content
@@ -129,15 +128,12 @@ export function generateWrapperElementReturn(
   classNameVarName: string,
 ): string {
   const { tree } = component
-  const refAttr =
-    dataSeldonRefAttr(tree.ref) + generateRootAttributePropsString(component)
+  const refAttr = dataSeldonRefAttr(tree.ref) + generateRootAttributePropsString(component)
   const { options, defaultValue } = tree.dataBinding.props.wrapperElement
 
   invariant(options, "wrapperElement.options is required to create a switch")
-  invariant(
-    defaultValue,
-    "wrapperElement.defaultValue is required to create a switch",
-  )
+  invariant(defaultValue, "wrapperElement.defaultValue is required to create a switch")
+
   if (typeof defaultValue !== "string") {
     throw new Error("defaultValue must be a string")
   }
@@ -153,6 +149,7 @@ export function generateWrapperElementReturn(
         ([_, value]) => value.wrapperElementOption === option,
       )
       const Component = hit?.[0]
+
       invariant(Component, "Component is required to create a switch")
 
       if (hasChildrenProp) {
@@ -174,7 +171,9 @@ export function generateWrapperElementReturn(
     ([_, value]) => value.wrapperElementOption === defaultValue,
   )
   const Component = hit?.[0]
+
   invariant(Component, `Could not find default component for ${defaultValue}`)
+
   if (hasChildrenProp) {
     content += `default: 
   //
@@ -188,6 +187,7 @@ export function generateWrapperElementReturn(
   //
   return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
   }
+
   content += `}`
 
   return content
@@ -212,19 +212,16 @@ export function generateSimpleReturn(
   // (excluding className and children which are handled separately)
   const rootProps = tree.dataBinding.props
   const rootLevelProps: string[] = []
+
   for (const [propKey] of Object.entries(rootProps)) {
     // Attribute-style keys (role, aria-*) are emitted from `sdn` as literals,
     // not as destructured identifiers.
-    if (
-      propKey !== "className" &&
-      propKey !== "children" &&
-      !isAttributeKey(propKey)
-    ) {
+    if (propKey !== "className" && propKey !== "children" && !isAttributeKey(propKey)) {
       rootLevelProps.push(`${propKey}={${propKey}}`)
     }
   }
-  const rootPropsString =
-    rootLevelProps.length > 0 ? " " + rootLevelProps.join(" ") : ""
+
+  const rootPropsString = rootLevelProps.length > 0 ? " " + rootLevelProps.join(" ") : ""
   const attrPropsString = generateRootAttributePropsString(component)
   const tag = getReactReturnTag(component)
 

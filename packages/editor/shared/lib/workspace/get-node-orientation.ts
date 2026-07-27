@@ -1,12 +1,9 @@
 import { Orientation } from "@seldon/core"
-import type { ComponentId } from "@seldon/core/components/constants"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { nodeRetrievalService } from "@seldon/core/workspace/services"
-import type {
-  InstanceId,
-  VariantId,
-  Workspace,
-} from "@seldon/core/workspace/types"
+
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { InstanceId, VariantId, Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Resolves layout orientation for canvas insert indicators and hover placement.

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import {
@@ -12,6 +11,8 @@ import {
   resolvePreviousSiblingNodeId,
   resolveSourceNodeId,
 } from "./node-navigation.service"
+
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(

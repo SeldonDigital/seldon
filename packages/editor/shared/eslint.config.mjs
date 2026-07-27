@@ -1,5 +1,5 @@
 import { defineConfig, globalIgnores } from "eslint/config"
-import tseslint from "typescript-eslint"
+import { seldonBase } from "../../../eslint.config.base.mjs"
 
 /**
  * `@seldon/editor` is the shared package consumed by both editors. It is a
@@ -13,8 +13,7 @@ import tseslint from "typescript-eslint"
  */
 const VUE_BAN = {
   group: ["vue", "vue/*", "@vue/*", "vue-router", "pinia", "pinia/*", "nuxt"],
-  message:
-    "@seldon/editor is framework-neutral. Keep Vue-family imports in packages/editor-vue.",
+  message: "@seldon/editor is framework-neutral. Keep Vue-family imports in packages/editor-vue.",
 }
 
 const REACT_BAN = {
@@ -37,14 +36,9 @@ const REACT_BAN = {
 
 export default defineConfig([
   globalIgnores(["dist/**", "node_modules/**", "seldon/**"]),
+  ...seldonBase,
   {
     files: ["lib/**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: tseslint.parser,
-    },
-    plugins: {
-      "@typescript-eslint": tseslint.plugin,
-    },
     rules: {
       "no-restricted-imports": ["error", { patterns: [VUE_BAN, REACT_BAN] }],
     },

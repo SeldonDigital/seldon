@@ -1,18 +1,17 @@
 import { plural } from "pluralize"
 
 import { findComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import { getNextVariantLabel } from "../../helpers/general/get-next-variant-label"
 import { getSpecialBoardVariantLabel } from "../../helpers/general/get-special-board-variant-label"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
-import {
-  type RepeatEditorData,
-  applyNodeRepeat,
-} from "../../helpers/nodes/node-repeat"
-import { Board, InstanceId, VariantId, Workspace } from "../../types"
+import { applyNodeRepeat } from "../../helpers/nodes/node-repeat"
 import { withNodeMutation } from "../shared/workspace-operation-helpers"
 import { typeCheckingService } from "../type-checking/type-checking.service"
+
+import type { ComponentId } from "../../../components/constants"
+import type { RepeatEditorData } from "../../helpers/nodes/node-repeat"
+import type { Board, InstanceId, VariantId, Workspace } from "../../types"
 
 export function setNodeLabel(
   nodeId: VariantId | InstanceId,
@@ -31,6 +30,7 @@ export function setNodeRef(
 ): Workspace {
   return withNodeMutation(nodeId, workspace, (node) => {
     const trimmed = ref.trim()
+
     if (trimmed === "") delete node.ref
     else node.ref = trimmed
   })
@@ -63,17 +63,13 @@ export function setNodeRepeat(
 }
 
 /** Picks the next numbered variant label for a component board. */
-export function getInitialVariantLabel(
-  componentId: ComponentId,
-  workspace: Workspace,
-): string {
+export function getInitialVariantLabel(componentId: ComponentId, workspace: Workspace): string {
   const nodesMap = getWorkspaceNodes(workspace)
   const board = workspace.boards[componentId]
-  const variantIdsOnBoard = board
-    ? collectVariantNodeIdsOnBoard(board)
-    : new Set<string>()
+  const variantIdsOnBoard = board ? collectVariantNodeIdsOnBoard(board) : new Set<string>()
 
   const specialLabel = board ? getSpecialBoardVariantLabel(board, false) : null
+
   if (specialLabel) {
     const specialLabelTaken = Object.values(nodesMap).some(
       (node) =>
@@ -81,6 +77,7 @@ export function getInitialVariantLabel(
         variantIdsOnBoard.has(node.id) &&
         node.label === specialLabel,
     )
+
     if (!specialLabelTaken) {
       return specialLabel
     }
@@ -90,9 +87,7 @@ export function getInitialVariantLabel(
     Object.values(nodesMap)
       .filter(
         (node) =>
-          typeCheckingService.isUserVariant(node) &&
-          variantIdsOnBoard.has(node.id) &&
-          node.label,
+          typeCheckingService.isUserVariant(node) && variantIdsOnBoard.has(node.id) && node.label,
       )
       .map((node) => node.label),
   )
@@ -107,6 +102,7 @@ export function getInitialVariantLabel(
 /** Pluralizes the component schema name for a new board label, such as "Buttons". */
 export function getInitialComponentLabel(componentId: ComponentId): string {
   const schema = findComponentSchema(componentId)
+
   return schema ? plural(schema.name) : `Unknown Component (${componentId})`
 }
 
@@ -121,8 +117,10 @@ export function getInitialAuthoredComponentLabel(name: string): string {
 
 function collectVariantNodeIdsOnBoard(board: Board): Set<string> {
   const ids = new Set<string>()
+
   walkBoardTreeRefs(board.variants, (ref) => {
     ids.add(ref.id)
   })
+
   return ids
 }

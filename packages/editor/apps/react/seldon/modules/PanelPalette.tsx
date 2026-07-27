@@ -10,16 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar, BarProps } from "../parts/Bar"
-import { IconProps } from "../primitives/Icon"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Bar } from "../parts/Bar"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FrameProps } from "../frames/Frame"
+import type { BarProps } from "../parts/Bar"
+import type { IconProps } from "../primitives/Icon"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface PanelPaletteProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -58,10 +62,7 @@ export function PanelPalette({
   seldonRefs,
   ...props
 }: PanelPaletteProps) {
-  const panelPaletteClassName = combineClassNames(
-    "sdn-panel-palette",
-    className,
-  )
+  const panelPaletteClassName = combineClassNames("sdn-panel-palette", className)
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -79,10 +80,7 @@ export function PanelPalette({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const buttonIconicProps = applyRef(
@@ -92,10 +90,7 @@ export function PanelPalette({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(

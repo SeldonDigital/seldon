@@ -10,12 +10,13 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
+import { Image } from "../primitives/Image"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ImageProps } from "../primitives/Image"
+import type { HTMLAttributes } from "react"
 
 export interface AvatarStackedProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -52,10 +53,7 @@ export function AvatarStacked({
   seldonRefs,
   ...props
 }: AvatarStackedProps) {
-  const avatarStackedClassName = combineClassNames(
-    "sdn-avatar-badged",
-    className,
-  )
+  const avatarStackedClassName = combineClassNames("sdn-avatar-badged", className)
   const imageProps = applyRef(
     seldonRefs,
     image === null
@@ -73,10 +71,7 @@ export function AvatarStacked({
       : {
           ...sdn.image2,
           ...image2,
-          className: combineClassNames(
-            sdn.image2?.className,
-            image2?.className,
-          ),
+          className: combineClassNames(sdn.image2?.className, image2?.className),
         },
   )
   const image3Props = applyRef(
@@ -86,19 +81,12 @@ export function AvatarStacked({
       : {
           ...sdn.image3,
           ...image3,
-          className: combineClassNames(
-            sdn.image3?.className,
-            image3?.className,
-          ),
+          className: combineClassNames(sdn.image3?.className, image3?.className),
         },
   )
 
   return (
-    <Frame
-      className={avatarStackedClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={avatarStackedClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

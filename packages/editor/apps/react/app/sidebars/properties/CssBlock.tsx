@@ -1,12 +1,11 @@
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import { Frame } from "@seldon/components/frames/Frame"
-import { CSSProperties, memo } from "react"
+import { memo } from "react"
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter"
 import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
-import {
-  atomOneDarkReasonable,
-  atomOneLight,
-} from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { atomOneDarkReasonable, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
+
+import type { CSSProperties } from "react"
 
 const CSS_BLOCK_PADDING =
   "var(--sdn-paddings-tight) var(--sdn-paddings-compact) var(--sdn-paddings-tight) var(--sdn-paddings-comfortable)"
@@ -27,8 +26,7 @@ interface CssBlockProps {
  */
 function CssBlockInner({ cssProperties }: CssBlockProps) {
   const mode = useResolvedInterfaceMode()
-  const highlighterStyle =
-    mode === "dark" ? atomOneDarkReasonable : atomOneLight
+  const highlighterStyle = mode === "dark" ? atomOneDarkReasonable : atomOneLight
 
   if (cssProperties.length === 0) {
     return null
@@ -36,11 +34,7 @@ function CssBlockInner({ cssProperties }: CssBlockProps) {
 
   return (
     <Frame style={styles.container}>
-      <SyntaxHighlighter
-        language="css"
-        style={highlighterStyle}
-        customStyle={styles.codeBlock}
-      >
+      <SyntaxHighlighter language="css" style={highlighterStyle} customStyle={styles.codeBlock}>
         {cssProperties.join("\n")}
       </SyntaxHighlighter>
     </Frame>
@@ -55,9 +49,8 @@ function CssBlockInner({ cssProperties }: CssBlockProps) {
  */
 export const CssBlock = memo(CssBlockInner, (prev, next) => {
   if (prev.cssProperties.length !== next.cssProperties.length) return false
-  return prev.cssProperties.every(
-    (line, index) => line === next.cssProperties[index],
-  )
+
+  return prev.cssProperties.every((line, index) => line === next.cssProperties[index])
 })
 
 const styles: Record<string, CSSProperties> = {

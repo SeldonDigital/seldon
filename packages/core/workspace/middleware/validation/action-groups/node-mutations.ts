@@ -1,5 +1,4 @@
 import { catalog } from "../../../../components/catalog"
-import type { ComponentId } from "../../../../components/constants"
 import { isComponentId } from "../../../../components/constants"
 import { isMatchColorValue } from "../../../../helpers/type-guards/value/is-computed-value"
 import {
@@ -36,12 +35,7 @@ import {
 } from "../../../helpers/nodes/sandbox"
 import { getEffectiveProperties } from "../../../helpers/properties"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-  isPlaygroundBoard,
-} from "../../../model/components"
-import type { EntryNodeLevel } from "../../../model/entry-node"
+import { isAuthoredBoard, isComponentBoard, isPlaygroundBoard } from "../../../model/components"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import {
   nodeRelationshipService,
@@ -50,13 +44,6 @@ import {
   typeCheckingService,
   workspaceMutationService,
 } from "../../../services"
-import type {
-  Action,
-  EntryNode,
-  InstanceId,
-  VariantId,
-  Workspace,
-} from "../../../types"
 import { check } from "../check"
 import { getNodeComponentId } from "../node-component-id"
 import {
@@ -71,41 +58,46 @@ import {
 } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
 
-export function validateInsertMutation(
-  workspace: Workspace,
-  action: Action,
-): void {
+import type { ComponentId } from "../../../../components/constants"
+import type { EntryNodeLevel } from "../../../model/entry-node"
+import type { Action, EntryNode, InstanceId, VariantId, Workspace } from "../../../types"
+
+export function validateInsertMutation(workspace: Workspace, action: Action): void {
   switch (action.type) {
     case "add_component_and_insert_default_instance": {
       const boardKey = action.payload.boardKey
       const parentId = action.payload.target.parentId as InstanceId | VariantId
+
       boardValidators.doesNotExist(workspace, boardKey)
       nodeValidators.exists(workspace, parentId)
       nodeValidators.canHaveChildren(workspace, parentId)
-      nodeValidators.isNotInstanceOfSelf(
-        workspace,
-        boardKey as ComponentId,
-        parentId,
-      )
+      nodeValidators.isNotInstanceOfSelf(workspace, boardKey as ComponentId, parentId)
       const parent = nodeRetrievalService.getNode(parentId, workspace)
+
       assertInsertTargetAllowed(parent, action)
       break
     }
+
     case "insert_variant_instance": {
       const nodeId = action.payload.variantId as VariantId
       const parentId = action.payload.target.parentId as InstanceId | VariantId
+
       validateInsertSource(workspace, action, nodeId, parentId, "variant")
       break
     }
+
     case "insert_duplicate_instance": {
       const nodeId = action.payload.instanceId as InstanceId
       const parentId = action.payload.target.parentId as InstanceId | VariantId
+
       validateInsertSource(workspace, action, nodeId, parentId, "instance")
       break
     }
+
     case "insert_default_instance": {
       const parentId = action.payload.parentId as InstanceId | VariantId
       const boardKey = action.payload.boardKey
+
       nodeValidators.exists(workspace, parentId)
       nodeValidators.canHaveChildren(workspace, parentId)
       boardValidators.exists(workspace, boardKey)
@@ -113,29 +105,29 @@ export function validateInsertMutation(
         boardKey as ComponentId,
         workspace,
       )
+
       nodeValidators.isNotInstanceOfSelf(workspace, defaultVariant.id, parentId)
       nodeValidators.canBeParentOf(workspace, parentId, defaultVariant.id)
       const parent = nodeRetrievalService.getNode(parentId, workspace)
+
       assertInsertTargetAllowed(parent, action)
       break
     }
+
     case "move_instance": {
       const instanceId = action.payload.instanceId as InstanceId
       const parentId = action.payload.target.parentId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, instanceId)
       nodeValidators.exists(workspace, parentId)
       const instance = nodeRetrievalService.getNode(instanceId, workspace)
       const parent = nodeRetrievalService.getNode(parentId, workspace)
+
       if (!typeCheckingService.isInstance(instance)) {
-        throw new WorkspaceValidationError(
-          ErrorMessages.nodeNotInstance(instanceId),
-          action,
-        )
+        throw new WorkspaceValidationError(ErrorMessages.nodeNotInstance(instanceId), action)
       }
-      assertMoveTargetAllowed(
-        parent,
-        "Cannot move an instance into a default catalog variant",
-      )
+
+      assertMoveTargetAllowed(parent, "Cannot move an instance into a default catalog variant")
       assertNodeNotInDefaultVariant(
         workspace,
         instance,
@@ -167,6 +159,7 @@ function validateInsertSource(
   nodeValidators.notIntoOwnSubtree(workspace, sourceId, parentId)
   nodeValidators.canBeParentOf(workspace, parentId, sourceId)
   const sourceNode = nodeRetrievalService.getNode(sourceId, workspace)
+
   if (expected === "variant") {
     check(
       typeCheckingService.isVariant(sourceNode),
@@ -178,37 +171,35 @@ function validateInsertSource(
       "insert_duplicate_instance source must be an instance",
     )
   }
+
   const parent = nodeRetrievalService.getNode(parentId, workspace)
+
   assertInsertTargetAllowed(parent, action)
 }
 
-export function validateNodeMutation(
-  workspace: Workspace,
-  action: Action,
-): void {
+export function validateNodeMutation(workspace: Workspace, action: Action): void {
   switch (action.type) {
     case "reorder_instance_in_parent": {
       const nodeId = action.payload.instanceId as InstanceId
       const node = getInstanceNodeOrThrow(workspace, action, nodeId)
+
       assertNodeNotInDefaultVariant(
         workspace,
         node,
         "Cannot reorder instances in a default variant. Only property overrides allowed. To reorder components, make a custom variant and make changes on it.",
       )
       nodeValidators.moveAllowed(workspace, nodeId)
-      variantValidators.notToDefaultPosition(
-        workspace,
-        nodeId,
-        action.payload.newIndex,
-      )
+      variantValidators.notToDefaultPosition(workspace, nodeId, action.payload.newIndex)
       break
     }
+
     case "move_instance_directional": {
       // The resolver only returns a placement allowed by the level rules, so the
       // remaining guards are that the subject is a real instance outside any
       // default variant. A null resolution is a no-op handled by the reducer.
       const nodeId = action.payload.instanceId as InstanceId
       const node = getInstanceNodeOrThrow(workspace, action, nodeId)
+
       assertNodeNotInDefaultVariant(
         workspace,
         node,
@@ -216,41 +207,43 @@ export function validateNodeMutation(
       )
       break
     }
+
     case "remove_instance": {
       // Removal inside the default variant is allowed; the reducer resolves
       // it to a hide (display EXCLUDE) for schema-defined instances instead
       // of a structural delete.
       const nodeId = action.payload.instanceId as InstanceId
+
       nodeValidators.canBeRemoved(workspace, nodeId)
       getInstanceNodeOrThrow(workspace, action, nodeId)
       break
     }
+
     case "remove_variant": {
       const nodeId = action.payload.variantRootId as VariantId
+
       nodeValidators.canBeRemoved(workspace, nodeId)
       nodeValidators.exists(workspace, nodeId)
       const node = nodeRetrievalService.getNode(nodeId, workspace)
-      check(
-        typeCheckingService.isVariant(node),
-        "remove_variant target must be a variant",
-      )
-      check(
-        !typeCheckingService.isDefaultVariant(node),
-        "Cannot remove a default catalog variant",
-      )
+
+      check(typeCheckingService.isVariant(node), "remove_variant target must be a variant")
+      check(!typeCheckingService.isDefaultVariant(node), "Cannot remove a default catalog variant")
       check(
         !typeCheckingService.isAuthored(node),
         "Cannot remove an authored root; remove the authored board instead",
       )
       break
     }
+
     case "set_node_properties": {
       const nodeId = action.payload.nodeId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, nodeId)
       const node = nodeRetrievalService.getNode(nodeId, workspace)
       // Use the node's effective theme (its own assignment first, then inherited)
       // so token refs validate against the theme that actually renders the node.
       const themeId = workspaceMutationService.getNodeTheme(node, workspace)
+
       propertyValidators.keys(
         action.payload.properties,
         getNodeComponentId(node, workspace),
@@ -264,26 +257,34 @@ export function validateNodeMutation(
         themeId,
         action.payload.properties as Record<string, unknown>,
       )
+
       if (isSandboxNode(node)) {
         assertSandboxConstraints(workspace, action, node as EntryNode, nodeId)
       }
+
       break
     }
+
     case "paste_node_properties": {
       // Keep this lenient on keys: the handler filters the pasted properties to
       // the target's vocabulary, so a key the target does not expose is dropped
       // rather than rejected. Only assert existence and valid value shapes.
       const nodeId = action.payload.nodeId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, nodeId)
       const node = nodeRetrievalService.getNode(nodeId, workspace)
       const themeId = workspaceMutationService.getNodeTheme(node, workspace)
+
       propertyValidators.values(action.payload.properties, workspace, themeId)
       break
     }
+
     case "reset_node_property": {
       const nodeId = action.payload.nodeId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, nodeId)
       const node = nodeRetrievalService.getNode(nodeId, workspace)
+
       propertyValidators.keys(
         {
           [action.payload.propertyKey]: {
@@ -295,14 +296,18 @@ export function validateNodeMutation(
       )
       break
     }
+
     case "set_node_theme": {
       const nodeId = action.payload.nodeId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, nodeId)
       themeValidators.exists(workspace, action.payload.theme)
       break
     }
+
     case "set_node_label": {
       const nodeId = action.payload.nodeId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, nodeId)
       variantValidators.labelIsUnique(workspace, {
         nodeId,
@@ -310,8 +315,10 @@ export function validateNodeMutation(
       })
       break
     }
+
     case "set_node_ref": {
       const nodeId = action.payload.nodeId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, nodeId)
       nodeValidators.refIsUnique(workspace, {
         nodeId,
@@ -319,57 +326,72 @@ export function validateNodeMutation(
       })
       break
     }
+
     case "set_node_editor_data":
     case "reset_node_label":
     case "reset_node_editor_data":
     case "reset_node":
       nodeValidators.exists(workspace, action.payload.nodeId)
       break
+
     case "set_node_repeat": {
       const nodeId = action.payload.nodeId as InstanceId | VariantId
+
       nodeValidators.exists(workspace, nodeId)
       assertRepeatConstraints(workspace, action, nodeId)
       break
     }
+
     case "reset_variant_to_catalog": {
       const variantRootId = action.payload.variantRootId as VariantId
+
       nodeValidators.exists(workspace, variantRootId)
       const node = nodeRetrievalService.getNode(variantRootId, workspace)
-      check(
-        isUserVariant(node),
-        "Only a user variant can reset to its catalog schema variant",
-      )
+
+      check(isUserVariant(node), "Only a user variant can reset to its catalog schema variant")
       const index = locateResettableBoardVariantIndex(workspace, variantRootId)
+
       check(index > 0, "The catalog default variant does not use this action")
       break
     }
+
     case "reset_variant_instances": {
       const variantRootId = action.payload.variantRootId as VariantId
+
       nodeValidators.exists(workspace, variantRootId)
       const node = nodeRetrievalService.getNode(variantRootId, workspace)
+
       check(isUserVariant(node), "Only a user variant can reset its instances")
       break
     }
+
     case "reset_instance_to_source":
+
     case "reset_instance_to_original": {
       const instanceId = action.payload.instanceId as InstanceId
+
       nodeValidators.exists(workspace, instanceId)
       const node = nodeRetrievalService.getNode(instanceId, workspace)
+
       check(
         typeCheckingService.isInstance(node),
         "Only an instance can reset to its source or original",
       )
       break
     }
+
     case "reset_default_variant_to_catalog": {
       const rootId = action.payload.defaultVariantRootId as VariantId
+
       nodeValidators.exists(workspace, rootId)
       const node = nodeRetrievalService.getNode(rootId, workspace)
+
       check(
         typeCheckingService.isDefaultVariant(node),
         "Only a default catalog variant can reset to catalog",
       )
       const index = locateResettableBoardVariantIndex(workspace, rootId)
+
       check(index === 0, "Reset to catalog only runs on the default variant")
       break
     }
@@ -382,16 +404,12 @@ export function validateResetComponentToCatalog(
 ): void {
   boardValidators.exists(workspace, action.payload.boardKey)
   const board = workspace.boards[action.payload.boardKey]
-  check(
-    !board || !isAuthoredBoard(board),
-    "Authored boards have no catalog schema to reset to",
-  )
+
+  check(!board || !isAuthoredBoard(board), "Authored boards have no catalog schema to reset to")
   const usages = collectExternalVariantUsage(action.payload.boardKey, workspace)
+
   if (usages.length > 0) {
-    throw new WorkspaceValidationError(
-      ErrorMessages.variantsInUseForReset(usages),
-      action,
-    )
+    throw new WorkspaceValidationError(ErrorMessages.variantsInUseForReset(usages), action)
   }
 }
 
@@ -401,22 +419,15 @@ export function validateAddVariant(
 ): void {
   boardValidators.exists(workspace, action.payload.boardKey)
   const board = workspace.boards[action.payload.boardKey]
+
   check(
-    board &&
-      (isComponentBoard(board) ||
-        isAuthoredBoard(board) ||
-        isPlaygroundBoard(board)),
+    board && (isComponentBoard(board) || isAuthoredBoard(board) || isPlaygroundBoard(board)),
     "add_variant requires a component, authored, or playground board",
   )
 }
 
 /** Levels an authored component may declare. Primitives and frames are not authorable. */
-const AUTHORED_COMPONENT_LEVELS: readonly EntryNodeLevel[] = [
-  "element",
-  "part",
-  "module",
-  "screen",
-]
+const AUTHORED_COMPONENT_LEVELS: readonly EntryNodeLevel[] = ["element", "part", "module", "screen"]
 
 /** Cached set of catalog schema names, used to reject colliding authored names. */
 const CATALOG_COMPONENT_NAMES = new Set<string>(
@@ -432,10 +443,8 @@ export function validateAddAuthoredComponent(
   const { name, level } = action.payload
 
   const boardKey = authoredBoardKeyFromName(name)
-  check(
-    boardKey.length > 0,
-    "Authored component name must contain a letter or number",
-  )
+
+  check(boardKey.length > 0, "Authored component name must contain a letter or number")
 
   // Reject a key already used by a board or playground so the new authored
   // board never shadows an existing row.
@@ -454,6 +463,7 @@ export function validateAddAuthoredComponent(
     `Authored component name collides with catalog component id "${boardKey}"`,
   )
   const exportName = authoredExportNameFromName(name)
+
   check(
     !CATALOG_COMPONENT_NAMES.has(exportName),
     `Authored component name collides with catalog component "${exportName}"`,
@@ -467,12 +477,12 @@ export function validateDuplicateNode(
   nodeValidators.exists(workspace, action.payload.nodeId)
   const node = nodeRetrievalService.getNode(action.payload.nodeId, workspace)
   const entity = typeCheckingService.getEntityType(node)
-  check(
-    rules.mutations.duplicate[entity].allowed,
-    `Cannot duplicate node of entity type ${entity}`,
-  )
+
+  check(rules.mutations.duplicate[entity].allowed, `Cannot duplicate node of entity type ${entity}`)
+
   if (typeCheckingService.isInstance(node)) {
     const parent = nodeTraversalService.findParentNode(node, workspace)
+
     check(
       !parent || !typeCheckingService.isDefaultVariant(parent),
       "Cannot duplicate an instance in a default catalog variant",
@@ -493,9 +503,11 @@ export function validateReorderVariantInBoard(
 ): void {
   boardValidators.exists(workspace, action.payload.boardKey)
   const board = workspace.boards[action.payload.boardKey]
+
   check(Boolean(board), "Board missing after exists check")
   const roots = getBoardVariantRootIds(board!)
   const oldIndex = roots.indexOf(action.payload.variantRootId)
+
   check(oldIndex >= 0, "Variant is not in the board variant list")
   // Index 0 is the default variant slot: a move may only touch it as a no-op.
   check(
@@ -504,10 +516,7 @@ export function validateReorderVariantInBoard(
   )
 }
 
-export function validateThemeMutation(
-  workspace: Workspace,
-  action: Action,
-): void {
+export function validateThemeMutation(workspace: Workspace, action: Action): void {
   switch (action.type) {
     case "reset_theme_tokens":
     case "reset_theme_label":
@@ -543,28 +552,21 @@ function themeIdOf(action: Action): string {
  */
 function assertThemeOverridePathValid(action: Action): void {
   const path = (action.payload as { path?: unknown }).path
+
   if (typeof path !== "string" || path.length === 0) {
-    throw new WorkspaceValidationError(
-      "Theme override path must be a non-empty string",
-      action,
-    )
+    throw new WorkspaceValidationError("Theme override path must be a non-empty string", action)
   }
 }
 
 /** Loads an instance node, throwing when the id is missing or not an instance. */
-function getInstanceNodeOrThrow(
-  workspace: Workspace,
-  action: Action,
-  instanceId: InstanceId,
-) {
+function getInstanceNodeOrThrow(workspace: Workspace, action: Action, instanceId: InstanceId) {
   nodeValidators.exists(workspace, instanceId)
   const node = nodeRetrievalService.getNode(instanceId, workspace)
+
   if (!typeCheckingService.isInstance(node)) {
-    throw new WorkspaceValidationError(
-      ErrorMessages.nodeNotInstance(instanceId),
-      action,
-    )
+    throw new WorkspaceValidationError(ErrorMessages.nodeNotInstance(instanceId), action)
   }
+
   return node
 }
 
@@ -579,33 +581,33 @@ function assertRepeatConstraints(
   nodeId: InstanceId | VariantId,
 ): void {
   const repeat = action.payload.repeat
+
   if (!repeat) return
 
   // A data-only override omits count and inherits it from the template, so there
   // is no count constraint to enforce on this write.
   const count = repeat.count
+
   if (count == null) return
 
   if (!Number.isInteger(count) || count < 1) {
-    throw new WorkspaceValidationError(
-      "Repeat count must be a whole number of at least 1.",
-      action,
-    )
+    throw new WorkspaceValidationError("Repeat count must be a whole number of at least 1.", action)
   }
+
   if (count > MAX_REPEAT_COUNT) {
-    throw new WorkspaceValidationError(
-      `Repeat count cannot exceed ${MAX_REPEAT_COUNT}.`,
-      action,
-    )
+    throw new WorkspaceValidationError(`Repeat count cannot exceed ${MAX_REPEAT_COUNT}.`, action)
   }
 
   let expansion = count
   let ancestor = nodeTraversalService.findParentNode(nodeId, workspace)
+
   while (ancestor) {
     const ancestorRepeat = getNodeRepeat(ancestor)
+
     if (ancestorRepeat?.count != null && ancestorRepeat.count > 1) {
       expansion *= ancestorRepeat.count
     }
+
     ancestor = nodeTraversalService.findParentNode(ancestor, workspace)
   }
 
@@ -645,13 +647,10 @@ function assertSandboxConstraints(
   // resolve the rect against the schema default, causing a false overlap.
   const merged: EntryNode = {
     ...node,
-    overrides: mergeProperties(
-      node.overrides,
-      action.payload.properties,
-      action.payload.options,
-    ),
+    overrides: mergeProperties(node.overrides, action.payload.properties, action.payload.options),
   }
   const rect = resolveSandboxRect(merged)
+
   if (!rect) return
 
   if (
@@ -667,11 +666,15 @@ function assertSandboxConstraints(
   }
 
   const playgroundKey = findPlaygroundKeyForSandbox(workspace, nodeId)
+
   if (!playgroundKey) return
+
   for (const siblingId of getPlaygroundSandboxIds(workspace, playgroundKey)) {
     if (siblingId === nodeId) continue
     const sibling = workspace.nodes[siblingId]
+
     if (!sibling) continue
+
     if (sandboxesOverlap(rect, resolveSandboxRect(sibling))) {
       throw new WorkspaceValidationError(
         "Sandboxes cannot overlap. Adjust the position or size so this sandbox does not cover another.",
@@ -688,6 +691,7 @@ function assertNodeNotInDefaultVariant(
   message: string,
 ): void {
   const root = nodeRelationshipService.getRootVariant(node, workspace)
+
   check(!typeCheckingService.isDefaultVariant(root), message)
 }
 
@@ -695,37 +699,27 @@ function assertNodeNotInDefaultVariant(
  * Finds the position of a variant root within its board, requiring the board to
  * be a component or playground board that supports variant resets.
  */
-function locateResettableBoardVariantIndex(
-  workspace: Workspace,
-  variantRootId: VariantId,
-): number {
+function locateResettableBoardVariantIndex(workspace: Workspace, variantRootId: VariantId): number {
   const located = findBoardContainingTreeNodeId(workspace, variantRootId)
+
   check(
-    located &&
-      (isComponentBoard(located.board) || isPlaygroundBoard(located.board)),
+    located && (isComponentBoard(located.board) || isPlaygroundBoard(located.board)),
     "That reset only runs on component or playground boards",
   )
+
   return located!.board.variants.findIndex((ref) => ref.id === variantRootId)
 }
 
 /** Rejects deleting a default theme entry or one still referenced as an effective theme. */
-function assertThemeDeletable(
-  workspace: Workspace,
-  themeId: string,
-  action: Action,
-): void {
+function assertThemeDeletable(workspace: Workspace, themeId: string, action: Action): void {
   const entry = workspace.themes[themeId]
+
   if (entry && isEntryThemeDefault(entry)) {
-    throw new WorkspaceValidationError(
-      "Cannot remove default theme entry",
-      action,
-    )
+    throw new WorkspaceValidationError("Cannot remove default theme entry", action)
   }
+
   if (hasEffectiveThemeReference(workspace, themeId)) {
-    throw new WorkspaceValidationError(
-      `Theme ${themeId} is still in use (effective theme)`,
-      action,
-    )
+    throw new WorkspaceValidationError(`Theme ${themeId} is still in use (effective theme)`, action)
   }
 }
 
@@ -754,12 +748,10 @@ function assertMatchColorSiblingsLocked(
   }
   const includeBrightness = !!theme.matchColor?.parameters?.includeBrightness
   const includeOpacity = !!theme.matchColor?.parameters?.includeOpacity
+
   if (!includeBrightness && !includeOpacity) return
 
-  const effective = getEffectiveProperties(nodeId, workspace) as Record<
-    string,
-    unknown
-  >
+  const effective = getEffectiveProperties(nodeId, workspace) as Record<string, unknown>
 
   const checkFacets = (
     patch: Record<string, unknown>,
@@ -772,19 +764,15 @@ function assertMatchColorSiblingsLocked(
       if (colorKey in patch) continue
 
       const color = effectiveFacets?.[colorKey]
+
       if (!isMatchColorValue(color)) continue
 
       if (includeBrightness && siblingKeys.brightness in patch) {
-        check(
-          false,
-          "Brightness cannot be changed while color is set to Match Color.",
-        )
+        check(false, "Brightness cannot be changed while color is set to Match Color.")
       }
+
       if (includeOpacity && siblingKeys.opacity in patch) {
-        check(
-          false,
-          "Opacity cannot be changed while color is set to Match Color.",
-        )
+        check(false, "Opacity cannot be changed while color is set to Match Color.")
       }
     }
   }
@@ -794,6 +782,7 @@ function assertMatchColorSiblingsLocked(
 
   for (const key of COLOR_SIBLING_COMPOUND_KEYS) {
     const patch = properties[key]
+
     if (patch && typeof patch === "object" && !Array.isArray(patch)) {
       checkFacets(
         patch as Record<string, unknown>,
@@ -804,13 +793,16 @@ function assertMatchColorSiblingsLocked(
 
   for (const key of COLOR_SIBLING_LAYER_KEYS) {
     const patchLayers = properties[key]
+
     if (!Array.isArray(patchLayers)) continue
     const effectiveLayers = effective[key]
+
     patchLayers.forEach((layerPatch, index) => {
       if (!layerPatch || typeof layerPatch !== "object") return
       const effectiveLayer = Array.isArray(effectiveLayers)
         ? (effectiveLayers[index] as Record<string, unknown> | undefined)
         : undefined
+
       checkFacets(layerPatch as Record<string, unknown>, effectiveLayer)
     })
   }

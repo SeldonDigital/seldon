@@ -1,6 +1,7 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Footer",
@@ -1303,10 +1304,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.offBlack",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: { type: Sdn.ValueType.EMPTY, value: null },
                           },
                         ],
@@ -1351,10 +1349,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.offBlack",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: { type: Sdn.ValueType.EMPTY, value: null },
                           },
                         ],
@@ -1399,10 +1394,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.offBlack",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: { type: Sdn.ValueType.EMPTY, value: null },
                           },
                         ],
@@ -1447,10 +1439,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.offBlack",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: { type: Sdn.ValueType.EMPTY, value: null },
                           },
                         ],

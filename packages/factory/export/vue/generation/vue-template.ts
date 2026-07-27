@@ -1,4 +1,4 @@
-import { JSXNode } from "../../react/generation/preprocess/types"
+import type { JSXNode } from "../../react/generation/preprocess/types"
 
 type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
 
@@ -14,11 +14,13 @@ type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
 function grandchildPropAttr(gp: GrandchildProp): string {
   if (gp.nullLiteral) return `:${gp.propKeyName}="null"`
   const value = gp.guard ? `${gp.guard} && ${gp.propVarName}` : gp.propVarName
+
   return `:${gp.propKeyName}="${value}"`
 }
 
 function grandchildPropsString(node: JSXNode): string {
   if (!node.grandchildProps || node.grandchildProps.length === 0) return ""
+
   return " " + node.grandchildProps.map(grandchildPropAttr).join(" ")
 }
 
@@ -37,6 +39,7 @@ export function nodeToTemplate(node: JSXNode, indent: number): string {
 
   if (node.type === "frame") {
     let out = `\n${pad}<Frame v-bind="${node.propVarName}"${vIf(node.condition)}>`
+
     if (node.children) {
       for (const child of node.children) out += nodeToTemplate(child, next)
     } else if (node.ref) {
@@ -45,7 +48,9 @@ export function nodeToTemplate(node: JSXNode, indent: number): string {
       // where the same ref keys the `seldonRefs` children injection.
       out += `\n${" ".repeat(next)}<slot name="${node.ref}" />`
     }
+
     out += `\n${pad}</Frame>`
+
     return out
   }
 
@@ -57,8 +62,10 @@ export function nodeToTemplate(node: JSXNode, indent: number): string {
 
   if (node.children && node.children.length > 0) {
     let out = `\n${pad}<${node.name}${guardAttr} v-bind="${node.propVarName}">`
+
     for (const child of node.children) out += nodeToTemplate(child, next)
     out += `\n${pad}</${node.name}>`
+
     return out
   }
 

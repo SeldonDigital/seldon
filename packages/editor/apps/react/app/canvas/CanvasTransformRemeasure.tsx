@@ -1,9 +1,6 @@
 "use client"
 
-import {
-  bumpRemeasure,
-  setTransforming,
-} from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
+import { bumpRemeasure, setTransforming } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 import { useEffect, useRef } from "react"
 import { useTransformContext } from "react-zoom-pan-pinch"
 
@@ -23,6 +20,7 @@ const SETTLE_MS = 60
 export function CanvasTransformRemeasure() {
   const transformContext = useTransformContext()
   const transformContextRef = useRef(transformContext)
+
   transformContextRef.current = transformContext
 
   useEffect(() => {

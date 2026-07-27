@@ -1,23 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "List",
   id: Seldon.ComponentId.LIST,
   intent:
     "Displays a list of items. Renders as an unordered bulleted list or an ordered numbered list.",
-  tags: [
-    "list",
-    "ul",
-    "ol",
-    "element",
-    "bulleted",
-    "numbered",
-    "sequence",
-    "text",
-    "UI",
-  ],
+  tags: ["list", "ul", "ol", "element", "bulleted", "numbered", "sequence", "text", "UI"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -55,9 +46,7 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.ListStylePosition.OUTSIDE,
     },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,

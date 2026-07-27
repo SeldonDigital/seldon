@@ -1,6 +1,7 @@
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { getDefaultBoardLabel } from "../../../helpers/components/default-board-metadata"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 export function resetBoardLabel(
   payload: ExtractPayload<"reset_board_label">,

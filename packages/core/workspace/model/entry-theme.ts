@@ -13,14 +13,10 @@ export interface EntryTheme {
   __editor?: Record<string, unknown>
 }
 
-export function isEntryThemeDefault(
-  entry: EntryTheme,
-): entry is EntryTheme & { type: "default" } {
+export function isEntryThemeDefault(entry: EntryTheme): entry is EntryTheme & { type: "default" } {
   return entry.type === "default"
 }
 
-export function isEntryThemeVariant(
-  entry: EntryTheme,
-): entry is EntryTheme & { type: "variant" } {
+export function isEntryThemeVariant(entry: EntryTheme): entry is EntryTheme & { type: "variant" } {
   return entry.type === "variant"
 }

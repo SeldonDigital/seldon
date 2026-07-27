@@ -1,7 +1,6 @@
-import {
-  type ReservedStateName,
-  isReservedStateName,
-} from "@seldon/core/workspace/model/node-state"
+import { isReservedStateName } from "@seldon/core/workspace/model/node-state"
+
+import type { ReservedStateName } from "@seldon/core/workspace/model/node-state"
 
 /**
  * React/CSS binding from a core interaction-state name to the CSS selector
@@ -68,6 +67,7 @@ export function getStateSelectorSuffixes(stateName: string): string[] {
   if (isReservedStateName(stateName)) {
     return RESERVED_STATE_SELECTOR_SUFFIXES[stateName]
   }
+
   return [`.${STATE_CLASS_PREFIX}${stateName}`]
 }
 
@@ -80,5 +80,6 @@ export function getAncestorStateSelectorSuffixes(stateName: string): string[] {
   if (isReservedStateName(stateName)) {
     return ANCESTOR_STATE_SELECTOR_SUFFIXES[stateName]
   }
+
   return [`.${STATE_CLASS_PREFIX}${stateName}`]
 }

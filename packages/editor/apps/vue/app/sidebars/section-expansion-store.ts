@@ -15,12 +15,15 @@ const STORAGE_KEY = "objects-section-expansion"
 
 function loadOverrides(): Partial<Record<ExpandableSection, boolean>> {
   if (typeof localStorage === "undefined") return {}
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
+
     if (!raw) return {}
     const parsed = JSON.parse(raw) as {
       overrides?: Partial<Record<ExpandableSection, boolean>>
     }
+
     return parsed.overrides ?? {}
   } catch {
     return {}
@@ -33,35 +36,25 @@ function loadOverrides(): Partial<Record<ExpandableSection, boolean>> {
  * starts fully collapsed and later launches restore saved expansions. Mirrors
  * the React `use-section-expansion` store.
  */
-export const useSectionExpansionStore = defineStore(
-  "objects-section-expansion",
-  () => {
-    const overrides =
-      ref<Partial<Record<ExpandableSection, boolean>>>(loadOverrides())
+export const useSectionExpansionStore = defineStore("objects-section-expansion", () => {
+  const overrides = ref<Partial<Record<ExpandableSection, boolean>>>(loadOverrides())
 
-    function isSectionExpanded(section: ExpandableSection): boolean {
-      return overrides.value[section] ?? false
-    }
+  function isSectionExpanded(section: ExpandableSection): boolean {
+    return overrides.value[section] ?? false
+  }
 
-    function toggleSection(
-      section: ExpandableSection,
-      expanded: boolean,
-    ): void {
-      overrides.value = { ...overrides.value, [section]: expanded }
-    }
+  function toggleSection(section: ExpandableSection, expanded: boolean): void {
+    overrides.value = { ...overrides.value, [section]: expanded }
+  }
 
-    watch(
-      overrides,
-      () => {
-        if (typeof localStorage === "undefined") return
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({ overrides: overrides.value }),
-        )
-      },
-      { deep: false },
-    )
+  watch(
+    overrides,
+    () => {
+      if (typeof localStorage === "undefined") return
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ overrides: overrides.value }))
+    },
+    { deep: false },
+  )
 
-    return { overrides, isSectionExpanded, toggleSection }
-  },
-)
+  return { overrides, isSectionExpanded, toggleSection }
+})

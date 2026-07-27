@@ -1,7 +1,9 @@
 import { storeToRefs } from "pinia"
-import { type ComputedRef, computed, ref } from "vue"
+import { computed, ref } from "vue"
 
 import { useEditorConfigStore } from "./editor-config-store"
+
+import type { ComputedRef } from "vue"
 
 /** Resolved appearance after mapping `"system"` to the OS preference. */
 export type ResolvedInterfaceMode = "light" | "dark"
@@ -17,18 +19,17 @@ const QUERY = "(prefers-color-scheme: dark)"
 function createSystemColorScheme() {
   const hasMatchMedia = typeof window !== "undefined" && !!window.matchMedia
   const mode = ref<ResolvedInterfaceMode>(
-    hasMatchMedia
-      ? window.matchMedia(QUERY).matches
-        ? "dark"
-        : "light"
-      : "dark",
+    hasMatchMedia ? (window.matchMedia(QUERY).matches ? "dark" : "light") : "dark",
   )
+
   if (hasMatchMedia) {
     const mql = window.matchMedia(QUERY)
+
     mql.addEventListener("change", () => {
       mode.value = mql.matches ? "dark" : "light"
     })
   }
+
   return mode
 }
 
@@ -40,7 +41,6 @@ const systemMode = createSystemColorScheme()
  */
 export function useResolvedInterfaceMode(): ComputedRef<ResolvedInterfaceMode> {
   const { interfaceMode } = storeToRefs(useEditorConfigStore())
-  return computed(() =>
-    interfaceMode.value === "system" ? systemMode.value : interfaceMode.value,
-  )
+
+  return computed(() => (interfaceMode.value === "system" ? systemMode.value : interfaceMode.value))
 }

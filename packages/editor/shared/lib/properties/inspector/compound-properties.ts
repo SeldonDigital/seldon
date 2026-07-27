@@ -1,12 +1,14 @@
 import {
   getCompoundLayerValue,
+  getParentPathForPreset,
   isLayeredPaintRoot,
 } from "@seldon/editor/lib/properties/property-paths"
-import { getParentPathForPreset } from "@seldon/editor/lib/properties/property-paths"
-import { Theme, ValueType, Workspace } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { applyCompoundPreset as coreApplyCompoundPreset } from "@seldon/core/helpers/properties/properties-bridge"
-import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getPropertiesSubjectId } from "./properties-data"
+
+import type { Theme, Workspace } from "@seldon/core"
+import type { Board, Instance, Variant } from "@seldon/core/workspace/types"
 
 /**
  * Creates a preset property update with theme token handling
@@ -32,15 +34,14 @@ export function createPresetPropertyUpdate(
     const token = presetValue.substring(1)
     const [section, id] = token.split(".")
     const sectionObj = (theme as Record<string, unknown>)[section]
+
     if (
       sectionObj &&
       (sectionObj as Record<string, unknown>)[id] &&
       typeof (sectionObj as Record<string, unknown>)[id] === "object" &&
       "name" in ((sectionObj as Record<string, unknown>)[id] as object)
     ) {
-      presetForCore = String(
-        ((sectionObj as Record<string, unknown>)[id] as { name: string }).name,
-      )
+      presetForCore = String(((sectionObj as Record<string, unknown>)[id] as { name: string }).name)
       tokenForPreset = `@${section}.${id}`
     }
   }
@@ -58,8 +59,10 @@ export function createPresetPropertyUpdate(
       type: ValueType.THEME_CATEGORICAL,
       value: tokenForPreset,
     }
+
     if (isLayeredPaintRoot(parentKey)) {
       const layer = getCompoundLayerValue(applied[parentKey]) ?? {}
+
       applied[parentKey] = [{ ...layer, preset: presetCell }]
     } else {
       applied[parentKey] = {

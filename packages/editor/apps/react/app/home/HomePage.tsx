@@ -1,7 +1,6 @@
 import { selectFile } from "@seldon/editor/lib/helpers/select-file"
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import {
-  type StoredWorkspace,
   createStoredWorkspace,
   deleteStoredWorkspace,
   listStoredWorkspaces,
@@ -13,6 +12,8 @@ import { createEmptyWorkspace } from "@seldon/core"
 
 import { HomeView } from "./HomePage.bespoke"
 import { useParseWorkspace } from "./hooks/use-parse-workspace"
+
+import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -31,22 +32,23 @@ export default function HomePage() {
 
   const handleNew = useCallback(async () => {
     const name =
-      prompt(
-        HOME_CONTENT.newWorkspaceNamePrompt,
-        HOME_CONTENT.defaultWorkspaceName,
-      ) ?? HOME_CONTENT.defaultWorkspaceName
+      prompt(HOME_CONTENT.newWorkspaceNamePrompt, HOME_CONTENT.defaultWorkspaceName) ??
+      HOME_CONTENT.defaultWorkspaceName
     const record = await createStoredWorkspace(name, createEmptyWorkspace())
+
     navigate(`/${record.id}`)
   }, [navigate])
 
   const handleImport = useCallback(async () => {
     const result = await selectFile({ accept: ".json,application/json" })
+
     if (!result.success) return
     const { file } = result
     const text = await file.text()
     const workspace = parseWorkspace(text)
     const name = file.name.replace(/\.json$/i, "") || "Imported workspace"
     const record = await createStoredWorkspace(name, workspace)
+
     navigate(`/${record.id}`)
   }, [navigate, parseWorkspace])
 

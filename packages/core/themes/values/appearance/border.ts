@@ -1,5 +1,5 @@
 import type { BorderCompound } from "../../../properties/values/appearance/border"
-import { TokenType } from "../../constants/token-type"
+import type { TokenType } from "../../constants/token-type"
 
 export type BorderParameters = Pick<
   BorderCompound,
@@ -8,7 +8,7 @@ export type BorderParameters = Pick<
 
 export interface ThemeBorder {
   type: TokenType.LOOK
+  parameters: BorderParameters
   name?: string
   intent?: string
-  parameters: BorderParameters
 }

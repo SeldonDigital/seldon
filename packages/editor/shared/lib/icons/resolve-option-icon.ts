@@ -4,9 +4,10 @@ import {
 } from "@seldon/editor/lib/icons/icons-registry"
 import { getComboboxStoredValue } from "@seldon/editor/lib/properties/combobox-stored-value"
 import { getThemeTokenIconColor } from "@seldon/editor/lib/themes/theme-token-icon-color"
-import { Theme } from "@seldon/core"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-registry"
+
+import type { Theme } from "@seldon/core"
 
 /** Icon id rendered for theme token values that are not swatch colors. */
 export const THEME_TOKEN_ICON = "seldon-theme"
@@ -36,9 +37,11 @@ export function getOptionIcon(
 ): OptionIconDescriptor {
   if (isThemeValueKey(value)) {
     const swatchColor = getThemeTokenIconColor(value, theme)
+
     if (swatchColor) {
       return { kind: "swatchColor", color: swatchColor }
     }
+
     return { kind: "themeToken" }
   }
 
@@ -57,6 +60,7 @@ export function getOptionIcon(
     EDITOR_OPTION_ICON_OVERLAY[propertyKey]?.[value] ??
     coreGetOptionIcon(propertyKey, value) ??
     fallbackIcon
+
   return { kind: "static", icon }
 }
 
@@ -65,13 +69,11 @@ export function getOptionIcon(
  * compound reflects its `preset` facet; every other property uses the stored
  * combobox value.
  */
-export function getCurrentOptionValue(
-  propertyKey: string,
-  propertyValue: unknown,
-): string {
+export function getCurrentOptionValue(propertyKey: string, propertyValue: unknown): string {
   if (propertyKey === "board") {
     return getBoardPresetValue(propertyValue)
   }
+
   return getComboboxStoredValue(propertyValue)
 }
 
@@ -79,10 +81,13 @@ export function getCurrentOptionValue(
 function getBoardPresetValue(value: unknown): string {
   if (value && typeof value === "object" && "preset" in value) {
     const preset = (value as { preset?: unknown }).preset
+
     if (preset && typeof preset === "object" && "value" in preset) {
       const presetValue = (preset as { value?: unknown }).value
+
       return typeof presetValue === "string" ? presetValue : ""
     }
   }
+
   return ""
 }

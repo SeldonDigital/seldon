@@ -21,9 +21,7 @@ describe("isDarkBackgroundColor", () => {
   })
 
   it("throws for empty and transparent colors", () => {
-    expect(() =>
-      isDarkBackgroundColor({ type: ValueType.EMPTY, value: null }),
-    ).toThrow()
+    expect(() => isDarkBackgroundColor({ type: ValueType.EMPTY, value: null })).toThrow()
     expect(() =>
       isDarkBackgroundColor({
         type: ValueType.OPTION,

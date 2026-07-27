@@ -44,7 +44,7 @@
     "packages/ai"
   ],
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
     "@vitest/coverage-v8": "^4.1.9",
     "eslint-plugin-react-hooks": "^7.1.1",
     "happy-dom": "^20.10.6",

@@ -73,18 +73,15 @@ describe("theme look validation", () => {
   it("validates refs against a theme", () => {
     expect(themeLookRefIsValid("@border.none", defaultTheme)).toBe(true)
     expect(themeLookRefIsValid("@border.none")).toBe(false)
-    expect(themeLookRefIsValid("@border.none", defaultTheme, "shadow")).toBe(
-      false,
-    )
-    expect(
-      validateThemeLookPresetRef("border", "@border.none", defaultTheme),
-    ).toBe(true)
+    expect(themeLookRefIsValid("@border.none", defaultTheme, "shadow")).toBe(false)
+    expect(validateThemeLookPresetRef("border", "@border.none", defaultTheme)).toBe(true)
   })
 })
 
 describe("theme look lookup", () => {
   it("lists ids with the built-in first", () => {
     const ids = listThemeLookIds(defaultTheme, "border")
+
     expect(ids[0]).toBe("none")
     expect(ids).toContain("hairline")
   })
@@ -95,9 +92,7 @@ describe("theme look lookup", () => {
   })
 
   it("resolves a look by token and by name", () => {
-    expect(resolveThemeLook(defaultTheme, "border", "@border.none")?.name).toBe(
-      "None",
-    )
+    expect(resolveThemeLook(defaultTheme, "border", "@border.none")?.name).toBe("None")
     expect(resolveThemeLook(defaultTheme, "border", "None")?.name).toBe("None")
     expect(resolveThemeLook(defaultTheme, "border", "no-such-look")).toBeNull()
   })
@@ -105,12 +100,8 @@ describe("theme look lookup", () => {
 
 describe("picker token and cleared-look detection", () => {
   it("builds picker tokens from the resolved section", () => {
-    expect(getThemeLookPickerToken("border", "hairline")).toBe(
-      "@border.hairline",
-    )
-    expect(getThemeLookPickerToken("background", "primary")).toBe(
-      "@gradient.primary",
-    )
+    expect(getThemeLookPickerToken("border", "hairline")).toBe("@border.hairline")
+    expect(getThemeLookPickerToken("background", "primary")).toBe("@gradient.primary")
     expect(getThemeLookPickerToken("color", "x")).toBe("@color.x")
   })
 

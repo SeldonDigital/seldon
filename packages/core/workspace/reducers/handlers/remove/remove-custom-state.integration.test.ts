@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../../index"
 import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { addCustomState } from "../add/add-custom-state"
 import { setNodeStateProperties } from "../set/set-node-state-properties"
 import { removeCustomState } from "./remove-custom-state"
+
+import type { ExtractPayload } from "../../../../index"
 
 describe("removeCustomState", () => {
   it("drops the registry entry and strips the state from nodes", () => {
@@ -37,6 +38,7 @@ describe("removeCustomState", () => {
       } as ExtractPayload<"set_node_state_properties">,
       registered,
     )
+
     expect(withState.nodes[nodeId]!.states?.warning).toBeDefined()
 
     const removed = removeCustomState(
@@ -44,9 +46,7 @@ describe("removeCustomState", () => {
       withState,
     )
 
-    expect(
-      (removed.metadata.customStates ?? []).some((s) => s.key === "warning"),
-    ).toBe(false)
+    expect((removed.metadata.customStates ?? []).some((s) => s.key === "warning")).toBe(false)
     expect(removed.nodes[nodeId]!.states?.warning).toBeUndefined()
   })
 })

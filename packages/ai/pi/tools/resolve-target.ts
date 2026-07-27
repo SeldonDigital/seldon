@@ -1,15 +1,13 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
-import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 
 import { activeBoardSection } from "../../prompt/context-sections/active-board"
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
 import { matchNodeStrings } from "../../prompt/context-sections/node-strings"
+
 import type { SelectionScope } from "../../types"
+import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 /** How the model names a node to edit: the current selection or an explicit id. */
 export type TargetSpec = "selection" | { nodeId: string }
@@ -41,29 +39,30 @@ const MATCH_LIMIT = 10
 function boardNodeIds(workspace: Workspace, boardKey: BoardKey): Set<string> {
   const ids = new Set<string>()
   const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return ids
+
+  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return ids
   walkBoardTreeRefs(board.variants, (ref) => {
     ids.add(ref.id)
   })
+
   return ids
 }
 
 /** The distinct component catalog ids present in a board's variant trees. */
-function boardCatalogIds(
-  workspace: Workspace,
-  boardKey: BoardKey,
-): Set<string> {
+function boardCatalogIds(workspace: Workspace, boardKey: BoardKey): Set<string> {
   const ids = new Set<string>()
   const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return ids
+
+  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return ids
   walkBoardTreeRefs(board.variants, (ref) => {
     const node = workspace.nodes[ref.id]
+
     if (!node) return
     const catalogId = getNodeCatalogId(node, workspace)
+
     if (catalogId) ids.add(catalogId)
   })
+
   return ids
 }
 
@@ -74,12 +73,10 @@ function boardCatalogIds(
  * values already in hand, instead of a blind re-search. Returns "" when no
  * active component board exists, so the caller adds nothing.
  */
-function tierTwoBlock(
-  workspace: Workspace,
-  activeKey: BoardKey | undefined,
-): string {
+function tierTwoBlock(workspace: Workspace, activeKey: BoardKey | undefined): string {
   if (activeKey === undefined) return ""
   const board = workspace.boards[activeKey]
+
   if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return ""
   const block = [
     ...activeBoardSection(workspace, activeKey, board).lines,
@@ -87,40 +84,40 @@ function tierTwoBlock(
   ]
     .join("\n")
     .trim()
-  return block
-    ? `\n\nActive board (tier 2) and its settable values:\n${block}`
-    : ""
+
+  return block ? `\n\nActive board (tier 2) and its settable values:\n${block}` : ""
 }
 
 /** The settable values of one node's component, appended when a match is found off-board. */
 function nodeValuesBlock(workspace: Workspace, nodeId: string): string {
   const node = workspace.nodes[nodeId]
+
   if (!node) return ""
   const catalogId = getNodeCatalogId(node, workspace)
+
   if (!catalogId) return ""
   const block = componentValuesSection(new Set([catalogId]), workspace)
     .join("\n")
     .trim()
+
   return block ? `\n\nSettable values for ${catalogId}:\n${block}` : ""
 }
 
 /** Every node id in the subtree rooted at `rootId` on a component board. */
-function subtreeNodeIds(
-  workspace: Workspace,
-  boardKey: BoardKey,
-  rootId: string,
-): Set<string> {
+function subtreeNodeIds(workspace: Workspace, boardKey: BoardKey, rootId: string): Set<string> {
   const ids = new Set<string>()
   const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return ids
+
+  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return ids
 
   const root = findRef(board.variants, rootId)
+
   if (!root) return ids
 
   walkBoardTreeRefs([root], (ref) => {
     ids.add(ref.id)
   })
+
   return ids
 }
 
@@ -130,11 +127,14 @@ function findRef(
   id: string,
 ): Parameters<Parameters<typeof walkBoardTreeRefs>[1]>[0] | undefined {
   let found: Parameters<Parameters<typeof walkBoardTreeRefs>[1]>[0] | undefined
+
   walkBoardTreeRefs(refs, (ref) => {
     if (ref.id !== id) return
     found = ref
+
     return true
   })
+
   return found
 }
 
@@ -152,9 +152,11 @@ function searchSubtree(
   allowedBoardKeys?: Set<string>,
 ): NodeMatch[] {
   const ids = subtreeNodeIds(workspace, boardKey, rootId)
+
   if (ids.size === 0) return []
-  return searchWorkspace(workspace, query, boardKey, allowedBoardKeys).filter(
-    (match) => ids.has(match.id),
+
+  return searchWorkspace(workspace, query, boardKey, allowedBoardKeys).filter((match) =>
+    ids.has(match.id),
   )
 }
 
@@ -170,25 +172,25 @@ function searchWorkspace(
   allowedBoardKeys?: Set<string>,
 ): NodeMatch[] {
   const needle = query.trim().toLowerCase()
+
   if (needle === "") return []
-  const activeIds =
-    activeKey !== undefined ? boardNodeIds(workspace, activeKey) : new Set()
+  const activeIds = activeKey !== undefined ? boardNodeIds(workspace, activeKey) : new Set()
 
   const matches: NodeMatch[] = []
+
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
     if (allowedBoardKeys && !allowedBoardKeys.has(key)) continue
     walkBoardTreeRefs(board.variants, (ref) => {
       const node = workspace.nodes[ref.id]
+
       if (!node) return
       const catalogId = getNodeCatalogId(node, workspace) ?? ""
       const label = node.label ?? ""
       const byName =
-        label.toLowerCase().includes(needle) ||
-        catalogId.toLowerCase().includes(needle)
-      const snippet = byName
-        ? null
-        : matchNodeStrings(workspace, ref.id, needle)
+        label.toLowerCase().includes(needle) || catalogId.toLowerCase().includes(needle)
+      const snippet = byName ? null : matchNodeStrings(workspace, ref.id, needle)
+
       if (!byName && snippet === null) return
       matches.push({
         id: ref.id,
@@ -201,12 +203,14 @@ function searchWorkspace(
       })
     })
   }
+
   return matches
 }
 
 function describe(match: NodeMatch): string {
   const name = match.label || match.catalogId || match.id
   const value = match.snippet ? ` value="${match.snippet}"` : ""
+
   return `${match.id} ("${name}"${match.catalogId ? ` ${match.catalogId}` : ""})${value} on board ${match.boardKey} "${match.boardLabel}"`
 }
 
@@ -226,26 +230,32 @@ function widen(
   allowedBoardKeys?: Set<string>,
 ): TargetResolution {
   const matches = searchWorkspace(workspace, query, activeKey, allowedBoardKeys)
+
   if (matches.length === 0) {
     return {
       kind: "message",
       text: `No node matches "${query}". Ask the user which node to change, or call find_nodes with a different term.`,
     }
   }
+
   if (matches.length === 1) {
     const match = matches[0]
+
     if (match.inActiveBoard || scope === "workspace") {
       return { kind: "resolved", nodeId: match.id }
     }
+
     return {
       kind: "message",
       text: `Found ${describe(match)}, outside the active board. Ask the user to confirm before editing it, then call again with target { "nodeId": "${match.id}" }.${nodeValuesBlock(workspace, match.id)}`,
     }
   }
+
   const list = matches
     .slice(0, MATCH_LIMIT)
     .map((match) => `- ${describe(match)}`)
     .join("\n")
+
   return {
     kind: "message",
     text: `Several nodes match "${query}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
@@ -272,42 +282,37 @@ export function resolveNodeTarget(
     // A match hint on a selected node means "a part of me": dive into the
     // selection's own subtree first, so the edit stays inside what the user
     // pointed at before the search widens outward.
-    if (
-      match &&
-      selectedNodeId &&
-      workspace.nodes[selectedNodeId] &&
-      activeKey !== undefined
-    ) {
-      const within = searchSubtree(
-        workspace,
-        activeKey,
-        selectedNodeId,
-        match,
-        allowedBoardKeys,
-      )
+    if (match && selectedNodeId && workspace.nodes[selectedNodeId] && activeKey !== undefined) {
+      const within = searchSubtree(workspace, activeKey, selectedNodeId, match, allowedBoardKeys)
+
       if (within.length === 1) {
         return { kind: "resolved", nodeId: within[0].id }
       }
+
       if (within.length > 1) {
         const list = within
           .slice(0, MATCH_LIMIT)
           .map((item) => `- ${describe(item)}`)
           .join("\n")
+
         return {
           kind: "message",
           text: `Several parts of the selection match "${match}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
         }
       }
+
       return widen(workspace, match, activeKey, scope, allowedBoardKeys)
     }
+
     if (selectedNodeId && workspace.nodes[selectedNodeId]) {
       return { kind: "resolved", nodeId: selectedNodeId }
     }
-    if (match)
-      return widen(workspace, match, activeKey, scope, allowedBoardKeys)
+
+    if (match) return widen(workspace, match, activeKey, scope, allowedBoardKeys)
     const selectionNote = selectedBoardId
       ? `A board (${selectedBoardId}) is selected, not a node`
       : "Nothing is selected"
+
     return {
       kind: "message",
       text: `${selectionNote}, so 'this' is ambiguous. Pick the target from the active board below, or pass an explicit target { nodeId }, or ask the user which node to change.${tierTwoBlock(workspace, activeKey)}`,
@@ -318,18 +323,12 @@ export function resolveNodeTarget(
   // to the bounded search so the miss ends in a not-found within scope.
   if (
     workspace.nodes[target.nodeId] &&
-    (!allowedBoardKeys ||
-      allowedBoardKeys.has(boardOfNode(workspace, target.nodeId) ?? ""))
+    (!allowedBoardKeys || allowedBoardKeys.has(boardOfNode(workspace, target.nodeId) ?? ""))
   ) {
     return { kind: "resolved", nodeId: target.nodeId }
   }
-  return widen(
-    workspace,
-    match ?? target.nodeId,
-    activeKey,
-    scope,
-    allowedBoardKeys,
-  )
+
+  return widen(workspace, match ?? target.nodeId, activeKey, scope, allowedBoardKeys)
 }
 
 /** The board key whose variant trees list this node id, or undefined. */
@@ -337,12 +336,15 @@ function boardOfNode(workspace: Workspace, nodeId: string): string | undefined {
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
     let found = false
+
     walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id !== nodeId) return
       found = true
+
       return true
     })
     if (found) return key
   }
+
   return undefined
 }

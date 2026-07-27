@@ -1,12 +1,12 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Color Chip",
   id: Seldon.ComponentId.COLOR_CHIP,
-  intent:
-    "Schema for a color chip that shows a swatch fill with its role name and color values.",
+  intent: "Schema for a color chip that shows a swatch fill with its role name and color values.",
   tags: ["color", "chip", "swatch", "specimen", "palette", "theme", "ui"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.COMPONENT,

@@ -1,9 +1,6 @@
 import { useStore as useSelectionStore } from "@app/workspace/hooks/use-selection"
 
-export type {
-  ResourceEntryKind,
-  SelectionKind,
-} from "@seldon/editor/lib/workspace/selection-kind"
+export type { ResourceEntryKind, SelectionKind } from "@seldon/editor/lib/workspace/selection-kind"
 export {
   SELECTION_ID_ATTR,
   SELECTION_KIND_ATTR,

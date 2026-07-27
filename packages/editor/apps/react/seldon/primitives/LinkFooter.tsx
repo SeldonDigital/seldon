@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { AnchorHTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { combineClassNames } from "../utils/class-name"
+
+import type { AnchorHTMLAttributes } from "react"
 
 export interface LinkFooterProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   className?: string
@@ -35,22 +35,14 @@ export interface LinkFooterProps extends AnchorHTMLAttributes<HTMLAnchorElement>
  * />
  * ```
  *****/
-export function LinkFooter({
-  className = "",
-  children = sdn.children,
-  ...props
-}: LinkFooterProps) {
+export function LinkFooter({ className = "", children = sdn.children, ...props }: LinkFooterProps) {
   const linkFooterClassName = combineClassNames("sdn-link-footer", className)
 
   //
   // React JSX component with merged default and custom properties
   //
   return (
-    <HTMLAnchor
-      className={linkFooterClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLAnchor className={linkFooterClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children}
     </HTMLAnchor>
   )

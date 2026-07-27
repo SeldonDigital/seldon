@@ -13,14 +13,7 @@ import {
 import { createPresetPropertyUpdate } from "@seldon/editor/lib/properties/inspector/compound-properties"
 import { handleComputedValueChange } from "@seldon/editor/lib/properties/inspector/computed-property-handler"
 import { isComputedFunctionOption } from "@seldon/editor/lib/properties/inspector/computed-utils"
-import {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import type { PropertyPickerResult } from "@seldon/editor/lib/properties/inspector/options-utils"
 import { getPropertiesSubjectId } from "@seldon/editor/lib/properties/inspector/properties-data"
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { updateProperty } from "@seldon/editor/lib/properties/inspector/property-update-handler"
 import {
   REPEAT_ROW_KEY,
@@ -32,35 +25,36 @@ import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
 import { serializeValue } from "@seldon/editor/lib/properties/serialize-value"
 import { useCallback } from "react"
 
-import {
-  Board,
-  Instance,
-  Properties,
-  Theme,
-  Value,
-  Variant,
-} from "@seldon/core"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { getCompoundSelectorFacet } from "@seldon/core/properties/constants/shared/compound-properties"
 import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
-import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 import { useSetNodeRepeat } from "./use-set-node-repeat"
 import { useSetObjectReference } from "./use-set-object-reference"
 import { useSetObjectTheme } from "./use-set-object-theme"
 
+import type { Board, Instance, Properties, Theme, Value, Variant } from "@seldon/core"
+import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { PropertyPickerResult } from "@seldon/editor/lib/properties/inspector/options-utils"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+
 interface UseCommitPropertyValueInput {
   property: FlatProperty
-  theme?: Theme
   /** Built picker options, used to detect preset values on compound properties. */
   options: PropertyPickerResult["options"] | undefined
+  /** Run after a successful commit or reset to close the editor. */
+  onDone: () => void
+  theme?: Theme
   propertySubject?: Variant | Instance | Board
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
-  /** Run after a successful commit or reset to close the editor. */
-  onDone: () => void
 }
 
 interface UseCommitPropertyValueResult {
@@ -89,8 +83,7 @@ export function useCommitPropertyValue({
   const { selection } = useSelection()
   const setObjectTheme = useSetObjectTheme()
   const setObjectReference = useSetObjectReference()
-  const { setCount: setNodeRepeatCount, setDataValue: setNodeRepeatDataValue } =
-    useSetNodeRepeat()
+  const { setCount: setNodeRepeatCount, setDataValue: setNodeRepeatDataValue } = useSetNodeRepeat()
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const reset = useCallback(() => {
@@ -115,19 +108,22 @@ export function useCommitPropertyValue({
         !iconSetEditingContext?.isIconSetEditing
       ) {
         const parsed = parsePropertyPath(property.key)
-        const baseKey =
-          parsed.kind === "layered-parent" ? parsed.root : property.key
+        const baseKey = parsed.kind === "layered-parent" ? parsed.root : property.key
         const layerIndex = property.layerIndex
 
         let layerValue: Record<string, unknown>
+
         if (getCompoundSelectorFacet(baseKey) === "kind") {
           // Kind-typed layer (e.g. background). Default resets the slot; a kind
           // value seeds that kind's facets from the core seed map.
           const seedLayer = backgroundLayerForKind(newValue)
+
           if (!seedLayer) {
             reset()
+
             return
           }
+
           layerValue = seedLayer as Record<string, unknown>
         } else {
           const presetSource = createPresetPropertyUpdate(
@@ -137,23 +133,20 @@ export function useCommitPropertyValue({
             subject,
             theme,
           )
+
           layerValue =
-            (
-              presetSource[baseKey] as
-                | Array<Record<string, unknown>>
-                | undefined
-            )?.[0] ?? {}
+            (presetSource[baseKey] as Array<Record<string, unknown>> | undefined)?.[0] ?? {}
         }
 
-        const current = coreGetEffectiveProperties(
-          getPropertiesSubjectId(subject),
-          workspace,
-        )[baseKey as keyof Properties]
+        const current = coreGetEffectiveProperties(getPropertiesSubjectId(subject), workspace)[
+          baseKey as keyof Properties
+        ]
         const layers = Array.isArray(current)
           ? [...(current as Array<Record<string, unknown>>)]
           : current
             ? [current as Record<string, unknown>]
             : []
+
         while (layers.length <= layerIndex) layers.push({})
         layers[layerIndex] = layerValue
 
@@ -161,13 +154,11 @@ export function useCommitPropertyValue({
           mergeSubProperties: false,
         })
         onDone()
+
         return
       }
 
-      const localSerializeValue = (
-        nextValue: string,
-        currentValue: unknown,
-      ) => {
+      const localSerializeValue = (nextValue: string, currentValue: unknown) => {
         return serializeValue(
           nextValue,
           {
@@ -181,10 +172,7 @@ export function useCommitPropertyValue({
 
       // Applies a preset update for the given key. Returns false without
       // writing when core produced no update, so callers can fall through.
-      const writePresetUpdate = (
-        presetKey: string,
-        nextValue: string,
-      ): boolean => {
+      const writePresetUpdate = (presetKey: string, nextValue: string): boolean => {
         const update = createPresetPropertyUpdate(
           presetKey,
           nextValue,
@@ -192,8 +180,10 @@ export function useCommitPropertyValue({
           selection!,
           theme,
         )
+
         if (Object.keys(update).length === 0) return false
         setProperties(update, { mergeSubProperties: false })
+
         return true
       }
 
@@ -201,6 +191,7 @@ export function useCommitPropertyValue({
         if (!isPresetProperty(property.key)) {
           return false
         }
+
         // A layered-paint facet preset (e.g. `background.<n>.preset`) is a plain
         // per-layer facet, not the compound's selector. The compound-preset apply
         // collapses the whole stack to a single layer at index 0 and drops the
@@ -208,19 +199,19 @@ export function useCommitPropertyValue({
         if (parsePropertyPath(property.key).kind === "layered-facet") {
           return false
         }
+
         writePresetUpdate(property.key, nextValue)
         onDone()
+
         return true
       }
 
       // Font collection family rows route edits straight to the workspace through
       // the editing context, bypassing the node/theme property paths.
       if (fontCollectionEditingContext?.isFontCollectionEditing) {
-        fontCollectionEditingContext.updateFontCollectionProperty(
-          property,
-          newValue,
-        )
+        fontCollectionEditingContext.updateFontCollectionProperty(property, newValue)
         onDone()
+
         return
       }
 
@@ -229,20 +220,23 @@ export function useCommitPropertyValue({
       if (iconSetEditingContext?.isIconSetEditing) {
         iconSetEditingContext.updateIconSetProperty(property, newValue)
         onDone()
+
         return
       }
 
       if (property.key === "theme" && subject) {
-        const newThemeId =
-          newValue === "none" ? null : (newValue as ThemeInstanceId)
+        const newThemeId = newValue === "none" ? null : (newValue as ThemeInstanceId)
+
         setObjectTheme(subject, newThemeId)
         onDone()
+
         return
       }
 
       if (property.key === "reference" && subject && !isBoard(subject)) {
         setObjectReference(subject, newValue)
         onDone()
+
         return
       }
 
@@ -253,26 +247,27 @@ export function useCommitPropertyValue({
         if (property.key === REPEAT_ROW_KEY) {
           setNodeRepeatCount(subject.id, Number.parseInt(newValue, 10))
           onDone()
+
           return
         }
+
         const dataSlot = parseRepeatDataRowKey(property.key)
+
         if (dataSlot) {
-          setNodeRepeatDataValue(
-            subject.id,
-            dataSlot.descendantId,
-            dataSlot.echoIndex,
-            newValue,
-          )
+          setNodeRepeatDataValue(subject.id, dataSlot.descendantId, dataSlot.echoIndex, newValue)
           onDone()
+
           return
         }
       }
 
       if (newValue === "__upload__") {
         const uploadTarget = imageUploadTargetForKey(property.key)
+
         if (uploadTarget) {
           showUploadPanel({ property: uploadTarget })
           onDone()
+
           return
         }
       }
@@ -287,9 +282,11 @@ export function useCommitPropertyValue({
           setProperties,
           cleanCompoundValue,
         })
+
         if (handled) {
           onDone()
         }
+
         return
       }
 
@@ -299,21 +296,26 @@ export function useCommitPropertyValue({
         if (themeEditingContext?.isThemeEditing) {
           themeEditingContext.resetThemeProperty(property)
           onDone()
+
           return
         }
+
         // Check if this is a compound property with a preset sub-property
         if (
           property.isCompound &&
           writePresetUpdate(compoundPresetPropertyKey(property.key), newValue)
         ) {
           onDone()
+
           return
         }
 
         if (applyPresetPropertyUpdate(newValue)) {
           return
         }
+
         reset()
+
         return
       }
 
@@ -321,6 +323,7 @@ export function useCommitPropertyValue({
       if (themeEditingContext?.isThemeEditing) {
         themeEditingContext.updateThemeProperty(property, newValue)
         onDone()
+
         return
       }
 
@@ -334,11 +337,9 @@ export function useCommitPropertyValue({
         const flatOptions = options.flat()
         const isPresetValue = flatOptions.some((opt) => opt.value === newValue)
 
-        if (
-          isPresetValue &&
-          writePresetUpdate(compoundPresetPropertyKey(property.key), newValue)
-        ) {
+        if (isPresetValue && writePresetUpdate(compoundPresetPropertyKey(property.key), newValue)) {
           onDone()
+
           return
         }
       }
@@ -351,11 +352,12 @@ export function useCommitPropertyValue({
       // owns the layer count and order; pass it through to the update handler.
       const parsedForUpdate = parsePropertyPath(property.key)
       let effectiveLayers: Record<string, unknown>[] | undefined
+
       if (parsedForUpdate.kind === "layered-facet" && subject) {
-        const current = coreGetEffectiveProperties(
-          getPropertiesSubjectId(subject),
-          workspace,
-        )[parsedForUpdate.root as keyof Properties]
+        const current = coreGetEffectiveProperties(getPropertiesSubjectId(subject), workspace)[
+          parsedForUpdate.root as keyof Properties
+        ]
+
         effectiveLayers = Array.isArray(current)
           ? (current as Record<string, unknown>[])
           : current

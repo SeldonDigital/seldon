@@ -1,20 +1,13 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Input",
   id: Seldon.ComponentId.INPUT,
   intent: "Low-level text input control for collecting user input.",
-  tags: [
-    "input",
-    "form",
-    "text",
-    "primitive",
-    "field",
-    "user entry",
-    "control",
-  ],
+  tags: ["input", "form", "text", "primitive", "field", "user entry", "control"],
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.INPUT,
   properties: {

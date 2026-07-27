@@ -1,4 +1,4 @@
-import { PropertySchema } from "../../types/schema"
+import type { PropertySchema } from "../../types/schema"
 
 export const wrapTextSchema: PropertySchema = {
   name: "wrapText",

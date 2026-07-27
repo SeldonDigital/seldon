@@ -1,16 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  Properties,
-  TextAlign,
-  TextDecoration,
-  Unit,
-  ValueType,
-} from "@seldon/core"
+import { TextAlign, TextDecoration, Unit, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
 
-import { StyleGenerationContext } from "../types"
 import { getTextStyles } from "./get-text-styles"
+
+import type { StyleGenerationContext } from "../types"
+import type { Properties } from "@seldon/core"
 
 const context = (properties: Properties): StyleGenerationContext => ({
   properties,
@@ -23,6 +19,7 @@ describe("getTextStyles", () => {
     const properties = {
       textAlign: { type: ValueType.OPTION, value: TextAlign.RIGHT },
     } as unknown as Properties
+
     expect(getTextStyles(context(properties))).toEqual({ textAlign: "end" })
   })
 
@@ -30,6 +27,7 @@ describe("getTextStyles", () => {
     const properties = {
       textAlign: { type: ValueType.OPTION, value: TextAlign.AUTO },
     } as unknown as Properties
+
     expect(getTextStyles(context(properties))).toEqual({ textAlign: "start" })
   })
 
@@ -40,6 +38,7 @@ describe("getTextStyles", () => {
         value: TextDecoration.UNDERLINE,
       },
     } as unknown as Properties
+
     expect(getTextStyles(context(underline))).toEqual({
       textDecoration: "underline",
     })
@@ -50,6 +49,7 @@ describe("getTextStyles", () => {
         value: TextDecoration.LINE_THROUGH,
       },
     } as unknown as Properties
+
     expect(getTextStyles(context(strike))).toEqual({
       textDecoration: "line-through",
     })
@@ -59,6 +59,7 @@ describe("getTextStyles", () => {
     const properties = {
       wrapText: { type: ValueType.OPTION, value: false },
     } as unknown as Properties
+
     expect(getTextStyles(context(properties))).toEqual({
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
@@ -72,6 +73,7 @@ describe("getTextStyles", () => {
         size: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 16 } },
       },
     } as unknown as Properties
+
     expect(getTextStyles(context(properties))).toEqual({ fontSize: "16px" })
   })
 

@@ -5,12 +5,13 @@ import { setIsLocalWorkspaceDirty } from "@app/project/hooks/use-workspace-sync-
 import { useToastStore } from "@app/toaster/hooks/use-toast-store"
 import { useCallback } from "react"
 
-import { Action } from "@seldon/core/index"
 import { WorkspaceValidationError } from "@seldon/core/workspace/middleware/validation/validation.middleware"
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 
 import { getCurrentWorkspace, useHistoryStore } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
+
+import type { Action } from "@seldon/core/index"
 
 /**
  * Returns a stable `dispatch` that never subscribes the calling component to

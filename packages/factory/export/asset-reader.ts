@@ -10,10 +10,10 @@ export type IconExportSource = {
 
 export type ExportAssetReader = {
   readNativeComponent(fileStem: string): string | undefined
-  readCustomComponent?(fileStem: string): string | undefined
   readIconFile(absolutePath: string): Buffer | undefined
-  getIconExportSource?(iconId: IconId): IconExportSource | undefined
   listNativeComponentFileStems(): string[]
+  readCustomComponent?(fileStem: string): string | undefined
+  getIconExportSource?(iconId: IconId): IconExportSource | undefined
 }
 
 /**
@@ -28,60 +28,56 @@ function isSafeFileStem(fileStem: string): boolean {
 function isInside(root: string, candidate: string): boolean {
   const resolvedRoot = path.resolve(root)
   const resolved = path.resolve(candidate)
-  return (
-    resolved === resolvedRoot || resolved.startsWith(resolvedRoot + path.sep)
-  )
+
+  return resolved === resolvedRoot || resolved.startsWith(resolvedRoot + path.sep)
 }
 
-export function createNodeExportAssetReader(
-  rootDirectory: string,
-): ExportAssetReader {
-  const nativeReactPath = path.join(
-    rootDirectory,
-    "packages/core/components/native-react",
-  )
-  const customReactPath = path.join(
-    rootDirectory,
-    "packages/core/components/catalog/custom",
-  )
+export function createNodeExportAssetReader(rootDirectory: string): ExportAssetReader {
+  const nativeReactPath = path.join(rootDirectory, "packages/core/components/native-react")
+  const customReactPath = path.join(rootDirectory, "packages/core/components/catalog/custom")
 
   return {
     readNativeComponent(fileStem: string): string | undefined {
       if (!isSafeFileStem(fileStem) || !fs.existsSync(nativeReactPath)) {
         return undefined
       }
+
       const filePath = path.join(nativeReactPath, `${fileStem}.tsx`)
+
       if (!fs.existsSync(filePath)) {
         return undefined
       }
+
       return fs.readFileSync(filePath, "utf8")
     },
     readCustomComponent(fileStem: string): string | undefined {
       if (!isSafeFileStem(fileStem) || !fs.existsSync(customReactPath)) {
         return undefined
       }
+
       const filePath = path.join(customReactPath, `${fileStem}.tsx`)
+
       if (!fs.existsSync(filePath)) {
         return undefined
       }
+
       return fs.readFileSync(filePath, "utf8")
     },
     readIconFile(absolutePath: string): Buffer | undefined {
       // Only read files inside the repo root. The path is derived from the
       // workspace, so containment stops a crafted workspace from reading and
       // embedding arbitrary files from disk.
-      if (
-        !isInside(rootDirectory, absolutePath) ||
-        !fs.existsSync(absolutePath)
-      ) {
+      if (!isInside(rootDirectory, absolutePath) || !fs.existsSync(absolutePath)) {
         return undefined
       }
+
       return fs.readFileSync(absolutePath)
     },
     listNativeComponentFileStems(): string[] {
       if (!fs.existsSync(nativeReactPath)) {
         return []
       }
+
       return fs
         .readdirSync(nativeReactPath)
         .filter((name) => name.endsWith(".tsx"))

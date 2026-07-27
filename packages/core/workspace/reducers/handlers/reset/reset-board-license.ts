@@ -1,5 +1,6 @@
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 export function resetBoardLicense(
   payload: ExtractPayload<"reset_board_license">,

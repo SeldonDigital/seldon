@@ -10,17 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface MessageOutcomeProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -60,10 +61,7 @@ export function MessageOutcome({
   seldonRefs,
   ...props
 }: MessageOutcomeProps) {
-  const messageOutcomeClassName = combineClassNames(
-    "sdn-message-outcome",
-    className,
-  )
+  const messageOutcomeClassName = combineClassNames("sdn-message-outcome", className)
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -91,10 +89,7 @@ export function MessageOutcome({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const textDescriptionProps = applyRef(
@@ -104,19 +99,12 @@ export function MessageOutcome({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
 
   return (
-    <Frame
-      className={messageOutcomeClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={messageOutcomeClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -125,9 +113,7 @@ export function MessageOutcome({
             {icon && iconProps && <Icon {...iconProps} />}
             {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
           </Frame>
-          {textDescription && textDescriptionProps && (
-            <TextDescription {...textDescriptionProps} />
-          )}
+          {textDescription && textDescriptionProps && <TextDescription {...textDescriptionProps} />}
         </>
       )}
     </Frame>

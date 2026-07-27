@@ -1,4 +1,3 @@
-import type { ComponentId } from "../../../../components/constants"
 import { invariant } from "../../../../index"
 import { ErrorMessages } from "../../../constants"
 import {
@@ -18,9 +17,11 @@ import {
   isMediaBoard,
   isThemeBoard,
 } from "../../../model/components"
-import type { Action, Board, Workspace } from "../../../types"
 import { boardValidators, isPackagedCatalogBoard } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
+
+import type { ComponentId } from "../../../../components/constants"
+import type { Action, Board, Workspace } from "../../../types"
 
 const RESOURCE_CATALOGS = {
   add_font_collection: {
@@ -53,17 +54,17 @@ export function validateAddResourceCatalog(
   >,
 ): void {
   const config = RESOURCE_CATALOGS[action.type]
-  const catalogId =
-    action.type === "add_theme"
-      ? action.payload.boardKey
-      : action.payload.catalogId
+  const catalogId = action.type === "add_theme" ? action.payload.boardKey : action.payload.catalogId
+
   boardValidators.doesNotExist(workspace, catalogId)
+
   try {
     boardValidators.assertCatalogId(catalogId, config.allowed, config.label)
   } catch (error) {
     if (error instanceof Error) {
       throw new WorkspaceValidationError(error.message, action)
     }
+
     throw error
   }
 }
@@ -75,22 +76,16 @@ export function validateDuplicateComponent(
   boardValidators.exists(workspace, action.payload.sourceBoardKey)
   boardValidators.doesNotExist(workspace, action.payload.newBoardKey)
   const sourceBoard = workspace.boards[action.payload.sourceBoardKey]
-  invariant(
-    sourceBoard,
-    `Board ${action.payload.sourceBoardKey} missing after exists check`,
-  )
+
+  invariant(sourceBoard, `Board ${action.payload.sourceBoardKey} missing after exists check`)
 
   if (isComponentBoard(sourceBoard)) {
-    throw new WorkspaceValidationError(
-      "Cannot duplicate a component board",
-      action,
-    )
+    throw new WorkspaceValidationError("Cannot duplicate a component board", action)
   }
 
   const packagedChecks: Array<[boolean, string]> = [
     [
-      isThemeBoard(sourceBoard) &&
-        isPackagedCatalogBoard(sourceBoard, THEME_BOARD_CATALOG_IDS),
+      isThemeBoard(sourceBoard) && isPackagedCatalogBoard(sourceBoard, THEME_BOARD_CATALOG_IDS),
       "Cannot duplicate a theme board tied to a packaged theme catalog",
     ],
     [
@@ -104,8 +99,7 @@ export function validateDuplicateComponent(
       "Cannot duplicate an icon set board tied to a packaged catalog",
     ],
     [
-      isMediaBoard(sourceBoard) &&
-        isPackagedCatalogBoard(sourceBoard, MEDIA_BOARD_CATALOG_IDS),
+      isMediaBoard(sourceBoard) && isPackagedCatalogBoard(sourceBoard, MEDIA_BOARD_CATALOG_IDS),
       "Cannot duplicate a media board tied to a packaged catalog",
     ],
   ]
@@ -118,9 +112,7 @@ export function validateDuplicateComponent(
 }
 
 /** Protected default boards that may never be removed, keyed by board type. */
-const PROTECTED_BOARDS: Partial<
-  Record<Board["type"], { key: string; message: string }>
-> = {
+const PROTECTED_BOARDS: Partial<Record<Board["type"], { key: string; message: string }>> = {
   theme: {
     key: DEFAULT_THEME_BOARD_KEY,
     message:
@@ -139,41 +131,33 @@ const PROTECTED_BOARDS: Partial<
 }
 
 /** Message thrown when a board's variants are still referenced elsewhere. */
-const IN_USE_MESSAGES: Partial<Record<Board["type"], (key: string) => string>> =
-  {
-    component: (key) =>
-      ErrorMessages.componentVariantsInUse(key as ComponentId),
-    "authored-component": (key) =>
-      ErrorMessages.componentVariantsInUse(key as ComponentId),
-    theme: () => "Theme catalog rows are still referenced in another board",
-    "font-collection": () =>
-      "Font collection catalog rows are still referenced in another board",
-    media: () => "Media catalog rows are still referenced in another board",
-    "icon-set": () =>
-      "Icon set catalog rows are still referenced in another board",
-    playground: () => "Playground board is still referenced by another catalog",
-  }
+const IN_USE_MESSAGES: Partial<Record<Board["type"], (key: string) => string>> = {
+  component: (key) => ErrorMessages.componentVariantsInUse(key as ComponentId),
+  "authored-component": (key) => ErrorMessages.componentVariantsInUse(key as ComponentId),
+  theme: () => "Theme catalog rows are still referenced in another board",
+  "font-collection": () => "Font collection catalog rows are still referenced in another board",
+  media: () => "Media catalog rows are still referenced in another board",
+  "icon-set": () => "Icon set catalog rows are still referenced in another board",
+  playground: () => "Playground board is still referenced by another catalog",
+}
 
-export function validateRemoveBoard(
-  workspace: Workspace,
-  action: Action,
-): void {
+export function validateRemoveBoard(workspace: Workspace, action: Action): void {
   const key = (action.payload as { boardKey: string }).boardKey
   const board = workspace.boards[key] ?? workspace.playgrounds?.[key]
+
   if (!board) {
-    throw new WorkspaceValidationError(
-      ErrorMessages.componentNotFound(key),
-      action,
-    )
+    throw new WorkspaceValidationError(ErrorMessages.componentNotFound(key), action)
   }
 
   const protectedBoard = PROTECTED_BOARDS[board.type]
+
   if (protectedBoard && key === protectedBoard.key) {
     throw new WorkspaceValidationError(protectedBoard.message, action)
   }
 
   if (shouldBlockDeletableBoardRemoval(board, workspace, key)) {
     const buildMessage = IN_USE_MESSAGES[board.type]
+
     throw new WorkspaceValidationError(
       buildMessage ? buildMessage(key) : ErrorMessages.componentNotFound(key),
       action,

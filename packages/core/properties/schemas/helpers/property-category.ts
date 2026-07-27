@@ -1,8 +1,9 @@
 import { isCompoundCatalogProperty } from "../../constants/shared/compound-properties"
 import { isShorthandCatalogProperty } from "../../constants/shared/shorthand-properties"
-import type { PropertySchema } from "../../types/schema"
 import { getPropertySchema } from "./get-property-schema"
 import { joinCompoundFacetKey } from "./property-path"
+
+import type { PropertySchema } from "../../types/schema"
 
 /** Catalog grouping for a top-level property key. */
 export type PropertyCategory = "atomic" | "compound" | "shorthand"
@@ -13,13 +14,12 @@ export type PropertyCategory = "atomic" | "compound" | "shorthand"
  * `constants/shared/shorthand-properties.ts`.
  * Returns undefined when the name is absent from both lists and from the catalog schema map.
  */
-export function getPropertyCategory(
-  propertyName: string,
-): PropertyCategory | undefined {
+export function getPropertyCategory(propertyName: string): PropertyCategory | undefined {
   if (isShorthandCatalogProperty(propertyName)) return "shorthand"
   if (isCompoundCatalogProperty(propertyName)) return "compound"
 
   const schema = getPropertySchema(propertyName)
+
   if (!schema) {
     return undefined
   }

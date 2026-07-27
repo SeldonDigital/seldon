@@ -1,20 +1,11 @@
 "use client"
 
-import {
-  ComboboxOptionItem,
-  ComboboxPosition,
-  OptionIconRender,
-  useComboboxPosition,
-} from "@app/menus"
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import {
-  CSSProperties,
-  MouseEvent,
-  RefObject,
-  useCallback,
-  useRef,
-  useState,
-} from "react"
+import { useComboboxPosition } from "@app/menus"
+import { useCallback, useRef, useState } from "react"
+
+import type { ComboboxOptionItem, ComboboxPosition, OptionIconRender } from "@app/menus"
+import type { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import type { CSSProperties, MouseEvent, RefObject } from "react"
 
 // Fixed panel width for the floating display picker.
 const PANEL_WIDTH = 200
@@ -38,10 +29,10 @@ interface DisplayPickerResult {
     filteredOptions: ComboboxOptionItem[][]
     hasSections: boolean
     value: string
-    highlightedValue?: string
     resolveIcon: (option?: { value: string; name: string }) => OptionIconRender
     onSelect: (value: string) => void
     onHighlight: (value: string | undefined) => void
+    highlightedValue?: string
   }
 }
 
@@ -60,9 +51,7 @@ export function useRowDisplayPicker({
   resolveIcon,
 }: DisplayPickerInput): DisplayPickerResult {
   const [open, setOpen] = useState(false)
-  const [highlightedValue, setHighlightedValue] = useState<string | undefined>(
-    undefined,
-  )
+  const [highlightedValue, setHighlightedValue] = useState<string | undefined>(undefined)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
 
   // Reuse the shared anchor positioning, then right-align a fixed-width panel to
@@ -94,10 +83,7 @@ export function useRowDisplayPicker({
     [onSelect],
   )
 
-  const handlePointerLeave = useCallback(
-    () => setHighlightedValue(value),
-    [value],
-  )
+  const handlePointerLeave = useCallback(() => setHighlightedValue(value), [value])
 
   return {
     buttonProps: {

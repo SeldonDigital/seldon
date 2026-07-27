@@ -1,4 +1,5 @@
 import { STOCK_THEMES_BY_ID } from "../../../../themes/catalog"
+
 import type { ThemeTemplateId } from "../../../../themes/types/theme-id"
 import type { EntryTheme } from "../../../model/entry-theme"
 import type { Workspace } from "../../../model/workspace"
@@ -24,23 +25,28 @@ function resolveThemeTemplateId(
   if (seen.has(entryId)) return undefined
   seen.add(entryId)
   const entry = themes[entryId]
+
   if (!entry) return undefined
   const [prefix, suffix] = entry.template.split(":")
+
   if (prefix === "catalog") return suffix
+
   if (prefix === "theme" && suffix) {
     return resolveThemeTemplateId(suffix, themes, seen)
   }
+
   return undefined
 }
 
 /** Reads the entry's own `overrides.colorHarmony.parameters` record, if any. */
-function overrideColorHarmonyParameters(
-  entry: EntryTheme,
-): Record<string, unknown> | undefined {
+function overrideColorHarmonyParameters(entry: EntryTheme): Record<string, unknown> | undefined {
   const colorHarmony = entry.overrides.colorHarmony
+
   if (!colorHarmony || typeof colorHarmony !== "object") return undefined
   const parameters = (colorHarmony as Record<string, unknown>).parameters
+
   if (!parameters || typeof parameters !== "object") return undefined
+
   return parameters as Record<string, unknown>
 }
 
@@ -54,11 +60,14 @@ function chainOverridesSupply(
   if (seen.has(entry.id)) return false
   seen.add(entry.id)
   const parameters = overrideColorHarmonyParameters(entry)
+
   if (parameters && parameters[key] !== undefined) return true
   const [prefix, suffix] = entry.template.split(":")
+
   if (prefix === "theme" && suffix && themes[suffix]) {
     return chainOverridesSupply(themes[suffix], themes, key, seen)
   }
+
   return false
 }
 
@@ -69,10 +78,10 @@ function entryNeedsStamp(
   key: "mode" | "chromaChange",
 ): boolean {
   const templateId = resolveThemeTemplateId(entry.id, themes)
-  const stockTheme = templateId
-    ? STOCK_THEMES_BY_ID[templateId as ThemeTemplateId]
-    : undefined
+  const stockTheme = templateId ? STOCK_THEMES_BY_ID[templateId as ThemeTemplateId] : undefined
+
   if (stockTheme) return false
+
   return !chainOverridesSupply(entry, themes, key)
 }
 
@@ -93,23 +102,19 @@ export function migrateV7ThemeModeChroma(workspace: Workspace): Workspace {
   for (const entry of Object.values(themes)) {
     const needsMode = entryNeedsStamp(entry, themes, "mode")
     const needsChroma = entryNeedsStamp(entry, themes, "chromaChange")
+
     if (!needsMode && !needsChroma) continue
 
     const overrides = entry.overrides
-    const colorHarmony = (overrides.colorHarmony ??= {}) as Record<
-      string,
-      unknown
-    >
-    const parameters = (colorHarmony.parameters ??= {}) as Record<
-      string,
-      unknown
-    >
+    const colorHarmony = (overrides.colorHarmony ??= {}) as Record<string, unknown>
+    const parameters = (colorHarmony.parameters ??= {}) as Record<string, unknown>
 
     if (needsMode) {
       const templateId = resolveThemeTemplateId(entry.id, themes)
-      parameters.mode =
-        templateId && DARK_STOCK_TEMPLATE_IDS.has(templateId) ? "dark" : "light"
+
+      parameters.mode = templateId && DARK_STOCK_TEMPLATE_IDS.has(templateId) ? "dark" : "light"
     }
+
     if (needsChroma) {
       parameters.chromaChange = 0
     }

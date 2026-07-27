@@ -1,4 +1,4 @@
-import { MenuEntry } from "./types"
+import type { MenuEntry } from "./types"
 
 interface BuildResetMenuEntryInput {
   label: string

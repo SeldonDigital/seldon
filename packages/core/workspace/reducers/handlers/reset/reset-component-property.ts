@@ -1,6 +1,7 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { workspaceMutationService } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /** Clears one `componentProperties` key on a board when board property edits are allowed. */
 export function resetComponentProperty(

@@ -1,17 +1,11 @@
-import type { Propagation } from "../../../rules/types/rule-config-types"
 import {
-  EntryNodeId,
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  Workspace,
-} from "../../types"
-import {
-  OperationResult,
   propagateNodeOperation,
   propagatePositionalChildOperation,
 } from "./propagate-node-operation"
+
+import type { Propagation } from "../../../rules/types/rule-config-types"
+import type { EntryNodeId, Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
+import type { OperationResult } from "./propagate-node-operation"
 
 export type { OperationResult }
 
@@ -21,11 +15,7 @@ export class WorkspacePropagationService {
   public propagateNodeOperation<OpResult extends OperationResult>(args: {
     nodeId: VariantId | InstanceId
     propagation: Propagation
-    apply: (
-      node: Variant | Instance,
-      workspace: Workspace,
-      sourceResult?: OpResult,
-    ) => OpResult
+    apply: (node: Variant | Instance, workspace: Workspace, sourceResult?: OpResult) => OpResult
     workspace: Workspace
   }): Workspace {
     return propagateNodeOperation(args)

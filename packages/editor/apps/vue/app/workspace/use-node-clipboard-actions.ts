@@ -8,9 +8,10 @@ import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { resolvePasteTarget } from "@seldon/editor/lib/workspace/paste-target"
 import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
-import { InstanceId, VariantId } from "@seldon/core"
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { typeCheckingService } from "@seldon/core/workspace/services"
+
+import type { InstanceId, VariantId } from "@seldon/core"
 
 /**
  * Cut/copy/paste for the selected object. The clipboard holds a node id only;
@@ -29,25 +30,32 @@ export function useNodeClipboardActions() {
 
   function cutOrCopyNode(clipboardMode: "cut" | "copy"): void {
     const node = selectedNode.value
+
     if (!node) {
       toast.addToast("Select an object to copy")
+
       return
     }
+
     clipboard.setClipboard(node.id as VariantId | InstanceId, clipboardMode)
   }
 
   function pasteNode(): void {
     const nodeId = clipboard.nodeId
     const mode = clipboard.mode
+
     if (!nodeId) {
       toast.addToast("Nothing to paste")
+
       return
     }
 
     const subject = getNode(workspace.value, nodeId)
+
     if (!subject) {
       toast.addToast("The copied object no longer exists")
       clipboard.clearClipboard()
+
       return
     }
 
@@ -60,19 +68,20 @@ export function useNodeClipboardActions() {
 
     if (result.action === "error") {
       toast.addToast(result.message)
+
       return
     }
 
     let newState
+
     if (result.action === "duplicate-into") {
       newState = duplicateNodeInto(subject, result.parentId, result.index)
 
       // Select the freshly created node at the resolved slot.
       if (newState) {
         const parent = getNode(newState, result.parentId)
-        const newNodeId = parent
-          ? getNodeChildIds(parent, newState)[result.index]
-          : undefined
+        const newNodeId = parent ? getNodeChildIds(parent, newState)[result.index] : undefined
+
         if (newNodeId) selectNode(newNodeId as VariantId | InstanceId)
       }
     } else {
@@ -86,6 +95,7 @@ export function useNodeClipboardActions() {
         type: "remove_instance",
         payload: { instanceId: subject.id as InstanceId },
       })
+
       dispatch({ type: "set_workspace", payload: { workspace: afterRemove } })
     }
 

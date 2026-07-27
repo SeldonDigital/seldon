@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { shouldBlockDeletableBoardRemoval } from "./board-removal-guards"
+
+import type { ExtractPayload, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(

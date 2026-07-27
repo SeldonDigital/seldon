@@ -1,18 +1,20 @@
 import merge from "lodash/merge"
 
-import type { IconId } from "../../icon-sets"
 import { isIconSetBoard } from "../../workspace/model/components"
-import type { EntryIconSet } from "../../workspace/model/entry-icon-set"
 import {
   getIconSetTemplateCatalogId,
   getIconSetTemplateIconSetId,
 } from "../../workspace/model/template-ref"
-import type { Workspace } from "../../workspace/types"
 import { STOCK_ICON_SETS_BY_ID } from "../catalog"
 import { instantiateIconSet } from "../compute"
+import { getIncludedIcons } from "./icon-selection"
+
+import type { IconId } from "../../icon-sets"
+import type { EntryIconSet } from "../../workspace/model/entry-icon-set"
+import type { Workspace } from "../../workspace/types"
 import type { ComputedIconSet } from "../types/icon-set"
 import type { IconSetTemplateId } from "../types/icon-set-id"
-import { type IconInclusion, getIncludedIcons } from "./icon-selection"
+import type { IconInclusion } from "./icon-selection"
 
 /** Maps an icon-set board catalog id to the icon-id prefix it contributes. */
 const CATALOG_TO_ICON_PREFIX: Record<string, string> = {
@@ -25,13 +27,11 @@ const CATALOG_TO_ICON_PREFIX: Record<string, string> = {
 /** Reads the per-icon inclusion stored on an `icon-sets` entry. */
 function readInclusion(entry: EntryIconSet | undefined): IconInclusion {
   const inclusion = entry?.overrides?.["includedIcons"]
-  if (
-    typeof inclusion !== "object" ||
-    inclusion === null ||
-    Array.isArray(inclusion)
-  ) {
+
+  if (typeof inclusion !== "object" || inclusion === null || Array.isArray(inclusion)) {
     return {}
   }
+
   return inclusion as IconInclusion
 }
 
@@ -40,16 +40,16 @@ function readInclusion(entry: EntryIconSet | undefined): IconInclusion {
  * directly and walks `icon-set:{parentId}` links. Mirrors
  * `workspaceIconSetService.getIconSet`.
  */
-function resolveEntryIconSet(
-  iconSetId: string,
-  workspace: Workspace,
-): ComputedIconSet | null {
+function resolveEntryIconSet(iconSetId: string, workspace: Workspace): ComputedIconSet | null {
   const entry = workspace["icon-sets"][iconSetId] as EntryIconSet | undefined
+
   if (!entry) return null
 
   const catalogId = getIconSetTemplateCatalogId(entry.template)
+
   if (catalogId) {
     if (!(catalogId in STOCK_ICON_SETS_BY_ID)) return null
+
     return instantiateIconSet(
       catalogId as IconSetTemplateId,
       entry.overrides,
@@ -58,9 +58,12 @@ function resolveEntryIconSet(
   }
 
   const parentId = getIconSetTemplateIconSetId(entry.template)
+
   if (parentId) {
     const parent = resolveEntryIconSet(parentId, workspace)
+
     if (!parent) return null
+
     return merge({}, parent, entry.overrides) as ComputedIconSet
   }
 
@@ -73,11 +76,14 @@ function resolveEntryIconSet(
  */
 export function getAddedIconSetPrefixes(workspace: Workspace): Set<string> {
   const prefixes = new Set<string>()
+
   for (const entry of Object.values(workspace.boards)) {
     if (!entry || !isIconSetBoard(entry)) continue
     const prefix = CATALOG_TO_ICON_PREFIX[entry.catalogId]
+
     if (prefix) prefixes.add(prefix)
   }
+
   return prefixes
 }
 
@@ -92,12 +98,13 @@ export function getWorkspaceEnabledIcons(workspace: Workspace): IconId[] {
 
   for (const board of Object.values(workspace.boards)) {
     if (!board || !isIconSetBoard(board)) continue
+
     for (const variant of board.variants ?? []) {
       const set = resolveEntryIconSet(variant.id, workspace)
+
       if (!set) continue
-      const entry = workspace["icon-sets"][variant.id] as
-        | EntryIconSet
-        | undefined
+      const entry = workspace["icon-sets"][variant.id] as EntryIconSet | undefined
+
       for (const iconId of getIncludedIcons(set, readInclusion(entry))) {
         if (seen.has(iconId)) continue
         seen.add(iconId)
@@ -121,6 +128,8 @@ export function isIconUnavailable(
   addedPrefixes: ReadonlySet<string>,
 ): boolean {
   const prefix = iconId.split("-")[0]
+
   if (!addedPrefixes.has(prefix)) return false
+
   return !enabled.has(iconId)
 }

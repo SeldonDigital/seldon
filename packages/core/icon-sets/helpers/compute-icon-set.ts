@@ -1,4 +1,5 @@
 import { normalizeIconSetInput } from "../compute/normalize-icon-set"
+
 import type { ComputedIconSet, IconSetPipelineInput } from "../types/icon-set"
 
 /**
@@ -7,6 +8,7 @@ import type { ComputedIconSet, IconSetPipelineInput } from "../types/icon-set"
  */
 export function computeIconSet(set: IconSetPipelineInput): ComputedIconSet {
   const normalized = normalizeIconSetInput(set)
+
   return {
     ...normalized,
     id: normalized.metadata.id,

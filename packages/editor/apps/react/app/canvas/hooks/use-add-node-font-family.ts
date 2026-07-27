@@ -6,9 +6,10 @@ import { useEffect } from "react"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import { InstanceId, VariantId } from "@seldon/core/index"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+
+import type { InstanceId, VariantId } from "@seldon/core/index"
 
 /**
  * Adds the nodes used font family to the editor fonts

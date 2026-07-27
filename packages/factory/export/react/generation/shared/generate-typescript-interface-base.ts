@@ -1,8 +1,9 @@
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
-import { ComponentToExport } from "../../../types"
 import { isAttributeKey } from "./attribute-props"
 import { getCustomTemplateMeta } from "./custom-react"
+
+import type { ComponentToExport } from "../../../types"
 
 /**
  * Get the needed generic type and its parameter for interface generation
@@ -13,6 +14,7 @@ export function getGenericAndParameters(component: ComponentToExport) {
   // If this component has an icon, we need to get the generic parameter from there
   if (config.react.returns === "iconMap") {
     const item = NATIVE_REACT_PRIMITIVES.HTMLSvg
+
     return {
       generic: item.types.generic,
       parameters: [item.types.parameter],
@@ -22,17 +24,17 @@ export function getGenericAndParameters(component: ComponentToExport) {
   if (config.react.returns === "htmlElement") {
     // Get the htmlElement option parameters
     const options = component.tree.dataBinding.props.htmlElement?.options ?? []
+
     if (options.length === 0) {
       throw new Error(
         `Component ${component.name} should return a htmlElement, but it does not have any htmlElement options in the schema`,
       )
     }
+
     const parameters = Object.values(NATIVE_REACT_PRIMITIVES)
-      .filter(
-        (item) =>
-          item.htmlElementOption && options.includes(item.htmlElementOption),
-      )
+      .filter((item) => item.htmlElementOption && options.includes(item.htmlElementOption))
       .map((item) => item.types.parameter)
+
     return {
       generic: "HTMLAttributes",
       parameters,
@@ -48,20 +50,18 @@ export function getGenericAndParameters(component: ComponentToExport) {
   }
 
   if (config.react.returns === "wrapperElement") {
-    const options =
-      component.tree.dataBinding.props.wrapperElement?.options ?? []
+    const options = component.tree.dataBinding.props.wrapperElement?.options ?? []
+
     if (options.length === 0) {
       throw new Error(
         `Component ${component.name} should return a wrapperElement, but it does not have any wrapperElement options in the schema`,
       )
     }
+
     const parameters = Object.values(NATIVE_REACT_PRIMITIVES)
-      .filter(
-        (item) =>
-          item.wrapperElementOption &&
-          options.includes(item.wrapperElementOption),
-      )
+      .filter((item) => item.wrapperElementOption && options.includes(item.wrapperElementOption))
       .map((item) => item.types.parameter)
+
     return {
       generic: "HTMLAttributes",
       parameters,
@@ -72,6 +72,7 @@ export function getGenericAndParameters(component: ComponentToExport) {
   // wraps (e.g. a toggle switch extends the input's attributes).
   if (config.react.returns === "custom") {
     const item = NATIVE_REACT_PRIMITIVES[getCustomTemplateMeta(component).base]
+
     return {
       generic: item.types.generic,
       parameters: [item.types.parameter],
@@ -80,6 +81,7 @@ export function getGenericAndParameters(component: ComponentToExport) {
 
   // Get the generic parameter
   const item = NATIVE_REACT_PRIMITIVES[config.react.returns]
+
   return {
     generic: item.types.generic,
     parameters: [item.types.parameter],
@@ -98,6 +100,7 @@ export function generateOwnPropsContent(component: ComponentToExport): string {
     if (isAttributeKey(key)) {
       continue
     }
+
     if (value.options) {
       // If this prop has options, create a union (e.g. "span" | "div")
       content += `${key}?: ${value.options?.map((i) => `'${i}'`).join(" | ")};`
@@ -119,6 +122,7 @@ export function generateOwnPropsContent(component: ComponentToExport): string {
       // Convert function signatures to use void return type
       const functionSignature = value.value as string
       const voidSignature = functionSignature.replace(/=>\s*\{\}/g, "=> void")
+
       content += `${key}?: ${voidSignature};`
     } else if (Array.isArray(value.value)) {
       content += `${key}?: ${typeof value.value[0]}[];`

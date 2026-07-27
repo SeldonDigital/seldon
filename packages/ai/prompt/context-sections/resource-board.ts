@@ -3,6 +3,9 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
+
+import { section } from "./section"
+
 import type {
   Board,
   BoardKey,
@@ -12,8 +15,6 @@ import type {
   Workspace,
 } from "@seldon/core/workspace/types"
 
-import { section } from "./section"
-
 /** A resource board (theme, font collection, or icon set) and its map key. */
 export interface ResourceBoardMatch {
   boardKey: BoardKey
@@ -21,12 +22,8 @@ export interface ResourceBoardMatch {
 }
 
 /** True for a resource board that carries editable variant entries. */
-function isResourceBoard(
-  board: Board,
-): board is ThemeBoard | FontCollectionBoard | IconSetBoard {
-  return (
-    isThemeBoard(board) || isFontCollectionBoard(board) || isIconSetBoard(board)
-  )
+function isResourceBoard(board: Board): board is ThemeBoard | FontCollectionBoard | IconSetBoard {
+  return isThemeBoard(board) || isFontCollectionBoard(board) || isIconSetBoard(board)
 }
 
 /**
@@ -40,10 +37,12 @@ export function findResourceBoardForEntry(
 ): ResourceBoardMatch | undefined {
   for (const [boardKey, board] of Object.entries(workspace.boards)) {
     if (!isResourceBoard(board)) continue
+
     if (board.variants.some((ref) => ref.id === entryId)) {
       return { boardKey, board }
     }
   }
+
   return undefined
 }
 
@@ -57,9 +56,8 @@ export function resourceBoardEntriesSection(
   board: ThemeBoard | FontCollectionBoard | IconSetBoard,
   boardKey: BoardKey,
 ): string[] {
-  const body = board.variants.map(
-    (ref, index) => `- ${ref.id}${index === 0 ? " (default)" : ""}`,
-  )
+  const body = board.variants.map((ref, index) => `- ${ref.id}${index === 0 ? " (default)" : ""}`)
+
   return section(
     `Resource board entries: ${boardKey} -> "${board.label}" (target these ids):`,
     body,

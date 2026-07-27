@@ -24,9 +24,11 @@ describe("colorspaceLiteralToHsl", () => {
 describe("parseColorspaceLiteral", () => {
   it("returns valid strings unchanged and copies color objects", () => {
     expect(parseColorspaceLiteral("#fff")).toBe("#fff")
-    expect(
-      parseColorspaceLiteral({ hue: 120, saturation: 50, lightness: 50 }),
-    ).toEqual({ hue: 120, saturation: 50, lightness: 50 })
+    expect(parseColorspaceLiteral({ hue: 120, saturation: 50, lightness: 50 })).toEqual({
+      hue: 120,
+      saturation: 50,
+      lightness: 50,
+    })
   })
 
   it("throws on null, invalid strings, and unsupported types", () => {

@@ -1,11 +1,12 @@
-import { IconId } from "../../icon-sets"
 import { isIconSetBoard } from "../../workspace/model/components"
-import { Workspace } from "../../workspace/types"
 import { carbonIconIds } from "../catalog/carbon"
 import { lucideIconIds } from "../catalog/lucide"
 import { materialIconIds } from "../catalog/material"
 import { seldonIconIds } from "../catalog/seldon"
-import { IconSetId } from "../types"
+
+import type { IconId } from "../../icon-sets"
+import type { Workspace } from "../../workspace/types"
+import type { IconSetId } from "../types"
 
 const ICON_SET_CATALOG_TO_SET_ID: Record<string, IconSetId> = {
   seldonIcons: "seldon",
@@ -31,11 +32,14 @@ function iconIdsForSet(setId: IconSetId): readonly IconId[] {
 
 function collectIconSetIdsFromBoards(workspace: Workspace): IconSetId[] {
   const setIds = new Set<IconSetId>()
+
   for (const entry of Object.values(workspace.boards)) {
     if (!entry || !isIconSetBoard(entry)) continue
     const setId = ICON_SET_CATALOG_TO_SET_ID[entry.catalogId]
+
     if (setId) setIds.add(setId)
   }
+
   return [...setIds]
 }
 
@@ -45,11 +49,13 @@ function collectIconSetIdsFromBoards(workspace: Workspace): IconSetId[] {
  */
 export function getAvailableIcons(workspace: Workspace): IconId[] {
   let setIds = collectIconSetIdsFromBoards(workspace)
+
   if (setIds.length === 0) {
     setIds = ["google-material", "seldon"]
   }
 
   const availableIcons = new Set<IconId>()
+
   for (const setId of setIds) {
     for (const iconId of iconIdsForSet(setId)) {
       availableIcons.add(iconId)

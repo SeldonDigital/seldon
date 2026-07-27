@@ -14,7 +14,4 @@ export type {
   FontFamilyTable,
   StockFontCollection,
 } from "./font-collection"
-export type {
-  FontCollectionInstanceId,
-  FontCollectionTemplateId,
-} from "./font-collection-id"
+export type { FontCollectionInstanceId, FontCollectionTemplateId } from "./font-collection-id"

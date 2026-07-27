@@ -1,7 +1,8 @@
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { section } from "./section"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 const SEARCH_LIMIT = 30
 
@@ -17,27 +18,23 @@ const SEARCH_LIMIT = 30
  * workspace has not turned on. Falls back to nothing on no match, so the caller
  * can report a clean miss.
  */
-export function searchFontsSection(
-  workspace: Workspace,
-  query: string,
-): string[] {
+export function searchFontsSection(workspace: Workspace, query: string): string[] {
   const needle = query.trim().toLowerCase()
+
   if (needle === "") return []
 
   const matches: string[] = []
-  for (const family of workspaceFontCollectionService.collectWorkspaceFamilies(
-    workspace,
-  )) {
+
+  for (const family of workspaceFontCollectionService.collectWorkspaceFamilies(workspace)) {
     const value = family.stack ?? family.name
     const haystack = `${value} ${family.name}`.toLowerCase()
+
     if (haystack.includes(needle)) {
       matches.push(value === family.name ? value : `${value} (${family.name})`)
     }
+
     if (matches.length >= SEARCH_LIMIT) break
   }
 
-  return section(
-    `Fonts matching "${query}" (set font.family to the value):`,
-    matches,
-  )
+  return section(`Fonts matching "${query}" (set font.family to the value):`, matches)
 }

@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideBinoculars(props: SVGAttributes<SVGSVGElement>) {
   return (

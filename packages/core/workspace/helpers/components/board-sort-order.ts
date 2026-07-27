@@ -7,6 +7,7 @@ const BOARD_ORDER_KEY = "order"
  */
 export function getBoardOrder(board: Board): number {
   const v = board.__editor?.[BOARD_ORDER_KEY]
+
   return typeof v === "number" ? v : 0
 }
 

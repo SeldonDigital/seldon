@@ -1,12 +1,12 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Description List",
   id: Seldon.ComponentId.DESCRIPTION_LIST,
-  intent:
-    "Renders a list of term-description pairs for structured information.",
+  intent: "Renders a list of term-description pairs for structured information.",
   tags: ["description list", "dl", "terms", "definitions", "element", "info"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.COMPONENT,
@@ -36,9 +36,7 @@ export const schema = {
     wrapChildren: { type: Sdn.ValueType.OPTION, value: false },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,

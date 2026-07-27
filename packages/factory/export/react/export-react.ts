@@ -1,4 +1,3 @@
-import { Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ORDERED_COMPONENT_LEVELS } from "@seldon/core/components/constants"
 import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
@@ -7,7 +6,6 @@ import { buildExportContext } from "../../helpers/build-export-context"
 import { buildStyleRegistry } from "../css/discovery/get-style-registry"
 import { generateComponentStylesheet } from "../css/generation/generate-css-stylesheet"
 import { generateThemeStylesheetFiles } from "../css/generation/insert-theme-variables"
-import { ExportOptions, FileToExport } from "../types"
 import { generateIconIndex } from "./assets/generate-icon-index"
 import { generateRefsRegistry } from "./assets/generate-refs-registry"
 import { getFilesToExportFromImagesToExport } from "./assets/get-files-to-export-from-images-to-export"
@@ -25,6 +23,9 @@ import { generateReadmeFile } from "./generation/helpers/generate-readme-file"
 import { getNativeComponentFiles } from "./generation/helpers/get-native-component-files"
 import { insertLicense } from "./generation/inserts/insert-license"
 import { getUtilityFileContents } from "./utils/generate-utility-file-contents"
+
+import type { ExportOptions, FileToExport } from "../types"
+import type { Workspace } from "@seldon/core"
 
 export async function exportReact(
   input: Workspace,
@@ -48,13 +49,10 @@ export async function exportReact(
     nodeTreeDepths,
   } = buildStyleRegistry(workspace, options.publishAll, parentIndex)
 
-  let componentsToExport = getComponentsToExport(
-    workspace,
-    options,
-    nodeIdToClass,
-  )
+  let componentsToExport = getComponentsToExport(workspace, options, nodeIdToClass)
 
   const levelOrder = ORDERED_COMPONENT_LEVELS.slice().reverse()
+
   componentsToExport = componentsToExport.sort((a, b) => {
     const aSchema = getComponentSchema(a.componentId)
     const bSchema = getComponentSchema(b.componentId)
@@ -72,6 +70,7 @@ export async function exportReact(
   // even when no component references it, so users can ship complete icon sets.
   // `exportAllIconSetIcons: false` tree-shakes to only the icons components use.
   const usedIconIds = getUsedIconIds(workspace)
+
   if (options.exportAllIconSetIcons !== false) {
     for (const iconId of getWorkspaceEnabledIcons(workspace)) {
       usedIconIds.add(iconId)
@@ -95,6 +94,7 @@ export async function exportReact(
     options.output.componentsFolder,
     options.exportAllThemes !== false,
   )
+
   filesToExport.push(
     ...themeStylesheets.map((file) => ({
       path: file.path,
@@ -103,6 +103,7 @@ export async function exportReact(
   )
 
   const imagesToExport = await getImagesToExport(workspace, options)
+
   workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
   try {
@@ -113,17 +114,15 @@ export async function exportReact(
       usedIconIds,
       options,
     )
+
     filesToExport.push(...componentFiles)
   } catch (error) {
     console.warn("Failed to generate component files:", error)
   }
 
   try {
-    const primitives = getNativeComponentFiles(
-      workspace,
-      componentsToExport,
-      options,
-    )
+    const primitives = getNativeComponentFiles(workspace, componentsToExport, options)
+
     filesToExport.push(...primitives)
   } catch {
     // Failed to generate native component files
@@ -131,6 +130,7 @@ export async function exportReact(
 
   try {
     const frameComponent = await generateFrameComponent(options)
+
     filesToExport.push(frameComponent)
   } catch {
     // Failed to generate frame component
@@ -138,6 +138,7 @@ export async function exportReact(
 
   try {
     const iconComponents = getIcons(usedIconIds, options)
+
     filesToExport.push(...iconComponents)
   } catch {
     // Failed to generate icon components
@@ -145,17 +146,15 @@ export async function exportReact(
 
   try {
     const iconIndexFile = generateIconIndex(usedIconIds, options)
+
     filesToExport.push(iconIndexFile)
   } catch {
     // Failed to generate icon index
   }
 
   try {
-    const refsRegistryFile = generateRefsRegistry(
-      componentsToExport,
-      nodeIdToClass,
-      options,
-    )
+    const refsRegistryFile = generateRefsRegistry(componentsToExport, nodeIdToClass, options)
+
     if (refsRegistryFile) {
       filesToExport.push(refsRegistryFile)
     }
@@ -165,6 +164,7 @@ export async function exportReact(
 
   try {
     const fontsComponent = await getFontsComponent(workspace, options)
+
     filesToExport.push(fontsComponent)
   } catch {
     // Failed to generate fonts component
@@ -172,6 +172,7 @@ export async function exportReact(
 
   try {
     const readmeFile = generateReadmeFile(options)
+
     filesToExport.push(readmeFile)
   } catch {
     // Failed to generate README
@@ -179,16 +180,15 @@ export async function exportReact(
 
   try {
     const utilityFiles = getUtilityFileContents(options)
+
     filesToExport.push(...utilityFiles)
   } catch {
     // Failed to generate utility files
   }
 
   try {
-    const images = await getFilesToExportFromImagesToExport(
-      imagesToExport,
-      options,
-    )
+    const images = await getFilesToExportFromImagesToExport(imagesToExport, options)
+
     filesToExport.push(...images)
   } catch {
     // Failed to export images
@@ -202,6 +202,7 @@ export async function exportReact(
     filesToExport.map(async (file) => {
       if (typeof file.content !== "string") return
       file.content = insertLicense(file.content)
+
       if (!options.skipFormat && isFormattableSource(file.path)) {
         file.content = await format(file.content)
       }
@@ -211,14 +212,7 @@ export async function exportReact(
   return filesToExport
 }
 
-const FORMATTABLE_SOURCE_EXTENSIONS = [
-  ".ts",
-  ".tsx",
-  ".js",
-  ".jsx",
-  ".mjs",
-  ".cjs",
-]
+const FORMATTABLE_SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
 
 function isFormattableSource(path: string): boolean {
   return FORMATTABLE_SOURCE_EXTENSIONS.some((ext) => path.endsWith(ext))

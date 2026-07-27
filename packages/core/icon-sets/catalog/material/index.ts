@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconMaterialArrowBack } from "./user-interface/navigation/IconMaterialArrowBack"
 export { IconMaterialArrowForward } from "./user-interface/navigation/IconMaterialArrowForward"

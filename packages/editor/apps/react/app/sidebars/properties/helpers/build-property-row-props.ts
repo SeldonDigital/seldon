@@ -1,11 +1,8 @@
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import {
   getPropertyIcon2Color,
   isMenuOrComboControl,
 } from "@seldon/editor/lib/properties/inspector/property-value-display"
-import { MouseEvent } from "react"
 
 import {
   getDisclosureButtonStyle,
@@ -16,11 +13,16 @@ import {
   getValueIconStyle,
 } from "./property-row-state-styles"
 
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { MouseEvent } from "react"
+
 const CHEVRON_ICON = "material-chevronRight" as const
 
 /** Data attribute used to detect clicks on the value-cell frame control. */
 const FRAME_REF_ATTR = "data-frame-ref"
 const FRAME_REF_VALUE = "true"
+
 export const FRAME_REF_SELECTOR = `[${FRAME_REF_ATTR}="${FRAME_REF_VALUE}"]`
 
 interface BuildPropertyRowPropsInput {
@@ -52,7 +54,6 @@ export function buildPropertyRowProps({
   property,
   isExpanded,
   hasChildren,
-  labelText,
   labelColor,
   iconId,
   isThemeAssignment,
@@ -115,6 +116,7 @@ export function buildPropertyRowProps({
   const chipColor = getPropertyIcon2Color(property, swatchChipColor, undefined)
 
   let icon2: Record<string, unknown> | null
+
   if (property.isLookParent) {
     icon2 = null
   } else if (isThemeAssignment) {
@@ -143,11 +145,7 @@ export function buildPropertyRowProps({
   // and tab order.
   const isMenuButtonInteractive = supportsUpload || isMenuOrCombo
   const buttonIconic2 = {
-    onClick: supportsUpload
-      ? handleUploadClick
-      : isMenuOrCombo
-        ? handleMenuClick
-        : undefined,
+    onClick: supportsUpload ? handleUploadClick : isMenuOrCombo ? handleMenuClick : undefined,
     [ICONIC_BUTTON_ATTR]: true,
     style: getMenuButtonStyle({ supportsUpload, isCalculated, isMenuOrCombo }),
     ...(isMenuButtonInteractive
@@ -159,9 +157,7 @@ export function buildPropertyRowProps({
   // generated `.sdn-item-property` CSS so it tints on hover and state like the
   // rest of the row, instead of a baked-in label tint that overrides them.
   const icon3 = {
-    icon: (supportsUpload
-      ? "material-upload"
-      : "material-chevronDown") as IconProps["icon"],
+    icon: (supportsUpload ? "material-upload" : "material-chevronDown") as IconProps["icon"],
     style: getMenuIconStyle({
       isCalculated,
       supportsUpload,

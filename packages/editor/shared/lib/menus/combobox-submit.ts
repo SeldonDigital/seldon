@@ -19,16 +19,16 @@ export type ComboboxSubmitResolution =
 interface ResolveComboboxSubmitArgs<T extends OptionLike> {
   /** The text currently in the input (already trimmed by the caller if desired). */
   inputValue: string
-  /** The value of the current selection, used to revert on no match. */
-  currentValue?: string
-  highlightedValue?: string
   /** Whether the highlighted option should win over a name match. */
   useHighlighted: boolean
   flatOptions: T[]
-  /** Options the highlight is drawn from; defaults to `flatOptions`. */
-  highlightSource?: T[]
   /** Whether the raw typed value may be committed as a custom value. */
   allowCustom: (value: string) => boolean
+  /** The value of the current selection, used to revert on no match. */
+  currentValue?: string
+  highlightedValue?: string
+  /** Options the highlight is drawn from; defaults to `flatOptions`. */
+  highlightSource?: T[]
 }
 
 /**
@@ -49,9 +49,8 @@ export function resolveComboboxSubmit<T extends OptionLike>({
 }: ResolveComboboxSubmitArgs<T>): ComboboxSubmitResolution {
   if (useHighlighted && highlightedValue) {
     const source = highlightSource ?? flatOptions
-    const option = source.find(
-      (candidate) => candidate.value === highlightedValue,
-    )
+    const option = source.find((candidate) => candidate.value === highlightedValue)
+
     if (option) {
       return {
         kind: "select",
@@ -63,6 +62,7 @@ export function resolveComboboxSubmit<T extends OptionLike>({
   }
 
   const byName = findOptionByName(flatOptions, inputValue)
+
   if (byName) {
     return {
       kind: "select",
@@ -77,8 +77,7 @@ export function resolveComboboxSubmit<T extends OptionLike>({
   }
 
   const current =
-    currentValue !== undefined
-      ? findOptionByValue(flatOptions, currentValue)
-      : undefined
+    currentValue !== undefined ? findOptionByValue(flatOptions, currentValue) : undefined
+
   return { kind: "revert", name: current?.name ?? "" }
 }

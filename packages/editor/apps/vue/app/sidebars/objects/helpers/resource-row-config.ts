@@ -1,6 +1,3 @@
-import type { ResourceEntryKind } from "@app/workspace/selection-store"
-
-import type { Action, Board as BoardType } from "@seldon/core"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -10,6 +7,9 @@ import {
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
+
+import type { ResourceEntryKind } from "@app/workspace/selection-store"
+import type { Action, Board as BoardType } from "@seldon/core"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 type ResolvedEntry = {
@@ -43,7 +43,9 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
     testId: "objects-sidebar-theme-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace.themes[entryId]
+
       if (!entry) return undefined
+
       return {
         label: entry.label,
         isDefault: isEntryThemeDefault(entry),
@@ -73,7 +75,9 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
     testId: "objects-sidebar-font-collection-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace["font-collections"][entryId]
+
       if (!entry) return undefined
+
       return {
         label: entry.label,
         isDefault: isEntryFontCollectionDefault(entry),
@@ -102,7 +106,9 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
     testId: "objects-sidebar-icon-set-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace["icon-sets"][entryId]
+
       if (!entry) return undefined
+
       return { label: entry.label, isDefault: isEntryIconSetDefault(entry) }
     },
     buildLabelAction: (entryId, label) => ({
@@ -130,7 +136,9 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
     testId: "objects-sidebar-media-entry",
     getEntry: (workspace, entryId) => {
       const entry = workspace.media[entryId]
+
       if (!entry) return undefined
+
       return { label: entry.id, isDefault: true }
     },
   },
@@ -140,12 +148,11 @@ const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
  * Resource-entry row config for a board, or null when the board's children are
  * component variants rather than resource entries.
  */
-export function getBoardResourceRowConfig(
-  board: BoardType,
-): ResourceRowConfig | null {
+export function getBoardResourceRowConfig(board: BoardType): ResourceRowConfig | null {
   if (isThemeBoard(board)) return RESOURCE_ROW_CONFIG.theme
   if (isFontCollectionBoard(board)) return RESOURCE_ROW_CONFIG.fontCollection
   if (isIconSetBoard(board)) return RESOURCE_ROW_CONFIG.iconSet
   if (isMediaBoard(board)) return RESOURCE_ROW_CONFIG.media
+
   return null
 }

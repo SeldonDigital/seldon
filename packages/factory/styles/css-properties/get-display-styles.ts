@@ -1,12 +1,9 @@
-import { Display, Properties } from "@seldon/core"
+import { Display } from "@seldon/core"
 
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
 
-export function getDisplayStyles({
-  properties,
-}: {
-  properties: Properties
-}): CSSObject {
+export function getDisplayStyles({ properties }: { properties: Properties }): CSSObject {
   const styles: CSSObject = {}
 
   if (properties.display?.value === Display.EXCLUDE) {

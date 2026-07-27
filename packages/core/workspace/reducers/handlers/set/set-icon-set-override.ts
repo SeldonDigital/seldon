@@ -1,10 +1,8 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
-import {
-  deleteOverrideAtPath,
-  setOverrideAtPath,
-} from "../../../helpers/general/override-paths"
+import { deleteOverrideAtPath, setOverrideAtPath } from "../../../helpers/general/override-paths"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 
 /**
@@ -17,18 +15,19 @@ export function setIconSetOverride(
   workspace: Workspace,
 ): Workspace {
   return produce(workspace, (draft) => {
-    const entry = draft["icon-sets"][payload.iconSetId] as
-      | EntryIconSet
-      | undefined
+    const entry = draft["icon-sets"][payload.iconSetId] as EntryIconSet | undefined
+
     if (!entry) return
     const overrides: Record<string, unknown> = {
       ...(entry.overrides as Record<string, unknown>),
     }
+
     if (payload.value === null) {
       deleteOverrideAtPath(overrides, payload.path)
     } else {
       setOverrideAtPath(overrides, payload.path, payload.value)
     }
+
     entry.overrides = overrides
   })
 }

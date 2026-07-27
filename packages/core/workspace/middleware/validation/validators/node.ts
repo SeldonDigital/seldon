@@ -13,10 +13,6 @@ import {
   getEffectiveNodeLevel,
   isEffectivelyAuthoredNode,
 } from "../../../helpers/nodes/get-effective-node-level"
-import type {
-  Instance,
-  Variant,
-} from "../../../helpers/rules/rules-node-subject"
 import {
   nodeRelationshipService,
   nodeRetrievalService,
@@ -24,22 +20,16 @@ import {
   typeCheckingService,
 } from "../../../services"
 import { findTreeRef } from "../../../services/shared/component-tree-helpers"
-import type {
-  Action,
-  EntryNode,
-  InstanceId,
-  VariantId,
-  Workspace,
-} from "../../../types"
 import { check } from "../check"
 import { getNodeComponentId } from "../node-component-id"
 import { WorkspaceValidationError } from "../workspace-validation-error"
 
-export function assertInsertTargetAllowed(
-  parent: EntryNode,
-  action: Action,
-): void {
+import type { Instance, Variant } from "../../../helpers/rules/rules-node-subject"
+import type { Action, EntryNode, InstanceId, VariantId, Workspace } from "../../../types"
+
+export function assertInsertTargetAllowed(parent: EntryNode, action: Action): void {
   const entity = typeCheckingService.getEntityType(parent)
+
   if (!rules.mutations.insertInto[entity].allowed) {
     throw new WorkspaceValidationError(
       "Cannot insert into default catalog variant; use overrides or a user variant.",
@@ -48,10 +38,7 @@ export function assertInsertTargetAllowed(
   }
 }
 
-export function assertMoveTargetAllowed(
-  parent: EntryNode,
-  message: string,
-): void {
+export function assertMoveTargetAllowed(parent: EntryNode, message: string): void {
   check(!typeCheckingService.isDefaultVariant(parent), message)
 }
 
@@ -67,8 +54,10 @@ export const nodeValidators = {
       sourceNodeComponent = subjectId
     } else {
       const sourceNode = nodeRetrievalService.getNode(subjectId, workspace)
+
       sourceNodeComponent = getNodeComponentId(sourceNode, workspace)
     }
+
     const targetNode = nodeRetrievalService.getNode(targetId, workspace)
 
     if (
@@ -93,16 +82,16 @@ export const nodeValidators = {
     parentId: InstanceId | VariantId,
   ) => {
     const board = getBoardByNodeId(workspace, nodeId)
+
     if (!board) return
     const treeRef = findTreeRef(board, nodeId)
+
     if (!treeRef) return
     // `collectTreeRefIds` includes the node itself, so this also rejects
     // moving a node directly under itself.
     const subtreeIds = new Set(collectTreeRefIds(treeRef))
-    check(
-      !subtreeIds.has(parentId),
-      ErrorMessages.cannotMoveIntoOwnSubtree(nodeId),
-    )
+
+    check(!subtreeIds.has(parentId), ErrorMessages.cannotMoveIntoOwnSubtree(nodeId))
   },
   isWithinSameVariant: (
     workspace: Workspace,
@@ -111,6 +100,7 @@ export const nodeValidators = {
   ) => {
     const node = workspace.nodes[nodeId]
     const parent = workspace.nodes[parentId]
+
     check(
       nodeRelationshipService.areWithinSameVariant(
         node as Variant | Instance,
@@ -128,35 +118,36 @@ export const nodeValidators = {
     { nodeId, ref }: { nodeId: InstanceId | VariantId; ref: string },
   ) => {
     const trimmed = ref.trim()
+
     if (trimmed === "") return
     const taken = Object.values(workspace.nodes).some(
       (node) => node.id !== nodeId && node.ref === trimmed,
     )
+
     check(!taken, ErrorMessages.refNotUnique(trimmed))
   },
   canHaveChildren: (workspace: Workspace, id: InstanceId | VariantId) => {
     const node = workspace.nodes[id]
+
     check(node, ErrorMessages.nodeNotFound(id))
-    check(
-      canNodeHaveChildren(node, workspace),
-      ErrorMessages.childNotAllowed(id),
-    )
+    check(canNodeHaveChildren(node, workspace), ErrorMessages.childNotAllowed(id))
   },
   moveAllowed: (workspace: Workspace, id: InstanceId | VariantId) => {
     const node = workspace.nodes[id]
+
     if (!node) {
       throw new Error(ErrorMessages.nodeNotFound(id))
     }
+
     if (typeCheckingService.isInstance(node)) {
       const parent = nodeTraversalService.findParentNode(node, workspace)
+
       if (!parent) {
         throw new Error(ErrorMessages.parentNotFound(id))
       }
     } else {
-      const board = nodeRelationshipService.findBoardForVariant(
-        node as Variant,
-        workspace,
-      )
+      const board = nodeRelationshipService.findBoardForVariant(node as Variant, workspace)
+
       if (!board) {
         throw new Error(ErrorMessages.componentNotFoundForVariant(node.id))
       }
@@ -164,9 +155,11 @@ export const nodeValidators = {
   },
   canBeRemoved: (workspace: Workspace, id: VariantId | InstanceId) => {
     const node = workspace.nodes[id]
+
     if (!node) {
       throw new Error(ErrorMessages.nodeNotFound(id))
     }
+
     if (typeCheckingService.isInstance(node)) {
       return
     }
@@ -196,9 +189,7 @@ export const nodeValidators = {
     const childNode = nodeRetrievalService.getNode(childId, workspace)
     const childComponent = getNodeComponentId(childNode, workspace)
 
-    const parentAuthored = parentNode
-      ? isEffectivelyAuthoredNode(parentNode, workspace)
-      : false
+    const parentAuthored = parentNode ? isEffectivelyAuthoredNode(parentNode, workspace) : false
     const childAuthored = isEffectivelyAuthoredNode(childNode, workspace)
 
     const parentSchema = getComponentSchema(parentComponentId)
@@ -214,10 +205,12 @@ export const nodeValidators = {
       const childLevel = getEffectiveNodeLevel(childNode, workspace)
       const parentName = parentAuthored ? parentNode!.label : parentSchema.name
       const childName = childAuthored ? childNode.label : childSchema.name
+
       check(
         typeCheckingService.canLevelContainLevel(parentLevel, childLevel),
         ErrorMessages.invalidParentChildRelationship(parentName, childName),
       )
+
       return
     }
 
@@ -228,10 +221,7 @@ export const nodeValidators = {
 
     check(
       canBeParent,
-      ErrorMessages.invalidParentChildRelationship(
-        parentSchema.name,
-        childSchema.name,
-      ),
+      ErrorMessages.invalidParentChildRelationship(parentSchema.name, childSchema.name),
     )
 
     if (childComponent === ComponentId.FRAME) {
@@ -258,23 +248,22 @@ function assertFrameGrandchildrenAllowed(
   frameSchema: ReturnType<typeof getComponentSchema>,
 ): void {
   const board = getBoardByNodeId(workspace, frameId)
+
   if (!board) return
 
   for (const grandChildId of getChildrenIds(board, frameId)) {
     const grandChildNode = workspace.nodes[grandChildId]
+
     if (!grandChildNode) continue
 
     const grandChildComponent = getNodeComponentId(grandChildNode, workspace)
-    if (
-      typeCheckingService.canComponentBeParentOf(
-        parentComponentId,
-        grandChildComponent,
-      )
-    ) {
+
+    if (typeCheckingService.canComponentBeParentOf(parentComponentId, grandChildComponent)) {
       continue
     }
 
     const grandChildSchema = getComponentSchema(grandChildComponent)
+
     check(
       false,
       ErrorMessages.invalidParentChildRelationship(
@@ -294,16 +283,18 @@ export function validateComponentCanBeInserted(
 
   try {
     const targetParent = nodeRetrievalService.getNode(targetNodeId, workspace)
+
     if (!targetParent) {
       errors.push(`Target parent ${targetNodeId} not found`)
+
       return { isValid: false, errors }
     }
 
     const entity = typeCheckingService.getEntityType(targetParent)
+
     if (!rules.mutations.insertInto[entity].allowed) {
-      errors.push(
-        "Cannot insert into default variant. Use a custom variant instead.",
-      )
+      errors.push("Cannot insert into default variant. Use a custom variant instead.")
+
       return { isValid: false, errors }
     }
 
@@ -316,29 +307,19 @@ export function validateComponentCanBeInserted(
           getEffectiveNodeLevel(targetParent, workspace),
           childSchema.level,
         )
-      : typeCheckingService.canComponentBeParentOf(
-          parentComponentId,
-          componentId,
-        )
+      : typeCheckingService.canComponentBeParentOf(parentComponentId, componentId)
+
     if (!canBeParent) {
       const parentName = parentAuthored
         ? targetParent.label
         : getComponentSchema(parentComponentId).name
-      errors.push(
-        ErrorMessages.invalidParentChildRelationship(
-          parentName,
-          childSchema.name,
-        ),
-      )
+
+      errors.push(ErrorMessages.invalidParentChildRelationship(parentName, childSchema.name))
     }
 
     if (
       componentId !== ComponentId.FRAME &&
-      nodeRelationshipService.hasAncestorWithComponentId(
-        componentId,
-        targetParent,
-        workspace,
-      )
+      nodeRelationshipService.hasAncestorWithComponentId(componentId, targetParent, workspace)
     ) {
       errors.push(ErrorMessages.cannotAddSelfAsInstance())
     }

@@ -4,6 +4,8 @@ import { ComponentId } from "../../../components/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { parseWorkspace } from "../../helpers/parse-workspace"
 import { workspaceReducer } from "../../reducers/reducer"
+import { workspacePropagationService as service } from "./workspace-propagation.service"
+
 import type {
   ComponentTreeRef,
   EntryNodeId,
@@ -13,10 +15,8 @@ import type {
   Workspace,
   WorkspaceAction,
 } from "../../types"
-import { workspacePropagationService as service } from "./workspace-propagation.service"
 
-const dispatch = (ws: Workspace, action: WorkspaceAction): Workspace =>
-  workspaceReducer(ws, action)
+const dispatch = (ws: Workspace, action: WorkspaceAction): Workspace => workspaceReducer(ws, action)
 
 const act = (type: string, payload: unknown): WorkspaceAction =>
   ({ type, payload }) as unknown as WorkspaceAction
@@ -25,19 +25,16 @@ const BOARD = ComponentId.BUTTON
 
 /** Builds a workspace whose user variant holds an instance of the button default. */
 function buildScenario() {
-  let ws = dispatch(
-    createEmptyWorkspace(),
-    act("add_component", { boardKey: BOARD }),
-  )
+  let ws = dispatch(createEmptyWorkspace(), act("add_component", { boardKey: BOARD }))
+
   ws = dispatch(ws, act("add_variant", { boardKey: BOARD }))
   const defaultRootId = ws.boards[BOARD]!.variants[0]!.id as VariantId
   const uv1Id = ws.boards[BOARD]!.variants[1]!.id as VariantId
-  ws = dispatch(
-    ws,
-    act("insert_default_instance", { boardKey: BOARD, parentId: uv1Id }),
-  )
-  const childId = (ws.boards[BOARD]!.variants[0] as ComponentTreeRef)
-    .children![0]!.id as EntryNodeId
+
+  ws = dispatch(ws, act("insert_default_instance", { boardKey: BOARD, parentId: uv1Id }))
+  const childId = (ws.boards[BOARD]!.variants[0] as ComponentTreeRef).children![0]!
+    .id as EntryNodeId
+
   return { ws, defaultRootId, uv1Id, childId }
 }
 
@@ -50,10 +47,12 @@ describe("WorkspacePropagationService.propagateNodeOperation", () => {
       propagation: "none",
       apply: (_node, current) => {
         calls += 1
+
         return current
       },
       workspace: ws,
     })
+
     expect(calls).toBe(1)
     expect(result.boards).toBeTruthy()
   })
@@ -66,17 +65,20 @@ describe("WorkspacePropagationService.propagateNodeOperation", () => {
       apply: (_node, current) => ({ workspace: current }),
       workspace: ws,
     })
+
     expect(result.boards).toBeTruthy()
   })
 
   it("fans out to instances for the downstream mode", () => {
     const { ws, defaultRootId } = buildScenario()
     let calls = 0
+
     service.propagateNodeOperation({
       nodeId: defaultRootId,
       propagation: "downstream",
       apply: (_node: Variant | Instance, current) => {
         calls += 1
+
         return current
       },
       workspace: ws,
@@ -90,20 +92,24 @@ describe("WorkspacePropagationService.propagateNodeOperation", () => {
     // The inserted default instance templates from the button default variant.
     const buttonInstanceId = Object.keys(ws.nodes).find((id) => {
       const node = ws.nodes[id]!
+
       return (
         node.type === "instance" &&
         typeof node.template === "string" &&
         node.template.includes(defaultRootId)
       )
     })!
+
     expect(buttonInstanceId).toBeTruthy()
 
     let calls = 0
+
     service.propagateNodeOperation({
       nodeId: buttonInstanceId as VariantId,
       propagation: "bidirectional",
       apply: (_node, current) => {
         calls += 1
+
         return current
       },
       workspace: ws,
@@ -113,6 +119,7 @@ describe("WorkspacePropagationService.propagateNodeOperation", () => {
 
   it("throws for an invalid propagation mode", () => {
     const { ws, defaultRootId } = buildScenario()
+
     expect(() =>
       service.propagateNodeOperation({
         nodeId: defaultRootId,
@@ -128,11 +135,13 @@ describe("WorkspacePropagationService.propagatePositionalChildOperation", () => 
   it("applies directly to a root node that has no parent", () => {
     const { ws, defaultRootId } = buildScenario()
     let appliedTo: string | null = null
+
     service.propagatePositionalChildOperation({
       childId: defaultRootId,
       propagation: "none",
       applyToChild: (childId, current) => {
         appliedTo = childId
+
         return current
       },
       workspace: ws,
@@ -148,10 +157,12 @@ describe("WorkspacePropagationService.propagatePositionalChildOperation", () => 
       propagation: "none",
       applyToChild: (resolved, current) => {
         appliedTo = resolved
+
         return current
       },
       workspace: ws,
     })
+
     expect(appliedTo).toBe(childId)
     expect(result.boards).toBeTruthy()
   })
@@ -160,6 +171,7 @@ describe("WorkspacePropagationService.propagatePositionalChildOperation", () => 
 describe("parseWorkspace", () => {
   it("parses a JSON string back into a workspace", () => {
     const ws = createEmptyWorkspace()
+
     expect(parseWorkspace(JSON.stringify(ws))).toEqual(ws)
   })
 

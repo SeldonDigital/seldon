@@ -1,7 +1,4 @@
-import {
-  buildDisplayInputProps,
-  buildEditingRefProps,
-} from "@app/sidebars/state-props"
+import { buildDisplayInputProps, buildEditingRefProps } from "@app/sidebars/state-props"
 
 import type { PropertyControl } from "../hooks/use-property-control"
 
@@ -41,28 +38,34 @@ export function buildPropertyValueInput({
       ...buildEditingRefProps(true),
       onInput: (event: Event) =>
         (control.fieldDraft.value = (event.target as HTMLInputElement).value),
-      onFocus: (event: FocusEvent) =>
-        (event.currentTarget as HTMLInputElement).select(),
+      onFocus: (event: FocusEvent) => (event.currentTarget as HTMLInputElement).select(),
       onKeydown: (event: KeyboardEvent) => {
         const target = event.currentTarget as HTMLInputElement
+
         if (event.key === "Enter") {
           event.preventDefault()
           target.blur()
+
           return
         }
+
         if (event.key === "Escape") {
           event.preventDefault()
           control.cancelField()
           target.blur()
+
           return
         }
+
         if (event.key === "Tab") {
           const moved = event.shiftKey ? onTabPrev() : onTabNext()
+
           if (moved) event.preventDefault()
         }
       },
       onBlur: (event: FocusEvent) => {
         const value = (event.currentTarget as HTMLInputElement).value.trim()
+
         control.submitField(value)
         endEdit()
       },
@@ -71,12 +74,12 @@ export function buildPropertyValueInput({
 
   // Menu/combo: type-to-filter input paired with the floating option list.
   const combo = control.combobox
+
   return {
     value: combo.inputValue.value,
     readonly: false,
     ...buildEditingRefProps(true),
-    onInput: (event: Event) =>
-      combo.handleInputChange((event.target as HTMLInputElement).value),
+    onInput: (event: Event) => combo.handleInputChange((event.target as HTMLInputElement).value),
     onClick: (event: MouseEvent) => {
       event.stopPropagation()
       if (!combo.open.value) combo.setOpen(true)
@@ -87,27 +90,37 @@ export function buildPropertyValueInput({
     },
     onKeydown: (event: KeyboardEvent) => {
       const target = event.currentTarget as HTMLInputElement
+
       if (event.key === "ArrowDown") {
         event.preventDefault()
         combo.highlightNext()
+
         return
       }
+
       if (event.key === "ArrowUp") {
         event.preventDefault()
         combo.highlightPrev()
+
         return
       }
+
       if (event.key === "Enter") {
         event.preventDefault()
         combo.handleSubmit()
+
         return
       }
+
       if (event.key === "Tab") {
         combo.handleSubmit({ keepFocus: true })
         const moved = event.shiftKey ? onTabPrev() : onTabNext()
+
         if (moved) event.preventDefault()
+
         return
       }
+
       if (event.key === "Escape") {
         event.preventDefault()
         combo.handleCancel()

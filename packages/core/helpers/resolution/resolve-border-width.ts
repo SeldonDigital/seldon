@@ -1,17 +1,17 @@
-import {
-  BorderWidth,
+import { BorderWidth, ValueType } from "../../index"
+import { isOptionToken } from "../../themes/types"
+import { getThemeOption } from "../theme/get-theme-option"
+import { resolveModulatedOrExactLength } from "./resolve-length-token"
+
+import type {
   BorderWidthHairlineValue,
   BorderWidthValue,
   EmptyValue,
   PixelValue,
   RemValue,
-  ValueType,
 } from "../../index"
 import type { ComputeContext } from "../../properties/compute/types"
-import { Theme } from "../../themes/types"
-import { isOptionToken } from "../../themes/types"
-import { getThemeOption } from "../theme/get-theme-option"
-import { resolveModulatedOrExactLength } from "./resolve-length-token"
+import type { Theme } from "../../themes/types"
 
 /**
  * Resolves border width values to concrete PixelValue, RemValue, BorderWidthHairlineValue, or EmptyValue.
@@ -34,6 +34,7 @@ export function resolveBorderWidth({
     case ValueType.EXACT:
     case ValueType.OPTION:
       return borderWidth
+
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(borderWidth.value as string, theme)
 
@@ -45,14 +46,14 @@ export function resolveBorderWidth({
       }
 
       const resolved = resolveModulatedOrExactLength(themeValue, theme)
+
       if (resolved) return resolved
       throw new Error(
         `Theme value ${borderWidth.value as string} must resolve to MODULATED or EXACT length`,
       )
     }
+
     default:
-      throw new Error(
-        `Invalid border width type ${(borderWidth as { type: string }).type}`,
-      )
+      throw new Error(`Invalid border width type ${(borderWidth as { type: string }).type}`)
   }
 }

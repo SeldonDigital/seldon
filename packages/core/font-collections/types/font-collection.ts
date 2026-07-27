@@ -3,26 +3,22 @@
  * `ComputedFontCollection` — materialized collection from `computeFontCollection`.
  */
 import type { FontOrigin } from "../constants/font-origin"
-import type {
-  FontCollectionInstanceId,
-  FontCollectionTemplateId,
-} from "./font-collection-id"
+import type { FontCollectionInstanceId, FontCollectionTemplateId } from "./font-collection-id"
 
-/** One font family in a collection. */
+/**
+ * One font family in a collection. `name` is the display label and CSS family name, such as `Inter`
+ * or `System Sans`. `origin` is where the family loads from, and `local` never makes a network
+ * request. `stack` is the CSS fallback stack for local families. `variants` are the weight and style
+ * variants for remote families, used to build font host URLs.
+ */
 export interface FontFamilyEntry {
-  /** Display label and CSS family name, such as `Inter` or `System Sans`. */
   name: string
-  /** Where the family loads from. `local` never makes a network request. */
   origin: FontOrigin
-  /** CSS fallback stack for local families. */
   stack?: string
-  /** Weight and style variants for remote families. Used to build font host URLs. */
   variants?: string[]
 }
 
-export interface FontCollectionMetadata<
-  TId extends string = FontCollectionTemplateId,
-> {
+export interface FontCollectionMetadata<TId extends string = FontCollectionTemplateId> {
   id: TId
   name: string
   description: string
@@ -49,6 +45,4 @@ export type ComputedFontCollection = StockFontCollection & {
 export type FontCollection = ComputedFontCollection
 
 /** Valid input to `computeFontCollection`: packaged schema or computed collection. */
-export type FontCollectionPipelineInput =
-  | StockFontCollection
-  | ComputedFontCollection
+export type FontCollectionPipelineInput = StockFontCollection | ComputedFontCollection

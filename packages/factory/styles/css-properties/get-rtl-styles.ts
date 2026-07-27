@@ -1,12 +1,9 @@
-import { Direction, Properties, ValueType } from "@seldon/core"
+import { Direction, ValueType } from "@seldon/core"
 
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
 
-export function getRTLStyles({
-  properties,
-}: {
-  properties: Properties
-}): CSSObject {
+export function getRTLStyles({ properties }: { properties: Properties }): CSSObject {
   const styles: CSSObject = {}
 
   if (properties.direction?.type === ValueType.OPTION) {

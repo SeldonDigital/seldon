@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconLucideNavigation_2Off } from "./IconLucideNavigation_2Off"
 export { IconLucideNavigationOff } from "./IconLucideNavigationOff"

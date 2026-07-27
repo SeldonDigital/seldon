@@ -1,6 +1,7 @@
-import { PropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-property-sections"
-import { ThemePropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
 import { create } from "zustand"
+
+import type { PropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-property-sections"
+import type { ThemePropertyCategoryType } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
 
 type AllCategoryType = PropertyCategoryType | ThemePropertyCategoryType
 
@@ -19,6 +20,7 @@ const useStore = create<PropertyExpansionState>((set) => ({
   toggleCategory: (category: AllCategoryType, shouldExpand?: boolean) =>
     set((state) => {
       const expand = shouldExpand ?? !(state.categories[category] ?? true)
+
       return {
         categories: {
           ...state.categories,
@@ -29,6 +31,7 @@ const useStore = create<PropertyExpansionState>((set) => ({
   toggleProperty: (propertyKey: string, shouldExpand?: boolean) =>
     set((state) => {
       const expand = shouldExpand ?? !state.properties[propertyKey]
+
       return {
         properties: {
           ...state.properties,

@@ -1,5 +1,3 @@
-import type { SelectionScope } from "@seldon/ai"
-import type { InstanceId, VariantId } from "@seldon/core/index"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -7,9 +5,12 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
-import type { ResourceEntryKind } from "./selection-kind"
 import { getComponent, getNode } from "./workspace-accessors"
+
+import type { ResourceEntryKind } from "./selection-kind"
+import type { SelectionScope } from "@seldon/ai"
+import type { InstanceId, VariantId } from "@seldon/core/index"
+import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 export type { SelectionScope }
 
@@ -49,18 +50,22 @@ export function resolveSelectionScope(
 
   if (selectedNodeId) {
     const node = getNode(workspace, selectedNodeId)
+
     if (node && typeCheckingService.isInstance(node)) return "instance"
+
     return "variant"
   }
 
   if (selectedBoardId) {
     const board = getComponent(workspace, selectedBoardId)
+
     if (board) {
       if (isThemeBoard(board)) return "theme"
       if (isFontCollectionBoard(board)) return "fontCollection"
       if (isIconSetBoard(board)) return "iconSet"
       if (isMediaBoard(board)) return "media"
     }
+
     return "board"
   }
 
@@ -79,6 +84,7 @@ export function resolveSelectionScope(
 
   if (selectedResourceItemKey) {
     const resource = selectedResourceItemKey.split(":")[0]
+
     if (resource === "font-collection") return "fontCollection"
     if (resource === "icon-set") return "iconSet"
     if (resource === "media") return "media"

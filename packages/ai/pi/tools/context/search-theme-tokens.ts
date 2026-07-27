@@ -1,18 +1,16 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { searchThemeTokensSection } from "../../../prompt/context-sections/theme-tokens"
-import type { ResolvedContext } from "../../editor-context"
 import { joinOrEmpty, textResult } from "./shared"
 
+import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+
 /** Returns theme tokens whose scope or key matches the query. */
-export function createSearchThemeTokensTool(
-  resolved: ResolvedContext,
-): ToolDefinition {
+export function createSearchThemeTokensTool(resolved: ResolvedContext): ToolDefinition {
   const { workspace } = resolved
+
   return defineTool({
     name: "search_theme_tokens",
     label: "Search Theme Tokens",
@@ -23,6 +21,7 @@ export function createSearchThemeTokensTool(
         description: "Text to match against token scopes and keys.",
       }),
     }),
+
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(

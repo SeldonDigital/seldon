@@ -24,11 +24,7 @@ describe("instantiateTheme", () => {
 
   it("throws for an unknown template id", () => {
     expect(() =>
-      instantiateTheme(
-        "does-not-exist" as never,
-        undefined,
-        STOCK_THEMES_BY_ID,
-      ),
+      instantiateTheme("does-not-exist" as never, undefined, STOCK_THEMES_BY_ID),
     ).toThrow()
   })
 })

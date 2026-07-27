@@ -1,18 +1,12 @@
-import {
-  EmptyValue,
-  FontSizeValue,
-  PixelValue,
-  RemValue,
-  Unit,
-  ValueType,
-  invariant,
-} from "../../index"
-import type { ComputeContext } from "../../properties/compute/types"
-import { Theme } from "../../themes/types"
+import { Unit, ValueType, invariant } from "../../index"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"
 import { exactTokenToLength } from "./resolve-length-token"
+
+import type { EmptyValue, FontSizeValue, PixelValue, RemValue } from "../../index"
+import type { ComputeContext } from "../../properties/compute/types"
+import type { Theme } from "../../themes/types"
 
 /**
  * Resolves font size values to concrete PixelValue, RemValue, or EmptyValue.
@@ -42,30 +36,35 @@ export function resolveFontSize({
       return fontSize as EmptyValue
     case ValueType.EXACT:
       return fontSize as PixelValue | RemValue
+
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(fontSize.value as string, theme)
+
       invariant(themeValue, `Theme value ${fontSize.value} not found`)
+
       if (isModulatedToken(themeValue)) {
         const n = modulate({
           ratio: theme.modulation.parameters.ratio,
           size: theme.modulation.parameters.baseFontSize / 16,
           step: themeValue.parameters.step,
         })
+
         return {
           type: ValueType.EXACT,
           value: { unit: Unit.REM, value: n },
         }
       }
+
       if (isThemeExactToken(themeValue)) {
         return exactTokenToLength(themeValue.parameters)
       }
+
       throw new Error(
         `Theme value ${fontSize.value as string} must resolve to MODULATED or EXACT length`,
       )
     }
+
     default:
-      throw new Error(
-        `Invalid font size type ${(fontSize as { type: string }).type}`,
-      )
+      throw new Error(`Invalid font size type ${(fontSize as { type: string }).type}`)
   }
 }

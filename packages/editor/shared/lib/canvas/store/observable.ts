@@ -23,12 +23,14 @@ export function createStore<T extends object>(initial: T): Store<T> {
   function setState(partial: Partial<T> | ((prev: T) => Partial<T>)): void {
     const patch = typeof partial === "function" ? partial(state) : partial
     let changed = false
+
     for (const key in patch) {
       if (patch[key] !== state[key]) {
         changed = true
         break
       }
     }
+
     if (!changed) return
     state = { ...state, ...patch }
     for (const listener of listeners) listener()
@@ -36,6 +38,7 @@ export function createStore<T extends object>(initial: T): Store<T> {
 
   function subscribe(listener: StoreListener): () => void {
     listeners.add(listener)
+
     return () => {
       listeners.delete(listener)
     }

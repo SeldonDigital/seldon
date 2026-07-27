@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "List Item",
   id: Seldon.ComponentId.LIST_ITEM,
   intent:
     "Text item inside a list. Renders as li in ordered and unordered lists, or as dt and dd in description lists.",
-  tags: [
-    "list text",
-    "li",
-    "dt",
-    "dd",
-    "list item",
-    "description",
-    "primitive",
-    "text",
-  ],
+  tags: ["list text", "li", "dt", "dd", "list item", "description", "primitive", "text"],
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.TEXT,
   properties: {
@@ -50,9 +42,7 @@ export const schema = {
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,

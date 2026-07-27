@@ -1,4 +1,4 @@
-import { ColorValue, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { applyBrightness } from "@seldon/core/helpers/color/apply-brightness"
 import {
   readAnchoredLayerPercentage,
@@ -7,21 +7,20 @@ import {
   resolveHighContrastSource,
 } from "@seldon/core/properties/compute"
 import { getModeSwatches } from "@seldon/core/themes/compute"
-import type { ThemeMode } from "@seldon/core/themes/constants"
-import type { Theme } from "@seldon/core/themes/types"
 
 import { getColorCSSValue } from "../css-properties/get-color-css-value"
-import {
-  getBrightnessSwatches,
-  recordBrightnessSwatch,
-} from "./brightness-swatches"
+import { getBrightnessSwatches, recordBrightnessSwatch } from "./brightness-swatches"
 import {
   REFERENCEABLE_SWATCH_SLOTS,
   highContrastBrightnessVarName,
   highContrastVarName,
   swatchIdFromRef,
 } from "./names"
-import { ComputedVariableStrategy } from "./types"
+
+import type { ComputedVariableStrategy } from "./types"
+import type { ColorValue } from "@seldon/core"
+import type { ThemeMode } from "@seldon/core/themes/constants"
+import type { Theme } from "@seldon/core/themes/types"
 
 /** The share of the composited surface below which the backdrop drives contrast. */
 const BACKDROP_DOMINANT_OPACITY = 50
@@ -36,7 +35,9 @@ function referenceableSlotFromValue(value: unknown): string | null {
   ) {
     return null
   }
+
   const slot = swatchIdFromRef(String(value.value))
+
   return slot && REFERENCEABLE_SWATCH_SLOTS.has(slot) ? slot : null
 }
 
@@ -54,33 +55,28 @@ export const highContrastStrategy: ComputedVariableStrategy = {
     const { value, facetSource } = resolveBasedOnWithAnchor(basedOn, context)
 
     const slot = referenceableSlotFromValue(value)
+
     if (!slot) return null
 
     if (facetSource && basedOn.endsWith(".color")) {
-      const opacity = readAnchoredLayerPercentage(
-        facetSource,
-        basedOn,
-        "opacity",
-      )
+      const opacity = readAnchoredLayerPercentage(facetSource, basedOn, "opacity")
+
       if (opacity && opacity.value.value < BACKDROP_DOMINANT_OPACITY) {
-        const backdrop = resolveBasedOnWithAnchor(
-          "#parent.background.color",
-          facetSource,
-        )
+        const backdrop = resolveBasedOnWithAnchor("#parent.background.color", facetSource)
         const backdropSlot = referenceableSlotFromValue(backdrop.value)
+
         if (!backdropSlot) return null
+
         return `var(${highContrastVarName(backdropSlot)})`
       }
 
       // A brightness shift changes the surface luminance, so the pick follows a
       // variable keyed by the shifted color rather than the raw slot.
-      const brightness = readAnchoredLayerPercentage(
-        facetSource,
-        basedOn,
-        "brightness",
-      )
+      const brightness = readAnchoredLayerPercentage(facetSource, basedOn, "brightness")
+
       if (brightness && brightness.value.value !== 0) {
         recordBrightnessSwatch(slot, brightness.value.value)
+
         return `var(${highContrastBrightnessVarName(slot, brightness.value.value)})`
       }
     }
@@ -101,21 +97,17 @@ export const highContrastStrategy: ComputedVariableStrategy = {
  * swapped partner for paired neutrals in dark, and the chroma-derived color otherwise. A shifted
  * surface applies its brightness to that color before the pick.
  */
-export function emitHighContrastVariables(
-  theme: Theme,
-  targetMode?: ThemeMode,
-): string {
+export function emitHighContrastVariables(theme: Theme, targetMode?: ThemeMode): string {
   const authoredMode = theme.displayMode.parameters.mode ?? "light"
   const mode = targetMode ?? authoredMode
   const modeSwatches = getModeSwatches(theme, mode)
 
-  const contrastForSurface = (
-    surface: (typeof modeSwatches)[string],
-  ): string => {
+  const contrastForSurface = (surface: (typeof modeSwatches)[string]): string => {
     const foreground = resolveHighContrastForeground(
       { type: ValueType.EXACT, value: surface },
       theme,
     )
+
     return getColorCSSValue({
       color: foreground as ColorValue,
       theme,
@@ -124,8 +116,10 @@ export function emitHighContrastVariables(
   }
 
   let out = "  /* High Contrast */\n"
+
   for (const slot of REFERENCEABLE_SWATCH_SLOTS) {
     const surface = modeSwatches[slot]
+
     if (!surface) continue
     out += `  ${highContrastVarName(slot)}: ${contrastForSurface(surface)};\n`
   }
@@ -135,9 +129,12 @@ export function emitHighContrastVariables(
   // pair the swatch variable uses.
   for (const { slot, brightness } of getBrightnessSwatches()) {
     const surface = modeSwatches[slot]
+
     if (!surface) continue
     const shifted = applyBrightness(surface, brightness)
+
     out += `  ${highContrastBrightnessVarName(slot, brightness)}: ${contrastForSurface(shifted)};\n`
   }
+
   return out
 }

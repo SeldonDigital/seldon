@@ -3,21 +3,21 @@ import { useToolStore } from "@app/editor/tool-store"
 import { useObjectHoverStore } from "@app/workspace/object-hover-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
-import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
-import type { OutlineColors } from "@seldon/editor/lib/canvas/overlay/outline-colors"
 import { overlayStore } from "@seldon/editor/lib/canvas/overlay/overlay-store"
-import {
-  type OverlayTracker,
-  createOverlayTracker,
-} from "@seldon/editor/lib/canvas/overlay/overlay-tracker"
+import { createOverlayTracker } from "@seldon/editor/lib/canvas/overlay/overlay-tracker"
 import {
   bumpRemeasure,
   remeasureStore,
   setTransforming,
 } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
-import { type Ref, onScopeDispose, watch } from "vue"
+import { onScopeDispose, watch } from "vue"
 
 import { useSharedStore } from "./use-shared-store"
+
+import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
+import type { OutlineColors } from "@seldon/editor/lib/canvas/overlay/outline-colors"
+import type { OverlayTracker } from "@seldon/editor/lib/canvas/overlay/overlay-tracker"
+import type { Ref } from "vue"
 
 /** Trailing delay after a pan/zoom stops before re-measuring (ms). */
 const SETTLE_MS = 60
@@ -92,6 +92,7 @@ export function useCanvasOverlays(
   // Re-measure once a reorder glide settles or a pan/zoom settle bumps.
   const remeasureVersion = useSharedStore(remeasureStore, (s) => s.version)
   const isTransforming = useSharedStore(remeasureStore, (s) => s.isTransforming)
+
   watch([remeasureVersion, isTransforming], () => tracker.refresh())
 
   // Hide the outlines while the canvas pans or zooms, then bump a re-measure at
@@ -118,10 +119,7 @@ export function useCanvasOverlays(
   return {
     selectionRect: useSharedStore(overlayStore, (s) => s.selectionRect),
     hoverRect: useSharedStore(overlayStore, (s) => s.hoverRect),
-    selectionColors: useSharedStore(
-      overlayStore,
-      (s) => s.selectionOutlineColors,
-    ),
+    selectionColors: useSharedStore(overlayStore, (s) => s.selectionOutlineColors),
     hoverColors: useSharedStore(overlayStore, (s) => s.hoverOutlineColors),
   }
 }

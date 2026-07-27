@@ -32,6 +32,7 @@ export function createSubPropertyLabel(
 
     // Handle special cases for plural forms
     let parentTextToRemove = parentLabel
+
     if (parentLabel.endsWith("s") && !parentLabel.endsWith("ss")) {
       // Remove 's' from the end for singular form (e.g., "Corners" -> "Corner")
       parentTextToRemove = parentLabel.slice(0, -1)
@@ -40,6 +41,7 @@ export function createSubPropertyLabel(
     // Remove parent text from anywhere in the label
     let simplifiedLabel = registryLabel
     const parentTextRegex = new RegExp(`\\b${parentTextToRemove}\\b`, "gi")
+
     simplifiedLabel = simplifiedLabel.replace(parentTextRegex, "").trim()
 
     // Clean up any double spaces that might have been created

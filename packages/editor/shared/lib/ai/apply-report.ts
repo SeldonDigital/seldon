@@ -1,9 +1,5 @@
 import type { RejectedActionResult } from "@seldon/ai"
-import type {
-  BoardKey,
-  Workspace,
-  WorkspaceAction,
-} from "@seldon/core/workspace/types"
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 export type RejectedAction = RejectedActionResult
 
@@ -22,9 +18,8 @@ export function findActiveBoardKey(
   activeBoard: Workspace["boards"][BoardKey] | null,
 ): BoardKey | undefined {
   if (!activeBoard) return undefined
-  return Object.keys(workspace.boards).find(
-    (key) => workspace.boards[key] === activeBoard,
-  )
+
+  return Object.keys(workspace.boards).find((key) => workspace.boards[key] === activeBoard)
 }
 
 /**

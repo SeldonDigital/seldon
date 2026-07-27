@@ -2,25 +2,15 @@
 
 import { MenuController } from "@app/menus/MenuController"
 import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
-import { MenuEntry } from "@app/menus/types"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { DialogCreateComponent } from "@seldon/components/modules/DialogCreateComponent"
-import {
-  CSSProperties,
-  ChangeEvent,
-  MouseEvent,
-  PointerEvent,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 
-import {
-  AUTHORED_LEVEL_OPTIONS,
-  useCreateComponentPanel,
-} from "./hooks/use-create-component-panel"
+import { AUTHORED_LEVEL_OPTIONS, useCreateComponentPanel } from "./hooks/use-create-component-panel"
+
+import type { MenuEntry } from "@app/menus/types"
+import type { CSSProperties, ChangeEvent, MouseEvent, PointerEvent } from "react"
 
 /**
  * Gate for the Create Component dialog. Mounts the dialog only while the
@@ -70,10 +60,7 @@ function CreateComponentDialog({
     contentSized: true,
     closeOnEscape: false,
   })
-  const startDrag = useCallback(
-    (event: PointerEvent) => moveControls.start(event),
-    [moveControls],
-  )
+  const startDrag = useCallback((event: PointerEvent) => moveControls.start(event), [moveControls])
 
   const [levelOpen, setLevelOpen] = useState(false)
   const levelAnchorRef = useRef<HTMLElement | null>(null)
@@ -91,10 +78,7 @@ function CreateComponentDialog({
     [setTags],
   )
   const selectFrame = useCallback(() => setRootKind("frame"), [setRootKind])
-  const selectContainer = useCallback(
-    () => setRootKind("container"),
-    [setRootKind],
-  )
+  const selectContainer = useCallback(() => setRootKind("container"), [setRootKind])
   const openLevel = useCallback((event: MouseEvent) => {
     levelAnchorRef.current = event.currentTarget as HTMLElement
     setLevelOpen(true)
@@ -102,9 +86,7 @@ function CreateComponentDialog({
   const closeLevel = useCallback(() => setLevelOpen(false), [])
 
   const levelLabel = useMemo(
-    () =>
-      AUTHORED_LEVEL_OPTIONS.find((option) => option.value === level)?.label ??
-      "",
+    () => AUTHORED_LEVEL_OPTIONS.find((option) => option.value === level)?.label ?? "",
     [level],
   )
   const levelItems = useMemo<MenuEntry[]>(
@@ -123,9 +105,7 @@ function CreateComponentDialog({
   const frameSelected = rootKind === "frame"
   const containerSelected = rootKind === "container"
   const frameItemStyle = frameSelected ? styles.optionSelected : styles.option
-  const containerItemStyle = containerSelected
-    ? styles.optionSelected
-    : styles.option
+  const containerItemStyle = containerSelected ? styles.optionSelected : styles.option
   const nameInvalid = nameError ? "true" : undefined
   const confirmStyle = canSubmit ? undefined : styles.disabled
 
@@ -187,14 +167,7 @@ function CreateComponentDialog({
   }
 
   return (
-    <WindowSurface
-      modal
-      contentSized
-      onClose={close}
-      x={x}
-      y={y}
-      moveControls={moveControls}
-    >
+    <WindowSurface modal contentSized onClose={close} x={x} y={y} moveControls={moveControls}>
       <DialogCreateComponent
         data-testid="create-component-dialog"
         bar={barHandle}

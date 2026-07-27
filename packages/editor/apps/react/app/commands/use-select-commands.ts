@@ -34,6 +34,7 @@ export function useSelectCommands() {
         previousSibling: null,
       }
     }
+
     return {
       original: resolveOriginalNodeId(workspace, currentId),
       source: resolveSourceNodeId(workspace, currentId),
@@ -53,22 +54,10 @@ export function useSelectCommands() {
     [currentId, selectNode],
   )
 
-  const selectOriginal = useCallback(
-    () => goTo(targets.original),
-    [goTo, targets.original],
-  )
-  const selectSource = useCallback(
-    () => goTo(targets.source),
-    [goTo, targets.source],
-  )
-  const selectParent = useCallback(
-    () => goTo(targets.parent),
-    [goTo, targets.parent],
-  )
-  const selectFirstChild = useCallback(
-    () => goTo(targets.firstChild),
-    [goTo, targets.firstChild],
-  )
+  const selectOriginal = useCallback(() => goTo(targets.original), [goTo, targets.original])
+  const selectSource = useCallback(() => goTo(targets.source), [goTo, targets.source])
+  const selectParent = useCallback(() => goTo(targets.parent), [goTo, targets.parent])
+  const selectFirstChild = useCallback(() => goTo(targets.firstChild), [goTo, targets.firstChild])
   const selectNextSibling = useCallback(
     () => goTo(targets.nextSibling),
     [goTo, targets.nextSibling],
@@ -78,8 +67,7 @@ export function useSelectCommands() {
     [goTo, targets.previousSibling],
   )
 
-  const canMove = (targetId: string | null) =>
-    targetId !== null && targetId !== currentId
+  const canMove = (targetId: string | null) => targetId !== null && targetId !== currentId
 
   return {
     selectOriginal,

@@ -1,15 +1,14 @@
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import {
-  type ImageUploadTarget,
-  imageUploadTargetForKey,
-} from "@seldon/editor/lib/dialogs/image-upload-target"
+import { imageUploadTargetForKey } from "@seldon/editor/lib/dialogs/image-upload-target"
 import { useRef, useState } from "react"
 import { create } from "zustand"
 
 import { BackgroundKind, ValueType } from "@seldon/core/properties"
 
 import { useImageUpload } from "./use-image-upload"
+
+import type { ImageUploadTarget } from "@seldon/editor/lib/dialogs/image-upload-target"
 
 export { imageUploadTargetForKey, type ImageUploadTarget }
 
@@ -32,12 +31,7 @@ export function useImageUploadPanel() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { setProperties } = useObjectProperties()
 
-  const {
-    mutateAsync: upload,
-    status,
-    error,
-    reset: resetUpload,
-  } = useImageUpload()
+  const { mutateAsync: upload, status, error, reset: resetUpload } = useImageUpload()
 
   function show({ property }: { property: ImageUploadTarget }) {
     setProperty(property)
@@ -53,6 +47,7 @@ export function useImageUploadPanel() {
 
   function clear() {
     setCurrentFile(null)
+
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }

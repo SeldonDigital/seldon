@@ -1,11 +1,13 @@
 import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
-import { Theme, ThemeMarginKey } from "../../../themes/types"
-import { Unit, ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { PercentageValue } from "../shared/exact/percentage"
-import { PixelValue } from "../shared/exact/pixel"
-import { RemValue } from "../shared/exact/rem"
+import { Unit } from "../../constants"
+
+import type { Theme, ThemeMarginKey } from "../../../themes/types"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { PercentageValue } from "../shared/exact/percentage"
+import type { PixelValue } from "../shared/exact/pixel"
+import type { RemValue } from "../shared/exact/rem"
 
 /** Catalog spacing choice for one side when not using a length or theme step. */
 export enum Margin {
@@ -62,18 +64,18 @@ export const marginSchema: PropertySchema = {
         "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
-      )
+      ) {
         return true
+      }
+
       if (typeof value === "number" && value >= 0) return true
+
       return false
     },
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Margin) as string[]).includes(value),
-    themeOrdinal: (value: unknown, theme?: Theme) =>
-      themeTokenRefIsValid(value, theme, "margin"),
+      typeof value === "string" && (Object.values(Margin) as string[]).includes(value),
+    themeOrdinal: (value: unknown, theme?: Theme) => themeTokenRefIsValid(value, theme, "margin"),
   },
   presetOptions: () => Object.values(Margin),
-  themeOrdinalKeys: (theme: Theme) =>
-    Object.keys(theme.margin).map((id) => `@margin.${id}`),
+  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.margin).map((id) => `@margin.${id}`),
 }

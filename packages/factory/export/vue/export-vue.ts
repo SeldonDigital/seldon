@@ -1,4 +1,3 @@
-import { Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ORDERED_COMPONENT_LEVELS } from "@seldon/core/components/constants"
 import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
@@ -15,12 +14,14 @@ import { assertUniqueVariantNames } from "../react/discovery/assert-unique-varia
 import { getUsedIconIds } from "../react/discovery/get-used-icon-ids"
 import { format } from "../react/format"
 import { insertLicense } from "../react/generation/inserts/insert-license"
-import { ExportOptions, FileToExport } from "../types"
 import { generateFrameComponent } from "./assets/generate-frame"
 import { getVueIcons } from "./assets/get-vue-icons"
 import { getVueUtilityFiles } from "./assets/get-vue-utility-files"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
 import { generateComponentFiles } from "./generation/generate-component-files"
+
+import type { ExportOptions, FileToExport } from "../types"
+import type { Workspace } from "@seldon/core"
 
 /**
  * Exports a workspace to a Vue project. This is the Vue analog of
@@ -28,10 +29,7 @@ import { generateComponentFiles } from "./generation/generate-component-files"
  * discovery IR, style registry, and refs registry verbatim, and emits `.vue`
  * single-file components in place of `.tsx`.
  */
-export async function exportVue(
-  input: Workspace,
-  options: ExportOptions,
-): Promise<FileToExport[]> {
+export async function exportVue(input: Workspace, options: ExportOptions): Promise<FileToExport[]> {
   const filesToExport: FileToExport[] = []
   let workspace = input
 
@@ -48,24 +46,19 @@ export async function exportVue(
     nodeTreeDepths,
   } = buildStyleRegistry(workspace, options.publishAll, parentIndex)
 
-  let componentsToExport = getComponentsToExport(
-    workspace,
-    options,
-    nodeIdToClass,
-  )
+  let componentsToExport = getComponentsToExport(workspace, options, nodeIdToClass)
 
   const levelOrder = ORDERED_COMPONENT_LEVELS.slice().reverse()
+
   componentsToExport = componentsToExport.sort((a, b) => {
-    const aLevelIndex = levelOrder.indexOf(
-      getComponentSchema(a.componentId).level,
-    )
-    const bLevelIndex = levelOrder.indexOf(
-      getComponentSchema(b.componentId).level,
-    )
+    const aLevelIndex = levelOrder.indexOf(getComponentSchema(a.componentId).level)
+    const bLevelIndex = levelOrder.indexOf(getComponentSchema(b.componentId).level)
+
     return aLevelIndex - bLevelIndex
   })
 
   const usedIconIds = getUsedIconIds(workspace)
+
   if (options.exportAllIconSetIcons !== false) {
     for (const iconId of getWorkspaceEnabledIcons(workspace)) {
       usedIconIds.add(iconId)
@@ -89,19 +82,16 @@ export async function exportVue(
     options.output.componentsFolder,
     options.exportAllThemes !== false,
   )
+
   filesToExport.push(...themeStylesheets)
 
   const imagesToExport = await getImagesToExport(workspace, options)
+
   workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
   try {
     filesToExport.push(
-      ...generateComponentFiles(
-        componentsToExport,
-        workspace,
-        nodeIdToClass,
-        options,
-      ),
+      ...generateComponentFiles(componentsToExport, workspace, nodeIdToClass, options),
     )
   } catch (error) {
     console.warn("Failed to generate Vue component files:", error)
@@ -126,21 +116,16 @@ export async function exportVue(
   }
 
   try {
-    const refsRegistryFile = generateRefsRegistry(
-      componentsToExport,
-      nodeIdToClass,
-      options,
-    )
+    const refsRegistryFile = generateRefsRegistry(componentsToExport, nodeIdToClass, options)
+
     if (refsRegistryFile) filesToExport.push(refsRegistryFile)
   } catch {
     // Failed to generate refs registry
   }
 
   try {
-    const images = await getFilesToExportFromImagesToExport(
-      imagesToExport,
-      options,
-    )
+    const images = await getFilesToExportFromImagesToExport(imagesToExport, options)
+
     filesToExport.push(...images)
   } catch {
     // Failed to export images
@@ -152,6 +137,7 @@ export async function exportVue(
   await Promise.all(
     filesToExport.map(async (file) => {
       if (typeof file.content !== "string") return
+
       if (isFormattableSource(file.path)) {
         file.content = insertLicense(file.content)
         if (!options.skipFormat) file.content = await format(file.content)
@@ -162,14 +148,7 @@ export async function exportVue(
   return filesToExport
 }
 
-const FORMATTABLE_SOURCE_EXTENSIONS = [
-  ".ts",
-  ".tsx",
-  ".js",
-  ".jsx",
-  ".mjs",
-  ".cjs",
-]
+const FORMATTABLE_SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
 
 function isFormattableSource(path: string): boolean {
   return FORMATTABLE_SOURCE_EXTENSIONS.some((ext) => path.endsWith(ext))

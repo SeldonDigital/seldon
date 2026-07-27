@@ -1,16 +1,15 @@
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import { Placement } from "@seldon/editor/lib/types"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { useEffect, useRef, useState } from "react"
 
-import { Instance, Variant, Workspace, invariant } from "@seldon/core"
+import { invariant } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import {
-  nodeRelationshipService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
+import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
+
+import type { Instance, Variant, Workspace } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import type { Placement } from "@seldon/editor/lib/types"
 
 type DropzoneParams = {
   target: Variant | Instance | EntryNode
@@ -22,18 +21,14 @@ type DropzoneParams = {
 /**
  * Makes an element a dropzone for drag-and-drop operations with validation.
  */
-export function useDropzone({
-  target,
-  placement,
-  onDragEnter,
-  onDragLeave,
-}: DropzoneParams) {
+export function useDropzone({ target, placement, onDragEnter, onDragLeave }: DropzoneParams) {
   const ref = useRef(null)
   const [isValidDropTarget, setValidDropTarget] = useState(false)
   const { workspace } = useWorkspace({ usePreview: false })
 
   useEffect(() => {
     const el = ref.current
+
     invariant(el, "Element ref is not set")
 
     return dropTargetForElements({
@@ -47,16 +42,9 @@ export function useDropzone({
       onDragEnter: ({ source }) => {
         onDragEnter?.()
 
-        const subjectNode = source.data.subjectNode as
-          | Variant
-          | Instance
-          | EntryNode
-        const isValid = isValidTargetForSubjectNode(
-          target,
-          subjectNode,
-          placement,
-          workspace,
-        )
+        const subjectNode = source.data.subjectNode as Variant | Instance | EntryNode
+        const isValid = isValidTargetForSubjectNode(target, subjectNode, placement, workspace)
+
         setValidDropTarget(isValid)
       },
       onDragLeave: () => {
@@ -64,16 +52,9 @@ export function useDropzone({
         setValidDropTarget(false)
       },
       canDrop: ({ source }) => {
-        const subjectNode = source.data.subjectNode as
-          | Variant
-          | Instance
-          | EntryNode
-        return isValidTargetForSubjectNode(
-          target,
-          subjectNode,
-          placement,
-          workspace,
-        )
+        const subjectNode = source.data.subjectNode as Variant | Instance | EntryNode
+
+        return isValidTargetForSubjectNode(target, subjectNode, placement, workspace)
       },
       onDrop: () => {
         setValidDropTarget(false)
@@ -101,6 +82,7 @@ function isValidTargetForSubjectNode(
 
   if (placement === "inside") {
     const targetEntityType = typeCheckingService.getEntityType(target)
+
     if (!rules.mutations.insertInto[targetEntityType].allowed) {
       return false
     }
@@ -118,15 +100,8 @@ function isValidTargetForSubjectNode(
   ) {
     if (placement === "inside") {
       return (
-        typeCheckingService.canComponentBeParentOf(
-          targetComponentId,
-          subjectComponentId,
-        ) &&
-        !nodeRelationshipService.hasAncestorWithComponentId(
-          subjectComponentId,
-          target,
-          workspace,
-        )
+        typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
+        !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
       )
     }
 
@@ -143,20 +118,14 @@ function isValidTargetForSubjectNode(
     targetComponentId
   ) {
     const subjectEntityType = typeCheckingService.getEntityType(subject)
+
     if (!rules.mutations.instantiate[subjectEntityType].allowed) {
       return false
     }
 
     return (
-      typeCheckingService.canComponentBeParentOf(
-        targetComponentId,
-        subjectComponentId,
-      ) &&
-      !nodeRelationshipService.hasAncestorWithComponentId(
-        subjectComponentId,
-        target,
-        workspace,
-      )
+      typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
+      !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
     )
   }
 

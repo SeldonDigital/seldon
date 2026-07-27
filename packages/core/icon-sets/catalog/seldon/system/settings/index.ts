@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconSeldonAngle } from "./IconSeldonAngle"
 export { IconSeldonBackground } from "./IconSeldonBackground"

@@ -10,16 +10,22 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import { LinkPlain, LinkPlainProps } from "../primitives/LinkPlain"
-import { Text, TextProps } from "../primitives/Text"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Button } from "../elements/Button"
+import { Frame } from "../frames/Frame"
+import { Image } from "../primitives/Image"
+import { LinkPlain } from "../primitives/LinkPlain"
+import { Text } from "../primitives/Text"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { FrameProps } from "../frames/Frame"
+import type { ImageProps } from "../primitives/Image"
+import type { LinkPlainProps } from "../primitives/LinkPlain"
+import type { TextProps } from "../primitives/Text"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface TopbarCompactProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -104,10 +110,7 @@ export function TopbarCompact({
       : {
           ...sdn.image2,
           ...image2,
-          className: combineClassNames(
-            sdn.image2?.className,
-            image2?.className,
-          ),
+          className: combineClassNames(sdn.image2?.className, image2?.className),
         },
   )
   const frame2Props = applyRef(
@@ -117,10 +120,7 @@ export function TopbarCompact({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const linkPlainProps = applyRef(
@@ -130,10 +130,7 @@ export function TopbarCompact({
       : {
           ...sdn.linkPlain,
           ...linkPlain,
-          className: combineClassNames(
-            sdn.linkPlain?.className,
-            linkPlain?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain?.className, linkPlain?.className),
         },
   )
   const linkPlain2Props = applyRef(
@@ -143,10 +140,7 @@ export function TopbarCompact({
       : {
           ...sdn.linkPlain2,
           ...linkPlain2,
-          className: combineClassNames(
-            sdn.linkPlain2?.className,
-            linkPlain2?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain2?.className, linkPlain2?.className),
         },
   )
   const linkPlain3Props = applyRef(
@@ -156,10 +150,7 @@ export function TopbarCompact({
       : {
           ...sdn.linkPlain3,
           ...linkPlain3,
-          className: combineClassNames(
-            sdn.linkPlain3?.className,
-            linkPlain3?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain3?.className, linkPlain3?.className),
         },
   )
   const linkPlain4Props = applyRef(
@@ -169,10 +160,7 @@ export function TopbarCompact({
       : {
           ...sdn.linkPlain4,
           ...linkPlain4,
-          className: combineClassNames(
-            sdn.linkPlain4?.className,
-            linkPlain4?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain4?.className, linkPlain4?.className),
         },
   )
   const frame3Props = applyRef(
@@ -182,10 +170,7 @@ export function TopbarCompact({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const linkPlain5Props = applyRef(
@@ -195,10 +180,7 @@ export function TopbarCompact({
       : {
           ...sdn.linkPlain5,
           ...linkPlain5,
-          className: combineClassNames(
-            sdn.linkPlain5?.className,
-            linkPlain5?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain5?.className, linkPlain5?.className),
         },
   )
   const textProps = applyRef(
@@ -218,10 +200,7 @@ export function TopbarCompact({
       : {
           ...sdn.linkPlain6,
           ...linkPlain6,
-          className: combineClassNames(
-            sdn.linkPlain6?.className,
-            linkPlain6?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain6?.className, linkPlain6?.className),
         },
   )
   const buttonProps = applyRef(
@@ -231,10 +210,7 @@ export function TopbarCompact({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -244,10 +220,7 @@ export function TopbarCompact({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
@@ -268,24 +241,14 @@ export function TopbarCompact({
           </Frame>
           <Frame {...frame2Props}>
             {linkPlain && linkPlainProps && <LinkPlain {...linkPlainProps} />}
-            {linkPlain2 && linkPlain2Props && (
-              <LinkPlain {...linkPlain2Props} />
-            )}
-            {linkPlain3 && linkPlain3Props && (
-              <LinkPlain {...linkPlain3Props} />
-            )}
-            {linkPlain4 && linkPlain4Props && (
-              <LinkPlain {...linkPlain4Props} />
-            )}
+            {linkPlain2 && linkPlain2Props && <LinkPlain {...linkPlain2Props} />}
+            {linkPlain3 && linkPlain3Props && <LinkPlain {...linkPlain3Props} />}
+            {linkPlain4 && linkPlain4Props && <LinkPlain {...linkPlain4Props} />}
           </Frame>
           <Frame {...frame3Props}>
-            {linkPlain5 && linkPlain5Props && (
-              <LinkPlain {...linkPlain5Props} />
-            )}
+            {linkPlain5 && linkPlain5Props && <LinkPlain {...linkPlain5Props} />}
             {text && textProps && <Text {...textProps} />}
-            {linkPlain6 && linkPlain6Props && (
-              <LinkPlain {...linkPlain6Props} />
-            )}
+            {linkPlain6 && linkPlain6Props && <LinkPlain {...linkPlain6Props} />}
           </Frame>
           {buttonProps !== null && (
             <Button {...buttonProps}>

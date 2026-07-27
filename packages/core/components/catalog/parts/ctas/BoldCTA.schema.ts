@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Bold CTA",
   id: Seldon.ComponentId.BOLD_CTA,
   intent:
     "Bold dark call to action with a left-aligned headline, supporting text, and a light action button on an offBlack background.",
-  tags: [
-    "cta",
-    "call to action",
-    "part",
-    "bold",
-    "dark",
-    "headline",
-    "marketing",
-    "conversion",
-  ],
+  tags: ["cta", "call to action", "part", "bold", "dark", "headline", "marketing", "conversion"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

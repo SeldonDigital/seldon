@@ -1,12 +1,9 @@
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
-import { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
-import { MouseEvent } from "react"
+import { useIsCategoryExpanded, usePropertyExpansion } from "./use-property-expansion"
 
-import {
-  useIsCategoryExpanded,
-  usePropertyExpansion,
-} from "./use-property-expansion"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
+import type { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
+import type { MouseEvent } from "react"
 
 /**
  * Hook that provides state and handlers for rendering a category header in the properties sidebar.
@@ -15,9 +12,7 @@ import {
  * @param section - The property section to render (e.g., "Attributes", "Layout")
  * @returns Object containing label, icon, button props, and toggle handler
  */
-export function useRowCategory(
-  section: PropertySection | ThemePropertySection,
-) {
+export function useRowCategory(section: PropertySection | ThemePropertySection) {
   // Expansion state: category-level and property-level expansion
   const { toggleCategory, toggleProperty } = usePropertyExpansion()
 
@@ -31,11 +26,14 @@ export function useRowCategory(
   function onToggle(event?: MouseEvent<HTMLElement>) {
     if (!event?.altKey) {
       toggleCategory(section.category)
+
       return
     }
 
     const shouldExpand = !isExpanded
+
     toggleCategory(section.category, shouldExpand)
+
     for (const property of section.properties) {
       if (property.isCompound || property.isShorthand) {
         toggleProperty(property.key, shouldExpand)
@@ -44,9 +42,7 @@ export function useRowCategory(
   }
 
   // Icon: changes based on expansion state
-  const iconId: IconProps["icon"] = isExpanded
-    ? "material-unfoldLess"
-    : "material-unfoldMore"
+  const iconId: IconProps["icon"] = isExpanded ? "material-unfoldLess" : "material-unfoldMore"
 
   // Disclosure button: leading toggle with accessibility attributes
   const buttonIconic = {

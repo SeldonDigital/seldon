@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Article Card",
   id: Seldon.ComponentId.ARTICLE_CARD,
   intent:
     "Content preview card with a featured image, headline, short excerpt, and author metadata to drive click-throughs.",
-  tags: [
-    "card",
-    "article",
-    "blog",
-    "preview",
-    "excerpt",
-    "author",
-    "content",
-    "UI",
-  ],
+  tags: ["card", "article", "blog", "preview", "excerpt", "author", "content", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -421,8 +413,7 @@ export const schema = {
     {
       id: "minimal",
       label: "Minimal",
-      intent:
-        "Compact article card showing only image, category, and headline for dense feeds.",
+      intent: "Compact article card showing only image, category, and headline for dense feeds.",
       children: [
         {
           component: Seldon.ComponentId.IMAGE,

@@ -39,22 +39,23 @@ export function configureWorkspaceStore(editor: EditorId): void {
 
 export async function listStoredWorkspaces(): Promise<StoredWorkspace[]> {
   const response = await fetch(BASE)
+
   if (!response.ok) return []
+
   return (await response.json()) as StoredWorkspace[]
 }
 
-export async function getStoredWorkspace(
-  id: string,
-): Promise<StoredWorkspace | undefined> {
+export async function getStoredWorkspace(id: string): Promise<StoredWorkspace | undefined> {
   const response = await fetch(`${BASE}/${encodeURIComponent(id)}`)
+
   if (!response.ok) return undefined
+
   return (await response.json()) as StoredWorkspace
 }
 
-export async function saveStoredWorkspace(
-  record: StoredWorkspace,
-): Promise<void> {
+export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void> {
   const stamped: StoredWorkspace = { ...record, lastEditor: currentEditor }
+
   await fetch(`${BASE}/${encodeURIComponent(record.id)}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -77,6 +78,8 @@ export async function createStoredWorkspace(
     updatedAt: new Date().toISOString(),
     lastEditor: currentEditor,
   }
+
   await saveStoredWorkspace(record)
+
   return record
 }

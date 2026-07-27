@@ -1,18 +1,13 @@
 import { getCurrentWorkspace } from "@app/workspace/hooks/use-history"
 import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getComponentKey,
-  getNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
+import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
 import { create } from "zustand"
 
-import { InstanceId, VariantId, Workspace } from "@seldon/core"
-import {
-  nodeTraversalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
+import { nodeTraversalService, typeCheckingService } from "@seldon/core/workspace/services"
+
+import type { InstanceId, VariantId, Workspace } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
 const useStore = create<{
@@ -24,25 +19,28 @@ const useStore = create<{
   expandObjects: (ids) =>
     set((state) => {
       const newSet = new Set(state.expandedObjects)
+
       ids.forEach((id) => newSet.add(id))
+
       return { expandedObjects: newSet }
     }),
   collapseObjects: (ids) =>
     set((state) => {
       const newSet = new Set(state.expandedObjects)
+
       ids.forEach((id) => newSet.delete(id))
+
       return { expandedObjects: newSet }
     }),
 }))
 
-function getAllDescendantNodeIds(
-  nodeId: string,
-  workspace: Workspace,
-): string[] {
+function getAllDescendantNodeIds(nodeId: string, workspace: Workspace): string[] {
   const node = getNode(workspace, nodeId)
+
   if (!node) return []
 
   const board = findComponentForNode(node, workspace)
+
   if (!board) return []
 
   return collectDescendantNodeIds(board, nodeId)
@@ -69,13 +67,8 @@ export const useExpansion = () => {
   const collapseObjects = useStore((state) => state.collapseObjects)
 
   const toggle = useCallback(
-    (
-      id: string,
-      shouldExpand?: boolean,
-      options?: { includeAncestors?: boolean },
-    ) => {
-      const expand =
-        shouldExpand ?? !useStore.getState().expandedObjects.has(id)
+    (id: string, shouldExpand?: boolean, options?: { includeAncestors?: boolean }) => {
+      const expand = shouldExpand ?? !useStore.getState().expandedObjects.has(id)
 
       if (!options?.includeAncestors) {
         if (expand) {
@@ -95,15 +88,14 @@ export const useExpansion = () => {
 
           if (typeCheckingService.isVariant(currentNode)) {
             const board = findComponentForNode(currentNode, workspace)
+
             if (board) {
               idsToToggle.push(getComponentKey(board))
             }
           }
 
-          const parentNode = nodeTraversalService.findParentNode(
-            currentNode.id,
-            workspace,
-          )
+          const parentNode = nodeTraversalService.findParentNode(currentNode.id, workspace)
+
           if (!parentNode) break
 
           currentNode = parentNode as EntryNode
@@ -121,15 +113,11 @@ export const useExpansion = () => {
 
   return {
     toggle,
-    isExpanded: useCallback(
-      (id: string) => useStore.getState().expandedObjects.has(id),
-      [],
-    ),
+    isExpanded: useCallback((id: string) => useStore.getState().expandedObjects.has(id), []),
     expandObjects,
     collapseObjects,
     getAllDescendantNodeIds: useCallback(
-      (nodeId: string) =>
-        getAllDescendantNodeIds(nodeId, getCurrentWorkspace()),
+      (nodeId: string) => getAllDescendantNodeIds(nodeId, getCurrentWorkspace()),
       [],
     ),
   }

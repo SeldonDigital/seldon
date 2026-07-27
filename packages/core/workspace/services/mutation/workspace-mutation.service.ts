@@ -1,21 +1,8 @@
-import { ComponentId } from "../../../components/constants"
-import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
-import { Theme, ThemeInstanceId, ThemeSwatchKey } from "../../../themes/types"
 import { applyResetDefaultVariantToCatalog } from "../../helpers/nodes/apply-reset-default-variant-to-catalog"
 import { applyResetInstanceToOriginal } from "../../helpers/nodes/apply-reset-instance-to-original"
 import { applyResetInstanceToSource } from "../../helpers/nodes/apply-reset-instance-to-source"
 import { applyResetSchemaVariantToCatalog } from "../../helpers/nodes/apply-reset-schema-variant-to-catalog"
 import { applyResetVariantInstances } from "../../helpers/nodes/apply-reset-variant-instances"
-import type { RepeatEditorData } from "../../helpers/nodes/node-repeat"
-import {
-  BoardKey,
-  Instance,
-  InstanceId,
-  NodeState,
-  Variant,
-  VariantId,
-  Workspace,
-} from "../../types"
 import {
   getInitialAuthoredComponentLabel,
   getInitialComponentLabel,
@@ -39,16 +26,26 @@ import {
   setNodeStateProperties,
 } from "./node-property-mutations"
 import { replaceSwatchRefsWithExactColor } from "./swatch-ref-replacement"
-import {
-  getNodeTheme,
-  setComponentTheme,
-  setNodeTheme,
-} from "./theme-mutations"
+import { getNodeTheme, setComponentTheme, setNodeTheme } from "./theme-mutations"
 
+import type { ComponentId } from "../../../components/constants"
+import type { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
+import type { Theme, ThemeInstanceId, ThemeSwatchKey } from "../../../themes/types"
+import type { RepeatEditorData } from "../../helpers/nodes/node-repeat"
+import type {
+  BoardKey,
+  Instance,
+  InstanceId,
+  NodeState,
+  Variant,
+  VariantId,
+  Workspace,
+} from "../../types"
+
+/** Property, optional sub-facet, and paint-layer slot to reset. `layerIndex` defaults to layer 0. */
 interface PropertyResetTarget {
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
-  /** Paint-layer slot for layered properties; defaults to layer 0. */
   layerIndex?: number
 }
 
@@ -65,11 +62,7 @@ export class WorkspaceMutationService {
     return setNodeLabel(nodeId, label, workspace)
   }
 
-  public setNodeRef(
-    nodeId: VariantId | InstanceId,
-    ref: string,
-    workspace: Workspace,
-  ): Workspace {
+  public setNodeRef(nodeId: VariantId | InstanceId, ref: string, workspace: Workspace): Workspace {
     return setNodeRef(nodeId, ref, workspace)
   }
 
@@ -89,10 +82,7 @@ export class WorkspaceMutationService {
     return setNodeRepeat(nodeId, repeat, workspace)
   }
 
-  public getInitialVariantLabel(
-    componentId: ComponentId,
-    workspace: Workspace,
-  ): string {
+  public getInitialVariantLabel(componentId: ComponentId, workspace: Workspace): string {
     return getInitialVariantLabel(componentId, workspace)
   }
 
@@ -156,10 +146,7 @@ export class WorkspaceMutationService {
     return resetNodeState(nodeId, state, workspace)
   }
 
-  public resetNodeOverrides(
-    nodeId: VariantId | InstanceId,
-    workspace: Workspace,
-  ): Workspace {
+  public resetNodeOverrides(nodeId: VariantId | InstanceId, workspace: Workspace): Workspace {
     return resetNodeOverrides(nodeId, workspace)
   }
 
@@ -186,18 +173,12 @@ export class WorkspaceMutationService {
     return applyComponentPropertiesToAllBoards(sourceBoardKey, workspace)
   }
 
-  public resetComponentBoard(
-    boardKey: BoardKey,
-    workspace: Workspace,
-  ): Workspace {
+  public resetComponentBoard(boardKey: BoardKey, workspace: Workspace): Workspace {
     return resetComponentBoard(boardKey, workspace)
   }
 
   /** Rebuilds a single schema-backed user variant to its catalog schema variant. */
-  public resetSchemaVariantToCatalog(
-    variantRootId: VariantId,
-    workspace: Workspace,
-  ): Workspace {
+  public resetSchemaVariantToCatalog(variantRootId: VariantId, workspace: Workspace): Workspace {
     return applyResetSchemaVariantToCatalog(workspace, variantRootId)
   }
 
@@ -215,10 +196,7 @@ export class WorkspaceMutationService {
    * source's structurally-matching child, so node ids survive and downstream
    * instances keep their overrides.
    */
-  public resetInstanceToSource(
-    instanceId: InstanceId,
-    workspace: Workspace,
-  ): Workspace {
+  public resetInstanceToSource(instanceId: InstanceId, workspace: Workspace): Workspace {
     return applyResetInstanceToSource(workspace, instanceId)
   }
 
@@ -227,10 +205,7 @@ export class WorkspaceMutationService {
    * instance whose template links straight to the variant is reset to source,
    * clearing its subtree overrides and repointing to the variant's children.
    */
-  public resetVariantInstances(
-    variantRootId: VariantId,
-    workspace: Workspace,
-  ): Workspace {
+  public resetVariantInstances(variantRootId: VariantId, workspace: Workspace): Workspace {
     return applyResetVariantInstances(workspace, variantRootId)
   }
 
@@ -239,10 +214,7 @@ export class WorkspaceMutationService {
    * subtree overrides and repoints each node's template to its resolved original,
    * so node ids survive and downstream instances keep their overrides.
    */
-  public resetInstanceToOriginal(
-    instanceId: InstanceId,
-    workspace: Workspace,
-  ): Workspace {
+  public resetInstanceToOriginal(instanceId: InstanceId, workspace: Workspace): Workspace {
     return applyResetInstanceToOriginal(workspace, instanceId)
   }
 
@@ -262,10 +234,7 @@ export class WorkspaceMutationService {
     return setNodeTheme(nodeId, theme, workspace)
   }
 
-  public getNodeTheme(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): ThemeInstanceId {
+  public getNodeTheme(node: Variant | Instance, workspace: Workspace): ThemeInstanceId {
     return getNodeTheme(node, workspace)
   }
 

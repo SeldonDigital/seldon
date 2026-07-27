@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { OptionHTMLAttributes } from "react"
+import type { OptionHTMLAttributes } from "react"
 
 export const HTMLOption = (props: OptionHTMLAttributes<HTMLOptionElement>) => {
   return <option {...props} />

@@ -13,8 +13,6 @@
  * existing red "missing" symbol at the render layer.
  */
 import { getComponentSchema } from "../components/catalog"
-import type { ComponentId } from "../components/types"
-import type { IconId } from "../icon-sets"
 import {
   GLOBAL_OPTION_ICONS,
   PROPERTY_ICONS,
@@ -22,6 +20,9 @@ import {
 } from "../properties/schemas/data/property-icons"
 import { getCatalogKeyForPropertyPath } from "../properties/schemas/helpers/property-path"
 import { getThemeTokenSchema } from "../themes/schemas/helpers/get-theme-token-schema"
+
+import type { ComponentId } from "../components/types"
+import type { IconId } from "../icon-sets"
 
 /** Generic fallback when a component schema declares no icon. */
 const COMPONENT_ICON_FALLBACK: IconId = "seldon-component"
@@ -33,8 +34,10 @@ const COMPONENT_ICON_FALLBACK: IconId = "seldon-component"
  */
 export function getPropertyIcon(path: string): string | undefined {
   const direct = PROPERTY_ICONS[path]
+
   if (direct) return direct
   const catalogKey = getCatalogKeyForPropertyPath(path)
+
   return catalogKey ? PROPERTY_ICONS[catalogKey] : undefined
 }
 
@@ -44,6 +47,7 @@ export function getPropertyIcon(path: string): string | undefined {
  */
 export function getOptionIcon(path: string, value: string): string | undefined {
   const catalogKey = getCatalogKeyForPropertyPath(path) ?? path
+
   return (
     PROPERTY_OPTION_ICONS[path]?.[value] ??
     PROPERTY_OPTION_ICONS[catalogKey]?.[value] ??

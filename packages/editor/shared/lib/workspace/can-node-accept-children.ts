@@ -1,7 +1,8 @@
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "./node-tree"
+
+import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Whether a node can accept inserted children. Resolves the catalog component id
@@ -13,12 +14,11 @@ import { getNodeCatalogComponentId } from "./node-tree"
  * that the node resolves to a component catalog id without applying the level
  * containment rule.
  */
-export function canNodeAcceptChildren(
-  node: EntryNode,
-  workspace: Workspace,
-): boolean {
+export function canNodeAcceptChildren(node: EntryNode, workspace: Workspace): boolean {
   const componentId = getNodeCatalogComponentId(node, workspace)
+
   if (!componentId) return false
   const schema = getComponentSchema(componentId)
+
   return rules.componentLevels[schema.level].mayContain.length > 0
 }

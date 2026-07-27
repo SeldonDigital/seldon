@@ -1,6 +1,5 @@
+import type { ComponentToExport } from "../../types"
 import type { NativeReactPrimitive } from "@seldon/core/components/types"
-
-import { ComponentToExport } from "../../types"
 
 /**
  * Maps each native primitive to the HTML tag a Vue template renders directly.
@@ -73,7 +72,9 @@ export type VueReturns = NonNullable<ComponentToExport["config"]["vue"]>
  */
 export function resolveVueReturns(component: ComponentToExport): VueReturns {
   const { config } = component
+
   if (config.vue) return config.vue
+
   return {
     returns: config.react.returns,
     custom: config.react.custom,
@@ -88,8 +89,10 @@ export function resolveVueReturns(component: ComponentToExport): VueReturns {
  */
 export function getVueRootTag(component: ComponentToExport): string | null {
   const returns = resolveVueReturns(component).returns
+
   if (returns in NATIVE_VUE_TAGS) {
     return NATIVE_VUE_TAGS[returns as NativeReactPrimitive]
   }
+
   return null
 }

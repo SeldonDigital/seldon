@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { Unit, ValueType } from "../../../properties/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "./add/add-component"
@@ -15,15 +14,13 @@ import { setNodeRef } from "./set/set-node-ref"
 import { setNodeStateProperties } from "./set/set-node-state-properties"
 import { setPlaygroundLabel } from "./set/set-playground-label"
 
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
+
 const boardKey = ComponentId.BUTTON
 const componentWorkspace = () =>
-  addComponent(
-    { boardKey } as ExtractPayload<"add_component">,
-    createEmptyWorkspace(),
-  )
+  addComponent({ boardKey } as ExtractPayload<"add_component">, createEmptyWorkspace())
 
-const rootId = (ws: Workspace) =>
-  (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
+const rootId = (ws: Workspace) => (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
 const instanceId = (ws: Workspace) =>
   (ws.boards[boardKey] as ComponentBoard).variants[0].children![0].id as string
 
@@ -31,15 +28,14 @@ describe("setNodeEditorData / resetNodeEditorData", () => {
   it("sets and clears node editor data", () => {
     const ws = componentWorkspace()
     const id = rootId(ws)
-    const set = setNodeEditorData(
-      { nodeId: id, editorData: { n: 1 } } as never,
-      ws,
-    )
+    const set = setNodeEditorData({ nodeId: id, editorData: { n: 1 } } as never, ws)
+
     expect(set.nodes[id]!.__editor).toEqual({ n: 1 })
     const reset = resetNodeEditorData(
       { nodeId: id } as ExtractPayload<"reset_node_editor_data">,
       set,
     )
+
     expect(reset.nodes[id]!.__editor).toBeUndefined()
   })
 })
@@ -47,12 +43,10 @@ describe("setNodeEditorData / resetNodeEditorData", () => {
 describe("resetNodeLabel", () => {
   it("is a no-op on a default variant (rename blocked)", () => {
     const ws = componentWorkspace()
-    expect(
-      resetNodeLabel(
-        { nodeId: rootId(ws) } as ExtractPayload<"reset_node_label">,
-        ws,
-      ),
-    ).toBe(ws)
+
+    expect(resetNodeLabel({ nodeId: rootId(ws) } as ExtractPayload<"reset_node_label">, ws)).toBe(
+      ws,
+    )
   })
 })
 
@@ -80,6 +74,7 @@ describe("resetNodeState / resetNodeStateProperty", () => {
       { nodeId: id, state: "hover", propertyKey: "opacity" } as never,
       seeded,
     )
+
     expect((reset.nodes[id]!.states?.hover ?? {}).opacity).toBeUndefined()
   })
 
@@ -87,10 +82,8 @@ describe("resetNodeState / resetNodeStateProperty", () => {
     const ws = componentWorkspace()
     const id = rootId(ws)
     const seeded = seed(ws)
-    const reset = resetNodeState(
-      { nodeId: id, state: "hover" } as never,
-      seeded,
-    )
+    const reset = resetNodeState({ nodeId: id, state: "hover" } as never, seeded)
+
     expect(reset.nodes[id]!.states?.hover).toBeUndefined()
   })
 })
@@ -100,6 +93,7 @@ describe("setNodeRef", () => {
     const ws = componentWorkspace()
     const instance = instanceId(ws)
     const set = setNodeRef({ nodeId: instance, ref: "my-ref" } as never, ws)
+
     expect(set.nodes[instance]!.ref).toBe("my-ref")
 
     expect(setNodeRef({ nodeId: rootId(ws), ref: "x" } as never, ws)).toBe(ws)
@@ -119,6 +113,7 @@ describe("setPlaygroundLabel", () => {
       } as ExtractPayload<"set_playground_label">,
       added,
     )
+
     expect(renamed.playgrounds["pg-1"]!.label).toBe("My Playground")
   })
 })

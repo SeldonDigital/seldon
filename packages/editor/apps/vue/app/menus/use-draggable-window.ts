@@ -1,6 +1,8 @@
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
 import { useDragControls, useMotionValue } from "motion-v"
-import { type Ref, onBeforeUnmount, onMounted, ref } from "vue"
+import { onBeforeUnmount, onMounted, ref } from "vue"
+
+import type { Ref } from "vue"
 
 const DEFAULT_MIN_WINDOW_WIDTH = 300
 const DEFAULT_MIN_WINDOW_HEIGHT = 300
@@ -22,9 +24,9 @@ interface BoundingBox {
 }
 
 interface DraggableWindowOptions {
+  handleClose: () => void
   initialPosition?: { x: number; y: number }
   initialSize?: { width: number; height: number }
-  handleClose: () => void
   closeOnEscape?: boolean
   minWidth?: number
   minHeight?: number
@@ -72,11 +74,14 @@ export function useDraggableWindow(options: DraggableWindowOptions) {
   // surface. Restore it once the pointer is released.
   function onResizeStart(): void {
     const previousUserSelect = document.body.style.userSelect
+
     document.body.style.userSelect = "none"
+
     const restoreUserSelect = () => {
       document.body.style.userSelect = previousUserSelect
       window.removeEventListener("pointerup", restoreUserSelect)
     }
+
     window.addEventListener("pointerup", restoreUserSelect)
   }
 
@@ -117,12 +122,14 @@ export function useDraggableWindow(options: DraggableWindowOptions) {
       const onKey = (event: KeyboardEvent) => {
         if (event.key === "Escape") handleClose()
       }
+
       window.addEventListener("keydown", onKey)
       cleanups.push(() => window.removeEventListener("keydown", onKey))
     }
 
     const onWindowResize = () => {
       const size = getWindowInnerSize()
+
       dragConstraints.value = {
         top: 0,
         left: 0,
@@ -130,6 +137,7 @@ export function useDraggableWindow(options: DraggableWindowOptions) {
         bottom: size.height - height.get(),
       }
     }
+
     window.addEventListener("resize", onWindowResize)
     cleanups.push(() => window.removeEventListener("resize", onWindowResize))
   })

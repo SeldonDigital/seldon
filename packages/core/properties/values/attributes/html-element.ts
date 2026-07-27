@@ -1,8 +1,8 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { StringValue } from "../shared/exact/string"
-import { InheritValue } from "../shared/inherit/inherit"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { StringValue } from "../shared/exact/string"
+import type { InheritValue } from "../shared/inherit/inherit"
 
 /** HTML tag names the catalog exposes as fixed choices. */
 export enum HtmlElement {
@@ -48,11 +48,7 @@ export interface HtmlElementOptionValue {
 }
 
 /** Empty, inherit, a catalog tag keyword, or a custom tag string (`exact`). */
-export type HtmlElementValue =
-  | EmptyValue
-  | InheritValue
-  | HtmlElementOptionValue
-  | StringValue
+export type HtmlElementValue = EmptyValue | InheritValue | HtmlElementOptionValue | StringValue
 
 /** Defines labels, allowed shapes, checks, and preset choices for `htmlElement`. */
 export const htmlElementSchema: PropertySchema = {
@@ -64,8 +60,7 @@ export const htmlElementSchema: PropertySchema = {
     inherit: () => true,
     exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(HtmlElement) as string[]).includes(value),
+      typeof value === "string" && (Object.values(HtmlElement) as string[]).includes(value),
   },
   presetOptions: () => Object.values(HtmlElement),
 }

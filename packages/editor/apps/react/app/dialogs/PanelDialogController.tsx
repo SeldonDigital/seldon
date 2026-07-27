@@ -7,20 +7,14 @@ import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Container } from "@seldon/components/frames/Container"
 import { PanelDialog } from "@seldon/components/modules/PanelDialog"
 import { ListStandardCatalog } from "@seldon/components/parts/ListStandardCatalog"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextSubtitle } from "@seldon/components/primitives/TextSubtitle"
-import { ResizeSide } from "@seldon/components/utils/resize"
-import {
-  CSSProperties,
-  ChangeEvent,
-  PointerEvent,
-  useCallback,
-  useMemo,
-  useState,
-} from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 
-import { CatalogDialogCategory, CatalogDialogItem } from "./types"
+import type { CatalogDialogCategory, CatalogDialogItem } from "./types"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { ResizeSide } from "@seldon/components/utils/resize"
+import type { CSSProperties, ChangeEvent, PointerEvent } from "react"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
 // side and bottom edges plus the two bottom corners.
@@ -85,10 +79,7 @@ export function PanelDialogController<T extends CatalogDialogItem>({
 
   useHotkeys("esc", onClose)
 
-  const startDrag = useCallback(
-    (event: PointerEvent) => moveControls.start(event),
-    [moveControls],
-  )
+  const startDrag = useCallback((event: PointerEvent) => moveControls.start(event), [moveControls])
 
   const stopDrag = useCallback((event: PointerEvent) => {
     // Keep pointer interactions with the search field from starting a drag.
@@ -102,9 +93,8 @@ export function PanelDialogController<T extends CatalogDialogItem>({
 
   const selectedItem = useMemo(
     () =>
-      visibleCategories
-        .flatMap(({ items }) => items)
-        .find((item) => item.id === selectedId) ?? null,
+      visibleCategories.flatMap(({ items }) => items).find((item) => item.id === selectedId) ??
+      null,
     [visibleCategories, selectedId],
   )
 
@@ -282,8 +272,7 @@ const styles: Record<string, CSSProperties> = {
   rowSelected: {
     cursor: "pointer",
     width: "100%",
-    backgroundColor:
-      "color-mix(in srgb, var(--sdn-swatch-white) 10%, transparent)",
+    backgroundColor: "color-mix(in srgb, var(--sdn-swatch-white) 10%, transparent)",
   },
   empty: {
     width: "100%",

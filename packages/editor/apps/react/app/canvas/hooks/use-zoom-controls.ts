@@ -18,20 +18,16 @@ export const useZoomControlsStore = create<ZoomControlsState>((set) => ({
   zoomOutCounter: 0,
   resetZoomCounter: 0,
 
-  triggerZoomIn: () =>
-    set((state) => ({ zoomInCounter: state.zoomInCounter + 1 })),
-  triggerZoomOut: () =>
-    set((state) => ({ zoomOutCounter: state.zoomOutCounter + 1 })),
-  triggerResetZoom: () =>
-    set((state) => ({ resetZoomCounter: state.resetZoomCounter + 1 })),
+  triggerZoomIn: () => set((state) => ({ zoomInCounter: state.zoomInCounter + 1 })),
+  triggerZoomOut: () => set((state) => ({ zoomOutCounter: state.zoomOutCounter + 1 })),
+  triggerResetZoom: () => set((state) => ({ resetZoomCounter: state.resetZoomCounter + 1 })),
 }))
 
 /**
  * Hook to trigger zoom controls from anywhere in the app
  */
 export function useZoomControls() {
-  const { triggerZoomIn, triggerZoomOut, triggerResetZoom } =
-    useZoomControlsStore()
+  const { triggerZoomIn, triggerZoomOut, triggerResetZoom } = useZoomControlsStore()
 
   return {
     zoomIn: () => triggerZoomIn(),

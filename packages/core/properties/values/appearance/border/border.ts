@@ -1,10 +1,8 @@
-import {
-  listThemeLookIds,
-  validateThemeLookPresetRef,
-} from "../../../../themes/looks"
-import { Theme, ThemeBorderKey } from "../../../../themes/types"
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
+import { listThemeLookIds, validateThemeLookPresetRef } from "../../../../themes/looks"
+
+import type { Theme, ThemeBorderKey } from "../../../../themes/types"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
 
 /** Theme categorical reference to a named recipe under `theme.border`. */
 export interface BorderValue {
@@ -14,8 +12,7 @@ export interface BorderValue {
 
 export const borderPresetSchema: PropertySchema = {
   name: "borderPreset",
-  description:
-    "Selects a named border recipe from the theme, including the built-in None look.",
+  description: "Selects a named border recipe from the theme, including the built-in None look.",
   supports: ["empty", "inherit", "themeCategorical"] as const,
   validation: {
     empty: () => true,

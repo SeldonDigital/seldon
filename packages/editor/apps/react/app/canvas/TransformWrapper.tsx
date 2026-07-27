@@ -1,15 +1,14 @@
 import { useTextFieldFocus } from "@app/canvas/hooks/use-text-field-focus"
 import { useZoomControlsStore } from "@app/canvas/hooks/use-zoom-controls"
-import React, { FC, useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import {
-  TransformWrapper as ReactTransformWrapper,
-  useControls,
-} from "react-zoom-pan-pinch"
+import { TransformWrapper as ReactTransformWrapper, useControls } from "react-zoom-pan-pinch"
 
 import { CanvasOverlayTracker } from "./CanvasOverlayTracker"
 import { CanvasScrollToSelection } from "./CanvasScrollToSelection"
 import { CanvasTransformRemeasure } from "./CanvasTransformRemeasure"
+
+import type { FC } from "react"
 
 export const TRANSFORM_WRAPPER_INITIAL_POSITION_X = 0
 export const TRANSFORM_WRAPPER_INITIAL_POSITION_Y = 50
@@ -62,16 +61,10 @@ export const TransformWrapper: FC<Props> = ({ children }) => {
 
 const ZoomControls = () => {
   const { zoomIn, zoomOut, setTransform } = useControls()
-  const { zoomInCounter, zoomOutCounter, resetZoomCounter } =
-    useZoomControlsStore()
+  const { zoomInCounter, zoomOutCounter, resetZoomCounter } = useZoomControlsStore()
 
   const resetZoom = useCallback(() => {
-    setTransform(
-      TRANSFORM_WRAPPER_INITIAL_POSITION_X,
-      TRANSFORM_WRAPPER_INITIAL_POSITION_Y,
-      1,
-      0,
-    )
+    setTransform(TRANSFORM_WRAPPER_INITIAL_POSITION_X, TRANSFORM_WRAPPER_INITIAL_POSITION_Y, 1, 0)
   }, [setTransform])
 
   // Handle zoom from menu using the counter from the store

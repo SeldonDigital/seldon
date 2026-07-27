@@ -1,17 +1,18 @@
 import { findComponentSchema } from "../../../components/catalog"
-import { ComponentId, ComponentLevel } from "../../../components/constants"
 import { rules } from "../../../rules/config/rules.config"
-import type { Entity } from "../../../rules/types/rule-config-types"
 import { canNodeHaveChildren } from "../../helpers/nodes/can-node-have-children"
 import { mapEntryNodeTypeToRulesEntity } from "../../helpers/rules/map-entry-node-type-to-rules-entity"
-import {
-  type Authored,
-  type DefaultVariant,
-  type Instance,
-  type RulesNodeOrComponent,
-  type UserVariant,
-  type Variant,
-  isEntryNodeForRules,
+import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
+
+import type { ComponentId, ComponentLevel } from "../../../components/constants"
+import type { Entity } from "../../../rules/types/rule-config-types"
+import type {
+  Authored,
+  DefaultVariant,
+  Instance,
+  RulesNodeOrComponent,
+  UserVariant,
+  Variant,
 } from "../../helpers/rules/rules-node-subject"
 import type { Board, Workspace } from "../../types"
 
@@ -41,6 +42,7 @@ export class TypeCheckingService {
   public isInstance(node: RulesNodeOrComponent | undefined): node is Instance {
     if (node === undefined) return false
     if (isEntryNodeForRules(node)) return node.type === "instance"
+
     return false
   }
 
@@ -52,13 +54,11 @@ export class TypeCheckingService {
   public isVariant(node: RulesNodeOrComponent | undefined): node is Variant {
     if (node === undefined) return false
     if (this.isBoard(node)) return false
+
     if (isEntryNodeForRules(node)) {
-      return (
-        node.type === "default" ||
-        node.type === "variant" ||
-        node.type === "authored"
-      )
+      return node.type === "default" || node.type === "variant" || node.type === "authored"
     }
+
     return false
   }
 
@@ -73,6 +73,7 @@ export class TypeCheckingService {
     if (node === undefined) return false
     if (this.isBoard(node)) return false
     if (isEntryNodeForRules(node)) return node.type === "authored"
+
     return false
   }
 
@@ -84,6 +85,7 @@ export class TypeCheckingService {
   public isDefaultVariant(node: RulesNodeOrComponent): node is DefaultVariant {
     if (this.isBoard(node)) return false
     if (isEntryNodeForRules(node)) return node.type === "default"
+
     return false
   }
 
@@ -95,6 +97,7 @@ export class TypeCheckingService {
   public isUserVariant(node: RulesNodeOrComponent): node is UserVariant {
     if (this.isBoard(node)) return false
     if (isEntryNodeForRules(node)) return node.type === "variant"
+
     return false
   }
 
@@ -133,12 +136,10 @@ export class TypeCheckingService {
    * @param workspace - Workspace that contains the node chain
    * @returns True if the node resolves to a component catalog id
    */
-  public canNodeHaveChildren(
-    node: RulesNodeOrComponent,
-    workspace: Workspace,
-  ): boolean {
+  public canNodeHaveChildren(node: RulesNodeOrComponent, workspace: Workspace): boolean {
     if (this.isBoard(node)) return false
     if (!isEntryNodeForRules(node)) return false
+
     return canNodeHaveChildren(node, workspace)
   }
 
@@ -150,17 +151,13 @@ export class TypeCheckingService {
    * @param childId - The child component ID
    * @returns True if the parent can contain the child
    */
-  public canComponentBeParentOf(
-    parentId: ComponentId,
-    childId: ComponentId,
-  ): boolean {
+  public canComponentBeParentOf(parentId: ComponentId, childId: ComponentId): boolean {
     const parentSchema = findComponentSchema(parentId)
     const childSchema = findComponentSchema(childId)
+
     if (!parentSchema || !childSchema) return false
 
-    return rules.componentLevels[parentSchema.level].mayContain.includes(
-      childSchema.level,
-    )
+    return rules.componentLevels[parentSchema.level].mayContain.includes(childSchema.level)
   }
 
   /**
@@ -171,10 +168,7 @@ export class TypeCheckingService {
    * @param childLevel - The child component level
    * @returns True if the parent level may contain the child level
    */
-  public canLevelContainLevel(
-    parentLevel: ComponentLevel,
-    childLevel: ComponentLevel,
-  ): boolean {
+  public canLevelContainLevel(parentLevel: ComponentLevel, childLevel: ComponentLevel): boolean {
     return rules.componentLevels[parentLevel].mayContain.includes(childLevel)
   }
 }

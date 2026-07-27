@@ -1,17 +1,15 @@
 import { describe, expect, it } from "vitest"
 
 import { ValueType } from "../constants"
-import type { Properties } from "../types/properties"
 import { resolveAutoFitSource } from "./resolve-auto-fit-source"
 import { resolveHighContrastSource } from "./resolve-high-contrast-source"
 import { resolveMatchColorSource } from "./resolve-match-color-source"
 import { resolveOpticalPaddingSource } from "./resolve-optical-padding-source"
+
+import type { Properties } from "../types/properties"
 import type { ComputeContext } from "./types"
 
-const ctx = (
-  properties: Properties,
-  parent: ComputeContext | null = null,
-): ComputeContext => ({
+const ctx = (properties: Properties, parent: ComputeContext | null = null): ComputeContext => ({
   properties,
   parentContext: parent,
   theme: {} as ComputeContext["theme"],
@@ -31,18 +29,16 @@ describe("resolveAutoFitSource", () => {
     const parent = ctx({
       buttonSize: ordinal("@fontSize.large"),
     } as unknown as Properties)
-    expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(
-      ordinal("@fontSize.large"),
-    )
+
+    expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(ordinal("@fontSize.large"))
   })
 
   it("uses ancestor size when no buttonSize is present", () => {
     const parent = ctx({
       size: ordinal("@fontSize.small"),
     } as unknown as Properties)
-    expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(
-      ordinal("@fontSize.small"),
-    )
+
+    expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(ordinal("@fontSize.small"))
   })
 
   it("skips empty values and walks further up", () => {
@@ -55,9 +51,8 @@ describe("resolveAutoFitSource", () => {
       } as unknown as Properties,
       grandparent,
     )
-    expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(
-      ordinal("@fontSize.xlarge"),
-    )
+
+    expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(ordinal("@fontSize.xlarge"))
   })
 })
 
@@ -83,9 +78,7 @@ describe("resolveOpticalPaddingSource", () => {
   })
 
   it("falls back to parent fontSize", () => {
-    expect(resolveOpticalPaddingSource(ctx({} as Properties))).toBe(
-      "#parent.fontSize",
-    )
+    expect(resolveOpticalPaddingSource(ctx({} as Properties))).toBe("#parent.fontSize")
   })
 })
 

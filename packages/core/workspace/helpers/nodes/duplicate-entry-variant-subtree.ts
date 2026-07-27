@@ -1,17 +1,8 @@
 import { current, isDraft } from "immer"
 
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-  isPlaygroundBoard,
-} from "../../model/components"
-import {
-  isEntryNodeAuthored,
-  isEntryNodeDefault,
-  isEntryNodeVariant,
-} from "../../model/entry-node"
+import { isAuthoredBoard, isComponentBoard, isPlaygroundBoard } from "../../model/components"
+import { isEntryNodeAuthored, isEntryNodeDefault, isEntryNodeVariant } from "../../model/entry-node"
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
-import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
 import { getVariantTree } from "../components/get-variant-tree"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
@@ -19,12 +10,15 @@ import { getCompositionContainerEntries } from "../general/get-composition-conta
 import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 import { collectTreeRefIds } from "./collect-tree-ref-ids"
 
+import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
+
 /**
  * Drops the `ref` handle from a node. A reference must stay globally unique, so
  * duplicates never inherit the source node's ref.
  */
 function stripRef<T extends EntryNode>(node: T): T {
   delete node.ref
+
   return node
 }
 
@@ -34,12 +28,15 @@ function cloneEntryNodeWithIdRemap(
   idMap: Map<string, string>,
 ): EntryNode {
   const clone = structuredClone(row) as EntryNode
+
   clone.id = newId
   delete clone.ref
   const link = parseNodeLink(clone.template)
+
   if (link && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
   }
+
   return clone
 }
 
@@ -50,14 +47,17 @@ export function findBoardContainingTreeNodeId(
   for (const [boardKey, board] of getCompositionContainerEntries(workspace)) {
     if (!board.variants?.length) continue
     let found = false
+
     walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id === nodeId) {
         found = true
+
         return true
       }
     })
     if (found) return { board, boardKey }
   }
+
   return null
 }
 
@@ -74,15 +74,20 @@ export function insertComponentTreeInstanceAfterSibling(
   const newRef: ComponentTreeRef =
     typeof newInstance === "string" ? { id: newInstance } : newInstance
   let inserted = false
+
   walkBoardTreeRefs(board.variants, (ref) => {
     const children = ref.children
+
     if (!children?.length) return
     const idx = children.findIndex((c) => c.id === afterInstanceId)
+
     if (idx < 0) return
     children.splice(idx + 1, 0, newRef)
     inserted = true
+
     return true
   })
+
   return inserted
 }
 
@@ -104,19 +109,18 @@ export function buildDuplicateEntryVariantSubtreePlan(
   sourceRootId: string,
   newVariantLabel: string,
 ): DuplicateEntryVariantPlan | null {
-  if (
-    !isComponentBoard(board) &&
-    !isAuthoredBoard(board) &&
-    !isPlaygroundBoard(board)
-  )
+  if (!isComponentBoard(board) && !isAuthoredBoard(board) && !isPlaygroundBoard(board)) {
     return null
+  }
 
   const liveNodes = getWorkspaceNodes(workspace)
   const nodes = isDraft(liveNodes) ? current(liveNodes) : liveNodes
   const sourceNode = nodes[sourceRootId]
+
   if (!sourceNode) return null
 
   const tree = getVariantTree(board, sourceRootId)
+
   if (!tree) return null
 
   const subtreeIds = collectTreeRefIds(tree)
@@ -126,8 +130,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
   // An authored root is the schema-free base of an authored board. Duplicating
   // it creates a user variant chained to it, exactly like duplicating a
   // catalog default variant.
-  const sourceIsBase =
-    isEntryNodeDefault(sourceNode) || isEntryNodeAuthored(sourceNode)
+  const sourceIsBase = isEntryNodeDefault(sourceNode) || isEntryNodeAuthored(sourceNode)
 
   if (sourceIsBase) {
     for (const id of subtreeIds) {
@@ -136,10 +139,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
     }
   } else if (isEntryNodeVariant(sourceNode)) {
     for (const id of subtreeIds) {
-      idMap.set(
-        id,
-        id === sourceRootId ? newRootId : componentBoardUniqueNodeId(boardKey),
-      )
+      idMap.set(id, id === sourceRootId ? newRootId : componentBoardUniqueNodeId(boardKey))
     }
   } else {
     return null
@@ -147,11 +147,11 @@ export function buildDuplicateEntryVariantSubtreePlan(
 
   function remapTreeRef(ref: ComponentTreeRef): ComponentTreeRef {
     const mapped = ref.id === sourceRootId ? newRootId : idMap.get(ref.id)
+
     if (!mapped) {
-      throw new Error(
-        `duplicate variant: missing id remap for tree ref ${ref.id}`,
-      )
+      throw new Error(`duplicate variant: missing id remap for tree ref ${ref.id}`)
     }
+
     return {
       id: mapped,
       children: ref.children?.map(remapTreeRef),
@@ -170,17 +170,21 @@ export function buildDuplicateEntryVariantSubtreePlan(
       template: formatNodeLink(sourceRootId),
       overrides: structuredClone(sourceNode.overrides),
     })
+
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]
+
       if (!row) continue
       // Chain the new child from the base variant's matching child so edits
       // to the base child propagate into the user variant. Start with empty
       // overrides so inherited values are not shadowed by a copy.
       let template = formatNodeLink(oldId)
       const link = parseNodeLink(row.template)
+
       if (link?.kind === "node" && idMap.has(link.nodeId)) {
         template = formatNodeLink(idMap.get(link.nodeId)!)
       }
+
       newNodes[newId] = stripRef({
         ...structuredClone(row),
         id: newId,
@@ -199,9 +203,12 @@ export function buildDuplicateEntryVariantSubtreePlan(
     const rootTemplate = isPlaygroundBoard(board)
       ? (nodes[sourceRootId]?.template ?? formatNodeLink(sourceRootId))
       : formatNodeLink(defaultVariantId ?? sourceRootId)
+
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]
+
       if (!row) continue
+
       if (oldId === sourceRootId) {
         newNodes[newId] = stripRef({
           ...structuredClone(row),

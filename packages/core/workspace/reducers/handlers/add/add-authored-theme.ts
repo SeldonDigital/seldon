@@ -1,11 +1,7 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../../../helpers/components/board-sort-order"
+import { getBoardOrder, setBoardOrder } from "../../../helpers/components/board-sort-order"
 import { DEFAULT_THEME_BOARD_AUTHOR } from "../../../helpers/components/default-board-metadata"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { formatEntryId } from "../../../helpers/general/entry-id"
@@ -14,6 +10,8 @@ import { getUniqueThemeBoardLabel } from "../../../helpers/themes/theme-label"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatThemeCatalog } from "../../../model/template-ref"
 import { boardOrderService } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /** Default name for a newly authored theme, made unique against existing theme boards. */
 const NEW_THEME_LABEL = "New Theme"
@@ -42,9 +40,7 @@ export function addAuthoredTheme(
 
     const existingBoards = Object.values(draft.boards)
     const maxOrder =
-      existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
-        : -1
+      existingBoards.length > 0 ? Math.max(...existingBoards.map((b) => getBoardOrder(b))) : -1
 
     const defaultThemeEntryId = formatEntryId("theme", boardKey, "default")
     const label = getUniqueThemeBoardLabel(draft, NEW_THEME_LABEL)
@@ -67,10 +63,12 @@ export function addAuthoredTheme(
       componentProperties: getInitialBoardComponentProperties("theme"),
       variants: [{ id: defaultThemeEntryId }],
     }
+
     setBoardOrder(board, maxOrder + 1)
     draft.boards[boardKey] = board
 
     const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
+
     Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

@@ -1,5 +1,5 @@
+import type { FlatProperty } from "./properties-data"
 import type { ThemeCustomTokenSection } from "@seldon/core"
-import { FlatProperty } from "./properties-data"
 
 /**
  * Theme editing context. Present when the properties sidebar edits a theme
@@ -12,11 +12,7 @@ export interface ThemeEditingContext {
   /** Adds a custom token to a section. Only meaningful when `canAddCustom`. */
   addCustomToken: (section: ThemeCustomTokenSection) => void
   /** Renames a custom token's cell. The `customN` key stays stable. */
-  renameCustomToken: (
-    section: ThemeCustomTokenSection,
-    key: string,
-    name: string,
-  ) => void
+  renameCustomToken: (section: ThemeCustomTokenSection, key: string, name: string) => void
   /** Deletes a custom token cell from its section. */
   removeCustomToken: (section: ThemeCustomTokenSection, key: string) => void
   /** True when the edited entry is a variant, so custom tokens may be added. */
@@ -29,10 +25,7 @@ export interface ThemeEditingContext {
  */
 export interface FontCollectionEditingContext {
   isFontCollectionEditing: true
-  updateFontCollectionProperty: (
-    property: FlatProperty,
-    newValue: string,
-  ) => void
+  updateFontCollectionProperty: (property: FlatProperty, newValue: string) => void
 }
 
 /**

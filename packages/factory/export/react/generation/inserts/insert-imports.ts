@@ -1,20 +1,15 @@
-import {
-  ComponentLevel,
-  NATIVE_REACT_PRIMITIVES,
-} from "@seldon/core/components/constants"
-import { IconId } from "@seldon/core/icon-sets"
+import { ComponentLevel, NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
-import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
 import { getIconComponentName } from "../../discovery/get-icon-component-name"
 import { resolveIconExport } from "../../utils/find-icon-path"
 import { pluralizeLevel } from "../../utils/pluralize-level"
-import {
-  TransformStrategy,
-  transformSource,
-} from "../../utils/transform-source"
+import { TransformStrategy, transformSource } from "../../utils/transform-source"
 import { validateTreeNodeProps } from "../../validation/validate-component-props"
-import { JSXNode } from "../preprocess/types"
 import { getCustomTemplateMeta } from "../shared/custom-react"
+
+import type { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
+import type { JSXNode } from "../preprocess/types"
+import type { IconId } from "@seldon/core/icon-sets"
 
 /**
  * This traverses the tree and checks the used primitives for which imports to add
@@ -45,6 +40,7 @@ export function insertImports(
   // forwardRef components pull the helper from react alongside the props type.
   if (config.react.forwardRef) {
     imports["react"] = imports["react"] ?? []
+
     if (!imports["react"].includes("forwardRef")) {
       imports["react"].push("forwardRef")
     }
@@ -56,39 +52,39 @@ export function insertImports(
 
   if (config.react.returns === "custom") {
     const meta = getCustomTemplateMeta(component)
+
     imports[meta.importPath] = [meta.importName]
   }
 
   if (config.react.returns.startsWith("HTML")) {
     const key = `../native-react/${config.react.returns.replace("HTML", "HTML.")}`
+
     imports[key] = [config.react.returns]
   }
 
-  if (
-    config.react.returns === "htmlElement" &&
-    tree.dataBinding.props.htmlElement?.options
-  ) {
+  if (config.react.returns === "htmlElement" && tree.dataBinding.props.htmlElement?.options) {
     for (const option of tree.dataBinding.props.htmlElement.options) {
       const hit = Object.entries(NATIVE_REACT_PRIMITIVES).find(
         ([_, value]) => value.htmlElementOption === option,
       )
+
       if (hit) {
         const key = `../native-react/${hit[0].replace("HTML", "HTML.")}`
+
         imports[key] = [hit[0]]
       }
     }
   }
 
-  if (
-    config.react.returns === "wrapperElement" &&
-    tree.dataBinding.props.wrapperElement?.options
-  ) {
+  if (config.react.returns === "wrapperElement" && tree.dataBinding.props.wrapperElement?.options) {
     for (const option of tree.dataBinding.props.wrapperElement.options) {
       const hit = Object.entries(NATIVE_REACT_PRIMITIVES).find(
         ([_, value]) => value.wrapperElementOption === option,
       )
+
       if (hit) {
         const key = `../native-react/${hit[0].replace("HTML", "HTML.")}`
+
         imports[key] = [hit[0]]
       }
     }
@@ -109,13 +105,13 @@ export function insertImports(
 
         if (options?.rootDirectory) {
           const resolved = resolveIconExport(iconId, options.rootDirectory)
+
           if (!resolved) continue
-          imports[`../icons/${resolved.relativePath}`] = [
-            resolved.componentName,
-          ]
+          imports[`../icons/${resolved.relativePath}`] = [resolved.componentName]
         } else {
           // Fallback to flat structure if options not provided (backward compatibility)
           const componentName = getIconComponentName(iconId)
+
           imports[`../icons/${componentName}`] = [componentName]
         }
       }
@@ -160,6 +156,7 @@ export function insertImports(
       if (Array.isArray(node.children)) {
         node.children.forEach(traverseAndAddComponentToImports)
       }
+
       return
     }
 
@@ -182,6 +179,7 @@ export function insertImports(
         node.children.forEach((child: JSONTreeNode) => {
           // Import the child component itself
           const childKey = `../${pluralizeLevel(child.level)}/${child.name}`
+
           if (imports[childKey]) {
             if (!imports[childKey].includes(child.name)) {
               imports[childKey].push(child.name)
@@ -191,9 +189,7 @@ export function insertImports(
           }
 
           // Check if child has invalid props to determine if grandchildren are rendered or passed as props
-          const childChildren = Array.isArray(child.children)
-            ? child.children
-            : []
+          const childChildren = Array.isArray(child.children) ? child.children : []
           const childValidation = validateTreeNodeProps({
             ...child,
             children: childChildren,
@@ -202,13 +198,11 @@ export function insertImports(
           // Only import grandchildren as components if child has invalid props
           // (meaning grandchildren will be rendered inline as JSX components)
           // If child has valid props, grandchildren are passed as props, not rendered
-          if (
-            childValidation.invalidProps.length > 0 &&
-            Array.isArray(child.children)
-          ) {
+          if (childValidation.invalidProps.length > 0 && Array.isArray(child.children)) {
             // Grandchildren are rendered, so import them as components
             child.children.forEach((grandchild: JSONTreeNode) => {
               const grandchildKey = `../${pluralizeLevel(grandchild.level)}/${grandchild.name}`
+
               if (imports[grandchildKey]) {
                 if (!imports[grandchildKey].includes(grandchild.name)) {
                   imports[grandchildKey].push(grandchild.name)
@@ -262,19 +256,20 @@ export function insertImports(
         node.children.forEach((child) => {
           // Find the corresponding JSONTreeNode to get the level
           let childLevel = ComponentLevel.PRIMITIVE
-          function findNodeInTree(
-            treeNode: JSONTreeNode,
-            targetPath: string,
-          ): JSONTreeNode | null {
+
+          function findNodeInTree(treeNode: JSONTreeNode, targetPath: string): JSONTreeNode | null {
             if (treeNode.dataBinding.path === targetPath) {
               return treeNode
             }
+
             if (Array.isArray(treeNode.children)) {
               for (const c of treeNode.children) {
                 const found = findNodeInTree(c, targetPath)
+
                 if (found) return found
               }
             }
+
             return null
           }
 
@@ -282,6 +277,7 @@ export function insertImports(
           if (Array.isArray(component.tree.children)) {
             for (const treeChild of component.tree.children) {
               const found = findNodeInTree(treeChild, child.path)
+
               if (found) {
                 childLevel = found.level
                 break
@@ -290,6 +286,7 @@ export function insertImports(
           }
 
           const childKey = `../${pluralizeLevel(childLevel)}/${child.name}`
+
           // Only add if not already imported (avoid duplicates)
           if (imports[childKey]) {
             if (!imports[childKey].includes(child.name)) {
@@ -298,6 +295,7 @@ export function insertImports(
           } else {
             imports[childKey] = [child.name]
           }
+
           // Recursively traverse children
           traverseJSXForImports(child)
         })
@@ -316,14 +314,12 @@ export function insertImports(
   // Components that compose children wrap each merged slot props with applyRef
   // to support the ref override channel. Leaf components have no slot props, so
   // they skip the import to avoid an unused binding.
-  if (
-    Array.isArray(component.tree.children) &&
-    component.tree.children.length > 0
-  ) {
+  if (Array.isArray(component.tree.children) && component.tree.children.length > 0) {
     imports["../utils/apply-ref"] = ["applyRef"]
   }
 
   let importString = ""
+
   for (const [location, modules] of Object.entries(imports)) {
     // Check if this is a wildcard import (only one module and it starts with "*")
     if (modules.length === 1 && modules[0].startsWith("*")) {
@@ -340,9 +336,7 @@ export function insertImports(
   })
 }
 
-function getReactImports(
-  component: ComponentToExport,
-): Record<string, string[]> {
+function getReactImports(component: ComponentToExport): Record<string, string[]> {
   const { config } = component
 
   if (config.react.returns === "iconMap") {
@@ -377,10 +371,12 @@ function getReactImports(
 
   const nativePrimitive = NATIVE_REACT_PRIMITIVES[returnsKey]
   const reactImports = [nativePrimitive.types.generic]
+
   // Native wrappers that forward `ref` need the `Ref` type for the ref prop.
   if (nativePrimitive.forwardsRef) {
     reactImports.push("Ref")
   }
+
   return {
     react: reactImports,
   }

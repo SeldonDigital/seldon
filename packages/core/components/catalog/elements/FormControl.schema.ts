@@ -1,6 +1,7 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Form Control",
@@ -294,8 +295,7 @@ export const schema = {
     {
       id: "radio",
       label: "Radio Button Control",
-      intent:
-        "Allows selection of a single option among multiple mutually exclusive choices.",
+      intent: "Allows selection of a single option among multiple mutually exclusive choices.",
       children: [
         {
           component: Seldon.ComponentId.INPUT,

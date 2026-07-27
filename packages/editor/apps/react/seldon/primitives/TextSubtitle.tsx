@@ -10,8 +10,6 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -26,6 +24,8 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface TextSubtitleProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -82,10 +82,7 @@ export function TextSubtitle({
   htmlElement = sdn.htmlElement,
   ...props
 }: TextSubtitleProps) {
-  const textSubtitleClassName = combineClassNames(
-    "sdn-text-subtitle",
-    className,
-  )
+  const textSubtitleClassName = combineClassNames("sdn-text-subtitle", className)
 
   switch (htmlElement) {
     case "p":
@@ -106,11 +103,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLSpan
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLSpan className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLSpan>
       )
@@ -119,11 +112,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLAnchor
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLAnchor className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLAnchor>
       )
@@ -132,11 +121,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLabel
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLabel className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLabel>
       )
@@ -145,11 +130,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading1
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading1 className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading1>
       )
@@ -158,11 +139,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading2
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading2 className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading2>
       )
@@ -171,11 +148,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading3
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading3 className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading3>
       )
@@ -184,11 +157,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading4
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading4 className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading4>
       )
@@ -197,11 +166,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading6
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading6 className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading6>
       )
@@ -210,11 +175,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLPre
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLPre className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLPre>
       )
@@ -223,11 +184,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLCode
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLCode className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLCode>
       )
@@ -236,11 +193,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLOption
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLOption className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLOption>
       )
@@ -249,11 +202,7 @@ export function TextSubtitle({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading5
-          className={textSubtitleClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading5 className={textSubtitleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading5>
       )

@@ -1,7 +1,4 @@
-import {
-  HoverState,
-  useCanvasHoverState,
-} from "@app/canvas/hooks/use-canvas-hover-state"
+import { useCanvasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
@@ -10,10 +7,7 @@ import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@app/workspace/hooks/use-object-hover"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  getSelectionTarget,
-  selectFromTarget,
-} from "@app/workspace/selection-target"
+import { getSelectionTarget, selectFromTarget } from "@app/workspace/selection-target"
 import { getNodeIdForEventTarget } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import {
   getEditableControl,
@@ -23,18 +17,14 @@ import {
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "@seldon/editor/lib/workspace/node-tree"
+import { getNodeCatalogComponentId, getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { MouseEventHandler, useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useThrottledCallback } from "use-debounce"
 
-import { InstanceId, VariantId, invariant } from "@seldon/core"
+import { invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { ComponentId } from "@seldon/core/components/constants"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import {
@@ -46,6 +36,11 @@ import {
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
+
+import type { HoverState } from "@app/canvas/hooks/use-canvas-hover-state"
+import type { InstanceId, VariantId } from "@seldon/core"
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { MouseEventHandler } from "react"
 
 /**
  * Delay before a single click commits its selection. A double click cancels the
@@ -81,6 +76,7 @@ export function useCanvas() {
       pendingSelectRef.current = null
     }
   }, [])
+
   useEffect(() => clearPendingSelect, [clearPendingSelect])
 
   /**
@@ -94,6 +90,7 @@ export function useCanvas() {
       if (activeBoard && isThemeBoard(activeBoard)) {
         setHoverState(null)
         setHoveredId(null)
+
         return
       }
 
@@ -106,37 +103,28 @@ export function useCanvas() {
       // resources) highlight as-is.
       if (activeTool === "select") {
         if (selectionTarget?.kind === "node") {
-          const mode =
-            event.metaKey || event.ctrlKey || directSelect ? "exact" : "root"
+          const mode = event.metaKey || event.ctrlKey || directSelect ? "exact" : "root"
           const preview = resolveCanvasNodeSelection(
             selectionTarget.rootId ?? selectionTarget.id,
             selectedNodeRootId,
             mode,
           )
+
           setHoveredId(preview.id, "node", preview.rootId)
         } else {
-          setHoveredId(
-            selectionTarget?.id ?? null,
-            selectionTarget?.kind,
-            selectionTarget?.rootId,
-          )
+          setHoveredId(selectionTarget?.id ?? null, selectionTarget?.kind, selectionTarget?.rootId)
         }
+
         return
       }
 
       // Component tool: keep the exact node under the cursor. It drives the
       // accent hover box and the insertion placement computed below.
-      setHoveredId(
-        selectionTarget?.id ?? null,
-        selectionTarget?.kind,
-        selectionTarget?.rootId,
-      )
+      setHoveredId(selectionTarget?.id ?? null, selectionTarget?.kind, selectionTarget?.rootId)
 
       const element = event.target as HTMLDivElement
       const boardId =
-        activeTool === "component"
-          ? (getBoardIdForEventTarget(element) as ComponentId)
-          : null
+        activeTool === "component" ? (getBoardIdForEventTarget(element) as ComponentId) : null
 
       const nodeId = getNodeIdForEventTarget(element) as
         | InstanceId // Child node
@@ -146,6 +134,7 @@ export function useCanvas() {
 
       if (!objectId) {
         setHoverState(null)
+
         return
       }
 
@@ -159,9 +148,7 @@ export function useCanvas() {
       const needsChildLookup = activeTool === "component"
 
       // Find all children that have a data-node-id attribute
-      const nodesWithNodeId = needsChildLookup
-        ? getChildNodesWithNodeId(element)
-        : []
+      const nodesWithNodeId = needsChildLookup ? getChildNodesWithNodeId(element) : []
 
       // If there are children with a data-node-id attribute, we want to find the last child before the cursor
       // That means we want to find the child that is closest to the left for horizontal oriented nodes
@@ -186,8 +173,7 @@ export function useCanvas() {
         // We can safely assume that the node as a data-node-id attribute
         // because getChildNodesWithNodeId only returns nodes with a data-node-id attribute
         if (lastNodeBeforeCursor) {
-          lastChildNodeBeforeCursor = lastNodeBeforeCursor.dataset
-            .nodeId! as InstanceId
+          lastChildNodeBeforeCursor = lastNodeBeforeCursor.dataset.nodeId! as InstanceId
         }
       }
 
@@ -218,6 +204,7 @@ export function useCanvas() {
 
         if (!insertionAllowed) {
           setHoverState(null)
+
           return
         }
       }
@@ -263,17 +250,18 @@ export function useCanvas() {
   const insertNextToChild = useCallback(
     (hoverState: HoverState) => {
       const childNodeId = hoverState.lastChildNodeBeforeCursor!
-      const parentNode = nodeTraversalService.findParentNode(
-        childNodeId,
-        workspace,
-      )
+      const parentNode = nodeTraversalService.findParentNode(childNodeId, workspace)
 
       invariant(parentNode, "Container node not found")
+
       if (!canNodeAcceptChildren(parentNode, workspace)) {
         const catalogId = getNodeCatalogComponentId(parentNode, workspace)
+
         invariant(catalogId, "Parent node has no catalog component")
         const schema = getComponentSchema(catalogId)
+
         addToast(ErrorMessages.cannotAddChild(schema.name))
+
         return
       }
 
@@ -287,6 +275,7 @@ export function useCanvas() {
 
       const childIds = getNodeChildIds(parentNode, workspace)
       let index = childIds.indexOf(childNodeId)
+
       if (hoverState.placement === "after") {
         index += 1
       }
@@ -302,12 +291,10 @@ export function useCanvas() {
   const insertIntoNode = useCallback(
     (nodeId: InstanceId | VariantId) => {
       const node = nodeRetrievalService.getNode(nodeId, workspace)
+
       if (canNodeAcceptChildren(node, workspace)) {
         // Prevent insertion into default variants
-        if (
-          typeCheckingService.isVariant(node) &&
-          typeCheckingService.isDefaultVariant(node)
-        ) {
+        if (typeCheckingService.isVariant(node) && typeCheckingService.isDefaultVariant(node)) {
           return
         }
 
@@ -317,10 +304,8 @@ export function useCanvas() {
         })
       } else {
         // Otherwise, the target is the parent node of the hovered object
-        const parentNode = nodeTraversalService.findParentNode(
-          nodeId,
-          workspace,
-        )
+        const parentNode = nodeTraversalService.findParentNode(nodeId, workspace)
+
         invariant(parentNode, "Parent node not found for node " + nodeId)
 
         // Prevent insertion into default variants
@@ -333,6 +318,7 @@ export function useCanvas() {
 
         const childIds = getNodeChildIds(parentNode, workspace)
         let index = childIds.indexOf(nodeId)
+
         if (hoverState?.placement === "after") {
           index += 1
         }
@@ -376,6 +362,7 @@ export function useCanvas() {
         } else {
           insertOnBoard(hoverState)
         }
+
         break
     }
   }, [hoverState, activeTool, insertNextToChild, insertIntoNode, insertOnBoard])
@@ -395,6 +382,7 @@ export function useCanvas() {
         // While an input is being edited, clicks inside it stay native (caret
         // placement, text selection) and must not change the canvas selection.
         const editing = getEditableControl(event.target as Element)
+
         if (editing && isEditableControlFocused(editing)) {
           return
         }
@@ -408,6 +396,7 @@ export function useCanvas() {
           } else {
             selectNode(null)
           }
+
           return
         }
 
@@ -420,6 +409,7 @@ export function useCanvas() {
             selectResourceEntry,
             selectResourceItem,
           })
+
           return
         }
 
@@ -427,32 +417,30 @@ export function useCanvas() {
         // Direct select mode selects the exact node on a plain click, as if
         // cmd/ctrl were held, restoring the pre-drill selection behavior.
         const additive = event.metaKey || event.ctrlKey || directSelect
+
         if (additive) {
-          const exact = resolveCanvasNodeSelection(
-            clickedRootId,
-            selectedNodeRootId,
-            "exact",
-          )
+          const exact = resolveCanvasNodeSelection(clickedRootId, selectedNodeRootId, "exact")
+
           selectNode(exact.id as VariantId | InstanceId, exact.rootId)
           // Sync hover to the selection so the coincident hover outline is
           // suppressed instead of leaving a stale second dashed border.
           setHoveredId(exact.id, "node", exact.rootId)
+
           return
         }
 
         // Defer the top-most selection so a double click can cancel it and drill
         // instead. The current selection is captured now for the drill baseline.
         const currentRootId = selectedNodeRootId
+
         pendingSelectRef.current = setTimeout(() => {
           pendingSelectRef.current = null
-          const root = resolveCanvasNodeSelection(
-            clickedRootId,
-            currentRootId,
-            "root",
-          )
+          const root = resolveCanvasNodeSelection(clickedRootId, currentRootId, "root")
+
           selectNode(root.id as VariantId | InstanceId, root.rootId)
           setHoveredId(root.id, "node", root.rootId)
         }, SINGLE_CLICK_DELAY_MS)
+
         return
       }
 
@@ -461,8 +449,10 @@ export function useCanvas() {
       const element = event.target as HTMLDivElement
       const clickedBoardId = getBoardIdForEventTarget(element)
       const clickedNodeId = getNodeIdForEventTarget(element)
+
       if (!clickedBoardId && !clickedNodeId) {
         setActiveTool("select")
+
         return
       }
 
@@ -498,16 +488,14 @@ export function useCanvas() {
       // focus was granted on mousedown; here we only cancel the pending single
       // click so the selection stays on the input being edited.
       const control = getEditableControl(event.target as Element)
+
       if (
         control &&
         (isEditableControlFocused(control) ||
-          isEditableControlNodeSelected(
-            control,
-            selectedNodeId,
-            selectedNodeRootId,
-          ))
+          isEditableControlNodeSelected(control, selectedNodeId, selectedNodeRootId))
       ) {
         clearPendingSelect()
+
         return
       }
 
@@ -516,15 +504,13 @@ export function useCanvas() {
       if (directSelect) return
 
       const target = getSelectionTarget(event.target as Element)
+
       if (!target || target.kind !== "node") return
 
       clearPendingSelect()
       const clickedRootId = target.rootId ?? target.id
-      const drilled = resolveCanvasNodeSelection(
-        clickedRootId,
-        selectedNodeRootId,
-        "drill",
-      )
+      const drilled = resolveCanvasNodeSelection(clickedRootId, selectedNodeRootId, "drill")
+
       selectNode(drilled.id as VariantId | InstanceId, drilled.rootId)
       // Sync hover to the drilled node. The mouse is stationary during a double
       // click, so without this the hover outline stays on the previous node and
@@ -551,6 +537,7 @@ export function useCanvas() {
   const handleMouseDown: MouseEventHandler<HTMLDivElement> = useCallback(
     (event) => {
       const control = getEditableControl(event.target as Element)
+
       if (!control) return
 
       if (isEditableControlFocused(control)) return
@@ -558,11 +545,8 @@ export function useCanvas() {
       const enteringEdit =
         activeTool === "select" &&
         event.detail >= 2 &&
-        isEditableControlNodeSelected(
-          control,
-          selectedNodeId,
-          selectedNodeRootId,
-        )
+        isEditableControlNodeSelected(control, selectedNodeId, selectedNodeRootId)
+
       if (enteringEdit) return
 
       event.preventDefault()
@@ -570,11 +554,10 @@ export function useCanvas() {
     [activeTool, selectedNodeId, selectedNodeRootId],
   )
 
-  const handleMouseLeave: MouseEventHandler<HTMLDivElement> =
-    useCallback(() => {
-      setHoverState(null)
-      setHoveredId(null)
-    }, [setHoverState, setHoveredId])
+  const handleMouseLeave: MouseEventHandler<HTMLDivElement> = useCallback(() => {
+    setHoverState(null)
+    setHoveredId(null)
+  }, [setHoverState, setHoveredId])
 
   // Update the indicator position no more than 60 times per second (60 FPS)
   const throttledMouseMove = useThrottledCallback(handleMouseMove, 1000 / 60)

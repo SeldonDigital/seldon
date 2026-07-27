@@ -1,5 +1,5 @@
 /** Single-tag value shapes used on their own or as nested fields under compounds and shorthands. */
-import {
+import type {
   AlignValue,
   BackgroundColorValue,
   BackgroundImageValue,
@@ -70,10 +70,10 @@ import {
   TrackKindValue,
   WrapperElementValue,
 } from "../values"
-import { CursorValue } from "../values/attributes/cursor"
-import { PlacementValue } from "../values/layout/placement"
-import { InheritValue } from "../values/shared/inherit/inherit"
-import { TransparentValue } from "../values/shared/option/transparent"
+import type { CursorValue } from "../values/attributes/cursor"
+import type { PlacementValue } from "../values/layout/placement"
+import type { InheritValue } from "../values/shared/inherit/inherit"
+import type { TransparentValue } from "../values/shared/option/transparent"
 
 /** Every atomic payload assignable to a property value on a node. */
 export type AtomicValue =

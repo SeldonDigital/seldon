@@ -1,29 +1,17 @@
 import { defineConfig, globalIgnores } from "eslint/config"
-import tseslint from "typescript-eslint"
+
+import { seldonBase } from "../../../../eslint.config.base.mjs"
 
 export default defineConfig([
   globalIgnores(["seldon/**", "dist/**", "node_modules/**"]),
+  ...seldonBase,
   {
     files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: tseslint.parser,
-    },
-    plugins: {
-      "@typescript-eslint": tseslint.plugin,
-    },
     rules: {
       "no-console": [
         "warn",
         {
-          allow: [
-            "warn",
-            "error",
-            "info",
-            "dir",
-            "group",
-            "groupCollapsed",
-            "groupEnd",
-          ],
+          allow: ["warn", "error", "info", "dir", "group", "groupCollapsed", "groupEnd"],
         },
       ],
     },

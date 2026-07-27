@@ -1,17 +1,15 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { setThemeOverride } from "./set-theme-override"
+
+import type { ExtractPayload } from "../../../../index"
 
 const workspace = createEmptyWorkspace()
 const themeId = Object.keys(workspace.themes)[0]!
 
 const override = (path: string, value: unknown, ws = workspace) =>
-  setThemeOverride(
-    { themeId, path, value } as ExtractPayload<"set_theme_override">,
-    ws,
-  )
+  setThemeOverride({ themeId, path, value } as ExtractPayload<"set_theme_override">, ws)
 
 describe("setThemeOverride", () => {
   it("writes a nested override value into the theme entry", () => {
@@ -20,6 +18,7 @@ describe("setThemeOverride", () => {
       string,
       Record<string, Record<string, unknown>>
     >
+
     expect(overrides.color.primary.value).toBe("#123456")
   })
 
@@ -30,6 +29,7 @@ describe("setThemeOverride", () => {
       string,
       Record<string, Record<string, unknown>>
     >
+
     expect(overrides.color?.primary?.value).toBeUndefined()
   })
 
@@ -42,6 +42,7 @@ describe("setThemeOverride", () => {
       } as ExtractPayload<"set_theme_override">,
       workspace,
     )
+
     expect(result).toBe(workspace)
   })
 })

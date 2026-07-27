@@ -1,12 +1,11 @@
-import {
-  type LayeredPaintKey,
-  isLayeredPaintProperty,
-} from "../../../../properties"
+import { isLayeredPaintProperty } from "../../../../properties"
 import { BACKGROUND_KIND_VALUES } from "../../../../properties/values/appearance/background/background-kind"
 import { getEffectiveNodeProperties } from "../../../compute/compute-node-properties"
-import type { Action, InstanceId, VariantId, Workspace } from "../../../types"
 import { check } from "../check"
 import { nodeValidators } from "../validators"
+
+import type { LayeredPaintKey } from "../../../../properties"
+import type { Action, InstanceId, VariantId, Workspace } from "../../../types"
 
 function effectiveLayerCount(
   workspace: Workspace,
@@ -14,6 +13,7 @@ function effectiveLayerCount(
   property: LayeredPaintKey,
 ): number {
   const value = getEffectiveNodeProperties(nodeId, workspace)[property]
+
   return Array.isArray(value) ? value.length : value ? 1 : 0
 }
 
@@ -22,6 +22,7 @@ export function validateAddNodeLayer(
   action: Extract<Action, { type: "add_node_layer" }>,
 ): void {
   const nodeId = action.payload.nodeId as InstanceId | VariantId
+
   nodeValidators.exists(workspace, nodeId)
   check(
     isLayeredPaintProperty(action.payload.property),
@@ -34,17 +35,19 @@ export function validateSetNodeLayerKind(
   action: Extract<Action, { type: "set_node_layer_kind" }>,
 ): void {
   const nodeId = action.payload.nodeId as InstanceId | VariantId
+
   nodeValidators.exists(workspace, nodeId)
   check(
     isLayeredPaintProperty(action.payload.property),
     `set_node_layer_kind requires a layered paint property, got "${action.payload.property}"`,
   )
   const { layerIndex } = action.payload
+
   check(
-    layerIndex === undefined ||
-      (Number.isInteger(layerIndex) && layerIndex >= 0),
+    layerIndex === undefined || (Number.isInteger(layerIndex) && layerIndex >= 0),
     `set_node_layer_kind layerIndex must be a non-negative integer, got ${layerIndex}`,
   )
+
   if (action.payload.property === "background") {
     check(
       (BACKGROUND_KIND_VALUES as string[]).includes(action.payload.kind),
@@ -58,21 +61,21 @@ export function validateRemoveNodeLayer(
   action: Extract<Action, { type: "remove_node_layer" }>,
 ): void {
   const nodeId = action.payload.nodeId as InstanceId | VariantId
+
   nodeValidators.exists(workspace, nodeId)
   check(
     isLayeredPaintProperty(action.payload.property),
     `remove_node_layer requires a layered paint property, got "${action.payload.property}"`,
   )
   const { index } = action.payload
+
   check(
     Number.isInteger(index) && index >= 1,
     `remove_node_layer cannot remove the base layer (index ${index})`,
   )
   const count = effectiveLayerCount(workspace, nodeId, action.payload.property)
-  check(
-    index < count,
-    `remove_node_layer index ${index} is out of range (${count} layers)`,
-  )
+
+  check(index < count, `remove_node_layer index ${index} is out of range (${count} layers)`)
 }
 
 export function validateReorderNodeLayer(
@@ -80,6 +83,7 @@ export function validateReorderNodeLayer(
   action: Extract<Action, { type: "reorder_node_layer" }>,
 ): void {
   const nodeId = action.payload.nodeId as InstanceId | VariantId
+
   nodeValidators.exists(workspace, nodeId)
   check(
     isLayeredPaintProperty(action.payload.property),
@@ -87,6 +91,7 @@ export function validateReorderNodeLayer(
   )
   const { fromIndex, toIndex } = action.payload
   const count = effectiveLayerCount(workspace, nodeId, action.payload.property)
+
   check(
     Number.isInteger(fromIndex) && fromIndex >= 0 && fromIndex < count,
     `reorder_node_layer fromIndex ${fromIndex} is out of range (${count} layers)`,

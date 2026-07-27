@@ -1,4 +1,4 @@
-import { FlatProperty } from "./properties-data"
+import type { FlatProperty } from "./properties-data"
 
 /**
  * Resolves the color for the value-cell icon (icon2). Swatch chips win, then
@@ -12,9 +12,11 @@ export function getPropertyIcon2Color(
   if (swatchChipColor) {
     return swatchChipColor
   }
+
   if (property.key.startsWith("swatch.") && property.actualValue) {
     return property.actualValue as string
   }
+
   if (
     (property.key === "colorHarmony.baseColor" ||
       property.key === "colorHarmony.whitePoint" ||
@@ -24,6 +26,7 @@ export function getPropertyIcon2Color(
   ) {
     return property.iconColorValue
   }
+
   return labelColor || undefined
 }
 

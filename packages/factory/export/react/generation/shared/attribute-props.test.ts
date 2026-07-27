@@ -1,10 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { ComponentToExport } from "../../../types"
-import {
-  generateRootAttributePropsString,
-  isAttributeKey,
-} from "./attribute-props"
+import { generateRootAttributePropsString, isAttributeKey } from "./attribute-props"
+
+import type { ComponentToExport } from "../../../types"
 
 describe("isAttributeKey", () => {
   it("recognizes role", () => {
@@ -23,18 +21,14 @@ describe("isAttributeKey", () => {
   })
 })
 
-const componentWithProps = (
-  props: Record<string, unknown>,
-): ComponentToExport =>
+const componentWithProps = (props: Record<string, unknown>): ComponentToExport =>
   ({ tree: { dataBinding: { props } } }) as unknown as ComponentToExport
 
 describe("generateRootAttributePropsString", () => {
   it("returns an empty string when there are no attribute props", () => {
-    expect(
-      generateRootAttributePropsString(
-        componentWithProps({ className: {}, title: {} }),
-      ),
-    ).toBe("")
+    expect(generateRootAttributePropsString(componentWithProps({ className: {}, title: {} }))).toBe(
+      "",
+    )
   })
 
   it("emits sdn bracket access for each attribute prop", () => {

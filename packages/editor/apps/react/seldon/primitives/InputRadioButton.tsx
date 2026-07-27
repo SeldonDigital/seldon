@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { InputHTMLAttributes, Ref } from "react"
-
 import { HTMLInput } from "../native-react/HTML.Input"
 import { combineClassNames } from "../utils/class-name"
+
+import type { InputHTMLAttributes, Ref } from "react"
 
 export interface InputRadioButtonProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
@@ -44,10 +44,7 @@ export function InputRadioButton({
   type = sdn.type,
   ...props
 }: InputRadioButtonProps) {
-  const inputRadioButtonClassName = combineClassNames(
-    "sdn-input-checkbox",
-    className,
-  )
+  const inputRadioButtonClassName = combineClassNames("sdn-input-checkbox", className)
 
   //
   // React JSX component with merged default and custom properties

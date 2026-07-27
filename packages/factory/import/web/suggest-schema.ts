@@ -3,36 +3,34 @@ import { camelCase, capitalCase } from "change-case"
 import { findComponentSchema } from "@seldon/core/components/catalog"
 
 import { childOutline } from "./structure"
-import type {
-  FunctionalNode,
-  MatchResult,
-  PieceClassification,
-  SuggestedSchema,
-} from "./types"
+
+import type { FunctionalNode, MatchResult, PieceClassification, SuggestedSchema } from "./types"
 
 /** A fallback base id for a suggestion, from its role when present, else tag. */
 function heuristicId(node: FunctionalNode): string {
   const source = node.role ?? node.tag
   const name = camelCase(source)
+
   return name === "" ? "component" : name
 }
 
 /** The recognized catalog children a suggested schema can compose. */
-function resolvableChildren(
-  node: FunctionalNode,
-): Array<{ component: string }> {
+function resolvableChildren(node: FunctionalNode): Array<{ component: string }> {
   const children: Array<{ component: string }> = []
+
   for (const child of node.children) {
     if (child.seededComponent && findComponentSchema(child.seededComponent)) {
       children.push({ component: child.seededComponent })
     }
   }
+
   return children
 }
 
 /** Builds the evidence block carried on every suggestion for review. */
 function toEvidence(result: MatchResult): SuggestedSchema["evidence"] {
   const { sample } = result.piece
+
   return {
     tag: sample.tag,
     role: sample.role,
@@ -73,9 +71,8 @@ function toSuggestion(
   }
 
   const roleText = sample.role ? ` with role "${sample.role}"` : ""
-  const tags = [sample.tag, sample.role ?? "", "imported", "web"].filter(
-    (tag) => tag !== "",
-  )
+  const tags = [sample.tag, sample.role ?? "", "imported", "web"].filter((tag) => tag !== "")
+
   return {
     id,
     name: capitalCase(sample.role ?? sample.tag),
@@ -110,8 +107,10 @@ export function suggestSchemas(
         ? classification.id
         : heuristicId(result.piece.sample)
     const seen = used.get(base) ?? 0
+
     used.set(base, seen + 1)
     const id = seen === 0 ? base : `${base}${seen + 1}`
+
     suggestions.push(toSuggestion(result, id, classification))
   })
 

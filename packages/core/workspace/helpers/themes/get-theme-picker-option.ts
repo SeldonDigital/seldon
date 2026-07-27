@@ -1,7 +1,8 @@
 import { isThemeBoard } from "../../model/components"
-import type { Workspace } from "../../types"
 import { getThemeEntryDisplayName } from "./get-theme-entry-display-name"
 import { sortThemeBoardsForDisplay } from "./sort-theme-boards"
+
+import type { Workspace } from "../../types"
 
 export type ThemePickerOption = {
   value: string
@@ -36,9 +37,11 @@ export function getThemePickerOptions({
   for (const board of themeBoards) {
     board.variants.forEach((variantRef) => {
       const name = getThemeEntryDisplayName(variantRef.id, workspace)
+
       if (!name) {
         return
       }
+
       options.push({ value: variantRef.id, name })
     })
   }

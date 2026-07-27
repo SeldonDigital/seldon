@@ -1,11 +1,9 @@
-import {
-  nodeRetrievalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import { Instance, Variant, Workspace } from "@seldon/core/workspace/types"
+import { nodeRetrievalService, typeCheckingService } from "@seldon/core/workspace/services"
 
-import { ComponentToExport } from "../../../types"
 import { isInlineComponent } from "../inline-components/is-inline-component"
+
+import type { ComponentToExport } from "../../../types"
+import type { Instance, Variant, Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Custom Component:
@@ -21,10 +19,7 @@ import { isInlineComponent } from "../inline-components/is-inline-component"
  * - User-created: Created by users for component customization
  *
  */
-export function isCustomComponent(
-  component: ComponentToExport,
-  workspace: Workspace,
-): boolean {
+export function isCustomComponent(component: ComponentToExport, workspace: Workspace): boolean {
   // First check if it's inline - if so, it's not a custom component
   if (isInlineComponent(component)) {
     return false
@@ -32,6 +27,7 @@ export function isCustomComponent(
 
   // Get the variant from workspace
   let variant: Variant | Instance
+
   try {
     variant = nodeRetrievalService.getNode(component.variantId, workspace)
   } catch {

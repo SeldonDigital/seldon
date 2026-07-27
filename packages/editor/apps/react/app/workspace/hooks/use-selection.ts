@@ -1,11 +1,7 @@
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import {
-  ExpandableSection,
-  useSectionExpansion,
-} from "@app/sidebars/hooks/use-section-expansion"
+import { useSectionExpansion } from "@app/sidebars/hooks/use-section-expansion"
 import { useExpansion } from "@app/sidebars/objects/hooks/use-expansion"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
-import type { ResourceEntryKind } from "@seldon/editor/lib/workspace/selection-kind"
 import {
   getComponent,
   getComponentKey,
@@ -15,11 +11,7 @@ import { useCallback } from "react"
 import { create } from "zustand"
 
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import {
-  ComponentLevel,
-  isComponentId,
-} from "@seldon/core/components/constants"
-import { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
+import { ComponentLevel, isComponentId } from "@seldon/core/components/constants"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -28,13 +20,17 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model"
-import type { Board } from "@seldon/core/workspace/model/components"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
-import type { BoardKey } from "@seldon/core/workspace/types"
 
 import { getCurrentWorkspace } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
 import { useWorkspace } from "./use-workspace"
+
+import type { ExpandableSection } from "@app/sidebars/hooks/use-section-expansion"
+import type { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
+import type { Board } from "@seldon/core/workspace/model/components"
+import type { BoardKey } from "@seldon/core/workspace/types"
+import type { ResourceEntryKind } from "@seldon/editor/lib/workspace/selection-kind"
 
 /**
  * Non-subscribing read of the workspace the selection setters resolve against,
@@ -55,10 +51,10 @@ export function getCurrentSelection(): Variant | Instance | Board | null {
   const { selectedNodeId, selectedBoardId } = useStore.getState()
   const workspace = getSelectionWorkspace()
   const node = selectedNodeId ? getNode(workspace, selectedNodeId) : null
+
   if (node) return node
-  return (
-    (selectedBoardId ? getComponent(workspace, selectedBoardId) : null) ?? null
-  )
+
+  return (selectedBoardId ? getComponent(workspace, selectedBoardId) : null) ?? null
 }
 
 /** Resource board kinds whose rows are selectable items (families, icons, media). */
@@ -116,10 +112,7 @@ type SelectionState = {
    */
   selectedResourceItemKey: string | null
   selectBoard: (id: BoardKey | null) => void
-  selectNode: (
-    id: VariantId | InstanceId | null,
-    rootId?: string | null,
-  ) => void
+  selectNode: (id: VariantId | InstanceId | null, rootId?: string | null) => void
   selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
   selectResourceItem: (key: string | null) => void
   selectWorkspace: (frozenBoardKey: BoardKey | null) => void
@@ -212,14 +205,9 @@ export const useSelectedNodeRootId = (): string | null =>
   useStore((state) => state.selectedNodeRootId)
 
 /** Reactive subscription to whether a specific resource board entry is selected. */
-export const useIsResourceEntrySelected = (
-  kind: ResourceEntryKind,
-  id: string,
-): boolean =>
+export const useIsResourceEntrySelected = (kind: ResourceEntryKind, id: string): boolean =>
   useStore(
-    (state) =>
-      state.selectedResourceEntry?.kind === kind &&
-      state.selectedResourceEntry?.id === id,
+    (state) => state.selectedResourceEntry?.kind === kind && state.selectedResourceEntry?.id === id,
   )
 
 /**
@@ -228,18 +216,19 @@ export const useIsResourceEntrySelected = (
  * their dedicated sections. Unknown rows return null so selection leaves
  * section expansion untouched.
  */
-function resolveBoardSectionLevel(
-  board: Board | undefined,
-): ExpandableSection | null {
+function resolveBoardSectionLevel(board: Board | undefined): ExpandableSection | null {
   if (!board) return null
+
   if (isComponentBoard(board) && isComponentId(board.catalogId)) {
     return getComponentSchema(board.catalogId).level
   }
+
   if (isThemeBoard(board)) return "THEME"
   if (isFontCollectionBoard(board)) return "FONT_COLLECTION"
   if (isIconSetBoard(board)) return "ICON_SET"
   if (isMediaBoard(board)) return "MEDIA"
   if (isPlaygroundBoard(board)) return "PLAYGROUND"
+
   return null
 }
 
@@ -267,6 +256,7 @@ export function useSelectionActions() {
       if (id === useStore.getState().selectedBoardId) return
 
       selectBoard(id)
+
       if (id) {
         const workspace = getSelectionWorkspace()
         const board = workspace.boards[id]
@@ -285,18 +275,13 @@ export function useSelectionActions() {
         }
       }
     },
-    [
-      selectBoard,
-      toggleSection,
-      toggleObject,
-      autoExpandOnSelection,
-      isExpanded,
-    ],
+    [selectBoard, toggleSection, toggleObject, autoExpandOnSelection, isExpanded],
   )
 
   const _selectNode = useCallback(
     (id: VariantId | InstanceId | null, rootId?: string | null) => {
       const { selectedNodeId, selectedNodeRootId } = useStore.getState()
+
       // Re-select when the same child id is clicked in a different variant-root
       // column so the selection moves to the clicked copy instead of sticking.
       if (id === selectedNodeId && (rootId ?? null) === selectedNodeRootId) {
@@ -304,6 +289,7 @@ export function useSelectionActions() {
       }
 
       selectNode(id, rootId)
+
       if (id) {
         const workspace = getSelectionWorkspace()
         // Check if node exists in workspace (virtual category nodes won't exist)
@@ -320,17 +306,15 @@ export function useSelectionActions() {
         toggleObject(id, true, { includeAncestors: true })
         const root = nodeRelationshipService.getRootVariant(node, workspace)
         const rootEntry = getNode(workspace, root.id)
-        const rootCatalogId = rootEntry
-          ? getNodeCatalogComponentId(rootEntry, workspace)
-          : null
+        const rootCatalogId = rootEntry ? getNodeCatalogComponentId(rootEntry, workspace) : null
+
         if (rootCatalogId && isComponentId(rootCatalogId)) {
           const schema = getComponentSchema(rootCatalogId)
+
           toggleSection(schema.level, true)
         } else {
-          const board = nodeRelationshipService.findBoardForNode(
-            node,
-            workspace,
-          )
+          const board = nodeRelationshipService.findBoardForNode(node, workspace)
+
           if (board) {
             toggleSection(ComponentLevel.MODULE, true)
             toggleObject(getComponentKey(board), true, {
@@ -346,25 +330,19 @@ export function useSelectionActions() {
         }
       }
     },
-    [
-      selectNode,
-      toggleObject,
-      toggleSection,
-      autoExpandOnSelection,
-      isExpanded,
-    ],
+    [selectNode, toggleObject, toggleSection, autoExpandOnSelection, isExpanded],
   )
 
   const _selectResourceEntry = useCallback(
     (kind: ResourceEntryKind, id: string | null) => {
       const selectedResourceEntry = useStore.getState().selectedResourceEntry
-      if (
-        selectedResourceEntry?.kind === kind &&
-        selectedResourceEntry?.id === id
-      ) {
+
+      if (selectedResourceEntry?.kind === kind && selectedResourceEntry?.id === id) {
         return
       }
+
       selectResourceEntry(kind, id)
+
       if (id && autoExpandOnSelection) {
         toggleObject(id, true)
       }
@@ -398,21 +376,14 @@ export function useSelectionActions() {
 }
 
 export function useSelection() {
-  const {
-    selectBoard,
-    selectNode,
-    selectResourceEntry,
-    selectResourceItem,
-    selectWorkspace,
-  } = useSelectionActions()
+  const { selectBoard, selectNode, selectResourceEntry, selectResourceItem, selectWorkspace } =
+    useSelectionActions()
 
   const selectedBoardId = useStore((state) => state.selectedBoardId)
   const selectedNodeId = useStore((state) => state.selectedNodeId)
   const selectedNodeRootId = useStore((state) => state.selectedNodeRootId)
   const selectedResourceEntry = useStore((state) => state.selectedResourceEntry)
-  const selectedResourceItemKey = useStore(
-    (state) => state.selectedResourceItemKey,
-  )
+  const selectedResourceItemKey = useStore((state) => state.selectedResourceItemKey)
   const workspaceSelected = useStore((state) => state.workspaceSelected)
   const frozenBoardKey = useStore((state) => state.frozenBoardKey)
   const { workspace } = useWorkspace()
@@ -423,21 +394,15 @@ export function useSelection() {
   const selectedThemeEntryId =
     selectedResourceEntry?.kind === "theme" ? selectedResourceEntry.id : null
   const selectedFontCollectionEntryId =
-    selectedResourceEntry?.kind === "fontCollection"
-      ? selectedResourceEntry.id
-      : null
+    selectedResourceEntry?.kind === "fontCollection" ? selectedResourceEntry.id : null
   const selectedIconSetEntryId =
     selectedResourceEntry?.kind === "iconSet" ? selectedResourceEntry.id : null
   const selectedMediaEntryId =
     selectedResourceEntry?.kind === "media" ? selectedResourceEntry.id : null
 
-  const selectedNode = selectedNodeId
-    ? getNode(workspace, selectedNodeId)
-    : null
+  const selectedNode = selectedNodeId ? getNode(workspace, selectedNodeId) : null
 
-  const selectedBoard = selectedBoardId
-    ? getComponent(workspace, selectedBoardId)
-    : null
+  const selectedBoard = selectedBoardId ? getComponent(workspace, selectedBoardId) : null
 
   const selection = selectedNode ?? selectedBoard
 
@@ -460,8 +425,7 @@ export function useSelection() {
     frozenBoardKey,
     selectedNode,
     selectedBoard,
-    selectedId:
-      selectedNodeId ?? selectedBoardId ?? selectedResourceEntry?.id ?? null,
+    selectedId: selectedNodeId ?? selectedBoardId ?? selectedResourceEntry?.id ?? null,
     selection,
   }
 }

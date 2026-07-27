@@ -10,14 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
+import { Button } from "../elements/Button"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface BarNavigationBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -76,10 +79,7 @@ export function BarNavigationBar({
   seldonRefs,
   ...props
 }: BarNavigationBarProps) {
-  const barNavigationBarClassName = combineClassNames(
-    "sdn-bar-navigation-bar",
-    className,
-  )
+  const barNavigationBarClassName = combineClassNames("sdn-bar-navigation-bar", className)
   const buttonProps = applyRef(
     seldonRefs,
     button === null
@@ -87,10 +87,7 @@ export function BarNavigationBar({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const iconProps = applyRef(
@@ -110,10 +107,7 @@ export function BarNavigationBar({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const button2Props = applyRef(
@@ -123,10 +117,7 @@ export function BarNavigationBar({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -146,10 +137,7 @@ export function BarNavigationBar({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const button3Props = applyRef(
@@ -159,10 +147,7 @@ export function BarNavigationBar({
       : {
           ...sdn.button3,
           ...button3,
-          className: combineClassNames(
-            sdn.button3?.className,
-            button3?.className,
-          ),
+          className: combineClassNames(sdn.button3?.className, button3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -182,10 +167,7 @@ export function BarNavigationBar({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const button4Props = applyRef(
@@ -195,10 +177,7 @@ export function BarNavigationBar({
       : {
           ...sdn.button4,
           ...button4,
-          className: combineClassNames(
-            sdn.button4?.className,
-            button4?.className,
-          ),
+          className: combineClassNames(sdn.button4?.className, button4?.className),
         },
   )
   const icon4Props = applyRef(
@@ -218,10 +197,7 @@ export function BarNavigationBar({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const button5Props = applyRef(
@@ -231,10 +207,7 @@ export function BarNavigationBar({
       : {
           ...sdn.button5,
           ...button5,
-          className: combineClassNames(
-            sdn.button5?.className,
-            button5?.className,
-          ),
+          className: combineClassNames(sdn.button5?.className, button5?.className),
         },
   )
   const icon5Props = applyRef(
@@ -254,10 +227,7 @@ export function BarNavigationBar({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
 
@@ -281,33 +251,25 @@ export function BarNavigationBar({
           {button2Props !== null && (
             <Button {...button2Props}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel2 && textLabel2Props && (
-                <TextLabel {...textLabel2Props} />
-              )}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
             </Button>
           )}
           {button3Props !== null && (
             <Button {...button3Props}>
               {icon3 && icon3Props && <Icon {...icon3Props} />}
-              {textLabel3 && textLabel3Props && (
-                <TextLabel {...textLabel3Props} />
-              )}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
             </Button>
           )}
           {button4Props !== null && (
             <Button {...button4Props}>
               {icon4 && icon4Props && <Icon {...icon4Props} />}
-              {textLabel4 && textLabel4Props && (
-                <TextLabel {...textLabel4Props} />
-              )}
+              {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
             </Button>
           )}
           {button5Props !== null && (
             <Button {...button5Props}>
               {icon5 && icon5Props && <Icon {...icon5Props} />}
-              {textLabel5 && textLabel5Props && (
-                <TextLabel {...textLabel5Props} />
-              )}
+              {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
             </Button>
           )}
         </>

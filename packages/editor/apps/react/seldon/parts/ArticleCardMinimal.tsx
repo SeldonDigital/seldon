@@ -10,15 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Chip, ChipProps } from "../elements/Chip"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import { TextHeading, TextHeadingProps } from "../primitives/TextHeading"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Chip } from "../elements/Chip"
+import { Frame } from "../frames/Frame"
+import { Image } from "../primitives/Image"
+import { TextHeading } from "../primitives/TextHeading"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ChipProps } from "../elements/Chip"
+import type { FrameProps } from "../frames/Frame"
+import type { ImageProps } from "../primitives/Image"
+import type { TextHeadingProps } from "../primitives/TextHeading"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface ArticleCardMinimalProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -61,10 +66,7 @@ export function ArticleCardMinimal({
   seldonRefs,
   ...props
 }: ArticleCardMinimalProps) {
-  const articleCardMinimalClassName = combineClassNames(
-    "sdn-article-card",
-    className,
-  )
+  const articleCardMinimalClassName = combineClassNames("sdn-article-card", className)
   const imageProps = applyRef(
     seldonRefs,
     image === null
@@ -102,10 +104,7 @@ export function ArticleCardMinimal({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const textHeadingProps = applyRef(
@@ -115,19 +114,12 @@ export function ArticleCardMinimal({
       : {
           ...sdn.textHeading,
           ...textHeading,
-          className: combineClassNames(
-            sdn.textHeading?.className,
-            textHeading?.className,
-          ),
+          className: combineClassNames(sdn.textHeading?.className, textHeading?.className),
         },
   )
 
   return (
-    <Frame
-      className={articleCardMinimalClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={articleCardMinimalClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -136,14 +128,10 @@ export function ArticleCardMinimal({
           <Frame {...frameProps}>
             {chip && chipProps && (
               <Chip {...chipProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
               </Chip>
             )}
-            {textHeading && textHeadingProps && (
-              <TextHeading {...textHeadingProps} />
-            )}
+            {textHeading && textHeadingProps && <TextHeading {...textHeadingProps} />}
           </Frame>
         </>
       )}

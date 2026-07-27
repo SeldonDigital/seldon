@@ -1,7 +1,3 @@
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-
-import type { ResolvedContext } from "../../editor-context"
-import type { PiTurnState } from "../turn-state"
 import { createBoardSummaryTool } from "./board-summary"
 import { createDescribeCatalogComponentTool } from "./describe-catalog-component"
 import { createDescribeNodeTool } from "./describe-node"
@@ -21,6 +17,10 @@ import { createSearchIconsTool } from "./search-icons"
 import { createSearchThemeTokensTool } from "./search-theme-tokens"
 import { createSuggestActionTool } from "./suggest-action"
 import { createWidenScopeTool } from "./widen-scope"
+
+import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /**
  * Read-only tools that surface Seldon reference data on demand. Keeping the

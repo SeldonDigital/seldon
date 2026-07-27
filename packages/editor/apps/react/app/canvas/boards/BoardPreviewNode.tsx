@@ -1,18 +1,17 @@
 "use client"
 
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "@seldon/editor/lib/workspace/node-tree"
+import { getNodeCatalogComponentId, getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
 
-import { Display, VariantId, type Workspace } from "@seldon/core"
+import { Display } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { getNodeComputeContext } from "@seldon/core/workspace/compute"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
 import { ComponentRenderer } from "../ComponentRenderer"
 import { getPropertyHtmlAttributes } from "../property-html-attributes"
+
+import type { VariantId, Workspace } from "@seldon/core"
 
 type BoardPreviewNodeProps = {
   nodeId: string
@@ -43,6 +42,7 @@ export function BoardPreviewNode({
   rootPath,
 }: BoardPreviewNodeProps) {
   const node = workspace.nodes[nodeId]
+
   if (!node) {
     return null
   }
@@ -50,11 +50,13 @@ export function BoardPreviewNode({
   const selfPath = rootPath ?? nodeId
 
   const catalogComponentId = getNodeCatalogComponentId(node, workspace)
+
   if (!catalogComponentId) {
     return null
   }
 
   let component
+
   try {
     component = getComponentSchema(catalogComponentId)
   } catch {
@@ -62,6 +64,7 @@ export function BoardPreviewNode({
   }
 
   const nodeProperties = getNodeProperties(node, workspace)
+
   if (nodeProperties?.display?.value === Display.EXCLUDE) {
     return null
   }

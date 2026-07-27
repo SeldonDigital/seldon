@@ -11,8 +11,11 @@ function subscribe(onChange: () => void): () => void {
   if (typeof window === "undefined" || !window.matchMedia) {
     return () => {}
   }
+
   const mql = window.matchMedia(QUERY)
+
   mql.addEventListener("change", onChange)
+
   return () => mql.removeEventListener("change", onChange)
 }
 
@@ -20,6 +23,7 @@ function getSnapshot(): ResolvedInterfaceMode {
   if (typeof window === "undefined" || !window.matchMedia) {
     return "dark"
   }
+
   return window.matchMedia(QUERY).matches ? "dark" : "light"
 }
 
@@ -38,5 +42,6 @@ export function useSystemColorScheme(): ResolvedInterfaceMode {
 export function useResolvedInterfaceMode(): ResolvedInterfaceMode {
   const { interfaceMode } = useEditorConfig()
   const system = useSystemColorScheme()
+
   return interfaceMode === "system" ? system : interfaceMode
 }

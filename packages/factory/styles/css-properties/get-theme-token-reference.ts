@@ -26,19 +26,19 @@ const KIND_TO_CSS_LABEL: Record<string, string> = {
  * Returns a `var(--sdn-<label>-<key>)` reference for a scale or typography theme
  * reference, or undefined when the reference does not name a theme-file token.
  */
-export function getThemeTokenVarReference(
-  themeReference: unknown,
-): string | undefined {
+export function getThemeTokenVarReference(themeReference: unknown): string | undefined {
   if (typeof themeReference !== "string" || !themeReference.startsWith("@")) {
     return undefined
   }
 
   const dotIndex = themeReference.indexOf(".")
+
   if (dotIndex < 0) return undefined
 
   const kind = themeReference.slice(1, dotIndex)
   const key = themeReference.slice(dotIndex + 1)
   const label = KIND_TO_CSS_LABEL[kind]
+
   if (!label || !key) return undefined
 
   return `var(--sdn-${label}-${key})`

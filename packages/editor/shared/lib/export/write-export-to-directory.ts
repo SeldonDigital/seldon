@@ -21,7 +21,9 @@ function parseFile(file: FileToExport): ParsedFile | null {
     .split("/")
     .filter((segment) => segment && segment !== "." && segment !== "..")
   const fileName = segments.pop()
+
   if (!fileName) return null
+
   return { dirPath: segments.join("/"), fileName, content: file.content }
 }
 
@@ -31,9 +33,11 @@ async function ensureDirectory(
 ): Promise<FileSystemDirectoryHandle> {
   const parts = relativePath.split("/").filter(Boolean)
   let current = parent
+
   for (const part of parts) {
     current = await current.getDirectoryHandle(part, { create: true })
   }
+
   return current
 }
 
@@ -48,13 +52,13 @@ async function resolveDirectories(
   dirPaths: Set<string>,
 ): Promise<Map<string, FileSystemDirectoryHandle>> {
   const handles = new Map<string, FileSystemDirectoryHandle>([["", root]])
-  const ordered = [...dirPaths].sort(
-    (a, b) => a.split("/").length - b.split("/").length,
-  )
+  const ordered = [...dirPaths].sort((a, b) => a.split("/").length - b.split("/").length)
+
   for (const dirPath of ordered) {
     if (handles.has(dirPath)) continue
     handles.set(dirPath, await ensureDirectory(root, dirPath))
   }
+
   return handles
 }
 
@@ -65,6 +69,7 @@ async function writeFile(
 ): Promise<void> {
   const handle = await dir.getFileHandle(fileName, { create: true })
   const writable = await handle.createWritable()
+
   await writable.write(content)
   await writable.close()
 }
@@ -73,9 +78,7 @@ export async function writeExportToDirectory(
   directory: FileSystemDirectoryHandle,
   files: FileToExport[],
 ): Promise<number> {
-  const parsed = files
-    .map(parseFile)
-    .filter((file): file is ParsedFile => file !== null)
+  const parsed = files.map(parseFile).filter((file): file is ParsedFile => file !== null)
 
   const dirHandles = await resolveDirectories(
     directory,
@@ -88,15 +91,18 @@ export async function writeExportToDirectory(
   async function worker(): Promise<void> {
     while (cursor < parsed.length) {
       const file = parsed[cursor]
+
       cursor += 1
       if (!file) continue
       const dir = dirHandles.get(file.dirPath) ?? directory
+
       await writeFile(dir, file.fileName, file.content)
       written += 1
     }
   }
 
   const workerCount = Math.min(WRITE_CONCURRENCY, parsed.length)
+
   await Promise.all(Array.from({ length: workerCount }, () => worker()))
 
   return written
@@ -106,6 +112,7 @@ export async function pickExportDirectory(): Promise<FileSystemDirectoryHandle |
   if (typeof window === "undefined" || !("showDirectoryPicker" in window)) {
     return null
   }
+
   const showDirectoryPicker = (
     window as Window & {
       showDirectoryPicker: (options?: {
@@ -113,5 +120,6 @@ export async function pickExportDirectory(): Promise<FileSystemDirectoryHandle |
       }) => Promise<FileSystemDirectoryHandle>
     }
   ).showDirectoryPicker
+
   return showDirectoryPicker({ mode: "readwrite" })
 }

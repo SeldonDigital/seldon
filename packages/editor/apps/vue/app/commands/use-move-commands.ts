@@ -3,7 +3,6 @@ import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import {
-  type MoveDirection,
   getBoardMoveIndex,
   getMoveCapabilities,
   getVariantMoveIndex,
@@ -11,8 +10,7 @@ import {
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { computed } from "vue"
 
-import { VariantId, invariant } from "@seldon/core"
-import { ComponentId } from "@seldon/core/components/constants"
+import { invariant } from "@seldon/core"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import {
@@ -20,6 +18,10 @@ import {
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { VariantId } from "@seldon/core"
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { MoveDirection } from "@seldon/editor/lib/commands/move-decisions"
 
 /**
  * Commands for moving the current selection. Instances move through the core
@@ -49,18 +51,22 @@ export function useMoveCommands() {
   function moveVariant(variantId: VariantId, direction: MoveDirection): void {
     const ws = workspace.value
     const variant = nodeRetrievalService.getVariant(variantId, ws)
+
     if (typeCheckingService.isDefaultVariant(variant)) {
       toast.addToast("Default variant cannot be moved")
+
       return
     }
 
     const board = nodeRelationshipService.findBoardForVariant(variant, ws)
+
     invariant(board, "Board not found")
 
     const variantRootIds = getBoardVariantRootIds(board)
     const currentIndex = variantRootIds.indexOf(variantId)
     const lastIndex = variantRootIds.length - 1
     const newIndex = getVariantMoveIndex(currentIndex, lastIndex, direction)
+
     if (newIndex === null) return
 
     dispatch({
@@ -82,7 +88,9 @@ export function useMoveCommands() {
 
   function move(direction: MoveDirection): void {
     const selection = selectedItem.value
+
     if (!selection) return
+
     if (typeCheckingService.isBoard(selection)) {
       moveBoard(getComponentKey(selection) as ComponentId, direction)
     } else if (typeCheckingService.isInstance(selection)) {
@@ -92,9 +100,7 @@ export function useMoveCommands() {
     }
   }
 
-  const can = computed(() =>
-    getMoveCapabilities(workspace.value, selectedItem.value),
-  )
+  const can = computed(() => getMoveCapabilities(workspace.value, selectedItem.value))
 
   return {
     moveSelectionForward: () => move("forward"),

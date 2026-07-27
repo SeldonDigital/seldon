@@ -1,8 +1,5 @@
-import { VideoHTMLAttributes } from "react"
+import type { VideoHTMLAttributes } from "react"
 
-export const HTMLVideo = ({
-  style,
-  ...props
-}: VideoHTMLAttributes<HTMLVideoElement>) => {
+export const HTMLVideo = ({ style, ...props }: VideoHTMLAttributes<HTMLVideoElement>) => {
   return <video style={{ ...style }} {...props} />
 }

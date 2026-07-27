@@ -12,21 +12,19 @@ export interface IconSetMetadata<TId extends string = IconSetTemplateId> {
 }
 
 /**
- * Packaged icon set schema. Lists every icon the set ships and the categories
- * enabled by default when the set is first added to a workspace.
+ * Packaged icon set schema. Lists every icon the set ships and the categories enabled by default
+ * when the set is first added to a workspace.
+ *
+ * `source` is the shipped component set these icons come from, such as `seldon`. `icons` is every
+ * icon id available in this set. `defaultEnabledCategories` are the categories enabled by default,
+ * and icons in other categories start off. `defaultEnabledIcons`, when present, defines the default
+ * inclusion by icon id and supersedes `defaultEnabledCategories`.
  */
 export interface StockIconSet {
   metadata: IconSetMetadata
-  /** Shipped component set these icons come from, such as `seldon`. */
   source: IconSetId
-  /** Every icon id available in this set. */
   icons: IconId[]
-  /** Categories enabled by default. Icons in other categories start off. */
   defaultEnabledCategories: IconCategory[]
-  /**
-   * Icon ids enabled by default. When present this list defines the default
-   * inclusion and supersedes `defaultEnabledCategories`.
-   */
   defaultEnabledIcons?: IconId[]
 }
 

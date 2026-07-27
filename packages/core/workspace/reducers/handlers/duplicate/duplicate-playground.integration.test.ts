@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest"
 
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
-import type { ExtractPayload } from "../../../types"
 import { addPlayground } from "../add/add-playground"
 import { duplicatePlayground } from "./duplicate-playground"
+
+import type { ExtractPayload } from "../../../types"
 
 const workspace = addPlayground(
   { boardKey: "pg-source" } as ExtractPayload<"add_playground">,

@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconLucidePlus } from "./miscellaneous/miscellaneous/IconLucidePlus"
 export { IconLucideMinus } from "./miscellaneous/miscellaneous/IconLucideMinus"

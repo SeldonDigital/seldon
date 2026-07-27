@@ -1,8 +1,9 @@
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
-import { SchemaChild, isComplexSchema } from "@seldon/core/components/types"
+import { isComplexSchema } from "@seldon/core/components/types"
 
-import { ComponentToExport, JSONTreeNode } from "../../types"
+import type { ComponentToExport, JSONTreeNode } from "../../types"
+import type { SchemaChild } from "@seldon/core/components/types"
 
 /**
  * Validation result for component props.
@@ -28,10 +29,7 @@ export function validateComponentProps(
   proposedChildren: JSONTreeNode[],
 ): ComponentPropsValidation {
   try {
-    const expectedChildren = getActiveSchemaChildren(
-      componentId,
-      schemaVariantId,
-    )
+    const expectedChildren = getActiveSchemaChildren(componentId, schemaVariantId)
 
     // Special handling for Frame: Frame has no schema restrictions (children: []),
     // which means any children are allowed. Treat all children as valid.
@@ -48,25 +46,18 @@ export function validateComponentProps(
 
     // Create a map of expected child signatures and their counts.
     const expectedChildCounts = new Map<string, number>()
+
     expectedChildren.forEach((slot) => {
-      const childKey = getChildValidationKey(
-        slot.component,
-        slot.variant ?? null,
-      )
-      expectedChildCounts.set(
-        childKey,
-        (expectedChildCounts.get(childKey) || 0) + 1,
-      )
+      const childKey = getChildValidationKey(slot.component, slot.variant ?? null)
+
+      expectedChildCounts.set(childKey, (expectedChildCounts.get(childKey) || 0) + 1)
     })
 
     // Track how many of each child signature we've used
     const usedChildCounts = new Map<string, number>()
 
     for (const child of proposedChildren) {
-      const childKey = getChildValidationKey(
-        child.componentId,
-        child.schemaVariantId,
-      )
+      const childKey = getChildValidationKey(child.componentId, child.schemaVariantId)
       const expectedCount = expectedChildCounts.get(childKey) || 0
       const usedCount = usedChildCounts.get(childKey) || 0
 
@@ -97,9 +88,7 @@ export function validateComponentProps(
  * Validates a single exported tree node against the active schema branch encoded
  * on the node itself.
  */
-export function validateTreeNodeProps(
-  node: JSONTreeNode,
-): ComponentPropsValidation {
+export function validateTreeNodeProps(node: JSONTreeNode): ComponentPropsValidation {
   return validateComponentProps(
     node.componentId,
     node.schemaVariantId,
@@ -121,6 +110,7 @@ function getActiveSchemaChildren(
   schemaVariantId: string | null,
 ): SchemaChild[] {
   const schema = getComponentSchema(componentId)
+
   if (!isComplexSchema(schema)) {
     return []
   }
@@ -129,8 +119,7 @@ function getActiveSchemaChildren(
     return schema.default.children ?? []
   }
 
-  const selectedVariant =
-    schema.variants?.find((variant) => variant.id === schemaVariantId) ?? null
+  const selectedVariant = schema.variants?.find((variant) => variant.id === schemaVariantId) ?? null
 
   if (!selectedVariant) {
     return schema.default.children ?? []
@@ -141,9 +130,6 @@ function getActiveSchemaChildren(
     : (schema.default.children ?? [])
 }
 
-function getChildValidationKey(
-  componentId: ComponentId,
-  schemaVariantId: string | null,
-): string {
+function getChildValidationKey(componentId: ComponentId, schemaVariantId: string | null): string {
   return `${componentId}:${schemaVariantId ?? "__default__"}`
 }

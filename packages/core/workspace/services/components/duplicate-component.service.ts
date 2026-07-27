@@ -1,11 +1,23 @@
-import type { WritableDraft } from "immer"
-
 import { invariant } from "../../../index"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../../helpers/components/board-sort-order"
+import { getBoardOrder, setBoardOrder } from "../../helpers/components/board-sort-order"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
+import {
+  isComponentBoard,
+  isFontCollectionBoard,
+  isIconSetBoard,
+  isMediaBoard,
+  isPlaygroundBoard,
+  isThemeBoard,
+} from "../../model/components"
+import {
+  formatNodeLink,
+  formatThemeLink,
+  parseNodeLink,
+  parseThemeTemplate,
+} from "../../model/template-ref"
+import { mutateWorkspace } from "../shared/workspace-mutation.helper"
+import { boardOrderService } from "./board-order.service"
+
 import type { ComponentTreeRef } from "../../model/component-tree"
 import type {
   Board,
@@ -15,31 +27,18 @@ import type {
   PlaygroundBoard,
   ThemeBoard,
 } from "../../model/components"
-import {
-  isComponentBoard,
-  isFontCollectionBoard,
-  isIconSetBoard,
-  isMediaBoard,
-  isPlaygroundBoard,
-  isThemeBoard,
-} from "../../model/components"
 import type { EntryNode } from "../../model/entry-node"
 import type { EntryTheme } from "../../model/entry-theme"
-import {
-  formatNodeLink,
-  formatThemeLink,
-  parseNodeLink,
-  parseThemeTemplate,
-} from "../../model/template-ref"
 import type { Workspace } from "../../types"
-import { mutateWorkspace } from "../shared/workspace-mutation.helper"
-import { boardOrderService } from "./board-order.service"
+import type { WritableDraft } from "immer"
 
 function collectTreeIds(roots: ComponentTreeRef[]): string[] {
   const ids: string[] = []
+
   walkBoardTreeRefs(roots, (ref) => {
     ids.push(ref.id)
   })
+
   return [...new Set(ids)]
 }
 
@@ -51,6 +50,7 @@ function remapComponentTree(
     id: idMap.get(ref.id) ?? ref.id,
     children: ref.children?.map(mapRef),
   })
+
   return roots.map(mapRef)
 }
 
@@ -62,47 +62,49 @@ function buildPrefixIdMap(
 ): Map<string, string> {
   const fullPrefix = `${prefix}${sourceBoardKey}-`
   const map = new Map<string, string>()
+
   for (const id of ids) {
     if (id.startsWith(fullPrefix)) {
       map.set(id, `${prefix}${newBoardKey}-` + id.slice(fullPrefix.length))
     }
   }
+
   return map
 }
 
-function cloneNodeEntry(
-  node: EntryNode,
-  newId: string,
-  idMap: Map<string, string>,
-): EntryNode {
+function cloneNodeEntry(node: EntryNode, newId: string, idMap: Map<string, string>): EntryNode {
   const clone = structuredClone(node) as EntryNode
+
   clone.id = newId
   // A ref must stay globally unique; never carry it onto a duplicated node.
   delete clone.ref
   const link = parseNodeLink(clone.template)
+
   if (link && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
   }
+
   return clone
 }
 
-function cloneThemeEntry(
-  entry: EntryTheme,
-  newId: string,
-  idMap: Map<string, string>,
-): EntryTheme {
+function cloneThemeEntry(entry: EntryTheme, newId: string, idMap: Map<string, string>): EntryTheme {
   const clone = structuredClone(entry) as EntryTheme
+
   clone.id = newId
   const parsed = parseThemeTemplate(clone.template)
+
   if (parsed?.kind === "theme" && idMap.has(parsed.themeId)) {
     clone.template = formatThemeLink(idMap.get(parsed.themeId)!)
   }
+
   return clone
 }
 
 function clonePlainRow<T extends { id: string }>(row: T, newId: string): T {
   const c = structuredClone(row) as T
+
   c.id = newId
+
   return c
 }
 
@@ -124,10 +126,13 @@ function cloneResourceVariants(
     variants.map((v) => v.id),
     prefix,
   )
+
   for (const [oldId, newId] of idMap) {
     const row = sourceMap[oldId]
+
     if (row) draftMap[newId] = clonePlainRow(row, newId)
   }
+
   return variants.map((v) => ({ id: idMap.get(v.id) ?? v.id }))
 }
 
@@ -143,22 +148,19 @@ export function cloneBoard(
   label?: string,
 ): Workspace {
   const sourceBoard = workspace.boards[sourceBoardKey]
+
   invariant(sourceBoard, `cloneBoard: missing source board ${sourceBoardKey}`)
-  invariant(
-    !workspace.boards[newBoardKey],
-    `cloneBoard: board key already exists ${newBoardKey}`,
-  )
+  invariant(!workspace.boards[newBoardKey], `cloneBoard: board key already exists ${newBoardKey}`)
 
   return mutateWorkspace(workspace, (draft) => {
     const src = draft.boards[sourceBoardKey]
+
     invariant(src, `cloneBoard: source board disappeared ${sourceBoardKey}`)
 
     // Clone from the non-draft source: `structuredClone` throws on Immer draft proxies.
     const newBoard = structuredClone(sourceBoard) as Board
-    const maxOrder = Math.max(
-      0,
-      ...Object.values(draft.boards).map((b) => getBoardOrder(b)),
-    )
+    const maxOrder = Math.max(0, ...Object.values(draft.boards).map((b) => getBoardOrder(b)))
+
     setBoardOrder(newBoard, maxOrder + 1)
 
     if (label !== undefined && "label" in newBoard) {
@@ -169,35 +171,28 @@ export function cloneBoard(
       const treeIds = collectTreeIds(src.variants)
       const idMap = new Map([
         ...buildPrefixIdMap(sourceBoardKey, newBoardKey, treeIds, "component-"),
-        ...buildPrefixIdMap(
-          sourceBoardKey,
-          newBoardKey,
-          treeIds,
-          "playground-",
-        ),
+        ...buildPrefixIdMap(sourceBoardKey, newBoardKey, treeIds, "playground-"),
       ])
+
       for (const [oldId, newId] of idMap) {
         const node = workspace.nodes[oldId] as EntryNode | undefined
+
         if (!node) continue
-        draft.nodes[newId] = cloneNodeEntry(
-          node,
-          newId,
-          idMap,
-        ) as WritableDraft<EntryNode>
+        draft.nodes[newId] = cloneNodeEntry(node, newId, idMap) as WritableDraft<EntryNode>
       }
+
       newBoard.variants = remapComponentTree(src.variants, idMap)
     } else if (isThemeBoard(src)) {
       const ids = src.variants.map((v) => v.id)
       const idMap = buildPrefixIdMap(sourceBoardKey, newBoardKey, ids, "theme-")
+
       for (const [oldId, newId] of idMap) {
         const row = workspace.themes[oldId] as EntryTheme | undefined
+
         if (!row) continue
-        draft.themes[newId] = cloneThemeEntry(
-          row,
-          newId,
-          idMap,
-        ) as WritableDraft<EntryTheme>
+        draft.themes[newId] = cloneThemeEntry(row, newId, idMap) as WritableDraft<EntryTheme>
       }
+
       ;(newBoard as ThemeBoard).variants = src.variants.map((v) => ({
         id: idMap.get(v.id) ?? v.id,
       }))
@@ -235,6 +230,7 @@ export function cloneBoard(
     draft.boards[newBoardKey] = newBoard as WritableDraft<Board>
 
     const realigned = boardOrderService.realignBoardOrder(draft as Workspace)
+
     Object.assign(draft.boards, realigned.boards)
   })
 }
@@ -253,65 +249,47 @@ export function clonePlayground(
   label?: string,
 ): Workspace {
   const source = workspace.playgrounds?.[sourcePlaygroundKey]
+
+  invariant(source, `clonePlayground: missing source playground ${sourcePlaygroundKey}`)
   invariant(
-    source,
-    `clonePlayground: missing source playground ${sourcePlaygroundKey}`,
-  )
-  invariant(
-    !workspace.boards[newPlaygroundKey] &&
-      !workspace.playgrounds?.[newPlaygroundKey],
+    !workspace.boards[newPlaygroundKey] && !workspace.playgrounds?.[newPlaygroundKey],
     `clonePlayground: key already exists ${newPlaygroundKey}`,
   )
 
   return mutateWorkspace(workspace, (draft) => {
     const src = draft.playgrounds[sourcePlaygroundKey]
-    invariant(
-      src,
-      `clonePlayground: source playground disappeared ${sourcePlaygroundKey}`,
-    )
+
+    invariant(src, `clonePlayground: source playground disappeared ${sourcePlaygroundKey}`)
 
     // Clone from the non-draft source: `structuredClone` throws on Immer draft proxies.
     const newPlayground = structuredClone(source) as PlaygroundBoard
-    const maxOrder = Math.max(
-      -1,
-      ...Object.values(draft.playgrounds).map((p) => getBoardOrder(p)),
-    )
+    const maxOrder = Math.max(-1, ...Object.values(draft.playgrounds).map((p) => getBoardOrder(p)))
+
     setBoardOrder(newPlayground, maxOrder + 1)
 
     if ("id" in newPlayground) {
       ;(newPlayground as { id: string }).id = newPlaygroundKey
     }
+
     if (label !== undefined && "label" in newPlayground) {
       ;(newPlayground as { label: string }).label = label
     }
 
     const treeIds = collectTreeIds(src.variants)
     const idMap = new Map([
-      ...buildPrefixIdMap(
-        sourcePlaygroundKey,
-        newPlaygroundKey,
-        treeIds,
-        "component-",
-      ),
-      ...buildPrefixIdMap(
-        sourcePlaygroundKey,
-        newPlaygroundKey,
-        treeIds,
-        "playground-",
-      ),
+      ...buildPrefixIdMap(sourcePlaygroundKey, newPlaygroundKey, treeIds, "component-"),
+      ...buildPrefixIdMap(sourcePlaygroundKey, newPlaygroundKey, treeIds, "playground-"),
     ])
+
     for (const [oldId, newId] of idMap) {
       const node = workspace.nodes[oldId] as EntryNode | undefined
+
       if (!node) continue
-      draft.nodes[newId] = cloneNodeEntry(
-        node,
-        newId,
-        idMap,
-      ) as WritableDraft<EntryNode>
+      draft.nodes[newId] = cloneNodeEntry(node, newId, idMap) as WritableDraft<EntryNode>
     }
+
     newPlayground.variants = remapComponentTree(src.variants, idMap)
 
-    draft.playgrounds[newPlaygroundKey] =
-      newPlayground as WritableDraft<PlaygroundBoard>
+    draft.playgrounds[newPlaygroundKey] = newPlayground as WritableDraft<PlaygroundBoard>
   })
 }

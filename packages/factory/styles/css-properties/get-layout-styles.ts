@@ -1,13 +1,15 @@
-import { Gap, Orientation, Properties, ValueType } from "@seldon/core"
+import { Gap, Orientation, ValueType } from "@seldon/core"
 import { modulate } from "@seldon/core/helpers/math/modulate"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import type { LayoutMode } from "@seldon/core/properties/compute"
-import { Theme, ThemeModulation } from "@seldon/core/themes/types"
 
 import { getCssValue } from "./get-css-value"
 import { getThemeTokenVarReference } from "./get-theme-token-reference"
-import { CSSObject } from "./types"
+
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
+import type { LayoutMode } from "@seldon/core/properties/compute"
+import type { Theme, ThemeModulation } from "@seldon/core/themes/types"
 
 /** Reads a positive integer track count from a resolved number value. */
 function readTrackCount(value: unknown): number | null {
@@ -18,6 +20,7 @@ function readTrackCount(value: unknown): number | null {
   ) {
     return null
   }
+
   const stored = (value as { value: unknown }).value
   const raw =
     typeof stored === "number"
@@ -28,6 +31,7 @@ function readTrackCount(value: unknown): number | null {
           typeof (stored as { value: unknown }).value === "number"
         ? (stored as { value: number }).value
         : null
+
   return raw !== null && raw >= 1 ? Math.floor(raw) : null
 }
 
@@ -101,12 +105,14 @@ export function getLayoutStyles({
     if (columns) {
       styles.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`
     }
+
     if (rows) {
       styles.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`
     }
 
     if (align && !truncatesText) {
       const map = horizontalLayout
+
       styles.alignItems = map[align.value as keyof typeof map]?.align
       styles.justifyItems = map[align.value as keyof typeof map]?.justify
     }
@@ -117,18 +123,13 @@ export function getLayoutStyles({
 
     if (orientation && !truncatesText) {
       styles.display = "flex"
-      styles.flexDirection =
-        orientation?.value === Orientation.HORIZONTAL ? "row" : "column"
+      styles.flexDirection = orientation?.value === Orientation.HORIZONTAL ? "row" : "column"
     }
-    if (align && !truncatesText) {
-      const orientationValue = orientation
-        ? orientation.value
-        : Orientation.VERTICAL
 
-      const map =
-        orientationValue === Orientation.HORIZONTAL
-          ? horizontalLayout
-          : verticalLayout
+    if (align && !truncatesText) {
+      const orientationValue = orientation ? orientation.value : Orientation.VERTICAL
+
+      const map = orientationValue === Orientation.HORIZONTAL ? horizontalLayout : verticalLayout
 
       styles.display = "flex"
       styles.alignItems = map[align.value as keyof typeof map]?.align
@@ -151,16 +152,19 @@ export function getLayoutStyles({
         } else {
           throw new Error(`Unknown gap preset: ${gap.value}`)
         }
+
         break
 
       case ValueType.THEME_ORDINAL: {
         const reference = useThemeVariableReferences
           ? getThemeTokenVarReference(gap.value)
           : undefined
+
         if (reference) {
           styles.gap = reference
         } else {
           const themeValue = getThemeOption(gap.value, theme) as ThemeModulation
+
           styles.gap =
             modulate({
               step: themeValue.parameters.step,
@@ -168,13 +172,12 @@ export function getLayoutStyles({
               ratio: theme.modulation.parameters.ratio,
             }) + "rem"
         }
+
         break
       }
 
       default:
-        throw new Error(
-          `Unknown gap type: ${(gap as { type: ValueType }).type}`,
-        )
+        throw new Error(`Unknown gap type: ${(gap as { type: ValueType }).type}`)
     }
   }
 

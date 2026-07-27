@@ -1,31 +1,26 @@
-import {
-  Board,
-  Instance,
-  NODE_FIELD_DISPLAY_ORDER,
-  Theme,
-  Variant,
-  Workspace,
-} from "@seldon/core"
+import { NODE_FIELD_DISPLAY_ORDER } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import { ThemeEditingContext } from "./editing-contexts"
-import { PropertySection, getPropertySections } from "./get-property-sections"
-import {
-  ThemePropertySection,
-  getThemePropertySections,
-} from "./get-theme-property-sections"
+import { getPropertySections } from "./get-property-sections"
+import { getThemePropertySections } from "./get-theme-property-sections"
 import { getIconRowCategory, titleCase } from "./icon-set-properties-data"
-import { FlatProperty } from "./properties-data"
 import { buildReferenceProperty } from "./reference-display"
 import { injectRepeatRows } from "./repeat-display"
 import { buildThemeAssignmentProperty } from "./theme-assignment-display"
+
+import type { ThemeEditingContext } from "./editing-contexts"
+import type { PropertySection } from "./get-property-sections"
+import type { ThemePropertySection } from "./get-theme-property-sections"
+import type { FlatProperty } from "./properties-data"
+import type { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 
 /** A reference is only editable where `setRef` rules allow it (boards excluded). */
 function isReferenceFieldAllowed(node: Variant | Instance | Board): boolean {
   if (isBoard(node)) return false
   const entityType = typeCheckingService.getEntityType(node)
+
   return rules.mutations.setRef[entityType].allowed
 }
 
@@ -39,6 +34,7 @@ function buildLeadingNodeFieldRows(
   workspace: Workspace,
 ): FlatProperty[] {
   const rows: FlatProperty[] = []
+
   for (const field of NODE_FIELD_DISPLAY_ORDER) {
     if (field === "theme") {
       rows.push(buildThemeAssignmentProperty(node, workspace))
@@ -46,6 +42,7 @@ function buildLeadingNodeFieldRows(
       rows.push(buildReferenceProperty(node))
     }
   }
+
   return rows
 }
 
@@ -74,6 +71,7 @@ export function buildPropertyTreeLayout({
   properties: FlatProperty[]
   workspace: Workspace
   node: Variant | Instance | Board
+  cssStringCount: number
   theme?: Theme
   themeEditingContext?: ThemeEditingContext | null
   metadataProperties?: FlatProperty[]
@@ -81,7 +79,6 @@ export function buildPropertyTreeLayout({
   metadataVariantLabel?: string
   familyProperties?: FlatProperty[]
   iconProperties?: FlatProperty[]
-  cssStringCount: number
 }): PropertyTreeLayout {
   // The metadata section heads resource trees the way the attributes section
   // heads component trees: title it "Family · Variant" (just the family when the
@@ -112,11 +109,11 @@ export function buildPropertyTreeLayout({
 
   if (themeEditingContext?.isThemeEditing) {
     const themeSections = getThemePropertySections(properties, theme)
+
     return {
-      sections: [
-        ...(metadataSection ? [metadataSection] : []),
-        ...themeSections,
-      ] as Array<PropertySection | ThemePropertySection>,
+      sections: [...(metadataSection ? [metadataSection] : []), ...themeSections] as Array<
+        PropertySection | ThemePropertySection
+      >,
       allProperties: properties,
     }
   }
@@ -128,11 +125,7 @@ export function buildPropertyTreeLayout({
         ...injectRepeatRows(properties, node, workspace),
       ]
 
-  const regularSections = getPropertySections(
-    propertiesWithLeadingFields,
-    node,
-    workspace,
-  )
+  const regularSections = getPropertySections(propertiesWithLeadingFields, node, workspace)
 
   const allSections: Array<PropertySection | ThemePropertySection> = [
     ...(metadataSection ? [metadataSection] : []),
@@ -146,16 +139,16 @@ export function buildPropertyTreeLayout({
   if (iconProperties && iconProperties.length > 0) {
     const parentRows = iconProperties.filter((p) => !p.isSubProperty)
     const seen = new Set<string>()
+
     for (const row of parentRows) {
       const category = getIconRowCategory(row.key)
+
       if (!category || seen.has(category)) continue
       seen.add(category)
       allSections.push({
         label: titleCase(category),
         category,
-        properties: parentRows.filter(
-          (p) => getIconRowCategory(p.key) === category,
-        ),
+        properties: parentRows.filter((p) => getIconRowCategory(p.key) === category),
       })
     }
   }

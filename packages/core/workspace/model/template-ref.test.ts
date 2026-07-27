@@ -48,9 +48,7 @@ describe("format helpers round-trip", () => {
   it("formats and re-parses node refs", () => {
     expect(formatNodeCatalog("button")).toBe("catalog:button")
     expect(formatNodeLink("abc")).toBe("node:abc")
-    expect(parseNodeCatalog(formatNodeCatalog("button"))?.componentId).toBe(
-      "button",
-    )
+    expect(parseNodeCatalog(formatNodeCatalog("button"))?.componentId).toBe("button")
     expect(parseNodeLink(formatNodeLink("abc"))?.nodeId).toBe("abc")
   })
 })

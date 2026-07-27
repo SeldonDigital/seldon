@@ -1,10 +1,11 @@
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentLevel } from "@seldon/core/components/constants"
-import { Workspace } from "@seldon/core/workspace/types"
 
-import { ComponentToExport } from "../../../types"
 import { isCustomComponent } from "../custom-components/is-custom-component"
 import { isInlineComponent } from "../inline-components/is-inline-component"
+
+import type { ComponentToExport } from "../../../types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /** Loose prop descriptor used only to render JSDoc example values. */
 type JsdocPropValue = {
@@ -21,10 +22,7 @@ type JsdocChild = {
 /**
  * Generates a JSDoc comment for a React component based on its schema
  */
-export function generateJSDocComment(
-  component: ComponentToExport,
-  workspace: Workspace,
-): string {
+export function generateJSDocComment(component: ComponentToExport, workspace: Workspace): string {
   // Handle cases where componentId might not be available (e.g., in tests)
   // Note: fallback doesn't use workspace, so it defaults to "Default"
   if (!component.componentId) {
@@ -84,10 +82,7 @@ ${propsExample}
  * Generates a JSDoc comment for an authored component from the board metadata
  * carried on the component, rather than the root template's schema.
  */
-function generateAuthoredJSDocComment(
-  component: ComponentToExport,
-  workspace: Workspace,
-): string {
+function generateAuthoredJSDocComment(component: ComponentToExport, workspace: Workspace): string {
   const { tree, authored } = component
   const level = getLevelString(authored!.level)
   const intent = authored!.intent ?? ""
@@ -162,6 +157,7 @@ function extractShortName(componentName: string, _schemaName: string): string {
   for (const prefix of prefixes) {
     if (componentName.startsWith(prefix)) {
       const remaining = componentName.slice(prefix.length)
+
       // If there's a meaningful remainder, return it
       if (remaining.length > 0) {
         return remaining
@@ -177,10 +173,7 @@ function extractShortName(componentName: string, _schemaName: string): string {
  * Formats component name for JSDoc header
  * Example: "ListItemTreeSection" -> "List Item"
  */
-function formatComponentName(
-  componentName: string,
-  schemaName: string,
-): string {
+function formatComponentName(componentName: string, schemaName: string): string {
   // Extract prefix from component name and format it (ordered by length, longest first)
   const prefixes = [
     { prefix: "ListItem", formatted: "List Item" },
@@ -258,11 +251,13 @@ function generatePropsExample(
       if (propValue.defaultValue === "" && propName !== "className") {
         return false
       }
+
       return true
     })
     .map(([propName, propValue]) => {
       // Generate example values based on prop type and default
       const exampleValue = generateExampleValue(propValue, propName)
+
       return ` *   ${propName}=${exampleValue}`
     })
 
@@ -316,10 +311,7 @@ function extractPropsFromChildren(
 
     // Recursively extract from nested children
     if (child.children && Array.isArray(child.children)) {
-      Object.assign(
-        extractedProps,
-        extractPropsFromChildren(child.children, extractedProps),
-      )
+      Object.assign(extractedProps, extractPropsFromChildren(child.children, extractedProps))
     }
   })
 
@@ -329,31 +321,25 @@ function extractPropsFromChildren(
 /**
  * Generates example values for props based on their type and default values
  */
-function generateExampleValue(
-  propValue: JsdocPropValue,
-  propName: string,
-): string {
+function generateExampleValue(propValue: JsdocPropValue, propName: string): string {
   // If there's a defaultValue, use it as a reference
   if (propValue.defaultValue !== undefined) {
     if (typeof propValue.defaultValue === "string") {
       // Special handling for function strings
-      if (
-        propValue.defaultValue.includes("=>") ||
-        propValue.defaultValue.includes("function")
-      ) {
+      if (propValue.defaultValue.includes("=>") || propValue.defaultValue.includes("function")) {
         return `{${propValue.defaultValue}}`
       }
+
       // Special handling for JSX comment placeholders
-      if (
-        propValue.defaultValue.includes("/*") &&
-        propValue.defaultValue.includes("*/")
-      ) {
+      if (propValue.defaultValue.includes("/*") && propValue.defaultValue.includes("*/")) {
         return `{{}}`
       }
+
       // Don't show empty strings in examples unless it's className
       if (propValue.defaultValue === "" && propName !== "className") {
         return `""`
       }
+
       return `"${propValue.defaultValue}"`
     } else if (typeof propValue.defaultValue === "boolean") {
       return `{${propValue.defaultValue}}`
@@ -367,6 +353,7 @@ function generateExampleValue(
   // If there are options, use the first one
   if (propValue.options && propValue.options.length > 0) {
     const firstOption = propValue.options[0]
+
     if (typeof firstOption === "string") {
       return `"${firstOption}"`
     } else {

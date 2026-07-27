@@ -1,6 +1,6 @@
 import chroma from "chroma-js"
 
-import { ColorValue, EmptyValue, ValueType } from "../../index"
+import { ValueType } from "../../index"
 import { isHSLObject } from "../type-guards/color/is-hsl-object"
 import { isLCHObject } from "../type-guards/color/is-lch-object"
 import { isRGBObject } from "../type-guards/color/is-rgb-object"
@@ -8,6 +8,8 @@ import { isHex, isHexWithoutHash } from "../validation"
 import { HSLObjectToString } from "./hsl-object-to-string"
 import { LCHObjectToString } from "./lch-object-to-string"
 import { RGBObjectToString } from "./rgb-object-to-string"
+
+import type { ColorValue, EmptyValue } from "../../index"
 
 const DARK_COLOR_THRESHOLD = 2.5
 

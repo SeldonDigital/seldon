@@ -17,6 +17,7 @@ export function useEditorFonts() {
       if (fonts.includes(font)) {
         return
       }
+
       setFonts([...fonts, font])
     },
     [fonts, setFonts],

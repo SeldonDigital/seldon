@@ -10,9 +10,11 @@
 import { ButtonIconic } from "@seldon/components/elements/ButtonIconic"
 import { MessageTools } from "@seldon/components/elements/MessageTools"
 import { Frame } from "@seldon/components/frames/Frame"
-import { Icon, type IconProps } from "@seldon/components/primitives/Icon"
+import { Icon } from "@seldon/components/primitives/Icon"
 import { TextDescription } from "@seldon/components/primitives/TextDescription"
 import { useState } from "react"
+
+import type { IconProps } from "@seldon/components/primitives/Icon"
 
 /** One tool-activity line: a status icon and its label. */
 export interface ToolRow {
@@ -54,18 +56,14 @@ export function HariTools({ rows, defaultOpen }: HariToolsProps) {
         aria-expanded={open}
         aria-label={toggleLabel}
       />
-      <TextDescription className={HEADER_TEXT_CLASS}>
-        Tools Applied
-      </TextDescription>
+      <TextDescription className={HEADER_TEXT_CLASS}>Tools Applied</TextDescription>
     </Frame>
   )
   const rowFrames = open
     ? rows.map((row) => (
         <Frame key={row.key} className={ROW_FRAME_CLASS}>
           <Icon className={ROW_ICON_CLASS} icon={row.icon} />
-          <TextDescription className={ROW_TEXT_CLASS}>
-            {row.text}
-          </TextDescription>
+          <TextDescription className={ROW_TEXT_CLASS}>{row.text}</TextDescription>
         </Frame>
       ))
     : null

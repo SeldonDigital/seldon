@@ -1,6 +1,6 @@
-import { Workspace } from "@seldon/core"
-
 import { exportReact } from "../react/export-react"
+import { exportVue } from "../vue/export-vue"
+
 import type {
   ExportOptions,
   ExportStyleId,
@@ -8,7 +8,7 @@ import type {
   PlatformId,
   PlatformStatus,
 } from "../types"
-import { exportVue } from "../vue/export-vue"
+import type { Workspace } from "@seldon/core"
 
 /**
  * A single export platform. `export` is present only when the platform can
@@ -20,10 +20,7 @@ export interface PlatformDefinition {
   label: string
   status: PlatformStatus
   styles: ExportStyleId
-  export?: (
-    workspace: Workspace,
-    options: ExportOptions,
-  ) => Promise<FileToExport[]>
+  export?: (workspace: Workspace, options: ExportOptions) => Promise<FileToExport[]>
 }
 
 /**

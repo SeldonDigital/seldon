@@ -1,9 +1,10 @@
 import { CURRENT_WORKSPACE_VERSION } from "../middleware/migration/middleware"
-import type { Workspace } from "../model/workspace"
 import { boardOrderService } from "../services/components/board-order.service"
 import { seedDefaultFontCollectionBoard } from "./seed/seed-default-font-collection-board"
 import { seedDefaultIconSetBoard } from "./seed/seed-default-icon-set-board"
 import { seedDefaultThemeBoard } from "./seed/seed-default-theme-board"
+
+import type { Workspace } from "../model/workspace"
 
 /**
  * Minimal workspace (editor “clear workspace”, tests, debug panels).
@@ -22,9 +23,11 @@ export function createEmptyWorkspace(): Workspace {
     "icon-sets": {},
     media: {},
   }
+
   seedDefaultThemeBoard(workspace)
   seedDefaultFontCollectionBoard(workspace)
   seedDefaultIconSetBoard(workspace)
+
   // Normalize the derived board order up front so the on-load repair is a no-op
   // for a freshly created workspace.
   return boardOrderService.realignBoardOrder(workspace)

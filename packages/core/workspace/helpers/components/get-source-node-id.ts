@@ -1,8 +1,6 @@
-import {
-  type EntryNodeId,
-  type Workspace,
-  parseNodeTemplate,
-} from "../../types"
+import { parseNodeTemplate } from "../../types"
+
+import type { EntryNodeId, Workspace } from "../../types"
 
 /**
  * Walks a node's template chain to the workspace node that sits directly on a
@@ -17,10 +15,7 @@ import {
  * unparseable, or a link dangles, so callers can treat the result as a safe
  * write target. A visited set guards against a cyclic chain.
  */
-export function getSourceNodeId(
-  workspace: Workspace,
-  nodeId: EntryNodeId,
-): EntryNodeId {
+export function getSourceNodeId(workspace: Workspace, nodeId: EntryNodeId): EntryNodeId {
   const nodes = workspace.nodes
   const visited = new Set<EntryNodeId>()
   let current = nodeId
@@ -28,9 +23,11 @@ export function getSourceNodeId(
   while (!visited.has(current)) {
     visited.add(current)
     const node = nodes?.[current]
+
     if (!node) return current
 
     const parsed = parseNodeTemplate(node.template)
+
     if (!parsed) return current
     if (parsed.kind === "catalog") return current
 

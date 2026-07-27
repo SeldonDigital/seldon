@@ -1,6 +1,7 @@
 import merge from "lodash/merge"
 
 import { computeIconSet } from "../helpers/compute-icon-set"
+
 import type { ComputedIconSet, StockIconSet } from "../types/icon-set"
 import type { IconSetTemplateId } from "../types/icon-set-id"
 
@@ -17,12 +18,16 @@ export function instantiateIconSet(
   presetsById: PresetIconSetsById,
 ): ComputedIconSet {
   const base = presetsById[templateId]
+
   if (!base) {
     throw new Error(`Unknown icon set template: ${templateId}`)
   }
+
   if (!overrides || Object.keys(overrides).length === 0) {
     return computeIconSet(base)
   }
+
   const merged = merge({}, base, overrides) as StockIconSet
+
   return computeIconSet(merged)
 }

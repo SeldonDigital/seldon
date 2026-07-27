@@ -6,10 +6,7 @@ export function componentBoardDefaultNodeId(boardKey: string): string {
 }
 
 /** Root node id for a catalog schema variant (`component-{boardKey}-{variantId}`). */
-export function componentBoardSchemaVariantNodeId(
-  boardKey: string,
-  variantId: string,
-): string {
+export function componentBoardSchemaVariantNodeId(boardKey: string, variantId: string): string {
   return `component-${boardKey}-${variantId}`
 }
 

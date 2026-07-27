@@ -1,8 +1,9 @@
-import { ComponentToExport } from "../../../types"
 import { generateRootAttributePropsString } from "../shared/attribute-props"
 import { getReactReturnTag } from "../shared/custom-react"
 import { dataSeldonRefAttr } from "../shared/data-ref-attr"
-import { JSXNode } from "./types"
+
+import type { ComponentToExport } from "../../../types"
+import type { JSXNode } from "./types"
 
 type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
 
@@ -14,6 +15,7 @@ type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
 function grandchildPropAttr(gp: GrandchildProp): string {
   if (gp.nullLiteral) return `${gp.propKeyName}={null}`
   const value = gp.guard ? `${gp.guard} && ${gp.propVarName}` : gp.propVarName
+
   return `${gp.propKeyName}={${value}}`
 }
 
@@ -50,6 +52,7 @@ export function jsxStructureToString(
       }
 
       content += `\n${indentStr}</Frame>`
+
       return content
     } else if (node.type === "conditional") {
       // Conditionally rendered component
@@ -67,6 +70,7 @@ export function jsxStructureToString(
         const grandchildPropsString = node.grandchildProps
           .map((gp) => grandchildPropAttr(gp))
           .join(" ")
+
         content += `\n${indentStr}  <${node.name} {...${node.propVarName}} ${grandchildPropsString} />`
       } else if (node.children && node.children.length > 0) {
         // Component with children
@@ -81,6 +85,7 @@ export function jsxStructureToString(
       }
 
       content += `\n${indentStr})}`
+
       return content
     } else {
       // Regular component
@@ -89,14 +94,17 @@ export function jsxStructureToString(
         const grandchildPropsString = node.grandchildProps
           .map((gp) => grandchildPropAttr(gp))
           .join(" ")
+
         return `\n${indentStr}<${node.name} {...${node.propVarName}} ${grandchildPropsString} />`
       } else if (node.children && node.children.length > 0) {
         // Component with children
         let content = `\n${indentStr}<${node.name} {...${node.propVarName}}>`
+
         node.children.forEach((child) => {
           content += nodeToString(child, nextIndent)
         })
         content += `\n${indentStr}</${node.name}>`
+
         return content
       } else {
         // Self-closing component
@@ -126,5 +134,6 @@ export function jsxStructureToString(
   }
 
   content += `\n    </${rootTag}>\n  )`
+
   return content
 }

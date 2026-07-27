@@ -1,11 +1,13 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
-import { type SchemaChild, hasVariants } from "../../../components/types"
+import { hasVariants } from "../../../components/types"
 import {
   formatSchemaVariantLabel,
   getSchemaVariantSlotKey,
   walkSchemaComposition,
 } from "./schema-composition-children"
+
+import type { ComponentId } from "../../../components/constants"
+import type { SchemaChild } from "../../../components/types"
 
 export type MissingSchemaVariantIssue = {
   componentId: ComponentId
@@ -15,9 +17,7 @@ export type MissingSchemaVariantIssue = {
   slotKey: string
 }
 
-export function getMissingSchemaVariantMessage(
-  issue: MissingSchemaVariantIssue,
-): string {
+export function getMissingSchemaVariantMessage(issue: MissingSchemaVariantIssue): string {
   return `${issue.componentName} ${issue.variantLabel} does not exist. Use Default ${issue.componentName}?`
 }
 
@@ -32,6 +32,7 @@ export function getMissingSchemaVariantIssueForSlot(
   const variantExists =
     hasVariants(childSchema) &&
     childSchema.variants.some((candidate) => candidate.id === slot.variant)
+
   if (variantExists) {
     return null
   }
@@ -57,9 +58,11 @@ export function collectMissingSchemaVariants(
 
   walkSchemaComposition(componentId, (slot) => {
     const issue = getMissingSchemaVariantIssueForSlot(slot)
+
     if (!issue || seenSlotKeys.has(issue.slotKey)) {
       return
     }
+
     seenSlotKeys.add(issue.slotKey)
     issues.push(issue)
   })

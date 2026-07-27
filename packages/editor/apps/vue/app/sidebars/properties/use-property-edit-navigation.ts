@@ -1,4 +1,6 @@
-import { type Ref, inject, provide } from "vue"
+import { inject, provide } from "vue"
+
+import type { Ref } from "vue"
 
 type Direction = 1 | -1
 
@@ -44,25 +46,28 @@ export function providePropertyEditNavigation(): PropertyEditNavigationApi {
         const aEl = a.el.value!
         const bEl = b.el.value!
         const position = aEl.compareDocumentPosition(bEl)
+
         return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
       })
 
     const index = ordered.findIndex(([key]) => key === currentKey)
+
     if (index === -1) return false
     const target = ordered[index + direction]
+
     if (!target) return false
     target[1].activate()
+
     return true
   }
 
   const api: PropertyEditNavigationApi = { register, unregister, moveFocus }
+
   provide(PROPERTY_EDIT_NAVIGATION_KEY, api)
+
   return api
 }
 
 export function usePropertyEditNavigation(): PropertyEditNavigationApi | null {
-  return inject<PropertyEditNavigationApi | null>(
-    PROPERTY_EDIT_NAVIGATION_KEY,
-    null,
-  )
+  return inject<PropertyEditNavigationApi | null>(PROPERTY_EDIT_NAVIGATION_KEY, null)
 }

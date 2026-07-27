@@ -2,9 +2,10 @@ import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getPropertyStatus } from "@seldon/core/workspace/helpers/properties/property-status"
 import { getEffectiveProperties } from "@seldon/core/workspace/helpers/properties/shared"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { summarizeValue } from "./value-summary"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Color and background carry down the parent chain, so high-contrast and
@@ -19,21 +20,13 @@ const MAX_DEPTH = 12
 function ancestorLine(workspace: Workspace, nodeId: string): string {
   const node = workspace.nodes[nodeId]
   const catalogId = node ? getNodeCatalogId(node, workspace) : undefined
-  const kind = node
-    ? catalogId
-      ? `${node.level} ${catalogId}`
-      : node.level
-    : "(no node entry)"
+  const kind = node ? (catalogId ? `${node.level} ${catalogId}` : node.level) : "(no node entry)"
   const paint: string[] = []
+
   try {
-    const effective = getEffectiveProperties(nodeId, workspace) as Record<
-      string,
-      unknown
-    >
-    const status = getPropertyStatus(nodeId, workspace) as Record<
-      string,
-      string
-    >
+    const effective = getEffectiveProperties(nodeId, workspace) as Record<string, unknown>
+    const status = getPropertyStatus(nodeId, workspace) as Record<string, string>
+
     for (const key of INHERITED_KEYS) {
       if (status[key] === "set" || status[key] === "override") {
         paint.push(`${key}=${summarizeValue(effective[key])}`)
@@ -42,7 +35,9 @@ function ancestorLine(workspace: Workspace, nodeId: string): string {
   } catch {
     // A non-property-bearing ancestor contributes no paint.
   }
+
   const paintText = paint.length > 0 ? ` ${paint.join(" ")}` : ""
+
   return `- ${nodeId} [${kind}]${paintText}`
 }
 
@@ -55,18 +50,13 @@ function ancestorLine(workspace: Workspace, nodeId: string): string {
  * the whole board. Returns nothing when the id is not a node, so the caller can
  * report a clean miss.
  */
-export function ancestrySection(
-  workspace: Workspace,
-  nodeId: string,
-): string[] {
+export function ancestrySection(workspace: Workspace, nodeId: string): string[] {
   if (!workspace.nodes[nodeId]) return []
 
   const chain: string[] = []
-  let currentId: string | null = getImmediateParentIdInWorkspace(
-    workspace,
-    nodeId,
-  )
+  let currentId: string | null = getImmediateParentIdInWorkspace(workspace, nodeId)
   let depth = 0
+
   while (currentId && depth < MAX_DEPTH) {
     chain.push(ancestorLine(workspace, currentId))
     currentId = getImmediateParentIdInWorkspace(workspace, currentId)

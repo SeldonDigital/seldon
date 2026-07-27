@@ -1,8 +1,8 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { StringValue } from "../shared/exact/string"
-import { InheritValue } from "../shared/inherit/inherit"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { StringValue } from "../shared/exact/string"
+import type { InheritValue } from "../shared/inherit/inherit"
 
 /** Cursor keywords the catalog exposes as fixed choices. */
 export enum Cursor {
@@ -50,11 +50,7 @@ export interface CursorOptionValue {
 }
 
 /** Empty, inherit, a catalog cursor keyword, or a custom CSS cursor string (`exact`). */
-export type CursorValue =
-  | EmptyValue
-  | InheritValue
-  | CursorOptionValue
-  | StringValue
+export type CursorValue = EmptyValue | InheritValue | CursorOptionValue | StringValue
 
 /** Defines labels, allowed shapes, checks, and preset choices for `cursor`. */
 export const cursorSchema: PropertySchema = {
@@ -66,8 +62,7 @@ export const cursorSchema: PropertySchema = {
     inherit: () => true,
     exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Cursor) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Cursor) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Cursor),
 }

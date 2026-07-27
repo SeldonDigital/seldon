@@ -1,10 +1,8 @@
-import {
-  listThemeLookIds,
-  validateThemeLookPresetRef,
-} from "../../../../themes/looks"
-import { Theme, ThemeGradientKey } from "../../../../themes/types"
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
+import { listThemeLookIds, validateThemeLookPresetRef } from "../../../../themes/looks"
+
+import type { Theme, ThemeGradientKey } from "../../../../themes/types"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
 
 /** Theme categorical reference to a named recipe under `theme.gradient`. */
 export interface GradientValue {

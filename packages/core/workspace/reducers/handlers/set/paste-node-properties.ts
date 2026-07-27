@@ -1,4 +1,3 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
@@ -6,6 +5,8 @@ import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Pastes a copied look onto a node when rules allow, using configured
@@ -29,11 +30,7 @@ export function pasteNodeProperties(
     nodeId: payload.nodeId,
     propagation,
     apply: (node, workspace) =>
-      workspaceMutationService.pasteNodeProperties(
-        node.id,
-        payload.properties,
-        workspace,
-      ),
+      workspaceMutationService.pasteNodeProperties(node.id, payload.properties, workspace),
     workspace,
   })
 }

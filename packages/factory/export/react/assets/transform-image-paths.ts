@@ -1,10 +1,12 @@
 import { produce } from "immer"
 
-import { ValueType, Workspace } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
 import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
-import { ImageToExportMap } from "../../types"
+
+import type { ImageToExportMap } from "../../types"
+import type { Workspace } from "@seldon/core"
 
 export function replaceImagesWithRelativePaths(
   workspace: Workspace,
@@ -13,14 +15,17 @@ export function replaceImagesWithRelativePaths(
   return produce(workspace, (draft) => {
     for (const node of getWorkspaceNodeList(draft)) {
       const entry = draft.nodes[node.id]
+
       if (!entry) continue
 
       const properties = getNodeProperties(node, draft)
       const overrides = { ...entry.overrides }
 
       const backgroundImage = properties?.background?.[0]?.image?.value
+
       if (backgroundImage) {
         const image = imagesToExport[backgroundImage]
+
         if (image) {
           overrides.background = overrides.background ?? [
             {
@@ -30,6 +35,7 @@ export function replaceImagesWithRelativePaths(
               },
             },
           ]
+
           if (Array.isArray(overrides.background) && overrides.background[0]) {
             overrides.background[0] = {
               ...overrides.background[0],
@@ -44,6 +50,7 @@ export function replaceImagesWithRelativePaths(
 
       if (properties.source?.value) {
         const image = imagesToExport[properties.source.value]
+
         if (image) {
           overrides.source = {
             type: ValueType.EXACT,

@@ -5,6 +5,7 @@ import { STOCK_THEMES_BY_ID } from "../../themes/catalog"
 import { computeTheme } from "../../themes/helpers/compute-theme"
 import { ComputedFunction, ValueType } from "../constants"
 import { computeAutoFit } from "./compute-auto-fit"
+
 import type { ComputeContext } from "./types"
 
 const computed = computeTheme(STOCK_THEMES_BY_ID.seldon)
@@ -18,8 +19,7 @@ const marker = {
 const ctx = (
   properties: Record<string, unknown>,
   parentContext: ComputeContext | null = null,
-): ComputeContext =>
-  ({ properties, parentContext, theme: computed }) as unknown as ComputeContext
+): ComputeContext => ({ properties, parentContext, theme: computed }) as unknown as ComputeContext
 
 describe("computeAutoFit", () => {
   it("scales a numeric ancestor size by the theme factor", () => {

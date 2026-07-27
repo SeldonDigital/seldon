@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload } from "../../../index"
 import { ValueType } from "../../../properties/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "./add/add-component"
 import { addNodeLayer } from "./add/add-node-layer"
 import { reorderNodeLayer } from "./reorder/reorder-node-layer"
+
+import type { ExtractPayload } from "../../../index"
 
 const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
@@ -27,15 +28,13 @@ const addLayer = (ws: typeof workspace, value: string) =>
   )
 
 const backgroundOf = (ws: typeof workspace) =>
-  (ws.nodes[nodeId]!.overrides as Record<string, unknown>).background as Record<
-    string,
-    unknown
-  >[]
+  (ws.nodes[nodeId]!.overrides as Record<string, unknown>).background as Record<string, unknown>[]
 
 describe("addNodeLayer", () => {
   it("appends a seeded layer to the top of the stack", () => {
     const next = addLayer(workspace, "#aaaaaa")
     const layers = backgroundOf(next)
+
     expect(layers[layers.length - 1].color).toEqual({
       type: ValueType.EXACT,
       value: "#aaaaaa",
@@ -50,6 +49,7 @@ describe("addNodeLayer", () => {
       } as ExtractPayload<"add_node_layer">,
       workspace,
     )
+
     expect(result).toBe(workspace)
   })
 })
@@ -69,6 +69,7 @@ describe("reorderNodeLayer", () => {
       stacked,
     )
     const layers = backgroundOf(next)
+
     expect(layers).toHaveLength(length)
     expect(layers[0].color).toEqual({ type: ValueType.EXACT, value: "#bbbbbb" })
   })
@@ -83,6 +84,7 @@ describe("reorderNodeLayer", () => {
       } as ExtractPayload<"reorder_node_layer">,
       stacked,
     )
+
     expect(result).toBe(stacked)
   })
 })

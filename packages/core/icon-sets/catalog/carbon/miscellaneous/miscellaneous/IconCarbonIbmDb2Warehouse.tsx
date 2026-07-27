@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconCarbonIbmDb2Warehouse(props: SVGAttributes<SVGSVGElement>) {
   return (

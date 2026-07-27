@@ -1,19 +1,20 @@
 import { produce } from "immer"
 
-import type { ComponentId } from "../../../../components/constants"
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { componentBoardDefaultNodeId } from "../../../helpers/components/entry-node-ids"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { applyResetSchemaVariantsToCatalog } from "../../../helpers/nodes/apply-reset-schema-variants-to-catalog"
 import { isComponentBoard } from "../../../model/components"
-import type { VariantId } from "../../../types"
 import { ensureComponentBoards } from "../add/add-component"
 import { resetBoardEditorData } from "./reset-board-editor-data"
 import { resetBoardIntent } from "./reset-board-intent"
 import { resetBoardLabel } from "./reset-board-label"
 import { resetBoardTags } from "./reset-board-tags"
 import { resetDefaultVariantToCatalog } from "./reset-default-variant-to-catalog"
+
+import type { ComponentId } from "../../../../components/constants"
+import type { ExtractPayload, Workspace } from "../../../../index"
+import type { VariantId } from "../../../types"
 
 /**
  * Resets an entire component board to its catalog state. Rebuilds the default
@@ -31,6 +32,7 @@ export function resetComponentToCatalog(
   workspace: Workspace,
 ): Workspace {
   const board = workspace.boards[payload.boardKey]
+
   if (!board || !isComponentBoard(board)) return workspace
 
   if (collectExternalVariantUsage(payload.boardKey, workspace).length > 0) {
@@ -50,10 +52,7 @@ export function resetComponentToCatalog(
     })
   }
 
-  next = resetDefaultVariantToCatalog(
-    { defaultVariantRootId: defaultVariantId as VariantId },
-    next,
-  )
+  next = resetDefaultVariantToCatalog({ defaultVariantRootId: defaultVariantId as VariantId }, next)
   next = applyResetSchemaVariantsToCatalog(next, payload.boardKey)
 
   next = resetBoardLabel({ boardKey: payload.boardKey }, next)

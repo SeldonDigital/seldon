@@ -31,11 +31,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 
 /** True when a cell is a `{ type: "themeOrdinal", ... }` reference. */
 function isThemeOrdinalCell(cell: unknown): boolean {
-  return (
-    !!cell &&
-    typeof cell === "object" &&
-    (cell as { type?: unknown }).type === THEME_ORDINAL
-  )
+  return !!cell && typeof cell === "object" && (cell as { type?: unknown }).type === THEME_ORDINAL
 }
 
 /** True when a value is a layout position bag carrying edge keys. */
@@ -52,13 +48,11 @@ function treeHasThemeOrdinalInset(value: unknown): boolean {
   if (Array.isArray(value)) {
     return value.some(treeHasThemeOrdinalInset)
   }
+
   if (!value || typeof value !== "object") return false
   const record = value as Record<string, unknown>
 
-  if (
-    isPositionBag(record.position) &&
-    positionBagHasThemeOrdinal(record.position)
-  ) {
+  if (isPositionBag(record.position) && positionBagHasThemeOrdinal(record.position)) {
     return true
   }
 
@@ -69,13 +63,16 @@ function treeHasThemeOrdinalInset(value: unknown): boolean {
 function rewriteThemeOrdinalInsets(value: unknown): void {
   if (Array.isArray(value)) {
     for (const item of value) rewriteThemeOrdinalInsets(item)
+
     return
   }
+
   if (!value || typeof value !== "object") return
   const record = value as Record<string, unknown>
 
   if (isPositionBag(record.position)) {
     const bag = record.position as Record<string, unknown>
+
     for (const side of POSITION_SIDES) {
       if (isThemeOrdinalCell(bag[side])) {
         bag[side] = { ...EMPTY_CELL }
@@ -89,8 +86,8 @@ function rewriteThemeOrdinalInsets(value: unknown): void {
 /** True when any board, node, or node state holds a theme ordinal inset. */
 function migrationApplies(workspace: Workspace): boolean {
   for (const board of Object.values(workspace.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties && treeHasThemeOrdinalInset(componentProperties)) {
       return true
     }
@@ -104,16 +101,14 @@ function migrationApplies(workspace: Workspace): boolean {
   return false
 }
 
-export function migrateV11PositionDropDimensionOrdinal(
-  workspace: Workspace,
-): Workspace {
+export function migrateV11PositionDropDimensionOrdinal(workspace: Workspace): Workspace {
   if (!migrationApplies(workspace)) return workspace
 
   const next = structuredClone(workspace)
 
   for (const board of Object.values(next.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties) rewriteThemeOrdinalInsets(componentProperties)
   }
 

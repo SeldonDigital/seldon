@@ -9,11 +9,7 @@ import type {
   SelectionScope,
   ThinkingLevelOption,
 } from "@seldon/ai"
-import type {
-  BoardKey,
-  Workspace,
-  WorkspaceAction,
-} from "@seldon/core/workspace/types"
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 export type AgentChatRequest = {
   workspace: Workspace
@@ -83,12 +79,15 @@ export async function runAgentChat(
 
   if (!response.ok || !response.body) {
     let message = "Agent request failed."
+
     try {
       const data = (await response.json()) as { error?: string }
+
       if (data?.error) message = data.error
     } catch {
       // Response was not JSON; keep the default message.
     }
+
     throw new Error(message)
   }
 
@@ -99,10 +98,13 @@ export async function runAgentChat(
 
   const handleLine = (line: string) => {
     const trimmed = line.trim()
+
     if (!trimmed) return
     const frame = JSON.parse(trimmed) as StreamFrame
+
     if (frame.type === "done") {
       const { type: _type, ...rest } = frame
+
       result = rest
     } else if (frame.type === "error") {
       throw new Error(frame.error)
@@ -113,18 +115,22 @@ export async function runAgentChat(
 
   for (;;) {
     const { done, value } = await reader.read()
+
     if (done) break
     buffer += decoder.decode(value, { stream: true })
     let newline = buffer.indexOf("\n")
+
     while (newline !== -1) {
       handleLine(buffer.slice(0, newline))
       buffer = buffer.slice(newline + 1)
       newline = buffer.indexOf("\n")
     }
   }
+
   handleLine(buffer)
 
   if (!result) throw new Error("Agent stream ended before completion.")
+
   return result
 }
 
@@ -136,7 +142,9 @@ export async function runAgentChat(
 export async function getAgentConfig(): Promise<AgentConfig | undefined> {
   try {
     const response = await fetch("/api/agent/config")
+
     if (!response.ok) return undefined
+
     return (await response.json()) as AgentConfig
   } catch {
     return undefined
@@ -153,16 +161,16 @@ export type WarmResponse = {
  * `/api/agent/warm`, so the first real turn skips the cold load. Fire and forget
  * from the UI; the returned metrics are logged when AI Logging is on.
  */
-export async function warmAgent(warm?: {
-  model?: string
-}): Promise<WarmResponse> {
+export async function warmAgent(warm?: { model?: string }): Promise<WarmResponse> {
   const response = await fetch("/api/agent/warm", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(warm ?? {}),
   })
+
   if (!response.ok) {
     throw new Error("Agent warm-up failed.")
   }
+
   return (await response.json()) as WarmResponse
 }

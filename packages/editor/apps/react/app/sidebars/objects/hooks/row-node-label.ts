@@ -1,11 +1,13 @@
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { removeNewLines } from "@seldon/editor/lib/helpers/new-lines"
 import { getComponentName } from "@seldon/factory/export/react/discovery/get-component-name"
 
-import { Properties } from "@seldon/core"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"
-import { IconId, iconLabels } from "@seldon/core/icon-sets"
+import { iconLabels } from "@seldon/core/icon-sets"
 import { typeCheckingService } from "@seldon/core/workspace/services"
+
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { Properties } from "@seldon/core"
+import type { IconId } from "@seldon/core/icon-sets"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
 type Workspace = Parameters<typeof getComponentName>[1]
@@ -26,12 +28,7 @@ interface NodeLabelOptions {
 export function getNodeLabel(
   node: EntryNode,
   workspace: Workspace,
-  {
-    showNodeIds,
-    showCodeNames,
-    nodeExistsInWorkspace,
-    properties,
-  }: NodeLabelOptions,
+  { showNodeIds, showCodeNames, nodeExistsInWorkspace, properties }: NodeLabelOptions,
 ): string {
   if (showNodeIds) {
     return `${node.id} | ${node.template}`
@@ -67,10 +64,12 @@ export function getComponentTypeIcon(node: EntryNode): IconProps["icon"] {
     if (typeCheckingService.isDefaultVariant(node)) {
       return "seldon-componentDefault"
     }
+
     if (typeCheckingService.isUserVariant(node)) {
       return "seldon-componentVariant"
     }
   }
+
   return "seldon-stub"
 }
 
@@ -79,16 +78,16 @@ export function getComponentTypeIcon(node: EntryNode): IconProps["icon"] {
  * Punch swatch and instances a lighter tint. Boards and default variants keep
  * the default color.
  */
-export function getNodeTypeColor(
-  node: EntryNode,
-  showNodeTypes: boolean,
-): string | undefined {
+export function getNodeTypeColor(node: EntryNode, showNodeTypes: boolean): string | undefined {
   if (!showNodeTypes) return undefined
+
   if (typeCheckingService.isInstance(node)) {
     return "color-mix(in srgb, var(--sdn-swatch-punch) 80%, var(--sdn-swatch-white))"
   }
+
   if (typeCheckingService.isUserVariant(node)) {
     return "var(--sdn-swatch-punch)"
   }
+
   return undefined
 }

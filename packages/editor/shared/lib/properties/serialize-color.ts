@@ -1,16 +1,5 @@
-import {
-  ColorValue,
-  EmptyValue,
-  Hex,
-  ThemeSwatchKey,
-  ValueType,
-} from "@seldon/core"
-import { Color } from "@seldon/core"
-import {
-  parseHSLString,
-  parseLCHString,
-  parseRGBString,
-} from "@seldon/core/helpers/color"
+import { Color, ValueType } from "@seldon/core"
+import { parseHSLString, parseLCHString, parseRGBString } from "@seldon/core/helpers/color"
 import {
   isHSLString,
   isHex,
@@ -19,6 +8,8 @@ import {
   isRGBString,
   isThemeValueKey,
 } from "@seldon/core/helpers/validation"
+
+import type { ColorValue, EmptyValue, Hex, ThemeSwatchKey } from "@seldon/core"
 
 /**
  * Serializes a string to a ColorValue or EmptyValue.
@@ -38,6 +29,7 @@ export function serializeColor(value: string): ColorValue | EmptyValue {
 
   if (isThemeValueKey(value)) {
     const themeSection = value.split(".")[0]
+
     switch (themeSection) {
       case "@swatch":
         return {

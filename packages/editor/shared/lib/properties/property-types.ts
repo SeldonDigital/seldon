@@ -42,8 +42,10 @@ export function isPresetProperty(propertyKey: string): boolean {
  */
 export function getSubPropertyKeys(propertyKey: string): string[] {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
+
   if (registryEntry?.subProperties) {
     return Object.keys(registryEntry.subProperties)
   }
+
   return []
 }

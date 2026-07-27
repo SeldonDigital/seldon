@@ -14,7 +14,8 @@
     }
   },
   "scripts": {
-    "quality": "tsc -p tsconfig.json"
+    "lint": "eslint .",
+    "quality": "tsc -p tsconfig.json && eslint ."
   },
   "dependencies": {
     "@earendil-works/pi-ai": "^0.80.6",

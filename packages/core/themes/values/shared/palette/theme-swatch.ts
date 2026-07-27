@@ -1,13 +1,13 @@
-import { TokenType } from "../../../constants/token-type"
+import type { TokenType } from "../../../constants/token-type"
 import type { ThemeInterfaceSwatchId } from "../../../types/theme-token-ids"
 import type { ThemeSwatchParameters } from "./theme-swatch-parameters"
 
 /** Resolved or author-fixed swatch color. */
 export interface ThemeSwatch {
   type: TokenType.SWATCH
+  parameters: ThemeSwatchParameters
   name?: string
   intent?: string
-  parameters: ThemeSwatchParameters
 }
 
 /**

@@ -1,25 +1,24 @@
+import { changedProperties, targetIdWithParentOf } from "@seldon/editor/lib/ai/action-helpers"
+
 import type { AgentDebug, AgentMetrics } from "@seldon/ai"
-import {
-  changedProperties,
-  targetIdWithParentOf,
-} from "@seldon/editor/lib/ai/action-helpers"
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ApplyReport } from "@seldon/editor/lib/ai/apply-report"
-import type {
-  BoardKey,
-  Workspace,
-  WorkspaceAction,
-} from "@seldon/core/workspace/types"
 
 /** Human-readable label/level for a target id, resolved as a node then a board. */
 function describeTarget(workspace: Workspace, id: string | undefined): string {
   if (!id) return "(no target id)"
   const node = workspace.nodes?.[id]
+
   if (node) {
     const label = node.label ? ` "${node.label}"` : ""
+
     return `${id}${label} [${node.level}]`
   }
+
   const board = workspace.boards?.[id]
+
   if (board) return `${id} "${board.label}" [board]`
+
   return `${id} (not found)`
 }
 
@@ -27,9 +26,12 @@ function describeTarget(workspace: Workspace, id: string | undefined): string {
 function summarizeValue(value: unknown): string {
   if (value && typeof value === "object" && "type" in value) {
     const tagged = value as { type?: unknown; value?: unknown }
+
     return `${String(tagged.type)}:${JSON.stringify(tagged.value)}`
   }
+
   const json = JSON.stringify(value)
+
   return json && json.length > 60 ? `${json.slice(0, 60)}…` : String(json)
 }
 
@@ -48,21 +50,18 @@ function aiLog(message: string, ...args: unknown[]): void {
 }
 
 /** Logs one applied action's target header and each property's before -> after. */
-function logActionChange(
-  before: Workspace,
-  after: Workspace,
-  action: WorkspaceAction,
-): void {
+function logActionChange(before: Workspace, after: Workspace, action: WorkspaceAction): void {
   const id = targetIdWithParentOf(action.payload)
+
   aiLog(`${action.type} → ${describeTarget(after, id)}`)
   const overrides = id
     ? (before.nodes?.[id]?.overrides as Record<string, unknown> | undefined)
     : undefined
+
   for (const [key, nextValue] of changedProperties(action)) {
     const previous = overrides?.[key]
-    aiLog(
-      `    ${key}: ${summarizeValue(previous)} → ${summarizeValue(nextValue)}`,
-    )
+
+    aiLog(`    ${key}: ${summarizeValue(previous)} → ${summarizeValue(nextValue)}`)
   }
 }
 
@@ -71,16 +70,14 @@ function logActionChange(
  * label, and level so the object is identifiable in the editor, plus the
  * before -> after value of each property it set.
  */
-function logChanges(
-  before: Workspace,
-  after: Workspace,
-  appliedActions: WorkspaceAction[],
-): void {
+function logChanges(before: Workspace, after: Workspace, appliedActions: WorkspaceAction[]): void {
   if (appliedActions.length === 0) return
   aiGroup("🎯 Changed")
+
   for (const action of appliedActions) {
     logActionChange(before, after, action)
   }
+
   console.groupEnd()
 }
 
@@ -90,12 +87,10 @@ function collectBoardNodeIds(
   ids: Set<string>,
 ): void {
   if (!refs) return
+
   for (const ref of refs) {
     ids.add(ref.id)
-    collectBoardNodeIds(
-      ref.children as { id: string; children?: unknown[] }[] | undefined,
-      ids,
-    )
+    collectBoardNodeIds(ref.children as { id: string; children?: unknown[] }[] | undefined, ids)
   }
 }
 
@@ -109,14 +104,19 @@ function scopeToBoard(
   activeBoardKey: BoardKey | undefined,
 ): Pick<Workspace, "nodes"> | Workspace {
   const board = activeBoardKey ? workspace.boards[activeBoardKey] : undefined
+
   if (!board || board.type !== "component") return workspace
   const ids = new Set<string>()
+
   collectBoardNodeIds(board.variants, ids)
   const nodes: Workspace["nodes"] = {}
+
   for (const id of ids) {
     const node = workspace.nodes[id]
+
     if (node) nodes[id] = node
   }
+
   return { nodes }
 }
 
@@ -124,6 +124,7 @@ function scopeToBoard(
 function formatBytes(bytes: number | undefined): string | undefined {
   if (!bytes || bytes <= 0) return undefined
   const gb = bytes / 1e9
+
   return gb >= 1 ? `${gb.toFixed(2)} GB` : `${(bytes / 1e6).toFixed(0)} MB`
 }
 
@@ -141,20 +142,26 @@ function formatCount(value: number): string {
 function logMetricsSummary(metrics: AgentMetrics | undefined): void {
   if (!metrics) return
   const parts: string[] = [`${(metrics.totalMs / 1000).toFixed(2)} s total`]
+
   if (metrics.firstTokenMs !== undefined) {
     parts.push(`${(metrics.firstTokenMs / 1000).toFixed(2)} s to first token`)
   }
+
   if (metrics.loadMs > 0) {
     parts.push(`${(metrics.loadMs / 1000).toFixed(2)} s load`)
   }
+
   parts.push(
     `${formatCount(metrics.promptTokens)} tokens input / ${formatCount(metrics.outputTokens)} tokens output`,
   )
+
   if (metrics.outputTokensPerSecond) {
     parts.push(`${metrics.outputTokensPerSecond.toFixed(1)} tokens/second`)
   }
+
   const vram = formatBytes(metrics.modelVramBytes)
   const size = formatBytes(metrics.modelSizeBytes)
+
   if (vram) parts.push(`${vram} VRAM`)
   else if (size) parts.push(`${size} loaded`)
   if (metrics.calls > 1) parts.push(`${metrics.calls} calls`)
@@ -191,14 +198,15 @@ const CONTEXT_SECTION_ANCHORS: { label: string; startsWith: string }[] = [
 function logContextSizes(context: string): void {
   const buckets = new Map<string, number>()
   let current = "Header"
+
   for (const line of context.split("\n")) {
     const trimmed = line.trimStart()
-    const anchor = CONTEXT_SECTION_ANCHORS.find((entry) =>
-      trimmed.startsWith(entry.startsWith),
-    )
+    const anchor = CONTEXT_SECTION_ANCHORS.find((entry) => trimmed.startsWith(entry.startsWith))
+
     if (anchor) current = anchor.label
     buckets.set(current, (buckets.get(current) ?? 0) + line.length + 1)
   }
+
   const rows = [...buckets.entries()]
     .map(([label, chars]) => ({
       section: label,
@@ -206,6 +214,7 @@ function logContextSizes(context: string): void {
       approxTokens: Math.round(chars / 4),
     }))
     .sort((a, b) => b.chars - a.chars)
+
   aiGroup(
     `📏 Context size · ${formatCount(context.length)} chars (~${formatCount(
       Math.round(context.length / 4),
@@ -226,6 +235,7 @@ export function logWarm(metrics: AgentMetrics): void {
     `${formatCount(metrics.promptTokens)} tokens prefilled`,
   ]
   const vram = formatBytes(metrics.modelVramBytes)
+
   if (vram) parts.push(`${vram} VRAM`)
   aiLog(`🔥 Warmed ${metrics.model} · ${parts.join(" · ")}`, metrics)
 }
@@ -241,6 +251,7 @@ function outcomeIcon(report: ApplyReport): string {
   if (report.rejected.length > 0) return "❌"
   if (report.applied.length === 0 && report.ineffective.length > 0) return "⚠️"
   if (report.applied.length > 0) return "✅"
+
   return "➖"
 }
 
@@ -268,11 +279,14 @@ function logDebug(debug: AgentDebug): void {
   console.log(debug.rawResponse)
   console.groupEnd()
   const repairs = debug.repairs ?? []
+
   if (repairs.length === 0) return
   aiGroup(`🔧 Shape repairs (${repairs.length})`)
+
   for (const repair of repairs) {
     aiLog(`${repair.actionType}.${repair.propertyKey}: ${repair.reason}`)
   }
+
   console.groupEnd()
 }
 

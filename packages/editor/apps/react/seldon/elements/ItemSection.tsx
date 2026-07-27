@@ -10,18 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { LiHTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import {
-  FormControlCombobox,
-  FormControlComboboxProps,
-} from "../elements/FormControlCombobox"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { FormControlCombobox } from "../elements/FormControlCombobox"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemSectionProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -79,10 +79,7 @@ export function ItemSection({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -115,10 +112,7 @@ export function ItemSection({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const buttonIconic2Props = applyRef(
@@ -128,10 +122,7 @@ export function ItemSection({
       : {
           ...sdn.buttonIconic2,
           ...buttonIconic2,
-          className: combineClassNames(
-            sdn.buttonIconic2?.className,
-            buttonIconic2?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic2?.className, buttonIconic2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -151,10 +142,7 @@ export function ItemSection({
       : {
           ...sdn.buttonIconic3,
           ...buttonIconic3,
-          className: combineClassNames(
-            sdn.buttonIconic3?.className,
-            buttonIconic3?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic3?.className, buttonIconic3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -169,11 +157,7 @@ export function ItemSection({
   )
 
   return (
-    <HTMLLi
-      className={itemSectionClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLLi className={itemSectionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

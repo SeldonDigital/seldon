@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { Properties } from "../../../properties/types/properties"
 import { pruneRedundantOverrides } from "./prune-redundant-overrides"
 
-const props = (value: Record<string, unknown>): Properties =>
-  value as unknown as Properties
+import type { Properties } from "../../../properties/types/properties"
+
+const props = (value: Record<string, unknown>): Properties => value as unknown as Properties
 
 describe("pruneRedundantOverrides", () => {
   it("drops an atomic override equal to the baseline", () => {

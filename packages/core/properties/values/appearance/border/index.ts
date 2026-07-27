@@ -1,10 +1,10 @@
-import { EmptyValue } from "../../shared/empty/empty"
+import type { EmptyValue } from "../../shared/empty/empty"
 import type { BorderValue } from "./border"
-import { BorderBrightnessValue } from "./border-brightness"
-import { BorderColorValue } from "./border-color"
-import { BorderOpacityValue } from "./border-opacity"
-import { BorderStyleValue } from "./border-style"
-import { BorderWidthValue } from "./border-width"
+import type { BorderBrightnessValue } from "./border-brightness"
+import type { BorderColorValue } from "./border-color"
+import type { BorderOpacityValue } from "./border-opacity"
+import type { BorderStyleValue } from "./border-style"
+import type { BorderWidthValue } from "./border-width"
 
 /** One border compound with optional theme recipe and per-field picks. */
 export interface BorderCompound {

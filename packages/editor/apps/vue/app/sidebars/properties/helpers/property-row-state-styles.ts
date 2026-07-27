@@ -6,10 +6,7 @@ import type { CSSProperties } from "vue"
  * type, status color) to the inline style of one generated `ItemProperty` slot.
  */
 
-function iconStateStyle(
-  labelColor: string | undefined,
-  opacity?: number,
-): CSSProperties {
+function iconStateStyle(labelColor: string | undefined, opacity?: number): CSSProperties {
   return {
     ...(labelColor ? { color: labelColor } : {}),
     ...(opacity !== undefined ? { opacity } : {}),
@@ -67,6 +64,7 @@ export function getValueIconStyle({
   labelColor: string | undefined
 }): CSSProperties {
   if (hidden) return { display: "none" }
+
   return iconStateStyle(labelColor)
 }
 
@@ -83,6 +81,7 @@ export function getMenuButtonStyle({
   if (supportsUpload) return { pointerEvents: "auto" }
   if (isCalculated) return { display: "none" }
   if (isMenuOrCombo) return { pointerEvents: "auto" }
+
   return { pointerEvents: "none" }
 }
 
@@ -106,6 +105,7 @@ export function getMenuIconStyle({
     hasControl,
     showMenuIcon,
   })
+
   return { fontSize: "0.6rem", ...iconStateStyle(labelColor, opacity) }
 }
 
@@ -123,5 +123,6 @@ function resolveMenuIconOpacity({
   if (isCalculated) return 0
   if (supportsUpload) return 1
   if (!hasControl) return 0
+
   return showMenuIcon ? 0 : 1
 }

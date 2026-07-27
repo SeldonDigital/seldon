@@ -1,15 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  ComponentBoard,
-  ExtractPayload,
-  Instance,
-  Workspace,
-} from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { typeCheckingService as svc } from "./type-checking.service"
+
+import type { ComponentBoard, ExtractPayload, Instance, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
@@ -62,20 +58,11 @@ describe("capability checks", () => {
   })
 
   it("canComponentBeParentOf consults component level rules", () => {
-    expect(
-      svc.canComponentBeParentOf(ComponentId.BUTTON, ComponentId.BUTTON),
-    ).toBe(true)
-    expect(
-      svc.canComponentBeParentOf(
-        "bogus" as ComponentId,
-        "bogus" as ComponentId,
-      ),
-    ).toBe(false)
+    expect(svc.canComponentBeParentOf(ComponentId.BUTTON, ComponentId.BUTTON)).toBe(true)
+    expect(svc.canComponentBeParentOf("bogus" as ComponentId, "bogus" as ComponentId)).toBe(false)
   })
 
   it("isSchemaDefinedInstance reads the origin classification", () => {
-    expect(typeof svc.isSchemaDefinedInstance(instance as Instance)).toBe(
-      "boolean",
-    )
+    expect(typeof svc.isSchemaDefinedInstance(instance as Instance)).toBe("boolean")
   })
 })

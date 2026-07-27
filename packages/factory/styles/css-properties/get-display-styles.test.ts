@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Display, Properties, ValueType } from "@seldon/core"
+import { Display, ValueType } from "@seldon/core"
 
 import { getDisplayStyles } from "./get-display-styles"
+
+import type { Properties } from "@seldon/core"
 
 const display = (value: Display): Properties =>
   ({ display: { type: ValueType.OPTION, value } }) as unknown as Properties
@@ -25,8 +27,6 @@ describe("getDisplayStyles", () => {
   })
 
   it("returns no styles when display is unset", () => {
-    expect(
-      getDisplayStyles({ properties: {} as unknown as Properties }),
-    ).toEqual({})
+    expect(getDisplayStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 })

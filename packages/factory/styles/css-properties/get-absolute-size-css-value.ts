@@ -1,18 +1,18 @@
-import {
-  CornerValue,
-  MarginSideValue,
-  PaddingSideValue,
-  PositionSideValue,
-  Unit,
-  ValueType,
-} from "@seldon/core"
+import { Unit, ValueType } from "@seldon/core"
 import { modulate } from "@seldon/core/helpers/math/modulate"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import { Theme, ThemeMarginKey } from "@seldon/core/themes/types"
 import { isModulatedToken } from "@seldon/core/themes/types"
 
 import { getCssValue } from "./get-css-value"
 import { getThemeTokenVarReference } from "./get-theme-token-reference"
+
+import type {
+  CornerValue,
+  MarginSideValue,
+  PaddingSideValue,
+  PositionSideValue,
+} from "@seldon/core"
+import type { Theme, ThemeMarginKey } from "@seldon/core/themes/types"
 
 export function getAbsoluteSizeCssValue(
   value: MarginSideValue | PaddingSideValue | CornerValue | PositionSideValue,
@@ -22,6 +22,7 @@ export function getAbsoluteSizeCssValue(
   if (value.type === ValueType.THEME_ORDINAL) {
     if (useThemeVariableReferences) {
       const reference = getThemeTokenVarReference(value.value)
+
       if (reference) return reference
     }
 
@@ -45,6 +46,7 @@ export function getAbsoluteSizeCssValue(
 
     const { unit, value: exactValue } = themeValue.parameters
     const suffix = unit === Unit.PX ? "px" : unit === Unit.PERCENT ? "%" : "rem"
+
     return `${exactValue}${suffix}`
   }
 

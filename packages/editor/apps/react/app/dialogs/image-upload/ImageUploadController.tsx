@@ -4,19 +4,15 @@ import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
 import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { PanelDialog } from "@seldon/components/modules/PanelDialog"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { ResizeSide } from "@seldon/components/utils/resize"
-import {
-  CSSProperties,
-  PointerEvent,
-  RefObject,
-  useCallback,
-  useMemo,
-} from "react"
+import { useCallback, useMemo } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 
 import { ImageDropzone } from "./ImageDropzone"
 import { useImageUploadPanel } from "./hooks/use-upload-image-panel"
+
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { ResizeSide } from "@seldon/components/utils/resize"
+import type { CSSProperties, PointerEvent, RefObject } from "react"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
 // side and bottom edges plus the two bottom corners.
@@ -34,16 +30,8 @@ const DIALOG_RESIZE_SIDES: readonly ResizeSide[] = [
  * catalog dialogs.
  */
 export function ImageUploadController() {
-  const {
-    isOpen,
-    currentFile,
-    onFileChange,
-    fileInputRef,
-    status,
-    clear,
-    save,
-    close,
-  } = useImageUploadPanel()
+  const { isOpen, currentFile, onFileChange, fileInputRef, status, clear, save, close } =
+    useImageUploadPanel()
 
   if (!isOpen) return null
 
@@ -111,10 +99,7 @@ function ImageUploadDialog({
 
   useHotkeys("esc", onClose)
 
-  const startDrag = useCallback(
-    (event: PointerEvent) => moveControls.start(event),
-    [moveControls],
-  )
+  const startDrag = useCallback((event: PointerEvent) => moveControls.start(event), [moveControls])
 
   const content = useMemo(
     () =>

@@ -24,12 +24,10 @@ export function isRemoteFontFamily(family: string): boolean {
  *
  * Pass `variants` to request only those weights and styles. When omitted, every weight is requested.
  */
-export function getRemoteFontUrl(
-  family: string,
-  variants?: string[],
-): string | null {
+export function getRemoteFontUrl(family: string, variants?: string[]): string | null {
   if (typeof family !== "string" || family.length === 0) return null
   if (family.startsWith("@")) return null
   if (!REMOTE_FAMILY_NAMES.has(family)) return null
+
   return getGoogleFontURL(family, variants)
 }

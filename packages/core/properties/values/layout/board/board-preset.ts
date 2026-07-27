@@ -1,12 +1,10 @@
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
 import { Resize } from "../resize"
-import {
-  BOARD_DEVICE_PRESETS,
-  BoardDevicePresetId,
-  isBoardDevicePresetId,
-} from "./device-presets"
+import { BOARD_DEVICE_PRESETS, isBoardDevicePresetId } from "./device-presets"
+
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { BoardDevicePresetId } from "./device-presets"
 
 export type BoardPresetId = BoardDevicePresetId | typeof Resize.FIT
 
@@ -29,8 +27,7 @@ export type BoardPresetValue = EmptyValue | BoardPresetOptionValue
 
 export const boardPresetSchema: PropertySchema = {
   name: "boardPreset",
-  description:
-    "Selects fit mode or a device preset for board width and height on the canvas.",
+  description: "Selects fit mode or a device preset for board width and height on the canvas.",
   supports: ["empty", "option"] as const,
   validation: {
     empty: () => true,

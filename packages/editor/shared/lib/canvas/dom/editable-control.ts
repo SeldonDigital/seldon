@@ -9,9 +9,7 @@ const EDITABLE_CONTROL_SELECTOR =
   "input, textarea, select, [contenteditable]:not([contenteditable='false'])"
 
 /** The nearest editable form control at or above the element, if any. */
-export function getEditableControl(
-  element: Element | null,
-): HTMLElement | null {
+export function getEditableControl(element: Element | null): HTMLElement | null {
   return element?.closest<HTMLElement>(EDITABLE_CONTROL_SELECTOR) ?? null
 }
 
@@ -32,10 +30,9 @@ export function isEditableControlNodeSelected(
 ): boolean {
   if (!selectedNodeId) return false
   const target = getSelectionTarget(control)
+
   if (!target || target.kind !== "node") return false
   if (target.id !== selectedNodeId) return false
-  return (
-    selectedNodeRootId == null ||
-    (target.rootId ?? target.id) === selectedNodeRootId
-  )
+
+  return selectedNodeRootId == null || (target.rootId ?? target.id) === selectedNodeRootId
 }

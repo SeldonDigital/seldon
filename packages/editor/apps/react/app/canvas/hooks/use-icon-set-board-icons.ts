@@ -1,9 +1,10 @@
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useMemo } from "react"
 
-import { Board } from "@seldon/core"
 import { isIconSetBoard } from "@seldon/core/workspace/model/components"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
+
+import type { Board } from "@seldon/core"
 
 /**
  * Derives the flat list of icons rendered on an icon set board, pairing each
@@ -15,9 +16,8 @@ export function useIconSetBoardIcons(board: Board) {
   const { workspace } = useWorkspace()
 
   return useMemo(() => {
-    const entryIds = isIconSetBoard(board)
-      ? board.variants.map((variant) => variant.id)
-      : []
+    const entryIds = isIconSetBoard(board) ? board.variants.map((variant) => variant.id) : []
+
     return entryIds.flatMap((entryId) =>
       workspaceIconSetService
         .getIncludedIcons(entryId, workspace)

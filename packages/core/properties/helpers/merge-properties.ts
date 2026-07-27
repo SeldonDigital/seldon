@@ -1,12 +1,9 @@
 import { ValueType } from "../constants"
-import type { Properties } from "../types/properties"
-import {
-  LAYERED_PAINT_KEYS,
-  type LayeredPaintKey,
-  OBJECT_FACET_PROPERTY_KEYS,
-  type ObjectFacetPropertyKey,
-} from "../types/property-keys"
+import { LAYERED_PAINT_KEYS, OBJECT_FACET_PROPERTY_KEYS } from "../types/property-keys"
 import { mergeTaggedValues } from "./merge-tagged-value"
+
+import type { Properties } from "../types/properties"
+import type { LayeredPaintKey, ObjectFacetPropertyKey } from "../types/property-keys"
 
 /**
  * Aligns two paint stacks by index and merges plain layer objects when asked.
@@ -21,10 +18,13 @@ function mergeLayerArrays<T extends Record<string, unknown>>(
   mergeSubProperties: boolean,
 ): T[] {
   if (!mergeSubProperties) return next
+
   return Array.from({ length: next.length }, (_, i) => {
     const a = base[i]
     const b = next[i]
+
     if (a === undefined) return b as T
+
     if (
       a &&
       typeof a === "object" &&
@@ -35,6 +35,7 @@ function mergeLayerArrays<T extends Record<string, unknown>>(
     ) {
       return { ...a, ...b } as T
     }
+
     return b as T
   })
 }
@@ -98,12 +99,7 @@ export function mergeProperties(
       value = properties2[key]
     }
 
-    if (
-      value &&
-      typeof value === "object" &&
-      "type" in value &&
-      value.type === ValueType.EMPTY
-    ) {
+    if (value && typeof value === "object" && "type" in value && value.type === ValueType.EMPTY) {
       return merged
     }
 

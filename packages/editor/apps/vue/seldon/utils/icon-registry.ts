@@ -20,9 +20,7 @@ export function registerIcon(id: string, geometry: IconGeometry): void {
   registry.set(id, geometry)
 }
 
-export function getRegisteredIcon(
-  id: string | undefined,
-): IconGeometry | undefined {
+export function getRegisteredIcon(id: string | undefined): IconGeometry | undefined {
   if (!id) return undefined
   return registry.get(id)
 }

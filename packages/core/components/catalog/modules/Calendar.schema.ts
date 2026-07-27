@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Calendar",
   id: Seldon.ComponentId.CALENDAR,
   intent:
     "Month calendar with a navigable header, weekday labels, and a day grid. The default shows a single bordered month; variants cover a two-month range picker and a single month with event markers.",
-  tags: [
-    "calendar",
-    "ui",
-    "month",
-    "date",
-    "navigation",
-    "selection",
-    "range",
-    "events",
-  ],
+  tags: ["calendar", "ui", "month", "date", "navigation", "selection", "range", "events"],
   level: Seldon.ComponentLevel.MODULE,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -1555,10 +1547,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.primary",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: {
                               type: Sdn.ValueType.EXACT,
                               value: { unit: Sdn.Unit.PERCENT, value: 100 },
@@ -1660,10 +1649,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.primary",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: {
                               type: Sdn.ValueType.EXACT,
                               value: { unit: Sdn.Unit.PERCENT, value: 100 },

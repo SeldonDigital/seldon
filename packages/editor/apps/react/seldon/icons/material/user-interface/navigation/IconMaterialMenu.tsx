@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialMenu(props: SVGAttributes<SVGSVGElement>) {
   return (

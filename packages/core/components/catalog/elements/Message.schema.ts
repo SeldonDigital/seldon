@@ -1,6 +1,7 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Message",
@@ -58,9 +59,7 @@ export const schema = {
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -293,8 +292,7 @@ export const schema = {
     {
       id: "thinking",
       label: "Thinking",
-      intent:
-        "Collapsible reasoning disclosure with a summary header and a markdown body.",
+      intent: "Collapsible reasoning disclosure with a summary header and a markdown body.",
       overrides: {
         background: [
           {
@@ -614,8 +612,7 @@ export const schema = {
     {
       id: "outcome",
       label: "Outcome",
-      intent:
-        "A summary card of the applied changes: a status header and one row per change.",
+      intent: "A summary card of the applied changes: a status header and one row per change.",
       overrides: {
         gap: {
           type: Sdn.ValueType.THEME_ORDINAL,
@@ -755,8 +752,7 @@ export const schema = {
     {
       id: "error",
       label: "Error",
-      intent:
-        "A failure callout with an alert icon, a message, and a retry button.",
+      intent: "A failure callout with an alert icon, a message, and a retry button.",
       overrides: {
         gap: {
           type: Sdn.ValueType.THEME_ORDINAL,

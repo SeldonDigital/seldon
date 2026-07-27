@@ -14,8 +14,7 @@ export const PROPERTY_COMPOUND_CATALOG = [
   { key: "board", nodeStorage: "facets" },
 ] as const
 
-export type PropertyCompoundCatalogEntry =
-  (typeof PROPERTY_COMPOUND_CATALOG)[number]
+export type PropertyCompoundCatalogEntry = (typeof PROPERTY_COMPOUND_CATALOG)[number]
 
 export type PropertyCompoundCatalogKey = PropertyCompoundCatalogEntry["key"]
 
@@ -93,15 +92,6 @@ export const COMPOUND_FACET_DISPLAY_ORDER: Record<string, readonly string[]> = {
   borderRight: ["preset", "style", "color", "width", "brightness", "opacity"],
   borderBottom: ["preset", "style", "color", "width", "brightness", "opacity"],
   borderLeft: ["preset", "style", "color", "width", "brightness", "opacity"],
-  font: [
-    "preset",
-    "family",
-    "style",
-    "weight",
-    "size",
-    "lineHeight",
-    "textCase",
-    "letterSpacing",
-  ],
+  font: ["preset", "family", "style", "weight", "size", "lineHeight", "textCase", "letterSpacing"],
   board: ["preset", "width", "height"],
 }

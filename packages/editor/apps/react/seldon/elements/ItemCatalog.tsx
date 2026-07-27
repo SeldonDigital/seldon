@@ -10,15 +10,19 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { LiHTMLAttributes } from "react"
-
-import { Frame, FrameProps } from "../frames/Frame"
+import { Frame } from "../frames/Frame"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemCatalogProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -86,10 +90,7 @@ export function ItemCatalog({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const textSubtitleProps = applyRef(
@@ -99,10 +100,7 @@ export function ItemCatalog({
       : {
           ...sdn.textSubtitle,
           ...textSubtitle,
-          className: combineClassNames(
-            sdn.textSubtitle?.className,
-            textSubtitle?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
         },
   )
 
@@ -120,9 +118,7 @@ export function ItemCatalog({
           {icon && iconProps && <Icon {...iconProps} />}
           <Frame {...frameProps}>
             {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-            {textSubtitle && textSubtitleProps && (
-              <TextSubtitle {...textSubtitleProps} />
-            )}
+            {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
           </Frame>
         </>
       )}

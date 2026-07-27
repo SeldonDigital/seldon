@@ -1,9 +1,6 @@
 "use client"
 
-import {
-  useCanvasHoverState,
-  useHasHoverState,
-} from "@app/canvas/hooks/use-canvas-hover-state"
+import { useCanvasHoverState, useHasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useTool } from "@app/editor/hooks/use-tool"
@@ -35,9 +32,7 @@ export function CanvasTracking() {
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
-  const isTransforming = useCanvasRemeasureStore(
-    (state) => state.isTransforming,
-  )
+  const isTransforming = useCanvasRemeasureStore((state) => state.isTransforming)
 
   // The insert component tool suppresses auto wireframes so the accent hover
   // box reads cleanly. Explicit wireframe mode still wins, and leaving the tool
@@ -65,17 +60,12 @@ export function CanvasTracking() {
           if (!nodeBelongsToActiveBoard(node.id)) return null
 
           return (
-            <NodeWireframe
-              key={node.id}
-              nodeId={node.id}
-              isSelected={selectedNodeId === node.id}
-            />
+            <NodeWireframe key={node.id} nodeId={node.id} isSelected={selectedNodeId === node.id} />
           )
         })}
-      {showSelection &&
-        activeTool === "select" &&
-        !isDragging &&
-        !activeBoardIsTheme && <SelectionOverlay wireframe={showWireframes} />}
+      {showSelection && activeTool === "select" && !isDragging && !activeBoardIsTheme && (
+        <SelectionOverlay wireframe={showWireframes} />
+      )}
       {showSelection && activeTool === "select" && !activeBoardIsTheme && (
         <HoverOverlay wireframe={showWireframes} />
       )}

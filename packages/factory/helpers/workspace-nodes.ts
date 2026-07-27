@@ -1,6 +1,7 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
 import { parseNodeTemplate } from "@seldon/core/workspace/model/template-ref"
+
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 /**
@@ -10,29 +11,33 @@ import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
  */
 function collectPlaygroundNodeIds(workspace: Workspace): Set<string> {
   const ids = new Set<string>()
+
   for (const playground of Object.values(workspace.playgrounds ?? {})) {
     walkBoardTreeRefs(playground.variants, (ref) => {
       ids.add(ref.id)
     })
   }
+
   return ids
 }
 
 export function getWorkspaceNodeList(workspace: Workspace): EntryNode[] {
   const playgroundNodeIds = collectPlaygroundNodeIds(workspace)
+
   if (playgroundNodeIds.size === 0) {
     return Object.values(workspace.nodes)
   }
-  return Object.values(workspace.nodes).filter(
-    (node) => !playgroundNodeIds.has(node.id),
-  )
+
+  return Object.values(workspace.nodes).filter((node) => !playgroundNodeIds.has(node.id))
 }
 
 export function getTemplateSourceNodeId(node: EntryNode): string | null {
   const parsed = parseNodeTemplate(node.template)
+
   if (parsed?.kind === "node") {
     return parsed.nodeId
   }
+
   return null
 }
 
@@ -47,20 +52,19 @@ export function getTemplateSourceNodeId(node: EntryNode): string | null {
  * @returns The id of the source variant node, or null when the chain does not
  * resolve to a variant or contains a cycle or dangling reference.
  */
-export function resolveSourceVariantId(
-  node: EntryNode,
-  workspace: Workspace,
-): string | null {
+export function resolveSourceVariantId(node: EntryNode, workspace: Workspace): string | null {
   const seen = new Set<string>()
   let current: EntryNode | undefined = node
 
   while (current) {
     const parsed = parseNodeTemplate(current.template)
+
     if (parsed?.kind !== "node") return null
     if (seen.has(parsed.nodeId)) return null
     seen.add(parsed.nodeId)
 
     const next = workspace.nodes[parsed.nodeId]
+
     if (!next) return null
     if (isVariantNode(next)) return parsed.nodeId
     current = next
@@ -72,6 +76,7 @@ export function resolveSourceVariantId(
 export function getInstanceClassHash(nodeId: string): string {
   const nodeIdParts = nodeId.split("-")
   const hashPart = nodeIdParts[nodeIdParts.length - 1] || ""
+
   return hashPart
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "")

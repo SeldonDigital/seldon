@@ -1,10 +1,11 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
   typeCheckingService,
   workspaceMutationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Rebuilds a default variant’s composition tree to match its catalog schema
@@ -20,10 +21,8 @@ export function resetDefaultVariantToCatalog(
     return workspace
   }
 
-  const node = nodeRetrievalService.getNode(
-    payload.defaultVariantRootId,
-    workspace,
-  )
+  const node = nodeRetrievalService.getNode(payload.defaultVariantRootId, workspace)
+
   if (!typeCheckingService.isDefaultVariant(node)) {
     return workspace
   }

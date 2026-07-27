@@ -1,11 +1,9 @@
 import { catalog, findComponentSchema } from "@seldon/core/components/catalog"
-import { ComponentId } from "@seldon/core/components/constants"
-import {
-  type ComponentSchema,
-  isComplexSchema,
-} from "@seldon/core/components/types"
+import { isComplexSchema } from "@seldon/core/components/types"
 
 import type { DedupedPiece, FunctionalNode, MatchResult } from "./types"
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { ComponentSchema } from "@seldon/core/components/types"
 
 /** Minimum overlap between a piece and a schema's children to count as a match. */
 const MATCH_THRESHOLD = 0.5
@@ -28,6 +26,7 @@ function childSeeds(node: FunctionalNode): ComponentId[] {
 /** Top-level component ids a complex schema composes in its default tree. */
 function schemaChildIds(schema: ComponentSchema): ComponentId[] {
   if (!isComplexSchema(schema)) return []
+
   return (schema.default.children ?? []).map((child) => child.component)
 }
 
@@ -35,24 +34,28 @@ function schemaChildIds(schema: ComponentSchema): ComponentId[] {
 function overlap(a: ComponentId[], b: ComponentId[]): number {
   const setA = new Set(a)
   const setB = new Set(b)
+
   if (setA.size === 0 || setB.size === 0) return 0
   let shared = 0
+
   for (const id of setA) if (setB.has(id)) shared += 1
   const unionSize = new Set([...setA, ...setB]).size
+
   return unionSize === 0 ? 0 : shared / unionSize
 }
 
 /** Finds the complex schema whose child composition best overlaps the piece. */
-function bestStructuralMatch(
-  seeds: ComponentId[],
-): { id: ComponentId; score: number } | null {
+function bestStructuralMatch(seeds: ComponentId[]): { id: ComponentId; score: number } | null {
   let best: { id: ComponentId; score: number } | null = null
+
   for (const schema of COMPLEX_SCHEMAS) {
     const score = overlap(seeds, schemaChildIds(schema))
+
     if (score > 0 && (!best || score > best.score)) {
       best = { id: schema.id, score }
     }
   }
+
   return best
 }
 
@@ -70,6 +73,7 @@ export function matchPiece(piece: DedupedPiece): MatchResult {
         reason: `Leaf <${sample.tag}> maps to catalog "${sample.seededComponent}".`,
       }
     }
+
     return {
       piece,
       matched: null,
@@ -82,8 +86,10 @@ export function matchPiece(piece: DedupedPiece): MatchResult {
   // A seeded container whose children line up with the seed schema wins outright.
   if (sample.seededComponent) {
     const schema = findComponentSchema(sample.seededComponent)
+
     if (schema) {
       const score = overlap(seeds, schemaChildIds(schema))
+
       if (score >= MATCH_THRESHOLD || seeds.length === 0) {
         return {
           piece,
@@ -96,6 +102,7 @@ export function matchPiece(piece: DedupedPiece): MatchResult {
 
   // Otherwise search for the closest structural fit across complex schemas.
   const best = bestStructuralMatch(seeds)
+
   if (best && best.score >= MATCH_THRESHOLD) {
     return {
       piece,
@@ -105,6 +112,7 @@ export function matchPiece(piece: DedupedPiece): MatchResult {
   }
 
   const seedList = seeds.length ? seeds.join(", ") : "no recognized children"
+
   return {
     piece,
     matched: null,

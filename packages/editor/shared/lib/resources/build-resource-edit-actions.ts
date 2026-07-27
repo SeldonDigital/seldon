@@ -12,13 +12,16 @@ export function buildFontCollectionEditAction(
   rawValue: string,
 ): WorkspaceAction | null {
   const segments = key.split(".")
+
   if (segments[0] !== "family" || !segments[1]) return null
   const slot = segments[1]
   const variant = segments[2]
 
   if (!variant) {
     const preset = rawValue.toLowerCase()
+
     if (preset !== "all" && preset !== "none") return null
+
     return {
       type: "set_font_collection_family_preset",
       payload: { fontCollectionId, slot, preset },
@@ -49,13 +52,16 @@ export function buildIconSetEditAction(
   rawValue: string,
 ): WorkspaceAction | null {
   const segments = key.split(".")
+
   if (segments[0] !== "icon" || !segments[1]) return null
   const subcategory = segments[1]
   const iconId = segments[2]
 
   if (!iconId) {
     const preset = rawValue.toLowerCase()
+
     if (preset !== "all" && preset !== "none") return null
+
     return {
       type: "set_icon_set_subcategory_preset",
       payload: { iconSetId, subcategory, preset },

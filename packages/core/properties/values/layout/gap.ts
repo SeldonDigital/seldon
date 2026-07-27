@@ -1,11 +1,13 @@
 import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
-import { Theme, ThemeGapKey } from "../../../themes/types"
-import { Unit, ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { PercentageValue } from "../shared/exact/percentage"
-import { PixelValue } from "../shared/exact/pixel"
-import { RemValue } from "../shared/exact/rem"
+import { Unit } from "../../constants"
+
+import type { Theme, ThemeGapKey } from "../../../themes/types"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { PercentageValue } from "../shared/exact/percentage"
+import type { PixelValue } from "../shared/exact/pixel"
+import type { RemValue } from "../shared/exact/rem"
 
 /** Catalog spacing choice between children when not using fixed lengths or theme steps. */
 export enum Gap {
@@ -55,18 +57,18 @@ export const gapSchema: PropertySchema = {
         "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
-      )
+      ) {
         return true
+      }
+
       if (typeof value === "number" && value >= 0) return true
+
       return false
     },
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Gap) as string[]).includes(value),
-    themeOrdinal: (value: unknown, theme?: Theme) =>
-      themeTokenRefIsValid(value, theme, "gap"),
+      typeof value === "string" && (Object.values(Gap) as string[]).includes(value),
+    themeOrdinal: (value: unknown, theme?: Theme) => themeTokenRefIsValid(value, theme, "gap"),
   },
   presetOptions: () => Object.values(Gap),
-  themeOrdinalKeys: (theme: Theme) =>
-    Object.keys(theme.gap).map((id) => `@gap.${id}`),
+  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.gap).map((id) => `@gap.${id}`),
 }

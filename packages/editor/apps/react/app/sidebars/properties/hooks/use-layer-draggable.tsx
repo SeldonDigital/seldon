@@ -2,11 +2,11 @@ import { DragNodePreview } from "@app/sidebars/DragNodePreview"
 import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview"
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 
-import { LayeredPaintKey } from "@seldon/core"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { LayeredPaintKey } from "@seldon/core"
 
 export const LAYER_DRAG_ACTION = "properties-reorder-layer"
 
@@ -31,6 +31,7 @@ export function useLayerDraggable({
 
   useEffect(() => {
     const el = ref.current
+
     if (!el) return
 
     return draggable({
@@ -47,12 +48,9 @@ export function useLayerDraggable({
           getOffset: pointerOutsideOfPreview({ x: "16px", y: "8px" }),
           render: ({ container }) => {
             const root = createRoot(container)
-            root.render(
-              <DragNodePreview
-                label={label}
-                icon={icon as IconProps["icon"]}
-              />,
-            )
+
+            root.render(<DragNodePreview label={label} icon={icon as IconProps["icon"]} />)
+
             return () => root.unmount()
           },
           nativeSetDragImage,

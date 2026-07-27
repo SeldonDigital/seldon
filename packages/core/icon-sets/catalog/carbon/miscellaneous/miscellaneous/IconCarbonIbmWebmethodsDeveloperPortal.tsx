@@ -1,8 +1,6 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconCarbonIbmWebmethodsDeveloperPortal(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconCarbonIbmWebmethodsDeveloperPortal(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

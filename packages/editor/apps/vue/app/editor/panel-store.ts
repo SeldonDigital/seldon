@@ -1,10 +1,10 @@
-import type { Target } from "@seldon/editor/lib/workspace/target"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
-import { ComponentLevel } from "@seldon/core/components/constants"
-
 import { useToolStore } from "./tool-store"
+
+import type { ComponentLevel } from "@seldon/core/components/constants"
+import type { Target } from "@seldon/editor/lib/workspace/target"
 
 export type PanelType =
   | "add-board"
@@ -32,30 +32,31 @@ export const usePanelStore = defineStore("panel", () => {
   const targetRef = ref<Target | undefined>(undefined)
   const dialogLevelRef = ref<ComponentLevel | undefined>(undefined)
 
-  function openPanel(
-    panel: PanelType,
-    options?: { level?: ComponentLevel } | Target,
-  ): void {
+  function openPanel(panel: PanelType, options?: { level?: ComponentLevel } | Target): void {
     if (panel === "component") {
       activePanel.value = panel
       targetRef.value = options as Target | undefined
       dialogLevelRef.value = undefined
+
       return
     }
+
     if (panel === "add-board") {
       activePanel.value = panel
       targetRef.value = undefined
-      dialogLevelRef.value = (
-        options as { level?: ComponentLevel } | undefined
-      )?.level
+      dialogLevelRef.value = (options as { level?: ComponentLevel } | undefined)?.level
+
       return
     }
+
     if (panel === null) {
       activePanel.value = null
       targetRef.value = undefined
       dialogLevelRef.value = undefined
+
       return
     }
+
     activePanel.value = panel
     targetRef.value = undefined
     dialogLevelRef.value = undefined
@@ -69,14 +70,13 @@ export const usePanelStore = defineStore("panel", () => {
     ) {
       tool.setActiveTool("select")
     }
+
     activePanel.value = null
     targetRef.value = undefined
     dialogLevelRef.value = undefined
   }
 
-  const target = computed(() =>
-    activePanel.value === "component" ? targetRef.value : undefined,
-  )
+  const target = computed(() => (activePanel.value === "component" ? targetRef.value : undefined))
   const dialogLevel = computed(() =>
     activePanel.value === "add-board" ? dialogLevelRef.value : undefined,
   )

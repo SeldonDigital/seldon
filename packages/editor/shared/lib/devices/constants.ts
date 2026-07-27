@@ -1,4 +1,4 @@
-import { DeviceConfig, DeviceId } from "./types"
+import type { DeviceConfig, DeviceId } from "./types"
 
 export const DEVICE_VIEWS: Record<DeviceId, DeviceConfig> = {
   desktop: {

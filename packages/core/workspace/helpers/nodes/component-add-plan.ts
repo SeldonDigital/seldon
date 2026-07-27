@@ -1,12 +1,10 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
-import {
-  SchemaChild,
-  hasVariants,
-  isComplexSchema,
-} from "../../../components/types"
+import { hasVariants, isComplexSchema } from "../../../components/types"
 import { resolveSchemaChild } from "./resolve-schema-child"
 import { applyVariantFallbackToSlot } from "./schema-composition-children"
+
+import type { ComponentId } from "../../../components/constants"
+import type { SchemaChild } from "../../../components/types"
 
 /**
  * How a component board is built when added: either every catalog variant
@@ -46,6 +44,7 @@ export function materializedChildSlots(
   variantFallbacks?: ReadonlySet<string>,
 ): SchemaChild[] {
   const schema = getComponentSchema(componentId)
+
   if (!isComplexSchema(schema)) {
     return []
   }
@@ -59,9 +58,8 @@ export function materializedChildSlots(
     }
   } else {
     for (const variantId of plan.variantIds) {
-      const variant = schema.variants?.find(
-        (candidate) => candidate.id === variantId,
-      )
+      const variant = schema.variants?.find((candidate) => candidate.id === variantId)
+
       if (variant?.children?.length) {
         trees.push(variant.children)
       }
@@ -72,10 +70,12 @@ export function materializedChildSlots(
 
   function walk(rawSlot: SchemaChild): void {
     const slot = applyVariantFallbackToSlot(rawSlot, variantFallbacks)
+
     slots.push(slot)
     const childSlots = slot.children?.length
       ? slot.children
       : resolveSchemaChild(slot).fallbackChildren
+
     for (const child of childSlots) {
       walk(child)
     }
@@ -125,6 +125,7 @@ function computePlans(
     if (!existing) {
       plans.set(id, plan)
     }
+
     if (changed) {
       queue.push(id)
     }
@@ -135,6 +136,7 @@ function computePlans(
   while (queue.length) {
     const id = queue.shift()!
     const plan = plans.get(id)!
+
     for (const slot of materializedChildSlots(id, plan, variantFallbacks)) {
       reference(slot.component, slot.variant)
     }
@@ -163,12 +165,14 @@ function computeOrderedIds(
     const plan = plans.get(id) ?? fullCatalogFallback
     const ids: ComponentId[] = []
     const localSeen = new Set<ComponentId>()
+
     for (const slot of materializedChildSlots(id, plan, variantFallbacks)) {
       if (!localSeen.has(slot.component)) {
         localSeen.add(slot.component)
         ids.push(slot.component)
       }
     }
+
     return ids
   }
 
@@ -176,10 +180,13 @@ function computeOrderedIds(
     if (seen.has(id)) {
       return
     }
+
     seen.add(id)
+
     for (const childId of childComponentIds(id)) {
       visit(childId)
     }
+
     ordered.push(id)
   }
 
@@ -199,5 +206,6 @@ export function buildComponentAddPlan(
 ): ComponentAddPlan {
   const plans = computePlans(rootId, variantFallbacks)
   const orderedComponentIds = computeOrderedIds(rootId, plans, variantFallbacks)
+
   return { orderedComponentIds, plans }
 }

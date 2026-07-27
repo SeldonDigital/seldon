@@ -1,4 +1,3 @@
-import type { ComboboxOptionItem } from "@app/menus/types"
 import {
   filterOptions,
   findOptionByValue,
@@ -6,7 +5,10 @@ import {
   stepHighlight,
 } from "@seldon/editor/lib/menus/combobox-selection"
 import { resolveComboboxSubmit } from "@seldon/editor/lib/menus/combobox-submit"
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
+
+import type { ComboboxOptionItem } from "@app/menus/types"
+import type { ComputedRef, Ref } from "vue"
 
 interface UsePropertyComboboxInput {
   controlType: ComputedRef<string | undefined>
@@ -67,13 +69,13 @@ export function usePropertyCombobox({
 
   const filteredGroups = computed<ComboboxOptionItem[][]>(() => {
     const query = inputValue.value.trim()
+
     if (!query || !shouldFilter.value) return optionGroups.value
+
     return filterOptions(optionGroups.value, query) as ComboboxOptionItem[][]
   })
 
-  const hasFilteredOptions = computed(() =>
-    filteredGroups.value.some((group) => group.length > 0),
-  )
+  const hasFilteredOptions = computed(() => filteredGroups.value.some((group) => group.length > 0))
 
   // Mirror the current value into the closed input when not editing. The field
   // must show what the row currently displays, so seed from `displayValue`. Enum
@@ -85,9 +87,8 @@ export function usePropertyCombobox({
     [open, isEditing, storedValue, displayValue, flatOptions],
     () => {
       if (!open.value && !isEditing.value) {
-        const option = flatOptions.value.find(
-          (candidate) => candidate.value === storedValue.value,
-        )
+        const option = flatOptions.value.find((candidate) => candidate.value === storedValue.value)
+
         inputValue.value = displayValue.value || option?.name || ""
       }
     },
@@ -119,10 +120,10 @@ export function usePropertyCombobox({
   function handleSelect(value: string): void {
     hasSelection = true
     commit(value)
-    const option = flatOptions.value.find(
-      (candidate) => candidate.value === value,
-    )
+    const option = flatOptions.value.find((candidate) => candidate.value === value)
+
     if (option) inputValue.value = option.name
+
     if (controlType.value === "menu") {
       open.value = false
       onDone()
@@ -139,8 +140,7 @@ export function usePropertyCombobox({
       useHighlighted: true,
       flatOptions: flatOptions.value,
       allowCustom: (candidate) =>
-        controlType.value === "combo" &&
-        (!validate.value || validate.value(candidate)),
+        controlType.value === "combo" && (!validate.value || validate.value(candidate)),
     })
 
     if (resolution.kind === "select") {
@@ -153,12 +153,14 @@ export function usePropertyCombobox({
       restoreInput()
       open.value = false
     }
+
     if (!options?.keepFocus) onDone()
   }
 
   function restoreInput(): void {
     if (!hasSelection && originalValue.value !== undefined) {
       const option = findOptionByValue(flatOptions.value, originalValue.value)
+
       inputValue.value = option ? option.name : originalValue.value || ""
     }
   }
@@ -175,19 +177,11 @@ export function usePropertyCombobox({
   }
 
   function highlightNext(): void {
-    highlightedValue.value = stepHighlight(
-      flatOptions.value,
-      highlightedValue.value,
-      1,
-    )
+    highlightedValue.value = stepHighlight(flatOptions.value, highlightedValue.value, 1)
   }
 
   function highlightPrev(): void {
-    highlightedValue.value = stepHighlight(
-      flatOptions.value,
-      highlightedValue.value,
-      -1,
-    )
+    highlightedValue.value = stepHighlight(flatOptions.value, highlightedValue.value, -1)
   }
 
   function setHighlightedValue(value: string | undefined): void {

@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideEarthLock(props: SVGAttributes<SVGSVGElement>) {
   return (

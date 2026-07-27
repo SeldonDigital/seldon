@@ -1,7 +1,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
-import { ComponentLevel } from "@seldon/core/components/constants"
+import type { ComponentLevel } from "@seldon/core/components/constants"
 
 export type ExpandableSection =
   | ComponentLevel
@@ -52,5 +52,6 @@ export const useIsSectionExpanded = (section: ExpandableSection): boolean =>
  */
 export const useSectionExpansion = () => {
   const toggleSection = useStore((state) => state.toggleSection)
+
   return { toggleSection }
 }

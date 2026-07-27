@@ -7,28 +7,17 @@ import {
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  getSelectionTarget,
-  selectFromTarget,
-} from "@app/workspace/selection-target"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import { getSelectionTarget, selectFromTarget } from "@app/workspace/selection-target"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
-import { Properties, VariantId } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import type { EntryNode } from "@seldon/core/workspace/types"
 
 import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
-import {
-  getComponentTypeIcon,
-  getNodeLabel,
-  getNodeTypeColor,
-} from "./row-node-label"
+import { getComponentTypeIcon, getNodeLabel, getNodeTypeColor } from "./row-node-label"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
@@ -37,10 +26,12 @@ import { useRowClick } from "./use-row-click"
 import { useRowNodeActions } from "./use-row-node-actions"
 import { useRowNodeDisplay } from "./use-row-node-display"
 import { useRowToggle } from "./use-row-toggle"
-import {
-  useIsAncestorOfSelection,
-  useIsParentOfSelection,
-} from "./use-selection-relations"
+import { useIsAncestorOfSelection, useIsParentOfSelection } from "./use-selection-relations"
+
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import type { Properties, VariantId } from "@seldon/core"
+import type { EntryNode } from "@seldon/core/workspace/types"
 
 /**
  * Assembles the view model for a node row in the objects sidebar: selection and
@@ -66,14 +57,12 @@ export function useRowNode(
 ) {
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
-  const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
-    useSelectionActions()
+  const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } = useSelectionActions()
   const { showNodeIds, showNodeTypes } = useDebugMode()
   const { showCodeNames } = useEditorConfig()
   const addToast = useAddToast()
 
-  const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
-    useExpansion()
+  const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } = useExpansion()
 
   const { isEditingName, setEditingName } = useEditState(node)
 
@@ -85,21 +74,17 @@ export function useRowNode(
   const isEcho = options?.isEcho ?? false
 
   const nodeExistsInWorkspace = hasNode(workspace, node.id)
-  const properties: Properties = nodeExistsInWorkspace
-    ? getNodeProperties(node, workspace)
-    : {}
+  const properties: Properties = nodeExistsInWorkspace ? getNodeProperties(node, workspace) : {}
 
   // A user variant that repeats a sibling's label reads as an error: it exports
   // under a colliding component name and blocks factory export.
-  const isDuplicateLabel =
-    nodeExistsInWorkspace && isDuplicateVariantLabel(workspace, node.id)
+  const isDuplicateLabel = nodeExistsInWorkspace && isDuplicateVariantLabel(workspace, node.id)
   const expandedId = node.id
   const isExpandedState = useIsExpanded(expandedId)
 
   // Echo rows are leaves: they never disclose children, which also renders an
   // inert, transparent chevron via useRowButton.
-  const children =
-    !isEcho && nodeExistsInWorkspace ? getNodeChildIds(node, workspace) : []
+  const children = !isEcho && nodeExistsInWorkspace ? getNodeChildIds(node, workspace) : []
   const hasChildren = children.length > 0
 
   // A child id is shared across variant columns, so match the selected copy by
@@ -109,13 +94,11 @@ export function useRowNode(
   const isSelected = useSelectionStore(
     (state) =>
       state.selectedNodeId === node.id &&
-      (state.selectedNodeRootId == null ||
-        state.selectedNodeRootId === selectionPath),
+      (state.selectedNodeRootId == null || state.selectedNodeRootId === selectionPath),
   )
   const selectedNodeIsWithin = useIsAncestorOfSelection(node.id)
   const isParentOfSelectedNode = useIsParentOfSelection(node.id)
-  const isNodeActive =
-    parentIsSelected || isParentOfSelectedNode || selectedNodeIsWithin
+  const isNodeActive = parentIsSelected || isParentOfSelectedNode || selectedNodeIsWithin
 
   // Show Leaves / Branch / Tree lineage highlight from the View menu. Primary
   // rows change when the selection is edited; secondary rows are related
@@ -141,6 +124,7 @@ export function useRowNode(
     collapseObjects,
     getAllIdsForAltClick: () => {
       const descendantIds = getAllDescendantNodeIds(expandedId)
+
       return [expandedId, ...descendantIds]
     },
     hasChildren,
@@ -152,6 +136,7 @@ export function useRowNode(
     activeTool,
     onSelect: (event) => {
       const target = getSelectionTarget(event.target as Element)
+
       if (target) {
         selectFromTarget(target, {
           selectNode,
@@ -172,6 +157,7 @@ export function useRowNode(
   function handleDoubleClick() {
     if (isEcho) return
     const entityType = typeCheckingService.getEntityType(node)
+
     if (rules.mutations.rename[entityType].allowed) {
       setEditingName(true)
     } else if (typeCheckingService.isInstance(node)) {

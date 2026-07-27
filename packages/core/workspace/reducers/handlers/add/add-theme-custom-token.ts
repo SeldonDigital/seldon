@@ -1,12 +1,13 @@
 import { produce } from "immer"
 
-import { Workspace } from "../../../../index"
 import { TokenType } from "../../../../themes/constants/token-type"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import { workspaceThemeService } from "../../../services"
-import type { ThemeCustomTokenSection, WorkspaceAction } from "../../types"
 import { buildScaleCell } from "../shared/build-scale-cell"
 import { appendCustomToken } from "../shared/theme-custom-token"
+
+import type { Workspace } from "../../../../index"
+import type { ThemeCustomTokenSection, WorkspaceAction } from "../../types"
 
 type AddThemeCustomTokenPayload = Extract<
   WorkspaceAction,
@@ -36,6 +37,7 @@ function buildCustomTokenCell(
       parameters: (payload as { parameters: unknown }).parameters,
     }
   }
+
   if (LOOK_SECTIONS.has(section)) {
     return {
       type: TokenType.LOOK,
@@ -43,6 +45,7 @@ function buildCustomTokenCell(
       parameters: (payload as { parameters: unknown }).parameters,
     }
   }
+
   if (section === "borderWidth") {
     return {
       type: TokenType.MODULATED,
@@ -50,6 +53,7 @@ function buildCustomTokenCell(
       parameters: (payload as { parameters: unknown }).parameters,
     }
   }
+
   if (section === "fontWeight" || section === "lineHeight") {
     return {
       type: TokenType.EXACT,
@@ -57,6 +61,7 @@ function buildCustomTokenCell(
       parameters: (payload as { parameters: unknown }).parameters,
     }
   }
+
   return buildScaleCell(payload as Parameters<typeof buildScaleCell>[0])
 }
 
@@ -73,19 +78,11 @@ export function addThemeCustomToken(
 ): Workspace {
   return produce(workspace, (draft) => {
     const entry = draft.themes[payload.themeId]
+
     if (!entry || isEntryThemeDefault(entry)) return
 
-    const id = workspaceThemeService.getNextCustomTokenIdForTheme(
-      draft,
-      payload.themeId,
-      section,
-    )
+    const id = workspaceThemeService.getNextCustomTokenIdForTheme(draft, payload.themeId, section)
 
-    appendCustomToken(
-      entry,
-      section,
-      id,
-      buildCustomTokenCell(section, payload),
-    )
+    appendCustomToken(entry, section, id, buildCustomTokenCell(section, payload))
   })
 }

@@ -1,8 +1,6 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconMaterialQuestionExchange(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconMaterialQuestionExchange(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialLogout(props: SVGAttributes<SVGSVGElement>) {
   return (

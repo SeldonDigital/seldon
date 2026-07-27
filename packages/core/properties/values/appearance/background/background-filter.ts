@@ -1,7 +1,7 @@
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { StringValue } from "../../shared/exact/string"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { StringValue } from "../../shared/exact/string"
 
 const BACKGROUND_FILTER_PRESETS = [
   { name: "Blur", value: "blur(4px)" },
@@ -24,10 +24,7 @@ export interface BackgroundFilterOptionValue {
 }
 
 /** Empty, one preset choice, or a custom filter string. */
-export type BackgroundFilterValue =
-  | EmptyValue
-  | BackgroundFilterOptionValue
-  | StringValue
+export type BackgroundFilterValue = EmptyValue | BackgroundFilterOptionValue | StringValue
 
 function isPresetFilterValue(value: unknown): value is string {
   return (

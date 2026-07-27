@@ -48,11 +48,7 @@ function lowerFirst(value: string): string {
  * case-insensitively, that id wins. This covers ids whose casing differs from
  * the component name, such as `seldon-deviceTv` for `IconSeldonDeviceTV`.
  */
-function deriveIconId(
-  componentName: string,
-  prefix: string,
-  allIconIds: Set<string>,
-): string {
+function deriveIconId(componentName: string, prefix: string, allIconIds: Set<string>): string {
   const setInfix = prefix.charAt(0).toUpperCase() + prefix.slice(1)
   const standardPrefix = `Icon${setInfix}`
   const derived = componentName.startsWith(standardPrefix)
@@ -62,9 +58,7 @@ function deriveIconId(
   if (allIconIds.has(derived)) {
     return derived
   }
-  const caseMatches = [...allIconIds].filter(
-    (id) => id.toLowerCase() === derived.toLowerCase(),
-  )
+  const caseMatches = [...allIconIds].filter((id) => id.toLowerCase() === derived.toLowerCase())
   return caseMatches.length === 1 ? caseMatches[0] : derived
 }
 
@@ -93,26 +87,20 @@ function parseExistingMap(filePath: string): Map<string, string> {
   const source = fs.readFileSync(filePath, "utf8")
   // Prettier may wrap long entries, so allow whitespace and newlines between
   // the id, the path, and the cast.
-  for (const match of source.matchAll(
-    /"([^"]+)":\s+"([^"]+)" as IconCategoryPath,/g,
-  )) {
+  for (const match of source.matchAll(/"([^"]+)":\s+"([^"]+)" as IconCategoryPath,/g)) {
     entries.set(match[1], match[2])
   }
   return entries
 }
 
-function generateMapSource(
-  setFolder: string,
-  entries: Map<string, string>,
-): string {
+function generateMapSource(setFolder: string, entries: Map<string, string>): string {
   const sorted = [...entries.entries()].sort(([idA, pathA], [idB, pathB]) => {
     if (pathA !== pathB) return pathA.localeCompare(pathB)
     return idA.localeCompare(idB)
   })
 
   const lines = sorted.map(
-    ([iconId, categoryPath]) =>
-      `  "${iconId}": "${categoryPath}" as IconCategoryPath,`,
+    ([iconId, categoryPath]) => `  "${iconId}": "${categoryPath}" as IconCategoryPath,`,
   )
 
   return `/**
@@ -154,9 +142,7 @@ function generateSet(setFolder: string, prefix: string): void {
       continue
     }
     if (!allIconIds.has(iconId)) {
-      problems.push(
-        `${componentName}: derived id "${iconId}" not in ${setFolder}AllIconIds`,
-      )
+      problems.push(`${componentName}: derived id "${iconId}" not in ${setFolder}AllIconIds`)
       continue
     }
     if (entries.has(iconId)) {
@@ -182,8 +168,7 @@ function generateSet(setFolder: string, prefix: string): void {
   const added = [...entries.keys()].filter((id) => !previous.has(id))
   const removed = [...previous.keys()].filter((id) => !entries.has(id))
   const changed = [...entries.entries()].filter(
-    ([id, categoryPath]) =>
-      previous.has(id) && previous.get(id) !== categoryPath,
+    ([id, categoryPath]) => previous.has(id) && previous.get(id) !== categoryPath,
   )
 
   fs.writeFileSync(mapPath, generateMapSource(setFolder, entries))

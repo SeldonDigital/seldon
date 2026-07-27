@@ -1,15 +1,12 @@
 // BESPOKE-VIEW: hand-authored SVG icon asset. Raw svg markup, not a generated
 // View.
-import { SVGProps } from "react"
+import type { SVGProps } from "react"
 
 interface Props extends Omit<SVGProps<SVGSVGElement>, "enabled"> {
   enabled?: boolean
 }
 
-export function IconCustomBooleanValue({
-  enabled = false,
-  ...svgProps
-}: Props) {
+export function IconCustomBooleanValue({ enabled = false, ...svgProps }: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,15 +16,7 @@ export function IconCustomBooleanValue({
       height="1em"
       {...svgProps}
     >
-      <rect
-        width={14}
-        height={14}
-        x={1}
-        y={1}
-        fill="#fff"
-        fillOpacity={0.1}
-        rx={3}
-      />
+      <rect width={14} height={14} x={1} y={1} fill="#fff" fillOpacity={0.1} rx={3} />
       {enabled && (
         <path
           fill="currentColor"

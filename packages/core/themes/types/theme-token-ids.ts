@@ -166,11 +166,7 @@ export type ThemeShadowId =
   | "xstrong"
   | `custom${number}`
 
-export type ThemeGradientId =
-  | "primary"
-  | "gradient1"
-  | "gradient2"
-  | `custom${number}`
+export type ThemeGradientId = "primary" | "gradient1" | "gradient2" | `custom${number}`
 
 export type ThemeScrollbarId = "primary" | `custom${number}`
 
@@ -184,18 +180,9 @@ export type ThemeBorderId =
   | `custom${number}`
 
 export type StockThemeFontId = Exclude<ThemeFontId, BuiltInThemeFontLookId>
-export type StockThemeShadowId = Exclude<
-  ThemeShadowId,
-  BuiltInThemeClearedLookId
->
-export type StockThemeGradientId = Exclude<
-  ThemeGradientId,
-  BuiltInThemeClearedLookId
->
-export type StockThemeBorderId = Exclude<
-  ThemeBorderId,
-  BuiltInThemeClearedLookId
->
+export type StockThemeShadowId = Exclude<ThemeShadowId, BuiltInThemeClearedLookId>
+export type StockThemeGradientId = Exclude<ThemeGradientId, BuiltInThemeClearedLookId>
+export type StockThemeBorderId = Exclude<ThemeBorderId, BuiltInThemeClearedLookId>
 
 export type ThemeOptionId =
   | ThemeSizeId

@@ -1,11 +1,10 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { searchActions } from "../../../schema/action-schema"
 import { joinOrEmpty, textResult } from "./shared"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns action types matching an intent, each with its payload spec. */
 export function createSuggestActionTool(): ToolDefinition {
@@ -19,6 +18,7 @@ export function createSuggestActionTool(): ToolDefinition {
         description: "Intent text to match against action type names.",
       }),
     }),
+
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(

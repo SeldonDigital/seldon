@@ -1,7 +1,5 @@
-import { FieldsetHTMLAttributes } from "react"
+import type { FieldsetHTMLAttributes } from "react"
 
-export const HTMLFieldset = (
-  props: FieldsetHTMLAttributes<HTMLFieldSetElement>,
-) => {
+export const HTMLFieldset = (props: FieldsetHTMLAttributes<HTMLFieldSetElement>) => {
   return <fieldset {...props} />
 }

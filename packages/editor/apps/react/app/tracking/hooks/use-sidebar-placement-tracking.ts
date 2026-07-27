@@ -7,12 +7,10 @@ import { useTool } from "@app/editor/hooks/use-tool"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { isInsertionAllowed } from "@app/workspace/is-insertion-allowed"
-import { Placement } from "@seldon/editor/lib/types"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback, useMemo } from "react"
 
-import { Instance, Variant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import {
@@ -20,6 +18,9 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { Instance, Variant } from "@seldon/core"
+import type { Placement } from "@seldon/editor/lib/types"
 
 /**
  * Hook that handles granular placement zone tracking for sidebar rows (nodes).
@@ -40,9 +41,11 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
   // result on the COMPONENTS.md containment rule rather than the raw template.
   const canHaveChildren = useMemo(() => {
     const componentId = getNodeCatalogComponentId(node, workspace)
+
     if (!componentId) return false
     const schema = getComponentSchema(componentId)
     const mayContain = rules.componentLevels[schema.level].mayContain
+
     return mayContain.length > 0
   }, [node, workspace])
 
@@ -51,9 +54,11 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
       if (typeCheckingService.isBoard(node)) {
         return null
       }
+
       return nodeTraversalService.findParentNode(node.id, workspace)
     } catch (error) {
       console.warn(`Could not find parent for node ${node.id}:`, error)
+
       return null
     }
   }, [node, workspace])
@@ -68,20 +73,16 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
     // Check if node exists in workspace (virtual nodes like categories don't exist)
     const nodeExistsInWorkspace = workspace.nodes[node.id] !== undefined
+
     if (!nodeExistsInWorkspace) {
       return false
     }
 
     try {
-      const nodeBoard = nodeRelationshipService.findBoardForNode(
-        node,
-        workspace,
-      )
-      return (
-        nodeBoard !== null &&
-        getComponentKey(nodeBoard) === getComponentKey(activeBoard)
-      )
-    } catch (error) {
+      const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
+
+      return nodeBoard !== null && getComponentKey(nodeBoard) === getComponentKey(activeBoard)
+    } catch {
       // Node doesn't exist in workspace (virtual node), skip tracking
       return false
     }
@@ -94,14 +95,12 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
       }
 
       try {
-        const adjacentNode = nodeRelationshipService.findAdjacentNode(
-          node,
-          "before",
-          workspace,
-        )
+        const adjacentNode = nodeRelationshipService.findAdjacentNode(node, "before", workspace)
+
         return adjacentNode?.id ?? null
       } catch (error) {
         console.warn(`Could not find adjacent node for ${node.id}:`, error)
+
         return null
       }
     },
@@ -116,13 +115,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
       if (!shouldTrackCanvas) return
 
-      const insertionAllowed = isInsertionAllowed(
-        node.id,
-        placement,
-        workspace,
-        activeTool,
-        node,
-      )
+      const insertionAllowed = isInsertionAllowed(node.id, placement, workspace, activeTool, node)
 
       if (!insertionAllowed) {
         return
@@ -135,6 +128,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
           placement,
           lastChildNodeBeforeCursor: null,
         })
+
         return
       }
 
@@ -160,10 +154,8 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
   const handlePlacementLeave = useCallback(() => {
     const hoverState = getHoverStateSnapshot()
-    if (
-      hoverState?.objectId === node.id ||
-      hoverState?.objectId === parentNode?.id
-    ) {
+
+    if (hoverState?.objectId === node.id || hoverState?.objectId === parentNode?.id) {
       setHoverState(null)
     }
   }, [node.id, parentNode?.id, setHoverState])
@@ -193,6 +185,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
             "before",
             workspace,
           )
+
           return adjacentNode?.id === hoverState.lastChildNodeBeforeCursor
         } catch {
           return hoverState.lastChildNodeBeforeCursor === null
@@ -218,19 +211,14 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
       // Check if node exists in workspace (virtual nodes like categories don't exist)
       const nodeExistsInWorkspace = workspace.nodes[node.id] !== undefined
+
       if (!nodeExistsInWorkspace) {
         return false
       }
 
       try {
-        return isInsertionAllowed(
-          node.id,
-          placement,
-          workspace,
-          activeTool,
-          node,
-        )
-      } catch (error) {
+        return isInsertionAllowed(node.id, placement, workspace, activeTool, node)
+      } catch {
         // Node doesn't exist in workspace (virtual node), insertion not allowed
         return false
       }

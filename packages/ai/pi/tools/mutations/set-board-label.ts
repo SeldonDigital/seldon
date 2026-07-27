@@ -1,13 +1,11 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import { commit, textResult } from "./commit"
 
 import type { PiTurnState } from "../turn-state"
-import { commit, textResult } from "./commit"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** Renames a board by its key. */
 export function createSetBoardLabelTool(state: PiTurnState): ToolDefinition {
@@ -19,6 +17,7 @@ export function createSetBoardLabelTool(state: PiTurnState): ToolDefinition {
       boardKey: Type.String({ description: "Board key from the context." }),
       label: Type.String({ description: "New board label." }),
     }),
+
     execute: async (_id, params) =>
       textResult(
         commit(state, {

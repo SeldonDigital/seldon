@@ -12,10 +12,7 @@ export {
   getPropertyOptions,
 } from "./property-options"
 export type { PropertyCategory } from "./property-category"
-export {
-  getCompoundSubPropertySchema,
-  getPropertyCategory,
-} from "./property-category"
+export { getCompoundSubPropertySchema, getPropertyCategory } from "./property-category"
 export { validatePropertyValue } from "./validate-property-value"
 export { collectPropertyValueErrors } from "./validate-property-entry"
 export type { PropertyValueError } from "./validate-property-entry"

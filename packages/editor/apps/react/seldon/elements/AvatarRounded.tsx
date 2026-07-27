@@ -10,12 +10,13 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
+import { Image } from "../primitives/Image"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ImageProps } from "../primitives/Image"
+import type { HTMLAttributes } from "react"
 
 export interface AvatarRoundedProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -59,16 +60,8 @@ export function AvatarRounded({
   )
 
   return (
-    <Frame
-      className={avatarRoundedClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
-      {children !== undefined ? (
-        children
-      ) : (
-        <>{imageProps !== null && <Image {...imageProps} />}</>
-      )}
+    <Frame className={avatarRoundedClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+      {children !== undefined ? children : <>{imageProps !== null && <Image {...imageProps} />}</>}
     </Frame>
   )
 }

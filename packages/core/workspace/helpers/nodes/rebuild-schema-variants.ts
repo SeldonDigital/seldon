@@ -3,16 +3,13 @@
  * definition. Both the whole-board reset and the single-variant reset use these
  * so a variant is rematerialized the same way from either entry point.
  */
-import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId } from "../../../components/constants"
 import { isComplexSchema } from "../../../components/types"
+import { appendComplexSchemaVariant, makePrimitiveVariantNode } from "./build-component-variants"
+
+import type { getComponentSchema } from "../../../components/catalog"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
-import {
-  type BuildContext,
-  type CatalogSchemaVariant,
-  appendComplexSchemaVariant,
-  makePrimitiveVariantNode,
-} from "./build-component-variants"
+import type { BuildContext, CatalogSchemaVariant } from "./build-component-variants"
 
 /**
  * Rebuilds one catalog schema variant against the reset default tree, writing its
@@ -40,17 +37,16 @@ export function rebuildSchemaVariant(params: {
   } = params
 
   if (!isComplexSchema(schema)) {
-    const { id, node } = makePrimitiveVariantNode(
-      catalogId,
-      schema,
-      catalogVariant,
-    )
+    const { id, node } = makePrimitiveVariantNode(catalogId, schema, catalogVariant)
+
     newNodes[id] = node
+
     return { id }
   }
 
   const ctx: BuildContext = { workspace, newNodes }
   const variantRefs: ComponentTreeRef[] = []
+
   appendComplexSchemaVariant(
     catalogId,
     defaultVariantRootId,
@@ -60,5 +56,6 @@ export function rebuildSchemaVariant(params: {
     defaultRef,
     variantRefs,
   )
+
   return variantRefs[0]
 }

@@ -1,7 +1,7 @@
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { InheritValue } from "../../shared/inherit/inherit"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { InheritValue } from "../../shared/inherit/inherit"
 
 /** What a single background layer paints. */
 export enum BackgroundKind {
@@ -27,9 +27,7 @@ export function isGradientBackgroundKind(
   return (GRADIENT_BACKGROUND_KINDS as readonly unknown[]).includes(kind)
 }
 
-export const BACKGROUND_KIND_VALUES = Object.values(
-  BackgroundKind,
-) as BackgroundKind[]
+export const BACKGROUND_KIND_VALUES = Object.values(BackgroundKind) as BackgroundKind[]
 
 /** Stores one kind choice from the enum. */
 export interface BackgroundKindOptionValue {
@@ -38,10 +36,7 @@ export interface BackgroundKindOptionValue {
 }
 
 /** Empty, inherited, or one named kind choice. */
-export type BackgroundKindValue =
-  | EmptyValue
-  | InheritValue
-  | BackgroundKindOptionValue
+export type BackgroundKindValue = EmptyValue | InheritValue | BackgroundKindOptionValue
 
 /** Validates the kind discriminator on one background paint layer. */
 export const backgroundKindSchema: PropertySchema = {
@@ -53,8 +48,7 @@ export const backgroundKindSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (BACKGROUND_KIND_VALUES as string[]).includes(value),
+      typeof value === "string" && (BACKGROUND_KIND_VALUES as string[]).includes(value),
   },
   presetOptions: () => BACKGROUND_KIND_VALUES,
 }

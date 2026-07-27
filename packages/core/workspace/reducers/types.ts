@@ -1,48 +1,6 @@
-/**
- * WorkspaceAction coverage (serialized top-level keys in WORKSPACE.md):
- *
- * | Action | Primary map / target |
- * | --- | --- |
- * | set_workspace | whole file |
- * | set_workspace_owner, set_workspace_label, set_workspace_version, set_workspace_last_update, set_workspace_intent, set_workspace_tags, set_workspace_license | metadata |
- * | reset_workspace_owner, reset_workspace_label, normalize_metadata_version, reset_workspace_last_update, reset_workspace_intent, reset_workspace_tags, reset_workspace_license | metadata |
- * | add_component, remove_board, reorder_board, duplicate_component | components (+ nodes/themes/resources per type) |
- * | add_authored_component | components (authored board + authored root node) |
- * | duplicate_playground | playgrounds (+ nodes) |
- * | add_font_collection, add_media, add_icon_set, add_theme, add_playground, set_playground_label | components + section rows / playgrounds |
- * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, reset_component_board, apply_component_properties_to_all_boards, set_component_theme | components |
- * | reset_board_label, reset_board_intent, reset_board_tags, reset_board_license, reset_board_author, reset_board_credentials, reset_board_preview, reset_board_editor_data | components |
- * | reorder_variant_in_board | components.variants order |
- * | add_variant | components.variants + nodes |
- * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
- * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
- * | set_node_properties, paste_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data, set_node_repeat | nodes |
- * | add_node_layer, remove_node_layer, reorder_node_layer, set_node_layer_kind | nodes (background/shadow paint stacks) |
- * | reset_node_label, reset_node_editor_data | nodes |
- * | reset_variant_to_catalog, reset_variant_instances, reset_instance_to_source, reset_instance_to_original, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
- * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
- * | set_theme_scale_slot, set_theme_custom_token_name | themes (variant rows only) |
- * | add_theme_custom_{swatch,font,border,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
- * | remove_theme_custom_{...same 18 tables...} | themes (variant rows only) |
- * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
- * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, reset_font_collection, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
- * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
- * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
- * | set_icon_set_label | icon-sets |
- * | set_icon_set_override, reset_icon_set_override, reset_icon_set | icon-sets (per-icon inclusion under includedIcons) |
- * | set_icon_set_subcategory_preset | icon-sets (per-subcategory inclusion under includedIcons) |
- * | delete_icon_set | icon-sets (variant rows only; drops board ref) |
- * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
- * | stubs_* (font / media) | reserved — no-op until spec |
- */
 import type { FontOrigin } from "../../font-collections/types"
-import {
-  LayeredPaintKey,
-  Properties,
-  PropertyKey,
-  SubPropertyKey,
-} from "../../properties"
-import {
+import type { LayeredPaintKey, Properties, PropertyKey, SubPropertyKey } from "../../properties"
+import type {
   BorderParameters,
   FontParameters,
   GradientParameters,
@@ -62,10 +20,13 @@ import type { NodeState } from "../model/node-state"
 import type { WorkspaceStringMap } from "../model/string-maps"
 import type { Workspace } from "../model/workspace"
 
-/** Parent, component board key, and optional child index for {@link WorkspaceAction} `insert_default_instance`. */
+/**
+ * Parent, component board key, and optional child index for {@link WorkspaceAction}
+ * `insert_default_instance`. `boardKey` is the component catalog row key and must match `components`
+ * in the workspace file.
+ */
 export type InsertDefaultInstance = {
   parentId: VariantId | InstanceId
-  /** Component catalog row key; must match `components` in the workspace file. */
   boardKey: BoardKey
   index?: number
 }
@@ -145,9 +106,7 @@ export const THEME_CUSTOM_TOKEN_SECTIONS = [
 ] as const satisfies readonly ThemeCustomTokenSection[]
 
 /** Tells whether a section accepts user-added `customN` tokens. */
-export function isThemeCustomTokenSection(
-  section: string,
-): section is ThemeCustomTokenSection {
+export function isThemeCustomTokenSection(section: string): section is ThemeCustomTokenSection {
   return (THEME_CUSTOM_TOKEN_SECTIONS as readonly string[]).includes(section)
 }
 
@@ -247,7 +206,8 @@ export type RemoveCustomToken =
   | { type: "remove_theme_custom_fontWeight"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_lineHeight"; payload: RemoveThemeCustomBase }
 
-export type WorkspaceAction =
+/** Workspace-level metadata reads and resets. */
+export type WorkspaceMetadataActions =
   | {
       type: "set_workspace"
       payload: {
@@ -292,6 +252,9 @@ export type WorkspaceAction =
   | { type: "reset_workspace_intent"; payload: Record<string, never> }
   | { type: "reset_workspace_tags"; payload: Record<string, never> }
   | { type: "reset_workspace_license"; payload: Record<string, never> }
+
+/** Board, variant, and instance structure: add, remove, duplicate, reorder, and insert. */
+export type BoardStructureActions =
   | {
       type: "add_component"
       payload: {
@@ -317,10 +280,10 @@ export type WorkspaceAction =
         boardKey: BoardKey
       }
     }
+  /** `boardKey` is a caller-generated unique board key so the UI can select the new theme. */
   | {
       type: "add_authored_theme"
       payload: {
-        /** Caller-generated unique board key so the UI can select the new theme. */
         boardKey: BoardKey
       }
     }
@@ -330,14 +293,16 @@ export type WorkspaceAction =
         boardKey: BoardKey
       }
     }
+  /**
+   * `name` is the human-entered component name, and the board key and export name derive from it.
+   * `rootKind` is the root template, either a flex Container or a Frame, both opaque at the declared
+   * level. `level` is the declared component level, enforced for containment and export folder.
+   */
   | {
       type: "add_authored_component"
       payload: {
-        /** Human-entered component name; the board key and export name derive from it. */
         name: string
-        /** Root template: a flex Container or a Frame. Both are opaque at the declared level. */
         rootKind: "container" | "frame"
-        /** Declared component level, enforced for containment and export folder. */
         level: EntryNodeLevel
         intent?: string
         tags?: string[]
@@ -422,11 +387,11 @@ export type WorkspaceAction =
       type: "add_component_and_insert_default_instance"
       payload: {
         boardKey: BoardKey
-        variantFallbacks?: string[]
         target: {
           parentId: VariantId | InstanceId
           index?: number
         }
+        variantFallbacks?: string[]
       }
     }
   | {
@@ -447,6 +412,9 @@ export type WorkspaceAction =
         nodeId: VariantId | InstanceId
       }
     }
+
+/** Node content: properties, interaction states, custom states, and paint layers. */
+export type NodeContentActions =
   | {
       type: "set_node_properties"
       payload: {
@@ -464,13 +432,13 @@ export type WorkspaceAction =
         properties: Properties
       }
     }
+  /** `layerIndex` is the paint-layer slot for layered properties and defaults to layer 0. */
   | {
       type: "reset_node_property"
       payload: {
         nodeId: InstanceId | VariantId
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
-        /** Paint-layer slot for layered properties; defaults to layer 0. */
         layerIndex?: number
       }
     }
@@ -491,6 +459,7 @@ export type WorkspaceAction =
         }
       }
     }
+  /** `layerIndex` is the paint-layer slot for layered properties and defaults to layer 0. */
   | {
       type: "reset_node_state_property"
       payload: {
@@ -498,7 +467,6 @@ export type WorkspaceAction =
         state: NodeState
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
-        /** Paint-layer slot for layered properties; defaults to layer 0. */
         layerIndex?: number
       }
     }
@@ -530,12 +498,12 @@ export type WorkspaceAction =
         label: string
       }
     }
+  /** `seed` is the optional initial facets for the new layer and defaults to an empty bag. */
   | {
       type: "add_node_layer"
       payload: {
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
-        /** Optional initial facets for the new layer. Defaults to an empty bag. */
         seed?: Record<string, unknown>
       }
     }
@@ -556,17 +524,22 @@ export type WorkspaceAction =
         toIndex: number
       }
     }
+  /**
+   * `kind` is the kind to seed the layer with, such as a `BackgroundKind` value. `layerIndex` is the
+   * paint-layer slot to retype and defaults to layer 0.
+   */
   | {
       type: "set_node_layer_kind"
       payload: {
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
-        /** Paint-layer slot to retype; defaults to layer 0. */
-        layerIndex?: number
-        /** The kind to seed the layer with, e.g. a `BackgroundKind` value. */
         kind: string
+        layerIndex?: number
       }
     }
+
+/** Component property and board metadata edits and resets. */
+export type BoardMetadataActions =
   | {
       type: "set_component_properties"
       payload: {
@@ -574,13 +547,13 @@ export type WorkspaceAction =
         properties: Properties
       }
     }
+  /** `layerIndex` is the paint-layer slot for layered properties and defaults to layer 0. */
   | {
       type: "reset_component_property"
       payload: {
         boardKey: BoardKey
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
-        /** Paint-layer slot for layered properties; defaults to layer 0. */
         layerIndex?: number
       }
     }
@@ -655,6 +628,9 @@ export type WorkspaceAction =
       type: "reset_board_editor_data"
       payload: { boardKey: BoardKey }
     }
+
+/** Node metadata (label, ref, theme, editor data, repeat), component theme, and instance placement. */
+export type NodeMetadataAndPlacementActions =
   | {
       type: "set_node_label"
       payload: {
@@ -729,6 +705,9 @@ export type WorkspaceAction =
         direction: "forward" | "backward" | "front" | "back"
       }
     }
+
+/** Theme token edits, custom-token add and remove, scale slots, and theme resets. */
+export type ThemeActions =
   | {
       type: "set_theme_label"
       payload: { themeId: string; label: string }
@@ -786,6 +765,9 @@ export type WorkspaceAction =
       type: "reset_theme_override"
       payload: { themeId: string; path: string }
     }
+
+/** Rebuild variants, instances, and boards back to their catalog or source state. */
+export type ResetToCatalogActions =
   | {
       type: "reset_variant_to_catalog"
       payload: {
@@ -822,6 +804,9 @@ export type WorkspaceAction =
         boardKey: BoardKey
       }
     }
+
+/** Theme row lifecycle: delete and duplicate. */
+export type ThemeLifecycleActions =
   | {
       type: "delete_theme"
       payload: {
@@ -835,6 +820,9 @@ export type WorkspaceAction =
         newThemeId?: string
       }
     }
+
+/** Font collection edits, family management, and lifecycle. */
+export type FontCollectionActions =
   | {
       type: "set_font_collection_label"
       payload: { fontCollectionId: string; label: string }
@@ -912,6 +900,9 @@ export type WorkspaceAction =
         preset: "all" | "none"
       }
     }
+
+/** Reserved font-collection row stubs; no-op until the spec is finalized. */
+export type FontCollectionStubActions =
   /** @internal Reserved payload; no-op until `font-collections` spec is finalized. */
   | { type: "stubs_add_font_collection_row"; payload: { id?: string } }
   /** @internal */
@@ -920,6 +911,9 @@ export type WorkspaceAction =
   | { type: "stubs_set_font_collection_field"; payload: { id?: string } }
   /** @internal */
   | { type: "stubs_duplicate_font_collection_row"; payload: { id?: string } }
+
+/** Icon set edits, per-icon and subcategory inclusion, and lifecycle. */
+export type IconSetActions =
   | {
       type: "set_icon_set_label"
       payload: { iconSetId: string; label: string }
@@ -959,6 +953,9 @@ export type WorkspaceAction =
         newIconSetId?: string
       }
     }
+
+/** Reserved media row stubs; no-op until the spec is finalized. */
+export type MediaStubActions =
   /** @internal Reserved payload; no-op until `media` spec is finalized. */
   | { type: "stubs_add_media_row"; payload: { id?: string } }
   /** @internal */
@@ -967,6 +964,21 @@ export type WorkspaceAction =
   | { type: "stubs_set_media_field"; payload: { id?: string } }
   /** @internal */
   | { type: "stubs_duplicate_media_row"; payload: { id?: string } }
+
+/** Every reducer action, grouped by target entity. */
+export type WorkspaceAction =
+  | WorkspaceMetadataActions
+  | BoardStructureActions
+  | NodeContentActions
+  | BoardMetadataActions
+  | NodeMetadataAndPlacementActions
+  | ThemeActions
+  | ResetToCatalogActions
+  | ThemeLifecycleActions
+  | FontCollectionActions
+  | FontCollectionStubActions
+  | IconSetActions
+  | MediaStubActions
 
 export type ExtractPayload<T extends WorkspaceAction["type"]> = Extract<
   WorkspaceAction,

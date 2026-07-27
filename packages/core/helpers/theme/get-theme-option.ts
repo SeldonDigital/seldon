@@ -1,4 +1,7 @@
-import {
+import { isThemeValueKey } from "../validation/theme"
+import { parseThemeRef } from "./get-theme-key-components"
+
+import type {
   Theme,
   ThemeBlurKey,
   ThemeBorder,
@@ -47,8 +50,6 @@ import {
   ThemeSwatchKey,
   ThemeTokenNamespace,
 } from "../../themes/types"
-import { isThemeValueKey } from "../validation/theme"
-import { parseThemeRef } from "./get-theme-key-components"
 
 /**
  * Retrieves a theme option value from a theme object using a theme value key
@@ -59,59 +60,23 @@ import { parseThemeRef } from "./get-theme-key-components"
  * @throws Error if the key is invalid or the value is not found
  */
 export function getThemeOption(key: ThemeFontKey, theme: Theme): ThemeFont
-export function getThemeOption(
-  key: ThemeFontFamilyKey,
-  theme: Theme,
-): ThemeFontFamilyToken
-export function getThemeOption(
-  key: ThemeFontSizeKey,
-  theme: Theme,
-): ThemeScaleToken
-export function getThemeOption(
-  key: ThemeFontWeightKey,
-  theme: Theme,
-): ThemeExact
-export function getThemeOption(
-  key: ThemeLineHeightKey,
-  theme: Theme,
-): ThemeExact
-export function getThemeOption(
-  key: ThemeMarginKey,
-  theme: Theme,
-): ThemeScaleToken
-export function getThemeOption(
-  key: ThemePaddingKey,
-  theme: Theme,
-): ThemeScaleToken
+export function getThemeOption(key: ThemeFontFamilyKey, theme: Theme): ThemeFontFamilyToken
+export function getThemeOption(key: ThemeFontSizeKey, theme: Theme): ThemeScaleToken
+export function getThemeOption(key: ThemeFontWeightKey, theme: Theme): ThemeExact
+export function getThemeOption(key: ThemeLineHeightKey, theme: Theme): ThemeExact
+export function getThemeOption(key: ThemeMarginKey, theme: Theme): ThemeScaleToken
+export function getThemeOption(key: ThemePaddingKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(key: ThemeGapKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(key: ThemeSizeKey, theme: Theme): ThemeScaleToken
-export function getThemeOption(
-  key: ThemeDimensionKey,
-  theme: Theme,
-): ThemeScaleToken
+export function getThemeOption(key: ThemeDimensionKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(key: ThemeSwatchKey, theme: Theme): ThemeSwatch
-export function getThemeOption(
-  key: ThemeBorderWidthKey,
-  theme: Theme,
-): ThemeBorderWidth
-export function getThemeOption(
-  key: ThemeCornersKey,
-  theme: Theme,
-): ThemeScaleToken
+export function getThemeOption(key: ThemeBorderWidthKey, theme: Theme): ThemeBorderWidth
+export function getThemeOption(key: ThemeCornersKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(key: ThemeShadowKey, theme: Theme): ThemeShadow
-export function getThemeOption(
-  key: ThemeScrollbarKey,
-  theme: Theme,
-): ThemeScrollbar
-export function getThemeOption(
-  key: ThemeGradientKey,
-  theme: Theme,
-): ThemeGradient
+export function getThemeOption(key: ThemeScrollbarKey, theme: Theme): ThemeScrollbar
+export function getThemeOption(key: ThemeGradientKey, theme: Theme): ThemeGradient
 export function getThemeOption(key: ThemeBlurKey, theme: Theme): ThemeScaleToken
-export function getThemeOption(
-  key: ThemeSpreadKey,
-  theme: Theme,
-): ThemeScaleToken
+export function getThemeOption(key: ThemeSpreadKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(key: ThemeBorderKey, theme: Theme): ThemeBorder
 export function getThemeOption(key: string, theme: Theme): ThemeOption
 
@@ -121,9 +86,11 @@ export function getThemeOption(key: string, theme: Theme): ThemeOption {
   }
 
   const parsed = parseThemeRef(key)
+
   if (!parsed) {
     throw new Error(`${key} is not a valid theme value`)
   }
+
   const { section, optionId } = parsed
 
   let result: ThemeOption | undefined

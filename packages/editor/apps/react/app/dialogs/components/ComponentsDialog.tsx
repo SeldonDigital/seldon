@@ -9,14 +9,12 @@ import { useCallback } from "react"
 
 import { invariant } from "@seldon/core"
 import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers/helpers/validation"
-import { InstanceId, VariantId } from "@seldon/core/workspace/types"
 
 import { PanelDialogController } from "../PanelDialogController"
-import {
-  CatalogComponentItem,
-  FilterComponentPredicate,
-  useDialog,
-} from "../hooks/use-dialog"
+import { useDialog } from "../hooks/use-dialog"
+
+import type { CatalogComponentItem, FilterComponentPredicate } from "../hooks/use-dialog"
+import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
 
 /**
  * Dialog for inserting an existing variant into the selected target node.
@@ -53,9 +51,8 @@ export function ComponentsDialog() {
 
       // If the variant doesn't exist yet, create it
       if (!item.variantId) {
-        const variantFallbacks = await confirmMissingSchemaVariants(
-          item.componentId,
-        )
+        const variantFallbacks = await confirmMissingSchemaVariants(item.componentId)
+
         if (variantFallbacks === null) {
           return
         }
@@ -64,9 +61,7 @@ export function ComponentsDialog() {
           type: "add_component_and_insert_default_instance",
           payload: {
             boardKey: item.componentId,
-            variantFallbacks: variantFallbacks.length
-              ? variantFallbacks
-              : undefined,
+            variantFallbacks: variantFallbacks.length ? variantFallbacks : undefined,
             target: {
               parentId: target.nodeId as VariantId | InstanceId,
               index: target.index,

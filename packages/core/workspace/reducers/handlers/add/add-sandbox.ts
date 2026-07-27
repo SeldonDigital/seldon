@@ -1,12 +1,10 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  buildSandboxNode,
-  getNextSandboxTop,
-} from "../../../helpers/nodes/sandbox"
+import { buildSandboxNode, getNextSandboxTop } from "../../../helpers/nodes/sandbox"
 import { isPlaygroundContainer } from "../../../model/playground"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Mints a Sandbox root node on a playground. The Sandbox is a `type: "variant"`
@@ -23,6 +21,7 @@ export function addSandbox(
   }
 
   const playground = workspace.playgrounds?.[payload.playgroundKey]
+
   if (!playground || !isPlaygroundContainer(playground)) {
     return workspace
   }
@@ -33,6 +32,7 @@ export function addSandbox(
     const { id, node } = buildSandboxNode(payload.playgroundKey, {
       top: nextTop,
     })
+
     draft.nodes[id] = node
     container.variants.push({ id })
   })

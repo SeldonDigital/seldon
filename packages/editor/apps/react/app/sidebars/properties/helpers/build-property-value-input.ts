@@ -1,11 +1,8 @@
-import {
-  buildDisplayInputProps,
-  buildEditingRefProps,
-} from "@app/views/state-props"
-import { InputProps } from "@seldon/components/primitives/Input"
-import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
+import { buildDisplayInputProps, buildEditingRefProps } from "@app/views/state-props"
 
-import { PropertyControlView } from "../hooks/use-property-control"
+import type { PropertyControlView } from "../hooks/use-property-control"
+import type { InputProps } from "@seldon/components/primitives/Input"
+import type { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
 
 export type ValueInputProps = InputProps & { ref?: Ref<HTMLInputElement> }
 
@@ -51,6 +48,7 @@ export function buildPropertyValueInput({
   // restores the original value first.
   if (control.kind === "field") {
     const field = control.combobox
+
     return {
       ref: valueRef,
       value: field.value,
@@ -59,32 +57,38 @@ export function buildPropertyValueInput({
       autoFocus: field.autoFocus,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         field.onValueChange(event.currentTarget.value),
-      onFocus: (event: FocusEvent<HTMLInputElement>) =>
-        event.currentTarget.select(),
+      onFocus: (event: FocusEvent<HTMLInputElement>) => event.currentTarget.select(),
       onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
           event.preventDefault()
           event.currentTarget.blur()
+
           return
         }
+
         if (event.key === "Escape") {
           event.preventDefault()
           field.onCancel()
           event.currentTarget.blur()
+
           return
         }
+
         if (event.key === "Tab") {
           const moved = event.shiftKey ? onTabPrev() : onTabNext()
+
           if (moved) event.preventDefault()
         }
       },
       onBlur: (event: FocusEvent<HTMLInputElement>) => {
         const value = event.currentTarget.value.trim()
+
         if (field.validate && !field.validate(value)) {
           field.onCancel()
         } else {
           field.onSubmit(value)
         }
+
         endEdit()
       },
     }
@@ -92,6 +96,7 @@ export function buildPropertyValueInput({
 
   // Menu/combo: type-to-filter input paired with the floating option list.
   const field = control.field
+
   return {
     ref: valueRef,
     value: field.value,
@@ -112,24 +117,33 @@ export function buildPropertyValueInput({
       if (event.key === "ArrowDown") {
         event.preventDefault()
         field.onHighlightNext()
+
         return
       }
+
       if (event.key === "ArrowUp") {
         event.preventDefault()
         field.onHighlightPrev()
+
         return
       }
+
       if (event.key === "Enter") {
         event.preventDefault()
         field.handleSubmit()
+
         return
       }
+
       if (event.key === "Tab") {
         field.handleSubmit({ keepFocus: true })
         const moved = event.shiftKey ? onTabPrev() : onTabNext()
+
         if (moved) event.preventDefault()
+
         return
       }
+
       if (event.key === "Escape") {
         event.preventDefault()
         field.onCancel()

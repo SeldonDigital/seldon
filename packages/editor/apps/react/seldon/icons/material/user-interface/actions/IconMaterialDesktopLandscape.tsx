@@ -10,11 +10,9 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconMaterialDesktopLandscape(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconMaterialDesktopLandscape(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

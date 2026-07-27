@@ -1,23 +1,24 @@
-import {
-  BackgroundPositionValue,
-  BackgroundSizeValue,
-  SingleBackgroundSizeValue,
-} from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
-import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
 import {
   BackgroundKind,
   isGradientBackgroundKind,
 } from "@seldon/core/properties/values/appearance/background/background-kind"
-import { Theme } from "@seldon/core/themes/types"
 
-import { StyleGenerationContext } from "../types"
 import { getBackgroundPositionStyle } from "./get-background-position-style"
 import { getBackgroundSizeStyle } from "./get-background-size-style"
 import { getLayeredPaintColor } from "./get-layered-paint-color"
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"
 import { resolveGradientLayer } from "./resolve-gradient-layer"
-import { CSSObject } from "./types"
+
+import type { StyleGenerationContext } from "../types"
+import type { CSSObject } from "./types"
+import type {
+  BackgroundPositionValue,
+  BackgroundSizeValue,
+  SingleBackgroundSizeValue,
+} from "@seldon/core"
+import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
+import type { Theme } from "@seldon/core/themes/types"
 
 const DEFAULT_POSITION = "center"
 const DEFAULT_SIZE = "cover"
@@ -54,9 +55,7 @@ type PaintEntry = {
  * When the node has text content and any gradient layer, the gradient clips to
  * the text (`background-clip: text` with transparent color).
  */
-export function getBackgroundStyles(
-  context: StyleGenerationContext,
-): CSSObject {
+export function getBackgroundStyles(context: StyleGenerationContext): CSSObject {
   const { properties, theme, useThemeVariableReferences } = context
   const layers = getLayeredPaintLayers(properties, "background")
 
@@ -69,7 +68,9 @@ export function getBackgroundStyles(
 
     if (kind === BackgroundKind.COLOR) {
       const color = resolveColorLayer(layer, context)
+
       if (!color) return
+
       // The back-most paint can use the single `background-color` slot. A color
       // above any other paint must stack as a flat gradient instead.
       if (index === 0 && paint.length === 0 && backgroundColor === undefined) {
@@ -83,22 +84,21 @@ export function getBackgroundStyles(
           blend: DEFAULT_BLEND,
         })
       }
+
       return
     }
 
     if (kind === BackgroundKind.IMAGE) {
       const entry = resolveImageLayer(layer, theme)
+
       if (entry) paint.push(entry)
+
       return
     }
 
     if (isGradientBackgroundKind(kind)) {
-      const gradient = resolveGradientLayer(
-        layer,
-        kind,
-        theme,
-        useThemeVariableReferences,
-      )
+      const gradient = resolveGradientLayer(layer, kind, theme, useThemeVariableReferences)
+
       if (!gradient) return
       hasGradient = true
       paint.push({
@@ -112,22 +112,21 @@ export function getBackgroundStyles(
   })
 
   const styles: CSSObject = {}
+
   if (backgroundColor) styles.backgroundColor = backgroundColor
 
   if (paint.length > 0) {
     // Index 0 is the bottom layer. CSS paints the first list entry on top, so
     // reverse to keep the bottom layer at the back.
     const ordered = [...paint].reverse()
+
     styles.backgroundImage = ordered.map((entry) => entry.image).join(", ")
-    styles.backgroundPosition = ordered
-      .map((entry) => entry.position)
-      .join(", ")
+    styles.backgroundPosition = ordered.map((entry) => entry.position).join(", ")
     styles.backgroundSize = ordered.map((entry) => entry.size).join(", ")
     styles.backgroundRepeat = ordered.map((entry) => entry.repeat).join(", ")
+
     if (ordered.some((entry) => entry.blend !== DEFAULT_BLEND)) {
-      styles.backgroundBlendMode = ordered
-        .map((entry) => entry.blend)
-        .join(", ")
+      styles.backgroundBlendMode = ordered.map((entry) => entry.blend).join(", ")
     }
   }
 
@@ -143,16 +142,22 @@ export function getBackgroundStyles(
 /** Reads the layer kind, inferring it from facets when the kind is unset. */
 function resolveBackgroundKind(layer: BackgroundLayer): BackgroundKind {
   const kind = resolveValue(layer.kind)
+
   if (kind && typeof kind.value === "string") {
     if (kind.value === BackgroundKind.COLOR) return BackgroundKind.COLOR
     if (kind.value === BackgroundKind.IMAGE) return BackgroundKind.IMAGE
     if (isGradientBackgroundKind(kind.value)) return kind.value
     if (kind.value === BackgroundKind.NONE) return BackgroundKind.NONE
   }
+
   if (resolveValue(layer.image)) return BackgroundKind.IMAGE
-  if (resolveValue(layer.preset) || resolveValue(layer.startColor))
+
+  if (resolveValue(layer.preset) || resolveValue(layer.startColor)) {
     return BackgroundKind.LINEAR_GRADIENT
+  }
+
   if (resolveValue(layer.color)) return BackgroundKind.COLOR
+
   return BackgroundKind.NONE
 }
 
@@ -162,7 +167,9 @@ function resolveColorLayer(
   { theme, useThemeVariableReferences }: StyleGenerationContext,
 ): string | undefined {
   const color = resolveValue(layer.color)
+
   if (!color) return undefined
+
   return getLayeredPaintColor({
     color,
     brightness: resolveValue(layer.brightness),
@@ -173,11 +180,9 @@ function resolveColorLayer(
 }
 
 /** Resolves an image layer to a paint entry, or undefined when it has no image. */
-function resolveImageLayer(
-  layer: BackgroundLayer,
-  _theme: Theme,
-): PaintEntry | undefined {
+function resolveImageLayer(layer: BackgroundLayer, _theme: Theme): PaintEntry | undefined {
   const image = resolveValue(layer.image)
+
   if (!image) return undefined
 
   const repeat = resolveValue(layer.repeat)
@@ -187,16 +192,10 @@ function resolveImageLayer(
 
   return {
     image: `url(${image.value})`,
-    repeat:
-      repeat && typeof repeat.value === "string"
-        ? repeat.value
-        : DEFAULT_REPEAT,
+    repeat: repeat && typeof repeat.value === "string" ? repeat.value : DEFAULT_REPEAT,
     position: position ? formatPosition(position) : DEFAULT_POSITION,
     size: size ? formatSize(size) : DEFAULT_SIZE,
-    blend:
-      blendMode && typeof blendMode.value === "string"
-        ? blendMode.value
-        : DEFAULT_BLEND,
+    blend: blendMode && typeof blendMode.value === "string" ? blendMode.value : DEFAULT_BLEND,
   }
 }
 
@@ -205,16 +204,11 @@ function formatPosition(position: BackgroundPositionValue): string {
 }
 
 function formatSize(size: BackgroundSizeValue): string {
-  if (
-    !!size.value &&
-    typeof size.value === "object" &&
-    "x" in size.value &&
-    "y" in size.value
-  ) {
+  if (!!size.value && typeof size.value === "object" && "x" in size.value && "y" in size.value) {
     const { x, y } = size.value
+
     return `${x.value}${x.unit} ${y.value}${y.unit}`
   }
-  return (
-    getBackgroundSizeStyle(size as SingleBackgroundSizeValue) || DEFAULT_SIZE
-  )
+
+  return getBackgroundSizeStyle(size as SingleBackgroundSizeValue) || DEFAULT_SIZE
 }

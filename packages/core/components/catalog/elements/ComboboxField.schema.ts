@@ -1,6 +1,7 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Combobox Field",
@@ -243,8 +244,7 @@ export const schema = {
     {
       id: "search",
       label: "Search Field",
-      intent:
-        "Specialized input field for entering and submitting search queries.",
+      intent: "Specialized input field for entering and submitting search queries.",
       children: [
         {
           component: Seldon.ComponentId.ICON,

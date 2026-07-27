@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, Unit, ValueType } from "@seldon/core"
+import { Unit, ValueType } from "@seldon/core"
 
 import { getOpacityStyles } from "./get-opacity-styles"
+
+import type { Properties } from "@seldon/core"
 
 const opacity = (value: number): Properties =>
   ({
@@ -27,8 +29,6 @@ describe("getOpacityStyles", () => {
   })
 
   it("returns no styles when opacity is unset", () => {
-    expect(
-      getOpacityStyles({ properties: {} as unknown as Properties }),
-    ).toEqual({})
+    expect(getOpacityStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 })

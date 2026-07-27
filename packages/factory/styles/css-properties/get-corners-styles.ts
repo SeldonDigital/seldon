@@ -1,9 +1,10 @@
-import { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
-import { Theme } from "@seldon/core/themes/types"
 
 import { getAbsoluteSizeCssValue } from "./get-absolute-size-css-value"
-import { CSSObject } from "./types"
+
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 export function getCornersStyles({
   properties,
@@ -48,11 +49,7 @@ export function getCornersStyles({
   }
 
   if (topLeft) {
-    styles.borderTopLeftRadius = getAbsoluteSizeCssValue(
-      topLeft,
-      theme,
-      useThemeVariableReferences,
-    )
+    styles.borderTopLeftRadius = getAbsoluteSizeCssValue(topLeft, theme, useThemeVariableReferences)
   }
 
   return styles

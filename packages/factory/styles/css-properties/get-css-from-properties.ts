@@ -1,10 +1,10 @@
-import { Properties } from "@seldon/core"
-
-import { StyleGenerationContext } from "../types"
 import { getCssObjectFromProperties } from "./get-css-object-from-properties"
 import { getCssStringFromCssObject } from "./get-css-string-from-css-object"
 import { getShorthandValues } from "./get-shorthand-values"
-import { CSSObject } from "./types"
+
+import type { StyleGenerationContext } from "../types"
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
 
 /**
  * Turn a properties object into CSS styles
@@ -36,7 +36,5 @@ export function getCssFromProperties(
  * @returns The styles object with undefined values removed
  */
 function removeUndefinedValues(styles: CSSObject) {
-  return Object.fromEntries(
-    Object.entries(styles).filter(([_, value]) => value !== undefined),
-  )
+  return Object.fromEntries(Object.entries(styles).filter(([_, value]) => value !== undefined))
 }

@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { getNodeRepeat } from "../../../helpers/nodes/node-repeat"
 import { addComponent } from "../add/add-component"
 import { setNodeRepeat } from "./set-node-repeat"
+
+import type { ExtractPayload } from "../../../../index"
 
 const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
@@ -19,12 +20,14 @@ describe("setNodeRepeat", () => {
       { nodeId, repeat: { count: 3 } } as ExtractPayload<"set_node_repeat">,
       workspace,
     )
+
     expect(getNodeRepeat(withRepeat.nodes[nodeId]!)).toEqual({ count: 3 })
 
     const cleared = setNodeRepeat(
       { nodeId, repeat: undefined } as ExtractPayload<"set_node_repeat">,
       withRepeat,
     )
+
     expect(getNodeRepeat(cleared.nodes[nodeId]!)).toBeUndefined()
   })
 
@@ -33,6 +36,7 @@ describe("setNodeRepeat", () => {
       { nodeId, repeat: { count: 1 } } as ExtractPayload<"set_node_repeat">,
       workspace,
     )
+
     expect(getNodeRepeat(next.nodes[nodeId]!)).toBeUndefined()
   })
 })

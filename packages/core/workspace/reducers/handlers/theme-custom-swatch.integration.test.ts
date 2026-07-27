@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload } from "../../../index"
 import { Colorspace } from "../../../themes/constants/colorspace"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addThemeCustomToken } from "./add/add-theme-custom-token"
 import { duplicateTheme } from "./duplicate/duplicate-theme"
 import { removeThemeCustomSwatch } from "./remove/remove-theme-custom-swatch"
+
+import type { ExtractPayload } from "../../../index"
 
 const defaultThemeId = "theme-seldon-default"
 const variantThemeId = "theme-seldon-copy"
@@ -31,22 +32,20 @@ const addSwatch = (themeId: string, ws: ReturnType<typeof withVariantTheme>) =>
     ws,
   )
 
-const swatchOverrides = (
-  ws: ReturnType<typeof withVariantTheme>,
-  themeId: string,
-) =>
-  (ws.themes[themeId]!.overrides as Record<string, Record<string, unknown>>)
-    .swatch ?? {}
+const swatchOverrides = (ws: ReturnType<typeof withVariantTheme>, themeId: string) =>
+  (ws.themes[themeId]!.overrides as Record<string, Record<string, unknown>>).swatch ?? {}
 
 describe("addThemeCustomToken swatch", () => {
   it("appends a custom swatch cell to a variant theme", () => {
     const next = addSwatch(variantThemeId, withVariantTheme())
     const swatch = swatchOverrides(next, variantThemeId)
+
     expect(swatch.custom1).toMatchObject({ name: "My Swatch" })
   })
 
   it("is a no-op for a default theme entry", () => {
     const workspace = withVariantTheme()
+
     expect(addSwatch(defaultThemeId, workspace)).toBe(workspace)
   })
 })
@@ -61,11 +60,13 @@ describe("removeThemeCustomSwatch", () => {
       } as ExtractPayload<"remove_theme_custom_swatch">,
       added,
     )
+
     expect(swatchOverrides(removed, variantThemeId).custom1).toBeUndefined()
   })
 
   it("is a no-op for a default theme entry", () => {
     const workspace = withVariantTheme()
+
     expect(
       removeThemeCustomSwatch(
         {

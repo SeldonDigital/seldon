@@ -1,6 +1,7 @@
-import type { SelectionKind } from "@seldon/editor/lib/workspace/selection-kind"
 import { defineStore } from "pinia"
 import { ref } from "vue"
+
+import type { SelectionKind } from "@seldon/editor/lib/workspace/selection-kind"
 
 /**
  * The single hovered object across the editor. Both the objects sidebar and the
@@ -26,10 +27,7 @@ export const useObjectHoverStore = defineStore("object-hover", () => {
   }
 
   function isHovered(id: string, rootId?: string): boolean {
-    return (
-      hoveredId.value === id &&
-      (hoveredRootId.value == null || hoveredRootId.value === rootId)
-    )
+    return hoveredId.value === id && (hoveredRootId.value == null || hoveredRootId.value === rootId)
   }
 
   return { hoveredId, hoveredKind, hoveredRootId, setHoveredId, isHovered }

@@ -25,12 +25,14 @@ export function computeLayerToIndex(
 
   const withoutSource = displayOrder.filter((index) => index !== fromIndex)
   const targetPosition = withoutSource.indexOf(targetIndex)
+
   if (targetPosition === -1) return fromIndex
 
-  const insertPosition =
-    placement === "before" ? targetPosition : targetPosition + 1
+  const insertPosition = placement === "before" ? targetPosition : targetPosition + 1
+
   withoutSource.splice(insertPosition, 0, fromIndex)
 
   const newArrayOrder = withoutSource.slice().reverse()
+
   return newArrayOrder.indexOf(fromIndex)
 }

@@ -60,12 +60,7 @@ export {
   RESERVED_STATE_NAMES,
   isReservedStateName,
 } from "./node-state"
-export type {
-  EntryTheme,
-  EntryThemeId,
-  EntryThemeOverrides,
-  EntryThemeType,
-} from "./entry-theme"
+export type { EntryTheme, EntryThemeId, EntryThemeOverrides, EntryThemeType } from "./entry-theme"
 export { isEntryThemeDefault, isEntryThemeVariant } from "./entry-theme"
 export type {
   EntryFontCollection,
@@ -73,10 +68,7 @@ export type {
   EntryFontCollectionOverrides,
   EntryFontCollectionType,
 } from "./entry-font-collection"
-export {
-  isEntryFontCollectionDefault,
-  isEntryFontCollectionVariant,
-} from "./entry-font-collection"
+export { isEntryFontCollectionDefault, isEntryFontCollectionVariant } from "./entry-font-collection"
 export type { EntryIconSet, EntryIconSetId } from "./entry-icon-set"
 export type { EntryMedia, EntryMediaId } from "./entry-media"
 export {

@@ -1,7 +1,4 @@
-import {
-  buildDisplayInputProps,
-  buildEditingRefProps,
-} from "@app/sidebars/state-props"
+import { buildDisplayInputProps, buildEditingRefProps } from "@app/sidebars/state-props"
 import { computed, nextTick, ref } from "vue"
 
 const PLACEHOLDER = "Filter..."
@@ -49,14 +46,14 @@ export function useFilterInput() {
         placeholder: PLACEHOLDER,
       }
     }
+
     return {
       ref: (el: unknown) => (inputEl.value = el as HTMLInputElement | null),
       value: query.value,
       placeholder: PLACEHOLDER,
       readonly: false,
       ...buildEditingRefProps(true),
-      onInput: (event: Event) =>
-        (query.value = (event.target as HTMLInputElement).value),
+      onInput: (event: Event) => (query.value = (event.target as HTMLInputElement).value),
       onBlur: () => (isEditing.value = false),
       onKeydown: (event: KeyboardEvent) => {
         if (event.key === "Escape") {

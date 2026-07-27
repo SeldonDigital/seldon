@@ -1,9 +1,10 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
-import type { EntryFontCollection } from "../../../model/entry-font-collection"
 import { workspaceFontCollectionService } from "../../../services"
 import { setFamilyVariantPreset } from "../shared/font-collection-variant-selection"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
+import type { EntryFontCollection } from "../../../model/entry-font-collection"
 
 /**
  * Applies a preset to a family on a font collection entry. `all` clears the
@@ -24,6 +25,7 @@ export function setFontCollectionFamilyPreset(
     const entry = draft["font-collections"][payload.fontCollectionId] as
       | EntryFontCollection
       | undefined
+
     if (!entry) return
     setFamilyVariantPreset(entry, payload.slot, payload.preset, available)
   })

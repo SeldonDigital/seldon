@@ -1,9 +1,11 @@
 import { isWorkspaceIconUnavailable } from "@seldon/editor/lib/icon-sets/icon-availability"
 import { getOptionIcon } from "@seldon/editor/lib/icons/resolve-option-icon"
-import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { getRepeatSymbolDescendant } from "@seldon/editor/lib/properties/inspector/repeat-display"
+import { defaultIconId } from "@seldon/core/icon-sets"
+
 import type { Theme, Workspace } from "@seldon/core"
-import { type IconId, defaultIconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 /**
  * Framework-neutral decision for a property option's icon. `iconId` values flow
@@ -30,8 +32,8 @@ export type PropertyOptionIconBinding =
 
 interface ResolveBindingArgs {
   property: FlatProperty
-  theme?: Theme
   workspace: Workspace
+  theme?: Theme
   /** The option being resolved. Absent for the Default/Inherit rows. */
   option?: { value: string; name?: string }
 }
@@ -51,24 +53,27 @@ export function resolvePropertyOptionIconBinding({
 }: ResolveBindingArgs): PropertyOptionIconBinding {
   if (property.key === "theme" && option) {
     if (option.value === "none") return { kind: "none" }
+
     return { kind: "themeSwatches", themeId: option.value }
   }
 
   const isSymbolRow =
-    property.key === "symbol" ||
-    !!getRepeatSymbolDescendant(property.key, workspace)
+    property.key === "symbol" || !!getRepeatSymbolDescendant(property.key, workspace)
 
   if (isSymbolRow && option && option.value && option.value !== "inherit") {
     // The default symbol is not a real glyph; show the property icon instead.
     if (option.value === defaultIconId) {
       return { kind: "iconId", icon: property.icon }
     }
+
     if (isWorkspaceIconUnavailable(option.value as IconId, workspace)) {
       return { kind: "symbolUnavailable", iconId: option.value }
     }
+
     if (option.name === "[Unused Icon]") {
       return { kind: "symbolUnused" }
     }
+
     return { kind: "symbolGlyph", iconId: option.value }
   }
 
@@ -78,12 +83,8 @@ export function resolvePropertyOptionIconBinding({
     return { kind: "iconId", icon: property.icon }
   }
 
-  const descriptor = getOptionIcon(
-    property.key,
-    option.value,
-    theme,
-    property.icon,
-  )
+  const descriptor = getOptionIcon(property.key, option.value, theme, property.icon)
+
   switch (descriptor.kind) {
     case "swatchColor":
       return { kind: "swatchColor", color: descriptor.color }

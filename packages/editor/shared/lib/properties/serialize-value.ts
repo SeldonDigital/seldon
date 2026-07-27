@@ -11,7 +11,6 @@ import {
   ComputedFunction,
   Corner,
   Cursor,
-  DegreesValue,
   Direction,
   Display,
   FontStyle,
@@ -27,13 +26,9 @@ import {
   ListStylePosition,
   ListStyleType,
   Margin,
-  NumberValue,
   Orientation,
   Padding,
-  PercentageValue,
-  PixelValue,
   Placement,
-  RemValue,
   Resize,
   ScreenSize,
   Scroll,
@@ -42,6 +37,34 @@ import {
   TextAlign,
   TextCasing,
   TextDecoration,
+  Unit,
+  ValueType,
+  WrapperElement,
+} from "@seldon/core"
+import { getComponentSchema } from "@seldon/core/components/catalog"
+import { isDoubleAxisValue } from "@seldon/core/helpers/type-guards/value/is-double-axis-value"
+import {
+  isNumber,
+  isPercentage,
+  isPx,
+  isRem,
+  isThemeValueKey,
+} from "@seldon/core/helpers/validation"
+import { getDefaultUnitForProperty as getDefaultUnitForPropertyCore } from "@seldon/core/properties/helpers/unit-utils"
+import {
+  getCompoundSubPropertySchema,
+  getPropertySchema,
+} from "@seldon/core/properties/schemas/helpers"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { serializeColor } from "./serialize-color"
+
+import type {
+  DegreesValue,
+  NumberValue,
+  PercentageValue,
+  PixelValue,
+  RemValue,
   ThemeBlurKey,
   ThemeBorderKey,
   ThemeBorderWidthKey,
@@ -60,36 +83,10 @@ import {
   ThemeSizeKey,
   ThemeSpreadKey,
   ThemeSwatchKey,
-  Unit,
   Value,
-  ValueType,
-  WrapperElement,
 } from "@seldon/core"
-import { getComponentSchema } from "@seldon/core/components/catalog"
-import { ComponentId } from "@seldon/core/components/constants"
-import { isDoubleAxisValue } from "@seldon/core/helpers/type-guards/value/is-double-axis-value"
-import {
-  isNumber,
-  isPercentage,
-  isPx,
-  isRem,
-  isThemeValueKey,
-} from "@seldon/core/helpers/validation"
-import { getDefaultUnitForProperty as getDefaultUnitForPropertyCore } from "@seldon/core/properties/helpers/unit-utils"
-import {
-  getCompoundSubPropertySchema,
-  getPropertySchema,
-} from "@seldon/core/properties/schemas/helpers"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import {
-  Board,
-  EntryNode,
-  Instance,
-  Variant,
-  Workspace,
-} from "@seldon/core/workspace/types"
-import { serializeColor } from "./serialize-color"
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { Board, EntryNode, Instance, Variant, Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Dynamic preset mapping system that automatically handles all preset values.
@@ -134,10 +131,7 @@ function initializePresetMappings() {
     PRESET_MAPPINGS.set(value, ListStyleType[key as keyof typeof ListStyleType])
   })
   Object.entries(ListStylePosition).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      ListStylePosition[key as keyof typeof ListStylePosition],
-    )
+    PRESET_MAPPINGS.set(value, ListStylePosition[key as keyof typeof ListStylePosition])
   })
 
   // HTML element presets
@@ -158,10 +152,7 @@ function initializePresetMappings() {
     PRESET_MAPPINGS.set(value, BorderWidth[key as keyof typeof BorderWidth])
   })
   Object.entries(BorderCollapse).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      BorderCollapse[key as keyof typeof BorderCollapse],
-    )
+    PRESET_MAPPINGS.set(value, BorderCollapse[key as keyof typeof BorderCollapse])
   })
 
   // Color presets
@@ -211,16 +202,10 @@ function initializePresetMappings() {
 
   // Radial gradient center axis anchors (left/center/right, top/center/bottom)
   Object.entries(GradientPositionX).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      GradientPositionX[key as keyof typeof GradientPositionX],
-    )
+    PRESET_MAPPINGS.set(value, GradientPositionX[key as keyof typeof GradientPositionX])
   })
   Object.entries(GradientPositionY).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      GradientPositionY[key as keyof typeof GradientPositionY],
-    )
+    PRESET_MAPPINGS.set(value, GradientPositionY[key as keyof typeof GradientPositionY])
   })
 
   // Image fit presets
@@ -243,10 +228,7 @@ function initializePresetMappings() {
     PRESET_MAPPINGS.set(value, ShadowStyle[key as keyof typeof ShadowStyle])
   })
   Object.entries(ScrollbarStyle).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      ScrollbarStyle[key as keyof typeof ScrollbarStyle],
-    )
+    PRESET_MAPPINGS.set(value, ScrollbarStyle[key as keyof typeof ScrollbarStyle])
   })
 
   // Text presets
@@ -257,30 +239,18 @@ function initializePresetMappings() {
     PRESET_MAPPINGS.set(value, TextCasing[key as keyof typeof TextCasing])
   })
   Object.entries(TextDecoration).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      TextDecoration[key as keyof typeof TextDecoration],
-    )
+    PRESET_MAPPINGS.set(value, TextDecoration[key as keyof typeof TextDecoration])
   })
 
   // Background layer presets
   Object.entries(BackgroundBlendMode).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      BackgroundBlendMode[key as keyof typeof BackgroundBlendMode],
-    )
+    PRESET_MAPPINGS.set(value, BackgroundBlendMode[key as keyof typeof BackgroundBlendMode])
   })
   Object.entries(BackgroundPosition).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      BackgroundPosition[key as keyof typeof BackgroundPosition],
-    )
+    PRESET_MAPPINGS.set(value, BackgroundPosition[key as keyof typeof BackgroundPosition])
   })
   Object.entries(BackgroundRepeat).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      BackgroundRepeat[key as keyof typeof BackgroundRepeat],
-    )
+    PRESET_MAPPINGS.set(value, BackgroundRepeat[key as keyof typeof BackgroundRepeat])
   })
   BACKGROUND_FILTER_PRESET_VALUES.forEach((value) => {
     PRESET_MAPPINGS.set(value, value)
@@ -293,18 +263,12 @@ function initializePresetMappings() {
 
   // Wrapper element presets
   Object.entries(WrapperElement).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      WrapperElement[key as keyof typeof WrapperElement],
-    )
+    PRESET_MAPPINGS.set(value, WrapperElement[key as keyof typeof WrapperElement])
   })
 
   // Computed function presets
   Object.entries(ComputedFunction).forEach(([key, value]) => {
-    PRESET_MAPPINGS.set(
-      value,
-      ComputedFunction[key as keyof typeof ComputedFunction],
-    )
+    PRESET_MAPPINGS.set(value, ComputedFunction[key as keyof typeof ComputedFunction])
   })
 }
 
@@ -316,9 +280,11 @@ initializePresetMappings()
  */
 function tryPresetValue(value: string): Value | null {
   const presetValue = PRESET_MAPPINGS.get(value)
+
   if (presetValue !== undefined) {
     return { type: ValueType.OPTION, value: presetValue }
   }
+
   return null
 }
 
@@ -330,8 +296,10 @@ function tryPresetValue(value: string): Value | null {
 function supportsNoneOption(propertyKey?: string): boolean {
   if (!propertyKey) return false
   const baseKey = propertyKey.split(".")[0]
+
   try {
     const schema = getPropertySchema(baseKey)
+
     return schema?.validation?.option?.("none") === true
   } catch {
     return false
@@ -352,9 +320,7 @@ function getDefaultUnitForProperty(propertyKey: string): Unit {
  */
 export function isColorProperty(propertyKey: string): boolean {
   // Handle sub-properties by checking the full path
-  const actualProperty = propertyKey.includes(".")
-    ? propertyKey.split(".").pop()!
-    : propertyKey
+  const actualProperty = propertyKey.includes(".") ? propertyKey.split(".").pop()! : propertyKey
 
   // Try direct property first
   let schema = getPropertySchema(actualProperty)
@@ -362,6 +328,7 @@ export function isColorProperty(propertyKey: string): boolean {
   // If not found, try compound property (e.g., "background.color")
   if (!schema && propertyKey.includes(".")) {
     const [parent, sub] = propertyKey.split(".")
+
     schema = getCompoundSubPropertySchema(parent, sub)
   }
 
@@ -369,10 +336,7 @@ export function isColorProperty(propertyKey: string): boolean {
 
   // Check if the property supports themeCategorical (color theme values)
   // This is the most reliable indicator of color properties
-  return (
-    schema.supports.includes("themeCategorical") &&
-    schema.themeCategoricalKeys !== undefined
-  )
+  return schema.supports.includes("themeCategorical") && schema.themeCategoricalKeys !== undefined
 }
 
 /**
@@ -396,14 +360,16 @@ function getUnitForNumericValue(
 
   if (node && workspace && !isBoard(node) && propertyKey) {
     const catalogId = getNodeCatalogId(node as EntryNode, workspace)
+
     if (!catalogId) {
       return getDefaultUnitForProperty(propertyKey || "")
     }
+
     const schema = getComponentSchema(catalogId as ComponentId)
+
     if (schema?.properties) {
-      const schemaProperty = (schema.properties as Record<string, Value>)[
-        propertyKey
-      ]
+      const schemaProperty = (schema.properties as Record<string, Value>)[propertyKey]
+
       if (
         schemaProperty &&
         "type" in schemaProperty &&
@@ -477,6 +443,7 @@ export function serializeValue(
 
   // Try to handle as a preset value using the dynamic mapping system
   const presetValue = tryPresetValue(value)
+
   if (presetValue) {
     return presetValue
   }
@@ -495,6 +462,7 @@ export function serializeValue(
 
   if (isThemeValueKey(value)) {
     const themeSection = value.split(".")[0]
+
     switch (themeSection) {
       case "@border":
         return {
@@ -663,12 +631,7 @@ export function serializeValue(
       unit = options.defaultUnit
     } else {
       // Use the enhanced unit detection that considers node and property context
-      unit = getUnitForNumericValue(
-        options?.currentValue,
-        node,
-        propertyKey,
-        options?.workspace,
-      )
+      unit = getUnitForNumericValue(options?.currentValue, node, propertyKey, options?.workspace)
     }
 
     if (unit === Unit.DEGREES) {
@@ -696,7 +659,7 @@ export function serializeValue(
   if (propertyKey && isColorProperty(propertyKey)) {
     try {
       return serializeColor(value)
-    } catch (error) {
+    } catch {
       // If color serialization fails, store as invalid string value
       // This allows invalid colors to be stored and displayed in error state
       return {
@@ -708,28 +671,27 @@ export function serializeValue(
 
   // Handle boolean values for boolean properties (e.g., wrapText)
   if (propertyKey) {
-    const actualProperty = propertyKey.includes(".")
-      ? propertyKey.split(".").pop()!
-      : propertyKey
+    const actualProperty = propertyKey.includes(".") ? propertyKey.split(".").pop()! : propertyKey
     const schema = getPropertySchema(actualProperty)
 
     // Check if this is a boolean property (has boolean presetOptions)
     if (schema?.presetOptions) {
       const presetOptions = schema.presetOptions()
       const isBooleanProperty =
-        presetOptions.length === 2 &&
-        presetOptions.every((v) => typeof v === "boolean")
+        presetOptions.length === 2 && presetOptions.every((v) => typeof v === "boolean")
 
       if (isBooleanProperty) {
         // Convert "On"/"Off" or "true"/"false" strings to boolean. On/off
         // booleans are option-only in core, so tag the pick as OPTION.
         const lowerValue = value.toLowerCase()
+
         if (lowerValue === "on" || lowerValue === "true") {
           return {
             type: ValueType.OPTION,
             value: true,
           }
         }
+
         if (lowerValue === "off" || lowerValue === "false") {
           return {
             type: ValueType.OPTION,
@@ -747,9 +709,4 @@ export function serializeValue(
   }
 }
 
-type ValueWithUnit =
-  | PixelValue
-  | RemValue
-  | PercentageValue
-  | DegreesValue
-  | NumberValue
+type ValueWithUnit = PixelValue | RemValue | PercentageValue | DegreesValue | NumberValue

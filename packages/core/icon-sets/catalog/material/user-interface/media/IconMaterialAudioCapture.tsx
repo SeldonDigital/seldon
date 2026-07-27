@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialAudioCapture(props: SVGAttributes<SVGSVGElement>) {
   return (

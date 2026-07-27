@@ -1,6 +1,7 @@
 import { Frame } from "@seldon/components/frames/Frame"
 import { Image } from "@seldon/components/primitives/Image"
-import { CSSProperties } from "react"
+
+import type { CSSProperties } from "react"
 
 interface ImagePreviewProps {
   src: string
@@ -16,11 +17,7 @@ const imageStyle: CSSProperties = {
 }
 
 /** Contained image preview that reports load failures through `onError`. */
-export function ImagePreview({
-  src,
-  alt = "Preview",
-  onError,
-}: ImagePreviewProps) {
+export function ImagePreview({ src, alt = "Preview", onError }: ImagePreviewProps) {
   return (
     <Frame wrapperElement="div" style={wrapperStyle}>
       <Image src={src} alt={alt} style={imageStyle} onError={onError} />

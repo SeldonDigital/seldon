@@ -33,9 +33,7 @@ export function getEnabledVariants(
   slotSelection: FamilyVariantSelection | undefined,
   available: string[],
 ): string[] {
-  return sortFontVariants(
-    available.filter((variant) => isVariantEnabled(slotSelection, variant)),
-  )
+  return sortFontVariants(available.filter((variant) => isVariantEnabled(slotSelection, variant)))
 }
 
 /** Derives the preset for a family from its selection and available variants. */
@@ -45,7 +43,9 @@ export function deriveVariantPreset(
 ): VariantPreset {
   if (available.length === 0) return "all"
   const enabled = getEnabledVariants(slotSelection, available).length
+
   if (enabled === available.length) return "all"
   if (enabled === 0) return "none"
+
   return "custom"
 }

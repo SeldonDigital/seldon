@@ -10,8 +10,6 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -26,6 +24,8 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface TextCodeblockProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -82,10 +82,7 @@ export function TextCodeblock({
   htmlElement = sdn.htmlElement,
   ...props
 }: TextCodeblockProps) {
-  const textCodeblockClassName = combineClassNames(
-    "sdn-text-codeblock",
-    className,
-  )
+  const textCodeblockClassName = combineClassNames("sdn-text-codeblock", className)
 
   switch (htmlElement) {
     case "p":
@@ -106,11 +103,7 @@ export function TextCodeblock({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLSpan
-          className={textCodeblockClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLSpan className={textCodeblockClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLSpan>
       )
@@ -119,11 +112,7 @@ export function TextCodeblock({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLAnchor
-          className={textCodeblockClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLAnchor className={textCodeblockClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLAnchor>
       )
@@ -132,11 +121,7 @@ export function TextCodeblock({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLabel
-          className={textCodeblockClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLabel className={textCodeblockClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLabel>
       )
@@ -223,11 +208,7 @@ export function TextCodeblock({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLCode
-          className={textCodeblockClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLCode className={textCodeblockClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLCode>
       )
@@ -236,11 +217,7 @@ export function TextCodeblock({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLOption
-          className={textCodeblockClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLOption className={textCodeblockClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLOption>
       )
@@ -249,11 +226,7 @@ export function TextCodeblock({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLPre
-          className={textCodeblockClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLPre className={textCodeblockClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLPre>
       )

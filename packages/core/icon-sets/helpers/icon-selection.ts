@@ -1,11 +1,9 @@
-import type { IconId } from "../../icon-sets"
-import {
-  type IconCategory,
-  categorySubcategories,
-  iconCategories,
-} from "../constants/categories"
-import type { ComputedIconSet } from "../types/icon-set"
+import { categorySubcategories, iconCategories } from "../constants/categories"
 import { getIconCategoryFromId } from "./get-icon-category-from-id"
+
+import type { IconId } from "../../icon-sets"
+import type { IconCategory } from "../constants/categories"
+import type { ComputedIconSet } from "../types/icon-set"
 
 /**
  * Per-icon inclusion for an icon set entry. An icon set entry stores which icons
@@ -25,13 +23,11 @@ function getIconTopCategory(iconId: IconId): IconCategory {
  * the default inclusion per icon id. Other sets fall back to the default
  * categories.
  */
-export function isIconEnabledByDefault(
-  set: ComputedIconSet,
-  iconId: IconId,
-): boolean {
+export function isIconEnabledByDefault(set: ComputedIconSet, iconId: IconId): boolean {
   if (set.defaultEnabledIcons) {
     return set.defaultEnabledIcons.includes(iconId)
   }
+
   return set.defaultEnabledCategories.includes(getIconTopCategory(iconId))
 }
 
@@ -47,7 +43,9 @@ export function isIconIncluded(
   iconId: IconId,
 ): boolean {
   const explicit = inclusion?.[iconId]
+
   if (typeof explicit === "boolean") return explicit
+
   return isIconEnabledByDefault(set, iconId)
 }
 
@@ -60,23 +58,23 @@ export function isIconIncluded(
 export function getIconsInCategoryOrder(set: ComputedIconSet): IconId[] {
   const ordered: IconId[] = []
   const seen = new Set<IconId>()
+
   for (const category of iconCategories) {
     for (const subcategory of categorySubcategories[category]) {
-      for (const iconId of getIconsInSubcategory(
-        set,
-        `${category}/${subcategory}`,
-      )) {
+      for (const iconId of getIconsInSubcategory(set, `${category}/${subcategory}`)) {
         if (seen.has(iconId)) continue
         ordered.push(iconId)
         seen.add(iconId)
       }
     }
   }
+
   for (const iconId of set.icons) {
     if (seen.has(iconId)) continue
     ordered.push(iconId)
     seen.add(iconId)
   }
+
   return ordered
 }
 
@@ -88,29 +86,19 @@ export function getIncludedIcons(
   set: ComputedIconSet,
   inclusion: IconInclusion | undefined,
 ): IconId[] {
-  return getIconsInCategoryOrder(set).filter((iconId) =>
-    isIconIncluded(set, inclusion, iconId),
-  )
+  return getIconsInCategoryOrder(set).filter((iconId) => isIconIncluded(set, inclusion, iconId))
 }
 
 /** Preset for a subcategory, derived from how many of its icons are on. */
 export type IconSubcategoryPreset = "all" | "none" | "custom"
 
 /** Icons in the set that belong to a `category/subcategory` path. */
-export function getIconsInSubcategory(
-  set: ComputedIconSet,
-  subcategoryPath: string,
-): IconId[] {
-  return set.icons.filter(
-    (iconId) => getIconCategoryFromId(iconId) === subcategoryPath,
-  )
+export function getIconsInSubcategory(set: ComputedIconSet, subcategoryPath: string): IconId[] {
+  return set.icons.filter((iconId) => getIconCategoryFromId(iconId) === subcategoryPath)
 }
 
 /** Icons in the set that belong to a top-level category. */
-export function getIconsInCategory(
-  set: ComputedIconSet,
-  category: IconCategory,
-): IconId[] {
+export function getIconsInCategory(set: ComputedIconSet, category: IconCategory): IconId[] {
   return set.icons.filter((iconId) => getIconTopCategory(iconId) === category)
 }
 
@@ -121,11 +109,12 @@ export function deriveSubcategoryPreset(
   subcategoryPath: string,
 ): IconSubcategoryPreset {
   const icons = getIconsInSubcategory(set, subcategoryPath)
+
   if (icons.length === 0) return "none"
-  const enabled = icons.filter((iconId) =>
-    isIconIncluded(set, inclusion, iconId),
-  ).length
+  const enabled = icons.filter((iconId) => isIconIncluded(set, inclusion, iconId)).length
+
   if (enabled === icons.length) return "all"
   if (enabled === 0) return "none"
+
   return "custom"
 }

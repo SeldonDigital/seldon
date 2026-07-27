@@ -4,11 +4,9 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback, useMemo } from "react"
 
-import { InstanceId, VariantId } from "@seldon/core/index"
-import {
-  nodeRelationshipService,
-  nodeRetrievalService,
-} from "@seldon/core/workspace/services"
+import { nodeRelationshipService, nodeRetrievalService } from "@seldon/core/workspace/services"
+
+import type { InstanceId, VariantId } from "@seldon/core/index"
 
 export type BelongsToActiveBoardResult = {
   /** Whether the current canvas hover target belongs to the active board. */
@@ -25,9 +23,7 @@ export type BelongsToActiveBoardResult = {
  *
  * @returns A checker for whether a node id belongs to the active board.
  */
-export function useNodeBelongsToActiveBoard(): (
-  nodeId: VariantId | InstanceId,
-) => boolean {
+export function useNodeBelongsToActiveBoard(): (nodeId: VariantId | InstanceId) => boolean {
   const { activeBoard } = useActiveBoard()
   const { workspace } = useWorkspace()
 
@@ -37,14 +33,9 @@ export function useNodeBelongsToActiveBoard(): (
 
       try {
         const node = nodeRetrievalService.getNode(nodeId, workspace)
-        const nodeBoard = nodeRelationshipService.findBoardForNode(
-          node,
-          workspace,
-        )
-        return (
-          nodeBoard !== null &&
-          getComponentKey(nodeBoard) === getComponentKey(activeBoard)
-        )
+        const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
+
+        return nodeBoard !== null && getComponentKey(nodeBoard) === getComponentKey(activeBoard)
       } catch {
         return false
       }
@@ -72,9 +63,7 @@ export function useBelongsToActiveBoard(): BelongsToActiveBoardResult {
       return hoverState.objectId === activeBoardKey
     }
 
-    return nodeBelongsToActiveBoard(
-      hoverState.objectId as VariantId | InstanceId,
-    )
+    return nodeBelongsToActiveBoard(hoverState.objectId as VariantId | InstanceId)
   }, [activeBoard, hoverState, nodeBelongsToActiveBoard])
 
   return { hoverBelongsToActiveBoard, nodeBelongsToActiveBoard }

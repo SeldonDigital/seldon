@@ -1,7 +1,8 @@
 import { materialIconIds } from "."
 import { computeIconSet } from "../../helpers/compute-icon-set"
-import type { StockIconSet } from "../../types/icon-set"
 import { materialAllIconIds } from "./index-all"
+
+import type { StockIconSet } from "../../types/icon-set"
 
 export const iconSet: StockIconSet = {
   metadata: {

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComputedFunction, ValueType } from "../../../properties/constants"
-import type { Value } from "../../../properties/types/value"
 import { isAtomicValue } from "./is-atomic-value"
 import { isComputedValue, isMatchColorValue } from "./is-computed-value"
 import { isDoubleAxisValue } from "./is-double-axis-value"
@@ -9,13 +8,13 @@ import { isEmptyValue } from "./is-empty-value"
 import { isThemeValue } from "./is-theme-value"
 import { isUnitValue } from "./is-unit-value"
 
+import type { Value } from "../../../properties/types/value"
+
 const asValue = (value: unknown): Value => value as Value
 
 describe("isAtomicValue", () => {
   it("accepts objects with type and value", () => {
-    expect(isAtomicValue(asValue({ type: ValueType.EXACT, value: 5 }))).toBe(
-      true,
-    )
+    expect(isAtomicValue(asValue({ type: ValueType.EXACT, value: 5 }))).toBe(true)
   })
 
   it("rejects objects missing type or value", () => {
@@ -25,15 +24,11 @@ describe("isAtomicValue", () => {
 
 describe("isEmptyValue", () => {
   it("accepts EMPTY values", () => {
-    expect(isEmptyValue(asValue({ type: ValueType.EMPTY, value: null }))).toBe(
-      true,
-    )
+    expect(isEmptyValue(asValue({ type: ValueType.EMPTY, value: null }))).toBe(true)
   })
 
   it("rejects non-empty values and undefined", () => {
-    expect(isEmptyValue(asValue({ type: ValueType.EXACT, value: 1 }))).toBe(
-      false,
-    )
+    expect(isEmptyValue(asValue({ type: ValueType.EXACT, value: 1 }))).toBe(false)
     expect(isEmptyValue(undefined)).toBe(false)
   })
 })
@@ -48,33 +43,25 @@ describe("isThemeValue", () => {
         }),
       ),
     ).toBe(true)
-    expect(
-      isThemeValue(
-        asValue({ type: ValueType.THEME_ORDINAL, value: "@size.medium" }),
-      ),
-    ).toBe(true)
+    expect(isThemeValue(asValue({ type: ValueType.THEME_ORDINAL, value: "@size.medium" }))).toBe(
+      true,
+    )
   })
 
   it("rejects exact values", () => {
-    expect(isThemeValue(asValue({ type: ValueType.EXACT, value: 1 }))).toBe(
-      false,
-    )
+    expect(isThemeValue(asValue({ type: ValueType.EXACT, value: 1 }))).toBe(false)
   })
 })
 
 describe("isUnitValue", () => {
   it("accepts exact values carrying a unit object", () => {
-    expect(
-      isUnitValue(
-        asValue({ type: ValueType.EXACT, value: { unit: "px", value: 16 } }),
-      ),
-    ).toBe(true)
+    expect(isUnitValue(asValue({ type: ValueType.EXACT, value: { unit: "px", value: 16 } }))).toBe(
+      true,
+    )
   })
 
   it("rejects exact values without a unit object", () => {
-    expect(isUnitValue(asValue({ type: ValueType.EXACT, value: 5 }))).toBe(
-      false,
-    )
+    expect(isUnitValue(asValue({ type: ValueType.EXACT, value: 5 }))).toBe(false)
   })
 })
 

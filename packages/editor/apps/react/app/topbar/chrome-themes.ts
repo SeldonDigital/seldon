@@ -1,8 +1,9 @@
 import {
-  type ChromeTheme,
   DEFAULT_CHROME_THEME,
   getChromeThemes as buildChromeThemes,
 } from "@seldon/editor/lib/chrome/chrome-themes"
+
+import type { ChromeTheme } from "@seldon/editor/lib/chrome/chrome-themes"
 
 /**
  * Editor chrome themes for the React editor.

@@ -3,6 +3,7 @@ import {
   layeredFacetPath,
   parsePropertyPath,
 } from "@seldon/editor/lib/properties/property-paths"
+
 import type {
   LayeredPaintKey,
   PropertyKey,
@@ -18,6 +19,7 @@ export function compoundPresetPropertyKey(propertyKey: string): string {
   if (isLayeredPaintRoot(propertyKey)) {
     return layeredFacetPath(propertyKey as LayeredPaintKey, "preset")
   }
+
   return `${propertyKey}.preset`
 }
 
@@ -36,20 +38,19 @@ export function dispatchPropertyReset(
   ) => void,
 ): void {
   const parsed = parsePropertyPath(propertyKey)
+
   if (isSubProperty) {
     if (parsed.kind === "layered-facet") {
-      resetProperty(
-        parsed.root as PropertyKey,
-        parsed.facet as SubPropertyKey,
-        parsed.index,
-      )
+      resetProperty(parsed.root as PropertyKey, parsed.facet as SubPropertyKey, parsed.index)
     } else if (parsed.kind === "facet") {
       resetProperty(parsed.root as PropertyKey, parsed.facet as SubPropertyKey)
     } else {
       resetProperty(propertyKey as PropertyKey)
     }
+
     return
   }
+
   if (parsed.kind === "layered-parent") {
     resetProperty(parsed.root as PropertyKey, undefined, parsed.index)
   } else {
@@ -61,19 +62,15 @@ export function dispatchPropertyReset(
  * Strips the `type`/`value` envelope keys and empty facets from a compound
  * value, leaving only the populated sub-properties for a partial update.
  */
-export function cleanCompoundValue(
-  compoundValue: unknown,
-): Record<string, unknown> {
+export function cleanCompoundValue(compoundValue: unknown): Record<string, unknown> {
   const current = compoundValue || {}
+
   return Object.keys(current).reduce(
     (acc, key) => {
-      if (
-        key !== "type" &&
-        key !== "value" &&
-        (current as Record<string, unknown>)[key]
-      ) {
+      if (key !== "type" && key !== "value" && (current as Record<string, unknown>)[key]) {
         acc[key] = (current as Record<string, unknown>)[key]
       }
+
       return acc
     },
     {} as Record<string, unknown>,

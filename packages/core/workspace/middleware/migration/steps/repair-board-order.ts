@@ -1,5 +1,6 @@
-import type { Workspace } from "../../../model/workspace"
 import { boardOrderService } from "../../../services/components/board-order.service"
+
+import type { Workspace } from "../../../model/workspace"
 
 /**
  * Realigns the stored board order on every load.

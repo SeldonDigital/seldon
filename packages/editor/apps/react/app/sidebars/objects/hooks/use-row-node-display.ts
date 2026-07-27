@@ -1,21 +1,19 @@
-import { ComboboxOptionItem, OptionIconRender } from "@app/menus"
-import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { CSSProperties } from "react"
-
-import { Display, Properties, Value, ValueType, VariantId } from "@seldon/core"
+import { Display, ValueType } from "@seldon/core"
 import {
   PROPERTY_ICONS,
   PROPERTY_OPTION_ICONS,
 } from "@seldon/core/properties/schemas/data/property-icons"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import {
-  nodeTraversalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import type { EntryNode } from "@seldon/core/workspace/types"
+import { nodeTraversalService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import { resolveRowDisplayDecoration } from "./row-display-style"
+
+import type { ComboboxOptionItem, OptionIconRender } from "@app/menus"
+import type { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { Properties, Value, VariantId } from "@seldon/core"
+import type { EntryNode } from "@seldon/core/workspace/types"
+import type { CSSProperties } from "react"
 
 type Workspace = ReturnType<typeof useWorkspace>["workspace"]
 type Dispatch = ReturnType<typeof useWorkspace>["dispatch"]
@@ -41,10 +39,7 @@ interface RowNodeDisplay {
   /** Applies a picker value, clearing or storing the `display` override. */
   selectDisplay: (value: string) => void
   /** Resolves the Material glyph for a picker option. */
-  resolveDisplayOptionIcon: (option?: {
-    value: string
-    name: string
-  }) => OptionIconRender
+  resolveDisplayOptionIcon: (option?: { value: string; name: string }) => OptionIconRender
   /** Trigger glyph for the row's Display button. */
   displayIcon: IconProps
   /** Row reads as disabled/gray (hide/stub/mock/exclude in the ancestor chain). */
@@ -137,13 +132,11 @@ export function useRowNodeDisplay({
     if (key === "default" || key === "inherit") {
       return DISPLAY_NEUTRAL_ICON
     }
+
     return PROPERTY_OPTION_ICONS.display[key] ?? DISPLAY_NEUTRAL_ICON
   }
 
-  function resolveDisplayOptionIcon(option?: {
-    value: string
-    name: string
-  }): OptionIconRender {
+  function resolveDisplayOptionIcon(option?: { value: string; name: string }): OptionIconRender {
     return {
       kind: "iconId",
       icon: resolveDisplayGlyph(option?.value ?? "default"),
@@ -166,6 +159,7 @@ export function useRowNodeDisplay({
 
     const states: Display[] = []
     const ownDisplay = properties?.display?.value
+
     if (ownDisplay) states.push(ownDisplay)
 
     if (!typeCheckingService.isInstance(node)) {
@@ -173,17 +167,14 @@ export function useRowNodeDisplay({
     }
 
     let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
+
     while (currentParent) {
-      const parentDisplay = getNodeProperties(
-        currentParent as EntryNode,
-        workspace,
-      )?.display?.value
+      const parentDisplay = getNodeProperties(currentParent as EntryNode, workspace)?.display?.value
+
       if (parentDisplay) states.push(parentDisplay)
+
       if (typeCheckingService.isInstance(currentParent)) {
-        currentParent = nodeTraversalService.findParentNode(
-          currentParent.id,
-          workspace,
-        )
+        currentParent = nodeTraversalService.findParentNode(currentParent.id, workspace)
       } else {
         break
       }

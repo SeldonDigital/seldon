@@ -16,6 +16,7 @@ export function getLayeredPaintLayers<K extends keyof LayeredPaintLayerMap>(
   key: K,
 ): LayeredPaintLayerMap[K][] {
   const stack = properties[key] as unknown
+
   if (!stack) return []
 
   if (Array.isArray(stack)) {

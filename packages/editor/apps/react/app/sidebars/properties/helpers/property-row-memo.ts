@@ -1,10 +1,10 @@
 import {
-  FlatProperty,
   getCompoundChildRows,
   getPropertiesSubjectId,
 } from "@seldon/editor/lib/properties/inspector/properties-data"
 
-import { RowPropertyProps } from "../hooks/use-row-property"
+import type { RowPropertyProps } from "../hooks/use-row-property"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 /** Structural equality for plain JSON-like values (FlatProperty fields). */
 function deepEqual(a: unknown, b: unknown): boolean {
@@ -14,11 +14,15 @@ function deepEqual(a: unknown, b: unknown): boolean {
   if (typeof a !== "object") return false
 
   const arrayA = Array.isArray(a)
+
   if (arrayA !== Array.isArray(b)) return false
+
   if (arrayA) {
     const listA = a as unknown[]
     const listB = b as unknown[]
+
     if (listA.length !== listB.length) return false
+
     return listA.every((item, index) => deepEqual(item, listB[index]))
   }
 
@@ -26,13 +30,16 @@ function deepEqual(a: unknown, b: unknown): boolean {
   const objB = b as Record<string, unknown>
   const keysA = Object.keys(objA)
   const keysB = Object.keys(objB)
+
   if (keysA.length !== keysB.length) return false
+
   return keysA.every((key) => deepEqual(objA[key], objB[key]))
 }
 
 /** The sub-property rows a compound or shorthand parent recurses into. */
 function rowChildren(props: RowPropertyProps): FlatProperty[] {
   if (!props.property.isCompound && !props.property.isShorthand) return []
+
   return getCompoundChildRows(props.property.key, props.allProperties)
 }
 
@@ -45,22 +52,25 @@ function rowChildren(props: RowPropertyProps): FlatProperty[] {
  * unchanged rows is what cuts the properties-sidebar re-render storm on each edit
  * and keystroke.
  */
-export function arePropertyRowPropsEqual(
-  prev: RowPropertyProps,
-  next: RowPropertyProps,
-): boolean {
+export function arePropertyRowPropsEqual(prev: RowPropertyProps, next: RowPropertyProps): boolean {
   if (prev.theme !== next.theme) return false
   if (prev.themeEditingContext !== next.themeEditingContext) return false
+
   if (prev.fontCollectionEditingContext !== next.fontCollectionEditingContext) {
     return false
   }
+
   if (prev.iconSetEditingContext !== next.iconSetEditingContext) return false
+
   if (getPropertiesSubjectId(prev.node) !== getPropertiesSubjectId(next.node)) {
     return false
   }
+
   if (!deepEqual(prev.property, next.property)) return false
+
   if (prev.property.isCompound || prev.property.isShorthand) {
     if (!deepEqual(rowChildren(prev), rowChildren(next))) return false
   }
+
   return true
 }

@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Panel",
   id: Seldon.ComponentId.PANEL,
   intent:
     "Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.",
-  tags: [
-    "panel",
-    "dialog",
-    "modal",
-    "ui",
-    "overlay",
-    "popup",
-    "interaction",
-    "alert",
-  ],
+  tags: ["panel", "dialog", "modal", "ui", "overlay", "popup", "interaction", "alert"],
   level: Seldon.ComponentLevel.MODULE,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -462,8 +454,7 @@ export const schema = {
     {
       id: "modal",
       label: "Modal",
-      intent:
-        "Confirmation dialog with a titled header and cancel or confirm actions.",
+      intent: "Confirmation dialog with a titled header and cancel or confirm actions.",
       children: [
         {
           component: Seldon.ComponentId.BAR,
@@ -819,8 +810,7 @@ export const schema = {
     {
       id: "palette",
       label: "Palette",
-      intent:
-        "Floating palette panel with a titled header, close control, and an open body.",
+      intent: "Floating palette panel with a titled header, close control, and an open body.",
       children: [
         {
           component: Seldon.ComponentId.BAR,

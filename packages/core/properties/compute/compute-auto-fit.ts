@@ -2,12 +2,13 @@ import { modulate, round } from "../../helpers/math"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isUnitValue } from "../../helpers/type-guards/value/is-unit-value"
 import { invariant } from "../../helpers/utils/invariant"
-import type { ThemeValueKey } from "../../themes/types"
 import { isModulatedToken } from "../../themes/values"
 import { EMPTY_VALUE, Unit, ValueType } from "../constants"
-import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
 import { resolveAutoFitSource } from "./resolve-auto-fit-source"
-import { ComputeContext } from "./types"
+
+import type { ThemeValueKey } from "../../themes/types"
+import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
+import type { ComputeContext } from "./types"
 
 /**
  * Scales the ancestor size token by the theme's `autoFit` factor. The source is resolved by walking
@@ -22,10 +23,7 @@ import { ComputeContext } from "./types"
  * @param context - Theme and contexts for the ancestor walk
  * @returns `EXACT` number, `EXACT` length, `EXACT` rem from size modulation, or `EMPTY`
  */
-export function computeAutoFit(
-  value: ComputedAutoFitValue,
-  context: ComputeContext,
-) {
+export function computeAutoFit(value: ComputedAutoFitValue, context: ComputeContext) {
   const factor = context.theme.autoFit.parameters.factor
   const basedOnValue = resolveAutoFitSource(context)
 

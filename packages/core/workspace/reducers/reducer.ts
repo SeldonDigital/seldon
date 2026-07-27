@@ -3,12 +3,6 @@ import { migrationMiddleware } from "../middleware/migration/middleware"
 import { debugMiddleware } from "../middleware/observability/debug.middleware"
 import { validationMiddleware } from "../middleware/validation/validation.middleware"
 import { workspaceVerificationMiddleware } from "../middleware/verification/verification.middleware"
-import type { Workspace } from "../model/workspace"
-import type {
-  ThemeCustomTokenSection,
-  VariantId,
-  WorkspaceAction,
-} from "../types"
 import { addAuthoredComponent } from "./handlers/add/add-authored-component"
 import { addAuthoredTheme } from "./handlers/add/add-authored-theme"
 import { addComponent } from "./handlers/add/add-component"
@@ -133,6 +127,9 @@ import { setWorkspaceTags } from "./handlers/set/set-workspace-tags"
 import { setWorkspaceVersion } from "./handlers/set/set-workspace-version"
 import { stubsResourceMapNoop } from "./handlers/stubs/stubs-resource-maps"
 
+import type { Workspace } from "../model/workspace"
+import type { ThemeCustomTokenSection, VariantId, WorkspaceAction } from "../types"
+
 function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
   switch (action.type) {
     case "set_workspace":
@@ -186,15 +183,15 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addAuthoredComponent(action.payload, workspace)
     case "add_sandbox":
       return addSandbox(action.payload, workspace)
+
     case "add_component_and_insert_default_instance": {
       const { boardKey, target, variantFallbacks } = action.payload
-      const workspaceWithBoard = addComponent(
-        { boardKey, variantFallbacks },
-        workspace,
-      )
+      const workspaceWithBoard = addComponent({ boardKey, variantFallbacks }, workspace)
       const board = workspaceWithBoard.boards[boardKey]
       const rootId = board?.variants[0]?.id
+
       if (!rootId) return workspaceWithBoard
+
       return insertVariantInstance(
         {
           variantId: rootId as VariantId,
@@ -376,9 +373,7 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "add_theme_custom_fontWeight":
     case "add_theme_custom_lineHeight":
       return addThemeCustomToken(
-        action.type.slice(
-          "add_theme_custom_".length,
-        ) as ThemeCustomTokenSection,
+        action.type.slice("add_theme_custom_".length) as ThemeCustomTokenSection,
         action.payload,
         workspace,
       )
@@ -470,10 +465,7 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
 
 const preReducerMiddlewares = [validationMiddleware]
 
-const postReducerMiddlewares = [
-  migrationMiddleware,
-  workspaceVerificationMiddleware,
-]
+const postReducerMiddlewares = [migrationMiddleware, workspaceVerificationMiddleware]
 
 if (process.env.NODE_ENV === "development") {
   preReducerMiddlewares.push(debugMiddleware)

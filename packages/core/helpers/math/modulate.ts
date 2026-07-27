@@ -8,12 +8,12 @@ const DEFAULT_MODULATION_RATIO = 1.25
  */
 export function modulate(
   {
-    ratio = DEFAULT_MODULATION_RATIO,
     step = 0,
+    ratio = DEFAULT_MODULATION_RATIO,
     size = 1,
   }: {
-    ratio?: number
     step: number
+    ratio?: number
     size?: number
   },
   options: { round?: boolean } = { round: true },

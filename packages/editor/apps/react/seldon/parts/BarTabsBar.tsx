@@ -10,13 +10,15 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
+import { ButtonSimple } from "../elements/ButtonSimple"
 import { Frame } from "../frames/Frame"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface BarTabsBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -65,10 +67,7 @@ export function BarTabsBar({
       : {
           ...sdn.buttonSimple,
           ...buttonSimple,
-          className: combineClassNames(
-            sdn.buttonSimple?.className,
-            buttonSimple?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -78,10 +77,7 @@ export function BarTabsBar({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const buttonSimple2Props = applyRef(
@@ -91,10 +87,7 @@ export function BarTabsBar({
       : {
           ...sdn.buttonSimple2,
           ...buttonSimple2,
-          className: combineClassNames(
-            sdn.buttonSimple2?.className,
-            buttonSimple2?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple2?.className, buttonSimple2?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -104,10 +97,7 @@ export function BarTabsBar({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const buttonSimple3Props = applyRef(
@@ -117,10 +107,7 @@ export function BarTabsBar({
       : {
           ...sdn.buttonSimple3,
           ...buttonSimple3,
-          className: combineClassNames(
-            sdn.buttonSimple3?.className,
-            buttonSimple3?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple3?.className, buttonSimple3?.className),
         },
   )
   const textLabel3Props = applyRef(
@@ -130,10 +117,7 @@ export function BarTabsBar({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
 
@@ -155,16 +139,12 @@ export function BarTabsBar({
           )}
           {buttonSimple2Props !== null && (
             <ButtonSimple {...buttonSimple2Props}>
-              {textLabel2 && textLabel2Props && (
-                <TextLabel {...textLabel2Props} />
-              )}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
             </ButtonSimple>
           )}
           {buttonSimple3Props !== null && (
             <ButtonSimple {...buttonSimple3Props}>
-              {textLabel3 && textLabel3Props && (
-                <TextLabel {...textLabel3Props} />
-              )}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
             </ButtonSimple>
           )}
         </>

@@ -8,10 +8,9 @@ import { useEffect, useMemo } from "react"
 
 import { boardOrderService } from "@seldon/core/workspace/services"
 
-import {
-  BoardSection,
-  getBoardSections,
-} from "../../helpers/get-board-sections"
+import { getBoardSections } from "../../helpers/get-board-sections"
+
+import type { BoardSection } from "../../helpers/get-board-sections"
 
 /** Section levels that belong to the Resources view of the objects sidebar. */
 const RESOURCE_SECTION_LEVELS: ReadonlySet<BoardSection["level"]> = new Set([
@@ -28,29 +27,13 @@ const RESOURCE_SECTION_LEVELS: ReadonlySet<BoardSection["level"]> = new Set([
 export function useObjectsSidebar() {
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
-  const {
-    showPlayground,
-    objectsView,
-    isolatedView,
-    isolatedBoardKey,
-    isolatedVariantRootId,
-  } = useEditorConfig()
-  const {
-    selectBoard,
-    selectedNodeId,
-    selectedBoardId,
-    selectedResourceEntry,
-  } = useSelection()
+  const { showPlayground, objectsView, isolatedView, isolatedBoardKey, isolatedVariantRootId } =
+    useEditorConfig()
+  const { selectBoard, selectedNodeId, selectedBoardId, selectedResourceEntry } = useSelection()
 
-  const boards = useMemo(
-    () => boardOrderService.getBoards(workspace),
-    [workspace],
-  )
+  const boards = useMemo(() => boardOrderService.getBoards(workspace), [workspace])
 
-  const playgrounds = useMemo(
-    () => boardOrderService.getPlaygrounds(workspace),
-    [workspace],
-  )
+  const playgrounds = useMemo(() => boardOrderService.getPlaygrounds(workspace), [workspace])
 
   const sections = useMemo(() => {
     const allSections = getBoardSections(boards, playgrounds)
@@ -66,17 +49,12 @@ export function useObjectsSidebar() {
     // Isolation reads the anchored board from the live workspace, so an inserted
     // component grows the set. It keys off the stored board, not the selection,
     // so deselecting does not exit isolation.
-    const isolatedBoard = isolatedBoardKey
-      ? workspace.boards[isolatedBoardKey]
-      : null
+    const isolatedBoard = isolatedBoardKey ? workspace.boards[isolatedBoardKey] : null
+
     if (isolatedView && isolatedBoard) {
-      return filterIsolatedSections(
-        withPlayground,
-        isolatedBoard,
-        isolatedVariantRootId,
-        workspace,
-      )
+      return filterIsolatedSections(withPlayground, isolatedBoard, isolatedVariantRootId, workspace)
     }
+
     return withPlayground
   }, [
     boards,
@@ -99,14 +77,7 @@ export function useObjectsSidebar() {
     ) {
       selectBoard(getComponentKey(boards[0]))
     }
-  }, [
-    boards,
-    activeBoard,
-    selectBoard,
-    selectedNodeId,
-    selectedBoardId,
-    selectedResourceEntry,
-  ])
+  }, [boards, activeBoard, selectBoard, selectedNodeId, selectedBoardId, selectedResourceEntry])
 
   return { sections }
 }

@@ -1,4 +1,3 @@
-import type { Action, Workspace } from "../../types"
 import { validateBoardMetadata } from "./action-groups/board-metadata"
 import {
   validateAddFontCollectionCustomFamily,
@@ -29,10 +28,7 @@ import {
   validateDuplicateComponent,
   validateRemoveBoard,
 } from "./action-groups/resource-catalog"
-import {
-  validateCustomStateRegistry,
-  validateStateMutation,
-} from "./action-groups/state-mutations"
+import { validateCustomStateRegistry, validateStateMutation } from "./action-groups/state-mutations"
 import {
   validateAddThemeCustomToken,
   validateRemoveThemeCustomToken,
@@ -41,6 +37,8 @@ import {
 } from "./action-groups/theme-custom-tokens"
 import { boardValidators } from "./validators"
 import { WorkspaceValidationError } from "./workspace-validation-error"
+
+import type { Action, Workspace } from "../../types"
 
 /**
  * Validates a workspace action before the reducer runs.
@@ -53,86 +51,100 @@ export function validateAction(workspace: Workspace, action: Action): void {
 
   if (action.type.startsWith("add_theme_custom_")) {
     validateAddThemeCustomToken(workspace, action)
+
     return
   }
 
   if (action.type.startsWith("remove_theme_custom_")) {
     validateRemoveThemeCustomToken(workspace, action)
+
     return
   }
 
   if (action.type === "set_theme_scale_slot") {
     validateSetThemeScaleSlot(workspace, action)
+
     return
   }
 
   if (action.type === "set_theme_custom_token_name") {
     validateSetThemeCustomTokenName(workspace, action)
+
     return
   }
 
   if (action.type === "add_font_collection_custom_family") {
     validateAddFontCollectionCustomFamily(workspace, action)
+
     return
   }
 
   if (action.type === "remove_font_collection_custom_family") {
     validateRemoveFontCollectionCustomFamily(workspace, action)
+
     return
   }
 
   switch (action.type) {
     case "add_component":
       boardValidators.doesNotExist(workspace, action.payload.boardKey)
+
       return
     case "add_font_collection":
     case "add_media":
     case "add_icon_set":
     case "add_theme":
       validateAddResourceCatalog(workspace, action)
+
       return
     case "add_authored_theme":
       boardValidators.doesNotExist(workspace, action.payload.boardKey)
+
       return
     case "add_playground":
       boardValidators.playgroundKeyIsFree(workspace, action.payload.boardKey)
+
       return
     case "add_authored_component":
       validateAddAuthoredComponent(workspace, action)
+
       return
     case "add_sandbox":
       boardValidators.playgroundExists(workspace, action.payload.playgroundKey)
+
       return
     case "set_playground_label":
       boardValidators.playgroundExists(workspace, action.payload.playgroundKey)
+
       return
     case "duplicate_playground":
-      boardValidators.playgroundExists(
-        workspace,
-        action.payload.sourcePlaygroundKey,
-      )
-      boardValidators.playgroundKeyIsFree(
-        workspace,
-        action.payload.newPlaygroundKey,
-      )
+      boardValidators.playgroundExists(workspace, action.payload.sourcePlaygroundKey)
+      boardValidators.playgroundKeyIsFree(workspace, action.payload.newPlaygroundKey)
+
       return
     case "add_variant":
       validateAddVariant(workspace, action)
+
       return
     case "duplicate_node":
       validateDuplicateNode(workspace, action)
+
       return
     case "reorder_board":
       validateReorderBoard(workspace, action)
+
       return
     case "reorder_variant_in_board":
       validateReorderVariantInBoard(workspace, action)
+
       return
     case "duplicate_component":
       validateDuplicateComponent(workspace, action)
+
       return
     case "remove_board":
       validateRemoveBoard(workspace, action)
+
       return
     case "add_component_and_insert_default_instance":
     case "insert_variant_instance":
@@ -140,6 +152,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "insert_default_instance":
     case "move_instance":
       validateInsertMutation(workspace, action)
+
       return
     case "reorder_instance_in_parent":
     case "move_instance_directional":
@@ -150,18 +163,23 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_node_property":
     case "reset_node":
       validateNodeMutation(workspace, action)
+
       return
     case "add_node_layer":
       validateAddNodeLayer(workspace, action)
+
       return
     case "remove_node_layer":
       validateRemoveNodeLayer(workspace, action)
+
       return
     case "reorder_node_layer":
       validateReorderNodeLayer(workspace, action)
+
       return
     case "set_node_layer_kind":
       validateSetNodeLayerKind(workspace, action)
+
       return
     case "set_node_theme":
     case "set_node_label":
@@ -176,19 +194,23 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_instance_to_original":
     case "reset_default_variant_to_catalog":
       validateNodeMutation(workspace, action)
+
       return
     case "set_node_state_properties":
     case "reset_node_state_property":
     case "reset_node_state":
       validateStateMutation(workspace, action)
+
       return
     case "add_custom_state":
     case "remove_custom_state":
     case "rename_custom_state":
       validateCustomStateRegistry(workspace, action)
+
       return
     case "reset_component_to_catalog":
       validateResetComponentToCatalog(workspace, action)
+
       return
     case "reset_theme_tokens":
     case "reset_theme_label":
@@ -200,6 +222,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "delete_theme":
     case "duplicate_theme":
       validateThemeMutation(workspace, action)
+
       return
     case "reset_font_collection_label":
     case "reset_font_collection_editor_data":
@@ -213,6 +236,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "delete_font_collection":
     case "duplicate_font_collection":
       validateFontCollectionMutation(workspace, action)
+
       return
     case "set_icon_set_label":
     case "set_icon_set_override":
@@ -222,6 +246,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "delete_icon_set":
     case "duplicate_icon_set":
       validateIconSetMutation(workspace, action)
+
       return
     case "set_board_label":
     case "set_board_intent":
@@ -245,7 +270,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "apply_component_properties_to_all_boards":
     case "set_component_theme":
       validateBoardMetadata(workspace, action)
+
       return
+
     default:
       if (process.env.NODE_ENV === "development") {
         throw new WorkspaceValidationError(

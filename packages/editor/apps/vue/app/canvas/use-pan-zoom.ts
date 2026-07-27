@@ -1,6 +1,8 @@
 import { useZoomControlsStore } from "@app/canvas/zoom-controls-store"
 import { createPanZoomEngine } from "@seldon/editor/lib/canvas/pan-zoom/pan-zoom-engine"
-import { type Ref, onBeforeUnmount, onMounted, ref, watch } from "vue"
+import { onBeforeUnmount, onMounted, ref, watch } from "vue"
+
+import type { Ref } from "vue"
 
 const MIN_SCALE = 0.1
 const MAX_SCALE = 4
@@ -29,6 +31,7 @@ export function usePanZoom(viewport: Ref<HTMLElement | null>) {
 
   function sync(): void {
     const transform = engine.getTransform()
+
     scale.value = transform.scale
     translateX.value = transform.x
     translateY.value = transform.y

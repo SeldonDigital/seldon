@@ -1,16 +1,15 @@
-import {
-  buildDisplayInputProps,
-  buildEditingRefProps,
-} from "@app/sidebars/state-props"
-import { type MaybeRefOrGetter, computed, ref, toValue, watch } from "vue"
+import { buildDisplayInputProps, buildEditingRefProps } from "@app/sidebars/state-props"
+import { computed, ref, toValue, watch } from "vue"
+
+import type { MaybeRefOrGetter } from "vue"
 
 interface UseRenameInputOptions {
   label: MaybeRefOrGetter<string>
-  /** Seed value for edit mode. Defaults to `label` (e.g. edit the raw name while a code name shows). */
-  editLabel?: MaybeRefOrGetter<string>
   isEditing: MaybeRefOrGetter<boolean>
   setEditing: (editing: boolean) => void
   onSubmit: (value: string) => void
+  /** Seed value for edit mode. Defaults to `label` (e.g. edit the raw name while a code name shows). */
+  editLabel?: MaybeRefOrGetter<string>
 }
 
 /**
@@ -46,6 +45,7 @@ export function useRenameInput(options: UseRenameInputOptions) {
     if (!toValue(options.isEditing)) {
       return buildDisplayInputProps(toValue(options.label))
     }
+
     return {
       value: value.value,
       readonly: false,

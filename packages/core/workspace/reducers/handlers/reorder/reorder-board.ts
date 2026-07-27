@@ -1,18 +1,12 @@
 import { produce } from "immer"
 
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../../../helpers/components/board-sort-order"
+import { getBoardOrder, setBoardOrder } from "../../../helpers/components/board-sort-order"
 import { boardOrderService } from "../../../services"
-import type { Board, BoardKey } from "../../../types"
-import { ExtractPayload, Workspace } from "../../../types"
 
-export function reorderBoard(
-  payload: ExtractPayload<"reorder_board">,
-  workspace: Workspace,
-) {
+import type { Board, BoardKey, ExtractPayload, Workspace } from "../../../types"
+
+export function reorderBoard(payload: ExtractPayload<"reorder_board">, workspace: Workspace) {
   if (rules.mutations.reorder.board.allowed === false) {
     return workspace
   }
@@ -27,6 +21,7 @@ export function reorderBoard(
     }
 
     const boardToMove = draft.boards[boardKey]
+
     if (!boardToMove) return draft
 
     const movingUp = getBoardOrder(boardToMove) < newIndex
@@ -41,11 +36,13 @@ export function reorderBoard(
 
     sortedBoards.forEach((id, index) => {
       const board = draft.boards[id]
+
       if (!board) return
       setBoardOrder(board, index)
     })
 
     const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
+
     Object.assign(draft.boards, updatedWorkspace.boards)
 
     return draft

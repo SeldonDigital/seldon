@@ -1,8 +1,5 @@
 import type { Board, BoardKey } from "./components"
-import type {
-  EntryFontCollection,
-  EntryFontCollectionId,
-} from "./entry-font-collection"
+import type { EntryFontCollection, EntryFontCollectionId } from "./entry-font-collection"
 import type { EntryIconSet, EntryIconSetId } from "./entry-icon-set"
 import type { EntryMedia, EntryMediaId } from "./entry-media"
 import type { EntryNode, EntryNodeId } from "./entry-node"

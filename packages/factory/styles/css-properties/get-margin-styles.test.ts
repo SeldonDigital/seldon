@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, Unit, ValueType } from "@seldon/core"
+import { Unit, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
 
 import { getMarginStyles } from "./get-margin-styles"
+
+import type { Properties } from "@seldon/core"
 
 const px = (value: number) => ({
   type: ValueType.EXACT,
@@ -15,6 +17,7 @@ describe("getMarginStyles", () => {
     const properties = {
       margin: { top: px(4), right: px(8), bottom: px(12), left: px(16) },
     } as unknown as Properties
+
     expect(getMarginStyles({ properties, theme: defaultTheme })).toEqual({
       marginTop: "4px",
       marginInlineEnd: "8px",
@@ -27,6 +30,7 @@ describe("getMarginStyles", () => {
     const properties = {
       margin: { top: px(4), bottom: { type: ValueType.EMPTY, value: null } },
     } as unknown as Properties
+
     expect(getMarginStyles({ properties, theme: defaultTheme })).toEqual({
       marginTop: "4px",
     })

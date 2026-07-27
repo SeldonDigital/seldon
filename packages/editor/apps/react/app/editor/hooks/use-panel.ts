@@ -1,9 +1,9 @@
-import { Target } from "@seldon/editor/lib/workspace/target"
 import { create } from "zustand"
 
-import { ComponentLevel } from "@seldon/core/components/constants"
-
 import { useTool } from "./use-tool"
+
+import type { ComponentLevel } from "@seldon/core/components/constants"
+import type { Target } from "@seldon/editor/lib/workspace/target"
 
 export type PanelType =
   | "add-board"
@@ -31,10 +31,10 @@ type OpenPanelArgs =
 
 type PanelState = {
   activePanel: PanelType
-  target?: Target
-  dialogLevel?: ComponentLevel
   openPanel: (...args: OpenPanelArgs) => void
   closePanel: () => void
+  target?: Target
+  dialogLevel?: ComponentLevel
 }
 
 const useStore = create<PanelState>((set) => ({
@@ -71,8 +71,7 @@ const useStore = create<PanelState>((set) => ({
         set({ activePanel: null, target: undefined, dialogLevel: undefined })
     }
   },
-  closePanel: () =>
-    set({ activePanel: null, target: undefined, dialogLevel: undefined }),
+  closePanel: () => set({ activePanel: null, target: undefined, dialogLevel: undefined }),
 }))
 
 export function usePanel() {
@@ -90,10 +89,10 @@ export function usePanel() {
       ) {
         setActiveTool("select")
       }
+
       store.closePanel()
     },
     target: store.activePanel === "component" ? store.target : undefined,
-    dialogLevel:
-      store.activePanel === "add-board" ? store.dialogLevel : undefined,
+    dialogLevel: store.activePanel === "add-board" ? store.dialogLevel : undefined,
   }
 }

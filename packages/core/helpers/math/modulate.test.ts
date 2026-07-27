@@ -14,9 +14,7 @@ describe("modulate", () => {
   })
 
   it("skips rounding when round is false", () => {
-    expect(modulate({ step: 3, ratio: 1.25, size: 1 }, { round: false })).toBe(
-      1.25 ** 3,
-    )
+    expect(modulate({ step: 3, ratio: 1.25, size: 1 }, { round: false })).toBe(1.25 ** 3)
   })
 
   it("uses the default ratio when omitted", () => {

@@ -4,10 +4,11 @@ import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId } from "../../../components/constants"
 import { isComponentBoard } from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
-import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardDefaultNodeId } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { rebuildSchemaVariant } from "./rebuild-schema-variants"
+
+import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 
 /**
  * Rebuilds every catalog schema variant of a component board to its catalog
@@ -23,6 +24,7 @@ export function applyResetSchemaVariantsToCatalog(
 ): Workspace {
   return produce(workspace, (draft) => {
     const board = draft.boards[boardKey]
+
     if (!board || !isComponentBoard(board)) return
 
     const catalogId = board.catalogId as ComponentId
@@ -30,26 +32,26 @@ export function applyResetSchemaVariantsToCatalog(
     const defaultVariantRootId = componentBoardDefaultNodeId(boardKey)
 
     const oldIds = new Set<string>()
+
     walkBoardTreeRefs(board.variants, (ref) => {
       oldIds.add(ref.id)
     })
 
-    const defaultRef = board.variants.find(
-      (ref) => ref.id === defaultVariantRootId,
-    ) ?? { id: defaultVariantRootId }
+    const defaultRef = board.variants.find((ref) => ref.id === defaultVariantRootId) ?? {
+      id: defaultVariantRootId,
+    }
     const newNodes: Record<string, EntryNode> = {}
 
-    const schemaVariantRefs: ComponentTreeRef[] = (schema.variants ?? []).map(
-      (catalogVariant) =>
-        rebuildSchemaVariant({
-          catalogId,
-          defaultVariantRootId,
-          schema,
-          catalogVariant,
-          workspace: draft,
-          newNodes,
-          defaultRef,
-        }),
+    const schemaVariantRefs: ComponentTreeRef[] = (schema.variants ?? []).map((catalogVariant) =>
+      rebuildSchemaVariant({
+        catalogId,
+        defaultVariantRootId,
+        schema,
+        catalogVariant,
+        workspace: draft,
+        newNodes,
+        defaultRef,
+      }),
     )
 
     for (const [id, node] of Object.entries(newNodes)) {
@@ -61,19 +63,21 @@ export function applyResetSchemaVariantsToCatalog(
     // Prune nodes that the board no longer lists. Use direct deletion rather
     // than variant removal so references in other boards are never cascaded.
     const newIds = new Set<string>()
+
     for (const candidate of Object.values(draft.boards)) {
       walkBoardTreeRefs(candidate.variants, (ref) => {
         newIds.add(ref.id)
       })
     }
-    const removalCandidates = new Set(
-      [...oldIds].filter((id) => !newIds.has(id)),
-    )
+
+    const removalCandidates = new Set([...oldIds].filter((id) => !newIds.has(id)))
 
     const templateTargetsOfSurvivors = new Set<string>()
+
     for (const [nodeId, node] of Object.entries(draft.nodes)) {
       if (removalCandidates.has(nodeId)) continue
       const link = parseNodeLink(node.template)
+
       if (link?.kind === "node") {
         templateTargetsOfSurvivors.add(link.nodeId)
       }

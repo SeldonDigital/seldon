@@ -3,14 +3,12 @@ import { describe, expect, it } from "vitest"
 import { Colorspace } from "../constants/colorspace"
 import { TokenType } from "../constants/token-type"
 import { defaultTheme } from "../index"
-import type { ThemePipelineInput } from "../types"
 import { buildEmptyCustomTokenPayload } from "./build-empty-custom-token-payload"
 import { modulate, modulateWithTheme } from "./modulate"
 import { normalizeTheme } from "./normalize-theme"
-import {
-  getReservedTokenKeys,
-  isReservedTokenName,
-} from "./reserved-token-names"
+import { getReservedTokenKeys, isReservedTokenName } from "./reserved-token-names"
+
+import type { ThemePipelineInput } from "../types"
 
 describe("modulateWithTheme", () => {
   const theme = {
@@ -70,6 +68,7 @@ describe("buildEmptyCustomTokenPayload", () => {
 describe("normalizeTheme", () => {
   it("resets palette slots to dynamic swatches for a computed theme", () => {
     const stock = normalizeTheme(defaultTheme)
+
     expect(stock.swatch.white.type).toBe(TokenType.DYNAMIC_SWATCH)
     expect(stock.swatch.primary.type).toBe(TokenType.DYNAMIC_SWATCH)
   })

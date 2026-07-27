@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Topbar",
   id: Seldon.ComponentId.TOPBAR,
   intent:
     "Site header that pairs a brand logo and wordmark with primary navigation and a call-to-action.",
-  tags: [
-    "topbar",
-    "navbar",
-    "header",
-    "navigation",
-    "brand",
-    "menu",
-    "part",
-    "UI",
-  ],
+  tags: ["topbar", "navbar", "header", "navigation", "brand", "menu", "part", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -412,8 +404,7 @@ export const schema = {
     {
       id: "compact",
       label: "Compact",
-      intent:
-        "Brand with inline navigation, a language toggle, and a filled primary action.",
+      intent: "Brand with inline navigation, a language toggle, and a filled primary action.",
       children: [
         {
           component: Seldon.ComponentId.FRAME,
@@ -649,8 +640,7 @@ export const schema = {
     {
       id: "centered",
       label: "Centered",
-      intent:
-        "Navigation on the left, brand centered, and a text action on the right.",
+      intent: "Navigation on the left, brand centered, and a text action on the right.",
       children: [
         {
           component: Seldon.ComponentId.FRAME,
@@ -806,8 +796,7 @@ export const schema = {
     {
       id: "menu",
       label: "Menu",
-      intent:
-        "Menu trigger on the left, centered wordmark, and a search action on the right.",
+      intent: "Menu trigger on the left, centered wordmark, and a search action on the right.",
       children: [
         {
           component: Seldon.ComponentId.FRAME,
@@ -970,8 +959,7 @@ export const schema = {
     {
       id: "inlineLinks",
       label: "Inline Links",
-      intent:
-        "Brand with inline links and a text action beside a filled primary action.",
+      intent: "Brand with inline links and a text action beside a filled primary action.",
       children: [
         {
           component: Seldon.ComponentId.FRAME,
@@ -1139,8 +1127,7 @@ export const schema = {
     {
       id: "spread",
       label: "Spread",
-      intent:
-        "Brand on the left, evenly spread navigation, and a language toggle on the right.",
+      intent: "Brand on the left, evenly spread navigation, and a language toggle on the right.",
       overrides: {
         padding: {
           top: {

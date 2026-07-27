@@ -1,12 +1,11 @@
 import { ValueType } from "../../properties/constants"
-import type { Properties } from "../../properties/types/properties"
-import type { Theme } from "../types"
-import {
-  type BuiltInLookSection,
-  getBuiltInLookSectionForPropertyKey,
-} from "./built-in-looks"
+import { getBuiltInLookSectionForPropertyKey } from "./built-in-looks"
 import { LOOK_FACETS } from "./look-facets"
 import { readPresetThemeLookRef, resolveThemeLook } from "./resolve-theme-look"
+
+import type { Properties } from "../../properties/types/properties"
+import type { Theme } from "../types"
+import type { BuiltInLookSection } from "./built-in-looks"
 
 const EMPTY_VALUE = { type: ValueType.EMPTY, value: null } as const
 
@@ -15,14 +14,11 @@ export function convertLookParameterValue(subValue: unknown): unknown {
   if (typeof subValue === "string" && subValue.startsWith("@")) {
     return { type: ValueType.THEME_CATEGORICAL, value: subValue }
   }
-  if (
-    subValue &&
-    typeof subValue === "object" &&
-    "type" in subValue &&
-    "value" in subValue
-  ) {
+
+  if (subValue && typeof subValue === "object" && "type" in subValue && "value" in subValue) {
     return subValue
   }
+
   return { type: ValueType.EXACT, value: subValue }
 }
 
@@ -36,12 +32,7 @@ function isEmptyTaggedValue(value: unknown): boolean {
 }
 
 function isFacetObject(value: unknown): value is Record<string, unknown> {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    !Array.isArray(value) &&
-    !("type" in value)
-  )
+  return !!value && typeof value === "object" && !Array.isArray(value) && !("type" in value)
 }
 
 /**
@@ -57,21 +48,27 @@ function expandLayer(
   theme: Theme,
 ): Record<string, unknown> {
   const presetRef = readPresetThemeLookRef(layer)
+
   if (!presetRef) return layer
 
   const look = resolveThemeLook(theme, propertyKey, presetRef)
+
   if (!look) return layer
 
   const facets: Record<string, unknown> = {}
+
   for (const entry of LOOK_FACETS[section]) {
     facets[entry.facet] = EMPTY_VALUE
   }
+
   for (const [facetKey, parameter] of Object.entries(look.parameters ?? {})) {
     if (facetKey === "preset") continue
     facets[facetKey] = convertLookParameterValue(parameter)
   }
+
   for (const [facetKey, value] of Object.entries(layer)) {
     if (facetKey === "preset") continue
+
     if (value !== undefined && !isEmptyTaggedValue(value)) {
       facets[facetKey] = value
     }
@@ -91,9 +88,12 @@ function expandPropertyValue(
     const layers = value.map((layer) => {
       if (!isFacetObject(layer)) return layer
       const expanded = expandLayer(section, propertyKey, layer, theme)
+
       if (expanded !== layer) changed = true
+
       return expanded
     })
+
     return changed ? layers : value
   }
 
@@ -112,12 +112,14 @@ function layerHasPresetRef(value: unknown): boolean {
 export function hasExpandableLookPreset(properties: Properties): boolean {
   for (const [key, value] of Object.entries(properties)) {
     if (!getBuiltInLookSectionForPropertyKey(key)) continue
+
     if (Array.isArray(value)) {
       if (value.some(layerHasPresetRef)) return true
     } else if (layerHasPresetRef(value)) {
       return true
     }
   }
+
   return false
 }
 
@@ -126,20 +128,20 @@ export function hasExpandableLookPreset(properties: Properties): boolean {
  * to a theme look section change: layered paint values expand per layer, facet
  * compounds expand in place. Everything else is returned untouched.
  */
-export function expandLookPresetFacets(
-  properties: Properties,
-  theme: Theme,
-): Properties {
+export function expandLookPresetFacets(properties: Properties, theme: Theme): Properties {
   let changed = false
   const result: Record<string, unknown> = {}
 
   for (const [key, value] of Object.entries(properties)) {
     const section = getBuiltInLookSectionForPropertyKey(key)
+
     if (!section) {
       result[key] = value
       continue
     }
+
     const expanded = expandPropertyValue(section, key, value, theme)
+
     if (expanded !== value) changed = true
     result[key] = expanded
   }

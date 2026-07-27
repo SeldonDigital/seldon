@@ -1,4 +1,4 @@
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
 
 /**
  * Group shorthand values into a single property
@@ -117,5 +117,6 @@ function areAllValuesEqual(values: CSSPropertyValue[]) {
   if (values.every((value) => value === undefined)) {
     return false
   }
+
   return values.every((value) => value === values[0])
 }

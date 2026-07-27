@@ -1,10 +1,6 @@
-import {
-  DEFAULT_CATEGORY_PATH,
-  type IconCategory,
-  IconCategoryPath,
-  type IconSubcategory,
-  categoryPaths,
-} from "../constants/categories"
+import { DEFAULT_CATEGORY_PATH, categoryPaths } from "../constants/categories"
+
+import type { IconCategory, IconCategoryPath, IconSubcategory } from "../constants/categories"
 
 /**
  * Extracts category path from a file path
@@ -44,9 +40,7 @@ export function parseCategoryPath(path: IconCategoryPath): {
   category: IconCategory
   subcategory: IconSubcategory
 } {
-  const [category, subcategory] = path.split("/") as [
-    IconCategory,
-    IconSubcategory,
-  ]
+  const [category, subcategory] = path.split("/") as [IconCategory, IconSubcategory]
+
   return { category, subcategory }
 }

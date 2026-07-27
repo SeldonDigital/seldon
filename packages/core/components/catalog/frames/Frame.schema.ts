@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Frame",
   id: Seldon.ComponentId.FRAME,
   intent:
     "Generic frame component schema used to wrap content sections with configurable padding, alignment, and sizing constraints.",
-  tags: [
-    "frame",
-    "layout",
-    "container",
-    "ui",
-    "wrap",
-    "box",
-    "content",
-    "sizing",
-  ],
+  tags: ["frame", "layout", "container", "ui", "wrap", "box", "content", "sizing"],
   level: Seldon.ComponentLevel.FRAME,
   icon: Seldon.ComponentIcon.FRAME,
   properties: {

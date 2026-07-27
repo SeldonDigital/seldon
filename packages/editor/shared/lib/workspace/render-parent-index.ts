@@ -14,6 +14,8 @@
 export function buildRenderParentIndex(path: string): Map<string, string> {
   const ids = path.split("/")
   const edges = new Map<string, string>()
+
   for (let i = 1; i < ids.length; i++) edges.set(ids[i], ids[i - 1])
+
   return edges
 }

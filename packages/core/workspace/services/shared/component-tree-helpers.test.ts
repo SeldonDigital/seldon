@@ -1,13 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  Board,
-  ComponentBoard,
-  ComponentTreeRef,
-  ExtractPayload,
-  Workspace,
-} from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { collectTreeRefIds } from "../../helpers/nodes/collect-tree-ref-ids"
 import { addComponent } from "../../reducers/handlers/add/add-component"
@@ -18,22 +11,28 @@ import {
   removeComponentTreeChild,
 } from "./component-tree-helpers"
 
+import type {
+  Board,
+  ComponentBoard,
+  ComponentTreeRef,
+  ExtractPayload,
+  Workspace,
+} from "../../../index"
+
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
   { boardKey } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
 const rootId = (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
-const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0]
-  .id as string
+const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0].id as string
 
 const cloneBoard = (): Board => structuredClone(ws.boards[boardKey]) as Board
 
 describe("collectTreeRefIds", () => {
   it("collects the root and every descendant id", () => {
-    const ids = collectTreeRefIds(
-      (ws.boards[boardKey] as ComponentBoard).variants[0],
-    )
+    const ids = collectTreeRefIds((ws.boards[boardKey] as ComponentBoard).variants[0])
+
     expect(ids).toContain(rootId)
     expect(ids).toContain(childId)
     expect(ids.length).toBeGreaterThan(1)
@@ -61,6 +60,7 @@ describe("insert/remove component tree child", () => {
 
   it("reports false when the target is missing", () => {
     const board = cloneBoard()
+
     expect(
       insertComponentTreeChild(board, "missing", {
         id: "x",
@@ -74,17 +74,13 @@ describe("collectReferencedTreeIdsExcludingSubtree", () => {
   it("excludes the subtree rooted at the given id", () => {
     const board = cloneBoard()
 
-    const excludingRoot = collectReferencedTreeIdsExcludingSubtree(
-      [board],
-      rootId,
-    )
+    const excludingRoot = collectReferencedTreeIdsExcludingSubtree([board], rootId)
+
     expect(excludingRoot.has(rootId)).toBe(false)
     expect(excludingRoot.has(childId)).toBe(false)
 
-    const excludingChild = collectReferencedTreeIdsExcludingSubtree(
-      [board],
-      childId,
-    )
+    const excludingChild = collectReferencedTreeIdsExcludingSubtree([board], childId)
+
     expect(excludingChild.has(rootId)).toBe(true)
     expect(excludingChild.has(childId)).toBe(false)
   })

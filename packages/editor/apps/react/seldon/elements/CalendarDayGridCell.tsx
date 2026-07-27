@@ -10,12 +10,13 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface CalendarDayGridCellProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -69,10 +70,7 @@ export function CalendarDayGridCell({
   seldonRefs,
   ...props
 }: CalendarDayGridCellProps) {
-  const calendarDayGridCellClassName = combineClassNames(
-    "sdn-calendar-day-grid-cell",
-    className,
-  )
+  const calendarDayGridCellClassName = combineClassNames("sdn-calendar-day-grid-cell", className)
   const textLabelProps = applyRef(
     seldonRefs,
     textLabel === null
@@ -80,19 +78,12 @@ export function CalendarDayGridCell({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
   return (
-    <Frame
-      className={calendarDayGridCellClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={calendarDayGridCellClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

@@ -16,7 +16,7 @@ import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { selectFile } from "@seldon/editor/lib/helpers/select-file"
 import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 import { useRouter } from "vue-router"
 
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
@@ -35,6 +35,7 @@ import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-s
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 
 import type { MenuConfig, MenuDropdown, MenuItem } from "../menus/types"
+import type { ComputedRef } from "vue"
 
 /**
  * Builds the topbar menu configuration: the six dropdown menus (File, Edit,
@@ -71,8 +72,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     importWorkspaceFromFile,
     importWeb,
   } = useImportExport()
-  const { addVariant, deleteSelection, duplicateSelection } =
-    useAddRemoveCommands()
+  const { addVariant, deleteSelection, duplicateSelection } = useAddRemoveCommands()
   const {
     moveSelectionForward,
     moveSelectionBackward,
@@ -103,46 +103,42 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     if (selectedNode.value) return true
 
     const board = selectedBoard.value
+
     if (board) {
-      if (
-        isComponentBoard(board) ||
-        isPlaygroundBoard(board) ||
-        isMediaBoard(board)
-      ) {
+      if (isComponentBoard(board) || isPlaygroundBoard(board) || isMediaBoard(board)) {
         return true
       }
+
       if (isThemeBoard(board)) {
-        return (
-          resolveComponentKey(board, workspace.value) !==
-          DEFAULT_THEME_BOARD_KEY
-        )
+        return resolveComponentKey(board, workspace.value) !== DEFAULT_THEME_BOARD_KEY
       }
+
       if (isFontCollectionBoard(board)) {
-        return (
-          resolveComponentKey(board, workspace.value) !==
-          DEFAULT_FONT_COLLECTION_BOARD_KEY
-        )
+        return resolveComponentKey(board, workspace.value) !== DEFAULT_FONT_COLLECTION_BOARD_KEY
       }
+
       if (isIconSetBoard(board)) {
-        return (
-          resolveComponentKey(board, workspace.value) !==
-          DEFAULT_ICON_SET_BOARD_KEY
-        )
+        return resolveComponentKey(board, workspace.value) !== DEFAULT_ICON_SET_BOARD_KEY
       }
+
       return false
     }
 
     if (selectedThemeEntryId.value) {
       const entry = workspace.value.themes[selectedThemeEntryId.value]
+
       return Boolean(entry) && !isEntryThemeDefault(entry)
     }
+
     if (selectedFontCollectionEntryId.value) {
-      const entry =
-        workspace.value["font-collections"][selectedFontCollectionEntryId.value]
+      const entry = workspace.value["font-collections"][selectedFontCollectionEntryId.value]
+
       return Boolean(entry) && !isEntryFontCollectionDefault(entry)
     }
+
     if (selectedIconSetEntryId.value) {
       const entry = workspace.value["icon-sets"][selectedIconSetEntryId.value]
+
       return Boolean(entry) && !isEntryIconSetDefault(entry)
     }
 
@@ -155,6 +151,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "Open Workspace…",
       action: async () => {
         const result = await selectFile()
+
         if (!result.success) return
         await importWorkspaceFromFile(result.file)
       },
@@ -346,12 +343,12 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
 
   const hariMenuItems = computed<(MenuItem | "separator")[]>(() => {
     const isChatOpen = panel.activePanel === "ai-chat"
+
     return [
       {
         id: "show-chat",
         label: "Show Chat",
-        action: () =>
-          isChatOpen ? panel.closePanel() : panel.openPanel("ai-chat"),
+        action: () => (isChatOpen ? panel.closePanel() : panel.openPanel("ai-chat")),
         active: isChatOpen,
         shortcut: "~",
       },

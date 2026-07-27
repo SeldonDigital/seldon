@@ -1,7 +1,8 @@
-import { Align, Properties, Theme, ValueType } from "@seldon/core"
+import { Align, ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
+import type { Properties, Theme } from "@seldon/core"
 
 // Logical start/end so a cascaded direction: rtl mirrors cell text alignment.
 const alignmentStyles: Partial<Record<Align, CSSObject>> = {
@@ -33,10 +34,10 @@ export function getTableStyles({
   }
 
   const borderCollapse = properties.borderCollapse
+
   if (
     borderCollapse &&
-    (borderCollapse.type === ValueType.EXACT ||
-      borderCollapse.type === ValueType.OPTION)
+    (borderCollapse.type === ValueType.EXACT || borderCollapse.type === ValueType.OPTION)
   ) {
     styles.borderCollapse = borderCollapse.value
   }

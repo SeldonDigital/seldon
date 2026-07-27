@@ -10,14 +10,19 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonHTMLAttributes, forwardRef } from "react"
+import { forwardRef } from "react"
 
-import { Button, ButtonProps } from "../elements/Button"
+import { Button } from "../elements/Button"
 import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { ButtonHTMLAttributes } from "react"
 
 export interface ButtonToolsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
@@ -52,180 +57,145 @@ export interface ButtonToolsProps extends ButtonHTMLAttributes<HTMLButtonElement
  * />
  * ```
  *****/
-export const ButtonTools = forwardRef<HTMLButtonElement, ButtonToolsProps>(
-  function ButtonTools(
-    {
-      className = "",
-      button = sdn.button,
-      icon = sdn.icon,
-      textLabel,
-      button2 = sdn.button2,
-      icon2 = sdn.icon2,
-      textLabel2,
-      button3 = sdn.button3,
-      icon3 = sdn.icon3,
-      textLabel3,
-      children,
-      seldonRefs,
-      ...props
-    },
-    ref,
-  ) {
-    const buttonToolsClassName = combineClassNames(
-      "sdn-button-tools",
-      className,
-    )
-    const buttonProps = applyRef(
-      seldonRefs,
-      button === null
-        ? null
-        : {
-            ...sdn.button,
-            ...button,
-            className: combineClassNames(
-              sdn.button?.className,
-              button?.className,
-            ),
-          },
-    )
-    const iconProps = applyRef(
-      seldonRefs,
-      icon === null
-        ? null
-        : {
-            ...sdn.icon,
-            ...icon,
-            className: combineClassNames(sdn.icon?.className, icon?.className),
-          },
-    )
-    const textLabelProps = applyRef(
-      seldonRefs,
-      textLabel === null
-        ? null
-        : {
-            ...sdn.textLabel,
-            ...textLabel,
-            className: combineClassNames(
-              sdn.textLabel?.className,
-              textLabel?.className,
-            ),
-          },
-    )
-    const button2Props = applyRef(
-      seldonRefs,
-      button2 === null
-        ? null
-        : {
-            ...sdn.button2,
-            ...button2,
-            className: combineClassNames(
-              sdn.button2?.className,
-              button2?.className,
-            ),
-          },
-    )
-    const icon2Props = applyRef(
-      seldonRefs,
-      icon2 === null
-        ? null
-        : {
-            ...sdn.icon2,
-            ...icon2,
-            className: combineClassNames(
-              sdn.icon2?.className,
-              icon2?.className,
-            ),
-          },
-    )
-    const textLabel2Props = applyRef(
-      seldonRefs,
-      textLabel2 === null
-        ? null
-        : {
-            ...sdn.textLabel2,
-            ...textLabel2,
-            className: combineClassNames(
-              sdn.textLabel2?.className,
-              textLabel2?.className,
-            ),
-          },
-    )
-    const button3Props = applyRef(
-      seldonRefs,
-      button3 === null
-        ? null
-        : {
-            ...sdn.button3,
-            ...button3,
-            className: combineClassNames(
-              sdn.button3?.className,
-              button3?.className,
-            ),
-          },
-    )
-    const icon3Props = applyRef(
-      seldonRefs,
-      icon3 === null
-        ? null
-        : {
-            ...sdn.icon3,
-            ...icon3,
-            className: combineClassNames(
-              sdn.icon3?.className,
-              icon3?.className,
-            ),
-          },
-    )
-    const textLabel3Props = applyRef(
-      seldonRefs,
-      textLabel3 === null
-        ? null
-        : {
-            ...sdn.textLabel3,
-            ...textLabel3,
-            className: combineClassNames(
-              sdn.textLabel3?.className,
-              textLabel3?.className,
-            ),
-          },
-    )
-
-    return (
-      <HTMLButton className={buttonToolsClassName} ref={ref} {...props}>
-        {children !== undefined ? (
-          children
-        ) : (
-          <>
-            {buttonProps !== null && (
-              <Button {...buttonProps}>
-                {icon && iconProps && <Icon {...iconProps} />}
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
-              </Button>
-            )}
-            {button2Props !== null && (
-              <Button {...button2Props}>
-                {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
-              </Button>
-            )}
-            {button3Props !== null && (
-              <Button {...button3Props}>
-                {icon3 && icon3Props && <Icon {...icon3Props} />}
-                {textLabel3 && textLabel3Props && (
-                  <TextLabel {...textLabel3Props} />
-                )}
-              </Button>
-            )}
-          </>
-        )}
-      </HTMLButton>
-    )
+export const ButtonTools = forwardRef<HTMLButtonElement, ButtonToolsProps>(function ButtonTools(
+  {
+    className = "",
+    button = sdn.button,
+    icon = sdn.icon,
+    textLabel,
+    button2 = sdn.button2,
+    icon2 = sdn.icon2,
+    textLabel2,
+    button3 = sdn.button3,
+    icon3 = sdn.icon3,
+    textLabel3,
+    children,
+    seldonRefs,
+    ...props
   },
-)
+  ref,
+) {
+  const buttonToolsClassName = combineClassNames("sdn-button-tools", className)
+  const buttonProps = applyRef(
+    seldonRefs,
+    button === null
+      ? null
+      : {
+          ...sdn.button,
+          ...button,
+          className: combineClassNames(sdn.button?.className, button?.className),
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
+        },
+  )
+  const button2Props = applyRef(
+    seldonRefs,
+    button2 === null
+      ? null
+      : {
+          ...sdn.button2,
+          ...button2,
+          className: combineClassNames(sdn.button2?.className, button2?.className),
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
+    icon2 === null
+      ? null
+      : {
+          ...sdn.icon2,
+          ...icon2,
+          className: combineClassNames(sdn.icon2?.className, icon2?.className),
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
+    textLabel2 === null
+      ? null
+      : {
+          ...sdn.textLabel2,
+          ...textLabel2,
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
+        },
+  )
+  const button3Props = applyRef(
+    seldonRefs,
+    button3 === null
+      ? null
+      : {
+          ...sdn.button3,
+          ...button3,
+          className: combineClassNames(sdn.button3?.className, button3?.className),
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
+    icon3 === null
+      ? null
+      : {
+          ...sdn.icon3,
+          ...icon3,
+          className: combineClassNames(sdn.icon3?.className, icon3?.className),
+        },
+  )
+  const textLabel3Props = applyRef(
+    seldonRefs,
+    textLabel3 === null
+      ? null
+      : {
+          ...sdn.textLabel3,
+          ...textLabel3,
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
+        },
+  )
+
+  return (
+    <HTMLButton className={buttonToolsClassName} ref={ref} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {buttonProps !== null && (
+            <Button {...buttonProps}>
+              {icon && iconProps && <Icon {...iconProps} />}
+              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+            </Button>
+          )}
+          {button2Props !== null && (
+            <Button {...button2Props}>
+              {icon2 && icon2Props && <Icon {...icon2Props} />}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
+            </Button>
+          )}
+          {button3Props !== null && (
+            <Button {...button3Props}>
+              {icon3 && icon3Props && <Icon {...icon3Props} />}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
+            </Button>
+          )}
+        </>
+      )}
+    </HTMLButton>
+  )
+})
 
 //
 // Default property values

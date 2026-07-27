@@ -32,6 +32,7 @@ describe("getShorthandValues", () => {
       paddingBottom: undefined,
       paddingLeft: undefined,
     }
+
     expect(getShorthandValues(input)).toEqual(input)
     expect("padding" in getShorthandValues(input)).toBe(false)
   })
@@ -74,6 +75,7 @@ describe("getShorthandValues", () => {
       marginBottom: "8px",
       marginLeft: "8px",
     }
+
     getShorthandValues(input)
     expect(input.marginTop).toBe("8px")
   })

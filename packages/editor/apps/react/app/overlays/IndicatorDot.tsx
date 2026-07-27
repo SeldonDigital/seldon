@@ -1,5 +1,6 @@
 import { Frame } from "@seldon/components/frames/Frame"
-import { CSSProperties } from "react"
+
+import type { CSSProperties } from "react"
 
 interface IndicatorDotProps {
   style: CSSProperties

@@ -1,18 +1,13 @@
-import {
-  EmptyValue,
-  PixelValue,
-  RemValue,
-  SizeValue,
-  Unit,
-  ValueType,
-} from "../../index"
+import { Unit, ValueType } from "../../index"
 import { resolveAutoFitSource } from "../../properties/compute/resolve-auto-fit-source"
-import type { ComputeContext } from "../../properties/compute/types"
-import { Theme } from "../../themes/types"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"
 import { exactTokenToLength } from "./resolve-length-token"
+
+import type { EmptyValue, PixelValue, RemValue, SizeValue } from "../../index"
+import type { ComputeContext } from "../../properties/compute/types"
+import type { Theme } from "../../themes/types"
 
 /**
  * Resolves size values to concrete PixelValue, RemValue, or EmptyValue.
@@ -36,6 +31,7 @@ export function resolveSize({
     case ValueType.EMPTY:
     case ValueType.EXACT:
       return size as PixelValue | RemValue | EmptyValue
+
     case ValueType.COMPUTED: {
       if (!parentContext) {
         throw new Error(
@@ -70,23 +66,25 @@ export function resolveSize({
 
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(size.value as string, theme)
+
       if (isModulatedToken(themeValue)) {
         const n = modulate({
           ratio: theme.modulation.parameters.ratio,
           size: theme.modulation.parameters.baseSize,
           step: themeValue.parameters.step,
         })
+
         return {
           type: ValueType.EXACT,
           value: { unit: Unit.REM, value: n },
         }
       }
+
       if (isThemeExactToken(themeValue)) {
         return exactTokenToLength(themeValue.parameters)
       }
-      throw new Error(
-        `Theme key ${size.value as string} must resolve to MODULATED or EXACT length`,
-      )
+
+      throw new Error(`Theme key ${size.value as string} must resolve to MODULATED or EXACT length`)
     }
 
     default:

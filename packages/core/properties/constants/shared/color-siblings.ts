@@ -14,23 +14,17 @@ import { BORDER_SIDE_KEYS } from "../../helpers/border-side-options"
 import { PROPERTY_COMPOUND_CATALOG } from "./compound-properties"
 
 /** Color facet key -> its sibling brightness and opacity keys within the same container. */
-export const COLOR_SIBLING_KEYS: Record<
-  string,
-  { brightness: string; opacity: string }
-> = {
+export const COLOR_SIBLING_KEYS: Record<string, { brightness: string; opacity: string }> = {
   color: { brightness: "brightness", opacity: "opacity" },
   startColor: { brightness: "startBrightness", opacity: "startOpacity" },
   endColor: { brightness: "endBrightness", opacity: "endOpacity" },
 }
 
 /** Single-color compounds whose `color` facet carries sibling brightness and opacity. */
-export const COLOR_SIBLING_COMPOUND_KEYS = [
-  "border",
-  ...BORDER_SIDE_KEYS,
-] as const
+export const COLOR_SIBLING_COMPOUND_KEYS = ["border", ...BORDER_SIDE_KEYS] as const
 
 /** Layered-paint roots whose layers carry color and gradient-stop facets. */
 export const COLOR_SIBLING_LAYER_KEYS: readonly ("background" | "shadow")[] =
-  PROPERTY_COMPOUND_CATALOG.filter(
-    (entry) => entry.nodeStorage === "layered",
-  ).map((entry) => entry.key as "background" | "shadow")
+  PROPERTY_COMPOUND_CATALOG.filter((entry) => entry.nodeStorage === "layered").map(
+    (entry) => entry.key as "background" | "shadow",
+  )

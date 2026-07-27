@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialDoorbell_3p(props: SVGAttributes<SVGSVGElement>) {
   return (

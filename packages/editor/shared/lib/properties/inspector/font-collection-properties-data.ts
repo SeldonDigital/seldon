@@ -1,22 +1,17 @@
 import { getFontLicenseHref } from "@seldon/editor/lib/font-collections/font-license"
-import {
-  type VariantSelection,
-  deriveVariantPreset,
-  isVariantEnabled,
-} from "@seldon/core/font-collections"
-import type { ComputedFontCollection } from "@seldon/core/font-collections/types"
-import {
-  fontVariantDisplayLabel,
-  sortFontVariants,
-} from "@seldon/core/helpers/utils/font-variant"
+import { deriveVariantPreset, isVariantEnabled } from "@seldon/core/font-collections"
+import { fontVariantDisplayLabel, sortFontVariants } from "@seldon/core/helpers/utils/font-variant"
 import { ValueType } from "@seldon/core/properties"
-import { FlatProperty } from "./properties-data"
 import {
   RESOURCE_PRESET_OPTIONS,
   RESOURCE_TOGGLE_OPTIONS,
   createResourceMenuRow,
   resourcePresetDisplayValue,
 } from "./resource-menu-rows"
+
+import type { FlatProperty } from "./properties-data"
+import type { VariantSelection } from "@seldon/core/font-collections"
+import type { ComputedFontCollection } from "@seldon/core/font-collections/types"
 
 /** Builds a read-only license link row. */
 function createLicenseRow(slot: string): FlatProperty {
@@ -39,11 +34,7 @@ function createLicenseRow(slot: string): FlatProperty {
 }
 
 /** Builds a read-only atomic row for a family with no selectable variants. */
-function createPlainFamilyRow(
-  slot: string,
-  name: string,
-  origin: string,
-): FlatProperty {
+function createPlainFamilyRow(slot: string, name: string, origin: string): FlatProperty {
   return {
     key: `family.${slot}`,
     propertyType: "atomic",
@@ -110,6 +101,7 @@ export function flattenFontCollectionFamilies(
 
     for (const variant of sortFontVariants(variants)) {
       const enabled = isVariantEnabled(slotSelection, variant)
+
       rows.push(
         createResourceMenuRow(
           `family.${slot}.${variant}`,

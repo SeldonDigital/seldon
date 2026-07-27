@@ -1,9 +1,11 @@
-import { Unit, ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { PercentageValue } from "../../shared/exact/percentage"
-import { PixelValue } from "../../shared/exact/pixel"
-import { RemValue } from "../../shared/exact/rem"
+import { Unit } from "../../../constants"
+
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { PercentageValue } from "../../shared/exact/percentage"
+import type { PixelValue } from "../../shared/exact/pixel"
+import type { RemValue } from "../../shared/exact/rem"
 
 /** Named anchors for the radial gradient center along the horizontal axis. */
 export enum GradientPositionX {
@@ -39,7 +41,9 @@ export type GradientPositionValue =
 function isMeasurePayload(u: unknown): boolean {
   if (typeof u !== "object" || u === null) return false
   const m = u as { value?: unknown; unit?: unknown }
+
   if (typeof m.value !== "number" || !Number.isFinite(m.value)) return false
+
   return m.unit === Unit.PX || m.unit === Unit.REM || m.unit === Unit.PERCENT
 }
 
@@ -59,8 +63,7 @@ export const gradientPositionXSchema: PropertySchema = {
     inherit: () => true,
     exact: (value: unknown) => isMeasurePayload(value),
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(GradientPositionX) as string[]).includes(value),
+      typeof value === "string" && (Object.values(GradientPositionX) as string[]).includes(value),
   },
   presetOptions: () => Object.values(GradientPositionX),
 }
@@ -81,8 +84,7 @@ export const gradientPositionYSchema: PropertySchema = {
     inherit: () => true,
     exact: (value: unknown) => isMeasurePayload(value),
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(GradientPositionY) as string[]).includes(value),
+      typeof value === "string" && (Object.values(GradientPositionY) as string[]).includes(value),
   },
   presetOptions: () => Object.values(GradientPositionY),
 }

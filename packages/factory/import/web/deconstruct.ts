@@ -1,9 +1,8 @@
-import type { Document, Element } from "happy-dom"
-
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { HtmlElement } from "@seldon/core/properties"
 
 import type { FunctionalNode, NodeEvidence } from "./types"
+import type { Document, Element } from "happy-dom"
 
 /**
  * Maps an HTML tag to the catalog component that plays the same role. This is
@@ -94,12 +93,16 @@ const MAX_ATTR_VALUE = 80
 /** The element's own text, joined from direct text nodes and capped. */
 function ownText(element: Element): string {
   const parts: string[] = []
+
   for (const node of Array.from(element.childNodes)) {
     if (node.nodeType !== TEXT_NODE) continue
     const value = (node.textContent ?? "").trim()
+
     if (value !== "") parts.push(value)
   }
+
   const text = parts.join(" ").replace(/\s+/g, " ").trim()
+
   return text.length > MAX_TEXT ? `${text.slice(0, MAX_TEXT)}…` : text
 }
 
@@ -109,6 +112,7 @@ function hasOwnText(element: Element): boolean {
     if (node.nodeType !== TEXT_NODE) continue
     if ((node.textContent ?? "").trim() !== "") return true
   }
+
   return false
 }
 
@@ -117,6 +121,7 @@ function collectEvidence(element: Element): NodeEvidence {
   const evidence: NodeEvidence = {}
 
   const text = ownText(element)
+
   if (text !== "") evidence.text = text
 
   const className = element.getAttribute("class") ?? ""
@@ -124,14 +129,18 @@ function collectEvidence(element: Element): NodeEvidence {
     .split(/\s+/)
     .filter((token) => token !== "")
     .slice(0, MAX_CLASSES)
+
   if (classes.length > 0) evidence.classes = classes
 
   const attrs: Record<string, string> = {}
+
   for (const name of EVIDENCE_ATTRS) {
     const value = element.getAttribute(name)
+
     if (value === null || value.trim() === "") continue
     attrs[name] = value.trim().slice(0, MAX_ATTR_VALUE)
   }
+
   if (element.getAttribute("href")) attrs.href = "yes"
   if (Object.keys(attrs).length > 0) evidence.attrs = attrs
 
@@ -141,6 +150,7 @@ function collectEvidence(element: Element): NodeEvidence {
 /** The ARIA role, explicit when set, otherwise inferred from a few key tags. */
 function resolveRole(tag: string, element: Element): string | null {
   const explicit = element.getAttribute("role")
+
   if (explicit && explicit.trim() !== "") return explicit.trim()
   if (tag === "nav") return "navigation"
   if (tag === "header") return "banner"
@@ -150,6 +160,7 @@ function resolveRole(tag: string, element: Element): string | null {
   if (tag === "button") return "button"
   if (tag === "ul" || tag === "ol") return "list"
   if (tag === "li") return "listitem"
+
   return null
 }
 
@@ -165,20 +176,19 @@ function resolveLevel(
   childLevels: ComponentLevel[],
 ): ComponentLevel {
   if (tag === "body" || tag === "html") return ComponentLevel.SCREEN
+
   if (childLevels.length === 0) {
     if (seed === ComponentId.BUTTON) return ComponentLevel.ELEMENT
+
     return ComponentLevel.PRIMITIVE
   }
-  const childMax = Math.max(
-    ...childLevels.map((level) => LEVEL_RANK[level] ?? 0),
-  )
+
+  const childMax = Math.max(...childLevels.map((level) => LEVEL_RANK[level] ?? 0))
   // A wrapper around a single child is the same tier as that child, not a step
   // up, so a plain container such as <main> around one region does not inflate
   // toward screen. Multiple children make a genuine composite one tier higher.
-  const rank =
-    childLevels.length === 1
-      ? childMax
-      : Math.min(childMax + 1, RANK_LEVEL.length - 1)
+  const rank = childLevels.length === 1 ? childMax : Math.min(childMax + 1, RANK_LEVEL.length - 1)
+
   return RANK_LEVEL[rank]
 }
 
@@ -190,17 +200,21 @@ function resolveLevel(
 function resolveSeed(tag: string): ComponentId | null {
   if (tag === "button") return ComponentId.BUTTON
   if (tag === "img") return ComponentId.IMAGE
+
   return TAG_TO_COMPONENT[tag as HtmlElement] ?? null
 }
 
 /** Converts one element and its visual subtree into a functional node. */
 function toFunctionalNode(element: Element): FunctionalNode | null {
   const tag = element.tagName.toLowerCase()
+
   if (IGNORED_TAGS.has(tag)) return null
 
   const children: FunctionalNode[] = []
+
   for (const child of Array.from(element.children)) {
     const node = toFunctionalNode(child as Element)
+
     if (node) children.push(node)
   }
 
@@ -233,6 +247,8 @@ export function countNodes(node: FunctionalNode): number {
  */
 export function deconstruct(document: Document): FunctionalNode | null {
   const body = document.body
+
   if (!body) return null
+
   return toFunctionalNode(body as unknown as Element)
 }

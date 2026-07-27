@@ -1,12 +1,10 @@
 import { produce } from "immer"
 
-import type { FontFamilyEntry } from "../../../../font-collections/types"
-import { ExtractPayload, Workspace } from "../../../../index"
 import { isEntryFontCollectionDefault } from "../../../model/entry-font-collection"
-import {
-  appendCustomFamily,
-  getNextCustomFamilyId,
-} from "../shared/font-collection-custom-family"
+import { appendCustomFamily, getNextCustomFamilyId } from "../shared/font-collection-custom-family"
+
+import type { FontFamilyEntry } from "../../../../font-collections/types"
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Appends a custom font family to a variant `font-collections` entry's `overrides.families` bag.
@@ -18,6 +16,7 @@ export function addFontCollectionCustomFamily(
 ): Workspace {
   return produce(workspace, (draft) => {
     const entry = draft["font-collections"][payload.fontCollectionId]
+
     if (!entry || isEntryFontCollectionDefault(entry)) return
 
     const id = getNextCustomFamilyId(entry)

@@ -9,7 +9,8 @@ import { STOCK_THEMES } from "@seldon/core/themes/catalog"
 
 import { PanelDialogController } from "../PanelDialogController"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { CatalogDialogItem } from "../types"
+
+import type { CatalogDialogItem } from "../types"
 
 const THEME_ICON = "seldon-theme"
 
@@ -21,16 +22,11 @@ export function ThemesDialog() {
   const { workspace } = useWorkspace()
   const { addTheme } = useAddRemoveCommands()
 
-  const currentBoards = useMemo(
-    () => Object.keys(workspace.boards),
-    [workspace],
-  )
+  const currentBoards = useMemo(() => Object.keys(workspace.boards), [workspace])
 
   const items = useMemo<CatalogDialogItem[]>(
     () =>
-      STOCK_THEMES.filter(
-        (theme) => !currentBoards.includes(theme.metadata.id),
-      ).map((theme) => ({
+      STOCK_THEMES.filter((theme) => !currentBoards.includes(theme.metadata.id)).map((theme) => ({
         id: theme.metadata.id,
         icon: THEME_ICON,
         name: theme.metadata.name,
@@ -44,10 +40,7 @@ export function ThemesDialog() {
     items,
   })
 
-  const handlePick = useCallback(
-    (item: CatalogDialogItem) => addTheme(item.id),
-    [addTheme],
-  )
+  const handlePick = useCallback((item: CatalogDialogItem) => addTheme(item.id), [addTheme])
 
   if (activePanel !== "add-theme") return null
 

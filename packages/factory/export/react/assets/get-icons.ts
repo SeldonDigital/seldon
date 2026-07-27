@@ -1,10 +1,10 @@
 import fs from "node:fs"
 import path from "node:path"
 
-import { IconId } from "@seldon/core/icon-sets"
-
-import { ExportOptions, FileToExport } from "../../types"
 import { getIconSourcePath, resolveIconExport } from "../utils/find-icon-path"
+
+import type { ExportOptions, FileToExport } from "../../types"
+import type { IconId } from "@seldon/core/icon-sets"
 
 /**
  * Get icon files to export from the icon-sets/catalog directory structure.
@@ -15,21 +15,15 @@ import { getIconSourcePath, resolveIconExport } from "../utils/find-icon-path"
  * @param options - Export options
  * @returns List of icon files to export
  */
-export function getIcons(
-  usedIconIds: Set<IconId>,
-  options: ExportOptions,
-): FileToExport[] {
+export function getIcons(usedIconIds: Set<IconId>, options: ExportOptions): FileToExport[] {
   const icons: FileToExport[] = []
 
   for (const iconId of usedIconIds) {
     const fromReader = options.assetReader?.getIconExportSource?.(iconId)
+
     if (fromReader) {
       icons.push({
-        path: path.join(
-          options.output.componentsFolder,
-          "icons",
-          `${fromReader.relativePath}.tsx`,
-        ),
+        path: path.join(options.output.componentsFolder, "icons", `${fromReader.relativePath}.tsx`),
         content: fromReader.content,
       })
       continue
@@ -37,11 +31,7 @@ export function getIcons(
 
     // The __default__ icon lives outside icon sets and is generated directly
     if (iconId === "__default__") {
-      const outputPath = path.join(
-        options.output.componentsFolder,
-        "icons",
-        "IconDefault.tsx",
-      )
+      const outputPath = path.join(options.output.componentsFolder, "icons", "IconDefault.tsx")
 
       const iconDefaultContent = `import { SVGAttributes } from "react"
 
@@ -77,6 +67,7 @@ export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
     }
 
     const resolved = resolveIconExport(iconId, options.rootDirectory)
+
     if (!resolved) {
       console.warn(`Skipping icon "${iconId}": no catalog file found`)
       continue
@@ -90,6 +81,7 @@ export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
     )
 
     const iconFileFromReader = options.assetReader?.readIconFile(sourcePath)
+
     if (iconFileFromReader) {
       icons.push({
         path: outputPath,
@@ -107,5 +99,6 @@ export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
       console.warn(`Skipping icon "${iconId}": source file not readable`)
     }
   }
+
   return icons
 }

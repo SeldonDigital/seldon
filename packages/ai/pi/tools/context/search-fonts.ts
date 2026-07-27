@@ -1,18 +1,16 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { searchFontsSection } from "../../../prompt/context-sections/fonts"
-import type { ResolvedContext } from "../../editor-context"
 import { joinOrEmpty, textResult } from "./shared"
 
+import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+
 /** Returns enabled font family values whose value or name matches the query. */
-export function createSearchFontsTool(
-  resolved: ResolvedContext,
-): ToolDefinition {
+export function createSearchFontsTool(resolved: ResolvedContext): ToolDefinition {
   const { workspace } = resolved
+
   return defineTool({
     name: "search_fonts",
     label: "Search Fonts",
@@ -23,6 +21,7 @@ export function createSearchFontsTool(
         description: "Text to match against enabled font family names.",
       }),
     }),
+
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(

@@ -10,13 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonHTMLAttributes, forwardRef } from "react"
+import { forwardRef } from "react"
 
 import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { ButtonHTMLAttributes } from "react"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
@@ -41,57 +45,45 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * />
  * ```
  *****/
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  function Button(
-    {
-      className = "",
-      icon = sdn.icon,
-      textLabel,
-      children,
-      seldonRefs,
-      ...props
-    },
-    ref,
-  ) {
-    const buttonClassName = combineClassNames("sdn-button", className)
-    const iconProps = applyRef(
-      seldonRefs,
-      icon === null
-        ? null
-        : {
-            ...sdn.icon,
-            ...icon,
-            className: combineClassNames(sdn.icon?.className, icon?.className),
-          },
-    )
-    const textLabelProps = applyRef(
-      seldonRefs,
-      textLabel === null
-        ? null
-        : {
-            ...sdn.textLabel,
-            ...textLabel,
-            className: combineClassNames(
-              sdn.textLabel?.className,
-              textLabel?.className,
-            ),
-          },
-    )
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { className = "", icon = sdn.icon, textLabel, children, seldonRefs, ...props },
+  ref,
+) {
+  const buttonClassName = combineClassNames("sdn-button", className)
+  const iconProps = applyRef(
+    seldonRefs,
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
+        },
+  )
 
-    return (
-      <HTMLButton className={buttonClassName} ref={ref} {...props}>
-        {children !== undefined ? (
-          children
-        ) : (
-          <>
-            {iconProps !== null && <Icon {...iconProps} />}
-            {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-          </>
-        )}
-      </HTMLButton>
-    )
-  },
-)
+  return (
+    <HTMLButton className={buttonClassName} ref={ref} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {iconProps !== null && <Icon {...iconProps} />}
+          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+        </>
+      )}
+    </HTMLButton>
+  )
+})
 
 //
 // Default property values

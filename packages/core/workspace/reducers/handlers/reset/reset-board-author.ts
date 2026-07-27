@@ -1,6 +1,7 @@
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { DEFAULT_THEME_BOARD_AUTHOR } from "../../../helpers/components/default-board-metadata"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 export function resetBoardAuthor(
   payload: ExtractPayload<"reset_board_author">,

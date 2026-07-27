@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Profile Card",
   id: Seldon.ComponentId.PROFILE_CARD,
   intent:
     "Identity card showing an avatar, name, role, and a single connect action, kept to a few data points.",
-  tags: [
-    "card",
-    "profile",
-    "user",
-    "avatar",
-    "identity",
-    "follow",
-    "social",
-    "UI",
-  ],
+  tags: ["card", "profile", "user", "avatar", "identity", "follow", "social", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -360,8 +352,7 @@ export const schema = {
     {
       id: "withStats",
       label: "Stats",
-      intent:
-        "Profile card that adds a compact stats row beneath the identity block.",
+      intent: "Profile card that adds a compact stats row beneath the identity block.",
       children: [
         {
           component: Seldon.ComponentId.AVATAR,

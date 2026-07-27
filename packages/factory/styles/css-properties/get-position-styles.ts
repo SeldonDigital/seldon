@@ -1,9 +1,11 @@
-import { Placement, Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
-import { Theme } from "@seldon/core/themes/types"
 
 import { getAbsoluteSizeCssValue } from "./get-absolute-size-css-value"
-import { CSSObject } from "./types"
+
+import type { CSSObject } from "./types"
+import type { Placement, Properties } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 export function getPositionStyles({
   properties,
@@ -25,35 +27,19 @@ export function getPositionStyles({
     const left = resolveValue(properties.position.left)
 
     if (top) {
-      styles.top = getAbsoluteSizeCssValue(
-        top,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.top = getAbsoluteSizeCssValue(top, theme, useThemeVariableReferences)
     }
 
     if (right) {
-      styles.right = getAbsoluteSizeCssValue(
-        right,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.right = getAbsoluteSizeCssValue(right, theme, useThemeVariableReferences)
     }
 
     if (bottom) {
-      styles.bottom = getAbsoluteSizeCssValue(
-        bottom,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.bottom = getAbsoluteSizeCssValue(bottom, theme, useThemeVariableReferences)
     }
 
     if (left) {
-      styles.left = getAbsoluteSizeCssValue(
-        left,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.left = getAbsoluteSizeCssValue(left, theme, useThemeVariableReferences)
     }
 
     hasInsets = !!(top || right || bottom || left)
@@ -65,9 +51,7 @@ export function getPositionStyles({
   // `absolute` so a positioned frame keeps working without an explicit pick.
   const placement = resolveValue(properties.placement)
   const placementMode =
-    placement?.type === ValueType.OPTION
-      ? (placement.value as Placement)
-      : undefined
+    placement?.type === ValueType.OPTION ? (placement.value as Placement) : undefined
 
   if (placementMode) {
     styles.position = placementMode

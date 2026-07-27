@@ -1,7 +1,9 @@
-import { Rect } from "@seldon/components/utils/resize"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
-import { BoundingBox, useDragControls, useMotionValue } from "framer-motion"
+import { useDragControls, useMotionValue } from "framer-motion"
 import { useCallback, useEffect, useState } from "react"
+
+import type { Rect } from "@seldon/components/utils/resize"
+import type { BoundingBox } from "framer-motion"
 
 const DEFAULT_MIN_WINDOW_WIDTH = 300
 const DEFAULT_MIN_WINDOW_HEIGHT = 300
@@ -20,9 +22,9 @@ export function useDraggableWindow({
   minHeight = DEFAULT_MIN_WINDOW_HEIGHT,
   contentSized = false,
 }: {
+  handleClose: () => void
   initialPosition?: { x: number; y: number }
   initialSize?: { width: number; height: number }
-  handleClose: () => void
   closeOnEscape?: boolean
   minWidth?: number
   minHeight?: number
@@ -52,11 +54,14 @@ export function useDraggableWindow({
   // surface. Restore it once the pointer is released.
   const onResizeStart = useCallback(() => {
     const previousUserSelect = document.body.style.userSelect
+
     document.body.style.userSelect = "none"
+
     const restoreUserSelect = () => {
       document.body.style.userSelect = previousUserSelect
       window.removeEventListener("pointerup", restoreUserSelect)
     }
+
     window.addEventListener("pointerup", restoreUserSelect)
   }, [])
 
@@ -96,6 +101,7 @@ export function useDraggableWindow({
         bottom: windowHeight - height,
       })),
     )
+
     return () => {
       unsubscribeWidth()
       unsubscribeHeight()
@@ -113,7 +119,9 @@ export function useDraggableWindow({
         handleClose()
       }
     }
+
     window.addEventListener("keydown", handleEscapeKey)
+
     return () => window.removeEventListener("keydown", handleEscapeKey)
   }, [closeOnEscape, handleClose])
 
@@ -129,7 +137,9 @@ export function useDraggableWindow({
         bottom: windowHeight - height.get(),
       })
     }
+
     window.addEventListener("resize", handleResize)
+
     return () => window.removeEventListener("resize", handleResize)
   }, [width, height, windowWidth, windowHeight])
 

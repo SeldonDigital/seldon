@@ -1,9 +1,11 @@
-import { Unit, ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { PixelValue } from "../../shared/exact/pixel"
-import { RemValue } from "../../shared/exact/rem"
+import { Unit } from "../../../constants"
 import { Resize } from "../resize"
+
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { PixelValue } from "../../shared/exact/pixel"
+import type { RemValue } from "../../shared/exact/rem"
 
 /** Sets board width to fit its content. */
 export interface BoardWidthFitOptionValue {
@@ -12,11 +14,7 @@ export interface BoardWidthFitOptionValue {
 }
 
 /** Board width as unset, px or rem lengths, or fit. */
-export type BoardWidthValue =
-  | EmptyValue
-  | BoardWidthFitOptionValue
-  | PixelValue
-  | RemValue
+export type BoardWidthValue = EmptyValue | BoardWidthFitOptionValue | PixelValue | RemValue
 
 export const boardWidthSchema: PropertySchema = {
   name: "boardWidth",
@@ -30,14 +28,10 @@ export const boardWidthSchema: PropertySchema = {
   validation: {
     empty: () => true,
     exact: (value: unknown) => {
-      if (
-        typeof value === "object" &&
-        value !== null &&
-        "value" in value &&
-        "unit" in value
-      ) {
+      if (typeof value === "object" && value !== null && "value" in value && "unit" in value) {
         return true
       }
+
       return typeof value === "number" && value > 0
     },
     option: (value: unknown) => value === Resize.FIT,

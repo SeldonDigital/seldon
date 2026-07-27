@@ -1,4 +1,4 @@
-import {
+import type {
   AlignValue,
   AriaCurrentValue,
   AriaDisabledValue,
@@ -73,8 +73,8 @@ import {
   TrackLabelValue,
   WrapperElementValue,
 } from "../values"
-import { CursorValue } from "../values/attributes/cursor"
-import { InheritValue } from "../values/shared/inherit/inherit"
+import type { CursorValue } from "../values/attributes/cursor"
+import type { InheritValue } from "../values/shared/inherit/inherit"
 
 /**
  * Every catalog property key and the stored value shape for that key on a node.

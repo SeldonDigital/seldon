@@ -14,5 +14,6 @@ export function getFamilyNameByValue(value: string): string | null {
       }
     }
   }
+
   return null
 }

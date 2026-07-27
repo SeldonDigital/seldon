@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
 
-import { StyleGenerationContext } from "../types"
 import { getColorStyles } from "./get-color-styles"
+
+import type { StyleGenerationContext } from "../types"
+import type { Properties } from "@seldon/core"
 
 const context = (properties: Properties): StyleGenerationContext =>
   ({
@@ -17,18 +19,14 @@ const hex = (value: string) => ({ type: ValueType.EXACT, value })
 
 describe("getColorStyles", () => {
   it("emits a resolved color", () => {
-    expect(
-      getColorStyles(
-        context({ color: hex("#112233") } as unknown as Properties),
-      ),
-    ).toEqual({ color: "#112233" })
+    expect(getColorStyles(context({ color: hex("#112233") } as unknown as Properties))).toEqual({
+      color: "#112233",
+    })
   })
 
   it("emits an accent color", () => {
     expect(
-      getColorStyles(
-        context({ accentColor: hex("#445566") } as unknown as Properties),
-      ),
+      getColorStyles(context({ accentColor: hex("#445566") } as unknown as Properties)),
     ).toEqual({ accentColor: "#445566" })
   })
 

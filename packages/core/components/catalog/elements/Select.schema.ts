@@ -1,12 +1,12 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Select",
   id: Seldon.ComponentId.SELECT,
-  intent:
-    "Dropdown element for choosing a single value from a list of options.",
+  intent: "Dropdown element for choosing a single value from a list of options.",
   tags: ["select", "dropdown", "input", "form", "element", "menu", "choice"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.INPUT,

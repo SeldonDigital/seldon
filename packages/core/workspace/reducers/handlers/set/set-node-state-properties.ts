@@ -1,4 +1,3 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
@@ -6,6 +5,8 @@ import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Merges properties into a node's override bag for an interaction state when
@@ -18,8 +19,7 @@ export function setNodeStateProperties(
 ): Workspace {
   const node = nodeRetrievalService.getNode(payload.nodeId, workspace)
   const entityType = typeCheckingService.getEntityType(node)
-  const { allowed, propagation } =
-    rules.mutations.setStateProperties[entityType]
+  const { allowed, propagation } = rules.mutations.setStateProperties[entityType]
 
   if (!allowed) {
     return workspace

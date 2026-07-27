@@ -1,4 +1,4 @@
-import {
+import type {
   MenuEntry as MenuEntryBase,
   MenuItem as MenuItemBase,
 } from "@seldon/editor/lib/menus/types"

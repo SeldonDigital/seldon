@@ -24,21 +24,18 @@ export function useToggleIsolation() {
   const { workspace } = useWorkspace()
 
   const selectedVariantRootId =
-    selectedNode != null && !isEntryNodeInstance(selectedNode)
-      ? selectedNode.id
-      : null
+    selectedNode != null && !isEntryNodeInstance(selectedNode) ? selectedNode.id : null
   const canToggleIsolation = isolatedView || selectedVariantRootId != null
 
   const toggleIsolation = useCallback(() => {
     if (isolatedView) {
       disableIsolation()
+
       return
     }
+
     if (!selectedVariantRootId || !activeBoard) return
-    enableIsolation(
-      resolveComponentKey(activeBoard, workspace),
-      selectedVariantRootId,
-    )
+    enableIsolation(resolveComponentKey(activeBoard, workspace), selectedVariantRootId)
   }, [
     isolatedView,
     selectedVariantRootId,

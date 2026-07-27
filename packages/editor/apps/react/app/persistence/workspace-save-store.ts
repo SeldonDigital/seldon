@@ -1,13 +1,11 @@
 "use client"
 
 import { setIsLocalWorkspaceDirty } from "@app/project/hooks/use-workspace-sync-status"
-import {
-  type StoredWorkspace,
-  saveStoredWorkspace,
-} from "@seldon/editor/lib/storage/workspace-store"
+import { saveStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 import { create } from "zustand"
 
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
 /** Optional record fields a save may patch alongside the workspace snapshot. */
 type SavePatch = Pick<Partial<StoredWorkspace>, "name">
@@ -30,6 +28,7 @@ export const useWorkspaceSaveStore = create<WorkspaceSaveState>((set, get) => ({
   setRecord: (record) => set({ record }),
   saveNow: async (workspace, patch) => {
     const record = get().record
+
     if (!record) return
     const next: StoredWorkspace = {
       ...record,
@@ -37,6 +36,7 @@ export const useWorkspaceSaveStore = create<WorkspaceSaveState>((set, get) => ({
       workspace,
       updatedAt: new Date().toISOString(),
     }
+
     await saveStoredWorkspace(next)
     set({ record: next })
     setIsLocalWorkspaceDirty(false)

@@ -10,19 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { LiHTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import {
-  FormControlCombobox,
-  FormControlComboboxProps,
-} from "../elements/FormControlCombobox"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { ComboboxField } from "../elements/ComboboxField"
+import { FormControlCombobox } from "../elements/FormControlCombobox"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
+import { Input } from "../primitives/Input"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemPropertyProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -78,10 +79,7 @@ export function ItemProperty({
   seldonRefs,
   ...props
 }: ItemPropertyProps) {
-  const itemPropertyClassName = combineClassNames(
-    "sdn-item-property",
-    className,
-  )
+  const itemPropertyClassName = combineClassNames("sdn-item-property", className)
   const buttonIconicProps = applyRef(
     seldonRefs,
     buttonIconic === null
@@ -89,10 +87,7 @@ export function ItemProperty({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -135,10 +130,7 @@ export function ItemProperty({
       : {
           ...sdn.comboboxField,
           ...comboboxField,
-          className: combineClassNames(
-            sdn.comboboxField?.className,
-            comboboxField?.className,
-          ),
+          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
         },
   )
   const icon2Props = applyRef(
@@ -158,10 +150,7 @@ export function ItemProperty({
       : {
           ...sdn.input2,
           ...input2,
-          className: combineClassNames(
-            sdn.input2?.className,
-            input2?.className,
-          ),
+          className: combineClassNames(sdn.input2?.className, input2?.className),
         },
   )
   const buttonIconic2Props = applyRef(
@@ -171,10 +160,7 @@ export function ItemProperty({
       : {
           ...sdn.buttonIconic2,
           ...buttonIconic2,
-          className: combineClassNames(
-            sdn.buttonIconic2?.className,
-            buttonIconic2?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic2?.className, buttonIconic2?.className),
         },
   )
   const icon3Props = applyRef(
@@ -194,10 +180,7 @@ export function ItemProperty({
       : {
           ...sdn.buttonIconic3,
           ...buttonIconic3,
-          className: combineClassNames(
-            sdn.buttonIconic3?.className,
-            buttonIconic3?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic3?.className, buttonIconic3?.className),
         },
   )
   const icon4Props = applyRef(
@@ -212,18 +195,12 @@ export function ItemProperty({
   )
 
   return (
-    <HTMLLi
-      className={itemPropertyClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLLi className={itemPropertyClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
-          {buttonIconicProps !== null && (
-            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-          )}
+          {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
           {formControlComboboxProps !== null && (
             <FormControlCombobox {...formControlComboboxProps}>
               {input && inputProps && <Input {...inputProps} />}

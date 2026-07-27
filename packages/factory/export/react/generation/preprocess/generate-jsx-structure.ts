@@ -2,11 +2,8 @@ import { ComponentLevel } from "@seldon/core/components/constants"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
-import { Workspace } from "@seldon/core/workspace/types"
 
 import { getTemplateSourceNodeId } from "../../../../helpers/workspace-nodes"
-import { NodeIdToClass } from "../../../css/types"
-import { ComponentToExport, JSONTreeNode } from "../../../types"
 import { getComponentName } from "../../discovery/get-component-name"
 import {
   validateExportedComponentProps,
@@ -15,7 +12,11 @@ import {
 import { assignPropNames } from "../shared/assign-prop-names"
 import { getReactReturnTag } from "../shared/custom-react"
 import { getConditionalPropPaths } from "../shared/get-conditional-prop-paths"
-import { JSXNode, JSXNodeType, JSXStructure } from "./types"
+
+import type { NodeIdToClass } from "../../../css/types"
+import type { ComponentToExport, JSONTreeNode } from "../../../types"
+import type { JSXNode, JSXNodeType, JSXStructure } from "./types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Reports whether a node's descendant tree can be flattened into props without
@@ -27,10 +28,13 @@ import { JSXNode, JSXNodeType, JSXStructure } from "./types"
  */
 function canForwardLosslessly(node: JSONTreeNode): boolean {
   const children = Array.isArray(node.children) ? node.children : []
+
   return children.every((child) => {
     const grandchildren = Array.isArray(child.children) ? child.children : []
+
     if (grandchildren.length === 0) return true
     if (child.level === ComponentLevel.FRAME) return false
+
     return canForwardLosslessly(child)
   })
 }
@@ -70,14 +74,12 @@ interface ForwardedSlots {
  * Falls back to instance numbering when the child templates straight from the
  * catalog, where no node source subtree exists.
  */
-function getForwardedSlotNames(
-  node: JSONTreeNode,
-  workspace: Workspace,
-): ForwardedSlots {
+function getForwardedSlotNames(node: JSONTreeNode, workspace: Workspace): ForwardedSlots {
   const instanceChildren = Array.isArray(node.children) ? node.children : []
   const instanceNode = workspace.nodes[node.nodeId]
   const sourceId = instanceNode ? getTemplateSourceNodeId(instanceNode) : null
   const sourceBoard = sourceId ? getBoardByNodeId(workspace, sourceId) : null
+
   if (!sourceId || !sourceBoard) {
     return { slotNames: assignPropNames(instanceChildren), droppedSlots: [] }
   }
@@ -87,35 +89,38 @@ function getForwardedSlotNames(
     name: getComponentName(getNodeById(id, workspace), workspace),
     children: getChildrenIds(sourceBoard, id).map(buildSourceNode),
   })
-  const sourceChildren = getChildrenIds(sourceBoard, sourceId).map(
-    buildSourceNode,
-  )
-  const sourceSlotNames = assignPropNames(
-    sourceChildren as unknown as JSONTreeNode[],
-  )
+  const sourceChildren = getChildrenIds(sourceBoard, sourceId).map(buildSourceNode)
+  const sourceSlotNames = assignPropNames(sourceChildren as unknown as JSONTreeNode[])
 
   const resolveSlot = (nodeId: string): string | undefined => {
     const seen = new Set<string>()
     let current = workspace.nodes[nodeId]
+
     while (current) {
       const srcId = getTemplateSourceNodeId(current)
+
       if (!srcId || seen.has(srcId)) return undefined
       seen.add(srcId)
       const slot = sourceSlotNames.get(srcId)
+
       if (slot) return slot
       current = workspace.nodes[srcId]
     }
+
     return undefined
   }
 
   const result = new Map<string, string>()
+
   const mapChildren = (children: JSONTreeNode[]) => {
     for (const child of children) {
       const slot = resolveSlot(child.nodeId)
+
       if (slot) result.set(child.nodeId, slot)
       if (Array.isArray(child.children)) mapChildren(child.children)
     }
   }
+
   mapChildren(instanceChildren)
 
   // If the source mapping missed any descendant, fall back to instance
@@ -132,26 +137,34 @@ function getForwardedSlotNames(
   // branches the author never touched. Nulling only genuine sibling-drops
   // suppresses the element's default child without breaking wrapper layout.
   const filled = new Set(result.values())
+
   const isFilled = (n: MinimalTreeNode): boolean => {
     const slot = sourceSlotNames.get(n.nodeId)
+
     return slot ? filled.has(slot) : false
   }
+
   const hasFilledDescendant = (n: MinimalTreeNode): boolean =>
     isFilled(n) || n.children.some(hasFilledDescendant)
 
   const droppedSlots: string[] = []
+
   const collectDropped = (parent: MinimalTreeNode) => {
     const parentHasFilledChild = parent.children.some(isFilled)
+
     if (parentHasFilledChild) {
       parent.children.forEach((child) => {
         const slot = sourceSlotNames.get(child.nodeId)
+
         if (slot && !filled.has(slot) && !hasFilledDescendant(child)) {
           droppedSlots.push(slot)
         }
       })
     }
+
     parent.children.forEach(collectDropped)
   }
+
   collectDropped({
     nodeId: node.nodeId,
     name: node.name,
@@ -163,12 +176,15 @@ function getForwardedSlotNames(
 
 function countDescendants(children: JSONTreeNode[]): number {
   let count = 0
+
   for (const child of children) {
     count += 1
+
     if (Array.isArray(child.children)) {
       count += countDescendants(child.children)
     }
   }
+
   return count
 }
 
@@ -199,15 +215,19 @@ export function generateJSXStructure(
 
   // Path-keyed view consumed by interface, signature, and default-prop generators.
   const propNames = new Map<string, string>()
+
   function collectPropNames(node: JSONTreeNode) {
     const propName = nodeIdToPropName.get(node.nodeId)
+
     if (propName) {
       propNames.set(node.dataBinding.path, propName)
     }
+
     if (Array.isArray(node.children)) {
       node.children.forEach(collectPropNames)
     }
   }
+
   treeChildren.forEach(collectPropNames)
 
   // Validate component props
@@ -221,6 +241,7 @@ export function generateJSXStructure(
   // Build JSX structure recursively
   function buildJSXNode(node: JSONTreeNode): JSXNode {
     const propName = nodeIdToPropName.get(node.nodeId)
+
     if (!propName) {
       throw new Error(
         `Prop name not found for node "${node.name}" at path "${node.dataBinding.path}" in component "${component.name}". ` +
@@ -243,6 +264,7 @@ export function generateJSXStructure(
 
     if (node.level === ComponentLevel.FRAME) {
       nodeType = "frame"
+
       // Frame should be conditionally rendered if it's an invalid prop or a
       // stub slot.
       if (!isValidProp || node.isStub) {
@@ -284,8 +306,7 @@ export function generateJSXStructure(
         // Grandchildren are passed as props to this child component. The JSX
         // attribute name is the child component's own slot name for each
         // grandchild, derived from the child's own numbering.
-        const { slotNames: childSlotNames, droppedSlots } =
-          getForwardedSlotNames(node, workspace)
+        const { slotNames: childSlotNames, droppedSlots } = getForwardedSlotNames(node, workspace)
 
         // Forward every hoisted descendant whose ancestor chain (up to this
         // node) is itself flattened into props, not only direct children. This
@@ -298,6 +319,7 @@ export function generateJSXStructure(
           descendants.forEach((descendant) => {
             const grandchildPropValue = nodeIdToPropName.get(descendant.nodeId)
             const slotName = childSlotNames.get(descendant.nodeId)
+
             if (!grandchildPropValue || !slotName) {
               throw new Error(
                 `Prop name not found for grandchild "${descendant.name}" at path "${descendant.dataBinding.path}" in component "${component.name}". ` +
@@ -306,8 +328,8 @@ export function generateJSXStructure(
             }
 
             const isConditional =
-              conditionalPaths.has(descendant.dataBinding.path) ||
-              Boolean(descendant.isStub)
+              conditionalPaths.has(descendant.dataBinding.path) || Boolean(descendant.isStub)
+
             grandchildProps.push({
               propKeyName: slotName,
               propVarName: `${grandchildPropValue}Props`,
@@ -366,9 +388,7 @@ export function generateJSXStructure(
   }
 
   // Build root node (wrapper for the component)
-  const rootChildren: JSXNode[] = treeChildren.map((child) =>
-    buildJSXNode(child),
-  )
+  const rootChildren: JSXNode[] = treeChildren.map((child) => buildJSXNode(child))
 
   const root: JSXNode = {
     type: "component",

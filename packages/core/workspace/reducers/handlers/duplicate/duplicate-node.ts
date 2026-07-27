@@ -1,16 +1,13 @@
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  debugGroup,
-  debugGroupEnd,
-  debugLog,
-} from "../../../../utils/debug-logger"
+import { debugGroup, debugGroupEnd, debugLog } from "../../../../utils/debug-logger"
 import {
   nodeOperationsService,
   nodeRetrievalService,
   typeCheckingService,
   workspacePropagationService,
 } from "../../../services"
-import { ExtractPayload, Workspace } from "../../../types"
+
+import type { ExtractPayload, Workspace } from "../../../types"
 
 /**
  * Applies `duplicate_node`: an in-place copy gated by
@@ -43,27 +40,18 @@ export function duplicateNode(
   if (rules.mutations.duplicate[entityType].allowed) {
     const propagation = rules.mutations.duplicate[entityType].propagation
 
-    debugLog(
-      "Workspace",
-      "duplicateNode",
-      "Duplication allowed, applying with propagation",
-      {
-        propagation,
-      },
-    )
+    debugLog("Workspace", "duplicateNode", "Duplication allowed, applying with propagation", {
+      propagation,
+    })
 
     const result = workspacePropagationService.propagateNodeOperation({
       nodeId: payload.nodeId,
       propagation,
       apply: (node, workspace) => {
-        debugLog(
-          "Workspace",
-          "duplicateNode",
-          "Duplicating node in workspace",
-          {
-            nodeId: node.id,
-          },
-        )
+        debugLog("Workspace", "duplicateNode", "Duplicating node in workspace", {
+          nodeId: node.id,
+        })
+
         return nodeOperationsService.duplicateNode(node.id, workspace)
       },
       workspace,
@@ -71,18 +59,12 @@ export function duplicateNode(
 
     debugLog("Workspace", "duplicateNode", "Node duplication complete")
     debugGroupEnd("Workspace", "duplicateNode", "Node duplication complete")
+
     return result
   }
 
-  debugLog(
-    "Workspace",
-    "duplicateNode",
-    "Duplication not allowed for entity type",
-  )
-  debugGroupEnd(
-    "Workspace",
-    "duplicateNode",
-    "Duplication not allowed for entity type",
-  )
+  debugLog("Workspace", "duplicateNode", "Duplication not allowed for entity type")
+  debugGroupEnd("Workspace", "duplicateNode", "Duplication not allowed for entity type")
+
   return workspace
 }

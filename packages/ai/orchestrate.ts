@@ -1,18 +1,13 @@
 import { chatToActionsPi, warmModelPi } from "./pi/orchestrate"
-import type {
-  AgentMetrics,
-  ChatToActionsInput,
-  ChatToActionsResult,
-} from "./types"
+
+import type { AgentMetrics, ChatToActionsInput, ChatToActionsResult } from "./types"
 
 /**
  * Translates a chat message into workspace actions through the Pi tool-calling
  * loop. The caller applies the returned actions; this function never mutates
  * state.
  */
-export async function chatToActions(
-  input: ChatToActionsInput,
-): Promise<ChatToActionsResult> {
+export async function chatToActions(input: ChatToActionsInput): Promise<ChatToActionsResult> {
   return chatToActionsPi(input)
 }
 

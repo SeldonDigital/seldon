@@ -329,7 +329,6 @@ const PROPERTY_SCHEMAS_RAW = {
   ariaLive: ariaLiveSchema,
 } as const
 
-export const PROPERTY_SCHEMAS =
-  attachPropertyDisplayMetadata(PROPERTY_SCHEMAS_RAW)
+export const PROPERTY_SCHEMAS = attachPropertyDisplayMetadata(PROPERTY_SCHEMAS_RAW)
 
 export type PropertyName = keyof typeof PROPERTY_SCHEMAS

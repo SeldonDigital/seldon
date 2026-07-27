@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** Keyword describing the validity state of an input. */
 export enum AriaInvalid {
@@ -28,8 +28,7 @@ export const ariaInvalidSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(AriaInvalid) as string[]).includes(value),
+      typeof value === "string" && (Object.values(AriaInvalid) as string[]).includes(value),
   },
   presetOptions: () => Object.values(AriaInvalid),
 }

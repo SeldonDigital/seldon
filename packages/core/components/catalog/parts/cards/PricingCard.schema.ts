@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Pricing Card",
   id: Seldon.ComponentId.PRICING_CARD,
   intent:
     "Plan comparison card with a plan name, price, a single subscribe action, and a short list of differentiating features.",
-  tags: [
-    "card",
-    "pricing",
-    "plan",
-    "subscription",
-    "features",
-    "cta",
-    "saas",
-    "UI",
-  ],
+  tags: ["card", "pricing", "plan", "subscription", "features", "cta", "saas", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

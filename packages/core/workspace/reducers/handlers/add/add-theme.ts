@@ -1,14 +1,9 @@
 import { produce } from "immer"
 
 import { isComponentId } from "../../../../components/constants"
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { STOCK_THEMES_BY_ID } from "../../../../themes/catalog"
-import type { ThemeTemplateId } from "../../../../themes/types/theme-id"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../../../helpers/components/board-sort-order"
+import { getBoardOrder, setBoardOrder } from "../../../helpers/components/board-sort-order"
 import { DEFAULT_THEME_BOARD_AUTHOR } from "../../../helpers/components/default-board-metadata"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { formatEntryId } from "../../../helpers/general/entry-id"
@@ -16,14 +11,14 @@ import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/works
 import { formatThemeCatalog } from "../../../model/template-ref"
 import { boardOrderService, workspaceMutationService } from "../../../services"
 
+import type { ExtractPayload, Workspace } from "../../../../index"
+import type { ThemeTemplateId } from "../../../../themes/types/theme-id"
+
 /**
  * Inserts a theme board and one default `themes` row rooted at `catalog:{boardKey}`.
  * Returns the incoming workspace when rules block creation or `workspace.boards[boardKey]` already exists.
  */
-export function addTheme(
-  payload: ExtractPayload<"add_theme">,
-  workspace: Workspace,
-): Workspace {
+export function addTheme(payload: ExtractPayload<"add_theme">, workspace: Workspace): Workspace {
   if (!rules.mutations.create.board.allowed) {
     return workspace
   }
@@ -37,9 +32,7 @@ export function addTheme(
 
     const existingBoards = Object.values(draft.boards)
     const maxOrder =
-      existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
-        : -1
+      existingBoards.length > 0 ? Math.max(...existingBoards.map((b) => getBoardOrder(b))) : -1
 
     const defaultThemeEntryId = formatEntryId("theme", boardKey, "default")
 
@@ -68,10 +61,12 @@ export function addTheme(
       componentProperties: getInitialBoardComponentProperties("theme"),
       variants: [{ id: defaultThemeEntryId }],
     }
+
     setBoardOrder(board, maxOrder + 1)
     draft.boards[boardKey] = board
 
     const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
+
     Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

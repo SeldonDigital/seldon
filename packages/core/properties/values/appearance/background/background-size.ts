@@ -1,11 +1,13 @@
 import { Unit } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { PercentageValue } from "../../shared/exact/percentage"
-import { PixelValue } from "../../shared/exact/pixel"
-import { RemValue } from "../../shared/exact/rem"
-import { DoubleAxisValue } from "../../shared/option/double-axis"
-import { ImageFit, ImageFitValue } from "../../shared/utilities/image-fit"
+import { ImageFit } from "../../shared/utilities/image-fit"
+
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { PercentageValue } from "../../shared/exact/percentage"
+import type { PixelValue } from "../../shared/exact/pixel"
+import type { RemValue } from "../../shared/exact/rem"
+import type { DoubleAxisValue } from "../../shared/option/double-axis"
+import type { ImageFitValue } from "../../shared/utilities/image-fit"
 
 /** One size choice before pairing: empty, lengths, or a named fit. */
 export type SingleBackgroundSizeValue =
@@ -16,15 +18,14 @@ export type SingleBackgroundSizeValue =
   | ImageFitValue
 
 /** All size shapes for one background layer. */
-export type BackgroundSizeValue =
-  | EmptyValue
-  | SingleBackgroundSizeValue
-  | DoubleAxisValue
+export type BackgroundSizeValue = EmptyValue | SingleBackgroundSizeValue | DoubleAxisValue
 
 function isMeasurePayload(u: unknown): boolean {
   if (typeof u !== "object" || u === null) return false
   const m = u as { value?: unknown; unit?: unknown }
+
   if (typeof m.value !== "number" || !Number.isFinite(m.value)) return false
+
   return m.unit === Unit.PX || m.unit === Unit.REM || m.unit === Unit.PERCENT
 }
 
@@ -45,14 +46,15 @@ export const backgroundSizeSchema: PropertySchema = {
     exact: (value: unknown) => {
       if (typeof value !== "object" || value === null) return false
       const v = value as Record<string, unknown>
+
       if ("x" in v && "y" in v) {
         return isMeasurePayload(v.x) && isMeasurePayload(v.y)
       }
+
       return isMeasurePayload(value)
     },
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(ImageFit) as string[]).includes(value),
+      typeof value === "string" && (Object.values(ImageFit) as string[]).includes(value),
   },
   presetOptions: () => Object.values(ImageFit),
 }

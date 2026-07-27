@@ -4,19 +4,18 @@ import { useTool } from "@app/editor/hooks/use-tool"
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
-import { Placement } from "@seldon/editor/lib/types"
-import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
+import { useCallback } from "react"
 
-import { Instance, Variant } from "@seldon/core"
-import {
-  nodeRelationshipService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
+import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
+
+import type { Instance, Variant } from "@seldon/core"
+import type { Placement } from "@seldon/editor/lib/types"
+import type { CSSProperties, MouseEvent, ReactNode } from "react"
 
 interface SidebarTrackingProps {
   node: Variant | Instance
@@ -36,10 +35,12 @@ interface SidebarTrackingProps {
  */
 function isButtonTarget(event: MouseEvent<HTMLElement>): boolean {
   const target = event.target as HTMLElement
+
   // Check if target or any ancestor is a button
   if (target.closest("button")) return true
   // Also check element at click coordinates (in case overlay is above button)
   const elementAtPoint = document.elementFromPoint(event.clientX, event.clientY)
+
   return elementAtPoint?.closest("button") !== null
 }
 
@@ -68,8 +69,7 @@ export function SidebarTracking({
   const { openPanel } = usePanel()
   const { activeTool } = useTool()
   const isDragging = useDragStateStore((state) => state.isDragging)
-  const { isPlacementAllowed, parentNode, canHaveChildren } =
-    useSidebarPlacementTracking(node)
+  const { isPlacementAllowed, parentNode, canHaveChildren } = useSidebarPlacementTracking(node)
 
   const handlePlacementClick = useCallback(
     (placement: Placement) => {
@@ -82,6 +82,7 @@ export function SidebarTracking({
           nodeId: node.id,
           index: 0,
         })
+
         return
       }
 
@@ -89,6 +90,7 @@ export function SidebarTracking({
 
       // Check if node exists in workspace (additional safety check)
       const nodeExistsInWorkspace = workspace.nodes[node.id] !== undefined
+
       if (!nodeExistsInWorkspace) {
         // Node doesn't exist in workspace, skip insertion
         return
@@ -103,7 +105,7 @@ export function SidebarTracking({
           nodeId: parentNode.id,
           index: placement === "before" ? currentIndex : currentIndex + 1,
         })
-      } catch (error) {
+      } catch {
         // Node doesn't exist in workspace, skip insertion
         return
       }
@@ -135,12 +137,7 @@ export function SidebarTracking({
         <DragDropZone
           target={node}
           placement="before"
-          bandStyle={getZoneBandStyle(
-            "before",
-            canHaveChildren,
-            isExpanded,
-            isDragging,
-          )}
+          bandStyle={getZoneBandStyle("before", canHaveChildren, isExpanded, isDragging)}
           onClick={handleRowClickWrapper}
           onDoubleClick={handleRowDoubleClickWrapper}
           onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -150,12 +147,7 @@ export function SidebarTracking({
           <DragDropZone
             target={node}
             placement="inside"
-            bandStyle={getZoneBandStyle(
-              "inside",
-              canHaveChildren,
-              isExpanded,
-              isDragging,
-            )}
+            bandStyle={getZoneBandStyle("inside", canHaveChildren, isExpanded, isDragging)}
             onClick={handleRowClickWrapper}
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -166,12 +158,7 @@ export function SidebarTracking({
           <DragDropZone
             target={node}
             placement="after"
-            bandStyle={getZoneBandStyle(
-              "after",
-              canHaveChildren,
-              isExpanded,
-              isDragging,
-            )}
+            bandStyle={getZoneBandStyle("after", canHaveChildren, isExpanded, isDragging)}
             onClick={handleRowClickWrapper}
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -239,15 +226,18 @@ function getZoneBandStyle(
   if (canHaveChildren && !isExpanded) {
     if (placement === "before") return { ...base, top: 0, height: "30%" }
     if (placement === "inside") return { ...base, top: "30%", height: "40%" }
+
     return { ...base, bottom: 0, height: "30%" }
   }
 
   if (canHaveChildren && isExpanded) {
     if (placement === "before") return { ...base, top: 0, height: "50%" }
+
     return { ...base, bottom: 0, height: "50%" }
   }
 
   if (placement === "before") return { ...base, top: 0, height: "50%" }
+
   return { ...base, bottom: 0, height: "50%" }
 }
 

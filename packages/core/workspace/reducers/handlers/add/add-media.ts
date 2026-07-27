@@ -1,21 +1,16 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../../../helpers/components/board-sort-order"
+import { getBoardOrder, setBoardOrder } from "../../../helpers/components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { boardOrderService } from "../../../services"
 import { formatLabelFromCatalogId } from "../shared/format-label-from-catalog-id"
 
+import type { ExtractPayload, Workspace } from "../../../../index"
+
 /** Creates a media board with default and custom rows in `media`. */
-export function addMedia(
-  payload: ExtractPayload<"add_media">,
-  workspace: Workspace,
-): Workspace {
+export function addMedia(payload: ExtractPayload<"add_media">, workspace: Workspace): Workspace {
   if (!rules.mutations.create.board.allowed) {
     return workspace
   }
@@ -24,16 +19,16 @@ export function addMedia(
     if (!draft.media) {
       draft.media = {}
     }
+
     const boardKey = payload.catalogId
+
     if (draft.boards[boardKey]) {
       return draft
     }
 
     const existingBoards = Object.values(draft.boards)
     const maxOrder =
-      existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
-        : -1
+      existingBoards.length > 0 ? Math.max(...existingBoards.map((b) => getBoardOrder(b))) : -1
 
     const defaultEntryId = `media-${boardKey}-default`
     const variantEntryId = `media-${boardKey}-custom-${Date.now()}`
@@ -50,10 +45,12 @@ export function addMedia(
       componentProperties: getInitialBoardComponentProperties("media"),
       variants: [{ id: defaultEntryId }, { id: variantEntryId }],
     }
+
     setBoardOrder(board, maxOrder + 1)
     draft.boards[boardKey] = board
 
     const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
+
     Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

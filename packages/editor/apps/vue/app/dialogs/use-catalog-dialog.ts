@@ -1,13 +1,11 @@
-import type {
-  CatalogDialogCategory,
-  CatalogDialogItem,
-} from "@app/dialogs/types"
 import { computed, ref } from "vue"
 
 import { catalog } from "@seldon/core/components/catalog"
-import { ComponentId } from "@seldon/core/components/constants"
-import type { ComponentSchema } from "@seldon/core/components/types"
 import { getComponentIcon } from "@seldon/core/icon-registry"
+
+import type { CatalogDialogCategory, CatalogDialogItem } from "@app/dialogs/types"
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { ComponentSchema } from "@seldon/core/components/types"
 
 export type CatalogItem = CatalogDialogItem & {
   componentId: ComponentId
@@ -37,6 +35,7 @@ export function useCatalogDialog(shouldShow: CatalogPredicate) {
 
   const categories = computed<CatalogCategory[]>(() => {
     const queryLower = query.value.toLowerCase()
+
     return categoryConfigs.map(({ category, schemas }) => {
       const items = schemas
         .filter((schema) => shouldShow(schema))
@@ -49,11 +48,13 @@ export function useCatalogDialog(shouldShow: CatalogPredicate) {
         }))
         .filter((item) => {
           if (queryLower.length === 0) return true
+
           return (
             item.name.toLowerCase().includes(queryLower) ||
             item.componentId.toLowerCase().includes(queryLower)
           )
         })
+
       return { category, items }
     })
   })

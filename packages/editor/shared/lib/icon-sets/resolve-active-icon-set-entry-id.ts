@@ -15,10 +15,7 @@ export function resolveActiveIconSetEntryId({
   workspace,
   selectedIconSetEntryId,
 }: ResolveInput): string | null {
-  if (
-    selectedIconSetEntryId &&
-    workspace["icon-sets"][selectedIconSetEntryId]
-  ) {
+  if (selectedIconSetEntryId && workspace["icon-sets"][selectedIconSetEntryId]) {
     return selectedIconSetEntryId
   }
 

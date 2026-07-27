@@ -3,13 +3,14 @@ import { fileURLToPath } from "node:url"
 
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload, Workspace } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
 
 import { exportWorkspace } from "./export-workspace"
-import { ExportOptions } from "./types"
+
+import type { ExportOptions } from "./types"
+import type { ExtractPayload, Workspace } from "@seldon/core"
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(here, "../../..")
@@ -49,12 +50,14 @@ describe("exportWorkspace", () => {
 
   it("returns a non-empty list of files", async () => {
     const files = await exportWorkspace(workspace, options)
+
     expect(files.length).toBeGreaterThan(0)
   })
 
   it("emits the shared stylesheet, README, and class-name utility", async () => {
     const files = await exportWorkspace(workspace, options)
     const paths = files.map((f) => f.path)
+
     expect(paths).toContain("/src/components/styles.css")
     expect(paths).toContain("/src/components/README.md")
     expect(paths).toContain("/src/components/utils/class-name.ts")
@@ -63,14 +66,14 @@ describe("exportWorkspace", () => {
   it("emits a Button component file", async () => {
     const files = await exportWorkspace(workspace, options)
     const buttonFile = files.find((f) => /\/Button\.tsx$/.test(f.path))
+
     expect(buttonFile).toBeDefined()
   })
 
   it("prepends the license header into generated text files", async () => {
     const files = await exportWorkspace(workspace, options)
-    const stylesheet = files.find(
-      (f) => f.path === "/src/components/styles.css",
-    )
+    const stylesheet = files.find((f) => f.path === "/src/components/styles.css")
+
     expect(typeof stylesheet?.content).toBe("string")
     expect(stylesheet?.content).toContain("generated using Seldon")
   })
@@ -84,6 +87,7 @@ describe("exportWorkspace", () => {
         assetPublicPath: "/assets",
       },
     })
+
     expect(files.map((f) => f.path)).toContain("/src/components/styles.css")
   })
 })

@@ -12,16 +12,20 @@ interface ParsedFontVariant {
 export function parseFontVariant(variant: string): ParsedFontVariant {
   const italic = variant.endsWith("italic")
   const weightPart = italic ? variant.slice(0, -"italic".length) : variant
+
   if (weightPart === "" || weightPart === "regular") {
     return { weight: 400, italic }
   }
+
   const weight = Number(weightPart)
+
   return { weight: Number.isFinite(weight) ? weight : 400, italic }
 }
 
 /** Returns a human label for a variant, such as `"700 Italic"`. */
 export function fontVariantDisplayLabel(variant: string): string {
   const { weight, italic } = parseFontVariant(variant)
+
   return `${weight}${italic ? " Italic" : ""}`
 }
 
@@ -34,6 +38,7 @@ export function sortFontVariants(variants: string[]): string[] {
   return [...variants].sort((a, b) => {
     const pa = parseFontVariant(a)
     const pb = parseFontVariant(b)
+
     return Number(pa.italic) - Number(pb.italic) || pa.weight - pb.weight
   })
 }
@@ -46,13 +51,15 @@ export function sortFontVariants(variants: string[]): string[] {
 export function buildGoogleFontAxisParam(variants: string[]): string {
   if (variants.length === 0) return ""
   const byKey = new Map<string, { ital: number; wght: number }>()
+
   for (const variant of variants) {
     const { weight, italic } = parseFontVariant(variant)
     const ital = italic ? 1 : 0
+
     byKey.set(`${ital},${weight}`, { ital, wght: weight })
   }
-  const sorted = Array.from(byKey.values()).sort(
-    (a, b) => a.ital - b.ital || a.wght - b.wght,
-  )
+
+  const sorted = Array.from(byKey.values()).sort((a, b) => a.ital - b.ital || a.wght - b.wght)
+
   return `ital,wght@${sorted.map((t) => `${t.ital},${t.wght}`).join(";")}`
 }

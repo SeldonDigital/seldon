@@ -1,15 +1,16 @@
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
-import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 import { buildEchoOverrides } from "./build-echo-overrides"
 import { getNodeChildIds } from "../../workspace/node-tree"
+
+import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 /** One rendered child slot, expanded for repeat echoes. */
 export interface ChildRender {
   key: string
   nodeId: string
   rootPath: string
-  repeatOverrides?: Record<string, string>
   isRepeatCopy: boolean
+  repeatOverrides?: Record<string, string>
 }
 
 /**
@@ -24,11 +25,10 @@ export function buildChildRenders(
   repeatOverrides: Record<string, string> | undefined,
 ): ChildRender[] {
   const result: ChildRender[] = []
+
   for (const childId of getNodeChildIds(node, workspace)) {
     const childNode = workspace.nodes[childId]
-    const childRepeat = childNode
-      ? resolveNodeRepeat(childId, workspace)
-      : undefined
+    const childRepeat = childNode ? resolveNodeRepeat(childId, workspace) : undefined
     const childRootPath = `${selfPath}/${childId}`
 
     if (!childRepeat || childRepeat.count <= 1) {
@@ -43,8 +43,10 @@ export function buildChildRenders(
     }
 
     const total = Math.min(childRepeat.count, MAX_REPEAT_COUNT)
+
     for (let echoIndex = 0; echoIndex < total; echoIndex++) {
       const isEcho = echoIndex > 0
+
       result.push({
         key: isEcho ? `${childId}#echo${echoIndex}` : childId,
         nodeId: childId,
@@ -59,5 +61,6 @@ export function buildChildRenders(
       })
     }
   }
+
   return result
 }

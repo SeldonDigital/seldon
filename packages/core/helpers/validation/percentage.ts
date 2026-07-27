@@ -5,10 +5,7 @@
  * @param options - Optional min/max range constraints for the percentage value
  * @returns True if the value is a valid percentage within the specified range
  */
-export function isPercentage(
-  value: string,
-  options?: { min?: number; max?: number },
-) {
+export function isPercentage(value: string, options?: { min?: number; max?: number }) {
   if (!/^\d+(\.\d+)?%$/.test(value)) {
     return false
   }
@@ -22,5 +19,6 @@ export function isPercentage(
   if (options?.max !== undefined && number > options.max) {
     return false
   }
+
   return true
 }

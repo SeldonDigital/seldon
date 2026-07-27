@@ -25,10 +25,5 @@
     "target": "ES2017"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": [
-    "node_modules",
-    "**/generated-ai-action-schema.json",
-    ".next",
-    "dist"
-  ]
+  "exclude": ["node_modules", "**/generated-ai-action-schema.json", ".next", "dist"]
 }

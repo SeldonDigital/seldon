@@ -12,17 +12,13 @@ const ALL_WEIGHTS_AXIS =
  *   When omitted or empty, every weight is requested.
  * @returns Google Fonts URL with `swap` display
  */
-export function getGoogleFontURL(
-  fontFamily: string,
-  variants?: string[],
-): string {
+export function getGoogleFontURL(fontFamily: string, variants?: string[]): string {
   const axis =
-    variants && variants.length > 0
-      ? buildGoogleFontAxisParam(variants)
-      : ALL_WEIGHTS_AXIS
+    variants && variants.length > 0 ? buildGoogleFontAxisParam(variants) : ALL_WEIGHTS_AXIS
   const params = new URLSearchParams({
     family: `${fontFamily}:${axis}`,
     display: "swap",
   })
+
   return `https://fonts.googleapis.com/css2?${params.toString()}`
 }

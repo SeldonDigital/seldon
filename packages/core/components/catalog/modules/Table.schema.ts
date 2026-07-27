@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Table",
   id: Seldon.ComponentId.TABLE,
   intent:
     "A data table card with a toolbar, a column header row, data rows, and a pagination footer.",
-  tags: [
-    "table",
-    "standard",
-    "ui",
-    "data",
-    "columns",
-    "rows",
-    "filter",
-    "sort",
-  ],
+  tags: ["table", "standard", "ui", "data", "columns", "rows", "filter", "sort"],
   level: Seldon.ComponentLevel.MODULE,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -1884,14 +1876,8 @@ export const schema = {
                                   type: Sdn.ValueType.EXACT,
                                   value: "#1F9D55",
                                 },
-                                brightness: {
-                                  type: Sdn.ValueType.EMPTY,
-                                  value: null,
-                                },
-                                opacity: {
-                                  type: Sdn.ValueType.EMPTY,
-                                  value: null,
-                                },
+                                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                                opacity: { type: Sdn.ValueType.EMPTY, value: null },
                               },
                             ],
                           },
@@ -2172,14 +2158,8 @@ export const schema = {
                                   type: Sdn.ValueType.THEME_CATEGORICAL,
                                   value: "@swatch.gray",
                                 },
-                                brightness: {
-                                  type: Sdn.ValueType.EMPTY,
-                                  value: null,
-                                },
-                                opacity: {
-                                  type: Sdn.ValueType.EMPTY,
-                                  value: null,
-                                },
+                                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                                opacity: { type: Sdn.ValueType.EMPTY, value: null },
                               },
                             ],
                           },
@@ -2327,14 +2307,8 @@ export const schema = {
                                   type: Sdn.ValueType.EXACT,
                                   value: "#1F9D55",
                                 },
-                                brightness: {
-                                  type: Sdn.ValueType.EMPTY,
-                                  value: null,
-                                },
-                                opacity: {
-                                  type: Sdn.ValueType.EMPTY,
-                                  value: null,
-                                },
+                                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                                opacity: { type: Sdn.ValueType.EMPTY, value: null },
                               },
                             ],
                           },

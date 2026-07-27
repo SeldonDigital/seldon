@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, Unit, ValueType } from "@seldon/core"
+import { Unit, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
 
-import { StyleGenerationContext } from "../types"
 import { getIconStyles } from "./get-icon-styles"
+
+import type { StyleGenerationContext } from "../types"
+import type { Properties } from "@seldon/core"
 
 const context = (properties: Properties): StyleGenerationContext => ({
   properties,
@@ -21,6 +23,7 @@ describe("getIconStyles", () => {
       size: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 24 } },
       color: { type: ValueType.EXACT, value: "#00ff00" },
     } as unknown as Properties
+
     expect(getIconStyles(context(properties))).toEqual({
       fontSize: "24px",
       color: "#00ff00",
@@ -32,6 +35,7 @@ describe("getIconStyles", () => {
       size: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 24 } },
       color: { type: ValueType.EXACT, value: "#00ff00" },
     } as unknown as Properties
+
     expect(getIconStyles(context(properties))).toEqual({})
   })
 
@@ -40,6 +44,7 @@ describe("getIconStyles", () => {
       symbol,
       size: { type: ValueType.EMPTY, value: null },
     } as unknown as Properties
+
     expect(getIconStyles(context(properties))).toEqual({})
   })
 })

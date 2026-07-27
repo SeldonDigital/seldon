@@ -1,14 +1,12 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import { commit, textResult } from "./commit"
 
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
-import { commit, textResult } from "./commit"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** Turns one weight (variant) of a font family on or off. */
 export function createSetFontCollectionFamilyVariantTool(
@@ -33,14 +31,14 @@ export function createSetFontCollectionFamilyVariantTool(
         description: "true to enable, false to disable.",
       }),
     }),
+
     execute: async (_id, params) => {
-      const fontCollectionId =
-        params.fontCollectionId ?? resolved.resourceTargetId
+      const fontCollectionId = params.fontCollectionId ?? resolved.resourceTargetId
+
       if (!fontCollectionId) {
-        return textResult(
-          "No font collection is selected. Pass fontCollectionId.",
-        )
+        return textResult("No font collection is selected. Pass fontCollectionId.")
       }
+
       return textResult(
         commit(state, {
           type: "set_font_collection_family_variant",

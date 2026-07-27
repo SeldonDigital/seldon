@@ -1,5 +1,6 @@
-import type { Theme } from "../../../themes/types"
 import { getPropertySchema } from "./get-property-schema"
+
+import type { Theme } from "../../../themes/types"
 
 /**
  * Runs the schema validator for one storage shape.
@@ -16,10 +17,11 @@ export function validatePropertyValue(
   theme?: Theme,
 ): boolean {
   const schema = getPropertySchema(propertyName)
+
   if (!schema) return false
 
-  const validator =
-    schema.validation[valueType as keyof typeof schema.validation]
+  const validator = schema.validation[valueType as keyof typeof schema.validation]
+
   if (!validator) return false
 
   return validator(value, theme)

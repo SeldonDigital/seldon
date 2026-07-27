@@ -1,7 +1,9 @@
 import { useMemo } from "react"
 import { create } from "zustand"
 
-import { BORDER_SIDE_KEYS, BorderSideKey } from "@seldon/core"
+import { BORDER_SIDE_KEYS } from "@seldon/core"
+
+import type { BorderSideKey } from "@seldon/core"
 
 /**
  * Ephemeral, per-session visibility for the four border sides. Showing a side
@@ -20,6 +22,7 @@ const useStore = create<BorderSideVisibilityState>((set) => ({
     set((state) => {
       const current = state.shown[subjectId] ?? {}
       const next = show ?? !current[side]
+
       return {
         shown: {
           ...state.shown,
@@ -32,13 +35,16 @@ const useStore = create<BorderSideVisibilityState>((set) => ({
 /** Reactive read of the sides currently shown for one subject. */
 export function useRevealedBorderSides(subjectId: string): Set<BorderSideKey> {
   const shown = useStore((state) => state.shown[subjectId])
+
   return useMemo(() => {
     const result = new Set<BorderSideKey>()
+
     if (shown) {
       for (const side of BORDER_SIDE_KEYS) {
         if (shown[side]) result.add(side)
       }
     }
+
     return result
   }, [shown])
 }
@@ -46,5 +52,6 @@ export function useRevealedBorderSides(subjectId: string): Set<BorderSideKey> {
 /** Border-side visibility action. Use `useRevealedBorderSides` for reads. */
 export function useBorderSideVisibility() {
   const toggle = useStore((state) => state.toggle)
+
   return { toggleBorderSide: toggle }
 }

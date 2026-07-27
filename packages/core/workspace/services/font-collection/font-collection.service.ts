@@ -2,39 +2,41 @@ import merge from "lodash/merge"
 
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { instantiateFontCollection } from "../../../font-collections/compute"
+import { deriveVariantPreset, getEnabledVariants } from "../../../font-collections/helpers"
+import { sortFontVariants } from "../../../helpers/utils/font-variant"
+import { isFontCollectionBoard } from "../../model/components"
 import {
-  deriveVariantPreset,
-  getEnabledVariants,
-} from "../../../font-collections/helpers"
+  getFontCollectionTemplateCatalogId,
+  getFontCollectionTemplateFontCollectionId,
+} from "../../model/template-ref"
+
 import type { VariantSelection } from "../../../font-collections/helpers"
 import type {
   ComputedFontCollection,
   FontCollectionTemplateId,
   FontFamilyEntry,
 } from "../../../font-collections/types"
-import { sortFontVariants } from "../../../helpers/utils/font-variant"
-import { isFontCollectionBoard } from "../../model/components"
 import type { EntryFontCollection } from "../../model/entry-font-collection"
-import {
-  getFontCollectionTemplateCatalogId,
-  getFontCollectionTemplateFontCollectionId,
-} from "../../model/template-ref"
 import type { Workspace } from "../../types"
 
-/** One resolved family plus the collection it came from. */
+/**
+ * One resolved family plus the collection it came from. `collectionId` is the catalog id of the
+ * owning collection, such as `system` or `googleFonts`. `slot` is the family slot id within the
+ * collection.
+ */
 export interface WorkspaceFontFamily extends FontFamilyEntry {
-  /** Catalog id of the owning collection, such as `system` or `googleFonts`. */
   collectionId: string
-  /** Family slot id within the collection. */
   slot: string
 }
 
-/** An enabled remote family plus the variants to self-host. */
+/**
+ * An enabled remote family plus the variants to self-host. `slot` is the family slot id, which
+ * matches the self-hosted woff2 directory. `variants` are the enabled variant strings, such as
+ * `"400"` or `"700italic"`.
+ */
 export interface EnabledRemoteFamily {
   name: string
-  /** Family slot id, which matches the self-hosted woff2 directory. */
   slot: string
-  /** Enabled variant strings, such as `"400"`, `"700italic"`. */
   variants: string[]
 }
 
@@ -47,14 +49,15 @@ export class WorkspaceFontCollectionService {
     fontCollectionId: string,
     workspace: Workspace,
   ): ComputedFontCollection | null {
-    const entry = workspace["font-collections"][fontCollectionId] as
-      | EntryFontCollection
-      | undefined
+    const entry = workspace["font-collections"][fontCollectionId] as EntryFontCollection | undefined
+
     if (!entry) return null
 
     const catalogId = getFontCollectionTemplateCatalogId(entry.template)
+
     if (catalogId) {
       if (!(catalogId in STOCK_FONT_COLLECTIONS_BY_ID)) return null
+
       return instantiateFontCollection(
         catalogId as FontCollectionTemplateId,
         entry.overrides,
@@ -63,9 +66,12 @@ export class WorkspaceFontCollectionService {
     }
 
     const parentId = getFontCollectionTemplateFontCollectionId(entry.template)
+
     if (parentId) {
       const parent = this.getFontCollection(parentId, workspace)
+
       if (!parent) return null
+
       return merge({}, parent, entry.overrides) as ComputedFontCollection
     }
 
@@ -76,21 +82,14 @@ export class WorkspaceFontCollectionService {
    * Reads the per-family variant selection stored on a `font-collections` entry.
    * Returns an empty map when the entry or its selection is missing.
    */
-  public getVariantSelection(
-    fontCollectionId: string,
-    workspace: Workspace,
-  ): VariantSelection {
-    const entry = workspace["font-collections"][fontCollectionId] as
-      | EntryFontCollection
-      | undefined
+  public getVariantSelection(fontCollectionId: string, workspace: Workspace): VariantSelection {
+    const entry = workspace["font-collections"][fontCollectionId] as EntryFontCollection | undefined
     const selection = entry?.overrides?.["variantSelection"]
-    if (
-      typeof selection !== "object" ||
-      selection === null ||
-      Array.isArray(selection)
-    ) {
+
+    if (typeof selection !== "object" || selection === null || Array.isArray(selection)) {
       return {}
     }
+
     return selection as VariantSelection
   }
 
@@ -101,33 +100,38 @@ export class WorkspaceFontCollectionService {
    * weight enabled in any variant is requested once. Used by font loading and
    * export.
    */
-  public getEnabledVariantsByFamily(
-    workspace: Workspace,
-  ): Record<string, string[]> {
+  public getEnabledVariantsByFamily(workspace: Workspace): Record<string, string[]> {
     const byFamily: Record<string, Set<string>> = {}
+
     for (const board of Object.values(workspace.boards)) {
       if (!board || !isFontCollectionBoard(board)) continue
+
       for (const variant of board.variants ?? []) {
         const collection = this.getFontCollection(variant.id, workspace)
+
         if (!collection) continue
         const selection = this.getVariantSelection(variant.id, workspace)
+
         for (const [slot, family] of Object.entries(collection.families)) {
-          if (!family || family.origin !== "remote" || !family.variants)
+          if (!family || family.origin !== "remote" || !family.variants) {
             continue
+          }
+
           const enabled = (byFamily[family.name] ??= new Set<string>())
-          for (const weight of getEnabledVariants(
-            selection[slot],
-            family.variants,
-          )) {
+
+          for (const weight of getEnabledVariants(selection[slot], family.variants)) {
             enabled.add(weight)
           }
         }
       }
     }
+
     const result: Record<string, string[]> = {}
+
     for (const [name, weights] of Object.entries(byFamily)) {
       result[name] = sortFontVariants([...weights])
     }
+
     return result
   }
 
@@ -141,29 +145,40 @@ export class WorkspaceFontCollectionService {
   public getEnabledRemoteFamilies(workspace: Workspace): EnabledRemoteFamily[] {
     const byName = new Map<string, { slot: string; variants: Set<string> }>()
     const order: string[] = []
+
     for (const board of Object.values(workspace.boards)) {
       if (!board || !isFontCollectionBoard(board)) continue
+
       for (const variant of board.variants ?? []) {
         const collection = this.getFontCollection(variant.id, workspace)
+
         if (!collection) continue
         const selection = this.getVariantSelection(variant.id, workspace)
+
         for (const [slot, family] of Object.entries(collection.families)) {
-          if (!family || family.origin !== "remote" || !family.variants)
+          if (!family || family.origin !== "remote" || !family.variants) {
             continue
+          }
+
           const enabled = getEnabledVariants(selection[slot], family.variants)
+
           if (enabled.length === 0) continue
           let record = byName.get(family.name)
+
           if (!record) {
             record = { slot, variants: new Set<string>() }
             byName.set(family.name, record)
             order.push(family.name)
           }
+
           for (const weight of enabled) record.variants.add(weight)
         }
       }
     }
+
     return order.map((name) => {
       const record = byName.get(name)!
+
       return {
         name,
         slot: record.slot,
@@ -180,9 +195,7 @@ export class WorkspaceFontCollectionService {
    * enabled (preset `All` or `Custom`) in any entry; families without variants
    * always show. Families are deduped by name across all groups.
    */
-  public collectWorkspaceFamilyGroups(
-    workspace: Workspace,
-  ): WorkspaceFontFamily[][] {
+  public collectWorkspaceFamilyGroups(workspace: Workspace): WorkspaceFontFamily[][] {
     const seen = new Set<string>()
     const groups: WorkspaceFontFamily[][] = []
 
@@ -190,25 +203,29 @@ export class WorkspaceFontCollectionService {
       if (!board || !isFontCollectionBoard(board)) continue
       const group: WorkspaceFontFamily[] = []
       const groupSeen = new Set<string>()
+
       for (const variant of board.variants ?? []) {
         const collection = this.getFontCollection(variant.id, workspace)
+
         if (!collection) continue
         const selection = this.getVariantSelection(variant.id, workspace)
+
         for (const [slot, family] of Object.entries(collection.families)) {
           if (!family || seen.has(family.name) || groupSeen.has(family.name)) {
             continue
           }
+
           const variants = family.variants ?? []
-          if (
-            variants.length > 0 &&
-            deriveVariantPreset(selection[slot], variants) === "none"
-          ) {
+
+          if (variants.length > 0 && deriveVariantPreset(selection[slot], variants) === "none") {
             continue
           }
+
           groupSeen.add(family.name)
           group.push({ ...family, collectionId: collection.id, slot })
         }
       }
+
       for (const family of group) seen.add(family.name)
       if (group.length > 0) groups.push(group)
     }
@@ -227,14 +244,15 @@ export class WorkspaceFontCollectionService {
   /** Catalog ids of font collections present in the workspace. */
   public collectUsedFontCollections(workspace: Workspace): Set<string> {
     const used = new Set<string>()
+
     for (const board of Object.values(workspace.boards)) {
       if (board && isFontCollectionBoard(board)) {
         used.add(board.catalogId)
       }
     }
+
     return used
   }
 }
 
-export const workspaceFontCollectionService =
-  new WorkspaceFontCollectionService()
+export const workspaceFontCollectionService = new WorkspaceFontCollectionService()

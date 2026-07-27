@@ -1,11 +1,7 @@
 import { ComputedFunction, ValueType } from "@seldon/core"
-import {
-  Board,
-  Instance,
-  Variant,
-  Workspace,
-} from "@seldon/core/workspace/types"
 import { getNodePropertiesWithStatus } from "./properties-data"
+
+import type { Board, Instance, Variant, Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Creates a computed value. The payload is the bare `ComputedFunction`; source resolution lives in
@@ -59,7 +55,9 @@ export function canApplyComputedSafely(
       font.size.type
     )
     const hasButtonSize = !!buttonSize
+
     return hasFontSize || hasButtonSize
   }
+
   return true
 }

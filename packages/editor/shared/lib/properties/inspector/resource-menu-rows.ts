@@ -1,5 +1,6 @@
 import { ValueType } from "@seldon/core/properties"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
 
 /** All/None/Custom preset options for a resource parent row. */
 export const RESOURCE_PRESET_OPTIONS = [
@@ -15,9 +16,7 @@ export const RESOURCE_TOGGLE_OPTIONS = [
 ]
 
 /** Display value for a derived All/None/Custom preset. */
-export function resourcePresetDisplayValue(
-  preset: "all" | "none" | "custom",
-): string {
+export function resourcePresetDisplayValue(preset: "all" | "none" | "custom"): string {
   return preset === "all" ? "All" : preset === "none" ? "None" : "Custom"
 }
 

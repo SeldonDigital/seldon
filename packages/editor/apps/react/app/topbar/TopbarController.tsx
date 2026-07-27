@@ -1,33 +1,27 @@
 "use client"
 
-import { AppState, useAppState } from "@app/editor/hooks/use-app-state"
-import {
-  InterfaceMode,
-  useEditorConfig,
-} from "@app/editor/hooks/use-editor-config"
+import { useAppState } from "@app/editor/hooks/use-app-state"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useExportStatusStore } from "@app/io/export-status-store"
-import { MenuAlign, MenuController, MenuEntry } from "@app/menus"
-import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
-import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
+import { MenuController } from "@app/menus"
 import { Frame } from "@seldon/components/frames/Frame"
 import { BarTopbar } from "@seldon/components/parts/BarTopbar"
-import { ImageProps } from "@seldon/components/primitives/Image"
-import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import {
-  CSSProperties,
-  MouseEvent,
-  PointerEvent,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 
 import { getChromeThemes } from "./chrome-themes"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
-import { MenuDropdown } from "./menus/types"
 import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
+
+import type { MenuDropdown } from "./menus/types"
+import type { AppState } from "@app/editor/hooks/use-app-state"
+import type { InterfaceMode } from "@app/editor/hooks/use-editor-config"
+import type { MenuAlign, MenuEntry } from "@app/menus"
+import type { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
+import type { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
+import type { ImageProps } from "@seldon/components/primitives/Image"
+import type { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import type { CSSProperties, MouseEvent, PointerEvent } from "react"
 
 /** Menu id for the chrome-theme dropdown, distinct from the config menus. */
 const CHROME_THEME_MENU_ID = "chrome-theme"
@@ -72,8 +66,7 @@ function buildMenuTrigger(
     "data-testid": `menu-${menuId}`,
     "aria-haspopup": "menu",
     "aria-expanded": openMenuId === menuId,
-    onClick: (event: MouseEvent<HTMLButtonElement>) =>
-      onTriggerClick(menuId, event.currentTarget),
+    onClick: (event: MouseEvent<HTMLButtonElement>) => onTriggerClick(menuId, event.currentTarget),
   } as ButtonMenuProps
 }
 
@@ -85,6 +78,7 @@ function toMenuEntries(menu: MenuDropdown, appState: AppState): MenuEntry[] {
   return menu.items.flatMap<MenuEntry>((item) => {
     if (item === "separator") return ["separator"]
     if (item.visibleIn && !item.visibleIn.includes(appState)) return []
+
     return [
       {
         id: item.id,
@@ -119,8 +113,7 @@ const EMPTY_SLOT: MenuSlot = { button: null, label: null }
 export function TopbarController() {
   const menuConfig = useMenuConfig()
   const { appState } = useAppState()
-  const { chromeTheme, setChromeTheme, interfaceMode, setInterfaceMode } =
-    useEditorConfig()
+  const { chromeTheme, setChromeTheme, interfaceMode, setInterfaceMode } = useEditorConfig()
   const chromeThemes = useMemo(() => getChromeThemes(), [])
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const anchorRef = useRef<HTMLElement | null>(null)
@@ -133,14 +126,12 @@ export function TopbarController() {
   const handleLogoClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
     if (!event.altKey || !event.shiftKey) return
     const { isExporting, setExporting } = useExportStatusStore.getState()
+
     setExporting(!isExporting)
   }, [])
 
   // Inject the gesture onto the generated `logo` frame that wraps both images.
-  const seldonRefs = useMemo(
-    () => ({ logo: { onClick: handleLogoClick } }),
-    [handleLogoClick],
-  )
+  const seldonRefs = useMemo(() => ({ logo: { onClick: handleLogoClick } }), [handleLogoClick])
 
   const closeMenu = useCallback(() => setOpenMenuId(null), [])
 
@@ -161,9 +152,12 @@ export function TopbarController() {
   const menuSlots = useMemo<MenuSlot[]>(() => {
     return [0, 1, 2, 3, 4, 5].map((index) => {
       const menu = menuConfig[index]
+
       if (!menu) return EMPTY_SLOT
-      if (menu.visibleIn && !menu.visibleIn.includes(appState))
+
+      if (menu.visibleIn && !menu.visibleIn.includes(appState)) {
         return EMPTY_SLOT
+      }
 
       const button = {
         "data-testid": `menu-${menu.id}`,
@@ -174,6 +168,7 @@ export function TopbarController() {
         onPointerEnter: (event: PointerEvent<HTMLButtonElement>) =>
           handleTriggerEnter(menu.id, event.currentTarget),
       } as ButtonSimpleProps
+
       return { button, label: { children: menu.label } }
     })
   }, [menuConfig, appState, openMenuId, handleTriggerClick, handleTriggerEnter])
@@ -191,12 +186,12 @@ export function TopbarController() {
 
   const activeThemeLabel = useMemo(() => {
     const active = chromeThemes.find((theme) => theme.slug === chromeTheme)
+
     return active?.label ?? chromeTheme
   }, [chromeThemes, chromeTheme])
 
   const themeButton = useMemo<ButtonMenuProps>(
-    () =>
-      buildMenuTrigger(CHROME_THEME_MENU_ID, openMenuId, handleTriggerClick),
+    () => buildMenuTrigger(CHROME_THEME_MENU_ID, openMenuId, handleTriggerClick),
     [openMenuId, handleTriggerClick],
   )
 
@@ -207,23 +202,18 @@ export function TopbarController() {
 
   const modeMenuItems = useMemo<MenuEntry[]>(
     () =>
-      buildDropdownItems(
-        INTERFACE_MODES,
-        interfaceMode,
-        setInterfaceMode,
-        INTERFACE_MODE_MENU_ID,
-      ),
+      buildDropdownItems(INTERFACE_MODES, interfaceMode, setInterfaceMode, INTERFACE_MODE_MENU_ID),
     [interfaceMode, setInterfaceMode],
   )
 
   const activeModeLabel = useMemo(() => {
     const active = INTERFACE_MODES.find((mode) => mode.id === interfaceMode)
+
     return active?.label ?? "System"
   }, [interfaceMode])
 
   const modeButton = useMemo<ButtonMenuProps>(
-    () =>
-      buildMenuTrigger(INTERFACE_MODE_MENU_ID, openMenuId, handleTriggerClick),
+    () => buildMenuTrigger(INTERFACE_MODE_MENU_ID, openMenuId, handleTriggerClick),
     [openMenuId, handleTriggerClick],
   )
 
@@ -236,6 +226,7 @@ export function TopbarController() {
     if (openMenuId === CHROME_THEME_MENU_ID) return themeMenuItems
     if (openMenuId === INTERFACE_MODE_MENU_ID) return modeMenuItems
     const menu = menuConfig.find((entry) => entry.id === openMenuId)
+
     return menu ? toMenuEntries(menu, appState) : []
   }, [menuConfig, openMenuId, appState, themeMenuItems, modeMenuItems])
 
@@ -243,9 +234,7 @@ export function TopbarController() {
   // the trigger's right and open leftward. The left-side config menus align to
   // their left.
   const menuAlign: MenuAlign =
-    openMenuId === CHROME_THEME_MENU_ID || openMenuId === INTERFACE_MODE_MENU_ID
-      ? "end"
-      : "start"
+    openMenuId === CHROME_THEME_MENU_ID || openMenuId === INTERFACE_MODE_MENU_ID ? "end" : "start"
 
   const menuKey = openMenuId ?? "closed"
 

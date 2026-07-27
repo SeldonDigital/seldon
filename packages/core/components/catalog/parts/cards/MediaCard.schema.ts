@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Media Card",
   id: Seldon.ComponentId.MEDIA_CARD,
   intent:
     "Visual-first media card where the thumbnail dominates, supported by a title, creator, metrics, and a play action.",
-  tags: [
-    "card",
-    "media",
-    "video",
-    "thumbnail",
-    "creator",
-    "play",
-    "streaming",
-    "UI",
-  ],
+  tags: ["card", "media", "video", "thumbnail", "creator", "play", "streaming", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -389,8 +381,7 @@ export const schema = {
     {
       id: "compact",
       label: "Compact",
-      intent:
-        "Dense media card showing only the thumbnail, title, and creator for browse grids.",
+      intent: "Dense media card showing only the thumbnail, title, and creator for browse grids.",
       children: [
         {
           component: Seldon.ComponentId.IMAGE,

@@ -1,14 +1,17 @@
-import type { LayeredPaintKey } from "../types/property-keys"
 import { BackgroundKind } from "../values/appearance/background/background-kind"
 import { BACKGROUND_KIND_SEEDS } from "../values/appearance/background/background-seeds"
 
-/** One "Add layer" menu choice for a layered paint property. */
+import type { LayeredPaintKey } from "../types/property-keys"
+
+/**
+ * One "Add layer" menu choice for a layered paint property. `seed` is the initial facets for the new
+ * layer, or undefined for an empty layer. `separatorBefore` renders a divider before this choice to
+ * group it apart from the prior ones.
+ */
 export interface LayerAddOption {
   id: string
   label: string
-  /** Initial facets for the new layer, or undefined for an empty layer. */
   seed?: Record<string, unknown>
-  /** Render a divider before this choice to group it apart from the prior ones. */
   separatorBefore?: boolean
 }
 
@@ -23,26 +26,18 @@ const LAYERED_PAINT_LABELS: Record<LayeredPaintKey, string> = {
  * single empty layer. The editor renders these without knowing any property
  * specifics.
  */
-export function getLayerAddOptions(
-  property: LayeredPaintKey,
-): LayerAddOption[] {
+export function getLayerAddOptions(property: LayeredPaintKey): LayerAddOption[] {
   if (property === "background") {
     return [
       {
         id: "add-layer-background-color",
         label: "Add Color Background",
-        seed: { ...BACKGROUND_KIND_SEEDS[BackgroundKind.COLOR] } as Record<
-          string,
-          unknown
-        >,
+        seed: { ...BACKGROUND_KIND_SEEDS[BackgroundKind.COLOR] } as Record<string, unknown>,
       },
       {
         id: "add-layer-background-image",
         label: "Add Image Background",
-        seed: { ...BACKGROUND_KIND_SEEDS[BackgroundKind.IMAGE] } as Record<
-          string,
-          unknown
-        >,
+        seed: { ...BACKGROUND_KIND_SEEDS[BackgroundKind.IMAGE] } as Record<string, unknown>,
       },
       {
         id: "add-layer-background-linear-gradient",
@@ -68,6 +63,7 @@ export function getLayerAddOptions(
       },
     ]
   }
+
   return [
     {
       id: `add-layer-${property}`,

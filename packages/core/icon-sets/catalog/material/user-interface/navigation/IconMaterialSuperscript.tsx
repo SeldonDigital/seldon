@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialSuperscript(props: SVGAttributes<SVGSVGElement>) {
   return (

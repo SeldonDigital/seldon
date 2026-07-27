@@ -1,9 +1,10 @@
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
 
-import { BoardSection } from "../helpers/get-board-sections"
 import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { useRowSection } from "./hooks/use-row-section"
+
+import type { BoardSection } from "../helpers/get-board-sections"
 
 interface SectionProps {
   section: BoardSection
@@ -15,16 +16,9 @@ interface SectionProps {
  * the canvas tracking system.
  */
 export function Section({ section }: SectionProps) {
-  const {
-    label,
-    icon,
-    buttonIconic,
-    buttonIconic2,
-    sectionMenuItems,
-    onToggle,
-  } = useRowSection(section)
-  const { handleClick, handleMouseEnter, handleMouseLeave } =
-    useSectionHeaderRow({ onToggle })
+  const { label, icon, buttonIconic, buttonIconic2, sectionMenuItems, onToggle } =
+    useRowSection(section)
+  const { handleClick, handleMouseEnter, handleMouseLeave } = useSectionHeaderRow({ onToggle })
 
   // Sections with menu items (THEME) drive the add slot as a menu trigger; the
   // rest keep their single add button. The hook runs unconditionally with an
@@ -43,6 +37,7 @@ export function Section({ section }: SectionProps) {
     sectionToggleIcon: { icon },
     sectionLabel: { children: label },
   }
+
   if (addProps) seldonRefs.sectionAdd = { ...addProps }
 
   // Positional enabler: render the add slot only when the section exposes one.

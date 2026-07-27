@@ -10,6 +10,7 @@ export function signatureOf(node: FunctionalNode): string {
   const role = node.role ? `#${node.role}` : ""
   const text = node.hasText ? "~t" : ""
   const children = node.children.map(signatureOf).join(",")
+
   return `${node.tag}${role}${text}(${children})`
 }
 
@@ -31,11 +32,13 @@ export function dedupe(root: FunctionalNode): DedupedPiece[] {
   function visit(node: FunctionalNode): void {
     const signature = signatureOf(node)
     const existing = groups.get(signature)
+
     if (existing) {
       existing.count += 1
     } else {
       groups.set(signature, { signature, count: 1, sample: node })
     }
+
     for (const child of node.children) visit(child)
   }
 
@@ -43,7 +46,9 @@ export function dedupe(root: FunctionalNode): DedupedPiece[] {
 
   return Array.from(groups.values()).sort((a, b) => {
     const sizeDelta = subtreeSize(b.sample) - subtreeSize(a.sample)
+
     if (sizeDelta !== 0) return sizeDelta
+
     return b.count - a.count
   })
 }

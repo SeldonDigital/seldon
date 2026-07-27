@@ -1,22 +1,22 @@
 import { packagedFontCollectionCatalogIds } from "../../../font-collections/catalog-ids"
 import { packagedIconSetCatalogIds } from "../../../icon-sets/catalog-ids"
 import { packagedThemeCatalogIds } from "../../../themes"
-import type { Board, ThemeBoard } from "../../model/components"
 import { isThemeBoard } from "../../model/components"
+
+import type { Board, ThemeBoard } from "../../model/components"
 
 /**
  * Packaged theme catalog ids from `core/themes`. Use for theme board `catalogId` validation.
  */
-export const THEME_BOARD_CATALOG_IDS: ReadonlySet<string> = new Set<string>(
-  packagedThemeCatalogIds,
-)
+export const THEME_BOARD_CATALOG_IDS: ReadonlySet<string> = new Set<string>(packagedThemeCatalogIds)
 
 /**
  * Packaged font collection catalog ids from `core/font-collections`. Use for font collection
  * board `catalogId` validation.
  */
-export const FONT_COLLECTION_BOARD_CATALOG_IDS: ReadonlySet<string> =
-  new Set<string>(packagedFontCollectionCatalogIds)
+export const FONT_COLLECTION_BOARD_CATALOG_IDS: ReadonlySet<string> = new Set<string>(
+  packagedFontCollectionCatalogIds,
+)
 
 /**
  * Packaged icon set catalog ids from `core/icon-sets`. Use for icon set board

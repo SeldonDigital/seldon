@@ -1,9 +1,8 @@
 import { create } from "zustand"
 
-import {
-  NORMAL_STATE,
-  type NodeState,
-} from "@seldon/core/workspace/model/node-state"
+import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
+
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 /**
  * Per-board active interaction state for the canvas. The board state switcher
@@ -25,7 +24,5 @@ export const useBoardStateStore = create<BoardStateStore>((set) => ({
 
 /** Reactive read of one board's active state, defaulting to Normal. */
 export function useActiveBoardState(boardKey: string): NodeState {
-  return useBoardStateStore(
-    (store) => store.activeStates[boardKey] ?? NORMAL_STATE,
-  )
+  return useBoardStateStore((store) => store.activeStates[boardKey] ?? NORMAL_STATE)
 }

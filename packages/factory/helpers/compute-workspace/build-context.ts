@@ -1,6 +1,7 @@
+import { getNodeComputeContext } from "@seldon/core/workspace/compute"
+
 import type { ComputeContext } from "@seldon/core/properties/compute"
 import type { WorkspacePropertySource } from "@seldon/core/workspace/compute"
-import { getNodeComputeContext } from "@seldon/core/workspace/compute"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import type { EntryNode, Instance, Variant } from "@seldon/core/workspace/types"
 

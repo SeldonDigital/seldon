@@ -9,10 +9,8 @@
  * omitting a facet fails the build.
  */
 import { Harmony, Ratio } from "../../constants"
-import type {
-  ThemeTokenSchema,
-  ThemeTokenSchemaSupport,
-} from "../../types/schema"
+
+import type { ThemeTokenSchema, ThemeTokenSchemaSupport } from "../../types/schema"
 import type {
   AutoFitParameters,
   ColorHarmonyParameters,
@@ -26,7 +24,10 @@ import type {
 
 type ComputedFacetControlType = NonNullable<ThemeTokenSchema["controlType"]>
 
-/** Inline-controlled facet on a computed group. */
+/**
+ * Inline-controlled facet on a computed group. `icon` is the icon id authored on the facet, read by
+ * the icon registry and theme sidebar.
+ */
 export interface ComputedGroupFacet {
   facet: string
   label: string
@@ -34,7 +35,6 @@ export interface ComputedGroupFacet {
   controlType: ComputedFacetControlType
   options?: Array<{ label: string; value: string | number }>
   unit?: ThemeTokenSchema["unit"]
-  /** Icon id authored on the facet; read by the icon registry and theme sidebar. */
   icon?: string
 }
 
@@ -49,9 +49,7 @@ const RATIO_OPTIONS = Object.entries(Ratio)
     label: name.replace(/([A-Z])/g, " $1").trim(),
     value: String(value),
   }))
-  .filter(
-    (opt, index, arr) => arr.findIndex((o) => o.value === opt.value) === index,
-  )
+  .filter((opt, index, arr) => arr.findIndex((o) => o.value === opt.value) === index)
 
 const HARMONY_OPTIONS = [
   { label: "Monochromatic", value: String(Harmony.Monochromatic) },
@@ -299,6 +297,4 @@ export const COMPUTED_GROUPS = [
 export type ComputedGroupKey = (typeof COMPUTED_GROUPS)[number]["key"]
 
 /** Facets the editor reads as a plain color HSL object rather than a tagged value. */
-export const COMPUTED_COLOR_FACET_KEYS = new Set<string>([
-  "colorHarmony.baseColor",
-])
+export const COMPUTED_COLOR_FACET_KEYS = new Set<string>(["colorHarmony.baseColor"])

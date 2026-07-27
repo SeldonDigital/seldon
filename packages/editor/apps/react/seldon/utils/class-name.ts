@@ -25,10 +25,7 @@
  * combineClassNames("btn", "") // "btn"
  * ```
  */
-export function combineClassNames(
-  defaultClassName?: string,
-  customClassName?: string,
-): string {
+export function combineClassNames(defaultClassName?: string, customClassName?: string): string {
   if (!defaultClassName) return customClassName || ""
   if (!customClassName) return defaultClassName
 
@@ -38,5 +35,6 @@ export function combineClassNames(
 
   // Remove duplicates using Set
   const uniqueClasses = Array.from(new Set(allClasses))
+
   return uniqueClasses.join(" ")
 }

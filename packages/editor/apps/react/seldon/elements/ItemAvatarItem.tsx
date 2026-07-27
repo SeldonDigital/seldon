@@ -10,20 +10,28 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { LiHTMLAttributes } from "react"
-
-import { AvatarRounded, AvatarRoundedProps } from "../elements/AvatarRounded"
-import { Button, ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
+import { AvatarRounded } from "../elements/AvatarRounded"
+import { Button } from "../elements/Button"
+import { Frame } from "../frames/Frame"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { ImageProps } from "../primitives/Image"
-import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { InputCheckbox } from "../primitives/InputCheckbox"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { AvatarRoundedProps } from "../elements/AvatarRounded"
+import type { ButtonProps } from "../elements/Button"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { ImageProps } from "../primitives/Image"
+import type { InputCheckboxProps } from "../primitives/InputCheckbox"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemAvatarItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -86,10 +94,7 @@ export function ItemAvatarItem({
       : {
           ...sdn.inputCheckbox,
           ...inputCheckbox,
-          className: combineClassNames(
-            sdn.inputCheckbox?.className,
-            inputCheckbox?.className,
-          ),
+          className: combineClassNames(sdn.inputCheckbox?.className, inputCheckbox?.className),
         },
   )
   const avatarRoundedProps = applyRef(
@@ -99,10 +104,7 @@ export function ItemAvatarItem({
       : {
           ...sdn.avatarRounded,
           ...avatarRounded,
-          className: combineClassNames(
-            sdn.avatarRounded?.className,
-            avatarRounded?.className,
-          ),
+          className: combineClassNames(sdn.avatarRounded?.className, avatarRounded?.className),
         },
   )
   const imageProps = applyRef(
@@ -132,10 +134,7 @@ export function ItemAvatarItem({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const textSubtitleProps = applyRef(
@@ -145,10 +144,7 @@ export function ItemAvatarItem({
       : {
           ...sdn.textSubtitle,
           ...textSubtitle,
-          className: combineClassNames(
-            sdn.textSubtitle?.className,
-            textSubtitle?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
         },
   )
   const buttonProps = applyRef(
@@ -158,10 +154,7 @@ export function ItemAvatarItem({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const iconProps = applyRef(
@@ -181,34 +174,23 @@ export function ItemAvatarItem({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
   return (
-    <HTMLLi
-      className={itemAvatarItemClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLLi className={itemAvatarItemClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
-          {inputCheckbox && inputCheckboxProps && (
-            <InputCheckbox {...inputCheckboxProps} />
-          )}
+          {inputCheckbox && inputCheckboxProps && <InputCheckbox {...inputCheckboxProps} />}
           {avatarRoundedProps !== null && (
             <AvatarRounded {...avatarRoundedProps} image={imageProps} />
           )}
           <Frame {...frameProps}>
             {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-            {textSubtitle && textSubtitleProps && (
-              <TextSubtitle {...textSubtitleProps} />
-            )}
+            {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
           </Frame>
           {buttonProps !== null && (
             <Button {...buttonProps}>

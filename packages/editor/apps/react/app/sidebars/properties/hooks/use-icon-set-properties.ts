@@ -1,6 +1,7 @@
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { useCallback } from "react"
+
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 /**
  * Maps icon set property edits to workspace actions on the active entry. Preset
@@ -16,6 +17,7 @@ export function useIconSetProperties(iconSetId: string | null) {
       if (!iconSetId) return
 
       const segments = property.key.split(".")
+
       if (segments[0] !== "icon" || !segments[1]) return
       const subcategory = segments[1]
       const iconId = segments[2]
@@ -23,11 +25,13 @@ export function useIconSetProperties(iconSetId: string | null) {
       // Preset row: `icon.<category>/<subcategory>`
       if (!iconId) {
         const preset = newValue.toLowerCase()
+
         if (preset !== "all" && preset !== "none") return
         dispatch({
           type: "set_icon_set_subcategory_preset",
           payload: { iconSetId, subcategory, preset },
         })
+
         return
       }
 

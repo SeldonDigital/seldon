@@ -10,15 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import { LinkPlain, LinkPlainProps } from "../primitives/LinkPlain"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Button } from "../elements/Button"
+import { Frame } from "../frames/Frame"
+import { Image } from "../primitives/Image"
+import { LinkPlain } from "../primitives/LinkPlain"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { FrameProps } from "../frames/Frame"
+import type { ImageProps } from "../primitives/Image"
+import type { LinkPlainProps } from "../primitives/LinkPlain"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface TopbarInlineLinksProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -81,10 +86,7 @@ export function TopbarInlineLinks({
       : {
           ...sdn.linkPlain,
           ...linkPlain,
-          className: combineClassNames(
-            sdn.linkPlain?.className,
-            linkPlain?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain?.className, linkPlain?.className),
         },
   )
   const linkPlain2Props = applyRef(
@@ -94,10 +96,7 @@ export function TopbarInlineLinks({
       : {
           ...sdn.linkPlain2,
           ...linkPlain2,
-          className: combineClassNames(
-            sdn.linkPlain2?.className,
-            linkPlain2?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain2?.className, linkPlain2?.className),
         },
   )
   const frame2Props = applyRef(
@@ -107,10 +106,7 @@ export function TopbarInlineLinks({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const linkPlain3Props = applyRef(
@@ -120,10 +116,7 @@ export function TopbarInlineLinks({
       : {
           ...sdn.linkPlain3,
           ...linkPlain3,
-          className: combineClassNames(
-            sdn.linkPlain3?.className,
-            linkPlain3?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain3?.className, linkPlain3?.className),
         },
   )
   const buttonProps = applyRef(
@@ -133,10 +126,7 @@ export function TopbarInlineLinks({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -146,10 +136,7 @@ export function TopbarInlineLinks({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const imageProps = applyRef(
@@ -176,19 +163,13 @@ export function TopbarInlineLinks({
         <>
           <Frame {...frameProps}>
             {linkPlain && linkPlainProps && <LinkPlain {...linkPlainProps} />}
-            {linkPlain2 && linkPlain2Props && (
-              <LinkPlain {...linkPlain2Props} />
-            )}
+            {linkPlain2 && linkPlain2Props && <LinkPlain {...linkPlain2Props} />}
           </Frame>
           <Frame {...frame2Props}>
-            {linkPlain3 && linkPlain3Props && (
-              <LinkPlain {...linkPlain3Props} />
-            )}
+            {linkPlain3 && linkPlain3Props && <LinkPlain {...linkPlain3Props} />}
             {button && buttonProps && (
               <Button {...buttonProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
               </Button>
             )}
             {image && imageProps && <Image {...imageProps} />}

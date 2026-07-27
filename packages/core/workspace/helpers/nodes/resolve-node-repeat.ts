@@ -1,9 +1,10 @@
 import { parseNodeLink } from "../../model/template-ref"
-import type { EntryNodeId, Workspace } from "../../types"
 import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getChildrenIds } from "../components/get-children-ids"
 import { findParentNode } from "./find-parent-node"
 import { getNodeRepeat } from "./node-repeat"
+
+import type { EntryNodeId, Workspace } from "../../types"
 
 /**
  * Effective repeat for a node after inheritance and override merge. `count` is
@@ -27,20 +28,26 @@ export function getRepeatInheritanceSourceId(
   workspace: Workspace,
 ): EntryNodeId | null {
   const parent = findParentNode(nodeId, workspace)
+
   if (!parent) return null
 
   const link = parseNodeLink(parent.template)
+
   if (!link) return null
 
   const parentBoard = getBoardByNodeId(workspace, parent.id)
+
   if (!parentBoard) return null
   const index = getChildrenIds(parentBoard, parent.id).indexOf(nodeId)
+
   if (index < 0) return null
 
   const sourceParentId = link.nodeId as EntryNodeId
   const sourceBoard = getBoardByNodeId(workspace, sourceParentId)
+
   if (!sourceBoard) return null
   const sourceChildId = getChildrenIds(sourceBoard, sourceParentId)[index]
+
   if (!sourceChildId || sourceChildId === nodeId) return null
 
   return sourceChildId
@@ -52,16 +59,20 @@ export function collectDescendantIdsInOrder(
   workspace: Workspace,
 ): EntryNodeId[] {
   const board = getBoardByNodeId(workspace, rootId)
+
   if (!board) return []
 
   const ordered: EntryNodeId[] = []
+
   const walk = (id: EntryNodeId): void => {
     for (const childId of getChildrenIds(board, id)) {
       ordered.push(childId)
       walk(childId)
     }
   }
+
   walk(rootId)
+
   return ordered
 }
 
@@ -81,12 +92,16 @@ function translateInheritedData(
   const sourceIndexById = new Map(sourceOrder.map((id, i) => [id, i]))
 
   const translated: Record<string, string[]> = {}
+
   for (const [sourceDescId, values] of Object.entries(inheritedData)) {
     const ordinal = sourceIndexById.get(sourceDescId as EntryNodeId)
+
     if (ordinal == null) continue
     const targetDescId = targetOrder[ordinal]
+
     if (targetDescId) translated[targetDescId] = values
   }
+
   return translated
 }
 
@@ -97,20 +112,22 @@ function mergeRepeatData(
 ): Record<string, string[]> {
   const merged: Record<string, string[]> = {}
   const keys = new Set([...Object.keys(inherited), ...Object.keys(own)])
+
   for (const key of keys) {
     const inheritedSlots = inherited[key] ?? []
     const ownSlots = own[key] ?? []
     const length = Math.max(inheritedSlots.length, ownSlots.length)
     const slots: string[] = []
+
     for (let i = 0; i < length; i++) {
       const ownValue = ownSlots[i]
-      slots[i] =
-        ownValue != null && ownValue !== ""
-          ? ownValue
-          : (inheritedSlots[i] ?? "")
+
+      slots[i] = ownValue != null && ownValue !== "" ? ownValue : (inheritedSlots[i] ?? "")
     }
+
     merged[key] = slots
   }
+
   return merged
 }
 
@@ -124,9 +141,12 @@ export function resolveInheritedRepeatData(
   workspace: Workspace,
 ): Record<string, string[]> {
   const sourceId = getRepeatInheritanceSourceId(nodeId, workspace)
+
   if (!sourceId) return {}
   const inherited = resolveNodeRepeat(sourceId, workspace)
+
   if (!inherited) return {}
+
   return translateInheritedData(inherited.data, sourceId, nodeId, workspace)
 }
 
@@ -148,17 +168,14 @@ export function resolveNodeRepeat(
   const own = node ? getNodeRepeat(node) : undefined
 
   const sourceId = getRepeatInheritanceSourceId(nodeId, workspace)
-  const inherited = sourceId
-    ? resolveNodeRepeat(sourceId, workspace, visited)
-    : undefined
+  const inherited = sourceId ? resolveNodeRepeat(sourceId, workspace, visited) : undefined
 
   const count = own?.count ?? inherited?.count
+
   if (count == null) return undefined
 
   const inheritedData =
-    inherited && sourceId
-      ? translateInheritedData(inherited.data, sourceId, nodeId, workspace)
-      : {}
+    inherited && sourceId ? translateInheritedData(inherited.data, sourceId, nodeId, workspace) : {}
   const data = mergeRepeatData(inheritedData, own?.data ?? {})
 
   return { count, data }

@@ -1,16 +1,14 @@
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
-import { ComponentToExport } from "../../../types"
-import {
-  TransformStrategy,
-  transformSource,
-} from "../../utils/transform-source"
+import { TransformStrategy, transformSource } from "../../utils/transform-source"
 import { getCustomTemplateMeta } from "../shared/custom-react"
 import { generateChildrenProps } from "../shared/generate-children-props"
 import {
   generateOwnPropsContent,
   getGenericAndParameters,
 } from "../shared/generate-typescript-interface-base"
+
+import type { ComponentToExport } from "../../../types"
 
 /**
  * Inserts the interface for a component
@@ -47,6 +45,7 @@ export function insertInterface(
       : NATIVE_REACT_PRIMITIVES[
           component.config.react.returns as keyof typeof NATIVE_REACT_PRIMITIVES
         ]
+
   if (nativeReturn?.forwardsRef) {
     allProps.push(`ref?: Ref<${nativeReturn.types.parameter}>`)
   }
@@ -55,8 +54,8 @@ export function insertInterface(
   // keys overrides by a descendant's `data-seldon-ref` name, and the merged
   // slot props pick them up via `applyRef`, so view models drive nested slots
   // by stable ref name instead of positional prop name.
-  const hasChildren =
-    Array.isArray(component.tree.children) && component.tree.children.length > 0
+  const hasChildren = Array.isArray(component.tree.children) && component.tree.children.length > 0
+
   if (hasChildren) {
     allProps.push("seldonRefs?: Record<string, Record<string, unknown>>")
   }

@@ -10,15 +10,13 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
+import { TextDescription } from "../primitives/TextDescription"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { HTMLAttributes } from "react"
 
 export interface MessageAssistantProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -49,10 +47,7 @@ export function MessageAssistant({
   seldonRefs,
   ...props
 }: MessageAssistantProps) {
-  const messageAssistantClassName = combineClassNames(
-    "sdn-message-assistant",
-    className,
-  )
+  const messageAssistantClassName = combineClassNames("sdn-message-assistant", className)
   const textDescriptionProps = applyRef(
     seldonRefs,
     textDescription === null
@@ -60,26 +55,17 @@ export function MessageAssistant({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
 
   return (
-    <Frame
-      className={messageAssistantClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={messageAssistantClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
-          {textDescription && textDescriptionProps && (
-            <TextDescription {...textDescriptionProps} />
-          )}
+          {textDescription && textDescriptionProps && <TextDescription {...textDescriptionProps} />}
         </>
       )}
     </Frame>

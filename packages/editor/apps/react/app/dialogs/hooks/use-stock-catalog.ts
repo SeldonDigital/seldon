@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 
-import { CatalogDialogCategory, CatalogDialogItem } from "../types"
+import type { CatalogDialogCategory, CatalogDialogItem } from "../types"
 
 /**
  * Shared picker state for the stock board dialogs (themes, font collections,

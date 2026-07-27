@@ -1,5 +1,7 @@
 import { Unit } from "../../../properties/constants"
 import { PROPERTY_SCHEMAS } from "../../../properties/schemas/data/property-schemas"
+import { buildThemeTokenValidation, finalizeThemeTokenSchema } from "./finalize-theme-token-schema"
+
 import type { PropertySchema } from "../../../properties/types/schema"
 import type {
   ThemeTokenCatalogDraft,
@@ -8,10 +10,6 @@ import type {
   ThemeTokenSchemaUnresolved,
   ThemeTokenSchemaValidation,
 } from "../../types/schema"
-import {
-  buildThemeTokenValidation,
-  finalizeThemeTokenSchema,
-} from "./finalize-theme-token-schema"
 
 function humanizePropertyName(name: string): string {
   return name
@@ -31,7 +29,9 @@ function isColorLikeProperty(name: string): boolean {
     "gradientEndColor",
     "gradientStopColor",
   ])
+
   if (exact.has(name)) return true
+
   return /Color$/.test(name)
 }
 
@@ -74,9 +74,7 @@ function mapUnitToTheme(
   return base
 }
 
-function hasValidationBody(
-  validation: ThemeTokenSchemaValidation | undefined,
-): boolean {
+function hasValidationBody(validation: ThemeTokenSchemaValidation | undefined): boolean {
   return !!validation && Object.keys(validation).length > 0
 }
 
@@ -91,6 +89,7 @@ function deriveFromPropertySchema(
 
   if (supportsSet.has("themeCategorical") && isColorLikeProperty(prop.name)) {
     const support: ThemeTokenSchemaSupport = "color"
+
     return {
       label,
       supports: [support],
@@ -106,6 +105,7 @@ function deriveFromPropertySchema(
     !supportsSet.has("exact")
   ) {
     const support: ThemeTokenSchemaSupport = "enum"
+
     return {
       label,
       supports: [support],
@@ -119,12 +119,7 @@ function deriveFromPropertySchema(
     const validation = prop.units.validation
     const uiUnit = mapUnitToTheme(
       prop.units.allowed[0],
-      validation as
-        | "number"
-        | "percentage"
-        | "signedPercentage"
-        | "both"
-        | undefined,
+      validation as "number" | "percentage" | "signedPercentage" | "both" | undefined,
     )
     const support: ThemeTokenSchemaSupport =
       validation === "percentage"
@@ -132,6 +127,7 @@ function deriveFromPropertySchema(
         : validation === "signedPercentage"
           ? "signedPercentage"
           : "number"
+
     return {
       label,
       supports: [support],
@@ -144,6 +140,7 @@ function deriveFromPropertySchema(
 
   if (prop.name === "fontFamily") {
     const support: ThemeTokenSchemaSupport = "text"
+
     return {
       label,
       supports: [support],
@@ -155,6 +152,7 @@ function deriveFromPropertySchema(
 
   if (supportsSet.has("themeOrdinal") && supportsSet.has("exact")) {
     const support: ThemeTokenSchemaSupport = "number"
+
     return {
       label,
       supports: [support],
@@ -166,6 +164,7 @@ function deriveFromPropertySchema(
 
   if (supportsSet.has("themeOrdinal")) {
     const support: ThemeTokenSchemaSupport = "enum"
+
     return {
       label,
       supports: [support],
@@ -176,6 +175,7 @@ function deriveFromPropertySchema(
   }
 
   const support: ThemeTokenSchemaSupport = "text"
+
   return {
     label,
     supports: [support],
@@ -190,11 +190,10 @@ function deriveFromPropertySchema(
  * or finalizes `valueType` drafts into `supports` + `validation`.
  * Explicit entry values still win over derived defaults.
  */
-export function resolveThemeTokenSchema(
-  row: ThemeTokenSchemaUnresolved,
-): ThemeTokenSchema {
+export function resolveThemeTokenSchema(row: ThemeTokenSchemaUnresolved): ThemeTokenSchema {
   if (row.propertyKey) {
     const prop = PROPERTY_SCHEMAS[row.propertyKey]
+
     if (!prop) {
       throw new Error(
         `resolveThemeTokenSchema: unknown propertyKey "${row.propertyKey}" for theme key "${row.key}"`,
@@ -203,13 +202,9 @@ export function resolveThemeTokenSchema(
 
     const derived = deriveFromPropertySchema(prop)
     const rowSupports =
-      "supports" in row && row.supports && row.supports.length > 0
-        ? row.supports
-        : undefined
+      "supports" in row && row.supports && row.supports.length > 0 ? row.supports : undefined
     const rowValidation =
-      "validation" in row && hasValidationBody(row.validation)
-        ? row.validation
-        : undefined
+      "validation" in row && hasValidationBody(row.validation) ? row.validation : undefined
 
     // A look facet picks one token from a set, so it renders as a combobox when its
     // property can reference a token scale or enum. Facets that only take an exact
@@ -219,8 +214,7 @@ export function resolveThemeTokenSchema(
       prop.supports.includes("themeCategorical") ||
       prop.supports.includes("option")
     const controlType =
-      row.controlType ??
-      (row.isSubProperty && canPickToken ? "combo" : derived.controlType)
+      row.controlType ?? (row.isSubProperty && canPickToken ? "combo" : derived.controlType)
 
     return {
       ...row,

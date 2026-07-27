@@ -1,4 +1,5 @@
 import { modulate } from "../../helpers/math/modulate"
+
 import type { ThemePipelineInput } from "../types"
 
 export { modulate }
@@ -12,9 +13,9 @@ export function modulateWithTheme({
 }: {
   theme: ThemePipelineInput
   parameters: {
+    step: number
     ratio?: number
     size?: number
-    step: number
   }
 }) {
   return modulate({

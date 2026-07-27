@@ -14,13 +14,7 @@ interface HomeViewProps {
 }
 
 /** Home screen: create, import, and open recently stored workspaces. */
-export function HomeView({
-  workspaces,
-  loading,
-  onNew,
-  onImport,
-  onDelete,
-}: HomeViewProps) {
+export function HomeView({ workspaces, loading, onNew, onImport, onDelete }: HomeViewProps) {
   return (
     <main className="home">
       <header>
@@ -29,26 +23,16 @@ export function HomeView({
       </header>
 
       <div className="home-actions">
-        <button
-          type="button"
-          className="home-button home-button-primary"
-          onClick={onNew}
-        >
+        <button type="button" className="home-button home-button-primary" onClick={onNew}>
           {HOME_CONTENT.newWorkspaceButton}
         </button>
-        <button
-          type="button"
-          className="home-button home-button-secondary"
-          onClick={onImport}
-        >
+        <button type="button" className="home-button home-button-secondary" onClick={onImport}>
           {HOME_CONTENT.openWorkspaceButton}
         </button>
       </div>
 
       <section>
-        <h2 className="home-section-title">
-          {HOME_CONTENT.recentWorkspacesHeading}
-        </h2>
+        <h2 className="home-section-title">{HOME_CONTENT.recentWorkspacesHeading}</h2>
         {loading ? (
           <p className="home-muted">{HOME_CONTENT.loading}</p>
         ) : workspaces.length === 0 ? (
@@ -63,11 +47,7 @@ export function HomeView({
                     Updated {new Date(ws.updatedAt).toLocaleString()}
                   </span>
                 </Link>
-                <button
-                  type="button"
-                  className="home-delete"
-                  onClick={() => onDelete(ws.id)}
-                >
+                <button type="button" className="home-delete" onClick={() => onDelete(ws.id)}>
                   {HOME_CONTENT.deleteButton}
                 </button>
               </li>

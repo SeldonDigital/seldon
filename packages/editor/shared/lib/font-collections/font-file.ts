@@ -6,5 +6,6 @@
  */
 export function getFontFileHref(slot: string, variant: string): string {
   const file = encodeURIComponent(`${slot}-${variant}`)
+
   return `/font-files/${encodeURIComponent(slot)}/${file}.woff2`
 }

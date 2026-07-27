@@ -4,7 +4,8 @@
  */
 import { PROPERTY_COMPOUND_CATALOG } from "../constants/shared/compound-properties"
 import { PROPERTY_SHORTHAND_KEYS } from "../constants/shared/shorthand-properties"
-import {
+
+import type {
   BackgroundLayer,
   BoardCompound,
   BorderCompound,
@@ -16,7 +17,7 @@ import {
   PositionValue,
   ShadowCompound,
 } from "../values"
-import { Properties } from "./properties"
+import type { Properties } from "./properties"
 
 /** Any top-level key on Properties. */
 export type PropertyKey = keyof Properties
@@ -44,9 +45,9 @@ export type ObjectFacetPropertyKey =
   | ShorthandPropertyKey
 
 const OBJECT_FACET_PROPERTY_KEYS_LIST = [
-  ...PROPERTY_COMPOUND_CATALOG.filter(
-    (entry) => entry.nodeStorage === "facets",
-  ).map((entry) => entry.key),
+  ...PROPERTY_COMPOUND_CATALOG.filter((entry) => entry.nodeStorage === "facets").map(
+    (entry) => entry.key,
+  ),
   ...PROPERTY_SHORTHAND_KEYS,
 ] as readonly ObjectFacetPropertyKey[]
 
@@ -56,9 +57,7 @@ export const OBJECT_FACET_PROPERTY_KEYS = new Set<ObjectFacetPropertyKey>(
 )
 
 /** True when the key uses a flat facet map on the node (not a layered paint array). */
-export function isObjectFacetMapProperty(
-  key: PropertyKey,
-): key is ObjectFacetPropertyKey {
+export function isObjectFacetMapProperty(key: PropertyKey): key is ObjectFacetPropertyKey {
   return OBJECT_FACET_PROPERTY_KEYS.has(key as ObjectFacetPropertyKey)
 }
 
@@ -73,10 +72,7 @@ export type CompoundSubPropertyKey =
   | keyof ShadowCompound
 
 /** Field names allowed on margin, padding, and corners objects. */
-export type ShorthandSubPropertyKey =
-  | keyof MarginValue
-  | keyof PaddingValue
-  | keyof CornersValue
+export type ShorthandSubPropertyKey = keyof MarginValue | keyof PaddingValue | keyof CornersValue
 
 /** Union of every facet name that may sit under a compound or shorthand. */
 export type SubPropertyKey = CompoundSubPropertyKey | ShorthandSubPropertyKey
@@ -89,14 +85,10 @@ const LAYERED_PAINT_KEYS_LIST = PROPERTY_COMPOUND_CATALOG.filter(
   (entry) => entry.nodeStorage === "layered",
 ).map((entry) => entry.key) as readonly LayeredPaintKey[]
 
-export const LAYERED_PAINT_KEYS = new Set<LayeredPaintKey>(
-  LAYERED_PAINT_KEYS_LIST,
-)
+export const LAYERED_PAINT_KEYS = new Set<LayeredPaintKey>(LAYERED_PAINT_KEYS_LIST)
 
 /** True for `background` / `shadow` paint stacks (array storage on the node). */
-export function isLayeredPaintProperty(
-  key: PropertyKey,
-): key is LayeredPaintKey {
+export function isLayeredPaintProperty(key: PropertyKey): key is LayeredPaintKey {
   return LAYERED_PAINT_KEYS.has(key as LayeredPaintKey)
 }
 

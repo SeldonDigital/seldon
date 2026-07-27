@@ -2,10 +2,11 @@ import { ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 
 import { getComputedCssValue } from "../computed-variables"
-import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
 import { getSizeCSSValue } from "./get-size-css-value"
-import { CSSObject } from "./types"
+
+import type { StyleGenerationContext } from "../types"
+import type { CSSObject } from "./types"
 
 export function getIconStyles({
   properties,
@@ -32,11 +33,13 @@ export function getIconStyles({
           context: computeContext,
         })
       : null
+
     styles.fontSize = themed ?? fontSize
   }
 
   if (symbol && properties.color && properties.color.type !== ValueType.EMPTY) {
     const resolvedColor = resolveValue(properties.color)
+
     if (resolvedColor) {
       const colorValue = getColorCSSValue({
         color: resolvedColor,
@@ -50,6 +53,7 @@ export function getIconStyles({
             context: computeContext,
           })
         : null
+
       styles.color = themed ?? colorValue
     }
   }

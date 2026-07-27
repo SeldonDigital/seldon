@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 
 import { getCursorStyles } from "./get-cursor-styles"
+
+import type { Properties } from "@seldon/core"
 
 describe("getCursorStyles", () => {
   it("emits the cursor value for an option value", () => {
@@ -16,9 +18,7 @@ describe("getCursorStyles", () => {
   })
 
   it("returns no styles when cursor is unset", () => {
-    expect(
-      getCursorStyles({ properties: {} as unknown as Properties }),
-    ).toEqual({})
+    expect(getCursorStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 
   it("returns no styles when cursor is empty", () => {

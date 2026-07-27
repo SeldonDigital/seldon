@@ -1,7 +1,9 @@
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
 
-import { Value, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
+
+import type { Value } from "@seldon/core"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 interface UsePropertyControlDataOptions {
   property: FlatProperty
@@ -11,9 +13,7 @@ interface UsePropertyControlDataOptions {
  * Hook that provides data and helper functions for property controls.
  * Used by the property-row ViewModel to derive display values and unit labels.
  */
-export function usePropertyControlData({
-  property,
-}: UsePropertyControlDataOptions) {
+export function usePropertyControlData({ property }: UsePropertyControlDataOptions) {
   // Get property value for display
   const getPropertyValueForDisplay = (): Value => {
     // If the property is dimmed (controlled by a computed main property),
@@ -49,6 +49,7 @@ export function usePropertyControlData({
 
     if (property.isSubProperty && property.key.includes(".")) {
       const [parentKey] = property.key.split(".")
+
       if (isPresetProperty(parentKey)) {
         if (property.actualValue && property.actualValue !== "unset") {
           return { type: ValueType.EXACT, value: property.actualValue }
@@ -79,8 +80,7 @@ export function usePropertyControlData({
     // This ensures calculated HSL values display correctly instead of showing the raw object
     if (
       property.actualValue &&
-      (property.key.startsWith("swatch.") ||
-        property.key === "colorHarmony.baseColor")
+      (property.key.startsWith("swatch.") || property.key === "colorHarmony.baseColor")
     ) {
       return { type: ValueType.EXACT, value: property.actualValue }
     }

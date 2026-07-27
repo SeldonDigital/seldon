@@ -1,5 +1,5 @@
 import { findComponentSchema } from "../../../components/catalog"
-import { ComponentId, isComponentId } from "../../../components/constants"
+import { isComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
@@ -8,30 +8,28 @@ import { getImmediateParentIdInWorkspace } from "../../helpers/components/get-no
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
-import {
-  Board,
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  Workspace,
-} from "../../types"
 import { withParentNode } from "../shared/workspace-operation-helpers"
 import { typeCheckingService } from "../type-checking/type-checking.service"
 import { nodeRetrievalService } from "./node-retrieval.service"
 import { nodeTraversalService } from "./node-traversal.service"
 
+import type { ComponentId } from "../../../components/constants"
+import type { Board, Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
+
 function templateSourceNodeId(node: Variant | Instance): string | null {
   if (!isEntryNodeForRules(node)) return null
   const link = parseNodeLink((node as { template: string }).template)
+
   return link?.kind === "node" ? link.nodeId : null
 }
 
 function nodeCatalogComponentId(node: Variant | Instance): ComponentId | null {
   const parsed = parseNodeCatalog(node.template)
+
   if (parsed?.kind === "catalog" && isComponentId(parsed.componentId)) {
     return parsed.componentId
   }
+
   return null
 }
 
@@ -42,15 +40,19 @@ export class NodeRelationshipService {
   public getInstanceIndex(node: Instance, workspace: Workspace): number {
     const { result } = withParentNode(node, workspace, (parent) => {
       const board = getBoardByNodeId(workspace, parent.id)
+
       invariant(board, `Board not found for parent ${parent.id}`)
       const childIds = getChildrenIds(board, parent.id)
+
       return childIds.indexOf(node.id)
     })
+
     return result
   }
 
   public getVariantIndex(node: Variant, workspace: Workspace): number {
     const board = this.findBoardForVariant(node, workspace)
+
     invariant(board, ErrorMessages.componentNotFoundForVariant(node.id))
 
     return board.variants.findIndex((ref) => ref.id === node.id)
@@ -78,48 +80,27 @@ export class NodeRelationshipService {
 
     const { result } = withParentNode(node, workspace, (parent) => {
       const board = getBoardByNodeId(workspace, parent.id)
+
       if (!board) return null
 
       const childIds = getChildrenIds(board, parent.id)
+
       if (targetIndex < 0 || targetIndex >= childIds.length) return null
 
       const targetId = childIds[targetIndex]
       const child = nodeRetrievalService.getNode(targetId, workspace)
+
       return typeCheckingService.isInstance(child) ? child : null
     })
+
     return result
   }
 
-  private findAdjacentVariant(
-    node: Variant,
-    placement: "before" | "after",
-    workspace: Workspace,
-  ): Variant | null {
-    const ownIndex = this.getVariantIndex(node, workspace)
-    const targetIndex = placement === "before" ? ownIndex - 1 : ownIndex + 1
-
-    const board = this.findBoardForVariant(node, workspace)
-    if (!board) return null
-
-    const refs = board.variants
-    if (targetIndex < 0 || targetIndex >= refs.length) return null
-
-    const targetRef = refs[targetIndex]
-    const child = nodeRetrievalService.getNode(targetRef.id, workspace)
-    return typeCheckingService.isVariant(child) ? child : null
-  }
-
-  public findBoardForVariant(
-    variant: Variant,
-    workspace: Workspace,
-  ): Board | null {
+  public findBoardForVariant(variant: Variant, workspace: Workspace): Board | null {
     return getBoardByNodeId(workspace, variant.id)
   }
 
-  public findBoardForNode(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): Board | null {
+  public findBoardForNode(node: Variant | Instance, workspace: Workspace): Board | null {
     return getBoardByNodeId(workspace, node.id)
   }
 
@@ -128,19 +109,15 @@ export class NodeRelationshipService {
     workspace: Workspace,
   ): Variant | Instance {
     let currentNode =
-      typeof node === "string"
-        ? nodeRetrievalService.getNode(node, workspace)
-        : node
+      typeof node === "string" ? nodeRetrievalService.getNode(node, workspace) : node
 
     while (currentNode) {
       if (typeCheckingService.canNodeHaveChildren(currentNode, workspace)) {
         return currentNode
       }
 
-      const parentNode = nodeTraversalService.findParentNode(
-        currentNode,
-        workspace,
-      )
+      const parentNode = nodeTraversalService.findParentNode(currentNode, workspace)
+
       if (!parentNode) break
       currentNode = parentNode
     }
@@ -148,17 +125,12 @@ export class NodeRelationshipService {
     throw new Error(`No container node found for ${node}`)
   }
 
-  public getRootVariant(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): Variant {
+  public getRootVariant(node: Variant | Instance, workspace: Workspace): Variant {
     let currentNode: Variant | Instance = node
 
     while (currentNode) {
-      const parentNode = nodeTraversalService.findParentNode(
-        currentNode,
-        workspace,
-      )
+      const parentNode = nodeTraversalService.findParentNode(currentNode, workspace)
+
       if (!parentNode) break
       currentNode = parentNode
     }
@@ -175,22 +147,14 @@ export class NodeRelationshipService {
     otherNode: Variant | Instance,
     workspace: Workspace,
   ): boolean {
-    return (
-      this.getRootVariant(node, workspace).id ===
-      this.getRootVariant(otherNode, workspace).id
-    )
+    return this.getRootVariant(node, workspace).id === this.getRootVariant(otherNode, workspace).id
   }
 
-  public findInstances(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): (Variant | Instance)[] {
+  public findInstances(node: Variant | Instance, workspace: Workspace): (Variant | Instance)[] {
     const sourceId = node.id
+
     return Object.values(workspace.nodes).filter((row) => {
-      return (
-        typeCheckingService.isInstance(row) &&
-        templateSourceNodeId(row) === sourceId
-      )
+      return typeCheckingService.isInstance(row) && templateSourceNodeId(row) === sourceId
     })
   }
 
@@ -207,6 +171,7 @@ export class NodeRelationshipService {
 
     while (true) {
       const parentId = getImmediateParentIdInWorkspace(workspace, currentId)
+
       if (!parentId) return false
       if (parentId === possibleParent) return true
 
@@ -214,13 +179,11 @@ export class NodeRelationshipService {
     }
   }
 
-  public isDirectChildOfVariant(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): node is Instance {
+  public isDirectChildOfVariant(node: Variant | Instance, workspace: Workspace): node is Instance {
     if (!typeCheckingService.isInstance(node)) return false
 
     const parent = nodeTraversalService.findParentNode(node, workspace)
+
     if (!parent) return false
 
     return typeCheckingService.isVariant(parent)
@@ -231,11 +194,13 @@ export class NodeRelationshipService {
     workspace: Workspace,
   ): string {
     const directSchema = findComponentSchema(nodeId)
+
     if (directSchema) return directSchema.name
 
     const node = getWorkspaceNodes(workspace)[nodeId as InstanceId | VariantId]
     const componentId = node ? nodeCatalogComponentId(node) : null
     const schema = componentId ? findComponentSchema(componentId) : undefined
+
     return schema?.name ?? "Unknown Component"
   }
 
@@ -250,17 +215,38 @@ export class NodeRelationshipService {
     }
 
     let parentNode: Variant | Instance | null = node
+
     while (parentNode) {
-      if (
-        isEntryNodeForRules(parentNode) &&
-        nodeCatalogComponentId(parentNode) === componentId
-      ) {
+      if (isEntryNodeForRules(parentNode) && nodeCatalogComponentId(parentNode) === componentId) {
         return true
       }
+
       parentNode = nodeTraversalService.findParentNode(parentNode.id, workspace)
     }
 
     return false
+  }
+
+  private findAdjacentVariant(
+    node: Variant,
+    placement: "before" | "after",
+    workspace: Workspace,
+  ): Variant | null {
+    const ownIndex = this.getVariantIndex(node, workspace)
+    const targetIndex = placement === "before" ? ownIndex - 1 : ownIndex + 1
+
+    const board = this.findBoardForVariant(node, workspace)
+
+    if (!board) return null
+
+    const refs = board.variants
+
+    if (targetIndex < 0 || targetIndex >= refs.length) return null
+
+    const targetRef = refs[targetIndex]
+    const child = nodeRetrievalService.getNode(targetRef.id, workspace)
+
+    return typeCheckingService.isVariant(child) ? child : null
   }
 }
 

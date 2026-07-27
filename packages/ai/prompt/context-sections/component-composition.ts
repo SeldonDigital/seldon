@@ -1,18 +1,16 @@
 import { findComponentSchema } from "@seldon/core/components/catalog"
-import {
-  type SchemaChild,
-  hasVariants,
-  isComplexSchema,
-} from "@seldon/core/components/types"
+import { hasVariants, isComplexSchema } from "@seldon/core/components/types"
 
 import { section } from "./section"
+
+import type { SchemaChild } from "@seldon/core/components/types"
 
 /** The tail a child line prints after its component id: variant and baked override keys. */
 function childTail(child: SchemaChild): string {
   const variant = child.variant ? ` variant "${child.variant}"` : ""
   const overrideKeys = child.overrides ? Object.keys(child.overrides) : []
-  const overrides =
-    overrideKeys.length > 0 ? ` (overrides: ${overrideKeys.join(", ")})` : ""
+  const overrides = overrideKeys.length > 0 ? ` (overrides: ${overrideKeys.join(", ")})` : ""
+
   return `${variant}${overrides}`
 }
 
@@ -25,12 +23,15 @@ function childTail(child: SchemaChild): string {
 function childLines(children: readonly SchemaChild[], depth: number): string[] {
   const indent = "  ".repeat(depth + 1)
   const lines: string[] = []
+
   for (const child of children) {
     lines.push(`${indent}- ${child.component}${childTail(child)}`)
+
     if (child.children && child.children.length > 0) {
       lines.push(...childLines(child.children, depth + 1))
     }
   }
+
   return lines
 }
 
@@ -46,12 +47,14 @@ function childLines(children: readonly SchemaChild[], depth: number): string[] {
  */
 export function componentCompositionSection(catalogId: string): string[] {
   const schema = findComponentSchema(catalogId)
+
   if (!schema) return []
 
   const body: string[] = [`${schema.id} [${schema.level}] - ${schema.intent}`]
 
   if (isComplexSchema(schema)) {
     const children = schema.default.children ?? []
+
     if (children.length > 0) {
       body.push("composition (default):")
       body.push(...childLines(children, 0))
@@ -64,12 +67,12 @@ export function componentCompositionSection(catalogId: string): string[] {
 
   if (hasVariants(schema)) {
     body.push("variants:")
+
     for (const variant of schema.variants) {
       body.push(`  - ${variant.id} (${variant.label})`)
     }
-    body.push(
-      "Each variant is an alternate tree; insert one with insert_variant_instance.",
-    )
+
+    body.push("Each variant is an alternate tree; insert one with insert_variant_instance.")
   } else {
     body.push("variants: (none)")
   }

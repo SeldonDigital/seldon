@@ -2,10 +2,7 @@
 
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useTool } from "@app/editor/hooks/use-tool"
-import {
-  useSaveWorkspace,
-  useWorkspaceName,
-} from "@app/persistence/workspace-save-store"
+import { useSaveWorkspace, useWorkspaceName } from "@app/persistence/workspace-save-store"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildFieldStateProps } from "@app/views/state-props"
@@ -21,9 +18,8 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { LayoutGroup } from "framer-motion"
-import { CSSProperties, PointerEvent, useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 
-import { BoardSection } from "../helpers/get-board-sections"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { BoardController } from "./BoardController"
@@ -33,6 +29,9 @@ import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
 import { useRowClick } from "./hooks/use-row-click"
 import { useScrollSelection } from "./hooks/use-scroll-selection"
 import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
+
+import type { BoardSection } from "../helpers/get-board-sections"
+import type { CSSProperties, PointerEvent } from "react"
 
 /** Class that renders a header ButtonToggle in its activated (on) state. */
 const ACTIVE_TOGGLE_CLASS = "sdn-state-activated"
@@ -56,32 +55,31 @@ export function ObjectsSidebar() {
   const { selectWorkspace } = useSelectionActions()
   const { activeTool } = useTool()
   const { objectsView, setObjectsView } = useEditorConfig()
-  const workspaceSelected = useSelectionStore(
-    (state) => state.workspaceSelected,
-  )
+  const workspaceSelected = useSelectionStore((state) => state.workspaceSelected)
 
   useDraggableMonitor()
 
   const handlePointerMove = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
       const target = getSelectionTarget(event.target as Element)
+
       setHoveredId(target?.id ?? null, target?.kind, target?.rootId)
     },
     [setHoveredId],
   )
 
-  const handlePointerLeave = useCallback(
-    () => setHoveredId(null),
-    [setHoveredId],
-  )
+  const handlePointerLeave = useCallback(() => setHoveredId(null), [setHoveredId])
 
   // The project name reuses the node-row rename machinery: a read-only display
   // input until edit mode, then an editable input that commits on Enter/blur.
   const submitRename = useCallback(
     (next: string) => {
       const trimmed = next.trim()
-      if (trimmed && trimmed !== name)
+
+      if (trimmed && trimmed !== name) {
         void saveNow(workspace, { name: trimmed })
+      }
+
       setEditingName(false)
     },
     [name, saveNow, workspace],
@@ -101,6 +99,7 @@ export function ObjectsSidebar() {
   // the active selection.
   const selectWorkspaceRow = useCallback(() => {
     const frozenBoardKey = activeBoard ? getComponentKey(activeBoard) : null
+
     selectWorkspace(frozenBoardKey)
   }, [activeBoard, selectWorkspace])
 
@@ -127,14 +126,8 @@ export function ObjectsSidebar() {
 
   // Header view toggles behave as a radio pair: one is always active. The
   // activated state renders through the generated button-toggle `on` styling.
-  const showComponents = useCallback(
-    () => setObjectsView("components"),
-    [setObjectsView],
-  )
-  const showResources = useCallback(
-    () => setObjectsView("resources"),
-    [setObjectsView],
-  )
+  const showComponents = useCallback(() => setObjectsView("components"), [setObjectsView])
+  const showResources = useCallback(() => setObjectsView("resources"), [setObjectsView])
   const componentsActive = objectsView === "components"
   const resourcesActive = objectsView === "resources"
   const componentsToggle = {
@@ -200,9 +193,7 @@ function ObjectsSectionGroup({ section }: { section: BoardSection }) {
     section.boards.length === 0 ? (
       <BoardController emptyLabel={emptyLabel} />
     ) : (
-      section.boards.map((board) => (
-        <BoardController key={getComponentKey(board)} board={board} />
-      ))
+      section.boards.map((board) => <BoardController key={getComponentKey(board)} board={board} />)
     )
 
   return (

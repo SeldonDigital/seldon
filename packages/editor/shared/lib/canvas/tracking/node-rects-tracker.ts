@@ -16,10 +16,13 @@ export function createNodeRectsTracker(nodeIds: string[]): () => void {
 
   const updateRect = (nodeId: string): void => {
     const nodeEl = getHtmlElementByNodeId(nodeId)
+
     if (!nodeEl) {
       updateNodeRect(nodeId, null)
+
       return
     }
+
     try {
       updateNodeRect(nodeId, calculateSelectionOutline({ nodeEl }))
     } catch {
@@ -40,12 +43,16 @@ export function createNodeRectsTracker(nodeIds: string[]): () => void {
 
   nodeIds.forEach((nodeId) => {
     const nodeEl = getHtmlElementByNodeId(nodeId)
+
     if (!nodeEl) {
       updateNodeRect(nodeId, null)
+
       return
     }
+
     updateRect(nodeId)
     const observer = new ResizeObserver(() => updateRect(nodeId))
+
     observer.observe(nodeEl)
     observers.set(nodeId, observer)
   })

@@ -38,12 +38,10 @@ function toTreeRef(variant: string | ComponentTreeRef): ComponentTreeRef {
   return typeof variant === "string" ? { id: variant } : variant
 }
 
-function walkContainer(
-  container: ComponentTreeRef,
-  parentByChild: Map<string, string>,
-): void {
+function walkContainer(container: ComponentTreeRef, parentByChild: Map<string, string>): void {
   for (const raw of container.children ?? []) {
     const child = toTreeRef(raw)
+
     if (!parentByChild.has(child.id)) parentByChild.set(child.id, container.id)
     walkContainer(child, parentByChild)
   }
@@ -51,9 +49,7 @@ function walkContainer(
 
 function isCompositionComponentRow(board: CompositionComponentRow): boolean {
   return (
-    board.type === "component" ||
-    board.type === "authored-component" ||
-    board.type === "playground"
+    board.type === "component" || board.type === "authored-component" || board.type === "playground"
   )
 }
 
@@ -63,8 +59,10 @@ function walkRows(
 ): void {
   if (!rows) return
   const keys = Object.keys(rows).sort()
+
   for (const key of keys) {
     const row = rows[key]
+
     if (!row || !isCompositionComponentRow(row)) continue
 
     for (const variant of row.variants ?? []) {
@@ -73,12 +71,12 @@ function walkRows(
   }
 }
 
-export function buildNodeParentIndex(
-  source: WorkspaceComponentTreeSource,
-): Map<string, string> {
+export function buildNodeParentIndex(source: WorkspaceComponentTreeSource): Map<string, string> {
   const parentByChild = new Map<string, string>()
+
   walkRows(source.boards, parentByChild)
   walkRows(source.playgrounds, parentByChild)
+
   return parentByChild
 }
 
@@ -90,18 +88,13 @@ export function buildNodeParentIndex(
  */
 const parentIndexCache = new WeakMap<object, Map<string, string>>()
 
-export function getNodeParentIndex(
-  source: WorkspaceComponentTreeSource,
-): Map<string, string> {
-  if (
-    isDraft(source) ||
-    isDraft(source.boards) ||
-    isDraft(source.playgrounds)
-  ) {
+export function getNodeParentIndex(source: WorkspaceComponentTreeSource): Map<string, string> {
+  if (isDraft(source) || isDraft(source.boards) || isDraft(source.playgrounds)) {
     return buildNodeParentIndex(source)
   }
 
   let index = parentIndexCache.get(source)
+
   if (!index) {
     index = buildNodeParentIndex(source)
     parentIndexCache.set(source, index)

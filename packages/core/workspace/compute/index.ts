@@ -4,10 +4,7 @@
  * context for `#parent.*`, then delegation to `properties/compute`. Resolution to CSS
  * strings lives in `helpers/resolution` after `computeProperties`. See `./README.md`.
  */
-export {
-  computeWorkspaceThemes,
-  getComputedTheme,
-} from "./compute-workspace-themes"
+export { computeWorkspaceThemes, getComputedTheme } from "./compute-workspace-themes"
 export {
   computeNodeProperties,
   getEffectiveNodeProperties,

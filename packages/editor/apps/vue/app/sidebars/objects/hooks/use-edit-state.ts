@@ -1,10 +1,6 @@
-import {
-  type MaybeRefOrGetter,
-  onBeforeUnmount,
-  ref,
-  toValue,
-  watch,
-} from "vue"
+import { onBeforeUnmount, ref, toValue, watch } from "vue"
+
+import type { MaybeRefOrGetter } from "vue"
 
 /**
  * Inline-rename edit state for an objects-sidebar row. Mirrors the React

@@ -1,17 +1,19 @@
 import fs from "node:fs/promises"
 import path from "node:path"
 
-import type { FileToExport } from "../../export/types"
 import { runImportWeb } from "./run-import-web"
+
+import type { FileToExport } from "../../export/types"
 
 const REPORT_FOLDER = "Components Report"
 
 /** Writes one file, creating parent directories as needed. */
 async function writeFile(baseDir: string, file: FileToExport): Promise<void> {
   const target = path.join(baseDir, file.path)
+
   await fs.mkdir(path.dirname(target), { recursive: true })
-  const content =
-    typeof file.content === "string" ? file.content : Buffer.from(file.content)
+  const content = typeof file.content === "string" ? file.content : Buffer.from(file.content)
+
   await fs.writeFile(target, content)
 }
 
@@ -31,10 +33,9 @@ async function main(): Promise<void> {
   const classify = args.includes("--classify")
   const positionals = args.filter((arg) => !arg.startsWith("--"))
   const [url, outDir = process.cwd()] = positionals
+
   if (!url) {
-    console.error(
-      "Usage: bun packages/factory/import/web/cli.ts <url> [outDir] [--classify]",
-    )
+    console.error("Usage: bun packages/factory/import/web/cli.ts <url> [outDir] [--classify]")
     process.exit(1)
   }
 
@@ -42,11 +43,13 @@ async function main(): Promise<void> {
   const result = await runImportWeb(url, { classify: classify ? {} : false })
 
   const baseDir = path.join(path.resolve(outDir), REPORT_FOLDER)
+
   for (const file of result.files) {
     await writeFile(baseDir, file)
   }
 
   const { summary } = result
+
   console.log(`Raw DOM nodes:      ${summary.rawNodeCount}`)
   console.log(`Unique pieces:      ${summary.dedupedCount}`)
   console.log(`Matched to catalog: ${summary.matchedCount}`)

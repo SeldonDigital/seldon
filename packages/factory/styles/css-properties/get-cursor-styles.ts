@@ -1,12 +1,9 @@
-import { Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
 
-export function getCursorStyles({
-  properties,
-}: {
-  properties: Properties
-}): CSSObject {
+export function getCursorStyles({ properties }: { properties: Properties }): CSSObject {
   if (!properties.cursor) {
     return {}
   }
@@ -16,6 +13,7 @@ export function getCursorStyles({
   // Type guard to check if cursor is not empty
   if (properties.cursor.type !== ValueType.EMPTY) {
     const cursorType = properties.cursor.type
+
     // Only support PRESET cursor values, throw error for all other types
     if (cursorType === ValueType.OPTION) {
       styles.cursor = properties.cursor.value

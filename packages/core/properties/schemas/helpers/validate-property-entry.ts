@@ -1,13 +1,14 @@
-import type { Theme } from "../../../themes/types"
 import {
   PROPERTY_COMPOUND_CATALOG,
   isCompoundCatalogProperty,
 } from "../../constants/shared/compound-properties"
 import { isShorthandCatalogProperty } from "../../constants/shared/shorthand-properties"
 import { ValueType } from "../../constants/shared/value-types"
-import type { PropertyValueType } from "../../types/schema"
 import { getPropertySchema } from "./get-property-schema"
 import { getCatalogKeyForPropertyPath } from "./property-path"
+
+import type { Theme } from "../../../themes/types"
+import type { PropertyValueType } from "../../types/schema"
 
 /** True when a compound parent stores its node value as an ordered layer array. */
 function isLayeredCompound(propertyKey: string): boolean {
@@ -16,9 +17,11 @@ function isLayeredCompound(propertyKey: string): boolean {
   )
 }
 
-/** One malformed value found while validating a property entry. */
+/**
+ * One malformed value found while validating a property entry. `path` is the dot path of the
+ * offending value, for example `background.0.color`.
+ */
 export interface PropertyValueError {
-  /** Dot path of the offending value, for example `background.0.color`. */
   path: string
   reason: string
 }
@@ -38,9 +41,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value)
 }
 
-function isTaggedValue(
-  value: unknown,
-): value is { type: unknown; value?: unknown } {
+function isTaggedValue(value: unknown): value is { type: unknown; value?: unknown } {
   return isPlainObject(value) && "type" in value
 }
 
@@ -61,6 +62,7 @@ function validateSingle(
   }
 
   const shape = VALUE_TYPE_TO_SHAPE[value.type as ValueType]
+
   if (!shape) {
     return [{ path, reason: `unknown value type "${String(value.type)}"` }]
   }
@@ -68,6 +70,7 @@ function validateSingle(
   if (shape === "empty") return []
 
   const schema = getPropertySchema(schemaKey)
+
   if (!schema) {
     return [{ path, reason: `no schema for property "${schemaKey}"` }]
   }
@@ -82,6 +85,7 @@ function validateSingle(
   }
 
   const validator = schema.validation[shape]
+
   if (validator && !validator(value.value, theme)) {
     return [{ path, reason: `invalid ${shape} value for ${schemaKey}` }]
   }
@@ -106,9 +110,11 @@ function validateFacet(
   path: string,
 ): PropertyValueError[] {
   const schemaKey = getCatalogKeyForPropertyPath(path)
+
   if (!schemaKey) {
     return [{ path, reason: `unknown facet "${facet}" on ${parent}` }]
   }
+
   return validateSingle(schemaKey, value, theme, path)
 }
 
@@ -133,9 +139,11 @@ export function collectPropertyValueErrors(
 ): PropertyValueError[] {
   if (propertyKey.includes(".")) {
     const schemaKey = getCatalogKeyForPropertyPath(propertyKey)
+
     if (!schemaKey) {
       return [{ path: propertyKey, reason: "unknown property path" }]
     }
+
     return validateSingle(schemaKey, value, theme, propertyKey)
   }
 
@@ -143,15 +151,19 @@ export function collectPropertyValueErrors(
     if (!Array.isArray(value)) {
       return [{ path: propertyKey, reason: "expected an array of layers" }]
     }
+
     const errors: PropertyValueError[] = []
+
     value.forEach((layer, index) => {
       if (!isPlainObject(layer)) {
         errors.push({
           path: `${propertyKey}.${index}`,
           reason: "layer must be an object of facets",
         })
+
         return
       }
+
       for (const [facet, facetValue] of Object.entries(layer)) {
         errors.push(
           ...validateFacet(
@@ -164,6 +176,7 @@ export function collectPropertyValueErrors(
         )
       }
     })
+
     return errors
   }
 
@@ -171,44 +184,34 @@ export function collectPropertyValueErrors(
     if (!isPlainObject(value)) {
       return [{ path: propertyKey, reason: "expected a facet object" }]
     }
+
     const errors: PropertyValueError[] = []
+
     for (const [facet, facetValue] of Object.entries(value)) {
       errors.push(
-        ...validateFacet(
-          propertyKey,
-          facet,
-          facetValue,
-          theme,
-          `${propertyKey}.${facet}`,
-        ),
+        ...validateFacet(propertyKey, facet, facetValue, theme, `${propertyKey}.${facet}`),
       )
     }
+
     return errors
   }
 
   // A shorthand stores an object of sides that all share the parent schema.
-  if (
-    isShorthandCatalogProperty(propertyKey) &&
-    isPlainObject(value) &&
-    !isTaggedValue(value)
-  ) {
+  if (isShorthandCatalogProperty(propertyKey) && isPlainObject(value) && !isTaggedValue(value)) {
     const errors: PropertyValueError[] = []
+
     for (const [side, sideValue] of Object.entries(value)) {
-      errors.push(
-        ...validateSingle(
-          propertyKey,
-          sideValue,
-          theme,
-          `${propertyKey}.${side}`,
-        ),
-      )
+      errors.push(...validateSingle(propertyKey, sideValue, theme, `${propertyKey}.${side}`))
     }
+
     return errors
   }
 
   const schemaKey = getCatalogKeyForPropertyPath(propertyKey)
+
   if (!schemaKey) {
     return [{ path: propertyKey, reason: "unknown property" }]
   }
+
   return validateSingle(schemaKey, value, theme, propertyKey)
 }

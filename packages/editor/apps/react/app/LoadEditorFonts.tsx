@@ -16,8 +16,8 @@ export function LoadEditorFonts() {
   const { workspace } = useWorkspace({ usePreview: false })
 
   const fontFaceCss = useMemo(() => {
-    const families =
-      workspaceFontCollectionService.getEnabledRemoteFamilies(workspace)
+    const families = workspaceFontCollectionService.getEnabledRemoteFamilies(workspace)
+
     return buildFontFaceCss(families)
   }, [workspace])
 

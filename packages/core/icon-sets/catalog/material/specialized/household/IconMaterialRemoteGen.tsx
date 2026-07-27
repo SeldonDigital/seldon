@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialRemoteGen(props: SVGAttributes<SVGSVGElement>) {
   return (

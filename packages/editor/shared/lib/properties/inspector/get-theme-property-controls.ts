@@ -1,6 +1,7 @@
-import { ControlType } from "@seldon/editor/lib/icons/icons-registry"
 import { getThemeTokenSchema } from "@seldon/core/themes/schemas"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
+import type { ControlType } from "@seldon/editor/lib/icons/icons-registry"
 
 /**
  * Maps theme property keys to appropriate control types using schema system.
@@ -9,9 +10,7 @@ import { FlatProperty } from "./properties-data"
  * @param property - The flat property to get control type for
  * @returns Control type for the property
  */
-export function getThemePropertyControlType(
-  property: FlatProperty,
-): ControlType {
+export function getThemePropertyControlType(property: FlatProperty): ControlType {
   const schema = getThemeTokenSchema(property.key)
 
   if (schema) {

@@ -1,10 +1,8 @@
 import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
-import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import {
   getPropertyIcon2Color,
   isMenuOrComboControl,
 } from "@seldon/editor/lib/properties/inspector/property-value-display"
-import type { CSSProperties } from "vue"
 
 import {
   getDisclosureButtonStyle,
@@ -15,11 +13,15 @@ import {
   getValueIconStyle,
 } from "./property-row-state-styles"
 
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { CSSProperties } from "vue"
+
 const CHEVRON_ICON = "material-chevronRight"
 
 /** Data attribute used to detect clicks on the value-cell frame control. */
 const FRAME_REF_ATTR = "data-frame-ref"
 const FRAME_REF_VALUE = "true"
+
 export const FRAME_REF_SELECTOR = `[${FRAME_REF_ATTR}="${FRAME_REF_VALUE}"]`
 
 interface BuildPropertyRowPropsInput {
@@ -103,6 +105,7 @@ export function buildPropertyRowProps({
   const chipColor = getPropertyIcon2Color(property, swatchChipColor, undefined)
 
   let icon2: Record<string, unknown> | null
+
   if (property.isLookParent) {
     icon2 = null
   } else if (isThemeAssignment) {
@@ -125,11 +128,7 @@ export function buildPropertyRowProps({
 
   const isMenuButtonInteractive = supportsUpload || isMenuOrCombo
   const buttonIconic2: Record<string, unknown> = {
-    onClick: supportsUpload
-      ? handleUploadClick
-      : isMenuOrCombo
-        ? handleMenuClick
-        : undefined,
+    onClick: supportsUpload ? handleUploadClick : isMenuOrCombo ? handleMenuClick : undefined,
     [ICONIC_BUTTON_ATTR]: true,
     style: getMenuButtonStyle({ supportsUpload, isCalculated, isMenuOrCombo }),
     ...(isMenuButtonInteractive

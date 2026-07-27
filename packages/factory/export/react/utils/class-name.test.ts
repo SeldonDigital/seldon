@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { ComponentToExport } from "../../types"
 import { getClassName, getVariantClassNames } from "./class-name"
+
+import type { ComponentToExport } from "../../types"
 
 describe("getClassName", () => {
   const map = { a: "sdn-button", b: null, c: undefined }
@@ -22,13 +23,13 @@ describe("getClassName", () => {
 describe("getVariantClassNames", () => {
   it("returns the variant's own class", () => {
     const component = { variantId: "v1" } as unknown as ComponentToExport
-    expect(getVariantClassNames(component, { v1: "sdn-button-iconic" })).toBe(
-      "sdn-button-iconic",
-    )
+
+    expect(getVariantClassNames(component, { v1: "sdn-button-iconic" })).toBe("sdn-button-iconic")
   })
 
   it("returns an empty string when the variant has no class", () => {
     const component = { variantId: "v1" } as unknown as ComponentToExport
+
     expect(getVariantClassNames(component, {})).toBe("")
   })
 })

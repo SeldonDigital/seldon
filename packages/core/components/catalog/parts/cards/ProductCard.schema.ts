@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Product Card",
   id: Seldon.ComponentId.PRODUCT_CARD,
   intent:
     "Ecommerce product card emphasizing image, price, title, rating, and a single add-to-cart action.",
-  tags: [
-    "card",
-    "product",
-    "ecommerce",
-    "price",
-    "rating",
-    "cta",
-    "UI",
-    "commerce",
-  ],
+  tags: ["card", "product", "ecommerce", "price", "rating", "cta", "UI", "commerce"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -442,8 +434,7 @@ export const schema = {
     {
       id: "minimal",
       label: "Minimal",
-      intent:
-        "Stripped-down product card showing only image, name, and price for dense grids.",
+      intent: "Stripped-down product card showing only image, name, and price for dense grids.",
       children: [
         {
           component: Seldon.ComponentId.IMAGE,

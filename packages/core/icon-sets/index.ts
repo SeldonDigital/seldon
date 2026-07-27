@@ -8935,12 +8935,9 @@ export const iconLabels = {
   "carbon-deploymentUnitInstallation": "Deployment Unit Installation",
   "carbon-deploymentUnitPresentation": "Deployment Unit Presentation",
   "carbon-deploymentUnitTechnicalData": "Deployment Unit Technical Data",
-  "carbon-deploymentUnitTechnicalExecution":
-    "Deployment Unit Technical Execution",
-  "carbon-deploymentUnitTechnicalInstallation":
-    "Deployment Unit Technical Installation",
-  "carbon-deploymentUnitTechnicalPresentation":
-    "Deployment Unit Technical Presentation",
+  "carbon-deploymentUnitTechnicalExecution": "Deployment Unit Technical Execution",
+  "carbon-deploymentUnitTechnicalInstallation": "Deployment Unit Technical Installation",
+  "carbon-deploymentUnitTechnicalPresentation": "Deployment Unit Technical Presentation",
   "carbon-deployRules": "Deploy Rules",
   "carbon-deskAdjustable": "Desk Adjustable",
   "carbon-development": "Development",
@@ -8974,8 +8971,7 @@ export const iconLabels = {
   "carbon-directionRight_02": "Direction Right_02",
   "carbon-directionRight_02Filled": "Direction Right_02 Filled",
   "carbon-directionRotaryFirstRight": "Direction Rotary First Right",
-  "carbon-directionRotaryFirstRightFilled":
-    "Direction Rotary First Right Filled",
+  "carbon-directionRotaryFirstRightFilled": "Direction Rotary First Right Filled",
   "carbon-directionRotaryRight": "Direction Rotary Right",
   "carbon-directionRotaryRightFilled": "Direction Rotary Right Filled",
   "carbon-directionRotaryStraight": "Direction Rotary Straight",
@@ -9309,13 +9305,11 @@ export const iconLabels = {
   "carbon-ibmCloudDedicatedHost": "Ibm Cloud Dedicated Host",
   "carbon-ibmCloudDirectLink_1Connect": "Ibm Cloud Direct Link_1 Connect",
   "carbon-ibmCloudDirectLink_1Dedicated": "Ibm Cloud Direct Link_1 Dedicated",
-  "carbon-ibmCloudDirectLink_1DedicatedHosting":
-    "Ibm Cloud Direct Link_1 Dedicated Hosting",
+  "carbon-ibmCloudDirectLink_1DedicatedHosting": "Ibm Cloud Direct Link_1 Dedicated Hosting",
   "carbon-ibmCloudDirectLink_1Exchange": "Ibm Cloud Direct Link_1 Exchange",
   "carbon-ibmCloudDirectLink_2Connect": "Ibm Cloud Direct Link_2 Connect",
   "carbon-ibmCloudDirectLink_2Dedicated": "Ibm Cloud Direct Link_2 Dedicated",
-  "carbon-ibmCloudDirectLink_2DedicatedHosting":
-    "Ibm Cloud Direct Link_2 Dedicated Hosting",
+  "carbon-ibmCloudDirectLink_2DedicatedHosting": "Ibm Cloud Direct Link_2 Dedicated Hosting",
   "carbon-ibmCloudEssentialSecurityAndObservabilityServices":
     "Ibm Cloud Essential Security And Observability Services",
   "carbon-ibmCloudEventNotification": "Ibm Cloud Event Notification",
@@ -9324,8 +9318,7 @@ export const iconLabels = {
   "carbon-ibmCloudGateKeeper": "Ibm Cloud Gate Keeper",
   "carbon-ibmCloudHpc": "Ibm Cloud Hpc",
   "carbon-ibmCloudHsm": "Ibm Cloud Hsm",
-  "carbon-ibmCloudHyperProtectCryptoServices":
-    "Ibm Cloud Hyper Protect Crypto Services",
+  "carbon-ibmCloudHyperProtectCryptoServices": "Ibm Cloud Hyper Protect Crypto Services",
   "carbon-ibmCloudHyperProtectDbaas": "Ibm Cloud Hyper Protect Dbaas",
   "carbon-ibmCloudHyperProtectVs": "Ibm Cloud Hyper Protect Vs",
   "carbon-ibmCloudInternetServices": "Ibm Cloud Internet Services",
@@ -9339,8 +9332,7 @@ export const iconLabels = {
   "carbon-ibmCloudPakBusinessAutomation": "Ibm Cloud Pak Business Automation",
   "carbon-ibmCloudPakData": "Ibm Cloud Pak Data",
   "carbon-ibmCloudPakIntegration": "Ibm Cloud Pak Integration",
-  "carbon-ibmCloudPakMantaAutomatedDataLineage":
-    "Ibm Cloud Pak Manta Automated Data Lineage",
+  "carbon-ibmCloudPakMantaAutomatedDataLineage": "Ibm Cloud Pak Manta Automated Data Lineage",
   "carbon-ibmCloudPakMulticloudMgmt": "Ibm Cloud Pak Multicloud Mgmt",
   "carbon-ibmCloudPakNetezza": "Ibm Cloud Pak Netezza",
   "carbon-ibmCloudPakNetworkAutomation": "Ibm Cloud Pak Network Automation",
@@ -9348,14 +9340,12 @@ export const iconLabels = {
   "carbon-ibmCloudPakSystem": "Ibm Cloud Pak System",
   "carbon-ibmCloudPakWatsonAiops": "Ibm Cloud Pak Watson Aiops",
   "carbon-ibmCloudPal": "Ibm Cloud Pal",
-  "carbon-ibmCloudPrivilegedAccessGateway":
-    "Ibm Cloud Privileged Access Gateway",
+  "carbon-ibmCloudPrivilegedAccessGateway": "Ibm Cloud Privileged Access Gateway",
   "carbon-ibmCloudProjects": "Ibm Cloud Projects",
   "carbon-ibmCloudResiliency": "Ibm Cloud Resiliency",
   "carbon-ibmCloudSecretsManager": "Ibm Cloud Secrets Manager",
   "carbon-ibmCloudSecurity": "Ibm Cloud Security",
-  "carbon-ibmCloudSecurityComplianceCenter":
-    "Ibm Cloud Security Compliance Center",
+  "carbon-ibmCloudSecurityComplianceCenter": "Ibm Cloud Security Compliance Center",
   "carbon-ibmCloudSecurityComplianceCenterWorkloadProtection":
     "Ibm Cloud Security Compliance Center Workload Protection",
   "carbon-ibmCloudSecurityGroups": "Ibm Cloud Security Groups",
@@ -9365,17 +9355,14 @@ export const iconLabels = {
   "carbon-ibmCloudVirtualServerClassic": "Ibm Cloud Virtual Server Classic",
   "carbon-ibmCloudVirtualServerVpc": "Ibm Cloud Virtual Server Vpc",
   "carbon-ibmCloudVpc": "Ibm Cloud Vpc",
-  "carbon-ibmCloudVpcBlockStorageSnapshots":
-    "Ibm Cloud Vpc Block Storage Snapshots",
+  "carbon-ibmCloudVpcBlockStorageSnapshots": "Ibm Cloud Vpc Block Storage Snapshots",
   "carbon-ibmCloudVpcClientVpn": "Ibm Cloud Vpc Client Vpn",
   "carbon-ibmCloudVpcEndpoints": "Ibm Cloud Vpc Endpoints",
   "carbon-ibmCloudVpcFileStorage": "Ibm Cloud Vpc File Storage",
   "carbon-ibmCloudVpcImages": "Ibm Cloud Vpc Images",
   "carbon-ibmConsultingAdvantageAgent": "Ibm Consulting Advantage Agent",
-  "carbon-ibmConsultingAdvantageApplication":
-    "Ibm Consulting Advantage Application",
-  "carbon-ibmConsultingAdvantageAssistant":
-    "Ibm Consulting Advantage Assistant",
+  "carbon-ibmConsultingAdvantageApplication": "Ibm Consulting Advantage Application",
+  "carbon-ibmConsultingAdvantageAssistant": "Ibm Consulting Advantage Assistant",
   "carbon-ibmContentServices": "Ibm Content Services",
   "carbon-ibmDataband": "Ibm Databand",
   "carbon-ibmDataPower": "Ibm Data Power",
@@ -9393,16 +9380,12 @@ export const iconLabels = {
   "carbon-ibmEloMethodComposer": "Ibm Elo Method Composer",
   "carbon-ibmEloPublishing": "Ibm Elo Publishing",
   "carbon-ibmEngineeringLifecycleMgmt": "Ibm Engineering Lifecycle Mgmt",
-  "carbon-ibmEngineeringRequirementsDoorsNext":
-    "Ibm Engineering Requirements Doors Next",
-  "carbon-ibmEngineeringSystemsDesignRhapsody":
-    "Ibm Engineering Systems Design Rhapsody",
+  "carbon-ibmEngineeringRequirementsDoorsNext": "Ibm Engineering Requirements Doors Next",
+  "carbon-ibmEngineeringSystemsDesignRhapsody": "Ibm Engineering Systems Design Rhapsody",
   "carbon-ibmEngineeringSystemsDesignRhapsodyModelManager":
     "Ibm Engineering Systems Design Rhapsody Model Manager",
-  "carbon-ibmEngineeringSystemsDesignRhapsodySn1":
-    "Ibm Engineering Systems Design Rhapsody Sn1",
-  "carbon-ibmEngineeringSystemsDesignRhapsodySn2":
-    "Ibm Engineering Systems Design Rhapsody Sn2",
+  "carbon-ibmEngineeringSystemsDesignRhapsodySn1": "Ibm Engineering Systems Design Rhapsody Sn1",
+  "carbon-ibmEngineeringSystemsDesignRhapsodySn2": "Ibm Engineering Systems Design Rhapsody Sn2",
   "carbon-ibmEngineeringTestMgmt": "Ibm Engineering Test Mgmt",
   "carbon-ibmEngineeringWorkflowMgmt": "Ibm Engineering Workflow Mgmt",
   "carbon-ibmEventAutomation": "Ibm Event Automation",
@@ -9445,18 +9428,15 @@ export const iconLabels = {
     "Ibm Secure Infrastructure On Vpc For Regulated Industries",
   "carbon-ibmSecurity": "Ibm Security",
   "carbon-ibmSecurityServices": "Ibm Security Services",
-  "carbon-ibmSoftwareWatsonxDataAnalyzeAndProcess":
-    "Ibm Software Watsonx Data Analyze And Process",
+  "carbon-ibmSoftwareWatsonxDataAnalyzeAndProcess": "Ibm Software Watsonx Data Analyze And Process",
   "carbon-ibmSoftwareWatsonxDataStructuredEnrichment":
     "Ibm Software Watsonx Data Structured Enrichment",
-  "carbon-ibmSoftwareWatsonxDataStructuredImport":
-    "Ibm Software Watsonx Data Structured Import",
+  "carbon-ibmSoftwareWatsonxDataStructuredImport": "Ibm Software Watsonx Data Structured Import",
   "carbon-ibmSoftwareWatsonxDataUnstructuredEnrichment":
     "Ibm Software Watsonx Data Unstructured Enrichment",
   "carbon-ibmSoftwareWatsonxDataUnstructuredImport":
     "Ibm Software Watsonx Data Unstructured Import",
-  "carbon-ibmSoftwareWatsonxDocumentLibrary":
-    "Ibm Software Watsonx Document Library",
+  "carbon-ibmSoftwareWatsonxDocumentLibrary": "Ibm Software Watsonx Document Library",
   "carbon-ibmStreamsets": "Ibm Streamsets",
   "carbon-ibmTelehealth": "Ibm Telehealth",
   "carbon-ibmTenet": "Ibm Tenet",
@@ -9465,18 +9445,15 @@ export const iconLabels = {
   "carbon-ibmTurbonomic": "Ibm Turbonomic",
   "carbon-ibmUnstructuredDataProcessor": "Ibm Unstructured Data Processor",
   "carbon-ibmVpnForVpc": "Ibm Vpn For Vpc",
-  "carbon-ibmVsiOnVpcForRegulatedIndustries":
-    "Ibm Vsi On Vpc For Regulated Industries",
+  "carbon-ibmVsiOnVpcForRegulatedIndustries": "Ibm Vsi On Vpc For Regulated Industries",
   "carbon-ibmWatsonAssistant": "Ibm Watson Assistant",
   "carbon-ibmWatsonDiscovery": "Ibm Watson Discovery",
   "carbon-ibmWatsonKnowledgeCatalog": "Ibm Watson Knowledge Catalog",
   "carbon-ibmWatsonKnowledgeStudio": "Ibm Watson Knowledge Studio",
   "carbon-ibmWatsonLanguageTranslator": "Ibm Watson Language Translator",
   "carbon-ibmWatsonMachineLearning": "Ibm Watson Machine Learning",
-  "carbon-ibmWatsonNaturalLanguageClassifier":
-    "Ibm Watson Natural Language Classifier",
-  "carbon-ibmWatsonNaturalLanguageUnderstanding":
-    "Ibm Watson Natural Language Understanding",
+  "carbon-ibmWatsonNaturalLanguageClassifier": "Ibm Watson Natural Language Classifier",
+  "carbon-ibmWatsonNaturalLanguageUnderstanding": "Ibm Watson Natural Language Understanding",
   "carbon-ibmWatsonOpenscale": "Ibm Watson Openscale",
   "carbon-ibmWatsonOrders": "Ibm Watson Orders",
   "carbon-ibmWatsonQuery": "Ibm Watson Query",
@@ -9489,8 +9466,7 @@ export const iconLabels = {
   "carbon-ibmWatsonxCodeAssistantForEnterpriseJavaApplications":
     "Ibm Watsonx Code Assistant For Enterprise Java Applications",
   "carbon-ibmWatsonxCodeAssistantForZ": "Ibm Watsonx Code Assistant For Z",
-  "carbon-ibmWatsonxCodeAssistantForZRefactor":
-    "Ibm Watsonx Code Assistant For Z Refactor",
+  "carbon-ibmWatsonxCodeAssistantForZRefactor": "Ibm Watsonx Code Assistant For Z Refactor",
   "carbon-ibmWatsonxCodeAssistantForZValidationAssistant":
     "Ibm Watsonx Code Assistant For Z Validation Assistant",
   "carbon-ibmWatsonxOrchestrate": "Ibm Watsonx Orchestrate",
@@ -9502,8 +9478,7 @@ export const iconLabels = {
   "carbon-ibmWebmethodsHybridIntegration": "Ibm Webmethods Hybrid Integration",
   "carbon-ibmWebmethodsIntegration": "Ibm Webmethods Integration",
   "carbon-ibmWebmethodsIntegrationServer": "Ibm Webmethods Integration Server",
-  "carbon-ibmWebmethodsManagedFileTransfer":
-    "Ibm Webmethods Managed File Transfer",
+  "carbon-ibmWebmethodsManagedFileTransfer": "Ibm Webmethods Managed File Transfer",
   "carbon-ibmZCloudModStack": "Ibm Z Cloud Mod Stack",
   "carbon-ibmZCloudProvisioning": "Ibm Z Cloud Provisioning",
   "carbon-ibmZEnvironmentsDevSecOps": "Ibm Z Environments Dev Sec Ops",
@@ -9723,8 +9698,7 @@ export const iconLabels = {
   "carbon-logoPython": "Logo Python",
   "carbon-logoQuora": "Logo Quora",
   "carbon-logoReact": "Logo React",
-  "carbon-logoRedHatAiInstructlabOnIbmCloud":
-    "Logo Red Hat Ai Instructlab On Ibm Cloud",
+  "carbon-logoRedHatAiInstructlabOnIbmCloud": "Logo Red Hat Ai Instructlab On Ibm Cloud",
   "carbon-logoRedHatAnsible": "Logo Red Hat Ansible",
   "carbon-logoRScript": "Logo R Script",
   "carbon-logoSketch": "Logo Sketch",
@@ -10162,8 +10136,7 @@ export const iconLabels = {
   "carbon-rotateClockwiseFilled": "Rotate Clockwise Filled",
   "carbon-rotateCounterclockwise": "Rotate Counterclockwise",
   "carbon-rotateCounterclockwiseAlt": "Rotate Counterclockwise Alt",
-  "carbon-rotateCounterclockwiseAltFilled":
-    "Rotate Counterclockwise Alt Filled",
+  "carbon-rotateCounterclockwiseAltFilled": "Rotate Counterclockwise Alt Filled",
   "carbon-rotateCounterclockwiseFilled": "Rotate Counterclockwise Filled",
   "carbon-router": "Router",
   "carbon-routerVoice": "Router Voice",
@@ -10720,8 +10693,7 @@ export const iconLabels = {
   "carbon-webServicesDefinition": "Web Services Definition",
   "carbon-webServicesService": "Web Services Service",
   "carbon-webServicesTask": "Web Services Task",
-  "carbon-webServicesTaskDefinitionVersion":
-    "Web Services Task Definition Version",
+  "carbon-webServicesTaskDefinitionVersion": "Web Services Task Definition Version",
   "carbon-websheet": "Websheet",
   "carbon-wheat": "Wheat",
   "carbon-whileLoop": "While Loop",
@@ -10788,8 +10760,7 @@ export const iconLabels = {
   "lucide-alignCenterVertical": "Align Center Vertical",
   "lucide-alignEndHorizontal": "Align End Horizontal",
   "lucide-alignEndVertical": "Align End Vertical",
-  "lucide-alignHorizontalDistributeCenter":
-    "Align Horizontal Distribute Center",
+  "lucide-alignHorizontalDistributeCenter": "Align Horizontal Distribute Center",
   "lucide-alignHorizontalDistributeEnd": "Align Horizontal Distribute End",
   "lucide-alignHorizontalDistributeStart": "Align Horizontal Distribute Start",
   "lucide-alignHorizontalJustifyCenter": "Align Horizontal Justify Center",
@@ -15682,10 +15653,8 @@ export const iconLabels = {
   "material-signalCellularAlt": "Signal Cellular Alt",
   "material-signalCellularAlt_1Bar": "Signal Cellular Alt_1 Bar",
   "material-signalCellularAlt_2Bar": "Signal Cellular Alt_2 Bar",
-  "material-signalCellularConnectedNoInternet_0Bar":
-    "Signal Cellular Connected No Internet_0 Bar",
-  "material-signalCellularConnectedNoInternet_4Bar":
-    "Signal Cellular Connected No Internet_4 Bar",
+  "material-signalCellularConnectedNoInternet_0Bar": "Signal Cellular Connected No Internet_0 Bar",
+  "material-signalCellularConnectedNoInternet_4Bar": "Signal Cellular Connected No Internet_4 Bar",
   "material-signalCellularAltOff": "Signal Cellular Alt Off",
   "material-signalCellularNodata": "Signal Cellular Nodata",
   "material-signalCellularNoSim": "Signal Cellular No Sim",
@@ -15697,14 +15666,12 @@ export const iconLabels = {
   "material-signalWifi_4Bar": "Signal Wifi_4 Bar",
   "material-signalWifi_4BarLock": "Signal Wifi_4 Bar Lock",
   "material-signalWifiBad": "Signal Wifi Bad",
-  "material-signalWifiConnectedNoInternet_4":
-    "Signal Wifi Connected No Internet_4",
+  "material-signalWifiConnectedNoInternet_4": "Signal Wifi Connected No Internet_4",
   "material-signalWifiOff": "Signal Wifi Off",
   "material-signalWifiStatusbar_4Bar": "Signal Wifi Statusbar_4 Bar",
   "material-signalWifiStatusbarConnectedNoInternet_4":
     "Signal Wifi Statusbar Connected No Internet_4",
-  "material-signalWifiStatusbarNotConnected":
-    "Signal Wifi Statusbar Not Connected",
+  "material-signalWifiStatusbarNotConnected": "Signal Wifi Statusbar Not Connected",
   "material-signalWifiStatusbarNull": "Signal Wifi Statusbar Null",
   "material-signature": "Signature",
   "material-signLanguage": "Sign Language",
@@ -16099,8 +16066,7 @@ export const iconLabels = {
   "material-textSelectStart": "Text Select Start",
   "material-textSelectMoveUp": "Text Select Move Up",
   "material-textSelectMoveForwardWord": "Text Select Move Forward Word",
-  "material-textSelectMoveForwardCharacter":
-    "Text Select Move Forward Character",
+  "material-textSelectMoveForwardCharacter": "Text Select Move Forward Character",
   "material-textSelectMoveDown": "Text Select Move Down",
   "material-textSelectMoveBackWord": "Text Select Move Back Word",
   "material-textSelectMoveBackCharacter": "Text Select Move Back Character",

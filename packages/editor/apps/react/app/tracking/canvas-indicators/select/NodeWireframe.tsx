@@ -8,9 +8,10 @@ import {
   calculateSelectionOutline,
 } from "@seldon/editor/lib/canvas/overlay/measure"
 import { useEffect, useState } from "react"
-import { CSSProperties } from "react"
 
 import { useNodeRect } from "../../hooks/use-node-rects"
+
+import type { CSSProperties } from "react"
 
 export type NodeWireframeProps = {
   nodeId: string
@@ -22,10 +23,7 @@ export type NodeWireframeProps = {
  * are drawn by the single canvas overlays, so this is wireframe-only and the
  * selected node is skipped (its selection outline covers it).
  */
-export function NodeWireframe({
-  nodeId,
-  isSelected = false,
-}: NodeWireframeProps) {
+export function NodeWireframe({ nodeId, isSelected = false }: NodeWireframeProps) {
   const trackedRect = useNodeRect(nodeId)
   const [directRect, setDirectRect] = useState<{
     top: number
@@ -39,19 +37,23 @@ export function NodeWireframe({
   useEffect(() => {
     if (!showOutline) {
       setDirectRect(null)
+
       return
     }
 
     if (trackedRect) {
       setDirectRect(null)
+
       return
     }
 
     const updateRect = () => {
       const nodeEl = getHtmlElementByNodeId(nodeId)
+
       if (nodeEl) {
         try {
           const rect = calculateSelectionOutline({ nodeEl: nodeEl })
+
           setDirectRect(rect)
         } catch {
           setDirectRect(null)
@@ -85,6 +87,7 @@ export function NodeWireframe({
   if (!rect) return null
 
   const clippedRect = calculateClippingBox({ nodeId, rect })
+
   if (!clippedRect) return null
   const box = getWireframeMode(clippedRect)
 

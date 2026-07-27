@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconMaterialEnergySavingsLeaf } from "./IconMaterialEnergySavingsLeaf"
 export { IconMaterialStreetview } from "./IconMaterialStreetview"

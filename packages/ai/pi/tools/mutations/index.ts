@@ -1,7 +1,3 @@
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-
-import type { ResolvedContext } from "../../editor-context"
-import type { PiTurnState } from "../turn-state"
 import { createAddComponentTool } from "./add-component"
 import { createAddVariantTool } from "./add-variant"
 import { createApplyActionsTool } from "./apply-actions"
@@ -10,15 +6,26 @@ import { createDuplicateComponentTool } from "./duplicate-component"
 import { createInsertComponentTool } from "./insert-component"
 import { createInsertVariantInstanceTool } from "./insert-variant-instance"
 import { createMoveComponentTool } from "./move-component"
+import { createNudgeTool } from "./nudge"
 import { createRemoveInstanceTool } from "./remove-instance"
 import { createReorderComponentTool } from "./reorder-component"
+import { createSetAlignTool } from "./set-align"
 import { createSetBoardLabelTool } from "./set-board-label"
+import { createSetDirectionTool } from "./set-direction"
+import { createSetEmphasisTool } from "./set-emphasis"
 import { createSetFontCollectionFamilyPresetTool } from "./set-font-collection-family-preset"
 import { createSetFontCollectionFamilyVariantTool } from "./set-font-collection-family-variant"
 import { createSetIconSetOverrideTool } from "./set-icon-set-override"
 import { createSetIconSetSubcategoryPresetTool } from "./set-icon-set-subcategory-preset"
 import { createSetPropertiesTool } from "./set-properties"
+import { createSetSpacingFeelTool } from "./set-spacing-feel"
+import { createSetStateStyleTool } from "./set-state-style"
+import { createSetTextRoleTool } from "./set-text-role"
 import { createSetThemeOverrideTool } from "./set-theme-override"
+
+import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /**
  * The Seldon mutation tools for one turn. Each tool proposes one or more
@@ -53,23 +60,50 @@ export function createMutationTools(
     createRemoveInstanceTool(state),
     createSetBoardLabelTool(state),
   ]
+
+  // Intent verb tools bake a design rule into a closed choice, so the model
+  // picks a role, weight, or direction instead of assembling facets and tokens.
+  // They act on component nodes, so they are gated out of resource and media
+  // turns to keep those schemas small.
+  const componentScope =
+    turnScope === undefined ||
+    turnScope === "workspace" ||
+    turnScope === "board" ||
+    turnScope === "variant" ||
+    turnScope === "instance"
+
+  if (componentScope) {
+    tools.push(
+      createSetTextRoleTool(state, resolved),
+      createSetEmphasisTool(state, resolved),
+      createSetDirectionTool(state, resolved),
+      createNudgeTool(state, resolved),
+      createSetAlignTool(state, resolved),
+      createSetStateStyleTool(state, resolved),
+    )
+  }
+
   if (includeAll) {
     tools.push(createApplyActionsTool(state))
   }
+
   if (includeAll || turnScope === "theme") {
-    tools.push(createSetThemeOverrideTool(state))
+    tools.push(createSetThemeOverrideTool(state), createSetSpacingFeelTool(state))
   }
+
   if (includeAll || turnScope === "fontCollection") {
     tools.push(
       createSetFontCollectionFamilyPresetTool(state, resolved),
       createSetFontCollectionFamilyVariantTool(state, resolved),
     )
   }
+
   if (includeAll || turnScope === "iconSet") {
     tools.push(
       createSetIconSetSubcategoryPresetTool(state, resolved),
       createSetIconSetOverrideTool(state, resolved),
     )
   }
+
   return tools
 }

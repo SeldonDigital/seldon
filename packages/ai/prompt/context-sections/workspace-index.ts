@@ -1,16 +1,13 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
-import type { Workspace } from "@seldon/core/workspace/types"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 
 import { matchNodeStrings } from "./node-strings"
 import { section } from "./section"
 
-const BOARDS_TITLE =
-  "Component boards in the workspace (board key -> catalog id -> label):"
+import type { Workspace } from "@seldon/core/workspace/types"
+
+const BOARDS_TITLE = "Component boards in the workspace (board key -> catalog id -> label):"
 
 /**
  * Context section: Workspace boards.
@@ -32,20 +29,22 @@ export function workspaceBoardsSection(
     if (!isolation) return ""
     if (key === isolation.isolatedBoardKey) return " [isolated anchor]"
     if (isolation.allowedBoardKeys.has(key)) return " [in scope]"
+
     return " [out of scope: edits rejected]"
   }
+
   const rows: string[] = []
+
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (isComponentBoard(board)) {
-      rows.push(
-        `- ${key} -> ${board.catalogId} -> "${board.label}"${marker(key)}`,
-      )
+      rows.push(`- ${key} -> ${board.catalogId} -> "${board.label}"${marker(key)}`)
     } else if (isAuthoredBoard(board)) {
       // Authored boards have no catalog schema; mark them so the model treats
       // the key as the board and does not look up a catalog id for it.
       rows.push(`- ${key} -> authored -> "${board.label}"${marker(key)}`)
     }
   }
+
   return section(BOARDS_TITLE, rows)
 }
 
@@ -66,31 +65,34 @@ export function findNodesSection(
   allowedBoardKeys?: Set<string>,
 ): string[] {
   const needle = query.trim().toLowerCase()
+
   if (needle === "") return []
 
   const matches: string[] = []
+
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
     // In Isolation Mode, skip boards outside the dependency closure so search
     // never surfaces a node the turn cannot edit.
     if (allowedBoardKeys && !allowedBoardKeys.has(key)) continue
     let variantRootId = ""
+
     walkBoardTreeRefs(board.variants, (ref, parent) => {
       if (parent === null) variantRootId = ref.id
       const node = workspace.nodes[ref.id]
+
       if (!node) return
       const catalogId = getNodeCatalogId(node, workspace) ?? ""
       const label = node.label ?? ""
       const byName =
-        label.toLowerCase().includes(needle) ||
-        catalogId.toLowerCase().includes(needle)
-      const snippet = byName
-        ? null
-        : matchNodeStrings(workspace, ref.id, needle)
+        label.toLowerCase().includes(needle) || catalogId.toLowerCase().includes(needle)
+      const snippet = byName ? null : matchNodeStrings(workspace, ref.id, needle)
+
       if (!byName && snippet === null) return
       const kind = catalogId ? `${node.level} ${catalogId}` : node.level
       const labelText = label ? ` label="${label}"` : ""
       const valueText = snippet ? ` value="${snippet}"` : ""
+
       matches.push(
         `- ${ref.id} [${kind}]${labelText}${valueText} on board ${key} "${board.label}" variant ${variantRootId}`,
       )
@@ -98,8 +100,5 @@ export function findNodesSection(
     if (matches.length >= FIND_LIMIT) break
   }
 
-  return section(
-    `Nodes across the workspace matching "${query}":`,
-    matches.slice(0, FIND_LIMIT),
-  )
+  return section(`Nodes across the workspace matching "${query}":`, matches.slice(0, FIND_LIMIT))
 }

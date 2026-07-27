@@ -1,22 +1,13 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Button",
   id: Seldon.ComponentId.BUTTON,
-  intent:
-    "Standard button for triggering actions like submit, confirm, or cancel.",
-  tags: [
-    "button",
-    "action",
-    "UI",
-    "primary",
-    "click",
-    "control",
-    "submit",
-    "call to action",
-  ],
+  intent: "Standard button for triggering actions like submit, confirm, or cancel.",
+  tags: ["button", "action", "UI", "primary", "click", "control", "submit", "call to action"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -285,8 +276,7 @@ export const schema = {
     {
       id: "menu",
       label: "Menu",
-      intent:
-        "Dropdown menu button pairing a label with a chevron that reveals more options.",
+      intent: "Dropdown menu button pairing a label with a chevron that reveals more options.",
       overrides: {
         buttonSize: {
           type: Sdn.ValueType.THEME_ORDINAL,
@@ -704,8 +694,7 @@ export const schema = {
     {
       id: "segmented",
       label: "Segmented",
-      intent:
-        "Combines related actions into a segmented control with selectable options.",
+      intent: "Combines related actions into a segmented control with selectable options.",
       overrides: {
         padding: {
           top: {

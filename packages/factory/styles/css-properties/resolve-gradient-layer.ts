@@ -1,23 +1,22 @@
-import {
-  DegreesValue,
-  EmptyValue,
-  GradientPositionValue,
-  GradientRepeatValue,
-  GradientShape,
-  GradientShapeValue,
-  GradientSize,
-  GradientSizeValue,
-  GradientType,
-  PercentageValue,
-} from "@seldon/core"
+import { GradientShape, GradientSize, GradientType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { getAnchoredFacetDefault } from "@seldon/core/properties/helpers/anchored-facet-default"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
-import type { GradientCompound } from "@seldon/core/properties/values/effects/gradients"
-import { Theme } from "@seldon/core/themes/types"
 
 import { getLayeredPaintColor } from "./get-layered-paint-color"
+
+import type {
+  DegreesValue,
+  EmptyValue,
+  GradientPositionValue,
+  GradientRepeatValue,
+  GradientShapeValue,
+  GradientSizeValue,
+  PercentageValue,
+} from "@seldon/core"
+import type { GradientCompound } from "@seldon/core/properties/values/effects/gradients"
+import type { Theme } from "@seldon/core/themes/types"
 
 // An unset gradient-stop opacity renders fully opaque, matching the shared
 // anchored facet default the color layers and override-pruning already use.
@@ -76,8 +75,7 @@ export function resolveGradientLayer(
   const themeGradient = preset ? getThemeOption(preset.value, theme) : undefined
 
   const resolvedStartColor =
-    resolveValue(startColor) ??
-    resolveValue(themeGradient?.parameters.startColor)
+    resolveValue(startColor) ?? resolveValue(themeGradient?.parameters.startColor)
   const resolvedEndColor =
     resolveValue(endColor) ?? resolveValue(themeGradient?.parameters.endColor)
 
@@ -91,11 +89,7 @@ export function resolveGradientLayer(
 
   const resolvedType = KIND_TO_TYPE[kind] ?? GradientType.LINEAR
 
-  const resolvedAngle = resolveAngle(
-    angle,
-    themeGradient?.parameters.angle,
-    DEFAULTS.ANGLE,
-  )
+  const resolvedAngle = resolveAngle(angle, themeGradient?.parameters.angle, DEFAULTS.ANGLE)
 
   const resolvedStartOpacity = resolveOpacity(
     startOpacity,
@@ -110,12 +104,10 @@ export function resolveGradientLayer(
   )
 
   const resolvedStartBrightness =
-    resolveValue(startBrightness) ||
-    resolveValue(themeGradient?.parameters.startBrightness)
+    resolveValue(startBrightness) || resolveValue(themeGradient?.parameters.startBrightness)
 
   const resolvedEndBrightness =
-    resolveValue(endBrightness) ||
-    resolveValue(themeGradient?.parameters.endBrightness)
+    resolveValue(endBrightness) || resolveValue(themeGradient?.parameters.endBrightness)
 
   const resolvedStartPosition = resolvePosition(
     startPosition,
@@ -148,35 +140,22 @@ export function resolveGradientLayer(
   const stops = `${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%`
 
   if (resolvedType === GradientType.RADIAL) {
-    const resolvedShape = resolveOption(
-      shape,
-      themeGradient?.parameters.shape,
-      DEFAULTS.SHAPE,
-    )
+    const resolvedShape = resolveOption(shape, themeGradient?.parameters.shape, DEFAULTS.SHAPE)
     const resolvedSize = resolveOption(
       radialSize,
       themeGradient?.parameters.radialSize,
       DEFAULTS.SIZE,
     )
-    const x = resolveLength(
-      positionX,
-      themeGradient?.parameters.positionX,
-      DEFAULTS.POSITION,
-    )
-    const y = resolveLength(
-      positionY,
-      themeGradient?.parameters.positionY,
-      DEFAULTS.POSITION,
-    )
+    const x = resolveLength(positionX, themeGradient?.parameters.positionX, DEFAULTS.POSITION)
+    const y = resolveLength(positionY, themeGradient?.parameters.positionY, DEFAULTS.POSITION)
+
     return `radial-gradient(${resolvedShape} ${resolvedSize} at ${x} ${y}, ${stops})`
   }
 
   if (resolvedType === GradientType.CONIC) {
-    const repeats = resolveBoolean(
-      conicRepeat,
-      themeGradient?.parameters.conicRepeat,
-    )
+    const repeats = resolveBoolean(conicRepeat, themeGradient?.parameters.conicRepeat)
     const fn = repeats ? "repeating-conic-gradient" : "conic-gradient"
+
     return `${fn}(from ${resolvedAngle}deg, ${stops})`
   }
 
@@ -228,15 +207,18 @@ function resolveLength(
   themeValue: GradientPositionValue | EmptyValue | undefined,
   defaultValue: string,
 ): string {
-  const resolved =
-    resolveValue(propertiesValue)?.value ?? resolveValue(themeValue)?.value
+  const resolved = resolveValue(propertiesValue)?.value ?? resolveValue(themeValue)?.value
+
   if (typeof resolved === "string") return resolved
+
   if (resolved && typeof resolved === "object") {
     const measure = resolved as { value?: unknown; unit?: unknown }
+
     if (typeof measure.value === "number" && typeof measure.unit === "string") {
       return `${measure.value}${measure.unit}`
     }
   }
+
   return defaultValue
 }
 
@@ -246,8 +228,8 @@ function resolveOption<T extends string>(
   themeValue: GradientShapeValue | GradientSizeValue | undefined,
   defaultValue: T,
 ): T {
-  const resolved =
-    resolveValue(propertiesValue)?.value ?? resolveValue(themeValue)?.value
+  const resolved = resolveValue(propertiesValue)?.value ?? resolveValue(themeValue)?.value
+
   return typeof resolved === "string" ? (resolved as T) : defaultValue
 }
 
@@ -256,7 +238,7 @@ function resolveBoolean(
   propertiesValue: GradientRepeatValue | undefined,
   themeValue: GradientRepeatValue | undefined,
 ): boolean {
-  const resolved =
-    resolveValue(propertiesValue)?.value ?? resolveValue(themeValue)?.value
+  const resolved = resolveValue(propertiesValue)?.value ?? resolveValue(themeValue)?.value
+
   return resolved === true
 }

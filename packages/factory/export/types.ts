@@ -1,10 +1,8 @@
-import { CSSProperties } from "react"
-
-import { InstanceId, VariantId } from "@seldon/core"
-import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import { ComponentExport } from "@seldon/core/components/types"
-
 import type { ExportAssetReader } from "./asset-reader"
+import type { InstanceId, VariantId } from "@seldon/core"
+import type { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+import type { ComponentExport } from "@seldon/core/components/types"
+import type { CSSProperties } from "react"
 
 /**
  * Export options
@@ -12,13 +10,13 @@ import type { ExportAssetReader } from "./asset-reader"
 
 export type ExportOptions = {
   rootDirectory: string
-  token?: string
   target: ExportTarget
   output: {
     assetsFolder: string
     componentsFolder: string
     assetPublicPath: string
   }
+  token?: string
   publishAll?: boolean
   debugMode?: boolean
   assetReader?: ExportAssetReader
@@ -77,6 +75,10 @@ export type ComponentToExport = {
   variantId: VariantId
   defaultVariantId: VariantId
   config: ComponentExport
+  output: {
+    path: string
+  }
+  tree: JSONTreeNode
   /**
    * Present only for authored components. Carries the board's own display
    * metadata so generated docs report the board's level, intent, and tags
@@ -87,10 +89,6 @@ export type ComponentToExport = {
     intent?: string
     tags?: string[]
   }
-  output: {
-    path: string
-  }
-  tree: JSONTreeNode
 }
 
 /**
@@ -108,10 +106,7 @@ export type FileToExport = {
  * So uploadPath the file will be uploaded to. The relativePath is the path we will replace the full url with.
  * E.g. relativePath = '/assets/' -> https://url.com/image.png becomes /assets/image.png
  */
-export type ImageToExportMap = Record<
-  string,
-  { relativePath: string; uploadPath: string }
->
+export type ImageToExportMap = Record<string, { relativePath: string; uploadPath: string }>
 
 /**
  * This is used to create a JSON representation of the entire tree that needs to be exported.
@@ -164,11 +159,11 @@ export type JSONTreeNode = {
   componentId: ComponentId
   schemaVariantId: string | null
   nodeId: InstanceId | VariantId
+  level: ComponentLevel
+  dataBinding: DataBinding
   /** Unique node reference handle, emitted as `data-seldon-ref` when present. */
   ref?: string
   children?: null | string | JSONTreeNode[]
-  level: ComponentLevel
-  dataBinding: DataBinding
   classNames?: string[]
   /**
    * True when this node (or an ancestor within the same tree) has Display set to
@@ -184,15 +179,15 @@ export type JSONTreeNode = {
  */
 export type DataBinding = {
   interfaceName: string
-  referenceName?: string // If there are multiple children with the same name, we have to distinguish every child by index
   path: string
   props: Record<
     string,
     {
+      defaultValue: string | CSSProperties
       type?: string
       value?: string | boolean | number | object | string[] | number[]
-      defaultValue: string | CSSProperties
       options?: string[]
     }
   >
+  referenceName?: string // If there are multiple children with the same name, we have to distinguish every child by index
 }

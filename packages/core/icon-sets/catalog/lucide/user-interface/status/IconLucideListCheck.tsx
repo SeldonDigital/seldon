@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideListCheck(props: SVGAttributes<SVGSVGElement>) {
   return (

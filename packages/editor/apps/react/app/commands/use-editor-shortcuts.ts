@@ -11,10 +11,7 @@ import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-acce
 import { useHotkeys } from "react-hotkeys-hook"
 import { useNavigate } from "react-router"
 
-import {
-  NORMAL_STATE,
-  RESERVED_STATE_GROUPS,
-} from "@seldon/core/workspace/model/node-state"
+import { NORMAL_STATE, RESERVED_STATE_GROUPS } from "@seldon/core/workspace/model/node-state"
 
 import { useAddRemoveCommands } from "./use-add-remove-commands"
 import { useMoveCommands } from "./use-move-commands"
@@ -31,14 +28,9 @@ const STATE_SHORTCUT_ORDER = [
 ]
 
 export function useEditorShortcuts() {
-  const { addVariant, deleteSelection, duplicateSelection } =
-    useAddRemoveCommands()
-  const {
-    moveSelectionForward,
-    moveSelectionBackward,
-    moveSelectionToFront,
-    moveSelectionToBack,
-  } = useMoveCommands()
+  const { addVariant, deleteSelection, duplicateSelection } = useAddRemoveCommands()
+  const { moveSelectionForward, moveSelectionBackward, moveSelectionToFront, moveSelectionToBack } =
+    useMoveCommands()
   const {
     selectOriginal,
     selectSource,
@@ -67,9 +59,11 @@ export function useEditorShortcuts() {
   const { workspace } = useWorkspace()
   const { activeBoard } = useActiveBoard()
   const setActiveState = useBoardStateStore((store) => store.setActiveState)
+
   const selectBoardState = (index: number) => {
     if (!activeBoard) return
     const state = STATE_SHORTCUT_ORDER[index]
+
     if (!state) return
     setActiveState(resolveComponentKey(activeBoard, workspace), state)
   }

@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest"
 
 import { ValueType } from "../../properties/constants"
-import type { Theme } from "../types"
 import {
   convertLookParameterValue,
   expandLookPresetFacets,
   hasExpandableLookPreset,
 } from "./expand-preset-facets"
+
+import type { Theme } from "../types"
 
 const theme = {
   border: {
@@ -35,6 +36,7 @@ describe("convertLookParameterValue", () => {
     })
 
     const tagged = { type: ValueType.EXACT, value: 2 }
+
     expect(convertLookParameterValue(tagged)).toBe(tagged)
 
     expect(convertLookParameterValue(5)).toEqual({
@@ -77,6 +79,7 @@ describe("expandLookPresetFacets", () => {
 
   it("returns the same object when no key bridges to a look section", () => {
     const properties = { opacity: { type: ValueType.EXACT, value: 1 } } as never
+
     expect(expandLookPresetFacets(properties, theme)).toBe(properties)
   })
 })

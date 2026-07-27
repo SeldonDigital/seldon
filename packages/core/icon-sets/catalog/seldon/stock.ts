@@ -1,15 +1,14 @@
 import { seldonIconIds } from "."
-import type { IconCategory } from "../../constants/categories"
 import { computeIconSet } from "../../helpers/compute-icon-set"
+
+import type { IconCategory } from "../../constants/categories"
 import type { StockIconSet } from "../../types/icon-set"
 
 /**
  * Categories enabled when the Seldon icon set is added to a workspace. Icons in
  * every other category start off until the user turns them on.
  */
-export const SELDON_DEFAULT_ENABLED_CATEGORIES: IconCategory[] = [
-  "user-interface",
-]
+export const SELDON_DEFAULT_ENABLED_CATEGORIES: IconCategory[] = ["user-interface"]
 
 export const iconSet: StockIconSet = {
   metadata: {

@@ -1,6 +1,7 @@
-import { Workspace } from "@seldon/core"
 import { getDuplicateVariantLabelNodeIds } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
+
+import type { Workspace } from "@seldon/core"
 
 /**
  * Error thrown when a workspace cannot be exported because two variants on the
@@ -24,11 +25,13 @@ export class DuplicateVariantNameError extends Error {
  */
 export function assertUniqueVariantNames(workspace: Workspace): void {
   const duplicateIds = getDuplicateVariantLabelNodeIds(workspace)
+
   if (duplicateIds.size === 0) return
 
   const details = [...duplicateIds].map((nodeId) => {
     const label = workspace.nodes[nodeId]?.label ?? nodeId
     const boardLabel = getBoardByNodeId(workspace, nodeId)?.label ?? "unknown"
+
     return `"${label}" on ${boardLabel}`
   })
 

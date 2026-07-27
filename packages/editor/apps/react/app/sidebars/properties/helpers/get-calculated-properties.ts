@@ -5,8 +5,9 @@
 import { getScopedSelectionElement } from "@seldon/editor/lib/canvas/overlay/selection-target"
 import { useMemo } from "react"
 
-import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+
+import type { Board, Instance, Variant } from "@seldon/core"
 
 /**
  * Drops declarations the browser cannot apply. `CSS.supports` returns false for
@@ -15,6 +16,7 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
  */
 function isValidDeclaration(declaration: string): boolean {
   const separatorIndex = declaration.indexOf(":")
+
   if (separatorIndex === -1) return false
 
   const property = declaration.slice(0, separatorIndex).trim()
@@ -22,11 +24,14 @@ function isValidDeclaration(declaration: string): boolean {
     .slice(separatorIndex + 1)
     .replace(/;$/, "")
     .trim()
+
   if (!property || !value) return false
 
   if (value.includes("var(")) return true
-  if (typeof CSS === "undefined" || typeof CSS.supports !== "function")
+
+  if (typeof CSS === "undefined" || typeof CSS.supports !== "function") {
     return true
+  }
 
   return CSS.supports(property, value)
 }
@@ -34,6 +39,7 @@ function isValidDeclaration(declaration: string): boolean {
 /** Parses declaration lines from a Seldon-authored `.class { ... }` rule. */
 function parseAuthoredCssRule(cssText: string): string[] {
   const match = cssText.match(/\{([\s\S]*)\}/)
+
   if (!match) return []
 
   return match[1]
@@ -48,9 +54,8 @@ function parseAuthoredCssRule(cssText: string): string[] {
  * `<style data-seldon-style-for>` tag.
  */
 function getAuthoredCssForClass(className: string): string[] {
-  const styleEl = document.querySelector(
-    `style[data-seldon-style-for="${className}"]`,
-  )
+  const styleEl = document.querySelector(`style[data-seldon-style-for="${className}"]`)
+
   if (!styleEl?.textContent) return []
 
   return parseAuthoredCssRule(styleEl.textContent)
@@ -67,16 +72,13 @@ export interface ScopedNodeCss {
  * node id and variant-root path, then reads only that copy's scoped style tag.
  * Keeps declarations in source order to match the browser inspector.
  */
-function getScopedNodeCss(
-  nodeId: string,
-  rootId: string | null | undefined,
-): ScopedNodeCss {
+function getScopedNodeCss(nodeId: string, rootId: string | null | undefined): ScopedNodeCss {
   const element = getScopedSelectionElement(nodeId, rootId)
+
   if (!element) return { declarations: [], selector: null }
 
-  const className = Array.from(element.classList).find((cls) =>
-    cls.startsWith("node-"),
-  )
+  const className = Array.from(element.classList).find((cls) => cls.startsWith("node-"))
+
   if (!className) return { declarations: [], selector: null }
 
   return {

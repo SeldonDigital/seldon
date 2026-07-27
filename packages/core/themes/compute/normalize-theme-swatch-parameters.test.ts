@@ -56,9 +56,7 @@ describe("normalizeThemeSwatchParameters", () => {
         value: "#aabbcc",
       }),
     ).toThrow()
-    expect(() =>
-      normalizeThemeSwatchParameters({ colorspace: "cmyk", value: "x" }),
-    ).toThrow()
+    expect(() => normalizeThemeSwatchParameters({ colorspace: "cmyk", value: "x" })).toThrow()
     expect(() => normalizeThemeSwatchParameters(null)).toThrow()
   })
 })

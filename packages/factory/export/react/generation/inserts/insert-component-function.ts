@@ -1,13 +1,5 @@
-import { Workspace } from "@seldon/core/workspace/types"
-
-import { NodeIdToClass } from "../../../css/types"
-import { ComponentToExport } from "../../../types"
-import {
-  TransformStrategy,
-  transformSource,
-} from "../../utils/transform-source"
+import { TransformStrategy, transformSource } from "../../utils/transform-source"
 import { jsxStructureToString } from "../preprocess/jsx-structure-to-string"
-import { JSXNode } from "../preprocess/types"
 import { generateJSDocComment } from "../shared/generate-jsdoc-comment"
 import { generatePropsSpread } from "../shared/generate-props-spread"
 import {
@@ -17,6 +9,11 @@ import {
   generateWrapperElementReturn,
 } from "../shared/generate-react-component-return-statements"
 import { generateVariableDeclarations } from "../shared/generate-variable-declarations"
+
+import type { NodeIdToClass } from "../../../css/types"
+import type { ComponentToExport } from "../../../types"
+import type { JSXNode } from "../preprocess/types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Inserts the React component function into the source code.
@@ -63,52 +60,36 @@ export function insertComponentFunction(
 
   let returns = ""
   let usesSlotTree = false
+
   if (config.react.returns === "htmlElement") {
     if (useForwardRef) {
       throw new Error(
         `forwardRef is not supported for htmlElement components (${component.tree.name})`,
       )
     }
+
     // If the component export config is set to htmlElement, return a switch statement
-    returns = generateHtmlElementReturn(
-      component,
-      nodeIdToClass,
-      classNameVarName,
-    )
+    returns = generateHtmlElementReturn(component, nodeIdToClass, classNameVarName)
   } else if (config.react.returns === "wrapperElement") {
     if (useForwardRef) {
       throw new Error(
         `forwardRef is not supported for wrapperElement components (${component.tree.name})`,
       )
     }
-    returns = generateWrapperElementReturn(
-      component,
-      nodeIdToClass,
-      classNameVarName,
-    )
+
+    returns = generateWrapperElementReturn(component, nodeIdToClass, classNameVarName)
   } else if (config.react.returns === "iconMap") {
     if (useForwardRef) {
-      throw new Error(
-        `forwardRef is not supported for iconMap components (${component.tree.name})`,
-      )
+      throw new Error(`forwardRef is not supported for iconMap components (${component.tree.name})`)
     }
+
     returns = generateIconMapReturn(component, nodeIdToClass, classNameVarName)
   } else if (tree.children === null) {
     // If the component has no children, return a simple return statement
-    returns = generateSimpleReturn(
-      component,
-      nodeIdToClass,
-      classNameVarName,
-      useForwardRef,
-    )
+    returns = generateSimpleReturn(component, nodeIdToClass, classNameVarName, useForwardRef)
   } else {
     // If the component has children, convert JSX structure to string
-    returns = jsxStructureToString(
-      jsxRoot,
-      component,
-      classNameVarName,
-      useForwardRef,
-    )
+    returns = jsxStructureToString(jsxRoot, component, classNameVarName, useForwardRef)
     usesSlotTree = Boolean(jsxRoot.children && jsxRoot.children.length > 0)
   }
 

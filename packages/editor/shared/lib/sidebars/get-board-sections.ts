@@ -1,5 +1,4 @@
 import {
-  Board as BoardType,
   ComponentLevel,
   ORDERED_COMPONENT_LEVELS,
   getComponentSchema,
@@ -17,6 +16,8 @@ import {
 } from "@seldon/core/workspace/model/components"
 import { getComponentKey } from "../workspace/workspace-accessors"
 
+import type { Board as BoardType } from "@seldon/core"
+
 const SECTION_LABELS: Record<ComponentLevel, string> = {
   [ComponentLevel.FRAME]: "Frames",
   [ComponentLevel.PRIMITIVE]: "Primitives",
@@ -29,13 +30,7 @@ const SECTION_LABELS: Record<ComponentLevel, string> = {
 
 export interface BoardSection {
   label: string
-  level:
-    | ComponentLevel
-    | "THEME"
-    | "FONT_COLLECTION"
-    | "ICON_SET"
-    | "MEDIA"
-    | "PLAYGROUND"
+  level: ComponentLevel | "THEME" | "FONT_COLLECTION" | "ICON_SET" | "MEDIA" | "PLAYGROUND"
   boards: BoardType[]
 }
 
@@ -50,11 +45,13 @@ function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
   if (isComponentBoard(board) && isComponentId(board.catalogId)) {
     return getComponentSchema(board.catalogId).level
   }
+
   // Authored boards declare their own level, so they group under that level's
   // section alongside catalog components.
   if (isAuthoredBoard(board)) {
     return board.level as ComponentLevel
   }
+
   return null
 }
 
@@ -64,9 +61,7 @@ export function getBoardSections(
 ): BoardSection[] {
   const themeBoards = sortThemeBoardsForDisplay(boards.filter(isThemeBoard))
 
-  const fontCollectionBoards = boards.filter((board) =>
-    isFontCollectionBoard(board),
-  )
+  const fontCollectionBoards = boards.filter((board) => isFontCollectionBoard(board))
 
   const iconSetBoards = boards.filter((board) => isIconSetBoard(board))
 
@@ -79,14 +74,16 @@ export function getBoardSections(
   const sections = [...ORDERED_COMPONENT_LEVELS].map<BoardSection>((level) => {
     const boardsAtThisLevel = regularBoards.filter((board) => {
       const boardLevel = getBoardComponentLevel(board)
+
       if (boardLevel === null) {
-        console.warn(
-          `Skipping board ${getComponentKey(board)} with unknown component level`,
-        )
+        console.warn(`Skipping board ${getComponentKey(board)} with unknown component level`)
+
         return false
       }
+
       return boardLevel === level
     })
+
     return {
       label: SECTION_LABELS[level],
       level,
@@ -100,11 +97,9 @@ export function getBoardSections(
     level: "THEME",
     boards: themeBoards,
   }
-  const framesIndex = sections.findIndex(
-    (section) => section.level === ComponentLevel.FRAME,
-  )
-  const themesInsertIndex =
-    framesIndex === -1 ? sections.length : framesIndex + 1
+  const framesIndex = sections.findIndex((section) => section.level === ComponentLevel.FRAME)
+  const themesInsertIndex = framesIndex === -1 ? sections.length : framesIndex + 1
+
   sections.splice(themesInsertIndex, 0, themesSection)
 
   // Insert the Font Collections section directly below the Themes section.
@@ -115,6 +110,7 @@ export function getBoardSections(
     boards: fontCollectionBoards,
   }
   const themesIndex = sections.findIndex((section) => section.level === "THEME")
+
   sections.splice(themesIndex + 1, 0, fontCollectionsSection)
 
   // Insert the Icon Sets section directly below the Font Collections section.
@@ -124,9 +120,8 @@ export function getBoardSections(
     level: "ICON_SET",
     boards: iconSetBoards,
   }
-  const fontCollectionsIndex = sections.findIndex(
-    (section) => section.level === "FONT_COLLECTION",
-  )
+  const fontCollectionsIndex = sections.findIndex((section) => section.level === "FONT_COLLECTION")
+
   sections.splice(fontCollectionsIndex + 1, 0, iconSetsSection)
 
   // Add the Media section at the end. It has no add flow, so it stays hidden
@@ -137,6 +132,7 @@ export function getBoardSections(
       level: "MEDIA",
       boards: mediaBoards,
     }
+
     sections.push(mediaSection)
   }
 
@@ -147,14 +143,9 @@ export function getBoardSections(
     level: "PLAYGROUND",
     boards: playgrounds,
   }
-  const screensIndex = sections.findIndex(
-    (section) => section.level === ComponentLevel.SCREEN,
-  )
-  sections.splice(
-    screensIndex === -1 ? sections.length : screensIndex,
-    0,
-    playgroundsSection,
-  )
+  const screensIndex = sections.findIndex((section) => section.level === ComponentLevel.SCREEN)
+
+  sections.splice(screensIndex === -1 ? sections.length : screensIndex, 0, playgroundsSection)
 
   return sections
 }

@@ -1,10 +1,11 @@
-import { Hex } from "../../properties/values/shared/exact/hex"
-import { HSL } from "../../properties/values/shared/exact/hsl"
-import { LCH } from "../../properties/values/shared/exact/lch"
-import { RGB } from "../../properties/values/shared/exact/rgb"
 import { isRGBObject } from "../type-guards/color/is-rgb-object"
 import { isHex } from "../validation"
 import { hexToHSLObject, rgbToHSL } from "./convert-color"
+
+import type { Hex } from "../../properties/values/shared/exact/hex"
+import type { HSL } from "../../properties/values/shared/exact/hsl"
+import type { LCH } from "../../properties/values/shared/exact/lch"
+import type { RGB } from "../../properties/values/shared/exact/rgb"
 
 /**
  * Applies brightness to an HSL or LCH object by adjusting the lightness value.
@@ -13,10 +14,7 @@ import { hexToHSLObject, rgbToHSL } from "./convert-color"
  * @param brightness - The brightness percentage (-100 to 100, where positive values tint toward white, negative values shade toward black)
  * @returns The HSL or LCH object with the brightness applied
  */
-export const applyBrightness = <T extends HSL | LCH>(
-  value: T,
-  brightness: number,
-): T => {
+export const applyBrightness = <T extends HSL | LCH>(value: T, brightness: number): T => {
   if ("saturation" in value) {
     return {
       lightness: calculateLightness(value.lightness, brightness),
@@ -39,10 +37,7 @@ export const applyBrightness = <T extends HSL | LCH>(
  * @param brightness - The brightness percentage (-100 to 100)
  * @returns The color with the brightness applied, converted to HSL if needed
  */
-export const convertAndApplyBrightness = (
-  value: HSL | LCH | RGB | Hex,
-  brightness: number,
-) => {
+export const convertAndApplyBrightness = (value: HSL | LCH | RGB | Hex, brightness: number) => {
   if (isRGBObject(value)) {
     return applyBrightness(rgbToHSL(value), brightness)
   }
@@ -67,6 +62,7 @@ const calculateLightness = (lightness: number, brightness: number): number => {
   if (brightness > 0) {
     // Tint: percentage of remaining range to white
     const rangeToWhite = 100 - lightness
+
     result = lightness + (rangeToWhite * brightness) / 100
   } else {
     // Shade: percentage of range to black

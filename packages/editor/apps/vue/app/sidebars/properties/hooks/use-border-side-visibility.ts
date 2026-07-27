@@ -1,7 +1,9 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
-import { BORDER_SIDE_KEYS, type BorderSideKey } from "@seldon/core"
+import { BORDER_SIDE_KEYS } from "@seldon/core"
+
+import type { BorderSideKey } from "@seldon/core"
 
 /**
  * Ephemeral, per-session visibility for the four border sides. Showing a side
@@ -10,37 +12,31 @@ import { BORDER_SIDE_KEYS, type BorderSideKey } from "@seldon/core"
  * set. Resets on reload, like the property expand/collapse store. Vue port of
  * the React `use-border-side-visibility`.
  */
-export const useBorderSideVisibilityStore = defineStore(
-  "properties-border-side-visibility",
-  () => {
-    const shown = ref<Record<string, Partial<Record<BorderSideKey, boolean>>>>(
-      {},
-    )
+export const useBorderSideVisibilityStore = defineStore("properties-border-side-visibility", () => {
+  const shown = ref<Record<string, Partial<Record<BorderSideKey, boolean>>>>({})
 
-    function toggle(
-      subjectId: string,
-      side: BorderSideKey,
-      show?: boolean,
-    ): void {
-      const current = shown.value[subjectId] ?? {}
-      const next = show ?? !current[side]
-      shown.value = {
-        ...shown.value,
-        [subjectId]: { ...current, [side]: next },
+  function toggle(subjectId: string, side: BorderSideKey, show?: boolean): void {
+    const current = shown.value[subjectId] ?? {}
+    const next = show ?? !current[side]
+
+    shown.value = {
+      ...shown.value,
+      [subjectId]: { ...current, [side]: next },
+    }
+  }
+
+  function revealed(subjectId: string): Set<BorderSideKey> {
+    const set = new Set<BorderSideKey>()
+    const entry = shown.value[subjectId]
+
+    if (entry) {
+      for (const side of BORDER_SIDE_KEYS) {
+        if (entry[side]) set.add(side)
       }
     }
 
-    function revealed(subjectId: string): Set<BorderSideKey> {
-      const set = new Set<BorderSideKey>()
-      const entry = shown.value[subjectId]
-      if (entry) {
-        for (const side of BORDER_SIDE_KEYS) {
-          if (entry[side]) set.add(side)
-        }
-      }
-      return set
-    }
+    return set
+  }
 
-    return { shown, toggle, revealed }
-  },
-)
+  return { shown, toggle, revealed }
+})

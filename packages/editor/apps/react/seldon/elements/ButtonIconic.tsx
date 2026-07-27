@@ -10,12 +10,15 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonHTMLAttributes, forwardRef } from "react"
+import { forwardRef } from "react"
 
 import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon, IconProps } from "../primitives/Icon"
+import { Icon } from "../primitives/Icon"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { IconProps } from "../primitives/Icon"
+import type { ButtonHTMLAttributes } from "react"
 
 export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
@@ -38,37 +41,28 @@ export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElemen
  * />
  * ```
  *****/
-export const ButtonIconic = forwardRef<HTMLButtonElement, ButtonIconicProps>(
-  function ButtonIconic(
-    { className = "", icon = sdn.icon, children, seldonRefs, ...props },
-    ref,
-  ) {
-    const buttonIconicClassName = combineClassNames(
-      "sdn-button-iconic",
-      className,
-    )
-    const iconProps = applyRef(
-      seldonRefs,
-      icon === null
-        ? null
-        : {
-            ...sdn.icon,
-            ...icon,
-            className: combineClassNames(sdn.icon?.className, icon?.className),
-          },
-    )
+export const ButtonIconic = forwardRef<HTMLButtonElement, ButtonIconicProps>(function ButtonIconic(
+  { className = "", icon = sdn.icon, children, seldonRefs, ...props },
+  ref,
+) {
+  const buttonIconicClassName = combineClassNames("sdn-button-iconic", className)
+  const iconProps = applyRef(
+    seldonRefs,
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        },
+  )
 
-    return (
-      <HTMLButton className={buttonIconicClassName} ref={ref} {...props}>
-        {children !== undefined ? (
-          children
-        ) : (
-          <>{iconProps !== null && <Icon {...iconProps} />}</>
-        )}
-      </HTMLButton>
-    )
-  },
-)
+  return (
+    <HTMLButton className={buttonIconicClassName} ref={ref} {...props}>
+      {children !== undefined ? children : <>{iconProps !== null && <Icon {...iconProps} />}</>}
+    </HTMLButton>
+  )
+})
 
 //
 // Default property values

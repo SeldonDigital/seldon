@@ -6,26 +6,22 @@ import { MenuItem } from "@seldon/components/elements/MenuItem"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import {
-  CSSProperties,
-  ReactNode,
-  RefObject,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
 import { useMenuPosition } from "./hooks/use-menu-position"
-import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
+
+import type { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { CSSProperties, ReactNode, RefObject } from "react"
 
 function focusReturnTarget(element: HTMLElement | null | undefined): void {
   if (!element?.isConnected) return
+
   if (element.tabIndex < 0 && !element.hasAttribute("tabindex")) {
     element.tabIndex = -1
   }
+
   element.focus({ preventScroll: true })
 }
 
@@ -44,15 +40,10 @@ function isMarked(item: MenuItemModel): boolean {
  * items render the same glyph hidden so labels stay aligned. Returns null when
  * the menu has no markable items, dropping the column entirely.
  */
-function markerIconProps(
-  item: MenuItemModel,
-  showColumn: boolean,
-): IconProps | null {
+function markerIconProps(item: MenuItemModel, showColumn: boolean): IconProps | null {
   if (!showColumn) return null
-  const glyph =
-    item.activeMarker === "bullet"
-      ? "material-radioButtonChecked"
-      : "material-check"
+  const glyph = item.activeMarker === "bullet" ? "material-radioButtonChecked" : "material-check"
+
   if (isMarked(item)) {
     return {
       icon: glyph,
@@ -60,6 +51,7 @@ function markerIconProps(
       className: item.active ? "sdn-state-activated" : undefined,
     }
   }
+
   return { icon: glyph, "aria-hidden": "true", style: { visibility: "hidden" } }
 }
 
@@ -103,9 +95,7 @@ type MenuControllerTriggerProps = MenuControllerCommon & {
   onClose?: never
 }
 
-export type MenuControllerProps =
-  | MenuControllerControlledProps
-  | MenuControllerTriggerProps
+export type MenuControllerProps = MenuControllerControlledProps | MenuControllerTriggerProps
 
 /**
  * View-model for menus. In controlled mode the caller owns `open`/`anchorRef`
@@ -117,6 +107,7 @@ export function MenuController(props: MenuControllerProps) {
   if (props.renderTrigger) {
     return <TriggerMenu {...props} />
   }
+
   return <FloatingMenu {...props} />
 }
 
@@ -201,6 +192,7 @@ function FloatingMenu({
     () =>
       items.reduce<number[]>((acc, item, index) => {
         if (item !== "separator" && !item.disabled) acc.push(index)
+
         return acc
       }, []),
     [items],
@@ -214,10 +206,9 @@ function FloatingMenu({
   // Move DOM focus to the highlighted item for keyboard navigation.
   useEffect(() => {
     if (!open) return
+
     if (activeIndex >= 0) {
-      menuRef.current
-        ?.querySelector<HTMLElement>(`[data-menu-index="${activeIndex}"]`)
-        ?.focus()
+      menuRef.current?.querySelector<HTMLElement>(`[data-menu-index="${activeIndex}"]`)?.focus()
     } else {
       menuRef.current?.focus()
     }
@@ -225,38 +216,42 @@ function FloatingMenu({
 
   // Restore focus to the trigger when the menu closes without a selection.
   const wasOpen = useRef(false)
+
   useEffect(() => {
     if (wasOpen.current && !open && !closedBySelectRef.current) {
       focusReturnTarget(anchorRef.current)
     }
+
     wasOpen.current = open
   }, [open, anchorRef])
 
   // Close on pointer interactions outside the menu and trigger.
   useEffect(() => {
     if (!open) return
+
     const handlePointerDown = (event: PointerEvent) => {
       const target = event.target as Node
+
       if (menuRef.current?.contains(target)) return
       if (anchorRef.current?.contains(target)) return
       onClose()
     }
+
     document.addEventListener("pointerdown", handlePointerDown, true)
-    return () =>
-      document.removeEventListener("pointerdown", handlePointerDown, true)
+
+    return () => document.removeEventListener("pointerdown", handlePointerDown, true)
   }, [open, onClose, anchorRef])
 
   if (open && typeof document === "undefined") return null
   if (!open) return null
 
-  const showMarkerColumn = items.some(
-    (item) => item !== "separator" && isMarked(item),
-  )
+  const showMarkerColumn = items.some((item) => item !== "separator" && isMarked(item))
 
   const moveActive = (direction: 1 | -1) => {
     if (enabledIndexes.length === 0) return
     const currentPosition = enabledIndexes.indexOf(activeIndex)
     let nextPosition = currentPosition + direction
+
     if (nextPosition < 0) nextPosition = enabledIndexes.length - 1
     if (nextPosition >= enabledIndexes.length) nextPosition = 0
     setActiveIndex(enabledIndexes[nextPosition])
@@ -299,11 +294,13 @@ function FloatingMenu({
     item.onSelect?.()
     requestAnimationFrame(() => {
       const focusTarget = focusTargetRef?.current
+
       if (focusTarget?.isConnected) {
         focusReturnTarget(focusTarget)
       } else if (anchorRef.current?.isConnected) {
         focusReturnTarget(anchorRef.current)
       }
+
       closedBySelectRef.current = false
     })
   }
@@ -329,7 +326,9 @@ function FloatingMenu({
           if (item === "separator") {
             return <Hr key={`separator-${index}`} />
           }
+
           const highlighted = index === activeIndex
+
           return (
             <MenuItem
               key={item.id}

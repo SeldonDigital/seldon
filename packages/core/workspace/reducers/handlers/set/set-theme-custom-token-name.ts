@@ -1,8 +1,9 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import { appendCustomToken } from "../shared/theme-custom-token"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Renames a custom token by writing `${section}.${key}.name`. The `customN` key
@@ -15,15 +16,15 @@ export function setThemeCustomTokenName(
 ): Workspace {
   return produce(workspace, (draft) => {
     const entry = draft.themes[payload.themeId]
+
     if (!entry || isEntryThemeDefault(entry)) return
 
-    const sectionBag = (entry.overrides as Record<string, unknown>)[
-      payload.section
-    ]
+    const sectionBag = (entry.overrides as Record<string, unknown>)[payload.section]
     const existing =
       sectionBag && typeof sectionBag === "object"
         ? (sectionBag as Record<string, unknown>)[payload.key]
         : undefined
+
     if (!existing || typeof existing !== "object") return
 
     appendCustomToken(entry, payload.section, payload.key, {

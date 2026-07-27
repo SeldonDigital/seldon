@@ -4,14 +4,9 @@
  * This file contains precise TypeScript types for all rule configurations,
  * matching the structure in rules.config.ts
  */
-import { ComponentLevel } from "../../components/constants"
+import type { ComponentLevel } from "../../components/constants"
 
-export type Entity =
-  | "board"
-  | "userVariant"
-  | "defaultVariant"
-  | "authoredVariant"
-  | "instance"
+export type Entity = "board" | "userVariant" | "defaultVariant" | "authoredVariant" | "instance"
 
 /**
  * Maps each policy entity to its rule row. Shape for non-delete mutation rules.

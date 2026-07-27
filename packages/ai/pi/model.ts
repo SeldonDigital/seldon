@@ -1,10 +1,11 @@
+import { AuthStorage, ModelRegistry } from "@earendil-works/pi-coding-agent"
+
 import type {
   Model,
   OpenAICompletionsCompat,
   ThinkingLevel,
   ThinkingLevelMap,
 } from "@earendil-works/pi-ai"
-import { AuthStorage, ModelRegistry } from "@earendil-works/pi-coding-agent"
 
 const DEFAULT_HOST = "http://127.0.0.1:11434"
 const DEFAULT_MODEL = "gpt-oss:20b"
@@ -40,6 +41,7 @@ function resolveHost(host?: string): string {
  */
 export function supportsThinking(model?: string): boolean {
   const id = resolvePiModelId(model).toLowerCase()
+
   return id.includes("qwen3") || id.includes("gpt-oss")
 }
 
@@ -102,17 +104,15 @@ const BINARY_OPTIONS: ThinkingMenuOption[] = [
  * an older Ollama or an imported GGUF still behaves. The graded-versus-binary
  * split comes from {@link supportsReasoningEffort}.
  */
-export function deriveModelThinking(
-  model: string,
-  capabilities?: string[],
-): ModelThinking {
-  const thinks = capabilities
-    ? capabilities.includes("thinking")
-    : supportsThinking(model)
+export function deriveModelThinking(model: string, capabilities?: string[]): ModelThinking {
+  const thinks = capabilities ? capabilities.includes("thinking") : supportsThinking(model)
+
   if (!thinks) return { mode: "none", options: [], default: "off" }
+
   if (supportsReasoningEffort(model)) {
     return { mode: "graded", options: GRADED_OPTIONS, default: "medium" }
   }
+
   return { mode: "binary", options: BINARY_OPTIONS, default: "medium" }
 }
 
@@ -126,12 +126,14 @@ export function deriveModelThinking(
 function ollamaCompat(id: string): OpenAICompletionsCompat {
   const compat: OpenAICompletionsCompat = { supportsDeveloperRole: false }
   const lower = id.toLowerCase()
+
   if (lower.includes("qwen3")) {
     compat.thinkingFormat = "qwen-chat-template"
     compat.supportsReasoningEffort = false
   } else if (supportsReasoningEffort(id)) {
     compat.supportsReasoningEffort = true
   }
+
   return compat
 }
 
@@ -143,6 +145,7 @@ function ollamaCompat(id: string): OpenAICompletionsCompat {
  */
 function thinkingLevelMap(id: string): ThinkingLevelMap | undefined {
   if (!id.toLowerCase().includes("gpt-oss")) return undefined
+
   return { minimal: "low", xhigh: "high", max: "high" }
 }
 
@@ -161,6 +164,7 @@ export function buildOllamaModel(options: {
 }): Model<"openai-completions"> {
   const id = resolvePiModelId(options.model)
   const host = resolveHost(options.host)
+
   return {
     id,
     name: `${id} (Ollama)`,
@@ -186,7 +190,9 @@ export function createPiAuth(): {
   modelRegistry: ModelRegistry
 } {
   const authStorage = AuthStorage.create()
+
   authStorage.setRuntimeApiKey(OLLAMA_PROVIDER, "ollama")
   const modelRegistry = ModelRegistry.create(authStorage)
+
   return { authStorage, modelRegistry }
 }

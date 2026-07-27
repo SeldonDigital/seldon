@@ -1,10 +1,9 @@
 import { findComponentSchema } from "@seldon/core/components/catalog"
-import {
-  PROPERTY_DISPLAY_META,
-  type PropertyDisplayCategory,
-} from "@seldon/core/properties/constants/property-display"
+import { PROPERTY_DISPLAY_META } from "@seldon/core/properties/constants/property-display"
 
 import { section } from "./section"
+
+import type { PropertyDisplayCategory } from "@seldon/core/properties/constants/property-display"
 
 const TITLE =
   "Property vocabulary (component -> settable property keys; only set keys listed here; for any key in the shapes legend below, use that value shape):"
@@ -25,22 +24,21 @@ export function propertyVocabularySection(
   catalogIds: Set<string>,
   category?: PropertyDisplayCategory,
 ): string[] {
-  const title = category
-    ? `${TITLE.slice(0, -2)}; filtered to the "${category}" category):`
-    : TITLE
+  const title = category ? `${TITLE.slice(0, -2)}; filtered to the "${category}" category):` : TITLE
   const body: string[] = []
+
   for (const catalogId of [...catalogIds].sort()) {
     const schema = findComponentSchema(catalogId)
+
     if (!schema) continue
     let keys = schema.properties ? Object.keys(schema.properties) : []
+
     if (category) {
-      keys = keys.filter(
-        (key) => PROPERTY_DISPLAY_META[key]?.displayCategory === category,
-      )
+      keys = keys.filter((key) => PROPERTY_DISPLAY_META[key]?.displayCategory === category)
     }
-    body.push(
-      `- ${catalogId} [${schema.level}]: ${keys.join(", ") || "(none)"}`,
-    )
+
+    body.push(`- ${catalogId} [${schema.level}]: ${keys.join(", ") || "(none)"}`)
   }
+
   return section(title, body)
 }

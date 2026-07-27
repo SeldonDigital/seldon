@@ -1,9 +1,7 @@
-import {
-  type NodeRect,
-  getSelectionMode,
-  getWireframeMode,
-} from "@seldon/editor/lib/canvas/overlay/geometry"
+import { getSelectionMode, getWireframeMode } from "@seldon/editor/lib/canvas/overlay/geometry"
 import { getSelectionOutlineStyle } from "@seldon/editor/lib/canvas/overlay/outline-style"
+
+import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 import type { CSSProperties } from "react"
 
 /** Absolute-positioned outline style for a selection or hover box. */
@@ -16,6 +14,7 @@ export function outlineBoxStyle(
   // In wireframe mode the outline hugs the node border to align with the
   // surrounding wireframe boxes; otherwise it sits padded off the node.
   const box = wireframe ? getWireframeMode(rect) : getSelectionMode(rect)
+
   return {
     position: "absolute",
     pointerEvents: "none",

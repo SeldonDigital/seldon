@@ -1,5 +1,5 @@
-import { ValueType } from "../../../constants"
-import { ComputedFunction } from "./computed"
+import type { ValueType } from "../../../constants"
+import type { ComputedFunction } from "./computed"
 
 export type ComputedMatchColorValue = {
   type: ValueType.COMPUTED

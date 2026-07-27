@@ -1,5 +1,6 @@
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { ValueType } from "../constants"
+
 import type { Value } from "../types/value"
 import type { AtomicValue } from "../types/value-atomic"
 import type { ComputeContext } from "./types"
@@ -14,7 +15,9 @@ function isUsableSize(value: Value | undefined): value is AtomicValue {
   if (!value || typeof value !== "object" || !("type" in value)) {
     return false
   }
+
   const type = (value as { type: ValueType }).type
+
   return type !== ValueType.EMPTY && type !== ValueType.INHERIT
 }
 
@@ -28,16 +31,22 @@ function isUsableSize(value: Value | undefined): value is AtomicValue {
  */
 export function resolveAutoFitSource(context: ComputeContext): AtomicValue {
   let cursor: ComputeContext | null = context.parentContext
+
   while (cursor) {
     const buttonSize = findInObject<Value>(cursor.properties, "buttonSize")
+
     if (isUsableSize(buttonSize)) {
       return buttonSize
     }
+
     const size = findInObject<Value>(cursor.properties, "size")
+
     if (isUsableSize(size)) {
       return size
     }
+
     cursor = cursor.parentContext
   }
+
   return AUTO_FIT_FALLBACK
 }

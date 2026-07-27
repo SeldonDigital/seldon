@@ -1,13 +1,6 @@
-import {
-  ReactNode,
-  RefObject,
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef } from "react"
+
+import type { ReactNode, RefObject } from "react"
 
 type Direction = 1 | -1
 
@@ -28,8 +21,7 @@ interface PropertyEditNavigationApi {
   moveFocus: (currentKey: string, direction: Direction) => boolean
 }
 
-const PropertyEditNavigationContext =
-  createContext<PropertyEditNavigationApi | null>(null)
+const PropertyEditNavigationContext = createContext<PropertyEditNavigationApi | null>(null)
 
 /**
  * Coordinates roving edit focus across property rows. Only the row being edited
@@ -37,11 +29,7 @@ const PropertyEditNavigationContext =
  * their frame element and an `activate` callback here; `moveFocus` orders the
  * registered rows by DOM position and enters edit mode on the adjacent one.
  */
-export function PropertyEditNavigationProvider({
-  children,
-}: {
-  children: ReactNode
-}) {
+export function PropertyEditNavigationProvider({ children }: { children: ReactNode }) {
   const rowsRef = useRef<Map<string, PropertyEditRowEntry>>(new Map())
 
   const register = useCallback((key: string, entry: PropertyEditRowEntry) => {
@@ -65,24 +53,31 @@ export function PropertyEditNavigationProvider({
       .sort(([, a], [, b]) => {
         const aNode = a.ref.current
         const bNode = b.ref.current
+
         if (!aNode || !bNode) return 0
         const relation = aNode.compareDocumentPosition(bNode)
+
         if (relation & Node.DOCUMENT_POSITION_FOLLOWING) return -1
         if (relation & Node.DOCUMENT_POSITION_PRECEDING) return 1
+
         return 0
       })
 
     const currentIndex = ordered.findIndex(([key]) => key === currentKey)
+
     if (currentIndex === -1) return false
 
     const targetIndex = currentIndex + direction
+
     if (targetIndex < 0 || targetIndex >= ordered.length) return false
 
     const [, target] = ordered[targetIndex]
+
     target.activate()
     requestAnimationFrame(() => {
       target.ref.current?.scrollIntoView({ block: "nearest" })
     })
+
     return true
   }, [])
 
@@ -111,6 +106,7 @@ export function usePropertyEditRowRegistration(
 ) {
   const nav = useContext(PropertyEditNavigationContext)
   const activateRef = useRef(activate)
+
   activateRef.current = activate
 
   useEffect(() => {
@@ -120,6 +116,7 @@ export function usePropertyEditRowRegistration(
       activate: () => activateRef.current(),
       isNavigable,
     })
+
     return () => nav.unregister(key)
   }, [nav, key, ref, isNavigable])
 }

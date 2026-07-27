@@ -1,14 +1,8 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { getImmediateParentIdInWorkspace } from "@seldon/core/workspace/helpers/components/get-node-parent-id"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 
 import {
   activeBoardSection,
@@ -19,9 +13,11 @@ import {
   findResourceBoardForEntry,
   resourceBoardEntriesSection,
 } from "../../../prompt/context-sections/resource-board"
+import { joinOrEmpty, textResult } from "./shared"
+
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
-import { joinOrEmpty, textResult } from "./shared"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /**
  * Climbs exactly one level up from the selection and returns that view. A node
@@ -34,15 +30,10 @@ export function createWidenScopeTool(
   state: PiTurnState,
   resolved: ResolvedContext,
 ): ToolDefinition {
-  const {
-    resolvedKey,
-    selectedNodeId,
-    selectedBoardId,
-    scope,
-    resourceTargetId,
-    isolation,
-  } = resolved
+  const { resolvedKey, selectedNodeId, selectedBoardId, scope, resourceTargetId, isolation } =
+    resolved
   const allowedBoardKeys = isolation?.allowedBoardKeys
+
   return defineTool({
     name: "widen_scope",
     label: "Widen Scope",
@@ -55,38 +46,30 @@ export function createWidenScopeTool(
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const workspace = state.workspace
-      const activeBoard =
-        resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
+      const activeBoard = resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
       const emptyWorkspace = "No workspace boards available."
       const workspaceResult = () =>
         textResult(
           joinOrEmpty(
-            workspaceShallowSection(workspace, undefined, allowedBoardKeys)
-              .lines,
+            workspaceShallowSection(workspace, undefined, allowedBoardKeys).lines,
             emptyWorkspace,
           ),
         )
 
       // Resource scopes climb the same way: a variant entry rises to its board's
       // entry list, and a board rises to the workspace.
-      if (
-        scope === "theme" ||
-        scope === "fontCollection" ||
-        scope === "iconSet"
-      ) {
+      if (scope === "theme" || scope === "fontCollection" || scope === "iconSet") {
         if (selectedBoardId !== undefined) return workspaceResult()
         const entryId = params.nodeId ?? resourceTargetId
-        const owner = entryId
-          ? findResourceBoardForEntry(workspace, entryId)
-          : undefined
+        const owner = entryId ? findResourceBoardForEntry(workspace, entryId) : undefined
+
         if (!owner) return workspaceResult()
+
         return textResult(
-          joinOrEmpty(
-            resourceBoardEntriesSection(owner.board, owner.boardKey),
-            emptyWorkspace,
-          ),
+          joinOrEmpty(resourceBoardEntriesSection(owner.board, owner.boardKey), emptyWorkspace),
         )
       }
 
@@ -97,21 +80,23 @@ export function createWidenScopeTool(
       ) {
         return workspaceResult()
       }
+
       const fromId = params.nodeId ?? selectedNodeId
+
       if (fromId === undefined) return workspaceResult()
       const parentId = getImmediateParentIdInWorkspace(workspace, fromId)
+
       if (parentId) {
         return textResult(
           joinOrEmpty(
-            nodeSubtreeSection(workspace, resolvedKey, activeBoard, parentId)
-              .lines,
+            nodeSubtreeSection(workspace, resolvedKey, activeBoard, parentId).lines,
             `No node found for id "${parentId}".`,
           ),
         )
       }
-      const isVariantRoot = activeBoard.variants.some(
-        (ref) => ref.id === fromId,
-      )
+
+      const isVariantRoot = activeBoard.variants.some((ref) => ref.id === fromId)
+
       if (isVariantRoot) {
         return textResult(
           joinOrEmpty(
@@ -120,6 +105,7 @@ export function createWidenScopeTool(
           ),
         )
       }
+
       return workspaceResult()
     },
   })

@@ -19,13 +19,16 @@ export function useImageUpload() {
   const mutateAsync = useCallback(async (imageData: Blob | File) => {
     setStatus("pending")
     setError(null)
+
     try {
       const url = await convertBlobToBase64(imageData)
+
       setStatus("success")
+
       return { url }
     } catch (cause) {
-      const err =
-        cause instanceof Error ? cause : new Error("Failed to read image file")
+      const err = cause instanceof Error ? cause : new Error("Failed to read image file")
+
       setError(err)
       setStatus("error")
       throw err

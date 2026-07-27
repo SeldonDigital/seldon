@@ -1,8 +1,12 @@
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import { getCatalogKeyForPropertyPath } from "@seldon/core/properties/schemas/helpers/property-path"
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import { resolveToken } from "@seldon/core/rules/config/design-semantics.resolve"
+import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"
 
 import { isTaggedValue, themeRefTag } from "../prompt/property-taxonomy"
+
+import type { Theme } from "@seldon/core/themes/types"
+import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** One deterministic shape fix applied to a model action before validation. */
 export interface ActionRepair {
@@ -21,6 +25,7 @@ export interface NormalizeResult {
 const PROPERTY_ACTION_TYPES = new Set([
   "set_node_properties",
   "set_component_properties",
+  "set_node_state_properties",
 ])
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -28,22 +33,15 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * Wraps one loose leaf value into its tagged shape. Models often emit a bare
- * literal (`"italic"`, `12`) or a bare theme reference (`"@swatch.primary"`)
- * instead of the `{ type, value }` object the reducer expects. An `@` reference
- * becomes a theme value tagged by its scope; a bare value matching one of the
- * property's option keywords becomes an option, so a keyword like `"italic"` is
- * stored as the option the editor renders rather than an exact string it flags
- * as invalid; any other primitive becomes an exact value. `schemaKey` is the
- * flattened key the leaf resolves to, so options and theme tags read from the
- * right schema. `resolved` is false when the key could not be mapped to a schema
- * path, so an exact fallback is flagged as a distinct, higher-suspicion repair:
- * with no schema to consult, options and theme tags are invisible, so the exact
- * shape may be wrong. A value already tagged `exact` whose scalar matches one
- * of the property's option keywords is re-tagged to `option`, so a closed-set
- * property a model emits as `{ type: "exact", value: "rtl" }` passes the now
- * strict option-only validation. Other already-tagged and non-scalar values
- * pass through.
+ * Wraps one loose leaf value into its tagged `{ type, value }` shape, the form
+ * the reducer expects. A bare `@` reference becomes a theme value tagged by its
+ * scope; a scalar matching one of the property's option keywords becomes an
+ * option; any other scalar becomes an exact value. An already-tagged `exact`
+ * scalar that matches an option keyword is re-tagged to `option`, so a closed-set
+ * property passes option-only validation. `schemaKey` is the flattened key the
+ * leaf resolves to. When `resolved` is false the key mapped to no schema, so the
+ * exact fallback is flagged as higher-suspicion, since its shape may be wrong.
+ * Non-scalar values pass through unchanged.
  */
 function coerceLeaf(
   schemaKey: string,
@@ -51,9 +49,11 @@ function coerceLeaf(
   value: unknown,
   actionType: string,
   repairs: ActionRepair[],
+  theme?: Theme,
 ): unknown {
   if (isTaggedValue(value)) {
     const tagged = value as { type: unknown; value: unknown }
+
     if (
       tagged.type === "exact" &&
       (typeof tagged.value === "string" ||
@@ -66,36 +66,52 @@ function coerceLeaf(
         propertyKey: schemaKey,
         reason: "re-tagged an exact value into an option value",
       })
+
       return { ...tagged, type: "option" }
     }
+
     return value
   }
 
   if (typeof value === "string" && value.startsWith("@")) {
     const tag = themeRefTag(schemaKey)
+
     if (tag) {
       repairs.push({
         actionType,
         propertyKey: schemaKey,
         reason: `wrapped "${value}" into a ${tag} theme reference`,
       })
+
       return { type: tag, value }
     }
   }
 
-  if (
-    typeof value === "string" ||
-    typeof value === "number" ||
-    typeof value === "boolean"
-  ) {
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
     if (getPresetOptions(schemaKey).some((option) => option === value)) {
       repairs.push({
         actionType,
         propertyKey: schemaKey,
         reason: `wrapped a bare ${typeof value} into an option value`,
       })
+
       return { type: "option", value }
     }
+
+    if (typeof value === "string") {
+      const token = resolveToken(value, schemaKey, theme)
+
+      if (token) {
+        repairs.push({
+          actionType,
+          propertyKey: schemaKey,
+          reason: `resolved "${value}" to the theme token ${token.token}`,
+        })
+
+        return { type: token.tag, value: token.token }
+      }
+    }
+
     repairs.push({
       actionType,
       propertyKey: schemaKey,
@@ -103,6 +119,7 @@ function coerceLeaf(
         ? `wrapped a bare ${typeof value} into an exact value`
         : `could not resolve a schema key for "${schemaKey}"; wrapped a bare ${typeof value} into an exact value, which may be the wrong shape`,
     })
+
     return { type: "exact", value }
   }
 
@@ -120,31 +137,33 @@ function coerceTree(
   value: unknown,
   actionType: string,
   repairs: ActionRepair[],
+  theme?: Theme,
 ): unknown {
   if (Array.isArray(value)) {
     return value.map((item, index) =>
-      coerceTree(`${path}.${index}`, item, actionType, repairs),
+      coerceTree(`${path}.${index}`, item, actionType, repairs, theme),
     )
   }
+
   if (isPlainObject(value) && !isTaggedValue(value)) {
     const out: Record<string, unknown> = {}
+
     for (const [facet, facetValue] of Object.entries(value)) {
-      out[facet] = coerceTree(
-        `${path}.${facet}`,
-        facetValue,
-        actionType,
-        repairs,
-      )
+      out[facet] = coerceTree(`${path}.${facet}`, facetValue, actionType, repairs, theme)
     }
+
     return out
   }
+
   const resolvedKey = getCatalogKeyForPropertyPath(path)
+
   return coerceLeaf(
     resolvedKey ?? path,
     resolvedKey !== undefined,
     value,
     actionType,
     repairs,
+    theme,
   )
 }
 
@@ -154,53 +173,71 @@ function coerceTree(
  * replacing it. This turns a dotted key such as `font.style` into the nested
  * `{ font: { style } }` the reducer stores, and folds sibling facets together.
  */
-function assignPath(
-  target: Record<string, unknown>,
-  segments: string[],
-  value: unknown,
-): void {
+function assignPath(target: Record<string, unknown>, segments: string[], value: unknown): void {
   let cursor: Record<string, unknown> = target
+
   for (let i = 0; i < segments.length - 1; i++) {
     const segment = segments[i]!
     const container = /^\d+$/.test(segments[i + 1]!) ? [] : {}
+
     if (typeof cursor[segment] !== "object" || cursor[segment] === null) {
       cursor[segment] = container
     }
+
     cursor = cursor[segment] as Record<string, unknown>
   }
+
   const last = segments[segments.length - 1]!
   const existing = cursor[last]
-  cursor[last] =
-    isPlainObject(existing) && isPlainObject(value)
-      ? { ...existing, ...value }
-      : value
+
+  cursor[last] = isPlainObject(existing) && isPlainObject(value) ? { ...existing, ...value } : value
 }
 
 /**
  * Deterministically repairs the property shape of model actions before the
  * reducer validates them. It rebuilds each `properties` map so a dotted key
  * becomes a nested facet, and every leaf value is tagged, using one recursive
- * walk keyed off the core path resolver. Anything it cannot place is left for
- * core validation to reject with a precise message. Never mutates the input.
+ * walk keyed off the core path resolver. When a `workspace` is passed, a bare
+ * descriptive word on a themeable key resolves to a real theme token, so "big"
+ * becomes `@fontSize.xxlarge` rather than an invalid exact value. Anything it
+ * cannot place is left for core validation to reject with a precise message.
+ * Never mutates the input.
  */
 export function normalizeActions(
   actions: readonly WorkspaceAction[],
+  workspace?: Workspace,
 ): NormalizeResult {
   const repairs: ActionRepair[] = []
+
+  // Theme computation can throw on a malformed workspace, so a failure drops
+  // token resolution rather than the whole repair pass.
+  let theme: Theme | undefined
+
+  if (workspace) {
+    try {
+      theme = computeWorkspaceThemes(workspace)[0] as unknown as Theme | undefined
+    } catch {
+      theme = undefined
+    }
+  }
 
   const repaired = actions.map((action) => {
     if (!action || !PROPERTY_ACTION_TYPES.has(action.type)) return action
 
     const payload = (action as { payload?: unknown }).payload
+
     if (!isPlainObject(payload)) return action
 
     const properties = payload.properties
+
     if (!isPlainObject(properties)) return action
 
     const nextProperties: Record<string, unknown> = {}
+
     for (const [key, value] of Object.entries(properties)) {
-      const coerced = coerceTree(key, value, action.type, repairs)
+      const coerced = coerceTree(key, value, action.type, repairs, theme)
       const segments = key.split(".")
+
       if (segments.length > 1) {
         repairs.push({
           actionType: action.type,
@@ -208,6 +245,7 @@ export function normalizeActions(
           reason: "reshaped dotted key into a nested facet",
         })
       }
+
       assignPath(nextProperties, segments, coerced)
     }
 

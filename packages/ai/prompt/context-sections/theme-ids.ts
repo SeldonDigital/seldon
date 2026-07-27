@@ -1,6 +1,6 @@
-import type { Workspace } from "@seldon/core/workspace/types"
-
 import { section } from "./section"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 const TITLE = "Theme ids (use as themeId for set_theme_override):"
 
@@ -14,5 +14,6 @@ const TITLE = "Theme ids (use as themeId for set_theme_override):"
  */
 export function themeIdsSection(workspace: Workspace): string[] {
   const themeIds = Object.keys(workspace.themes)
+
   return section(TITLE, themeIds.length > 0 ? [themeIds.join(", ")] : [])
 }

@@ -1,4 +1,4 @@
-import { Placement } from "@seldon/editor/lib/types"
+import type { Placement } from "@seldon/editor/lib/types"
 
 const LINE_WIDTH = 3
 

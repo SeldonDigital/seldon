@@ -1,7 +1,4 @@
-import {
-  THEME_INTERFACE_SLOTS,
-  THEME_PALETTE_SLOTS,
-} from "@seldon/core/themes/values"
+import { THEME_INTERFACE_SLOTS, THEME_PALETTE_SLOTS } from "@seldon/core/themes/values"
 
 /**
  * Swatch slots that align across themes by id, so a high-contrast variable keyed by one carries
@@ -26,11 +23,11 @@ export function swatchIdFromRef(ref: string): string | null {
 }
 
 /** Splits a theme ordinal such as `@fontSize.medium` into its scale and step key. */
-export function parseThemeOrdinal(
-  token: string,
-): { scale: string; key: string } | null {
+export function parseThemeOrdinal(token: string): { scale: string; key: string } | null {
   const match = /^@([A-Za-z0-9]+)\.(.+)$/.exec(token)
+
   if (!match) return null
+
   return { scale: match[1]!, key: match[2]! }
 }
 
@@ -38,6 +35,7 @@ export function parseThemeOrdinal(
 export function rhythmSideForFacet(side: string | undefined): RhythmSide {
   if (side === "right") return "right"
   if (side === "top" || side === "bottom") return "vertical"
+
   return "left"
 }
 
@@ -48,6 +46,7 @@ export function rhythmSideForFacet(side: string | undefined): RhythmSide {
  */
 export function brightnessSuffix(brightness: number): string {
   const magnitude = Math.abs(brightness).toString().replace(".", "_")
+
   return brightness < 0 ? `bn${magnitude}` : `b${magnitude}`
 }
 
@@ -60,10 +59,7 @@ export function highContrastVarName(slot: string): string {
  * `--sdn-hc-on-primary-b25`. The pick is baked against the brightened color, so
  * a node reading a tinted or shaded background gets the correct foreground.
  */
-export function highContrastBrightnessVarName(
-  slot: string,
-  brightness: number,
-): string {
+export function highContrastBrightnessVarName(slot: string, brightness: number): string {
   return `--sdn-hc-on-${slot}-${brightnessSuffix(brightness)}`
 }
 

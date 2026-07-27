@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Direction, Properties, ValueType } from "@seldon/core"
+import { Direction, ValueType } from "@seldon/core"
 
 import { getRTLStyles } from "./get-rtl-styles"
+
+import type { Properties } from "@seldon/core"
 
 const direction = (value: Direction): Properties =>
   ({ direction: { type: ValueType.OPTION, value } }) as unknown as Properties
@@ -31,8 +33,6 @@ describe("getRTLStyles", () => {
   })
 
   it("returns no styles when direction is unset", () => {
-    expect(getRTLStyles({ properties: {} as unknown as Properties })).toEqual(
-      {},
-    )
+    expect(getRTLStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 })

@@ -1,24 +1,22 @@
 import { iconLabels } from "@seldon/core/icon-sets"
+import { categorySubcategories, iconCategories } from "@seldon/core/icon-sets/constants"
 import {
-  type IconCategory,
-  categorySubcategories,
-  iconCategories,
-} from "@seldon/core/icon-sets/constants"
-import {
-  type IconInclusion,
   deriveSubcategoryPreset,
   getIconsInSubcategory,
   isIconIncluded,
 } from "@seldon/core/icon-sets/helpers"
-import type { ComputedIconSet } from "@seldon/core/icon-sets/types"
 import { capitalize } from "@seldon/core/themes/helpers/capitalize"
-import { FlatProperty } from "./properties-data"
 import {
   RESOURCE_PRESET_OPTIONS,
   RESOURCE_TOGGLE_OPTIONS,
   createResourceMenuRow,
   resourcePresetDisplayValue,
 } from "./resource-menu-rows"
+
+import type { FlatProperty } from "./properties-data"
+import type { IconCategory } from "@seldon/core/icon-sets/constants"
+import type { IconInclusion } from "@seldon/core/icon-sets/helpers"
+import type { ComputedIconSet } from "@seldon/core/icon-sets/types"
 
 const ICON_CATEGORY_SET = new Set<string>(iconCategories)
 
@@ -31,6 +29,7 @@ export function titleCase(token: string): string {
 export function getIconRowCategory(key: string): IconCategory | null {
   if (!key.startsWith("icon.")) return null
   const category = key.slice("icon.".length).split("/")[0]
+
   return ICON_CATEGORY_SET.has(category) ? (category as IconCategory) : null
 }
 
@@ -56,6 +55,7 @@ export function flattenIconSetCategories(
     for (const subcategory of categorySubcategories[category]) {
       const subcategoryPath = `${category}/${subcategory}`
       const icons = getIconsInSubcategory(set, subcategoryPath)
+
       if (icons.length === 0) continue
 
       const preset = deriveSubcategoryPreset(set, inclusion, subcategoryPath)
@@ -80,6 +80,7 @@ export function flattenIconSetCategories(
 
       for (const iconId of icons) {
         const enabled = isIconIncluded(set, inclusion, iconId)
+
         rows.push(
           createResourceMenuRow(
             `icon.${subcategoryPath}.${iconId}`,

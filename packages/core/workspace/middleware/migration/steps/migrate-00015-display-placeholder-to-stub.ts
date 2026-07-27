@@ -14,6 +14,7 @@ import type { Workspace } from "../../../model/workspace"
 /** True when a value is a `display` cell still set to `"placeholder"`. */
 function isPlaceholderDisplayCell(cell: unknown): boolean {
   if (!cell || typeof cell !== "object") return false
+
   return (cell as { value?: unknown }).value === "placeholder"
 }
 
@@ -22,6 +23,7 @@ function treeNeedsRewrite(value: unknown): boolean {
   if (Array.isArray(value)) {
     return value.some(treeNeedsRewrite)
   }
+
   if (!value || typeof value !== "object") return false
   const record = value as Record<string, unknown>
 
@@ -37,8 +39,10 @@ function treeNeedsRewrite(value: unknown): boolean {
 function rewriteTree(value: unknown): void {
   if (Array.isArray(value)) {
     for (const item of value) rewriteTree(item)
+
     return
   }
+
   if (!value || typeof value !== "object") return
   const record = value as Record<string, unknown>
 
@@ -47,6 +51,7 @@ function rewriteTree(value: unknown): void {
       record[key] = { ...(sub as object), value: "stub" }
       continue
     }
+
     rewriteTree(sub)
   }
 }
@@ -54,8 +59,8 @@ function rewriteTree(value: unknown): void {
 /** True when any board, node, or node state holds a target cell to rewrite. */
 function migrationApplies(workspace: Workspace): boolean {
   for (const board of Object.values(workspace.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties && treeNeedsRewrite(componentProperties)) {
       return true
     }
@@ -69,16 +74,14 @@ function migrationApplies(workspace: Workspace): boolean {
   return false
 }
 
-export function migrateV15DisplayPlaceholderToStub(
-  workspace: Workspace,
-): Workspace {
+export function migrateV15DisplayPlaceholderToStub(workspace: Workspace): Workspace {
   if (!migrationApplies(workspace)) return workspace
 
   const next = structuredClone(workspace)
 
   for (const board of Object.values(next.boards)) {
-    const componentProperties = (board as { componentProperties?: unknown })
-      .componentProperties
+    const componentProperties = (board as { componentProperties?: unknown }).componentProperties
+
     if (componentProperties) rewriteTree(componentProperties)
   }
 

@@ -1,9 +1,5 @@
 /** The four border sides that can be shown individually in the inspector. */
-export type BorderSideKey =
-  | "borderTop"
-  | "borderRight"
-  | "borderBottom"
-  | "borderLeft"
+export type BorderSideKey = "borderTop" | "borderRight" | "borderBottom" | "borderLeft"
 
 /** Ordered list of the per-side border keys. */
 export const BORDER_SIDE_KEYS: readonly BorderSideKey[] = [
@@ -20,11 +16,13 @@ const BORDER_SIDE_LABELS: Record<BorderSideKey, string> = {
   borderLeft: "Left Border",
 }
 
-/** One "Show/Hide border side" menu choice. */
+/**
+ * One "Show/Hide border side" menu choice. `label` is the bare side label, such as "Top Border",
+ * which the editor prefixes with "Show" or "Hide".
+ */
 export interface BorderSideOption {
   id: string
   side: BorderSideKey
-  /** Bare side label, e.g. "Top Border". The editor prefixes "Show"/"Hide". */
   label: string
 }
 

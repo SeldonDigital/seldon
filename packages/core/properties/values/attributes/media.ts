@@ -1,9 +1,9 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { ContentValue } from "../shared/exact/string"
-import { BooleanOptionValue } from "../shared/option/boolean"
-import { ImageSourceValue } from "../shared/utilities/image-source"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { ContentValue } from "../shared/exact/string"
+import type { BooleanOptionValue } from "../shared/option/boolean"
+import type { ImageSourceValue } from "../shared/utilities/image-source"
 
 /** How much of a media resource the browser should preload before playback. */
 export enum Preload {
@@ -134,8 +134,7 @@ export const preloadSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Preload) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Preload) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Preload),
 }
@@ -149,8 +148,7 @@ export const trackKindSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(TrackKind) as string[]).includes(value),
+      typeof value === "string" && (Object.values(TrackKind) as string[]).includes(value),
   },
   presetOptions: () => Object.values(TrackKind),
 }

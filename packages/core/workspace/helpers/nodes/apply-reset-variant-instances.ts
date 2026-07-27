@@ -1,7 +1,8 @@
 import { isEntryNodeInstance } from "../../model/entry-node"
 import { parseNodeLink } from "../../model/template-ref"
-import type { EntryNodeId, Workspace } from "../../types"
 import { applyResetInstanceToSource } from "./apply-reset-instance-to-source"
+
+import type { EntryNodeId, Workspace } from "../../types"
 
 /**
  * Resets every direct instance of a variant back to that variant. A direct
@@ -18,6 +19,7 @@ export function applyResetVariantInstances(
   const directInstanceIds = Object.values(workspace.nodes)
     .filter((node) => {
       if (!isEntryNodeInstance(node)) return false
+
       return parseNodeLink(node.template)?.nodeId === variantRootId
     })
     .map((node) => node.id)

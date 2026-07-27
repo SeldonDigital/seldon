@@ -3,10 +3,11 @@ import { isMatchColorValue } from "../../helpers/type-guards/value/is-computed-v
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { InvariantError } from "../../helpers/utils/invariant"
 import { COLOR_SIBLING_KEYS, EMPTY_VALUE, ValueType } from "../constants"
-import type { Value } from "../types/value"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
 import { parseBasedOnPath } from "./parse-based-on-path"
 import { resolveMatchColorSource } from "./resolve-match-color-source"
+
+import type { Value } from "../types/value"
 import type { ComputeContext } from "./types"
 
 /**
@@ -21,6 +22,7 @@ function siblingSourcePath(
   const lastDot = colorLookupPath.lastIndexOf(".")
   const colorKey = colorLookupPath.slice(lastDot + 1)
   const siblingKeys = COLOR_SIBLING_KEYS[colorKey]
+
   if (!siblingKeys) return null
 
   return colorLookupPath.slice(0, lastDot + 1) + siblingKeys[facet]
@@ -33,6 +35,7 @@ function readSourceSiblingFacet(
   context: ComputeContext,
 ): Value | undefined {
   let facetSource: Omit<ComputeContext, "theme"> | null = null
+
   try {
     facetSource = resolveBasedOnWithAnchor(basedOn, context).facetSource
   } catch (error) {
@@ -41,16 +44,20 @@ function readSourceSiblingFacet(
     if (error instanceof InvariantError) throw error
     facetSource = null
   }
+
   if (!facetSource) return undefined
 
   const colorLookupPath = parseBasedOnPath(basedOn).lookupPath
   const facetPath = siblingSourcePath(colorLookupPath, facet)
+
   if (!facetPath) return undefined
 
   const raw = findInObject(facetSource.properties, facetPath)
+
   if (!raw || typeof raw !== "object" || !("type" in raw)) return undefined
 
   const type = (raw as { type: ValueType }).type
+
   if (type === ValueType.EMPTY || type === ValueType.INHERIT) return undefined
 
   return resolveValue(raw as Value)
@@ -70,14 +77,15 @@ export function applyMatchColorMirror(
   resolvedFacets: Record<string, Value>,
   context: ComputeContext,
 ): void {
-  const { includeBrightness, includeOpacity } =
-    context.theme.matchColor.parameters
+  const { includeBrightness, includeOpacity } = context.theme.matchColor.parameters
+
   if (!includeBrightness && !includeOpacity) return
 
   const basedOn = resolveMatchColorSource()
 
   for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
     const colorValue = inputFacets[colorKey]
+
     if (!isMatchColorValue(colorValue)) continue
 
     // Only mirror a sibling that the container actually exposes. A component that
@@ -87,6 +95,7 @@ export function applyMatchColorMirror(
       resolvedFacets[siblingKeys.brightness] =
         readSourceSiblingFacet(basedOn, "brightness", context) ?? EMPTY_VALUE
     }
+
     if (includeOpacity && siblingKeys.opacity in inputFacets) {
       resolvedFacets[siblingKeys.opacity] =
         readSourceSiblingFacet(basedOn, "opacity", context) ?? EMPTY_VALUE

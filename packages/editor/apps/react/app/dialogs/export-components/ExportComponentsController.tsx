@@ -2,25 +2,19 @@
 
 import { MenuController } from "@app/menus/MenuController"
 import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
-import { MenuEntry } from "@app/menus/types"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { DialogExportComponent } from "@seldon/components/modules/DialogExportComponent"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import {
-  CSSProperties,
-  MouseEvent,
-  PointerEvent,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 
 import {
   EXPORT_PLATFORM_OPTIONS,
   useExportComponentsPanel,
 } from "./hooks/use-export-components-panel"
+
+import type { MenuEntry } from "@app/menus/types"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { CSSProperties, MouseEvent, PointerEvent } from "react"
 
 /**
  * Gate for the Export Components dialog. Mounts the dialog only while the
@@ -70,10 +64,7 @@ function ExportComponentsDialog({
     contentSized: true,
     closeOnEscape: false,
   })
-  const startDrag = useCallback(
-    (event: PointerEvent) => moveControls.start(event),
-    [moveControls],
-  )
+  const startDrag = useCallback((event: PointerEvent) => moveControls.start(event), [moveControls])
 
   const [platformOpen, setPlatformOpen] = useState(false)
   const platformAnchorRef = useRef<HTMLElement | null>(null)
@@ -85,9 +76,7 @@ function ExportComponentsDialog({
   const closePlatform = useCallback(() => setPlatformOpen(false), [])
 
   const platformLabel = useMemo(
-    () =>
-      EXPORT_PLATFORM_OPTIONS.find((option) => option.id === platform)?.label ??
-      "",
+    () => EXPORT_PLATFORM_OPTIONS.find((option) => option.id === platform)?.label ?? "",
     [platform],
   )
   const platformItems = useMemo<MenuEntry[]>(
@@ -104,14 +93,8 @@ function ExportComponentsDialog({
     [platform, setPlatform],
   )
 
-  const includeHiddenYes = useCallback(
-    () => setIncludeHidden(true),
-    [setIncludeHidden],
-  )
-  const includeHiddenNo = useCallback(
-    () => setIncludeHidden(false),
-    [setIncludeHidden],
-  )
+  const includeHiddenYes = useCallback(() => setIncludeHidden(true), [setIncludeHidden])
+  const includeHiddenNo = useCallback(() => setIncludeHidden(false), [setIncludeHidden])
   const allThemesYes = useCallback(() => setAllThemes(true), [setAllThemes])
   const allThemesNo = useCallback(() => setAllThemes(false), [setAllThemes])
   const allFontsYes = useCallback(() => setAllFonts(true), [setAllFonts])
@@ -199,14 +182,7 @@ function ExportComponentsDialog({
   )
 
   return (
-    <WindowSurface
-      modal
-      contentSized
-      onClose={close}
-      x={x}
-      y={y}
-      moveControls={moveControls}
-    >
+    <WindowSurface modal contentSized onClose={close} x={x} y={y} moveControls={moveControls}>
       <DialogExportComponent
         data-testid="export-components-dialog"
         bar={barHandle}

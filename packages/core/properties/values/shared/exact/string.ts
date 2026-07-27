@@ -1,5 +1,5 @@
-import { ValueType } from "../../../constants"
-import { EmptyValue } from "../empty/empty"
+import type { ValueType } from "../../../constants"
+import type { EmptyValue } from "../empty/empty"
 
 /** Exact string payload on a node. */
 export type StringValue = {

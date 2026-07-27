@@ -1,17 +1,13 @@
-import {
-  DropIndicator,
-  OverlayLayer,
-  PlacementZoneSurface,
-} from "@app/overlays"
+import { DropIndicator, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { Frame } from "@seldon/components/frames/Frame"
-import type { LayerPlacement } from "@seldon/editor/lib/properties/layer-reorder"
-import { CSSProperties, ReactNode } from "react"
-
-import { LayeredPaintKey } from "@seldon/core"
 
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import { useLayerDraggable } from "./hooks/use-layer-draggable"
 import { useLayerDropzone } from "./hooks/use-layer-dropzone"
+
+import type { LayeredPaintKey } from "@seldon/core"
+import type { LayerPlacement } from "@seldon/editor/lib/properties/layer-reorder"
+import type { CSSProperties, ReactNode } from "react"
 
 /** A row's layer-reorder context: which paint stack it belongs to and where. */
 export interface LayerDragContext {
@@ -35,13 +31,9 @@ const nonInteractiveOverlayStyle: CSSProperties = { pointerEvents: "none" }
  * multi-layer paint parent. Rows without a layer context render their children
  * unwrapped, so the caller can always mount this without branching.
  */
-export function LayerDragRow({
-  layerDrag,
-  label,
-  icon,
-  children,
-}: LayerDragRowProps) {
+export function LayerDragRow({ layerDrag, label, icon, children }: LayerDragRowProps) {
   if (!layerDrag) return <>{children}</>
+
   return (
     <LayerDragSource
       property={layerDrag.property}
@@ -121,9 +113,7 @@ function LayerDropBand({
     layerCount,
     placement,
   })
-  const isLayerDragging = useLayerDragStateStore(
-    (state) => state.isLayerDragging,
-  )
+  const isLayerDragging = useLayerDragStateStore((state) => state.isLayerDragging)
 
   const bandStyle = getBandStyle(placement, isLayerDragging)
   const dropzoneTestId = `layer-${property}-${layerIndex}-dropzone-${placement}`
@@ -135,11 +125,7 @@ function LayerDropBand({
 
   return (
     <>
-      <PlacementZoneSurface
-        ref={ref}
-        style={bandStyle}
-        dataTestId={dropzoneTestId}
-      />
+      <PlacementZoneSurface ref={ref} style={bandStyle} dataTestId={dropzoneTestId} />
       {overlay}
     </>
   )
@@ -147,17 +133,16 @@ function LayerDropBand({
 
 // The bands cover the whole row, so they only become hit-testable while a layer
 // drag is active. Otherwise the row's combo, disclosure, and menu stay clickable.
-function getBandStyle(
-  placement: LayerPlacement,
-  isLayerDragging: boolean,
-): CSSProperties {
+function getBandStyle(placement: LayerPlacement, isLayerDragging: boolean): CSSProperties {
   const base: CSSProperties = {
     position: "absolute",
     left: 0,
     right: 0,
     pointerEvents: isLayerDragging ? "auto" : "none",
   }
+
   if (placement === "before") return { ...base, top: 0, height: "50%" }
+
   return { ...base, bottom: 0, height: "50%" }
 }
 

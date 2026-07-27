@@ -10,17 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { Frame, FrameProps } from "../frames/Frame"
-import { IconProps } from "../primitives/Icon"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { Frame } from "../frames/Frame"
+import { TextDescription } from "../primitives/TextDescription"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { HTMLAttributes } from "react"
 
 export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -65,10 +65,7 @@ export function MessageThinking({
   seldonRefs,
   ...props
 }: MessageThinkingProps) {
-  const messageThinkingClassName = combineClassNames(
-    "sdn-message-thinking",
-    className,
-  )
+  const messageThinkingClassName = combineClassNames("sdn-message-thinking", className)
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -86,10 +83,7 @@ export function MessageThinking({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -109,10 +103,7 @@ export function MessageThinking({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
   const textDescription2Props = applyRef(
@@ -143,11 +134,7 @@ export function MessageThinking({
   )
 
   return (
-    <Frame
-      className={messageThinkingClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={messageThinkingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

@@ -1,5 +1,6 @@
 import { Frame } from "@seldon/components/frames/Frame"
-import { CSSProperties } from "react"
+
+import type { CSSProperties } from "react"
 
 interface FocusRingProps {
   style: CSSProperties
@@ -7,7 +8,5 @@ interface FocusRingProps {
 
 /** Fixed, top-most ring drawn around the focused element. Position and size arrive via style. */
 export function FocusRing({ style }: FocusRingProps) {
-  return (
-    <Frame className="editor-focus-ring" style={style} aria-hidden="true" />
-  )
+  return <Frame className="editor-focus-ring" style={style} aria-hidden="true" />
 }

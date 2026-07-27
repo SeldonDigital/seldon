@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { ExportOptions, ImageToExportMap } from "../../types"
 import { getFilesToExportFromImagesToExport } from "./get-files-to-export-from-images-to-export"
+
+import type { ExportOptions, ImageToExportMap } from "../../types"
 
 const options = {} as ExportOptions
 
@@ -17,6 +18,7 @@ describe("getFilesToExportFromImagesToExport", () => {
     } as unknown as ImageToExportMap
 
     const files = await getFilesToExportFromImagesToExport(images, options)
+
     expect(files).toHaveLength(1)
     expect(files[0].path).toBe("/assets/hi.txt")
     expect(new TextDecoder().decode(files[0].content as ArrayBuffer)).toBe("Hi")
@@ -32,14 +34,11 @@ describe("getFilesToExportFromImagesToExport", () => {
     } as unknown as ImageToExportMap
 
     const files = await getFilesToExportFromImagesToExport(images, options)
-    expect(new TextDecoder().decode(files[0].content as ArrayBuffer)).toBe(
-      "Hello World",
-    )
+
+    expect(new TextDecoder().decode(files[0].content as ArrayBuffer)).toBe("Hello World")
   })
 
   it("returns an empty list when there are no images", async () => {
-    expect(
-      await getFilesToExportFromImagesToExport({} as ImageToExportMap, options),
-    ).toEqual([])
+    expect(await getFilesToExportFromImagesToExport({} as ImageToExportMap, options)).toEqual([])
   })
 })

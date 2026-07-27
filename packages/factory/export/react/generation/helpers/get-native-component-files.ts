@@ -1,13 +1,14 @@
 import path from "node:path"
 
-import { Workspace } from "@seldon/core"
 import { CUSTOM_REACT_TEMPLATE_META } from "@seldon/core/components/catalog/custom/registry"
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
 import { createNodeExportAssetReader } from "../../../asset-reader"
-import { ComponentToExport, ExportOptions, FileToExport } from "../../../types"
 import { getUsedNativeComponents } from "../../discovery/get-used-native-components"
 import { getNativeFileStemsForUsedElements } from "../../discovery/native-html-file-stem"
+
+import type { ComponentToExport, ExportOptions, FileToExport } from "../../../types"
+import type { Workspace } from "@seldon/core"
 
 /**
  * Native file stem for a primitive component name, e.g. `HTMLArticle` ->
@@ -22,10 +23,7 @@ function toNativeFileStem(componentName: string): string {
  * `htmlElement` or `wrapperElement`. The generated component imports a native
  * wrapper for every option, so each option must be written alongside it.
  */
-function addSwitchOptionStems(
-  component: ComponentToExport,
-  usedFileStems: Set<string>,
-): void {
+function addSwitchOptionStems(component: ComponentToExport, usedFileStems: Set<string>): void {
   const { config, tree } = component
 
   if (config.react.returns === "htmlElement") {
@@ -33,6 +31,7 @@ function addSwitchOptionStems(
       const hit = Object.entries(NATIVE_REACT_PRIMITIVES).find(
         ([, value]) => value.htmlElementOption === option,
       )
+
       if (hit) usedFileStems.add(toNativeFileStem(hit[0]))
     }
   }
@@ -42,6 +41,7 @@ function addSwitchOptionStems(
       const hit = Object.entries(NATIVE_REACT_PRIMITIVES).find(
         ([, value]) => value.wrapperElementOption === option,
       )
+
       if (hit) usedFileStems.add(toNativeFileStem(hit[0]))
     }
   }
@@ -62,12 +62,9 @@ export function getNativeComponentFiles(
   options: ExportOptions,
 ): FileToExport[] {
   const primitives: FileToExport[] = []
-  const reader =
-    options.assetReader ?? createNodeExportAssetReader(options.rootDirectory)
+  const reader = options.assetReader ?? createNodeExportAssetReader(options.rootDirectory)
 
-  const usedFileStems = getNativeFileStemsForUsedElements(
-    getUsedNativeComponents(workspace),
-  )
+  const usedFileStems = getNativeFileStemsForUsedElements(getUsedNativeComponents(workspace))
 
   // Bespoke templates whose sources must be copied when a custom component is
   // exported. Each `react.custom.template` resolves to one file stem.
@@ -75,15 +72,17 @@ export function getNativeComponentFiles(
 
   for (const component of componentsToExport) {
     const returns = component.config.react.returns
+
     if (returns.startsWith("HTML")) {
       usedFileStems.add(toNativeFileStem(returns))
     }
+
     if (returns === "custom" && component.config.react.custom) {
       usedCustomFileStems.add(
-        CUSTOM_REACT_TEMPLATE_META[component.config.react.custom.template]
-          .fileStem,
+        CUSTOM_REACT_TEMPLATE_META[component.config.react.custom.template].fileStem,
       )
     }
+
     addSwitchOptionStems(component, usedFileStems)
   }
 
@@ -91,28 +90,22 @@ export function getNativeComponentFiles(
 
   for (const fileStem of usedFileStems) {
     const content = reader.readNativeComponent(fileStem)
+
     if (!content) continue
 
     primitives.push({
-      path: path.join(
-        options.output.componentsFolder,
-        "native-react",
-        `${fileStem}.tsx`,
-      ),
+      path: path.join(options.output.componentsFolder, "native-react", `${fileStem}.tsx`),
       content,
     })
   }
 
   for (const fileStem of usedCustomFileStems) {
     const content = reader.readCustomComponent?.(fileStem)
+
     if (!content) continue
 
     primitives.push({
-      path: path.join(
-        options.output.componentsFolder,
-        "custom",
-        `${fileStem}.tsx`,
-      ),
+      path: path.join(options.output.componentsFolder, "custom", `${fileStem}.tsx`),
       content,
     })
   }

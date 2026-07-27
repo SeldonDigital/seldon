@@ -3,12 +3,12 @@
 // floating drag-chip chrome from Seldon tokens. The imperative mount into the
 // native drag preview lives in the drag hook that renders this.
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { CSSProperties } from "react"
+
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { CSSProperties } from "react"
 
 const previewStyle: CSSProperties = {
-  backgroundColor:
-    "color-mix(in srgb, var(--sdn-swatch-offBlack) 80%, transparent)",
+  backgroundColor: "color-mix(in srgb, var(--sdn-swatch-offBlack) 80%, transparent)",
   color: "var(--sdn-swatch-offWhite)",
   padding: "var(--sdn-paddings-compact)",
   borderRadius: "var(--sdn-corners-tight)",

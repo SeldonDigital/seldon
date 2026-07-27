@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { ComputedFunction, EMPTY_VALUE, ValueType } from "../constants"
 import { computeMatchColor } from "./compute-match-color"
+
 import type { ComputeContext } from "./types"
 
 const marker = {
@@ -12,8 +13,7 @@ const marker = {
 const ctx = (
   properties: Record<string, unknown>,
   parentContext: ComputeContext | null = null,
-): ComputeContext =>
-  ({ properties, parentContext, theme: undefined }) as unknown as ComputeContext
+): ComputeContext => ({ properties, parentContext, theme: undefined }) as unknown as ComputeContext
 
 describe("computeMatchColor", () => {
   it("returns the contributing color from an ancestor background", () => {

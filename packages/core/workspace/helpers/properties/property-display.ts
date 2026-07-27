@@ -1,26 +1,11 @@
-import {
-  type ComputedFunction,
-  type Theme,
-  Unit,
-  ValueType,
-  type Workspace,
-} from "@seldon/core"
-import {
-  HSLObjectToString,
-  LCHObjectToString,
-  RGBObjectToString,
-} from "@seldon/core/helpers/color"
+import { Unit, ValueType } from "@seldon/core"
+import { HSLObjectToString, LCHObjectToString, RGBObjectToString } from "@seldon/core/helpers/color"
 import { formatPresetValue } from "@seldon/core/helpers/properties/format-preset-value"
 import { parseThemeRef } from "@seldon/core/helpers/theme/get-theme-key-components"
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
-import {
-  isHSLObject,
-  isLCHObject,
-  isRGBObject,
-} from "@seldon/core/helpers/type-guards"
+import { isHSLObject, isLCHObject, isRGBObject } from "@seldon/core/helpers/type-guards"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
 import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import { matchCompoundPreset } from "./compound-presets"
 import {
@@ -30,6 +15,9 @@ import {
   getTypedNode,
   isValueSet,
 } from "./shared"
+
+import type { ComputedFunction, Theme, Workspace } from "@seldon/core"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 type DimensionValue = {
   unit: string
@@ -46,45 +34,40 @@ type ComputedValueLike = {
 }
 
 function isDimensionValue(value: unknown): value is DimensionValue {
-  return !!(
-    value &&
-    typeof value === "object" &&
-    "unit" in value &&
-    "value" in value
-  )
+  return !!(value && typeof value === "object" && "unit" in value && "value" in value)
 }
 
 function isPropertyValueLike(value: unknown): value is PropertyValueLike {
-  return !!(
-    value &&
-    typeof value === "object" &&
-    "type" in value &&
-    "value" in value
-  )
+  return !!(value && typeof value === "object" && "type" in value && "value" in value)
 }
 
 function formatThemeValue(value: unknown, theme?: Theme): string {
   const token = String(value)
+
   if (token.startsWith("@") && theme) {
     return getThemeValueName(token, theme)
   }
+
   const optionId = parseThemeRef(token)?.optionId
+
   if (optionId) {
     return optionId.charAt(0).toUpperCase() + optionId.slice(1)
   }
+
   return token
 }
 
 function formatComputedValue(value: unknown): string {
   if (typeof value === "string") {
-    return (
-      COMPUTED_FUNCTION_DISPLAY_NAMES[value as ComputedFunction] ?? "Computed"
-    )
+    return COMPUTED_FUNCTION_DISPLAY_NAMES[value as ComputedFunction] ?? "Computed"
   }
+
   if (value && typeof value === "object" && "function" in value) {
     const functionName = (value as ComputedValueLike).function
+
     return COMPUTED_FUNCTION_DISPLAY_NAMES[functionName] || functionName
   }
+
   return "Computed"
 }
 
@@ -101,6 +84,7 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
     if (value.value.unit === Unit.NUMBER) {
       return `${value.value.value}`
     }
+
     return `${value.value.value}${value.value.unit}`
   }
 
@@ -108,9 +92,11 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
     if (isHSLObject(value.value)) {
       return HSLObjectToString(value.value)
     }
+
     if (isRGBObject(value.value)) {
       return RGBObjectToString(value.value)
     }
+
     if (isLCHObject(value.value)) {
       return LCHObjectToString(value.value)
     }
@@ -125,13 +111,11 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
     if (typeof value.value === "boolean") {
       return value.value ? "On" : "Off"
     }
+
     return String(value.value)
   }
 
-  if (
-    value.type === ValueType.THEME_CATEGORICAL ||
-    value.type === ValueType.THEME_ORDINAL
-  ) {
+  if (value.type === ValueType.THEME_CATEGORICAL || value.type === ValueType.THEME_ORDINAL) {
     return formatThemeValue(value.value, theme)
   }
 
@@ -167,6 +151,7 @@ export function formatCompoundDisplay(
     (effectiveProperties as Record<string, unknown>)[propertyKey],
     layerIndex,
   )
+
   if (!parentLayer) return "Default"
 
   // Background layers are typed by an explicit `kind` facet rather than theme
@@ -183,14 +168,17 @@ export function formatCompoundDisplay(
     layerIndex,
     state,
   )
+
   if (matchedPreset) return matchedPreset
 
   const hasCustomValue = Object.keys(parentLayer)
     .filter((key) => key !== "preset")
     .some((key) => isValueSet(parentLayer[key]))
+
   if (hasCustomValue) return "Custom"
 
   const builtInSection = getBuiltInLookSectionForPropertyKey(propertyKey)
+
   if (builtInSection) {
     return builtInSection === "font" ? "Normal" : "None"
   }
@@ -207,25 +195,30 @@ export function formatShorthandDisplay(
 ): string {
   const effectiveProperties = getEffectiveProperties(nodeId, workspace, state)
   const node = getTypedNode(nodeId, workspace)
-  const propertyValue = (
-    effectiveProperties as Record<string, Record<string, unknown>>
-  )[propertyKey]
+  const propertyValue = (effectiveProperties as Record<string, Record<string, unknown>>)[
+    propertyKey
+  ]
   const subKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
+
   if (!subKeys.length) return "unset"
 
   const values: string[] = []
   let hasAnyValue = false
+
   for (const subKey of subKeys) {
     const subValue = propertyValue?.[subKey]
+
     if (!subValue) {
       values.push("Unset")
       continue
     }
+
     values.push(formatDisplayValue(subValue, theme))
     hasAnyValue = true
   }
 
   if (!hasAnyValue) return "unset"
   const allSame = values.every((value) => value === values[0])
+
   return allSame ? values[0] : values.join(" ")
 }

@@ -1,13 +1,11 @@
-import { ComponentId } from "@seldon/core/components/constants"
-import { InstanceId, VariantId, Workspace } from "@seldon/core/index"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
-import {
-  nodeRelationshipService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import type { BoardKey, EntryNode } from "@seldon/core/workspace/types"
+import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 import { getNodeCatalogComponentId, getNodeChildIds } from "./node-tree"
 import { getComponentKey, getNode } from "./workspace-accessors"
+
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { InstanceId, VariantId, Workspace } from "@seldon/core/index"
+import type { BoardKey, EntryNode } from "@seldon/core/workspace/types"
 
 /**
  * Where a paste should land, resolved from the clipboard subject and the current
@@ -32,23 +30,13 @@ function canPasteInto(
   workspace: Workspace,
 ): boolean {
   return (
-    typeCheckingService.canComponentBeParentOf(
-      targetComponentId,
-      subjectComponentId,
-    ) &&
-    !nodeRelationshipService.hasAncestorWithComponentId(
-      subjectComponentId,
-      targetNode,
-      workspace,
-    )
+    typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
+    !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, targetNode, workspace)
   )
 }
 
 function isDefaultVariantTarget(node: EntryNode): boolean {
-  return (
-    typeCheckingService.isVariant(node) &&
-    typeCheckingService.isDefaultVariant(node)
-  )
+  return typeCheckingService.isVariant(node) && typeCheckingService.isDefaultVariant(node)
 }
 
 export function resolvePasteTarget({
@@ -63,11 +51,13 @@ export function resolvePasteTarget({
   workspace: Workspace
 }): PasteTargetResult {
   const subject = getNode(workspace, subjectId)
+
   if (!subject) {
     return { action: "error", message: "The copied object no longer exists" }
   }
 
   const subjectComponentId = getNodeCatalogComponentId(subject, workspace)
+
   if (!subjectComponentId) {
     return { action: "error", message: "This object cannot be pasted" }
   }
@@ -75,23 +65,22 @@ export function resolvePasteTarget({
   // A node is selected: try to paste inside it, otherwise below it as a sibling.
   if (selectedNode) {
     const targetComponentId = getNodeCatalogComponentId(selectedNode, workspace)
+
     if (
       targetComponentId &&
       !isDefaultVariantTarget(selectedNode) &&
-      canPasteInto(
-        targetComponentId,
-        subjectComponentId,
-        selectedNode,
-        workspace,
-      )
+      canPasteInto(targetComponentId, subjectComponentId, selectedNode, workspace)
     ) {
       const index = getNodeChildIds(selectedNode, workspace).length
+
       return { action: "duplicate-into", parentId: selectedNode.id, index }
     }
 
     const parent = findParentNode(selectedNode.id, workspace)
+
     if (parent) {
       const parentComponentId = getNodeCatalogComponentId(parent, workspace)
+
       if (
         parentComponentId &&
         !isDefaultVariantTarget(parent) &&
@@ -100,6 +89,7 @@ export function resolvePasteTarget({
         const childIds = getNodeChildIds(parent, workspace)
         const targetIndex = childIds.indexOf(selectedNode.id)
         const index = targetIndex === -1 ? childIds.length : targetIndex + 1
+
         return { action: "duplicate-into", parentId: parent.id, index }
       }
     }
@@ -116,10 +106,8 @@ export function resolvePasteTarget({
       }
     }
 
-    const board = nodeRelationshipService.findBoardForVariant(
-      subject,
-      workspace,
-    )
+    const board = nodeRelationshipService.findBoardForVariant(subject, workspace)
+
     if (!board || getComponentKey(board) !== selectedBoardId) {
       return {
         action: "error",

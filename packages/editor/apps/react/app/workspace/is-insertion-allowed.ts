@@ -1,13 +1,3 @@
-import { Tool } from "@app/editor/hooks/use-tool"
-import { Placement } from "@seldon/editor/lib/types"
-
-import {
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  Workspace,
-} from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import {
   nodeRelationshipService,
@@ -15,6 +5,10 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { Tool } from "@app/editor/hooks/use-tool"
+import type { Instance, InstanceId, Variant, VariantId, Workspace } from "@seldon/core"
+import type { Placement } from "@seldon/editor/lib/types"
 
 /**
  * Checks if insertion is allowed for a given tool, object, and placement.
@@ -46,6 +40,7 @@ export function isInsertionAllowed(
     // insertion is disabled for all descendants
     const checkNodeAndAncestors = (startNode: Variant | Instance): boolean => {
       let currentNode: Variant | Instance | null = startNode
+
       while (currentNode) {
         // Check if current node is a default variant
         if (
@@ -56,13 +51,12 @@ export function isInsertionAllowed(
         }
 
         // Walk up to parent to check ancestors
-        const parent = nodeTraversalService.findParentNode(
-          currentNode.id,
-          workspace,
-        )
+        const parent = nodeTraversalService.findParentNode(currentNode.id, workspace)
+
         if (!parent) break
         currentNode = parent
       }
+
       return true
     }
 
@@ -72,10 +66,12 @@ export function isInsertionAllowed(
       const checkRules = (node: Variant | Instance): boolean => {
         if (typeCheckingService.isVariant(node)) {
           const entityType = typeCheckingService.getEntityType(node)
+
           if (!rules.mutations.insertInto[entityType].allowed) {
             return false
           }
         }
+
         return true
       }
 
@@ -85,23 +81,19 @@ export function isInsertionAllowed(
       if (placement === "inside") {
         // For "inside" placement, find the container node (same logic as click handler)
         try {
-          insertionTargetNode = nodeRelationshipService.findContainerNode(
-            objectId,
-            workspace,
-          )
+          insertionTargetNode = nodeRelationshipService.findContainerNode(objectId, workspace)
         } catch {
           // If container not found, fall back to checking the node itself
           insertionTargetNode = targetNode
         }
       } else {
         // For "before"/"after" placement, the target is the parent
-        const parentNode = nodeTraversalService.findParentNode(
-          objectId,
-          workspace,
-        )
+        const parentNode = nodeTraversalService.findParentNode(objectId, workspace)
+
         if (!parentNode) {
           return true // No parent means it's a root variant, allow insertion
         }
+
         insertionTargetNode = parentNode
       }
 

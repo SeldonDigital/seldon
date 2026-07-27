@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconLucideTerminal } from "./IconLucideTerminal"
 export { IconLucideSquareTerminal } from "./IconLucideSquareTerminal"

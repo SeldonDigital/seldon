@@ -1,5 +1,6 @@
 import { Unit } from "../../../../properties/constants/shared/units"
 import { TokenType } from "../../../constants/token-type"
+
 import type { ThemeExact } from "../exact/theme-exact"
 import type { ThemeFontFamilyToken } from "../font-stack/theme-font-family-token"
 import type { ThemeModulation } from "../modulated/theme-modulation"
@@ -23,32 +24,29 @@ export function isModulatedToken(
  * or angle (`deg`). Per-section schemas restrict which units a given section accepts.
  */
 export function isThemeExactToken(v: unknown): v is ThemeExact {
-  if (
-    typeof v !== "object" ||
-    v === null ||
-    !("type" in v) ||
-    !("parameters" in v)
-  ) {
+  if (typeof v !== "object" || v === null || !("type" in v) || !("parameters" in v)) {
     return false
   }
+
   if ((v as ThemeExact).type !== TokenType.EXACT) {
     return false
   }
+
   const inner = (v as ThemeExact).parameters
+
   if (!inner || typeof inner !== "object" || !("unit" in inner)) {
     return false
   }
+
   const u = (inner as { unit: unknown }).unit
   const n = (inner as { value: unknown }).value
+
   if (typeof n !== "number" || !Number.isFinite(n)) {
     return false
   }
+
   return (
-    u === Unit.PX ||
-    u === Unit.REM ||
-    u === Unit.PERCENT ||
-    u === Unit.DEGREES ||
-    u === Unit.NUMBER
+    u === Unit.PX || u === Unit.REM || u === Unit.PERCENT || u === Unit.DEGREES || u === Unit.NUMBER
   )
 }
 
@@ -71,9 +69,7 @@ export function isFontFamilyToken(v: unknown): v is ThemeFontFamilyToken {
 }
 
 /** Theme token with {@link TokenType.OPTION} (e.g. hairline border width). */
-export function isOptionToken(
-  v: ThemeBorderWidth | unknown,
-): v is ThemeBorderWidthOption {
+export function isOptionToken(v: ThemeBorderWidth | unknown): v is ThemeBorderWidthOption {
   return (
     typeof v === "object" &&
     v !== null &&

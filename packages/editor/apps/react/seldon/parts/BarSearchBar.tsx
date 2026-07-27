@@ -10,18 +10,16 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import {
-  ComboboxFieldSearch,
-  ComboboxFieldSearchProps,
-} from "../elements/ComboboxFieldSearch"
+import { ComboboxFieldSearch } from "../elements/ComboboxFieldSearch"
 import { Frame } from "../frames/Frame"
-import { IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldSearchProps } from "../elements/ComboboxFieldSearch"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { HTMLAttributes } from "react"
 
 export interface BarSearchBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -104,10 +102,7 @@ export function BarSearchBar({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon2Props = applyRef(
@@ -122,11 +117,7 @@ export function BarSearchBar({
   )
 
   return (
-    <Frame
-      className={barSearchBarClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={barSearchBarClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

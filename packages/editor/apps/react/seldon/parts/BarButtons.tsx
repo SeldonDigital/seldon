@@ -10,14 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Button } from "../elements/Button"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface BarButtonsProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -104,10 +108,7 @@ export function BarButtons({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const iconProps = applyRef(
@@ -127,10 +128,7 @@ export function BarButtons({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const button2Props = applyRef(
@@ -140,10 +138,7 @@ export function BarButtons({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -163,10 +158,7 @@ export function BarButtons({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const button3Props = applyRef(
@@ -176,10 +168,7 @@ export function BarButtons({
       : {
           ...sdn.button3,
           ...button3,
-          className: combineClassNames(
-            sdn.button3?.className,
-            button3?.className,
-          ),
+          className: combineClassNames(sdn.button3?.className, button3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -199,10 +188,7 @@ export function BarButtons({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const frame2Props = applyRef(
@@ -212,10 +198,7 @@ export function BarButtons({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const button4Props = applyRef(
@@ -225,10 +208,7 @@ export function BarButtons({
       : {
           ...sdn.button4,
           ...button4,
-          className: combineClassNames(
-            sdn.button4?.className,
-            button4?.className,
-          ),
+          className: combineClassNames(sdn.button4?.className, button4?.className),
         },
   )
   const icon4Props = applyRef(
@@ -248,10 +228,7 @@ export function BarButtons({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const button5Props = applyRef(
@@ -261,10 +238,7 @@ export function BarButtons({
       : {
           ...sdn.button5,
           ...button5,
-          className: combineClassNames(
-            sdn.button5?.className,
-            button5?.className,
-          ),
+          className: combineClassNames(sdn.button5?.className, button5?.className),
         },
   )
   const icon5Props = applyRef(
@@ -284,19 +258,12 @@ export function BarButtons({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
 
   return (
-    <Frame
-      className={barButtonsClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={barButtonsClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -305,25 +272,19 @@ export function BarButtons({
             {button && buttonProps && (
               <Button {...buttonProps}>
                 {icon && iconProps && <Icon {...iconProps} />}
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
               </Button>
             )}
             {button2 && button2Props && (
               <Button {...button2Props}>
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
               </Button>
             )}
             {button3 && button3Props && (
               <Button {...button3Props}>
                 {icon3 && icon3Props && <Icon {...icon3Props} />}
-                {textLabel3 && textLabel3Props && (
-                  <TextLabel {...textLabel3Props} />
-                )}
+                {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
               </Button>
             )}
           </Frame>
@@ -331,17 +292,13 @@ export function BarButtons({
             {button4 && button4Props && (
               <Button {...button4Props}>
                 {icon4 && icon4Props && <Icon {...icon4Props} />}
-                {textLabel4 && textLabel4Props && (
-                  <TextLabel {...textLabel4Props} />
-                )}
+                {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
               </Button>
             )}
             {button5 && button5Props && (
               <Button {...button5Props}>
                 {icon5 && icon5Props && <Icon {...icon5Props} />}
-                {textLabel5 && textLabel5Props && (
-                  <TextLabel {...textLabel5Props} />
-                )}
+                {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
               </Button>
             )}
           </Frame>

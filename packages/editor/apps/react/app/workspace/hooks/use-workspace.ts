@@ -8,9 +8,7 @@ import { useDispatch } from "./use-dispatch"
 import { useHistory } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
 
-export function useWorkspace({
-  usePreview = true,
-}: { usePreview?: boolean } = {}) {
+export function useWorkspace({ usePreview = true }: { usePreview?: boolean } = {}) {
   const { current } = useHistory()
 
   const { preview, initialize, reset } = usePreviewStore()

@@ -1,6 +1,7 @@
-import { ComponentToExport, JSONTreeNode } from "../../../types"
 import { isAttributeKey } from "./attribute-props"
 import { getConditionalPropPaths } from "./get-conditional-prop-paths"
+
+import type { ComponentToExport, JSONTreeNode } from "../../../types"
 
 /**
  * Generates the function signature props spread.
@@ -22,12 +23,14 @@ export function generatePropsSpread(
   const used = new Set<string>(["className"])
 
   const rootProps = component.tree.dataBinding.props
+
   for (const [propKey] of Object.entries(rootProps)) {
     // Attribute-style keys (role, aria-*) are emitted on the element from `sdn`
     // and ride `...props` when passed, so they are never destructured by name.
     if (isAttributeKey(propKey)) {
       continue
     }
+
     if (!used.has(propKey)) {
       used.add(propKey)
       props.push(`${propKey} = sdn.${propKey}`)
@@ -38,8 +41,10 @@ export function generatePropsSpread(
 
   function traverse(node: JSONTreeNode) {
     const propName = propNames.get(node.dataBinding.path)
+
     if (propName && !used.has(propName)) {
       used.add(propName)
+
       if (conditionalPaths.has(node.dataBinding.path)) {
         props.push(propName)
       } else {
@@ -64,12 +69,13 @@ export function generatePropsSpread(
   // Pull the ref override channel out of the rest so it is never spread onto a
   // DOM element. Only components that compose children read it through
   // `applyRef`, so leaf primitives omit it to avoid an unused binding.
-  const hasChildren =
-    Array.isArray(component.tree.children) && component.tree.children.length > 0
+  const hasChildren = Array.isArray(component.tree.children) && component.tree.children.length > 0
+
   if (hasChildren) {
     props.push("seldonRefs")
   }
 
   props.push("...props")
+
   return `{${props.join(",")}}`
 }

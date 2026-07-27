@@ -1,10 +1,12 @@
-import { BorderWidth, BorderWidthValue, ValueType } from "@seldon/core"
+import { BorderWidth, ValueType } from "@seldon/core"
 import { resolveBorderWidth } from "@seldon/core/helpers/resolution/resolve-border-width"
-import { Theme } from "@seldon/core/themes/types"
 
 import { getCssValue } from "./get-css-value"
 import { getThemeTokenVarReference } from "./get-theme-token-reference"
-import { CSSObject } from "./types"
+
+import type { CSSObject } from "./types"
+import type { BorderWidthValue } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 /**
  * Retrieves the CSS border width value based on the provided border width value and theme.
@@ -23,11 +25,9 @@ export function getBorderWidthCSSValue(
     return "var(--hairline)"
   }
 
-  if (
-    useThemeVariableReferences &&
-    borderWidth.type === ValueType.THEME_ORDINAL
-  ) {
+  if (useThemeVariableReferences && borderWidth.type === ValueType.THEME_ORDINAL) {
     const reference = getThemeTokenVarReference(borderWidth.value)
+
     if (reference) return reference
   }
 

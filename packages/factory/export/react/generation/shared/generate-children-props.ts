@@ -1,4 +1,4 @@
-import { ComponentToExport, JSONTreeNode } from "../../../types"
+import type { ComponentToExport, JSONTreeNode } from "../../../types"
 
 /**
  * Generates the interface entries for a component's children props.
@@ -17,6 +17,7 @@ export function generateChildrenProps(
 
   function traverse(node: JSONTreeNode) {
     const propName = propNames.get(node.dataBinding.path)
+
     if (propName && !added.has(propName)) {
       content += `${propName}?: ${node.dataBinding.interfaceName} | null\n`
       added.add(propName)

@@ -1,13 +1,11 @@
 import fs from "node:fs"
 
-import { IconId } from "@seldon/core/icon-sets"
+import { getIconSourcePath, resolveIconExport } from "../../react/utils/find-icon-path"
+import { parseIconSource } from "../../shared/parse-icon-source"
 
-import {
-  getIconSourcePath,
-  resolveIconExport,
-} from "../../react/utils/find-icon-path"
-import { IconGeometry, parseIconSource } from "../../shared/parse-icon-source"
-import { ExportOptions, FileToExport } from "../../types"
+import type { IconGeometry } from "../../shared/parse-icon-source"
+import type { ExportOptions, FileToExport } from "../../types"
+import type { IconId } from "@seldon/core/icon-sets"
 
 const DEFAULT_ICON: IconGeometry = {
   viewBox: "0 0 320 320",
@@ -22,10 +20,7 @@ const DEFAULT_ICON: IconGeometry = {
  * from that shared data. Geometry is parsed from the same catalog `.tsx` sources
  * the React target copies, so both editors render identical icons.
  */
-export function getVueIcons(
-  usedIconIds: Set<IconId>,
-  options: ExportOptions,
-): FileToExport[] {
+export function getVueIcons(usedIconIds: Set<IconId>, options: ExportOptions): FileToExport[] {
   const folder = options.output.componentsFolder
   const geometry: Record<string, IconGeometry> = {
     __default__: DEFAULT_ICON,
@@ -34,17 +29,21 @@ export function getVueIcons(
   for (const iconId of usedIconIds) {
     if (iconId === "__default__") continue
     const resolved = resolveIconExport(iconId, options.rootDirectory)
+
     if (!resolved) continue
     const sourcePath = getIconSourcePath(resolved, options.rootDirectory)
     let source: string | undefined
     const fromReader = options.assetReader?.readIconFile(sourcePath)
+
     if (fromReader) {
       source = fromReader.toString("utf8")
     } else if (fs.existsSync(sourcePath)) {
       source = fs.readFileSync(sourcePath, "utf8")
     }
+
     if (!source) continue
     const parsed = parseIconSource(source)
+
     if (parsed) geometry[iconId] = parsed
   }
 

@@ -1,16 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  ComponentBoard,
-  ExtractPayload,
-  Instance,
-  Variant,
-  Workspace,
-} from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { nodeTraversalService as svc } from "./node-traversal.service"
+
+import type { ComponentBoard, ExtractPayload, Instance, Variant, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(

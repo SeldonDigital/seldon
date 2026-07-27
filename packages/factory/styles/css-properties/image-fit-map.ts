@@ -1,6 +1,5 @@
-import { ImageFit } from "@seldon/core"
-
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
+import type { ImageFit } from "@seldon/core"
 
 export const objectFitMap: Record<ImageFit, CSSObject["objectFit"]> = {
   original: "none",
@@ -9,10 +8,9 @@ export const objectFitMap: Record<ImageFit, CSSObject["objectFit"]> = {
   stretch: "fill",
 }
 
-export const backgroundSizeMap: Record<ImageFit, CSSObject["backgroundSize"]> =
-  {
-    original: "auto",
-    contain: "contain",
-    cover: "cover",
-    stretch: "100% 100%",
-  }
+export const backgroundSizeMap: Record<ImageFit, CSSObject["backgroundSize"]> = {
+  original: "auto",
+  contain: "contain",
+  cover: "cover",
+  stretch: "100% 100%",
+}

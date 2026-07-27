@@ -4,22 +4,26 @@
  */
 const config = {
   semi: false,
-  plugins: ["@trivago/prettier-plugin-sort-imports"],
+  printWidth: 100,
+  plugins: ["@ianvs/prettier-plugin-sort-imports"],
   importOrder: [
-    "^node:(.*)$",
+    "<BUILTIN_MODULES>",
+    "",
     "<THIRD_PARTY_MODULES>",
-    "^@seldon/core",
+    "",
+    "^@seldon/core(.*)$",
+    "",
     "^#(.*)$",
     "^[./]",
+    "",
+    "<TYPES>",
   ],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
-  importOrderSideEffects: false,
+  importOrderTypeScriptVersion: "5.8.0",
+  importOrderCaseSensitive: true,
   overrides: [
     {
       files: ["packages/editor/shared/**/*.{ts,tsx,js,mjs}"],
       options: {
-        importOrderSeparation: false,
         importOrder: [
           "<THIRD_PARTY_MODULES>",
           "^@seldon/core",
@@ -32,6 +36,8 @@ const config = {
           "^@app/(.*)",
           "^[./].*ui.*",
           "^[./]",
+          "",
+          "<TYPES>",
         ],
       },
     },

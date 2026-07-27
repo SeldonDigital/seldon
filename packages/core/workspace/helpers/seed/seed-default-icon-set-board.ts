@@ -1,17 +1,16 @@
 import { STOCK_ICON_SETS_BY_ID } from "../../../icon-sets/catalog"
-import type { IconSetTemplateId } from "../../../icon-sets/types/icon-set-id"
-import type { Board, IconSetBoard } from "../../model/components"
 import { isIconSetBoard } from "../../model/components"
-import type {
-  EntryIconSet,
-  EntryIconSetOverrides,
-} from "../../model/entry-icon-set"
 import { formatIconSetCatalog } from "../../model/template-ref"
 import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { formatEntryId } from "../general/entry-id"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
-import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
+import { nextBoardOrder } from "./seedable-workspace"
+
+import type { IconSetTemplateId } from "../../../icon-sets/types/icon-set-id"
+import type { Board, IconSetBoard } from "../../model/components"
+import type { EntryIconSet, EntryIconSetOverrides } from "../../model/entry-icon-set"
+import type { SeedableWorkspace } from "./seedable-workspace"
 
 /** Catalog row key for the default icon set board (matches the Seldon icon set id). */
 export const DEFAULT_ICON_SET_BOARD_KEY = "seldonIcons" as const
@@ -20,21 +19,19 @@ export const DEFAULT_ICON_SET_BOARD_KEY = "seldonIcons" as const
 export const DEFAULT_ICON_SET_ENTRY_ID = "icon-set-seldonIcons-default" as const
 
 /** Extra icon set boards seeded into every new workspace alongside Seldon. Deletable. */
-const ADDITIONAL_ICON_SET_BOARD_KEYS = [
-  "googleSymbols",
-] as const satisfies IconSetTemplateId[]
+const ADDITIONAL_ICON_SET_BOARD_KEYS = ["googleSymbols"] as const satisfies IconSetTemplateId[]
 
 /**
  * Builds inclusion overrides that turn on every icon in a set, so each
  * subcategory derives the `all` preset.
  */
-function createAllIncludedIconsOverrides(
-  catalogId: IconSetTemplateId,
-): EntryIconSetOverrides {
+function createAllIncludedIconsOverrides(catalogId: IconSetTemplateId): EntryIconSetOverrides {
   const includedIcons: Record<string, boolean> = {}
+
   for (const iconId of STOCK_ICON_SETS_BY_ID[catalogId].icons) {
     includedIcons[iconId] = true
   }
+
   return { includedIcons }
 }
 
@@ -66,15 +63,12 @@ export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
   if (!workspace.boards) {
     workspace.boards = {}
   }
+
   if (!workspace["icon-sets"]) {
     workspace["icon-sets"] = {}
   }
 
-  seedIconSetBoard(
-    workspace,
-    DEFAULT_ICON_SET_BOARD_KEY,
-    createDefaultIconSetEntry(),
-  )
+  seedIconSetBoard(workspace, DEFAULT_ICON_SET_BOARD_KEY, createDefaultIconSetEntry())
 
   // Extra sets seed with empty overrides so inclusion falls back to the set's
   // defaults, such as the curated `defaultEnabledIcons` of `googleSymbols`.
@@ -96,6 +90,7 @@ function seedIconSetBoard(
   entry: EntryIconSet,
 ): void {
   const existing = workspace.boards[boardKey] as Board | undefined
+
   if (existing && isIconSetBoard(existing)) {
     return
   }
@@ -111,6 +106,7 @@ function seedIconSetBoard(
     componentProperties: getInitialBoardComponentProperties("icon-set"),
     variants: [{ id: entry.id }],
   }
+
   setBoardOrder(board, nextBoardOrder(workspace.boards))
   workspace.boards[boardKey] = board
 }

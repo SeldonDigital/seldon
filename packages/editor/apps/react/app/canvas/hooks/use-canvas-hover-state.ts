@@ -1,8 +1,8 @@
-import { Placement } from "@seldon/editor/lib/types"
 import { create } from "zustand"
 
-import { InstanceId, VariantId } from "@seldon/core"
+import type { InstanceId, VariantId } from "@seldon/core"
 import type { BoardKey } from "@seldon/core/workspace/types"
+import type { Placement } from "@seldon/editor/lib/types"
 
 interface BaseHoverState {
   /** Whether the user is hovering over the top (vertical) or left (horizontal) part of the object */
@@ -52,8 +52,7 @@ export const useSetHoverState = (): CanvasState["setHoverState"] =>
  * Reads the current hover state imperatively without subscribing. Use inside
  * event handlers (e.g. mouse-leave) that must not re-render on every hover.
  */
-export const getHoverStateSnapshot = (): HoverState | null =>
-  useStore.getState().hoverState
+export const getHoverStateSnapshot = (): HoverState | null => useStore.getState().hoverState
 
 /**
  * Subscribes to the hover state only while it targets the given object id,
@@ -61,9 +60,7 @@ export const getHoverStateSnapshot = (): HoverState | null =>
  * re-render on hover, so only the entering and leaving rows update.
  */
 export const useHoverStateForObject = (objectId: string): HoverState | null =>
-  useStore((state) =>
-    state.hoverState?.objectId === objectId ? state.hoverState : null,
-  )
+  useStore((state) => (state.hoverState?.objectId === objectId ? state.hoverState : null))
 
 /**
  * Subscribes to the hover state only while it targets one of the given object
@@ -74,11 +71,8 @@ export const useHoverStateForObjects = (
   objectIds: Array<string | null | undefined>,
 ): HoverState | null =>
   useStore((state) =>
-    state.hoverState && objectIds.includes(state.hoverState.objectId)
-      ? state.hoverState
-      : null,
+    state.hoverState && objectIds.includes(state.hoverState.objectId) ? state.hoverState : null,
   )
 
 /** Whether anything is currently hovered (cheap boolean subscription). */
-export const useHasHoverState = (): boolean =>
-  useStore((state) => state.hoverState !== null)
+export const useHasHoverState = (): boolean => useStore((state) => state.hoverState !== null)

@@ -1,16 +1,9 @@
-import { Theme } from "@seldon/core"
 import { applyBrightness } from "@seldon/core/helpers/color/apply-brightness"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { modulate } from "@seldon/core/helpers/math/modulate"
-import {
-  colorspaceLiteralToHsl,
-  getModeSwatches,
-} from "@seldon/core/themes/compute"
-import type { ThemeMode } from "@seldon/core/themes/constants"
+import { colorspaceLiteralToHsl, getModeSwatches } from "@seldon/core/themes/compute"
 import { isModulatedToken, isThemeExactToken } from "@seldon/core/themes/values"
-import type { ThemeScaleToken } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
-import { Workspace } from "@seldon/core/workspace/types"
 
 import {
   emitComputedThemeVariables,
@@ -22,22 +15,32 @@ import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"
 
+import type { Theme } from "@seldon/core"
+import type { ThemeMode } from "@seldon/core/themes/constants"
+import type { ThemeScaleToken } from "@seldon/core/themes/values"
+import type { Workspace } from "@seldon/core/workspace/types"
+
 function exactTokenCss(token: ThemeScaleToken): string {
   if (isThemeExactToken(token)) {
     const { unit, value } = token.parameters
+
     if (unit === "number") {
       return String(value)
     }
+
     if (unit === "rem" || unit === "px") {
       return `${value}${unit}`
     }
+
     if (unit === "%") {
       return `${value}%`
     }
+
     if (unit === "deg") {
       return `${value}deg`
     }
   }
+
   return "0"
 }
 
@@ -53,11 +56,13 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ")
+
     cssVariables += `\n  /* Theme: ${themeDisplayName} */\n`
   }
 
   if (theme.modulation) {
     const modulation = theme.modulation.parameters
+
     cssVariables += `  /* Modulation */\n`
     cssVariables += `  ${prefix}ratio: ${modulation.ratio};\n`
     cssVariables += `  ${prefix}font-size: ${modulation.baseFontSize}px;\n`
@@ -75,6 +80,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   const harmony = theme.colorHarmony.parameters
   const displayMode = theme.displayMode.parameters
   const baseHsl = colorspaceLiteralToHsl(harmony.baseColor)
+
   cssVariables += `  /* Colors */\n`
   cssVariables += `  ${prefix}color-base-hue: ${baseHsl.hue};\n`
   cssVariables += `  ${prefix}color-base-saturation: ${baseHsl.saturation}%;\n`
@@ -93,10 +99,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
 
   // The base block serves the theme's authored mode, so its swatch table comes
   // from the mode assignment: literal neutral pairs for light, swapped for dark.
-  cssVariables += generateModeSwatchVariables(
-    theme,
-    displayMode.mode ?? "light",
-  )
+  cssVariables += generateModeSwatchVariables(theme, displayMode.mode ?? "light")
 
   const writeModulatedScale = (
     label: string,
@@ -106,6 +109,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
     cssVariables += `  /* ${label} */\n`
     Object.entries(table).forEach(([key, value]) => {
       if (!value) return
+
       if (isModulatedToken(value)) {
         const resolved =
           value.value ??
@@ -114,9 +118,12 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
             size: theme.modulation.parameters.baseSize,
             step: value.parameters.step,
           })
+
         cssVariables += `  ${prefix}${label.toLowerCase()}-${key}: ${resolved}${unitSuffix};\n`
+
         return
       }
+
       cssVariables += `  ${prefix}${label.toLowerCase()}-${key}: ${exactTokenCss(value)};\n`
     })
   }
@@ -130,6 +137,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   cssVariables += `  /* Font Sizes */\n`
   Object.entries(theme.fontSize).forEach(([key, value]) => {
     if (!value) return
+
     if (isModulatedToken(value)) {
       const calculatedFontSize =
         value.value ??
@@ -138,9 +146,12 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
           size: theme.modulation.parameters.baseFontSize / 16,
           step: value.parameters.step,
         })
+
       cssVariables += `  ${prefix}font-size-${key}: ${calculatedFontSize}rem;\n`
+
       return
     }
+
     cssVariables += `  ${prefix}font-size-${key}: ${exactTokenCss(value)};\n`
   })
 
@@ -166,6 +177,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
         size: theme.modulation.parameters.baseSize,
         step: value.parameters.step,
       })
+
     cssVariables += `  ${prefix}border-width-${key}: ${calculatedBorderWidth}rem;\n`
   })
 
@@ -194,6 +206,7 @@ function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
 
   Object.entries(swatches).forEach(([key, hsl]) => {
     const swatchName = uniqueSwatchNames[key]
+
     if (!swatchName) return
     cssVariables += `  --sdn-swatch-${swatchName}: ${HSLObjectToString(hsl)};\n`
   })
@@ -202,11 +215,14 @@ function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
   // holding the concrete brightened color so a usage needs no runtime
   // relative-color support and still swaps with the active theme.
   const brightnessSwatches = getBrightnessSwatches()
+
   if (brightnessSwatches.length > 0) {
     cssVariables += `  /* Brightness Swatches */\n`
+
     for (const { slot, brightness } of brightnessSwatches) {
       const swatchName = uniqueSwatchNames[slot]
       const hsl = swatches[slot]
+
       if (!swatchName || !hsl) continue
       cssVariables += `  --sdn-swatch-${swatchName}-${brightnessSuffix(brightness)}: ${HSLObjectToString(
         applyBrightness(hsl, brightness),
@@ -239,10 +255,7 @@ export function generateThemeStylesheet(slug: string, theme: Theme): string {
   // that never sets `data-theme`) resolve to it. Every theme, default included,
   // answers its own `[data-theme="{slug}"]` selector so a consumer can switch to
   // it explicitly.
-  const selector =
-    slug === "seldon"
-      ? `:root,\n[data-theme="seldon"]`
-      : `[data-theme="${slug}"]`
+  const selector = slug === "seldon" ? `:root,\n[data-theme="seldon"]` : `[data-theme="${slug}"]`
 
   // Every theme ships its opposite mode as a swatch-only block behind
   // `data-mode`. Setting `data-mode` to the authored mode matches nothing and
@@ -267,9 +280,11 @@ export type ThemeStylesheetFile = {
 /** Theme entry ids referenced by any node's `theme` field. */
 function getUsedThemeIds(workspace: Workspace): Set<string> {
   const used = new Set<string>()
+
   for (const node of Object.values(workspace.nodes ?? {})) {
     if (node.theme) used.add(node.theme)
   }
+
   return used
 }
 
@@ -279,6 +294,7 @@ export async function generateThemeStylesheetFiles(
   exportAllThemes: boolean = true,
 ): Promise<ThemeStylesheetFile[]> {
   let themeIds = Object.keys(workspace.themes ?? {})
+
   if (themeIds.length === 0) {
     themeIds.push("seldon")
   }
@@ -287,10 +303,9 @@ export async function generateThemeStylesheetFiles(
   // the default `seldon` theme so unscoped subtrees still resolve.
   if (!exportAllThemes) {
     const usedThemeIds = getUsedThemeIds(workspace)
+
     themeIds = themeIds.filter(
-      (themeId) =>
-        getThemeSlug(themeId, workspace) === "seldon" ||
-        usedThemeIds.has(themeId),
+      (themeId) => getThemeSlug(themeId, workspace) === "seldon" || usedThemeIds.has(themeId),
     )
   }
 
@@ -298,6 +313,7 @@ export async function generateThemeStylesheetFiles(
 
   for (const themeId of themeIds) {
     const theme = workspaceThemeService.getTheme(themeId, workspace)
+
     if (!theme) continue
 
     const slug = getThemeSlug(themeId, workspace)

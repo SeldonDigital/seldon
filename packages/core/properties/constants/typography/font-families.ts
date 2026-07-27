@@ -39,16 +39,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Arimo",
-    variants: [
-      "regular",
-      "500",
-      "600",
-      "700",
-      "italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Arvo",
@@ -118,16 +109,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Cabin",
-    variants: [
-      "regular",
-      "500",
-      "600",
-      "700",
-      "italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Cairo",
@@ -327,17 +309,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Heebo",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Hind",
@@ -410,16 +382,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Instrument Sans",
-    variants: [
-      "400",
-      "500",
-      "600",
-      "700",
-      "400italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["400", "500", "600", "700", "400italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Inter",
@@ -545,17 +508,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Lexend",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Libre Baskerville",
@@ -590,16 +543,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Lora",
-    variants: [
-      "regular",
-      "500",
-      "600",
-      "700",
-      "italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Manrope",
@@ -726,17 +670,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Noto Sans Arabic",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Noto Sans JP",
@@ -850,17 +784,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Outfit",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Overpass",
@@ -1012,16 +936,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Radio Canada Big",
-    variants: [
-      "400",
-      "500",
-      "600",
-      "700",
-      "400italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["400", "500", "600", "700", "400italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Rajdhani",
@@ -1161,17 +1076,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Roboto Slab",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Rubik",
@@ -1316,16 +1221,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Ubuntu",
-    variants: [
-      "300",
-      "300italic",
-      "regular",
-      "italic",
-      "500",
-      "500italic",
-      "700",
-      "700italic",
-    ],
+    variants: ["300", "300italic", "regular", "italic", "500", "500italic", "700", "700italic"],
   },
   {
     family: "Urbanist",

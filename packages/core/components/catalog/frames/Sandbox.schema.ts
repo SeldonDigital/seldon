@@ -1,21 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Sandbox",
   id: Seldon.ComponentId.SANDBOX,
   intent:
     "Absolutely positioned playground frame placed directly on the canvas. Holds explicit position and size so playground sandboxes can be arranged without overlap. Never exported by the factory.",
-  tags: [
-    "sandbox",
-    "playground",
-    "frame",
-    "layout",
-    "container",
-    "absolute",
-    "canvas",
-  ],
+  tags: ["sandbox", "playground", "frame", "layout", "container", "absolute", "canvas"],
   level: Seldon.ComponentLevel.FRAME,
   icon: Seldon.ComponentIcon.FRAME,
   properties: {

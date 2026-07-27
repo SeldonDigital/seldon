@@ -1,12 +1,14 @@
 import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
-import { Theme, ThemePaddingKey } from "../../../themes/types"
-import { ComputedFunction, Unit, ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { ComputedOpticalPaddingValue } from "../shared/computed/optical-padding"
-import { EmptyValue } from "../shared/empty/empty"
-import { PercentageValue } from "../shared/exact/percentage"
-import { PixelValue } from "../shared/exact/pixel"
-import { RemValue } from "../shared/exact/rem"
+import { ComputedFunction, Unit } from "../../constants"
+
+import type { Theme, ThemePaddingKey } from "../../../themes/types"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { ComputedOpticalPaddingValue } from "../shared/computed/optical-padding"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { PercentageValue } from "../shared/exact/percentage"
+import type { PixelValue } from "../shared/exact/pixel"
+import type { RemValue } from "../shared/exact/rem"
 
 /** Catalog spacing choice for one side when not using a length or theme step. */
 export enum Padding {
@@ -47,14 +49,7 @@ export const paddingSchema: PropertySchema = {
   name: "padding",
   description:
     "Sets inside spacing on each edge using lengths, the catalog option, optical padding, or theme steps.",
-  supports: [
-    "empty",
-    "inherit",
-    "exact",
-    "option",
-    "computed",
-    "themeOrdinal",
-  ] as const,
+  supports: ["empty", "inherit", "exact", "option", "computed", "themeOrdinal"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
@@ -71,20 +66,20 @@ export const paddingSchema: PropertySchema = {
         "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
-      )
+      ) {
         return true
+      }
+
       if (typeof value === "number" && value >= 0) return true
+
       return false
     },
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Padding) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Padding) as string[]).includes(value),
     computed: (value: unknown) => value === ComputedFunction.OPTICAL_PADDING,
-    themeOrdinal: (value: unknown, theme?: Theme) =>
-      themeTokenRefIsValid(value, theme, "padding"),
+    themeOrdinal: (value: unknown, theme?: Theme) => themeTokenRefIsValid(value, theme, "padding"),
   },
   presetOptions: () => Object.values(Padding),
-  themeOrdinalKeys: (theme: Theme) =>
-    Object.keys(theme.padding).map((id) => `@padding.${id}`),
+  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.padding).map((id) => `@padding.${id}`),
   computedFunctions: () => [ComputedFunction.OPTICAL_PADDING],
 }

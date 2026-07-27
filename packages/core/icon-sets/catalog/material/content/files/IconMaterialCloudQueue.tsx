@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialCloudQueue(props: SVGAttributes<SVGSVGElement>) {
   return (

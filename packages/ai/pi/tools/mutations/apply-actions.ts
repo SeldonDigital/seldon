@@ -1,14 +1,12 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
-
 import { ALL_ACTION_TYPES } from "../../../schema/action-schema"
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+
+import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
 
@@ -35,26 +33,31 @@ export function createApplyActionsTool(state: PiTurnState): ToolDefinition {
         { description: "Actions to apply, in order." },
       ),
     }),
+
     execute: async (_id, params) => {
       if (params.actions.length === 0) {
         return textResult("No actions provided.")
       }
+
       const lines = params.actions.map((action, index) => {
         const position = index + 1
+
         if (!KNOWN_ACTION_TYPES.has(action.type)) {
           return `${position}. ${action.type} rejected: unknown action type. Allowed types: ${ALL_ACTION_TYPES.join(", ")}.`
         }
+
         try {
           return `${position}. ${commit(state, {
             type: action.type,
             payload: action.payload,
           } as WorkspaceAction)}`
         } catch (caught) {
-          const reason =
-            caught instanceof Error ? caught.message : "invalid action"
+          const reason = caught instanceof Error ? caught.message : "invalid action"
+
           return `${position}. ${action.type} rejected: ${reason}`
         }
       })
+
       return textResult(lines.join("\n"))
     },
   })

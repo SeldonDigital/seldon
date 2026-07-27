@@ -1,12 +1,11 @@
 import { Unit, ValueType } from "../../../constants"
-import type { Properties } from "../../../types/properties"
 import { Resize } from "../resize"
-import { type BoardPresetId, isBoardPresetId } from "./board-preset"
-import {
-  BOARD_DEVICE_PRESETS,
-  type BoardDevicePresetId,
-  getBoardDevicePreset,
-} from "./device-presets"
+import { isBoardPresetId } from "./board-preset"
+import { BOARD_DEVICE_PRESETS, getBoardDevicePreset } from "./device-presets"
+
+import type { Properties } from "../../../types/properties"
+import type { BoardPresetId } from "./board-preset"
+import type { BoardDevicePresetId } from "./device-presets"
 import type { BoardCompound } from "./index"
 
 /** Applies the board fit preset to a board compound facet map. */
@@ -28,10 +27,9 @@ export function applyBoardPreset(presetId: BoardPresetId): BoardCompound {
 }
 
 /** Applies a device preset id to a board compound facet map. */
-export function applyBoardDevicePreset(
-  presetId: BoardDevicePresetId,
-): BoardCompound {
+export function applyBoardDevicePreset(presetId: BoardDevicePresetId): BoardCompound {
   const preset = getBoardDevicePreset(presetId)
+
   return {
     preset: { type: ValueType.OPTION, value: presetId },
     width: {
@@ -53,9 +51,7 @@ function isSameBoardFacetValue(
 }
 
 /** Matches a board compound against the current preset's canonical state. */
-export function matchBoardCompoundPreset(
-  board: BoardCompound | undefined,
-): string | null {
+export function matchBoardCompoundPreset(board: BoardCompound | undefined): string | null {
   const preset = board?.preset
   const presetId =
     preset &&
@@ -81,27 +77,23 @@ export function matchBoardCompoundPreset(
   return null
 }
 
-export function buildBoardCompoundReset(
-  schemaBoard?: BoardCompound,
-): Properties {
+export function buildBoardCompoundReset(schemaBoard?: BoardCompound): Properties {
   const EMPTY = { type: ValueType.EMPTY, value: null } as const
   const schema = schemaBoard ?? {}
+
   return {
     board: {
       preset: schema.preset ?? EMPTY,
       width: schema.width ?? EMPTY,
-      height:
-        schema.height ??
-        ({ type: ValueType.OPTION, value: Resize.FIT } as const),
+      height: schema.height ?? ({ type: ValueType.OPTION, value: Resize.FIT } as const),
     },
   }
 }
 
-export function resolveBoardPresetIdFromPickerValue(
-  preset: string,
-): BoardPresetId | null {
+export function resolveBoardPresetIdFromPickerValue(preset: string): BoardPresetId | null {
   if (isBoardPresetId(preset)) return preset
   if (preset === "Fit") return Resize.FIT
   const byName = BOARD_DEVICE_PRESETS.find((entry) => entry.name === preset)
+
   return byName?.id ?? null
 }

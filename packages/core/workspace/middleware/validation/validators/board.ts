@@ -1,9 +1,10 @@
 import { getComponentSchema } from "../../../../components/catalog"
-import { ComponentId } from "../../../../components/constants"
 import { ErrorMessages } from "../../../constants"
 import { getComponentPropertyDefaults } from "../../../helpers/components/get-component-property-defaults"
-import type { Workspace } from "../../../types"
 import { check } from "../check"
+
+import type { ComponentId } from "../../../../components/constants"
+import type { Workspace } from "../../../types"
 
 export const boardValidators = {
   exists: (workspace: Workspace, id: string) => {
@@ -21,17 +22,16 @@ export const boardValidators = {
       ErrorMessages.componentAlreadyExists(id),
     )
   },
-  allowedPropertyKeys: (
-    componentId: ComponentId,
-    board?: { type: string },
-  ): Set<string> => {
+  allowedPropertyKeys: (componentId: ComponentId, board?: { type: string }): Set<string> => {
     const schema = getComponentSchema(componentId)
     const allowedKeys = new Set(Object.keys(schema.properties))
+
     if (board) {
       for (const key of Object.keys(getComponentPropertyDefaults())) {
         allowedKeys.add(key)
       }
     }
+
     return allowedKeys
   },
   assertCatalogId: (

@@ -1,23 +1,22 @@
 import { describe, expect, it } from "vitest"
 
-import type { Workspace } from "@seldon/core/workspace/types"
-
 import { getThemeSlug } from "./get-theme-slug"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 const workspaceWith = (themes: Record<string, unknown>): Workspace =>
   ({ themes }) as unknown as Workspace
 
 describe("getThemeSlug", () => {
   it("kebab-cases the id when no theme entry exists", () => {
-    expect(getThemeSlug("highContrast", workspaceWith({}))).toBe(
-      "high-contrast",
-    )
+    expect(getThemeSlug("highContrast", workspaceWith({}))).toBe("high-contrast")
   })
 
   it("slugs a default entry from its catalog template id", () => {
     const ws = workspaceWith({
       t1: { id: "t1", type: "default", template: "catalog:highContrast" },
     })
+
     expect(getThemeSlug("t1", ws)).toBe("high-contrast")
   })
 
@@ -25,6 +24,7 @@ describe("getThemeSlug", () => {
     const ws = workspaceWith({
       t1: { id: "t1", type: "default", label: "My Theme" },
     })
+
     expect(getThemeSlug("t1", ws)).toBe("my-theme")
   })
 
@@ -33,6 +33,7 @@ describe("getThemeSlug", () => {
       root: { id: "root", type: "default", template: "catalog:seldon" },
       v: { id: "v", type: "variant", label: "Red", template: "theme:root" },
     })
+
     expect(getThemeSlug("v", ws)).toBe("seldon-red")
   })
 
@@ -40,6 +41,7 @@ describe("getThemeSlug", () => {
     const ws = workspaceWith({
       v: { id: "v", type: "variant", label: "Loop", template: "theme:v" },
     })
+
     expect(getThemeSlug("v", ws)).toBe("loop-loop")
   })
 })

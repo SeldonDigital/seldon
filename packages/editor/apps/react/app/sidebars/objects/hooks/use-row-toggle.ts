@@ -1,4 +1,4 @@
-import { MouseEvent } from "react"
+import type { MouseEvent } from "react"
 
 /**
  * Hook that provides a toggle handler for row expansion with Alt+click support.

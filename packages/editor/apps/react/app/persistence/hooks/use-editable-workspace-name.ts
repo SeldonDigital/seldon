@@ -1,6 +1,8 @@
 "use client"
 
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
+
+import type React from "react"
 
 type UseEditableWorkspaceNameArgs = {
   name: string
@@ -11,35 +13,32 @@ type UseEditableWorkspaceNameArgs = {
  * Inline rename behavior for the workspace title. Double-click enters edit mode,
  * Enter or blur commits a non-empty change, Escape reverts.
  */
-export function useEditableWorkspaceName({
-  name,
-  onRename,
-}: UseEditableWorkspaceNameArgs) {
+export function useEditableWorkspaceName({ name, onRename }: UseEditableWorkspaceNameArgs) {
   const [mode, setMode] = useState<"edit" | "display">("display")
 
   const commit = useCallback(
     (text: string) => {
       const next = text.trim()
+
       if (next.length > 0 && next.length <= 200 && next !== name) {
         onRename(next)
       }
+
       setMode("display")
     },
     [name, onRename],
   )
 
-  const handleDoubleClick = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
-      setMode("edit")
-      const target = event.currentTarget
-      requestAnimationFrame(() => {
-        target.focus()
-        window.getSelection()?.selectAllChildren(target)
-      })
-    },
-    [],
-  )
+  const handleDoubleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+    setMode("edit")
+    const target = event.currentTarget
+
+    requestAnimationFrame(() => {
+      target.focus()
+      window.getSelection()?.selectAllChildren(target)
+    })
+  }, [])
 
   const handleBlur = useCallback(
     (event: React.FocusEvent<HTMLElement>) => {
@@ -58,6 +57,7 @@ export function useEditableWorkspaceName({
         event.currentTarget.innerText = name
         setMode("display")
         event.currentTarget.blur()
+
         return
       }
 

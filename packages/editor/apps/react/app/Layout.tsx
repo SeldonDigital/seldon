@@ -4,14 +4,12 @@ import { useAppState } from "@app/editor/hooks/use-app-state"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import { Frame } from "@seldon/components/frames/Frame"
-import { CSSProperties, PropsWithChildren } from "react"
 
 import { TopbarController } from "./topbar/TopbarController"
 
-export function Layout({
-  children,
-  testId,
-}: PropsWithChildren<{ testId?: string }>) {
+import type { CSSProperties, PropsWithChildren } from "react"
+
+export function Layout({ children, testId }: PropsWithChildren<{ testId?: string }>) {
   const { showPanels, chromeTheme } = useEditorConfig()
   const { appState } = useAppState()
   const resolvedMode = useResolvedInterfaceMode()

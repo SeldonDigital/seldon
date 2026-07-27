@@ -35,14 +35,10 @@ const PRESET_BY_ID = Object.fromEntries(
   BOARD_DEVICE_PRESETS.map((preset) => [preset.id, preset]),
 ) as Record<BoardDevicePresetId, BoardDevicePreset>
 
-export function isBoardDevicePresetId(
-  value: unknown,
-): value is BoardDevicePresetId {
+export function isBoardDevicePresetId(value: unknown): value is BoardDevicePresetId {
   return typeof value === "string" && value in PRESET_BY_ID
 }
 
-export function getBoardDevicePreset(
-  id: BoardDevicePresetId,
-): BoardDevicePreset {
+export function getBoardDevicePreset(id: BoardDevicePresetId): BoardDevicePreset {
   return PRESET_BY_ID[id]
 }

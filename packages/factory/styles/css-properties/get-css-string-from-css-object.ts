@@ -1,5 +1,6 @@
 import { kebabCase } from "../../export/react/utils/case-utils"
-import { CSSObject } from "./types"
+
+import type { CSSObject } from "./types"
 
 /**
  * Convert a CSSObject to a string that can be inserted into a stylesheet

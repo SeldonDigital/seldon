@@ -1,9 +1,10 @@
 "use client"
 
 import { bumpRemeasure } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
-import { RefObject, useLayoutEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 
-import { Workspace } from "@seldon/core"
+import type { Workspace } from "@seldon/core"
+import type { RefObject } from "react"
 
 const FLIP_DURATION_MS = 200
 const FLIP_EASING = "cubic-bezier(0.2, 0, 0, 1)"
@@ -49,6 +50,7 @@ export function useCanvasReorderFlip(
 
   useLayoutEffect(() => {
     const root = rootRef.current
+
     if (!root) return
 
     // The glide leaves the trackers measuring the pre-animation position. Once
@@ -72,6 +74,7 @@ export function useCanvasReorderFlip(
 
     elements.forEach((element) => {
       const id = element.getAttribute("data-canvas-node-id")
+
       if (!id) return
 
       // Cancel any in-flight FLIP so the measurement is the base layout
@@ -88,19 +91,19 @@ export function useCanvasReorderFlip(
         left: baseRect.left - rootRect.left,
         top: baseRect.top - rootRect.top,
       }
+
       nextPositions.set(id, base)
 
       if (prefersReducedMotion) return
 
       const previous = previousPositions.current.get(id)
+
       if (!previous) return // First appearance: nothing to animate from.
 
       const deltaX = (previous.left - base.left) / scale
       const deltaY = (previous.top - base.top) / scale
-      if (
-        Math.abs(deltaX) < MOVE_THRESHOLD_PX &&
-        Math.abs(deltaY) < MOVE_THRESHOLD_PX
-      ) {
+
+      if (Math.abs(deltaX) < MOVE_THRESHOLD_PX && Math.abs(deltaY) < MOVE_THRESHOLD_PX) {
         return
       }
 
@@ -123,6 +126,7 @@ export function useCanvasReorderFlip(
           composite: "add",
         },
       )
+
       runningAnimations.current.set(id, animation)
       animation.finished
         .then(() => {
@@ -148,18 +152,18 @@ export function useCanvasReorderFlip(
  * variant root the node belongs to. Falls back to `element` itself when it is
  * already a top-level node.
  */
-function getRootVariantElement(
-  element: HTMLElement,
-  root: HTMLElement,
-): HTMLElement {
+function getRootVariantElement(element: HTMLElement, root: HTMLElement): HTMLElement {
   let topmost = element
   let ancestor = element.parentElement
+
   while (ancestor && ancestor !== root) {
     if (ancestor.hasAttribute("data-canvas-node-id")) {
       topmost = ancestor
     }
+
     ancestor = ancestor.parentElement
   }
+
   return topmost
 }
 
@@ -173,23 +177,25 @@ function hasAnimatedAncestor(
   animatedElements: Set<Element>,
 ): boolean {
   let ancestor = element.parentElement
+
   while (ancestor && ancestor !== root) {
-    if (
-      ancestor.hasAttribute("data-canvas-node-id") &&
-      animatedElements.has(ancestor)
-    ) {
+    if (ancestor.hasAttribute("data-canvas-node-id") && animatedElements.has(ancestor)) {
       return true
     }
+
     ancestor = ancestor.parentElement
   }
+
   return false
 }
 
 /** Derives the rendered scale of the root from its layout vs box width. */
 function getRootScale(root: HTMLElement): number {
   const layoutWidth = root.offsetWidth
+
   if (!layoutWidth) return 1
   const renderedWidth = root.getBoundingClientRect().width
   const scale = renderedWidth / layoutWidth
+
   return scale > 0 ? scale : 1
 }

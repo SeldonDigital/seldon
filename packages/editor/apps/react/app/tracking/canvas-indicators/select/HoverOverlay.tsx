@@ -1,10 +1,7 @@
 "use client"
 
 import { OutlineBox } from "@app/overlays"
-import {
-  useHoveredId,
-  useHoveredRootId,
-} from "@app/workspace/hooks/use-object-hover"
+import { useHoveredId, useHoveredRootId } from "@app/workspace/hooks/use-object-hover"
 import { useSelectedNodeRootId } from "@app/workspace/hooks/use-selection"
 import { useSelectedId } from "@app/workspace/selection-target"
 import { getHoverCoincidesWithSelection } from "@seldon/editor/lib/canvas/tracking/overlay-visibility"
@@ -15,9 +12,7 @@ import { outlineBoxStyle } from "./outline-box-style"
 /** Dashed border around the hovered object (any kind). */
 export function HoverOverlay({ wireframe = false }: { wireframe?: boolean }) {
   const rect = useCanvasOverlayStore((state) => state.hoverRect)
-  const outlineColors = useCanvasOverlayStore(
-    (state) => state.hoverOutlineColors,
-  )
+  const outlineColors = useCanvasOverlayStore((state) => state.hoverOutlineColors)
   const hoveredId = useHoveredId()
   const hoveredRootId = useHoveredRootId()
   const selectedId = useSelectedId()
@@ -31,10 +26,8 @@ export function HoverOverlay({ wireframe = false }: { wireframe?: boolean }) {
     selectedId,
     selectedRootId,
   })
+
   if (!rect || coincidesWithSelection) return null
-  return (
-    <OutlineBox
-      style={outlineBoxStyle(rect, "hover", wireframe, outlineColors?.hover)}
-    />
-  )
+
+  return <OutlineBox style={outlineBoxStyle(rect, "hover", wireframe, outlineColors?.hover)} />
 }

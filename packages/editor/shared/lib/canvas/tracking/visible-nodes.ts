@@ -1,8 +1,6 @@
+import { getChildNodeIds, getVariantRootIds } from "../../workspace/component-tree"
+
 import type { Board } from "@seldon/core/workspace/types"
-import {
-  getChildNodeIds,
-  getVariantRootIds,
-} from "../../workspace/component-tree"
 
 /**
  * Flat list of every node id in a board's variant trees, in the same walk order
@@ -17,6 +15,7 @@ export function getVisibleNodeIds(board: Board): string[] {
     if (visited.has(nodeId)) return
     visited.add(nodeId)
     ids.push(nodeId)
+
     for (const childId of getChildNodeIds(board, nodeId)) {
       walk(childId)
     }

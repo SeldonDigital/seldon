@@ -10,13 +10,15 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface ListboxOptionProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -49,10 +51,7 @@ export function ListboxOption({
   seldonRefs,
   ...props
 }: ListboxOptionProps) {
-  const listboxOptionClassName = combineClassNames(
-    "sdn-listbox-option",
-    className,
-  )
+  const listboxOptionClassName = combineClassNames("sdn-listbox-option", className)
   const iconProps = applyRef(
     seldonRefs,
     icon === null
@@ -70,10 +69,7 @@ export function ListboxOption({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
