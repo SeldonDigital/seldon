@@ -16,9 +16,9 @@ const ROUTE = "/api/agent"
 
 const pluginDir = path.dirname(fileURLToPath(import.meta.url))
 const handlerEntry = path.join(pluginDir, "agent-handler.ts")
-const coreRoot = path.join(pluginDir, "../../core")
-const factoryRoot = path.join(pluginDir, "../../factory")
-const aiRoot = path.join(pluginDir, "../../ai")
+const coreRoot = path.join(pluginDir, "../../../core")
+const factoryRoot = path.join(pluginDir, "../../../factory")
+const aiRoot = path.join(pluginDir, "../../../ai")
 const aiEntry = path.join(aiRoot, "index.ts")
 
 type RunAgent = typeof runAgent
@@ -36,7 +36,7 @@ let buildId = 0
 /** Previous bundle path, removed after the next build so the cache dir stays clean. */
 let previousOutputFile: string | null = null
 
-const repoRoot = path.join(pluginDir, "../../..")
+const repoRoot = path.join(pluginDir, "../../../..")
 
 /**
  * Pi and its dependency graph are large and ship runtime assets and dynamic

@@ -13,9 +13,9 @@ const ROUTE = "/api/import-web"
 
 const pluginDir = path.dirname(fileURLToPath(import.meta.url))
 const handlerEntry = path.join(pluginDir, "import-web-handler.ts")
-const coreRoot = path.join(pluginDir, "../../core")
-const factoryRoot = path.join(pluginDir, "../../factory")
-const repoRoot = path.join(pluginDir, "../../..")
+const coreRoot = path.join(pluginDir, "../../../core")
+const factoryRoot = path.join(pluginDir, "../../../factory")
+const repoRoot = path.join(pluginDir, "../../../..")
 
 type RunImportWebHandler = typeof runImportWebHandler
 

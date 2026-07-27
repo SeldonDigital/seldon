@@ -18,8 +18,8 @@ class PayloadTooLargeError extends Error {}
 
 const pluginDir = path.dirname(fileURLToPath(import.meta.url))
 const handlerEntry = path.join(pluginDir, "export-handler.ts")
-const coreRoot = path.join(pluginDir, "../../core")
-const factoryRoot = path.join(pluginDir, "../../factory")
+const coreRoot = path.join(pluginDir, "../../../core")
+const factoryRoot = path.join(pluginDir, "../../../factory")
 
 type RunExport = typeof runExport
 
