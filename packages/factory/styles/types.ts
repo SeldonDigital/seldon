@@ -3,6 +3,8 @@ import type { ComputeContext, LayoutMode } from "@seldon/core/properties/compute
 
 export type StyleGenerationContext = {
   properties: Properties
+  parentContext: StyleGenerationContext | null
+  theme: Theme
   /**
    * The same effective (pre-compute) {@link ComputeContext} the core compute engine runs against,
    * as built by `getNodeComputeContext`. Style helpers read it in `useThemeVariableReferences` mode
@@ -11,8 +13,6 @@ export type StyleGenerationContext = {
    * on live rendering, where computed values stay concrete.
    */
   computeContext?: ComputeContext
-  parentContext: StyleGenerationContext | null
-  theme: Theme
   /**
    * Layout model the node arranges its children with. `"grid"` switches layout
    * and sizing style helpers to CSS grid. Absent means flexbox. Children read the

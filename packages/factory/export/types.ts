@@ -10,13 +10,13 @@ import type { CSSProperties } from "react"
 
 export type ExportOptions = {
   rootDirectory: string
-  token?: string
   target: ExportTarget
   output: {
     assetsFolder: string
     componentsFolder: string
     assetPublicPath: string
   }
+  token?: string
   publishAll?: boolean
   debugMode?: boolean
   assetReader?: ExportAssetReader
@@ -75,6 +75,10 @@ export type ComponentToExport = {
   variantId: VariantId
   defaultVariantId: VariantId
   config: ComponentExport
+  output: {
+    path: string
+  }
+  tree: JSONTreeNode
   /**
    * Present only for authored components. Carries the board's own display
    * metadata so generated docs report the board's level, intent, and tags
@@ -85,10 +89,6 @@ export type ComponentToExport = {
     intent?: string
     tags?: string[]
   }
-  output: {
-    path: string
-  }
-  tree: JSONTreeNode
 }
 
 /**
@@ -159,11 +159,11 @@ export type JSONTreeNode = {
   componentId: ComponentId
   schemaVariantId: string | null
   nodeId: InstanceId | VariantId
+  level: ComponentLevel
+  dataBinding: DataBinding
   /** Unique node reference handle, emitted as `data-seldon-ref` when present. */
   ref?: string
   children?: null | string | JSONTreeNode[]
-  level: ComponentLevel
-  dataBinding: DataBinding
   classNames?: string[]
   /**
    * True when this node (or an ancestor within the same tree) has Display set to
@@ -179,15 +179,15 @@ export type JSONTreeNode = {
  */
 export type DataBinding = {
   interfaceName: string
-  referenceName?: string // If there are multiple children with the same name, we have to distinguish every child by index
   path: string
   props: Record<
     string,
     {
+      defaultValue: string | CSSProperties
       type?: string
       value?: string | boolean | number | object | string[] | number[]
-      defaultValue: string | CSSProperties
       options?: string[]
     }
   >
+  referenceName?: string // If there are multiple children with the same name, we have to distinguish every child by index
 }

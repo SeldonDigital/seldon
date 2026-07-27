@@ -10,10 +10,10 @@ export type IconExportSource = {
 
 export type ExportAssetReader = {
   readNativeComponent(fileStem: string): string | undefined
-  readCustomComponent?(fileStem: string): string | undefined
   readIconFile(absolutePath: string): Buffer | undefined
-  getIconExportSource?(iconId: IconId): IconExportSource | undefined
   listNativeComponentFileStems(): string[]
+  readCustomComponent?(fileStem: string): string | undefined
+  getIconExportSource?(iconId: IconId): IconExportSource | undefined
 }
 
 /**

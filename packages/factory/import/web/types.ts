@@ -120,10 +120,10 @@ export interface SuggestedSchema {
     tag: string
     role: string | null
     count: number
+    childOutline: string[]
     text?: string
     classes?: string[]
     attrs?: Record<string, string>
-    childOutline: string[]
   }
 }
 

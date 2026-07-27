@@ -76,15 +76,15 @@ export function applyTransformsToColorReference(
  */
 export function getColorCSSValue({
   color,
+  theme,
   opacity,
   brightness,
-  theme,
   useThemeVariableReferences = false,
 }: {
   color: ColorValue | EmptyValue
+  theme: Theme
   opacity?: PercentageValue | EmptyValue | number
   brightness?: PercentageValue | EmptyValue | number
-  theme: Theme
   useThemeVariableReferences?: boolean
 }): string {
   if (useThemeVariableReferences) {

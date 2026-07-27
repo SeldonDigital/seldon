@@ -15,15 +15,15 @@ import type { Theme } from "@seldon/core/themes/types"
  */
 export function getLayeredPaintColor({
   color,
+  theme,
   brightness,
   opacity,
-  theme,
   useThemeVariableReferences = false,
 }: {
   color: ColorValue | EmptyValue
+  theme: Theme
   brightness?: PercentageValue | EmptyValue
   opacity?: PercentageValue | EmptyValue | number
-  theme: Theme
   useThemeVariableReferences?: boolean
 }): string {
   return getColorCSSValue({

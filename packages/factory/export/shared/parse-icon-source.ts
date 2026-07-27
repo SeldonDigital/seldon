@@ -7,10 +7,10 @@
 export type IconGeometry = {
   /** SVG `viewBox`, e.g. "0 0 24 24". */
   viewBox: string
-  /** Root `fill`, usually "currentColor". */
-  fill?: string
   /** Inner SVG markup with attributes de-Reactified for HTML/SVG. */
   body: string
+  /** Root `fill`, usually "currentColor". */
+  fill?: string
 }
 
 const REACT_TO_SVG_ATTRS: Array<[RegExp, string]> = [

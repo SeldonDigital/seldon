@@ -21,13 +21,13 @@ const SIDE_TO_CSS_KEY: Record<PaddingSide, keyof CSSObject> = {
 
 export function getPaddingStyles({
   properties,
-  computeContext,
   theme,
+  computeContext,
   useThemeVariableReferences,
 }: {
   properties: Properties
-  computeContext?: ComputeContext
   theme: Theme
+  computeContext?: ComputeContext
   useThemeVariableReferences?: boolean
 }): CSSObject {
   const styles: CSSObject = {}
