@@ -1,7 +1,10 @@
 import { getPropertySchema } from "../../properties/schemas/helpers/get-property-schema"
 import { getPropertyOptions } from "../../properties/schemas/helpers/property-options"
 import type { Theme } from "../../themes/types"
-import type { IntentRule } from "../types/design-semantics-types"
+import type {
+  IntentCandidate,
+  IntentRule,
+} from "../types/design-semantics-types"
 import { designSemantics } from "./design-semantics.config"
 
 /**
@@ -115,36 +118,177 @@ export function resolveIntentTarget(phrase: string): IntentRule | undefined {
   )
 }
 
+/** A relative operation resolved from a verb: which concept and which way. */
+export interface ResolvedOperation {
+  concept: string
+  direction: "increase" | "decrease"
+  steps: number
+}
+
+/**
+ * The relative operation a verb names, for example "tighten" -> spacing down,
+ * "bolder" -> weight up, or undefined when nothing matches. Lets a bare verb
+ * become a scale step without the caller restating the concept and direction.
+ */
+export function resolveOperation(phrase: string): ResolvedOperation | undefined {
+  const norm = normalizeWord(phrase)
+  const rule = designSemantics.operations.find((operation) =>
+    operation.phrases.some((p) => normalizeWord(p) === norm),
+  )
+  if (!rule) return undefined
+  return { concept: rule.concept, direction: rule.direction, steps: rule.steps ?? 1 }
+}
+
+/**
+ * Steps an ordinal token along its scale and returns the new `@scope.id`, or
+ * undefined when the scale is empty. `orderedTokens` is the scale in order, as
+ * `themeOrdinalKeys` reports it. The current token is matched by id, so a bare
+ * id and an `@scope.id` reference both locate the same step. An unknown or unset
+ * current value starts from the middle of the scale, so a first nudge moves off
+ * a sensible baseline. The result index is clamped to the scale ends.
+ */
+export function resolveScaleStep(
+  currentToken: string | undefined,
+  steps: number,
+  orderedTokens: readonly string[],
+): string | undefined {
+  if (orderedTokens.length === 0) return undefined
+  const ids = orderedTokens.map((token) => {
+    const parsed = parseToken(token)
+    return parsed ? parsed.id : token
+  })
+  const currentId = currentToken
+    ? (parseToken(currentToken)?.id ?? currentToken)
+    : undefined
+  const found = currentId
+    ? ids.findIndex((id) => normalizeWord(id) === normalizeWord(currentId))
+    : -1
+  const startIndex = found === -1 ? Math.floor(ids.length / 2) : found
+  const nextIndex = Math.min(
+    Math.max(startIndex + steps, 0),
+    ids.length - 1,
+  )
+  return orderedTokens[nextIndex]
+}
+
 /** The top-level key a candidate path writes, for example font.size -> font. */
 function rootKey(path: string): string {
   const dot = path.indexOf(".")
   return dot === -1 ? path : path.slice(0, dot)
 }
 
+/** Normalizes a bare path or a guarded candidate to the object form. */
+function asCandidate(candidate: string | IntentCandidate): IntentCandidate {
+  return typeof candidate === "string" ? { path: candidate } : candidate
+}
+
+/** The target component facts a candidate guard is checked against. */
+export interface IntentContext {
+  level?: string
+  componentId?: string
+}
+
 /**
- * The property an intent resolves to for a specific target, or its candidates
- * when the target exposes none of them. A concept like "size" is ambiguous
- * until a target is known, so this gates the ordered candidates against the
- * component's exposed top-level keys and returns the first that fits. Callers
- * pass the target's settable keys, so the same concept routes to `font.size` on
- * text and `width` on a frame without the config assuming one property.
+ * Whether a candidate's guards apply to the target. `none` means the candidate
+ * carries no guard, `match` means a guard names the target's level or component,
+ * and `fail` means a guard is present but the target does not match it, so the
+ * candidate is excluded even when its root key is exposed.
+ */
+function guardState(
+  candidate: IntentCandidate,
+  context?: IntentContext,
+): "none" | "match" | "fail" {
+  const hasGuard = candidate.whenLevel || candidate.whenComponent
+  if (!hasGuard) return "none"
+  const norm = (value: string) => value.toLowerCase()
+  if (
+    candidate.whenLevel &&
+    context?.level &&
+    candidate.whenLevel.some((level) => norm(level) === norm(context.level!))
+  ) {
+    return "match"
+  }
+  if (
+    candidate.whenComponent &&
+    context?.componentId &&
+    candidate.whenComponent.some(
+      (id) => norm(id) === norm(context.componentId!),
+    )
+  ) {
+    return "match"
+  }
+  return "fail"
+}
+
+/**
+ * The property an intent resolves to for a specific target, its candidates when
+ * the target exposes none, or an ambiguous set when several apply with no
+ * discriminator. A concept like "size" is ambiguous until a target is known, so
+ * this gates the ordered candidates against the component's exposed top-level
+ * keys and guards. A guarded candidate that names the target's level or
+ * component wins the tiebreak, for example text weight over stroke weight on a
+ * bordered text box. Callers pass the target's settable keys and optional
+ * level/component, so the same concept routes to `font.size` on text and
+ * `width` on a frame without the config assuming one property.
  */
 export type IntentPropertyResolution =
   | { status: "resolved"; propertyPath: string }
+  | { status: "ambiguous"; candidates: readonly string[] }
   | { status: "unsupported"; candidates: readonly string[] }
 
 export function resolveIntentProperty(
   phrase: string,
   exposedKeys: ReadonlySet<string>,
+  context?: IntentContext,
 ): IntentPropertyResolution | undefined {
   const intent = resolveIntentTarget(phrase)
   if (!intent) return undefined
-  const match = intent.candidates.find((path) => exposedKeys.has(rootKey(path)))
-  if (match) return { status: "resolved", propertyPath: match }
-  return { status: "unsupported", candidates: intent.candidates }
+
+  const allPaths = intent.candidates.map((c) => asCandidate(c).path)
+  const applicable = intent.candidates
+    .map(asCandidate)
+    .filter((candidate) => exposedKeys.has(rootKey(candidate.path)))
+    .filter((candidate) => guardState(candidate, context) !== "fail")
+
+  if (applicable.length === 0) {
+    return { status: "unsupported", candidates: allPaths }
+  }
+  const guarded = applicable.find(
+    (candidate) => guardState(candidate, context) === "match",
+  )
+  if (guarded) return { status: "resolved", propertyPath: guarded.path }
+  if (applicable.length === 1) {
+    return { status: "resolved", propertyPath: applicable[0]!.path }
+  }
+  return {
+    status: "ambiguous",
+    candidates: applicable.map((candidate) => candidate.path),
+  }
 }
 
 /** Every intent rule, for rendering the prompt section and verb tools. */
 export function listIntents(): readonly IntentRule[] {
   return designSemantics.intents
+}
+
+/** Every named spacing density, for the density tool's choices and the prompt. */
+export function listSpacingFeels() {
+  return designSemantics.spacingFeels
+}
+
+/**
+ * The spacing density a word names, matched by id or phrase, or undefined. Lets
+ * "breathe", "airy", or "tight" resolve to the modulation baseSize the whole
+ * theme scales by.
+ */
+export function resolveSpacingFeel(
+  word: string,
+): { id: string; baseSize: number } | undefined {
+  const norm = normalizeWord(word)
+  const feel = designSemantics.spacingFeels.find(
+    (candidate) =>
+      normalizeWord(candidate.id) === norm ||
+      candidate.phrases.some((phrase) => normalizeWord(phrase) === norm),
+  )
+  return feel ? { id: feel.id, baseSize: feel.baseSize } : undefined
 }

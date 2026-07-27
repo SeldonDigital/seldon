@@ -10,8 +10,10 @@ import { createDuplicateComponentTool } from "./duplicate-component"
 import { createInsertComponentTool } from "./insert-component"
 import { createInsertVariantInstanceTool } from "./insert-variant-instance"
 import { createMoveComponentTool } from "./move-component"
+import { createNudgeTool } from "./nudge"
 import { createRemoveInstanceTool } from "./remove-instance"
 import { createReorderComponentTool } from "./reorder-component"
+import { createSetAlignTool } from "./set-align"
 import { createSetBoardLabelTool } from "./set-board-label"
 import { createSetDirectionTool } from "./set-direction"
 import { createSetEmphasisTool } from "./set-emphasis"
@@ -20,6 +22,7 @@ import { createSetFontCollectionFamilyVariantTool } from "./set-font-collection-
 import { createSetIconSetOverrideTool } from "./set-icon-set-override"
 import { createSetIconSetSubcategoryPresetTool } from "./set-icon-set-subcategory-preset"
 import { createSetPropertiesTool } from "./set-properties"
+import { createSetSpacingFeelTool } from "./set-spacing-feel"
 import { createSetTextRoleTool } from "./set-text-role"
 import { createSetThemeOverrideTool } from "./set-theme-override"
 
@@ -72,6 +75,8 @@ export function createMutationTools(
       createSetTextRoleTool(state, resolved),
       createSetEmphasisTool(state, resolved),
       createSetDirectionTool(state, resolved),
+      createNudgeTool(state, resolved),
+      createSetAlignTool(state, resolved),
     )
   }
 
@@ -79,7 +84,7 @@ export function createMutationTools(
     tools.push(createApplyActionsTool(state))
   }
   if (includeAll || turnScope === "theme") {
-    tools.push(createSetThemeOverrideTool(state))
+    tools.push(createSetThemeOverrideTool(state), createSetSpacingFeelTool(state))
   }
   if (includeAll || turnScope === "fontCollection") {
     tools.push(

@@ -10,9 +10,10 @@ import { isTaggedValue } from "../prompt/property-taxonomy"
 /** Actions that carry a `properties` map keyed by a node id the linter can check. */
 const PROPERTY_ACTION_TYPES = new Set(["set_node_properties"])
 
-/** The component identity and settable keys a design check needs. */
+/** The component identity, level, and settable keys a design check needs. */
 interface Vocabulary {
   catalogId: string
+  level?: string
   validKeys: Set<string>
 }
 
@@ -34,7 +35,11 @@ function resolveVocabulary(
   if (!catalogId) return undefined
   const schema = findComponentSchema(catalogId)
   if (!schema?.properties) return undefined
-  return { catalogId, validKeys: new Set(Object.keys(schema.properties)) }
+  return {
+    catalogId,
+    level: schema.level,
+    validKeys: new Set(Object.keys(schema.properties)),
+  }
 }
 
 /**
@@ -88,11 +93,16 @@ function propertyViolations(
   value: unknown,
 ): string[] {
   if (!vocab.validKeys.has(key)) {
-    const routed = resolveIntentProperty(key, vocab.validKeys)
-    const hint =
-      routed?.status === "resolved"
-        ? ` Set "${routed.propertyPath}" instead.`
-        : " Call get_component_vocabulary for the keys it exposes."
+    const routed = resolveIntentProperty(key, vocab.validKeys, {
+      level: vocab.level,
+      componentId: vocab.catalogId,
+    })
+    let hint = " Call get_component_vocabulary for the keys it exposes."
+    if (routed?.status === "resolved") {
+      hint = ` Set "${routed.propertyPath}" instead.`
+    } else if (routed?.status === "ambiguous") {
+      hint = ` Set one of "${routed.candidates.join('", "')}" instead, depending on what you mean.`
+    }
     return [
       `${vocab.catalogId}: "${key}" is not a settable property on this component, so the edit would be silently dropped.${hint}`,
     ]
