@@ -11,7 +11,6 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
 import { Link, LinkProps } from "../primitives/Link"
 import { applyRef } from "../utils/apply-ref"

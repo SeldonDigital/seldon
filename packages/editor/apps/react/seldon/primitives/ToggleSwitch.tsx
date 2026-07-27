@@ -11,7 +11,6 @@
  *
  *****/
 import { InputHTMLAttributes, Ref, forwardRef } from "react"
-
 import { SeldonToggle } from "../custom/SeldonToggle"
 import { combineClassNames } from "../utils/class-name"
 

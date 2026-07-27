@@ -135,7 +135,6 @@ const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
           </ButtonMenu>
         </Frame>
         <Frame v-bind="frame2Props" v-if="frame2">
-          <slot name="properties" />
         </Frame>
       </slot>
     </div>

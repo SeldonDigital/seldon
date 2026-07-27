@@ -848,7 +848,7 @@ body {
   flex-direction: column;
   box-shadow: 0px 1px 0.125rem 0.031rem
     color-mix(in srgb, var(--sdn-swatch-black) 20%, transparent);
-  width: 600px;
+  width: 550px;
   height: fit-content;
   flex-shrink: 0;
   border-radius: var(--sdn-corners-compact);
@@ -1130,16 +1130,17 @@ body {
   margin-top: 0;
   margin-bottom: 0;
   box-shadow:
-    inset 0px -2px 0.375rem 0.062rem hsl(0 0% 15% / 12%),
-    inset 0px 2px 0.25rem 0.031rem hsl(0 0% 96% / 8%),
-    0px 1px 0.375rem 0.031rem hsl(0 0% 0% / 20%);
+    inset -0.5px -0.5px 0.5px 0px hsl(0 0% 15% / 20%),
+    inset 0.5px 0.5px 0.5px 0px hsl(0 0% 96% / 30%),
+    0px 0px 0.125rem 0.031rem
+      color-mix(in srgb, var(--sdn-swatch-primary) 30%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
   padding: var(--sdn-paddings-tight);
   border-radius: var(--sdn-corners-tight);
   border: var(--hairline) solid
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 20%, transparent);
+    color-mix(in srgb, var(--sdn-swatch-offBlack) 50%, transparent);
 }
 
 .sdn-item-tree-item {
@@ -1567,10 +1568,10 @@ body {
 }
 
 .sdn-panel-palette {
-  display: flex;
   background-color: var(--sdn-swatch-white);
   overflow: hidden;
   flex-wrap: nowrap;
+  display: flex;
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
@@ -2417,6 +2418,7 @@ body {
 
 .sdn-form-control-radio--9dpd {
   align-items: start;
+  gap: var(--sdn-gaps-cozy);
 }
 
 .sdn-frame--0lrb {

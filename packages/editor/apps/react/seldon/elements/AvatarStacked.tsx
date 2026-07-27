@@ -11,7 +11,6 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
 import { Image, ImageProps } from "../primitives/Image"
 import { applyRef } from "../utils/apply-ref"

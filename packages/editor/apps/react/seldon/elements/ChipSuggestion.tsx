@@ -11,7 +11,6 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"

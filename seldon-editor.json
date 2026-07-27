@@ -59580,7 +59580,7 @@
       "overrides": {
         "display": {
           "type": "option",
-          "value": "show"
+          "value": "mock"
         }
       },
       "origin": "user"

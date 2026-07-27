@@ -11,7 +11,6 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
