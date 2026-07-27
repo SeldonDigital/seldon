@@ -1,6 +1,7 @@
-import { WritableDraft, produce } from "immer"
+import { produce } from "immer"
 
-import { Workspace } from "../../types"
+import type { Workspace } from "../../types"
+import type { WritableDraft } from "immer"
 
 /**
  * Helper for workspace mutations using Immer.

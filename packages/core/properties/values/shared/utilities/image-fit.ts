@@ -1,6 +1,6 @@
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../empty/empty"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../empty/empty"
 
 /**
  * Image fit values for image sizing behavior.
@@ -27,8 +27,7 @@ export const imageFitSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(ImageFit) as string[]).includes(value),
+      typeof value === "string" && (Object.values(ImageFit) as string[]).includes(value),
   },
   presetOptions: () => Object.values(ImageFit),
 }

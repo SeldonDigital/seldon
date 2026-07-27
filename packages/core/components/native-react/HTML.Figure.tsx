@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react"
+import type { HTMLAttributes } from "react"
 
 export const HTMLFigure = (props: HTMLAttributes<HTMLElement>) => {
   return <figure {...props} />

@@ -1,4 +1,4 @@
-import { TokenType } from "../../../constants/token-type"
+import type { TokenType } from "../../../constants/token-type"
 
 /** Allowed option keys for `borderWidth` cells. Extend this list to add future options. */
 export const BORDER_WIDTH_OPTIONS = ["hairline"] as const

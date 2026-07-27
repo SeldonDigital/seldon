@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload, Workspace } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addFontCollectionCustomFamily } from "./add/add-font-collection-custom-family"
 import { duplicateFontCollection } from "./duplicate/duplicate-font-collection"
@@ -26,6 +25,8 @@ import { setThemeEditorData } from "./set/set-theme-editor-data"
 import { setThemeLabel } from "./set/set-theme-label"
 import { setThemeScaleSlot } from "./set/set-theme-scale-slot"
 
+import type { ExtractPayload, Workspace } from "../../../index"
+
 const defaultThemeId = "theme-seldon-default"
 const variantThemeId = "theme-seldon-copy"
 
@@ -40,10 +41,7 @@ const iconEntry = (ws: Workspace, id: string) => ws["icon-sets"][id]
 const at = (value: unknown, path: string): unknown =>
   path
     .split(".")
-    .reduce<unknown>(
-      (acc, key) => (acc as Record<string, unknown> | undefined)?.[key],
-      value,
-    )
+    .reduce<unknown>((acc, key) => (acc as Record<string, unknown> | undefined)?.[key], value)
 
 const variantTheme = () =>
   duplicateTheme(
@@ -63,11 +61,13 @@ describe("theme entry metadata", () => {
       } as ExtractPayload<"set_theme_label">,
       empty(),
     )
+
     expect(themeEntry(set, defaultThemeId).label).toBe("Renamed")
     const reset = resetThemeLabel(
       { themeId: defaultThemeId } as ExtractPayload<"reset_theme_label">,
       set,
     )
+
     expect(themeEntry(reset, defaultThemeId).label).not.toBe("Renamed")
   })
 
@@ -79,11 +79,13 @@ describe("theme entry metadata", () => {
       } as ExtractPayload<"set_theme_editor_data">,
       empty(),
     )
+
     expect(themeEntry(set, defaultThemeId).__editor).toEqual({ note: "x" })
     const reset = resetThemeEditorData(
       { themeId: defaultThemeId } as ExtractPayload<"reset_theme_editor_data">,
       set,
     )
+
     expect(themeEntry(reset, defaultThemeId).__editor).toBeUndefined()
   })
 })
@@ -102,9 +104,8 @@ describe("theme tokens (variant entry)", () => {
 
   it("writes a scale slot, renames it, and clears it", () => {
     const seeded = seedSlot(variantTheme())
-    expect(
-      at(themeEntry(seeded, variantThemeId).overrides, "size.custom1"),
-    ).toBeDefined()
+
+    expect(at(themeEntry(seeded, variantThemeId).overrides, "size.custom1")).toBeDefined()
 
     const renamed = setThemeCustomTokenName(
       {
@@ -115,9 +116,10 @@ describe("theme tokens (variant entry)", () => {
       } as ExtractPayload<"set_theme_custom_token_name">,
       seeded,
     )
-    expect(
-      at(themeEntry(renamed, variantThemeId).overrides, "size.custom1.name"),
-    ).toBe("Renamed Token")
+
+    expect(at(themeEntry(renamed, variantThemeId).overrides, "size.custom1.name")).toBe(
+      "Renamed Token",
+    )
 
     const removed = resetThemeOverride(
       {
@@ -126,19 +128,20 @@ describe("theme tokens (variant entry)", () => {
       } as ExtractPayload<"reset_theme_override">,
       seeded,
     )
-    expect(
-      at(themeEntry(removed, variantThemeId).overrides, "size.custom1"),
-    ).toBeUndefined()
+
+    expect(at(themeEntry(removed, variantThemeId).overrides, "size.custom1")).toBeUndefined()
 
     const cleared = resetThemeTokens(
       { themeId: variantThemeId } as ExtractPayload<"reset_theme_tokens">,
       seeded,
     )
+
     expect(themeEntry(cleared, variantThemeId).overrides).toEqual({})
   })
 
   it("renaming an unknown token is a no-op", () => {
     const ws = variantTheme()
+
     expect(
       setThemeCustomTokenName(
         {
@@ -164,6 +167,7 @@ describe("font collection entry metadata", () => {
       } as ExtractPayload<"set_font_collection_label">,
       ws,
     )
+
     expect(fcEntry(set, id).label).toBe("Fonts X")
     resetFontCollectionLabel(
       { fontCollectionId: id } as ExtractPayload<"reset_font_collection_label">,
@@ -178,6 +182,7 @@ describe("font collection entry metadata", () => {
       { fontCollectionId: id, editorData: { n: 1 } } as never,
       ws,
     )
+
     expect(fcEntry(set, id).__editor).toEqual({ n: 1 })
     const reset = resetFontCollectionEditorData(
       {
@@ -185,6 +190,7 @@ describe("font collection entry metadata", () => {
       } as ExtractPayload<"reset_font_collection_editor_data">,
       set,
     )
+
     expect(fcEntry(reset, id).__editor).toBeUndefined()
   })
 
@@ -195,16 +201,16 @@ describe("font collection entry metadata", () => {
       { fontCollectionId: id, path: "a.b", value: 5 } as never,
       ws,
     )
+
     expect(at(fcEntry(set, id).overrides, "a.b")).toBe(5)
-    const reset = resetFontCollectionOverride(
-      { fontCollectionId: id, path: "a.b" } as never,
-      set,
-    )
+    const reset = resetFontCollectionOverride({ fontCollectionId: id, path: "a.b" } as never, set)
+
     expect(at(fcEntry(reset, id).overrides, "a.b")).toBeUndefined()
     const cleared = resetFontCollection(
       { fontCollectionId: id } as ExtractPayload<"reset_font_collection">,
       set,
     )
+
     expect(fcEntry(cleared, id).overrides).toEqual({})
   })
 
@@ -224,18 +230,20 @@ describe("font collection entry metadata", () => {
       } as never,
       variant,
     )
-    const families = (at(fcEntry(added, "fc-variant").overrides, "families") ??
-      {}) as Record<string, unknown>
+    const families = (at(fcEntry(added, "fc-variant").overrides, "families") ?? {}) as Record<
+      string,
+      unknown
+    >
     const key = Object.keys(families)[0]!
+
     expect(at(families, `${key}.name`)).toBe("My Font")
 
     const removed = removeFontCollectionCustomFamily(
       { fontCollectionId: "fc-variant", key } as never,
       added,
     )
-    expect(
-      at(fcEntry(removed, "fc-variant").overrides, `families.${key}`),
-    ).toBeUndefined()
+
+    expect(at(fcEntry(removed, "fc-variant").overrides, `families.${key}`)).toBeUndefined()
   })
 })
 
@@ -250,26 +258,21 @@ describe("icon set entry metadata", () => {
       } as ExtractPayload<"set_icon_set_label">,
       ws,
     )
+
     expect(iconEntry(set, id).label).toBe("Icons X")
   })
 
   it("writes, clears, and resets an override path", () => {
     const ws = empty()
     const id = iconId(ws)
-    const set = setIconSetOverride(
-      { iconSetId: id, path: "a.b", value: 9 } as never,
-      ws,
-    )
+    const set = setIconSetOverride({ iconSetId: id, path: "a.b", value: 9 } as never, ws)
+
     expect(at(iconEntry(set, id).overrides, "a.b")).toBe(9)
-    const reset = resetIconSetOverride(
-      { iconSetId: id, path: "a.b" } as never,
-      set,
-    )
+    const reset = resetIconSetOverride({ iconSetId: id, path: "a.b" } as never, set)
+
     expect(at(iconEntry(reset, id).overrides, "a.b")).toBeUndefined()
-    const cleared = resetIconSet(
-      { iconSetId: id } as ExtractPayload<"reset_icon_set">,
-      set,
-    )
+    const cleared = resetIconSet({ iconSetId: id } as ExtractPayload<"reset_icon_set">, set)
+
     expect(iconEntry(cleared, id).overrides).toEqual({})
   })
 })

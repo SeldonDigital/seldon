@@ -1,5 +1,6 @@
-import type { Workspace } from "../../../model/workspace"
 import { enableGoogleFontFamilies } from "./migrate-00004-enable-default-fonts"
+
+import type { Workspace } from "../../../model/workspace"
 
 /**
  * v5: enable the Quicksand family, added to the default Google fonts for the

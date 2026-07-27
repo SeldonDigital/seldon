@@ -1,10 +1,4 @@
 import { isLookSection } from "../../looks/look-facets"
-import type {
-  ThemeTokenSchema,
-  ThemeTokenSchemaUnresolved,
-  ThemeTokenSectionId,
-} from "../../types/schema"
-import type { ComputedTheme, StockTheme } from "../../types/theme"
 import {
   generateComputedSchemas,
   generateLookSchemas,
@@ -15,6 +9,13 @@ import {
 import { THEME_TOKEN_SCHEMAS } from "../data/theme-token-schemas"
 import { resolveThemeTokenSchema } from "./resolve-theme-token-schema"
 
+import type {
+  ThemeTokenSchema,
+  ThemeTokenSchemaUnresolved,
+  ThemeTokenSectionId,
+} from "../../types/schema"
+import type { ComputedTheme, StockTheme } from "../../types/theme"
+
 export function getThemeTokenSchemasBySection(
   sectionId: ThemeTokenSectionId,
   theme?: StockTheme | ComputedTheme,
@@ -23,9 +24,7 @@ export function getThemeTokenSchemasBySection(
 
   Object.values(THEME_TOKEN_SCHEMAS).forEach((schema) => {
     if (schema.section === sectionId) {
-      schemas.push(
-        resolveThemeTokenSchema(schema as ThemeTokenSchemaUnresolved),
-      )
+      schemas.push(resolveThemeTokenSchema(schema as ThemeTokenSchemaUnresolved))
     }
   })
 

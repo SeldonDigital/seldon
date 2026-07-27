@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { getNodeById } from "./get-node-by-id"
 import { getNodeProperties } from "./get-node-properties"
+
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
@@ -25,12 +26,14 @@ describe("getNodeById", () => {
 describe("getNodeProperties", () => {
   it("merges schema and override chain for a node", () => {
     const props = getNodeProperties(ws.nodes[rootId]!, ws)
+
     expect(typeof props).toBe("object")
     expect(Object.keys(props).length).toBeGreaterThan(0)
   })
 
   it("merges component defaults for a board", () => {
     const props = getNodeProperties(board, ws)
+
     expect(typeof props).toBe("object")
   })
 })

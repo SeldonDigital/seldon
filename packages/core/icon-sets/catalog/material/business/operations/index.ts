@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconMaterialLocalPostOffice } from "./IconMaterialLocalPostOffice"
 export { IconMaterialBusinessCenter } from "./IconMaterialBusinessCenter"

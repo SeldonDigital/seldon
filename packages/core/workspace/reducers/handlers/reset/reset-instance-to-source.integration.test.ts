@@ -5,6 +5,12 @@ import { ComponentId } from "../../../../components/constants"
 import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { formatNodeLink } from "../../../model/template-ref"
+import { addComponent } from "../add/add-component"
+import { addVariant } from "../add/add-variant"
+import { insertVariantInstance } from "../insert/insert-variant-instance"
+import { setNodeProperties } from "../set/set-node-properties"
+import { resetInstanceToSource } from "./reset-instance-to-source"
+
 import type {
   ComponentBoard,
   ComponentTreeRef,
@@ -12,29 +18,19 @@ import type {
   ExtractPayload,
   Workspace,
 } from "../../../types"
-import { addComponent } from "../add/add-component"
-import { addVariant } from "../add/add-variant"
-import { insertVariantInstance } from "../insert/insert-variant-instance"
-import { setNodeProperties } from "../set/set-node-properties"
-import { resetInstanceToSource } from "./reset-instance-to-source"
 
 const boardKey = ComponentId.BUTTON
 
 const overridesOf = (ws: Workspace, id: string) =>
   (ws.nodes[id] as EntryNode).overrides as Record<string, unknown>
 
-const templateOf = (ws: Workspace, id: string) =>
-  (ws.nodes[id] as EntryNode).template
+const templateOf = (ws: Workspace, id: string) => (ws.nodes[id] as EntryNode).template
 
 const variantIds = (ws: Workspace) =>
-  (ws.boards[boardKey] as ComponentBoard).variants.map(
-    (v: ComponentTreeRef) => v.id,
-  )
+  (ws.boards[boardKey] as ComponentBoard).variants.map((v: ComponentTreeRef) => v.id)
 
 const variantRef = (ws: Workspace, id: string) =>
-  (ws.boards[boardKey] as ComponentBoard).variants.find(
-    (v: ComponentTreeRef) => v.id === id,
-  )!
+  (ws.boards[boardKey] as ComponentBoard).variants.find((v: ComponentTreeRef) => v.id === id)!
 
 /**
  * Builds a workspace with a user variant (the source) instantiated inside a
@@ -42,12 +38,10 @@ const variantRef = (ws: Workspace, id: string) =>
  * alongside the source's matching child id.
  */
 function buildInstanceWithChild() {
-  let ws = addComponent(
-    { boardKey } as ExtractPayload<"add_component">,
-    createEmptyWorkspace(),
-  )
+  let ws = addComponent({ boardKey } as ExtractPayload<"add_component">, createEmptyWorkspace())
 
   let prev = variantIds(ws)
+
   ws = addVariant({ boardKey } as ExtractPayload<"add_variant">, ws)
   const sourceId = variantIds(ws).find((id) => !prev.includes(id))!
 
@@ -87,6 +81,7 @@ describe("resetInstanceToSource", () => {
       } as ExtractPayload<"set_node_properties">,
       ws,
     )
+
     withOverrides = setNodeProperties(
       {
         nodeId: instanceChildId,
@@ -114,13 +109,13 @@ describe("resetInstanceToSource", () => {
   })
 
   it("repoints a child template to the source's matching child", () => {
-    const { ws, instanceRootId, instanceChildId, sourceChildId } =
-      buildInstanceWithChild()
+    const { ws, instanceRootId, instanceChildId, sourceChildId } = buildInstanceWithChild()
 
     // Simulate a flattened instance whose child templates a shared baseline
     // instead of the source's child, then carry an override on that child.
     const drifted = produce(ws, (draft) => {
       const child = draft.nodes[instanceChildId] as EntryNode
+
       child.template = formatNodeLink("component-icon-default")
       child.overrides = {
         opacity: {
@@ -129,9 +124,8 @@ describe("resetInstanceToSource", () => {
         },
       }
     })
-    expect(templateOf(drifted, instanceChildId)).not.toBe(
-      formatNodeLink(sourceChildId),
-    )
+
+    expect(templateOf(drifted, instanceChildId)).not.toBe(formatNodeLink(sourceChildId))
 
     const reset = resetInstanceToSource(
       {
@@ -140,14 +134,13 @@ describe("resetInstanceToSource", () => {
       drifted,
     )
 
-    expect(templateOf(reset, instanceChildId)).toBe(
-      formatNodeLink(sourceChildId),
-    )
+    expect(templateOf(reset, instanceChildId)).toBe(formatNodeLink(sourceChildId))
     expect(overridesOf(reset, instanceChildId).opacity).toBeUndefined()
   })
 
   it("is a no-op for a non-instance node", () => {
     const { ws, sourceId } = buildInstanceWithChild()
+
     expect(
       resetInstanceToSource(
         { instanceId: sourceId } as ExtractPayload<"reset_instance_to_source">,

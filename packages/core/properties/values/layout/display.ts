@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /**
  * Whether the node appears on the canvas, stays hidden, renders as an opt-in
@@ -34,15 +34,13 @@ export type DisplayValue = EmptyValue | DisplayOptionValue
 
 export const displaySchema: PropertySchema = {
   name: "display",
-  description:
-    "Controls whether the element shows, stays hidden, or is excluded from the tree.",
+  description: "Controls whether the element shows, stays hidden, or is excluded from the tree.",
   supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Display) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Display) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Display),
 }

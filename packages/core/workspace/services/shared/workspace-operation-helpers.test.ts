@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import {
@@ -11,6 +10,8 @@ import {
   withParentNode,
   withVariantAndBoardMutation,
 } from "./workspace-operation-helpers"
+
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
@@ -26,6 +27,7 @@ describe("withNodeMutation", () => {
     const next = withNodeMutation(rootId, ws, (node) => {
       node.label = "Renamed"
     })
+
     expect(next.nodes[rootId]!.label).toBe("Renamed")
     expect(ws.nodes[rootId]!.label).not.toBe("Renamed")
     expect(() => withNodeMutation("missing", ws, () => {})).toThrow()
@@ -37,6 +39,7 @@ describe("withBoardMutation", () => {
     const next = withBoardMutation(boardKey, ws, (b) => {
       b.label = "Board X"
     })
+
     expect(next.boards[boardKey].label).toBe("Board X")
   })
 })
@@ -48,6 +51,7 @@ describe("withParentNode", () => {
 
   it("returns parent plus operation result when given an operation", () => {
     const { parent, result } = withParentNode(childId, ws, (p) => p.type)
+
     expect(parent.id).toBe(rootId)
     expect(result).toBe("default")
   })
@@ -64,6 +68,7 @@ describe("withVariantAndBoardMutation", () => {
       boardLabel = b.label
       variant.label = "VarX"
     })
+
     expect(next.nodes[rootId]!.label).toBe("VarX")
     expect(boardLabel).toBe(board.label)
   })
@@ -71,14 +76,11 @@ describe("withVariantAndBoardMutation", () => {
 
 describe("withInstanceAndParentMutation", () => {
   it("provides the instance and its parent", () => {
-    const next = withInstanceAndParentMutation(
-      childId,
-      ws,
-      (instance, parent) => {
-        expect(parent.id).toBe(rootId)
-        instance.label = "InstX"
-      },
-    )
+    const next = withInstanceAndParentMutation(childId, ws, (instance, parent) => {
+      expect(parent.id).toBe(rootId)
+      instance.label = "InstX"
+    })
+
     expect(next.nodes[childId]!.label).toBe("InstX")
   })
 })

@@ -3,10 +3,11 @@ import { describe, expect, it } from "vitest"
 import { ComponentId } from "../../../components/constants"
 import { Unit, ValueType } from "../../../properties/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
-import type { EntryNode, ExtractPayload, Workspace } from "../../types"
 import { addComponent } from "./add/add-component"
 import { resetNodeProperty } from "./reset/reset-node-property"
 import { setNodeProperties } from "./set/set-node-properties"
+
+import type { EntryNode, ExtractPayload, Workspace } from "../../types"
 
 const baseWithButton = () =>
   addComponent(
@@ -37,6 +38,7 @@ describe("setNodeProperties then resetNodeProperty", () => {
       } as ExtractPayload<"set_node_properties">,
       workspace,
     )
+
     expect(overridesOf(afterSet, nodeId).opacity).toEqual({
       type: ValueType.EXACT,
       value: { value: 50, unit: Unit.PERCENT },
@@ -49,6 +51,7 @@ describe("setNodeProperties then resetNodeProperty", () => {
       } as ExtractPayload<"reset_node_property">,
       afterSet,
     )
+
     expect(overridesOf(afterReset, nodeId).opacity).toBeUndefined()
   })
 })

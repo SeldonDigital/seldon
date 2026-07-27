@@ -1,7 +1,7 @@
-import { ValueType } from "../../../constants"
-import { PercentageValue } from "../exact/percentage"
-import { PixelValue } from "../exact/pixel"
-import { RemValue } from "../exact/rem"
+import type { ValueType } from "../../../constants"
+import type { PercentageValue } from "../exact/percentage"
+import type { PixelValue } from "../exact/pixel"
+import type { RemValue } from "../exact/rem"
 
 export type DoubleAxisValue = {
   type: ValueType.EXACT

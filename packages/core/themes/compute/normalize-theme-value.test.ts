@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  normalizeThemeExactValue,
-  normalizeThemeNumber,
-} from "./normalize-theme-value"
+import { normalizeThemeExactValue, normalizeThemeNumber } from "./normalize-theme-value"
 
 describe("normalizeThemeNumber", () => {
   it("returns numbers, extracts unit values, and parses numeric strings", () => {
@@ -32,9 +29,7 @@ describe("normalizeThemeExactValue", () => {
 
   it("throws on a wrong unit, a non-finite value, or a non-object", () => {
     expect(() => normalizeThemeExactValue({ unit: "em", value: 1 })).toThrow()
-    expect(() =>
-      normalizeThemeExactValue({ unit: "px", value: Number.NaN }),
-    ).toThrow()
+    expect(() => normalizeThemeExactValue({ unit: "px", value: Number.NaN })).toThrow()
     expect(() => normalizeThemeExactValue("16px")).toThrow()
   })
 })

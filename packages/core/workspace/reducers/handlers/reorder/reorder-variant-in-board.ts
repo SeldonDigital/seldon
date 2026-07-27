@@ -5,6 +5,7 @@ import {
   typeCheckingService,
   workspacePropagationService,
 } from "../../../services"
+
 import type { ExtractPayload, Workspace } from "../../../types"
 
 /**
@@ -19,12 +20,14 @@ export function reorderVariantInBoard(
   workspace: Workspace,
 ): Workspace {
   const node = nodeRetrievalService.getNode(payload.variantRootId, workspace)
+
   if (!typeCheckingService.isVariant(node)) {
     return workspace
   }
 
   const entityType = typeCheckingService.getEntityType(node)
   const { allowed, propagation } = rules.mutations.reorder[entityType]
+
   if (!allowed) {
     return workspace
   }
@@ -33,11 +36,7 @@ export function reorderVariantInBoard(
     nodeId: payload.variantRootId,
     propagation,
     apply: (target, draft) =>
-      nodeOperationsService.reorderVariantIndex(
-        target,
-        payload.newIndex,
-        draft,
-      ),
+      nodeOperationsService.reorderVariantIndex(target, payload.newIndex, draft),
     workspace,
   })
 }

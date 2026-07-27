@@ -1,9 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../components/constants"
-import type { ExtractPayload } from "../../index"
 import { ValueType } from "../../properties/constants"
-import type { Properties } from "../../properties/types/properties"
 import { createEmptyWorkspace } from "../helpers/create-empty-workspace"
 import { addComponent } from "../reducers/handlers/add/add-component"
 import {
@@ -11,6 +9,9 @@ import {
   getNodeComputeContext,
   mergeEffectiveProperties,
 } from "./compute-node-properties"
+
+import type { ExtractPayload } from "../../index"
+import type { Properties } from "../../properties/types/properties"
 
 const exact = (value: unknown) =>
   ({ type: ValueType.EXACT, value }) as unknown as Properties[keyof Properties]
@@ -50,6 +51,7 @@ describe("computeNodeProperties", () => {
         !Array.isArray(value) &&
         (value as { type?: unknown }).type === ValueType.COMPUTED,
     )
+
     expect(lingering).toEqual([])
   })
 

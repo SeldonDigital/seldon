@@ -1,5 +1,6 @@
-import { ComponentId } from "../../../components/constants"
 import { buildComponentAddPlan } from "./component-add-plan"
+
+import type { ComponentId } from "../../../components/constants"
 
 /**
  * Collects all descendant component IDs a board add materializes, with parents
@@ -12,6 +13,5 @@ export function getComponentDescendantIds(
   componentId: ComponentId,
   variantFallbacks?: ReadonlySet<string>,
 ): ComponentId[] {
-  return buildComponentAddPlan(componentId, variantFallbacks)
-    .orderedComponentIds
+  return buildComponentAddPlan(componentId, variantFallbacks).orderedComponentIds
 }

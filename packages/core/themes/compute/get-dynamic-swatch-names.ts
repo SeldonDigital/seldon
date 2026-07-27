@@ -1,4 +1,5 @@
 import { Harmony } from "../constants"
+
 import type { ThemePipelineInput } from "../types"
 import type { ThemePaletteSlot } from "../values"
 
@@ -14,10 +15,7 @@ import type { ThemePaletteSlot } from "../values"
  * @param theme - Theme configuration containing harmony and step settings (unused for literal slots)
  * @returns Human-readable name for the slot
  */
-export function getDynamicSwatchName(
-  role: ThemePaletteSlot,
-  theme: ThemePipelineInput,
-): string {
+export function getDynamicSwatchName(role: ThemePaletteSlot, theme: ThemePipelineInput): string {
   switch (role) {
     case "white":
       return "White"
@@ -44,6 +42,7 @@ export function getDynamicSwatchName(
         case "swatch4":
           return `${step > 0 ? "Tint" : "Shade"} 4`
       }
+
     case Harmony.Complementary:
       if (step > 0) {
         switch (swatchId) {
@@ -68,7 +67,9 @@ export function getDynamicSwatchName(
         case "swatch4":
           return "Complement Dark"
       }
+
     case Harmony.SplitComplementary:
+
     case Harmony.Triadic:
       switch (swatchId) {
         case "swatch1":
@@ -78,6 +79,7 @@ export function getDynamicSwatchName(
         case "swatch4":
           return step > 0 ? "Complement Tint" : "Complement Shade"
       }
+
     case Harmony.Analogous:
       switch (swatchId) {
         case "swatch1":
@@ -89,6 +91,7 @@ export function getDynamicSwatchName(
         case "swatch4":
           return "Complement 4"
       }
+
     case Harmony.Square:
       if (step > 0) {
         switch (swatchId) {

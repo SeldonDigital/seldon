@@ -1,14 +1,8 @@
-import {
-  EntryTheme,
-  EntryThemeOverrides,
-  Workspace,
-  parseThemeTemplate,
-} from "../../types"
+import { parseThemeTemplate } from "../../types"
 
-export function getThemeOverrides(
-  theme: EntryTheme,
-  workspace: Workspace,
-): EntryThemeOverrides {
+import type { EntryTheme, EntryThemeOverrides, Workspace } from "../../types"
+
+export function getThemeOverrides(theme: EntryTheme, workspace: Workspace): EntryThemeOverrides {
   const chain: EntryTheme[] = []
   const visited = new Set<string>()
   let cursor: EntryTheme | null = theme
@@ -17,14 +11,12 @@ export function getThemeOverrides(
     visited.add(cursor.id)
     chain.push(cursor)
     const parsed = parseThemeTemplate(cursor.template)
+
     if (!parsed || parsed.kind !== "theme") break
     cursor = workspace.themes[parsed.themeId] ?? null
   }
 
   return chain
     .reverse()
-    .reduce<EntryThemeOverrides>(
-      (acc, item) => ({ ...acc, ...item.overrides }),
-      {},
-    )
+    .reduce<EntryThemeOverrides>((acc, item) => ({ ...acc, ...item.overrides }), {})
 }

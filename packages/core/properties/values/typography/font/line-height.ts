@@ -1,11 +1,11 @@
-import { Theme, ThemeLineHeightKey } from "../../../../themes/types"
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { NumberValue } from "../../shared/exact/number"
-import { PercentageValue } from "../../shared/exact/percentage"
-import { PixelValue } from "../../shared/exact/pixel"
-import { RemValue } from "../../shared/exact/rem"
+import type { Theme, ThemeLineHeightKey } from "../../../../themes/types"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { NumberValue } from "../../shared/exact/number"
+import type { PercentageValue } from "../../shared/exact/percentage"
+import type { PixelValue } from "../../shared/exact/pixel"
+import type { RemValue } from "../../shared/exact/rem"
 
 /** References one named line height step from the theme. */
 export interface LineHeightThemeValue {
@@ -32,21 +32,16 @@ export const lineHeightSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     exact: (value: unknown) => {
-      if (
-        typeof value === "object" &&
-        value !== null &&
-        "value" in value &&
-        "unit" in value
-      ) {
+      if (typeof value === "object" && value !== null && "value" in value && "unit" in value) {
         return true
       }
+
       return typeof value === "number" && value > 0
     },
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
-      return (Object.keys(theme.lineHeight) as string[]).some(
-        (id) => value === `@lineHeight.${id}`,
-      )
+
+      return (Object.keys(theme.lineHeight) as string[]).some((id) => value === `@lineHeight.${id}`)
     },
   },
   themeOrdinalKeys: (theme: Theme) =>

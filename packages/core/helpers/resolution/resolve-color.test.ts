@@ -3,8 +3,9 @@ import { describe, expect, it } from "vitest"
 import { ValueType } from "../../properties/constants"
 import { STOCK_THEMES_BY_ID } from "../../themes/catalog"
 import { computeTheme } from "../../themes/helpers/compute-theme"
-import type { Theme } from "../../themes/types"
 import { resolveColor } from "./resolve-color"
+
+import type { Theme } from "../../themes/types"
 
 const theme = computeTheme(STOCK_THEMES_BY_ID.seldon) as unknown as Theme
 
@@ -48,6 +49,7 @@ describe("resolveColor", () => {
       }),
       theme,
     })
+
     expect(result.type).toBe(ValueType.EXACT)
   })
 

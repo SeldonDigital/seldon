@@ -8,9 +8,10 @@ import { getDefaultUnitForProperty, getUnitsForProperty } from "./unit-utils"
 
 describe("mergeTaggedValues", () => {
   it("shallow-merges two records, patch wins on shared keys", () => {
-    expect(
-      mergeTaggedValues({ type: "EXACT", value: 1 }, { value: 2 }),
-    ).toEqual({ type: "EXACT", value: 2 })
+    expect(mergeTaggedValues({ type: "EXACT", value: 1 }, { value: 2 })).toEqual({
+      type: "EXACT",
+      value: 2,
+    })
   })
 
   it("replaces when the next value is not a record", () => {
@@ -22,16 +23,13 @@ describe("mergeTaggedValues", () => {
 
 describe("unit utils", () => {
   it("falls back to px/rem/percent for an unknown property", () => {
-    expect(getUnitsForProperty("totallyUnknownProperty")).toEqual([
-      Unit.PX,
-      Unit.REM,
-      Unit.PERCENT,
-    ])
+    expect(getUnitsForProperty("totallyUnknownProperty")).toEqual([Unit.PX, Unit.REM, Unit.PERCENT])
     expect(getDefaultUnitForProperty("totallyUnknownProperty")).toBe(Unit.PX)
   })
 
   it("returns a non-empty unit list for a compound facet path", () => {
     const units = getUnitsForProperty("border.width")
+
     expect(Array.isArray(units)).toBe(true)
     expect(units.length).toBeGreaterThan(0)
   })
@@ -40,6 +38,7 @@ describe("unit utils", () => {
 describe("getLayerAddOptions", () => {
   it("offers typed color/image and the three gradient seeds for background", () => {
     const options = getLayerAddOptions("background")
+
     expect(options.map((o) => o.id)).toEqual([
       "add-layer-background-color",
       "add-layer-background-image",
@@ -53,11 +52,13 @@ describe("getLayerAddOptions", () => {
   it("divides the gradient choices from color and image", () => {
     const options = getLayerAddOptions("background")
     const separated = options.filter((o) => o.separatorBefore).map((o) => o.id)
+
     expect(separated).toEqual(["add-layer-background-linear-gradient"])
   })
 
   it("offers a single empty layer for shadow", () => {
     const options = getLayerAddOptions("shadow")
+
     expect(options).toHaveLength(1)
     expect(options[0]!.id).toBe("add-layer-shadow")
     expect(options[0]!.seed).toBeUndefined()
@@ -67,6 +68,7 @@ describe("getLayerAddOptions", () => {
 describe("getBorderSideOptions", () => {
   it("returns the four border sides in order", () => {
     const options = getBorderSideOptions()
+
     expect(options.map((o) => o.side)).toEqual([
       "borderTop",
       "borderRight",

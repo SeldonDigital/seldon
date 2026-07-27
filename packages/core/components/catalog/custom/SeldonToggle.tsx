@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, Ref } from "react"
+import type { InputHTMLAttributes, Ref } from "react"
 
 const TOGGLE_SWITCH_CLASS = "sdn-toggle-switch"
 
@@ -61,19 +61,12 @@ export const SeldonToggle = ({
   children: _children,
   ...props
 }: SeldonToggleProps) => {
-  const trackClassName = className
-    ? `${TOGGLE_SWITCH_CLASS} ${className}`
-    : TOGGLE_SWITCH_CLASS
+  const trackClassName = className ? `${TOGGLE_SWITCH_CLASS} ${className}` : TOGGLE_SWITCH_CLASS
 
   return (
     <span className={trackClassName} style={style}>
       <style>{toggleSwitchStyles}</style>
-      <input
-        ref={ref}
-        type="checkbox"
-        className={`${TOGGLE_SWITCH_CLASS}__control`}
-        {...props}
-      />
+      <input ref={ref} type="checkbox" className={`${TOGGLE_SWITCH_CLASS}__control`} {...props} />
       <span className={`${TOGGLE_SWITCH_CLASS}__thumb`} aria-hidden="true" />
     </span>
   )

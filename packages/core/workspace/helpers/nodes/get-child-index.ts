@@ -1,8 +1,9 @@
 import { invariant } from "../../../index"
-import { EntryNodeId, Workspace } from "../../types"
 import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getChildrenIds } from "../components/get-children-ids"
 import { findParentNode } from "./find-parent-node"
+
+import type { EntryNodeId, Workspace } from "../../types"
 
 /**
  * Get the index of a child in its parent
@@ -12,11 +13,13 @@ import { findParentNode } from "./find-parent-node"
  */
 export function getChildIndex(childId: EntryNodeId, workspace: Workspace) {
   const parent = findParentNode(childId, workspace)
+
   invariant(parent, "Parent not found for " + childId)
 
   const board = getBoardByNodeId(workspace, parent.id)
   const siblings = board ? getChildrenIds(board, parent.id) : []
   const index = siblings.indexOf(childId)
+
   invariant(index !== -1, "Unable to determine index for node " + childId)
 
   return index

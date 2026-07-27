@@ -2,9 +2,10 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
-import type { ExtractPayload } from "../../../types"
 import { addComponent } from "../add/add-component"
 import { duplicateComponent } from "./duplicate-component"
+
+import type { ExtractPayload } from "../../../types"
 
 const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
@@ -24,10 +25,12 @@ describe("duplicateComponent", () => {
     )
 
     const copy = next.boards["buttonCopy"]
+
     expect(copy).toBeDefined()
     expect(copy!.variants.length).toBeGreaterThan(0)
 
     const newDefaultId = copy!.variants[0]!.id
+
     expect(newDefaultId).not.toBe(sourceDefaultId)
     expect(next.nodes[newDefaultId]).toBeDefined()
     expect(next).not.toBe(workspace)

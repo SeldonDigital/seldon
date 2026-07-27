@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { reorderInstanceInParent } from "./reorder-instance-in-parent"
+
+import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 
 const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
@@ -13,9 +14,7 @@ const workspace = addComponent(
 const board = workspace.boards[ComponentId.BUTTON]!
 const variants = board.variants as ComponentTreeRef[]
 const defaultRoot = variants[0]!
-const userVariant = variants
-  .slice(1)
-  .find((variant) => (variant.children?.length ?? 0) >= 2)!
+const userVariant = variants.slice(1).find((variant) => (variant.children?.length ?? 0) >= 2)!
 
 describe("reorderInstanceInParent", () => {
   it("moves an instance to a new index within its parent", () => {
@@ -29,9 +28,7 @@ describe("reorderInstanceInParent", () => {
       workspace,
     )
 
-    const after = (
-      next.boards[ComponentId.BUTTON]!.variants as ComponentTreeRef[]
-    )
+    const after = (next.boards[ComponentId.BUTTON]!.variants as ComponentTreeRef[])
       .find((variant) => variant.id === userVariant.id)!
       .children!.map((child) => child.id)
 

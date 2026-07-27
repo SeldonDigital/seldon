@@ -2,12 +2,13 @@ import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { invariant } from "../../helpers/utils/invariant"
 import { ValueType } from "../constants"
-import type { Value } from "../types/value"
-import type { AtomicValue } from "../types/value-atomic"
 import { BackgroundKind } from "../values/appearance/background/background-kind"
 import { Color } from "../values/appearance/color"
 import { parseBasedOnPath } from "./parse-based-on-path"
-import { ComputeContext } from "./types"
+
+import type { Value } from "../types/value"
+import type { AtomicValue } from "../types/value-atomic"
+import type { ComputeContext } from "./types"
 
 export type ResolvedBasedOnWithAnchor = {
   value: Value | undefined
@@ -61,8 +62,7 @@ export function resolveBasedOnWithAnchor(
   const { anchor, lookupPath: colorLookupPath } = parseBasedOnPath(basedOn)
 
   const kindLookupPath =
-    colorLookupPath.startsWith("background.") &&
-    colorLookupPath.endsWith(".color")
+    colorLookupPath.startsWith("background.") && colorLookupPath.endsWith(".color")
       ? colorLookupPath.replace(/\.color$/, ".kind")
       : null
 
@@ -78,9 +78,7 @@ export function resolveBasedOnWithAnchor(
       return false
     }
 
-    return isNonContributingBackgroundKind(
-      findInObject<Value>(properties, kindLookupPath),
-    )
+    return isNonContributingBackgroundKind(findInObject<Value>(properties, kindLookupPath))
   }
 
   const walkParents = (
@@ -90,10 +88,7 @@ export function resolveBasedOnWithAnchor(
     let cursor = start
     let value = seed
 
-    while (
-      isNonContributingLayer(cursor.properties, value) &&
-      cursor.parentContext
-    ) {
+    while (isNonContributingLayer(cursor.properties, value) && cursor.parentContext) {
       cursor = cursor.parentContext
 
       value = findInObject<Value>(cursor.properties, colorLookupPath)
@@ -111,10 +106,7 @@ export function resolveBasedOnWithAnchor(
 
     const parent = context.parentContext
 
-    return walkParents(
-      parent,
-      findInObject<Value>(parent.properties, colorLookupPath),
-    )
+    return walkParents(parent, findInObject<Value>(parent.properties, colorLookupPath))
   }
 
   if (anchor === "self") {
@@ -130,10 +122,7 @@ export function resolveBasedOnWithAnchor(
 
     const parent = context.parentContext
 
-    return walkParents(
-      parent,
-      findInObject<Value>(parent.properties, colorLookupPath),
-    )
+    return walkParents(parent, findInObject<Value>(parent.properties, colorLookupPath))
   }
 
   return {

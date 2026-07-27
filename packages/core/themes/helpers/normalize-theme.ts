@@ -1,6 +1,7 @@
 import { normalizeThemeInput } from "../compute/normalize-theme"
-import type { ComputedTheme, StockTheme } from "../types/theme"
 import { toRecomputableStockInput } from "./to-recomputable-stock"
+
+import type { ComputedTheme, StockTheme } from "../types/theme"
 
 /**
  * Coerce unknown / resolved workspace theme JSON into a normalized `StockTheme`

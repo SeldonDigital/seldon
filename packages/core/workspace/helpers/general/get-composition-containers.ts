@@ -10,26 +10,15 @@ import type { Board, BoardKey, Workspace } from "../../types"
  * callers that only want composition trees filter by `type`.
  */
 export function getCompositionContainers(workspace: Workspace): Board[] {
-  return [
-    ...Object.values(workspace.boards),
-    ...Object.values(workspace.playgrounds ?? {}),
-  ]
+  return [...Object.values(workspace.boards), ...Object.values(workspace.playgrounds ?? {})]
 }
 
 /** Same as {@link getCompositionContainers} but keyed by container key. */
-export function getCompositionContainerEntries(
-  workspace: Workspace,
-): Array<[BoardKey, Board]> {
-  return [
-    ...Object.entries(workspace.boards),
-    ...Object.entries(workspace.playgrounds ?? {}),
-  ]
+export function getCompositionContainerEntries(workspace: Workspace): Array<[BoardKey, Board]> {
+  return [...Object.entries(workspace.boards), ...Object.entries(workspace.playgrounds ?? {})]
 }
 
 /** Looks up a board or playground container by key. */
-export function getContainerByKey(
-  workspace: Workspace,
-  key: BoardKey,
-): Board | undefined {
+export function getContainerByKey(workspace: Workspace, key: BoardKey): Board | undefined {
   return workspace.boards[key] ?? workspace.playgrounds?.[key]
 }

@@ -10,18 +10,10 @@
  * they are stored as the node's own overrides on top of that source chain.
  */
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
-import { SchemaChild } from "../../../components/types"
-import { Properties, invariant } from "../../../index"
+import { invariant } from "../../../index"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isComponentBoard } from "../../model/components"
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
-import type {
-  ComponentTreeRef,
-  EntryNode,
-  EntryNodeId,
-  Workspace,
-} from "../../types"
 import {
   componentBoardDefaultNodeId,
   componentBoardSchemaVariantNodeId,
@@ -30,10 +22,12 @@ import {
 import { getVariantTree } from "../components/get-variant-tree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
 import { resolveSchemaChild } from "./resolve-schema-child"
-import {
-  applyVariantFallbackToSlot,
-  mergeInlineSlotOverrides,
-} from "./schema-composition-children"
+import { applyVariantFallbackToSlot, mergeInlineSlotOverrides } from "./schema-composition-children"
+
+import type { ComponentId } from "../../../components/constants"
+import type { SchemaChild } from "../../../components/types"
+import type { Properties } from "../../../index"
+import type { ComponentTreeRef, EntryNode, EntryNodeId, Workspace } from "../../types"
 
 export type InstantiateComponentOptions = {
   restrictedVariantIds?: string[]
@@ -75,12 +69,15 @@ export function makeEntryNode(params: {
     template: params.template,
     overrides: params.overrides as EntryNode["overrides"],
   }
+
   if (params.origin) {
     node.origin = params.origin
   }
+
   if (params.withInitialOverrides) {
     node.__editor = { initialOverrides: structuredClone(params.overrides) }
   }
+
   return node
 }
 
@@ -92,6 +89,7 @@ export function makePrimitiveVariantNode(
 ): { id: string; node: EntryNode } {
   const id = componentBoardSchemaVariantNodeId(componentId, catalogVariant.id)
   const overrides = mergeProperties({}, catalogVariant.overrides ?? {})
+
   return {
     id,
     node: makeEntryNode({
@@ -112,35 +110,34 @@ export function requireCatalogVariant(
   componentId: ComponentId,
   variantId: string,
 ): CatalogSchemaVariant {
-  const catalogVariant = schema.variants?.find(
-    (candidate) => candidate.id === variantId,
-  )
-  invariant(
-    catalogVariant,
-    `Schema child ${componentId} references missing variant "${variantId}"`,
-  )
+  const catalogVariant = schema.variants?.find((candidate) => candidate.id === variantId)
+
+  invariant(catalogVariant, `Schema child ${componentId} references missing variant "${variantId}"`)
+
   return catalogVariant
 }
 
 /** Finds the tree ref rooted at `sourceRootId` across the draft's component boards. */
-function getSourceTreeRef(
-  workspace: Workspace,
-  sourceRootId: string,
-): ComponentTreeRef | null {
+function getSourceTreeRef(workspace: Workspace, sourceRootId: string): ComponentTreeRef | null {
   for (const board of Object.values(workspace.boards)) {
     if (!isComponentBoard(board)) continue
     const tree = getVariantTree(board, sourceRootId as EntryNodeId)
+
     if (tree) return tree
   }
+
   return null
 }
 
 /** Catalog component id of a node, used to mint ids and match by component. */
 function nodeComponentId(workspace: Workspace, nodeId: string): ComponentId {
   const node = workspace.nodes[nodeId]
+
   invariant(node, `Missing source node ${nodeId} during composition`)
   const catalogId = getNodeCatalogId(node, workspace)
+
   invariant(catalogId, `Could not resolve component id for node ${nodeId}`)
+
   return catalogId as ComponentId
 }
 
@@ -158,10 +155,13 @@ function takeRefOfComponent(
   const matchIdx = refs.findIndex((ref, index) => {
     if (used.has(index)) return false
     const node = workspace.nodes[ref.id]
+
     return !!node && getNodeCatalogId(node, workspace) === componentId
   })
+
   if (matchIdx < 0) return null
   used.add(matchIdx)
+
   return refs[matchIdx]
 }
 
@@ -177,6 +177,7 @@ function cloneSubtreeChainingToSource(
   existingRef?: ComponentTreeRef,
 ): ComponentTreeRef {
   const sourceNode = ctx.workspace.nodes[sourceRef.id]
+
   invariant(sourceNode, `Missing source node ${sourceRef.id} during clone`)
 
   const componentId = nodeComponentId(ctx.workspace, sourceRef.id)
@@ -197,12 +198,8 @@ function cloneSubtreeChainingToSource(
   const children = (sourceRef.children ?? []).map((childSource) => {
     const childComponent = nodeComponentId(ctx.workspace, childSource.id)
     const reuse =
-      takeRefOfComponent(
-        existingRef?.children,
-        used,
-        ctx.workspace,
-        childComponent,
-      ) ?? undefined
+      takeRefOfComponent(existingRef?.children, used, ctx.workspace, childComponent) ?? undefined
+
     return cloneSubtreeChainingToSource(childSource, ctx, reuse)
   })
 
@@ -224,9 +221,7 @@ function buildComposedChild(
   ctx: BuildContext,
   existingRef?: ComponentTreeRef,
 ): ComponentTreeRef {
-  const resolved = resolveSchemaChild(
-    applyVariantFallbackToSlot(mergedSlot, ctx.variantFallbacks),
-  )
+  const resolved = resolveSchemaChild(applyVariantFallbackToSlot(mergedSlot, ctx.variantFallbacks))
   const id = existingRef?.id ?? componentBoardUniqueNodeId(resolved.schema.id)
   const overrides = mergeProperties({}, mergedSlot.overrides ?? {})
 
@@ -242,37 +237,35 @@ function buildComposedChild(
   })
 
   let childRefs: ComponentTreeRef[]
+
   if (mergedSlot.children?.length) {
     const usedExisting = new Set<number>()
+
     childRefs = mergedSlot.children.map((child) => {
       const childComponent = resolveSchemaChild(
         applyVariantFallbackToSlot(child, ctx.variantFallbacks),
       ).componentId
       const existingChild =
-        takeRefOfComponent(
-          existingRef?.children,
-          usedExisting,
-          ctx.workspace,
-          childComponent,
-        ) ?? undefined
+        takeRefOfComponent(existingRef?.children, usedExisting, ctx.workspace, childComponent) ??
+        undefined
+
       return buildComposedChild(child, ctx, existingChild)
     })
   } else {
     const sourceRef = getSourceTreeRef(ctx.workspace, resolved.templateNodeId)
+
     invariant(
       sourceRef,
       `Composition source ${resolved.templateNodeId} not found while building ${resolved.componentId}`,
     )
     const usedExisting = new Set<number>()
+
     childRefs = (sourceRef.children ?? []).map((childSource) => {
       const childComponent = nodeComponentId(ctx.workspace, childSource.id)
       const existingChild =
-        takeRefOfComponent(
-          existingRef?.children,
-          usedExisting,
-          ctx.workspace,
-          childComponent,
-        ) ?? undefined
+        takeRefOfComponent(existingRef?.children, usedExisting, ctx.workspace, childComponent) ??
+        undefined
+
       return cloneSubtreeChainingToSource(childSource, ctx, existingChild)
     })
   }
@@ -286,16 +279,12 @@ function buildComposedChild(
  * slots share a key only when their whole subtrees have the same component and
  * variant shape.
  */
-function slotStructureKey(
-  slot: SchemaChild,
-  variantFallbacks?: ReadonlySet<string>,
-): string {
-  const resolved = resolveSchemaChild(
-    applyVariantFallbackToSlot(slot, variantFallbacks),
-  )
+function slotStructureKey(slot: SchemaChild, variantFallbacks?: ReadonlySet<string>): string {
+  const resolved = resolveSchemaChild(applyVariantFallbackToSlot(slot, variantFallbacks))
   const children = (slot.children ?? [])
     .map((child) => slotStructureKey(child, variantFallbacks))
     .join(",")
+
   return `${resolved.templateNodeId}[${children}]`
 }
 
@@ -307,9 +296,8 @@ function slotStructureKey(
 function refStructureKey(workspace: Workspace, ref: ComponentTreeRef): string {
   const node = workspace.nodes[ref.id]
   const templateNodeId = node ? parseNodeLink(node.template)?.nodeId : null
-  const children = (ref.children ?? [])
-    .map((child) => refStructureKey(workspace, child))
-    .join(",")
+  const children = (ref.children ?? []).map((child) => refStructureKey(workspace, child)).join(",")
+
   return `${templateNodeId ?? ""}[${children}]`
 }
 
@@ -326,11 +314,12 @@ function takeDefaultChildMatch(
 ): ComponentTreeRef | null {
   if (!defaultChildren) return null
   const matchIdx = defaultChildren.findIndex(
-    (ref, index) =>
-      !used.has(index) && refStructureKey(workspace, ref) === slotKey,
+    (ref, index) => !used.has(index) && refStructureKey(workspace, ref) === slotKey,
   )
+
   if (matchIdx < 0) return null
   used.add(matchIdx)
+
   return defaultChildren[matchIdx]
 }
 
@@ -361,12 +350,7 @@ function buildChainedChild(
     withInitialOverrides: true,
   })
 
-  const childRefs = buildVariantChildRefs(
-    slot.children,
-    defaultChildRef.children,
-    ctx,
-    existingRef,
-  )
+  const childRefs = buildVariantChildRefs(slot.children, defaultChildRef.children, ctx, existingRef)
 
   return childRefs.length ? { id, children: childRefs } : { id }
 }
@@ -386,10 +370,9 @@ function buildVariantChildRefs(
   if (!slots?.length) return []
   const usedExisting = new Set<number>()
   const usedDefault = new Set<number>()
+
   return slots.map((rawSlot) => {
-    const resolved = resolveSchemaChild(
-      applyVariantFallbackToSlot(rawSlot, ctx.variantFallbacks),
-    )
+    const resolved = resolveSchemaChild(applyVariantFallbackToSlot(rawSlot, ctx.variantFallbacks))
     const existingChild =
       takeRefOfComponent(
         existingRef?.children,
@@ -403,9 +386,11 @@ function buildVariantChildRefs(
       ctx.workspace,
       slotStructureKey(rawSlot, ctx.variantFallbacks),
     )
+
     if (defaultMatch) {
       return buildChainedChild(rawSlot, defaultMatch, ctx, existingChild)
     }
+
     return buildComposedChild(
       mergeInlineSlotOverrides(rawSlot, ctx.variantFallbacks),
       ctx,
@@ -451,9 +436,7 @@ export function buildVariantTree(
     existingRef,
   )
 
-  return childRefs.length
-    ? { id: variantRootId, children: childRefs }
-    : { id: variantRootId }
+  return childRefs.length ? { id: variantRootId, children: childRefs } : { id: variantRootId }
 }
 
 /**
@@ -468,18 +451,16 @@ export function rebuildDefaultChildren(
   ctx: BuildContext,
 ): ComponentTreeRef[] {
   const usedExisting = new Set<number>()
+
   return slots.map((rawSlot) => {
     const mergedSlot = mergeInlineSlotOverrides(rawSlot, ctx.variantFallbacks)
     const resolved = resolveSchemaChild(
       applyVariantFallbackToSlot(mergedSlot, ctx.variantFallbacks),
     )
     const existingChild =
-      takeRefOfComponent(
-        existingRefs,
-        usedExisting,
-        ctx.workspace,
-        resolved.componentId,
-      ) ?? undefined
+      takeRefOfComponent(existingRefs, usedExisting, ctx.workspace, resolved.componentId) ??
+      undefined
+
     return buildComposedChild(mergedSlot, ctx, existingChild)
   })
 }
@@ -497,10 +478,7 @@ export function appendComplexSchemaVariant(
   defaultRef: ComponentTreeRef | undefined,
   variantTreeRefs: ComponentTreeRef[],
 ): void {
-  const variantRootId = componentBoardSchemaVariantNodeId(
-    componentId,
-    catalogVariant.id,
-  )
+  const variantRootId = componentBoardSchemaVariantNodeId(componentId, catalogVariant.id)
   const variantChildSlots = catalogVariant.children?.length
     ? catalogVariant.children
     : fallbackChildSlots
@@ -517,5 +495,6 @@ export function appendComplexSchemaVariant(
     ctx,
     defaultRef,
   )
+
   variantTreeRefs.push(variantRef)
 }

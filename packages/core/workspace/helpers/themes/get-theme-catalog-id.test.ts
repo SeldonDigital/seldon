@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload } from "../../../index"
 import { duplicateTheme } from "../../reducers/handlers/duplicate/duplicate-theme"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { getThemeCatalogId } from "./get-theme-catalog-id"
+
+import type { ExtractPayload } from "../../../index"
 
 const defaultThemeId = "theme-seldon-default"
 
@@ -11,6 +12,7 @@ describe("getThemeCatalogId", () => {
   it("resolves a catalog template directly", () => {
     const ws = createEmptyWorkspace()
     const theme = ws.themes[defaultThemeId]
+
     expect(getThemeCatalogId(theme, ws)).toBe("seldon")
   })
 
@@ -23,6 +25,7 @@ describe("getThemeCatalogId", () => {
       createEmptyWorkspace(),
     )
     const variant = ws.themes["theme-seldon-copy"]
+
     expect(getThemeCatalogId(variant, ws)).toBe("seldon")
   })
 })

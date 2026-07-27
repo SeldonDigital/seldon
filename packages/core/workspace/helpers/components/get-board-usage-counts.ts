@@ -1,16 +1,19 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentLevel, isComponentId } from "../../../components/constants"
 import { isAuthoredBoard, isComponentBoard } from "../../model/components"
-import type { Board, ComponentTreeRef, Workspace } from "../../types"
 import { boardKey, createBoardRefResolver } from "./board-ref-resolver"
+
+import type { Board, ComponentTreeRef, Workspace } from "../../types"
 
 function boardLevel(board: Board): ComponentLevel | null {
   if (isComponentBoard(board) && isComponentId(board.catalogId)) {
     return getComponentSchema(board.catalogId).level
   }
+
   if (isAuthoredBoard(board)) {
     return board.level as ComponentLevel
   }
+
   return null
 }
 
@@ -26,16 +29,15 @@ function boardLevel(board: Board): ComponentLevel | null {
  * above leaf boards, which use few. The objects sidebar and the isolation canvas
  * both read the resulting order.
  */
-export function getBoardUsageCounts(
-  workspace: Workspace,
-  boards: Board[],
-): Map<string, number> {
+export function getBoardUsageCounts(workspace: Workspace, boards: Board[]): Map<string, number> {
   const { resolveRef } = createBoardRefResolver(workspace, boards)
 
   const levelByKey = new Map<string, ComponentLevel>()
+
   for (const board of boards) {
     const key = boardKey(board)
     const level = boardLevel(board)
+
     if (key && level) levelByKey.set(key, level)
   }
 
@@ -44,6 +46,7 @@ export function getBoardUsageCounts(
   for (const board of boards) {
     const ownerKey = boardKey(board)
     const ownerLevel = ownerKey ? levelByKey.get(ownerKey) : undefined
+
     if (!ownerKey || !ownerLevel) continue
 
     const used = new Set<string>()
@@ -58,6 +61,7 @@ export function getBoardUsageCounts(
       // into them and let their direct children count against this board.
       if (depKey === ownerKey || depLevel === ComponentLevel.FRAME) {
         for (const child of ref.children ?? []) walk(child)
+
         return
       }
 

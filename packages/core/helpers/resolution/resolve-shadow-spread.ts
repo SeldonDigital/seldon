@@ -1,14 +1,10 @@
-import {
-  EmptyValue,
-  PixelValue,
-  RemValue,
-  ShadowSpreadValue,
-  ValueType,
-} from "../../index"
-import type { ComputeContext } from "../../properties/compute/types"
-import { Theme } from "../../themes/types"
+import { ValueType } from "../../index"
 import { getThemeOption } from "../theme/get-theme-option"
 import { resolveModulatedOrExactLength } from "./resolve-length-token"
+
+import type { EmptyValue, PixelValue, RemValue, ShadowSpreadValue } from "../../index"
+import type { ComputeContext } from "../../properties/compute/types"
+import type { Theme } from "../../themes/types"
 
 /**
  * Resolves shadow spread values to concrete PixelValue or RemValue.
@@ -31,17 +27,18 @@ export function resolveShadowSpread({
       return spread as EmptyValue
     case ValueType.EXACT:
       return spread as PixelValue | RemValue
+
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(spread.value as string, theme)
       const resolved = resolveModulatedOrExactLength(themeValue, theme)
+
       if (resolved) return resolved
       throw new Error(
         `Theme value ${spread.value as string} must resolve to MODULATED or EXACT length`,
       )
     }
+
     default:
-      throw new Error(
-        `Invalid spread type ${(spread as { type: string }).type}`,
-      )
+      throw new Error(`Invalid spread type ${(spread as { type: string }).type}`)
   }
 }

@@ -1,5 +1,6 @@
-import type { EntryNodeId, Workspace } from "../../types"
 import { getNodeParentIndex } from "../graph/build-node-parent-index"
+
+import type { EntryNodeId, Workspace } from "../../types"
 
 /**
  * Gets the immediate parent id for a node id by searching the board and
@@ -15,5 +16,6 @@ export function getImmediateParentIdInWorkspace(
   nodeId: EntryNodeId,
 ): EntryNodeId | null {
   const parentId = getNodeParentIndex(workspace).get(nodeId)
+
   return (parentId as EntryNodeId | undefined) ?? null
 }

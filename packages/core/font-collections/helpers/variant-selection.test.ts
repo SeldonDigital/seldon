@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  deriveVariantPreset,
-  getEnabledVariants,
-  isVariantEnabled,
-} from "./variant-selection"
+import { deriveVariantPreset, getEnabledVariants, isVariantEnabled } from "./variant-selection"
 
 describe("isVariantEnabled", () => {
   it("treats only an explicit true as enabled", () => {
@@ -30,9 +26,7 @@ describe("getEnabledVariants", () => {
 describe("deriveVariantPreset", () => {
   it("derives all, none, or custom", () => {
     expect(deriveVariantPreset(undefined, [])).toBe("all")
-    expect(
-      deriveVariantPreset({ "100": true, "400": true }, ["100", "400"]),
-    ).toBe("all")
+    expect(deriveVariantPreset({ "100": true, "400": true }, ["100", "400"])).toBe("all")
     expect(deriveVariantPreset({}, ["100", "400"])).toBe("none")
     expect(deriveVariantPreset({ "100": true }, ["100", "400"])).toBe("custom")
   })

@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
 import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { setNodeStateProperties } from "./set-node-state-properties"
 
+import type { ComponentTreeRef, ExtractPayload } from "../../../../index"
+
 const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
-const defaultRoot = workspace.boards[ComponentId.BUTTON]!
-  .variants[0]! as ComponentTreeRef
+const defaultRoot = workspace.boards[ComponentId.BUTTON]!.variants[0]! as ComponentTreeRef
 
 const hoverOpacity = (nodeId: string) =>
   setNodeStateProperties(
@@ -45,6 +45,7 @@ describe("setNodeStateProperties", () => {
 
   it("is a no-op on an instance because state authoring is blocked", () => {
     const instanceId = defaultRoot.children![0]!.id
+
     expect(hoverOpacity(instanceId)).toBe(workspace)
   })
 })

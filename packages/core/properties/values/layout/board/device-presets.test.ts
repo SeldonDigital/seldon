@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  BOARD_DEVICE_PRESETS,
-  getBoardDevicePreset,
-  isBoardDevicePresetId,
-} from "./device-presets"
+import { BOARD_DEVICE_PRESETS, getBoardDevicePreset, isBoardDevicePresetId } from "./device-presets"
 
 describe("isBoardDevicePresetId", () => {
   it("accepts known ids and rejects others", () => {
@@ -27,6 +23,7 @@ describe("getBoardDevicePreset", () => {
 
   it("exposes every catalog preset with positive dimensions", () => {
     expect(BOARD_DEVICE_PRESETS.length).toBe(10)
+
     for (const preset of BOARD_DEVICE_PRESETS) {
       expect(preset.widthPx).toBeGreaterThan(0)
       expect(preset.heightPx).toBeGreaterThan(0)

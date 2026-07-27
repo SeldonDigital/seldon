@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideJapaneseYen(props: SVGAttributes<SVGSVGElement>) {
   return (

@@ -1,4 +1,4 @@
-import { Action, Middleware, Workspace } from "../../types"
+import type { Action, Middleware, Workspace } from "../../types"
 
 /**
  * Composes middleware functions around a reducer using right-to-left function composition.

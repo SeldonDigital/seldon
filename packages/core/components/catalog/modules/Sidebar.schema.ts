@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Sidebar",
   id: Seldon.ComponentId.SIDEBAR,
   intent:
     "Provides a structured sidebar panel with tabbed navigation, content area, and status footer for application interfaces.",
-  tags: [
-    "sidebar",
-    "panel",
-    "module",
-    "ui",
-    "layout",
-    "navigation",
-    "tabs",
-    "structured",
-  ],
+  tags: ["sidebar", "panel", "module", "ui", "layout", "navigation", "tabs", "structured"],
   level: Seldon.ComponentLevel.MODULE,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

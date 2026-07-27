@@ -1,4 +1,4 @@
-import { ValueType } from "../../../constants"
+import type { ValueType } from "../../../constants"
 
 export interface LCH {
   lightness: number

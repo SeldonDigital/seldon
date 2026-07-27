@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  buildNodeParentIndex,
-  getNodeParentIndex,
-} from "./build-node-parent-index"
+import { buildNodeParentIndex, getNodeParentIndex } from "./build-node-parent-index"
 
 describe("buildNodeParentIndex", () => {
   it("maps each child to its composition parent depth-first", () => {
@@ -14,10 +11,7 @@ describe("buildNodeParentIndex", () => {
           variants: [
             {
               id: "root",
-              children: [
-                { id: "child1", children: [{ id: "grandchild" }] },
-                { id: "child2" },
-              ],
+              children: [{ id: "child1", children: [{ id: "grandchild" }] }, { id: "child2" }],
             },
           ],
         },
@@ -72,8 +66,6 @@ describe("getNodeParentIndex", () => {
     }
 
     expect(getNodeParentIndex(source)).toBe(getNodeParentIndex(source))
-    expect(getNodeParentIndex({ ...source })).not.toBe(
-      getNodeParentIndex(source),
-    )
+    expect(getNodeParentIndex({ ...source })).not.toBe(getNodeParentIndex(source))
   })
 })

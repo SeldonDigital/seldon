@@ -1,4 +1,4 @@
-import { RGB } from "../../index"
+import type { RGB } from "../../index"
 
 /**
  * Converts an RGB object to an RGB string with optional opacity.

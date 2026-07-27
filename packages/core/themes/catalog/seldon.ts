@@ -7,7 +7,9 @@ import {
   Unit,
   ValueType,
 } from "../../properties"
-import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
+import { Colorspace, Harmony, Ratio, TokenType } from "../types"
+
+import type { StockTheme } from "../types"
 
 export const theme: StockTheme = {
   metadata: {
@@ -564,8 +566,7 @@ export const theme: StockTheme = {
     },
     background: {
       name: "Background",
-      intent:
-        "The default color used to fill backgrounds, often white or black.",
+      intent: "The default color used to fill backgrounds, often white or black.",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,

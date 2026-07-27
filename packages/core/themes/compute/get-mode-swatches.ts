@@ -1,7 +1,8 @@
 import chroma from "chroma-js"
 
-import type { HSL } from "../../properties/values/shared/exact/hsl"
 import { Colorspace } from "../constants/colorspace"
+
+import type { HSL } from "../../properties/values/shared/exact/hsl"
 import type { ThemeMode } from "../constants/enums"
 import type { Theme } from "../types/theme"
 import type { ThemeSwatch } from "../values/shared/palette/theme-swatch"
@@ -13,9 +14,7 @@ import type { ThemeSwatch } from "../values/shared/palette/theme-swatch"
  * assignment and the dark appearance serves the swapped assignment, regardless
  * of the theme's authored mode. No derivation ever applies to them.
  */
-export const MODE_SWAPPED_SWATCH_PAIRS: ReadonlyArray<
-  readonly [string, string]
-> = [
+export const MODE_SWAPPED_SWATCH_PAIRS: ReadonlyArray<readonly [string, string]> = [
   ["white", "black"],
   ["foreground", "background"],
   ["offBlack", "offWhite"],
@@ -42,6 +41,7 @@ export const MODE_NEUTRAL_SWATCH_IDS = new Set<string>([
 
 function swatchToChroma(swatch: ThemeSwatch): chroma.Color {
   const { parameters } = swatch
+
   switch (parameters.colorspace) {
     case Colorspace.HSL:
       return chroma.hsl(
@@ -50,17 +50,9 @@ function swatchToChroma(swatch: ThemeSwatch): chroma.Color {
         parameters.value.lightness / 100,
       )
     case Colorspace.RGB:
-      return chroma.rgb(
-        parameters.value.red,
-        parameters.value.green,
-        parameters.value.blue,
-      )
+      return chroma.rgb(parameters.value.red, parameters.value.green, parameters.value.blue)
     case Colorspace.LCH:
-      return chroma.lch(
-        parameters.value.lightness,
-        parameters.value.chroma,
-        parameters.value.hue,
-      )
+      return chroma.lch(parameters.value.lightness, parameters.value.chroma, parameters.value.hue)
     case Colorspace.HEX:
     case Colorspace.NAME:
       return chroma(parameters.value)
@@ -75,14 +67,17 @@ function swatchToChroma(swatch: ThemeSwatch): chroma.Color {
 function getMaxChromaInGamut(lightness: number, hue: number): number {
   let low = 0
   let high = 150
+
   while (high - low > 0.5) {
     const mid = (low + high) / 2
+
     if (chroma.lch(lightness, mid, hue).clipped()) {
       high = mid
     } else {
       low = mid
     }
   }
+
   return low
 }
 
@@ -94,9 +89,8 @@ function chromaToHsl(color: chroma.Color): HSL {
   // Pure black and white carry no chroma; the RGB roundtrip can leave junk
   // saturation there, so zero it instead of serializing the artifact.
   const saturation =
-    lightness <= 0 || lightness >= 100
-      ? 0
-      : Math.round(Math.max(0, Math.min(100, (sa ?? 0) * 100)))
+    lightness <= 0 || lightness >= 100 ? 0 : Math.round(Math.max(0, Math.min(100, (sa ?? 0) * 100)))
+
   return { hue, saturation, lightness }
 }
 
@@ -137,6 +131,7 @@ function swatchToHsl(swatch: ThemeSwatch): HSL {
   if (swatch.parameters.colorspace === Colorspace.HSL) {
     return swatch.parameters.value
   }
+
   return chromaToHsl(swatchToChroma(swatch))
 }
 
@@ -148,16 +143,14 @@ function swatchToHsl(swatch: ThemeSwatch): HSL {
  * authored mode and derives through LCH otherwise, with `chromaChange` coming
  * from the theme's color harmony parameters.
  */
-export function getModeSwatches(
-  theme: Theme,
-  targetMode: ThemeMode,
-): Record<string, HSL> {
+export function getModeSwatches(theme: Theme, targetMode: ThemeMode): Record<string, HSL> {
   const authoredMode = theme.displayMode.parameters.mode ?? "light"
   const chromaChange = theme.displayMode.parameters.chromaChange ?? 0
   const lightnessChange = theme.displayMode.parameters.lightnessChange ?? 0
   const result: Record<string, HSL> = {}
 
   const swapPartner = new Map<string, string>()
+
   for (const [a, b] of MODE_SWAPPED_SWATCH_PAIRS) {
     swapPartner.set(a, b)
     swapPartner.set(b, a)
@@ -167,11 +160,13 @@ export function getModeSwatches(
     if (!swatch) continue
 
     const partnerId = swapPartner.get(swatchId)
+
     if (partnerId) {
       const partner =
         targetMode === "dark"
           ? (theme.swatch[partnerId as keyof Theme["swatch"]] ?? swatch)
           : swatch
+
       result[swatchId] = swatchToHsl(partner)
       continue
     }
@@ -179,12 +174,7 @@ export function getModeSwatches(
     result[swatchId] =
       targetMode === authoredMode
         ? swatchToHsl(swatch)
-        : getOppositeModeSwatchColor(
-            swatch,
-            swatchId,
-            chromaChange,
-            lightnessChange,
-          )
+        : getOppositeModeSwatchColor(swatch, swatchId, chromaChange, lightnessChange)
   }
 
   return result

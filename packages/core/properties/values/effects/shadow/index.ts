@@ -1,12 +1,12 @@
-import { EmptyValue } from "../../shared/empty/empty"
+import type { EmptyValue } from "../../shared/empty/empty"
 import type { ShadowValue } from "./shadow"
-import { ShadowBlurValue } from "./shadow-blur"
-import { ShadowBrightnessValue } from "./shadow-brightness"
-import { ShadowColorValue } from "./shadow-color"
-import { ShadowOffsetValue } from "./shadow-offset"
-import { ShadowOpacityValue } from "./shadow-opacity"
-import { ShadowSpreadValue } from "./shadow-spread"
-import { ShadowStyleValue } from "./shadow-style"
+import type { ShadowBlurValue } from "./shadow-blur"
+import type { ShadowBrightnessValue } from "./shadow-brightness"
+import type { ShadowColorValue } from "./shadow-color"
+import type { ShadowOffsetValue } from "./shadow-offset"
+import type { ShadowOpacityValue } from "./shadow-opacity"
+import type { ShadowSpreadValue } from "./shadow-spread"
+import type { ShadowStyleValue } from "./shadow-style"
 
 export interface ShadowCompound {
   preset?: ShadowValue | EmptyValue

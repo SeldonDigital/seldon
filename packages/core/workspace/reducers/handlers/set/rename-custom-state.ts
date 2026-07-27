@@ -11,9 +11,8 @@ export function renameCustomState(
   workspace: Workspace,
 ): Workspace {
   return produce(workspace, (draft) => {
-    const entry = draft.metadata.customStates?.find(
-      (state) => state.key === payload.key,
-    )
+    const entry = draft.metadata.customStates?.find((state) => state.key === payload.key)
+
     if (entry) entry.label = payload.label
   })
 }

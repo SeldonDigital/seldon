@@ -1,6 +1,7 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Text",
@@ -57,9 +58,7 @@ export const schema = {
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -155,8 +154,7 @@ export const schema = {
     {
       id: "display",
       label: "Display",
-      intent:
-        "Large format text for page-level headings or prominent statements.",
+      intent: "Large format text for page-level headings or prominent statements.",
       overrides: {
         htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H1 },
         content: { type: Sdn.ValueType.EXACT, value: "Display" },
@@ -252,8 +250,7 @@ export const schema = {
     {
       id: "tagline",
       label: "Tagline",
-      intent:
-        "Brief descriptive or marketing phrase used in branding or headers.",
+      intent: "Brief descriptive or marketing phrase used in branding or headers.",
       overrides: {
         htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.P },
         content: { type: Sdn.ValueType.EXACT, value: "Tagline" },
@@ -289,8 +286,7 @@ export const schema = {
     {
       id: "description",
       label: "Description",
-      intent:
-        "Presents descriptive text content used for clarification or support.",
+      intent: "Presents descriptive text content used for clarification or support.",
       overrides: {
         htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.P },
         content: { type: Sdn.ValueType.EXACT, value: "Description" },

@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialSpeed_0_75(props: SVGAttributes<SVGSVGElement>) {
   return (

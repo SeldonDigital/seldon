@@ -34,9 +34,7 @@ describe("applyBrightness", () => {
 
 describe("convertAndApplyBrightness", () => {
   it("converts an RGB value to HSL before applying brightness", () => {
-    expect(
-      convertAndApplyBrightness({ red: 255, green: 0, blue: 0 }, 0),
-    ).toEqual({
+    expect(convertAndApplyBrightness({ red: 255, green: 0, blue: 0 }, 0)).toEqual({
       hue: 0,
       saturation: 100,
       lightness: 50,
@@ -45,6 +43,7 @@ describe("convertAndApplyBrightness", () => {
 
   it("converts a hex string to HSL before applying brightness", () => {
     const result = convertAndApplyBrightness("#ff0000", 0)
+
     expect(result).toHaveProperty("saturation")
     expect((result as { lightness: number }).lightness).toBe(50)
   })

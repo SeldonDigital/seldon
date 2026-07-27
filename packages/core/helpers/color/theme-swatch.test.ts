@@ -3,9 +3,10 @@ import { describe, expect, it } from "vitest"
 import { ValueType } from "../../index"
 import { Colorspace } from "../../themes/constants/colorspace"
 import { TokenType } from "../../themes/constants/token-type"
-import type { ThemeSwatch } from "../../themes/types"
 import { themeSwatchToColorValue } from "./theme-swatch-to-color-value"
 import { themeSwatchToCssBackground } from "./theme-swatch-to-css-background"
+
+import type { ThemeSwatch } from "../../themes/types"
 
 const swatch = (parameters: unknown): ThemeSwatch =>
   ({ type: TokenType.SWATCH, parameters }) as ThemeSwatch
@@ -13,15 +14,13 @@ const swatch = (parameters: unknown): ThemeSwatch =>
 describe("themeSwatchToColorValue", () => {
   it("preserves the authoring colorspace value", () => {
     const hsl = { hue: 10, saturation: 20, lightness: 30 }
+
+    expect(themeSwatchToColorValue(swatch({ colorspace: Colorspace.HSL, value: hsl }))).toEqual({
+      type: ValueType.EXACT,
+      value: hsl,
+    })
     expect(
-      themeSwatchToColorValue(
-        swatch({ colorspace: Colorspace.HSL, value: hsl }),
-      ),
-    ).toEqual({ type: ValueType.EXACT, value: hsl })
-    expect(
-      themeSwatchToColorValue(
-        swatch({ colorspace: Colorspace.HEX, value: "#abcdef" }),
-      ),
+      themeSwatchToColorValue(swatch({ colorspace: Colorspace.HEX, value: "#abcdef" })),
     ).toEqual({ type: ValueType.EXACT, value: "#abcdef" })
   })
 })
@@ -45,9 +44,7 @@ describe("themeSwatchToCssBackground", () => {
       ),
     ).toBe("rgb(1 2 3)")
     expect(
-      themeSwatchToCssBackground(
-        swatch({ colorspace: Colorspace.HEX, value: "#abcdef" }),
-      ),
+      themeSwatchToCssBackground(swatch({ colorspace: Colorspace.HEX, value: "#abcdef" })),
     ).toBe("#abcdef")
   })
 

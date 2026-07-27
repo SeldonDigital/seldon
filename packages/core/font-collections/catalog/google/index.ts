@@ -1,8 +1,6 @@
 import { GOOGLE_FONT_FAMILIES } from "../../../properties/constants/typography/font-families"
-import type {
-  FontFamilyEntry,
-  StockFontCollection,
-} from "../../types/font-collection"
+
+import type { FontFamilyEntry, StockFontCollection } from "../../types/font-collection"
 
 /** Builds a stable family slot id from a family name, such as `IBM Plex Sans` -> `ibm-plex-sans`. */
 function slugify(family: string): string {
@@ -13,6 +11,7 @@ function slugify(family: string): string {
 }
 
 const families: Record<string, FontFamilyEntry> = {}
+
 for (const font of GOOGLE_FONT_FAMILIES) {
   families[slugify(font.family)] = {
     name: font.family,
@@ -30,8 +29,7 @@ export const collection: StockFontCollection = {
     id: "googleFonts",
     name: "Google Fonts",
     description: "Font families served by Google Fonts.",
-    intent:
-      "Remote font families loaded from Google Fonts when added to a workspace.",
+    intent: "Remote font families loaded from Google Fonts when added to a workspace.",
   },
   families,
 }

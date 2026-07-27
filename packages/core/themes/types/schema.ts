@@ -70,18 +70,12 @@ export interface ThemeTokenSchema {
 }
 
 /** Authoring shape for static data: single `valueType` is expanded to `supports` + `validation`. */
-export type ThemeTokenCatalogDraft = Omit<
-  ThemeTokenSchema,
-  "supports" | "validation"
-> & {
+export type ThemeTokenCatalogDraft = Omit<ThemeTokenSchema, "supports" | "validation"> & {
   valueType: ThemeTokenSchemaSupport
 }
 
 /** Dynamic entry bridged to a property schema before merge (no `supports` until resolved). */
-export type ThemeTokenBridgedCatalogDraft = Omit<
-  ThemeTokenSchema,
-  "supports" | "validation"
-> &
+export type ThemeTokenBridgedCatalogDraft = Omit<ThemeTokenSchema, "supports" | "validation"> &
   Partial<Pick<ThemeTokenSchema, "supports" | "validation">> & {
     propertyKey: PropertyName
   }

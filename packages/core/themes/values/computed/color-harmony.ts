@@ -1,4 +1,4 @@
-import { Harmony } from "../../constants"
+import type { Harmony } from "../../constants"
 import type { ColorSpaceLiteral } from "../shared/exact/color-spaces"
 import type { ThemeComputedGroup } from "./theme-computed-group"
 

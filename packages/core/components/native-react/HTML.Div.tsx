@@ -1,8 +1,5 @@
-import { HTMLAttributes } from "react"
+import type { HTMLAttributes } from "react"
 
-export const HTMLDiv = ({
-  style,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) => {
+export const HTMLDiv = ({ style, ...props }: HTMLAttributes<HTMLDivElement>) => {
   return <div style={style} {...props} />
 }

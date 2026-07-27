@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconCarbonTemperatureFahrenheitAlt } from "./IconCarbonTemperatureFahrenheitAlt"
 export { IconCarbonThunderstormScattered } from "./IconCarbonThunderstormScattered"

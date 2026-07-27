@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Stat Card",
   id: Seldon.ComponentId.STAT_CARD,
   intent:
     "Dashboard KPI card showing a single metric, a trend indicator, and a label answering whether the number is going up or down.",
-  tags: [
-    "card",
-    "stat",
-    "dashboard",
-    "metric",
-    "kpi",
-    "trend",
-    "analytics",
-    "UI",
-  ],
+  tags: ["card", "stat", "dashboard", "metric", "kpi", "trend", "analytics", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

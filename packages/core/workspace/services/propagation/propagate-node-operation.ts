@@ -1,5 +1,4 @@
 import { invariant } from "../../../index"
-import type { Propagation } from "../../../rules/types/rule-config-types"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
@@ -7,17 +6,12 @@ import { findParentNode } from "../../helpers/nodes/find-parent-node"
 import { getChildIndex } from "../../helpers/nodes/get-child-index"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
-import {
-  EntryNodeId,
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  Workspace,
-} from "../../types"
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { typeCheckingService } from "../type-checking/type-checking.service"
+
+import type { Propagation } from "../../../rules/types/rule-config-types"
+import type { EntryNodeId, Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
 
 export type OperationResult<T = void> =
   | Workspace
@@ -75,6 +69,7 @@ export function propagatePositionalChildOperation({
   workspace: Workspace
 }): Workspace {
   const parent = findParentNode(childId, workspace)
+
   if (!parent) return applyToChild(childId, workspace)
 
   const index = getChildIndex(childId, workspace)
@@ -84,9 +79,12 @@ export function propagatePositionalChildOperation({
     propagation,
     apply: (parentNode, currentWorkspace) => {
       const board = getBoardByNodeId(currentWorkspace, parentNode.id)
+
       if (!board) return currentWorkspace
       const positionalChildId = getChildrenIds(board, parentNode.id)[index]
+
       if (!positionalChildId) return currentWorkspace
+
       return applyToChild(positionalChildId, currentWorkspace)
     },
     workspace,
@@ -99,6 +97,7 @@ function applyDownstream<OpResult extends OperationResult>(
   apply: ApplyOperation<OpResult>,
 ): Workspace {
   const result = apply(node, workspace)
+
   return propagateToInstances(node, resolveWorkspace(result), apply, result)
 }
 
@@ -109,12 +108,10 @@ function applyBidirectional<OpResult extends OperationResult>(
 ): Workspace {
   const variant = typeCheckingService.isVariant(node)
     ? node
-    : nodeRetrievalService.getVariant(
-        instancePropagationVariantRootId(node),
-        workspace,
-      )
+    : nodeRetrievalService.getVariant(instancePropagationVariantRootId(node), workspace)
 
   const result = apply(variant, workspace)
+
   return propagateToInstances(variant, resolveWorkspace(result), apply, result)
 }
 
@@ -129,12 +126,8 @@ function propagateToInstances<OpResult extends OperationResult>(
 
   for (const instance of instances) {
     const result = apply(instance, updatedWorkspace, sourceResult)
-    updatedWorkspace = propagateToInstances(
-      instance,
-      resolveWorkspace(result),
-      apply,
-      result,
-    )
+
+    updatedWorkspace = propagateToInstances(instance, resolveWorkspace(result), apply, result)
   }
 
   return updatedWorkspace
@@ -149,17 +142,18 @@ function instancePropagationVariantRootId(node: Variant | Instance): VariantId {
   if (typeCheckingService.isVariant(node)) {
     return node.id as VariantId
   }
+
   invariant(isEntryNodeForRules(node), "Expected variant root id on instance")
 
   const link = parseNodeLink(node.template)
+
   if (link?.kind === "node") {
     return link.nodeId as VariantId
   }
 
   const cat = parseNodeCatalog(node.template)
-  invariant(
-    cat?.kind === "catalog",
-    "Expected catalog or node template on instance",
-  )
+
+  invariant(cat?.kind === "catalog", "Expected catalog or node template on instance")
+
   return componentBoardDefaultNodeId(cat.componentId) as VariantId
 }

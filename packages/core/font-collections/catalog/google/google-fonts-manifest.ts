@@ -331,17 +331,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Outfit",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Mulish",
@@ -431,17 +421,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Lexend",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Space Grotesk",
@@ -499,16 +479,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Cabin",
-    variants: [
-      "regular",
-      "500",
-      "600",
-      "700",
-      "italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Fira Sans",
@@ -656,16 +627,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Lora",
-    variants: [
-      "regular",
-      "500",
-      "600",
-      "700",
-      "italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "PT Serif",
@@ -692,17 +654,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Roboto Slab",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Roboto Mono",
@@ -878,17 +830,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Noto Sans Arabic",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Cairo",
@@ -926,16 +868,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Arimo",
-    variants: [
-      "regular",
-      "500",
-      "600",
-      "700",
-      "italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["regular", "500", "600", "700", "italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Arvo",
@@ -1086,17 +1019,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Heebo",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Hind",
@@ -1112,16 +1035,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Instrument Sans",
-    variants: [
-      "400",
-      "500",
-      "600",
-      "700",
-      "400italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["400", "500", "600", "700", "400italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Kanit",
@@ -1243,16 +1157,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Radio Canada Big",
-    variants: [
-      "400",
-      "500",
-      "600",
-      "700",
-      "400italic",
-      "500italic",
-      "600italic",
-      "700italic",
-    ],
+    variants: ["400", "500", "600", "700", "400italic", "500italic", "600italic", "700italic"],
   },
   {
     family: "Rajdhani",
@@ -1372,15 +1277,6 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Ubuntu",
-    variants: [
-      "300",
-      "300italic",
-      "regular",
-      "italic",
-      "500",
-      "500italic",
-      "700",
-      "700italic",
-    ],
+    variants: ["300", "300italic", "regular", "italic", "500", "500italic", "700", "700italic"],
   },
 ]

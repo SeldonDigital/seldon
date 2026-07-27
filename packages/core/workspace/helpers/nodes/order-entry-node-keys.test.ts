@@ -1,13 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { EntryNode } from "../../model/entry-node"
-import {
-  orderEntryNodeKeys,
-  orderWorkspaceNodeKeys,
-} from "./order-entry-node-keys"
+import { orderEntryNodeKeys, orderWorkspaceNodeKeys } from "./order-entry-node-keys"
 
-const node = (overrides: Record<string, unknown>): EntryNode =>
-  overrides as unknown as EntryNode
+import type { EntryNode } from "../../model/entry-node"
+
+const node = (overrides: Record<string, unknown>): EntryNode => overrides as unknown as EntryNode
 
 describe("orderEntryNodeKeys", () => {
   it("emits canonical key order, skips unset keys, and keeps extras", () => {
@@ -62,6 +59,7 @@ describe("orderWorkspaceNodeKeys", () => {
     } as never
 
     const result = orderWorkspaceNodeKeys(workspace)
+
     expect(Object.keys(result.nodes.n1).slice(0, 2)).toEqual(["id", "type"])
     expect(result.themes).toBe(themes)
   })

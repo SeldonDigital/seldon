@@ -1,20 +1,12 @@
 import { Unit } from "../../properties/constants/shared/units"
 import { TokenType } from "../constants"
-import type {
-  StockTheme,
-  ThemeMetadata,
-  ThemePipelineInput,
-} from "../types/theme"
-import {
-  BORDER_WIDTH_OPTIONS,
-  type BorderWidthOption,
-} from "../values/shared/option/theme-border-width-option"
+import { BORDER_WIDTH_OPTIONS } from "../values/shared/option/theme-border-width-option"
 import { parseColorspaceLiteral } from "./colorspaces"
 import { normalizeThemeSwatchParameters } from "./normalize-theme-swatch-parameters"
-import {
-  normalizeThemeExactValue,
-  normalizeThemeNumber,
-} from "./normalize-theme-value"
+import { normalizeThemeExactValue, normalizeThemeNumber } from "./normalize-theme-value"
+
+import type { StockTheme, ThemeMetadata, ThemePipelineInput } from "../types/theme"
+import type { BorderWidthOption } from "../values/shared/option/theme-border-width-option"
 
 /**
  * Normalizes theme values before palette completion. Accepts `StockTheme` or complete `Theme`-shaped input.
@@ -50,6 +42,7 @@ function normalizeTokenType(type: unknown): TokenType | undefined {
   ) {
     return type
   }
+
   return undefined
 }
 
@@ -90,17 +83,14 @@ export function normalizeThemeInput(
       },
     },
     displayMode: normalizeDisplayMode(theme),
-    matchColor: normalizeComputedGroup(
-      theme.matchColor as StockTheme["matchColor"],
-    ),
+    matchColor: normalizeComputedGroup(theme.matchColor as StockTheme["matchColor"]),
     highContrast: {
       ...(theme.highContrast as StockTheme["highContrast"]),
       type: TokenType.COMPUTED,
       parameters: {
         ...(theme.highContrast as StockTheme["highContrast"]).parameters,
         contrastRatio: normalizeThemeNumber(
-          (theme.highContrast as StockTheme["highContrast"]).parameters
-            .contrastRatio,
+          (theme.highContrast as StockTheme["highContrast"]).parameters.contrastRatio,
         ),
       },
     },
@@ -109,16 +99,13 @@ export function normalizeThemeInput(
       type: TokenType.COMPUTED,
       parameters: {
         leftRhythm: normalizeThemeNumber(
-          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters
-            .leftRhythm,
+          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters.leftRhythm,
         ),
         rightRhythm: normalizeThemeNumber(
-          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters
-            .rightRhythm,
+          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters.rightRhythm,
         ),
         verticalRhythm: normalizeThemeNumber(
-          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters
-            .verticalRhythm,
+          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters.verticalRhythm,
         ),
       },
     },
@@ -126,19 +113,13 @@ export function normalizeThemeInput(
       ...(theme.autoFit as StockTheme["autoFit"]),
       type: TokenType.COMPUTED,
       parameters: {
-        factor: normalizeThemeNumber(
-          (theme.autoFit as StockTheme["autoFit"]).parameters.factor,
-        ),
+        factor: normalizeThemeNumber((theme.autoFit as StockTheme["autoFit"]).parameters.factor),
       },
     },
-    fontFamily: normalizeFontFamily(
-      theme.fontFamily as StockTheme["fontFamily"],
-    ),
+    fontFamily: normalizeFontFamily(theme.fontFamily as StockTheme["fontFamily"]),
     iconSet: normalizeIconSet(theme as StockTheme),
     swatch: normalizeSwatches(theme.swatch as Record<string, unknown>),
-    borderWidth: normalizeBorderWidth(
-      theme.borderWidth as StockTheme["borderWidth"],
-    ),
+    borderWidth: normalizeBorderWidth(theme.borderWidth as StockTheme["borderWidth"]),
     size: normalizeScaleRecord(theme.size),
     blur: normalizeScaleRecord(theme.blur),
     margin: normalizeScaleRecord(theme.margin),
@@ -164,23 +145,16 @@ export function normalizeThemeInput(
   return normalized as ThemePipelineInput
 }
 
-function normalizeMetadata(
-  theme: ThemePipelineInput | { [key: string]: unknown },
-): ThemeMetadata {
+function normalizeMetadata(theme: ThemePipelineInput | { [key: string]: unknown }): ThemeMetadata {
   const withMetadata = theme as { metadata?: Partial<ThemeMetadata> }
+
   if (withMetadata.metadata?.id) {
     return {
       id: withMetadata.metadata.id as ThemeMetadata["id"],
-      name:
-        withMetadata.metadata.name ?? (theme as { name?: string }).name ?? "",
+      name: withMetadata.metadata.name ?? (theme as { name?: string }).name ?? "",
       description:
-        withMetadata.metadata.description ??
-        (theme as { description?: string }).description ??
-        "",
-      intent:
-        withMetadata.metadata.intent ??
-        (theme as { intent?: string }).intent ??
-        "",
+        withMetadata.metadata.description ?? (theme as { description?: string }).description ?? "",
+      intent: withMetadata.metadata.intent ?? (theme as { intent?: string }).intent ?? "",
     }
   }
 
@@ -190,6 +164,7 @@ function normalizeMetadata(
     description?: string
     intent?: string
   }
+
   return {
     id: (legacy.id ?? "seldon") as ThemeMetadata["id"],
     name: legacy.name ?? "",
@@ -200,30 +175,27 @@ function normalizeMetadata(
 
 type FontFamilySlot = StockTheme["fontFamily"]["parameters"]["primary"]
 
-function normalizeFontFamily(
-  ff: StockTheme["fontFamily"],
-): StockTheme["fontFamily"] {
+function normalizeFontFamily(ff: StockTheme["fontFamily"]): StockTheme["fontFamily"] {
   function slot(v: FontFamilySlot | string): FontFamilySlot {
     if (typeof v === "string") {
       return { type: TokenType.FONT_FAMILY, parameters: v }
     }
-    if (
-      v &&
-      typeof v === "object" &&
-      "parameters" in v &&
-      typeof v.parameters === "string"
-    ) {
-      const intent =
-        "intent" in v && typeof v.intent === "string" ? v.intent : undefined
+
+    if (v && typeof v === "object" && "parameters" in v && typeof v.parameters === "string") {
+      const intent = "intent" in v && typeof v.intent === "string" ? v.intent : undefined
+
       return {
         type: TokenType.FONT_FAMILY,
         parameters: v.parameters,
         ...(intent !== undefined ? { intent } : {}),
       }
     }
+
     return { type: TokenType.FONT_FAMILY, parameters: "" }
   }
+
   const params = ff.parameters
+
   return {
     ...ff,
     type: TokenType.COMPUTED,
@@ -235,9 +207,7 @@ function normalizeFontFamily(
 }
 
 /** Pass-through normalizer for a computed group: force `type`, keep parameters. */
-function normalizeComputedGroup<T extends { parameters: unknown }>(
-  group: T,
-): T {
+function normalizeComputedGroup<T extends { parameters: unknown }>(group: T): T {
   return {
     ...group,
     type: TokenType.COMPUTED,
@@ -252,13 +222,9 @@ function normalizeComputedGroup<T extends { parameters: unknown }>(
 function normalizeDisplayMode(
   theme: ThemePipelineInput | { [key: string]: unknown },
 ): StockTheme["displayMode"] {
-  const displayMode = (theme as { displayMode?: { parameters?: unknown } })
-    .displayMode
-  const legacy =
-    (theme.colorHarmony as { parameters?: Record<string, unknown> })
-      ?.parameters ?? {}
-  const source =
-    (displayMode?.parameters as Record<string, unknown> | undefined) ?? legacy
+  const displayMode = (theme as { displayMode?: { parameters?: unknown } }).displayMode
+  const legacy = (theme.colorHarmony as { parameters?: Record<string, unknown> })?.parameters ?? {}
+  const source = (displayMode?.parameters as Record<string, unknown> | undefined) ?? legacy
 
   return {
     type: TokenType.COMPUTED,
@@ -274,22 +240,25 @@ function normalizeIconSet(theme: StockTheme): StockTheme["iconSet"] {
   const iconSet =
     (theme as StockTheme & { icon?: StockTheme["iconSet"] }).iconSet ??
     (theme as StockTheme & { icon?: StockTheme["iconSet"] }).icon
+
   if (!iconSet) {
     throw new Error("Theme must define iconSet")
   }
+
   return iconSet
 }
 
-function normalizeSwatches(
-  swatch: Record<string, unknown>,
-): StockTheme["swatch"] {
+function normalizeSwatches(swatch: Record<string, unknown>): StockTheme["swatch"] {
   const out: Record<string, unknown> = {}
+
   for (const [key, cell] of Object.entries(swatch)) {
     if (!cell || typeof cell !== "object") {
       out[key] = cell
       continue
     }
+
     const c = cell as Record<string, unknown>
+
     if ("kind" in c && c.kind === "dynamic" && "role" in c) {
       out[key] = {
         type: TokenType.DYNAMIC_SWATCH,
@@ -298,6 +267,7 @@ function normalizeSwatches(
       }
       continue
     }
+
     if (normalizeTokenType(c.type) === TokenType.DYNAMIC_SWATCH) {
       out[key] = {
         type: TokenType.DYNAMIC_SWATCH,
@@ -306,6 +276,7 @@ function normalizeSwatches(
       }
       continue
     }
+
     if (normalizeTokenType(c.type) === TokenType.SWATCH && "parameters" in c) {
       out[key] = {
         type: TokenType.SWATCH,
@@ -315,22 +286,23 @@ function normalizeSwatches(
       }
       continue
     }
+
     out[key] = cell
   }
+
   return out as StockTheme["swatch"]
 }
 
-function normalizeBorderWidth(
-  bw: StockTheme["borderWidth"],
-): StockTheme["borderWidth"] {
+function normalizeBorderWidth(bw: StockTheme["borderWidth"]): StockTheme["borderWidth"] {
   const next = { ...bw } as Record<string, unknown>
   const isBorderWidthOption = (v: unknown): v is BorderWidthOption =>
-    typeof v === "string" &&
-    (BORDER_WIDTH_OPTIONS as readonly string[]).includes(v)
+    typeof v === "string" && (BORDER_WIDTH_OPTIONS as readonly string[]).includes(v)
 
   for (const key of Object.keys(next)) {
     const item = next[key] as Record<string, unknown> | undefined
+
     if (!item || typeof item !== "object") continue
+
     if (
       normalizeTokenType(item.type) === TokenType.OPTION &&
       isBorderWidthOption(item.parameters)
@@ -343,6 +315,7 @@ function normalizeBorderWidth(
       }
       continue
     }
+
     if (!("type" in item) && isBorderWidthOption(item.parameters)) {
       next[key] = {
         type: TokenType.OPTION,
@@ -352,6 +325,7 @@ function normalizeBorderWidth(
       }
       continue
     }
+
     if (
       normalizeTokenType(item.type) === TokenType.MODULATED ||
       ("parameters" in item &&
@@ -360,6 +334,7 @@ function normalizeBorderWidth(
         "step" in (item.parameters as object))
     ) {
       const params = item.parameters as { step?: unknown }
+
       next[key] = {
         ...item,
         type: TokenType.MODULATED,
@@ -370,34 +345,32 @@ function normalizeBorderWidth(
       }
       continue
     }
+
     next[key] = item
   }
+
   return next as StockTheme["borderWidth"]
 }
 
 function normalizeLookRecord<T extends Record<string, unknown>>(record: T): T {
   const normalized = {} as T
+
   for (const key in record) {
     const item = record[key] as Record<string, unknown>
-    if (
-      item &&
-      typeof item === "object" &&
-      "parameters" in item &&
-      item.type !== TokenType.LOOK
-    ) {
-      normalized[key] = { ...item, type: TokenType.LOOK } as T[Extract<
-        keyof T,
-        string
-      >]
+
+    if (item && typeof item === "object" && "parameters" in item && item.type !== TokenType.LOOK) {
+      normalized[key] = { ...item, type: TokenType.LOOK } as T[Extract<keyof T, string>]
     } else {
       normalized[key] = item as T[Extract<keyof T, string>]
     }
   }
+
   return normalized
 }
 
 function normalizeScaleRecord<T extends Record<string, unknown>>(record: T): T {
   const normalized = {} as T
+
   for (const key in record) {
     const item = record[key] as
       | {
@@ -406,6 +379,7 @@ function normalizeScaleRecord<T extends Record<string, unknown>>(record: T): T {
           type?: TokenType
         }
       | undefined
+
     if (item && typeof item === "object") {
       // An explicit `type: EXACT` wins over a stale `step`. Entry overrides
       // deep-merge onto the stock template, so a reserved token that switches to
@@ -424,6 +398,7 @@ function normalizeScaleRecord<T extends Record<string, unknown>>(record: T): T {
             ? item
             : { ...item, type: TokenType.MODULATED }
         const params = item.parameters as { step: unknown }
+
         normalized[key] = {
           ...typed,
           parameters: {
@@ -435,15 +410,11 @@ function normalizeScaleRecord<T extends Record<string, unknown>>(record: T): T {
       }
 
       if ("parameters" in item && item.parameters !== undefined) {
-        const typed =
-          item.type === TokenType.EXACT
-            ? item
-            : { ...item, type: TokenType.EXACT }
+        const typed = item.type === TokenType.EXACT ? item : { ...item, type: TokenType.EXACT }
+
         normalized[key] = {
           ...typed,
-          parameters: normalizeThemeExactValue(
-            (typed as { parameters: unknown }).parameters,
-          ),
+          parameters: normalizeThemeExactValue((typed as { parameters: unknown }).parameters),
         } as T[Extract<keyof T, string>]
         continue
       }
@@ -451,23 +422,19 @@ function normalizeScaleRecord<T extends Record<string, unknown>>(record: T): T {
 
     normalized[key] = item as T[Extract<keyof T, string>]
   }
+
   return normalized
 }
 
-function normalizeNumberRecord<T extends Record<string, unknown>>(
-  record: T,
-): T {
+function normalizeNumberRecord<T extends Record<string, unknown>>(record: T): T {
   const normalized = {} as T
+
   for (const key in record) {
     const item = record[key] as
       | { parameters?: unknown; name?: string; type?: TokenType }
       | undefined
-    if (
-      item &&
-      typeof item === "object" &&
-      "parameters" in item &&
-      item.parameters !== undefined
-    ) {
+
+    if (item && typeof item === "object" && "parameters" in item && item.parameters !== undefined) {
       const raw = item as {
         parameters: unknown
         name?: string
@@ -481,6 +448,7 @@ function normalizeNumberRecord<T extends Record<string, unknown>>(
         typeof (inner as { value: unknown }).value === "number"
           ? normalizeThemeNumber((inner as { value: number }).value)
           : normalizeThemeNumber(inner)
+
       normalized[key] = {
         ...raw,
         type: TokenType.EXACT,
@@ -490,5 +458,6 @@ function normalizeNumberRecord<T extends Record<string, unknown>>(
       normalized[key] = item as T[Extract<keyof T, string>]
     }
   }
+
   return normalized
 }

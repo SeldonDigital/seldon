@@ -9,6 +9,7 @@
  * `keyof <Parameters>`, so omitting a facet fails the build.
  */
 import { ValueType } from "../../properties/constants/shared/value-types"
+
 import type { PropertyName } from "../../properties/schemas/data/property-schemas"
 import type { ThemeTokenSchema, ThemeTokenSchemaSupport } from "../types/schema"
 import type { BorderParameters } from "../values/appearance/border"
@@ -302,9 +303,7 @@ export function isLookSection(section: string): section is LookSection {
   return section in LOOK_FACETS
 }
 
-export function isBridgedLookFacet(
-  facet: LookFacetEntry,
-): facet is BridgedLookFacet {
+export function isBridgedLookFacet(facet: LookFacetEntry): facet is BridgedLookFacet {
   return "propertyKey" in facet
 }
 
@@ -315,9 +314,11 @@ export function buildEmptyLookParameters(
   section: LookSection,
 ): Record<string, typeof EMPTY_FACET_VALUE> {
   const parameters: Record<string, typeof EMPTY_FACET_VALUE> = {}
+
   for (const facet of LOOK_FACETS[section]) {
     parameters[facet.facet] = EMPTY_FACET_VALUE
   }
+
   return parameters
 }
 
@@ -335,18 +336,15 @@ type AssertComplete<M> = [M] extends [never] ? true : M
 const _assertGradient: AssertComplete<
   MissingFacets<GradientParameters, typeof GRADIENT_LOOK_FACETS>
 > = true
-const _assertShadow: AssertComplete<
-  MissingFacets<ShadowParameters, typeof SHADOW_LOOK_FACETS>
-> = true
-const _assertBorder: AssertComplete<
-  MissingFacets<BorderParameters, typeof BORDER_LOOK_FACETS>
-> = true
-const _assertFont: AssertComplete<
-  MissingFacets<FontParameters, typeof FONT_LOOK_FACETS>
-> = true
+const _assertShadow: AssertComplete<MissingFacets<ShadowParameters, typeof SHADOW_LOOK_FACETS>> =
+  true
+const _assertBorder: AssertComplete<MissingFacets<BorderParameters, typeof BORDER_LOOK_FACETS>> =
+  true
+const _assertFont: AssertComplete<MissingFacets<FontParameters, typeof FONT_LOOK_FACETS>> = true
 const _assertScrollbar: AssertComplete<
   MissingFacets<ScrollbarParameters, typeof SCROLLBAR_LOOK_FACETS>
 > = true
+
 void _assertGradient
 void _assertShadow
 void _assertBorder

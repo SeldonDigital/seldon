@@ -1,6 +1,7 @@
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
-import { EntryNode, EntryNodeId, Workspace } from "../../types"
+
+import type { EntryNode, EntryNodeId, Workspace } from "../../types"
 
 /**
  * Retrieves a node (variant or instance) by its ID from the workspace.
@@ -9,11 +10,10 @@ import { EntryNode, EntryNodeId, Workspace } from "../../types"
  * @returns The node with the specified ID
  * @throws Error if the node is not found
  */
-export function getNodeById(
-  targetId: EntryNodeId,
-  workspace: Workspace,
-): EntryNode {
+export function getNodeById(targetId: EntryNodeId, workspace: Workspace): EntryNode {
   const node = workspace.nodes[targetId]
+
   invariant(node, ErrorMessages.nodeNotFound(targetId))
+
   return node
 }

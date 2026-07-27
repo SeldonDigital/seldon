@@ -1,11 +1,13 @@
-import { ComputedFunction, Unit, ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { ComputedAutoFitValue } from "../shared/computed/auto-fit"
-import { EmptyValue } from "../shared/empty/empty"
-import { PixelValue } from "../shared/exact/pixel"
-import { RemValue } from "../shared/exact/rem"
+import { ComputedFunction, Unit } from "../../constants"
 import { Resize } from "./resize"
 import { ScreenSize } from "./screen-size"
+
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { ComputedAutoFitValue } from "../shared/computed/auto-fit"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { PixelValue } from "../shared/exact/pixel"
+import type { RemValue } from "../shared/exact/rem"
 
 /** Picks fit, fill, or a device size band for board width. */
 export interface ScreenWidthOptionValue {
@@ -41,9 +43,12 @@ export const screenWidthSchema: PropertySchema = {
         "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
-      )
+      ) {
         return true
+      }
+
       if (typeof value === "number" && value > 0) return true
+
       return false
     },
     option: (value: unknown) =>

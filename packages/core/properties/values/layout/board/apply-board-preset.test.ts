@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
 
-import type { BoardCompound } from "."
 import { Unit, ValueType } from "../../../constants"
 import { Resize } from "../resize"
 import {
@@ -11,6 +10,8 @@ import {
   matchBoardCompoundPreset,
   resolveBoardPresetIdFromPickerValue,
 } from "./apply-board-preset"
+
+import type { BoardCompound } from "."
 
 describe("applyBoardPreset", () => {
   it("builds the fit preset facets", () => {
@@ -24,6 +25,7 @@ describe("applyBoardPreset", () => {
 
   it("builds device preset facets in pixels", () => {
     const iphone = applyBoardDevicePreset("iphone")
+
     expect(iphone.preset).toEqual({ type: ValueType.OPTION, value: "iphone" })
     expect(iphone.width).toEqual({
       type: ValueType.EXACT,
@@ -35,9 +37,7 @@ describe("applyBoardPreset", () => {
 describe("matchBoardCompoundPreset", () => {
   it("names a board that matches its preset's canonical state", () => {
     expect(matchBoardCompoundPreset(applyBoardPreset(Resize.FIT))).toBe("Fit")
-    expect(matchBoardCompoundPreset(applyBoardDevicePreset("iphone"))).toBe(
-      "iPhone",
-    )
+    expect(matchBoardCompoundPreset(applyBoardDevicePreset("iphone"))).toBe("iPhone")
   })
 
   it("returns null for a mismatch or a missing preset", () => {
@@ -45,6 +45,7 @@ describe("matchBoardCompoundPreset", () => {
       ...applyBoardDevicePreset("iphone"),
       width: { type: ValueType.EXACT, value: { value: 1, unit: Unit.PX } },
     }
+
     expect(matchBoardCompoundPreset(tampered as BoardCompound)).toBeNull()
     expect(matchBoardCompoundPreset(undefined)).toBeNull()
     expect(matchBoardCompoundPreset({})).toBeNull()
@@ -54,6 +55,7 @@ describe("matchBoardCompoundPreset", () => {
 describe("buildBoardCompoundReset", () => {
   it("defaults height to fit when no schema board is given", () => {
     const reset = buildBoardCompoundReset()
+
     expect(reset.board).toMatchObject({
       preset: { type: ValueType.EMPTY, value: null },
       width: { type: ValueType.EMPTY, value: null },
@@ -65,9 +67,8 @@ describe("buildBoardCompoundReset", () => {
     const schemaBoard = {
       preset: { type: ValueType.OPTION, value: "ipad" },
     } as BoardCompound
-    expect(
-      (buildBoardCompoundReset(schemaBoard).board as BoardCompound).preset,
-    ).toEqual({
+
+    expect((buildBoardCompoundReset(schemaBoard).board as BoardCompound).preset).toEqual({
       type: ValueType.OPTION,
       value: "ipad",
     })

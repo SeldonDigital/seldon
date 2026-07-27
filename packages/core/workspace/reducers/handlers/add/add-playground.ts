@@ -1,14 +1,12 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../../../helpers/components/board-sort-order"
+import { getBoardOrder, setBoardOrder } from "../../../helpers/components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { buildSandboxNode } from "../../../helpers/nodes/sandbox"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Creates an empty playground container row in `workspace.playgrounds` when the
@@ -32,10 +30,7 @@ export function addPlayground(
     }
 
     const existing = Object.values(draft.playgrounds)
-    const maxOrder =
-      existing.length > 0
-        ? Math.max(...existing.map((p) => getBoardOrder(p)))
-        : -1
+    const maxOrder = existing.length > 0 ? Math.max(...existing.map((p) => getBoardOrder(p))) : -1
 
     // Seed one Sandbox at 0,0 sized 800x600 so a new playground is never empty.
     const { id: sandboxId, node: sandboxNode } = buildSandboxNode(boardKey)
@@ -48,6 +43,7 @@ export function addPlayground(
       componentProperties: getInitialBoardComponentProperties("playground"),
       variants: [{ id: sandboxId }],
     }
+
     setBoardOrder(container, maxOrder + 1)
     draft.playgrounds[boardKey] = container
     draft.nodes[sandboxId] = sandboxNode

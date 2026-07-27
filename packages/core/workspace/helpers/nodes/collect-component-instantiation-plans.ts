@@ -1,4 +1,4 @@
-import { ComponentId } from "../../../components/constants"
+import type { ComponentId } from "../../../components/constants"
 import type { ComponentInstantiationPlan } from "./component-add-plan"
 
 export type { ComponentInstantiationPlan } from "./component-add-plan"
@@ -10,6 +10,7 @@ export function getInstantiationOptionsForComponent(
   restrictedVariantIds?: string[]
 } {
   const plan = plans.get(componentId)
+
   if (!plan || plan.fullCatalog || plan.variantIds.size === 0) {
     return {}
   }

@@ -15,6 +15,7 @@ function splitWords(name: string): string[] {
 /** camelCase workspace board key derived from an authored component name. */
 export function authoredBoardKeyFromName(name: string): string {
   const words = splitWords(name)
+
   return words
     .map((word, index) =>
       index === 0
@@ -27,7 +28,6 @@ export function authoredBoardKeyFromName(name: string): string {
 /** PascalCase export component name derived from an authored component name. */
 export function authoredExportNameFromName(name: string): string {
   const words = splitWords(name)
-  return words
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join("")
+
+  return words.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join("")
 }

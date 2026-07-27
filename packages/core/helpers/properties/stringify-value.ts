@@ -1,11 +1,4 @@
-import {
-  COMPUTED_FUNCTION_DISPLAY_NAMES,
-  ComputedFunction,
-  Unit,
-  ValueType,
-} from "../../properties"
-import { Value } from "../../properties/types/value"
-import { EmptyValue } from "../../properties/values/shared/empty/empty"
+import { COMPUTED_FUNCTION_DISPLAY_NAMES, Unit, ValueType } from "../../properties"
 import { HSLObjectToString } from "../color/hsl-object-to-string"
 import { LCHObjectToString } from "../color/lch-object-to-string"
 import { RGBObjectToString } from "../color/rgb-object-to-string"
@@ -14,6 +7,10 @@ import { isLCHObject } from "../type-guards/color/is-lch-object"
 import { isRGBObject } from "../type-guards/color/is-rgb-object"
 import { isCompoundValue } from "../type-guards/compound/is-compound-value"
 import { isEmptyValue } from "../type-guards/value/is-empty-value"
+
+import type { ComputedFunction } from "../../properties"
+import type { Value } from "../../properties/types/value"
+import type { EmptyValue } from "../../properties/values/shared/empty/empty"
 
 /**
  * Converts a Value object to its string representation for display purposes.
@@ -25,17 +22,13 @@ import { isEmptyValue } from "../type-guards/value/is-empty-value"
  * @param value - The Value object to convert
  * @returns The string representation of the Value object, or undefined if empty
  */
-export function stringifyValue(
-  value: Value | EmptyValue | undefined,
-): string | undefined {
+export function stringifyValue(value: Value | EmptyValue | undefined): string | undefined {
   if (!value || isEmptyValue(value)) {
     return undefined
   }
 
   if (isCompoundValue(value)) {
-    const subValues = Object.values(value).map((subValue) =>
-      stringifyValue(subValue),
-    )
+    const subValues = Object.values(value).map((subValue) => stringifyValue(subValue))
 
     // If all sub values are equal, for example all margin sides are the same, return the first one
     if (subValues.every((subValue) => subValue === subValues[0])) {
@@ -61,6 +54,7 @@ export function stringifyValue(
           return value.value
         case "boolean":
           return value.value ? "On" : "Off"
+
         case "object": {
           if (isRGBObject(value.value)) {
             return RGBObjectToString(value.value)
@@ -97,11 +91,7 @@ export function stringifyValue(
     case ValueType.THEME_CATEGORICAL:
       // Option values are usually strings, but a boolean option (such as a
       // yes/no toggle) stringifies to a readable On/Off label.
-      return typeof value.value === "boolean"
-        ? value.value
-          ? "On"
-          : "Off"
-        : value.value
+      return typeof value.value === "boolean" ? (value.value ? "On" : "Off") : value.value
 
     case ValueType.INHERIT:
       return "Inherit"
@@ -114,11 +104,9 @@ export function stringifyValue(
 /** Returns a display label for a COMPUTED value based on its function. */
 function stringifyComputedValue(value: Value): string {
   if (typeof value === "object" && "value" in value) {
-    return (
-      COMPUTED_FUNCTION_DISPLAY_NAMES[value.value as ComputedFunction] ??
-      "Computed"
-    )
+    return COMPUTED_FUNCTION_DISPLAY_NAMES[value.value as ComputedFunction] ?? "Computed"
   }
+
   return "Computed"
 }
 

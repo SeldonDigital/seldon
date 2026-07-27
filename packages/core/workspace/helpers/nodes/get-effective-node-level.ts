@@ -2,9 +2,10 @@ import { findComponentSchema } from "../../../components/catalog"
 import { ComponentLevel } from "../../../components/constants"
 import { isAuthoredBoard } from "../../model/components"
 import { parseNodeTemplate } from "../../model/template-ref"
-import type { EntryNode, Workspace } from "../../types"
 import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getNodeCatalogId } from "./get-node-catalog-id"
+
+import type { EntryNode, Workspace } from "../../types"
 
 /**
  * Resolves the level and authored classification for a node by walking its
@@ -26,23 +27,29 @@ function resolveEffective(
 
     if (current.type === "authored") {
       const board = getBoardByNodeId(workspace, current.id)
+
       if (board && isAuthoredBoard(board)) {
         return { level: board.level as ComponentLevel, authored: true }
       }
     }
 
     const parsed = parseNodeTemplate(current.template)
+
     if (!parsed) break
+
     if (parsed.kind === "catalog") {
       const schema = findComponentSchema(parsed.componentId)
+
       if (schema) return { level: schema.level, authored: false }
       break
     }
+
     current = workspace.nodes[parsed.nodeId]
   }
 
   const catalogId = getNodeCatalogId(node, workspace)
   const schema = catalogId ? findComponentSchema(catalogId) : undefined
+
   return {
     level: schema?.level ?? ComponentLevel.FRAME,
     authored: false,
@@ -50,17 +57,11 @@ function resolveEffective(
 }
 
 /** Effective containment level of a node, authored-aware. */
-export function getEffectiveNodeLevel(
-  node: EntryNode,
-  workspace: Workspace,
-): ComponentLevel {
+export function getEffectiveNodeLevel(node: EntryNode, workspace: Workspace): ComponentLevel {
   return resolveEffective(node, workspace).level
 }
 
 /** True when a node's template chain resolves through an authored root. */
-export function isEffectivelyAuthoredNode(
-  node: EntryNode,
-  workspace: Workspace,
-): boolean {
+export function isEffectivelyAuthoredNode(node: EntryNode, workspace: Workspace): boolean {
   return resolveEffective(node, workspace).authored
 }

@@ -1,6 +1,8 @@
-import { Properties } from "../../properties"
-import { ComponentIcon, ComponentLayout, ComponentLevel } from "../constants"
-import { ComponentId } from "./component-id"
+import { ComponentLevel } from "../constants"
+
+import type { Properties } from "../../properties"
+import type { ComponentIcon, ComponentLayout } from "../constants"
+import type { ComponentId } from "./component-id"
 
 export { ComponentId, isComponentId } from "./component-id"
 
@@ -69,9 +71,7 @@ export interface ComplexComponentSchema extends BaseComponentSchema {
 
 export type ComponentSchema = PrimitiveComponentSchema | ComplexComponentSchema
 
-export function isComplexSchema(
-  schema: ComponentSchema,
-): schema is ComplexComponentSchema {
+export function isComplexSchema(schema: ComponentSchema): schema is ComplexComponentSchema {
   return schema.level !== ComponentLevel.PRIMITIVE
 }
 

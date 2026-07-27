@@ -1,6 +1,11 @@
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
-import {
+import { nodeRelationshipService } from "../nodes/node-relationship.service"
+import { nodeRetrievalService } from "../nodes/node-retrieval.service"
+import { nodeTraversalService } from "../nodes/node-traversal.service"
+import { mutateWorkspace } from "./workspace-mutation.helper"
+
+import type {
   Board,
   BoardKey,
   Instance,
@@ -9,10 +14,6 @@ import {
   VariantId,
   Workspace,
 } from "../../types"
-import { nodeRelationshipService } from "../nodes/node-relationship.service"
-import { nodeRetrievalService } from "../nodes/node-retrieval.service"
-import { nodeTraversalService } from "../nodes/node-traversal.service"
-import { mutateWorkspace } from "./workspace-mutation.helper"
 
 /**
  * Helper functions for common workspace operation patterns to reduce code duplication.
@@ -32,6 +33,7 @@ export function withNodeMutation(
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
     const node = nodeRetrievalService.getNode(nodeId, draft)
+
     invariant(node, ErrorMessages.nodeNotFound(nodeId))
     operation(node, draft)
   })
@@ -51,6 +53,7 @@ export function withBoardMutation(
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
     const board = nodeRetrievalService.getBoard(boardKey, draft)
+
     operation(board, draft)
   })
 }
@@ -72,13 +75,12 @@ export function withParentNode<T = void>(
   operation?: (parent: Variant | Instance) => T,
 ): ParentNodeResult<T> {
   const parent = nodeTraversalService.findParentNode(child, workspace)
-  invariant(
-    parent,
-    ErrorMessages.parentNotFound(typeof child === "string" ? child : child.id),
-  )
+
+  invariant(parent, ErrorMessages.parentNotFound(typeof child === "string" ? child : child.id))
 
   if (operation) {
     const result = operation(parent)
+
     return { parent, result } as ParentNodeResult<T>
   }
 
@@ -100,6 +102,7 @@ export function withVariantAndBoardMutation(
   return mutateWorkspace(workspace, (draft) => {
     const variant = nodeRetrievalService.getVariant(variantId, draft)
     const board = nodeRelationshipService.findBoardForVariant(variant, draft)
+
     invariant(board, ErrorMessages.componentNotFoundForVariant(variantId))
     operation(variant, board, draft)
   })
@@ -115,15 +118,12 @@ export function withVariantAndBoardMutation(
 export function withInstanceAndParentMutation(
   instanceId: InstanceId,
   workspace: Workspace,
-  operation: (
-    instance: Instance,
-    parent: Variant | Instance,
-    draft: Workspace,
-  ) => void,
+  operation: (instance: Instance, parent: Variant | Instance, draft: Workspace) => void,
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
     const instance = nodeRetrievalService.getInstance(instanceId, draft)
     const parent = nodeTraversalService.findParentNode(instance, draft)
+
     invariant(parent, ErrorMessages.parentNotFound(instanceId))
     operation(instance, parent, draft)
   })

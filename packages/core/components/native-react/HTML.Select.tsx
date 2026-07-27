@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes } from "react"
+import type { SelectHTMLAttributes } from "react"
 
 export const HTMLSelect = (props: SelectHTMLAttributes<HTMLSelectElement>) => {
   return <select {...props} />

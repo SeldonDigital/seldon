@@ -2,11 +2,9 @@ import { describe, expect, it } from "vitest"
 
 import { Unit, ValueType } from "../../index"
 import { defaultTheme } from "../../themes"
+import { exactTokenToLength, resolveModulatedOrExactLength } from "./resolve-length-token"
+
 import type { ThemeOption } from "../../themes/types"
-import {
-  exactTokenToLength,
-  resolveModulatedOrExactLength,
-} from "./resolve-length-token"
 
 describe("exactTokenToLength", () => {
   it("wraps a px token as an exact px length", () => {
@@ -27,8 +25,7 @@ describe("exactTokenToLength", () => {
 describe("resolveModulatedOrExactLength", () => {
   it("returns undefined for a token that is neither modulated nor exact", () => {
     const optionToken = { type: "OPTION", name: "x" } as unknown as ThemeOption
-    expect(
-      resolveModulatedOrExactLength(optionToken, defaultTheme),
-    ).toBeUndefined()
+
+    expect(resolveModulatedOrExactLength(optionToken, defaultTheme)).toBeUndefined()
   })
 })

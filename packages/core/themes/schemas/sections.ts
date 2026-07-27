@@ -7,34 +7,34 @@
  */
 import type { ThemeTokenSectionSchema } from "../types/schema"
 
-const THEME_TOKEN_SECTION_ORDER: Array<Omit<ThemeTokenSectionSchema, "order">> =
-  [
-    { id: "computed", label: "Computed" },
-    { id: "swatch", label: "Swatches" },
-    { id: "size", label: "Size" },
-    { id: "margin", label: "Margin" },
-    { id: "padding", label: "Padding" },
-    { id: "gap", label: "Gap" },
-    { id: "dimension", label: "Dimension" },
-    { id: "border", label: "Border" },
-    { id: "borderWidth", label: "Border Width" },
-    { id: "corners", label: "Corners" },
-    { id: "fontWeight", label: "Font Weight" },
-    { id: "fontSize", label: "Font Size" },
-    { id: "lineHeight", label: "Line Height" },
-    { id: "font", label: "Font" },
-    { id: "gradient", label: "Gradient" },
-    { id: "blur", label: "Blur" },
-    { id: "spread", label: "Spread" },
-    { id: "shadow", label: "Shadow" },
-    { id: "scrollbar", label: "Scrollbar" },
-  ]
+const THEME_TOKEN_SECTION_ORDER: Array<Omit<ThemeTokenSectionSchema, "order">> = [
+  { id: "computed", label: "Computed" },
+  { id: "swatch", label: "Swatches" },
+  { id: "size", label: "Size" },
+  { id: "margin", label: "Margin" },
+  { id: "padding", label: "Padding" },
+  { id: "gap", label: "Gap" },
+  { id: "dimension", label: "Dimension" },
+  { id: "border", label: "Border" },
+  { id: "borderWidth", label: "Border Width" },
+  { id: "corners", label: "Corners" },
+  { id: "fontWeight", label: "Font Weight" },
+  { id: "fontSize", label: "Font Size" },
+  { id: "lineHeight", label: "Line Height" },
+  { id: "font", label: "Font" },
+  { id: "gradient", label: "Gradient" },
+  { id: "blur", label: "Blur" },
+  { id: "spread", label: "Spread" },
+  { id: "shadow", label: "Shadow" },
+  { id: "scrollbar", label: "Scrollbar" },
+]
 
-export const THEME_TOKEN_SECTIONS: ThemeTokenSectionSchema[] =
-  THEME_TOKEN_SECTION_ORDER.map((section, index) => ({
+export const THEME_TOKEN_SECTIONS: ThemeTokenSectionSchema[] = THEME_TOKEN_SECTION_ORDER.map(
+  (section, index) => ({
     ...section,
     order: index,
-  }))
+  }),
+)
 
 export function getAllThemeTokenSectionSchemas(): ThemeTokenSectionSchema[] {
   return [...THEME_TOKEN_SECTIONS].sort((a, b) => a.order - b.order)

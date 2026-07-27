@@ -1,4 +1,4 @@
-import { TokenType } from "../../../constants/token-type"
+import type { TokenType } from "../../../constants/token-type"
 
 /** Font stack entry on `StockTheme.fontFamily`. */
 export interface ThemeFontFamilyToken {

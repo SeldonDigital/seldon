@@ -1,6 +1,7 @@
 import { isComponentId } from "../../../components/constants"
-import { EntryNode, Workspace } from "../../types"
 import { getNodeCatalogId } from "./get-node-catalog-id"
+
+import type { EntryNode, Workspace } from "../../types"
 
 /**
  * Check whether a node can have children.
@@ -16,5 +17,6 @@ export function canNodeHaveChildren(
   if (!node) return false
 
   const catalogId = getNodeCatalogId(node, workspace)
+
   return !!catalogId && isComponentId(catalogId)
 }

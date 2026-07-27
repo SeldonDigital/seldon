@@ -1,12 +1,12 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Option Group",
   id: Seldon.ComponentId.OPTION_GROUP,
-  intent:
-    "Groups related options within a select input for better organization.",
+  intent: "Groups related options within a select input for better organization.",
   tags: ["option group", "select", "dropdown", "form", "element", "categorize"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.INPUT,
@@ -56,9 +56,7 @@ export const schema = {
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,

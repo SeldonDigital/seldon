@@ -1,13 +1,12 @@
-import { IconId } from "../../icon-sets"
 import { iconCategoryMapping as carbonMapping } from "../catalog/carbon/category-map"
 import { iconCategoryMapping as lucideMapping } from "../catalog/lucide/category-map"
 import { iconCategoryMapping as materialMapping } from "../catalog/material/category-map"
 import { iconCategoryMapping as seldonMapping } from "../catalog/seldon/category-map"
-import {
-  DEFAULT_CATEGORY_PATH,
-  IconCategoryPath,
-} from "../constants/categories"
-import { IconSetId } from "../types"
+import { DEFAULT_CATEGORY_PATH } from "../constants/categories"
+
+import type { IconId } from "../../icon-sets"
+import type { IconCategoryPath } from "../constants/categories"
+import type { IconSetId } from "../types"
 
 /**
  * Gets the icon ID prefix for an icon set ID
@@ -29,24 +28,21 @@ function getIconIdPrefix(iconSetId: IconSetId): string {
 /**
  * Gets the appropriate mapping for an icon ID
  */
-function getMappingForIconId(
-  iconId: IconId,
-): Partial<Record<IconId, IconCategoryPath>> | null {
+function getMappingForIconId(iconId: IconId): Partial<Record<IconId, IconCategoryPath>> | null {
   if (iconId.startsWith("material-")) return materialMapping
   if (iconId.startsWith("carbon-")) return carbonMapping
   if (iconId.startsWith("lucide-")) return lucideMapping
   if (iconId.startsWith("seldon-")) return seldonMapping
+
   return null
 }
 
 /**
  * Checks if an icon ID belongs to an icon set ID
  */
-export function iconBelongsToIconSet(
-  iconId: IconId,
-  iconSetId: IconSetId,
-): boolean {
+export function iconBelongsToIconSet(iconId: IconId, iconSetId: IconSetId): boolean {
   const prefix = getIconIdPrefix(iconSetId)
+
   return iconId.startsWith(prefix)
 }
 
@@ -56,5 +52,6 @@ export function iconBelongsToIconSet(
  */
 export function getIconCategoryFromId(iconId: IconId): IconCategoryPath {
   const mapping = getMappingForIconId(iconId)
+
   return mapping?.[iconId] || DEFAULT_CATEGORY_PATH
 }

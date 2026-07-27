@@ -1,4 +1,5 @@
 import { Unit, ValueType } from "../constants"
+
 import type { PercentageValue } from "../values/shared/exact/percentage"
 
 /**
@@ -8,10 +9,7 @@ import type { PercentageValue } from "../values/shared/exact/percentage"
  * non-contributing for the same reason, and the background color seed writes
  * these same literals, so this is the one shared source both consumers agree on.
  */
-const ANCHORED_FACET_DEFAULTS: Record<
-  "brightness" | "opacity",
-  PercentageValue
-> = {
+const ANCHORED_FACET_DEFAULTS: Record<"brightness" | "opacity", PercentageValue> = {
   brightness: {
     type: ValueType.EXACT,
     value: { value: 0, unit: Unit.PERCENT },
@@ -28,12 +26,12 @@ const ANCHORED_FACET_DEFAULTS: Record<
  * shadow, and the `start`/`end` prefixed gradient stop facets. Returns
  * `undefined` for any other facet, which has no fixed neutral to anchor to.
  */
-export function getAnchoredFacetDefault(
-  facet: string | undefined,
-): PercentageValue | undefined {
+export function getAnchoredFacetDefault(facet: string | undefined): PercentageValue | undefined {
   if (!facet) return undefined
   const normalized = facet.replace(/^(start|end)/, "").toLowerCase()
+
   if (normalized === "brightness") return ANCHORED_FACET_DEFAULTS.brightness
   if (normalized === "opacity") return ANCHORED_FACET_DEFAULTS.opacity
+
   return undefined
 }

@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialSetMeal(props: SVGAttributes<SVGSVGElement>) {
   return (

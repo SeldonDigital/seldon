@@ -36,24 +36,30 @@ const MODULATION_STEP_SECTIONS = new Set([
  */
 export function getThemeOverridePath(key: string): string | null {
   const [section, id, facet] = key.split(".")
+
   if (!section || !id) return null
 
   if (COMPUTED_GROUP_SECTIONS.has(section)) {
     return `${section}.parameters.${id}`
   }
+
   if (section === "swatch") {
     // Swatch rows nest under a group: `swatch.<group>.<id>`. The cell is owned by
     // the trailing id; a bare group parent (`swatch.harmony`) owns no override.
     return facet ? `swatch.${facet}` : null
   }
+
   if (section === "fontWeight") {
     return `fontWeight.${id}.value`
   }
+
   if (facet === "step" && MODULATION_STEP_SECTIONS.has(section)) {
     return `${section}.${id}.parameters.step`
   }
+
   if (facet && isLookSection(section)) {
     return `${section}.${id}.parameters.${facet}`
   }
+
   return null
 }

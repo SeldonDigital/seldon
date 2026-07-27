@@ -5,10 +5,7 @@
  * @param path - The path to search for (e.g., "user.address.street")
  * @returns The value at the path or undefined if not found
  */
-export function findInObject<Result = unknown>(
-  object: object,
-  path: string,
-): Result | undefined {
+export function findInObject<Result = unknown>(object: object, path: string): Result | undefined {
   const keys = path.split(".")
   let result: unknown = object
 

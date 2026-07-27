@@ -12,15 +12,15 @@ export function removeCustomState(
 ): Workspace {
   return produce(workspace, (draft) => {
     const customStates = draft.metadata.customStates
+
     if (customStates) {
-      draft.metadata.customStates = customStates.filter(
-        (state) => state.key !== payload.key,
-      )
+      draft.metadata.customStates = customStates.filter((state) => state.key !== payload.key)
     }
 
     for (const node of Object.values(draft.nodes)) {
       if (node.states && payload.key in node.states) {
         delete node.states[payload.key]
+
         if (Object.keys(node.states).length === 0) {
           delete node.states
         }

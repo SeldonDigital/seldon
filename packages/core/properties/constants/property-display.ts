@@ -248,21 +248,20 @@ export type PropertyDisplayMeta = {
 function buildPropertyDisplayMeta(): Record<string, PropertyDisplayMeta> {
   const out: Record<string, PropertyDisplayMeta> = {}
   let displayOrder = 0
+
   for (const block of PROPERTY_DISPLAY_ORDER) {
     for (const key of block.keys) {
       out[key] = { displayCategory: block.category, displayOrder }
       displayOrder += 1
     }
   }
+
   return out
 }
 
-export const PROPERTY_DISPLAY_META: Record<string, PropertyDisplayMeta> =
-  buildPropertyDisplayMeta()
+export const PROPERTY_DISPLAY_META: Record<string, PropertyDisplayMeta> = buildPropertyDisplayMeta()
 
-export function attachPropertyDisplayMetadata<
-  const T extends Record<string, object>,
->(
+export function attachPropertyDisplayMetadata<const T extends Record<string, object>>(
   schemas: T,
 ): {
   [K in keyof T]: T[K] & PropertyDisplayMeta
@@ -271,6 +270,7 @@ export function attachPropertyDisplayMetadata<
   const metaKeys = Object.keys(PROPERTY_DISPLAY_META)
 
   const missing = schemaKeys.filter((k) => !PROPERTY_DISPLAY_META[k])
+
   if (missing.length > 0) {
     throw new Error(
       `PROPERTY_DISPLAY_ORDER missing entries for catalog keys: ${missing.join(", ")}`,
@@ -278,6 +278,7 @@ export function attachPropertyDisplayMetadata<
   }
 
   const extra = metaKeys.filter((k) => !(k in schemas))
+
   if (extra.length > 0) {
     throw new Error(
       `PROPERTY_DISPLAY_ORDER has keys not present in PROPERTY_SCHEMAS: ${extra.join(", ")}`,
@@ -285,12 +286,15 @@ export function attachPropertyDisplayMetadata<
   }
 
   const result = {} as { [K in keyof T]: T[K] & PropertyDisplayMeta }
+
   for (const key of schemaKeys) {
     const k = key as keyof T
+
     result[k] = {
       ...schemas[k],
       ...PROPERTY_DISPLAY_META[key],
     }
   }
+
   return result
 }

@@ -20,6 +20,7 @@ function findAncestorIds(
 
   for (const child of ref.children ?? []) {
     const hit = findAncestorIds(child, pathToChild, nodeId)
+
     if (hit) return hit
   }
 
@@ -43,9 +44,10 @@ function findAncestorIds(
 function getParentIds(board: Board, nodeId: EntryNodeId): BoardParentIds {
   for (const root of board.variants) {
     const ancestors = findAncestorIds(root, [], nodeId)
+
     if (ancestors !== null) {
-      const immediateParent =
-        ancestors.length > 0 ? ancestors[ancestors.length - 1]! : null
+      const immediateParent = ancestors.length > 0 ? ancestors[ancestors.length - 1]! : null
+
       return {
         ancestors,
         immediateParent,
@@ -70,9 +72,6 @@ function getParentIds(board: Board, nodeId: EntryNodeId): BoardParentIds {
  * @param board Board whose variants hold the tree.
  * @param nodeId Node id whose parent you need.
  */
-export function getImmediateParentId(
-  board: Board,
-  nodeId: EntryNodeId,
-): EntryNodeId | null {
+export function getImmediateParentId(board: Board, nodeId: EntryNodeId): EntryNodeId | null {
   return getParentIds(board, nodeId).immediateParent
 }

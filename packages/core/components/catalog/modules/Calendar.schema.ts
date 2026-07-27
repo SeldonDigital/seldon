@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Calendar",
   id: Seldon.ComponentId.CALENDAR,
   intent:
     "Month calendar with a navigable header, weekday labels, and a day grid. The default shows a single bordered month; variants cover a two-month range picker and a single month with event markers.",
-  tags: [
-    "calendar",
-    "ui",
-    "month",
-    "date",
-    "navigation",
-    "selection",
-    "range",
-    "events",
-  ],
+  tags: ["calendar", "ui", "month", "date", "navigation", "selection", "range", "events"],
   level: Seldon.ComponentLevel.MODULE,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

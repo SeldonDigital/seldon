@@ -1,4 +1,6 @@
-import { type Board, isThemeBoard } from "../../../model/components"
+import { isThemeBoard } from "../../../model/components"
+
+import type { Board } from "../../../model/components"
 import type { Workspace } from "../../../model/workspace"
 
 /**
@@ -46,6 +48,7 @@ const RENAME_BY_OLD_CATALOG_ID = new Map(
 
 function themeBoardRename(board: Board): ThemeRename | undefined {
   if (!isThemeBoard(board)) return undefined
+
   return RENAME_BY_OLD_CATALOG_ID.get(board.catalogId)
 }
 
@@ -54,9 +57,11 @@ function migrationApplies(workspace: Workspace): boolean {
   for (const entry of Object.values(workspace.themes)) {
     if (RENAME_BY_OLD_TEMPLATE.has(entry.template)) return true
   }
+
   for (const board of Object.values(workspace.boards)) {
     if (themeBoardRename(board)) return true
   }
+
   return false
 }
 
@@ -67,18 +72,22 @@ export function migrateV3ThemeRenames(workspace: Workspace): Workspace {
 
   for (const entry of Object.values(next.themes)) {
     const rename = RENAME_BY_OLD_TEMPLATE.get(entry.template)
+
     if (rename) {
       entry.template = `catalog:${rename.newCatalogId}`
     }
   }
 
   const boards = next.boards
+
   for (const [key, board] of Object.entries(boards)) {
     if (!isThemeBoard(board)) continue
     const rename = RENAME_BY_OLD_CATALOG_ID.get(board.catalogId)
+
     if (!rename) continue
     board.catalogId = rename.newCatalogId
     board.label = rename.newLabel
+
     if (key === rename.oldCatalogId && !boards[rename.newCatalogId]) {
       boards[rename.newCatalogId] = board
       delete boards[key]

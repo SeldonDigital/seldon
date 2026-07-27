@@ -1,6 +1,6 @@
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
 
 /** How this layer mixes with content already drawn behind it. */
 export enum BackgroundBlendMode {
@@ -33,15 +33,12 @@ export interface BackgroundBlendModeOptionValue {
 }
 
 /** Empty or one named blend mode choice. */
-export type BackgroundBlendModeValue =
-  | EmptyValue
-  | BackgroundBlendModeOptionValue
+export type BackgroundBlendModeValue = EmptyValue | BackgroundBlendModeOptionValue
 
 /** Validates blend mode choice on one background paint layer. */
 export const backgroundBlendModeSchema: PropertySchema = {
   name: "backgroundBlendMode",
-  description:
-    "Sets how this layer mixes with what is already drawn behind it.",
+  description: "Sets how this layer mixes with what is already drawn behind it.",
   supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,

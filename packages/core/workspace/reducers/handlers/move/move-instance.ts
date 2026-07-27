@@ -7,7 +7,8 @@ import {
   typeCheckingService,
   workspacePropagationService,
 } from "../../../services"
-import { ExtractPayload, Workspace } from "../../../types"
+
+import type { ExtractPayload, Workspace } from "../../../types"
 
 /**
  * Moves an instance to a new parent and index, then applies the same placement
@@ -28,14 +29,8 @@ export function moveInstance(
 
   if (!allowed) return workspace
 
-  const rootVariant = nodeRelationshipService.getRootVariant(
-    instanceNode,
-    workspace,
-  )
-  const instanceNodePath = nodeTraversalService.getNodePath(
-    instanceNode,
-    workspace,
-  )
+  const rootVariant = nodeRelationshipService.getRootVariant(instanceNode, workspace)
+  const instanceNodePath = nodeTraversalService.getNodePath(instanceNode, workspace)
   const targetNodePath = nodeTraversalService.getNodePath(targetNode, workspace)
 
   return workspacePropagationService.propagateNodeOperation<
@@ -49,17 +44,9 @@ export function moveInstance(
         instanceNodePath,
         workspace,
       )
-      const resolvedTarget = nodeTraversalService.findNodeByPath(
-        node,
-        targetNodePath,
-        workspace,
-      )
+      const resolvedTarget = nodeTraversalService.findNodeByPath(node, targetNodePath, workspace)
 
-      if (
-        resolvedInstance &&
-        typeCheckingService.isInstance(resolvedInstance) &&
-        resolvedTarget
-      ) {
+      if (resolvedInstance && typeCheckingService.isInstance(resolvedInstance) && resolvedTarget) {
         return nodeOperationsService.moveInstance(
           resolvedInstance.id,
           { parentId: resolvedTarget.id, index },
@@ -72,10 +59,7 @@ export function moveInstance(
       // variant instead of the instance. On the originating variant, fall back to
       // the concrete payload ids so the move still applies. Downstream copies are
       // left untouched since their placement cannot be expressed as a tree path.
-      if (
-        node.id === rootVariant.id &&
-        typeCheckingService.isInstance(instanceNode)
-      ) {
+      if (node.id === rootVariant.id && typeCheckingService.isInstance(instanceNode)) {
         return nodeOperationsService.moveInstance(
           instanceNodeId,
           { parentId: targetNodeId, index },

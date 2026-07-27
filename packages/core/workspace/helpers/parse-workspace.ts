@@ -32,11 +32,13 @@ export function parseWorkspace(json: string): Workspace {
   if (!isPlainObject(parsed)) {
     throw new Error("Workspace file must contain a JSON object.")
   }
+
   for (const key of REQUIRED_TOP_LEVEL_KEYS) {
     if (!isPlainObject(parsed[key])) {
       throw new Error(`Workspace file is missing the "${key}" map.`)
     }
   }
+
   for (const key of OPTIONAL_TOP_LEVEL_KEYS) {
     if (parsed[key] !== undefined && !isPlainObject(parsed[key])) {
       throw new Error(`Workspace file has a malformed "${key}" map.`)

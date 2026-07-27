@@ -1,12 +1,13 @@
 import { current, isDraft, produce } from "immer"
 
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { formatEntryId } from "../../../helpers/general/entry-id"
 import { getNextVariantLabel } from "../../../helpers/general/get-next-variant-label"
 import { themeBoardKeyFromEntryId } from "../../../helpers/themes/theme-id"
-import type { EntryTheme } from "../../../model/entry-theme"
 import { formatThemeLink } from "../../../model/template-ref"
 import { randomSuffix } from "../shared/random-suffix"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
+import type { EntryTheme } from "../../../model/entry-theme"
 
 /**
  * Clones a variant `themes` entry, points its template at the source, and appends it to the owning theme board.
@@ -17,17 +18,16 @@ export function duplicateTheme(
 ): Workspace {
   return produce(workspace, (draft) => {
     const draftEntry = draft.themes[payload.themeId] as EntryTheme | undefined
+
     if (!draftEntry) return
 
-    const entry = (
-      isDraft(draftEntry) ? current(draftEntry) : draftEntry
-    ) as EntryTheme
+    const entry = (isDraft(draftEntry) ? current(draftEntry) : draftEntry) as EntryTheme
 
     const boardKey = themeBoardKeyFromEntryId(payload.themeId)
+
     if (!boardKey) return
 
-    const newId =
-      payload.newThemeId ?? formatEntryId("theme", boardKey, randomSuffix())
+    const newId = payload.newThemeId ?? formatEntryId("theme", boardKey, randomSuffix())
 
     if (draft.themes[newId]) return
 
@@ -36,9 +36,11 @@ export function duplicateTheme(
 
     const base = isThemeBoard ? board.label : entry.label
     const existing = new Set<string>()
+
     if (isThemeBoard && board.variants) {
       for (const ref of board.variants) {
         const existingLabel = draft.themes[ref.id]?.label
+
         if (existingLabel) existing.add(existingLabel)
       }
     }

@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconCarbonAudioConsole } from "./IconCarbonAudioConsole"
 export { IconCarbonPausePast } from "./IconCarbonPausePast"

@@ -1,12 +1,12 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Table Header",
   id: Seldon.ComponentId.TABLE_HEADER,
-  intent:
-    "A column header cell that labels a table column and can host a sort indicator.",
+  intent: "A column header cell that labels a table column and can host a sort indicator.",
   tags: ["table", "header", "th", "column label", "element", "heading", "grid"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.STUB,
@@ -66,9 +66,7 @@ export const schema = {
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -177,8 +175,7 @@ export const schema = {
     {
       id: "sortable",
       label: "Sortable Header",
-      intent:
-        "Column header with a trailing sort indicator for a sortable column.",
+      intent: "Column header with a trailing sort indicator for a sortable column.",
       children: [
         {
           component: Seldon.ComponentId.FRAME,

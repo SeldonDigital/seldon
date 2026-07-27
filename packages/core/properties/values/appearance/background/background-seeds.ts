@@ -3,11 +3,11 @@ import { ImageFit } from "../../shared/utilities/image-fit"
 import { BackgroundBlendMode } from "./background-blend-mode"
 import { BackgroundKind } from "./background-kind"
 import { BackgroundRepeat } from "./background-repeat"
+
 import type { BackgroundLayer } from "./index"
 
 /** Default picture used when seeding an image background. */
-const DEFAULT_BACKGROUND_IMAGE =
-  "https://static.seldon.app/background-default-light.jpg"
+const DEFAULT_BACKGROUND_IMAGE = "https://static.seldon.app/background-default-light.jpg"
 
 /** None background: paints nothing. */
 function noneSeed(): BackgroundLayer {
@@ -126,8 +126,10 @@ export function backgroundLayerForKind(value: string): BackgroundLayer | null {
   if (value === "inherit") {
     return { kind: { type: ValueType.INHERIT, value: null } }
   }
+
   if ((Object.values(BackgroundKind) as string[]).includes(value)) {
     return { ...BACKGROUND_KIND_SEEDS[value as BackgroundKind] }
   }
+
   return null
 }

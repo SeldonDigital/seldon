@@ -3,10 +3,11 @@ import { describe, expect, it } from "vitest"
 import { ComponentId } from "../../../../components/constants"
 import { Unit, ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
-import type { EntryNode, ExtractPayload, Workspace } from "../../../types"
 import { addComponent } from "../add/add-component"
 import { setNodeProperties } from "../set/set-node-properties"
 import { resetVariantToCatalog } from "./reset-variant-to-catalog"
+
+import type { EntryNode, ExtractPayload, Workspace } from "../../../types"
 
 const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
@@ -33,6 +34,7 @@ describe("resetVariantToCatalog", () => {
       } as ExtractPayload<"set_node_properties">,
       workspace,
     )
+
     expect(overridesOf(withOverride, userVariantId).opacity).toBeDefined()
 
     const reset = resetVariantToCatalog(
@@ -41,6 +43,7 @@ describe("resetVariantToCatalog", () => {
       } as ExtractPayload<"reset_variant_to_catalog">,
       withOverride,
     )
+
     expect(overridesOf(reset, userVariantId).opacity).toBeUndefined()
   })
 

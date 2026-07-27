@@ -1,5 +1,6 @@
-import { PropertySchema } from "../../types/schema"
 import { AriaTristate } from "./aria-tristate"
+
+import type { PropertySchema } from "../../types/schema"
 
 /** Defines labels, allowed shapes, checks, and preset choices for `ariaChecked`. */
 export const ariaCheckedSchema: PropertySchema = {
@@ -10,8 +11,7 @@ export const ariaCheckedSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(AriaTristate) as string[]).includes(value),
+      typeof value === "string" && (Object.values(AriaTristate) as string[]).includes(value),
   },
   presetOptions: () => Object.values(AriaTristate),
 }

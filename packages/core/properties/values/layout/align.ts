@@ -1,6 +1,6 @@
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { AlignOptionValue } from "../shared/option/align"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { AlignOptionValue } from "../shared/option/align"
 
 /** Preset anchors for where content sits inside its container. */
 export enum Align {
@@ -27,8 +27,7 @@ export const alignSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Align) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Align) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Align),
 }

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { setIconSetSubcategoryPreset } from "./set-icon-set-subcategory-preset"
+
+import type { ExtractPayload } from "../../../../index"
 
 const baseWorkspace = createEmptyWorkspace()
 const iconSetId = Object.keys(baseWorkspace["icon-sets"])[0]!
@@ -26,6 +27,7 @@ describe("setIconSetSubcategoryPreset", () => {
       string,
       Record<string, unknown>
     >
+
     expect(overrides.includedIcons[sampleIcon]).toBe(true)
   })
 
@@ -35,6 +37,7 @@ describe("setIconSetSubcategoryPreset", () => {
       string,
       Record<string, unknown>
     >
+
     expect(overrides.includedIcons[sampleIcon]).toBe(false)
   })
 
@@ -47,6 +50,7 @@ describe("setIconSetSubcategoryPreset", () => {
       } as ExtractPayload<"set_icon_set_subcategory_preset">,
       baseWorkspace,
     )
+
     expect(result).toBe(baseWorkspace)
   })
 })

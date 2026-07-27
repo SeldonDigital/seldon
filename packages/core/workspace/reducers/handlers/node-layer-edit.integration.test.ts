@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload } from "../../../index"
 import { ValueType } from "../../../properties/constants"
 import { BackgroundKind } from "../../../properties/values/appearance/background/background-kind"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
@@ -9,6 +8,8 @@ import { addComponent } from "./add/add-component"
 import { addNodeLayer } from "./add/add-node-layer"
 import { removeNodeLayer } from "./remove/remove-node-layer"
 import { setNodeLayerKind } from "./set/set-node-layer-kind"
+
+import type { ExtractPayload } from "../../../index"
 
 const base = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
@@ -26,10 +27,7 @@ const withTwoLayers = addNodeLayer(
 )
 
 const backgroundOf = (ws: typeof base) =>
-  (ws.nodes[nodeId]!.overrides as Record<string, unknown>).background as Record<
-    string,
-    unknown
-  >[]
+  (ws.nodes[nodeId]!.overrides as Record<string, unknown>).background as Record<string, unknown>[]
 
 describe("removeNodeLayer", () => {
   it("removes a non-base layer and shortens the stack", () => {
@@ -42,6 +40,7 @@ describe("removeNodeLayer", () => {
       } as ExtractPayload<"remove_node_layer">,
       withTwoLayers,
     )
+
     expect(backgroundOf(next)).toHaveLength(length - 1)
   })
 
@@ -83,6 +82,7 @@ describe("setNodeLayerKind", () => {
       } as ExtractPayload<"set_node_layer_kind">,
       base,
     )
+
     expect(backgroundOf(next)[0].kind).toEqual({
       type: ValueType.OPTION,
       value: BackgroundKind.COLOR,

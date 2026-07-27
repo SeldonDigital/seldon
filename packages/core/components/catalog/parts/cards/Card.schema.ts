@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Card",
   id: Seldon.ComponentId.CARD_STACKED,
   intent:
     "Defines a vertically stacked card layout with support for headers, content blocks, and action elements.",
-  tags: [
-    "card",
-    "stacked",
-    "vertical",
-    "ui",
-    "block",
-    "layout",
-    "cta",
-    "content",
-  ],
+  tags: ["card", "stacked", "vertical", "ui", "block", "layout", "cta", "content"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

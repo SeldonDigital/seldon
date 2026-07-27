@@ -1,5 +1,6 @@
-import type { Workspace } from "../../../types"
 import { check } from "../check"
+
+import type { Workspace } from "../../../types"
 
 export const iconSetEntryValidators = {
   exists: (workspace: Workspace, id: string | undefined) => {

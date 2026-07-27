@@ -1,4 +1,5 @@
 import { Unit } from "../../properties/constants/shared/units"
+
 import type { ThemeExactDimension } from "../values/shared/exact/theme-exact"
 
 /**
@@ -29,15 +30,14 @@ export function normalizeThemeNumber(value: unknown): number {
   // Fallback: try to parse as number
   if (typeof value === "string") {
     const parsed = parseFloat(value)
+
     if (!isNaN(parsed)) {
       return parsed
     }
   }
 
   // If we can't normalize, throw an error
-  throw new Error(
-    `Cannot normalize theme value to number: ${JSON.stringify(value)}`,
-  )
+  throw new Error(`Cannot normalize theme value to number: ${JSON.stringify(value)}`)
 }
 
 /**
@@ -46,26 +46,23 @@ export function normalizeThemeNumber(value: unknown): number {
  * Other EXACT subsets (`number`, `%`, `deg`) are validated by their own normalizers / schemas.
  */
 export function normalizeThemeExactValue(value: unknown): ThemeExactDimension {
-  if (
-    !value ||
-    typeof value !== "object" ||
-    !("unit" in value) ||
-    !("value" in value)
-  ) {
+  if (!value || typeof value !== "object" || !("unit" in value) || !("value" in value)) {
     throw new Error(
       `Theme length scale-slot value must be { unit: "px"|"rem", value: number }: ${JSON.stringify(value)}`,
     )
   }
+
   const { unit, value: n } = value as { unit: unknown; value: unknown }
+
   if (unit !== Unit.PX && unit !== Unit.REM) {
-    throw new Error(
-      `Theme length scale-slot unit must be px or rem, got ${JSON.stringify(unit)}`,
-    )
+    throw new Error(`Theme length scale-slot unit must be px or rem, got ${JSON.stringify(unit)}`)
   }
+
   if (typeof n !== "number" || !Number.isFinite(n)) {
     throw new Error(
       `Theme length scale-slot numeric value must be finite, got ${JSON.stringify(n)}`,
     )
   }
+
   return { unit, value: n }
 }

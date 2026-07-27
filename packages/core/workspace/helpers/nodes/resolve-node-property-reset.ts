@@ -1,18 +1,16 @@
-import { ComponentId } from "../../../components/constants"
 import { isComponentId } from "../../../components/constants"
 import { findInObject } from "../../../helpers/utils/find-in-object"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
-import type { Properties } from "../../../properties/types/properties"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
-import type {
-  PropertyKey,
-  SubPropertyKey,
-} from "../../../properties/types/property-keys"
 import { getInheritedNodeProperties } from "../../compute/compute-node-properties"
-import type { EntryNode, Workspace } from "../../types"
 import { getCompoundLayerValue } from "../properties/shared"
 import { getCatalogSchemaVariantOverridesForNode } from "./get-catalog-schema-variant-overrides"
 import { getNodeCatalogId } from "./get-node-catalog-id"
+
+import type { ComponentId } from "../../../components/constants"
+import type { Properties } from "../../../properties/types/properties"
+import type { PropertyKey, SubPropertyKey } from "../../../properties/types/property-keys"
+import type { EntryNode, Workspace } from "../../types"
 
 export type NodePropertyResetPatch =
   | { action: "delete" }
@@ -29,10 +27,8 @@ function getBaselineProperties(
   componentId: ComponentId,
 ): Properties {
   const inherited = getInheritedNodeProperties(node.id, workspace)
-  const catalogVariantOverrides = getCatalogSchemaVariantOverridesForNode(
-    node.id,
-    componentId,
-  )
+  const catalogVariantOverrides = getCatalogSchemaVariantOverridesForNode(node.id, componentId)
+
   return mergeProperties(inherited, catalogVariantOverrides)
 }
 
@@ -53,7 +49,9 @@ export function getBaselineLayerCount(
       ? getBaselineProperties(node, workspace, catalogId)
       : getInheritedNodeProperties(node.id, workspace)
   const value = baseline[propertyKey as keyof Properties]
+
   if (Array.isArray(value)) return value.length
+
   return value ? 1 : 0
 }
 
@@ -73,16 +71,12 @@ export function readPropertySlice(
   }
 
   const bag = properties[propertyKey as keyof Properties]
+
   if (isLayeredPaintProperty(propertyKey)) {
     return getCompoundLayerValue(bag, layerIndex)?.[subpropertyKey]
   }
 
-  if (
-    bag &&
-    typeof bag === "object" &&
-    !Array.isArray(bag) &&
-    !("type" in bag)
-  ) {
+  if (bag && typeof bag === "object" && !Array.isArray(bag) && !("type" in bag)) {
     return (bag as Record<string, unknown>)[subpropertyKey]
   }
 
@@ -107,8 +101,10 @@ function buildSetPatch(
     // Target the facet on its own layer slot. Lower slots stay empty bags so
     // mergeProperties merges by layer index without clobbering other layers.
     const layers: Record<string, unknown>[] = []
+
     for (let i = 0; i < layerIndex; i++) layers.push({})
     layers.push({ [subpropertyKey]: value })
+
     return { [propertyKey]: layers } as Properties
   }
 
@@ -128,24 +124,15 @@ export function resolveNodePropertyResetPatch(
   layerIndex: number = 0,
 ): NodePropertyResetPatch {
   const catalogId = getNodeCatalogId(node, workspace)
+
   if (!catalogId || !isComponentId(catalogId)) {
     return subpropertyKey ? { action: "delete-sub" } : { action: "delete" }
   }
 
   const inherited = getInheritedNodeProperties(node.id, workspace)
   const baseline = getBaselineProperties(node, workspace, catalogId)
-  const baselineSlice = readPropertySlice(
-    baseline,
-    propertyKey,
-    subpropertyKey,
-    layerIndex,
-  )
-  const inheritedSlice = readPropertySlice(
-    inherited,
-    propertyKey,
-    subpropertyKey,
-    layerIndex,
-  )
+  const baselineSlice = readPropertySlice(baseline, propertyKey, subpropertyKey, layerIndex)
+  const inheritedSlice = readPropertySlice(inherited, propertyKey, subpropertyKey, layerIndex)
 
   if (propertySlicesMatch(baselineSlice, inheritedSlice)) {
     return subpropertyKey ? { action: "delete-sub" } : { action: "delete" }
@@ -157,11 +144,6 @@ export function resolveNodePropertyResetPatch(
 
   return {
     action: "set",
-    properties: buildSetPatch(
-      propertyKey,
-      subpropertyKey,
-      baselineSlice,
-      layerIndex,
-    ),
+    properties: buildSetPatch(propertyKey, subpropertyKey, baselineSlice, layerIndex),
   }
 }

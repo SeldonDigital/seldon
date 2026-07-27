@@ -1,10 +1,11 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
   typeCheckingService,
   workspaceMutationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Reverts an instance to the node one hop up its template chain (its source).
@@ -22,12 +23,10 @@ export function resetInstanceToSource(
   }
 
   const node = nodeRetrievalService.getNode(payload.instanceId, workspace)
+
   if (!typeCheckingService.isInstance(node)) {
     return workspace
   }
 
-  return workspaceMutationService.resetInstanceToSource(
-    payload.instanceId,
-    workspace,
-  )
+  return workspaceMutationService.resetInstanceToSource(payload.instanceId, workspace)
 }

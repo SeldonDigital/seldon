@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconMaterialTrip(props: SVGAttributes<SVGSVGElement>) {
   return (

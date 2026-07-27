@@ -24,6 +24,7 @@ export function formatPresetValue(presetValue: string): string {
   // Handle custom values
   if (presetValue.startsWith("custom")) {
     const number = presetValue.replace("custom", "")
+
     return `Custom ${number}`
   }
 

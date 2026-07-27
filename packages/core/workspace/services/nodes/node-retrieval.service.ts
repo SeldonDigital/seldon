@@ -1,8 +1,10 @@
-import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
-import {
+import { typeCheckingService } from "../type-checking/type-checking.service"
+
+import type { ComponentId } from "../../../components/constants"
+import type {
   Board,
   BoardKey,
   DefaultVariant,
@@ -12,7 +14,6 @@ import {
   VariantId,
   Workspace,
 } from "../../types"
-import { typeCheckingService } from "../type-checking/type-checking.service"
 
 /**
  * Service for retrieving nodes, boards, and related entities from the workspace.
@@ -26,7 +27,9 @@ export class NodeRetrievalService {
    */
   public getBoard(boardKey: BoardKey, workspace: Workspace): Board {
     const board = workspace.boards[boardKey]
+
     invariant(board, ErrorMessages.componentNotFound(boardKey))
+
     return board
   }
 
@@ -36,12 +39,11 @@ export class NodeRetrievalService {
    * @param workspace - The workspace
    * @returns The node
    */
-  public getNode(
-    nodeId: InstanceId | VariantId,
-    workspace: Workspace,
-  ): Variant | Instance {
+  public getNode(nodeId: InstanceId | VariantId, workspace: Workspace): Variant | Instance {
     const node = getWorkspaceNodes(workspace)[nodeId]
+
     invariant(node, ErrorMessages.nodeNotFound(nodeId))
+
     return node as Variant | Instance
   }
 
@@ -60,6 +62,7 @@ export class NodeRetrievalService {
     if (workspace.boards[objectId]) {
       return this.getBoard(objectId, workspace)
     }
+
     return this.getNode(objectId, workspace)
   }
 
@@ -80,6 +83,7 @@ export class NodeRetrievalService {
    */
   public getVariant(variantId: VariantId, workspace: Workspace): Variant {
     const node = getWorkspaceNodes(workspace)[variantId]
+
     invariant(node, ErrorMessages.variantNotFound(variantId))
 
     if (!typeCheckingService.isVariant(node)) {
@@ -95,16 +99,12 @@ export class NodeRetrievalService {
    * @param workspace - The workspace
    * @returns The default variant
    */
-  public getDefaultVariant(
-    componentId: ComponentId,
-    workspace: Workspace,
-  ): DefaultVariant {
+  public getDefaultVariant(componentId: ComponentId, workspace: Workspace): DefaultVariant {
     const board = this.getBoard(componentId, workspace)
     const rootRef = board.variants[0]
-    invariant(
-      rootRef,
-      `Missing default variant root ref on board ${componentId}`,
-    )
+
+    invariant(rootRef, `Missing default variant root ref on board ${componentId}`)
+
     return this.getVariant(rootRef.id as VariantId, workspace) as DefaultVariant
   }
 

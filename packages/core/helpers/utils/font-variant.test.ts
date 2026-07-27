@@ -32,13 +32,17 @@ describe("fontVariantDisplayLabel", () => {
 
 describe("sortFontVariants", () => {
   it("orders uprights before italics, then by ascending weight", () => {
-    expect(
-      sortFontVariants(["700italic", "100", "regular", "100italic"]),
-    ).toEqual(["100", "regular", "100italic", "700italic"])
+    expect(sortFontVariants(["700italic", "100", "regular", "100italic"])).toEqual([
+      "100",
+      "regular",
+      "100italic",
+      "700italic",
+    ])
   })
 
   it("returns a new array", () => {
     const input = ["100"]
+
     expect(sortFontVariants(input)).not.toBe(input)
   })
 })
@@ -49,8 +53,6 @@ describe("buildGoogleFontAxisParam", () => {
   })
 
   it("dedupes and sorts tuples by italic then weight", () => {
-    expect(buildGoogleFontAxisParam(["400", "400", "700italic"])).toBe(
-      "ital,wght@0,400;1,700",
-    )
+    expect(buildGoogleFontAxisParam(["400", "400", "700italic"])).toBe("ital,wght@0,400;1,700")
   })
 })

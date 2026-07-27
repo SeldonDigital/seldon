@@ -1,10 +1,4 @@
-import {
-  ComponentLevel,
-  ComputedFunction,
-  Theme,
-  ValueType,
-  Workspace,
-} from "@seldon/core"
+import { ComponentLevel, ComputedFunction, ValueType } from "@seldon/core"
 import {
   RESERVED_LOOK_IDS,
   getBuiltInLookSectionForPropertyKey,
@@ -31,17 +25,17 @@ import {
   getPresetOptionsAsLabelValue,
   getPropertySchema,
 } from "../../../properties/schemas/helpers"
-import {
-  type PropertyKey,
-  isLayeredPaintProperty,
-} from "../../../properties/types/property-keys"
-import type { PropertySchema } from "../../../properties/types/schema"
+import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
 import { BackgroundKind } from "../../../properties/values/appearance/background/background-kind"
 import { GradientType } from "../../../properties/values/effects/gradients/gradient-type"
 import { Resize } from "../../../properties/values/layout/resize"
 import { Harmony } from "../../../themes/constants/enums"
 import { workspaceFontCollectionService } from "../../services/font-collection/font-collection.service"
 import { getCompoundLayerValue, getEffectiveProperties } from "./shared"
+
+import type { PropertyKey } from "../../../properties/types/property-keys"
+import type { PropertySchema } from "../../../properties/types/schema"
+import type { Theme, Workspace } from "@seldon/core"
 
 export type PropertyPickerOption = { value: string; name: string }
 
@@ -70,11 +64,13 @@ function getCompoundPresetPickerPath(compoundKey: string): string {
   if (isLayeredPaintProperty(compoundKey as PropertyKey)) {
     return `${compoundKey}.${LAYERED_PAINT_LAYER_INDEX}.preset`
   }
+
   return `${compoundKey}.preset`
 }
 
 function getParentPathForPreset(presetPath: string): string {
   const segments = presetPath.split(".").filter(Boolean)
+
   if (
     segments.length === 3 &&
     isLayeredPaintProperty(segments[0] as PropertyKey) &&
@@ -82,24 +78,18 @@ function getParentPathForPreset(presetPath: string): string {
   ) {
     return segments[0]!
   }
+
   if (segments.length >= 2) {
     return segments[0]!
   }
+
   return presetPath.replace(/\.preset$/, "")
 }
 
-function normalizeOptions(
-  options: unknown[],
-  theme?: Theme,
-): PropertyPickerOption[] {
+function normalizeOptions(options: unknown[], theme?: Theme): PropertyPickerOption[] {
   return options
     .map((option) => {
-      if (
-        typeof option === "object" &&
-        option !== null &&
-        "name" in option &&
-        "value" in option
-      ) {
+      if (typeof option === "object" && option !== null && "name" in option && "value" in option) {
         return {
           name: String((option as { name: string }).name),
           value: String((option as { value: unknown }).value),
@@ -114,6 +104,7 @@ function normalizeOptions(
       }
 
       const value = String(option)
+
       return {
         name: theme ? getThemeValueName(value, theme) : value,
         value,
@@ -124,9 +115,11 @@ function normalizeOptions(
 
 function buildDefaultOptions(schema: PropertySchema): PropertyPickerOption[] {
   const defaultGroup: PropertyPickerOption[] = [{ value: "", name: "Default" }]
+
   if (schema.supports.includes("inherit")) {
     defaultGroup.push({ value: "inherit", name: "Inherit" })
   }
+
   return defaultGroup
 }
 
@@ -141,6 +134,7 @@ function buildPresetOptions(
 
   const catalogKey = schema.name
   const labeled = getPresetOptionsAsLabelValue(catalogKey, workspace)
+
   if (labeled.length > 0) {
     return labeled.map((entry) => ({
       name: entry.label,
@@ -149,17 +143,16 @@ function buildPresetOptions(
   }
 
   let presetOptions: unknown[] = []
+
   if (typeof schema.presetOptions === "function") {
     if (workspace !== undefined) {
-      presetOptions = (
-        schema.presetOptions as (workspace?: Workspace) => unknown[]
-      )(workspace)
+      presetOptions = (schema.presetOptions as (workspace?: Workspace) => unknown[])(workspace)
     }
+
     if (!Array.isArray(presetOptions) && theme !== undefined) {
-      presetOptions = (
-        schema.presetOptions as unknown as (theme?: Theme) => unknown[]
-      )(theme)
+      presetOptions = (schema.presetOptions as unknown as (theme?: Theme) => unknown[])(theme)
     }
+
     if (!Array.isArray(presetOptions)) {
       presetOptions = (schema.presetOptions as () => unknown[])()
     }
@@ -175,9 +168,7 @@ function buildPresetOptions(
  * collection's enabled families. Used by the font family pickers so collections
  * render as separated groups.
  */
-function buildFontCollectionFamilyGroups(
-  workspace: Workspace,
-): PropertyPickerOption[][] {
+function buildFontCollectionFamilyGroups(workspace: Workspace): PropertyPickerOption[][] {
   return workspaceFontCollectionService
     .collectWorkspaceFamilyGroups(workspace)
     .map((group) =>
@@ -201,20 +192,19 @@ function groupPresetOptions(
     return [presetOptions]
   }
 
-  const fitOptions = presetOptions.filter(
-    (option) => option.value === Resize.FIT,
-  )
-  const deviceOptions = presetOptions.filter(
-    (option) => option.value !== Resize.FIT,
-  )
+  const fitOptions = presetOptions.filter((option) => option.value === Resize.FIT)
+  const deviceOptions = presetOptions.filter((option) => option.value !== Resize.FIT)
 
   const groups: PropertyPickerOption[][] = []
+
   if (fitOptions.length > 0) {
     groups.push(fitOptions)
   }
+
   if (deviceOptions.length > 0) {
     groups.push(deviceOptions)
   }
+
   return groups
 }
 
@@ -223,20 +213,19 @@ function groupPresetOptions(
  * single representative sub-value when all present sub-values resolve to the
  * same string. Atomic values are returned as-is. Mixed values return null.
  */
-function resolveAtomicValue(
-  value: unknown,
-): { type: ValueType; value?: unknown } | null {
+function resolveAtomicValue(value: unknown): { type: ValueType; value?: unknown } | null {
   if (!value || typeof value !== "object") {
     return null
   }
+
   if ("type" in value) {
     return value as { type: ValueType; value?: unknown }
   }
 
   const subValues = Object.values(value).filter(
-    (subValue): subValue is object =>
-      typeof subValue === "object" && subValue !== null,
+    (subValue): subValue is object => typeof subValue === "object" && subValue !== null,
   )
+
   if (subValues.length === 0) {
     return null
   }
@@ -249,11 +238,13 @@ function resolveAtomicValue(
     }
   })
   const first = strings[0]
+
   if (first === undefined || !strings.every((entry) => entry === first)) {
     return null
   }
 
   const representative = subValues[0]
+
   return representative && "type" in representative
     ? (representative as { type: ValueType; value?: unknown })
     : null
@@ -264,20 +255,20 @@ function getCurrentValueOption(
   theme?: Theme,
 ): PropertyPickerOption | null {
   const atomic = resolveAtomicValue(property.value)
-  if (
-    !atomic ||
-    (atomic.type !== ValueType.EXACT && atomic.type !== ValueType.OPTION)
-  ) {
+
+  if (!atomic || (atomic.type !== ValueType.EXACT && atomic.type !== ValueType.OPTION)) {
     return null
   }
 
   const raw = "value" in atomic ? atomic.value : null
+
   if (raw === null || raw === undefined) return null
 
   if (typeof raw === "string") {
     if (raw.startsWith("@") && theme) {
       return { value: raw, name: getThemeValueName(raw, theme) }
     }
+
     return {
       value: raw,
       name: theme ? getThemeValueName(raw, theme) : raw,
@@ -294,21 +285,25 @@ function getCurrentValueOption(
   if (typeof raw === "object" && raw !== null) {
     if (isHSLObject(raw)) {
       const colorString = HSLObjectToString(raw)
+
       return { value: colorString, name: colorString }
     }
 
     if (isRGBObject(raw)) {
       const colorString = RGBObjectToString(raw)
+
       return { value: colorString, name: colorString }
     }
 
     if (isLCHObject(raw)) {
       const colorString = LCHObjectToString(raw)
+
       return { value: colorString, name: colorString }
     }
 
     if ("value" in raw && "unit" in raw) {
       const dimensionString = `${(raw as { value: number }).value}${(raw as { unit: string }).unit}`
+
       return { value: dimensionString, name: dimensionString }
     }
   }
@@ -325,10 +320,8 @@ function insertCurrentValueGroup(
   groups: PropertyPickerOption[][],
   input: PropertyPickerInput,
 ): PropertyPickerOption | undefined {
-  const currentValueOption = getCurrentValueOption(
-    { value: input.value },
-    input.theme,
-  )
+  const currentValueOption = getCurrentValueOption({ value: input.value }, input.theme)
+
   if (!currentValueOption) {
     return undefined
   }
@@ -336,11 +329,13 @@ function insertCurrentValueGroup(
   const alreadyListed = groups.some((group) =>
     group.some((option) => option.value === currentValueOption.value),
   )
+
   if (alreadyListed) {
     return undefined
   }
 
   groups.splice(1, 0, [currentValueOption])
+
   return currentValueOption
 }
 
@@ -353,6 +348,7 @@ function buildComputedOptions(
     if (fn === ComputedFunction.OPTICAL_PADDING) {
       return componentLevel !== ComponentLevel.PRIMITIVE
     }
+
     return true
   })
 
@@ -369,6 +365,7 @@ function buildComputedOptions(
 function customTokenIndex(key: string): number {
   const id = parseThemeRef(key)?.optionId ?? key
   const match = /^custom(\d+)$/.exec(id)
+
   return match ? parseInt(match[1]!, 10) : -1
 }
 
@@ -382,6 +379,7 @@ function sortThemeKeysCustomLast(themeKeys: string[]): string[] {
   const custom = themeKeys
     .filter((key) => customTokenIndex(key) >= 0)
     .sort((a, b) => customTokenIndex(a) - customTokenIndex(b))
+
   return [...reserved, ...custom]
 }
 
@@ -390,13 +388,12 @@ function getThemeSectionFromSchema(
   theme: Theme,
   type: "categorical" | "ordinal",
 ): string | null {
-  const getKeys =
-    type === "categorical"
-      ? schema.themeCategoricalKeys
-      : schema.themeOrdinalKeys
+  const getKeys = type === "categorical" ? schema.themeCategoricalKeys : schema.themeOrdinalKeys
+
   if (!getKeys) return null
 
   const keys = getKeys(theme)
+
   if (keys.length === 0) return null
 
   // Full token keys already name their section (`@fontWeight.thin` -> `fontWeight`),
@@ -404,6 +401,7 @@ function getThemeSectionFromSchema(
   // and works for any schema that returns `@`-prefixed keys.
   const firstKey = keys[0]!
   const section = parseThemeRef(firstKey)?.section
+
   if (section && theme[section as keyof Theme]) {
     return section
   }
@@ -411,6 +409,7 @@ function getThemeSectionFromSchema(
   for (const [sectionName, sectionData] of Object.entries(theme)) {
     if (typeof sectionData === "object" && sectionData !== null) {
       const sectionKeys = Object.keys(sectionData)
+
       if (keys.every((key) => sectionKeys.includes(key))) {
         return sectionName
       }
@@ -429,6 +428,7 @@ function createThemeOptions(
 
   return sortedKeys.map((key) => {
     const themeKey = key.startsWith("@") ? key : `@${themeSection}.${key}`
+
     return {
       value: themeKey,
       name: getThemeValueName(themeKey, theme),
@@ -436,35 +436,22 @@ function createThemeOptions(
   })
 }
 
-function buildThemeOptions(
-  schema: PropertySchema,
-  theme: Theme,
-): PropertyPickerOption[] {
+function buildThemeOptions(schema: PropertySchema, theme: Theme): PropertyPickerOption[] {
   const options: PropertyPickerOption[] = []
 
   if (schema.themeCategoricalKeys) {
     const themeSection = getThemeSectionFromSchema(schema, theme, "categorical")
+
     if (themeSection) {
-      options.push(
-        ...createThemeOptions(
-          schema.themeCategoricalKeys(theme),
-          themeSection,
-          theme,
-        ),
-      )
+      options.push(...createThemeOptions(schema.themeCategoricalKeys(theme), themeSection, theme))
     }
   }
 
   if (schema.themeOrdinalKeys) {
     const themeSection = getThemeSectionFromSchema(schema, theme, "ordinal")
+
     if (themeSection) {
-      options.push(
-        ...createThemeOptions(
-          schema.themeOrdinalKeys(theme),
-          themeSection,
-          theme,
-        ),
-      )
+      options.push(...createThemeOptions(schema.themeOrdinalKeys(theme), themeSection, theme))
     }
   }
 
@@ -473,17 +460,21 @@ function buildThemeOptions(
 
 function propertySupportsImageUpload(path: string): boolean {
   if (path === "source") return true
+
   if (path === "background.0.image" || path === "background.image") {
     return true
   }
+
   return false
 }
 
 function getPropertySchemaForPath(path: string): PropertySchema | null {
   const catalogKey = getCatalogKeyForPropertyPath(path)
+
   if (catalogKey) {
     return getPropertySchema(catalogKey) ?? null
   }
+
   return getPropertySchema(path) ?? null
 }
 
@@ -510,6 +501,7 @@ function buildPropertyOptionsFromSchema(
   }
 
   const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
+
   if (presetOptions.length > 0) {
     groups.push(...groupPresetOptions(schema, presetOptions))
   }
@@ -526,6 +518,7 @@ function buildPropertyOptionsFromSchema(
       input.componentLevel,
       input.theme,
     )
+
     if (computedOptions.length > 0) {
       groups.push(computedOptions)
     }
@@ -558,45 +551,42 @@ const GRADIENT_KIND_TO_TYPE: Partial<Record<BackgroundKind, GradientType>> = {
  * `kind`. Returns undefined when the path is not a background gradient layer, so
  * the standalone gradient look picker is left unfiltered.
  */
-function targetGradientTypeForPath(
-  input: PropertyPickerInput,
-): GradientType | undefined {
+function targetGradientTypeForPath(input: PropertyPickerInput): GradientType | undefined {
   const segments = input.path.split(".").filter(Boolean)
+
   if (segments[0] !== "background" || segments.length < 3) return undefined
   const layerIndex = Number(segments[1])
+
   if (!Number.isInteger(layerIndex)) return undefined
   let background: unknown
+
   try {
     background = (
-      getEffectiveProperties(input.subjectId, input.workspace) as Record<
-        string,
-        unknown
-      >
+      getEffectiveProperties(input.subjectId, input.workspace) as Record<string, unknown>
     ).background
   } catch {
     return undefined
   }
+
   const layer = getCompoundLayerValue(background, layerIndex)
   const kind = (layer?.["kind"] as { value?: unknown } | undefined)?.value
+
   if (typeof kind !== "string") return undefined
+
   return GRADIENT_KIND_TO_TYPE[kind as BackgroundKind]
 }
 
 /** The gradient type a theme gradient look paints, defaulting to linear. */
-function gradientLookType(
-  sectionRecord: Record<string, unknown>,
-  id: string,
-): GradientType {
+function gradientLookType(sectionRecord: Record<string, unknown>, id: string): GradientType {
   const entry = sectionRecord[id] as
     | { parameters?: { gradientType?: { value?: unknown } } }
     | undefined
   const value = entry?.parameters?.gradientType?.value
-  if (
-    typeof value === "string" &&
-    (Object.values(GradientType) as string[]).includes(value)
-  ) {
+
+  if (typeof value === "string" && (Object.values(GradientType) as string[]).includes(value)) {
     return value as GradientType
   }
+
   return GradientType.LINEAR
 }
 
@@ -610,18 +600,18 @@ function themeLookPickerOption(
   id: string,
 ): PropertyPickerOption | null {
   const entry = section[id]
+
   if (!entry || typeof entry !== "object" || !("name" in entry)) {
     return null
   }
+
   return {
     value: getThemeLookPickerToken(parentKey, id),
     name: String((entry as Record<string, unknown>).name),
   }
 }
 
-function buildCompoundPresetPickerOptions(
-  input: PropertyPickerInput,
-): PropertyPickerResult {
+function buildCompoundPresetPickerOptions(input: PropertyPickerInput): PropertyPickerResult {
   const parentKey = getParentPathForPreset(input.path)
   const presetSchemaName = `${parentKey}Preset`
 
@@ -638,14 +628,12 @@ function buildCompoundPresetPickerOptions(
   }
 
   const groups: PropertyPickerOption[][] = []
+
   groups.push(buildDefaultOptions(schema))
 
   if (!isThemeLookPresetSchemaName(schema.name)) {
-    const presetOptions = buildPresetOptions(
-      schema,
-      input.theme,
-      input.workspace,
-    )
+    const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
+
     if (presetOptions.length > 0) {
       groups.push(...groupPresetOptions(schema, presetOptions))
     }
@@ -656,6 +644,7 @@ function buildCompoundPresetPickerOptions(
 
   if (!theme || !section || typeof section !== "object") {
     const currentValueOption = insertCurrentValueGroup(groups, input)
+
     return {
       options: groups,
       hasCurrentValue: currentValueOption !== undefined,
@@ -665,8 +654,7 @@ function buildCompoundPresetPickerOptions(
 
   const lookSection = getBuiltInLookSectionForPropertyKey(parentKey)
   const sectionRecord = section as Record<string, unknown>
-  const toOption = (id: string) =>
-    themeLookPickerOption(parentKey, sectionRecord, id)
+  const toOption = (id: string) => themeLookPickerOption(parentKey, sectionRecord, id)
   const keepOptions = (option: PropertyPickerOption | null) => option !== null
 
   if (lookSection === "gradient") {
@@ -687,12 +675,14 @@ function buildCompoundPresetPickerOptions(
       .filter((id) => !reservedIds.includes(id))
       .map(toOption)
       .filter((option): option is PropertyPickerOption => keepOptions(option))
+
     if (reservedGroup.length > 0) groups.push(reservedGroup)
     if (customGroup.length > 0) groups.push(customGroup)
   } else if (lookSection !== null) {
     const presetGroup = listThemeLookIds(theme, lookSection)
       .map(toOption)
       .filter((option): option is PropertyPickerOption => keepOptions(option))
+
     if (presetGroup.length > 0) {
       groups.push(presetGroup)
     }
@@ -708,15 +698,9 @@ function buildCompoundPresetPickerOptions(
 }
 
 /** Drops the synthetic `Default`/`Inherit` entries so theme tokens list only real choices. */
-function stripDefaultInherit(
-  groups: PropertyPickerOption[][],
-): PropertyPickerOption[][] {
+function stripDefaultInherit(groups: PropertyPickerOption[][]): PropertyPickerOption[][] {
   return groups
-    .map((group) =>
-      group.filter(
-        (option) => option.value !== "" && option.value !== "inherit",
-      ),
-    )
+    .map((group) => group.filter((option) => option.value !== "" && option.value !== "inherit"))
     .filter((group) => group.length > 0)
 }
 
@@ -725,10 +709,9 @@ function stripDefaultInherit(
  * `PROPERTY_SCHEMAS`, so options come from the bridged property schema, inline
  * token options, or an On/Off pair for boolean controls.
  */
-function buildThemeTokenPickerOptions(
-  input: PropertyPickerInput,
-): PropertyPickerResult | null {
+function buildThemeTokenPickerOptions(input: PropertyPickerInput): PropertyPickerResult | null {
   const tokenSchema = resolveThemeTokenEntry(input.path, input.theme)
+
   if (!tokenSchema) {
     return null
   }
@@ -736,11 +719,9 @@ function buildThemeTokenPickerOptions(
   // The theme font slots pick from the workspace's font collection boards, like the
   // node-level `fontFamily` picker. Local families store their CSS token; remote
   // families store their name.
-  if (
-    input.path === "fontFamily.primary" ||
-    input.path === "fontFamily.secondary"
-  ) {
+  if (input.path === "fontFamily.primary" || input.path === "fontFamily.secondary") {
     const familyGroups = buildFontCollectionFamilyGroups(input.workspace)
+
     if (familyGroups.length > 0) {
       return { options: familyGroups, hasCurrentValue: false }
     }
@@ -748,8 +729,10 @@ function buildThemeTokenPickerOptions(
 
   if (tokenSchema.propertyKey) {
     const prop = getPropertySchema(tokenSchema.propertyKey)
+
     if (prop) {
       const result = buildPropertyOptionsFromSchema(input, prop)
+
       return { ...result, options: stripDefaultInherit(result.options) }
     }
   }
@@ -766,10 +749,7 @@ function buildThemeTokenPickerOptions(
     }
   }
 
-  if (
-    tokenSchema.controlType === "boolean" ||
-    tokenSchema.supports.includes("boolean")
-  ) {
+  if (tokenSchema.controlType === "boolean" || tokenSchema.supports.includes("boolean")) {
     return {
       options: [
         [
@@ -793,6 +773,7 @@ function buildThemeTokenPickerOptions(
 function buildBackgroundKindPickerOptions(): PropertyPickerResult {
   const schema = getPropertySchema("backgroundKind")
   const groups: PropertyPickerOption[][] = []
+
   groups.push(
     schema
       ? buildDefaultOptions(schema)
@@ -809,6 +790,7 @@ function buildBackgroundKindPickerOptions(): PropertyPickerResult {
     { value: BackgroundKind.RADIAL_GRADIENT, name: "Radial Gradient" },
     { value: BackgroundKind.CONIC_GRADIENT, name: "Conic Gradient" },
   ])
+
   return { options: groups, hasCurrentValue: false }
 }
 
@@ -835,13 +817,8 @@ function buildHarmonyPickerOptions(): PropertyPickerResult {
  * Builds grouped picker options for a property path using catalog schemas,
  * the active theme, and workspace context.
  */
-export function getPropertyPickerOptions(
-  input: PropertyPickerInput,
-): PropertyPickerResult {
-  if (
-    input.path === "background" ||
-    /^background\.\d+\.kind$/.test(input.path)
-  ) {
+export function getPropertyPickerOptions(input: PropertyPickerInput): PropertyPickerResult {
+  if (input.path === "background" || /^background\.\d+\.kind$/.test(input.path)) {
     return buildBackgroundKindPickerOptions()
   }
 
@@ -866,21 +843,23 @@ export function getPropertyPickerOptions(
   // build options from that entry's bridged `propertyKey` instead.
   if (input.theme && resolveThemeTokenEntry(input.path, input.theme)) {
     const themeTokenOptions = buildThemeTokenPickerOptions(input)
+
     if (themeTokenOptions) {
       return themeTokenOptions
     }
   }
 
   const schema = getPropertySchemaForPath(input.path)
+
   if (!schema) {
     const themeTokenOptions = buildThemeTokenPickerOptions(input)
+
     if (themeTokenOptions) {
       return themeTokenOptions
     }
+
     return {
-      options: [
-        [{ value: "ERROR", name: `No schema found for ${input.path}` }],
-      ],
+      options: [[{ value: "ERROR", name: `No schema found for ${input.path}` }]],
       hasCurrentValue: false,
     }
   }

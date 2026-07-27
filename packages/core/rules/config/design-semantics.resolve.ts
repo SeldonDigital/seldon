@@ -1,15 +1,11 @@
 import { getPropertySchema } from "../../properties/schemas/helpers/get-property-schema"
 import { getPropertyOptions } from "../../properties/schemas/helpers/property-options"
-import type { Theme } from "../../themes/types"
-import {
-  RESERVED_STATE_NAMES,
-  type ReservedStateName,
-} from "../../workspace/model/node-state"
-import type {
-  IntentCandidate,
-  IntentRule,
-} from "../types/design-semantics-types"
+import { RESERVED_STATE_NAMES } from "../../workspace/model/node-state"
 import { designSemantics } from "./design-semantics.config"
+
+import type { Theme } from "../../themes/types"
+import type { ReservedStateName } from "../../workspace/model/node-state"
+import type { IntentCandidate, IntentRule } from "../types/design-semantics-types"
 
 /**
  * Lowercases and strips non-alphanumerics, so "Very Small", "very-small", and
@@ -25,13 +21,13 @@ export function normalizeWord(value: string): string {
  * read from its core schema `supports`, or null when the key takes no theme
  * token. No property supports both theme kinds, so the tag is unambiguous.
  */
-function themeTag(
-  schemaKey: string,
-): "theme.ordinal" | "theme.categorical" | null {
+function themeTag(schemaKey: string): "theme.ordinal" | "theme.categorical" | null {
   const supports = getPropertySchema(schemaKey)?.supports
+
   if (!supports) return null
   if (supports.includes("themeOrdinal")) return "theme.ordinal"
   if (supports.includes("themeCategorical")) return "theme.categorical"
+
   return null
 }
 
@@ -39,7 +35,9 @@ function themeTag(
 function parseToken(token: string): { scope: string; id: string } | null {
   if (!token.startsWith("@")) return null
   const dot = token.indexOf(".")
+
   if (dot === -1) return null
+
   return { scope: token.slice(1, dot), id: token.slice(dot + 1) }
 }
 
@@ -51,15 +49,17 @@ function parseToken(token: string): { scope: string; id: string } | null {
  */
 function scopeOfTokens(tokens: string[], theme: Theme): string | null {
   const parsed = parseToken(tokens[0]!)
+
   if (parsed) return parsed.scope
-  for (const [scope, table] of Object.entries(
-    theme as unknown as Record<string, unknown>,
-  )) {
+
+  for (const [scope, table] of Object.entries(theme as unknown as Record<string, unknown>)) {
     if (table && typeof table === "object" && !Array.isArray(table)) {
       const keys = table as Record<string, unknown>
+
       if (tokens.every((token) => token in keys)) return scope
     }
   }
+
   return null
 }
 
@@ -82,11 +82,14 @@ export function resolveToken(
   theme?: Theme,
 ): ResolvedToken | undefined {
   const tag = themeTag(schemaKey)
+
   if (!tag || !theme) return undefined
   const valueType = tag === "theme.ordinal" ? "themeOrdinal" : "themeCategorical"
   const tokens = getPropertyOptions(schemaKey, valueType, theme).map(String)
+
   if (tokens.length === 0) return undefined
   const scope = scopeOfTokens(tokens, theme)
+
   if (!scope) return undefined
 
   // Normalize the list to id and `@scope.id` reference, so a prefixed ordinal
@@ -94,6 +97,7 @@ export function resolveToken(
   const entries = tokens.map((token) => {
     const parsed = parseToken(token)
     const id = parsed ? parsed.id : token
+
     return { id, token: `@${scope}.${id}` }
   })
   const norm = normalizeWord(word)
@@ -104,16 +108,20 @@ export function resolveToken(
 
   const scale = designSemantics.tokenSynonyms.find((s) => s.scope === scope)
   const targetId = scale?.synonyms[norm]
+
   if (targetId) {
     const entry = entries.find((e) => e.id === targetId)
+
     if (entry) return { tag, token: entry.token }
   }
+
   return undefined
 }
 
 /** The intent rule a phrase names, matched after normalization, or undefined. */
 export function resolveIntentTarget(phrase: string): IntentRule | undefined {
   const norm = normalizeWord(phrase)
+
   return designSemantics.intents.find((intent) =>
     intent.phrases.some((p) => normalizeWord(p) === norm),
   )
@@ -136,7 +144,9 @@ export function resolveOperation(phrase: string): ResolvedOperation | undefined 
   const rule = designSemantics.operations.find((operation) =>
     operation.phrases.some((p) => normalizeWord(p) === norm),
   )
+
   if (!rule) return undefined
+
   return { concept: rule.concept, direction: rule.direction, steps: rule.steps ?? 1 }
 }
 
@@ -156,25 +166,23 @@ export function resolveScaleStep(
   if (orderedTokens.length === 0) return undefined
   const ids = orderedTokens.map((token) => {
     const parsed = parseToken(token)
+
     return parsed ? parsed.id : token
   })
-  const currentId = currentToken
-    ? (parseToken(currentToken)?.id ?? currentToken)
-    : undefined
+  const currentId = currentToken ? (parseToken(currentToken)?.id ?? currentToken) : undefined
   const found = currentId
     ? ids.findIndex((id) => normalizeWord(id) === normalizeWord(currentId))
     : -1
   const startIndex = found === -1 ? Math.floor(ids.length / 2) : found
-  const nextIndex = Math.min(
-    Math.max(startIndex + steps, 0),
-    ids.length - 1,
-  )
+  const nextIndex = Math.min(Math.max(startIndex + steps, 0), ids.length - 1)
+
   return orderedTokens[nextIndex]
 }
 
 /** The top-level key a candidate path writes, for example font.size -> font. */
 function rootKey(path: string): string {
   const dot = path.indexOf(".")
+
   return dot === -1 ? path : path.slice(0, dot)
 }
 
@@ -200,8 +208,10 @@ function guardState(
   context?: IntentContext,
 ): "none" | "match" | "fail" {
   const hasGuard = candidate.whenLevel || candidate.whenComponent
+
   if (!hasGuard) return "none"
   const norm = (value: string) => value.toLowerCase()
+
   if (
     candidate.whenLevel &&
     context?.level &&
@@ -209,15 +219,15 @@ function guardState(
   ) {
     return "match"
   }
+
   if (
     candidate.whenComponent &&
     context?.componentId &&
-    candidate.whenComponent.some(
-      (id) => norm(id) === norm(context.componentId!),
-    )
+    candidate.whenComponent.some((id) => norm(id) === norm(context.componentId!))
   ) {
     return "match"
   }
+
   return "fail"
 }
 
@@ -240,6 +250,7 @@ export function resolveIntentProperty(
   context?: IntentContext,
 ): IntentPropertyResolution | undefined {
   const intent = resolveIntentTarget(phrase)
+
   if (!intent) return undefined
 
   const allPaths = intent.candidates.map((c) => asCandidate(c).path)
@@ -251,13 +262,15 @@ export function resolveIntentProperty(
   if (applicable.length === 0) {
     return { status: "unsupported", candidates: allPaths }
   }
-  const guarded = applicable.find(
-    (candidate) => guardState(candidate, context) === "match",
-  )
+
+  const guarded = applicable.find((candidate) => guardState(candidate, context) === "match")
+
   if (guarded) return { status: "resolved", propertyPath: guarded.path }
+
   if (applicable.length === 1) {
     return { status: "resolved", propertyPath: applicable[0]!.path }
   }
+
   return {
     status: "ambiguous",
     candidates: applicable.map((candidate) => candidate.path),
@@ -279,15 +292,14 @@ export function listSpacingFeels() {
  * "breathe", "airy", or "tight" resolve to the modulation baseSize the whole
  * theme scales by.
  */
-export function resolveSpacingFeel(
-  word: string,
-): { id: string; baseSize: number } | undefined {
+export function resolveSpacingFeel(word: string): { id: string; baseSize: number } | undefined {
   const norm = normalizeWord(word)
   const feel = designSemantics.spacingFeels.find(
     (candidate) =>
       normalizeWord(candidate.id) === norm ||
       candidate.phrases.some((phrase) => normalizeWord(phrase) === norm),
   )
+
   return feel ? { id: feel.id, baseSize: feel.baseSize } : undefined
 }
 
@@ -315,20 +327,21 @@ export function resolveStateName(
   customStates: readonly CustomStateChoice[] = [],
 ): ResolvedStateName | undefined {
   const norm = normalizeWord(word)
+
   if (!norm || norm === "normal") return undefined
 
-  const direct = RESERVED_STATE_NAMES.find(
-    (name) => normalizeWord(name) === norm,
-  )
+  const direct = RESERVED_STATE_NAMES.find((name) => normalizeWord(name) === norm)
+
   if (direct) return { key: direct, kind: "reserved" }
 
   const synonym = designSemantics.stateSynonyms[norm]
+
   if (synonym) return { key: synonym as ReservedStateName, kind: "reserved" }
 
   const custom = customStates.find(
-    (state) =>
-      normalizeWord(state.key) === norm || normalizeWord(state.label) === norm,
+    (state) => normalizeWord(state.key) === norm || normalizeWord(state.label) === norm,
   )
+
   if (custom) return { key: custom.key, kind: "custom" }
 
   return undefined

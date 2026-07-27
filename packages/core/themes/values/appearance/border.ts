@@ -1,5 +1,5 @@
 import type { BorderCompound } from "../../../properties/values/appearance/border"
-import { TokenType } from "../../constants/token-type"
+import type { TokenType } from "../../constants/token-type"
 
 export type BorderParameters = Pick<
   BorderCompound,

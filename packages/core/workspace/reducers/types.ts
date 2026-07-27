@@ -36,13 +36,8 @@
  * | stubs_* (font / media) | reserved — no-op until spec |
  */
 import type { FontOrigin } from "../../font-collections/types"
-import {
-  LayeredPaintKey,
-  Properties,
-  PropertyKey,
-  SubPropertyKey,
-} from "../../properties"
-import {
+import type { LayeredPaintKey, Properties, PropertyKey, SubPropertyKey } from "../../properties"
+import type {
   BorderParameters,
   FontParameters,
   GradientParameters,
@@ -145,9 +140,7 @@ export const THEME_CUSTOM_TOKEN_SECTIONS = [
 ] as const satisfies readonly ThemeCustomTokenSection[]
 
 /** Tells whether a section accepts user-added `customN` tokens. */
-export function isThemeCustomTokenSection(
-  section: string,
-): section is ThemeCustomTokenSection {
+export function isThemeCustomTokenSection(section: string): section is ThemeCustomTokenSection {
   return (THEME_CUSTOM_TOKEN_SECTIONS as readonly string[]).includes(section)
 }
 

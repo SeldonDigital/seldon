@@ -1,6 +1,7 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Chip",
@@ -209,8 +210,7 @@ export const schema = {
     {
       id: "assist",
       label: "Assist",
-      intent:
-        "Smart or automated action suggested to the user, with a leading icon and label.",
+      intent: "Smart or automated action suggested to the user, with a leading icon and label.",
       overrides: {
         background: [
           {
@@ -336,8 +336,7 @@ export const schema = {
     {
       id: "filter",
       label: "Filter",
-      intent:
-        "Selectable tag that filters content, with a leading checkmark and label.",
+      intent: "Selectable tag that filters content, with a leading checkmark and label.",
       overrides: {
         background: [
           {
@@ -403,8 +402,7 @@ export const schema = {
     {
       id: "input",
       label: "Input",
-      intent:
-        "Represents user-entered information, with a label and a trailing remove icon.",
+      intent: "Represents user-entered information, with a label and a trailing remove icon.",
       overrides: {
         background: [
           {

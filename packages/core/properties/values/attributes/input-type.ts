@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** HTML input type strings the catalog exposes as fixed choices. */
 export enum InputType {
@@ -35,8 +35,7 @@ export const inputTypeSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(InputType) as string[]).includes(value),
+      typeof value === "string" && (Object.values(InputType) as string[]).includes(value),
   },
   presetOptions: () => Object.values(InputType),
 }

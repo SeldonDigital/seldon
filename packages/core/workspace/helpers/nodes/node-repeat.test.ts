@@ -1,14 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { EntryNode } from "../../model/entry-node"
-import {
-  applyNodeRepeat,
-  getNodeRepeat,
-  isMeaningfulRepeat,
-} from "./node-repeat"
+import { applyNodeRepeat, getNodeRepeat, isMeaningfulRepeat } from "./node-repeat"
 
-const node = (editor?: Record<string, unknown>) =>
-  ({ __editor: editor }) as unknown as EntryNode
+import type { EntryNode } from "../../model/entry-node"
+
+const node = (editor?: Record<string, unknown>) => ({ __editor: editor }) as unknown as EntryNode
 
 describe("getNodeRepeat", () => {
   it("returns undefined when no meaningful repeat is stored", () => {
@@ -37,6 +33,7 @@ describe("isMeaningfulRepeat", () => {
 describe("applyNodeRepeat", () => {
   it("writes a meaningful repeat and clears a non-meaningful one", () => {
     const n = node()
+
     applyNodeRepeat(n, { count: 3 })
     expect(n.__editor?.repeat).toEqual({ count: 3 })
 
@@ -46,6 +43,7 @@ describe("applyNodeRepeat", () => {
 
   it("preserves other editor keys when clearing", () => {
     const n = node({ other: 1, repeat: { count: 3 } })
+
     applyNodeRepeat(n, { count: 1 })
     expect(n.__editor?.repeat).toBeUndefined()
     expect(n.__editor?.other).toBe(1)

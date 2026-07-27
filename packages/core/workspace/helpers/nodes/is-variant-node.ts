@@ -1,4 +1,5 @@
 import { isEntryNodeInstance } from "../../model/entry-node"
+
 import type { EntryNode } from "../../types"
 
 /** True when the node is a default or variant row (not an instance). */

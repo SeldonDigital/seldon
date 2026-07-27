@@ -1,16 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type {
-  ComponentBoard,
-  ComponentTreeRef,
-  ExtractPayload,
-  Workspace,
-} from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { addVariant } from "../add/add-variant"
 import { insertVariantInstance } from "./insert-variant-instance"
+
+import type { ComponentBoard, ComponentTreeRef, ExtractPayload, Workspace } from "../../../../index"
 
 const workspace = addComponent(
   { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
@@ -32,6 +28,7 @@ const insert = (variantId: string, parentId: string) =>
 describe("insertVariantInstance", () => {
   it("is a no-op when the source is not a variant", () => {
     const instanceId = defaultRoot.children![0]!.id
+
     expect(insert(instanceId, userVariant.id)).toBe(workspace)
   })
 
@@ -48,18 +45,17 @@ describe("insertVariantInstance (happy path)", () => {
     sourceId: string
     targetId: string
   } => {
-    let ws = addComponent(
-      { boardKey } as ExtractPayload<"add_component">,
-      createEmptyWorkspace(),
-    )
+    let ws = addComponent({ boardKey } as ExtractPayload<"add_component">, createEmptyWorkspace())
     const baseIds = (ws.boards[boardKey] as ComponentBoard).variants.map(
       (v: ComponentTreeRef) => v.id,
     )
+
     ws = addVariant({ boardKey } as ExtractPayload<"add_variant">, ws)
     ws = addVariant({ boardKey } as ExtractPayload<"add_variant">, ws)
     const newIds = (ws.boards[boardKey] as ComponentBoard).variants
       .map((v: ComponentTreeRef) => v.id)
       .filter((id: string) => !baseIds.includes(id))
+
     return { ws, sourceId: newIds[0], targetId: newIds[1] }
   }
 

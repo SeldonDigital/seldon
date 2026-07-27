@@ -1,14 +1,16 @@
 import { STOCK_THEMES_BY_ID } from "../../../themes/catalog"
-import type { ThemeTemplateId } from "../../../themes/types/theme-id"
-import type { Board, ThemeBoard } from "../../model/components"
 import { isThemeBoard } from "../../model/components"
-import type { EntryTheme } from "../../model/entry-theme"
 import { formatThemeCatalog } from "../../model/template-ref"
 import { setBoardOrder } from "../components/board-sort-order"
 import { DEFAULT_THEME_BOARD_AUTHOR } from "../components/default-board-metadata"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { formatEntryId } from "../general/entry-id"
-import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
+import { nextBoardOrder } from "./seedable-workspace"
+
+import type { ThemeTemplateId } from "../../../themes/types/theme-id"
+import type { Board, ThemeBoard } from "../../model/components"
+import type { EntryTheme } from "../../model/entry-theme"
+import type { SeedableWorkspace } from "./seedable-workspace"
 
 /** Catalog row key for the default theme board (matches the `default` stock template id). */
 export const DEFAULT_THEME_BOARD_KEY = "seldon" as const
@@ -45,6 +47,7 @@ export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
   if (!workspace.boards) {
     workspace.boards = {}
   }
+
   if (!workspace.themes) {
     workspace.themes = {}
   }
@@ -72,6 +75,7 @@ function seedThemeBoard(
   entry: EntryTheme,
 ): void {
   const existing = workspace.boards[boardKey] as Board | undefined
+
   if (existing && isThemeBoard(existing)) {
     return
   }
@@ -88,6 +92,7 @@ function seedThemeBoard(
     componentProperties: getInitialBoardComponentProperties("theme"),
     variants: [{ id: entry.id }],
   }
+
   setBoardOrder(board, nextBoardOrder(workspace.boards))
   workspace.boards[boardKey] = board
 }

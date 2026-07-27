@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
 
-import type { EntryNode, EntryNodeType } from "../workspace/model/entry-node"
 import { addVariant } from "../workspace/reducers/handlers/add/add-variant"
 import { duplicateNode } from "../workspace/reducers/handlers/duplicate/duplicate-node"
 import { moveInstance } from "../workspace/reducers/handlers/move/move-instance"
@@ -13,8 +12,10 @@ import { resetNode } from "../workspace/reducers/handlers/reset/reset-node"
 import { resetNodeState } from "../workspace/reducers/handlers/reset/reset-node-state"
 import { resetVariantToCatalog } from "../workspace/reducers/handlers/reset/reset-variant-to-catalog"
 import { setNodeStateProperties } from "../workspace/reducers/handlers/set/set-node-state-properties"
-import type { Workspace } from "../workspace/types"
 import { rules } from "./config/rules.config"
+
+import type { EntryNode, EntryNodeType } from "../workspace/model/entry-node"
+import type { Workspace } from "../workspace/types"
 import type { Config } from "./types/rule-config-types"
 
 const ENTITIES = ["board", "userVariant", "defaultVariant", "instance"] as const
@@ -62,7 +63,9 @@ function withDenied<T>(
 ): T {
   const row = (rules.mutations[bucket] as Config)[entity]
   const previous = row.allowed
+
   row.allowed = false
+
   try {
     return fn()
   } finally {
@@ -75,11 +78,10 @@ describe("rules.config single-source contract", () => {
     for (const bucket of Object.values(rules.mutations)) {
       for (const entity of ENTITIES) {
         const row = (bucket as Config)[entity]
+
         expect(row).toBeDefined()
         expect(typeof row.allowed).toBe("boolean")
-        expect(["none", "downstream", "bidirectional"]).toContain(
-          row.propagation,
-        )
+        expect(["none", "downstream", "bidirectional"]).toContain(row.propagation)
       }
     }
   })
@@ -95,9 +97,7 @@ describe("rules.config single-source contract", () => {
     expect(rules.mutations.delete.instance.removalBehavior).toBeDefined()
     expect("removalBehavior" in rules.mutations.delete.board).toBe(false)
     expect("removalBehavior" in rules.mutations.delete.userVariant).toBe(false)
-    expect("removalBehavior" in rules.mutations.delete.defaultVariant).toBe(
-      false,
-    )
+    expect("removalBehavior" in rules.mutations.delete.defaultVariant).toBe(false)
   })
 
   it("authors interaction states on variants only", () => {
@@ -105,10 +105,9 @@ describe("rules.config single-source contract", () => {
     expect(rules.mutations.setStateProperties.userVariant.allowed).toBe(true)
     expect(rules.mutations.setStateProperties.instance.allowed).toBe(false)
     expect(rules.mutations.setStateProperties.board.allowed).toBe(false)
+
     for (const entity of ENTITIES) {
-      expect(rules.mutations.setStateProperties[entity].propagation).toBe(
-        "none",
-      )
+      expect(rules.mutations.setStateProperties[entity].propagation).toBe("none")
     }
   })
 
@@ -132,11 +131,9 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
   it("reorderVariantInBoard respects reorder.userVariant", () => {
     const ws = makeWorkspace()
     const result = withDenied("reorder", "userVariant", () =>
-      reorderVariantInBoard(
-        { boardKey: "button", variantRootId: "variant-1", newIndex: 2 },
-        ws,
-      ),
+      reorderVariantInBoard({ boardKey: "button", variantRootId: "variant-1", newIndex: 2 }, ws),
     )
+
     expect(result).toBe(ws)
   })
 
@@ -145,6 +142,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const result = withDenied("reorder", "instance", () =>
       reorderInstanceInParent({ instanceId: "instance-1", newIndex: 1 }, ws),
     )
+
     expect(result).toBe(ws)
   })
 
@@ -159,6 +157,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
         ws,
       ),
     )
+
     expect(result).toBe(ws)
   })
 
@@ -167,6 +166,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const result = withDenied("duplicate", "instance", () =>
       duplicateNode({ nodeId: "instance-1" }, ws),
     )
+
     expect(result).toBe(ws)
   })
 
@@ -175,6 +175,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const result = withDenied("delete", "userVariant", () =>
       removeVariant({ variantRootId: "variant-1" }, ws),
     )
+
     expect(result).toBe(ws)
   })
 
@@ -183,14 +184,14 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const result = withDenied("delete", "instance", () =>
       removeInstance({ instanceId: "instance-1" }, ws),
     )
+
     expect(result).toBe(ws)
   })
 
   it("resetNode respects reset.instance", () => {
     const ws = makeWorkspace()
-    const result = withDenied("reset", "instance", () =>
-      resetNode({ nodeId: "instance-1" }, ws),
-    )
+    const result = withDenied("reset", "instance", () => resetNode({ nodeId: "instance-1" }, ws))
+
     expect(result).toBe(ws)
   })
 
@@ -199,6 +200,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const result = withDenied("reset", "userVariant", () =>
       resetVariantToCatalog({ variantRootId: "variant-1" }, ws),
     )
+
     expect(result).toBe(ws)
   })
 
@@ -207,14 +209,14 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const result = withDenied("reset", "defaultVariant", () =>
       resetDefaultVariantToCatalog({ defaultVariantRootId: "default-1" }, ws),
     )
+
     expect(result).toBe(ws)
   })
 
   it("addVariant respects create.userVariant", () => {
     const ws = makeWorkspace()
-    const result = withDenied("create", "userVariant", () =>
-      addVariant({ boardKey: "button" }, ws),
-    )
+    const result = withDenied("create", "userVariant", () => addVariant({ boardKey: "button" }, ws))
+
     expect(result).toBe(ws)
   })
 
@@ -228,6 +230,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
       },
       ws,
     )
+
     expect(result).toBe(ws)
     expect(result.nodes["instance-1"].states).toBeUndefined()
   })
@@ -242,6 +245,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
       },
       ws,
     )
+
     expect(result).not.toBe(ws)
     expect(result.nodes["variant-1"].states?.hover).toBeDefined()
   })
@@ -251,6 +255,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const result = withDenied("setStateProperties", "userVariant", () =>
       resetNodeState({ nodeId: "variant-1", state: "hover" }, ws),
     )
+
     expect(result).toBe(ws)
   })
 })

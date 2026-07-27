@@ -10,10 +10,7 @@ export {
   resolveThemeTokenEntry,
   resolveThemeTokenSchema,
 } from "./helpers"
-export {
-  THEME_TOKEN_SECTIONS,
-  getAllThemeTokenSectionSchemas,
-} from "./sections"
+export { THEME_TOKEN_SECTIONS, getAllThemeTokenSectionSchemas } from "./sections"
 export type {
   ThemeTokenBridgedCatalogDraft,
   ThemeTokenCatalogDraft,
@@ -24,8 +21,5 @@ export type {
   ThemeTokenSectionId,
   ThemeTokenSectionSchema,
 } from "../types/schema"
-export {
-  generateLookSchemas,
-  generateSwatchSchemas,
-} from "./data/theme-dynamic-schemas"
+export { generateLookSchemas, generateSwatchSchemas } from "./data/theme-dynamic-schemas"
 export type { ThemeOrStock } from "./data/theme-dynamic-schemas"

@@ -1,12 +1,12 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Image",
   id: Seldon.ComponentId.IMAGE,
-  intent:
-    "Renders an image asset within the UI, supporting alt text and sizing.",
+  intent: "Renders an image asset within the UI, supporting alt text and sizing.",
   tags: ["image", "media", "photo", "UI", "primitive", "asset", "visual"],
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.IMAGE,

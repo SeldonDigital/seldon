@@ -1,8 +1,9 @@
 import { produce } from "immer"
 
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { invariant } from "../../../../index"
 import { ErrorMessages } from "../../../constants"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Sets `workspace.playgrounds[playgroundKey].label`.
@@ -13,10 +14,8 @@ export function setPlaygroundLabel(
 ): Workspace {
   return produce(workspace, (draft) => {
     const playground = draft.playgrounds[payload.playgroundKey]
-    invariant(
-      playground,
-      ErrorMessages.componentNotFound(payload.playgroundKey),
-    )
+
+    invariant(playground, ErrorMessages.componentNotFound(payload.playgroundKey))
     playground.label = payload.label
   })
 }

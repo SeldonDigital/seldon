@@ -1,5 +1,5 @@
 import type { ShadowCompound } from "../../../properties/values/effects/shadow"
-import { TokenType } from "../../constants/token-type"
+import type { TokenType } from "../../constants/token-type"
 
 export type ShadowParameters = Omit<ShadowCompound, "preset" | "style">
 

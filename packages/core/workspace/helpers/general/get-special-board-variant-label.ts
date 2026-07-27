@@ -1,4 +1,4 @@
-import { Board } from "../../types"
+import type { Board } from "../../types"
 
 /**
  * Gets the appropriate variant label for a special board type.

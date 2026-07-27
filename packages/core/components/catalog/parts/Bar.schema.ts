@@ -1,22 +1,13 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Bar",
   id: Seldon.ComponentId.BAR,
-  intent:
-    "Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.",
-  tags: [
-    "bar",
-    "controls",
-    "buttons",
-    "navigation",
-    "tabs",
-    "UI",
-    "layout",
-    "group",
-  ],
+  intent: "Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.",
+  tags: ["bar", "controls", "buttons", "navigation", "tabs", "UI", "layout", "group"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -272,8 +263,7 @@ export const schema = {
     {
       id: "search",
       label: "Search Bar",
-      intent:
-        "Search field bar with a leading search icon and a clear control.",
+      intent: "Search field bar with a leading search icon and a clear control.",
       children: [
         {
           component: Seldon.ComponentId.COMBOBOX_FIELD,
@@ -459,8 +449,7 @@ export const schema = {
     {
       id: "tabs",
       label: "Tabs Bar",
-      intent:
-        "Provides a horizontal tab bar for organizing content into selectable sections.",
+      intent: "Provides a horizontal tab bar for organizing content into selectable sections.",
       overrides: {
         align: {
           type: Sdn.ValueType.OPTION,
@@ -808,8 +797,7 @@ export const schema = {
     {
       id: "navigation",
       label: "Navigation Bar",
-      intent:
-        "Provides primary navigation controls for traversing sections or views.",
+      intent: "Provides primary navigation controls for traversing sections or views.",
       overrides: {
         position: {
           bottom: {

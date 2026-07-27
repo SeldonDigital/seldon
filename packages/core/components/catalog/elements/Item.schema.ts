@@ -1,21 +1,13 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Item",
   id: Seldon.ComponentId.ITEM,
   intent: "Default list item used for general content with flexible layout.",
-  tags: [
-    "list",
-    "item",
-    "standard",
-    "default",
-    "row",
-    "UI",
-    "layout",
-    "general",
-  ],
+  tags: ["list", "item", "standard", "default", "row", "UI", "layout", "general"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.STUB,
   properties: {
@@ -71,9 +63,7 @@ export const schema = {
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -409,8 +399,7 @@ export const schema = {
     {
       id: "todo",
       label: "To-Do Item",
-      intent:
-        "List item for a to-do task with a checkbox, label, and action chips.",
+      intent: "List item for a to-do task with a checkbox, label, and action chips.",
       children: [
         {
           component: Seldon.ComponentId.INPUT,
@@ -813,8 +802,7 @@ export const schema = {
     {
       id: "input",
       label: "Input Item",
-      intent:
-        "List item used for input fields with a label and an input field.",
+      intent: "List item used for input fields with a label and an input field.",
       overrides: {
         margin: {
           top: {

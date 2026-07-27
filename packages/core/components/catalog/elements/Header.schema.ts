@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Header",
   id: Seldon.ComponentId.HEADER,
   intent:
     "Arranges header content. The card variant groups identity and a primary action; the action variant groups title text with a set of action controls.",
-  tags: [
-    "header",
-    "card",
-    "actions",
-    "layout",
-    "UI",
-    "group",
-    "toolbar",
-    "summary",
-  ],
+  tags: ["header", "card", "actions", "layout", "UI", "group", "toolbar", "summary"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -69,9 +61,7 @@ export const schema = {
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
-    ],
+    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,

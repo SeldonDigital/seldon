@@ -1,4 +1,3 @@
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
@@ -6,6 +5,8 @@ import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Applies a node's unique reference handle when ref rules allow.

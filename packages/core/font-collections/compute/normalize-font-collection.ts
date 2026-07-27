@@ -20,9 +20,11 @@ export function normalizeFontCollectionInput(
   input: FontCollectionPipelineInput,
 ): StockFontCollection {
   const families: Record<string, FontFamilyEntry> = {}
+
   for (const [key, entry] of Object.entries(input.families)) {
     if (!entry) continue
     families[key] = normalizeFamily(entry)
   }
+
   return { ...input, families } as StockFontCollection
 }

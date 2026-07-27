@@ -1,11 +1,7 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId, isComponentId } from "../../../components/constants"
-import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
+import { isComponentId } from "../../../components/constants"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
-import {
-  type LayeredPaintKey,
-  isLayeredPaintProperty,
-} from "../../../properties/types/property-keys"
+import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
 import {
   getEffectiveNodeProperties,
   getInheritedNodeProperties,
@@ -25,21 +21,15 @@ import {
   resolveNodePropertyResetPatch,
 } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import {
-  BoardKey,
-  EntryNode,
-  InstanceId,
-  NodeState,
-  VariantId,
-  Workspace,
-} from "../../types"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
-import {
-  withBoardMutation,
-  withNodeMutation,
-} from "../shared/workspace-operation-helpers"
+import { withBoardMutation, withNodeMutation } from "../shared/workspace-operation-helpers"
 import { setComponentTheme } from "./theme-mutations"
+
+import type { ComponentId } from "../../../components/constants"
+import type { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
+import type { LayeredPaintKey } from "../../../properties/types/property-keys"
+import type { BoardKey, EntryNode, InstanceId, NodeState, VariantId, Workspace } from "../../types"
 
 interface PropertyResetTarget {
   propertyKey: PropertyKey
@@ -87,15 +77,15 @@ export function pasteNodeProperties(
     if (!isEntryNodeForRules(node)) return
 
     const catalogId = getNodeCatalogId(node, workspace)
+
     if (!catalogId || !isComponentId(catalogId)) return
 
-    const allowedKeys = new Set(
-      Object.keys(getComponentSchema(catalogId).properties),
-    )
+    const allowedKeys = new Set(Object.keys(getComponentSchema(catalogId).properties))
     const filtered = filterPropertiesToAllowedKeys(properties, allowedKeys)
 
     const layered: Record<string, unknown> = {}
     const rest: Record<string, unknown> = {}
+
     for (const [key, value] of Object.entries(filtered)) {
       if (isLayeredPaintProperty(key as PropertyKey)) {
         layered[key] = value
@@ -108,11 +98,7 @@ export function pasteNodeProperties(
       node.overrides = mergeProperties(node.overrides, rest, {
         mergeSubProperties: false,
       })
-      pruneRedundantOverrides(
-        node.overrides,
-        rest,
-        getInheritedNodeProperties(node.id, workspace),
-      )
+      pruneRedundantOverrides(node.overrides, rest, getInheritedNodeProperties(node.id, workspace))
     }
 
     for (const [key, value] of Object.entries(layered)) {
@@ -142,6 +128,7 @@ export function setNodeStateProperties(
     if (!isEntryNodeForRules(node)) return
     const states = node.states ?? {}
     const mergedBag = mergeProperties(states[state] ?? {}, properties, options)
+
     states[state] = mergedBag
     node.states = states
     // A state override facet carries no delta when it equals the value the state
@@ -152,6 +139,7 @@ export function setNodeStateProperties(
     // empty, matching a bare state write.
     states[state] = stripPatchFacets(mergedBag, properties)
     const baseline = getEffectiveNodeProperties(node.id, draft, { state })
+
     states[state] = mergedBag
     pruneRedundantOverrides(states[state], properties, baseline)
   })
@@ -170,6 +158,7 @@ export function resetNodeStateProperty(
   return withNodeMutation(nodeId, workspace, (node) => {
     if (!isEntryNodeForRules(node)) return
     const bag = node.states?.[state]
+
     if (!bag) return
 
     if (subpropertyKey) {
@@ -207,10 +196,13 @@ export function resetNodeOverrides(
   workspace: Workspace,
 ): Workspace {
   const subtreeIds = getNodeSubtreeIds(nodeId, workspace)
+
   return mutateWorkspace(workspace, (draft) => {
     const nodes = getWorkspaceNodes(draft)
+
     for (const id of subtreeIds) {
       const node = nodes[id]
+
       if (node && isEntryNodeForRules(node)) {
         node.overrides = {}
       }
@@ -225,11 +217,9 @@ export function setComponentProperties(
   workspace: Workspace,
 ): Workspace {
   return withBoardMutation(boardKey, workspace, (board) => {
-    board.componentProperties = mergeProperties(
-      board.componentProperties,
-      properties,
-      { mergeSubProperties: true },
-    )
+    board.componentProperties = mergeProperties(board.componentProperties, properties, {
+      mergeSubProperties: true,
+    })
   })
 }
 
@@ -245,45 +235,44 @@ export function applyComponentPropertiesToAllBoards(
   workspace: Workspace,
 ): Workspace {
   const source = workspace.boards[sourceBoardKey]
+
   if (!source || source.type !== "component") return workspace
 
   const sourceProperties = source.componentProperties
   const sharedDefaultKeys = Object.keys(getComponentPropertyDefaults())
 
   let result = workspace
+
   if (sourceProperties && Object.keys(sourceProperties).length > 0) {
     result = mutateWorkspace(workspace, (draft) => {
       for (const [boardKey, board] of Object.entries(draft.boards)) {
         if (boardKey === sourceBoardKey || board.type !== "component") continue
 
         const allowedKeys = new Set([
-          ...Object.keys(
-            getComponentSchema(boardKey as ComponentId).properties,
-          ),
+          ...Object.keys(getComponentSchema(boardKey as ComponentId).properties),
           ...sharedDefaultKeys,
         ])
-        const filtered = filterPropertiesToAllowedKeys(
-          sourceProperties,
-          allowedKeys,
-        )
+        const filtered = filterPropertiesToAllowedKeys(sourceProperties, allowedKeys)
+
         if (Object.keys(filtered).length === 0) continue
 
-        board.componentProperties = mergeProperties(
-          board.componentProperties,
-          filtered,
-          { mergeSubProperties: true },
-        )
+        board.componentProperties = mergeProperties(board.componentProperties, filtered, {
+          mergeSubProperties: true,
+        })
       }
     })
   }
 
   const sourceTheme = getBoardThemeRef(source) ?? DEFAULT_THEME_ID
+
   for (const [boardKey, board] of Object.entries(result.boards)) {
     if (boardKey === sourceBoardKey || board.type !== "component") continue
     const targetTheme = getBoardThemeRef(board) ?? DEFAULT_THEME_ID
+
     if (targetTheme === sourceTheme) continue
     result = setComponentTheme(boardKey as BoardKey, sourceTheme, result)
   }
+
   return result
 }
 
@@ -292,21 +281,22 @@ export function applyComponentPropertiesToAllBoards(
  * override and returns the board theme to the workspace default, remapping
  * tokens on variants that inherit the board theme.
  */
-export function resetComponentBoard(
-  boardKey: BoardKey,
-  workspace: Workspace,
-): Workspace {
+export function resetComponentBoard(boardKey: BoardKey, workspace: Workspace): Workspace {
   const board = workspace.boards[boardKey]
+
   if (!board || board.type !== "component") return workspace
 
   const result = mutateWorkspace(workspace, (draft) => {
     const draftBoard = draft.boards[boardKey]
+
     if (!draftBoard || draftBoard.type !== "component") return
     draftBoard.componentProperties = {}
   })
 
   const currentTheme = getBoardThemeRef(board) ?? DEFAULT_THEME_ID
+
   if (currentTheme === DEFAULT_THEME_ID) return result
+
   return setComponentTheme(boardKey, DEFAULT_THEME_ID, result)
 }
 
@@ -316,11 +306,13 @@ function filterPropertiesToAllowedKeys(
   allowedKeys: ReadonlySet<string>,
 ): Properties {
   const result: Record<string, unknown> = {}
+
   for (const [key, value] of Object.entries(properties)) {
     if (allowedKeys.has(key.split(".")[0])) {
       result[key] = value
     }
   }
+
   return result as Properties
 }
 
@@ -345,30 +337,26 @@ function resetObjectProperty(
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
     const board = draft.boards[objectId as BoardKey]
+
     if (board) {
       if (subpropertyKey) {
-        deleteSubProperty(
-          board.componentProperties,
-          propertyKey,
-          subpropertyKey,
-          layerIndex,
-        )
+        deleteSubProperty(board.componentProperties, propertyKey, subpropertyKey, layerIndex)
       } else if (isLayerSlotReset(propertyKey, layerIndex)) {
         resetLayerSlot(board.componentProperties, propertyKey, layerIndex!)
       } else {
         delete board.componentProperties[propertyKey]
       }
+
       return
     }
 
-    const node = nodeRetrievalService.getNode(
-      objectId as VariantId | InstanceId,
-      draft,
-    )
+    const node = nodeRetrievalService.getNode(objectId as VariantId | InstanceId, draft)
+
     if (!isEntryNodeForRules(node)) return
 
     if (!subpropertyKey && isLayerSlotReset(propertyKey, layerIndex)) {
       resetNodeLayer(node, draft, propertyKey as LayeredPaintKey, layerIndex!)
+
       return
     }
 
@@ -382,20 +370,25 @@ function resetObjectProperty(
 
     if (patch.action === "delete") {
       delete node.overrides[propertyKey]
+
       return
     }
+
     if (patch.action === "delete-sub" && subpropertyKey) {
       deleteSubProperty(node.overrides, propertyKey, subpropertyKey, layerIndex)
+
       return
     }
+
     if (patch.action === "set") {
       // A whole-property layered reset replaces the stack outright so no owned
       // facet lingers under the shorter baseline. Other resets merge by facet.
       if (!subpropertyKey && isLayeredPaintProperty(propertyKey)) {
-        ;(node.overrides as Record<string, unknown>)[propertyKey] =
-          patch.properties[propertyKey]
+        ;(node.overrides as Record<string, unknown>)[propertyKey] = patch.properties[propertyKey]
+
         return
       }
+
       node.overrides = mergeProperties(node.overrides, patch.properties, {
         mergeSubProperties: true,
       })
@@ -405,9 +398,11 @@ function resetObjectProperty(
 
 function toLayerBags(value: unknown): Record<string, unknown>[] {
   if (Array.isArray(value)) return value as Record<string, unknown>[]
+
   if (value && typeof value === "object") {
     return [value as Record<string, unknown>]
   }
+
   return []
 }
 
@@ -420,8 +415,7 @@ function cloneLayer(slot: unknown): Record<string, unknown> {
 function isEmptyLayer(layer: unknown): boolean {
   return (
     !layer ||
-    (typeof layer === "object" &&
-      Object.keys(layer as Record<string, unknown>).length === 0)
+    (typeof layer === "object" && Object.keys(layer as Record<string, unknown>).length === 0)
   )
 }
 
@@ -430,13 +424,16 @@ function stableLayers(layers: Record<string, unknown>[]): string {
   return JSON.stringify(layers, (_key, val) => {
     if (val && typeof val === "object" && !Array.isArray(val)) {
       const record = val as Record<string, unknown>
+
       return Object.keys(record)
         .sort()
         .reduce<Record<string, unknown>>((sorted, key) => {
           sorted[key] = record[key]
+
           return sorted
         }, {})
     }
+
     return val
   })
 }
@@ -455,35 +452,31 @@ function resetNodeLayer(
   layerIndex: number,
 ): void {
   const baselineCount = getBaselineLayerCount(node, workspace, propertyKey)
-  const inherited = toLayerBags(
-    getInheritedNodeProperties(node.id, workspace)[propertyKey],
-  )
+  const inherited = toLayerBags(getInheritedNodeProperties(node.id, workspace)[propertyKey])
 
   let layers: Record<string, unknown>[]
+
   if (layerIndex >= baselineCount) {
-    layers = toLayerBags(
-      getEffectiveNodeProperties(node.id, workspace)[propertyKey],
-    ).map(cloneLayer)
+    layers = toLayerBags(getEffectiveNodeProperties(node.id, workspace)[propertyKey]).map(
+      cloneLayer,
+    )
     if (layerIndex >= layers.length) return
     layers.splice(layerIndex, 1)
   } else {
-    const own = toLayerBags(
-      (node.overrides as Record<string, unknown>)[propertyKey],
-    )
+    const own = toLayerBags((node.overrides as Record<string, unknown>)[propertyKey])
+
     if (layerIndex >= own.length) return
-    layers = own.map((slot, index) =>
-      index === layerIndex ? {} : cloneLayer(slot),
-    )
+    layers = own.map((slot, index) => (index === layerIndex ? {} : cloneLayer(slot)))
   }
 
   const overrides = node.overrides as Record<string, unknown>
-  if (
-    layers.every(isEmptyLayer) ||
-    stableLayers(layers) === stableLayers(inherited)
-  ) {
+
+  if (layers.every(isEmptyLayer) || stableLayers(layers) === stableLayers(inherited)) {
     delete overrides[propertyKey]
+
     return
   }
+
   overrides[propertyKey] = layers
 }
 
@@ -492,13 +485,8 @@ function resetNodeLayer(
  * than deleting the entire property. Layer 0 and non-layered compounds fall back
  * to the regular whole-property reset.
  */
-function isLayerSlotReset(
-  propertyKey: PropertyKey,
-  layerIndex: number | undefined,
-): boolean {
-  return (
-    layerIndex != null && layerIndex > 0 && isLayeredPaintProperty(propertyKey)
-  )
+function isLayerSlotReset(propertyKey: PropertyKey, layerIndex: number | undefined): boolean {
+  return layerIndex != null && layerIndex > 0 && isLayeredPaintProperty(propertyKey)
 }
 
 /**
@@ -506,12 +494,9 @@ function isLayerSlotReset(
  * show through again. The array length is preserved, so the layer stays present
  * and sibling layers are untouched.
  */
-function resetLayerSlot(
-  bag: Properties,
-  propertyKey: PropertyKey,
-  layerIndex: number,
-): void {
+function resetLayerSlot(bag: Properties, propertyKey: PropertyKey, layerIndex: number): void {
   const overrideBag = bag[propertyKey]
+
   if (Array.isArray(overrideBag) && layerIndex < overrideBag.length) {
     overrideBag[layerIndex] = {}
   }
@@ -525,16 +510,14 @@ function deleteSubProperty(
   layerIndex: number = 0,
 ): void {
   const overrideBag = bag[propertyKey]
+
   if (Array.isArray(overrideBag)) {
     const layer = overrideBag[layerIndex]
+
     if (layer && typeof layer === "object") {
       delete (layer as Record<string, unknown>)[subpropertyKey]
     }
-  } else if (
-    overrideBag &&
-    typeof overrideBag === "object" &&
-    !Array.isArray(overrideBag)
-  ) {
+  } else if (overrideBag && typeof overrideBag === "object" && !Array.isArray(overrideBag)) {
     delete (overrideBag as Record<string, unknown>)[subpropertyKey]
   }
 }

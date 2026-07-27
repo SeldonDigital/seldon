@@ -1,4 +1,4 @@
-import { Value } from "../../../properties/types/value"
+import type { Value } from "../../../properties/types/value"
 import type { CompoundBranchPayload } from "../../../properties/types/value-compound"
 
 /**
@@ -8,10 +8,5 @@ import type { CompoundBranchPayload } from "../../../properties/types/value-comp
  * @returns True if the value is a compound value with subproperties
  */
 export function isCompoundValue(value: Value): value is CompoundBranchPayload {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    !("value" in value) &&
-    !("type" in value)
-  )
+  return typeof value === "object" && value !== null && !("value" in value) && !("type" in value)
 }

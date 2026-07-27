@@ -1,5 +1,6 @@
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 export function resetBoardEditorData(
   payload: ExtractPayload<"reset_board_editor_data">,

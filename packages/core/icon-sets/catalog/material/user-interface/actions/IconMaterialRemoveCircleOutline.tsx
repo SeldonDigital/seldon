@@ -1,8 +1,6 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconMaterialRemoveCircleOutline(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconMaterialRemoveCircleOutline(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

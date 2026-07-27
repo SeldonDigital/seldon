@@ -1,4 +1,3 @@
-import type { ThemeTokenSchema } from "../../types/schema"
 import {
   blurSchemas,
   borderWidthSchemas,
@@ -13,6 +12,8 @@ import {
   sizeSchemas,
   spreadSchemas,
 } from "./theme-static-schemas"
+
+import type { ThemeTokenSchema } from "../../types/schema"
 
 /**
  * Static theme token schema catalog (`ThemeTokenSchema.key` → schema). Dynamic catalog entries

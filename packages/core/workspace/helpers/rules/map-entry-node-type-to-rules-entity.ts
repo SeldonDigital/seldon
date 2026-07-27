@@ -24,8 +24,10 @@ export function mapEntryNodeTypeToRulesEntity(type: EntryNodeType): Entity {
       return "authoredVariant"
     case "instance":
       return "instance"
+
     default: {
       const _exhaustive: never = type
+
       return _exhaustive
     }
   }

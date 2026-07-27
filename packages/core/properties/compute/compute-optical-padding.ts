@@ -2,14 +2,15 @@ import { modulate, round } from "../../helpers/math"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isUnitValue } from "../../helpers/type-guards/value/is-unit-value"
 import { InvariantError, invariant } from "../../helpers/utils/invariant"
-import type { ThemeValueKey } from "../../themes/types"
 import { isModulatedToken } from "../../themes/values"
 import { EMPTY_VALUE, Unit, ValueType } from "../constants"
-import type { SubPropertyKey } from "../types/property-keys"
-import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
 import { getBasedOnValue } from "./get-based-on-value"
 import { resolveOpticalPaddingSource } from "./resolve-optical-padding-source"
-import { ComputeContext, ComputeKeys } from "./types"
+
+import type { ThemeValueKey } from "../../themes/types"
+import type { SubPropertyKey } from "../types/property-keys"
+import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
+import type { ComputeContext, ComputeKeys } from "./types"
 
 /**
  * Multiplies the resolved source length by the theme's side rhythm for the padding side named in
@@ -35,18 +36,18 @@ export function computeOpticalPadding(
   const basedOn = resolveOpticalPaddingSource(context)
 
   let basedOnValue
+
   try {
     basedOnValue = getBasedOnValue(basedOn, context)
   } catch (error) {
     // An unresolved source degrades to EMPTY; a compound value at the path is
     // an authoring bug and must surface.
     if (error instanceof InvariantError) throw error
+
     return EMPTY_VALUE
   }
-  const ratio = getRatio(
-    keys.subPropertyKey,
-    context.theme.opticalPadding.parameters,
-  )
+
+  const ratio = getRatio(keys.subPropertyKey, context.theme.opticalPadding.parameters)
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {
@@ -73,10 +74,7 @@ export function computeOpticalPadding(
       `Optical padding only supports @fontSize theme ordinals, got: ${basedOnValue.value}`,
     )
 
-    const themeOption = getThemeOption(
-      basedOnValue.value as ThemeValueKey,
-      context.theme,
-    )
+    const themeOption = getThemeOption(basedOnValue.value as ThemeValueKey, context.theme)
 
     invariant(themeOption, `Theme option not found for ${basedOnValue.value}`)
 

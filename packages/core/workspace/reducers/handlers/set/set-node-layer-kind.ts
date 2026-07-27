@@ -1,10 +1,11 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { backgroundLayerForKind } from "../../../../properties/values/appearance/background/background-seeds"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import { readNodeLayerArray } from "../shared/node-layers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Retypes one paint-layer slot to a new `kind`, replacing the slot with that
@@ -17,18 +18,22 @@ export function setNodeLayerKind(
   workspace: Workspace,
 ): Workspace {
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
+
   if (!node || !isEntryNodeForRules(node)) return workspace
 
   const seed = backgroundLayerForKind(payload.kind)
+
   if (!seed) return workspace
 
   const layerIndex = payload.layerIndex ?? 0
   const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
+
   while (layers.length <= layerIndex) layers.push({})
   layers[layerIndex] = { ...seed }
 
   return produce(workspace, (draft) => {
     const draftNode = getWorkspaceNodes(draft)[payload.nodeId]
+
     if (!draftNode) return
     ;(draftNode.overrides as Record<string, unknown>)[payload.property] = layers
   })

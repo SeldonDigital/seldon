@@ -1,10 +1,11 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
   typeCheckingService,
   workspaceMutationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Resets every direct instance of a user variant back to that variant. Each
@@ -21,12 +22,10 @@ export function resetVariantInstances(
   }
 
   const node = nodeRetrievalService.getNode(payload.variantRootId, workspace)
+
   if (!typeCheckingService.isUserVariant(node)) {
     return workspace
   }
 
-  return workspaceMutationService.resetVariantInstances(
-    payload.variantRootId,
-    workspace,
-  )
+  return workspaceMutationService.resetVariantInstances(payload.variantRootId, workspace)
 }

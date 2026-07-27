@@ -1,8 +1,9 @@
-import { HSL } from "../../properties/values/shared/exact/hsl"
-import { LCH } from "../../properties/values/shared/exact/lch"
-import { RGB } from "../../properties/values/shared/exact/rgb"
 import { isHSLString, isHex, isRGBString } from "../validation/color"
 import { HSLObjectToString } from "./hsl-object-to-string"
+
+import type { HSL } from "../../properties/values/shared/exact/hsl"
+import type { LCH } from "../../properties/values/shared/exact/lch"
+import type { RGB } from "../../properties/values/shared/exact/rgb"
 
 /**
  * Parse an RGB string into an RGB object.
@@ -16,6 +17,7 @@ function parseRGB(value: string): RGB {
     .split(/,| /)
     .map((s) => s.trim())
     .filter(Boolean)
+
   if (parts.length !== 3) throw new Error(`Invalid RGB value: ${value}`)
 
   return {
@@ -34,11 +36,14 @@ function parseRGB(value: string): RGB {
 export function toHSLString(value: string): string {
   if (isHSLString(value)) return value
   if (isHex(value)) return hexToHSLString(value)
+
   if (isRGBString(value)) {
     const rgb = parseRGB(value)
     const hsl = rgbToHSL(rgb)
+
     return HSLObjectToString(hsl)
   }
+
   throw new Error(`Invalid color value: ${value}`)
 }
 
@@ -50,9 +55,8 @@ export function toHSLString(value: string): string {
  */
 export function parseHSLString(value: string): HSL {
   // Handle both formats: "hsl(120, 50%, 50%)" and "hsl(120 50% 50%)"
-  const match = value.match(
-    /^hsl\(\s*(\d+)(?:deg)?\s*[,]?\s*(\d+)%?\s*[,]?\s*(\d+)%?\s*\)$/i,
-  )
+  const match = value.match(/^hsl\(\s*(\d+)(?:deg)?\s*[,]?\s*(\d+)%?\s*[,]?\s*(\d+)%?\s*\)$/i)
+
   if (!match) {
     throw new Error(`Invalid HSL string: ${value}`)
   }
@@ -65,12 +69,15 @@ export function parseHSLString(value: string): HSL {
   if (isNaN(hue) || isNaN(saturation) || isNaN(lightness)) {
     throw new Error(`Invalid HSL string: ${value}`)
   }
+
   if (hue < 0 || hue > 360) {
     throw new Error(`Invalid HSL string: ${value} - hue must be 0-360`)
   }
+
   if (saturation < 0 || saturation > 100) {
     throw new Error(`Invalid HSL string: ${value} - saturation must be 0-100`)
   }
+
   if (lightness < 0 || lightness > 100) {
     throw new Error(`Invalid HSL string: ${value} - lightness must be 0-100`)
   }
@@ -86,10 +93,7 @@ export function parseHSLString(value: string): HSL {
  * @throws An error if the string is malformed or a component is out of range
  */
 export function parseRGBString(value: string): RGB {
-  const match =
-    /^rgb\(\s*(\d{1,3})(\s*,\s*|\s+)(\d{1,3})(\s*,\s*|\s+)(\d{1,3})\s*\)$/i.exec(
-      value,
-    )
+  const match = /^rgb\(\s*(\d{1,3})(\s*,\s*|\s+)(\d{1,3})(\s*,\s*|\s+)(\d{1,3})\s*\)$/i.exec(value)
 
   if (!match) {
     throw new Error("Invalid RGB string: " + value)
@@ -102,6 +106,7 @@ export function parseRGBString(value: string): RGB {
 
   if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
     const invalidValues = []
+
     if (r < 0 || r > 255) invalidValues.push(`red: ${r}`)
     if (g < 0 || g > 255) invalidValues.push(`green: ${g}`)
     if (b < 0 || b > 255) invalidValues.push(`blue: ${b}`)
@@ -121,10 +126,7 @@ export function parseRGBString(value: string): RGB {
  * @throws An error if the string is malformed or a component is out of range
  */
 export function parseLCHString(value: string): LCH {
-  const match =
-    /^lch\(\s*(\d+)%?\s*[,]?\s*(\d+(?:\.\d+)?)\s*[,]?\s*(\d+)(deg)?\s*\)$/i.exec(
-      value,
-    )
+  const match = /^lch\(\s*(\d+)%?\s*[,]?\s*(\d+(?:\.\d+)?)\s*[,]?\s*(\d+)(deg)?\s*\)$/i.exec(value)
 
   if (!match) {
     throw new Error("Invalid LCH string: " + value)
@@ -137,6 +139,7 @@ export function parseLCHString(value: string): LCH {
 
   if (l < 0 || l > 100 || c < 0 || c > 150 || h < 0 || h > 360) {
     const invalidValues = []
+
     if (l < 0 || l > 100) invalidValues.push(`lightness: ${l}`)
     if (c < 0 || c > 150) invalidValues.push(`chroma: ${c}`)
     if (h < 0 || h > 360) invalidValues.push(`hue: ${h}`)
@@ -156,6 +159,7 @@ export function parseLCHString(value: string): LCH {
  */
 function hexToHSLString(value: string): string {
   const hsl = hexToHSLObject(value)
+
   return HSLObjectToString(hsl)
 }
 
@@ -186,8 +190,10 @@ export function rgbToHSL(rgb: RGB): HSL {
 
   let hue = 0
   let saturation = 0
+
   if (max !== min) {
     const d = max - min
+
     saturation = lightness > 0.5 ? d / (2 - max - min) : d / (max + min)
     hue = computeHue(max, r, g, b, d)
   }
@@ -200,14 +206,9 @@ export function rgbToHSL(rgb: RGB): HSL {
 }
 
 /** Computes the normalized HSL hue (0-1) from RGB channels and their range. */
-function computeHue(
-  max: number,
-  r: number,
-  g: number,
-  b: number,
-  d: number,
-): number {
+function computeHue(max: number, r: number, g: number, b: number, d: number): number {
   let h = 0
+
   switch (max) {
     case r:
       h = (g - b) / d + (g < b ? 6 : 0)
@@ -219,6 +220,7 @@ function computeHue(
       h = (r - g) / d + 4
       break
   }
+
   return h / 6
 }
 
@@ -239,5 +241,6 @@ function hexToRGBObject(value: string): RGB {
           .join("")
       : hex
   const [r, g, b] = full.match(/\w\w/g)!.map((pair) => parseInt(pair, 16))
+
   return { red: r, green: g, blue: b }
 }

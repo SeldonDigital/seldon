@@ -1,5 +1,5 @@
 import type { Unit } from "../../../../properties/constants/shared/units"
-import { TokenType } from "../../../constants/token-type"
+import type { TokenType } from "../../../constants/token-type"
 
 /**
  * Payload for a {@link TokenType.EXACT} cell. Holds a fixed length (`px` / `rem`),

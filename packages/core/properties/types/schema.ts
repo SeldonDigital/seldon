@@ -1,6 +1,6 @@
-import { Theme } from "../../themes/types"
-import { Workspace } from "../../workspace/types"
-import { ComputedFunction, Unit } from "../constants"
+import type { Theme } from "../../themes/types"
+import type { Workspace } from "../../workspace/types"
+import type { ComputedFunction, Unit } from "../constants"
 import type { PropertyDisplayCategory } from "../constants/property-display"
 
 /** Labels each storage shape a property may accept on a node. */

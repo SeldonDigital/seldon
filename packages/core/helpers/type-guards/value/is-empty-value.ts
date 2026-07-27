@@ -1,15 +1,14 @@
 import { ValueType } from "../../../properties"
-import { Value } from "../../../properties/types/value"
-import { EmptyValue } from "../../../properties/values/shared/empty/empty"
+
+import type { Value } from "../../../properties/types/value"
+import type { EmptyValue } from "../../../properties/values/shared/empty/empty"
 
 /**
  * Type guard that checks if a value is an empty value.
  * @param value - The value to check
  * @returns True if the value is an EmptyValue type
  */
-export function isEmptyValue(
-  value: Value | EmptyValue | undefined,
-): value is EmptyValue {
+export function isEmptyValue(value: Value | EmptyValue | undefined): value is EmptyValue {
   if (!value || typeof value !== "object") {
     return false
   }

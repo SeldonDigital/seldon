@@ -1,5 +1,5 @@
-import { ValueType } from "../../constants"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** Tristate keyword shared by `ariaChecked` and `ariaPressed`. */
 export enum AriaTristate {

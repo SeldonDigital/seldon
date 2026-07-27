@@ -1,4 +1,3 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
-export const seldonspecializedentertainmentIconIds: readonly IconId[] =
-  [] as const
+export const seldonspecializedentertainmentIconIds: readonly IconId[] = [] as const

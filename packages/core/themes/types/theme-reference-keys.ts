@@ -1,7 +1,7 @@
 /**
  * Branded `@namespace.slot` strings used in property theme references.
  */
-import {
+import type {
   ThemeBorderId,
   ThemeBorderWidthId,
   ThemeCornersId,

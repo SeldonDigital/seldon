@@ -1,24 +1,22 @@
 import { getComponentSchema } from "../../components/catalog"
-import { ComponentId, isComponentId } from "../../components/constants"
+import { isComponentId } from "../../components/constants"
 import { computeProperties } from "../../properties/compute"
-import type { ComputeContext } from "../../properties/compute"
 import { mergeProperties } from "../../properties/helpers/merge-properties"
-import type { Properties } from "../../properties/types/properties"
-import {
-  expandLookPresetFacets,
-  hasExpandableLookPreset,
-} from "../../themes/looks"
-import type { ComputedTheme } from "../../themes/types/theme"
+import { expandLookPresetFacets, hasExpandableLookPreset } from "../../themes/looks"
 import { getComponentPropertyDefaults } from "../helpers/components/get-component-property-defaults"
 import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "../helpers/nodes/get-node-catalog-id"
 import { resolveLayoutMode } from "../helpers/nodes/resolve-layout-mode"
-import type { EntryNodeStates, NodeState } from "../model/node-state"
 import { NORMAL_STATE } from "../model/node-state"
 import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
-import type { Board } from "../types"
-import type { EntryNode, Workspace } from "../types"
 import { getComputedTheme } from "./compute-workspace-themes"
+
+import type { ComponentId } from "../../components/constants"
+import type { ComputeContext } from "../../properties/compute"
+import type { Properties } from "../../properties/types/properties"
+import type { ComputedTheme } from "../../themes/types/theme"
+import type { EntryNodeStates, NodeState } from "../model/node-state"
+import type { Board, EntryNode, Workspace } from "../types"
 import type { WorkspaceThemeEntries } from "./compute-workspace-themes"
 
 type NodeRecord = Record<string, WorkspaceNode>
@@ -84,14 +82,10 @@ function getBoardOrPlayground(
   return workspace.boards?.[targetId] ?? workspace.playgrounds?.[targetId]
 }
 
-function getOwnProperties(
-  source: WorkspaceNode | WorkspaceComponent,
-): Properties {
+function getOwnProperties(source: WorkspaceNode | WorkspaceComponent): Properties {
   return (
     ("overrides" in source ? source.overrides : undefined) ??
-    ("componentProperties" in source
-      ? source.componentProperties
-      : undefined) ??
+    ("componentProperties" in source ? source.componentProperties : undefined) ??
     {}
   )
 }
@@ -107,6 +101,7 @@ function getOwnStateProperties(
 ): Properties {
   if (!state || state === NORMAL_STATE) return {}
   const states = "states" in source ? source.states : undefined
+
   return states?.[state] ?? {}
 }
 
@@ -119,11 +114,13 @@ function getNodeComponentId(
   workspace: WorkspacePropertySource,
 ): ComponentId | null {
   const parsed = node.template ? parseNodeTemplate(node.template) : null
+
   if (parsed?.kind === "catalog" && isComponentId(parsed.componentId)) {
     return parsed.componentId
   }
 
   const catalogId = getNodeCatalogId(node as EntryNode, workspace as Workspace)
+
   if (catalogId && isComponentId(catalogId)) return catalogId
 
   return null
@@ -149,7 +146,9 @@ function findComponentForNode(
     Object.values(workspace.boards ?? {}).find((board) =>
       (board.variants ?? []).some((variant) => {
         const variantId = getVariantId(variant)
+
         if (variantId === rootNode.id) return true
+
         return nodes[variantId]?.id === rootNode.id
       }),
     ) ?? null
@@ -163,8 +162,10 @@ function findParentNode(
 ): WorkspaceNode | null {
   const nodes = getNodes(workspace)
   const parentId = compositionParentByChild?.get(node.id)
+
   if (parentId) {
     const fromIndex = nodes[parentId]
+
     if (fromIndex) return fromIndex
   }
 
@@ -177,6 +178,7 @@ function getTemplateNode(
 ): WorkspaceNode | null {
   const nodes = getNodes(workspace)
   const parsed = node.template ? parseNodeTemplate(node.template) : null
+
   if (parsed?.kind === "node") return nodes[parsed.nodeId] ?? null
 
   return null
@@ -202,6 +204,7 @@ function normalizeThemeRef(themeRef: string | null | undefined): string | null {
   if (!themeRef) return null
 
   const parsed = parseThemeTemplate(themeRef)
+
   if (parsed?.kind === "catalog") return parsed.themeCatalogId
   if (parsed?.kind === "theme") return parsed.themeId
 
@@ -217,21 +220,18 @@ function getEffectiveThemeId(
 
   while (current) {
     const themeId = normalizeThemeRef(current.theme)
+
     if (themeId) return themeId
     current = findParentNode(current, workspace, compositionParentByChild)
   }
 
   const board = findComponentForNode(node, workspace, compositionParentByChild)
-  return (
-    normalizeThemeRef(board ? getComponentThemeRef(board) : null) ?? "seldon"
-  )
+
+  return normalizeThemeRef(board ? getComponentThemeRef(board) : null) ?? "seldon"
 }
 
 export function mergeEffectiveProperties(sources: Properties[]): Properties {
-  return sources.reduce(
-    (merged, source) => mergeProperties(merged, source),
-    {} as Properties,
-  )
+  return sources.reduce((merged, source) => mergeProperties(merged, source), {} as Properties)
 }
 
 /** Options for effective-merge readers that already resolved theme context. */
@@ -259,6 +259,7 @@ function expandPresetSources(
 ): Properties[] {
   if (!sources.some(hasExpandableLookPreset)) return sources
   const theme = resolveTheme()
+
   return sources.map((source) => expandLookPresetFacets(source, theme))
 }
 
@@ -268,11 +269,7 @@ function resolveNodeTheme(
   parentIndex?: ReadonlyMap<string, string>,
 ): ComputedTheme {
   return getComputedTheme(
-    getEffectiveThemeId(
-      node,
-      workspace,
-      parentIndex ?? getNodeParentIndex(workspace),
-    ),
+    getEffectiveThemeId(node, workspace, parentIndex ?? getNodeParentIndex(workspace)),
     workspace,
   )
 }
@@ -282,6 +279,7 @@ function resolveBoardTheme(
   workspace: WorkspacePropertySource,
 ): ComputedTheme {
   const themeId = normalizeThemeRef(board ? getComponentThemeRef(board) : null)
+
   return getComputedTheme(themeId ?? "seldon", workspace)
 }
 
@@ -304,17 +302,14 @@ function getTemplatePropertySources(
   state?: NodeState,
 ): TemplatePropertySources {
   const templateNode = getTemplateNode(node, workspace)
+
   if (!templateNode || visited.has(templateNode.id)) {
     return { normal: [], state: [] }
   }
 
   visited.add(templateNode.id)
-  const ancestor = getTemplatePropertySources(
-    templateNode,
-    workspace,
-    visited,
-    state,
-  )
+  const ancestor = getTemplatePropertySources(templateNode, workspace, visited, state)
+
   return {
     normal: [...ancestor.normal, getOwnProperties(templateNode)],
     state: [...ancestor.state, getOwnStateProperties(templateNode, state)],
@@ -328,6 +323,7 @@ export function getInheritedNodeProperties(
   options: EffectivePropertiesOptions = {},
 ): Properties {
   const node = getNodes(workspace)[targetId]
+
   if (!node) {
     throw new Error(`Workspace node ${targetId} not found`)
   }
@@ -345,8 +341,7 @@ export function getInheritedNodeProperties(
   return mergeEffectiveProperties(
     expandPresetSources(
       [schemaProperties, ...templateSources.normal, ...templateSources.state],
-      () =>
-        options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
+      () => options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
     ),
   )
 }
@@ -366,18 +361,23 @@ export function getEffectiveNodeProperties(
   options: EffectivePropertiesOptions = {},
 ): Properties {
   const theme = options.theme
+
   if (theme) {
     const cacheKey = `${targetId}|${theme.id}|${options.state ?? NORMAL_STATE}`
     let byKey = effectivePropertiesCache.get(workspace as object)
     const cached = byKey?.get(cacheKey)
+
     if (cached) return cached
 
     const result = computeEffectiveNodeProperties(targetId, workspace, options)
+
     if (!byKey) {
       byKey = new Map<string, Properties>()
       effectivePropertiesCache.set(workspace as object, byKey)
     }
+
     byKey.set(cacheKey, result)
+
     return result
   }
 
@@ -393,6 +393,7 @@ function computeEffectiveNodeProperties(
 
   if (!node) {
     const board = getBoardOrPlayground(workspace, targetId)
+
     if (!board) throw new Error(`Workspace object ${targetId} not found`)
 
     return mergeEffectiveProperties(
@@ -412,6 +413,7 @@ function computeEffectiveNodeProperties(
     new Set([node.id]),
     options.state,
   )
+
   return mergeEffectiveProperties(
     expandPresetSources(
       [
@@ -421,8 +423,7 @@ function computeEffectiveNodeProperties(
         ...templateSources.state,
         getOwnStateProperties(node, options.state),
       ],
-      () =>
-        options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
+      () => options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
     ),
   )
 }
@@ -437,14 +438,12 @@ function buildBoardComputeContext(
   compositionParentByChild: ReadonlyMap<string, string> | undefined,
 ): ComputeContext | null {
   const board = findComponentForNode(node, workspace, compositionParentByChild)
+
   if (!board) return null
 
   const theme = resolveBoardTheme(board, workspace)
   const properties = mergeEffectiveProperties(
-    expandPresetSources(
-      [getComponentPropertyDefaults(), getOwnProperties(board)],
-      () => theme,
-    ),
+    expandPresetSources([getComponentPropertyDefaults(), getOwnProperties(board)], () => theme),
   )
 
   return {
@@ -479,9 +478,8 @@ function buildComputeContext(
     // ancestor's. The parent chain is already resolved here, so inherit the
     // parent's computed theme instead of re-walking to the root per node.
     const ownThemeId = normalizeThemeRef(node.theme)
-    theme = ownThemeId
-      ? getComputedTheme(ownThemeId, workspace)
-      : parentContext.theme
+
+    theme = ownThemeId ? getComputedTheme(ownThemeId, workspace) : parentContext.theme
   } else {
     // A variant root's parent is its owning board, so `#parent.*` paths and the
     // high-contrast / match-color surface walk resolve against the board the
@@ -490,11 +488,8 @@ function buildComputeContext(
     parentContext = parentNode
       ? null
       : buildBoardComputeContext(node, workspace, compositionParentByChild)
-    const themeId = getEffectiveThemeId(
-      node,
-      workspace,
-      compositionParentByChild,
-    )
+    const themeId = getEffectiveThemeId(node, workspace, compositionParentByChild)
+
     theme = getComputedTheme(themeId, workspace)
   }
 
@@ -503,10 +498,7 @@ function buildComputeContext(
     state,
   })
 
-  const layoutMode = resolveLayoutMode(
-    node as EntryNode,
-    workspace as Workspace,
-  )
+  const layoutMode = resolveLayoutMode(node as EntryNode, workspace as Workspace)
 
   return {
     properties: effectiveProperties,
@@ -535,11 +527,8 @@ export function getNodeComputeContext(
   if (!node) {
     const board = getBoardOrPlayground(workspace, targetId)
     const theme = resolveBoardTheme(board, workspace)
-    const effectiveProperties = getEffectiveNodeProperties(
-      targetId,
-      workspace,
-      { theme },
-    )
+    const effectiveProperties = getEffectiveNodeProperties(targetId, workspace, { theme })
+
     return {
       properties: effectiveProperties,
       parentContext: null,
@@ -547,8 +536,7 @@ export function getNodeComputeContext(
     }
   }
 
-  const compositionParentByChild =
-    options.parentIndex ?? getNodeParentIndex(workspace)
+  const compositionParentByChild = options.parentIndex ?? getNodeParentIndex(workspace)
 
   return buildComputeContext(
     node,
@@ -576,11 +564,8 @@ export function computeNodeProperties(
   if (!node) {
     const board = getBoardOrPlayground(workspace, targetId)
     const theme = resolveBoardTheme(board, workspace)
-    const effectiveProperties = getEffectiveNodeProperties(
-      targetId,
-      workspace,
-      { theme },
-    )
+    const effectiveProperties = getEffectiveNodeProperties(targetId, workspace, { theme })
+
     return computeProperties(effectiveProperties, {
       properties: effectiveProperties,
       parentContext: null,
@@ -588,8 +573,7 @@ export function computeNodeProperties(
     })
   }
 
-  const compositionParentByChild =
-    options.parentIndex ?? getNodeParentIndex(workspace)
+  const compositionParentByChild = options.parentIndex ?? getNodeParentIndex(workspace)
 
   const context = buildComputeContext(
     node,

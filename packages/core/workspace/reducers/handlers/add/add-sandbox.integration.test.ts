@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addPlayground } from "./add-playground"
 import { addSandbox } from "./add-sandbox"
+
+import type { ExtractPayload } from "../../../../index"
 
 const workspace = addPlayground(
   { boardKey: "pg-main" } as ExtractPayload<"add_playground">,
@@ -20,6 +21,7 @@ describe("addSandbox", () => {
     )
 
     const variants = next.playgrounds["pg-main"]!.variants
+
     expect(variants).toHaveLength(before + 1)
     expect(next.nodes[variants[variants.length - 1]!.id]).toBeDefined()
   })
@@ -29,6 +31,7 @@ describe("addSandbox", () => {
       { playgroundKey: "ghost" } as ExtractPayload<"add_sandbox">,
       workspace,
     )
+
     expect(result).toBe(workspace)
   })
 })

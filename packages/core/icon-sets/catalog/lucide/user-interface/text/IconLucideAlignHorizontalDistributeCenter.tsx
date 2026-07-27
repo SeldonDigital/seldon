@@ -1,8 +1,6 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconLucideAlignHorizontalDistributeCenter(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconLucideAlignHorizontalDistributeCenter(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

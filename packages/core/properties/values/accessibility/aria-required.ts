@@ -1,6 +1,6 @@
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { BooleanOptionValue } from "../shared/option/boolean"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { BooleanOptionValue } from "../shared/option/boolean"
 
 /** Not set, or a picked boolean for whether input is required. */
 export type AriaRequiredValue = EmptyValue | BooleanOptionValue

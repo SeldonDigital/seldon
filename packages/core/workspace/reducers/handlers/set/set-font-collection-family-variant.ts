@@ -1,8 +1,9 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
-import type { EntryFontCollection } from "../../../model/entry-font-collection"
 import { setFamilyVariant } from "../shared/font-collection-variant-selection"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
+import type { EntryFontCollection } from "../../../model/entry-font-collection"
 
 /**
  * Enables or disables one variant (weight or style) of a family on a font
@@ -16,6 +17,7 @@ export function setFontCollectionFamilyVariant(
     const entry = draft["font-collections"][payload.fontCollectionId] as
       | EntryFontCollection
       | undefined
+
     if (!entry) return
     setFamilyVariant(entry, payload.slot, payload.variant, payload.enabled)
   })

@@ -1,12 +1,12 @@
-import { EmptyValue } from "../../shared/empty/empty"
-import { LetterSpacingValue } from "../letter-spacing"
-import { TextCaseValue } from "../text-casing"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { LetterSpacingValue } from "../letter-spacing"
+import type { TextCaseValue } from "../text-casing"
 import type { FontValue } from "./font"
-import { FontFamilyValue } from "./font-family"
-import { FontSizeValue } from "./font-size"
-import { FontStyleValue } from "./font-style"
-import { FontWeightValue } from "./font-weight"
-import { LineHeightValue } from "./line-height"
+import type { FontFamilyValue } from "./font-family"
+import type { FontSizeValue } from "./font-size"
+import type { FontStyleValue } from "./font-style"
+import type { FontWeightValue } from "./font-weight"
+import type { LineHeightValue } from "./line-height"
 
 export type FontCompound = {
   preset?: FontValue | EmptyValue

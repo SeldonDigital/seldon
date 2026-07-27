@@ -37,15 +37,16 @@ export interface RepeatEditorData {
 type EditorBearing = Pick<EntryNode, "__editor">
 
 /** Reads the repeat preview state from a node, or `undefined` when absent. */
-export function getNodeRepeat(
-  node: EditorBearing,
-): RepeatEditorData | undefined {
+export function getNodeRepeat(node: EditorBearing): RepeatEditorData | undefined {
   const raw = node.__editor?.[REPEAT_EDITOR_KEY]
+
   if (raw == null || typeof raw !== "object") return undefined
   const candidate = raw as Partial<RepeatEditorData>
   const hasCount = typeof candidate.count === "number"
   const hasData = candidate.data != null && typeof candidate.data === "object"
+
   if (!hasCount && !hasData) return undefined
+
   return candidate as RepeatEditorData
 }
 
@@ -61,6 +62,7 @@ export function isMeaningfulRepeat(
   if (!repeat) return false
   if (repeat.count != null && repeat.count > 1) return true
   if (!repeat.data) return false
+
   return Object.values(repeat.data).some((values) =>
     values.some((value) => value != null && value !== ""),
   )
@@ -71,16 +73,15 @@ export function isMeaningfulRepeat(
  * keys such as `initialOverrides`. Clears the key (and an emptied `__editor`)
  * when the repeat is not meaningful.
  */
-export function applyNodeRepeat(
-  node: EditorBearing,
-  repeat: RepeatEditorData | undefined,
-): void {
+export function applyNodeRepeat(node: EditorBearing, repeat: RepeatEditorData | undefined): void {
   if (!isMeaningfulRepeat(repeat)) {
     if (node.__editor) {
       delete node.__editor[REPEAT_EDITOR_KEY]
       if (Object.keys(node.__editor).length === 0) delete node.__editor
     }
+
     return
   }
+
   node.__editor = { ...node.__editor, [REPEAT_EDITOR_KEY]: repeat }
 }

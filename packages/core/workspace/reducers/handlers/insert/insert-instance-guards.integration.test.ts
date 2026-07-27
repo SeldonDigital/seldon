@@ -1,39 +1,29 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type {
-  ComponentBoard,
-  EntryNode,
-  ExtractPayload,
-  Workspace,
-} from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { insertDefaultInstance } from "./insert-default-instance"
 import { insertDuplicateInstance } from "./insert-duplicate-instance"
 
+import type { ComponentBoard, EntryNode, ExtractPayload, Workspace } from "../../../../index"
+
 const boardKey = ComponentId.BUTTON
 
 const componentWorkspace = () =>
-  addComponent(
-    { boardKey } as ExtractPayload<"add_component">,
-    createEmptyWorkspace(),
-  )
+  addComponent({ boardKey } as ExtractPayload<"add_component">, createEmptyWorkspace())
 
 const defaultRootId = (ws: Workspace) =>
   (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
 
 const anyInstanceId = (ws: Workspace) =>
-  Object.values(ws.nodes).find((n: EntryNode) => n.type === "instance")!
-    .id as string
+  Object.values(ws.nodes).find((n: EntryNode) => n.type === "instance")!.id as string
 
 describe("insertDefaultInstance", () => {
   it("is a no-op when the target parent is a default variant", () => {
     const ws = componentWorkspace()
-    const result = insertDefaultInstance(
-      { parentId: defaultRootId(ws), boardKey } as never,
-      ws,
-    )
+    const result = insertDefaultInstance({ parentId: defaultRootId(ws), boardKey } as never, ws)
+
     expect(result).toBe(ws)
   })
 })
@@ -48,6 +38,7 @@ describe("insertDuplicateInstance", () => {
       } as never,
       ws,
     )
+
     expect(result).toBe(ws)
   })
 
@@ -60,6 +51,7 @@ describe("insertDuplicateInstance", () => {
       } as never,
       ws,
     )
+
     expect(result).toBe(ws)
   })
 })

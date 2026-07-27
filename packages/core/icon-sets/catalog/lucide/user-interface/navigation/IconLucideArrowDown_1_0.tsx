@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideArrowDown_1_0(props: SVGAttributes<SVGSVGElement>) {
   return (

@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icon-sets"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { IconMaterialRoundaboutLeft } from "./IconMaterialRoundaboutLeft"
 export { IconMaterialBrowserNotSupported } from "./IconMaterialBrowserNotSupported"

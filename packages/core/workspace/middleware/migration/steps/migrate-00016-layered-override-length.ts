@@ -2,6 +2,7 @@ import {
   getEffectiveNodeProperties,
   getInheritedNodeProperties,
 } from "../../../compute/compute-node-properties"
+
 import type { Workspace } from "../../../model/workspace"
 
 /**
@@ -23,6 +24,7 @@ const LAYERED_KEYS = ["background", "shadow"] as const
 
 function stackLength(value: unknown): number {
   if (Array.isArray(value)) return value.length
+
   return value ? 1 : 0
 }
 
@@ -36,21 +38,23 @@ function padLayeredArrays(
 ): boolean {
   if (!bag || typeof bag !== "object") return false
   let changed = false
+
   for (const key of LAYERED_KEYS) {
     const value = bag[key]
+
     if (!Array.isArray(value)) continue
     const target = baseLength[key] ?? 0
+
     while (value.length < target) {
       value.push({})
       changed = true
     }
   }
+
   return changed
 }
 
-export function migrateV16LayeredOverrideLength(
-  workspace: Workspace,
-): Workspace {
+export function migrateV16LayeredOverrideLength(workspace: Workspace): Workspace {
   const next = structuredClone(workspace)
   let changed = false
 
@@ -60,24 +64,23 @@ export function migrateV16LayeredOverrideLength(
     // the baseline lengths are stable regardless.
     const inherited = getInheritedNodeProperties(nodeId, workspace)
     const inheritedLengths: Record<string, number> = {}
+
     for (const key of LAYERED_KEYS) {
       inheritedLengths[key] = stackLength(inherited[key])
     }
+
     if (padLayeredArrays(node.overrides, inheritedLengths)) changed = true
 
     if (node.states) {
       const effective = getEffectiveNodeProperties(nodeId, workspace)
       const effectiveLengths: Record<string, number> = {}
+
       for (const key of LAYERED_KEYS) {
         effectiveLengths[key] = stackLength(effective[key])
       }
+
       for (const stateBag of Object.values(node.states)) {
-        if (
-          padLayeredArrays(
-            stateBag as Record<string, unknown>,
-            effectiveLengths,
-          )
-        ) {
+        if (padLayeredArrays(stateBag as Record<string, unknown>, effectiveLengths)) {
           changed = true
         }
       }

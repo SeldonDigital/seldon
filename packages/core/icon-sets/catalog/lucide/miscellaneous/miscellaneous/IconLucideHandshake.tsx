@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideHandshake(props: SVGAttributes<SVGSVGElement>) {
   return (

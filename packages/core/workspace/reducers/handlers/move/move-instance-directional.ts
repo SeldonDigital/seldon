@@ -1,10 +1,8 @@
-import {
-  nodeTraversalService,
-  resolveInstanceMoveTarget,
-} from "../../../services"
-import { ExtractPayload, Workspace } from "../../../types"
+import { nodeTraversalService, resolveInstanceMoveTarget } from "../../../services"
 import { reorderInstanceInParent } from "../reorder/reorder-instance-in-parent"
 import { moveInstance } from "./move-instance"
+
+import type { ExtractPayload, Workspace } from "../../../types"
 
 /**
  * Moves an instance one slot forward/backward, or to the front/back, through the
@@ -18,18 +16,13 @@ export function moveInstanceDirectional(
 ): Workspace {
   const { instanceId, direction } = payload
   const target = resolveInstanceMoveTarget(workspace, instanceId, direction)
+
   if (!target) return workspace
 
-  const currentParent = nodeTraversalService.findParentNode(
-    instanceId,
-    workspace,
-  )
+  const currentParent = nodeTraversalService.findParentNode(instanceId, workspace)
 
   if (currentParent && currentParent.id === target.parentId) {
-    return reorderInstanceInParent(
-      { instanceId, newIndex: target.index },
-      workspace,
-    )
+    return reorderInstanceInParent({ instanceId, newIndex: target.index }, workspace)
   }
 
   return moveInstance(

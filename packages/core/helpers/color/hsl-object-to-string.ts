@@ -1,4 +1,4 @@
-import { HSL } from "../../index"
+import type { HSL } from "../../index"
 
 /**
  * Converts an HSL object to an HSL string with optional opacity.

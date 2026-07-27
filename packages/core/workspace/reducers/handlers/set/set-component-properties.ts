@@ -1,6 +1,7 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { workspaceMutationService } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /** Merges editor layout properties onto a board when rules allow. */
 export function setComponentProperties(

@@ -1,8 +1,9 @@
 import { isDraft } from "immer"
 
-import type { Board, EntryNodeId, Workspace } from "../../types"
 import { getCompositionContainers } from "../general/get-composition-containers"
 import { walkBoardTreeRefs } from "./walk-board-tree-refs"
+
+import type { Board, EntryNodeId, Workspace } from "../../types"
 
 /**
  * Maps every node id in a workspace to the container (board or playground) whose
@@ -14,6 +15,7 @@ const nodeToBoardCache = new WeakMap<object, Map<string, Board>>()
 
 function buildNodeToBoardIndex(workspace: Workspace): Map<string, Board> {
   const index = new Map<string, Board>()
+
   for (const board of getCompositionContainers(workspace)) {
     walkBoardTreeRefs(board.variants, (ref) => {
       // Keep the first board that lists the id to match scan order.
@@ -22,22 +24,23 @@ function buildNodeToBoardIndex(workspace: Workspace): Map<string, Board> {
       }
     })
   }
+
   return index
 }
 
-function scanBoardByNodeId(
-  workspace: Workspace,
-  nodeId: EntryNodeId,
-): Board | null {
+function scanBoardByNodeId(workspace: Workspace, nodeId: EntryNodeId): Board | null {
   for (const board of getCompositionContainers(workspace)) {
     let found = false
+
     walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id !== nodeId) return
       found = true
+
       return true
     })
     if (found) return board
   }
+
   return null
 }
 
@@ -49,10 +52,7 @@ function scanBoardByNodeId(
  * @param workspace Workspace to search.
  * @param nodeId Node id to find.
  */
-export function getBoardByNodeId(
-  workspace: Workspace,
-  nodeId: EntryNodeId,
-): Board | null {
+export function getBoardByNodeId(workspace: Workspace, nodeId: EntryNodeId): Board | null {
   // Immer drafts mutate in place while keeping a stable proxy identity, so a
   // cached index would go stale during a reducer pass. Scan directly instead.
   if (isDraft(workspace) || isDraft(workspace.boards)) {
@@ -60,6 +60,7 @@ export function getBoardByNodeId(
   }
 
   let index = nodeToBoardCache.get(workspace)
+
   if (!index) {
     index = buildNodeToBoardIndex(workspace)
     nodeToBoardCache.set(workspace, index)

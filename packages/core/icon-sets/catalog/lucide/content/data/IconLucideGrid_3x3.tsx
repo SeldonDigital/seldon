@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideGrid_3x3(props: SVGAttributes<SVGSVGElement>) {
   return (

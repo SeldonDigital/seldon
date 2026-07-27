@@ -1,36 +1,29 @@
-import { WritableDraft } from "immer"
 import { isEqual } from "lodash"
 
 import { isComponentId } from "../../components/constants"
-import { Workspace } from "../../index"
 import { ValueType } from "../../properties"
-import {
-  PropertyKey,
-  SubPropertyKey,
-  ThemeValue,
-  Value,
-} from "../../properties/types"
 import { isLayeredPaintProperty } from "../../properties/types/property-keys"
-import { HSL } from "../../properties/values/shared/exact/hsl"
 import { TokenType } from "../../themes/constants/token-type"
-import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
-import type { ThemeFontFamilyToken } from "../../themes/values"
 import { THEME_INTERFACE_SLOTS, THEME_PALETTE_SLOTS } from "../../themes/values"
 import { getEffectiveNodeProperties } from "../../workspace/compute"
 import { getBoardByNodeId } from "../../workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"
-import type { EntryNode } from "../../workspace/model/entry-node"
 import { parseNodeCatalog } from "../../workspace/model/template-ref"
-import {
-  nodeRetrievalService,
-  workspaceThemeService,
-} from "../../workspace/services"
-import { InstanceId, VariantId } from "../../workspace/types"
+import { nodeRetrievalService, workspaceThemeService } from "../../workspace/services"
 import { isCompoundProperty } from "../type-guards/compound/is-compound-property"
 import { isThemeValue } from "../type-guards/value/is-theme-value"
 import { isThemeValueKey } from "../validation/theme"
 import { getThemeKeyComponents } from "./get-theme-key-components"
 import { getThemeOption } from "./get-theme-option"
+
+import type { Workspace } from "../../index"
+import type { PropertyKey, SubPropertyKey, ThemeValue, Value } from "../../properties/types"
+import type { HSL } from "../../properties/values/shared/exact/hsl"
+import type { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
+import type { ThemeFontFamilyToken } from "../../themes/values"
+import type { EntryNode } from "../../workspace/model/entry-node"
+import type { InstanceId, VariantId } from "../../workspace/types"
+import type { WritableDraft } from "immer"
 
 /**
  * Swatch slots that carry across a theme switch by keeping the same slot id.
@@ -62,11 +55,10 @@ type MatchingResult = {
   newOptionId?: string
 }
 
-function themeOptionComparableName(
-  option: ThemeOption | undefined,
-): string | undefined {
+function themeOptionComparableName(option: ThemeOption | undefined): string | undefined {
   if (!option || typeof option !== "object") return undefined
   if ("name" in option && typeof option.name === "string") return option.name
+
   if (
     "type" in option &&
     option.type === TokenType.FONT_FAMILY &&
@@ -75,6 +67,7 @@ function themeOptionComparableName(
   ) {
     return (option as ThemeFontFamilyToken).parameters
   }
+
   return undefined
 }
 
@@ -104,13 +97,7 @@ function setThemeValueOnNode(
   layerIndex?: number,
 ): void {
   if (subpropertyKey && layerIndex != null) {
-    setNodeLayeredSubProperty(
-      node,
-      propertyKey,
-      layerIndex,
-      subpropertyKey,
-      newValue,
-    )
+    setNodeLayeredSubProperty(node, propertyKey, layerIndex, subpropertyKey, newValue)
   } else if (subpropertyKey) {
     setNodeSubProperty(node, propertyKey, subpropertyKey, newValue)
   } else {
@@ -130,11 +117,14 @@ function findMatchByName(
   }
 
   const currentName = themeOptionComparableName(currentOption)
+
   if (!currentName) return undefined
 
   return newThemeEntries.find(([_, possibleMatch]: [string, ThemeOption]) => {
     const matchName = themeOptionComparableName(possibleMatch)
+
     if (!matchName) return false
+
     return matchName.toLowerCase() === currentName.toLowerCase()
   })?.[0]
 }
@@ -146,11 +136,7 @@ function findMatchByValue(
   newThemeEntries: [string, ThemeOption][],
   currentOption: ThemeOption | undefined,
 ): string | undefined {
-  if (
-    !currentOption ||
-    typeof currentOption !== "object" ||
-    !("value" in currentOption)
-  ) {
+  if (!currentOption || typeof currentOption !== "object" || !("value" in currentOption)) {
     return undefined
   }
 
@@ -158,6 +144,7 @@ function findMatchByValue(
     if (typeof possibleMatch === "object" && "value" in possibleMatch) {
       return isEqual(possibleMatch.value, currentOption.value)
     }
+
     return false
   })?.[0]
 }
@@ -178,17 +165,20 @@ function findMatchingThemeOption(
   ][]
 
   const matchingPreset = newThemeEntries.find(([key]) => key === optionId)
+
   if (matchingPreset) {
     return { matched: true, newOptionId: optionId }
   }
 
   if (optionId.startsWith("custom")) {
     const matchByName = findMatchByName(newThemeEntries, currentOption)
+
     if (matchByName) {
       return { matched: true, newOptionId: matchByName }
     }
 
     const matchByValue = findMatchByValue(newThemeEntries, currentOption)
+
     if (matchByValue) {
       return { matched: true, newOptionId: matchByValue }
     }
@@ -199,8 +189,7 @@ function findMatchingThemeOption(
 
 /** Remaps a swatch theme value, carrying over reserved slots when present. */
 function remapSwatchValue(context: RemapContext): boolean {
-  const { value, newTheme, node, propertyKey, subpropertyKey, layerIndex } =
-    context
+  const { value, newTheme, node, propertyKey, subpropertyKey, layerIndex } = context
 
   if (!value.value) {
     return false
@@ -213,6 +202,7 @@ function remapSwatchValue(context: RemapContext): boolean {
   const { section, optionId } = getThemeKeyComponents(value.value)
 
   let currentOption: ThemeOption | undefined
+
   try {
     currentOption = getThemeOption(value.value, context.currentTheme)
   } catch {
@@ -220,50 +210,36 @@ function remapSwatchValue(context: RemapContext): boolean {
   }
 
   if (SWATCH_PRESET_SLOTS.includes(optionId)) {
-    const newThemeEntries = Object.entries(
-      newTheme[section as keyof Theme],
-    ) as [string, ThemeOption][]
+    const newThemeEntries = Object.entries(newTheme[section as keyof Theme]) as [
+      string,
+      ThemeOption,
+    ][]
     const matchingSlot = newThemeEntries.find(([key]) => key === optionId)
 
     if (matchingSlot) {
       const newValue = createUpdatedThemeValue(value, section, optionId)
-      setThemeValueOnNode(
-        node,
-        propertyKey,
-        subpropertyKey,
-        newValue,
-        layerIndex,
-      )
+
+      setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue, layerIndex)
+
       return true
     }
   }
 
   if (optionId.startsWith("custom")) {
-    const result = findMatchingThemeOption(
-      section,
-      optionId,
-      currentOption,
-      newTheme,
-    )
+    const result = findMatchingThemeOption(section, optionId, currentOption, newTheme)
+
     if (result.matched && result.newOptionId) {
-      const newValue = createUpdatedThemeValue(
-        value,
-        section,
-        result.newOptionId,
-      )
-      setThemeValueOnNode(
-        node,
-        propertyKey,
-        subpropertyKey,
-        newValue,
-        layerIndex,
-      )
+      const newValue = createUpdatedThemeValue(value, section, result.newOptionId)
+
+      setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue, layerIndex)
+
       return true
     }
   }
 
   if (currentOption) {
     detachThemeValue(context)
+
     return true
   }
 
@@ -272,15 +248,7 @@ function remapSwatchValue(context: RemapContext): boolean {
 
 /** Remaps a non-swatch theme value to its match in the new theme. */
 function remapNonSwatchValue(context: RemapContext): boolean {
-  const {
-    value,
-    currentTheme,
-    newTheme,
-    node,
-    propertyKey,
-    subpropertyKey,
-    layerIndex,
-  } = context
+  const { value, currentTheme, newTheme, node, propertyKey, subpropertyKey, layerIndex } = context
 
   if (!value.value) {
     return false
@@ -293,26 +261,25 @@ function remapNonSwatchValue(context: RemapContext): boolean {
   const { section, optionId } = getThemeKeyComponents(value.value)
 
   let currentOption: ThemeOption | undefined
+
   try {
     currentOption = getThemeOption(value.value, currentTheme)
   } catch {
     return false
   }
 
-  const result = findMatchingThemeOption(
-    section,
-    optionId,
-    currentOption,
-    newTheme,
-  )
+  const result = findMatchingThemeOption(section, optionId, currentOption, newTheme)
 
   if (result.matched && result.newOptionId) {
     const newValue = createUpdatedThemeValue(value, section, result.newOptionId)
+
     setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue, layerIndex)
+
     return true
   }
 
   detachThemeValue(context)
+
   return true
 }
 
@@ -364,19 +331,13 @@ export function remapNodeThemeTokens(
 
   const catalogParsed = parseNodeCatalog(node.template)
   const componentId =
-    catalogParsed?.kind === "catalog" &&
-    isComponentId(catalogParsed.componentId)
+    catalogParsed?.kind === "catalog" && isComponentId(catalogParsed.componentId)
       ? catalogParsed.componentId
       : undefined
 
   if (componentId && childIds.length > 0) {
     for (const childId of childIds) {
-      remapNodeThemeTokens(
-        childId as InstanceId,
-        currentThemeId,
-        newThemeId,
-        workspace,
-      )
+      remapNodeThemeTokens(childId as InstanceId, currentThemeId, newThemeId, workspace)
     }
   }
 }
@@ -391,10 +352,9 @@ function remapCompoundThemeTokens(
     propertyKey: PropertyKey
   },
 ): void {
-  for (const [subKey, subProperty] of Object.entries(
-    compoundValue as Record<string, unknown>,
-  )) {
+  for (const [subKey, subProperty] of Object.entries(compoundValue as Record<string, unknown>)) {
     const subValue = subProperty as Value
+
     if (!isThemeValue(subValue)) continue
     remapThemeToken({
       value: subValue,
@@ -424,10 +384,9 @@ function remapLayeredThemeTokens(
   layers.forEach((layer, layerIndex) => {
     if (!layer || typeof layer !== "object") return
 
-    for (const [subKey, subProperty] of Object.entries(
-      layer as Record<string, unknown>,
-    )) {
+    for (const [subKey, subProperty] of Object.entries(layer as Record<string, unknown>)) {
       const subValue = subProperty as Value
+
       if (!isThemeValue(subValue)) continue
       remapThemeToken({
         value: subValue,
@@ -487,14 +446,11 @@ function remapThemeToken({
 /**
  * Sets a property value on a node.
  */
-function setNodeProperty(
-  node: WritableDraft<EntryNode>,
-  key: PropertyKey,
-  value: Value,
-) {
+function setNodeProperty(node: WritableDraft<EntryNode>, key: PropertyKey, value: Value) {
   if (!node.overrides) {
     node.overrides = {}
   }
+
   Object.assign(node.overrides, { [key]: value })
 }
 
@@ -510,6 +466,7 @@ function setNodeSubProperty(
   if (!node.overrides) {
     node.overrides = {}
   }
+
   if (!node.overrides[key]) {
     Object.assign(node.overrides, { [key]: {} })
   }
@@ -534,19 +491,15 @@ function setNodeLayeredSubProperty(
   }
 
   const existing = node.overrides[key]
-  const layers = (Array.isArray(existing) ? existing : []) as Record<
-    string,
-    unknown
-  >[]
+  const layers = (Array.isArray(existing) ? existing : []) as Record<string, unknown>[]
 
   while (layers.length <= layerIndex) {
     layers.push({})
   }
 
   const layer =
-    layers[layerIndex] && typeof layers[layerIndex] === "object"
-      ? layers[layerIndex]
-      : {}
+    layers[layerIndex] && typeof layers[layerIndex] === "object" ? layers[layerIndex] : {}
+
   layer[subpropertyKey] = value
   layers[layerIndex] = layer
 
@@ -577,11 +530,7 @@ function detachThemeValue({
 
   const themeOption = getThemeOption(value.value, currentTheme)
 
-  if (
-    typeof themeOption === "string" ||
-    !("value" in themeOption) ||
-    !themeOption.value
-  ) {
+  if (typeof themeOption === "string" || !("value" in themeOption) || !themeOption.value) {
     return
   }
 

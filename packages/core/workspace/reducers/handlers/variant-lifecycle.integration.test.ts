@@ -2,20 +2,17 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
-import type { EntryNode, ExtractPayload, Workspace } from "../../types"
 import { addComponent } from "./add/add-component"
 import { addVariant } from "./add/add-variant"
 import { duplicateNode } from "./duplicate/duplicate-node"
 import { reorderVariantInBoard } from "./reorder/reorder-variant-in-board"
 
-const buttonBoard = (workspace: Workspace) =>
-  workspace.boards[ComponentId.BUTTON]!
+import type { EntryNode, ExtractPayload, Workspace } from "../../types"
+
+const buttonBoard = (workspace: Workspace) => workspace.boards[ComponentId.BUTTON]!
 
 const addButtonVariant = (workspace: Workspace) =>
-  addVariant(
-    { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_variant">,
-    workspace,
-  )
+  addVariant({ boardKey: ComponentId.BUTTON } as ExtractPayload<"add_variant">, workspace)
 
 const baseWithButton = () =>
   addComponent(
@@ -33,9 +30,8 @@ describe("addVariant", () => {
 
     expect(variantIds(after).length).toBe(variantIds(before).length + 1)
 
-    const newId = variantIds(after).find(
-      (id) => !variantIds(before).includes(id),
-    )
+    const newId = variantIds(after).find((id) => !variantIds(before).includes(id))
+
     expect((after.nodes[newId!] as EntryNode).type).toBe("variant")
   })
 
@@ -50,9 +46,7 @@ describe("addVariant", () => {
     )
 
     expect(after.boards[ComponentId.BUTTON]).toBeDefined()
-    expect(Object.keys(after.boards).length).toBeGreaterThan(
-      Object.keys(before.boards).length,
-    )
+    expect(Object.keys(after.boards).length).toBeGreaterThan(Object.keys(before.boards).length)
     expect(variantIds(after).length).toBeGreaterThan(1)
   })
 })
@@ -72,6 +66,7 @@ describe("reorderVariantInBoard", () => {
     )
 
     const newOrder = variantIds(result)
+
     expect(newOrder[0]).toBe(order[0])
     expect(newOrder[1]).toBe(lastVariantId)
     expect(newOrder).not.toEqual(order)

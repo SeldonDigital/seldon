@@ -3,10 +3,11 @@ import { describe, expect, it } from "vitest"
 import { ComponentId } from "../../../components/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
-import type { Action } from "../../types"
 import { check } from "./check"
 import { validateAction } from "./validate-action"
 import { WorkspaceValidationError } from "./workspace-validation-error"
+
+import type { Action } from "../../types"
 
 const addComponentAction = {
   type: "add_component",
@@ -23,6 +24,7 @@ describe("check", () => {
 describe("WorkspaceValidationError", () => {
   it("carries the offending action and a name", () => {
     const error = new WorkspaceValidationError("bad", addComponentAction)
+
     expect(error.name).toBe("WorkspaceValidationError")
     expect(error.action).toBe(addComponentAction)
   })
@@ -30,9 +32,7 @@ describe("WorkspaceValidationError", () => {
 
 describe("validateAction", () => {
   it("allows adding a component when its board is free", () => {
-    expect(() =>
-      validateAction(createEmptyWorkspace(), addComponentAction),
-    ).not.toThrow()
+    expect(() => validateAction(createEmptyWorkspace(), addComponentAction)).not.toThrow()
   })
 
   it("rejects adding a component whose board already exists", () => {
@@ -40,6 +40,7 @@ describe("validateAction", () => {
       { boardKey: ComponentId.BUTTON } as never,
       createEmptyWorkspace(),
     )
+
     expect(() => validateAction(workspace, addComponentAction)).toThrow()
   })
 })

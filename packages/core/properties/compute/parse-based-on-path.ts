@@ -13,9 +13,11 @@ const ANCHOR_PREFIX = /^#(parent\.|self\.)?/
 export function normalizeLayerFacetPath(path: string): string {
   for (const root of LAYERED_PAINT_KEYS) {
     const prefix = `${root}.`
+
     if (!path.startsWith(prefix)) continue
 
     const rest = path.slice(prefix.length)
+
     if (/^\d+\./.test(rest)) continue
 
     return `${root}.0.${rest}`
@@ -33,8 +35,7 @@ export function parseBasedOnPath(basedOn: string): {
   lookupPath: string
 } {
   const match = ANCHOR_PREFIX.exec(basedOn)
-  const anchor =
-    match?.[1] === "parent." ? "parent" : match?.[1] === "self." ? "self" : null
+  const anchor = match?.[1] === "parent." ? "parent" : match?.[1] === "self." ? "self" : null
 
   return {
     anchor,

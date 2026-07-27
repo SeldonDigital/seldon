@@ -1,16 +1,13 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
-import {
-  type ComponentSchema,
-  type SchemaChild,
-  type SchemaVariant,
-  isComplexSchema,
-} from "../../../components/types"
+import { isComplexSchema } from "../../../components/types"
 import { invariant } from "../../../helpers/utils/invariant"
 import {
   componentBoardDefaultNodeId,
   componentBoardSchemaVariantNodeId,
 } from "../components/entry-node-ids"
+
+import type { ComponentId } from "../../../components/constants"
+import type { ComponentSchema, SchemaChild, SchemaVariant } from "../../../components/types"
 
 export interface ResolvedSchemaChild {
   componentId: ComponentId
@@ -28,13 +25,9 @@ function getSelectedSchemaVariant(
     return null
   }
 
-  const variant =
-    schema.variants?.find((candidate) => candidate.id === slot.variant) ?? null
+  const variant = schema.variants?.find((candidate) => candidate.id === slot.variant) ?? null
 
-  invariant(
-    variant,
-    `Schema child ${slot.component} references missing variant "${slot.variant}"`,
-  )
+  invariant(variant, `Schema child ${slot.component} references missing variant "${slot.variant}"`)
 
   return variant
 }
@@ -49,9 +42,7 @@ export function resolveSchemaChild(slot: SchemaChild): ResolvedSchemaChild {
       schema,
       label: schema.name,
       templateNodeId: componentBoardDefaultNodeId(slot.component),
-      fallbackChildren: isComplexSchema(schema)
-        ? (schema.default.children ?? [])
-        : [],
+      fallbackChildren: isComplexSchema(schema) ? (schema.default.children ?? []) : [],
     }
   }
 
@@ -59,10 +50,7 @@ export function resolveSchemaChild(slot: SchemaChild): ResolvedSchemaChild {
     componentId: slot.component,
     schema,
     label: selectedVariant.label,
-    templateNodeId: componentBoardSchemaVariantNodeId(
-      slot.component,
-      selectedVariant.id,
-    ),
+    templateNodeId: componentBoardSchemaVariantNodeId(slot.component, selectedVariant.id),
     fallbackChildren: selectedVariant.children?.length
       ? selectedVariant.children
       : isComplexSchema(schema)

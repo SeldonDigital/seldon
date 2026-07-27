@@ -3,7 +3,6 @@
  * Entries that vary per theme instance are built in `theme-dynamic-schemas.ts`.
  */
 import { capitalize } from "../../helpers/capitalize"
-import type { ThemeTokenSchema } from "../../types/schema"
 import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
 import {
   BORDER_WIDTH_ORDER,
@@ -14,6 +13,8 @@ import {
   SIZE_ORDER,
   SPACING_ORDER,
 } from "./theme-step-orders"
+
+import type { ThemeTokenSchema } from "../../types/schema"
 
 /**
  * Shared control config for scale `.step` rows (modulation step input).
@@ -38,16 +39,11 @@ function makeScaleSlotSchemas<
     | "fontSize"
     | "blur"
     | "spread",
->({
-  section,
-  keys,
-}: {
-  section: TSection
-  keys: readonly string[]
-}): ThemeTokenSchema[] {
+>({ section, keys }: { section: TSection; keys: readonly string[] }): ThemeTokenSchema[] {
   return keys.flatMap((key, index) => {
     const label = capitalize(key)
     const baseOrder = index * 2
+
     return [
       finalizeThemeTokenSchema({
         key: `${section}.${key}.step`,
@@ -98,18 +94,17 @@ export const gapSchemas: ThemeTokenSchema[] = makeScaleSlotSchemas({
   keys: SPACING_ORDER,
 })
 
-export const borderWidthSchemas: ThemeTokenSchema[] = BORDER_WIDTH_ORDER.map(
-  (key, index) =>
-    finalizeThemeTokenSchema({
-      key: `borderWidth.${key}.step`,
-      label: capitalize(key),
-      valueType: SCALE_STEP_ROW_CONTROL.valueType,
-      controlType: SCALE_STEP_ROW_CONTROL.controlType,
-      unit: SCALE_STEP_ROW_CONTROL.unit,
-      section: "borderWidth",
-      order: index,
-      icon: "seldon-step",
-    }),
+export const borderWidthSchemas: ThemeTokenSchema[] = BORDER_WIDTH_ORDER.map((key, index) =>
+  finalizeThemeTokenSchema({
+    key: `borderWidth.${key}.step`,
+    label: capitalize(key),
+    valueType: SCALE_STEP_ROW_CONTROL.valueType,
+    controlType: SCALE_STEP_ROW_CONTROL.controlType,
+    unit: SCALE_STEP_ROW_CONTROL.unit,
+    section: "borderWidth",
+    order: index,
+    icon: "seldon-step",
+  }),
 )
 
 export const cornersSchemas: ThemeTokenSchema[] = makeScaleSlotSchemas({
@@ -122,32 +117,30 @@ export const fontSizeSchemas: ThemeTokenSchema[] = makeScaleSlotSchemas({
   keys: FONT_SIZE_ORDER,
 })
 
-export const lineHeightSchemas: ThemeTokenSchema[] = LINE_HEIGHT_ORDER.map(
-  (key, index) =>
-    finalizeThemeTokenSchema({
-      key: `lineHeight.${key}.step`,
-      label: capitalize(key),
-      valueType: SCALE_STEP_ROW_CONTROL.valueType,
-      controlType: SCALE_STEP_ROW_CONTROL.controlType,
-      unit: SCALE_STEP_ROW_CONTROL.unit,
-      section: "lineHeight",
-      order: index,
-      icon: "seldon-step",
-    }),
+export const lineHeightSchemas: ThemeTokenSchema[] = LINE_HEIGHT_ORDER.map((key, index) =>
+  finalizeThemeTokenSchema({
+    key: `lineHeight.${key}.step`,
+    label: capitalize(key),
+    valueType: SCALE_STEP_ROW_CONTROL.valueType,
+    controlType: SCALE_STEP_ROW_CONTROL.controlType,
+    unit: SCALE_STEP_ROW_CONTROL.unit,
+    section: "lineHeight",
+    order: index,
+    icon: "seldon-step",
+  }),
 )
 
-export const fontWeightSchemas: ThemeTokenSchema[] = FONT_WEIGHT_ORDER.map(
-  (key, index) =>
-    finalizeThemeTokenSchema({
-      key: `fontWeight.${key}`,
-      label: capitalize(key),
-      valueType: "number",
-      controlType: "number",
-      unit: { type: "none", min: 100, max: 900, step: 100 },
-      section: "fontWeight",
-      order: index,
-      icon: "seldon-step",
-    }),
+export const fontWeightSchemas: ThemeTokenSchema[] = FONT_WEIGHT_ORDER.map((key, index) =>
+  finalizeThemeTokenSchema({
+    key: `fontWeight.${key}`,
+    label: capitalize(key),
+    valueType: "number",
+    controlType: "number",
+    unit: { type: "none", min: 100, max: 900, step: 100 },
+    section: "fontWeight",
+    order: index,
+    icon: "seldon-step",
+  }),
 )
 
 export const blurSchemas: ThemeTokenSchema[] = makeScaleSlotSchemas({

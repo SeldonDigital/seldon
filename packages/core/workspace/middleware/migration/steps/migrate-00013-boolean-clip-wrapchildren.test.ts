@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import type { Workspace } from "../../../model/workspace"
 import { migrateV13BooleanClipWrapChildren } from "./migrate-00013-boolean-clip-wrapchildren"
+
+import type { Workspace } from "../../../model/workspace"
 
 function makeWorkspace(): Workspace {
   return {
@@ -40,6 +41,7 @@ describe("migrateV13BooleanClipWrapChildren", () => {
     const board = migrated.boards["board-1"] as unknown as {
       componentProperties: Record<string, unknown>
     }
+
     expect(board.componentProperties.clip).toEqual({
       type: "exact",
       value: false,
@@ -49,6 +51,7 @@ describe("migrateV13BooleanClipWrapChildren", () => {
       overrides: Record<string, unknown>
       states: Record<string, Record<string, unknown>>
     }
+
     expect(node.overrides.clip).toEqual({ type: "exact", value: false })
     expect(node.overrides.wrapChildren).toEqual({ type: "exact", value: false })
     expect(node.states.hover.wrapChildren).toEqual({
@@ -62,6 +65,7 @@ describe("migrateV13BooleanClipWrapChildren", () => {
     const node = migrated.nodes["node-2"] as unknown as {
       overrides: Record<string, unknown>
     }
+
     expect(node.overrides.clip).toEqual({ type: "exact", value: true })
   })
 
@@ -72,6 +76,7 @@ describe("migrateV13BooleanClipWrapChildren", () => {
         "node-1": { overrides: { clip: { type: "exact", value: false } } },
       },
     } as unknown as Workspace
+
     expect(migrateV13BooleanClipWrapChildren(clean)).toBe(clean)
   })
 })

@@ -1,9 +1,10 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import { readNodeLayerArray } from "../shared/node-layers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Removes the paint layer at `index` from a node's `background` / `shadow`
@@ -16,14 +17,17 @@ export function removeNodeLayer(
   workspace: Workspace,
 ): Workspace {
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
+
   if (!node || !isEntryNodeForRules(node)) return workspace
 
   const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
+
   if (payload.index < 1 || payload.index >= layers.length) return workspace
   layers.splice(payload.index, 1)
 
   return produce(workspace, (draft) => {
     const draftNode = getWorkspaceNodes(draft)[payload.nodeId]
+
     if (!draftNode) return
     ;(draftNode.overrides as Record<string, unknown>)[payload.property] = layers
   })

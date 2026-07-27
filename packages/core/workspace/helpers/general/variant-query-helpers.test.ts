@@ -1,12 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  Board,
-  ComponentBoard,
-  ExtractPayload,
-  Workspace,
-} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { collectExternalVariantUsage } from "./collect-external-variant-usage"
@@ -16,18 +10,20 @@ import { getSpecialBoardVariantLabel } from "./get-special-board-variant-label"
 import { getVariantById } from "./get-variant-by-id"
 import { isVariantInUse } from "./is-variant-in-use"
 
+import type { Board, ComponentBoard, ExtractPayload, Workspace } from "../../../index"
+
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
   { boardKey } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
 const rootId = (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
-const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0]
-  .id as string
+const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0].id as string
 
 describe("getAllVariants", () => {
   it("collects component/playground variant roots", () => {
     const ids = getAllVariants(ws).map((v) => v.id)
+
     expect(ids).toContain(rootId)
   })
 })
@@ -54,15 +50,11 @@ describe("isVariantInUse", () => {
 
 describe("getSpecialBoardVariantLabel", () => {
   it("labels special boards and returns null for components", () => {
-    expect(getSpecialBoardVariantLabel({ type: "theme" } as Board, true)).toBe(
-      "Clean",
+    expect(getSpecialBoardVariantLabel({ type: "theme" } as Board, true)).toBe("Clean")
+    expect(getSpecialBoardVariantLabel({ type: "icon-set" } as Board, false)).toBe(
+      "custom icon set",
     )
-    expect(
-      getSpecialBoardVariantLabel({ type: "icon-set" } as Board, false),
-    ).toBe("custom icon set")
-    expect(
-      getSpecialBoardVariantLabel({ type: "component" } as Board, true),
-    ).toBeNull()
+    expect(getSpecialBoardVariantLabel({ type: "component" } as Board, true)).toBeNull()
   })
 })
 

@@ -1,4 +1,3 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
@@ -6,6 +5,8 @@ import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Drops one property on a node's state bag when rules allow. Uses the same
@@ -17,8 +18,7 @@ export function resetNodeStateProperty(
 ): Workspace {
   const node = nodeRetrievalService.getNode(payload.nodeId, workspace)
   const entityType = typeCheckingService.getEntityType(node)
-  const { allowed, propagation } =
-    rules.mutations.setStateProperties[entityType]
+  const { allowed, propagation } = rules.mutations.setStateProperties[entityType]
 
   if (!allowed) {
     return workspace

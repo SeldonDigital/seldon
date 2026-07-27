@@ -1,4 +1,4 @@
-import { TokenType } from "../../../constants/token-type"
+import type { TokenType } from "../../../constants/token-type"
 
 export interface ModulationParameters {
   step: number

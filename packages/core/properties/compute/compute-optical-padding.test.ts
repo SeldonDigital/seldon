@@ -5,6 +5,7 @@ import { STOCK_THEMES_BY_ID } from "../../themes/catalog"
 import { computeTheme } from "../../themes/helpers/compute-theme"
 import { ComputedFunction, EMPTY_VALUE, ValueType } from "../constants"
 import { computeOpticalPadding } from "./compute-optical-padding"
+
 import type { ComputeContext, ComputeKeys } from "./types"
 
 const computed = computeTheme(STOCK_THEMES_BY_ID.seldon)
@@ -45,8 +46,6 @@ describe("computeOpticalPadding", () => {
   })
 
   it("degrades to EMPTY when no source can be resolved", () => {
-    expect(computeOpticalPadding(marker, ctx({}), keys("left"))).toEqual(
-      EMPTY_VALUE,
-    )
+    expect(computeOpticalPadding(marker, ctx({}), keys("left"))).toEqual(EMPTY_VALUE)
   })
 })

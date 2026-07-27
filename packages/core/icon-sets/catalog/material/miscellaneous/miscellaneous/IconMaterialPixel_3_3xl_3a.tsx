@@ -1,8 +1,6 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconMaterialPixel_3_3xl_3a(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconMaterialPixel_3_3xl_3a(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -5,17 +5,12 @@ import { PROPERTY_COMPOUND_CATALOG } from "../../constants/shared/compound-prope
  * Border sides repeat the full border facet set. They render as facets under the single
  * `border` row, not as their own inspector rows.
  */
-const FOLDED_BORDER_SIDES = [
-  "borderTop",
-  "borderRight",
-  "borderBottom",
-  "borderLeft",
-]
+const FOLDED_BORDER_SIDES = ["borderTop", "borderRight", "borderBottom", "borderLeft"]
 
 /** Compound parents shown as one inspector row each. */
-const COMPOUND_ROOTS = PROPERTY_COMPOUND_CATALOG.map(
-  (entry) => entry.key,
-).filter((key) => !FOLDED_BORDER_SIDES.includes(key))
+const COMPOUND_ROOTS = PROPERTY_COMPOUND_CATALOG.map((entry) => entry.key).filter(
+  (key) => !FOLDED_BORDER_SIDES.includes(key),
+)
 
 /**
  * `borderCollapse` is a standalone top-level property. The `${parent}${Facet}` join
@@ -57,6 +52,7 @@ export function getInspectorRootPropertyKeys(): string[] {
   for (const block of PROPERTY_DISPLAY_ORDER) {
     for (const key of block.keys) {
       const root = foldToInspectorRoot(key)
+
       if (!seen.has(root)) {
         seen.add(root)
         roots.push(root)

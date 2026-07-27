@@ -1,4 +1,4 @@
-import { CustomReactTemplate, NativeReactPrimitive } from "../../types"
+import type { CustomReactTemplate, NativeReactPrimitive } from "../../types"
 
 export interface CustomReactTemplateMeta {
   /** Export name used in generated imports. */
@@ -16,10 +16,7 @@ export interface CustomReactTemplateMeta {
  * module holds data only so the factory can resolve a template without pulling
  * the React component modules into its build.
  */
-export const CUSTOM_REACT_TEMPLATE_META: Record<
-  CustomReactTemplate,
-  CustomReactTemplateMeta
-> = {
+export const CUSTOM_REACT_TEMPLATE_META: Record<CustomReactTemplate, CustomReactTemplateMeta> = {
   toggleSwitch: {
     importName: "SeldonToggle",
     importPath: "../custom/SeldonToggle",

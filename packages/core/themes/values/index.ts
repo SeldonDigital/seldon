@@ -17,15 +17,9 @@
 export { TokenType } from "../constants"
 
 export type { ColorSpaceLiteral } from "./shared/exact/color-spaces"
-export type {
-  ThemeExact,
-  ThemeExactDimension,
-} from "./shared/exact/theme-exact"
+export type { ThemeExact, ThemeExactDimension } from "./shared/exact/theme-exact"
 
-export type {
-  ModulationParameters,
-  ThemeModulation,
-} from "./shared/modulated/theme-modulation"
+export type { ModulationParameters, ThemeModulation } from "./shared/modulated/theme-modulation"
 export type {
   BorderWidthOption,
   ThemeBorderWidthOption,
@@ -58,30 +52,12 @@ export type {
   ModulationParameters as ComputedModulationParameters,
   ThemeModulationGroup,
 } from "./computed/modulation"
-export type {
-  ColorHarmonyParameters,
-  ThemeColorHarmony,
-} from "./computed/color-harmony"
-export type {
-  DisplayModeParameters,
-  ThemeDisplayMode,
-} from "./computed/display-mode"
-export type {
-  FontFamilyGroupParameters,
-  ThemeFontFamilyGroup,
-} from "./computed/font-family"
-export type {
-  MatchColorParameters,
-  ThemeMatchColor,
-} from "./computed/match-color"
-export type {
-  HighContrastParameters,
-  ThemeHighContrast,
-} from "./computed/high-contrast"
-export type {
-  OpticalPaddingParameters,
-  ThemeOpticalPadding,
-} from "./computed/optical-padding"
+export type { ColorHarmonyParameters, ThemeColorHarmony } from "./computed/color-harmony"
+export type { DisplayModeParameters, ThemeDisplayMode } from "./computed/display-mode"
+export type { FontFamilyGroupParameters, ThemeFontFamilyGroup } from "./computed/font-family"
+export type { MatchColorParameters, ThemeMatchColor } from "./computed/match-color"
+export type { HighContrastParameters, ThemeHighContrast } from "./computed/high-contrast"
+export type { OpticalPaddingParameters, ThemeOpticalPadding } from "./computed/optical-padding"
 export type { AutoFitParameters, ThemeAutoFit } from "./computed/auto-fit"
 
 export type { BorderParameters, ThemeBorder } from "./appearance/border"

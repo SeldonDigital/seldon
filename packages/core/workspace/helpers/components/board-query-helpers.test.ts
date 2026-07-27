@@ -1,12 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  Board,
-  ComponentBoard,
-  ExtractPayload,
-  Workspace,
-} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { areBoardVariantsInUse } from "./are-board-variants-in-use"
@@ -18,6 +12,8 @@ import { getImmediateParentIdInWorkspace } from "./get-node-parent-id"
 import { getImmediateParentId } from "./get-parent-ids"
 import { getVariantTree } from "./get-variant-tree"
 import { walkBoardTreeRefs } from "./walk-board-tree-refs"
+
+import type { Board, ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
@@ -45,9 +41,7 @@ describe("getBoardKey", () => {
 describe("getBoardThemeRef", () => {
   it("reads a non-empty theme ref, undefined otherwise", () => {
     expect(typeof getBoardThemeRef(board)).toBe("string")
-    expect(
-      getBoardThemeRef({ componentTheme: "" } as unknown as Board),
-    ).toBeUndefined()
+    expect(getBoardThemeRef({ componentTheme: "" } as unknown as Board)).toBeUndefined()
   })
 })
 
@@ -62,6 +56,7 @@ describe("getBoardVariantRootIds / getVariantTree", () => {
 describe("walkBoardTreeRefs", () => {
   it("visits the root and its descendants", () => {
     const ids: string[] = []
+
     walkBoardTreeRefs(board.variants, (ref) => {
       ids.push(ref.id)
     })
@@ -71,8 +66,10 @@ describe("walkBoardTreeRefs", () => {
 
   it("stops early when the visitor returns true", () => {
     let count = 0
+
     walkBoardTreeRefs(board.variants, () => {
       count++
+
       return true
     })
     expect(count).toBe(1)

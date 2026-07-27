@@ -39,14 +39,14 @@ describe("RESERVED_STATE_GROUPS", () => {
   })
 
   it("alpha-sorts the class cluster with activated before dragged", () => {
-    const classGroup = RESERVED_STATE_GROUPS.find(
-      (group) => group.expression === "class",
-    )
+    const classGroup = RESERVED_STATE_GROUPS.find((group) => group.expression === "class")
+
     expect(classGroup?.states).toEqual(["activated", "dragged"])
   })
 
   it("covers every reserved name exactly once", () => {
     const grouped = RESERVED_STATE_GROUPS.flatMap((group) => group.states)
+
     expect(grouped).toHaveLength(RESERVED_STATE_NAMES.length)
     expect(new Set(grouped).size).toBe(RESERVED_STATE_NAMES.length)
   })

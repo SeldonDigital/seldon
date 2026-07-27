@@ -1,12 +1,6 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  ComponentBoard,
-  EntryNode,
-  ExtractPayload,
-  Workspace,
-} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { findParentNode } from "./find-parent-node"
@@ -16,14 +10,15 @@ import { isVariantNode } from "./is-variant-node"
 import { resolveLayoutMode } from "./resolve-layout-mode"
 import { resolveNodeRepeat } from "./resolve-node-repeat"
 
+import type { ComponentBoard, EntryNode, ExtractPayload, Workspace } from "../../../index"
+
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
   { boardKey } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
 const rootId = (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
-const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0]
-  .id as string
+const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0].id as string
 
 describe("findParentNode", () => {
   it("finds the parent of a child and null for a root", () => {
@@ -54,15 +49,13 @@ describe("isVariantNode", () => {
 
 describe("resolveLayoutMode", () => {
   it("resolves to a known layout mode", () => {
-    expect(["flexbox", "grid"]).toContain(
-      resolveLayoutMode(ws.nodes[rootId]!, ws),
-    )
+    expect(["flexbox", "grid"]).toContain(resolveLayoutMode(ws.nodes[rootId]!, ws))
   })
 
   it("falls back to flexbox for a node with no catalog id", () => {
-    expect(
-      resolveLayoutMode({ id: "x", template: "node:missing" } as EntryNode, ws),
-    ).toBe("flexbox")
+    expect(resolveLayoutMode({ id: "x", template: "node:missing" } as EntryNode, ws)).toBe(
+      "flexbox",
+    )
   })
 })
 

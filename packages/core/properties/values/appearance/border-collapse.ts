@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** Merged borders where cells meet, or a border drawn for each cell. */
 export enum BorderCollapse {
@@ -21,25 +21,19 @@ export interface BorderCollapseOptionValue {
 }
 
 /** Unset, a freeform exact value, or a picked separate/collapse choice for table borders. */
-export type BorderCollapseValue =
-  | EmptyValue
-  | BorderCollapseExactValue
-  | BorderCollapseOptionValue
+export type BorderCollapseValue = EmptyValue | BorderCollapseExactValue | BorderCollapseOptionValue
 
 export const borderCollapseSchema: PropertySchema = {
   name: "borderCollapse",
-  description:
-    "Sets whether table borders stay apart for each cell or merge where cells meet.",
+  description: "Sets whether table borders stay apart for each cell or merge where cells meet.",
   supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
     exact: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(BorderCollapse) as string[]).includes(value),
+      typeof value === "string" && (Object.values(BorderCollapse) as string[]).includes(value),
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(BorderCollapse) as string[]).includes(value),
+      typeof value === "string" && (Object.values(BorderCollapse) as string[]).includes(value),
   },
   presetOptions: () => Object.values(BorderCollapse),
 }

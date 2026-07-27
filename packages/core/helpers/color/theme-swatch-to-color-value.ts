@@ -1,9 +1,10 @@
 import { ValueType } from "../../properties/constants"
+import { Colorspace } from "../../themes/constants/colorspace"
+
 import type { Hex, HexValue } from "../../properties/values/shared/exact/hex"
 import type { HSLValue } from "../../properties/values/shared/exact/hsl"
 import type { LCHValue } from "../../properties/values/shared/exact/lch"
 import type { RGBValue } from "../../properties/values/shared/exact/rgb"
-import { Colorspace } from "../../themes/constants/colorspace"
 import type { ThemeSwatch } from "../../themes/types"
 
 /**
@@ -14,6 +15,7 @@ export function themeSwatchToColorValue(
   swatch: ThemeSwatch,
 ): HSLValue | RGBValue | LCHValue | HexValue {
   const { parameters } = swatch
+
   switch (parameters.colorspace) {
     case Colorspace.HSL:
       return { type: ValueType.EXACT, value: parameters.value }

@@ -3,8 +3,9 @@ import { ComponentId } from "../../../components/constants"
 import { Unit, ValueType } from "../../../properties"
 import { isPlaygroundContainer } from "../../model/playground"
 import { formatNodeCatalog, parseNodeCatalog } from "../../model/template-ref"
-import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { playgroundSandboxNodeId } from "../components/entry-node-ids"
+
+import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 
 /** Horizontal gap between auto-placed sandboxes, in px. */
 const SANDBOX_PLACEMENT_GAP = 40
@@ -27,18 +28,16 @@ export interface SandboxRect {
 /** Whether a node templates directly from the Sandbox catalog schema. */
 export function isSandboxNode(node: Pick<EntryNode, "template">): boolean {
   const parsed = parseNodeCatalog(node.template)
-  return (
-    parsed?.kind === "catalog" && parsed.componentId === ComponentId.SANDBOX
-  )
+
+  return parsed?.kind === "catalog" && parsed.componentId === ComponentId.SANDBOX
 }
 
 /** Returns the Sandbox root ids listed by a playground container. */
-export function getPlaygroundSandboxIds(
-  workspace: Workspace,
-  playgroundKey: string,
-): string[] {
+export function getPlaygroundSandboxIds(workspace: Workspace, playgroundKey: string): string[] {
   const playground = workspace.playgrounds?.[playgroundKey]
+
   if (!playground || !isPlaygroundContainer(playground)) return []
+
   return playground.variants.map((ref) => ref.id)
 }
 
@@ -50,6 +49,7 @@ export function findPlaygroundKeyForSandbox(
   for (const [key, playground] of Object.entries(workspace.playgrounds ?? {})) {
     if (playground.variants.some((ref) => ref.id === sandboxId)) return key
   }
+
   return null
 }
 
@@ -57,21 +57,22 @@ export function findPlaygroundKeyForSandbox(
 function toAbsolutePx(value: unknown): number | null {
   if (!value || typeof value !== "object") return null
   const atomic = value as { type?: string; value?: unknown }
+
   if (atomic.type !== ValueType.EXACT) return null
   const inner = atomic.value as { value?: unknown; unit?: unknown } | null
+
   if (!inner || typeof inner !== "object") return null
   if (typeof inner.value !== "number") return null
   if (inner.unit === Unit.PX) return inner.value
   if (inner.unit === Unit.REM) return inner.value * 16
+
   return null
 }
 
 /** Whether a width/height value is an explicit length (not Fit, Fill, or theme). */
 export function isExplicitSizeValue(value: unknown): boolean {
   return (
-    !!value &&
-    typeof value === "object" &&
-    (value as { type?: string }).type === ValueType.EXACT
+    !!value && typeof value === "object" && (value as { type?: string }).type === ValueType.EXACT
   )
 }
 
@@ -87,6 +88,7 @@ export function resolveSandboxRect(node: EntryNode): SandboxRect | null {
 
   const width = toAbsolutePx(overrides.width ?? defaults.width)
   const height = toAbsolutePx(overrides.height ?? defaults.height)
+
   if (width === null || height === null) return null
 
   const posOverride = overrides.position as Record<string, unknown> | undefined
@@ -107,21 +109,25 @@ export function getNextSandboxTop(
   nodes: Record<string, EntryNode | undefined>,
 ): number {
   let nextTop = 0
+
   for (const ref of variants) {
     const node = nodes[ref.id]
+
     if (!node) continue
     const rect = resolveSandboxRect(node)
+
     if (!rect) continue
     nextTop = Math.max(nextTop, rect.top + rect.height + SANDBOX_PLACEMENT_GAP)
   }
+
   return nextTop
 }
 
 /** Sets a Sandbox node's `position.top` override to an absolute px value. */
 export function setSandboxTop(node: EntryNode, top: number): void {
   const overrides = node.overrides as Record<string, unknown>
-  const position =
-    (overrides.position as Record<string, unknown> | undefined) ?? {}
+  const position = (overrides.position as Record<string, unknown> | undefined) ?? {}
+
   position.top = { type: ValueType.EXACT, value: { value: top, unit: Unit.PX } }
   overrides.position = position
 }
@@ -153,15 +159,14 @@ export function buildSandboxNode(
     origin: "user",
     __editor: { initialOverrides: {} },
   }
+
   return { id, node }
 }
 
 /** AABB overlap test. Edges that only touch do not count as overlap. */
-export function sandboxesOverlap(
-  a: SandboxRect | null,
-  b: SandboxRect | null,
-): boolean {
+export function sandboxesOverlap(a: SandboxRect | null, b: SandboxRect | null): boolean {
   if (!a || !b) return false
+
   return (
     a.left < b.left + b.width &&
     a.left + a.width > b.left &&

@@ -1,24 +1,14 @@
 import { invariant } from "../../../helpers/utils/invariant"
-import {
-  Theme,
-  ThemeCustomSwatchId,
-  ThemeInstanceId,
-} from "../../../themes/types"
 import { computeWorkspaceThemes, getComputedTheme } from "../../compute"
 import { DEFAULT_THEME_ID } from "../../constants"
 import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
-import {
-  Board,
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  Workspace,
-} from "../../types"
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { nodeTraversalService } from "../nodes/node-traversal.service"
 import { typeCheckingService } from "../type-checking/type-checking.service"
+
+import type { Theme, ThemeCustomSwatchId, ThemeInstanceId } from "../../../themes/types"
+import type { Board, Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
 
 export class WorkspaceThemeService {
   /**
@@ -44,10 +34,7 @@ export class WorkspaceThemeService {
    * @param workspace - The workspace
    * @returns The theme
    */
-  public getObjectTheme(
-    object: Variant | Instance | Board,
-    workspace: Workspace,
-  ): Theme {
+  public getObjectTheme(object: Variant | Instance | Board, workspace: Workspace): Theme {
     return this.getTheme(this.getObjectThemeId(object, workspace), workspace)
   }
 
@@ -57,14 +44,8 @@ export class WorkspaceThemeService {
    * @param workspace - The workspace
    * @returns The theme ID
    */
-  public getNodeThemeId(
-    nodeId: InstanceId | VariantId,
-    workspace: Workspace,
-  ): ThemeInstanceId {
-    const childNode = nodeRetrievalService.getNode(
-      nodeId as InstanceId | VariantId,
-      workspace,
-    )
+  public getNodeThemeId(nodeId: InstanceId | VariantId, workspace: Workspace): ThemeInstanceId {
+    const childNode = nodeRetrievalService.getNode(nodeId as InstanceId | VariantId, workspace)
 
     let currentNode: Variant | Instance | null = childNode
 
@@ -73,20 +54,11 @@ export class WorkspaceThemeService {
         return currentNode.theme as ThemeInstanceId
       }
 
-      currentNode = nodeTraversalService.findParentNode(
-        currentNode.id,
-        workspace,
-      )
+      currentNode = nodeTraversalService.findParentNode(currentNode.id, workspace)
     }
 
-    const rootNode = nodeRelationshipService.getRootVariant(
-      childNode,
-      workspace,
-    )
-    const board = nodeRelationshipService.findBoardForVariant(
-      rootNode,
-      workspace,
-    )
+    const rootNode = nodeRelationshipService.getRootVariant(childNode, workspace)
+    const board = nodeRelationshipService.findBoardForVariant(rootNode, workspace)
 
     invariant(board, `Unable to find board for variant ${rootNode.id}`)
 
@@ -99,10 +71,7 @@ export class WorkspaceThemeService {
    * @param workspace - The workspace
    * @returns The theme
    */
-  public getNodeTheme(
-    nodeId: InstanceId | VariantId,
-    workspace: Workspace,
-  ): Theme {
+  public getNodeTheme(nodeId: InstanceId | VariantId, workspace: Workspace): Theme {
     const themeId = this.getNodeThemeId(nodeId, workspace)
 
     return this.getTheme(themeId, workspace)
@@ -114,10 +83,7 @@ export class WorkspaceThemeService {
    * @param workspace - The workspace
    * @returns The theme
    */
-  public getTheme(
-    themeId: ThemeInstanceId | string,
-    workspace: Workspace,
-  ): Theme {
+  public getTheme(themeId: ThemeInstanceId | string, workspace: Workspace): Theme {
     return getComputedTheme(themeId, workspace as never)
   }
 
@@ -161,6 +127,7 @@ export class WorkspaceThemeService {
 
     Object.values(workspace.boards).forEach((board) => {
       const ref = board ? getBoardThemeRef(board) : undefined
+
       if (ref) {
         usedThemeIds.add(ref)
       }

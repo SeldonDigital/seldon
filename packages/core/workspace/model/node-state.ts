@@ -42,9 +42,7 @@ export const RESERVED_STATE_LABELS: Record<ReservedStateName, string> = {
 }
 
 /** Runtime list of every reserved state name. */
-export const RESERVED_STATE_NAMES = Object.keys(
-  RESERVED_STATE_LABELS,
-) as ReservedStateName[]
+export const RESERVED_STATE_NAMES = Object.keys(RESERVED_STATE_LABELS) as ReservedStateName[]
 
 /**
  * How a reserved state is expressed by web export targets. This is the shared
@@ -57,10 +55,7 @@ export const RESERVED_STATE_NAMES = Object.keys(
 export type StateExpression = "pseudo" | "aria" | "class"
 
 /** Expression kind for each reserved state. Web targets must honor this. */
-export const RESERVED_STATE_EXPRESSION: Record<
-  ReservedStateName,
-  StateExpression
-> = {
+export const RESERVED_STATE_EXPRESSION: Record<ReservedStateName, StateExpression> = {
   hover: "pseudo",
   focused: "pseudo",
   active: "pseudo",

@@ -3,10 +3,7 @@
  * `ComputedFontCollection` — materialized collection from `computeFontCollection`.
  */
 import type { FontOrigin } from "../constants/font-origin"
-import type {
-  FontCollectionInstanceId,
-  FontCollectionTemplateId,
-} from "./font-collection-id"
+import type { FontCollectionInstanceId, FontCollectionTemplateId } from "./font-collection-id"
 
 /** One font family in a collection. */
 export interface FontFamilyEntry {
@@ -20,9 +17,7 @@ export interface FontFamilyEntry {
   variants?: string[]
 }
 
-export interface FontCollectionMetadata<
-  TId extends string = FontCollectionTemplateId,
-> {
+export interface FontCollectionMetadata<TId extends string = FontCollectionTemplateId> {
   id: TId
   name: string
   description: string
@@ -49,6 +44,4 @@ export type ComputedFontCollection = StockFontCollection & {
 export type FontCollection = ComputedFontCollection
 
 /** Valid input to `computeFontCollection`: packaged schema or computed collection. */
-export type FontCollectionPipelineInput =
-  | StockFontCollection
-  | ComputedFontCollection
+export type FontCollectionPipelineInput = StockFontCollection | ComputedFontCollection

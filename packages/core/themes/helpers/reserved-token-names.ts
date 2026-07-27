@@ -6,7 +6,6 @@
  * built-in look ids, the dynamic swatch palette slots, and the ordinal scale
  * step orders.
  */
-import type { ScaleStepSection } from "../constants/scale-sections"
 import { RESERVED_LOOK_IDS } from "../looks/built-in-looks"
 import {
   BORDER_WIDTH_ORDER,
@@ -17,11 +16,10 @@ import {
   SIZE_ORDER,
   SPACING_ORDER,
 } from "../schemas/data/theme-step-orders"
-import {
-  THEME_INTERFACE_SLOTS,
-  THEME_PALETTE_SLOTS,
-} from "../values/shared/palette/theme-swatch"
+import { THEME_INTERFACE_SLOTS, THEME_PALETTE_SLOTS } from "../values/shared/palette/theme-swatch"
 import { capitalize } from "./capitalize"
+
+import type { ScaleStepSection } from "../constants/scale-sections"
 
 /** Reserved ordinal step / slot names per scale section. */
 const SCALE_RESERVED_KEYS: Record<string, readonly string[]> = {
@@ -40,19 +38,18 @@ const SCALE_RESERVED_KEYS: Record<string, readonly string[]> = {
 } satisfies Record<ScaleStepSection | "fontWeight", readonly string[]>
 
 /** Reserved swatch slot ids (dynamic palette roles plus the interface roles). */
-const SWATCH_RESERVED_KEYS: readonly string[] = [
-  ...THEME_PALETTE_SLOTS,
-  ...THEME_INTERFACE_SLOTS,
-]
+const SWATCH_RESERVED_KEYS: readonly string[] = [...THEME_PALETTE_SLOTS, ...THEME_INTERFACE_SLOTS]
 
 /** Returns the reserved key ids for a custom-capable section, or an empty list. */
 export function getReservedTokenKeys(section: string): readonly string[] {
   if (section in RESERVED_LOOK_IDS) {
     return RESERVED_LOOK_IDS[section as keyof typeof RESERVED_LOOK_IDS]
   }
+
   if (section === "swatch") {
     return SWATCH_RESERVED_KEYS
   }
+
   return SCALE_RESERVED_KEYS[section] ?? []
 }
 
@@ -62,10 +59,13 @@ export function getReservedTokenKeys(section: string): readonly string[] {
  */
 export function isReservedTokenName(section: string, name: string): boolean {
   const candidate = name.trim().toLowerCase()
+
   if (!candidate) return false
+
   for (const id of getReservedTokenKeys(section)) {
     if (id.toLowerCase() === candidate) return true
     if (capitalize(id).toLowerCase() === candidate) return true
   }
+
   return false
 }

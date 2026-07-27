@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** Which directions allow scrolling inside the element. */
 export enum Scroll {
@@ -29,8 +29,7 @@ export const scrollSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Scroll) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Scroll) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Scroll),
 }

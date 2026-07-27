@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { defaultTheme } from "../../themes"
 import { PROPERTY_SCHEMAS } from "../schemas/data/property-schemas"
+
 import type { PropertySchema } from "../types/schema"
 
 /** A spread of inputs that drives the typeof/branch guards in every validator. */
@@ -58,100 +59,92 @@ describe("PROPERTY_SCHEMAS catalog", () => {
     if (schema.supports.includes("empty")) {
       expect(schema.validation.empty?.()).toBe(true)
     }
+
     if (schema.supports.includes("inherit")) {
       expect(schema.validation.inherit?.()).toBe(true)
     }
   })
 
-  it.each(entries)(
-    "%s value validators never throw and return booleans",
-    (_name, schema) => {
-      const v = schema.validation
-      for (const input of BATTERY) {
-        if (v.exact) expect(typeof v.exact(input)).toBe("boolean")
-        if (v.option) expect(typeof v.option(input)).toBe("boolean")
-        if (v.computed) expect(typeof v.computed(input)).toBe("boolean")
-        if (v.themeCategorical) {
-          expect(typeof v.themeCategorical(input, defaultTheme)).toBe("boolean")
-          // The no-theme branch must resolve to false rather than throw.
-          expect(v.themeCategorical(input, undefined)).toBe(false)
-        }
-        if (v.themeOrdinal) {
-          expect(typeof v.themeOrdinal(input, defaultTheme)).toBe("boolean")
-          expect(v.themeOrdinal(input, undefined)).toBe(false)
-        }
-      }
-    },
-  )
+  it.each(entries)("%s value validators never throw and return booleans", (_name, schema) => {
+    const v = schema.validation
 
-  it.each(entries)(
-    "%s picker and key helpers return arrays",
-    (_name, schema) => {
-      if (schema.presetOptions) {
-        const opts = safe(() => schema.presetOptions!())
-        if (opts !== undefined) expect(Array.isArray(opts)).toBe(true)
-      }
-      if (schema.themeCategoricalKeys) {
-        expect(Array.isArray(schema.themeCategoricalKeys(defaultTheme))).toBe(
-          true,
-        )
-      }
-      if (schema.themeOrdinalKeys) {
-        expect(Array.isArray(schema.themeOrdinalKeys(defaultTheme))).toBe(true)
-      }
-      if (schema.computedFunctions) {
-        expect(Array.isArray(schema.computedFunctions())).toBe(true)
-      }
-    },
-  )
+    for (const input of BATTERY) {
+      if (v.exact) expect(typeof v.exact(input)).toBe("boolean")
+      if (v.option) expect(typeof v.option(input)).toBe("boolean")
+      if (v.computed) expect(typeof v.computed(input)).toBe("boolean")
 
-  it.each(entries)(
-    "%s string preset options validate as options",
-    (_name, schema) => {
-      if (!schema.presetOptions || !schema.validation.option) return
+      if (v.themeCategorical) {
+        expect(typeof v.themeCategorical(input, defaultTheme)).toBe("boolean")
+        // The no-theme branch must resolve to false rather than throw.
+        expect(v.themeCategorical(input, undefined)).toBe(false)
+      }
+
+      if (v.themeOrdinal) {
+        expect(typeof v.themeOrdinal(input, defaultTheme)).toBe("boolean")
+        expect(v.themeOrdinal(input, undefined)).toBe(false)
+      }
+    }
+  })
+
+  it.each(entries)("%s picker and key helpers return arrays", (_name, schema) => {
+    if (schema.presetOptions) {
       const opts = safe(() => schema.presetOptions!())
-      if (!Array.isArray(opts)) return
-      for (const option of opts) {
-        if (typeof option === "string" || typeof option === "number") {
-          expect(schema.validation.option(option)).toBe(true)
-        }
-      }
-    },
-  )
 
-  it.each(entries)(
-    "%s computed functions validate as computed",
-    (_name, schema) => {
-      if (!schema.computedFunctions || !schema.validation.computed) return
-      for (const fn of schema.computedFunctions()) {
-        expect(schema.validation.computed(fn)).toBe(true)
+      if (opts !== undefined) expect(Array.isArray(opts)).toBe(true)
+    }
+
+    if (schema.themeCategoricalKeys) {
+      expect(Array.isArray(schema.themeCategoricalKeys(defaultTheme))).toBe(true)
+    }
+
+    if (schema.themeOrdinalKeys) {
+      expect(Array.isArray(schema.themeOrdinalKeys(defaultTheme))).toBe(true)
+    }
+
+    if (schema.computedFunctions) {
+      expect(Array.isArray(schema.computedFunctions())).toBe(true)
+    }
+  })
+
+  it.each(entries)("%s string preset options validate as options", (_name, schema) => {
+    if (!schema.presetOptions || !schema.validation.option) return
+    const opts = safe(() => schema.presetOptions!())
+
+    if (!Array.isArray(opts)) return
+
+    for (const option of opts) {
+      if (typeof option === "string" || typeof option === "number") {
+        expect(schema.validation.option(option)).toBe(true)
       }
-      expect(schema.validation.computed("__not-a-fn__")).toBe(false)
-    },
-  )
+    }
+  })
+
+  it.each(entries)("%s computed functions validate as computed", (_name, schema) => {
+    if (!schema.computedFunctions || !schema.validation.computed) return
+
+    for (const fn of schema.computedFunctions()) {
+      expect(schema.validation.computed(fn)).toBe(true)
+    }
+
+    expect(schema.validation.computed("__not-a-fn__")).toBe(false)
+  })
 })
 
 describe("representative schema behaviors", () => {
   it("validates theme ordinal margin keys against the theme", () => {
     const schema = PROPERTY_SCHEMAS.margin
     const firstKey = Object.keys(defaultTheme.margin)[0]!
-    expect(
-      schema.validation.themeOrdinal!(`@margin.${firstKey}`, defaultTheme),
-    ).toBe(true)
+
+    expect(schema.validation.themeOrdinal!(`@margin.${firstKey}`, defaultTheme)).toBe(true)
     // The bare id without the `@margin.` prefix is not a valid stored ref.
     expect(schema.validation.themeOrdinal!(firstKey, defaultTheme)).toBe(false)
-    expect(schema.validation.themeOrdinal!("not-a-step", defaultTheme)).toBe(
-      false,
-    )
-    expect(
-      schema.themeOrdinalKeys!(defaultTheme).every((k) =>
-        k.startsWith("@margin."),
-      ),
-    ).toBe(true)
+    expect(schema.validation.themeOrdinal!("not-a-step", defaultTheme)).toBe(false)
+    expect(schema.themeOrdinalKeys!(defaultTheme).every((k) => k.startsWith("@margin."))).toBe(true)
   })
 
   it("bounds opacity exact values to 0..100", () => {
     const v = PROPERTY_SCHEMAS.opacity.validation.exact!
+
     expect(v({ value: 0, unit: "%" })).toBe(true)
     expect(v({ value: 100, unit: "%" })).toBe(true)
     expect(v({ value: 101, unit: "%" })).toBe(false)
@@ -161,6 +154,7 @@ describe("representative schema behaviors", () => {
 
   it("validates color literals, swatches, and computed rules", () => {
     const v = PROPERTY_SCHEMAS.color.validation
+
     expect(v.exact!("#ff0000")).toBe(true)
     expect(v.exact!({ red: 1, green: 2, blue: 3 })).toBe(true)
     expect(v.exact!(5)).toBe(false)

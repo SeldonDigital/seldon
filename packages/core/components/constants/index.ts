@@ -7,11 +7,12 @@
  * `ComponentId` lives in `./component-id` and is re-exported here for callers that
  * import component constants and the id from one place.
  */
-import { IconId } from "@seldon/core/icon-sets"
 import { HtmlElement, WrapperElement } from "@seldon/core/properties"
 
-import { NativeReactPrimitive } from "../types"
 import { ComponentId, isComponentId } from "../types/component-id"
+
+import type { NativeReactPrimitive } from "../types"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export { ComponentId, isComponentId }
 

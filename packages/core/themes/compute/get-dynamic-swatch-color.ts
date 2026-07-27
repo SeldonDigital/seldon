@@ -1,7 +1,8 @@
-import { HSL } from "../../properties/values/shared/exact/hsl"
 import { Harmony } from "../constants"
-import type { ThemePipelineInput } from "../types"
 import { colorspaceLiteralToHsl } from "./colorspaces"
+
+import type { HSL } from "../../properties/values/shared/exact/hsl"
+import type { ThemePipelineInput } from "../types"
 
 /**
  * Generates all dynamic swatch colors for a theme based on its color settings.
@@ -134,6 +135,7 @@ function mod(hue: number): number {
 function getWhiteColor(theme: ThemePipelineInput): HSL {
   const harmony = theme.colorHarmony.parameters
   const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
+
   return {
     hue,
     saturation: harmony.bleed,
@@ -149,6 +151,7 @@ function getWhiteColor(theme: ThemePipelineInput): HSL {
 function getGrayColor(theme: ThemePipelineInput): HSL {
   const harmony = theme.colorHarmony.parameters
   const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
+
   return {
     hue,
     saturation: harmony.bleed,
@@ -164,6 +167,7 @@ function getGrayColor(theme: ThemePipelineInput): HSL {
 function getBlackColor(theme: ThemePipelineInput): HSL {
   const harmony = theme.colorHarmony.parameters
   const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
+
   return {
     hue,
     saturation: harmony.bleed,

@@ -1,7 +1,7 @@
 import type { HSL } from "../../../../properties/values/shared/exact/hsl"
 import type { LCH } from "../../../../properties/values/shared/exact/lch"
 import type { RGB } from "../../../../properties/values/shared/exact/rgb"
-import { Colorspace } from "../../../constants/colorspace"
+import type { Colorspace } from "../../../constants/colorspace"
 
 /**
  * Discriminated `parameters` payload for `TokenType.SWATCH` cells. Mirrors the EXACT

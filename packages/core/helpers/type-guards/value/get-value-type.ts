@@ -9,6 +9,7 @@ import { parseThemeRef } from "../../theme/get-theme-key-components"
  */
 export function getValueType(value: string): ValueType {
   const ref = parseThemeRef(value)
+
   if (!ref) {
     return ValueType.OPTION
   }

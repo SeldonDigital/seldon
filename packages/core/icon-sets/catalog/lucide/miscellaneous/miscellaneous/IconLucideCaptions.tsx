@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideCaptions(props: SVGAttributes<SVGSVGElement>) {
   return (

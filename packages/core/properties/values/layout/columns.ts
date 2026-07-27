@@ -1,7 +1,8 @@
 import { Unit } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { NumberValue } from "../shared/exact/number"
+
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { NumberValue } from "../shared/exact/number"
 
 /** Unset or a positive integer column count stored as an exact number value. */
 export type ColumnCountValue = EmptyValue | NumberValue
@@ -28,6 +29,7 @@ export const columnsSchema: PropertySchema = {
               typeof (value as { value: unknown }).value === "number"
             ? (value as { value: number }).value
             : NaN
+
       return Number.isInteger(raw) && raw >= 1 && raw <= 100
     },
   },

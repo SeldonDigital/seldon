@@ -5,6 +5,7 @@ import { STOCK_THEMES_BY_ID } from "../../themes/catalog"
 import { computeTheme } from "../../themes/helpers/compute-theme"
 import { ComputedFunction, ValueType } from "../constants"
 import { computeProperties } from "./compute-properties"
+
 import type { ComputeContext } from "./types"
 
 const computed = computeTheme(STOCK_THEMES_BY_ID.seldon)
@@ -14,8 +15,7 @@ const rhythm = computed.opticalPadding.parameters
 const ctx = (
   properties: Record<string, unknown>,
   parentContext: ComputeContext | null = null,
-): ComputeContext =>
-  ({ properties, parentContext, theme: computed }) as unknown as ComputeContext
+): ComputeContext => ({ properties, parentContext, theme: computed }) as unknown as ComputeContext
 
 const props = (value: Record<string, unknown>) =>
   value as unknown as Parameters<typeof computeProperties>[0]
@@ -23,6 +23,7 @@ const props = (value: Record<string, unknown>) =>
 describe("computeProperties", () => {
   it("copies non-computed values through unchanged", () => {
     const input = props({ opacity: { type: ValueType.EXACT, value: 1 } })
+
     expect(computeProperties(input, ctx({}))).toEqual({
       opacity: { type: ValueType.EXACT, value: 1 },
     })
@@ -54,6 +55,7 @@ describe("computeProperties", () => {
     const result = computeProperties(input, context) as {
       padding: { left: unknown }
     }
+
     expect(result.padding.left).toEqual({
       type: ValueType.EXACT,
       value: round(8 * rhythm.leftRhythm),
@@ -64,12 +66,14 @@ describe("computeProperties", () => {
     const input = props({
       gap: { type: ValueType.COMPUTED, value: "not-a-function" },
     })
+
     expect(() => computeProperties(input, ctx({}))).toThrow()
   })
 
   it("does not mutate the input properties", () => {
     const input = props({ opacity: { type: ValueType.EXACT, value: 1 } })
     const snapshot = JSON.stringify(input)
+
     computeProperties(input, ctx({}))
     expect(JSON.stringify(input)).toBe(snapshot)
   })

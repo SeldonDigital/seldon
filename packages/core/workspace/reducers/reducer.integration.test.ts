@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../components/constants"
 import { createEmptyWorkspace } from "../helpers/create-empty-workspace"
-import type { Workspace, WorkspaceAction } from "../types"
 import { applyActions } from "./apply-actions"
 import { workspaceReducer } from "./reducer"
 
-const dispatch = (ws: Workspace, action: WorkspaceAction) =>
-  workspaceReducer(ws, action)
+import type { Workspace, WorkspaceAction } from "../types"
+
+const dispatch = (ws: Workspace, action: WorkspaceAction) => workspaceReducer(ws, action)
 
 describe("workspaceReducer dispatch", () => {
   it("routes add_component through the middleware stack", () => {
@@ -15,6 +15,7 @@ describe("workspaceReducer dispatch", () => {
       type: "add_component",
       payload: { boardKey: ComponentId.BUTTON },
     } as WorkspaceAction)
+
     expect(result.boards[ComponentId.BUTTON]).toBeDefined()
   })
 
@@ -23,6 +24,7 @@ describe("workspaceReducer dispatch", () => {
       type: "set_workspace_label",
       payload: { value: "My Workspace" },
     } as WorkspaceAction)
+
     expect(result.metadata.label).toBe("My Workspace")
   })
 
@@ -32,6 +34,7 @@ describe("workspaceReducer dispatch", () => {
       type: "stubs_add_media_row",
       payload: {},
     } as unknown as WorkspaceAction)
+
     expect(Object.keys(result.boards)).toEqual(Object.keys(ws.boards))
   })
 

@@ -1,7 +1,7 @@
-import { ComponentType } from "react"
-
-import { CustomReactTemplate } from "../../types"
 import { SeldonToggle } from "./SeldonToggle"
+
+import type { CustomReactTemplate } from "../../types"
+import type { ComponentType } from "react"
 
 export * from "./registry"
 export { SeldonToggle } from "./SeldonToggle"

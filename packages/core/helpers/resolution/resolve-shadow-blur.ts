@@ -1,14 +1,10 @@
-import {
-  EmptyValue,
-  PixelValue,
-  RemValue,
-  ShadowBlurValue,
-  ValueType,
-} from "../../index"
-import type { ComputeContext } from "../../properties/compute/types"
-import { Theme } from "../../themes/types"
+import { ValueType } from "../../index"
 import { getThemeOption } from "../theme/get-theme-option"
 import { resolveModulatedOrExactLength } from "./resolve-length-token"
+
+import type { EmptyValue, PixelValue, RemValue, ShadowBlurValue } from "../../index"
+import type { ComputeContext } from "../../properties/compute/types"
+import type { Theme } from "../../themes/types"
 
 /**
  * Resolves shadow blur values to concrete PixelValue or RemValue.
@@ -31,14 +27,17 @@ export function resolveShadowBlur({
       return blur as EmptyValue
     case ValueType.EXACT:
       return blur as PixelValue | RemValue
+
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(blur.value as string, theme)
       const resolved = resolveModulatedOrExactLength(themeValue, theme)
+
       if (resolved) return resolved
       throw new Error(
         `Theme value ${blur.value as string} must resolve to MODULATED or EXACT length`,
       )
     }
+
     default:
       throw new Error(`Invalid blur type ${(blur as { type: string }).type}`)
   }

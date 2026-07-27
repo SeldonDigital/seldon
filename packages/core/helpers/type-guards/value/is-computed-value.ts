@@ -1,4 +1,5 @@
 import { ComputedFunction, ValueType } from "../../../properties/constants"
+
 import type { ComputedValue } from "../../../properties/values/shared/computed/computed-value"
 import type { ComputedMatchColorValue } from "../../../properties/values/shared/computed/match-color"
 
@@ -17,9 +18,7 @@ export function isComputedValue(value: unknown): value is ComputedValue {
 /**
  * Type guard for a `COMPUTED` value whose function is `MATCH_COLOR`.
  */
-export function isMatchColorValue(
-  value: unknown,
-): value is ComputedMatchColorValue {
+export function isMatchColorValue(value: unknown): value is ComputedMatchColorValue {
   return (
     isComputedValue(value) &&
     (value as ComputedMatchColorValue).value === ComputedFunction.MATCH_COLOR

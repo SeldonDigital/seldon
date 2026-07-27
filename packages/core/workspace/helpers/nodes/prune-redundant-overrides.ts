@@ -1,12 +1,10 @@
 import { ValueType } from "../../../properties/constants"
 import { getAnchoredFacetDefault } from "../../../properties/helpers/anchored-facet-default"
-import type { Properties } from "../../../properties/types/properties"
-import type {
-  PropertyKey,
-  SubPropertyKey,
-} from "../../../properties/types/property-keys"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
 import { readPropertySlice } from "./resolve-node-property-reset"
+
+import type { Properties } from "../../../properties/types/properties"
+import type { PropertyKey, SubPropertyKey } from "../../../properties/types/property-keys"
 
 interface TouchedFacet {
   propertyKey: PropertyKey
@@ -26,9 +24,11 @@ function isTaggedValue(value: unknown): boolean {
 
 function toLayerArray(value: unknown): Record<string, unknown>[] {
   if (Array.isArray(value)) return value as Record<string, unknown>[]
+
   if (value && typeof value === "object") {
     return [value as Record<string, unknown>]
   }
+
   return []
 }
 
@@ -67,6 +67,7 @@ function enumeratePatchFacets(patch: Properties): TouchedFacet[] {
       for (const subKey of Object.keys(value)) {
         facets.push({ propertyKey, subpropertyKey: subKey as SubPropertyKey })
       }
+
       continue
     }
 
@@ -81,13 +82,16 @@ function stableStringify(value: unknown): string {
   return JSON.stringify(value, (_key, val) => {
     if (val && typeof val === "object" && !Array.isArray(val)) {
       const record = val as Record<string, unknown>
+
       return Object.keys(record)
         .sort()
         .reduce<Record<string, unknown>>((sorted, key) => {
           sorted[key] = record[key]
+
           return sorted
         }, {})
     }
+
     return val
   })
 }
@@ -104,10 +108,9 @@ function slicesMatch(a: unknown, b: unknown): boolean {
 /** True when a baseline slice carries no authored value to compare against. */
 function isEmptyBaselineSlice(value: unknown): boolean {
   if (value === undefined) return true
+
   return (
-    !!value &&
-    typeof value === "object" &&
-    (value as { type?: unknown }).type === ValueType.EMPTY
+    !!value && typeof value === "object" && (value as { type?: unknown }).type === ValueType.EMPTY
   )
 }
 
@@ -116,11 +119,9 @@ function isEmptyBaselineSlice(value: unknown): boolean {
  * brightness or opacity renders as its fixed neutral (no shift / fully opaque),
  * so a write of that neutral equals the baseline and stays a no-op.
  */
-function resolveBaselineSlice(
-  baselineSlice: unknown,
-  facet: TouchedFacet,
-): unknown {
+function resolveBaselineSlice(baselineSlice: unknown, facet: TouchedFacet): unknown {
   if (!isEmptyBaselineSlice(baselineSlice)) return baselineSlice
+
   return getAnchoredFacetDefault(facet.subpropertyKey) ?? baselineSlice
 }
 
@@ -130,12 +131,15 @@ function deleteFacet(overrides: Properties, facet: TouchedFacet): void {
 
   if (!subpropertyKey) {
     delete bag[propertyKey]
+
     return
   }
 
   const overrideBag = bag[propertyKey]
+
   if (Array.isArray(overrideBag)) {
     const layer = overrideBag[layerIndex]
+
     if (layer && typeof layer === "object") {
       delete (layer as Record<string, unknown>)[subpropertyKey]
     }
@@ -157,16 +161,18 @@ function deleteFacet(overrides: Properties, facet: TouchedFacet): void {
 function dropEmptyOverride(overrides: Properties, key: PropertyKey): void {
   const bag = overrides as Record<string, unknown>
   const value = bag[key]
+
   if (value === undefined) return
 
   if (Array.isArray(value)) {
     const allEmpty = value.every(
       (layer) =>
         !layer ||
-        (typeof layer === "object" &&
-          Object.keys(layer as Record<string, unknown>).length === 0),
+        (typeof layer === "object" && Object.keys(layer as Record<string, unknown>).length === 0),
     )
+
     if (allEmpty) delete bag[key]
+
     return
   }
 
@@ -187,14 +193,13 @@ function dropEmptyOverride(overrides: Properties, key: PropertyKey): void {
  * through JSON because a merged bag can carry Immer draft proxies on its leaf
  * values, which `structuredClone` rejects. Property bags are pure JSON data.
  */
-export function stripPatchFacets(
-  bag: Properties,
-  patch: Properties,
-): Properties {
+export function stripPatchFacets(bag: Properties, patch: Properties): Properties {
   const reduced = JSON.parse(JSON.stringify(bag)) as Properties
+
   for (const facet of enumeratePatchFacets(patch)) {
     deleteFacet(reduced, facet)
   }
+
   return reduced
 }
 
@@ -220,6 +225,7 @@ export function pruneRedundantOverrides(
       facet.subpropertyKey,
       facet.layerIndex ?? 0,
     )
+
     if (overrideSlice === undefined) continue
 
     const rawBaselineSlice = readPropertySlice(
@@ -229,6 +235,7 @@ export function pruneRedundantOverrides(
       facet.layerIndex ?? 0,
     )
     const baselineSlice = resolveBaselineSlice(rawBaselineSlice, facet)
+
     if (!slicesMatch(overrideSlice, baselineSlice)) continue
 
     deleteFacet(overrides, facet)

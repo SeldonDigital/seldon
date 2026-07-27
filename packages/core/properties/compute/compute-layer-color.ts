@@ -10,13 +10,14 @@ import { isRGBObject } from "../../helpers/type-guards/color/is-rgb-object"
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { isHex, isHexWithoutHash } from "../../helpers/validation"
 import { ValueType } from "../constants"
+import { parseBasedOnPath } from "./parse-based-on-path"
+
 import type { EmptyValue } from "../values/shared/empty/empty"
 import type { Hex, HexValue } from "../values/shared/exact/hex"
 import type { HSL } from "../values/shared/exact/hsl"
 import type { LCH } from "../values/shared/exact/lch"
 import type { PercentageValue } from "../values/shared/exact/percentage"
 import type { RGB } from "../values/shared/exact/rgb"
-import { parseBasedOnPath } from "./parse-based-on-path"
 import type { ComputeContext } from "./types"
 
 /** Neutral white used as the opacity backdrop when no deeper surface exists. */
@@ -31,6 +32,7 @@ function isNonContributingLayerPercentage(value: unknown): boolean {
   }
 
   const tagged = value as { type: ValueType }
+
   return tagged.type === ValueType.EMPTY || tagged.type === ValueType.INHERIT
 }
 
@@ -59,11 +61,10 @@ export function applyLayerOpacity(
 ): HexValue {
   const colorString = exactColorToChromaInput(color)
   const backdropString = exactColorToChromaInput(backdrop)
+
   return {
     type: ValueType.EXACT,
-    value: chroma
-      .mix(backdropString, colorString, opacityPercent / 100, "rgb")
-      .hex() as Hex,
+    value: chroma.mix(backdropString, colorString, opacityPercent / 100, "rgb").hex() as Hex,
   }
 }
 
@@ -71,6 +72,7 @@ function exactColorToChromaInput(color: HSL | LCH | RGB | Hex): string {
   if (typeof color === "string") {
     if (isHex(color)) return color
     if (isHexWithoutHash(color)) return `#${color}`
+
     return color
   }
 

@@ -1,4 +1,4 @@
-import { ValueType } from "../../../constants"
+import type { ValueType } from "../../../constants"
 
 /** Stores a boolean as a freeform exact value (true/false typed in directly). */
 export type BooleanValue = {

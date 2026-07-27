@@ -8,6 +8,7 @@ import {
   isThemeTokenSignedPercentageNumber,
   isThemeTokenText,
 } from "../../../properties/schemas/helpers/shared/theme-token-atomic-validators"
+
 import type {
   ThemeTokenCatalogDraft,
   ThemeTokenSchema,
@@ -44,10 +45,9 @@ export function buildThemeTokenValidation(
 /**
  * Expands authoring drafts (`valueType`) into `supports` + `validation` (property-schema shape).
  */
-export function finalizeThemeTokenSchema(
-  draft: ThemeTokenCatalogDraft,
-): ThemeTokenSchema {
+export function finalizeThemeTokenSchema(draft: ThemeTokenCatalogDraft): ThemeTokenSchema {
   const { valueType, ...rest } = draft
+
   return {
     ...rest,
     supports: [valueType],

@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** Keyword marking which item in a set is the current one. */
 export enum AriaCurrent {
@@ -31,8 +31,7 @@ export const ariaCurrentSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(AriaCurrent) as string[]).includes(value),
+      typeof value === "string" && (Object.values(AriaCurrent) as string[]).includes(value),
   },
   presetOptions: () => Object.values(AriaCurrent),
 }

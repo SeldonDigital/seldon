@@ -3,11 +3,12 @@ import { describe, expect, it } from "vitest"
 import { ValueType } from "../../properties/constants"
 import { STOCK_THEMES_BY_ID } from "../../themes/catalog"
 import { computeTheme } from "../../themes/helpers/compute-theme"
-import type { Theme } from "../../themes/types"
 import { resolveBorderWidth } from "./resolve-border-width"
 import { resolveFontFamily } from "./resolve-font-family"
 import { resolveShadowBlur } from "./resolve-shadow-blur"
 import { resolveSize } from "./resolve-size"
+
+import type { Theme } from "../../themes/types"
 
 const theme = computeTheme(STOCK_THEMES_BY_ID.seldon) as unknown as Theme
 const cast = <T>(value: unknown) => value as T
@@ -16,6 +17,7 @@ describe("resolveBorderWidth", () => {
   it("passes EMPTY, EXACT, and OPTION through unchanged", () => {
     const empty = { type: ValueType.EMPTY, value: null }
     const exact = { type: ValueType.EXACT, value: { unit: "px", value: 2 } }
+
     expect(resolveBorderWidth({ borderWidth: cast(empty), theme })).toBe(empty)
     expect(resolveBorderWidth({ borderWidth: cast(exact), theme })).toBe(exact)
   })
@@ -28,6 +30,7 @@ describe("resolveBorderWidth", () => {
       }),
       theme,
     })
+
     expect(result.type).toBeDefined()
   })
 })
@@ -36,6 +39,7 @@ describe("resolveShadowBlur", () => {
   it("passes EMPTY and EXACT through unchanged", () => {
     const empty = { type: ValueType.EMPTY, value: null }
     const exact = { type: ValueType.EXACT, value: { unit: "px", value: 4 } }
+
     expect(resolveShadowBlur({ blur: cast(empty), theme })).toBe(empty)
     expect(resolveShadowBlur({ blur: cast(exact), theme })).toBe(exact)
   })
@@ -90,6 +94,7 @@ describe("resolveFontFamily", () => {
       }),
       theme,
     })
+
     expect(result?.type).toBe(ValueType.OPTION)
     expect(typeof result?.value).toBe("string")
   })
@@ -107,9 +112,8 @@ describe("resolveFontFamily", () => {
 describe("resolveSize", () => {
   it("passes EMPTY and EXACT through", () => {
     const empty = { type: ValueType.EMPTY, value: null }
-    expect(resolveSize({ size: cast(empty), parentContext: null, theme })).toBe(
-      empty,
-    )
+
+    expect(resolveSize({ size: cast(empty), parentContext: null, theme })).toBe(empty)
   })
 
   it("resolves a modulated THEME_ORDINAL token to a rem length", () => {
@@ -118,6 +122,7 @@ describe("resolveSize", () => {
       parentContext: null,
       theme,
     })
+
     expect(result.type).toBe(ValueType.EXACT)
   })
 })

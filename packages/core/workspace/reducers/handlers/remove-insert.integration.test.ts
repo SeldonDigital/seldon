@@ -2,16 +2,12 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
-import type {
-  EntryNode,
-  ExtractPayload,
-  InsertDefaultInstance,
-  Workspace,
-} from "../../types"
 import { addComponent } from "./add/add-component"
 import { addVariant } from "./add/add-variant"
 import { insertDefaultInstance } from "./insert/insert-default-instance"
 import { removeVariant } from "./remove/remove-variant"
+
+import type { EntryNode, ExtractPayload, InsertDefaultInstance, Workspace } from "../../types"
 
 const baseWithButton = () =>
   addComponent(
@@ -20,18 +16,13 @@ const baseWithButton = () =>
   )
 
 const withUserVariant = () =>
-  addVariant(
-    { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_variant">,
-    baseWithButton(),
-  )
+  addVariant({ boardKey: ComponentId.BUTTON } as ExtractPayload<"add_variant">, baseWithButton())
 
 const variantIds = (workspace: Workspace): string[] =>
   workspace.boards[ComponentId.BUTTON]!.variants.map((ref) => ref.id)
 
 const userVariantId = (workspace: Workspace): string =>
-  variantIds(workspace).find(
-    (id) => (workspace.nodes[id] as EntryNode).type === "variant",
-  )!
+  variantIds(workspace).find((id) => (workspace.nodes[id] as EntryNode).type === "variant")!
 
 describe("removeVariant", () => {
   it("removes a user variant from its board", () => {
@@ -52,10 +43,7 @@ describe("removeVariant", () => {
     const defaultId = variantIds(workspace)[0]!
 
     expect(
-      removeVariant(
-        { variantRootId: defaultId } as ExtractPayload<"remove_variant">,
-        workspace,
-      ),
+      removeVariant({ variantRootId: defaultId } as ExtractPayload<"remove_variant">, workspace),
     ).toBe(workspace)
   })
 })
@@ -66,9 +54,7 @@ describe("insertDefaultInstance", () => {
     const parentId = userVariantId(workspace)
     const childBoardKey =
       Object.keys(workspace.boards).find(
-        (key) =>
-          key !== ComponentId.BUTTON &&
-          workspace.boards[key]!.type === "component",
+        (key) => key !== ComponentId.BUTTON && workspace.boards[key]!.type === "component",
       ) ?? ComponentId.BUTTON
 
     const result = insertDefaultInstance(
@@ -76,9 +62,7 @@ describe("insertDefaultInstance", () => {
       workspace,
     )
 
-    expect(Object.keys(result.nodes).length).toBeGreaterThan(
-      Object.keys(workspace.nodes).length,
-    )
+    expect(Object.keys(result.nodes).length).toBeGreaterThan(Object.keys(workspace.nodes).length)
   })
 
   it("refuses to insert into the default variant", () => {

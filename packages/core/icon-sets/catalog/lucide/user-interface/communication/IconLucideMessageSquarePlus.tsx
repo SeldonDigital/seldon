@@ -1,8 +1,6 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconLucideMessageSquarePlus(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconLucideMessageSquarePlus(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

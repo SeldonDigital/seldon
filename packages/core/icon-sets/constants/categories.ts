@@ -84,14 +84,7 @@ export const categorySubcategories: Record<IconCategory, IconSubcategory[]> = {
     "weather",
   ],
   system: ["ai", "connectivity", "devices", "security", "settings"],
-  "user-interface": [
-    "actions",
-    "communication",
-    "media",
-    "navigation",
-    "status",
-    "text",
-  ],
+  "user-interface": ["actions", "communication", "media", "navigation", "status", "text"],
   utility: ["location", "time"],
 }
 
@@ -135,8 +128,7 @@ export const categoryPaths: IconCategoryPath[] = [
 /**
  * Default category for icons that can't be categorized
  */
-export const DEFAULT_CATEGORY_PATH: IconCategoryPath =
-  "miscellaneous/miscellaneous"
+export const DEFAULT_CATEGORY_PATH: IconCategoryPath = "miscellaneous/miscellaneous"
 
 /**
  * All icon categories in order

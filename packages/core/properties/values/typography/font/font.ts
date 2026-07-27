@@ -1,10 +1,8 @@
-import {
-  listThemeLookIds,
-  validateThemeLookPresetRef,
-} from "../../../../themes/looks"
-import { Theme, ThemeFontKey } from "../../../../themes/types"
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
+import { listThemeLookIds, validateThemeLookPresetRef } from "../../../../themes/looks"
+
+import type { Theme, ThemeFontKey } from "../../../../themes/types"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
 
 /** Theme categorical reference to a named recipe under `theme.font`. */
 export interface FontValue {
@@ -15,8 +13,7 @@ export interface FontValue {
 /** Validates stored font theme recipe picks. */
 export const fontPresetSchema: PropertySchema = {
   name: "fontPreset",
-  description:
-    "Selects a named font recipe from the theme, including the built-in Normal look.",
+  description: "Selects a named font recipe from the theme, including the built-in Normal look.",
   supports: ["empty", "inherit", "themeCategorical"] as const,
   validation: {
     empty: () => true,

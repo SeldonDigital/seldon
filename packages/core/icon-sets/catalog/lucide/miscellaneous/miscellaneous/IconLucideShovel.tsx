@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideShovel(props: SVGAttributes<SVGSVGElement>) {
   return (

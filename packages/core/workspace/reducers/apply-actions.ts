@@ -1,5 +1,6 @@
-import type { Workspace } from "../model/workspace"
 import { workspaceReducer } from "./reducer"
+
+import type { Workspace } from "../model/workspace"
 import type { WorkspaceAction } from "./types"
 
 /**

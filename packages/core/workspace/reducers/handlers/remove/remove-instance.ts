@@ -1,10 +1,6 @@
 import { Display, ValueType } from "../../../../properties"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  debugGroup,
-  debugGroupEnd,
-  debugLog,
-} from "../../../../utils/debug-logger"
+import { debugGroup, debugGroupEnd, debugLog } from "../../../../utils/debug-logger"
 import {
   nodeOperationsService,
   nodeRelationshipService,
@@ -13,7 +9,8 @@ import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
-import { ExtractPayload, Workspace } from "../../../types"
+
+import type { ExtractPayload, Workspace } from "../../../types"
 
 export function removeInstance(
   payload: ExtractPayload<"remove_instance">,
@@ -22,8 +19,7 @@ export function removeInstance(
   const node = nodeRetrievalService.getNode(payload.instanceId, workspace)
   const entityType = typeCheckingService.getEntityType(node)
   const isInstance = typeCheckingService.isInstance(node)
-  const isSchemaDefined =
-    isInstance && typeCheckingService.isSchemaDefinedInstance(node)
+  const isSchemaDefined = isInstance && typeCheckingService.isSchemaDefinedInstance(node)
 
   debugGroup("Workspace", "removeInstance", "Removing instance")
   debugLog("Workspace", "removeInstance", "Instance details", {
@@ -34,16 +30,9 @@ export function removeInstance(
   })
 
   if (!isInstance) {
-    debugLog(
-      "Workspace",
-      "removeInstance",
-      "Removal not allowed for non-instance",
-    )
-    debugGroupEnd(
-      "Workspace",
-      "removeInstance",
-      "Removal not allowed for non-instance",
-    )
+    debugLog("Workspace", "removeInstance", "Removal not allowed for non-instance")
+    debugGroupEnd("Workspace", "removeInstance", "Removal not allowed for non-instance")
+
     return workspace
   }
 
@@ -56,9 +45,7 @@ export function removeInstance(
   // propagation applies the same operation to every linked instance.
   const isSchemaDefinedInDefaultVariant = () =>
     typeCheckingService.isSchemaDefinedInstance(node) &&
-    typeCheckingService.isDefaultVariant(
-      nodeRelationshipService.getRootVariant(node, workspace),
-    )
+    typeCheckingService.isDefaultVariant(nodeRelationshipService.getRootVariant(node, workspace))
   const removalBehavior =
     typeof config.removalBehavior === "string"
       ? config.removalBehavior
@@ -76,11 +63,8 @@ export function removeInstance(
 
   if (!allowed) {
     debugLog("Workspace", "removeInstance", "Removal not allowed for instance")
-    debugGroupEnd(
-      "Workspace",
-      "removeInstance",
-      "Removal not allowed for instance",
-    )
+    debugGroupEnd("Workspace", "removeInstance", "Removal not allowed for instance")
+
     return workspace
   }
 
@@ -89,6 +73,7 @@ export function removeInstance(
     propagation,
     applyToChild: (childId, workspace) => {
       const childNode = nodeRetrievalService.getNode(childId, workspace)
+
       if (!typeCheckingService.isInstance(childNode)) return workspace
 
       if (removalBehavior === "delete") {
@@ -115,5 +100,6 @@ export function removeInstance(
 
   debugLog("Workspace", "removeInstance", "Instance removal complete")
   debugGroupEnd("Workspace", "removeInstance", "Instance removal complete")
+
   return result
 }

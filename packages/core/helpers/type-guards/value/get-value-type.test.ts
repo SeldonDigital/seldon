@@ -11,9 +11,7 @@ describe("getValueType", () => {
   it("maps named token sections to THEME_CATEGORICAL", () => {
     expect(getValueType("@swatch.primary")).toBe(ValueType.THEME_CATEGORICAL)
     expect(getValueType("@font.body")).toBe(ValueType.THEME_CATEGORICAL)
-    expect(getValueType("@background.background1")).toBe(
-      ValueType.THEME_CATEGORICAL,
-    )
+    expect(getValueType("@background.background1")).toBe(ValueType.THEME_CATEGORICAL)
   })
 
   it("maps ordered scale sections to THEME_ORDINAL", () => {

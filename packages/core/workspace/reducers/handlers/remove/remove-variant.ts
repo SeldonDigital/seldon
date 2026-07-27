@@ -1,16 +1,13 @@
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  debugGroup,
-  debugGroupEnd,
-  debugLog,
-} from "../../../../utils/debug-logger"
+import { debugGroup, debugGroupEnd, debugLog } from "../../../../utils/debug-logger"
 import {
   nodeOperationsService,
   nodeRetrievalService,
   typeCheckingService,
   workspacePropagationService,
 } from "../../../services"
-import { ExtractPayload, Workspace } from "../../../types"
+
+import type { ExtractPayload, Workspace } from "../../../types"
 
 export function removeVariant(
   payload: ExtractPayload<"remove_variant">,
@@ -30,29 +27,20 @@ export function removeVariant(
   })
 
   if (!isVariant) {
-    debugLog(
-      "Workspace",
-      "removeVariant",
-      "Removal not allowed for non-variant",
-    )
-    debugGroupEnd(
-      "Workspace",
-      "removeVariant",
-      "Removal not allowed for non-variant",
-    )
+    debugLog("Workspace", "removeVariant", "Removal not allowed for non-variant")
+    debugGroupEnd("Workspace", "removeVariant", "Removal not allowed for non-variant")
+
     return workspace
   }
 
   // The default variant is denied by `delete.defaultVariant.allowed === false`,
   // so the rule gate below is the single owner of that policy.
   const { allowed, propagation } = rules.mutations.delete[entityType]
+
   if (!allowed) {
     debugLog("Workspace", "removeVariant", "Removal not allowed for variant")
-    debugGroupEnd(
-      "Workspace",
-      "removeVariant",
-      "Removal not allowed for variant",
-    )
+    debugGroupEnd("Workspace", "removeVariant", "Removal not allowed for variant")
+
     return workspace
   }
 
@@ -63,6 +51,7 @@ export function removeVariant(
       // Downstream propagation visits linked instances, never variants, so the
       // variant check keeps `deleteVariant` from running on a propagated node.
       if (!typeCheckingService.isVariant(node)) return workspace
+
       return nodeOperationsService.deleteVariant(node.id, workspace)
     },
     workspace,
@@ -70,5 +59,6 @@ export function removeVariant(
 
   debugLog("Workspace", "removeVariant", "Variant removal complete")
   debugGroupEnd("Workspace", "removeVariant", "Variant removal complete")
+
   return result
 }

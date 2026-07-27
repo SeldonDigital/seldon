@@ -1,7 +1,8 @@
 import { Unit } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { DegreesValue } from "../../shared/exact/degrees"
+
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { DegreesValue } from "../../shared/exact/degrees"
 
 /** Unset or an exact angle in degrees for the gradient direction. */
 export type GradientAngleValue = EmptyValue | DegreesValue
@@ -22,8 +23,10 @@ export const gradientAngleSchema: PropertySchema = {
     exact: (value: unknown) => {
       if (typeof value !== "object" || value === null) return false
       const m = value as { value?: unknown; unit?: unknown }
+
       if (m.unit !== Unit.DEGREES || typeof m.value !== "number") return false
       if (!Number.isFinite(m.value)) return false
+
       return m.value >= -360 && m.value <= 360
     },
   },

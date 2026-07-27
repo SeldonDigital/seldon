@@ -22,8 +22,10 @@ function isDebugFlagEnabled(flag: string): boolean {
   if (typeof window !== "undefined") {
     try {
       const debugMode = localStorage.getItem("debug-mode")
+
       if (debugMode) {
         const parsed = JSON.parse(debugMode)
+
         return parsed?.state?.[flag] === true
       }
     } catch {
@@ -95,6 +97,7 @@ function formatMessage(
   if (functionName === "verificationMiddleware") {
     return `🐶 ${functionName} · ${message}`
   }
+
   return `➡️  ${functionName} · ${message}`
 }
 
@@ -136,6 +139,7 @@ export function debugLog(
   if (!isDebugEnabled()) return
   const formattedMessage = formatMessage(category, functionName, message)
   const formattedData = formatData(data)
+
   console.log(formattedMessage + formattedData)
 
   // Add blank line after log entry if there's data
@@ -154,20 +158,11 @@ export function debugLog(
  * @param functionName - Name of the function generating the log
  * @param title - Title for the group
  */
-export function debugGroup(
-  category: string,
-  functionName: string,
-  title: string,
-): void {
+export function debugGroup(category: string, functionName: string, title: string): void {
   if (!isDebugEnabled()) return
   console.log("") // Blank line before group start
-  const formattedMessage = formatMessage(
-    category,
-    functionName,
-    title,
-    true,
-    false,
-  )
+  const formattedMessage = formatMessage(category, functionName, title, true, false)
+
   console.log(formattedMessage)
   console.log("") // Blank line after group start
 }
@@ -182,25 +177,18 @@ export function debugGroup(
  * @param functionName - Name of the function generating the log
  * @param message - Completion message (optional)
  */
-export function debugGroupEnd(
-  category?: string,
-  functionName?: string,
-  message?: string,
-): void {
+export function debugGroupEnd(category?: string, functionName?: string, message?: string): void {
   if (!isDebugEnabled()) return
   console.log("") // Blank line before group end
+
   if (category && functionName && message) {
-    const formattedMessage = formatMessage(
-      category,
-      functionName,
-      message,
-      false,
-      true,
-    )
+    const formattedMessage = formatMessage(category, functionName, message, false, true)
+
     console.log(formattedMessage)
   } else {
     console.log(SEPARATOR)
   }
+
   console.log("") // Blank line after group end
 }
 
@@ -217,17 +205,18 @@ export function testDebugLogger(): void {
   const isBrowser = typeof window !== "undefined"
 
   console.log("=== Debug Logger Test ===")
-  console.log(
-    `Environment: ${isBrowser ? "Browser console" : "Server terminal"}`,
-  )
+  console.log(`Environment: ${isBrowser ? "Browser console" : "Server terminal"}`)
   console.log(`Debug mode enabled: ${enabled}`)
 
   if (isBrowser) {
     const debugMode = localStorage.getItem("debug-mode")
+
     console.log(`localStorage['debug-mode']: ${debugMode}`)
+
     if (debugMode) {
       try {
         const parsed = JSON.parse(debugMode)
+
         console.log("Parsed debug mode:", parsed)
         console.log(`parsed.state.enabled: ${parsed?.state?.enabled}`)
       } catch (e) {
@@ -249,13 +238,12 @@ export function testDebugLogger(): void {
   debugGroupEnd("Test", "testDebugLogger", "Test complete")
 
   console.log("=== Test Complete ===")
+
   if (enabled) {
     console.log("Debug logger is working.")
   } else {
     if (isBrowser) {
-      console.log(
-        "Debug logger is disabled. Enable it via Help > Enable Debug Mode.",
-      )
+      console.log("Debug logger is disabled. Enable it via Help > Enable Debug Mode.")
     } else {
       console.log("Debug logger is disabled. Enable it with DEBUG_MODE=true.")
       console.log("Example: DEBUG_MODE=true npm run dev")
@@ -264,6 +252,5 @@ export function testDebugLogger(): void {
 }
 
 if (typeof window !== "undefined") {
-  ;(window as Window & { testDebugLogger?: () => void }).testDebugLogger =
-    testDebugLogger
+  ;(window as Window & { testDebugLogger?: () => void }).testDebugLogger = testDebugLogger
 }

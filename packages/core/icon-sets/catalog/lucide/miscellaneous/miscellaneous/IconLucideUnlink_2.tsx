@@ -1,4 +1,4 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
 export function IconLucideUnlink_2(props: SVGAttributes<SVGSVGElement>) {
   return (

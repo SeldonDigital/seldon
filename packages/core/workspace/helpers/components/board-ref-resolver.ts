@@ -1,9 +1,11 @@
-import type { Board, EntryNode, Workspace } from "../../types"
 import { parseNodeTemplate } from "../../types"
+
+import type { Board, EntryNode, Workspace } from "../../types"
 
 /** Catalog id for a component board, or the map key for an authored board. */
 export function boardKey(board: Board): string | undefined {
   if ("catalogId" in board && board.catalogId) return board.catalogId
+
   return (board as { id?: string }).id
 }
 
@@ -29,19 +31,18 @@ export interface BoardRefResolver {
  * helpers. `resolveRef` maps any node to the board and variant root it instances,
  * resolving `node:` template chains and `catalog:` references alike.
  */
-export function createBoardRefResolver(
-  workspace: Workspace,
-  boards: Board[],
-): BoardRefResolver {
+export function createBoardRefResolver(workspace: Workspace, boards: Board[]): BoardRefResolver {
   const variantRootToBoardKey = new Map<string, string>()
   const defaultVariantRootByBoardKey = new Map<string, string>()
   const boardsByKey = new Map<string, Board>()
 
   for (const board of boards) {
     const key = boardKey(board)
+
     if (!key) continue
     boardsByKey.set(key, board)
     const rootIds = board.variants.map((variant) => variant.id)
+
     if (rootIds[0]) defaultVariantRootByBoardKey.set(key, rootIds[0])
     for (const rootId of rootIds) variantRootToBoardKey.set(rootId, key)
   }
@@ -49,22 +50,27 @@ export function createBoardRefResolver(
   const resolveRef = (start: EntryNode): BoardRef | null => {
     const seen = new Set<string>()
     let current: EntryNode | undefined = start
+
     while (current && !seen.has(current.id)) {
       seen.add(current.id)
       const key = variantRootToBoardKey.get(current.id)
+
       if (key) return { key, rootId: current.id }
       const parsed = parseNodeTemplate(current.template)
+
       if (!parsed) return null
+
       if (parsed.kind === "catalog") {
         const board = boardsByKey.get(parsed.componentId)
         const boardId = board ? boardKey(board) : undefined
-        const rootId = boardId
-          ? defaultVariantRootByBoardKey.get(boardId)
-          : undefined
+        const rootId = boardId ? defaultVariantRootByBoardKey.get(boardId) : undefined
+
         return boardId && rootId ? { key: boardId, rootId } : null
       }
+
       current = workspace.nodes?.[parsed.nodeId]
     }
+
     return null
   }
 

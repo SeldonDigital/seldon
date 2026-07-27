@@ -1,10 +1,7 @@
 import { REPEAT_EDITOR_KEY } from "../../../helpers/nodes/node-repeat"
+import { isAuthoredBoard, isComponentBoard, isPlaygroundBoard } from "../../../model/components"
+
 import type { ComponentTreeRef } from "../../../model/component-tree"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-  isPlaygroundBoard,
-} from "../../../model/components"
 import type { EntryNode } from "../../../model/entry-node"
 import type { Workspace } from "../../../model/workspace"
 
@@ -41,17 +38,17 @@ const OLD_NODE_LINK_PREFIX = `node:${OLD_NODE_PREFIX}`
 
 /** Maps a node id from the Dialog family to its Panels id, else returns it unchanged. */
 function mapNodeId(id: string): string {
-  return id.startsWith(OLD_NODE_PREFIX)
-    ? NEW_NODE_PREFIX + id.slice(OLD_NODE_PREFIX.length)
-    : id
+  return id.startsWith(OLD_NODE_PREFIX) ? NEW_NODE_PREFIX + id.slice(OLD_NODE_PREFIX.length) : id
 }
 
 /** Rewrites a node template ref (`catalog:` or `node:`) onto the Panels id. */
 function mapTemplate(template: string): string {
   if (template === OLD_CATALOG_TEMPLATE) return NEW_CATALOG_TEMPLATE
+
   if (template.startsWith(OLD_NODE_LINK_PREFIX)) {
     return `node:${mapNodeId(template.slice("node:".length))}`
   }
+
   return template
 }
 
@@ -69,21 +66,24 @@ function treeRefsReferenceOldPrefix(refs: ComponentTreeRef[]): boolean {
     if (ref.id.startsWith(OLD_NODE_PREFIX)) return true
     if (ref.children && treeRefsReferenceOldPrefix(ref.children)) return true
   }
+
   return false
 }
 
 /** Remaps repeat data keys, which reference descendant node ids, in place. */
 function remapRepeatData(node: EntryNode): void {
   const editor = node.__editor
+
   if (!editor) return
-  const repeat = editor[REPEAT_EDITOR_KEY] as
-    | { data?: Record<string, string[]> }
-    | undefined
+  const repeat = editor[REPEAT_EDITOR_KEY] as { data?: Record<string, string[]> } | undefined
+
   if (!repeat || typeof repeat !== "object" || !repeat.data) return
   const remapped: Record<string, string[]> = {}
+
   for (const [descendantId, values] of Object.entries(repeat.data)) {
     remapped[mapNodeId(descendantId)] = values
   }
+
   repeat.data = remapped
 }
 
@@ -93,6 +93,7 @@ function migrationApplies(workspace: Workspace): boolean {
     if (key.startsWith(OLD_NODE_PREFIX)) return true
     if (node.template === OLD_CATALOG_TEMPLATE) return true
     if (node.template.startsWith(OLD_NODE_LINK_PREFIX)) return true
+
     // Self-heal a workspace already re-keyed to Panels but left with the old
     // default label (migrated by an earlier build before the rename existed).
     if (
@@ -103,25 +104,27 @@ function migrationApplies(workspace: Workspace): boolean {
       return true
     }
   }
+
   for (const [key, board] of Object.entries(workspace.boards)) {
     // A board still stored under the old `dialog` key needs repair even when an
     // earlier partial migration already flipped its `catalogId` to `panel`.
     if (key === OLD_CATALOG_ID) return true
+
     if (isComponentBoard(board) && board.catalogId === OLD_CATALOG_ID) {
       return true
     }
+
     // A tree ref still pointing at a Dialog node id needs repair even when the
     // node itself was already re-keyed to Panels. This self-heals authored
     // boards, whose tree refs an earlier build skipped.
     if (
-      (isComponentBoard(board) ||
-        isPlaygroundBoard(board) ||
-        isAuthoredBoard(board)) &&
+      (isComponentBoard(board) || isPlaygroundBoard(board) || isAuthoredBoard(board)) &&
       treeRefsReferenceOldPrefix(board.variants)
     ) {
       return true
     }
   }
+
   return false
 }
 
@@ -131,11 +134,14 @@ export function migrateV12DialogToPanels(workspace: Workspace): Workspace {
   const next = structuredClone(workspace)
 
   const nextNodes: Record<string, EntryNode> = {}
+
   for (const [key, node] of Object.entries(next.nodes)) {
     const newKey = mapNodeId(key)
+
     node.id = mapNodeId(node.id)
     node.template = mapTemplate(node.template)
     remapRepeatData(node)
+
     if (
       node.type === "default" &&
       newKey.startsWith(NEW_NODE_PREFIX) &&
@@ -143,22 +149,22 @@ export function migrateV12DialogToPanels(workspace: Workspace): Workspace {
     ) {
       node.label = NEW_NODE_LABEL
     }
+
     nextNodes[newKey] = node
   }
+
   next.nodes = nextNodes
 
   const boards = next.boards
+
   for (const [key, board] of Object.entries(boards)) {
     // Remap tree refs for every board that owns a node tree, authored boards
     // included, so a Dialog node referenced from an authored tree is repointed
     // to its Panels id and never dangles after the node re-key.
-    if (
-      !isComponentBoard(board) &&
-      !isPlaygroundBoard(board) &&
-      !isAuthoredBoard(board)
-    ) {
+    if (!isComponentBoard(board) && !isPlaygroundBoard(board) && !isAuthoredBoard(board)) {
       continue
     }
+
     remapTreeRefs(board.variants)
     if (!isComponentBoard(board)) continue
 
@@ -167,8 +173,8 @@ export function migrateV12DialogToPanels(workspace: Workspace): Workspace {
     // catches a board an earlier partial migration flipped to `catalogId: panel`
     // but left keyed `dialog`, which renders a `data-board-id="dialog"` that no
     // catalog id resolves.
-    const isDialogFamily =
-      board.catalogId === OLD_CATALOG_ID || key === OLD_CATALOG_ID
+    const isDialogFamily = board.catalogId === OLD_CATALOG_ID || key === OLD_CATALOG_ID
+
     if (!isDialogFamily) continue
 
     board.catalogId = NEW_CATALOG_ID

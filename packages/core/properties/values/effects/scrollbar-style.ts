@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** How scrollbars look and how much space they take. */
 export enum ScrollbarStyle {
@@ -22,15 +22,13 @@ export type ScrollbarStyleValue = EmptyValue | ScrollbarStyleOptionValue
 /** Validates stored scrollbar style values. */
 export const scrollbarStyleSchema: PropertySchema = {
   name: "scrollbarStyle",
-  description:
-    "Sets how scrollbars look for this element using the catalog choices.",
+  description: "Sets how scrollbars look for this element using the catalog choices.",
   supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(ScrollbarStyle) as string[]).includes(value),
+      typeof value === "string" && (Object.values(ScrollbarStyle) as string[]).includes(value),
   },
   presetOptions: () => Object.values(ScrollbarStyle),
 }

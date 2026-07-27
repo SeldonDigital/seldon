@@ -1,12 +1,12 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   id: Seldon.ComponentId.BOARD,
   name: "Board",
-  intent:
-    "Editor canvas frame for previewing components with device sizing and layout chrome.",
+  intent: "Editor canvas frame for previewing components with device sizing and layout chrome.",
   tags: ["board", "canvas", "viewport", "editor"],
   level: Seldon.ComponentLevel.BOARD,
   icon: Seldon.ComponentIcon.COMPONENT,

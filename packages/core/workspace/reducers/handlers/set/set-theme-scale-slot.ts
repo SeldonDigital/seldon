@@ -1,10 +1,11 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { getComputedTheme } from "../../../compute"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import { buildScaleCell } from "../shared/build-scale-cell"
 import { appendCustomToken } from "../shared/theme-custom-token"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Resolves a scale token's current display name from the effective theme. A
@@ -20,6 +21,7 @@ function getEffectiveScaleName(
     const theme = getComputedTheme(payload.themeId, workspace) as unknown as
       | Record<string, Record<string, { name?: string }>>
       | undefined
+
     return theme?.[payload.section]?.[payload.key]?.name
   } catch {
     return undefined
@@ -41,11 +43,10 @@ export function setThemeScaleSlot(
 
   return produce(workspace, (draft) => {
     const entry = draft.themes[payload.themeId]
+
     if (!entry || isEntryThemeDefault(entry)) return
 
-    const sectionBag = (entry.overrides as Record<string, unknown>)[
-      payload.section
-    ]
+    const sectionBag = (entry.overrides as Record<string, unknown>)[payload.section]
     const existing =
       sectionBag && typeof sectionBag === "object"
         ? ((sectionBag as Record<string, unknown>)[payload.key] as

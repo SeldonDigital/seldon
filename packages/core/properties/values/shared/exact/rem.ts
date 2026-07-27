@@ -1,5 +1,4 @@
-import { Unit } from "../../../constants"
-import { ValueType } from "../../../constants"
+import type { Unit, ValueType } from "../../../constants"
 
 export type RemValue = {
   type: ValueType.EXACT

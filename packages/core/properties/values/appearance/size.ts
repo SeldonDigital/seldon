@@ -1,11 +1,13 @@
 import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
-import { Theme, ThemeSizeKey } from "../../../themes/types"
-import { ComputedFunction, Unit, ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { ComputedAutoFitValue } from "../shared/computed/auto-fit"
-import { EmptyValue } from "../shared/empty/empty"
-import { PixelValue } from "../shared/exact/pixel"
-import { RemValue } from "../shared/exact/rem"
+import { ComputedFunction, Unit } from "../../constants"
+
+import type { Theme, ThemeSizeKey } from "../../../themes/types"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { ComputedAutoFitValue } from "../shared/computed/auto-fit"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { PixelValue } from "../shared/exact/pixel"
+import type { RemValue } from "../shared/exact/rem"
 
 /** References a named step on the theme size scale. */
 export interface SizeThemeValue {
@@ -14,12 +16,7 @@ export interface SizeThemeValue {
 }
 
 /** Unset, px or rem lengths, theme size steps, or the auto-fit computed rule. */
-export type SizeValue =
-  | EmptyValue
-  | SizeThemeValue
-  | PixelValue
-  | RemValue
-  | ComputedAutoFitValue
+export type SizeValue = EmptyValue | SizeThemeValue | PixelValue | RemValue | ComputedAutoFitValue
 
 export const sizeSchema: PropertySchema = {
   name: "size",
@@ -37,6 +34,7 @@ export const sizeSchema: PropertySchema = {
     exact: (value: unknown) => {
       if (typeof value === "object" && value !== null) {
         const o = value as { value?: unknown; unit?: unknown }
+
         if (
           typeof o.value === "number" &&
           o.value > 0 &&
@@ -45,14 +43,14 @@ export const sizeSchema: PropertySchema = {
           return true
         }
       }
+
       if (typeof value === "number" && value > 0) return true
+
       return false
     },
     computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
-    themeOrdinal: (value: unknown, theme?: Theme) =>
-      themeTokenRefIsValid(value, theme, "size"),
+    themeOrdinal: (value: unknown, theme?: Theme) => themeTokenRefIsValid(value, theme, "size"),
   },
-  themeOrdinalKeys: (theme: Theme) =>
-    Object.keys(theme.size).map((id) => `@size.${id}`),
+  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.size).map((id) => `@size.${id}`),
   computedFunctions: () => [ComputedFunction.AUTO_FIT],
 }

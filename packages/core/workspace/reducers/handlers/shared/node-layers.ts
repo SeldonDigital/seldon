@@ -1,5 +1,6 @@
-import type { LayeredPaintKey } from "../../../../properties"
 import { getEffectiveNodeProperties } from "../../../compute/compute-node-properties"
+
+import type { LayeredPaintKey } from "../../../../properties"
 import type { Workspace } from "../../../types"
 
 /** One paint layer as a loose facet bag, used while rewriting a stack. */
@@ -8,6 +9,7 @@ type LayerBag = Record<string, unknown>
 function toLayerArray(value: unknown): LayerBag[] {
   if (Array.isArray(value)) return value as LayerBag[]
   if (value && typeof value === "object") return [value as LayerBag]
+
   return []
 }
 
@@ -23,9 +25,7 @@ export function readNodeLayerArray(
   property: LayeredPaintKey,
   workspace: Workspace,
 ): LayerBag[] {
-  const effective = toLayerArray(
-    getEffectiveNodeProperties(nodeId, workspace)[property],
-  )
+  const effective = toLayerArray(getEffectiveNodeProperties(nodeId, workspace)[property])
 
   return effective.map((slot) =>
     slot && typeof slot === "object" && !Array.isArray(slot) ? { ...slot } : {},

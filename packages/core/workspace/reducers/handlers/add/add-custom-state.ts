@@ -1,7 +1,8 @@
 import { produce } from "immer"
 
-import type { ExtractPayload, Workspace } from "../../../../index"
 import { isReservedStateName } from "../../../model/node-state"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Registers a workspace-wide custom interaction state. No-ops when the key
@@ -16,13 +17,12 @@ export function addCustomState(
 
   return produce(workspace, (draft) => {
     const customStates = draft.metadata.customStates ?? []
+
     if (customStates.some((state) => state.key === payload.key)) return
     customStates.push({
       key: payload.key,
       label: payload.label,
-      ...(payload.description !== undefined
-        ? { description: payload.description }
-        : {}),
+      ...(payload.description !== undefined ? { description: payload.description } : {}),
     })
     draft.metadata.customStates = customStates
   })

@@ -1,6 +1,7 @@
-import type { Board, ComponentTreeRef, Workspace } from "../../types"
 import { boardKey, createBoardRefResolver } from "./board-ref-resolver"
 import { walkBoardTreeRefs } from "./walk-board-tree-refs"
+
+import type { Board, ComponentTreeRef, Workspace } from "../../types"
 
 /**
  * Maps each board reachable from one variant of the isolated board to the exact
@@ -30,18 +31,22 @@ export function getIsolatedVariantUsage(
 
   const enqueue = (key: string, rootId: string): void => {
     const id = `${key}:${rootId}`
+
     if (visited.has(id)) return
     visited.add(id)
     let set = usage.get(key)
+
     if (!set) {
       set = new Set<string>()
       usage.set(key, set)
     }
+
     set.add(rootId)
     queue.push({ key, rootId })
   }
 
   const isolatedKey = boardKey(isolatedBoard)
+
   if (isolatedKey) {
     if (isolatedVariantRootId) {
       enqueue(isolatedKey, isolatedVariantRootId)
@@ -54,18 +59,24 @@ export function getIsolatedVariantUsage(
 
   while (queue.length) {
     const unit = queue.pop()
+
     if (!unit) continue
     const board = boardsByKey.get(unit.key)
+
     if (!board) continue
     const rootRef = board.variants.find((variant) => variant.id === unit.rootId)
+
     if (!rootRef) continue
     // Resource board refs (theme, font collection, icon set, media) carry no
     // child tree, so treat a missing `children` as an empty subtree.
     const children = (rootRef as { children?: ComponentTreeRef[] }).children
+
     walkBoardTreeRefs(children ?? [], (ref) => {
       const node = workspace.nodes?.[ref.id]
+
       if (!node) return
       const dependency = resolveRef(node)
+
       if (dependency) enqueue(dependency.key, dependency.rootId)
     })
   }

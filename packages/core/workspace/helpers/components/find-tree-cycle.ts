@@ -12,8 +12,10 @@ import type { ComponentTreeRef, Workspace } from "../../types"
 export function findBoardTreeCycleId(workspace: Workspace): string | null {
   for (const board of Object.values(workspace.boards)) {
     const cycleId = findCycleInRefs(board.variants)
+
     if (cycleId) return cycleId
   }
+
   return null
 }
 
@@ -26,8 +28,10 @@ export function findBoardTreeCycleId(workspace: Workspace): string | null {
 function findCycleInRefs(roots: ComponentTreeRef[]): string | null {
   for (const root of roots) {
     const cycleId = findCycleFromRoot(root)
+
     if (cycleId) return cycleId
   }
+
   return null
 }
 
@@ -54,6 +58,7 @@ function findCycleFromRoot(root: ComponentTreeRef): string | null {
     }
 
     const child = children[frame.childIndex]
+
     frame.childIndex += 1
 
     if (pathRefs.has(child) || pathIds.has(child.id)) {

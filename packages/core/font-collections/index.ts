@@ -27,9 +27,6 @@ export {
   FONT_COLLECTIONS_BY_ID,
   defaultFontCollection,
 } from "./catalog"
-export {
-  instantiateFontCollection,
-  type PresetFontCollectionsById,
-} from "./compute"
+export { instantiateFontCollection, type PresetFontCollectionsById } from "./compute"
 export { packagedFontCollectionCatalogIds } from "./catalog-ids"
 export * from "./types"

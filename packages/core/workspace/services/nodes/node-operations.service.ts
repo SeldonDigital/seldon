@@ -1,6 +1,5 @@
-import { WritableDraft, current, isDraft, produce } from "immer"
+import { current, isDraft, produce } from "immer"
 
-import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { debugLog } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
@@ -20,13 +19,8 @@ import {
   insertComponentTreeInstanceAfterSibling,
 } from "../../helpers/nodes/duplicate-entry-variant-subtree"
 import { moveItemInArray } from "../../helpers/nodes/move-utils"
-import {
-  getNextSandboxTop,
-  isSandboxNode,
-  setSandboxTop,
-} from "../../helpers/nodes/sandbox"
+import { getNextSandboxTop, isSandboxNode, setSandboxTop } from "../../helpers/nodes/sandbox"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import type { ComponentTreeRef } from "../../model/component-tree"
 import {
   isAuthoredBoard,
   isComponentBoard,
@@ -36,20 +30,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../../model/components"
-import type { BoardKey } from "../../model/components"
-import type { EntryNode } from "../../model/entry-node"
-import {
-  formatNodeLink,
-  parseNodeCatalog,
-  parseNodeLink,
-} from "../../model/template-ref"
-import {
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  Workspace,
-} from "../../types"
+import { formatNodeLink, parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
 import { boardOrderService } from "../components/board-order.service"
 import { workspaceMutationService } from "../mutation/workspace-mutation.service"
 import {
@@ -69,13 +50,22 @@ import { nodeRelationshipService } from "./node-relationship.service"
 import { nodeRetrievalService } from "./node-retrieval.service"
 import { nodeTraversalService } from "./node-traversal.service"
 
+import type { ComponentId } from "../../../components/constants"
+import type { ComponentTreeRef } from "../../model/component-tree"
+import type { BoardKey } from "../../model/components"
+import type { EntryNode } from "../../model/entry-node"
+import type { Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
+import type { WritableDraft } from "immer"
+
 function nodeCatalogComponentId(node: unknown): ComponentId | undefined {
   if (node && typeof node === "object" && "template" in node) {
     const cat = parseNodeCatalog((node as { template: string }).template)
+
     if (cat?.kind === "catalog" && cat.componentId) {
       return cat.componentId as ComponentId
     }
   }
+
   return undefined
 }
 
@@ -86,6 +76,7 @@ function cloneEntryNodeAsInstance(
   idMap: Map<string, string>,
 ): EntryNode {
   const clone = structuredClone(row) as EntryNode
+
   clone.id = newId
   clone.type = "instance"
   clone.template = formatNodeLink(templateNodeId)
@@ -98,9 +89,11 @@ function cloneEntryNodeAsInstance(
   clone.overrides = {}
   delete clone.states
   const link = parseNodeLink(row.template)
+
   if (link?.kind === "node" && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
   }
+
   return clone
 }
 
@@ -110,13 +103,11 @@ function remapTreeRef(
   newRootId: string,
   idMap: Map<string, string>,
 ): ComponentTreeRef {
-  const mapped =
-    ref.id === sourceRootId ? newRootId : (idMap.get(ref.id) ?? ref.id)
+  const mapped = ref.id === sourceRootId ? newRootId : (idMap.get(ref.id) ?? ref.id)
+
   return {
     id: mapped,
-    children: ref.children?.map((child) =>
-      remapTreeRef(child, sourceRootId, newRootId, idMap),
-    ),
+    children: ref.children?.map((child) => remapTreeRef(child, sourceRootId, newRootId, idMap)),
   }
 }
 
@@ -146,11 +137,10 @@ export class NodeOperationsService {
     // Read the source subtree from a plain snapshot. `_instantiateNode` only
     // reads to build the new nodes, and `structuredClone` throws on Immer draft
     // proxies, so cloning must operate on non-draft data.
-    const sourceWorkspace = isDraft(workspace)
-      ? (current(workspace) as Workspace)
-      : workspace
+    const sourceWorkspace = isDraft(workspace) ? (current(workspace) as Workspace) : workspace
     const updatedWorkspace = produce(workspace, (draft) => {
       const parentBoard = getBoardByNodeId(draft, parentId)
+
       invariant(parentBoard, `Board not found for parent ${parentId}`)
 
       const {
@@ -161,16 +151,9 @@ export class NodeOperationsService {
 
       Object.assign(draft.nodes, newNodes)
 
-      const inserted = insertComponentTreeChild(
-        parentBoard,
-        parentId,
-        newTreeRef,
-        parentIndex,
-      )
-      invariant(
-        inserted,
-        `insertNode: could not insert ${newNodeId} under parent ${parentId}`,
-      )
+      const inserted = insertComponentTreeChild(parentBoard, parentId, newTreeRef, parentIndex)
+
+      invariant(inserted, `insertNode: could not insert ${newNodeId} under parent ${parentId}`)
 
       newId = newNodeId
     })
@@ -181,12 +164,10 @@ export class NodeOperationsService {
     }
   }
 
-  private deleteBoard(
-    componentId: ComponentId,
-    workspace: Workspace,
-  ): Workspace {
+  private deleteBoard(componentId: ComponentId, workspace: Workspace): Workspace {
     const workspaceAfterDeletion = mutateWorkspace(workspace, (draft) => {
       const board = draft.boards[componentId]
+
       if (!board) return
 
       for (const rootId of getBoardVariantRootIds(board)) {
@@ -205,6 +186,7 @@ export class NodeOperationsService {
     }
 
     const board = workspace.boards[boardKey]
+
     if (!board) return workspace
 
     if (isComponentBoard(board) || isAuthoredBoard(board)) {
@@ -214,12 +196,15 @@ export class NodeOperationsService {
     if (isThemeBoard(board)) {
       return this._deleteResourceBoard(boardKey, workspace, "themes")
     }
+
     if (isFontCollectionBoard(board)) {
       return this._deleteResourceBoard(boardKey, workspace, "font-collections")
     }
+
     if (isMediaBoard(board)) {
       return this._deleteResourceBoard(boardKey, workspace, "media")
     }
+
     if (isIconSetBoard(board)) {
       return this._deleteResourceBoard(boardKey, workspace, "icon-sets")
     }
@@ -235,13 +220,17 @@ export class NodeOperationsService {
   ): Workspace {
     const next = mutateWorkspace(workspace, (draft) => {
       const board = draft.boards[boardKey]
+
       if (!board) return
       const entries = draft[resourceMap] as Record<string, unknown>
+
       for (const ref of board.variants) {
         delete entries[ref.id]
       }
+
       delete draft.boards[boardKey]
     })
+
     return boardOrderService.realignBoardOrder(next)
   }
 
@@ -250,15 +239,14 @@ export class NodeOperationsService {
    * Playground containers live in `workspace.playgrounds`, not `workspace.boards`,
    * so this mirrors the playground-board deletion path against that map.
    */
-  public deletePlaygroundByKey(
-    playgroundKey: BoardKey,
-    workspace: Workspace,
-  ): Workspace {
+  public deletePlaygroundByKey(playgroundKey: BoardKey, workspace: Workspace): Workspace {
     const playground = workspace.playgrounds?.[playgroundKey]
+
     if (!playground) return workspace
 
     return mutateWorkspace(workspace, (draft) => {
       const row = draft.playgrounds[playgroundKey]
+
       if (!row) return
 
       for (const rootId of getBoardVariantRootIds(row)) {
@@ -269,19 +257,12 @@ export class NodeOperationsService {
     })
   }
 
-  public deleteInstance(
-    instanceId: InstanceId,
-    workspace: Workspace,
-  ): Workspace {
-    return withInstanceAndParentMutation(
-      instanceId,
-      workspace,
-      (_instance, _parent, draft) => {
-        // `_deleteSubtreeFromDraft` collects the descendant ids and removes the
-        // tree child itself, so the ref must stay in place until it runs.
-        this._deleteSubtreeFromDraft(instanceId, draft)
-      },
-    )
+  public deleteInstance(instanceId: InstanceId, workspace: Workspace): Workspace {
+    return withInstanceAndParentMutation(instanceId, workspace, (_instance, _parent, draft) => {
+      // `_deleteSubtreeFromDraft` collects the descendant ids and removes the
+      // tree child itself, so the ref must stay in place until it runs.
+      this._deleteSubtreeFromDraft(instanceId, draft)
+    })
   }
 
   public moveInstance(
@@ -293,18 +274,18 @@ export class NodeOperationsService {
     workspace: Workspace,
   ): Workspace {
     return withNodeMutation(instanceId, workspace, (_node, draft) => {
-      const currentParent = nodeTraversalService.findParentNode(
-        instanceId,
-        draft,
-      )
+      const currentParent = nodeTraversalService.findParentNode(instanceId, draft)
+
       invariant(currentParent, `Parent not found for node ${instanceId}`)
 
       const oldBoard = getBoardByNodeId(draft, currentParent.id)
+
       invariant(oldBoard, `Board not found for parent ${currentParent.id}`)
 
       // Capture the full tree ref before removing it so the instance keeps its
       // child subtree. Inserting a bare { id } ref would orphan every child node.
       const treeRef = findTreeRef(oldBoard, instanceId)
+
       invariant(treeRef, `Tree ref not found for instance ${instanceId}`)
 
       // Reinserting a live subtree under its own descendant would make the tree
@@ -317,6 +298,7 @@ export class NodeOperationsService {
       removeComponentTreeChild(oldBoard, instanceId)
 
       const newBoard = getBoardByNodeId(draft, newPosition.parentId)
+
       invariant(newBoard, `Board not found for parent ${newPosition.parentId}`)
 
       const inserted = insertComponentTreeChild(
@@ -325,6 +307,7 @@ export class NodeOperationsService {
         treeRef,
         newPosition.index,
       )
+
       invariant(
         inserted,
         `moveInstance: could not insert ${instanceId} under ${newPosition.parentId}`,
@@ -344,13 +327,11 @@ export class NodeOperationsService {
    * use this directly so node deletions propagate; merging a nested result with
    * `Object.assign` would silently keep deleted node ids.
    */
-  private _deleteVariantFromDraft(
-    variantId: VariantId,
-    draft: WritableDraft<Workspace>,
-  ): void {
+  private _deleteVariantFromDraft(variantId: VariantId, draft: WritableDraft<Workspace>): void {
     for (const [id, node] of Object.entries(draft.nodes)) {
       if (!typeCheckingService.isInstance(node)) continue
       const linkedVariant = parseNodeLink(node.template)?.nodeId
+
       if (linkedVariant === variantId) {
         this._deleteSubtreeFromDraft(id as InstanceId, draft)
       }
@@ -382,6 +363,7 @@ export class NodeOperationsService {
 
     if (board && treeRef) {
       const isTopLevelRoot = board.variants.some((ref) => ref.id === nodeId)
+
       if (!isTopLevelRoot) {
         removeComponentTreeChild(board, nodeId)
       }
@@ -397,26 +379,22 @@ export class NodeOperationsService {
 
     for (const id of idsToDelete) {
       if (referencedElsewhere.has(id)) continue
+
       if (draftWorkspace.nodes[id]) {
         delete draftWorkspace.nodes[id]
       }
     }
   }
 
-  public duplicateNode(
-    nodeId: VariantId | InstanceId,
-    workspace: Workspace,
-  ): Workspace {
+  public duplicateNode(nodeId: VariantId | InstanceId, workspace: Workspace): Workspace {
     debugLog("Workspace", "duplicateNode", "Duplicating node", { nodeId })
 
     return withNodeMutation(nodeId, workspace, (node, draft) => {
-      invariant(
-        isEntryNodeForRules(node),
-        `duplicateNode: expected EntryNode ${nodeId}`,
-      )
+      invariant(isEntryNodeForRules(node), `duplicateNode: expected EntryNode ${nodeId}`)
 
       if (typeCheckingService.isVariant(node)) {
         const located = findBoardContainingTreeNodeId(draft, node.id)
+
         invariant(located, ErrorMessages.componentNotFoundForVariant(node.id))
         invariant(
           isComponentBoard(located.board) ||
@@ -425,15 +403,11 @@ export class NodeOperationsService {
           `duplicateNode: unsupported board type for ${node.id}`,
         )
 
-        const defaultVariantRow =
-          getWorkspaceNodes(draft)[located.board.variants[0]?.id as string]
+        const defaultVariantRow = getWorkspaceNodes(draft)[located.board.variants[0]?.id as string]
         const componentId =
-          nodeCatalogComponentId(node) ??
-          nodeCatalogComponentId(defaultVariantRow)
-        invariant(
-          componentId,
-          `duplicateNode: missing catalog template for variant ${node.id}`,
-        )
+          nodeCatalogComponentId(node) ?? nodeCatalogComponentId(defaultVariantRow)
+
+        invariant(componentId, `duplicateNode: missing catalog template for variant ${node.id}`)
 
         // Use the board key, not the catalog template id, so uniqueness is
         // scoped to this board's own variants. For catalog component boards the
@@ -450,23 +424,20 @@ export class NodeOperationsService {
           node.id,
           label,
         )
-        invariant(
-          plan,
-          `duplicateNode: could not plan variant duplicate ${node.id}`,
-        )
+
+        invariant(plan, `duplicateNode: could not plan variant duplicate ${node.id}`)
 
         const board = getContainerByKey(draft, located.boardKey as BoardKey)!
+
         Object.assign(draft.nodes, plan.newNodes)
 
         // A duplicated Sandbox keeps the source overrides, including position, so
         // offset the copy below every existing sandbox to avoid overlap.
         if (isSandboxNode(node)) {
           const newRoot = draft.nodes[plan.newRootTreeRef.id]
+
           if (newRoot) {
-            setSandboxTop(
-              newRoot as EntryNode,
-              getNextSandboxTop(board.variants, draft.nodes),
-            )
+            setSandboxTop(newRoot as EntryNode, getNextSandboxTop(board.variants, draft.nodes))
           }
         }
 
@@ -474,21 +445,25 @@ export class NodeOperationsService {
           board.variants = [...board.variants, plan.newRootTreeRef]
         } else {
           const idx = board.variants.findIndex((v) => v.id === node.id)
+
           if (idx !== -1) {
             board.variants.splice(idx + 1, 0, plan.newRootTreeRef)
           } else {
             board.variants.push(plan.newRootTreeRef)
           }
         }
+
         return
       }
 
       const located = findBoardContainingTreeNodeId(draft, node.id)
+
       invariant(located, ErrorMessages.parentNotFound(nodeId))
 
       const liveNodes = getWorkspaceNodes(draft)
       const nodes = isDraft(liveNodes) ? current(liveNodes) : liveNodes
       const sourceRow = nodes[node.id]
+
       invariant(sourceRow, ErrorMessages.nodeNotFound(node.id))
 
       const board = getContainerByKey(draft, located.boardKey as BoardKey)!
@@ -496,39 +471,40 @@ export class NodeOperationsService {
 
       const newRootId = componentBoardUniqueNodeId(located.boardKey)
       const idMap = new Map<string, string>()
+
       idMap.set(node.id, newRootId)
 
       let newTreeRef: ComponentTreeRef = { id: newRootId }
+
       if (tree) {
         for (const id of collectTreeRefIds(tree)) {
           if (id === node.id) continue
           idMap.set(id, componentBoardUniqueNodeId(located.boardKey))
         }
+
         newTreeRef = remapTreeRef(tree, node.id, newRootId, idMap)
       }
 
       for (const [oldId, newId] of idMap) {
         const row = nodes[oldId]
+
         if (!row) continue
         const clone = structuredClone(row)
+
         clone.id = newId
         delete clone.ref
         const link = parseNodeLink(clone.template)
+
         if (link?.kind === "node" && idMap.has(link.nodeId)) {
           clone.template = formatNodeLink(idMap.get(link.nodeId)!)
         }
+
         draft.nodes[newId] = clone
       }
 
-      const inserted = insertComponentTreeInstanceAfterSibling(
-        board,
-        node.id,
-        newTreeRef,
-      )
-      invariant(
-        inserted,
-        `duplicateNode: could not insert instance ${newRootId} after ${node.id}`,
-      )
+      const inserted = insertComponentTreeInstanceAfterSibling(board, node.id, newTreeRef)
+
+      invariant(inserted, `duplicateNode: could not insert instance ${newRootId} after ${node.id}`)
     })
   }
 
@@ -539,26 +515,22 @@ export class NodeOperationsService {
   ): Workspace {
     if (!typeCheckingService.isInstance(node)) return workspace
 
-    return withInstanceAndParentMutation(
-      node.id,
-      workspace,
-      (instance, parent, draft) => {
-        const board = getBoardByNodeId(draft, parent.id)
-        invariant(board, `Board not found for parent ${parent.id}`)
+    return withInstanceAndParentMutation(node.id, workspace, (instance, parent, draft) => {
+      const board = getBoardByNodeId(draft, parent.id)
 
-        const currentIndex = nodeRelationshipService.getInstanceIndex(
-          instance,
-          draft,
-        )
-        if (currentIndex === -1 || currentIndex === index) return
+      invariant(board, `Board not found for parent ${parent.id}`)
 
-        const treeRef = findTreeRef(board, instance.id)
-        invariant(treeRef, `Tree ref not found for instance ${instance.id}`)
+      const currentIndex = nodeRelationshipService.getInstanceIndex(instance, draft)
 
-        removeComponentTreeChild(board, instance.id)
-        insertComponentTreeChild(board, parent.id, treeRef, index)
-      },
-    )
+      if (currentIndex === -1 || currentIndex === index) return
+
+      const treeRef = findTreeRef(board, instance.id)
+
+      invariant(treeRef, `Tree ref not found for instance ${instance.id}`)
+
+      removeComponentTreeChild(board, instance.id)
+      insertComponentTreeChild(board, parent.id, treeRef, index)
+    })
   }
 
   public reorderVariantIndex(
@@ -568,29 +540,22 @@ export class NodeOperationsService {
   ): Workspace {
     if (!typeCheckingService.isVariant(node)) return workspace
 
-    return withVariantAndBoardMutation(
-      node.id,
-      workspace,
-      (variant, board, draft) => {
-        const currentIndex = nodeRelationshipService.getVariantIndex(
-          variant,
-          draft,
-        )
-        if (currentIndex === -1) return
+    return withVariantAndBoardMutation(node.id, workspace, (variant, board, draft) => {
+      const currentIndex = nodeRelationshipService.getVariantIndex(variant, draft)
 
-        // Clamp the target into the valid range so an out-of-bounds index
-        // settles at the last slot instead of overshooting the array.
-        const clampedIndex = Math.max(
-          0,
-          Math.min(index, board.variants.length - 1),
-        )
-        if (currentIndex === clampedIndex) return
+      if (currentIndex === -1) return
 
-        const ref = board.variants[currentIndex]
-        if (!ref) return
-        moveItemInArray(board.variants, ref, clampedIndex)
-      },
-    )
+      // Clamp the target into the valid range so an out-of-bounds index
+      // settles at the last slot instead of overshooting the array.
+      const clampedIndex = Math.max(0, Math.min(index, board.variants.length - 1))
+
+      if (currentIndex === clampedIndex) return
+
+      const ref = board.variants[currentIndex]
+
+      if (!ref) return
+      moveItemInArray(board.variants, ref, clampedIndex)
+    })
   }
 
   private _instantiateNode(
@@ -602,9 +567,11 @@ export class NodeOperationsService {
     newNodes: Record<string, EntryNode>
   } {
     const node = nodeRetrievalService.getNode(nodeId, workspace)
+
     if (typeCheckingService.isInstance(node)) {
       return this._instantiateInstance(nodeId as InstanceId, workspace)
     }
+
     return this._instantiateVariant(nodeId as VariantId, workspace)
   }
 
@@ -618,9 +585,11 @@ export class NodeOperationsService {
   } {
     const source = nodeRetrievalService.getVariant(nodeId, workspace)
     const located = findBoardContainingTreeNodeId(workspace, nodeId)
+
     invariant(located, `instantiate: board not found for variant ${nodeId}`)
 
     const tree = getVariantTree(located.board, nodeId)
+
     invariant(tree, `instantiate: tree not found for variant ${nodeId}`)
 
     const boardKey = located.boardKey
@@ -634,6 +603,7 @@ export class NodeOperationsService {
     }
 
     const newNodes: Record<string, EntryNode> = {}
+
     newNodes[newRootId] = {
       id: newRootId,
       type: "instance",
@@ -649,6 +619,7 @@ export class NodeOperationsService {
 
     for (const [oldId, mappedId] of idMap) {
       const row = nodes[oldId]
+
       if (!row) continue
       newNodes[mappedId] = cloneEntryNodeAsInstance(row, mappedId, oldId, idMap)
     }
@@ -668,6 +639,7 @@ export class NodeOperationsService {
   } {
     const source = nodeRetrievalService.getInstance(nodeId, workspace)
     const located = findBoardContainingTreeNodeId(workspace, nodeId)
+
     invariant(located, `instantiate: board not found for instance ${nodeId}`)
 
     const tree = getVariantTree(located.board, nodeId)
@@ -693,20 +665,19 @@ export class NodeOperationsService {
     if (tree) {
       const nodes = getWorkspaceNodes(workspace)
       const idMap = new Map<string, string>()
+
       for (const id of collectTreeRefIds(tree)) {
         if (id === nodeId) continue
         idMap.set(id, componentBoardUniqueNodeId(boardKey))
       }
+
       for (const [oldId, mappedId] of idMap) {
         const row = nodes[oldId]
+
         if (!row) continue
-        newNodes[mappedId] = cloneEntryNodeAsInstance(
-          row,
-          mappedId,
-          oldId,
-          idMap,
-        )
+        newNodes[mappedId] = cloneEntryNodeAsInstance(row, mappedId, oldId, idMap)
       }
+
       newTreeRef = remapTreeRef(tree, nodeId, newRootId, idMap)
     }
 
@@ -714,13 +685,11 @@ export class NodeOperationsService {
   }
 }
 
-function walkRemoveVariantRefs(
-  refs: ComponentTreeRef[],
-  variantId: string,
-): void {
+function walkRemoveVariantRefs(refs: ComponentTreeRef[], variantId: string): void {
   for (const ref of refs) {
     if (ref.children) {
       ref.children = ref.children.filter((c) => c.id !== variantId)
+
       for (const child of ref.children) {
         if (child.children) walkRemoveVariantRefs([child], variantId)
       }

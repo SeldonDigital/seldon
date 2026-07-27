@@ -1,8 +1,6 @@
-import { SVGAttributes } from "react"
+import type { SVGAttributes } from "react"
 
-export function IconMaterialAndroidCell_4BarAlert(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconMaterialAndroidCell_4BarAlert(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

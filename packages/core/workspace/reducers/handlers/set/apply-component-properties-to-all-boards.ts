@@ -1,6 +1,7 @@
-import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { workspaceMutationService } from "../../../services"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /** Copies a board's editor layout properties onto every other component board. */
 export function applyComponentPropertiesToAllBoards(

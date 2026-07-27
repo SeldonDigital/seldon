@@ -2,14 +2,16 @@ import { themeSwatchToColorValue } from "../../../helpers/color/theme-swatch-to-
 import { getThemeOption } from "../../../helpers/theme/get-theme-option"
 import { isCompoundValue } from "../../../helpers/type-guards/compound/is-compound-value"
 import { isAtomicValue } from "../../../helpers/type-guards/value/is-atomic-value"
-import { Properties, PropertyKey, ValueType } from "../../../properties"
-import { AtomicValue, ThemeValue, Value } from "../../../properties/types"
-import { Theme, ThemeSwatchKey, ThemeValueKey } from "../../../themes/types"
+import { ValueType } from "../../../properties"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import { Instance, Variant, Workspace } from "../../types"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 import { getNodeTheme } from "./theme-mutations"
+
+import type { Properties, PropertyKey } from "../../../properties"
+import type { AtomicValue, ThemeValue, Value } from "../../../properties/types"
+import type { Theme, ThemeSwatchKey, ThemeValueKey } from "../../../themes/types"
+import type { Instance, Variant, Workspace } from "../../types"
 
 /**
  * Replaces `@swatch.*` override refs with exact HSL for nodes on the given theme.
@@ -21,9 +23,7 @@ export function replaceSwatchRefsWithExactColor(
   key: ThemeSwatchKey,
   workspace: Workspace,
 ): Workspace {
-  const exactValue = themeSwatchToColorValue(
-    getThemeOption(key, theme),
-  ) as AtomicValue
+  const exactValue = themeSwatchToColorValue(getThemeOption(key, theme)) as AtomicValue
 
   return mutateWorkspace(workspace, (draft) => {
     const nodes = findNodesWithThemeValue(key, draft).filter(
@@ -38,10 +38,7 @@ export function replaceSwatchRefsWithExactColor(
   })
 }
 
-function findNodesWithThemeValue(
-  key: ThemeValueKey,
-  workspace: Workspace,
-): (Variant | Instance)[] {
+function findNodesWithThemeValue(key: ThemeValueKey, workspace: Workspace): (Variant | Instance)[] {
   return Object.values(getWorkspaceNodes(workspace)).filter((node) =>
     Object.values(node.overrides).some((rawValue) =>
       valueReferencesThemeKey(rawValue as Value, key),
@@ -50,10 +47,7 @@ function findNodesWithThemeValue(
 }
 
 function isThemeRefValue(value: AtomicValue): value is ThemeValue {
-  return (
-    value.type === ValueType.THEME_CATEGORICAL ||
-    value.type === ValueType.THEME_ORDINAL
-  )
+  return value.type === ValueType.THEME_CATEGORICAL || value.type === ValueType.THEME_ORDINAL
 }
 
 /** True when an atomic value is a theme ref pointing at `key`. */
@@ -62,13 +56,8 @@ function matchesThemeKey(value: AtomicValue, key: ThemeValueKey): boolean {
 }
 
 /** True when any facet in a layer or compound facet map references the key. */
-function facetMapReferencesThemeKey(
-  facets: Record<string, unknown>,
-  key: ThemeValueKey,
-): boolean {
-  return Object.values(facets).some((sub) =>
-    matchesThemeKey(sub as AtomicValue, key),
-  )
+function facetMapReferencesThemeKey(facets: Record<string, unknown>, key: ThemeValueKey): boolean {
+  return Object.values(facets).some((sub) => matchesThemeKey(sub as AtomicValue, key))
 }
 
 /**
@@ -85,12 +74,11 @@ function valueReferencesThemeKey(value: Value, key: ThemeValueKey): boolean {
         facetMapReferencesThemeKey(layer as Record<string, unknown>, key),
     )
   }
+
   if (isCompoundValue(value)) {
-    return facetMapReferencesThemeKey(
-      value as unknown as Record<string, unknown>,
-      key,
-    )
+    return facetMapReferencesThemeKey(value as unknown as Record<string, unknown>, key)
   }
+
   return isAtomicValue(value) && matchesThemeKey(value, key)
 }
 
@@ -119,14 +107,11 @@ function replaceThemeKeyInProperties(
 ): void {
   for (const [propertyKey, rawValue] of Object.entries(bag)) {
     const value = rawValue as Value
+
     if (Array.isArray(value)) {
       for (const layer of value) {
         if (layer && typeof layer === "object") {
-          replaceThemeKeyInFacetMap(
-            layer as Record<string, unknown>,
-            key,
-            exactValue,
-          )
+          replaceThemeKeyInFacetMap(layer as Record<string, unknown>, key, exactValue)
         }
       }
     } else if (isCompoundValue(value)) {

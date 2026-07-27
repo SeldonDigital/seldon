@@ -1,5 +1,6 @@
 import { ComponentLevel } from "../../components/constants"
-import { RulesConfig } from "../types/rule-config-types"
+
+import type { RulesConfig } from "../types/rule-config-types"
 
 /**
  * Rule Configuration
@@ -26,11 +27,7 @@ export const rules: RulesConfig = {
     },
     // Elements can contain primitives, elements, and frames
     [ComponentLevel.ELEMENT]: {
-      mayContain: [
-        ComponentLevel.PRIMITIVE,
-        ComponentLevel.ELEMENT,
-        ComponentLevel.FRAME,
-      ],
+      mayContain: [ComponentLevel.PRIMITIVE, ComponentLevel.ELEMENT, ComponentLevel.FRAME],
     },
     // Parts can contain primitives, elements, parts, and frames
     [ComponentLevel.PART]: {

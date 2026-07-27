@@ -1,4 +1,3 @@
-import type { Workspace } from "../../model/workspace"
 import { migrateV1Baseline } from "./steps/migrate-00001-baseline"
 import { migrateV2InterfaceSwatches } from "./steps/migrate-00002-interface-swatches"
 import { migrateV3ThemeRenames } from "./steps/migrate-00003-theme-renames"
@@ -16,6 +15,8 @@ import { migrateV14EnumBooleanOption } from "./steps/migrate-00014-enum-boolean-
 import { migrateV15DisplayPlaceholderToStub } from "./steps/migrate-00015-display-placeholder-to-stub"
 import { migrateV16LayeredOverrideLength } from "./steps/migrate-00016-layered-override-length"
 import { repairBoardOrder } from "./steps/repair-board-order"
+
+import type { Workspace } from "../../model/workspace"
 
 /** Current workspace file version after migration steps on load. */
 export const CURRENT_WORKSPACE_VERSION = 16
@@ -92,6 +93,7 @@ export function migrateWorkspace(workspace: Workspace): Workspace {
     targetVersion++
   ) {
     const step = MIGRATION_STEPS[targetVersion]
+
     if (step) {
       current = step(current)
     }

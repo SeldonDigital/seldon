@@ -1,6 +1,6 @@
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
 
 /** How the picture tiles inside this layer along each axis. */
 export enum BackgroundRepeat {
@@ -28,8 +28,7 @@ export const backgroundRepeatSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(BackgroundRepeat) as string[]).includes(value),
+      typeof value === "string" && (Object.values(BackgroundRepeat) as string[]).includes(value),
   },
   presetOptions: () => Object.values(BackgroundRepeat),
 }

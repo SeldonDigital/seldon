@@ -1,4 +1,4 @@
-import { DesignSemanticsConfig } from "../types/design-semantics-types"
+import type { DesignSemanticsConfig } from "../types/design-semantics-types"
 
 /**
  * Design Semantics Configuration
@@ -29,24 +29,14 @@ export const designSemantics: DesignSemanticsConfig = {
     },
     {
       id: "direction",
-      phrases: [
-        "direction",
-        "reading direction",
-        "rtl",
-        "ltr",
-        "right to left",
-        "left to right",
-      ],
+      phrases: ["direction", "reading direction", "rtl", "ltr", "right to left", "left to right"],
       candidates: ["direction"],
       note: 'Reading direction is the "direction" property: "ltr" or "rtl". Never fake it with align, margin, padding, or float. For laying a container\'s children in a row or column, use "orientation", not direction.',
     },
     {
       id: "weight",
       phrases: ["weight", "font weight", "boldness", "emphasis", "stroke", "stroke weight"],
-      candidates: [
-        { path: "font.weight", whenLevel: ["element", "primitive"] },
-        "border.width",
-      ],
+      candidates: [{ path: "font.weight", whenLevel: ["element", "primitive"] }, "border.width"],
       note: 'Weight depends on the component: text weight is the "font" look "weight" facet (@fontWeight.*, bold, semibold, light); stroke weight is the "border" look "width" facet (@borderWidth.*).',
     },
     {
@@ -111,13 +101,30 @@ export const designSemantics: DesignSemanticsConfig = {
     },
     {
       id: "casing",
-      phrases: ["casing", "text case", "capitalization", "uppercase", "lowercase", "all caps", "caps", "capitalize"],
+      phrases: [
+        "casing",
+        "text case",
+        "capitalization",
+        "uppercase",
+        "lowercase",
+        "all caps",
+        "caps",
+        "capitalize",
+      ],
       candidates: ["font.textCase"],
       note: 'Casing is the "font" look "textCase" facet: an option "uppercase", "lowercase", "capitalize", or "normal". Do not retype the content to fake caps.',
     },
     {
       id: "decoration",
-      phrases: ["decoration", "text decoration", "underline", "strikethrough", "strike through", "line through", "overline"],
+      phrases: [
+        "decoration",
+        "text decoration",
+        "underline",
+        "strikethrough",
+        "strike through",
+        "line through",
+        "overline",
+      ],
       candidates: ["textDecoration"],
       note: 'Text decoration is the "textDecoration" property: an option "underline", "line-through", "overline", or "none".',
     },
@@ -129,7 +136,15 @@ export const designSemantics: DesignSemanticsConfig = {
     },
     {
       id: "orientation",
-      phrases: ["orientation", "layout direction", "row", "column", "stack direction", "horizontal", "vertical"],
+      phrases: [
+        "orientation",
+        "layout direction",
+        "row",
+        "column",
+        "stack direction",
+        "horizontal",
+        "vertical",
+      ],
       candidates: ["orientation"],
       note: 'Layout orientation is the "orientation" property: an option "horizontal" or "vertical". It lays a container\'s children in a row or a column. It is not reading direction (see direction).',
     },
@@ -337,7 +352,15 @@ export const designSemantics: DesignSemanticsConfig = {
 
   operations: [
     {
-      phrases: ["more space", "add space", "increase spacing", "loosen", "looser", "roomier", "spread out"],
+      phrases: [
+        "more space",
+        "add space",
+        "increase spacing",
+        "loosen",
+        "looser",
+        "roomier",
+        "spread out",
+      ],
       concept: "spacing",
       direction: "increase",
     },

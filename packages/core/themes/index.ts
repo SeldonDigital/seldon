@@ -4,13 +4,7 @@
  */
 export * from "./constants"
 export { computeTheme, normalizeTheme } from "./helpers"
-export {
-  STOCK_THEMES,
-  STOCK_THEMES_BY_ID,
-  THEMES,
-  THEMES_BY_ID,
-  defaultTheme,
-} from "./catalog"
+export { STOCK_THEMES, STOCK_THEMES_BY_ID, THEMES, THEMES_BY_ID, defaultTheme } from "./catalog"
 export { packagedThemeCatalogIds } from "./catalog-ids"
 export * from "./looks"
 export * from "./schemas"

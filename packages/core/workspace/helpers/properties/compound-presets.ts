@@ -1,7 +1,5 @@
-import { type Theme, ValueType, type Workspace } from "@seldon/core"
-import type { Properties } from "@seldon/core/properties/types/properties"
+import { ValueType } from "@seldon/core"
 import {
-  type ThemeLookPreset,
   getBuiltInLookSectionForPropertyKey,
   getThemeLookSection,
   isThemeLookPreset,
@@ -9,10 +7,8 @@ import {
   resolveBuiltInLookApplyName,
   resolveThemeLook,
 } from "@seldon/core/themes/looks"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import {
-  type BoardCompound,
   applyBoardPreset,
   buildBoardCompoundReset,
   matchBoardCompoundPreset,
@@ -27,6 +23,12 @@ import {
   getTypedNode,
   wrapCompoundPropertyValue,
 } from "./shared"
+
+import type { BoardCompound } from "../../../properties/values/layout/board"
+import type { Theme, Workspace } from "@seldon/core"
+import type { Properties } from "@seldon/core/properties/types/properties"
+import type { ThemeLookPreset } from "@seldon/core/themes/looks"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 function isResetPreset(preset: string): boolean {
   return (
@@ -50,6 +52,7 @@ function buildResetProperties(
   for (const subKey of subKeys) {
     if (subKey === "preset") continue
     const schemaSubValue = schemaLayer[subKey]
+
     facets[subKey] =
       schemaSubValue &&
       typeof schemaSubValue === "object" &&
@@ -74,6 +77,7 @@ function buildPresetProperties(
   // break that tracking. The explicit EMPTY facets also clear any prior facet
   // overrides so re-applying a look resets the compound.
   const facets: Record<string, unknown> = {}
+
   for (const subKey of subKeys) {
     facets[subKey] = { type: ValueType.EMPTY, value: null }
   }
@@ -83,9 +87,11 @@ function buildPresetProperties(
 
 function applyBoardPresetSelection(preset: string): Properties {
   const presetId = resolveBoardPresetIdFromPickerValue(preset)
+
   if (!presetId) {
     return {}
   }
+
   return { board: applyBoardPreset(presetId) }
 }
 
@@ -94,9 +100,11 @@ function layerMatchesLookParameters(
   parameters: Record<string, unknown>,
 ): boolean {
   const entries = Object.entries(parameters)
+
   if (entries.length === 0) {
     return false
   }
+
   return entries.every(([subKey, expectedValue]) =>
     compoundFacetMatches(parentLayer, subKey, expectedValue),
   )
@@ -112,22 +120,23 @@ function matchThemePreset(
     (effectiveProperties as Record<string, unknown>)[propertyKey],
     layerIndex,
   )
+
   if (!parentLayer) {
     return null
   }
 
   const presetRef = readPresetThemeLookRef(parentLayer)
+
   if (presetRef) {
     const tetheredLook = resolveThemeLook(theme, propertyKey, presetRef)
-    if (
-      tetheredLook &&
-      layerMatchesLookParameters(parentLayer, tetheredLook.parameters ?? {})
-    ) {
+
+    if (tetheredLook && layerMatchesLookParameters(parentLayer, tetheredLook.parameters ?? {})) {
       return tetheredLook.name ?? null
     }
   }
 
   const themeSection = getThemeLookSection(theme, propertyKey)
+
   if (!themeSection) {
     return null
   }
@@ -154,15 +163,13 @@ export function applyCompoundPreset(
 ): Properties {
   const node = getTypedNode(nodeId, workspace)
   const schemaProperties = getSchemaProperties(node, workspace)
-  const schemaProperty =
-    schemaProperties?.[propertyKey as keyof typeof schemaProperties]
+  const schemaProperty = schemaProperties?.[propertyKey as keyof typeof schemaProperties]
   const subKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
 
   if (isResetPreset(preset)) {
     if (propertyKey === "board") {
-      const schemaBoard = getCompoundLayerValue(schemaProperty) as
-        | BoardCompound
-        | undefined
+      const schemaBoard = getCompoundLayerValue(schemaProperty) as BoardCompound | undefined
+
       return buildBoardCompoundReset(schemaBoard)
     }
 
@@ -173,11 +180,13 @@ export function applyCompoundPreset(
     }
 
     const builtInApplyName = resolveBuiltInLookApplyName(propertyKey, preset)
+
     if (!builtInApplyName || !theme) {
       return buildResetProperties(propertyKey, subKeys, schemaProperty)
     }
 
     const builtInLook = resolveThemeLook(theme, propertyKey, builtInApplyName)
+
     if (!builtInLook) {
       return buildResetProperties(propertyKey, subKeys, schemaProperty)
     }
@@ -194,6 +203,7 @@ export function applyCompoundPreset(
   }
 
   const presetValue = resolveThemeLook(theme, propertyKey, preset)
+
   if (!presetValue) {
     return {}
   }
@@ -216,6 +226,7 @@ export function matchCompoundPreset(
       (effectiveProperties as Record<string, unknown>).board,
       layerIndex,
     ) as BoardCompound | undefined
+
     return matchBoardCompoundPreset(boardLayer)
   }
 

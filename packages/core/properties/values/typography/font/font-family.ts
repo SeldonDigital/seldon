@@ -1,11 +1,12 @@
 import { FONT_COLLECTIONS } from "../../../../font-collections/catalog"
-import { Theme, ThemeFontFamilyKey } from "../../../../themes/types"
-import { Workspace } from "../../../../workspace/types"
-import { ValueType } from "../../../constants"
-import { PropertySchema } from "../../../types/schema"
-import { EmptyValue } from "../../shared/empty/empty"
-import { StringValue } from "../../shared/exact/string"
-import { InheritValue } from "../../shared/inherit/inherit"
+
+import type { Theme, ThemeFontFamilyKey } from "../../../../themes/types"
+import type { Workspace } from "../../../../workspace/types"
+import type { ValueType } from "../../../constants"
+import type { PropertySchema } from "../../../types/schema"
+import type { EmptyValue } from "../../shared/empty/empty"
+import type { StringValue } from "../../shared/exact/string"
+import type { InheritValue } from "../../shared/inherit/inherit"
 
 /**
  * Stored option values from every packaged collection (`system` + `googleFonts`). Local
@@ -14,9 +15,7 @@ import { InheritValue } from "../../shared/inherit/inherit"
  */
 const PACKAGED_FAMILY_VALUES: ReadonlySet<string> = new Set(
   FONT_COLLECTIONS.flatMap((collection) =>
-    Object.values(collection.families).map(
-      (family) => family.stack ?? family.name,
-    ),
+    Object.values(collection.families).map((family) => family.stack ?? family.name),
   ),
 )
 
@@ -52,15 +51,8 @@ export type FontFamilyValue =
 /** Validates stored font family values. */
 export const fontFamilySchema: PropertySchema = {
   name: "fontFamily",
-  description:
-    "Sets the typeface from theme slots, the bundled list, or a custom name you type.",
-  supports: [
-    "empty",
-    "inherit",
-    "exact",
-    "option",
-    "themeCategorical",
-  ] as const,
+  description: "Sets the typeface from theme slots, the bundled list, or a custom name you type.",
+  supports: ["empty", "inherit", "exact", "option", "themeCategorical"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
@@ -68,10 +60,12 @@ export const fontFamilySchema: PropertySchema = {
     option: (value: unknown) => {
       if (typeof value !== "string" || value.length === 0) return false
       if (value.startsWith("@fontFamily.")) return true
+
       return PACKAGED_FAMILY_VALUES.has(value)
     },
     themeCategorical: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
+
       return (Object.keys(theme.fontFamily.parameters) as string[]).some(
         (id) => value === `@fontFamily.${id}`,
       )

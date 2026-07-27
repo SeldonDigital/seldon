@@ -1,11 +1,13 @@
 import { themeTokenRefIsValid } from "../../../helpers/theme/get-theme-key-components"
-import { Theme, ThemeCornersKey } from "../../../themes/types"
-import { Unit, ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { PercentageValue } from "../shared/exact/percentage"
-import { PixelValue } from "../shared/exact/pixel"
-import { RemValue } from "../shared/exact/rem"
+import { Unit } from "../../constants"
+
+import type { Theme, ThemeCornersKey } from "../../../themes/types"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
+import type { PercentageValue } from "../shared/exact/percentage"
+import type { PixelValue } from "../shared/exact/pixel"
+import type { RemValue } from "../shared/exact/rem"
 
 /** Fixed picks for a curved corner look or square corners. */
 export enum Corner {
@@ -65,6 +67,7 @@ export const cornersSchema: PropertySchema = {
     exact: (value: unknown) => {
       if (typeof value === "object" && value !== null) {
         const o = value as { value?: unknown; unit?: unknown }
+
         if (
           typeof o.value === "number" &&
           o.value >= 0 &&
@@ -73,16 +76,15 @@ export const cornersSchema: PropertySchema = {
           return true
         }
       }
+
       if (typeof value === "number" && value >= 0) return true
+
       return false
     },
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Corner) as string[]).includes(value),
-    themeOrdinal: (value: unknown, theme?: Theme) =>
-      themeTokenRefIsValid(value, theme, "corners"),
+      typeof value === "string" && (Object.values(Corner) as string[]).includes(value),
+    themeOrdinal: (value: unknown, theme?: Theme) => themeTokenRefIsValid(value, theme, "corners"),
   },
   presetOptions: () => Object.values(Corner),
-  themeOrdinalKeys: (theme: Theme) =>
-    Object.keys(theme.corners).map((id) => `@corners.${id}`),
+  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.corners).map((id) => `@corners.${id}`),
 }

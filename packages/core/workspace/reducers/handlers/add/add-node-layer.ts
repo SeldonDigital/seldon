@@ -1,9 +1,10 @@
 import { produce } from "immer"
 
-import { ExtractPayload, Workspace } from "../../../../index"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import { readNodeLayerArray } from "../shared/node-layers"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Appends one paint layer to a node's `background` / `shadow` stack. The new
@@ -18,13 +19,16 @@ export function addNodeLayer(
   workspace: Workspace,
 ): Workspace {
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
+
   if (!node || !isEntryNodeForRules(node)) return workspace
 
   const layers = readNodeLayerArray(payload.nodeId, payload.property, workspace)
+
   layers.push(payload.seed ? { ...payload.seed } : {})
 
   return produce(workspace, (draft) => {
     const draftNode = getWorkspaceNodes(draft)[payload.nodeId]
+
     if (!draftNode) return
     ;(draftNode.overrides as Record<string, unknown>)[payload.property] = layers
   })

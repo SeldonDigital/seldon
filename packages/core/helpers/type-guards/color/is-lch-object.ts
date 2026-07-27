@@ -1,4 +1,4 @@
-import { LCH } from "../../../index"
+import type { LCH } from "../../../index"
 
 /**
  * Type guard that checks if a value is a valid LCH color object

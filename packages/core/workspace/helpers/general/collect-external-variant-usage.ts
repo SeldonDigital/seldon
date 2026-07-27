@@ -1,14 +1,15 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId } from "../../../components/constants"
 import { hasVariants } from "../../../components/types"
 import { isComponentBoard } from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
-import type { Workspace } from "../../types"
 import {
   componentBoardDefaultNodeId,
   componentBoardSchemaVariantNodeId,
 } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
+
+import type { ComponentId } from "../../../components/constants"
+import type { Workspace } from "../../types"
 
 /** A variant on the reset board that another board still references. */
 export interface ExternalVariantUsage {
@@ -33,10 +34,12 @@ export function collectExternalVariantUsage(
   workspace: Workspace,
 ): ExternalVariantUsage[] {
   const board = workspace.boards[boardKey]
+
   if (!board || !isComponentBoard(board)) return []
 
   const schema = getComponentSchema(board.catalogId as ComponentId)
   const recreatedIds = new Set<string>([componentBoardDefaultNodeId(boardKey)])
+
   if (hasVariants(schema)) {
     for (const variant of schema.variants) {
       recreatedIds.add(componentBoardSchemaVariantNodeId(boardKey, variant.id))
@@ -46,17 +49,20 @@ export function collectExternalVariantUsage(
   const removeSet = new Set(
     board.variants.map((ref) => ref.id).filter((id) => !recreatedIds.has(id)),
   )
+
   if (removeSet.size === 0) return []
 
   // Map every tree node id to the board that lists it, and collect the ids that
   // belong to the board being reset so its own references are skipped.
   const nodeOwnerKey = new Map<string, string>()
   const inBoardNodeIds = new Set<string>()
+
   for (const [otherKey, otherBoard] of Object.entries(workspace.boards)) {
     walkBoardTreeRefs(otherBoard.variants, (ref) => {
       if (!nodeOwnerKey.has(ref.id)) {
         nodeOwnerKey.set(ref.id, otherKey)
       }
+
       if (otherKey === boardKey) {
         inBoardNodeIds.add(ref.id)
       }
@@ -68,6 +74,7 @@ export function collectExternalVariantUsage(
 
   const addIssue = (usingBoardKey: string, variantId: string) => {
     const key = `${usingBoardKey}:${variantId}`
+
     if (seen.has(key)) return
     seen.add(key)
     issues.push({
@@ -92,8 +99,10 @@ export function collectExternalVariantUsage(
   for (const [nodeId, node] of Object.entries(workspace.nodes)) {
     if (inBoardNodeIds.has(nodeId)) continue
     const link = parseNodeLink(node.template)
+
     if (!link || !removeSet.has(link.nodeId)) continue
     const owningBoardKey = nodeOwnerKey.get(nodeId)
+
     if (!owningBoardKey || owningBoardKey === boardKey) continue
     addIssue(owningBoardKey, link.nodeId)
   }

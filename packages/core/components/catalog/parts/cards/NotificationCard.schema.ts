@@ -1,22 +1,14 @@
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Notification Card",
   id: Seldon.ComponentId.NOTIFICATION_CARD,
   intent:
     "Interrupting alert card with a status icon, title, short message, timestamp, and at most two quiet actions.",
-  tags: [
-    "card",
-    "notification",
-    "alert",
-    "toast",
-    "message",
-    "snackbar",
-    "status",
-    "UI",
-  ],
+  tags: ["card", "notification", "alert", "toast", "message", "snackbar", "status", "UI"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -282,8 +274,7 @@ export const schema = {
     {
       id: "success",
       label: "Success",
-      intent:
-        "Positive confirmation toast with a success icon and a single acknowledge action.",
+      intent: "Positive confirmation toast with a success icon and a single acknowledge action.",
       children: [
         {
           component: Seldon.ComponentId.ICON,
@@ -382,8 +373,7 @@ export const schema = {
     {
       id: "alertNotification",
       label: "Alert",
-      intent:
-        "Warning alert with a status icon, message, and two actions for dismiss or act.",
+      intent: "Warning alert with a status icon, message, and two actions for dismiss or act.",
       overrides: {
         orientation: {
           type: Sdn.ValueType.OPTION,

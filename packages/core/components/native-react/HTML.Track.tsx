@@ -1,7 +1,5 @@
-import { TrackHTMLAttributes } from "react"
+import type { TrackHTMLAttributes } from "react"
 
-export const HTMLTrack = ({
-  ...props
-}: TrackHTMLAttributes<HTMLTrackElement>) => {
+export const HTMLTrack = ({ ...props }: TrackHTMLAttributes<HTMLTrackElement>) => {
   return <track {...props} />
 }

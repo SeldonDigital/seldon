@@ -4,12 +4,6 @@ import { ValueType } from "@seldon/core"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  ComponentBoard,
-  ExtractPayload,
-  Properties,
-  Workspace,
-} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { getPropertyStatus } from "./property-status"
@@ -29,6 +23,8 @@ import {
   propertyValuesMatch,
   wrapCompoundPropertyValue,
 } from "./shared"
+
+import type { ComponentBoard, ExtractPayload, Properties, Workspace } from "../../../index"
 
 const exact = (value: unknown) => ({ type: ValueType.EXACT, value })
 const empty = { type: ValueType.EMPTY, value: null }
@@ -68,9 +64,7 @@ describe("compound layer access", () => {
 
 describe("property path builders", () => {
   it("builds layered and plain compound paths", () => {
-    expect(compoundSubPropertyPath("background", "color", 1)).toBe(
-      "background.1.color",
-    )
+    expect(compoundSubPropertyPath("background", "color", 1)).toBe("background.1.color")
     expect(compoundSubPropertyPath("border", "width")).toBe("border.width")
     expect(layeredParentPropertyPath("background", 0)).toBe("background")
     expect(layeredParentPropertyPath("background", 2)).toBe("background.2")
@@ -92,15 +86,14 @@ describe("value matching", () => {
     expect(propertyValuesMatch(exact(5), exact(5))).toBe(true)
     expect(propertyValuesMatch(exact(5), 6)).toBe(false)
     expect(propertyValuesMatch("not-typed", empty)).toBe(true)
-    expect(compoundFacetMatches({ color: exact("red") }, "color", "red")).toBe(
-      true,
-    )
+    expect(compoundFacetMatches({ color: exact("red") }, "color", "red")).toBe(true)
   })
 })
 
 describe("schema and category helpers", () => {
   it("detects schema sub-properties and shorthand keys", () => {
     const schema = { border: { width: exact(1) } } as unknown as Properties
+
     expect(hasSchemaSubProperty(schema, "border", "width")).toBe(true)
     expect(hasSchemaSubProperty(schema, "border", "color")).toBe(false)
     expect(isShorthandProperty("margin")).toBe(true)
@@ -130,7 +123,9 @@ describe("getPropertyStatus", () => {
   it("returns valid statuses for every key on a node", () => {
     const status = getPropertyStatus(rootId, ws)
     const keys = Object.keys(status)
+
     expect(keys.length).toBeGreaterThan(0)
+
     for (const value of Object.values(status)) {
       expect(["set", "unset", "override", "not used"]).toContain(value)
     }

@@ -1,9 +1,10 @@
 import { produce } from "immer"
 
-import { Workspace } from "../../../../index"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
-import type { ThemeCustomTokenSection, WorkspaceAction } from "../../types"
 import { removeCustomToken } from "../shared/theme-custom-token"
+
+import type { Workspace } from "../../../../index"
+import type { ThemeCustomTokenSection, WorkspaceAction } from "../../types"
 
 type RemoveThemeCustomTokenPayload = Extract<
   WorkspaceAction,
@@ -22,6 +23,7 @@ export function removeThemeCustomToken(
 ): Workspace {
   return produce(workspace, (draft) => {
     const entry = draft.themes[payload.themeId]
+
     if (!entry || isEntryThemeDefault(entry)) return
     removeCustomToken(entry, section, payload.key)
   })

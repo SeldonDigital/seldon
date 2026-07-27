@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { setNodeTheme } from "./set-node-theme"
+
+import type { ExtractPayload } from "../../../../index"
 
 const themeId = "theme-seldon-default"
 

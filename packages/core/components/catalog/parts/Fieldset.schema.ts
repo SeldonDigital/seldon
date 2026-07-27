@@ -1,22 +1,14 @@
 import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Fieldset",
   id: Seldon.ComponentId.FIELDSET,
   intent:
     "Generic form field grouping component schema used to logically separate sections within forms.",
-  tags: [
-    "form",
-    "fieldset",
-    "ui",
-    "group",
-    "input",
-    "layout",
-    "section",
-    "fields",
-  ],
+  tags: ["form", "fieldset", "ui", "group", "input", "layout", "section", "fields"],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {

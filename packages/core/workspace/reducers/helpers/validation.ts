@@ -1,5 +1,6 @@
-import type { ComponentId } from "../../../components/constants"
 import { validateComponentCanBeInserted } from "../../middleware/validation/validators"
+
+import type { ComponentId } from "../../../components/constants"
 import type { InstanceId, VariantId, Workspace } from "../../types"
 
 export interface ValidationResult {
@@ -16,11 +17,8 @@ export function validateComponentInsertionForUI(
   targetNodeId: VariantId | InstanceId,
   workspace: Workspace,
 ): ValidationResult {
-  const result = validateComponentCanBeInserted(
-    componentId,
-    targetNodeId,
-    workspace,
-  )
+  const result = validateComponentCanBeInserted(componentId, targetNodeId, workspace)
+
   return {
     isValid: result.isValid,
     errors: result.errors,

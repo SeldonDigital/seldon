@@ -1,11 +1,8 @@
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-  isPlaygroundBoard,
-} from "../../model/components"
-import { EntryNode, Workspace } from "../../types"
+import { isAuthoredBoard, isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 import { getVariantById } from "./get-variant-by-id"
+
+import type { EntryNode, Workspace } from "../../types"
 
 /**
  * Retrieves all variant nodes from all boards in the workspace.
@@ -22,14 +19,9 @@ export function getAllVariants(
 ): (EntryNode & { type: "default" | "variant" })[] {
   return Object.values(workspace.boards)
     .filter(
-      (board) =>
-        isComponentBoard(board) ||
-        isAuthoredBoard(board) ||
-        isPlaygroundBoard(board),
+      (board) => isComponentBoard(board) || isAuthoredBoard(board) || isPlaygroundBoard(board),
     )
     .flatMap((board) =>
-      getBoardVariantRootIds(board).map((variantId) =>
-        getVariantById(variantId, workspace),
-      ),
+      getBoardVariantRootIds(board).map((variantId) => getVariantById(variantId, workspace)),
     )
 }

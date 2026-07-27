@@ -1,6 +1,6 @@
-import { ValueType } from "../../constants"
-import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
+import type { ValueType } from "../../constants"
+import type { PropertySchema } from "../../types/schema"
+import type { EmptyValue } from "../shared/empty/empty"
 
 /** Reading order for text and child layout that follows writing direction. */
 export enum Direction {
@@ -25,8 +25,7 @@ export const directionSchema: PropertySchema = {
     empty: () => true,
     inherit: () => true,
     option: (value: unknown) =>
-      typeof value === "string" &&
-      (Object.values(Direction) as string[]).includes(value),
+      typeof value === "string" && (Object.values(Direction) as string[]).includes(value),
   },
   presetOptions: () => [
     { value: Direction.LTR, name: "Left to Right" },

@@ -15,8 +15,5 @@ export { colorspaceLiteralToHsl, parseColorspaceLiteral } from "./colorspaces"
 export { getDynamicSwatchName } from "./get-dynamic-swatch-names"
 export { instantiateTheme, type PresetThemesById } from "./instantiate-theme"
 export { normalizeThemeInput } from "./normalize-theme"
-export {
-  normalizeThemeExactValue,
-  normalizeThemeNumber,
-} from "./normalize-theme-value"
+export { normalizeThemeExactValue, normalizeThemeNumber } from "./normalize-theme-value"
 export { normalizeThemeSwatchParameters } from "./normalize-theme-swatch-parameters"

@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react"
+import type { HTMLAttributes } from "react"
 
 export const HTMLCode = (props: HTMLAttributes<HTMLElement>) => {
   return <code {...props} />

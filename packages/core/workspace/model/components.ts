@@ -151,9 +151,7 @@ export function isThemeBoard(entry: Board): entry is ThemeBoard {
   return entry.type === "theme"
 }
 
-export function isFontCollectionBoard(
-  entry: Board,
-): entry is FontCollectionBoard {
+export function isFontCollectionBoard(entry: Board): entry is FontCollectionBoard {
   return entry.type === "font-collection"
 }
 

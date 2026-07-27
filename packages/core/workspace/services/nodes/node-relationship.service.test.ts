@@ -1,16 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type {
-  ComponentBoard,
-  ExtractPayload,
-  Instance,
-  Variant,
-  Workspace,
-} from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { nodeRelationshipService as svc } from "./node-relationship.service"
+
+import type { ComponentBoard, ExtractPayload, Instance, Variant, Workspace } from "../../../index"
 
 const boardKey = ComponentId.BUTTON
 const ws: Workspace = addComponent(
@@ -54,18 +49,15 @@ describe("ancestry", () => {
   })
 
   it("hasAncestorWithComponentId matches the button ancestor and board", () => {
-    expect(
-      svc.hasAncestorWithComponentId(ComponentId.BUTTON, instance, ws),
-    ).toBe(true)
-    expect(svc.hasAncestorWithComponentId(ComponentId.BUTTON, board, ws)).toBe(
-      true,
-    )
+    expect(svc.hasAncestorWithComponentId(ComponentId.BUTTON, instance, ws)).toBe(true)
+    expect(svc.hasAncestorWithComponentId(ComponentId.BUTTON, board, ws)).toBe(true)
   })
 })
 
 describe("getComponentName", () => {
   it("resolves the schema name from a component id and a node id", () => {
     const fromCatalog = svc.getComponentName(ComponentId.BUTTON, ws)
+
     expect(fromCatalog.length).toBeGreaterThan(0)
     expect(svc.getComponentName(rootId, ws)).toBe(fromCatalog)
   })

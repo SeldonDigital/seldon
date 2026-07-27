@@ -6,6 +6,7 @@ import { getThemeOption } from "./get-theme-option"
 describe("getThemeOption", () => {
   it("resolves an ordinal scale token", () => {
     const option = getThemeOption("@fontSize.medium", defaultTheme)
+
     expect(option).toBeDefined()
     expect(typeof option).toBe("object")
   })

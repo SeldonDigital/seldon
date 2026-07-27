@@ -1,9 +1,5 @@
 /** The four border sides that can be shown individually in the inspector. */
-export type BorderSideKey =
-  | "borderTop"
-  | "borderRight"
-  | "borderBottom"
-  | "borderLeft"
+export type BorderSideKey = "borderTop" | "borderRight" | "borderBottom" | "borderLeft"
 
 /** Ordered list of the per-side border keys. */
 export const BORDER_SIDE_KEYS: readonly BorderSideKey[] = [

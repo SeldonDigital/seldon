@@ -5,9 +5,7 @@ import { customAlphabet } from "nanoid"
  * @returns A unique node identifier string
  */
 export function createNodeId() {
-  const nanoid = customAlphabet(
-    "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-  )
+  const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
   return nanoid(8)
 }

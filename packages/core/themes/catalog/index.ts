@@ -1,6 +1,4 @@
 import { computeTheme } from "../helpers/compute-theme"
-import type { ComputedTheme, StockTheme } from "../types/theme"
-import type { ThemeTemplateId } from "../types/theme-id"
 import { theme as adobeSpectrumStock } from "./adobe-spectrum"
 import { theme as earthStock } from "./earth"
 import { theme as googleMaterialStock } from "./google-material"
@@ -11,6 +9,9 @@ import { theme as popPunkStock } from "./pop-punk"
 import { theme as defaultStock } from "./seldon"
 import { theme as sunsetBlueStock } from "./sunset-blue"
 import { theme as wildberryStock } from "./wildberry"
+
+import type { ComputedTheme, StockTheme } from "../types/theme"
+import type { ThemeTemplateId } from "../types/theme-id"
 
 /** Packaged stock theme definitions (`catalog/*.ts`), display order. */
 export const STOCK_THEMES: StockTheme[] = [
@@ -33,9 +34,10 @@ export const STOCK_THEMES_BY_ID = Object.fromEntries(
 /** Computed packaged themes, same order as `STOCK_THEMES`. */
 export const THEMES: ComputedTheme[] = STOCK_THEMES.map(computeTheme)
 
-export const THEMES_BY_ID = Object.fromEntries(
-  THEMES.map((theme) => [theme.id, theme]),
-) as Record<ThemeTemplateId, ComputedTheme>
+export const THEMES_BY_ID = Object.fromEntries(THEMES.map((theme) => [theme.id, theme])) as Record<
+  ThemeTemplateId,
+  ComputedTheme
+>
 
 /** Computed Seldon theme, the shipped default preset. */
 export const defaultTheme: ComputedTheme = THEMES_BY_ID.seldon

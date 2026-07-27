@@ -1,11 +1,12 @@
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../../font-collections/catalog"
-import type { EntryFontCollection } from "../../../model/entry-font-collection"
 import { formatFontCollectionCatalog } from "../../../model/template-ref"
-import type { Workspace } from "../../../model/workspace"
 import {
   readFamilyVariantSelection,
   setFamilyVariantPreset,
 } from "../../../reducers/handlers/shared/font-collection-variant-selection"
+
+import type { EntryFontCollection } from "../../../model/entry-font-collection"
+import type { Workspace } from "../../../model/workspace"
 
 /**
  * v4: enable Google font families that became defaults after a workspace was
@@ -32,19 +33,21 @@ function googleFontEntries(workspace: Workspace): EntryFontCollection[] {
 }
 
 /** Slots to enable on an entry: requested families it does not select yet. */
-function pendingFamilies(
-  entry: EntryFontCollection,
-  families: Set<string>,
-): [string, string[]][] {
+function pendingFamilies(entry: EntryFontCollection, families: Set<string>): [string, string[]][] {
   const stock = STOCK_FONT_COLLECTIONS_BY_ID["googleFonts"]
   const pending: [string, string[]][] = []
+
   for (const [slot, family] of Object.entries(stock.families)) {
     if (!family.variants || family.variants.length === 0) continue
     if (!families.has(family.name)) continue
-    if (Object.keys(readFamilyVariantSelection(entry, slot)).length > 0)
+
+    if (Object.keys(readFamilyVariantSelection(entry, slot)).length > 0) {
       continue
+    }
+
     pending.push([slot, family.variants])
   }
+
   return pending
 }
 
@@ -53,13 +56,11 @@ function pendingFamilies(
  * all available variants. Skips families an entry already selects, so it never
  * clobbers a user's own selection. Shared by the versioned font backfill steps.
  */
-export function enableGoogleFontFamilies(
-  workspace: Workspace,
-  families: Set<string>,
-): Workspace {
+export function enableGoogleFontFamilies(workspace: Workspace, families: Set<string>): Workspace {
   const applies = googleFontEntries(workspace).some(
     (entry) => pendingFamilies(entry, families).length > 0,
   )
+
   if (!applies) return workspace
 
   const next = structuredClone(workspace)

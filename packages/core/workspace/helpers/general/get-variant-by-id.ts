@@ -1,7 +1,8 @@
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
-import { EntryNode, EntryNodeId, Workspace } from "../../types"
 import { isVariantNode } from "../nodes/is-variant-node"
+
+import type { EntryNode, EntryNodeId, Workspace } from "../../types"
 
 /**
  * Retrieves a variant node by its ID, ensuring it's not an instance.
@@ -15,10 +16,12 @@ export function getVariantById(
   workspace: Workspace,
 ): EntryNode & { type: "default" | "variant" } {
   const node = workspace.nodes[targetId]
+
   invariant(node, ErrorMessages.variantNotFound(targetId))
 
   if (!isVariantNode(node)) {
     throw new Error(ErrorMessages.nodeNotVariant(targetId))
   }
+
   return node
 }

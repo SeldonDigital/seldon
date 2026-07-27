@@ -7,19 +7,16 @@ import { getDynamicSwatchName } from "../../compute/get-dynamic-swatch-names"
 import { SCALE_STEP_SECTIONS } from "../../constants/scale-sections"
 import { getReservedTokenKeys } from "../../helpers/reserved-token-names"
 import { LOOK_FACETS, isBridgedLookFacet } from "../../looks/look-facets"
+import { THEME_INTERFACE_SLOTS, THEME_PALETTE_SLOTS, isDynamicSwatchToken } from "../../values"
+import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
+import { COMPUTED_GROUPS } from "./theme-computed"
+import { SCALE_STEP_ROW_CONTROL } from "./theme-static-schemas"
+
 import type { LookFacetEntry, LookSection } from "../../looks/look-facets"
 import type { ThemeTokenSchemaUnresolved } from "../../types/schema"
 import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type { StockThemeSwatch, ThemeSwatch } from "../../values"
-import {
-  THEME_INTERFACE_SLOTS,
-  THEME_PALETTE_SLOTS,
-  isDynamicSwatchToken,
-} from "../../values"
-import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
-import { COMPUTED_GROUPS } from "./theme-computed"
 import type { ComputedGroupFacet } from "./theme-computed"
-import { SCALE_STEP_ROW_CONTROL } from "./theme-static-schemas"
 
 export type ThemeOrStock = StockTheme | ComputedTheme
 
@@ -36,9 +33,7 @@ const CUSTOM_SCALE_ORDER_BASE = 1000
 /**
  * Tells whether a section gets dynamic scale rows for its custom tokens.
  */
-export function isScaleSchemaSection(
-  section: string,
-): section is ScaleSchemaSection {
+export function isScaleSchemaSection(section: string): section is ScaleSchemaSection {
   return (
     (SCALE_STEP_SECTIONS as readonly string[]).includes(section) ||
     (SCALE_BARE_SECTIONS as readonly string[]).includes(section)
@@ -56,6 +51,7 @@ export function generateScaleSchemas(
   section: ScaleSchemaSection,
 ): ThemeTokenSchemaUnresolved[] {
   const table = (theme as unknown as Record<string, unknown>)[section]
+
   if (!table || typeof table !== "object") return []
 
   const reserved = new Set(getReservedTokenKeys(section))
@@ -63,11 +59,11 @@ export function generateScaleSchemas(
 
   const schemas: ThemeTokenSchemaUnresolved[] = []
   let order = CUSTOM_SCALE_ORDER_BASE
-  for (const [key, cell] of Object.entries(
-    table as Record<string, { name?: string }>,
-  )) {
+
+  for (const [key, cell] of Object.entries(table as Record<string, { name?: string }>)) {
     if (reserved.has(key)) continue
     const label = cell?.name?.trim() || key
+
     schemas.push(
       finalizeThemeTokenSchema({
         key: isBare ? `${section}.${key}` : `${section}.${key}.step`,
@@ -81,6 +77,7 @@ export function generateScaleSchemas(
       }),
     )
   }
+
   return schemas
 }
 
@@ -92,15 +89,15 @@ export function generateScaleSchemas(
  * and is finalized here. The parent label comes from the group cell `name`,
  * falling back to the group's default label.
  */
-export function generateComputedSchemas(
-  theme: ThemeOrStock,
-): ThemeTokenSchemaUnresolved[] {
+export function generateComputedSchemas(theme: ThemeOrStock): ThemeTokenSchemaUnresolved[] {
   const schemas: ThemeTokenSchemaUnresolved[] = []
   const themeObj = theme as unknown as Record<string, { name?: string }>
 
   let order = 0
+
   for (const group of COMPUTED_GROUPS) {
     const cell = themeObj[group.key]
+
     schemas.push({
       key: group.key,
       label: cell?.name?.trim() || group.label,
@@ -132,13 +129,11 @@ export function generateComputedSchemas(
   return schemas
 }
 
-function swatchSchemaLabel(
-  swatch: StockThemeSwatch | ThemeSwatch,
-  theme: ThemeOrStock,
-): string {
+function swatchSchemaLabel(swatch: StockThemeSwatch | ThemeSwatch, theme: ThemeOrStock): string {
   if (isDynamicSwatchToken(swatch)) {
     return getDynamicSwatchName(swatch.role, theme)
   }
+
   return (swatch as ThemeSwatch).name ?? ""
 }
 
@@ -163,15 +158,10 @@ function swatchSchemaLabel(
  * drives the editor's parent/child nesting; the trailing segment is the swatch
  * id read from `theme.swatch`.
  */
-export function generateSwatchSchemas(
-  theme: ThemeOrStock,
-): ThemeTokenSchemaUnresolved[] {
+export function generateSwatchSchemas(theme: ThemeOrStock): ThemeTokenSchemaUnresolved[] {
   const schemas: ThemeTokenSchemaUnresolved[] = []
   let order = 0
-  const swatchTable = theme.swatch as Record<
-    string,
-    StockThemeSwatch | ThemeSwatch
-  >
+  const swatchTable = theme.swatch as Record<string, StockThemeSwatch | ThemeSwatch>
 
   const harmonySlots = THEME_PALETTE_SLOTS as readonly string[]
   const interfaceSlots = THEME_INTERFACE_SLOTS as readonly string[]
@@ -189,12 +179,9 @@ export function generateSwatchSchemas(
     })
   }
 
-  const pushSwatchRow = (
-    group: string,
-    swatchId: string,
-    controlType?: "color",
-  ) => {
+  const pushSwatchRow = (group: string, swatchId: string, controlType?: "color") => {
     const swatch = swatchTable[swatchId]
+
     if (!swatch) return
     schemas.push({
       key: `swatch.${group}.${swatchId}`,
@@ -208,6 +195,7 @@ export function generateSwatchSchemas(
   }
 
   pushGroup("harmony", "Harmony")
+
   for (const swatchId of harmonySlots) {
     pushSwatchRow("harmony", swatchId)
   }
@@ -215,11 +203,13 @@ export function generateSwatchSchemas(
   // Interface swatches are author-fixed colors, so their rows edit the raw color
   // value directly instead of picking a theme token.
   pushGroup("interface", "Interface")
+
   for (const swatchId of interfaceSlots) {
     pushSwatchRow("interface", swatchId, "color")
   }
 
   pushGroup("custom", "Custom")
+
   for (const key of Object.keys(swatchTable)) {
     if (reservedSlots.has(key)) continue
     pushSwatchRow("custom", key)
@@ -243,12 +233,12 @@ export function generateLookSchemas(
   const schemas: ThemeTokenSchemaUnresolved[] = []
   const facets = LOOK_FACETS[section] as readonly LookFacetEntry[]
   const stride = facets.length + 1
-  const lookTable = (
-    theme as unknown as Record<string, Record<string, { name?: string }>>
-  )[section]
+  const lookTable = (theme as unknown as Record<string, Record<string, { name?: string }>>)[section]
+
   if (!lookTable) return schemas
 
   let index = 0
+
   for (const [lookId, look] of Object.entries(lookTable)) {
     if (!look) continue
     const baseOrder = index * stride
@@ -272,6 +262,7 @@ export function generateLookSchemas(
         isSubProperty: true,
         ...(facet.icon ? { icon: facet.icon } : {}),
       }
+
       if (isBridgedLookFacet(facet)) {
         schemas.push({ ...base, propertyKey: facet.propertyKey })
       } else {

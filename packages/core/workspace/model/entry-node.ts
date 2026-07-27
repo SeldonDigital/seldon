@@ -7,13 +7,7 @@ export type EntryNodeType = "default" | "variant" | "instance" | "authored"
 
 export type EntryNodePropertyOverrides = Properties
 
-export type EntryNodeLevel =
-  | "screen"
-  | "module"
-  | "part"
-  | "element"
-  | "primitive"
-  | "frame"
+export type EntryNodeLevel = "screen" | "module" | "part" | "element" | "primitive" | "frame"
 
 export type EntryNodeThemeRef = string
 
@@ -49,21 +43,15 @@ export interface EntryNode {
   __editor?: Record<string, unknown>
 }
 
-export function isEntryNodeDefault(
-  entry: EntryNode,
-): entry is EntryNode & { type: "default" } {
+export function isEntryNodeDefault(entry: EntryNode): entry is EntryNode & { type: "default" } {
   return entry.type === "default"
 }
 
-export function isEntryNodeVariant(
-  entry: EntryNode,
-): entry is EntryNode & { type: "variant" } {
+export function isEntryNodeVariant(entry: EntryNode): entry is EntryNode & { type: "variant" } {
   return entry.type === "variant"
 }
 
-export function isEntryNodeInstance(
-  entry: EntryNode,
-): entry is EntryNode & { type: "instance" } {
+export function isEntryNodeInstance(entry: EntryNode): entry is EntryNode & { type: "instance" } {
   return entry.type === "instance"
 }
 
@@ -72,8 +60,6 @@ export function isEntryNodeInstance(
  * authored component board. It is schema-free and freely editable, so it is
  * neither catalog-locked like a default variant nor reset-to-catalog capable.
  */
-export function isEntryNodeAuthored(
-  entry: EntryNode,
-): entry is EntryNode & { type: "authored" } {
+export function isEntryNodeAuthored(entry: EntryNode): entry is EntryNode & { type: "authored" } {
   return entry.type === "authored"
 }

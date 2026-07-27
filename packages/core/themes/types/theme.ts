@@ -1,10 +1,10 @@
 /**
  * `StockTheme` — packaged theme schema in `stock/` (incl. dynamic palette slots); `Theme` — computed tokens from `computeTheme`.
  */
-import { IconSetId } from "../../icon-sets"
-import { ColorValue } from "../../properties/values/appearance/color"
-import { SizeValue } from "../../properties/values/appearance/size"
-import {
+import type { IconSetId } from "../../icon-sets"
+import type { ColorValue } from "../../properties/values/appearance/color"
+import type { SizeValue } from "../../properties/values/appearance/size"
+import type {
   StockThemeSwatch,
   ThemeAutoFit,
   ThemeBorder,
@@ -27,9 +27,9 @@ import {
   ThemeShadow,
   ThemeSwatch,
 } from "../values"
-import { ThemeTokenTable } from "./helpers"
-import { ThemeInstanceId, ThemeTemplateId } from "./theme-id"
-import {
+import type { ThemeTokenTable } from "./helpers"
+import type { ThemeInstanceId, ThemeTemplateId } from "./theme-id"
+import type {
   StockThemeBorderId,
   StockThemeFontId,
   StockThemeGradientId,
@@ -83,10 +83,7 @@ export type StockThemeSwatches = ThemeTokenTable<
 > &
   Partial<
     Record<
-      Exclude<
-        ThemeInterfaceSwatchId,
-        "background" | "foreground" | "offBlack" | "offWhite"
-      >,
+      Exclude<ThemeInterfaceSwatchId, "background" | "foreground" | "offBlack" | "offWhite">,
       StockThemeSwatch
     >
   >
@@ -139,11 +136,7 @@ type BaseTheme<
 }
 
 /** Packaged theme schema (`stock/`); palette slots use `StockThemeSwatch` (incl. `TokenType.DYNAMIC_SWATCH`). */
-export type StockTheme = BaseTheme<
-  StockThemeSwatches,
-  ThemeTemplateId,
-  StockThemeLookTableIdMap
->
+export type StockTheme = BaseTheme<StockThemeSwatches, ThemeTemplateId, StockThemeLookTableIdMap>
 
 /** Complete theme in memory, including generated swatch slots and optional `custom` id. */
 export type ComputedTheme = BaseTheme<

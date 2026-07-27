@@ -8,12 +8,8 @@
  */
 import { invariant } from "../../helpers/utils/invariant"
 import { ComponentId } from "../constants"
-import { ComponentExport, ComponentSchema } from "../types"
 // Boards
-import {
-  exportConfig as boardExportConfig,
-  schema as boardSchema,
-} from "./boards/Board.schema"
+import { exportConfig as boardExportConfig, schema as boardSchema } from "./boards/Board.schema"
 import {
   exportConfig as toggleSwitchExportConfig,
   schema as toggleSwitchSchema,
@@ -31,10 +27,7 @@ import {
   exportConfig as calendarDayExportConfig,
   schema as calendarDaySchema,
 } from "./elements/CalendarDay.schema"
-import {
-  exportConfig as chipExportConfig,
-  schema as chipSchema,
-} from "./elements/Chip.schema"
+import { exportConfig as chipExportConfig, schema as chipSchema } from "./elements/Chip.schema"
 import {
   exportConfig as colorChipExportConfig,
   schema as colorChipSchema,
@@ -55,14 +48,8 @@ import {
   exportConfig as headerExportConfig,
   schema as headerSchema,
 } from "./elements/Header.schema"
-import {
-  exportConfig as itemExportConfig,
-  schema as itemSchema,
-} from "./elements/Item.schema"
-import {
-  exportConfig as listExportConfig,
-  schema as listSchema,
-} from "./elements/List.schema"
+import { exportConfig as itemExportConfig, schema as itemSchema } from "./elements/Item.schema"
+import { exportConfig as listExportConfig, schema as listSchema } from "./elements/List.schema"
 import {
   exportConfig as listboxOptionExportConfig,
   schema as listboxOptionSchema,
@@ -75,10 +62,7 @@ import {
   exportConfig as messageExportConfig,
   schema as messageSchema,
 } from "./elements/Message.schema"
-import {
-  exportConfig as navExportConfig,
-  schema as navSchema,
-} from "./elements/Nav.schema"
+import { exportConfig as navExportConfig, schema as navSchema } from "./elements/Nav.schema"
 import {
   exportConfig as optionGroupExportConfig,
   schema as optionGroupSchema,
@@ -124,10 +108,7 @@ import {
   exportConfig as containerExportConfig,
   schema as containerSchema,
 } from "./frames/Container.schema"
-import {
-  exportConfig as frameExportConfig,
-  schema as frameSchema,
-} from "./frames/Frame.schema"
+import { exportConfig as frameExportConfig, schema as frameSchema } from "./frames/Frame.schema"
 import {
   exportConfig as sandboxExportConfig,
   schema as sandboxSchema,
@@ -136,18 +117,12 @@ import {
   exportConfig as calendarExportConfig,
   schema as calendarSchema,
 } from "./modules/Calendar.schema"
-import {
-  exportConfig as panelsExportConfig,
-  schema as panelsSchema,
-} from "./modules/Panels.schema"
+import { exportConfig as panelsExportConfig, schema as panelsSchema } from "./modules/Panels.schema"
 import {
   exportConfig as sidebarExportConfig,
   schema as sidebarSchema,
 } from "./modules/Sidebar.schema"
-import {
-  exportConfig as tableExportConfig,
-  schema as tableSchema,
-} from "./modules/Table.schema"
+import { exportConfig as tableExportConfig, schema as tableSchema } from "./modules/Table.schema"
 import {
   exportConfig as widgetTodoExportConfig,
   schema as widgetTodoSchema,
@@ -162,10 +137,7 @@ import {
   schema as linksFooterSchema,
 } from "./modules/footers/LinksFooter.schema"
 // Parts
-import {
-  exportConfig as barExportConfig,
-  schema as barSchema,
-} from "./parts/Bar.schema"
+import { exportConfig as barExportConfig, schema as barSchema } from "./parts/Bar.schema"
 import {
   exportConfig as comboboxExportConfig,
   schema as comboboxSchema,
@@ -182,14 +154,8 @@ import {
   exportConfig as listboxExportConfig,
   schema as listboxSchema,
 } from "./parts/Listbox.schema"
-import {
-  exportConfig as menuExportConfig,
-  schema as menuSchema,
-} from "./parts/Menu.schema"
-import {
-  exportConfig as topbarExportConfig,
-  schema as topbarSchema,
-} from "./parts/Topbar.schema"
+import { exportConfig as menuExportConfig, schema as menuSchema } from "./parts/Menu.schema"
+import { exportConfig as topbarExportConfig, schema as topbarSchema } from "./parts/Topbar.schema"
 import {
   exportConfig as articleCardExportConfig,
   schema as articleCardSchema,
@@ -226,10 +192,7 @@ import {
   exportConfig as boldCtaExportConfig,
   schema as boldCtaSchema,
 } from "./parts/ctas/BoldCTA.schema"
-import {
-  exportConfig as ctaExportConfig,
-  schema as ctaSchema,
-} from "./parts/ctas/CTA.schema"
+import { exportConfig as ctaExportConfig, schema as ctaSchema } from "./parts/ctas/CTA.schema"
 import {
   exportConfig as joinCtaExportConfig,
   schema as joinCtaSchema,
@@ -255,18 +218,9 @@ import {
   schema as typeSpecimenSchema,
 } from "./parts/specimens/TypeSpecimen.schema"
 // Primitives
-import {
-  exportConfig as hrExportConfig,
-  schema as hrSchema,
-} from "./primitives/Hr.schema"
-import {
-  exportConfig as iconExportConfig,
-  schema as iconSchema,
-} from "./primitives/Icon.schema"
-import {
-  exportConfig as imageExportConfig,
-  schema as imageSchema,
-} from "./primitives/Image.schema"
+import { exportConfig as hrExportConfig, schema as hrSchema } from "./primitives/Hr.schema"
+import { exportConfig as iconExportConfig, schema as iconSchema } from "./primitives/Icon.schema"
+import { exportConfig as imageExportConfig, schema as imageSchema } from "./primitives/Image.schema"
 import {
   exportConfig as listItemExportConfig,
   schema as listItemSchema,
@@ -312,14 +266,13 @@ import {
   schema as videoSchema,
 } from "./primitives/video/Video.schema"
 // Screens
-import {
-  exportConfig as screenExportConfig,
-  schema as screenSchema,
-} from "./screens/Screen.schema"
+import { exportConfig as screenExportConfig, schema as screenSchema } from "./screens/Screen.schema"
 import {
   exportConfig as themeSpecExportConfig,
   schema as themeSpecSchema,
 } from "./screens/ThemeSpec.schema"
+
+import type { ComponentExport, ComponentSchema } from "../types"
 
 const elements: ComponentSchema[] = [
   avatarSchema,
@@ -430,20 +383,16 @@ export const catalog: Catalog = {
 }
 
 const schemasById: Record<string, ComponentSchema> = Object.fromEntries(
-  [
-    ...frames,
-    ...primitives,
-    ...elements,
-    ...parts,
-    ...modules,
-    ...screens,
-    ...boards,
-  ].map((schema) => [schema.id, schema]),
+  [...frames, ...primitives, ...elements, ...parts, ...modules, ...screens, ...boards].map(
+    (schema) => [schema.id, schema],
+  ),
 )
 
 export function getComponentSchema(id: ComponentId): ComponentSchema {
   const match = schemasById[id]
+
   invariant(match, `Schema ${id} not found`)
+
   return match
 }
 
@@ -549,6 +498,8 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
 export function getComponentExportConfig(id: ComponentId): ComponentExport {
   const match = exportConfigById[id]
+
   invariant(match, `Export config for ${id} not found`)
+
   return match
 }
