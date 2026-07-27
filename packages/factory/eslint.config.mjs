@@ -23,6 +23,15 @@ export default defineConfig([
       // Ordinal token enums intentionally share values across scales, so this
       // stays a warning while the rest of the baseline is error-clean.
       "@typescript-eslint/no-duplicate-enum-values": "warn",
+      curly: ["error", "multi-line"],
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports", fixStyle: "separate-type-imports" },
+      ],
+      "@typescript-eslint/member-ordering": [
+        "warn",
+        { default: { optionalityOrder: "required-first" } },
+      ],
     },
   },
 ])

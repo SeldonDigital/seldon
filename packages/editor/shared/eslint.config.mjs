@@ -38,6 +38,27 @@ const REACT_BAN = {
 export default defineConfig([
   globalIgnores(["dist/**", "node_modules/**", "seldon/**"]),
   {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
+    rules: {
+      curly: ["error", "multi-line"],
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports", fixStyle: "separate-type-imports" },
+      ],
+      "@typescript-eslint/member-ordering": [
+        "warn",
+        { default: { optionalityOrder: "required-first" } },
+      ],
+    },
+  },
+  {
     files: ["lib/**/*.{ts,tsx}"],
     languageOptions: {
       parser: tseslint.parser,

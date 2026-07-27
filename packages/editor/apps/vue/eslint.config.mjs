@@ -26,6 +26,15 @@ export default defineConfig([
           ],
         },
       ],
+      curly: ["error", "multi-line"],
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports", fixStyle: "separate-type-imports" },
+      ],
+      "@typescript-eslint/member-ordering": [
+        "warn",
+        { default: { optionalityOrder: "required-first" } },
+      ],
     },
   },
   {
