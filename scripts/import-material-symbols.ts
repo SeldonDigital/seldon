@@ -22,16 +22,12 @@ import path from "node:path"
 import { categoryPaths } from "../packages/core/icon-sets/constants/categories"
 
 const REPO_ROOT = path.resolve(import.meta.dir, "../..")
-const MATERIAL_DIR = path.join(
-  REPO_ROOT,
-  "packages/core/icon-sets/catalog/material",
-)
+const MATERIAL_DIR = path.join(REPO_ROOT, "packages/core/icon-sets/catalog/material")
 const REGISTRY_PATH = path.join(REPO_ROOT, "packages/core/icon-sets/index.ts")
 
 const VERSIONS_URL =
   "https://raw.githubusercontent.com/google/material-design-icons/master/update/current_versions.json"
-const METADATA_URL =
-  "https://fonts.google.com/metadata/icons?incomplete=1&key=material_symbols"
+const METADATA_URL = "https://fonts.google.com/metadata/icons?incomplete=1&key=material_symbols"
 const svgUrl = (name: string) =>
   `https://raw.githubusercontent.com/google/material-design-icons/master/symbols/web/${name}/materialsymbolsoutlined/${name}_24px.svg`
 
@@ -102,9 +98,7 @@ function deriveNaming(symbolName: string): {
 function deriveLabel(iconId: string): string {
   const name = iconId.slice("material-".length)
   const tokens = name.split(/(?=[A-Z])/)
-  return tokens
-    .map((token) => token.charAt(0).toUpperCase() + token.slice(1))
-    .join(" ")
+  return tokens.map((token) => token.charAt(0).toUpperCase() + token.slice(1)).join(" ")
 }
 
 function pickCategoryPath(categories: string[] | undefined): string {
@@ -120,16 +114,11 @@ function pickCategoryPath(categories: string[] | undefined): string {
 function toJsxAttributes(markup: string): string {
   return markup.replace(
     /(fill|clip|stroke|font|text|stop|color|flood|letter|marker|shape|word)-([a-z])([a-z]*)=/g,
-    (_, head: string, first: string, rest: string) =>
-      `${head}${first.toUpperCase()}${rest}=`,
+    (_, head: string, first: string, rest: string) => `${head}${first.toUpperCase()}${rest}=`,
   )
 }
 
-function buildComponentSource(
-  componentName: string,
-  viewBox: string,
-  innerSvg: string,
-): string {
+function buildComponentSource(componentName: string, viewBox: string, innerSvg: string): string {
   const propsBreak = componentName.length > 23
   const signature = propsBreak
     ? `export function ${componentName}(\n  props: SVGAttributes<SVGSVGElement>,\n) {`
@@ -193,13 +182,8 @@ function parseSvg(svg: string): { viewBox: string; inner: string } {
 }
 
 function parseExistingIconIds(): Set<string> {
-  const source = fs.readFileSync(
-    path.join(MATERIAL_DIR, "index-all.ts"),
-    "utf8",
-  )
-  const match = source.match(
-    /export const materialAllIconIds[^=]*= \[([\s\S]*?)\] as const/,
-  )
+  const source = fs.readFileSync(path.join(MATERIAL_DIR, "index-all.ts"), "utf8")
+  const match = source.match(/export const materialAllIconIds[^=]*= \[([\s\S]*?)\] as const/)
   if (!match) throw new Error("Could not find materialAllIconIds")
   const ids = new Set<string>()
   for (const idMatch of match[1].matchAll(/"([^"]+)"/g)) ids.add(idMatch[1])
@@ -228,9 +212,7 @@ function regenerateIndexAll(): string[] {
         componentName.slice("IconMaterial".length).charAt(0).toLowerCase() +
         componentName.slice("IconMaterial".length + 1)
       const iconId = `material-${idName}`
-      exportLines.push(
-        `export { ${componentName} } from "./${categoryPath}/${componentName}"`,
-      )
+      exportLines.push(`export { ${componentName} } from "./${categoryPath}/${componentName}"`)
       idLines.push(`  "${iconId}",`)
       orderedIds.push(iconId)
     }
@@ -266,10 +248,7 @@ function updateRegistry(newIds: string[]): void {
   if (idsToInsert.length === 0) return
   const lines = source.split("\n")
 
-  const insertSorted = (
-    entryPattern: RegExp,
-    renderLine: (id: string) => string,
-  ) => {
+  const insertSorted = (entryPattern: RegExp, renderLine: (id: string) => string) => {
     const blockIndexes: number[] = []
     for (const [index, line] of lines.entries()) {
       if (entryPattern.test(line)) blockIndexes.push(index)
@@ -297,10 +276,7 @@ function updateRegistry(newIds: string[]): void {
   }
 
   insertSorted(/^  "material-[^"]+",$/, (id) => `  "${id}",`)
-  insertSorted(
-    /^  "material-[^"]+": "[^"]*",$/,
-    (id) => `  "${id}": "${deriveLabel(id)}",`,
-  )
+  insertSorted(/^  "material-[^"]+": "[^"]*",$/, (id) => `  "${id}": "${deriveLabel(id)}",`)
 
   fs.writeFileSync(REGISTRY_PATH, lines.join("\n"))
 }
@@ -343,36 +319,30 @@ async function main(): Promise<void> {
   let completed = 0
 
   const queue = [...missing]
-  const workers = Array.from(
-    { length: DOWNLOAD_CONCURRENCY },
-    async (): Promise<void> => {
-      for (;;) {
-        const entry = queue.shift()
-        if (!entry) return
-        const categoryPath = pickCategoryPath(categoriesByName.get(entry.name))
-        const targetDir = path.join(MATERIAL_DIR, categoryPath)
-        const targetFile = path.join(targetDir, `${entry.componentName}.tsx`)
-        try {
-          if (!fs.existsSync(targetFile)) {
-            const svg = await fetchWithRetry(svgUrl(entry.name))
-            const { viewBox, inner } = parseSvg(svg)
-            fs.mkdirSync(targetDir, { recursive: true })
-            fs.writeFileSync(
-              targetFile,
-              buildComponentSource(entry.componentName, viewBox, inner),
-            )
-          }
-          byCategory.set(categoryPath, (byCategory.get(categoryPath) ?? 0) + 1)
-        } catch (error) {
-          failures.push(`${entry.name}: ${error}`)
+  const workers = Array.from({ length: DOWNLOAD_CONCURRENCY }, async (): Promise<void> => {
+    for (;;) {
+      const entry = queue.shift()
+      if (!entry) return
+      const categoryPath = pickCategoryPath(categoriesByName.get(entry.name))
+      const targetDir = path.join(MATERIAL_DIR, categoryPath)
+      const targetFile = path.join(targetDir, `${entry.componentName}.tsx`)
+      try {
+        if (!fs.existsSync(targetFile)) {
+          const svg = await fetchWithRetry(svgUrl(entry.name))
+          const { viewBox, inner } = parseSvg(svg)
+          fs.mkdirSync(targetDir, { recursive: true })
+          fs.writeFileSync(targetFile, buildComponentSource(entry.componentName, viewBox, inner))
         }
-        completed += 1
-        if (completed % 250 === 0) {
-          console.log(`  ${completed}/${missing.length} processed`)
-        }
+        byCategory.set(categoryPath, (byCategory.get(categoryPath) ?? 0) + 1)
+      } catch (error) {
+        failures.push(`${entry.name}: ${error}`)
       }
-    },
-  )
+      completed += 1
+      if (completed % 250 === 0) {
+        console.log(`  ${completed}/${missing.length} processed`)
+      }
+    }
+  })
   await Promise.all(workers)
 
   console.log("\nImported icons by category:")

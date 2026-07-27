@@ -2,10 +2,7 @@ import { defineConfig } from "vitest/config"
 
 export default defineConfig({
   test: {
-    projects: [
-      "packages/core/vitest.config.ts",
-      "packages/factory/vitest.config.ts",
-    ],
+    projects: ["packages/core/vitest.config.ts", "packages/factory/vitest.config.ts"],
     // Coverage is a workspace-wide concern, so configure it once here. Running
     // `npm run coverage` writes a single report to `/coverage` at the repo root
     // and enforces the thresholds below. Per-project config files intentionally

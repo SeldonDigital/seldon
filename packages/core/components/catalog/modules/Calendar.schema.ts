@@ -1547,10 +1547,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.primary",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: {
                               type: Sdn.ValueType.EXACT,
                               value: { unit: Sdn.Unit.PERCENT, value: 100 },
@@ -1652,10 +1649,7 @@ export const schema = {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
                               value: "@swatch.primary",
                             },
-                            brightness: {
-                              type: Sdn.ValueType.EMPTY,
-                              value: null,
-                            },
+                            brightness: { type: Sdn.ValueType.EMPTY, value: null },
                             opacity: {
                               type: Sdn.ValueType.EXACT,
                               value: { unit: Sdn.Unit.PERCENT, value: 100 },
