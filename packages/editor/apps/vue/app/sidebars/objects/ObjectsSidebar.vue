@@ -133,7 +133,7 @@ function asBoard(board: unknown): BoardType {
     :button-toggle2="resourcesToggle"
     :frame3="containerFrame"
   >
-    <template #objects>
+    <template #objectsContainer>
       <Frame class="objects-sidebar__scroll">
         <SectionRow
           v-for="section in sections"

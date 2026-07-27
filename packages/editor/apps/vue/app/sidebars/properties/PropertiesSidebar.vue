@@ -149,7 +149,7 @@ function sectionAddCustom(section: PropertySection): (() => void) | undefined {
     :text-label="stateLabelSlot"
     :frame2="{}"
   >
-    <template v-if="!isEmpty" #properties>
+    <template v-if="!isEmpty" #propertiesContainer>
       <Frame class="properties-sidebar__scroll">
         <Frame class="properties-sidebar__tree">
           <template v-for="section in filteredSections" :key="section.category">

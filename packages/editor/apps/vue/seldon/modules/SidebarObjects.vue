@@ -148,6 +148,7 @@ const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
           </Frame>
         </Frame>
         <Frame v-bind="frame3Props" v-if="frame3">
+          <slot name="objectsContainer" />
         </Frame>
       </slot>
     </div>

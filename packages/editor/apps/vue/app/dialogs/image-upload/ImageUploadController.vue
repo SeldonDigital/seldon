@@ -110,7 +110,7 @@ const confirmLabel = computed(() => ({ children: confirmText.value }))
       :text-label5="confirmLabel"
       :style="styles.dialog"
     >
-      <template #content>
+      <template #dialogContent>
         <div :style="styles.content">
           <ImageDropzone
             v-if="showDropzone"

@@ -190,7 +190,7 @@ function rowStyle(item: T): CSSProperties {
       :text-label5="confirmLabel"
       :style="dialogStyle"
     >
-      <template #content>
+      <template #dialogContent>
         <TextSubtitle
           v-if="visibleCategories.length === 0"
           :style="styles.empty"

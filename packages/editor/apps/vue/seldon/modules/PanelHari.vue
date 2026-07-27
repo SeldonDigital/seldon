@@ -252,6 +252,7 @@ const icon8Props = computed(() => mergeSlot(sdn.icon8, props.icon8))
           <ButtonIconic v-if="buttonIconic2 && buttonIconic2Props" v-bind="buttonIconic2Props" :icon="icon5Props" />
         </Bar>
         <Frame v-bind="frame2Props">
+          <slot name="turns" />
         </Frame>
         <Frame v-bind="frame3Props" v-if="frame3">
           <Textarea v-if="textarea && textareaProps" v-bind="textareaProps" />
