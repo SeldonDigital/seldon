@@ -6,10 +6,10 @@ import { readPropertySlice } from "./resolve-node-property-reset"
 import type { Properties } from "../../../properties/types/properties"
 import type { PropertyKey, SubPropertyKey } from "../../../properties/types/property-keys"
 
+/** A touched property facet. `layerIndex` is the paint-layer slot and defaults to layer 0. */
 interface TouchedFacet {
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
-  /** Paint-layer slot for layered properties; defaults to layer 0. */
   layerIndex?: number
 }
 

@@ -16,6 +16,15 @@ export type PropertyValueType =
 /**
  * Schema for one property key in the property schema catalog: label, allowed storage shapes,
  * checks, and optional picker lists, theme key sources, computed handlers, or unit rules.
+ *
+ * `supports` lists the storage shapes the key accepts and `validation` supplies the per-shape
+ * checks. `displayCategory` is the panel grouping from `PROPERTY_DISPLAY_ORDER` and `displayOrder`
+ * is the global sort key across the flattened catalog. Both are always set on merged
+ * `PROPERTY_SCHEMAS` entries and optional on raw per-value modules. `presetOptions` supplies picker
+ * entries when the field stores `ValueType.OPTION`. `themeCategoricalKeys` and `themeOrdinalKeys`
+ * list the `@`-style keys or token ids for the categorical and ordinal theme pickers.
+ * `computedFunctions` lists the allowed `ComputedFunction` ids for computed pickers. `units` gives
+ * the allowed unit suffixes and default when the property stores measured numbers.
  */
 export interface PropertySchema {
   name: string
@@ -30,22 +39,12 @@ export interface PropertySchema {
     themeCategorical?: (value: unknown, theme?: Theme) => boolean
     themeOrdinal?: (value: unknown, theme?: Theme) => boolean
   }
-  /**
-   * Panel grouping per the properties README categories (`PROPERTY_DISPLAY_ORDER`).
-   * Always set on merged `PROPERTY_SCHEMAS` entries; optional on raw per-value modules.
-   */
   displayCategory?: PropertyDisplayCategory
-  /** Global sort key across the flattened catalog. Always set on `PROPERTY_SCHEMAS`. */
   displayOrder?: number
-  /** Supplies picker entries when the field stores `ValueType.OPTION`. */
   presetOptions?: (workspace?: Workspace) => unknown[]
-  /** Lists `@`-style keys or token ids for categorical theme pickers. */
   themeCategoricalKeys?: (theme: Theme) => string[]
-  /** Lists `@`-style keys or token ids for ordinal theme pickers. */
   themeOrdinalKeys?: (theme: Theme) => string[]
-  /** Lists allowed `ComputedFunction` ids for computed pickers. */
   computedFunctions?: () => ComputedFunction[]
-  /** Allowed unit suffixes and default when the property stores measured numbers. */
   units?: {
     allowed: Unit[]
     default: Unit

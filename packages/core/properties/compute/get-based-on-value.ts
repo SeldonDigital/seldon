@@ -10,9 +10,12 @@ import type { Value } from "../types/value"
 import type { AtomicValue } from "../types/value-atomic"
 import type { ComputeContext } from "./types"
 
+/**
+ * A resolved based-on value plus its anchor. `facetSource` is the properties context that supplied
+ * `value`, used for sibling layer facets.
+ */
 export type ResolvedBasedOnWithAnchor = {
   value: Value | undefined
-  /** Properties context that supplied `value`; used for sibling layer facets. */
   facetSource: Omit<ComputeContext, "theme"> | null
 }
 

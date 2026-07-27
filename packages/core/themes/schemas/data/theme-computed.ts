@@ -24,7 +24,10 @@ import type {
 
 type ComputedFacetControlType = NonNullable<ThemeTokenSchema["controlType"]>
 
-/** Inline-controlled facet on a computed group. */
+/**
+ * Inline-controlled facet on a computed group. `icon` is the icon id authored on the facet, read by
+ * the icon registry and theme sidebar.
+ */
 export interface ComputedGroupFacet {
   facet: string
   label: string
@@ -32,7 +35,6 @@ export interface ComputedGroupFacet {
   controlType: ComputedFacetControlType
   options?: Array<{ label: string; value: string | number }>
   unit?: ThemeTokenSchema["unit"]
-  /** Icon id authored on the facet; read by the icon registry and theme sidebar. */
   icon?: string
 }
 

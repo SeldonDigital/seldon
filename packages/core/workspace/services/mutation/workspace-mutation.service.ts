@@ -42,10 +42,10 @@ import type {
   Workspace,
 } from "../../types"
 
+/** Property, optional sub-facet, and paint-layer slot to reset. `layerIndex` defaults to layer 0. */
 interface PropertyResetTarget {
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
-  /** Paint-layer slot for layered properties; defaults to layer 0. */
   layerIndex?: number
 }
 

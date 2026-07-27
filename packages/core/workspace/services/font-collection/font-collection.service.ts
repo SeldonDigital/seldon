@@ -19,20 +19,24 @@ import type {
 import type { EntryFontCollection } from "../../model/entry-font-collection"
 import type { Workspace } from "../../types"
 
-/** One resolved family plus the collection it came from. */
+/**
+ * One resolved family plus the collection it came from. `collectionId` is the catalog id of the
+ * owning collection, such as `system` or `googleFonts`. `slot` is the family slot id within the
+ * collection.
+ */
 export interface WorkspaceFontFamily extends FontFamilyEntry {
-  /** Catalog id of the owning collection, such as `system` or `googleFonts`. */
   collectionId: string
-  /** Family slot id within the collection. */
   slot: string
 }
 
-/** An enabled remote family plus the variants to self-host. */
+/**
+ * An enabled remote family plus the variants to self-host. `slot` is the family slot id, which
+ * matches the self-hosted woff2 directory. `variants` are the enabled variant strings, such as
+ * `"400"` or `"700italic"`.
+ */
 export interface EnabledRemoteFamily {
   name: string
-  /** Family slot id, which matches the self-hosted woff2 directory. */
   slot: string
-  /** Enabled variant strings, such as `"400"`, `"700italic"`. */
   variants: string[]
 }
 

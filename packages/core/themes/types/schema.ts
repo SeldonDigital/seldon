@@ -41,16 +41,20 @@ export type ThemeTokenSchemaValidation = {
   [K in ThemeTokenSchemaSupport]?: (value: unknown) => boolean
 }
 
+/**
+ * One catalog entry for a theme token key.
+ *
+ * When `propertyKey` is set, `label`, `supports`, `validation`, `controlType`, and `unit` derive
+ * from `PROPERTY_SCHEMAS[propertyKey]` unless overridden on this entry. `isLookParent` marks a look
+ * row that groups its facet sub-rows under a disclosure arrow, and `isSubProperty` marks a facet row
+ * nested under a look parent row.
+ */
 export interface ThemeTokenSchema {
   key: string
   supports: readonly ThemeTokenSchemaSupport[]
   validation: ThemeTokenSchemaValidation
   section: ThemeTokenSectionId
   order: number
-  /**
-   * When set, label / supports / validation / controlType / unit are derived from
-   * `PROPERTY_SCHEMAS[propertyKey]` unless overridden on this entry.
-   */
   propertyKey?: PropertyName
   label?: string
   controlType?: "number" | "color" | "text" | "combo" | "menu" | "boolean"
@@ -63,9 +67,7 @@ export interface ThemeTokenSchema {
   }
   icon?: string
   description?: string
-  /** Marks a look row that groups its facet sub-rows under a disclosure arrow. */
   isLookParent?: boolean
-  /** Marks a facet row nested under a look parent row. */
   isSubProperty?: boolean
 }
 

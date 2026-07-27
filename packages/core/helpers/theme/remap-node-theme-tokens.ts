@@ -39,6 +39,7 @@ const SWATCH_PRESET_SLOTS: readonly string[] = [
   ...THEME_INTERFACE_SLOTS,
 ]
 
+/** Context for remapping one token. `layerIndex` is the paint-layer slot when the token sits inside a layered paint stack. */
 type RemapContext = {
   value: ThemeValue
   currentTheme: Theme
@@ -46,7 +47,6 @@ type RemapContext = {
   node: WritableDraft<EntryNode>
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
-  /** Paint-layer slot when the token sits inside a layered paint stack. */
   layerIndex?: number
 }
 

@@ -120,13 +120,13 @@ export const NORMAL_STATE = "normal" as const
  * A workspace-defined custom state. Stored on `metadata.customStates` and shared
  * across the whole workspace. Target-agnostic: it carries no render data. Each
  * exporter derives its own binding from `key`.
+ *
+ * `key` is the stable identifier used as the key in a node's `states` map. `label` is the
+ * human-readable display name. `description` is optional text for menus and tooling.
  */
 export interface CustomState {
-  /** Stable identifier used as the key in a node's `states` map. */
   key: string
-  /** Human-readable display name. */
   label: string
-  /** Optional description for menus and tooling. */
   description?: string
 }
 

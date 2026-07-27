@@ -1,13 +1,16 @@
 import type { CustomReactTemplate, NativeReactPrimitive } from "../../types"
 
+/**
+ * Metadata for one bespoke React template. `importName` is the export name used in generated
+ * imports. `importPath` is the import path without extension used by generated code, relative to a
+ * component file. `fileStem` is the file stem under `components/custom` read on export and mirrored
+ * into the output. `base` is the native primitive whose props interface the generated component
+ * extends.
+ */
 export interface CustomReactTemplateMeta {
-  /** Export name used in generated imports. */
   importName: string
-  /** Import path (without extension) used by generated code, relative to a component file. */
   importPath: string
-  /** File stem under `components/custom` to read on export, mirrored into the output. */
   fileStem: string
-  /** Native primitive whose props interface the generated component extends. */
   base: NativeReactPrimitive
 }
 

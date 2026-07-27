@@ -16,23 +16,27 @@ export { ComponentId, isComponentId } from "./component-id"
  * workspace concept of `default` and `variant` entries on a board (see `workspace/model/entry-node.ts`).
  */
 
-// Base fields shared by every schema regardless of level.
+/**
+ * Base fields shared by every schema regardless of level. `icon` is optional and falls back to
+ * `seldon-component` in the icon registry when absent. `layout` is the layout model the component
+ * arranges its children with. Absent means `ComponentLayout.FLEXBOX`, and `ComponentLayout.GRID`
+ * selects a CSS grid container.
+ */
 interface BaseComponentSchema {
   id: ComponentId
   name: string
   intent: string
   properties: Properties
   tags: string[]
-  // Optional. When absent, the icon registry falls back to `seldon-component`.
   icon?: ComponentIcon
-  // Layout model the component arranges its children with. Optional; absent means
-  // `ComponentLayout.FLEXBOX`. `ComponentLayout.GRID` selects a CSS grid container.
   layout?: ComponentLayout
 }
 
-// A child entry inside a SchemaTree. `variant` selects a named child schema variant when present. `overrides` and
-// nested `children` layer on top of the selected child baseline. `children` carries inner-tree composition without the
-// default/variant tagging that only applies at the top level.
+/**
+ * A child entry inside a SchemaTree. `variant` selects a named child schema variant when present.
+ * `overrides` and nested `children` layer on top of the selected child baseline. `children` carries
+ * inner-tree composition without the default/variant tagging that only applies at the top level.
+ */
 export interface SchemaChild {
   component: ComponentId
   variant?: string
@@ -40,29 +44,34 @@ export interface SchemaChild {
   children?: SchemaChild[]
 }
 
-// A composition tree (the default tree of a complex schema or any of its variant trees).
+/** A composition tree, either the default tree of a complex schema or one of its variant trees. */
 export interface SchemaTree {
   children?: SchemaChild[]
 }
 
-// An alternate variant of a complex schema. Carries its own complete child tree plus identity metadata used to address
-// it (`id` is unique within the parent, e.g. "social" on `Button`).
+/**
+ * An alternate variant of a complex schema. Carries its own complete child tree plus identity
+ * metadata used to address it, where `id` is unique within the parent, such as "social" on
+ * `Button`. `overrides` are the root property overrides for this catalog variant, such as width and
+ * height.
+ */
 export interface SchemaVariant extends SchemaTree {
   id: string
   label: string
   intent: string
-  /** Root property overrides for this catalog variant (for example width and height). */
   overrides?: Properties
 }
 
-// Primitives are leaves: no default tree and no composition children. They may declare leaf `variants` that carry only
-// root property overrides, never child trees.
+/**
+ * Primitives are leaves: no default tree and no composition children. They may declare leaf
+ * `variants` that carry only root property overrides, never child trees.
+ */
 export interface PrimitiveComponentSchema extends BaseComponentSchema {
   level: ComponentLevel.PRIMITIVE
   variants?: SchemaVariant[]
 }
 
-// Complex schemas always declare a `default` tree and may declare alternate `variants` of the same component.
+/** Complex schemas always declare a `default` tree and may declare alternate `variants` of the same component. */
 export interface ComplexComponentSchema extends BaseComponentSchema {
   level: Exclude<ComponentLevel, "primitive">
   default: SchemaTree
@@ -183,6 +192,21 @@ export interface AndroidComponentExport {
   tintFrom?: string
 }
 
+/**
+ * Per-framework export descriptors for a component.
+ *
+ * In `react`, `custom` applies when `returns` is `"custom"` and names the bespoke template to
+ * render plus the native primitive its props interface extends. `forwardRef` generates the
+ * component with `React.forwardRef` targeting the given element type, such as "HTMLButtonElement",
+ * so callers can attach a ref to the rendered root. It is supported for slot-tree and simple-return
+ * components, but not for `htmlElement`, `wrapperElement`, or `iconMap`.
+ *
+ * `vue` is optional and mirrors `react`. The Vue factory defaults every field from `react` when this
+ * block is absent, so schemas only author it to diverge from the React shape. The `returns`
+ * semantics are framework-neutral and shared with React, and `expose` is the root element the SFC
+ * exposes via `defineExpose` for caller refs. `swift` and `android` are type-only descriptors for
+ * future factories.
+ */
 export interface ComponentExport {
   react: {
     returns:
@@ -192,29 +216,12 @@ export interface ComponentExport {
       | "iconMap"
       | "Frame"
       | "custom"
-    /**
-     * When `returns` is `"custom"`, identifies the bespoke template to render and
-     * the native primitive its props interface extends.
-     */
     custom?: {
       base: NativeReactPrimitive
       template: CustomReactTemplate
     }
-    /**
-     * When set, the component is generated with `React.forwardRef` targeting
-     * this element type (e.g. "HTMLButtonElement"), so callers can attach a ref
-     * to the rendered root element. Supported for slot-tree and simple-return
-     * components; not for `htmlElement`, `wrapperElement`, or `iconMap`.
-     */
     forwardRef?: string
   }
-  /**
-   * Optional Vue export descriptor, mirroring {@link ComponentExport.react}. The
-   * Vue factory defaults every field from `react` when this block is absent, so
-   * schemas only author it to diverge from the React shape. The `returns`
-   * semantics (native primitive, `Frame`, `wrapperElement`, `htmlElement`,
-   * `iconMap`, `custom`) are framework-neutral and shared with React.
-   */
   vue?: {
     returns:
       | NativeReactPrimitive
@@ -227,11 +234,8 @@ export interface ComponentExport {
       base: NativeReactPrimitive
       template: CustomVueTemplate
     }
-    /** Root element the SFC exposes via `defineExpose` for caller refs. */
     expose?: string
   }
-  /** Type-only descriptor for a future Swift factory. */
   swift?: SwiftComponentExport
-  /** Type-only descriptor for a future Android factory. */
   android?: AndroidComponentExport
 }

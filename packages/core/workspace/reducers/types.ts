@@ -57,10 +57,13 @@ import type { NodeState } from "../model/node-state"
 import type { WorkspaceStringMap } from "../model/string-maps"
 import type { Workspace } from "../model/workspace"
 
-/** Parent, component board key, and optional child index for {@link WorkspaceAction} `insert_default_instance`. */
+/**
+ * Parent, component board key, and optional child index for {@link WorkspaceAction}
+ * `insert_default_instance`. `boardKey` is the component catalog row key and must match `components`
+ * in the workspace file.
+ */
 export type InsertDefaultInstance = {
   parentId: VariantId | InstanceId
-  /** Component catalog row key; must match `components` in the workspace file. */
   boardKey: BoardKey
   index?: number
 }
@@ -310,10 +313,10 @@ export type WorkspaceAction =
         boardKey: BoardKey
       }
     }
+  /** `boardKey` is a caller-generated unique board key so the UI can select the new theme. */
   | {
       type: "add_authored_theme"
       payload: {
-        /** Caller-generated unique board key so the UI can select the new theme. */
         boardKey: BoardKey
       }
     }
@@ -323,14 +326,16 @@ export type WorkspaceAction =
         boardKey: BoardKey
       }
     }
+  /**
+   * `name` is the human-entered component name, and the board key and export name derive from it.
+   * `rootKind` is the root template, either a flex Container or a Frame, both opaque at the declared
+   * level. `level` is the declared component level, enforced for containment and export folder.
+   */
   | {
       type: "add_authored_component"
       payload: {
-        /** Human-entered component name; the board key and export name derive from it. */
         name: string
-        /** Root template: a flex Container or a Frame. Both are opaque at the declared level. */
         rootKind: "container" | "frame"
-        /** Declared component level, enforced for containment and export folder. */
         level: EntryNodeLevel
         intent?: string
         tags?: string[]
@@ -457,13 +462,13 @@ export type WorkspaceAction =
         properties: Properties
       }
     }
+  /** `layerIndex` is the paint-layer slot for layered properties and defaults to layer 0. */
   | {
       type: "reset_node_property"
       payload: {
         nodeId: InstanceId | VariantId
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
-        /** Paint-layer slot for layered properties; defaults to layer 0. */
         layerIndex?: number
       }
     }
@@ -484,6 +489,7 @@ export type WorkspaceAction =
         }
       }
     }
+  /** `layerIndex` is the paint-layer slot for layered properties and defaults to layer 0. */
   | {
       type: "reset_node_state_property"
       payload: {
@@ -491,7 +497,6 @@ export type WorkspaceAction =
         state: NodeState
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
-        /** Paint-layer slot for layered properties; defaults to layer 0. */
         layerIndex?: number
       }
     }
@@ -523,12 +528,12 @@ export type WorkspaceAction =
         label: string
       }
     }
+  /** `seed` is the optional initial facets for the new layer and defaults to an empty bag. */
   | {
       type: "add_node_layer"
       payload: {
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
-        /** Optional initial facets for the new layer. Defaults to an empty bag. */
         seed?: Record<string, unknown>
       }
     }
@@ -549,14 +554,16 @@ export type WorkspaceAction =
         toIndex: number
       }
     }
+  /**
+   * `kind` is the kind to seed the layer with, such as a `BackgroundKind` value. `layerIndex` is the
+   * paint-layer slot to retype and defaults to layer 0.
+   */
   | {
       type: "set_node_layer_kind"
       payload: {
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
-        /** The kind to seed the layer with, e.g. a `BackgroundKind` value. */
         kind: string
-        /** Paint-layer slot to retype; defaults to layer 0. */
         layerIndex?: number
       }
     }
@@ -567,13 +574,13 @@ export type WorkspaceAction =
         properties: Properties
       }
     }
+  /** `layerIndex` is the paint-layer slot for layered properties and defaults to layer 0. */
   | {
       type: "reset_component_property"
       payload: {
         boardKey: BoardKey
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
-        /** Paint-layer slot for layered properties; defaults to layer 0. */
         layerIndex?: number
       }
     }

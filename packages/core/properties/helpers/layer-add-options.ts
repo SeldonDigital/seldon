@@ -3,13 +3,15 @@ import { BACKGROUND_KIND_SEEDS } from "../values/appearance/background/backgroun
 
 import type { LayeredPaintKey } from "../types/property-keys"
 
-/** One "Add layer" menu choice for a layered paint property. */
+/**
+ * One "Add layer" menu choice for a layered paint property. `seed` is the initial facets for the new
+ * layer, or undefined for an empty layer. `separatorBefore` renders a divider before this choice to
+ * group it apart from the prior ones.
+ */
 export interface LayerAddOption {
   id: string
   label: string
-  /** Initial facets for the new layer, or undefined for an empty layer. */
   seed?: Record<string, unknown>
-  /** Render a divider before this choice to group it apart from the prior ones. */
   separatorBefore?: boolean
 }
 

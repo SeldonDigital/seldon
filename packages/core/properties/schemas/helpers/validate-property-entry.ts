@@ -17,9 +17,11 @@ function isLayeredCompound(propertyKey: string): boolean {
   )
 }
 
-/** One malformed value found while validating a property entry. */
+/**
+ * One malformed value found while validating a property entry. `path` is the dot path of the
+ * offending value, for example `background.0.color`.
+ */
 export interface PropertyValueError {
-  /** Dot path of the offending value, for example `background.0.color`. */
   path: string
   reason: string
 }

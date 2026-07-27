@@ -234,17 +234,16 @@ export function mergeEffectiveProperties(sources: Properties[]): Properties {
   return sources.reduce((merged, source) => mergeProperties(merged, source), {} as Properties)
 }
 
-/** Options for effective-merge readers that already resolved theme context. */
+/**
+ * Options for effective-merge readers that already resolved theme context. `theme` expands look
+ * preset facets and is resolved lazily when omitted. `parentIndex` supplies theme inheritance when
+ * `theme` is omitted. `state` is the interaction state to resolve. When omitted or `"normal"`, only
+ * Normal overrides are merged. Otherwise each node's `states[state]` bag layers on top of its Normal
+ * overrides along the template chain.
+ */
 export interface EffectivePropertiesOptions {
-  /** Theme used to expand look preset facets. Resolved lazily when omitted. */
   theme?: ComputedTheme
-  /** Parent index used for theme inheritance when `theme` is omitted. */
   parentIndex?: ReadonlyMap<string, string>
-  /**
-   * Interaction state to resolve. When omitted or `"normal"`, only Normal
-   * overrides are merged. Otherwise each node's `states[state]` bag layers on
-   * top of its Normal overrides along the template chain.
-   */
   state?: NodeState
 }
 
