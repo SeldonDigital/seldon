@@ -1,8 +1,9 @@
 import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { nodeStringsSummary } from "./node-strings"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * The descriptive tail for a node id, everything a tree line prints after the id
@@ -17,21 +18,18 @@ import { nodeStringsSummary } from "./node-strings"
  */
 export function nodeSummaryTail(workspace: Workspace, id: string): string {
   const node = workspace.nodes[id]
+
   if (!node) return " (no node entry)"
   const catalogId = getNodeCatalogId(node, workspace)
-  const kind = catalogId
-    ? `${node.level} ${catalogId} ${node.type}`
-    : `${node.level} ${node.type}`
+  const kind = catalogId ? `${node.level} ${catalogId} ${node.type}` : `${node.level} ${node.type}`
   const label = node.label ? ` label="${node.label}"` : ""
   const stateKeys = node.states ? Object.keys(node.states) : []
   const states = stateKeys.length > 0 ? ` states=[${stateKeys.join(", ")}]` : ""
   const sourceId = getSourceNodeId(workspace, id)
   const sourceLabel = workspace.nodes[sourceId]?.label
-  const source =
-    sourceId !== id
-      ? ` src=${sourceId}${sourceLabel ? ` "${sourceLabel}"` : ""}`
-      : ""
+  const source = sourceId !== id ? ` src=${sourceId}${sourceLabel ? ` "${sourceLabel}"` : ""}` : ""
   const summary = nodeStringsSummary(workspace, id)
   const values = summary ? ` {${summary}}` : ""
+
   return ` [${kind}]${label}${states}${source}${values}`
 }

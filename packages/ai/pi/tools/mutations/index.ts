@@ -1,7 +1,3 @@
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-
-import type { ResolvedContext } from "../../editor-context"
-import type { PiTurnState } from "../turn-state"
 import { createAddComponentTool } from "./add-component"
 import { createAddVariantTool } from "./add-variant"
 import { createApplyActionsTool } from "./apply-actions"
@@ -26,6 +22,10 @@ import { createSetSpacingFeelTool } from "./set-spacing-feel"
 import { createSetStateStyleTool } from "./set-state-style"
 import { createSetTextRoleTool } from "./set-text-role"
 import { createSetThemeOverrideTool } from "./set-theme-override"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
 
 /**
  * The Seldon mutation tools for one turn. Each tool proposes one or more
@@ -71,6 +71,7 @@ export function createMutationTools(
     turnScope === "board" ||
     turnScope === "variant" ||
     turnScope === "instance"
+
   if (componentScope) {
     tools.push(
       createSetTextRoleTool(state, resolved),
@@ -85,20 +86,24 @@ export function createMutationTools(
   if (includeAll) {
     tools.push(createApplyActionsTool(state))
   }
+
   if (includeAll || turnScope === "theme") {
     tools.push(createSetThemeOverrideTool(state), createSetSpacingFeelTool(state))
   }
+
   if (includeAll || turnScope === "fontCollection") {
     tools.push(
       createSetFontCollectionFamilyPresetTool(state, resolved),
       createSetFontCollectionFamilyVariantTool(state, resolved),
     )
   }
+
   if (includeAll || turnScope === "iconSet") {
     tools.push(
       createSetIconSetSubcategoryPresetTool(state, resolved),
       createSetIconSetOverrideTool(state, resolved),
     )
   }
+
   return tools
 }

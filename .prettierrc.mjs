@@ -4,7 +4,7 @@
  */
 const config = {
   semi: false,
-  printWidth: 120,
+  printWidth: 100,
   plugins: ["@ianvs/prettier-plugin-sort-imports"],
   importOrder: [
     "<BUILTIN_MODULES>",

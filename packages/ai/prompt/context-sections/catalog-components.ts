@@ -22,5 +22,6 @@ export function catalogComponentsSection(): string[] {
     ...catalog.modules,
     ...catalog.screens,
   ].map((schema) => schema.id)
+
   return section(TITLE, [ids.join(", ")])
 }

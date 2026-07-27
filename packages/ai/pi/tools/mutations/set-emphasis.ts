@@ -1,14 +1,13 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
+import { textResult } from "./commit"
+import { applyPropertyEdit } from "./set-properties"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { TargetSpec } from "../resolve-target"
 import type { PiTurnState } from "../turn-state"
-import { textResult } from "./commit"
-import { applyPropertyEdit } from "./set-properties"
 
 /** Weight names that map to the theme font weight scale ids. */
 const WEIGHTS = [
@@ -40,18 +39,15 @@ export function createSetEmphasisTool(
     description:
       "Set a text node's weight (bold, light, and so on) as a theme weight token. Use this to make text bold or lighter instead of set_properties.",
     parameters: Type.Object({
-      target: Type.Union(
-        [Type.Literal("selection"), Type.Object({ nodeId: Type.String() })],
-        {
-          description:
-            '"selection" for the selected node, or { "nodeId" } from the context.',
-        },
-      ),
+      target: Type.Union([Type.Literal("selection"), Type.Object({ nodeId: Type.String() })], {
+        description: '"selection" for the selected node, or { "nodeId" } from the context.',
+      }),
       weight: Type.Union(
         WEIGHTS.map((weight) => Type.Literal(weight)),
         { description: "A named weight on the theme scale." },
       ),
     }),
+
     execute: async (_id, params) =>
       textResult(
         applyPropertyEdit(state, resolved, {

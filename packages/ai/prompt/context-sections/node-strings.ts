@@ -1,5 +1,6 @@
 import { getPropertyStatus } from "@seldon/core/workspace/helpers/properties/property-status"
 import { getEffectiveProperties } from "@seldon/core/workspace/helpers/properties/shared"
+
 import type { Workspace } from "@seldon/core/workspace/types"
 
 /** One string leaf found in a node's set properties, keyed by its dotted path. */
@@ -14,6 +15,7 @@ const MAX_LENGTH = 40
 /** Trims a value to a bounded, single-line preview for display and matching. */
 function truncate(text: string): string {
   const flat = text.replace(/\s+/g, " ").trim()
+
   return flat.length > MAX_LENGTH ? `${flat.slice(0, MAX_LENGTH)}…` : flat
 }
 
@@ -26,20 +28,28 @@ function truncate(text: string): string {
  */
 function walkValue(value: unknown, path: string, out: NodeString[]): void {
   if (out.length >= MAX_STRINGS) return
+
   if (typeof value === "string") {
     if (value.trim() !== "") out.push({ path, text: truncate(value) })
+
     return
   }
+
   if (Array.isArray(value)) {
     value.forEach((item, index) => walkValue(item, `${path}.${index}`, out))
+
     return
   }
+
   if (value && typeof value === "object") {
     const record = value as Record<string, unknown>
+
     if ("value" in record) {
       walkValue(record.value, path, out)
+
       return
     }
+
     for (const [key, child] of Object.entries(record)) {
       walkValue(child, path ? `${path}.${key}` : key, out)
     }
@@ -54,22 +64,18 @@ function walkValue(value: unknown, path: string, out: NodeString[]): void {
  * to an id without expanding the node first. Returns an empty list for a node
  * with no property view.
  */
-function collectNodeStrings(
-  workspace: Workspace,
-  nodeId: string,
-): NodeString[] {
+function collectNodeStrings(workspace: Workspace, nodeId: string): NodeString[] {
   try {
-    const effective = getEffectiveProperties(nodeId, workspace) as Record<
-      string,
-      unknown
-    >
+    const effective = getEffectiveProperties(nodeId, workspace) as Record<string, unknown>
     const status = getPropertyStatus(nodeId, workspace)
     const out: NodeString[] = []
+
     for (const key of Object.keys(effective)) {
       if (status[key] !== "set" && status[key] !== "override") continue
       walkValue(effective[key], key, out)
       if (out.length >= MAX_STRINGS) break
     }
+
     return out
   } catch {
     return []
@@ -77,12 +83,11 @@ function collectNodeStrings(
 }
 
 /** A compact `path=text` summary of a node's string leaves, or "" when none. */
-export function nodeStringsSummary(
-  workspace: Workspace,
-  nodeId: string,
-): string {
+export function nodeStringsSummary(workspace: Workspace, nodeId: string): string {
   const strings = collectNodeStrings(workspace, nodeId)
+
   if (strings.length === 0) return ""
+
   return strings.map(({ path, text }) => `${path}="${text}"`).join(", ")
 }
 
@@ -99,5 +104,6 @@ export function matchNodeStrings(
   for (const { text } of collectNodeStrings(workspace, nodeId)) {
     if (text.toLowerCase().includes(needle)) return text
   }
+
   return null
 }

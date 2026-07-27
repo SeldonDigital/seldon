@@ -1,19 +1,15 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
-
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
 
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import type { PiTurnState } from "../turn-state"
+
 /** Inserts an instance of an existing variant under an existing parent node. */
-export function createInsertVariantInstanceTool(
-  state: PiTurnState,
-): ToolDefinition {
+export function createInsertVariantInstanceTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "insert_variant_instance",
     label: "Insert Variant Instance",
@@ -30,6 +26,7 @@ export function createInsertVariantInstanceTool(
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const before = state.workspace
       const message = commit(state, {
@@ -39,6 +36,7 @@ export function createInsertVariantInstanceTool(
           target: { parentId: params.parentId, index: params.index },
         },
       } as WorkspaceAction)
+
       return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })

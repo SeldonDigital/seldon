@@ -13,7 +13,7 @@ Layers own different things:
 
 - Author: how `const`, `if`, `return`, guards, blank lines, grouping, object literals, signatures, and interface order are written.
 - ESLint pins structure Prettier ignores: brace style (`curly: multi-line`), value-vs-type imports (`consistent-type-imports`), and required-before-optional interface order (`member-ordering`).
-- Prettier normalizes only: `printWidth: 120`, import grouping and type-import separation, quotes, semicolons, commas.
+- Prettier normalizes only: `printWidth: 100`, import grouping and type-import separation, quotes, semicolons, commas.
 
 ### Statements
 

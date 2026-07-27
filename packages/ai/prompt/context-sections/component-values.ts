@@ -8,13 +8,14 @@ import {
 } from "@seldon/core/properties/schemas/helpers/property-options"
 import { joinCompoundFacetKey } from "@seldon/core/properties/schemas/helpers/property-path"
 import { getThemeLookSection } from "@seldon/core/themes/looks/resolve-theme-look"
-import type { Theme } from "@seldon/core/themes/types"
 import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { SHORTHAND_SIDES, propertyShape } from "../property-taxonomy"
 import { section } from "./section"
 import { TOKEN_SCOPES } from "./theme-tokens"
+
+import type { Theme } from "@seldon/core/themes/types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /** Scopes the shared Theme tokens block lists, so a facet can reference `@scope.*`. */
 const SHARED_TOKEN_SCOPES: readonly string[] = TOKEN_SCOPES
@@ -41,11 +42,14 @@ function normalizeToken(value: string): string {
 function cellName(table: unknown, id: string): string | null {
   if (table && typeof table === "object") {
     const cell = (table as Record<string, unknown>)[id]
+
     if (cell && typeof cell === "object" && "name" in cell) {
       const name = (cell as { name?: unknown }).name
+
       if (typeof name === "string" && name.trim() !== "") return name
     }
   }
+
   return null
 }
 
@@ -57,31 +61,30 @@ function cellName(table: unknown, id: string): string | null {
  * read their scope table directly; bare tokens read the property's Look section
  * (font, border, gradient, shadow) or fall back to the swatch table for colors.
  */
-function annotateThemeToken(
-  token: string,
-  schemaKey: string,
-  theme?: Theme,
-): string {
+function annotateThemeToken(token: string, schemaKey: string, theme?: Theme): string {
   if (!theme) return token
 
   let table: unknown
   let id: string
+
   if (token.startsWith("@")) {
     const dot = token.indexOf(".")
     const scope = dot === -1 ? "" : token.slice(1, dot)
+
     id = dot === -1 ? token.slice(1) : token.slice(dot + 1)
     table = (theme as unknown as Record<string, unknown>)[scope]
   } else {
     id = token
     table =
-      getThemeLookSection(theme, schemaKey) ??
-      (theme as unknown as { swatch?: unknown }).swatch
+      getThemeLookSection(theme, schemaKey) ?? (theme as unknown as { swatch?: unknown }).swatch
   }
 
   const name = cellName(table, id)
+
   if (name && normalizeToken(name) !== normalizeToken(id)) {
     return `${token} (${name})`
   }
+
   return token
 }
 
@@ -94,10 +97,13 @@ function annotateThemeToken(
  */
 function detectScope(tokens: string[], theme?: Theme): string | null {
   const parsed = parseThemeRef(tokens[0])
+
   if (parsed) return parsed.section
   if (!theme) return null
+
   for (const scope of SHARED_TOKEN_SCOPES) {
     const table = (theme as unknown as Record<string, unknown>)[scope]
+
     if (
       table &&
       typeof table === "object" &&
@@ -106,6 +112,7 @@ function detectScope(tokens: string[], theme?: Theme): string | null {
       return scope
     }
   }
+
   return null
 }
 
@@ -121,16 +128,18 @@ function themeChoicePart(
   theme?: Theme,
 ): string | null {
   const tokens = getPropertyOptions(schemaKey, valueType, theme).map(String)
+
   if (tokens.length === 0) return null
   const scope = detectScope(tokens, theme)
+
   if (scope && SHARED_TOKEN_SCOPES.includes(scope)) return `@${scope}.*`
-  return tokens
-    .map((token) => annotateThemeToken(token, schemaKey, theme))
-    .join(" / ")
+
+  return tokens.map((token) => annotateThemeToken(token, schemaKey, theme)).join(" / ")
 }
 
 function describeChoices(schemaKey: string, theme?: Theme): string | null {
   const schema = getPropertySchema(schemaKey)
+
   if (!schema) return null
   const supports = schema.supports ?? []
   const parts: string[] = []
@@ -150,22 +159,29 @@ function describeChoices(schemaKey: string, theme?: Theme): string | null {
 
   if (supports.includes("option")) {
     const options = getPresetOptions(schemaKey).map(String)
+
     if (options.length > 0) parts.push(options.join(" / "))
   }
+
   if (supports.includes("themeOrdinal")) {
     const part = themeChoicePart(schemaKey, "themeOrdinal", theme)
+
     if (part) parts.push(part)
   }
+
   if (supports.includes("themeCategorical")) {
     const part = themeChoicePart(schemaKey, "themeCategorical", theme)
+
     if (part) parts.push(part)
   }
 
   const hasChoice = parts.length > 0
   const units = schema.units?.allowed
+
   if (units && units.length > 0) parts.push(`number (${units.join("|")})`)
 
   if (!hasChoice && (!units || units.length === 0)) return null
+
   return parts.join("  ·  ")
 }
 
@@ -178,29 +194,38 @@ function describeChoices(schemaKey: string, theme?: Theme): string | null {
  */
 function componentValueLines(catalogId: string, theme?: Theme): string[] {
   const schema = findComponentSchema(catalogId)
+
   if (!schema?.properties) return []
 
   const lines: string[] = []
+
   for (const key of Object.keys(schema.properties)) {
     const shape = propertyShape(key)
+
     if (shape === "atomic") {
       const choices = describeChoices(key, theme)
+
       if (choices) lines.push(`- ${key}: ${choices}`)
     } else if (shape === "compound" || shape === "layered") {
       const facets = COMPOUND_FACET_DISPLAY_ORDER[key] ?? []
+
       for (const facet of facets) {
         const facetKey = joinCompoundFacetKey(key, facet)
         const choices = describeChoices(facetKey, theme)
+
         if (choices) lines.push(`- ${key}.${facet}: ${choices}`)
       }
     } else if (shape === "shorthand") {
       const choices = describeChoices(key, theme)
+
       if (choices) {
         const sides = SHORTHAND_SIDES[key] ?? []
+
         lines.push(`- ${key}.{${sides.join("|")}}: ${choices}`)
       }
     }
   }
+
   return lines
 }
 
@@ -216,6 +241,7 @@ export function componentValuesSection(
   title: string = TITLE,
 ): string[] {
   let theme: Theme | undefined
+
   try {
     theme = computeWorkspaceThemes(workspace)[0] as unknown as Theme | undefined
   } catch {
@@ -224,11 +250,14 @@ export function componentValuesSection(
 
   const body: string[] = []
   const many = catalogIds.size > 1
+
   for (const catalogId of [...catalogIds].sort()) {
     const lines = componentValueLines(catalogId, theme)
+
     if (lines.length === 0) continue
     if (many) body.push(`${catalogId}:`)
     body.push(...lines)
   }
+
   return section(title, body)
 }

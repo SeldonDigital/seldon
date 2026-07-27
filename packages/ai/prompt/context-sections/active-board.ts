@@ -1,9 +1,9 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
+
+import { nodeSummaryTail } from "./node-line"
+
 import type {
   Board,
   BoardKey,
@@ -11,8 +11,6 @@ import type {
   EntryNode,
   Workspace,
 } from "@seldon/core/workspace/types"
-
-import { nodeSummaryTail } from "./node-line"
 
 /** A component or authored board: both own a variant tree the agent edits. */
 function isEditableComponentBoard(board: Board): boolean {
@@ -45,8 +43,10 @@ function walkTree(
   for (const ref of refs) {
     const node = workspace.nodes[ref.id]
     const indent = "  ".repeat(depth)
+
     if (node) visited.push(node)
     lines.push(`${indent}- ${ref.id}${nodeSummaryTail(workspace, ref.id)}`)
+
     if (depth < maxDepth && ref.children && ref.children.length > 0) {
       walkTree(ref.children, workspace, depth + 1, lines, visited, maxDepth)
     }
@@ -54,15 +54,15 @@ function walkTree(
 }
 
 /** Collects the resolved catalog ids from a set of visited nodes. */
-function collectCatalogIds(
-  visited: EntryNode[],
-  workspace: Workspace,
-): Set<string> {
+function collectCatalogIds(visited: EntryNode[], workspace: Workspace): Set<string> {
   const ids = new Set<string>()
+
   for (const node of visited) {
     const catalogId = getNodeCatalogId(node, workspace)
+
     if (catalogId) ids.add(catalogId)
   }
+
   return ids
 }
 
@@ -90,16 +90,15 @@ export function activeBoardSection(
   const treeCatalogIds = new Set<string>()
 
   const catalogId = boardCatalogLabel(activeBoard)
+
   lines.push(
     "",
     "The context is scoped to the active board the user is viewing. Only its nodes, states, and variants below are in scope. Refuse targets outside it.",
   )
-  lines.push(
-    "",
-    `Active board: ${resolvedKey} -> ${catalogId} -> "${activeBoard.label}"`,
-  )
+  lines.push("", `Active board: ${resolvedKey} -> ${catalogId} -> "${activeBoard.label}"`)
 
   const customStates = workspace.metadata.customStates ?? []
+
   if (customStates.length > 0) {
     lines.push(
       `Custom states (state keys usable in a node's states map): ${customStates
@@ -112,10 +111,12 @@ export function activeBoardSection(
     "Node trees per variant (use these ids for nodeId / parentId / instanceId / variantId):",
   )
   const visited: EntryNode[] = []
+
   activeBoard.variants.forEach((variantRef, index) => {
     const variantNode = workspace.nodes[variantRef.id]
     const variantLabel = variantNode?.label ? ` "${variantNode.label}"` : ""
     const defaultTag = index === 0 ? " (default)" : ""
+
     lines.push(`Variant ${variantRef.id}${variantLabel}${defaultTag}:`)
     walkTree([variantRef], workspace, 1, lines, visited)
   })
@@ -141,15 +142,17 @@ export function activeVariantSection(
 ): { lines: string[]; treeCatalogIds: Set<string> } {
   const lines: string[] = []
   const treeCatalogIds = new Set<string>()
+
   if (!isEditableComponentBoard(activeBoard)) return { lines, treeCatalogIds }
 
   const variantRef = activeBoard.variants.find((ref) => ref.id === variantId)
+
   if (!variantRef) return { lines, treeCatalogIds }
 
   const variantNode = workspace.nodes[variantRef.id]
   const variantLabel = variantNode?.label ? ` "${variantNode.label}"` : ""
-  const defaultTag =
-    activeBoard.variants[0]?.id === variantRef.id ? " (default)" : ""
+  const defaultTag = activeBoard.variants[0]?.id === variantRef.id ? " (default)" : ""
+
   lines.push(
     "",
     "The context is scoped to the active variant the user has selected. Only its nodes below are in scope for a direct edit.",
@@ -159,7 +162,9 @@ export function activeVariantSection(
   )
 
   const visited: EntryNode[] = []
+
   walkTree([variantRef], workspace, 1, lines, visited)
+
   return { lines, treeCatalogIds: collectCatalogIds(visited, workspace) }
 }
 
@@ -179,20 +184,24 @@ export function nodeSubtreeSection(
   nodeId: string,
 ): { lines: string[]; treeCatalogIds: Set<string> } {
   const lines: string[] = []
+
   if (!isEditableComponentBoard(activeBoard)) {
     return { lines, treeCatalogIds: new Set<string>() }
   }
 
   let target: ComponentTreeRef | undefined
+
   walkBoardTreeRefs(activeBoard.variants, (ref) => {
     if (ref.id !== nodeId) return
     target = ref
+
     return true
   })
   if (!target) return { lines, treeCatalogIds: new Set<string>() }
 
   const node = workspace.nodes[nodeId]
   const label = node?.label ? ` "${node.label}"` : ""
+
   lines.push(
     "",
     "The context is scoped to the selected node and its descendants. Only the ids below are in scope for a direct edit.",
@@ -202,7 +211,9 @@ export function nodeSubtreeSection(
   )
 
   const visited: EntryNode[] = []
+
   walkTree([target], workspace, 1, lines, visited)
+
   return { lines, treeCatalogIds: collectCatalogIds(visited, workspace) }
 }
 
@@ -226,16 +237,17 @@ export function workspaceShallowSection(
       : `Workspace boards (each walked ${maxDepth} levels deep; call widen_scope, describe_node, or get_active_board to go deeper):`,
   ]
   const visited: EntryNode[] = []
+
   for (const [boardKey, board] of Object.entries(workspace.boards)) {
     if (!isEditableComponentBoard(board)) continue
     if (allowedBoardKeys && !allowedBoardKeys.has(boardKey)) continue
-    lines.push(
-      `Board ${boardKey} -> ${boardCatalogLabel(board)} -> "${board.label}":`,
-    )
+    lines.push(`Board ${boardKey} -> ${boardCatalogLabel(board)} -> "${board.label}":`)
     const defaultVariant = board.variants[0]
+
     if (defaultVariant) {
       walkTree([defaultVariant], workspace, 1, lines, visited, maxDepth)
     }
   }
+
   return { lines, treeCatalogIds: collectCatalogIds(visited, workspace) }
 }

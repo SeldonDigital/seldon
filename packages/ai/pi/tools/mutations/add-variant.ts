@@ -1,14 +1,12 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { BoardKey, WorkspaceAction } from "@seldon/core/workspace/types"
-
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { BoardKey, WorkspaceAction } from "@seldon/core/workspace/types"
+import type { PiTurnState } from "../turn-state"
 
 /**
  * Adds a new variant to a board. Works on component, authored, and playground
@@ -24,12 +22,14 @@ export function createAddVariantTool(state: PiTurnState): ToolDefinition {
     parameters: Type.Object({
       boardKey: Type.String({ description: "Board key from the context." }),
     }),
+
     execute: async (_id, params) => {
       const before = state.workspace
       const applied = commit(state, {
         type: "add_variant",
         payload: { boardKey: params.boardKey as BoardKey },
       } as WorkspaceAction)
+
       return textResult(withCreatedIdentity(before, state.workspace, applied))
     },
   })

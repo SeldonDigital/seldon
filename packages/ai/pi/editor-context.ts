@@ -1,11 +1,7 @@
 import { boardKey } from "@seldon/core/workspace/helpers/components/board-ref-resolver"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
-import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 
 import {
   activeBoardSection,
@@ -24,8 +20,11 @@ import {
 import { selectionSection } from "../prompt/context-sections/selection"
 import { themeIdsSection } from "../prompt/context-sections/theme-ids"
 import { themeTokensSection } from "../prompt/context-sections/theme-tokens"
+import { buildIsolationClosure } from "./isolation"
+
+import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
 import type { IsolationScope, SelectionScope } from "../types"
-import { type IsolationClosure, buildIsolationClosure } from "./isolation"
+import type { IsolationClosure } from "./isolation"
 
 /** The editor state the agent needs to target the right board and node. */
 export interface EditorContextInput {
@@ -39,7 +38,11 @@ export interface EditorContextInput {
   resourceTargetId?: string
 }
 
-/** The active board resolved from the request, plus the passthrough selection. */
+/**
+ * The active board resolved from the request, plus the passthrough selection.
+ * `isolation` is present only when Isolation Mode is on and its anchor board
+ * resolved.
+ */
 export interface ResolvedContext {
   workspace: Workspace
   resolvedKey?: BoardKey
@@ -49,7 +52,6 @@ export interface ResolvedContext {
   selectedBoardId?: BoardKey
   scope?: SelectionScope
   resourceTargetId?: string
-  /** Present when Isolation Mode is on and its anchor board resolved. */
   isolation?: IsolationClosure
 }
 
@@ -59,9 +61,7 @@ export interface ResolvedContext {
  * way, so every board-facing path treats them alike.
  */
 function isEditableComponentBoard(board: Board | undefined): board is Board {
-  return (
-    board !== undefined && (isComponentBoard(board) || isAuthoredBoard(board))
-  )
+  return board !== undefined && (isComponentBoard(board) || isAuthoredBoard(board))
 }
 
 /**
@@ -97,8 +97,7 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
     : activeBoardKey && workspace.boards[activeBoardKey]
       ? activeBoardKey
       : editableBoards[0]?.[0]
-  const activeBoard =
-    resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
+  const activeBoard = resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
 
   // In isolation, pin the variant column to the frozen root so the per-turn
   // view narrows to that variant even when the selection sits elsewhere.
@@ -137,15 +136,18 @@ function resolveActiveVariantId(
 
   if (selectedNodeRootId) {
     const first = selectedNodeRootId.split("/")[0]
+
     if (first && rootIds.has(first)) return first
   }
 
   if (selectedNodeId) {
     for (const variantRef of board.variants) {
       let found = false
+
       walkBoardTreeRefs([variantRef], (ref) => {
         if (ref.id !== selectedNodeId) return
         found = true
+
         return true
       })
       if (found) return variantRef.id
@@ -179,6 +181,7 @@ export function buildTurnContext(resolved: ResolvedContext): string {
   }
 
   const resource = resourceScopeContext(resolved)
+
   if (resource) return [header, ...resource].join("\n")
 
   if (resolved.scope === "workspace") {
@@ -196,15 +199,13 @@ export function buildTurnContext(resolved: ResolvedContext): string {
  * so the model cannot drift to a board outside the closure.
  */
 function isolationScopeContext(resolved: ResolvedContext): string[] {
-  return [
-    ...isolationBoundaryLines(resolved),
-    ...componentScopeContext(resolved),
-  ]
+  return [...isolationBoundaryLines(resolved), ...componentScopeContext(resolved)]
 }
 
 /** The isolation boundary directive plus the in-scope dependency listing. */
 function isolationBoundaryLines(resolved: ResolvedContext): string[] {
   const { workspace, isolation } = resolved
+
   if (!isolation) return []
 
   const isolatedBoard = workspace.boards[isolation.isolatedBoardKey]
@@ -212,8 +213,7 @@ function isolationBoundaryLines(resolved: ResolvedContext): string[] {
   const variantNode = isolation.isolatedVariantRootId
     ? workspace.nodes[isolation.isolatedVariantRootId]
     : undefined
-  const variantName =
-    variantNode?.label ?? isolation.isolatedVariantRootId ?? "all variants"
+  const variantName = variantNode?.label ?? isolation.isolatedVariantRootId ?? "all variants"
 
   const lines: string[] = [
     "",
@@ -221,6 +221,7 @@ function isolationBoundaryLines(resolved: ResolvedContext): string[] {
   ]
 
   const depLines: string[] = []
+
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (key === isolation.isolatedBoardKey) continue
     if (!isolation.allowedBoardKeys.has(key)) continue
@@ -228,21 +229,20 @@ function isolationBoundaryLines(resolved: ResolvedContext): string[] {
     const rootNames = usedRoots
       ? [...usedRoots].map((rootId) => workspace.nodes[rootId]?.label ?? rootId)
       : []
-    const variantText =
-      rootNames.length > 0 ? ` variants: ${rootNames.join(", ")}` : ""
+    const variantText = rootNames.length > 0 ? ` variants: ${rootNames.join(", ")}` : ""
+
     depLines.push(`- ${key} "${board.label}"${variantText}`)
   }
+
   if (depLines.length > 0) {
-    lines.push(
-      "Dependency components in scope (edit only these boards and variants):",
-      ...depLines,
-    )
+    lines.push("Dependency components in scope (edit only these boards and variants):", ...depLines)
   }
 
   lines.push(
     "",
     "Editing a dependency component's source cascades to every instance of it across the workspace, not just inside this board. Prefer a local instance override (set_properties scope 'instance') unless the user asked to change the component everywhere.",
   )
+
   return lines
 }
 
@@ -273,6 +273,7 @@ function resourceScopeSpec(
         `Scope: theme variant "${entryId}". Edit its token values with set_theme_override (themeId "${entryId}", path like swatch.primary or fontSize.medium). Call list_theme_tokens or search_theme_tokens for token paths. If this is the wrong theme, call widen_scope to see the board's other themes. Do not edit component nodes.`,
     }
   }
+
   if (scope === "fontCollection") {
     return {
       valueLines: fontCollectionValuesSection(entryId, workspace),
@@ -282,6 +283,7 @@ function resourceScopeSpec(
         `Scope: font collection variant "${entryId}". Toggle families and weights with set_font_collection_family_preset (all or none) or set_font_collection_family_variant (one weight on or off). If this is the wrong collection, call widen_scope to see the board's other collections. Do not edit component nodes.`,
     }
   }
+
   if (scope === "iconSet") {
     return {
       valueLines: iconSetValuesSection(entryId, workspace),
@@ -291,6 +293,7 @@ function resourceScopeSpec(
         `Scope: icon set variant "${entryId}". Toggle a subcategory with set_icon_set_subcategory_preset (all or none), or a single icon with set_icon_set_override at path includedIcons.<iconId>. If this is the wrong set, call widen_scope to see the board's other sets. Do not edit component nodes.`,
     }
   }
+
   return null
 }
 
@@ -302,24 +305,29 @@ function resourceScopeSpec(
  */
 function resourceScopeContext(resolved: ResolvedContext): string[] | null {
   const { workspace, scope, resourceTargetId, selectedBoardId } = resolved
+
   if (resourceTargetId === undefined) return null
   const spec = resourceScopeSpec(scope, resourceTargetId, workspace)
+
   if (!spec) return null
 
   const lines = [...spec.valueLines]
   const owner = findResourceBoardForEntry(workspace, resourceTargetId)
+
   if (selectedBoardId !== undefined && owner) {
     lines.push(...resourceBoardEntriesSection(owner.board, owner.boardKey))
     lines.push("", spec.boardDirective(owner.boardKey))
   } else {
     lines.push("", spec.variantDirective())
   }
+
   return lines
 }
 
 /** The context for the workspace scope: every board shallow, plus theme ids. */
 function workspaceScopeContext(resolved: ResolvedContext): string[] {
   const { workspace } = resolved
+
   return [
     ...workspaceShallowSection(workspace).lines,
     ...themeIdsSection(workspace),
@@ -335,14 +343,8 @@ function workspaceScopeContext(resolved: ResolvedContext): string[] {
  * scope the variant subtree, and every other case the whole board.
  */
 function componentScopeContext(resolved: ResolvedContext): string[] {
-  const {
-    workspace,
-    resolvedKey,
-    activeBoard,
-    selectedNodeId,
-    selectedNodeRootId,
-    scope,
-  } = resolved
+  const { workspace, resolvedKey, activeBoard, selectedNodeId, selectedNodeRootId, scope } =
+    resolved
   const lines: string[] = []
 
   if (isEditableComponentBoard(activeBoard) && resolvedKey !== undefined) {
@@ -351,21 +353,12 @@ function componentScopeContext(resolved: ResolvedContext): string[] {
     // when the node is not on the active board.
     const instanceSubtree =
       scope === "instance" && selectedNodeId !== undefined
-        ? nodeSubtreeSection(
-            workspace,
-            resolvedKey,
-            activeBoard,
-            selectedNodeId,
-          )
+        ? nodeSubtreeSection(workspace, resolvedKey, activeBoard, selectedNodeId)
         : undefined
 
     const variantId =
       selectedNodeId !== undefined
-        ? resolveActiveVariantId(
-            activeBoard,
-            selectedNodeId,
-            selectedNodeRootId,
-          )
+        ? resolveActiveVariantId(activeBoard, selectedNodeId, selectedNodeRootId)
         : undefined
     const variant =
       scope !== "board" && variantId !== undefined
@@ -379,9 +372,7 @@ function componentScopeContext(resolved: ResolvedContext): string[] {
       lines.push(...variant.lines)
       lines.push("", variantScopeDirective())
     } else {
-      lines.push(
-        ...activeBoardSection(workspace, resolvedKey, activeBoard).lines,
-      )
+      lines.push(...activeBoardSection(workspace, resolvedKey, activeBoard).lines)
       lines.push("", boardScopeDirective(scope))
     }
   } else {
@@ -391,15 +382,9 @@ function componentScopeContext(resolved: ResolvedContext): string[] {
     )
   }
 
-  lines.push(
-    ...selectionSection(
-      workspace,
-      activeBoard,
-      selectedNodeId,
-      selectedNodeRootId,
-    ),
-  )
+  lines.push(...selectionSection(workspace, activeBoard, selectedNodeId, selectedNodeRootId))
   lines.push(...selectedComponentValues(resolved))
+
   return lines
 }
 
@@ -416,19 +401,15 @@ function componentScopeContext(resolved: ResolvedContext): string[] {
  */
 function selectedComponentValues(resolved: ResolvedContext): string[] {
   const { workspace, activeBoard, selectedNodeId } = resolved
-  const selectedNode = selectedNodeId
-    ? workspace.nodes[selectedNodeId]
-    : undefined
-  const selectedCatalogId = selectedNode
-    ? getNodeCatalogId(selectedNode, workspace)
-    : undefined
+  const selectedNode = selectedNodeId ? workspace.nodes[selectedNodeId] : undefined
+  const selectedCatalogId = selectedNode ? getNodeCatalogId(selectedNode, workspace) : undefined
+
   if (!selectedCatalogId) {
-    return isEditableComponentBoard(activeBoard)
-      ? themeTokensSection(workspace)
-      : []
+    return isEditableComponentBoard(activeBoard) ? themeTokensSection(workspace) : []
   }
 
   const catalogIds = new Set([selectedCatalogId])
+
   return [
     ...propertyShapeSection(catalogIds),
     ...themeTokensSection(workspace),
@@ -467,5 +448,6 @@ function boardScopeDirective(scope?: SelectionScope): string {
   if (scope === "board") {
     return "Scope: the active board above. Make the change cascade: prefer editing the default variant (listed first) or the component source so every variant and instance follows. set_properties defaults to scope 'all'. If the board lacks the target, call widen_scope to climb to the workspace, or find_nodes / list_boards to search."
   }
+
   return "Scope: every variant on the active board above. If it lacks the target, call widen_scope to climb to the workspace, or find_nodes / list_boards to search."
 }

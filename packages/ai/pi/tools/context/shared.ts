@@ -10,5 +10,6 @@ export function textResult(text: string) {
  */
 export function joinOrEmpty(lines: string[], empty: string): string {
   const body = lines.filter((line) => line !== "")
+
   return body.length > 0 ? lines.join("\n").trim() : empty
 }

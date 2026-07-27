@@ -30,6 +30,14 @@ export default defineConfig([
         "warn",
         { default: { optionalityOrder: "required-first" } },
       ],
+      "padding-line-between-statements": [
+        "error",
+        { blankLine: "always", prev: ["const", "let"], next: "*" },
+        { blankLine: "any", prev: ["const", "let"], next: ["const", "let"] },
+        { blankLine: "always", prev: "*", next: "return" },
+        { blankLine: "always", prev: "block-like", next: "*" },
+        { blankLine: "always", prev: "*", next: "block-like" },
+      ],
     },
   },
 ])

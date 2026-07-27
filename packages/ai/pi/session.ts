@@ -1,5 +1,4 @@
 import {
-  type AgentSession,
   DefaultResourceLoader,
   SessionManager,
   SettingsManager,
@@ -7,34 +6,30 @@ import {
   getAgentDir,
 } from "@earendil-works/pi-coding-agent"
 
-import {
-  type EditorContextInput,
-  type ResolvedContext,
-  resolveContext,
-} from "./editor-context"
-import {
-  buildOllamaModel,
-  clampedThinkingLevel,
-  createPiAuth,
-  supportsThinking,
-} from "./model"
-import type { ThinkingLevelOption } from "./model"
+import { resolveContext } from "./editor-context"
+import { buildOllamaModel, clampedThinkingLevel, createPiAuth, supportsThinking } from "./model"
 import { buildPiSystemPrompt } from "./system-prompt"
 import { createContextTools } from "./tools/context"
 import { createMutationTools } from "./tools/mutations"
-import { type PiTurnState, createTurnState } from "./tools/turn-state"
+import { createTurnState } from "./tools/turn-state"
 
+import type { AgentSession } from "@earendil-works/pi-coding-agent"
+import type { EditorContextInput, ResolvedContext } from "./editor-context"
+import type { ThinkingLevelOption } from "./model"
+import type { PiTurnState } from "./tools/turn-state"
+
+/**
+ * Options for building a Seldon Pi session. `thinkingCapable` is whether the
+ * model can run a thinking pass, resolved by the caller from Ollama's reported
+ * capabilities; when omitted it falls back to the name-based
+ * {@link supportsThinking} check. `noThink` forces reasoning off for the turn,
+ * overriding the thinking level.
+ */
 export interface SeldonSessionOptions {
   model?: string
   host?: string
   thinkingLevel?: ThinkingLevelOption
-  /**
-   * Whether the model can run a thinking pass, resolved by the caller from
-   * Ollama's reported capabilities. When omitted, falls back to the name-based
-   * {@link supportsThinking} check.
-   */
   thinkingCapable?: boolean
-  /** Forces reasoning off for this turn, overriding the thinking level. */
   noThink?: boolean
 }
 
@@ -61,7 +56,9 @@ async function buildResourceLoader(): Promise<DefaultResourceLoader> {
     noContextFiles: true,
     systemPromptOverride: () => buildPiSystemPrompt(),
   })
+
   await loader.reload()
+
   return loader
 }
 
@@ -98,13 +95,11 @@ export async function createSeldonSession(
   // On/off is driven by the session thinking level: a level enables thinking,
   // `undefined` sends `enable_thinking: false`. Clamp asks each model for the
   // least reasoning it supports: qwen3 turns off, gpt-oss drops to low effort.
-  const thinkingCapable =
-    options.thinkingCapable ?? supportsThinking(options.model)
+  const thinkingCapable = options.thinkingCapable ?? supportsThinking(options.model)
   const requestedLevel = options.noThink
     ? clampedThinkingLevel(options.model)
     : options.thinkingLevel
-  const thinkingOn =
-    thinkingCapable && requestedLevel !== undefined && requestedLevel !== "off"
+  const thinkingOn = thinkingCapable && requestedLevel !== undefined && requestedLevel !== "off"
   const model = buildOllamaModel({
     model: options.model,
     host: options.host,
@@ -137,9 +132,7 @@ export async function createSeldonSession(
  * the stable system prompt without a workspace, so the first real turn skips the
  * cold model load and reuses the cached system-prompt prefix.
  */
-export async function createWarmSession(
-  options: SeldonSessionOptions = {},
-): Promise<AgentSession> {
+export async function createWarmSession(options: SeldonSessionOptions = {}): Promise<AgentSession> {
   const model = buildOllamaModel({ model: options.model, host: options.host })
   const { authStorage, modelRegistry } = createPiAuth()
   const resourceLoader = await buildResourceLoader()

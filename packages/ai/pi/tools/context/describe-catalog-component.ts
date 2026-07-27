@@ -1,12 +1,11 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { componentCompositionSection } from "../../../prompt/context-sections/component-composition"
 import { resolveCatalogId } from "../mutations/catalog-ids"
 import { joinOrEmpty, textResult } from "./shared"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /**
  * Returns a catalog component's composition: its default child tree, named
@@ -25,15 +24,17 @@ export function createDescribeCatalogComponentTool(): ToolDefinition {
         description: "Catalog id, for example menu or button.",
       }),
     }),
+
     execute: async (_id, params) => {
       const resolved = resolveCatalogId(params.catalogId)
-      if (!resolved.id)
-        return textResult(resolved.message ?? "Unknown catalog id.")
+
+      if (!resolved.id) return textResult(resolved.message ?? "Unknown catalog id.")
       const lines = componentCompositionSection(resolved.id)
       const body = joinOrEmpty(
         lines,
         `No composition found for "${resolved.id}". Use list_catalog_ids for valid ids.`,
       )
+
       return textResult(resolved.note ? `${resolved.note}\n${body}` : body)
     },
   })

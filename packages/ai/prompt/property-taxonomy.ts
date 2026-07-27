@@ -8,14 +8,14 @@ import { getPropertySchema } from "@seldon/core/properties/schemas/helpers/get-p
  * context builder and the action repair pass so both classify keys the same.
  */
 export const LAYERED_KEYS = new Set<string>(
-  PROPERTY_COMPOUND_CATALOG.filter(
-    (entry) => entry.nodeStorage === "layered",
-  ).map((entry) => entry.key),
+  PROPERTY_COMPOUND_CATALOG.filter((entry) => entry.nodeStorage === "layered").map(
+    (entry) => entry.key,
+  ),
 )
 export const COMPOUND_FACET_KEYS = new Set<string>(
-  PROPERTY_COMPOUND_CATALOG.filter(
-    (entry) => entry.nodeStorage === "facets",
-  ).map((entry) => entry.key),
+  PROPERTY_COMPOUND_CATALOG.filter((entry) => entry.nodeStorage === "facets").map(
+    (entry) => entry.key,
+  ),
 )
 export const SHORTHAND_KEYS = new Set<string>(PROPERTY_SHORTHAND_KEYS)
 
@@ -34,6 +34,7 @@ export function propertyShape(key: string): PropertyShape {
   if (LAYERED_KEYS.has(key)) return "layered"
   if (COMPOUND_FACET_KEYS.has(key)) return "compound"
   if (SHORTHAND_KEYS.has(key)) return "shorthand"
+
   return "atomic"
 }
 
@@ -48,13 +49,13 @@ const VALUE_TYPE_TAGS = new Set<string>([
 ])
 
 /** True when a value is a single tagged property value, e.g. { type, value }. */
-export function isTaggedValue(
-  value: unknown,
-): value is { type: string; value: unknown } {
+export function isTaggedValue(value: unknown): value is { type: string; value: unknown } {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     return false
   }
+
   const tag = (value as { type?: unknown }).type
+
   return typeof tag === "string" && VALUE_TYPE_TAGS.has(tag)
 }
 
@@ -66,12 +67,12 @@ export function isTaggedValue(
  * validation to reject precisely. No property supports both theme kinds, so the
  * tag is unambiguous, and this stays correct as core property schemas evolve.
  */
-export function themeRefTag(
-  propertyKey: string,
-): "theme.ordinal" | "theme.categorical" | null {
+export function themeRefTag(propertyKey: string): "theme.ordinal" | "theme.categorical" | null {
   const supports = getPropertySchema(propertyKey)?.supports
+
   if (!supports) return null
   if (supports.includes("themeOrdinal")) return "theme.ordinal"
   if (supports.includes("themeCategorical")) return "theme.categorical"
+
   return null
 }

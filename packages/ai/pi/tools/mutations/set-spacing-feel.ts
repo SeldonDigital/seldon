@@ -1,17 +1,16 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import {
   listSpacingFeels,
   resolveSpacingFeel,
 } from "@seldon/core/rules/config/design-semantics.resolve"
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import type { PiTurnState } from "../turn-state"
 
 /**
  * Intent verb: set the whole theme's spacing density. A holistic request like
@@ -23,6 +22,7 @@ import { commit, textResult } from "./commit"
  */
 export function createSetSpacingFeelTool(state: PiTurnState): ToolDefinition {
   const feels = listSpacingFeels()
+
   return defineTool({
     name: "set_spacing_feel",
     label: "Set Spacing Feel",
@@ -37,11 +37,14 @@ export function createSetSpacingFeelTool(state: PiTurnState): ToolDefinition {
         { description: "The named spacing density to apply." },
       ),
     }),
+
     execute: async (_id, params) => {
       const feel = resolveSpacingFeel(params.feel)
+
       if (!feel) {
         return textResult(`Unknown spacing feel "${params.feel}".`)
       }
+
       return textResult(
         commit(state, {
           type: "set_theme_override",

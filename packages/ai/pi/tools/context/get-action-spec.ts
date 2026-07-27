@@ -1,11 +1,10 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { buildActionPayloadSpecs } from "../../../schema/action-schema"
 import { joinOrEmpty, textResult } from "./shared"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns the payload spec for one or more workspace action types. */
 export function createGetActionSpecTool(): ToolDefinition {
@@ -19,6 +18,7 @@ export function createGetActionSpecTool(): ToolDefinition {
         description: "Action type names, for example set_node_properties.",
       }),
     }),
+
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(

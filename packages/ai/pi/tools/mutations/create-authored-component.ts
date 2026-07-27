@@ -1,15 +1,14 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import type { PiTurnState } from "../turn-state"
 
 /**
  * Creates an authored component: a user-defined board with no catalog schema,
@@ -18,9 +17,7 @@ import { withCreatedIdentity } from "./created-nodes"
  * insert_component, and favor reusing an existing catalog or workspace component
  * over creating another authored one.
  */
-export function createCreateAuthoredComponentTool(
-  state: PiTurnState,
-): ToolDefinition {
+export function createCreateAuthoredComponentTool(state: PiTurnState): ToolDefinition {
   return defineTool({
     name: "create_authored_component",
     label: "Create Authored Component",
@@ -28,8 +25,7 @@ export function createCreateAuthoredComponentTool(
       "Create an authored component board (a user-defined component with no catalog schema). The board key derives from the name, so no parent is needed. Root it in a Frame or Container, then fill it with insert_component, reusing existing catalog or workspace components before creating new ones.",
     parameters: Type.Object({
       name: Type.String({
-        description:
-          "Human name for the component. The board key and export name derive from it.",
+        description: "Human name for the component. The board key and export name derive from it.",
       }),
       level: Type.Union(
         [
@@ -45,31 +41,26 @@ export function createCreateAuthoredComponentTool(
       ),
       rootKind: Type.Optional(
         Type.Union([Type.Literal("frame"), Type.Literal("container")], {
-          description:
-            "Root template: a Frame or a flex Container. Defaults to frame.",
+          description: "Root template: a Frame or a flex Container. Defaults to frame.",
           default: "frame",
         }),
       ),
-      intent: Type.Optional(
-        Type.String({ description: "Short description of the component." }),
-      ),
+      intent: Type.Optional(Type.String({ description: "Short description of the component." })),
       tags: Type.Optional(
         Type.Array(Type.String(), {
           description: "Optional tags for the component.",
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const boardKey = authoredBoardKeyFromName(params.name)
+
       if (!boardKey) {
-        return textResult(
-          "Authored component name must contain a letter or number.",
-        )
+        return textResult("Authored component name must contain a letter or number.")
       }
-      if (
-        state.workspace.boards[boardKey] ||
-        state.workspace.playgrounds?.[boardKey]
-      ) {
+
+      if (state.workspace.boards[boardKey] || state.workspace.playgrounds?.[boardKey]) {
         return textResult(
           `A component with the key "${boardKey}" already exists in this workspace. Pick a different name, or edit the existing board.`,
         )
@@ -86,6 +77,7 @@ export function createCreateAuthoredComponentTool(
           tags: params.tags,
         },
       } as WorkspaceAction)
+
       return textResult(withCreatedIdentity(before, state.workspace, applied))
     },
   })

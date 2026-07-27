@@ -1,9 +1,4 @@
-import type {
-  BoardKey,
-  Workspace,
-  WorkspaceAction,
-} from "@seldon/core/workspace/types"
-
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ThinkingLevelOption } from "./pi/model"
 import type { ActionRepair } from "./repair/normalize-actions"
 
@@ -40,59 +35,39 @@ export interface IsolationScope {
   variantRootId: string | null
 }
 
-/** Input to {@link chatToActions}. The workspace is read for context only; it is never mutated here. */
+/**
+ * Input to {@link chatToActions}. `workspace` is read for context only and is
+ * never mutated here. `activeBoardKey` is the board on screen, summarized in the
+ * context. `selectedNodeId` is the primary target on the canvas, with
+ * `selectedNodeRootId` giving its variant-root column to disambiguate shared ids
+ * and `selectedBoardId` standing in when no node is selected. `scope` is the
+ * selection scope the editor classified, which drives per-turn context, tool
+ * defaults, and the permission gate. `isolation` pins the active board and
+ * variant when Isolation Mode is on and rejects edits outside its closure at
+ * commit time. `resourceTargetId` is the theme, font collection, or icon set
+ * entry to edit under a resource scope. `model` overrides the model id,
+ * defaulting to `SELDON_AI_MODEL` or `gpt-oss:20b`. `thinkingLevel`,
+ * `thinkingCapable`, and `noThink` control the reasoning pass: the requested
+ * level, whether the model can think at all, and a hard override forcing
+ * reasoning off for the turn. `onEvent` streams turn events for live rendering,
+ * and `signal` aborts the turn so the local model stops generating.
+ */
 export interface ChatToActionsInput {
   workspace: Workspace
   message: string
   history?: ChatMessage[]
-  /** Board the user is looking at. Its node tree is summarized in the context. */
   activeBoardKey?: BoardKey
-  /** Node the user has selected on the canvas, surfaced as the primary target. */
   selectedNodeId?: string
-  /** Variant-root column of the selected node, for disambiguating shared ids. */
   selectedNodeRootId?: string
-  /** Board selected on the canvas when no node is selected, for sentinel disambiguation. */
   selectedBoardId?: BoardKey
-  /**
-   * The selection scope the editor classified for this turn. Drives the
-   * per-turn context, the deterministic tool defaults, and the permission gate.
-   */
   scope?: SelectionScope
-  /**
-   * Isolation Mode, when the editor has it on. Pins the active board and
-   * variant, bounds discovery to the isolated dependency closure, and rejects
-   * edits to any board or node outside it at commit time.
-   */
   isolation?: IsolationScope
-  /**
-   * The theme, font collection, or icon set entry id to edit when the scope is
-   * a resource scope. Resolved by the editor from the selected resource entry,
-   * resource item, or resource board default.
-   */
   resourceTargetId?: string
-  /** Model id override. Defaults to `SELDON_AI_MODEL` env or `gpt-oss:20b`. */
   model?: string
-  /** Thinking level for the model. */
   thinkingLevel?: ThinkingLevelOption
-  /**
-   * Whether the model can run a thinking pass, resolved by the editor from
-   * Ollama's reported capabilities. When omitted, the session falls back to a
-   * name-based check.
-   */
   thinkingCapable?: boolean
-  /**
-   * Forces reasoning off for this turn, overriding the thinking level. Sends an
-   * explicit `enable_thinking: false` to qwen while tool-calling stays enabled.
-   * A test lever for clamping overthinking on direct edits.
-   */
   noThink?: boolean
-  /** Streams turn events as they happen, so the caller can render live. */
   onEvent?: (event: AgentStreamEvent) => void
-  /**
-   * Aborts the turn. When it fires, the Pi session is stopped so the local model
-   * stops generating. Set server-side from the request's disconnect, so a user
-   * pressing Stop in the editor cancels the running turn.
-   */
   signal?: AbortSignal
 }
 
@@ -107,57 +82,55 @@ export type AgentStreamEvent =
   | { type: "tool"; name: string }
   | { type: "toolResult"; ok: boolean }
 
-/** One tool the model invoked during a turn, with its final status. */
+/**
+ * One tool the model invoked during a turn, with its final status. `name` is the
+ * tool name, such as `set_properties` or `find_nodes`. `ok` is false when the
+ * tool reported an error.
+ */
 export interface AgentToolCall {
-  /** Tool name, such as `set_properties` or `find_nodes`. */
   name: string
-  /** False when the tool reported an error. */
   ok: boolean
 }
 
-/** Context and model output captured for debugging. Logged by the editor console. */
+/**
+ * Context and model output captured for debugging, logged by the editor console.
+ * `context` is the compact context sent to the model and `rawResponse` the final
+ * assistant text. `repairs` are the deterministic shape fixes applied before
+ * returning. `thinking` is the reasoning text streamed when thinking is enabled,
+ * `toolCalls` the tools invoked in order, `thinkingMs` the wall time spent
+ * thinking, and `metrics` the turn's timing and token totals.
+ */
 export interface AgentDebug {
-  /** The compact context sent to the model. */
   context: string
-  /** The final assistant text the model returned. */
   rawResponse: string
-  /** Deterministic shape fixes applied to the actions before returning. */
   repairs: ActionRepair[]
-  /** Reasoning text the model streamed, when thinking is enabled. */
   thinking?: string
-  /** Tool calls the model made during the turn, in order. */
   toolCalls?: AgentToolCall[]
-  /** Wall time the model spent thinking, in milliseconds, when it thought. */
   thinkingMs?: number
-  /** Timing and token metrics for the turn. */
   metrics?: AgentMetrics
 }
 
-/** Performance summary for one chat turn, aggregated over its model calls. */
+/**
+ * Performance summary for one chat turn, aggregated over its model calls.
+ * `model` is the id that served the turn and `calls` the number of model calls.
+ * `totalMs` and `loadMs` are the total wall time and model load time across
+ * calls. `promptTokens` and `outputTokens` are the tokens processed and
+ * generated. `firstTokenMs` is the wall time from the prompt call to the first
+ * streamed event, covering model load and prompt prefill.
+ * `outputTokensPerSecond` is the generation-phase throughput when measurable.
+ * `modelSizeBytes` and `modelVramBytes` are the loaded model's resident size and
+ * VRAM footprint when reported.
+ */
 export interface AgentMetrics {
-  /** Model id that served the turn. */
   model: string
-  /** Number of model calls the turn made. */
   calls: number
-  /** Total wall time across calls, in milliseconds. */
   totalMs: number
-  /** Model load time across calls, in milliseconds. */
   loadMs: number
-  /**
-   * Wall time from the prompt call to the first streamed model event, in
-   * milliseconds. Covers model load and prompt prefill, so it measures the gap
-   * before the UI shows any thinking, text, or tool activity.
-   */
-  firstTokenMs?: number
-  /** Input tokens processed across calls. */
   promptTokens: number
-  /** Output tokens generated across calls. */
   outputTokens: number
-  /** Output tokens per second over the generation phase, if measurable. */
+  firstTokenMs?: number
   outputTokensPerSecond?: number
-  /** Resident size of the loaded model in bytes, when reported. */
   modelSizeBytes?: number
-  /** VRAM footprint of the loaded model in bytes, when reported. */
   modelVramBytes?: number
 }
 
@@ -170,18 +143,18 @@ export interface RejectedActionResult {
 /**
  * Result of {@link chatToActions}. The caller adopts {@link workspace} directly
  * with one `set_workspace` dispatch rather than re-applying {@link actions}, so
- * ids the turn minted stay stable. `actions` is retained for the change summary
- * and undo grouping; `ineffective` and `rejected` mirror what happened during
- * the turn for the transcript.
+ * ids the turn minted stay stable. `workspace` is the workspace the turn built,
+ * already folded through the reducer. `actions` is retained for the change
+ * summary and undo grouping. `reply` is the assistant text. `ineffective` lists
+ * action types that validated but changed nothing, in call order, and `rejected`
+ * the actions the reducer rejected with its reason. `debug` carries the
+ * debugging capture.
  */
 export interface ChatToActionsResult {
   actions: WorkspaceAction[]
-  /** Workspace the turn built, already folded through the reducer during the turn. */
   workspace: Workspace
   reply: string
-  /** Action types that validated but changed nothing, in call order. */
   ineffective: string[]
-  /** Actions the reducer rejected during the turn, with the reducer's reason. */
   rejected: RejectedActionResult[]
   debug: AgentDebug
 }

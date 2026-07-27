@@ -1,49 +1,42 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-source-node-id"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
-import type {
-  BoardKey,
-  Workspace,
-  WorkspaceAction,
-} from "@seldon/core/workspace/types"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 
-import type { ResolvedContext } from "../../editor-context"
-import { type TargetSpec, resolveNodeTarget } from "../resolve-target"
-import type { PiTurnState } from "../turn-state"
+import { resolveNodeTarget } from "../resolve-target"
 import { commit, textResult } from "./commit"
 
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
+import type { ResolvedContext } from "../../editor-context"
+import type { TargetSpec } from "../resolve-target"
+import type { PiTurnState } from "../turn-state"
+
 /** The component board key whose variant trees list this node id, if any. */
-function boardKeyOfNode(
-  workspace: Workspace,
-  nodeId: string,
-): BoardKey | undefined {
+function boardKeyOfNode(workspace: Workspace, nodeId: string): BoardKey | undefined {
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
     let found = false
+
     walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id !== nodeId) return
       found = true
+
       return true
     })
     if (found) return key as BoardKey
   }
+
   return undefined
 }
 
 /** Arguments for one property edit, shared by set_properties and the verb tools. */
 export interface PropertyEditArgs {
   target: TargetSpec
-  scope?: "instance" | "all"
   properties: Record<string, unknown>
+  scope?: "instance" | "all"
   match?: string
 }
 
@@ -69,6 +62,7 @@ export function applyPropertyEdit(
     resolved.scope,
     resolved.isolation?.allowedBoardKeys,
   )
+
   if (resolution.kind === "message") return resolution.text
 
   const sourceId = getSourceNodeId(state.workspace, resolution.nodeId)
@@ -78,8 +72,7 @@ export function applyPropertyEdit(
   // the user is looking at. Editing a child whose source lives on another
   // board is the case that bled every instance, so it is not a safe default.
   const sourceOnActiveBoard =
-    resolved.resolvedKey !== undefined &&
-    sourceBoardKey === resolved.resolvedKey
+    resolved.resolvedKey !== undefined && sourceBoardKey === resolved.resolvedKey
 
   // The write stays local by default, even in workspace scope. A cascade only
   // becomes the default when a broad selection targets a node whose source is
@@ -88,8 +81,7 @@ export function applyPropertyEdit(
   // local override so the edit lands on the node the model named instead of a
   // shared source that a variant preset would then override.
   const scope =
-    args.scope ??
-    (resolved.scope !== "instance" && sourceOnActiveBoard ? "all" : "instance")
+    args.scope ?? (resolved.scope !== "instance" && sourceOnActiveBoard ? "all" : "instance")
 
   // Guard the one reach that silently changes unrelated components: an "all"
   // write to a source on another board. Workspace scope is exempt because the
@@ -120,6 +112,7 @@ export function applyPropertyEdit(
     scope === "all"
       ? `Scope all: wrote the component source ${writeNodeId}; every instance without its own override for these properties now follows.`
       : `Scope instance: wrote ${writeNodeId} as a local override.`
+
   return `${outcome}\n${scopeNote}`
 }
 
@@ -139,13 +132,9 @@ export function createSetPropertiesTool(
     description:
       'Primary tool to change a node\'s properties. Values may be loose: a bare string or number becomes an exact value, a descriptive size or color word ("big", "primary") resolves to the matching theme token, and an "@scope.key" string becomes a theme reference. Omit scope to let the tool pick the reach; pass scope "all" only to change the shared source on purpose.',
     parameters: Type.Object({
-      target: Type.Union(
-        [Type.Literal("selection"), Type.Object({ nodeId: Type.String() })],
-        {
-          description:
-            '"selection" for the selected node, or { "nodeId" } from the context.',
-        },
-      ),
+      target: Type.Union([Type.Literal("selection"), Type.Object({ nodeId: Type.String() })], {
+        description: '"selection" for the selected node, or { "nodeId" } from the context.',
+      }),
       scope: Type.Optional(
         Type.Union([Type.Literal("instance"), Type.Literal("all")], {
           description:
@@ -155,11 +144,11 @@ export function createSetPropertiesTool(
       properties: Type.Record(Type.String(), Type.Unknown()),
       match: Type.Optional(
         Type.String({
-          description:
-            "Label or catalog id to locate the node when out of scope.",
+          description: "Label or catalog id to locate the node when out of scope.",
         }),
       ),
     }),
+
     execute: async (_id, params) =>
       textResult(
         applyPropertyEdit(state, resolved, {

@@ -1,13 +1,11 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
-
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import type { PiTurnState } from "../turn-state"
 
 /** Overrides or resets a single theme token by path on an existing theme. */
 export function createSetThemeOverrideTool(state: PiTurnState): ToolDefinition {
@@ -23,6 +21,7 @@ export function createSetThemeOverrideTool(state: PiTurnState): ToolDefinition {
       }),
       value: Type.Optional(Type.Unknown()),
     }),
+
     execute: async (_id, params) =>
       textResult(
         commit(state, {

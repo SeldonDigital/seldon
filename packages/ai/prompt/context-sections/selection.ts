@@ -4,6 +4,7 @@ import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-s
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getPropertyStatus } from "@seldon/core/workspace/helpers/properties/property-status"
 import { getEffectiveProperties } from "@seldon/core/workspace/helpers/properties/shared"
+
 import type { Board, Workspace } from "@seldon/core/workspace/types"
 
 /**
@@ -15,9 +16,12 @@ import type { Board, Workspace } from "@seldon/core/workspace/types"
 function summarizeValue(value: unknown): string {
   if (value && typeof value === "object" && "type" in value) {
     const tagged = value as { type?: unknown; value?: unknown }
+
     return `${String(tagged.type)}:${JSON.stringify(tagged.value)}`
   }
+
   const json = JSON.stringify(value)
+
   return json.length > 80 ? `${json.slice(0, 80)}…` : json
 }
 
@@ -42,22 +46,27 @@ export function selectionSection(
 ): string[] {
   if (!selectedNodeId) return []
   const node = workspace.nodes[selectedNodeId]
+
   if (!node) return []
 
   const lines: string[] = [""]
   const catalogId = getNodeCatalogId(node, workspace)
   const label = node.label ? ` label="${node.label}"` : ""
+
   lines.push(
     `Selected node: ${selectedNodeId} [${node.level}]${catalogId ? ` catalogId=${catalogId}` : ""}${label}`,
   )
+
   if (selectedNodeRootId) {
     lines.push(`Selected in variant column: ${selectedNodeRootId}`)
   }
 
   const parentId = getImmediateParentIdInWorkspace(workspace, selectedNodeId)
+
   lines.push(`Parent: ${parentId ?? "(root)"}`)
 
   const sourceId = getSourceNodeId(workspace, selectedNodeId)
+
   if (sourceId !== selectedNodeId) {
     lines.push(
       `Source: ${sourceId} (set_properties with scope "all" writes here so every instance follows; scope "instance" overrides only this node)`,
@@ -66,6 +75,7 @@ export function selectionSection(
 
   if (board) {
     const childIds = getChildrenIds(board, selectedNodeId)
+
     if (childIds.length > 0) {
       lines.push(`Children: ${childIds.join(", ")}`)
     }
@@ -77,10 +87,13 @@ export function selectionSection(
     const keys = Object.keys(effective).filter(
       (key) => status[key] === "set" || status[key] === "override",
     )
+
     if (keys.length > 0) {
       lines.push("Current properties (key = value (status)):")
+
       for (const key of keys) {
         const value = (effective as Record<string, unknown>)[key]
+
         lines.push(`- ${key} = ${summarizeValue(value)} (${status[key]})`)
       }
     }

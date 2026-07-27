@@ -1,14 +1,13 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
+import { textResult } from "./commit"
+import { applyPropertyEdit } from "./set-properties"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { TargetSpec } from "../resolve-target"
 import type { PiTurnState } from "../turn-state"
-import { textResult } from "./commit"
-import { applyPropertyEdit } from "./set-properties"
 
 /** Typographic roles that map to the theme font look ids. */
 const ROLES = [
@@ -40,18 +39,15 @@ export function createSetTextRoleTool(
     description:
       "Apply a typographic role (title, heading, body, label, and so on) to a text node by setting its font look. Prefer this over setting size and weight by hand.",
     parameters: Type.Object({
-      target: Type.Union(
-        [Type.Literal("selection"), Type.Object({ nodeId: Type.String() })],
-        {
-          description:
-            '"selection" for the selected node, or { "nodeId" } from the context.',
-        },
-      ),
+      target: Type.Union([Type.Literal("selection"), Type.Object({ nodeId: Type.String() })], {
+        description: '"selection" for the selected node, or { "nodeId" } from the context.',
+      }),
       role: Type.Union(
         ROLES.map((role) => Type.Literal(role)),
         { description: "A typographic role on the theme font look scale." },
       ),
     }),
+
     execute: async (_id, params) =>
       textResult(
         applyPropertyEdit(state, resolved, {

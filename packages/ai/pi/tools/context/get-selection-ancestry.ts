@@ -1,13 +1,12 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { ancestrySection } from "../../../prompt/context-sections/ancestry"
+import { joinOrEmpty, textResult } from "./shared"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
-import { joinOrEmpty, textResult } from "./shared"
 
 /** Returns a node's parent chain to its variant root, for inherited color reasoning. */
 export function createGetSelectionAncestryTool(
@@ -15,6 +14,7 @@ export function createGetSelectionAncestryTool(
   resolved: ResolvedContext,
 ): ToolDefinition {
   const { selectedNodeId } = resolved
+
   return defineTool({
     name: "get_selection_ancestry",
     label: "Get Selection Ancestry",
@@ -23,18 +23,18 @@ export function createGetSelectionAncestryTool(
     parameters: Type.Object({
       nodeId: Type.Optional(
         Type.String({
-          description:
-            "Node id to trace. Omit to use the node selected on the canvas.",
+          description: "Node id to trace. Omit to use the node selected on the canvas.",
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const targetId = params.nodeId ?? selectedNodeId
+
       if (targetId === undefined) {
-        return textResult(
-          "No node selected. Pass a nodeId to trace its ancestry.",
-        )
+        return textResult("No node selected. Pass a nodeId to trace its ancestry.")
       }
+
       return textResult(
         joinOrEmpty(
           ancestrySection(state.workspace, targetId),

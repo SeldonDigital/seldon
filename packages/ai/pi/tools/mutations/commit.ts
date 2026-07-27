@@ -1,13 +1,11 @@
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
-import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 import { collectDesignViolations } from "../../../repair/design-lint"
 import { normalizeActions } from "../../../repair/normalize-actions"
+
+import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { PiTurnState } from "../turn-state"
 
 /** Wraps a plain string in the tool result shape Pi expects. */
@@ -18,6 +16,7 @@ export function textResult(text: string) {
 /** True when applying an action left the working copy effectively unchanged. */
 function isUnchanged(before: unknown, after: unknown): boolean {
   if (before === after) return true
+
   return JSON.stringify(before) === JSON.stringify(after)
 }
 
@@ -35,8 +34,8 @@ type ActionAnchor =
   | null
 
 function getActionAnchor(action: WorkspaceAction): ActionAnchor {
-  const p = action.payload as Record<string, string> &
-    Record<string, { parentId?: string }>
+  const p = action.payload as Record<string, string> & Record<string, { parentId?: string }>
+
   switch (action.type) {
     case "set_node_properties":
     case "paste_node_properties":
@@ -110,20 +109,20 @@ function getActionAnchor(action: WorkspaceAction): ActionAnchor {
 }
 
 /** The workspace board map key whose variant trees list this node id, if any. */
-function boardKeyOfNode(
-  workspace: Workspace,
-  nodeId: string,
-): string | undefined {
+function boardKeyOfNode(workspace: Workspace, nodeId: string): string | undefined {
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
     let found = false
+
     walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id !== nodeId) return
       found = true
+
       return true
     })
     if (found) return key
   }
+
   return undefined
 }
 
@@ -140,21 +139,25 @@ function boardKeyOfNode(
  * So a node passes when its board is in scope, or when it is a fresh id minted
  * in scope this turn (tracked in `allowedNodeIds`).
  */
-function isolationRejection(
-  state: PiTurnState,
-  action: WorkspaceAction,
-): string | null {
+function isolationRejection(state: PiTurnState, action: WorkspaceAction): string | null {
   const { allowedNodeIds, allowedBoardKeys } = state
+
   if (!allowedNodeIds || !allowedBoardKeys) return null
   const anchor = getActionAnchor(action)
+
   if (!anchor) return null
+
   if (anchor.kind === "node") {
     if (!anchor.id || allowedNodeIds.has(anchor.id)) return null
     const owner = boardKeyOfNode(state.workspace, anchor.id)
+
     if (owner && allowedBoardKeys.has(owner)) return null
+
     return `Isolation Mode: node ${anchor.id} is on a board outside the isolated closure, so "${action.type}" is rejected. Target a node on the isolated board or one of the dependency components in scope, or tell the user this needs exiting Isolation Mode.`
   }
+
   if (!anchor.key || allowedBoardKeys.has(anchor.key)) return null
+
   return `Isolation Mode: board ${anchor.key} is outside the isolated closure, so "${action.type}" is rejected. Target the isolated board or a dependency component in scope, or tell the user this needs exiting Isolation Mode.`
 }
 
@@ -163,15 +166,13 @@ function isolationRejection(
  * follow-up edit to a node or board just inserted in scope passes the gate. A
  * no-op when isolation is off.
  */
-function growClosure(
-  state: PiTurnState,
-  before: Workspace,
-  after: Workspace,
-): void {
+function growClosure(state: PiTurnState, before: Workspace, after: Workspace): void {
   if (!state.allowedNodeIds || !state.allowedBoardKeys) return
+
   for (const id of Object.keys(after.nodes)) {
     if (!before.nodes[id]) state.allowedNodeIds.add(id)
   }
+
   for (const key of Object.keys(after.boards)) {
     if (!before.boards[key]) state.allowedBoardKeys.add(key)
   }
@@ -191,6 +192,7 @@ export function commit(state: PiTurnState, rawAction: WorkspaceAction): string {
   // the frozen closure before the dry-run, and record the reason so the model
   // reads it as a tool error and retargets or asks the user to exit isolation.
   const outOfScope = isolationRejection(state, rawAction)
+
   if (outOfScope) {
     state.rejected.push({ type: rawAction.type, reason: outOfScope })
     throw new Error(outOfScope)
@@ -203,16 +205,17 @@ export function commit(state: PiTurnState, rawAction: WorkspaceAction): string {
   // or an option outside the key's set, before the dry-run. Core would silently
   // drop the unknown key, so the turn would look applied while the value never
   // lands; throwing feeds the exact rule back to the model to retarget.
-  const violations = normalized.flatMap((action) =>
-    collectDesignViolations(before, action),
-  )
+  const violations = normalized.flatMap((action) => collectDesignViolations(before, action))
+
   if (violations.length > 0) {
     const reason = violations.join(" ")
+
     state.rejected.push({ type: rawAction.type, reason })
     throw new Error(reason)
   }
 
   let next
+
   try {
     next = applyActions(before, normalized)
   } catch (caught) {
@@ -222,13 +225,17 @@ export function commit(state: PiTurnState, rawAction: WorkspaceAction): string {
     })
     throw caught
   }
+
   if (isUnchanged(before, next)) {
     state.ineffective.push(rawAction.type)
+
     return `Action "${rawAction.type}" validated but changed nothing. It likely matched no node or set a value already in place. Check the target id and try a different edit.`
   }
+
   state.workspace = next
   state.actions.push(...normalized)
   state.repairs.push(...repairs)
   growClosure(state, before, next)
+
   return `Applied ${rawAction.type}.`
 }

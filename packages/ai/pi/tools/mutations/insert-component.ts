@@ -1,15 +1,13 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
-
-import type { PiTurnState } from "../turn-state"
 import { resolveCatalogId } from "./catalog-ids"
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import type { PiTurnState } from "../turn-state"
 
 /**
  * Inserts a catalog component's default instance under an existing parent node.
@@ -25,8 +23,7 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
       "Insert a catalog component under an existing parent node (for example the selection). Pass its catalog id (from list_catalog_ids). Creates the board if it does not exist yet. Only nest what the hierarchy allows.",
     parameters: Type.Object({
       catalogId: Type.String({
-        description:
-          "Catalog id of the component to insert (from list_catalog_ids).",
+        description: "Catalog id of the component to insert (from list_catalog_ids).",
       }),
       parentId: Type.String({ description: "Existing parent node id." }),
       index: Type.Optional(
@@ -35,10 +32,11 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const resolved = resolveCatalogId(params.catalogId)
-      if (!resolved.id)
-        return textResult(resolved.message ?? "Unknown catalog id.")
+
+      if (!resolved.id) return textResult(resolved.message ?? "Unknown catalog id.")
       const catalogId = resolved.id
       const action: WorkspaceAction = state.workspace.boards[catalogId]
         ? ({
@@ -59,6 +57,7 @@ export function createInsertComponentTool(state: PiTurnState): ToolDefinition {
       const before = state.workspace
       const applied = commit(state, action)
       const message = resolved.note ? `${resolved.note}\n${applied}` : applied
+
       return textResult(withCreatedIdentity(before, state.workspace, message))
     },
   })

@@ -1,19 +1,15 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { findNodesSection } from "../../../prompt/context-sections/workspace-index"
-import type { ResolvedContext } from "../../editor-context"
-import type { PiTurnState } from "../turn-state"
 import { joinOrEmpty, textResult } from "./shared"
 
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { ResolvedContext } from "../../editor-context"
+import type { PiTurnState } from "../turn-state"
+
 /** Searches every board for nodes matching a label or catalog id query. */
-export function createFindNodesTool(
-  state: PiTurnState,
-  resolved: ResolvedContext,
-): ToolDefinition {
+export function createFindNodesTool(state: PiTurnState, resolved: ResolvedContext): ToolDefinition {
   return defineTool({
     name: "find_nodes",
     label: "Find Nodes",
@@ -24,14 +20,11 @@ export function createFindNodesTool(
         description: "Text to match against node labels and catalog ids.",
       }),
     }),
+
     execute: async (_id, params) =>
       textResult(
         joinOrEmpty(
-          findNodesSection(
-            state.workspace,
-            params.query,
-            resolved.isolation?.allowedBoardKeys,
-          ),
+          findNodesSection(state.workspace, params.query, resolved.isolation?.allowedBoardKeys),
           `No nodes match "${params.query}".`,
         ),
       ),

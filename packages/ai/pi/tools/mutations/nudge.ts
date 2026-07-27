@@ -1,7 +1,4 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
 import { findComponentSchema } from "@seldon/core/components/catalog"
@@ -13,41 +10,41 @@ import {
   resolveOperation,
   resolveScaleStep,
 } from "@seldon/core/rules/config/design-semantics.resolve"
-import type { Theme } from "@seldon/core/themes/types"
-import {
-  computeNodeProperties,
-  computeWorkspaceThemes,
-} from "@seldon/core/workspace/compute"
+import { computeNodeProperties, computeWorkspaceThemes } from "@seldon/core/workspace/compute"
 import { getNodeParentIndex } from "@seldon/core/workspace/helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import type { Workspace } from "@seldon/core/workspace/types"
 
-import {
-  SHORTHAND_SIDES,
-  isTaggedValue,
-  propertyShape,
-} from "../../../prompt/property-taxonomy"
-import type { ResolvedContext } from "../../editor-context"
-import { type TargetSpec, resolveNodeTarget } from "../resolve-target"
-import type { PiTurnState } from "../turn-state"
-import { applyPropertyEdit } from "./set-properties"
+import { SHORTHAND_SIDES, isTaggedValue, propertyShape } from "../../../prompt/property-taxonomy"
+import { resolveNodeTarget } from "../resolve-target"
 import { textResult } from "./commit"
+import { applyPropertyEdit } from "./set-properties"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { Theme } from "@seldon/core/themes/types"
+import type { Workspace } from "@seldon/core/workspace/types"
+import type { ResolvedContext } from "../../editor-context"
+import type { TargetSpec } from "../resolve-target"
+import type { PiTurnState } from "../turn-state"
 
 /** A component's catalog id, level, and settable keys. */
 interface Facts {
   catalogId: string
-  level?: string
   keys: Set<string>
+  level?: string
 }
 
 /** The target component's catalog id, level, and settable keys, or undefined. */
 function componentFacts(workspace: Workspace, nodeId: string): Facts | undefined {
   const node = workspace.nodes?.[nodeId]
+
   if (!node) return undefined
   const catalogId = getNodeCatalogId(node, workspace)
+
   if (!catalogId) return undefined
   const schema = findComponentSchema(catalogId)
+
   if (!schema?.properties) return undefined
+
   return {
     catalogId,
     level: schema.level,
@@ -56,12 +53,11 @@ function componentFacts(workspace: Workspace, nodeId: string): Facts | undefined
 }
 
 /** The node an intent resolves against, with its property path, or a message. */
-type ConceptRoute =
-  | { nodeId: string; facts: Facts; path: string }
-  | { error: string }
+type ConceptRoute = { nodeId: string; facts: Facts; path: string } | { error: string }
 
 function propertyOn(concept: string, facts: Facts | undefined) {
   if (!facts) return undefined
+
   return resolveIntentProperty(concept, facts.keys, {
     level: facts.level,
     componentId: facts.catalogId,
@@ -75,11 +71,7 @@ function propertyOn(concept: string, facts: Facts | undefined) {
  * not expose it. An intent marked `target: "parent"` biases to the parent up
  * front. Returns a message when the concept resolves nowhere or is ambiguous.
  */
-function routeConcept(
-  workspace: Workspace,
-  selectedId: string,
-  concept: string,
-): ConceptRoute {
+function routeConcept(workspace: Workspace, selectedId: string, concept: string): ConceptRoute {
   const intent = resolveIntentTarget(concept)
   const selfFacts = componentFacts(workspace, selectedId)
   const parentId = getNodeParentIndex(workspace).get(selectedId)
@@ -89,29 +81,30 @@ function routeConcept(
   const parentRes = propertyOn(concept, parentFacts)
   const preferParent = intent?.target === "parent"
 
-  if (
-    preferParent &&
-    parentId &&
-    parentFacts &&
-    parentRes?.status === "resolved"
-  ) {
+  if (preferParent && parentId && parentFacts && parentRes?.status === "resolved") {
     return { nodeId: parentId, facts: parentFacts, path: parentRes.propertyPath }
   }
+
   if (selfFacts && selfRes?.status === "resolved") {
     return { nodeId: selectedId, facts: selfFacts, path: selfRes.propertyPath }
   }
+
   if (parentId && parentFacts && parentRes?.status === "resolved") {
     return { nodeId: parentId, facts: parentFacts, path: parentRes.propertyPath }
   }
+
   if (selfRes?.status === "ambiguous") {
     return {
       error: `"${concept}" is ambiguous on ${selfFacts!.catalogId}: it could be ${selfRes.candidates.join(" or ")}. Say which, or use set_properties.`,
     }
   }
+
   if (selfFacts?.keys.has(concept)) {
     return { nodeId: selectedId, facts: selfFacts, path: concept }
   }
+
   const where = selfFacts?.catalogId ?? selectedId
+
   return {
     error: `Could not route "${concept}" to a property on ${where}. Call get_component_vocabulary for its keys.`,
   }
@@ -123,27 +116,35 @@ function findOrdinalRef(value: unknown): string | undefined {
     if (value.type === "theme.ordinal" && typeof value.value === "string") {
       return value.value
     }
+
     return undefined
   }
+
   if (Array.isArray(value)) {
     for (const item of value) {
       const found = findOrdinalRef(item)
+
       if (found) return found
     }
+
     return undefined
   }
+
   if (value && typeof value === "object") {
     for (const facet of Object.values(value as Record<string, unknown>)) {
       const found = findOrdinalRef(facet)
+
       if (found) return found
     }
   }
+
   return undefined
 }
 
 /** The top-level key a candidate path writes, for example font.size -> font. */
 function rootOf(path: string): string {
   const dot = path.indexOf(".")
+
   return dot === -1 ? path : path.slice(0, dot)
 }
 
@@ -152,22 +153,24 @@ function rootOf(path: string): string {
  * step lands uniformly; a compound facet nests the value under its facet path;
  * an atomic key writes the value directly.
  */
-function buildWrite(
-  path: string,
-  value: Record<string, unknown>,
-): Record<string, unknown> {
+function buildWrite(path: string, value: Record<string, unknown>): Record<string, unknown> {
   const root = rootOf(path)
+
   if (propertyShape(root) === "shorthand") {
     const sides = SHORTHAND_SIDES[root] ?? []
+
     return {
       [root]: Object.fromEntries(sides.map((side) => [side, value])),
     }
   }
+
   const segments = path.split(".")
   let nested: Record<string, unknown> = value
+
   for (let i = segments.length - 1; i >= 1; i--) {
     nested = { [segments[i]!]: nested }
   }
+
   return { [segments[0]!]: nested }
 }
 
@@ -178,23 +181,16 @@ function buildWrite(
  * rather than the model guessing an absolute one. The concept routes to whichever
  * property the target exposes; a bare verb like "tighten" carries its direction.
  */
-export function createNudgeTool(
-  state: PiTurnState,
-  resolved: ResolvedContext,
-): ToolDefinition {
+export function createNudgeTool(state: PiTurnState, resolved: ResolvedContext): ToolDefinition {
   return defineTool({
     name: "nudge",
     label: "Nudge",
     description:
       'Step a concept up or down its theme scale relative to the node\'s current value, for "more space", "tighter", "a bit bigger", "bolder". Concept is a design word like "spacing", "size", "weight", "corners"; direction is "increase" or "decrease" (a verb like "tighten" already implies it). Use this for relative changes instead of set_properties with an absolute token.',
     parameters: Type.Object({
-      target: Type.Union(
-        [Type.Literal("selection"), Type.Object({ nodeId: Type.String() })],
-        {
-          description:
-            '"selection" for the selected node, or { "nodeId" } from the context.',
-        },
-      ),
+      target: Type.Union([Type.Literal("selection"), Type.Object({ nodeId: Type.String() })], {
+        description: '"selection" for the selected node, or { "nodeId" } from the context.',
+      }),
       concept: Type.String({
         description:
           'The design concept or relative verb, for example "spacing", "size", "weight", "corners", or "tighten".',
@@ -212,11 +208,11 @@ export function createNudgeTool(
       ),
       match: Type.Optional(
         Type.String({
-          description:
-            "Label or catalog id to locate the node when out of scope.",
+          description: "Label or catalog id to locate the node when out of scope.",
         }),
       ),
     }),
+
     execute: async (_id, params) => {
       const resolution = resolveNodeTarget(
         state.workspace,
@@ -228,37 +224,38 @@ export function createNudgeTool(
         resolved.scope,
         resolved.isolation?.allowedBoardKeys,
       )
+
       if (resolution.kind === "message") return textResult(resolution.text)
 
       // A bare relative verb ("tighten") names both the concept and direction.
       const operation = resolveOperation(params.concept)
       const concept = operation?.concept ?? params.concept
       const direction = params.direction ?? operation?.direction
+
       if (!direction) {
         return textResult(
           `Nudge needs a direction for "${params.concept}". Pass direction "increase" or "decrease", or use a verb like "tighten" or "bolder".`,
         )
       }
+
       const steps = params.steps ?? operation?.steps ?? 1
 
       const route = routeConcept(state.workspace, resolution.nodeId, concept)
+
       if ("error" in route) return textResult(route.error)
       const { nodeId: editId, facts, path } = route
 
       const schemaKey = getCatalogKeyForPropertyPath(path) ?? rootOf(path)
       let theme: Theme | undefined
+
       try {
-        theme = computeWorkspaceThemes(state.workspace)[0] as unknown as
-          | Theme
-          | undefined
+        theme = computeWorkspaceThemes(state.workspace)[0] as unknown as Theme | undefined
       } catch {
         theme = undefined
       }
-      const orderedTokens = getPropertyOptions(
-        schemaKey,
-        "themeOrdinal",
-        theme,
-      ).map(String)
+
+      const orderedTokens = getPropertyOptions(schemaKey, "themeOrdinal", theme).map(String)
+
       if (orderedTokens.length === 0) {
         return textResult(
           `"${path}" on ${facts.catalogId} has no ordinal theme scale to step. Use set_properties with an explicit value.`,
@@ -271,16 +268,16 @@ export function createNudgeTool(
       const currentToken = findOrdinalRef(effective[rootOf(path)])
       const signedSteps = direction === "decrease" ? -steps : steps
       const nextToken = resolveScaleStep(currentToken, signedSteps, orderedTokens)
+
       if (!nextToken) {
-        return textResult(
-          `Could not step "${path}" on ${facts.catalogId}.`,
-        )
+        return textResult(`Could not step "${path}" on ${facts.catalogId}.`)
       }
 
       const properties = buildWrite(path, {
         type: "theme.ordinal",
         value: nextToken,
       })
+
       return textResult(
         applyPropertyEdit(state, resolved, {
           target: { nodeId: editId },

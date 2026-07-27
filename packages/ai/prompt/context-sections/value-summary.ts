@@ -7,8 +7,11 @@
 export function summarizeValue(value: unknown): string {
   if (value && typeof value === "object" && "type" in value) {
     const tagged = value as { type?: unknown; value?: unknown }
+
     return `${String(tagged.type)}:${JSON.stringify(tagged.value)}`
   }
+
   const json = JSON.stringify(value)
+
   return json.length > 80 ? `${json.slice(0, 80)}…` : json
 }

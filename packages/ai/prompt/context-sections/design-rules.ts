@@ -16,5 +16,6 @@ const TITLE = "Design intents (concept -> property; write the property shown):"
  */
 export function designRulesSection(): string[] {
   const body = listIntents().map((intent) => `- ${intent.note}`)
+
   return section(TITLE, body)
 }

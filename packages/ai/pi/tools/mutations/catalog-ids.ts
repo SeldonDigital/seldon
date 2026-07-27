@@ -17,12 +17,15 @@ function normalize(id: string): string {
   return id.toLowerCase().replace(/[^a-z0-9]/g, "")
 }
 
+/**
+ * Outcome of resolving a model-supplied catalog id. `id` is the real catalog id
+ * to use, present unless the id is unresolvable. `note` is set when `id` was
+ * corrected from a near miss, such as "media-card". `message` is set when the id
+ * is unknown; return it to the model instead of acting.
+ */
 export interface CatalogIdResolution {
-  /** The real catalog id to use, present unless the id is unresolvable. */
   id?: string
-  /** Set when `id` was corrected from a near miss, e.g. "media-card". */
   note?: string
-  /** Set when the id is unknown; return this to the model instead of acting. */
   message?: string
 }
 
@@ -36,16 +39,19 @@ export interface CatalogIdResolution {
  */
 export function resolveCatalogId(catalogId: string): CatalogIdResolution {
   const ids = allCatalogIds()
+
   if (ids.includes(catalogId)) return { id: catalogId }
 
   const wanted = normalize(catalogId)
   const near = ids.find((id) => normalize(id) === wanted)
+
   if (near) {
     return {
       id: near,
       note: `Corrected catalog id "${catalogId}" to "${near}".`,
     }
   }
+
   return {
     message: `Unknown catalog id "${catalogId}". It is not in the catalog. Call list_catalog_ids and pass an exact id from that list.`,
   }

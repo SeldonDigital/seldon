@@ -1,14 +1,12 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import { commit, textResult } from "./commit"
 
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
-import { commit, textResult } from "./commit"
 
 /** Turns a single icon on or off in the selected icon set. */
 export function createSetIconSetOverrideTool(
@@ -31,11 +29,14 @@ export function createSetIconSetOverrideTool(
       }),
       value: Type.Optional(Type.Unknown()),
     }),
+
     execute: async (_id, params) => {
       const iconSetId = params.iconSetId ?? resolved.resourceTargetId
+
       if (!iconSetId) {
         return textResult("No icon set is selected. Pass iconSetId.")
       }
+
       return textResult(
         commit(state, {
           type: "set_icon_set_override",

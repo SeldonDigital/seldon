@@ -1,13 +1,11 @@
-import {
-  type ToolDefinition,
-  defineTool,
-} from "@earendil-works/pi-coding-agent"
+import { defineTool } from "@earendil-works/pi-coding-agent"
 import { Type } from "typebox"
 
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
-
-import type { PiTurnState } from "../turn-state"
 import { commit, textResult } from "./commit"
+
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import type { PiTurnState } from "../turn-state"
 
 /** Reorders an instance among its siblings under the same parent. */
 export function createReorderComponentTool(state: PiTurnState): ToolDefinition {
@@ -24,6 +22,7 @@ export function createReorderComponentTool(state: PiTurnState): ToolDefinition {
         description: "New index among the parent's children.",
       }),
     }),
+
     execute: async (_id, params) =>
       textResult(
         commit(state, {
