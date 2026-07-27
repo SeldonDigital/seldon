@@ -7,9 +7,9 @@ export interface ModulationParameters {
 /** Ordinal step token (`@size.*`, `@margin.*`, …). */
 export interface ThemeModulation {
   type: TokenType.MODULATED
+  parameters: ModulationParameters
   name?: string
   intent?: string
-  parameters: ModulationParameters
   /** Resolved length cached after `computeTheme`. Not authoring input. */
   value?: number
 }

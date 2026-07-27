@@ -13,9 +13,9 @@ export function modulateWithTheme({
 }: {
   theme: ThemePipelineInput
   parameters: {
+    step: number
     ratio?: number
     size?: number
-    step: number
   }
 }) {
   return modulate({

@@ -20,13 +20,6 @@ export type PropertyValueType =
 export interface PropertySchema {
   name: string
   description: string
-  /**
-   * Panel grouping per the properties README categories (`PROPERTY_DISPLAY_ORDER`).
-   * Always set on merged `PROPERTY_SCHEMAS` entries; optional on raw per-value modules.
-   */
-  displayCategory?: PropertyDisplayCategory
-  /** Global sort key across the flattened catalog. Always set on `PROPERTY_SCHEMAS`. */
-  displayOrder?: number
   supports: readonly PropertyValueType[]
   validation: {
     empty?: () => boolean
@@ -37,6 +30,13 @@ export interface PropertySchema {
     themeCategorical?: (value: unknown, theme?: Theme) => boolean
     themeOrdinal?: (value: unknown, theme?: Theme) => boolean
   }
+  /**
+   * Panel grouping per the properties README categories (`PROPERTY_DISPLAY_ORDER`).
+   * Always set on merged `PROPERTY_SCHEMAS` entries; optional on raw per-value modules.
+   */
+  displayCategory?: PropertyDisplayCategory
+  /** Global sort key across the flattened catalog. Always set on `PROPERTY_SCHEMAS`. */
+  displayOrder?: number
   /** Supplies picker entries when the field stores `ValueType.OPTION`. */
   presetOptions?: (workspace?: Workspace) => unknown[]
   /** Lists `@`-style keys or token ids for categorical theme pickers. */
@@ -45,7 +45,6 @@ export interface PropertySchema {
   themeOrdinalKeys?: (theme: Theme) => string[]
   /** Lists allowed `ComputedFunction` ids for computed pickers. */
   computedFunctions?: () => ComputedFunction[]
-
   /** Allowed unit suffixes and default when the property stores measured numbers. */
   units?: {
     allowed: Unit[]

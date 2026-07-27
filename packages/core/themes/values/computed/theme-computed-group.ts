@@ -12,7 +12,7 @@ import type { TokenType } from "../../constants/token-type"
 /** Base shape for every grouped configuration cell in the Computed section. */
 export interface ThemeComputedGroup<TParameters> {
   type: TokenType.COMPUTED
+  parameters: TParameters
   name?: string
   intent?: string
-  parameters: TParameters
 }

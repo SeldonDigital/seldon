@@ -13,47 +13,48 @@
  * a bordered text box that exposes both `font` and `border`: `font.weight`
  * guarded to text levels wins over `border.width` there. A bare string is a
  * candidate with no guard.
+ *
+ * `path` is the dot property path written, such as `font.weight`. `whenLevel`
+ * and `whenComponent` restrict the candidate to matching component levels or
+ * ids, matched case-insensitively.
  */
 export interface IntentCandidate {
-  /** Dot property path the candidate writes, for example font.weight. */
   path: string
-  /** Component levels this candidate applies to, matched case-insensitively. */
   whenLevel?: readonly string[]
-  /** Component ids this candidate applies to, matched case-insensitively. */
   whenComponent?: readonly string[]
 }
 
-/** One design concept and the properties it can map to. */
+/**
+ * One design concept and the properties it can map to.
+ *
+ * `id` is a stable id used by verb tools and messages. `phrases` name the
+ * concept, matched after normalization. `candidates` are the property paths this
+ * concept can write, ordered most specific first, such as
+ * `["font.size", "size", "width"]`. A concept is only deterministic once a target
+ * is known, so the resolver picks the first candidate whose root key the target
+ * exposes and whose guards match, rather than assuming one property. A candidate
+ * is a bare path or a guarded object. `note` is a one-line explanation rendered
+ * into the prompt. `target` selects the node the edit lands on relative to the
+ * selection. Omitted means the selected node itself. "parent" biases the edit to
+ * the container, for a concept that lives on the parent such as the gap between a
+ * container's children, and a concept-driven tool still falls back to the parent
+ * when the selected node does not expose the property but the parent does.
+ */
 export interface IntentRule {
-  /** Stable id, used by verb tools and messages. */
   id: string
-  /** Words or phrases that name this concept. Matched after normalization. */
   phrases: readonly string[]
-  /**
-   * Property paths this concept can write, ordered most specific first, for
-   * example ["font.size", "size", "width"]. A concept is only deterministic
-   * once a target is known, so the resolver picks the first candidate whose
-   * root key the target component exposes and whose guards match, rather than
-   * assuming one property. A candidate is a bare path or a guarded object.
-   */
   candidates: readonly (string | IntentCandidate)[]
-  /**
-   * Which node the edit lands on relative to the selection. Omitted means the
-   * selected node itself. "parent" biases the edit to the container, for a
-   * concept that lives on the parent such as the gap between a container's
-   * children. A concept-driven tool still falls back to the parent when the
-   * selected node does not expose the property but the parent does.
-   */
-  target?: "self" | "parent"
-  /** One-line explanation rendered into the prompt. */
   note: string
+  target?: "self" | "parent"
 }
 
-/** A theme scope's descriptive words mapped to its real token ids. */
+/**
+ * A theme scope's descriptive words mapped to its real token ids. `scope` is the
+ * theme scope the ids belong to, such as fontSize, fontWeight, or swatch.
+ * `synonyms` maps a normalized spoken word to a token id within the scope.
+ */
 export interface TokenScaleSynonyms {
-  /** Theme scope the ids belong to, for example fontSize, fontWeight, swatch. */
   scope: string
-  /** Normalized spoken word to token id within the scope. */
   synonyms: Readonly<Record<string, string>>
 }
 
@@ -65,15 +66,15 @@ export type OperationDirection = "increase" | "decrease"
  * ordinal scale, rather than naming an absolute value. It names the concept it
  * acts on and the direction, so a bare verb resolves to a scale step without the
  * caller restating both.
+ *
+ * `phrases` name this operation, matched after normalization. `concept` is the
+ * intent id it steps, such as "spacing" or "weight". `direction` is which way to
+ * move along the scale. `steps` is how many steps to move, default 1.
  */
 export interface OperationRule {
-  /** Words that name this relative operation. Matched after normalization. */
   phrases: readonly string[]
-  /** The intent id this operation steps, for example "spacing" or "weight". */
   concept: string
-  /** Which way to move along the scale. */
   direction: OperationDirection
-  /** How many steps to move, default 1. */
   steps?: number
 }
 
@@ -81,32 +82,34 @@ export interface OperationRule {
  * A named spacing density for the whole theme. It sets the theme modulation
  * `baseSize`, which scales the modulated spacing and size tokens together, so
  * "make it breathe" loosens the whole design at once rather than one node.
+ *
+ * `id` is a stable id, also the value the density tool accepts. `phrases` name
+ * this density, matched after normalization. `baseSize` is the modulation
+ * baseSize multiplier this density sets, 1 is the default.
  */
 export interface SpacingFeel {
-  /** Stable id, also the value the density tool accepts. */
   id: string
-  /** Words that name this density. Matched after normalization. */
   phrases: readonly string[]
-  /** The modulation baseSize multiplier this density sets, 1 is the default. */
   baseSize: number
 }
 
-/** The whole design semantics source. */
+/**
+ * The whole design semantics source.
+ *
+ * `intents` route a concept to its candidate property paths. `tokenSynonyms` map
+ * a descriptive word to a real token id, per theme scope. `operations` are the
+ * relative verbs that step a concept along its ordinal scale. `spacingFeels` are
+ * the named theme-wide spacing densities, applied through modulation baseSize.
+ * `stateSynonyms` map spoken interaction-state words to a reserved state name.
+ * Keys are normalized (lowercase, alphanumerics only). Values are reserved names
+ * from the workspace node-state model, so "greyed out" resolves to "disabled" and
+ * "pressed" to "active". A word that is already a reserved name or a workspace
+ * custom-state key needs no entry here.
+ */
 export interface DesignSemanticsConfig {
-  /** Intent routing: a concept to its candidate property paths. */
   intents: readonly IntentRule[]
-  /** Descriptive word to real token id, per theme scope. */
   tokenSynonyms: readonly TokenScaleSynonyms[]
-  /** Relative verbs that step a concept along its ordinal scale. */
   operations: readonly OperationRule[]
-  /** Named theme-wide spacing densities, applied through modulation baseSize. */
   spacingFeels: readonly SpacingFeel[]
-  /**
-   * Spoken interaction-state words mapped to a reserved state name. Keys are
-   * normalized (lowercase, alphanumerics only). Values are reserved names from
-   * the workspace node-state model, so "greyed out" resolves to "disabled" and
-   * "pressed" to "active". A word that is already a reserved name or a workspace
-   * custom-state key needs no entry here.
-   */
   stateSynonyms: Readonly<Record<string, string>>
 }

@@ -21,10 +21,10 @@ interface BaseComponentSchema {
   id: ComponentId
   name: string
   intent: string
-  // Optional. When absent, the icon registry falls back to `seldon-component`.
-  icon?: ComponentIcon
   properties: Properties
   tags: string[]
+  // Optional. When absent, the icon registry falls back to `seldon-component`.
+  icon?: ComponentIcon
   // Layout model the component arranges its children with. Optional; absent means
   // `ComponentLayout.FLEXBOX`. `ComponentLayout.GRID` selects a CSS grid container.
   layout?: ComponentLayout

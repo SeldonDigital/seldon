@@ -5,7 +5,7 @@ export type ShadowParameters = Omit<ShadowCompound, "preset" | "style">
 
 export interface ThemeShadow {
   type: TokenType.LOOK
+  parameters: ShadowParameters
   name?: string
   intent?: string
-  parameters: ShadowParameters
 }

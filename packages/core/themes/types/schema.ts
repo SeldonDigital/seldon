@@ -43,14 +43,16 @@ export type ThemeTokenSchemaValidation = {
 
 export interface ThemeTokenSchema {
   key: string
+  supports: readonly ThemeTokenSchemaSupport[]
+  validation: ThemeTokenSchemaValidation
+  section: ThemeTokenSectionId
+  order: number
   /**
    * When set, label / supports / validation / controlType / unit are derived from
    * `PROPERTY_SCHEMAS[propertyKey]` unless overridden on this entry.
    */
   propertyKey?: PropertyName
   label?: string
-  supports: readonly ThemeTokenSchemaSupport[]
-  validation: ThemeTokenSchemaValidation
   controlType?: "number" | "color" | "text" | "combo" | "menu" | "boolean"
   options?: Array<{ label: string; value: string | number }>
   unit?: {
@@ -59,8 +61,6 @@ export interface ThemeTokenSchema {
     max?: number
     step?: number
   }
-  section: ThemeTokenSectionId
-  order: number
   icon?: string
   description?: string
   /** Marks a look row that groups its facet sub-rows under a disclosure arrow. */

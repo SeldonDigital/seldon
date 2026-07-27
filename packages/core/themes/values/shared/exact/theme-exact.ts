@@ -18,7 +18,7 @@ export interface ThemeExactDimension {
 /** Exact token: fixed length or fixed unitless number on ordinal tables. */
 export interface ThemeExact {
   type: TokenType.EXACT
+  parameters: ThemeExactDimension
   name?: string
   intent?: string
-  parameters: ThemeExactDimension
 }

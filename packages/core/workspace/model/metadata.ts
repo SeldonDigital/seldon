@@ -2,9 +2,9 @@ import type { CustomState } from "./node-state"
 import type { WorkspaceStringMap } from "./string-maps"
 
 export interface WorkspaceMetadata {
+  version: number
   owner?: string
   label?: string
-  version: number
   lastUpdate?: string
   intent?: string
   tags?: string[]

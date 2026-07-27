@@ -415,11 +415,11 @@ export type WorkspaceAction =
       type: "add_component_and_insert_default_instance"
       payload: {
         boardKey: BoardKey
-        variantFallbacks?: string[]
         target: {
           parentId: VariantId | InstanceId
           index?: number
         }
+        variantFallbacks?: string[]
       }
     }
   | {
@@ -554,10 +554,10 @@ export type WorkspaceAction =
       payload: {
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
-        /** Paint-layer slot to retype; defaults to layer 0. */
-        layerIndex?: number
         /** The kind to seed the layer with, e.g. a `BackgroundKind` value. */
         kind: string
+        /** Paint-layer slot to retype; defaults to layer 0. */
+        layerIndex?: number
       }
     }
   | {

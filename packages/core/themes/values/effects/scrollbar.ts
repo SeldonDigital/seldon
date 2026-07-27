@@ -14,7 +14,7 @@ export interface ScrollbarParameters {
 
 export interface ThemeScrollbar {
   type: TokenType.LOOK
+  parameters: ScrollbarParameters
   name?: string
   intent?: string
-  parameters: ScrollbarParameters
 }

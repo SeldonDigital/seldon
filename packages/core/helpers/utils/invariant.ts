@@ -4,11 +4,11 @@ type InvariantErrorContext = Record<string, unknown>
  * Custom error class for invariant violations with optional context data.
  */
 export class InvariantError extends Error {
-  context?: InvariantErrorContext
-
-  constructor(message: string, context?: InvariantErrorContext) {
+  constructor(
+    message: string,
+    public context?: InvariantErrorContext,
+  ) {
     super(message)
-    this.context = context
   }
 }
 

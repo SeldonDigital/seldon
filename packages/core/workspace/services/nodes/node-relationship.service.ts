@@ -96,28 +96,6 @@ export class NodeRelationshipService {
     return result
   }
 
-  private findAdjacentVariant(
-    node: Variant,
-    placement: "before" | "after",
-    workspace: Workspace,
-  ): Variant | null {
-    const ownIndex = this.getVariantIndex(node, workspace)
-    const targetIndex = placement === "before" ? ownIndex - 1 : ownIndex + 1
-
-    const board = this.findBoardForVariant(node, workspace)
-
-    if (!board) return null
-
-    const refs = board.variants
-
-    if (targetIndex < 0 || targetIndex >= refs.length) return null
-
-    const targetRef = refs[targetIndex]
-    const child = nodeRetrievalService.getNode(targetRef.id, workspace)
-
-    return typeCheckingService.isVariant(child) ? child : null
-  }
-
   public findBoardForVariant(variant: Variant, workspace: Workspace): Board | null {
     return getBoardByNodeId(workspace, variant.id)
   }
@@ -247,6 +225,28 @@ export class NodeRelationshipService {
     }
 
     return false
+  }
+
+  private findAdjacentVariant(
+    node: Variant,
+    placement: "before" | "after",
+    workspace: Workspace,
+  ): Variant | null {
+    const ownIndex = this.getVariantIndex(node, workspace)
+    const targetIndex = placement === "before" ? ownIndex - 1 : ownIndex + 1
+
+    const board = this.findBoardForVariant(node, workspace)
+
+    if (!board) return null
+
+    const refs = board.variants
+
+    if (targetIndex < 0 || targetIndex >= refs.length) return null
+
+    const targetRef = refs[targetIndex]
+    const child = nodeRetrievalService.getNode(targetRef.id, workspace)
+
+    return typeCheckingService.isVariant(child) ? child : null
   }
 }
 

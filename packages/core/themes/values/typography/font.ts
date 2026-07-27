@@ -8,7 +8,7 @@ export type FontParameters = Pick<
 
 export interface ThemeFont {
   type: TokenType.LOOK
+  parameters: FontParameters
   name?: string
   intent?: string
-  parameters: FontParameters
 }

@@ -11,7 +11,7 @@ export type BorderWidthOption = (typeof BORDER_WIDTH_OPTIONS)[number]
  */
 export interface ThemeBorderWidthOption {
   type: TokenType.OPTION
+  parameters: BorderWidthOption
   name?: string
   intent?: string
-  parameters: BorderWidthOption
 }

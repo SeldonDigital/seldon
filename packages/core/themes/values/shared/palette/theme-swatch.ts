@@ -5,9 +5,9 @@ import type { ThemeSwatchParameters } from "./theme-swatch-parameters"
 /** Resolved or author-fixed swatch color. */
 export interface ThemeSwatch {
   type: TokenType.SWATCH
+  parameters: ThemeSwatchParameters
   name?: string
   intent?: string
-  parameters: ThemeSwatchParameters
 }
 
 /**

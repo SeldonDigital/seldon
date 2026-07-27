@@ -19,12 +19,12 @@ export interface ComponentBoard {
   catalogId: string
   label: string
   author: string
-  intent?: string
-  tags?: string[]
-  license?: WorkspaceStringMap
   componentTheme: ComponentThemeRef
   componentProperties: Properties
   variants: ComponentTreeRef[]
+  intent?: string
+  tags?: string[]
+  license?: WorkspaceStringMap
   __editor?: Record<string, unknown>
 }
 
@@ -35,34 +35,37 @@ export interface ComponentBoard {
  * enforced for containment and picks the export folder. Authored boards support
  * user variants and instances the same way component boards do, but they have
  * no reset-to-catalog for the board, the authored root, or its variants.
+ *
+ * `id` mirrors the board's map key so a row resolves its own key.
  */
 export interface AuthoredComponentBoard {
   type: "authored-component"
-  /** Mirrors the board's map key so a row resolves its own key. */
-  id?: BoardKey
-  /** Declared component level, enforced for containment and export folder. */
   level: EntryNodeLevel
   label: string
+  componentTheme: ComponentThemeRef
+  componentProperties: Properties
+  variants: ComponentTreeRef[]
+  id?: BoardKey
   author?: string
   intent?: string
   tags?: string[]
   license?: WorkspaceStringMap
-  componentTheme: ComponentThemeRef
-  componentProperties: Properties
-  variants: ComponentTreeRef[]
   __editor?: Record<string, unknown>
 }
 
+/**
+ * A playground board. `id` mirrors the playground container's map key so a row
+ * resolves its own key.
+ */
 export interface PlaygroundBoard {
   type: "playground"
-  /** Mirrors the playground container's map key so a row resolves its own key. */
-  id?: BoardKey
   label: string
-  intent?: string
-  tags?: string[]
   componentTheme: ComponentThemeRef
   componentProperties: Properties
   variants: ComponentTreeRef[]
+  id?: BoardKey
+  intent?: string
+  tags?: string[]
   __editor?: Record<string, unknown>
 }
 
@@ -71,13 +74,13 @@ export interface ThemeBoard {
   catalogId: string
   label: string
   author: string
-  intent?: string
-  tags?: string[]
-  license?: WorkspaceStringMap
   componentPreview: string
   componentTheme: ComponentThemeRef
   componentProperties: Properties
   variants: ThemeEntryRef[]
+  intent?: string
+  tags?: string[]
+  license?: WorkspaceStringMap
   __editor?: Record<string, unknown>
 }
 
@@ -85,14 +88,14 @@ export interface FontCollectionBoard {
   type: "font-collection"
   catalogId: string
   label: string
-  license?: WorkspaceStringMap
-  credentials?: WorkspaceStringMap
-  intent?: string
-  tags?: string[]
   componentPreview: string
   componentTheme: ComponentThemeRef
   componentProperties: Properties
   variants: FontCollectionEntryRef[]
+  license?: WorkspaceStringMap
+  credentials?: WorkspaceStringMap
+  intent?: string
+  tags?: string[]
   __editor?: Record<string, unknown>
 }
 
@@ -100,14 +103,14 @@ export interface IconSetBoard {
   type: "icon-set"
   catalogId: string
   label: string
-  license?: WorkspaceStringMap
-  credentials?: WorkspaceStringMap
-  intent?: string
-  tags?: string[]
   componentPreview: string
   componentTheme: ComponentThemeRef
   componentProperties: Properties
   variants: IconSetEntryRef[]
+  license?: WorkspaceStringMap
+  credentials?: WorkspaceStringMap
+  intent?: string
+  tags?: string[]
   __editor?: Record<string, unknown>
 }
 
@@ -115,14 +118,14 @@ export interface MediaBoard {
   type: "media"
   catalogId: string
   label: string
-  license?: WorkspaceStringMap
-  credentials?: WorkspaceStringMap
-  intent?: string
-  tags?: string[]
   componentPreview: string
   componentTheme: ComponentThemeRef
   componentProperties: Properties
   variants: MediaEntryRef[]
+  license?: WorkspaceStringMap
+  credentials?: WorkspaceStringMap
+  intent?: string
+  tags?: string[]
   __editor?: Record<string, unknown>
 }
 

@@ -5,7 +5,7 @@ export type GradientParameters = Omit<GradientCompound, "preset">
 
 export interface ThemeGradient {
   type: TokenType.LOOK
+  parameters: GradientParameters
   name?: string
   intent?: string
-  parameters: GradientParameters
 }
