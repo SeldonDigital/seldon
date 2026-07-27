@@ -24,7 +24,6 @@
     "noPropertyAccessFromIndexSignature": false,
 
     // Path mapping configuration
-    "baseUrl": ".",
     "paths": {
       "@seldon/core": ["../core/index"],
       "@seldon/core/*": ["../core/*"]
