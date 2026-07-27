@@ -35,8 +35,12 @@ const boardState = useBoardStateStore()
 const config = useEditorConfigStore()
 const selection = useSelectionStore()
 const { activeBoard, activeBoardKey } = useActiveBoard()
-const { onCanvasClick, onCanvasPointerMove, onCanvasPointerLeave } =
-  useCanvasTracking()
+const {
+  onCanvasClick,
+  onCanvasDblClick,
+  onCanvasPointerMove,
+  onCanvasPointerLeave,
+} = useCanvasTracking()
 
 const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
   storeToRefs(config)
@@ -236,6 +240,7 @@ watch(
       class="canvas-content"
       :style="contentStyle"
       @click="onCanvasClick"
+      @dblclick="onCanvasDblClick"
       @pointermove="onCanvasPointerMove"
     >
       <div v-if="showIsolationGallery" class="isolation-gallery">

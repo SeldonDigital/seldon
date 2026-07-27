@@ -14,6 +14,7 @@ import {
   selectFromTarget,
 } from "@app/workspace/selection-target"
 import { getNodeIdForEventTarget } from "@seldon/editor/lib/canvas/dom/canvas-elements"
+import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
 import {
@@ -21,7 +22,7 @@ import {
   getNodeChildIds,
 } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { MouseEventHandler, useCallback } from "react"
+import { MouseEventHandler, useCallback, useEffect, useRef } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useThrottledCallback } from "use-debounce"
 
@@ -40,9 +41,21 @@ import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-poin
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
 
+/**
+ * Delay before a single click commits its selection. A double click cancels the
+ * pending single click within this window, so the two gestures stay distinct and
+ * repeated double clicks can drill without a single click resetting to the root.
+ */
+const SINGLE_CLICK_DELAY_MS = 200
+
 export function useCanvas() {
-  const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
-    useSelection()
+  const {
+    selectNode,
+    selectBoard,
+    selectResourceEntry,
+    selectResourceItem,
+    selectedNodeRootId,
+  } = useSelection()
   const { workspace } = useWorkspace()
   const { activeBoard } = useActiveBoard()
   const { activeTool, setActiveTool } = useTool()
@@ -50,6 +63,17 @@ export function useCanvas() {
   const { hoverState, setHoverState } = useCanvasHoverState()
   const setHoveredId = useSetHoveredId()
   const addToast = useAddToast()
+
+  // Pending deferred single-click selection. A double click clears it so the
+  // single click never fires, letting the two gestures drive different behavior.
+  const pendingSelectRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const clearPendingSelect = useCallback(() => {
+    if (pendingSelectRef.current !== null) {
+      clearTimeout(pendingSelectRef.current)
+      pendingSelectRef.current = null
+    }
+  }, [])
+  useEffect(() => clearPendingSelect, [clearPendingSelect])
 
   /**
    * When hovering over a node within the canvas, we want to show a highlight around or next to a node.
@@ -65,19 +89,39 @@ export function useCanvas() {
         return
       }
 
-      // Resolve the hovered selectable (node, theme variant, font specimen) and
-      // feed the shared hover bridge for both tools. The select tool stops here;
-      // the component tool also drives the accent hover box from this id, then
-      // computes insertion placement below.
+      // Resolve the hovered selectable (node, theme variant, font specimen).
       const selectionTarget = getSelectionTarget(event.target as Element)
+
+      // Select tool: preview what a click will select. A plain hover highlights
+      // the top-most node of the tree; holding cmd/ctrl previews the exact node
+      // under the cursor, matching the click behavior. Non-node targets (boards,
+      // resources) highlight as-is.
+      if (activeTool === "select") {
+        if (selectionTarget?.kind === "node") {
+          const mode = event.metaKey || event.ctrlKey ? "exact" : "root"
+          const preview = resolveCanvasNodeSelection(
+            selectionTarget.rootId ?? selectionTarget.id,
+            null,
+            mode,
+          )
+          setHoveredId(preview.id, "node", preview.rootId)
+        } else {
+          setHoveredId(
+            selectionTarget?.id ?? null,
+            selectionTarget?.kind,
+            selectionTarget?.rootId,
+          )
+        }
+        return
+      }
+
+      // Component tool: keep the exact node under the cursor. It drives the
+      // accent hover box and the insertion placement computed below.
       setHoveredId(
         selectionTarget?.id ?? null,
         selectionTarget?.kind,
         selectionTarget?.rootId,
       )
-      if (activeTool === "select") {
-        return
-      }
 
       const element = event.target as HTMLDivElement
       const boardId =
@@ -333,22 +377,62 @@ export function useCanvas() {
     (event) => {
       event.stopPropagation()
 
-      // Select tool: select whatever selectable was clicked, using the same
-      // typed setters the sidebar rows use, so canvas and sidebar clicks match.
+      // Select tool: a plain click selects the top-most node of the clicked
+      // tree, a double click drills one level, and cmd/ctrl click selects the
+      // exact node under the cursor (the sidebar arrow behavior).
       if (activeTool === "select") {
+        clearPendingSelect()
         const target = getSelectionTarget(event.target as Element)
-        if (target) {
+
+        if (!target) {
+          if (activeBoard) {
+            selectBoard(getComponentKey(activeBoard))
+          } else {
+            selectNode(null)
+          }
+          return
+        }
+
+        // Boards and resource entries carry no node tree, so they select
+        // directly through the shared typed setters.
+        if (target.kind !== "node") {
           selectFromTarget(target, {
             selectNode,
             selectBoard,
             selectResourceEntry,
             selectResourceItem,
           })
-        } else if (activeBoard) {
-          selectBoard(getComponentKey(activeBoard))
-        } else {
-          selectNode(null)
+          return
         }
+
+        const clickedRootId = target.rootId ?? target.id
+        const additive = event.metaKey || event.ctrlKey
+        if (additive) {
+          const exact = resolveCanvasNodeSelection(
+            clickedRootId,
+            selectedNodeRootId,
+            "exact",
+          )
+          selectNode(exact.id as VariantId | InstanceId, exact.rootId)
+          // Sync hover to the selection so the coincident hover outline is
+          // suppressed instead of leaving a stale second dashed border.
+          setHoveredId(exact.id, "node", exact.rootId)
+          return
+        }
+
+        // Defer the top-most selection so a double click can cancel it and drill
+        // instead. The current selection is captured now for the drill baseline.
+        const currentRootId = selectedNodeRootId
+        pendingSelectRef.current = setTimeout(() => {
+          pendingSelectRef.current = null
+          const root = resolveCanvasNodeSelection(
+            clickedRootId,
+            currentRootId,
+            "root",
+          )
+          selectNode(root.id as VariantId | InstanceId, root.rootId)
+          setHoveredId(root.id, "node", root.rootId)
+        }, SINGLE_CLICK_DELAY_MS)
         return
       }
 
@@ -373,6 +457,44 @@ export function useCanvas() {
       selectBoard,
       selectResourceEntry,
       selectResourceItem,
+      selectedNodeRootId,
+      clearPendingSelect,
+      setHoveredId,
+    ],
+  )
+
+  /**
+   * Double click drills one level down the clicked tree toward the node under
+   * the cursor, relative to the current selection. Only the select tool drills;
+   * cmd/ctrl double clicks defer to the exact selection the click already made.
+   */
+  const handleDoubleClick: MouseEventHandler<HTMLDivElement> = useCallback(
+    (event) => {
+      if (activeTool !== "select") return
+      if (event.metaKey || event.ctrlKey) return
+
+      const target = getSelectionTarget(event.target as Element)
+      if (!target || target.kind !== "node") return
+
+      clearPendingSelect()
+      const clickedRootId = target.rootId ?? target.id
+      const drilled = resolveCanvasNodeSelection(
+        clickedRootId,
+        selectedNodeRootId,
+        "drill",
+      )
+      selectNode(drilled.id as VariantId | InstanceId, drilled.rootId)
+      // Sync hover to the drilled node. The mouse is stationary during a double
+      // click, so without this the hover outline stays on the previous node and
+      // draws a second dashed border next to the new selection.
+      setHoveredId(drilled.id, "node", drilled.rootId)
+    },
+    [
+      activeTool,
+      selectedNodeRootId,
+      selectNode,
+      clearPendingSelect,
+      setHoveredId,
     ],
   )
 
@@ -394,5 +516,6 @@ export function useCanvas() {
     onCanvasMouseLeave: handleMouseLeave,
     onCanvasMouseMove: throttledMouseMove,
     onCanvasClick: handleClick,
+    onCanvasDoubleClick: handleDoubleClick,
   }
 }

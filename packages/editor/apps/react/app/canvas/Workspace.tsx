@@ -25,7 +25,12 @@ import { ThemeBoard } from "./boards/ThemeBoard"
 import { useCanvas } from "./hooks/use-canvas"
 
 export function CanvasWorkspace() {
-  const { onCanvasMouseMove, onCanvasMouseLeave, onCanvasClick } = useCanvas()
+  const {
+    onCanvasMouseMove,
+    onCanvasMouseLeave,
+    onCanvasClick,
+    onCanvasDoubleClick,
+  } = useCanvas()
   const { isolatedView, isolatedBoardKey } = useEditorConfig()
   const { workspace } = useWorkspace()
 
@@ -44,6 +49,7 @@ export function CanvasWorkspace() {
     <Frame
       id="root-tree"
       onClick={onCanvasClick}
+      onDoubleClick={onCanvasDoubleClick}
       onMouseLeave={onCanvasMouseLeave}
       onMouseMove={onCanvasMouseMove}
     >
