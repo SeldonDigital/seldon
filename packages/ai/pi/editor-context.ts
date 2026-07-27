@@ -1,3 +1,4 @@
+import { boardKey } from "@seldon/core/workspace/helpers/components/board-ref-resolver"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import {
@@ -23,7 +24,8 @@ import {
 import { selectionSection } from "../prompt/context-sections/selection"
 import { themeIdsSection } from "../prompt/context-sections/theme-ids"
 import { themeTokensSection } from "../prompt/context-sections/theme-tokens"
-import type { SelectionScope } from "../types"
+import type { IsolationScope, SelectionScope } from "../types"
+import { type IsolationClosure, buildIsolationClosure } from "./isolation"
 
 /** The editor state the agent needs to target the right board and node. */
 export interface EditorContextInput {
@@ -33,6 +35,7 @@ export interface EditorContextInput {
   selectedNodeRootId?: string
   selectedBoardId?: BoardKey
   scope?: SelectionScope
+  isolation?: IsolationScope
   resourceTargetId?: string
 }
 
@@ -46,6 +49,8 @@ export interface ResolvedContext {
   selectedBoardId?: BoardKey
   scope?: SelectionScope
   resourceTargetId?: string
+  /** Present when Isolation Mode is on and its anchor board resolved. */
+  isolation?: IsolationClosure
 }
 
 /**
@@ -75,24 +80,43 @@ export function resolveContext(input: EditorContextInput): ResolvedContext {
     scope,
     resourceTargetId,
   } = input
+
+  // Isolation Mode pins the anchor: the isolated board is the active board and
+  // its frozen variant column is the active variant, regardless of a stray
+  // active-board hint. The closure bounds discovery and the commit-time gate.
+  const isolation =
+    input.isolation && workspace.boards[input.isolation.boardKey]
+      ? buildIsolationClosure(workspace, input.isolation)
+      : null
+
   const editableBoards = Object.entries(workspace.boards).filter(([, board]) =>
     isEditableComponentBoard(board),
   )
-  const resolvedKey =
-    activeBoardKey && workspace.boards[activeBoardKey]
+  const resolvedKey = isolation
+    ? isolation.isolatedBoardKey
+    : activeBoardKey && workspace.boards[activeBoardKey]
       ? activeBoardKey
       : editableBoards[0]?.[0]
   const activeBoard =
     resolvedKey !== undefined ? workspace.boards[resolvedKey] : undefined
+
+  // In isolation, pin the variant column to the frozen root so the per-turn
+  // view narrows to that variant even when the selection sits elsewhere.
+  const resolvedRootId =
+    isolation && isolation.isolatedVariantRootId
+      ? isolation.isolatedVariantRootId
+      : selectedNodeRootId
+
   return {
     workspace,
     resolvedKey,
     activeBoard,
     selectedNodeId,
-    selectedNodeRootId,
+    selectedNodeRootId: resolvedRootId,
     selectedBoardId,
     scope,
     resourceTargetId,
+    isolation: isolation ?? undefined,
   }
 }
 
@@ -147,6 +171,13 @@ function resolveActiveVariantId(
 export function buildTurnContext(resolved: ResolvedContext): string {
   const header = `Workspace: "${resolved.workspace.metadata.label ?? "Untitled"}"`
 
+  // Isolation Mode overrides every other scope: the boundary directive and the
+  // closure-only listing replace the whole-workspace view, and the anchor is
+  // already pinned in resolveContext.
+  if (resolved.isolation) {
+    return [header, ...isolationScopeContext(resolved)].join("\n")
+  }
+
   const resource = resourceScopeContext(resolved)
   if (resource) return [header, ...resource].join("\n")
 
@@ -155,6 +186,64 @@ export function buildTurnContext(resolved: ResolvedContext): string {
   }
 
   return [header, ...componentScopeContext(resolved)].join("\n")
+}
+
+/**
+ * The context for an isolation turn: a boundary directive naming the isolated
+ * board, its variant, and the dependency components in scope, then the normal
+ * component view for the selection so the depth directive (instance, variant,
+ * board) still drives the edit cascade. The whole-workspace listing is withheld,
+ * so the model cannot drift to a board outside the closure.
+ */
+function isolationScopeContext(resolved: ResolvedContext): string[] {
+  return [
+    ...isolationBoundaryLines(resolved),
+    ...componentScopeContext(resolved),
+  ]
+}
+
+/** The isolation boundary directive plus the in-scope dependency listing. */
+function isolationBoundaryLines(resolved: ResolvedContext): string[] {
+  const { workspace, isolation } = resolved
+  if (!isolation) return []
+
+  const isolatedBoard = workspace.boards[isolation.isolatedBoardKey]
+  const isolatedLabel = isolatedBoard?.label ?? isolation.isolatedBoardKey
+  const variantNode = isolation.isolatedVariantRootId
+    ? workspace.nodes[isolation.isolatedVariantRootId]
+    : undefined
+  const variantName =
+    variantNode?.label ?? isolation.isolatedVariantRootId ?? "all variants"
+
+  const lines: string[] = [
+    "",
+    `Isolation Mode is ON. The user froze board ${isolation.isolatedBoardKey} "${isolatedLabel}" on variant "${variantName}". You are hard-scoped to this board and the components its variant uses, listed below. Editing any board or node outside this set is rejected at commit, so do not target one. If the request needs a board outside the set, say it is outside Isolation Mode and ask the user to exit Isolation Mode; do not attempt the edit.`,
+  ]
+
+  const depLines: string[] = []
+  for (const [key, board] of Object.entries(workspace.boards)) {
+    if (key === isolation.isolatedBoardKey) continue
+    if (!isolation.allowedBoardKeys.has(key)) continue
+    const usedRoots = isolation.usage.get(boardKey(board) ?? key)
+    const rootNames = usedRoots
+      ? [...usedRoots].map((rootId) => workspace.nodes[rootId]?.label ?? rootId)
+      : []
+    const variantText =
+      rootNames.length > 0 ? ` variants: ${rootNames.join(", ")}` : ""
+    depLines.push(`- ${key} "${board.label}"${variantText}`)
+  }
+  if (depLines.length > 0) {
+    lines.push(
+      "Dependency components in scope (edit only these boards and variants):",
+      ...depLines,
+    )
+  }
+
+  lines.push(
+    "",
+    "Editing a dependency component's source cascades to every instance of it across the workspace, not just inside this board. Prefer a local instance override (set_properties scope 'instance') unless the user asked to change the component everywhere.",
+  )
+  return lines
 }
 
 /** The value lines and directives for one resource scope. */

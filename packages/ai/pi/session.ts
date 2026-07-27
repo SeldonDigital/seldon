@@ -79,6 +79,14 @@ export async function createSeldonSession(
   const resolved = resolveContext(input)
   const state = createTurnState(input.workspace)
 
+  // Carry the isolation closure onto the turn state so the shared `commit`
+  // chokepoint can reject out-of-closure edits and grow the allowed set as
+  // in-scope inserts mint ids.
+  if (resolved.isolation) {
+    state.allowedNodeIds = new Set(resolved.isolation.allowedNodeIds)
+    state.allowedBoardKeys = new Set(resolved.isolation.allowedBoardKeys)
+  }
+
   const mutationTools = createMutationTools(state, resolved)
   const contextTools = createContextTools(state, resolved)
   const customTools = [...mutationTools, ...contextTools]

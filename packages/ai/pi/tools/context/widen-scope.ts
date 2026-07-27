@@ -40,12 +40,14 @@ export function createWidenScopeTool(
     selectedBoardId,
     scope,
     resourceTargetId,
+    isolation,
   } = resolved
+  const allowedBoardKeys = isolation?.allowedBoardKeys
   return defineTool({
     name: "widen_scope",
     label: "Widen Scope",
     description:
-      "Climb exactly one level up. For a node: parent, then variant, then board, then a shallow workspace view. For a theme, font collection, or icon set: the board's other entries, then the workspace. Call it when the target is not in the current scope. Defaults to the selection.",
+      "Climb exactly one level up. For a node: parent, then variant, then board, then a shallow workspace view. For a theme, font collection, or icon set: the board's other entries, then the workspace. Call it when the target is not in the current scope. Defaults to the selection. In Isolation Mode, the terminal workspace view is limited to the boards in scope.",
     parameters: Type.Object({
       nodeId: Type.Optional(
         Type.String({
@@ -60,7 +62,11 @@ export function createWidenScopeTool(
       const emptyWorkspace = "No workspace boards available."
       const workspaceResult = () =>
         textResult(
-          joinOrEmpty(workspaceShallowSection(workspace).lines, emptyWorkspace),
+          joinOrEmpty(
+            workspaceShallowSection(workspace, undefined, allowedBoardKeys)
+              .lines,
+            emptyWorkspace,
+          ),
         )
 
       // Resource scopes climb the same way: a variant entry rises to its board's

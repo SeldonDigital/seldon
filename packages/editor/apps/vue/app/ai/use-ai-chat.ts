@@ -4,6 +4,7 @@ import {
   useAiChatStore,
 } from "@app/ai/ai-chat-store"
 import { useDebugStore } from "@app/editor/debug-store"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
@@ -89,6 +90,7 @@ export function useAiChat() {
   const store = useAiChatStore()
   const debug = useDebugStore()
   const selection = useSelectionStore()
+  const config = useEditorConfigStore()
   const dispatch = useDispatch()
 
   function applyTurnEvent(turnId: string, event: AgentStreamEvent): void {
@@ -163,6 +165,15 @@ export function useAiChat() {
         current,
       )
       const resourceTargetId = resolveResourceTargetId(current)
+      // Forward Isolation Mode only when it is on and has captured a board, so
+      // the harness scopes the turn to the isolated dependency closure.
+      const isolation =
+        config.isolatedView && config.isolatedBoardKey
+          ? {
+              boardKey: config.isolatedBoardKey as BoardKey,
+              variantRootId: config.isolatedVariantRootId,
+            }
+          : undefined
       const noThink = debug.noThink
 
       const {
@@ -182,6 +193,7 @@ export function useAiChat() {
           selectedNodeRootId: selection.selectedNodeRootId ?? undefined,
           selectedBoardId: selection.selectedBoardId ?? undefined,
           scope,
+          isolation,
           resourceTargetId,
           model,
           thinkingLevel,

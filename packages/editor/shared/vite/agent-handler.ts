@@ -3,6 +3,7 @@ import {
   type AgentMetrics,
   type AgentStreamEvent,
   type ChatMessage,
+  type IsolationScope,
   type ModelThinking,
   type RejectedActionResult,
   type SelectionScope,
@@ -28,6 +29,7 @@ export type AgentRequestBody = {
   selectedNodeRootId?: string
   selectedBoardId?: BoardKey
   scope?: SelectionScope
+  isolation?: IsolationScope
   resourceTargetId?: string
   model?: string
   thinkingLevel?: ThinkingLevelOption
@@ -74,6 +76,7 @@ export async function runAgent(
       selectedNodeRootId: body.selectedNodeRootId,
       selectedBoardId: body.selectedBoardId,
       scope: body.scope,
+      isolation: body.isolation,
       resourceTargetId: body.resourceTargetId,
       model: body.model,
       thinkingLevel: body.thinkingLevel,

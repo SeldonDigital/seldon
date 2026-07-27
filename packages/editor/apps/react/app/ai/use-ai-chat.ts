@@ -2,6 +2,7 @@ import {
   isAiLoggingEnabled,
   useDebugStore,
 } from "@app/editor/hooks/use-debug-mode"
+import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useDispatch } from "@app/workspace/hooks/use-dispatch"
@@ -34,6 +35,8 @@ import {
 import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
 import { useCallback } from "react"
 import { create } from "zustand"
+
+import type { BoardKey } from "@seldon/core/workspace/types"
 
 export type AiChatRole = "user" | "assistant"
 
@@ -230,6 +233,8 @@ export function useHari() {
   const { activePanel, openPanel, closePanel } = usePanel()
   const dispatch = useDispatch()
   const { activeBoard } = useActiveBoard()
+  const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
+    useEditorConfig()
 
   const turns = useStore((state) => state.turns)
   const status = useStore((state) => state.status)
@@ -261,6 +266,15 @@ export function useHari() {
           useSelectionStore.getState()
         const scope = getSelectionScope(current)
         const resourceTargetId = getResourceTargetId(current)
+        // Forward Isolation Mode only when it is on and has captured a board, so
+        // the harness scopes the turn to the isolated dependency closure.
+        const isolation =
+          isolatedView && isolatedBoardKey
+            ? {
+                boardKey: isolatedBoardKey as BoardKey,
+                variantRootId: isolatedVariantRootId,
+              }
+            : undefined
         const noThink = useDebugStore.getState().noThink
 
         const { actions, workspace, reply, ineffective, rejected, debug } =
@@ -274,6 +288,7 @@ export function useHari() {
               selectedNodeRootId: selectedNodeRootId ?? undefined,
               selectedBoardId: selectedBoardId ?? undefined,
               scope,
+              isolation,
               resourceTargetId,
               model,
               thinkingLevel,
@@ -372,7 +387,13 @@ export function useHari() {
         if (activeController === controller) activeController = null
       }
     },
-    [activeBoard, dispatch],
+    [
+      activeBoard,
+      dispatch,
+      isolatedView,
+      isolatedBoardKey,
+      isolatedVariantRootId,
+    ],
   )
 
   const stop = useCallback(() => {

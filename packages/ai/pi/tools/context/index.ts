@@ -56,7 +56,7 @@ export function createContextTools(
     createListActionTypesTool(),
     createGetActionSpecTool(),
     createSuggestActionTool(),
-    createListBoardsTool(state),
-    createFindNodesTool(state),
+    createListBoardsTool(state, resolved),
+    createFindNodesTool(state, resolved),
   ]
 }

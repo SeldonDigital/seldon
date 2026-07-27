@@ -18,6 +18,7 @@ export type {
   ChatMessage,
   ChatToActionsInput,
   ChatToActionsResult,
+  IsolationScope,
   RejectedActionResult,
   SelectionScope,
 } from "./types"

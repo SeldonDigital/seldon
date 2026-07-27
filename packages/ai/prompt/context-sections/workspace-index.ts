@@ -18,16 +18,32 @@ const BOARDS_TITLE =
  * Lists every component and authored board so the model can locate one other
  * than the active board. This is reference data for search, not an edit target
  * on its own.
+ *
+ * When `isolation` is set (Isolation Mode), every board is still listed, but each
+ * row is marked as the isolated anchor, an in-scope dependency, or out of scope,
+ * so the model sees the boundary without a separate tool. Out-of-scope boards
+ * carry a note that editing them is rejected at commit.
  */
-export function workspaceBoardsSection(workspace: Workspace): string[] {
+export function workspaceBoardsSection(
+  workspace: Workspace,
+  isolation?: { isolatedBoardKey: string; allowedBoardKeys: Set<string> },
+): string[] {
+  const marker = (key: string): string => {
+    if (!isolation) return ""
+    if (key === isolation.isolatedBoardKey) return " [isolated anchor]"
+    if (isolation.allowedBoardKeys.has(key)) return " [in scope]"
+    return " [out of scope: edits rejected]"
+  }
   const rows: string[] = []
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (isComponentBoard(board)) {
-      rows.push(`- ${key} -> ${board.catalogId} -> "${board.label}"`)
+      rows.push(
+        `- ${key} -> ${board.catalogId} -> "${board.label}"${marker(key)}`,
+      )
     } else if (isAuthoredBoard(board)) {
       // Authored boards have no catalog schema; mark them so the model treats
       // the key as the board and does not look up a catalog id for it.
-      rows.push(`- ${key} -> authored -> "${board.label}"`)
+      rows.push(`- ${key} -> authored -> "${board.label}"${marker(key)}`)
     }
   }
   return section(BOARDS_TITLE, rows)
@@ -47,6 +63,7 @@ const FIND_LIMIT = 50
 export function findNodesSection(
   workspace: Workspace,
   query: string,
+  allowedBoardKeys?: Set<string>,
 ): string[] {
   const needle = query.trim().toLowerCase()
   if (needle === "") return []
@@ -54,6 +71,9 @@ export function findNodesSection(
   const matches: string[] = []
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
+    // In Isolation Mode, skip boards outside the dependency closure so search
+    // never surfaces a node the turn cannot edit.
+    if (allowedBoardKeys && !allowedBoardKeys.has(key)) continue
     let variantRootId = ""
     walkBoardTreeRefs(board.variants, (ref, parent) => {
       if (parent === null) variantRootId = ref.id

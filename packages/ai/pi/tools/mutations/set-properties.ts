@@ -92,6 +92,7 @@ export function createSetPropertiesTool(
         params.target as TargetSpec,
         params.match,
         resolved.scope,
+        resolved.isolation?.allowedBoardKeys,
       )
       if (resolution.kind === "message") return textResult(resolution.text)
 

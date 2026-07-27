@@ -3,6 +3,7 @@ import type {
   AgentMetrics,
   AgentStreamEvent,
   ChatMessage,
+  IsolationScope,
   ModelThinking,
   RejectedActionResult,
   SelectionScope,
@@ -23,6 +24,7 @@ export type AgentChatRequest = {
   selectedNodeRootId?: string
   selectedBoardId?: BoardKey
   scope?: SelectionScope
+  isolation?: IsolationScope
   resourceTargetId?: string
   model?: string
   thinkingLevel?: ThinkingLevelOption

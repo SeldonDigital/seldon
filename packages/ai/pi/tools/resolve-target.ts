@@ -149,19 +149,25 @@ function searchSubtree(
   boardKey: BoardKey,
   rootId: string,
   query: string,
+  allowedBoardKeys?: Set<string>,
 ): NodeMatch[] {
   const ids = subtreeNodeIds(workspace, boardKey, rootId)
   if (ids.size === 0) return []
-  return searchWorkspace(workspace, query, boardKey).filter((match) =>
-    ids.has(match.id),
+  return searchWorkspace(workspace, query, boardKey, allowedBoardKeys).filter(
+    (match) => ids.has(match.id),
   )
 }
 
-/** Searches every component board for nodes whose label or catalog id matches. */
+/**
+ * Searches every component board for nodes whose label or catalog id matches.
+ * When `allowedBoardKeys` is set (Isolation Mode), boards outside the closure
+ * are skipped, so a target never resolves to an out-of-scope node.
+ */
 function searchWorkspace(
   workspace: Workspace,
   query: string,
   activeKey: BoardKey | undefined,
+  allowedBoardKeys?: Set<string>,
 ): NodeMatch[] {
   const needle = query.trim().toLowerCase()
   if (needle === "") return []
@@ -171,6 +177,7 @@ function searchWorkspace(
   const matches: NodeMatch[] = []
   for (const [key, board] of Object.entries(workspace.boards)) {
     if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
+    if (allowedBoardKeys && !allowedBoardKeys.has(key)) continue
     walkBoardTreeRefs(board.variants, (ref) => {
       const node = workspace.nodes[ref.id]
       if (!node) return
@@ -216,8 +223,9 @@ function widen(
   query: string,
   activeKey: BoardKey | undefined,
   scope: SelectionScope | undefined,
+  allowedBoardKeys?: Set<string>,
 ): TargetResolution {
-  const matches = searchWorkspace(workspace, query, activeKey)
+  const matches = searchWorkspace(workspace, query, activeKey, allowedBoardKeys)
   if (matches.length === 0) {
     return {
       kind: "message",
@@ -258,6 +266,7 @@ export function resolveNodeTarget(
   target: TargetSpec,
   match: string | undefined,
   scope: SelectionScope | undefined,
+  allowedBoardKeys?: Set<string>,
 ): TargetResolution {
   if (target === "selection") {
     // A match hint on a selected node means "a part of me": dive into the
@@ -269,7 +278,13 @@ export function resolveNodeTarget(
       workspace.nodes[selectedNodeId] &&
       activeKey !== undefined
     ) {
-      const within = searchSubtree(workspace, activeKey, selectedNodeId, match)
+      const within = searchSubtree(
+        workspace,
+        activeKey,
+        selectedNodeId,
+        match,
+        allowedBoardKeys,
+      )
       if (within.length === 1) {
         return { kind: "resolved", nodeId: within[0].id }
       }
@@ -283,12 +298,13 @@ export function resolveNodeTarget(
           text: `Several parts of the selection match "${match}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
         }
       }
-      return widen(workspace, match, activeKey, scope)
+      return widen(workspace, match, activeKey, scope, allowedBoardKeys)
     }
     if (selectedNodeId && workspace.nodes[selectedNodeId]) {
       return { kind: "resolved", nodeId: selectedNodeId }
     }
-    if (match) return widen(workspace, match, activeKey, scope)
+    if (match)
+      return widen(workspace, match, activeKey, scope, allowedBoardKeys)
     const selectionNote = selectedBoardId
       ? `A board (${selectedBoardId}) is selected, not a node`
       : "Nothing is selected"
@@ -298,8 +314,35 @@ export function resolveNodeTarget(
     }
   }
 
-  if (workspace.nodes[target.nodeId]) {
+  // An explicit id outside the closure never resolves in isolation: fall through
+  // to the bounded search so the miss ends in a not-found within scope.
+  if (
+    workspace.nodes[target.nodeId] &&
+    (!allowedBoardKeys ||
+      allowedBoardKeys.has(boardOfNode(workspace, target.nodeId) ?? ""))
+  ) {
     return { kind: "resolved", nodeId: target.nodeId }
   }
-  return widen(workspace, match ?? target.nodeId, activeKey, scope)
+  return widen(
+    workspace,
+    match ?? target.nodeId,
+    activeKey,
+    scope,
+    allowedBoardKeys,
+  )
+}
+
+/** The board key whose variant trees list this node id, or undefined. */
+function boardOfNode(workspace: Workspace, nodeId: string): string | undefined {
+  for (const [key, board] of Object.entries(workspace.boards)) {
+    if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
+    let found = false
+    walkBoardTreeRefs(board.variants, (ref) => {
+      if (ref.id !== nodeId) return
+      found = true
+      return true
+    })
+    if (found) return key
+  }
+  return undefined
 }

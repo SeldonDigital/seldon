@@ -29,6 +29,17 @@ export type SelectionScope =
   | "iconSet"
   | "media"
 
+/**
+ * The editor's Isolation Mode, forwarded when it is on. It hard-scopes the turn
+ * to the isolated board and the components its selected variant uses. `boardKey`
+ * is the workspace board map key; `variantRootId` is the frozen variant root, or
+ * null when the whole board is isolated.
+ */
+export interface IsolationScope {
+  boardKey: BoardKey
+  variantRootId: string | null
+}
+
 /** Input to {@link chatToActions}. The workspace is read for context only; it is never mutated here. */
 export interface ChatToActionsInput {
   workspace: Workspace
@@ -47,6 +58,12 @@ export interface ChatToActionsInput {
    * per-turn context, the deterministic tool defaults, and the permission gate.
    */
   scope?: SelectionScope
+  /**
+   * Isolation Mode, when the editor has it on. Pins the active board and
+   * variant, bounds discovery to the isolated dependency closure, and rejects
+   * edits to any board or node outside it at commit time.
+   */
+  isolation?: IsolationScope
   /**
    * The theme, font collection, or icon set entry id to edit when the scope is
    * a resource scope. Resolved by the editor from the selected resource entry,
