@@ -1,6 +1,7 @@
 "use client"
 
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import { useNodeTheme } from "@app/themes/hooks/use-node-theme"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
@@ -36,6 +37,11 @@ export type ComponentBoardProps = {
    * isolation gallery renders many boards at once, so each must key off itself.
    */
   useOwnKey?: boolean
+  /**
+   * Caption rendered at the board's top-left. The isolation gallery passes the
+   * board name; the normal single-board canvas omits it.
+   */
+  boardLabel?: string
 }
 
 const boardRootStyle: CSSProperties = { position: "static" }
@@ -100,10 +106,12 @@ export function ComponentBoard({
   board,
   variantRootIds: explicitVariantRootIds,
   useOwnKey,
+  boardLabel,
 }: ComponentBoardProps) {
   const { workspace } = useWorkspace()
   const { selectedBoardId, selectedNodeRootId } = useSelection()
   const { isolatedView } = useEditorConfig()
+  const resolvedMode = useResolvedInterfaceMode()
   const boardKey = useOwnKey
     ? resolveComponentKey(board, workspace)
     : (selectedBoardId ?? resolveComponentKey(board, workspace))
@@ -138,6 +146,23 @@ export function ComponentBoard({
   const initialThemeId = (getBoardThemeRef(boardEntry) ??
     "default") as ThemeInstanceId
 
+  // The canvas is pinned to the default (light) theme, so its swatch variables
+  // never invert. Pick the interface-mode foreground here so the chrome caption
+  // follows the editor mode: dark text in light mode, light text in dark mode.
+  const labelColor =
+    resolvedMode === "dark"
+      ? "var(--sdn-swatch-offWhite)"
+      : "var(--sdn-swatch-offBlack)"
+  const labelStyle = useMemo<CSSProperties>(
+    () => ({ color: labelColor }),
+    [labelColor],
+  )
+  const labelNode = boardLabel ? (
+    <div className="isolation-board-label" style={labelStyle}>
+      {boardLabel}
+    </div>
+  ) : null
+
   return (
     <>
       <CssPortal>
@@ -154,6 +179,7 @@ export function ComponentBoard({
         />
       </CssPortal>
       <Frame style={boardWrapperStyle}>
+        {labelNode}
         <Frame
           ref={boardRootRef}
           data-board-id={boardKey}

@@ -243,3 +243,16 @@ html::-webkit-scrollbar-thumb {
     0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset,
     0px 1px 1px 0px rgba(0, 0, 0, 0.25);
 }
+
+/*
+ * Board name caption above each board in the isolation gallery. It matches the
+ * objects sidebar text and sits outside the themed board root. The canvas pins
+ * the default theme, so the interface-mode text color is applied inline.
+ */
+.isolation-board-label {
+  margin-bottom: var(--sdn-margins-tight);
+  font-family: var(--sdn-font-family-primary), system-ui, sans-serif;
+  font-size: var(--sdn-font-size-xsmall);
+  font-weight: var(--sdn-font-weight-normal);
+  line-height: 1.2;
+}
