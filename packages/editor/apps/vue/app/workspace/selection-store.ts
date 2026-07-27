@@ -23,11 +23,7 @@ export const useSelectionStore = defineStore("selection", () => {
   const frozenBoardKey = ref<BoardKey | null>(null)
 
   const selectedId = computed(
-    () =>
-      selectedNodeId.value ??
-      selectedBoardId.value ??
-      selectedResourceEntry.value?.id ??
-      null,
+    () => selectedNodeId.value ?? selectedBoardId.value ?? selectedResourceEntry.value?.id ?? null,
   )
 
   function clearAll(): void {
@@ -45,19 +41,13 @@ export const useSelectionStore = defineStore("selection", () => {
     selectedBoardId.value = id
   }
 
-  function selectNode(
-    id: VariantId | InstanceId | null,
-    rootId: string | null = null,
-  ): void {
+  function selectNode(id: VariantId | InstanceId | null, rootId: string | null = null): void {
     clearAll()
     selectedNodeId.value = id
     selectedNodeRootId.value = id ? rootId : null
   }
 
-  function selectResourceEntry(
-    kind: ResourceEntryKind,
-    id: string | null,
-  ): void {
+  function selectResourceEntry(kind: ResourceEntryKind, id: string | null): void {
     clearAll()
     selectedResourceEntry.value = id ? { kind, id } : null
   }

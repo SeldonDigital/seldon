@@ -4,6 +4,7 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useMemo } from "react"
 
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
+
 import type { Workspace } from "@seldon/core/workspace/types"
 
 const EMPTY_IDS: ReadonlySet<string> = new Set()
@@ -44,9 +45,11 @@ function buildTemplateGraph(workspace: Workspace): TemplateGraph {
 
   for (const node of Object.values(workspace.nodes)) {
     const link = parseNodeLink(node.template)
+
     if (!link) continue
     sourceOf.set(node.id, link.nodeId)
     const siblings = childrenOf.get(link.nodeId)
+
     if (siblings) siblings.push(node.id)
     else childrenOf.set(link.nodeId, [node.id])
   }
@@ -62,7 +65,9 @@ function collectDownstream(rootId: string, graph: TemplateGraph): Set<string> {
   while (queue.length > 0) {
     const current = queue.pop() as string
     const children = graph.childrenOf.get(current)
+
     if (!children) continue
+
     for (const child of children) {
       if (result.has(child)) continue
       result.add(child)
@@ -77,10 +82,12 @@ function collectDownstream(rootId: string, graph: TemplateGraph): Set<string> {
 function collectUpstream(id: string, graph: TemplateGraph): Set<string> {
   const result = new Set<string>()
   let current = graph.sourceOf.get(id)
+
   while (current && !result.has(current)) {
     result.add(current)
     current = graph.sourceOf.get(current)
   }
+
   return result
 }
 
@@ -88,10 +95,12 @@ function collectUpstream(id: string, graph: TemplateGraph): Set<string> {
 function findRootId(id: string, graph: TemplateGraph): string {
   let current = id
   let next = graph.sourceOf.get(current)
+
   while (next) {
     current = next
     next = graph.sourceOf.get(current)
   }
+
   return current
 }
 
@@ -103,6 +112,7 @@ function computeHighlight(
   const graph = buildTemplateGraph(workspace)
 
   const primary = new Set<string>([selectedNodeId])
+
   for (const id of collectDownstream(selectedNodeId, graph)) primary.add(id)
 
   if (mode === "downstream") {
@@ -113,16 +123,20 @@ function computeHighlight(
 
   if (mode === "chain") {
     for (const id of collectUpstream(selectedNodeId, graph)) secondary.add(id)
+
     return { primary, secondary }
   }
 
   // family: everything connected to the same catalog root, minus the primary set.
   const rootId = findRootId(selectedNodeId, graph)
   const family = collectDownstream(rootId, graph)
+
   family.add(rootId)
+
   for (const id of family) {
     if (!primary.has(id)) secondary.add(id)
   }
+
   return { primary, secondary }
 }
 
@@ -145,9 +159,7 @@ export function useSharedNodeHighlight(): SharedNodeHighlight {
   const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
 
   const mode: Mode | null =
-    componentHighlightMode === "selection"
-      ? null
-      : MODE_BY_HIGHLIGHT[componentHighlightMode]
+    componentHighlightMode === "selection" ? null : MODE_BY_HIGHLIGHT[componentHighlightMode]
 
   return useMemo(() => {
     if (!mode || !selectedNodeId) return EMPTY_HIGHLIGHT
@@ -163,7 +175,9 @@ export function useSharedNodeHighlight(): SharedNodeHighlight {
     }
 
     const value = computeHighlight(mode, selectedNodeId, workspace)
+
     highlightCache = { mode, selectedNodeId, workspace, value }
+
     return value
   }, [mode, selectedNodeId, workspace])
 }

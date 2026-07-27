@@ -1,7 +1,8 @@
 // BESPOKE-VIEW: hand-authored framer-motion crossfade between the editor and
 // preview layouts. Wraps children in AnimatePresence + motion.div.
 import { AnimatePresence, motion } from "framer-motion"
-import { CSSProperties, ReactNode } from "react"
+
+import type { CSSProperties, ReactNode } from "react"
 
 interface EditorCrossfadeProps {
   /** Distinct key per layout so AnimatePresence crossfades on change. */
@@ -16,10 +17,7 @@ const exit = { opacity: 0, scale: 0.98 }
 const transition = { duration: 0.25 }
 
 /** Crossfades between the editor and preview layouts on mode change. */
-export function EditorCrossfade({
-  transitionKey,
-  children,
-}: EditorCrossfadeProps) {
+export function EditorCrossfade({ transitionKey, children }: EditorCrossfadeProps) {
   return (
     <AnimatePresence mode="popLayout" initial={false}>
       <motion.div

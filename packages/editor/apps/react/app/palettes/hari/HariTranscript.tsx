@@ -4,19 +4,22 @@
 // error. Tool activity renders as one collapsible HariTools block per turn, so
 // the turn reads as a single "Tools Applied" section. Assistant replies render
 // through HariMarkdown.
-import type { HariTurn } from "@app/ai/use-ai-chat"
 import { useDebugStore } from "@app/editor/hooks/use-debug-mode"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
 import { MessageError } from "@seldon/components/elements/MessageError"
 import { MessageOutcome } from "@seldon/components/elements/MessageOutcome"
 import { MessageStatus } from "@seldon/components/elements/MessageStatus"
 import { MessageUser } from "@seldon/components/elements/MessageUser"
-import type { IconProps } from "@seldon/components/primitives/Icon"
-import { type CSSProperties, type ReactNode, useMemo } from "react"
+import { useMemo } from "react"
 
 import { HariMarkdown } from "./HariMarkdown"
 import { HariThinking } from "./HariThinking"
-import { HariTools, type ToolRow } from "./HariTools"
+import { HariTools } from "./HariTools"
+
+import type { ToolRow } from "./HariTools"
+import type { HariTurn } from "@app/ai/use-ai-chat"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { CSSProperties, ReactNode } from "react"
 
 interface HariTranscriptProps {
   turns: HariTurn[]
@@ -32,6 +35,7 @@ export function HariTranscript({ turns, onRetry }: HariTranscriptProps) {
     () => buildTranscript(turns, onRetry, showTools, showOutcome),
     [turns, onRetry, showTools, showOutcome],
   )
+
   return content
 }
 
@@ -45,32 +49,37 @@ function buildTranscript(
   if (turns.length === 0) return null
 
   const blocks: ReactNode[] = []
+
   for (const turn of turns) {
     blocks.push(userBlock(turn))
     if (turn.thinking || turn.clamped) blocks.push(thinkingBlock(turn))
     const toolsNode = showTools ? toolsBlock(turn) : null
+
     if (toolsNode) blocks.push(toolsNode)
     const outcomeNode = showOutcome ? outcomeBlock(turn) : null
+
     if (outcomeNode) blocks.push(outcomeNode)
     if (turn.reply) blocks.push(assistantBlock(turn))
     if (turn.status === "pending") blocks.push(statusBlock(turn))
     if (turn.status === "stopped") blocks.push(stoppedBlock(turn))
+
     if (turn.error || turn.status === "error") {
       blocks.push(errorBlock(turn, onRetry))
     }
   }
+
   return <>{blocks}</>
 }
 
 function userBlock(turn: HariTurn): ReactNode {
   const textDescription = { children: turn.prompt }
-  return (
-    <MessageUser key={`${turn.id}-user`} textDescription={textDescription} />
-  )
+
+  return <MessageUser key={`${turn.id}-user`} textDescription={textDescription} />
 }
 
 function statusBlock(turn: HariTurn): ReactNode {
   const textLabel = { children: "Working..." }
+
   return (
     <MessageStatus
       key={`${turn.id}-status`}
@@ -82,11 +91,13 @@ function statusBlock(turn: HariTurn): ReactNode {
 
 function stoppedBlock(turn: HariTurn): ReactNode {
   const textLabel = { children: "Stopped." }
+
   return <MessageStatus key={`${turn.id}-stopped`} textLabel={textLabel} />
 }
 
 function thinkingBlock(turn: HariTurn): ReactNode {
   const text = turn.thinking ?? ""
+
   return (
     <HariThinking
       key={`${turn.id}-thinking`}
@@ -106,6 +117,7 @@ function thinkingBlock(turn: HariTurn): ReactNode {
  */
 function collectToolRows(turn: HariTurn): ToolRow[] {
   const rows: ToolRow[] = []
+
   ;(turn.toolCalls ?? []).forEach((call, index) => {
     rows.push({
       key: `call-${index}`,
@@ -134,6 +146,7 @@ function collectToolRows(turn: HariTurn): ToolRow[] {
       text: `rejected: ${item.type} — ${item.reason}`,
     })
   })
+
   return rows
 }
 
@@ -145,7 +158,9 @@ function collectToolRows(turn: HariTurn): ToolRow[] {
  */
 function toolsBlock(turn: HariTurn): ReactNode {
   const rows = collectToolRows(turn)
+
   if (rows.length === 0) return null
+
   return <HariTools key={`${turn.id}-tools`} rows={rows} defaultOpen />
 }
 
@@ -186,6 +201,7 @@ function outcomeBlock(turn: HariTurn): ReactNode {
   const icon = { icon: meta.icon }
   const textLabel = { children: meta.label }
   const textDescription = { children: detail, style: preWrapStyle }
+
   return (
     <MessageOutcome
       key={`${turn.id}-outcome`}
@@ -202,6 +218,7 @@ function assistantBlock(turn: HariTurn): ReactNode {
   const reply = turn.reply ?? ""
   const streaming = turn.status === "pending"
   const className = streaming ? "hari-assistant-streaming" : undefined
+
   return (
     <MessageAssistant key={`${turn.id}-assistant`} className={className}>
       <HariMarkdown content={reply} />
@@ -209,18 +226,13 @@ function assistantBlock(turn: HariTurn): ReactNode {
   )
 }
 
-function errorBlock(
-  turn: HariTurn,
-  onRetry: HariTranscriptProps["onRetry"],
-): ReactNode {
+function errorBlock(turn: HariTurn, onRetry: HariTranscriptProps["onRetry"]): ReactNode {
   const text =
-    turn.error ??
-    (turn.rejected ?? [])
-      .map((item) => `${item.type}: ${item.reason}`)
-      .join("; ")
+    turn.error ?? (turn.rejected ?? []).map((item) => `${item.type}: ${item.reason}`).join("; ")
   const textDescription = { children: text }
   const buttonSimple = onRetry ? { onClick: () => onRetry(turn.prompt) } : null
   const textLabel = onRetry ? { children: "Retry" } : null
+
   return (
     <MessageError
       key={`${turn.id}-error`}

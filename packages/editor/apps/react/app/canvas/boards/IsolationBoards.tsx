@@ -5,11 +5,13 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
 import { getIsolationCanvasGroups } from "@seldon/editor/lib/canvas/get-isolation-canvas-groups"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { CSSProperties, useMemo } from "react"
+import { useMemo } from "react"
 
 import { boardOrderService } from "@seldon/core/workspace/services"
 
 import { ComponentBoard } from "./ComponentBoard"
+
+import type { CSSProperties } from "react"
 
 const columnStyle: CSSProperties = {
   display: "flex",
@@ -37,22 +39,13 @@ export function IsolationBoards() {
   const { workspace } = useWorkspace()
   const { isolatedBoardKey, isolatedVariantRootId } = useEditorConfig()
 
-  const boards = useMemo(
-    () => boardOrderService.getBoards(workspace),
-    [workspace],
-  )
-  const isolatedBoard = isolatedBoardKey
-    ? workspace.boards[isolatedBoardKey]
-    : null
+  const boards = useMemo(() => boardOrderService.getBoards(workspace), [workspace])
+  const isolatedBoard = isolatedBoardKey ? workspace.boards[isolatedBoardKey] : null
 
   const rows = useMemo(() => {
     if (!isolatedBoard) return []
-    const groups = getIsolationCanvasGroups(
-      isolatedBoard,
-      isolatedVariantRootId,
-      workspace,
-      boards,
-    )
+    const groups = getIsolationCanvasGroups(isolatedBoard, isolatedVariantRootId, workspace, boards)
+
     return groups.map((group) => ({
       level: group.level,
       boards: group.items.map((item) => ({

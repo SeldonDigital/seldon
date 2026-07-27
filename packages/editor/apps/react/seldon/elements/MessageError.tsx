@@ -10,18 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { ButtonSimple } from "../elements/ButtonSimple"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface MessageErrorProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -64,10 +66,7 @@ export function MessageError({
   seldonRefs,
   ...props
 }: MessageErrorProps) {
-  const messageErrorClassName = combineClassNames(
-    "sdn-message-error",
-    className,
-  )
+  const messageErrorClassName = combineClassNames("sdn-message-error", className)
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -95,10 +94,7 @@ export function MessageError({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
   const buttonSimpleProps = applyRef(
@@ -108,10 +104,7 @@ export function MessageError({
       : {
           ...sdn.buttonSimple,
           ...buttonSimple,
-          className: combineClassNames(
-            sdn.buttonSimple?.className,
-            buttonSimple?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -121,19 +114,12 @@ export function MessageError({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
   return (
-    <Frame
-      className={messageErrorClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={messageErrorClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

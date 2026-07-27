@@ -6,11 +6,7 @@ import {
   IconMaterialTv,
   IconMaterialWatch,
 } from "@seldon/components/icons"
-import {
-  RegisteredIconProps,
-  registerIcon,
-} from "@seldon/components/utils/icon-registry"
-import type { ComponentType } from "react"
+import { registerIcon } from "@seldon/components/utils/icon-registry"
 
 import {
   IconCustomBooleanValue,
@@ -19,13 +15,14 @@ import {
   ThemeSwatches,
 } from "./custom"
 
+import type { RegisteredIconProps } from "@seldon/components/utils/icon-registry"
+import type { ComponentType } from "react"
+
 /**
  * The generated `Icon` types its own props, while the registry stores props-open
  * components. This localizes the one cast at the registration boundary.
  */
-function toRegistered<P>(
-  component: ComponentType<P>,
-): ComponentType<RegisteredIconProps> {
+function toRegistered<P>(component: ComponentType<P>): ComponentType<RegisteredIconProps> {
   return component as unknown as ComponentType<RegisteredIconProps>
 }
 
@@ -42,19 +39,10 @@ function toRegistered<P>(
  */
 export function registerDynamicIcons(): void {
   registerIcon("icon-custom-color-value", toRegistered(IconCustomColorValue))
-  registerIcon(
-    "icon-custom-boolean-value",
-    toRegistered(IconCustomBooleanValue),
-  )
-  registerIcon(
-    "icon-custom-theme-color-value",
-    toRegistered(IconCustomThemeColorValue),
-  )
+  registerIcon("icon-custom-boolean-value", toRegistered(IconCustomBooleanValue))
+  registerIcon("icon-custom-theme-color-value", toRegistered(IconCustomThemeColorValue))
   registerIcon("icon-custom-theme-swatches", toRegistered(ThemeSwatches))
-  registerIcon(
-    "icon-custom-device-mobile",
-    toRegistered(IconMaterialSmartphone),
-  )
+  registerIcon("icon-custom-device-mobile", toRegistered(IconMaterialSmartphone))
   registerIcon("icon-custom-device-tablet", toRegistered(IconMaterialTablet))
   registerIcon("icon-custom-device-laptop", toRegistered(IconMaterialLaptop))
   registerIcon("icon-custom-device-desktop", toRegistered(IconMaterialComputer))

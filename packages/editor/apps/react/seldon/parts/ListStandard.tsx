@@ -10,19 +10,27 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Item, ItemProps } from "../elements/Item"
-import { Frame, FrameProps } from "../frames/Frame"
+import { Button } from "../elements/Button"
+import { Item } from "../elements/Item"
+import { Frame } from "../frames/Frame"
 import { HTMLUl } from "../native-react/HTML.Ul"
-import { Icon, IconProps } from "../primitives/Icon"
-import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { InputCheckbox } from "../primitives/InputCheckbox"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ItemProps } from "../elements/Item"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputCheckboxProps } from "../primitives/InputCheckbox"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface ListStandardProps extends HTMLAttributes<HTMLUListElement> {
   className?: string
@@ -108,10 +116,7 @@ export function ListStandard({
   seldonRefs,
   ...props
 }: ListStandardProps) {
-  const listStandardClassName = combineClassNames(
-    "sdn-list-standard",
-    className,
-  )
+  const listStandardClassName = combineClassNames("sdn-list-standard", className)
   const itemProps = applyRef(
     seldonRefs,
     item === null
@@ -129,10 +134,7 @@ export function ListStandard({
       : {
           ...sdn.inputCheckbox,
           ...inputCheckbox,
-          className: combineClassNames(
-            sdn.inputCheckbox?.className,
-            inputCheckbox?.className,
-          ),
+          className: combineClassNames(sdn.inputCheckbox?.className, inputCheckbox?.className),
         },
   )
   const frameProps = applyRef(
@@ -152,10 +154,7 @@ export function ListStandard({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const textSubtitleProps = applyRef(
@@ -165,10 +164,7 @@ export function ListStandard({
       : {
           ...sdn.textSubtitle,
           ...textSubtitle,
-          className: combineClassNames(
-            sdn.textSubtitle?.className,
-            textSubtitle?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
         },
   )
   const buttonProps = applyRef(
@@ -178,10 +174,7 @@ export function ListStandard({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const iconProps = applyRef(
@@ -201,10 +194,7 @@ export function ListStandard({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const item2Props = applyRef(
@@ -224,10 +214,7 @@ export function ListStandard({
       : {
           ...sdn.inputCheckbox2,
           ...inputCheckbox2,
-          className: combineClassNames(
-            sdn.inputCheckbox2?.className,
-            inputCheckbox2?.className,
-          ),
+          className: combineClassNames(sdn.inputCheckbox2?.className, inputCheckbox2?.className),
         },
   )
   const frame2Props = applyRef(
@@ -237,10 +224,7 @@ export function ListStandard({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const textTitle2Props = applyRef(
@@ -250,10 +234,7 @@ export function ListStandard({
       : {
           ...sdn.textTitle2,
           ...textTitle2,
-          className: combineClassNames(
-            sdn.textTitle2?.className,
-            textTitle2?.className,
-          ),
+          className: combineClassNames(sdn.textTitle2?.className, textTitle2?.className),
         },
   )
   const textSubtitle2Props = applyRef(
@@ -263,10 +244,7 @@ export function ListStandard({
       : {
           ...sdn.textSubtitle2,
           ...textSubtitle2,
-          className: combineClassNames(
-            sdn.textSubtitle2?.className,
-            textSubtitle2?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle2?.className, textSubtitle2?.className),
         },
   )
   const button2Props = applyRef(
@@ -276,10 +254,7 @@ export function ListStandard({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -299,10 +274,7 @@ export function ListStandard({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const item3Props = applyRef(
@@ -322,10 +294,7 @@ export function ListStandard({
       : {
           ...sdn.inputCheckbox3,
           ...inputCheckbox3,
-          className: combineClassNames(
-            sdn.inputCheckbox3?.className,
-            inputCheckbox3?.className,
-          ),
+          className: combineClassNames(sdn.inputCheckbox3?.className, inputCheckbox3?.className),
         },
   )
   const frame3Props = applyRef(
@@ -335,10 +304,7 @@ export function ListStandard({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const textTitle3Props = applyRef(
@@ -348,10 +314,7 @@ export function ListStandard({
       : {
           ...sdn.textTitle3,
           ...textTitle3,
-          className: combineClassNames(
-            sdn.textTitle3?.className,
-            textTitle3?.className,
-          ),
+          className: combineClassNames(sdn.textTitle3?.className, textTitle3?.className),
         },
   )
   const textSubtitle3Props = applyRef(
@@ -361,10 +324,7 @@ export function ListStandard({
       : {
           ...sdn.textSubtitle3,
           ...textSubtitle3,
-          className: combineClassNames(
-            sdn.textSubtitle3?.className,
-            textSubtitle3?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle3?.className, textSubtitle3?.className),
         },
   )
   const button3Props = applyRef(
@@ -374,10 +334,7 @@ export function ListStandard({
       : {
           ...sdn.button3,
           ...button3,
-          className: combineClassNames(
-            sdn.button3?.className,
-            button3?.className,
-          ),
+          className: combineClassNames(sdn.button3?.className, button3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -397,88 +354,57 @@ export function ListStandard({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
 
   return (
-    <HTMLUl
-      className={listStandardClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLUl className={listStandardClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
           {itemProps !== null && (
             <Item {...itemProps}>
-              {inputCheckbox && inputCheckboxProps && (
-                <InputCheckbox {...inputCheckboxProps} />
-              )}
+              {inputCheckbox && inputCheckboxProps && <InputCheckbox {...inputCheckboxProps} />}
               <Frame {...frameProps}>
-                {textTitle && textTitleProps && (
-                  <TextTitle {...textTitleProps} />
-                )}
-                {textSubtitle && textSubtitleProps && (
-                  <TextSubtitle {...textSubtitleProps} />
-                )}
+                {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
+                {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
               </Frame>
               {button && buttonProps && (
                 <Button {...buttonProps}>
                   {icon && iconProps && <Icon {...iconProps} />}
-                  {textLabel && textLabelProps && (
-                    <TextLabel {...textLabelProps} />
-                  )}
+                  {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                 </Button>
               )}
             </Item>
           )}
           {item2Props !== null && (
             <Item {...item2Props}>
-              {inputCheckbox2 && inputCheckbox2Props && (
-                <InputCheckbox {...inputCheckbox2Props} />
-              )}
+              {inputCheckbox2 && inputCheckbox2Props && <InputCheckbox {...inputCheckbox2Props} />}
               <Frame {...frame2Props}>
-                {textTitle2 && textTitle2Props && (
-                  <TextTitle {...textTitle2Props} />
-                )}
-                {textSubtitle2 && textSubtitle2Props && (
-                  <TextSubtitle {...textSubtitle2Props} />
-                )}
+                {textTitle2 && textTitle2Props && <TextTitle {...textTitle2Props} />}
+                {textSubtitle2 && textSubtitle2Props && <TextSubtitle {...textSubtitle2Props} />}
               </Frame>
               {button2 && button2Props && (
                 <Button {...button2Props}>
                   {icon2 && icon2Props && <Icon {...icon2Props} />}
-                  {textLabel2 && textLabel2Props && (
-                    <TextLabel {...textLabel2Props} />
-                  )}
+                  {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
                 </Button>
               )}
             </Item>
           )}
           {item3Props !== null && (
             <Item {...item3Props}>
-              {inputCheckbox3 && inputCheckbox3Props && (
-                <InputCheckbox {...inputCheckbox3Props} />
-              )}
+              {inputCheckbox3 && inputCheckbox3Props && <InputCheckbox {...inputCheckbox3Props} />}
               <Frame {...frame3Props}>
-                {textTitle3 && textTitle3Props && (
-                  <TextTitle {...textTitle3Props} />
-                )}
-                {textSubtitle3 && textSubtitle3Props && (
-                  <TextSubtitle {...textSubtitle3Props} />
-                )}
+                {textTitle3 && textTitle3Props && <TextTitle {...textTitle3Props} />}
+                {textSubtitle3 && textSubtitle3Props && <TextSubtitle {...textSubtitle3Props} />}
               </Frame>
               {button3 && button3Props && (
                 <Button {...button3Props}>
                   {icon3 && icon3Props && <Icon {...icon3Props} />}
-                  {textLabel3 && textLabel3Props && (
-                    <TextLabel {...textLabel3Props} />
-                  )}
+                  {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
                 </Button>
               )}
             </Item>

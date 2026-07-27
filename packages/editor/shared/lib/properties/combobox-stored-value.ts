@@ -1,25 +1,13 @@
 import { Unit, ValueType } from "@seldon/core"
-import {
-  HSLObjectToString,
-  LCHObjectToString,
-  RGBObjectToString,
-} from "@seldon/core/helpers/color"
+import { HSLObjectToString, LCHObjectToString, RGBObjectToString } from "@seldon/core/helpers/color"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
-import {
-  isHSLObject,
-  isLCHObject,
-  isRGBObject,
-} from "@seldon/core/helpers/type-guards"
+import { isHSLObject, isLCHObject, isRGBObject } from "@seldon/core/helpers/type-guards"
 
 /**
  * Returns the wire string used as combobox `value` (option.value), not the display label.
  */
 export function getComboboxStoredValue(propertyValue: unknown): string {
-  if (
-    !propertyValue ||
-    typeof propertyValue !== "object" ||
-    propertyValue === null
-  ) {
+  if (!propertyValue || typeof propertyValue !== "object" || propertyValue === null) {
     return ""
   }
 
@@ -28,6 +16,7 @@ export function getComboboxStoredValue(propertyValue: unknown): string {
   // collapse to that representative sub-value so the picker highlights it.
   if (!("type" in propertyValue)) {
     const representative = getRepresentativeSubValue(propertyValue)
+
     return representative ? getComboboxStoredValue(representative) : ""
   }
 
@@ -60,9 +49,9 @@ export function getComboboxStoredValue(propertyValue: unknown): string {
  */
 function getRepresentativeSubValue(compound: object): object | null {
   const subValues = Object.values(compound).filter(
-    (subValue): subValue is object =>
-      typeof subValue === "object" && subValue !== null,
+    (subValue): subValue is object => typeof subValue === "object" && subValue !== null,
   )
+
   if (subValues.length === 0) {
     return null
   }
@@ -76,9 +65,11 @@ function getRepresentativeSubValue(compound: object): object | null {
   })
 
   const first = strings[0]
+
   if (first === undefined) {
     return null
   }
+
   if (!strings.every((entry) => entry === first)) {
     return null
   }
@@ -108,17 +99,22 @@ function getExactStoredValue(raw: unknown): string {
     if (isHSLObject(raw)) {
       return HSLObjectToString(raw)
     }
+
     if (isRGBObject(raw)) {
       return RGBObjectToString(raw)
     }
+
     if (isLCHObject(raw)) {
       return LCHObjectToString(raw)
     }
+
     if ("value" in raw && "unit" in raw) {
       const dimension = raw as { value: number; unit: string }
+
       if (dimension.unit === Unit.NUMBER) {
         return `${dimension.value}`
       }
+
       return `${dimension.value}${dimension.unit}`
     }
   }

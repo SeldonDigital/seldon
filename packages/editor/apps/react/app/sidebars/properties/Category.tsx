@@ -1,12 +1,14 @@
-import { MenuEntry } from "@app/menus"
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
-import { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
-import { Fragment, type MouseEvent } from "react"
+import { Fragment } from "react"
 
 import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { useRowCategory } from "./hooks/use-row-category"
+
+import type { MenuEntry } from "@app/menus"
+import type { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
+import type { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
+import type { MouseEvent } from "react"
 
 interface CategoryProps {
   section: PropertySection | ThemePropertySection
@@ -22,8 +24,7 @@ interface CategoryProps {
  */
 export function Category({ section, actions, onAddCustom }: CategoryProps) {
   const { label, icon, buttonIconic, onToggle } = useRowCategory(section)
-  const { handleClick, handleMouseEnter, handleMouseLeave } =
-    useSectionHeaderRow({ onToggle })
+  const { handleClick, handleMouseEnter, handleMouseLeave } = useSectionHeaderRow({ onToggle })
   const actionsMenu = useRowActionsMenu(actions ?? [], {
     "aria-label": "Section actions",
   })
@@ -48,8 +49,11 @@ export function Category({ section, actions, onAddCustom }: CategoryProps) {
     sectionToggleIcon: { icon },
     sectionLabel: { children: label },
   }
-  if (actionsMenu.hasActions)
+
+  if (actionsMenu.hasActions) {
     seldonRefs.sectionActions = { ...actionsMenu.buttonIconic }
+  }
+
   if (addButton) seldonRefs.sectionAdd = { ...addButton }
 
   // Positional enablers: render each trailing slot only when it has content, so

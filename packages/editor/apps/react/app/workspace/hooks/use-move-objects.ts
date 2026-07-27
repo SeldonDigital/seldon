@@ -1,29 +1,21 @@
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { Placement } from "@seldon/editor/lib/types"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
 
-import {
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  invariant,
-} from "@seldon/core"
+import { invariant } from "@seldon/core"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
-import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { getVariantIndex } from "@seldon/core/workspace/helpers/general/get-variant-index"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
-import {
-  nodeRelationshipService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import type { Board } from "@seldon/core/workspace/types"
+import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import { useWorkspace } from "./use-workspace"
+
+import type { Instance, InstanceId, Variant, VariantId } from "@seldon/core"
+import type { Board } from "@seldon/core/workspace/types"
+import type { Placement } from "@seldon/editor/lib/types"
 
 export function useMoveObjects() {
   // Index math must read committed state. During a live drag preview the
@@ -33,12 +25,7 @@ export function useMoveObjects() {
   const addToast = useAddToast()
 
   const moveChildTo = useCallback(
-    (
-      nodeId: InstanceId,
-      parentId: VariantId | InstanceId,
-      index: number,
-      isPreview = false,
-    ) => {
+    (nodeId: InstanceId, parentId: VariantId | InstanceId, index: number, isPreview = false) => {
       dispatch(
         {
           type: "move_instance",
@@ -53,8 +40,10 @@ export function useMoveObjects() {
   const moveChildUpOrDown = useCallback(
     (nodeId: InstanceId, direction: "up" | "down", isPreview = false) => {
       const parent = findParentNode(nodeId, workspace)
+
       invariant(parent, "Parent not found")
       const childIds = getNodeChildIds(parent, workspace)
+
       invariant(childIds.length > 0, "Parent does not have children")
 
       const currentIndex = childIds.indexOf(nodeId)
@@ -124,13 +113,13 @@ export function useMoveObjects() {
   const reorderVariant = useCallback(
     (variantId: VariantId, index: number, isPreview = false) => {
       const variant = getVariantById(variantId, workspace)
-      const board = nodeRelationshipService.findBoardForVariant(
-        variant,
-        workspace,
-      )
+      const board = nodeRelationshipService.findBoardForVariant(variant, workspace)
+
       invariant(board, "Board not found")
+
       if (isDefaultVariant(variant) || index === 0) {
         addToast("Default variant cannot be moved or replaced")
+
         return
       }
 
@@ -166,12 +155,15 @@ export function useMoveObjects() {
       if (isChild) {
         if (typeCheckingService.isVariant(targetNode)) {
           addToast("Moving an instance next to a variant is not allowed")
+
           return
         }
 
         const parent = findParentNode(targetNode.id, workspace)
+
         invariant(parent, "Parent not found")
         const childIds = getNodeChildIds(parent, workspace)
+
         invariant(childIds.length > 0, "Parent does not have children")
 
         let newIndex
@@ -183,6 +175,7 @@ export function useMoveObjects() {
 
         const targetIndex = childIds.indexOf(targetNode.id)
         const subjectIndex = childIds.indexOf(subjectNode.id)
+
         newIndex = position === "before" ? targetIndex : targetIndex + 1
 
         // If we're reordering within the same parent, we need to take the subject index into account
@@ -203,6 +196,7 @@ export function useMoveObjects() {
             },
             isPreview,
           )
+
           return
         }
 
@@ -249,15 +243,11 @@ export function useMoveObjects() {
           },
           isPreview,
         )
+
         return
       }
 
-      return moveChildTo(
-        subjectNode.id,
-        targetNode.id,
-        targetChildIds.length,
-        isPreview,
-      )
+      return moveChildTo(subjectNode.id, targetNode.id, targetChildIds.length, isPreview)
     },
     [workspace, moveChildTo, dispatch],
   )
@@ -324,12 +314,8 @@ export function useMoveObjects() {
     }) => {
       // Append after any existing children, mirroring moveNodeInside.
       const targetChildIds = getNodeChildIds(targetNode, workspace)
-      return duplicateNodeInto(
-        subjectNode,
-        targetNode.id,
-        targetChildIds.length,
-        isPreview,
-      )
+
+      return duplicateNodeInto(subjectNode, targetNode.id, targetChildIds.length, isPreview)
     },
     [workspace, duplicateNodeInto],
   )
@@ -353,11 +339,13 @@ export function useMoveObjects() {
       }
 
       const parent = findParentNode(targetNode.id, workspace)
+
       invariant(parent, "Parent not found")
       const childIds = getNodeChildIds(parent, workspace)
       const targetIndex = childIds.indexOf(targetNode.id)
       // No same-parent index subtraction: duplicate leaves the subject in place.
       const index = position === "before" ? targetIndex : targetIndex + 1
+
       return duplicateNodeInto(subjectNode, parent.id, index, isPreview)
     },
     [workspace, duplicateNodeInto, duplicateVariantOnBoard],

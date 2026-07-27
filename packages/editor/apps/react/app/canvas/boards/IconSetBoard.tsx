@@ -11,12 +11,10 @@ import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessor
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { useMemo } from "react"
 
-import { Board, Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
-import type { IconId } from "@seldon/core/icon-sets"
 import { iconLabels } from "@seldon/core/icon-sets"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
@@ -24,6 +22,10 @@ import { useIconSetBoardIcons } from "../hooks/use-icon-set-board-icons"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper"
 import { injectBoardBackground } from "./inject-board-background"
+
+import type { Board, Properties } from "@seldon/core"
+import type { IconId } from "@seldon/core/icon-sets"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 export type IconSetBoardProps = {
   board: Board
@@ -80,6 +82,7 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
             entryId,
             slot: iconId,
           })
+
           return (
             <IconPreview
               key={`${entryId}-${iconId}`}
@@ -138,10 +141,11 @@ function IconPreview({
     if (!rootId) {
       return null
     }
+
     const nodes = Object.fromEntries(
       Object.entries(iconBase.nodes).map(([id, node]) => {
-        const isIcon =
-          getNodeCatalogComponentId(node, iconBase) === ComponentId.ICON
+        const isIcon = getNodeCatalogComponentId(node, iconBase) === ComponentId.ICON
+
         return [
           id,
           {
@@ -159,6 +163,7 @@ function IconPreview({
         ]
       }),
     )
+
     return {
       ...iconBase,
       themes,
@@ -178,12 +183,7 @@ function IconPreview({
       selectionId={resourceItemKey}
       selectionKind="resourceItem"
     >
-      <BoardPreviewNode
-        nodeId={rootId}
-        workspace={previewWorkspace}
-        scope={scope}
-        isRoot
-      />
+      <BoardPreviewNode nodeId={rootId} workspace={previewWorkspace} scope={scope} isRoot />
     </PreviewItemWrapper>
   )
 }

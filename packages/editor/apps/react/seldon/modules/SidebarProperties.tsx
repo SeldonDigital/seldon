@@ -10,21 +10,23 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
-import {
-  ComboboxFieldFilter,
-  ComboboxFieldFilterProps,
-} from "../elements/ComboboxFieldFilter"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonMenu } from "../elements/ButtonMenu"
+import { ComboboxFieldFilter } from "../elements/ComboboxFieldFilter"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Icon, IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ButtonMenuProps } from "../elements/ButtonMenu"
+import type { ComboboxFieldFilterProps } from "../elements/ComboboxFieldFilter"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface SidebarPropertiesProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -73,10 +75,7 @@ export function SidebarProperties({
   seldonRefs,
   ...props
 }: SidebarPropertiesProps) {
-  const sidebarPropertiesClassName = combineClassNames(
-    "sdn-sidebar-objects",
-    className,
-  )
+  const sidebarPropertiesClassName = combineClassNames("sdn-sidebar-objects", className)
   const frameProps = applyRef(
     seldonRefs,
     frame === null
@@ -127,10 +126,7 @@ export function SidebarProperties({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon2Props = applyRef(
@@ -150,10 +146,7 @@ export function SidebarProperties({
       : {
           ...sdn.buttonMenu,
           ...buttonMenu,
-          className: combineClassNames(
-            sdn.buttonMenu?.className,
-            buttonMenu?.className,
-          ),
+          className: combineClassNames(sdn.buttonMenu?.className, buttonMenu?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -163,10 +156,7 @@ export function SidebarProperties({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const icon3Props = applyRef(
@@ -186,10 +176,7 @@ export function SidebarProperties({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
 
@@ -216,9 +203,7 @@ export function SidebarProperties({
             )}
             {buttonMenu && buttonMenuProps && (
               <ButtonMenu {...buttonMenuProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                 {icon3 && icon3Props && <Icon {...icon3Props} />}
               </ButtonMenu>
             )}

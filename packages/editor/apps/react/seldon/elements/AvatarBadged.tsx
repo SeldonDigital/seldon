@@ -10,14 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Chip, ChipProps } from "../elements/Chip"
+import { Chip } from "../elements/Chip"
 import { Frame } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import { Text, TextProps } from "../primitives/Text"
+import { Image } from "../primitives/Image"
+import { Text } from "../primitives/Text"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ChipProps } from "../elements/Chip"
+import type { ImageProps } from "../primitives/Image"
+import type { TextProps } from "../primitives/Text"
+import type { HTMLAttributes } from "react"
 
 export interface AvatarBadgedProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -54,10 +57,7 @@ export function AvatarBadged({
   seldonRefs,
   ...props
 }: AvatarBadgedProps) {
-  const avatarBadgedClassName = combineClassNames(
-    "sdn-avatar-badged",
-    className,
-  )
+  const avatarBadgedClassName = combineClassNames("sdn-avatar-badged", className)
   const imageProps = applyRef(
     seldonRefs,
     image === null
@@ -90,20 +90,14 @@ export function AvatarBadged({
   )
 
   return (
-    <Frame
-      className={avatarBadgedClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={avatarBadgedClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
           {imageProps !== null && <Image {...imageProps} />}
           {chipProps !== null && (
-            <Chip {...chipProps}>
-              {text && textProps && <Text {...textProps} />}
-            </Chip>
+            <Chip {...chipProps}>{text && textProps && <Text {...textProps} />}</Chip>
           )}
         </>
       )}

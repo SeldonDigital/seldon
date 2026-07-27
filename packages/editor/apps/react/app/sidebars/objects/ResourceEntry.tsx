@@ -3,20 +3,18 @@
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { buildFieldStateProps } from "@app/views/state-props"
-import {
-  useIsResourceEntrySelected,
-  useSelection,
-} from "@app/workspace/hooks/use-selection"
+import { useIsResourceEntrySelected, useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { useCallback, useRef } from "react"
 
 import { useRenameInput } from "../hooks/use-rename-input"
 import { RowSelectionTarget } from "./RowSelectionTarget"
-import type { ResourceRowConfig } from "./helpers/resource-row-config"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
+
+import type { ResourceRowConfig } from "./helpers/resource-row-config"
+import type { IconProps } from "@seldon/components/primitives/Icon"
 
 type ResourceEntryProps = {
   config: ResourceRowConfig
@@ -43,13 +41,12 @@ export function ResourceEntry({
   const isSelected = useIsResourceEntrySelected(config.kind, entryId)
   const entry = config.getEntry(workspace, entryId)
 
-  const { isEditingName, setEditingName, submitLabel, actions } =
-    useResourceEntryRow({
-      config,
-      entryId,
-      entry,
-      isSelected,
-    })
+  const { isEditingName, setEditingName, submitLabel, actions } = useResourceEntryRow({
+    config,
+    entryId,
+    entry,
+    isSelected,
+  })
   const isActive = parentIsSelected || isSelected
 
   const onClick = useRowClick({
@@ -105,11 +102,7 @@ export function ResourceEntry({
 
   return (
     <>
-      <RowSelectionTarget
-        ref={rowRef}
-        selectionId={entryId}
-        selectionKind={config.selectionKind}
-      >
+      <RowSelectionTarget ref={rowRef} selectionId={entryId} selectionKind={config.selectionKind}>
         {/* Resource entries have no `display` property, so the nodeDisplay slot
         is off (`buttonIconic2={null}`) and only the actions menu
         (`buttonIconic3`) renders. */}

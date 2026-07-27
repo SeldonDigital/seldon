@@ -10,7 +10,8 @@ import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/
 
 import { PanelDialogController } from "../PanelDialogController"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { CatalogDialogItem } from "../types"
+
+import type { CatalogDialogItem } from "../types"
 
 const ICON_SET_ICON = "material-category"
 
@@ -23,10 +24,7 @@ export function IconSetsDialog() {
   const { workspace } = useWorkspace()
   const { addIconSet } = useAddRemoveCommands()
 
-  const currentBoards = useMemo(
-    () => Object.keys(workspace.boards),
-    [workspace],
-  )
+  const currentBoards = useMemo(() => Object.keys(workspace.boards), [workspace])
 
   const items = useMemo<CatalogDialogItem[]>(
     () =>
@@ -48,10 +46,7 @@ export function IconSetsDialog() {
     items,
   })
 
-  const handlePick = useCallback(
-    (item: CatalogDialogItem) => addIconSet(item.id),
-    [addIconSet],
-  )
+  const handlePick = useCallback((item: CatalogDialogItem) => addIconSet(item.id), [addIconSet])
 
   if (activePanel !== "add-icon-set") return null
 

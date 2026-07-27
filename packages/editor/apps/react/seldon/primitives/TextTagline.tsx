@@ -10,8 +10,6 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -26,6 +24,8 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface TextTaglineProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -90,11 +90,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLSpan
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLSpan className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLSpan>
       )
@@ -103,11 +99,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLAnchor
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLAnchor className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLAnchor>
       )
@@ -116,11 +108,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLabel
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLabel className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLabel>
       )
@@ -129,11 +117,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading1
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading1 className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading1>
       )
@@ -142,11 +126,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading2
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading2 className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading2>
       )
@@ -155,11 +135,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading3
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading3 className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading3>
       )
@@ -168,11 +144,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading4
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading4 className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading4>
       )
@@ -181,11 +153,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading5
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading5 className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading5>
       )
@@ -194,11 +162,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading6
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLHeading6 className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLHeading6>
       )
@@ -207,11 +171,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLPre
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLPre className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLPre>
       )
@@ -220,11 +180,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLCode
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLCode className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLCode>
       )
@@ -233,11 +189,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLOption
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLOption className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLOption>
       )
@@ -246,11 +198,7 @@ export function TextTagline({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLParagraph
-          className={textTaglineClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLParagraph className={textTaglineClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLParagraph>
       )

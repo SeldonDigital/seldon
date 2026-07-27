@@ -1,6 +1,6 @@
 // BESPOKE-VIEW: hand-authored SVG icon asset. Raw svg markup, not a generated
 // View.
-import { CSSProperties, SVGProps } from "react"
+import type { CSSProperties, SVGProps } from "react"
 
 interface Props extends Omit<SVGProps<SVGSVGElement>, "color"> {
   color?: string | null | undefined
@@ -16,6 +16,7 @@ export function IconCustomColorValue(props: Props) {
   const colorValue = color ?? null
   // Type assertion needed because svgProps may include color from IconProps spread
   const cleanSvgProps = svgProps as Omit<SVGProps<SVGSVGElement>, "color">
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,15 +26,7 @@ export function IconCustomColorValue(props: Props) {
       height="1em"
       {...cleanSvgProps}
     >
-      <rect
-        width={14}
-        height={14}
-        x={1}
-        y={1}
-        fill="#fff"
-        fillOpacity={0.1}
-        rx={7}
-      />
+      <rect width={14} height={14} x={1} y={1} fill="#fff" fillOpacity={0.1} rx={7} />
       {colorValue && (
         <>
           <rect width={14} height={14} x={1} y={1} fill={colorValue} rx={7} />

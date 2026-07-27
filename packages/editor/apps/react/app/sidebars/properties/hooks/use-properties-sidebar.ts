@@ -1,35 +1,31 @@
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useNodeActiveState } from "@app/workspace/hooks/use-node-active-state"
-import {
-  useSelectedNodeRootId,
-  useSelection,
-} from "@app/workspace/hooks/use-selection"
+import { useSelectedNodeRootId, useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { resolveActiveFontCollectionEntryId } from "@seldon/editor/lib/font-collections/resolve-active-font-collection-entry-id"
-import { isFontCollectionEditingSelection } from "@seldon/editor/lib/font-collections/resolve-active-font-collection-entry-id"
-import { resolveActiveIconSetEntryId } from "@seldon/editor/lib/icon-sets/resolve-active-icon-set-entry-id"
-import { isIconSetEditingSelection } from "@seldon/editor/lib/icon-sets/resolve-active-icon-set-entry-id"
+import {
+  isFontCollectionEditingSelection,
+  resolveActiveFontCollectionEntryId,
+} from "@seldon/editor/lib/font-collections/resolve-active-font-collection-entry-id"
+import {
+  isIconSetEditingSelection,
+  resolveActiveIconSetEntryId,
+} from "@seldon/editor/lib/icon-sets/resolve-active-icon-set-entry-id"
 import { buildPropertyTreeLayout } from "@seldon/editor/lib/properties/inspector/build-property-tree-layout"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
 import { flattenFontCollectionFamilies } from "@seldon/editor/lib/properties/inspector/font-collection-properties-data"
 import { getThemePropertyControlType } from "@seldon/editor/lib/properties/inspector/get-theme-property-controls"
 import { flattenIconSetCategories } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
 import { buildMetadataProperties } from "@seldon/editor/lib/properties/inspector/metadata-properties-data"
 import {
-  FlatProperty,
   flattenNodeProperties,
   getPropertiesSubjectId,
 } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { flattenThemeProperties } from "@seldon/editor/lib/properties/inspector/theme-properties-data"
-import { resolveActiveThemeEntryId } from "@seldon/editor/lib/themes/resolve-active-theme-entry-id"
-import { isThemeEditingSelection } from "@seldon/editor/lib/themes/resolve-active-theme-entry-id"
+import {
+  isThemeEditingSelection,
+  resolveActiveThemeEntryId,
+} from "@seldon/editor/lib/themes/resolve-active-theme-entry-id"
 import { useMemo } from "react"
 
-import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
@@ -41,12 +37,20 @@ import { workspaceFontCollectionService } from "@seldon/core/workspace/services/
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 
-import type { PropertyTreeProps } from "../PropertiesSidebar"
 import { useCssStrings } from "../helpers/get-calculated-properties"
 import { useRevealedBorderSides } from "./use-border-side-visibility"
 import { useFontCollectionProperties } from "./use-font-collection-properties"
 import { useIconSetProperties } from "./use-icon-set-properties"
 import { useThemeProperties } from "./use-theme-properties"
+
+import type { PropertyTreeProps } from "../PropertiesSidebar"
+import type { Board, Instance, Variant, Workspace } from "@seldon/core"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 /**
  * View state for the properties sidebar. `empty` renders the no-selection
@@ -63,13 +67,11 @@ function findBoardForEntry<T extends Board>(
   entryId: string,
 ): T | undefined {
   for (const board of Object.values(workspace.boards)) {
-    if (
-      guard(board) &&
-      board.variants.some((variant) => variant.id === entryId)
-    ) {
+    if (guard(board) && board.variants.some((variant) => variant.id === entryId)) {
       return board
     }
   }
+
   return undefined
 }
 
@@ -79,16 +81,11 @@ function findBoardForEntry<T extends Board>(
  * prop assembly so the sidebar view-model stays a binding shell.
  */
 export function usePropertiesSidebar(): PropertiesSidebarState {
-  const {
-    selection,
-    selectedThemeEntryId,
-    selectedFontCollectionEntryId,
-    selectedIconSetEntryId,
-  } = useSelection()
+  const { selection, selectedThemeEntryId, selectedFontCollectionEntryId, selectedIconSetEntryId } =
+    useSelection()
   const selectedNodeRootId = useSelectedNodeRootId()
   const { workspace } = useWorkspace({ usePreview: false })
-  const { showUnusedProperties, showUnusedFonts, showUnusedIcons } =
-    useEditorConfig()
+  const { showUnusedProperties, showUnusedFonts, showUnusedIcons } = useEditorConfig()
 
   const activeThemeEntryId = useMemo(
     () =>
@@ -114,11 +111,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
   )
 
   const isFontCollectionEditingMode = useMemo(
-    () =>
-      isFontCollectionEditingSelection(
-        workspace,
-        selectedFontCollectionEntryId,
-      ),
+    () => isFontCollectionEditingSelection(workspace, selectedFontCollectionEntryId),
     [workspace, selectedFontCollectionEntryId],
   )
 
@@ -126,10 +119,8 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) {
       return null
     }
-    return workspaceFontCollectionService.getFontCollection(
-      activeFontCollectionEntryId,
-      workspace,
-    )
+
+    return workspaceFontCollectionService.getFontCollection(activeFontCollectionEntryId, workspace)
   }, [isFontCollectionEditingMode, activeFontCollectionEntryId, workspace])
 
   const activeIconSetEntryId = useMemo(
@@ -148,11 +139,13 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
 
   const editedIconSet = useMemo(() => {
     if (!isIconSetEditingMode || !activeIconSetEntryId) return null
+
     return workspaceIconSetService.getIconSet(activeIconSetEntryId, workspace)
   }, [isIconSetEditingMode, activeIconSetEntryId, workspace])
 
   const iconInclusion = useMemo(() => {
     if (!isIconSetEditingMode || !activeIconSetEntryId) return {}
+
     return workspaceIconSetService.getInclusion(activeIconSetEntryId, workspace)
   }, [isIconSetEditingMode, activeIconSetEntryId, workspace])
 
@@ -166,23 +159,21 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
 
   const editedTheme = useMemo(() => {
     if (!isThemeEditingMode || !activeThemeEntryId) return null
+
     return getComputedTheme(activeThemeEntryId, workspace)
   }, [isThemeEditingMode, activeThemeEntryId, workspace])
 
   const activeThemeBoard = useMemo(() => {
     if (!isThemeEditingMode || !activeThemeEntryId) return undefined
+
     return findBoardForEntry(workspace, isThemeBoard, activeThemeEntryId)
   }, [isThemeEditingMode, activeThemeEntryId, workspace])
 
-  const isAuthoredTheme = activeThemeBoard
-    ? isAuthoredThemeBoard(activeThemeBoard)
-    : false
+  const isAuthoredTheme = activeThemeBoard ? isAuthoredThemeBoard(activeThemeBoard) : false
 
   const themeProperties = useMemo(() => {
     if (!isThemeEditingMode || !editedTheme) return []
-    const entry = activeThemeEntryId
-      ? workspace.themes[activeThemeEntryId]
-      : undefined
+    const entry = activeThemeEntryId ? workspace.themes[activeThemeEntryId] : undefined
     // An authored theme's default variant owns its values: Seldon only seeds the
     // starting tokens, so its stored map is the theme's base, not overrides. Skip
     // the override map for that entry so its rows read as set. A custom variant of
@@ -198,17 +189,12 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       isAuthoredDefaultEntry ? undefined : entry?.overrides,
       baseSwatchIds,
     )
+
     return flatProps.map((prop) => ({
       ...prop,
       controlType: prop.controlType || getThemePropertyControlType(prop),
     }))
-  }, [
-    isThemeEditingMode,
-    editedTheme,
-    activeThemeEntryId,
-    workspace,
-    isAuthoredTheme,
-  ])
+  }, [isThemeEditingMode, editedTheme, activeThemeEntryId, workspace, isAuthoredTheme])
 
   const borderSideSubjectId =
     selection && !isThemeEditingMode ? getPropertiesSubjectId(selection) : ""
@@ -222,7 +208,9 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (isThemeEditingMode) {
       return editedTheme || undefined
     }
+
     if (!selection) return undefined
+
     return workspaceThemeService.getObjectTheme(selection, workspace)
   }, [selection, workspace, isThemeEditingMode, editedTheme])
 
@@ -230,6 +218,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (isThemeEditingMode) {
       return themeProperties
     }
+
     if (!selection) return []
     const allProperties = flattenNodeProperties(
       selection,
@@ -257,11 +246,13 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
 
   const canAddCustom = useMemo(() => {
     if (!isThemeEditingMode || !activeThemeEntryId) return false
+
     return workspace.themes[activeThemeEntryId]?.type === "variant"
   }, [isThemeEditingMode, activeThemeEntryId, workspace])
 
   const themeEditingContext = useMemo((): ThemeEditingContext | null => {
     if (!isThemeEditingMode) return null
+
     return {
       isThemeEditing: true,
       updateThemeProperty,
@@ -291,6 +282,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       const name = isAuthoredTheme
         ? (activeThemeBoard?.label ?? editedTheme.metadata.name)
         : (entry?.label ?? editedTheme.metadata.name)
+
       return buildMetadataProperties(
         {
           name,
@@ -301,26 +293,27 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
         isAuthoredTheme,
       )
     }
-    if (
-      isFontCollectionEditingMode &&
-      editedFontCollection &&
-      activeFontCollectionEntryId
-    ) {
+
+    if (isFontCollectionEditingMode && editedFontCollection && activeFontCollectionEntryId) {
       const entry = workspace["font-collections"][activeFontCollectionEntryId]
+
       return buildMetadataProperties({
         name: entry?.label ?? editedFontCollection.metadata.name,
         description: editedFontCollection.metadata.description,
         intent: editedFontCollection.metadata.intent,
       })
     }
+
     if (isIconSetEditingMode && editedIconSet && activeIconSetEntryId) {
       const entry = workspace["icon-sets"][activeIconSetEntryId]
+
       return buildMetadataProperties({
         name: entry?.label ?? editedIconSet.metadata.name,
         description: editedIconSet.metadata.description,
         intent: editedIconSet.metadata.intent,
       })
     }
+
     return undefined
   }, [
     isThemeEditingMode,
@@ -343,12 +336,15 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (isThemeEditingMode && activeThemeEntryId) {
       return workspace.themes[activeThemeEntryId]?.label
     }
+
     if (isFontCollectionEditingMode && activeFontCollectionEntryId) {
       return workspace["font-collections"][activeFontCollectionEntryId]?.label
     }
+
     if (isIconSetEditingMode && activeIconSetEntryId) {
       return workspace["icon-sets"][activeIconSetEntryId]?.label
     }
+
     return undefined
   }, [
     isThemeEditingMode,
@@ -362,6 +358,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
 
   const fontVariantSelection = useMemo(() => {
     if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) return {}
+
     return workspaceFontCollectionService.getVariantSelection(
       activeFontCollectionEntryId,
       workspace,
@@ -370,44 +367,36 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
 
   const familyProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (!isFontCollectionEditingMode || !editedFontCollection) return undefined
+
     return flattenFontCollectionFamilies(
       editedFontCollection,
       fontVariantSelection,
       showUnusedFonts,
     )
-  }, [
-    isFontCollectionEditingMode,
-    editedFontCollection,
-    fontVariantSelection,
-    showUnusedFonts,
-  ])
+  }, [isFontCollectionEditingMode, editedFontCollection, fontVariantSelection, showUnusedFonts])
 
-  const { updateFontCollectionProperty } = useFontCollectionProperties(
-    activeFontCollectionEntryId,
-  )
+  const { updateFontCollectionProperty } = useFontCollectionProperties(activeFontCollectionEntryId)
 
-  const fontCollectionEditingContext =
-    useMemo((): FontCollectionEditingContext | null => {
-      if (!isFontCollectionEditingMode) return null
-      return {
-        isFontCollectionEditing: true,
-        updateFontCollectionProperty,
-      }
-    }, [isFontCollectionEditingMode, updateFontCollectionProperty])
+  const fontCollectionEditingContext = useMemo((): FontCollectionEditingContext | null => {
+    if (!isFontCollectionEditingMode) return null
+
+    return {
+      isFontCollectionEditing: true,
+      updateFontCollectionProperty,
+    }
+  }, [isFontCollectionEditingMode, updateFontCollectionProperty])
 
   const iconProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (!isIconSetEditingMode || !editedIconSet) return undefined
-    return flattenIconSetCategories(
-      editedIconSet,
-      iconInclusion,
-      showUnusedIcons,
-    )
+
+    return flattenIconSetCategories(editedIconSet, iconInclusion, showUnusedIcons)
   }, [isIconSetEditingMode, editedIconSet, iconInclusion, showUnusedIcons])
 
   const { updateIconSetProperty } = useIconSetProperties(activeIconSetEntryId)
 
   const iconSetEditingContext = useMemo((): IconSetEditingContext | null => {
     if (!isIconSetEditingMode) return null
+
     return {
       isIconSetEditing: true,
       updateIconSetProperty,
@@ -418,30 +407,25 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (selection) {
       return selection as Variant | Instance | Board
     }
+
     if (isThemeEditingMode && activeThemeEntryId) {
-      const board = findBoardForEntry(
-        workspace,
-        isThemeBoard,
-        activeThemeEntryId,
-      )
+      const board = findBoardForEntry(workspace, isThemeBoard, activeThemeEntryId)
+
       if (board) return board
     }
+
     if (isFontCollectionEditingMode && activeFontCollectionEntryId) {
-      const board = findBoardForEntry(
-        workspace,
-        isFontCollectionBoard,
-        activeFontCollectionEntryId,
-      )
+      const board = findBoardForEntry(workspace, isFontCollectionBoard, activeFontCollectionEntryId)
+
       if (board) return board
     }
+
     if (isIconSetEditingMode && activeIconSetEntryId) {
-      const board = findBoardForEntry(
-        workspace,
-        isIconSetBoard,
-        activeIconSetEntryId,
-      )
+      const board = findBoardForEntry(workspace, isIconSetBoard, activeIconSetEntryId)
+
       if (board) return board
     }
+
     return null
   }, [
     selection,
@@ -463,6 +447,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (!propertyTreeNode) {
       return { sections: [], allProperties: [] }
     }
+
     return buildPropertyTreeLayout({
       properties: flatProperties,
       workspace,

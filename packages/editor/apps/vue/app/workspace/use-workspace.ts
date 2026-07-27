@@ -1,9 +1,10 @@
 import { useHistoryStore } from "@app/workspace/history-store"
 import { usePreviewStore } from "@app/workspace/preview-store"
 import { storeToRefs } from "pinia"
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { ComputedRef } from "vue"
 
 /**
  * The workspace the editor renders: the transient preview overlay when a
@@ -17,5 +18,6 @@ export function useWorkspace(): { workspace: ComputedRef<Workspace> } {
   const { preview: previewWorkspace } = storeToRefs(preview)
 
   const workspace = computed(() => previewWorkspace.value ?? current.value)
+
   return { workspace }
 }

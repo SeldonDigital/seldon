@@ -10,31 +10,37 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonProps } from "../elements/Button"
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import { FormControl, FormControlProps } from "../elements/FormControl"
-import {
-  FormControlRadio,
-  FormControlRadioProps,
-} from "../elements/FormControlRadio"
-import { MenuItemRadio, MenuItemRadioProps } from "../elements/MenuItemRadio"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ComboboxField } from "../elements/ComboboxField"
+import { FormControl } from "../elements/FormControl"
+import { FormControlRadio } from "../elements/FormControlRadio"
+import { MenuItemRadio } from "../elements/MenuItemRadio"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar, BarProps } from "../parts/Bar"
-import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Bar } from "../parts/Bar"
+import { BarButtons } from "../parts/BarButtons"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { FormControlProps } from "../elements/FormControl"
+import type { FormControlRadioProps } from "../elements/FormControlRadio"
+import type { MenuItemRadioProps } from "../elements/MenuItemRadio"
+import type { FrameProps } from "../frames/Frame"
+import type { BarProps } from "../parts/Bar"
+import type { BarButtonsProps } from "../parts/BarButtons"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface DialogExportComponentProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -232,10 +238,7 @@ export function DialogExportComponent({
   seldonRefs,
   ...props
 }: DialogExportComponentProps) {
-  const dialogExportComponentClassName = combineClassNames(
-    "sdn-dialog-export-component",
-    className,
-  )
+  const dialogExportComponentClassName = combineClassNames("sdn-dialog-export-component", className)
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -253,10 +256,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const frameProps = applyRef(
@@ -276,10 +276,7 @@ export function DialogExportComponent({
       : {
           ...sdn.formControl,
           ...formControl,
-          className: combineClassNames(
-            sdn.formControl?.className,
-            formControl?.className,
-          ),
+          className: combineClassNames(sdn.formControl?.className, formControl?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -289,10 +286,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const inputProps = applyRef(
@@ -312,10 +306,7 @@ export function DialogExportComponent({
       : {
           ...sdn.formControl2,
           ...formControl2,
-          className: combineClassNames(
-            sdn.formControl2?.className,
-            formControl2?.className,
-          ),
+          className: combineClassNames(sdn.formControl2?.className, formControl2?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -325,10 +316,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const comboboxFieldProps = applyRef(
@@ -338,10 +326,7 @@ export function DialogExportComponent({
       : {
           ...sdn.comboboxField,
           ...comboboxField,
-          className: combineClassNames(
-            sdn.comboboxField?.className,
-            comboboxField?.className,
-          ),
+          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
         },
   )
   const input2Props = applyRef(
@@ -351,10 +336,7 @@ export function DialogExportComponent({
       : {
           ...sdn.input2,
           ...input2,
-          className: combineClassNames(
-            sdn.input2?.className,
-            input2?.className,
-          ),
+          className: combineClassNames(sdn.input2?.className, input2?.className),
         },
   )
   const buttonIconicProps = applyRef(
@@ -364,10 +346,7 @@ export function DialogExportComponent({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -400,10 +379,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const textLabel3Props = applyRef(
@@ -413,10 +389,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const textDescriptionProps = applyRef(
@@ -426,10 +399,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
   const frame3Props = applyRef(
@@ -439,10 +409,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const menuItemRadioProps = applyRef(
@@ -452,10 +419,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio,
           ...menuItemRadio,
-          className: combineClassNames(
-            sdn.menuItemRadio?.className,
-            menuItemRadio?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio?.className, menuItemRadio?.className),
         },
   )
   const icon2Props = applyRef(
@@ -475,10 +439,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const menuItemRadio2Props = applyRef(
@@ -488,10 +449,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio2,
           ...menuItemRadio2,
-          className: combineClassNames(
-            sdn.menuItemRadio2?.className,
-            menuItemRadio2?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio2?.className, menuItemRadio2?.className),
         },
   )
   const icon3Props = applyRef(
@@ -511,10 +469,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
   const formControlRadio2Props = applyRef(
@@ -537,10 +492,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame4,
           ...frame4,
-          className: combineClassNames(
-            sdn.frame4?.className,
-            frame4?.className,
-          ),
+          className: combineClassNames(sdn.frame4?.className, frame4?.className),
         },
   )
   const textLabel6Props = applyRef(
@@ -550,10 +502,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel6,
           ...textLabel6,
-          className: combineClassNames(
-            sdn.textLabel6?.className,
-            textLabel6?.className,
-          ),
+          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
         },
   )
   const textDescription2Props = applyRef(
@@ -576,10 +525,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame5,
           ...frame5,
-          className: combineClassNames(
-            sdn.frame5?.className,
-            frame5?.className,
-          ),
+          className: combineClassNames(sdn.frame5?.className, frame5?.className),
         },
   )
   const menuItemRadio3Props = applyRef(
@@ -589,10 +535,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio3,
           ...menuItemRadio3,
-          className: combineClassNames(
-            sdn.menuItemRadio3?.className,
-            menuItemRadio3?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio3?.className, menuItemRadio3?.className),
         },
   )
   const icon4Props = applyRef(
@@ -612,10 +555,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel7,
           ...textLabel7,
-          className: combineClassNames(
-            sdn.textLabel7?.className,
-            textLabel7?.className,
-          ),
+          className: combineClassNames(sdn.textLabel7?.className, textLabel7?.className),
         },
   )
   const menuItemRadio4Props = applyRef(
@@ -625,10 +565,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio4,
           ...menuItemRadio4,
-          className: combineClassNames(
-            sdn.menuItemRadio4?.className,
-            menuItemRadio4?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio4?.className, menuItemRadio4?.className),
         },
   )
   const icon5Props = applyRef(
@@ -648,10 +585,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel8,
           ...textLabel8,
-          className: combineClassNames(
-            sdn.textLabel8?.className,
-            textLabel8?.className,
-          ),
+          className: combineClassNames(sdn.textLabel8?.className, textLabel8?.className),
         },
   )
   const formControlRadio3Props = applyRef(
@@ -674,10 +608,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame6,
           ...frame6,
-          className: combineClassNames(
-            sdn.frame6?.className,
-            frame6?.className,
-          ),
+          className: combineClassNames(sdn.frame6?.className, frame6?.className),
         },
   )
   const textLabel9Props = applyRef(
@@ -687,10 +618,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel9,
           ...textLabel9,
-          className: combineClassNames(
-            sdn.textLabel9?.className,
-            textLabel9?.className,
-          ),
+          className: combineClassNames(sdn.textLabel9?.className, textLabel9?.className),
         },
   )
   const textDescription3Props = applyRef(
@@ -713,10 +641,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame7,
           ...frame7,
-          className: combineClassNames(
-            sdn.frame7?.className,
-            frame7?.className,
-          ),
+          className: combineClassNames(sdn.frame7?.className, frame7?.className),
         },
   )
   const menuItemRadio5Props = applyRef(
@@ -726,10 +651,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio5,
           ...menuItemRadio5,
-          className: combineClassNames(
-            sdn.menuItemRadio5?.className,
-            menuItemRadio5?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio5?.className, menuItemRadio5?.className),
         },
   )
   const icon6Props = applyRef(
@@ -749,10 +671,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel10,
           ...textLabel10,
-          className: combineClassNames(
-            sdn.textLabel10?.className,
-            textLabel10?.className,
-          ),
+          className: combineClassNames(sdn.textLabel10?.className, textLabel10?.className),
         },
   )
   const menuItemRadio6Props = applyRef(
@@ -762,10 +681,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio6,
           ...menuItemRadio6,
-          className: combineClassNames(
-            sdn.menuItemRadio6?.className,
-            menuItemRadio6?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio6?.className, menuItemRadio6?.className),
         },
   )
   const icon7Props = applyRef(
@@ -785,10 +701,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel11,
           ...textLabel11,
-          className: combineClassNames(
-            sdn.textLabel11?.className,
-            textLabel11?.className,
-          ),
+          className: combineClassNames(sdn.textLabel11?.className, textLabel11?.className),
         },
   )
   const formControlRadio4Props = applyRef(
@@ -811,10 +724,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame8,
           ...frame8,
-          className: combineClassNames(
-            sdn.frame8?.className,
-            frame8?.className,
-          ),
+          className: combineClassNames(sdn.frame8?.className, frame8?.className),
         },
   )
   const textLabel12Props = applyRef(
@@ -824,10 +734,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel12,
           ...textLabel12,
-          className: combineClassNames(
-            sdn.textLabel12?.className,
-            textLabel12?.className,
-          ),
+          className: combineClassNames(sdn.textLabel12?.className, textLabel12?.className),
         },
   )
   const textDescription4Props = applyRef(
@@ -850,10 +757,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame9,
           ...frame9,
-          className: combineClassNames(
-            sdn.frame9?.className,
-            frame9?.className,
-          ),
+          className: combineClassNames(sdn.frame9?.className, frame9?.className),
         },
   )
   const menuItemRadio7Props = applyRef(
@@ -863,10 +767,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio7,
           ...menuItemRadio7,
-          className: combineClassNames(
-            sdn.menuItemRadio7?.className,
-            menuItemRadio7?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio7?.className, menuItemRadio7?.className),
         },
   )
   const icon8Props = applyRef(
@@ -886,10 +787,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel13,
           ...textLabel13,
-          className: combineClassNames(
-            sdn.textLabel13?.className,
-            textLabel13?.className,
-          ),
+          className: combineClassNames(sdn.textLabel13?.className, textLabel13?.className),
         },
   )
   const menuItemRadio8Props = applyRef(
@@ -899,10 +797,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio8,
           ...menuItemRadio8,
-          className: combineClassNames(
-            sdn.menuItemRadio8?.className,
-            menuItemRadio8?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio8?.className, menuItemRadio8?.className),
         },
   )
   const icon9Props = applyRef(
@@ -922,10 +817,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel14,
           ...textLabel14,
-          className: combineClassNames(
-            sdn.textLabel14?.className,
-            textLabel14?.className,
-          ),
+          className: combineClassNames(sdn.textLabel14?.className, textLabel14?.className),
         },
   )
   const formControlRadio5Props = applyRef(
@@ -948,10 +840,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame10,
           ...frame10,
-          className: combineClassNames(
-            sdn.frame10?.className,
-            frame10?.className,
-          ),
+          className: combineClassNames(sdn.frame10?.className, frame10?.className),
         },
   )
   const textLabel15Props = applyRef(
@@ -961,10 +850,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel15,
           ...textLabel15,
-          className: combineClassNames(
-            sdn.textLabel15?.className,
-            textLabel15?.className,
-          ),
+          className: combineClassNames(sdn.textLabel15?.className, textLabel15?.className),
         },
   )
   const textDescription5Props = applyRef(
@@ -987,10 +873,7 @@ export function DialogExportComponent({
       : {
           ...sdn.frame11,
           ...frame11,
-          className: combineClassNames(
-            sdn.frame11?.className,
-            frame11?.className,
-          ),
+          className: combineClassNames(sdn.frame11?.className, frame11?.className),
         },
   )
   const menuItemRadio9Props = applyRef(
@@ -1000,10 +883,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio9,
           ...menuItemRadio9,
-          className: combineClassNames(
-            sdn.menuItemRadio9?.className,
-            menuItemRadio9?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio9?.className, menuItemRadio9?.className),
         },
   )
   const icon10Props = applyRef(
@@ -1013,10 +893,7 @@ export function DialogExportComponent({
       : {
           ...sdn.icon10,
           ...icon10,
-          className: combineClassNames(
-            sdn.icon10?.className,
-            icon10?.className,
-          ),
+          className: combineClassNames(sdn.icon10?.className, icon10?.className),
         },
   )
   const textLabel16Props = applyRef(
@@ -1026,10 +903,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel16,
           ...textLabel16,
-          className: combineClassNames(
-            sdn.textLabel16?.className,
-            textLabel16?.className,
-          ),
+          className: combineClassNames(sdn.textLabel16?.className, textLabel16?.className),
         },
   )
   const menuItemRadio10Props = applyRef(
@@ -1039,10 +913,7 @@ export function DialogExportComponent({
       : {
           ...sdn.menuItemRadio10,
           ...menuItemRadio10,
-          className: combineClassNames(
-            sdn.menuItemRadio10?.className,
-            menuItemRadio10?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio10?.className, menuItemRadio10?.className),
         },
   )
   const icon11Props = applyRef(
@@ -1052,10 +923,7 @@ export function DialogExportComponent({
       : {
           ...sdn.icon11,
           ...icon11,
-          className: combineClassNames(
-            sdn.icon11?.className,
-            icon11?.className,
-          ),
+          className: combineClassNames(sdn.icon11?.className, icon11?.className),
         },
   )
   const textLabel17Props = applyRef(
@@ -1065,10 +933,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel17,
           ...textLabel17,
-          className: combineClassNames(
-            sdn.textLabel17?.className,
-            textLabel17?.className,
-          ),
+          className: combineClassNames(sdn.textLabel17?.className, textLabel17?.className),
         },
   )
   const barButtonsProps = applyRef(
@@ -1078,10 +943,7 @@ export function DialogExportComponent({
       : {
           ...sdn.barButtons,
           ...barButtons,
-          className: combineClassNames(
-            sdn.barButtons?.className,
-            barButtons?.className,
-          ),
+          className: combineClassNames(sdn.barButtons?.className, barButtons?.className),
         },
   )
   const buttonProps = applyRef(
@@ -1091,10 +953,7 @@ export function DialogExportComponent({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const icon12Props = applyRef(
@@ -1104,10 +963,7 @@ export function DialogExportComponent({
       : {
           ...sdn.icon12,
           ...icon12,
-          className: combineClassNames(
-            sdn.icon12?.className,
-            icon12?.className,
-          ),
+          className: combineClassNames(sdn.icon12?.className, icon12?.className),
         },
   )
   const textLabel18Props = applyRef(
@@ -1117,10 +973,7 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel18,
           ...textLabel18,
-          className: combineClassNames(
-            sdn.textLabel18?.className,
-            textLabel18?.className,
-          ),
+          className: combineClassNames(sdn.textLabel18?.className, textLabel18?.className),
         },
   )
   const button2Props = applyRef(
@@ -1130,10 +983,7 @@ export function DialogExportComponent({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon13Props = applyRef(
@@ -1143,10 +993,7 @@ export function DialogExportComponent({
       : {
           ...sdn.icon13,
           ...icon13,
-          className: combineClassNames(
-            sdn.icon13?.className,
-            icon13?.className,
-          ),
+          className: combineClassNames(sdn.icon13?.className, icon13?.className),
         },
   )
   const textLabel19Props = applyRef(
@@ -1156,19 +1003,12 @@ export function DialogExportComponent({
       : {
           ...sdn.textLabel19,
           ...textLabel19,
-          className: combineClassNames(
-            sdn.textLabel19?.className,
-            textLabel19?.className,
-          ),
+          className: combineClassNames(sdn.textLabel19?.className, textLabel19?.className),
         },
   )
 
   return (
-    <HTMLDiv
-      className={dialogExportComponentClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLDiv className={dialogExportComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -1181,17 +1021,13 @@ export function DialogExportComponent({
           <Frame {...frameProps}>
             {formControl && formControlProps && (
               <FormControl {...formControlProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                 {input && inputProps && <Input {...inputProps} />}
               </FormControl>
             )}
             {formControl2 && formControl2Props && (
               <FormControl {...formControl2Props}>
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
                 {comboboxField && comboboxFieldProps && (
                   <ComboboxField
                     {...comboboxFieldProps}
@@ -1206,9 +1042,7 @@ export function DialogExportComponent({
             {formControlRadio && formControlRadioProps && (
               <FormControlRadio {...formControlRadioProps}>
                 <Frame {...frame2Props}>
-                  {textLabel3 && textLabel3Props && (
-                    <TextLabel {...textLabel3Props} />
-                  )}
+                  {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
                   {textDescription && textDescriptionProps && (
                     <TextDescription {...textDescriptionProps} />
                   )}
@@ -1217,17 +1051,13 @@ export function DialogExportComponent({
                   {menuItemRadio && menuItemRadioProps && (
                     <MenuItemRadio {...menuItemRadioProps}>
                       {icon2 && icon2Props && <Icon {...icon2Props} />}
-                      {textLabel4 && textLabel4Props && (
-                        <TextLabel {...textLabel4Props} />
-                      )}
+                      {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
                     </MenuItemRadio>
                   )}
                   {menuItemRadio2 && menuItemRadio2Props && (
                     <MenuItemRadio {...menuItemRadio2Props}>
                       {icon3 && icon3Props && <Icon {...icon3Props} />}
-                      {textLabel5 && textLabel5Props && (
-                        <TextLabel {...textLabel5Props} />
-                      )}
+                      {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
                     </MenuItemRadio>
                   )}
                 </Frame>
@@ -1236,9 +1066,7 @@ export function DialogExportComponent({
             {formControlRadio2 && formControlRadio2Props && (
               <FormControlRadio {...formControlRadio2Props}>
                 <Frame {...frame4Props}>
-                  {textLabel6 && textLabel6Props && (
-                    <TextLabel {...textLabel6Props} />
-                  )}
+                  {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
                   {textDescription2 && textDescription2Props && (
                     <TextDescription {...textDescription2Props} />
                   )}
@@ -1247,17 +1075,13 @@ export function DialogExportComponent({
                   {menuItemRadio3 && menuItemRadio3Props && (
                     <MenuItemRadio {...menuItemRadio3Props}>
                       {icon4 && icon4Props && <Icon {...icon4Props} />}
-                      {textLabel7 && textLabel7Props && (
-                        <TextLabel {...textLabel7Props} />
-                      )}
+                      {textLabel7 && textLabel7Props && <TextLabel {...textLabel7Props} />}
                     </MenuItemRadio>
                   )}
                   {menuItemRadio4 && menuItemRadio4Props && (
                     <MenuItemRadio {...menuItemRadio4Props}>
                       {icon5 && icon5Props && <Icon {...icon5Props} />}
-                      {textLabel8 && textLabel8Props && (
-                        <TextLabel {...textLabel8Props} />
-                      )}
+                      {textLabel8 && textLabel8Props && <TextLabel {...textLabel8Props} />}
                     </MenuItemRadio>
                   )}
                 </Frame>
@@ -1266,9 +1090,7 @@ export function DialogExportComponent({
             {formControlRadio3 && formControlRadio3Props && (
               <FormControlRadio {...formControlRadio3Props}>
                 <Frame {...frame6Props}>
-                  {textLabel9 && textLabel9Props && (
-                    <TextLabel {...textLabel9Props} />
-                  )}
+                  {textLabel9 && textLabel9Props && <TextLabel {...textLabel9Props} />}
                   {textDescription3 && textDescription3Props && (
                     <TextDescription {...textDescription3Props} />
                   )}
@@ -1277,17 +1099,13 @@ export function DialogExportComponent({
                   {menuItemRadio5 && menuItemRadio5Props && (
                     <MenuItemRadio {...menuItemRadio5Props}>
                       {icon6 && icon6Props && <Icon {...icon6Props} />}
-                      {textLabel10 && textLabel10Props && (
-                        <TextLabel {...textLabel10Props} />
-                      )}
+                      {textLabel10 && textLabel10Props && <TextLabel {...textLabel10Props} />}
                     </MenuItemRadio>
                   )}
                   {menuItemRadio6 && menuItemRadio6Props && (
                     <MenuItemRadio {...menuItemRadio6Props}>
                       {icon7 && icon7Props && <Icon {...icon7Props} />}
-                      {textLabel11 && textLabel11Props && (
-                        <TextLabel {...textLabel11Props} />
-                      )}
+                      {textLabel11 && textLabel11Props && <TextLabel {...textLabel11Props} />}
                     </MenuItemRadio>
                   )}
                 </Frame>
@@ -1296,9 +1114,7 @@ export function DialogExportComponent({
             {formControlRadio4 && formControlRadio4Props && (
               <FormControlRadio {...formControlRadio4Props}>
                 <Frame {...frame8Props}>
-                  {textLabel12 && textLabel12Props && (
-                    <TextLabel {...textLabel12Props} />
-                  )}
+                  {textLabel12 && textLabel12Props && <TextLabel {...textLabel12Props} />}
                   {textDescription4 && textDescription4Props && (
                     <TextDescription {...textDescription4Props} />
                   )}
@@ -1307,17 +1123,13 @@ export function DialogExportComponent({
                   {menuItemRadio7 && menuItemRadio7Props && (
                     <MenuItemRadio {...menuItemRadio7Props}>
                       {icon8 && icon8Props && <Icon {...icon8Props} />}
-                      {textLabel13 && textLabel13Props && (
-                        <TextLabel {...textLabel13Props} />
-                      )}
+                      {textLabel13 && textLabel13Props && <TextLabel {...textLabel13Props} />}
                     </MenuItemRadio>
                   )}
                   {menuItemRadio8 && menuItemRadio8Props && (
                     <MenuItemRadio {...menuItemRadio8Props}>
                       {icon9 && icon9Props && <Icon {...icon9Props} />}
-                      {textLabel14 && textLabel14Props && (
-                        <TextLabel {...textLabel14Props} />
-                      )}
+                      {textLabel14 && textLabel14Props && <TextLabel {...textLabel14Props} />}
                     </MenuItemRadio>
                   )}
                 </Frame>
@@ -1326,9 +1138,7 @@ export function DialogExportComponent({
             {formControlRadio5 && formControlRadio5Props && (
               <FormControlRadio {...formControlRadio5Props}>
                 <Frame {...frame10Props}>
-                  {textLabel15 && textLabel15Props && (
-                    <TextLabel {...textLabel15Props} />
-                  )}
+                  {textLabel15 && textLabel15Props && <TextLabel {...textLabel15Props} />}
                   {textDescription5 && textDescription5Props && (
                     <TextDescription {...textDescription5Props} />
                   )}
@@ -1337,17 +1147,13 @@ export function DialogExportComponent({
                   {menuItemRadio9 && menuItemRadio9Props && (
                     <MenuItemRadio {...menuItemRadio9Props}>
                       {icon10 && icon10Props && <Icon {...icon10Props} />}
-                      {textLabel16 && textLabel16Props && (
-                        <TextLabel {...textLabel16Props} />
-                      )}
+                      {textLabel16 && textLabel16Props && <TextLabel {...textLabel16Props} />}
                     </MenuItemRadio>
                   )}
                   {menuItemRadio10 && menuItemRadio10Props && (
                     <MenuItemRadio {...menuItemRadio10Props}>
                       {icon11 && icon11Props && <Icon {...icon11Props} />}
-                      {textLabel17 && textLabel17Props && (
-                        <TextLabel {...textLabel17Props} />
-                      )}
+                      {textLabel17 && textLabel17Props && <TextLabel {...textLabel17Props} />}
                     </MenuItemRadio>
                   )}
                 </Frame>
@@ -1454,8 +1260,7 @@ const sdn: DialogExportComponentProps = {
     className: "sdn-text-label sdn-text-label--s1qr",
   },
   textDescription: {
-    children:
-      "When enabled, components hidden with Exclude or Mock are also exported.",
+    children: "When enabled, components hidden with Exclude or Mock are also exported.",
     htmlElement: "p",
     "aria-hidden": "false",
     className: "sdn-text-description sdn-text-description--ljmd",

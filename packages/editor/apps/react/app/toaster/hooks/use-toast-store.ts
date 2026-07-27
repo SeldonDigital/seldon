@@ -15,6 +15,7 @@ export const useToastStore = create<ToastStore>((set) => ({
   toasts: [],
   addToast: (message) => {
     const id = nanoid(8)
+
     set((state) => ({
       toasts: [...state.toasts, { message, id }],
     }))

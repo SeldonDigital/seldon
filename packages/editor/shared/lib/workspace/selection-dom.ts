@@ -1,11 +1,9 @@
-import { InstanceId, VariantId } from "@seldon/core"
-import type { BoardKey } from "@seldon/core/workspace/types"
 import type { ResourceEntryKind, SelectionKind } from "./selection-kind"
+import type { InstanceId, VariantId } from "@seldon/core"
+import type { BoardKey } from "@seldon/core/workspace/types"
 
 /** Maps a resource-entry selection kind to the unified resource entry kind. */
-const RESOURCE_ENTRY_KIND_BY_SELECTION_KIND: Partial<
-  Record<SelectionKind, ResourceEntryKind>
-> = {
+const RESOURCE_ENTRY_KIND_BY_SELECTION_KIND: Partial<Record<SelectionKind, ResourceEntryKind>> = {
   theme: "theme",
   fontCollection: "fontCollection",
   iconSet: "iconSet",
@@ -36,18 +34,21 @@ export type SelectionTarget = {
  * DOM logic shared by the React and Vue editors, so neither surface needs its
  * own selection resolution.
  */
-export function getSelectionTarget(
-  element: Element | null,
-): SelectionTarget | null {
+export function getSelectionTarget(element: Element | null): SelectionTarget | null {
   const match = element?.closest<HTMLElement>(`[${SELECTION_ID_ATTR}]`)
+
   if (!match) return null
   const id = match.getAttribute(SELECTION_ID_ATTR)
   const kind = match.getAttribute(SELECTION_KIND_ATTR) as SelectionKind | null
+
   if (!id || !kind) return null
+
   if (kind === "node") {
     const rootId = match.getAttribute(SELECTION_ROOT_ID_ATTR) ?? undefined
+
     return { id, kind, rootId: rootId ?? id }
   }
+
   return { id, kind }
 }
 
@@ -59,10 +60,7 @@ export function getSelectionTarget(
 export function selectFromTarget(
   target: SelectionTarget,
   setters: {
-    selectNode: (
-      id: VariantId | InstanceId | null,
-      rootId?: string | null,
-    ) => void
+    selectNode: (id: VariantId | InstanceId | null, rootId?: string | null) => void
     selectBoard: (id: BoardKey | null) => void
     selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
     selectResourceItem: (key: string | null) => void
@@ -71,9 +69,11 @@ export function selectFromTarget(
   switch (target.kind) {
     case "node":
       setters.selectNode(target.id as VariantId | InstanceId, target.rootId)
+
       return
     case "board":
       setters.selectBoard(target.id as BoardKey)
+
       return
     case "theme":
     case "fontCollection":
@@ -83,9 +83,11 @@ export function selectFromTarget(
         RESOURCE_ENTRY_KIND_BY_SELECTION_KIND[target.kind] as ResourceEntryKind,
         target.id,
       )
+
       return
     case "resourceItem":
       setters.selectResourceItem(target.id)
+
       return
   }
 }

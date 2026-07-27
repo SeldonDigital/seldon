@@ -10,13 +10,15 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface MessageStatusProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -50,10 +52,7 @@ export function MessageStatus({
   seldonRefs,
   ...props
 }: MessageStatusProps) {
-  const messageStatusClassName = combineClassNames(
-    "sdn-message-status",
-    className,
-  )
+  const messageStatusClassName = combineClassNames("sdn-message-status", className)
   const iconProps = applyRef(
     seldonRefs,
     icon === null
@@ -71,19 +70,12 @@ export function MessageStatus({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
   return (
-    <Frame
-      className={messageStatusClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={messageStatusClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

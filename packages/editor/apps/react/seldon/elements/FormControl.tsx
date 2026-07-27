@@ -10,13 +10,15 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Input, InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Input } from "../primitives/Input"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface FormControlProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -58,10 +60,7 @@ export function FormControl({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const inputProps = applyRef(
@@ -76,11 +75,7 @@ export function FormControl({
   )
 
   return (
-    <Frame
-      className={formControlClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={formControlClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

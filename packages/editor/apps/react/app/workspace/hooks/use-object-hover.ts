@@ -1,8 +1,9 @@
 import { useTool } from "@app/editor/hooks/use-tool"
-import type { SelectionKind } from "@app/workspace/selection-target"
 import { useMemo } from "react"
-import type { CSSProperties } from "react"
 import { create } from "zustand"
+
+import type { SelectionKind } from "@app/workspace/selection-target"
+import type { CSSProperties } from "react"
 
 /**
  * The single hovered object across the editor. Both the Objects sidebar and the
@@ -20,11 +21,7 @@ interface ObjectHoverState {
   hoveredId: string | null
   hoveredKind: SelectionKind | null
   hoveredRootId: string | null
-  setHoveredId: (
-    id: string | null,
-    kind?: SelectionKind | null,
-    rootId?: string | null,
-  ) => void
+  setHoveredId: (id: string | null, kind?: SelectionKind | null, rootId?: string | null) => void
 }
 
 const useStore = create<ObjectHoverState>((set) => ({
@@ -33,9 +30,7 @@ const useStore = create<ObjectHoverState>((set) => ({
   hoveredRootId: null,
   setHoveredId: (hoveredId, kind = null, rootId = null) =>
     set((state) =>
-      state.hoveredId === hoveredId &&
-      state.hoveredKind === kind &&
-      state.hoveredRootId === rootId
+      state.hoveredId === hoveredId && state.hoveredKind === kind && state.hoveredRootId === rootId
         ? state
         : {
             hoveredId,
@@ -50,16 +45,13 @@ export const useSetHoveredId = (): ObjectHoverState["setHoveredId"] =>
   useStore((state) => state.setHoveredId)
 
 /** The currently hovered object id. */
-export const useHoveredId = (): string | null =>
-  useStore((state) => state.hoveredId)
+export const useHoveredId = (): string | null => useStore((state) => state.hoveredId)
 
 /** The kind of the currently hovered object, when known. */
-export const useHoveredKind = (): SelectionKind | null =>
-  useStore((state) => state.hoveredKind)
+export const useHoveredKind = (): SelectionKind | null => useStore((state) => state.hoveredKind)
 
 /** The variant-root column of the hovered node, when known. */
-export const useHoveredRootId = (): string | null =>
-  useStore((state) => state.hoveredRootId)
+export const useHoveredRootId = (): string | null => useStore((state) => state.hoveredRootId)
 
 /**
  * Whether the given copy is the hovered one. A child id is shared across
@@ -70,8 +62,7 @@ export const useHoveredRootId = (): string | null =>
 export const useIsHovered = (id: string, rootId?: string): boolean =>
   useStore(
     (state) =>
-      state.hoveredId === id &&
-      (state.hoveredRootId == null || state.hoveredRootId === rootId),
+      state.hoveredId === id && (state.hoveredRootId == null || state.hoveredRootId === rootId),
   )
 
 /**
@@ -87,6 +78,7 @@ export function useRowHighlightStyle(
 ): CSSProperties {
   const isHovered = useIsHovered(id, rootId)
   const { activeTool } = useTool()
+
   return useMemo(
     () => ({
       ...(isSelected ? { borderColor: "var(--sdn-swatch-primary)" } : {}),
@@ -96,8 +88,7 @@ export function useRowHighlightStyle(
       // so it stays visible on both light and dark themes.
       ...(isHovered && !isSelected && activeTool !== "component"
         ? {
-            backgroundColor:
-              "color-mix(in srgb, var(--sdn-swatch-active) 10%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--sdn-swatch-active) 10%, transparent)",
           }
         : {}),
     }),

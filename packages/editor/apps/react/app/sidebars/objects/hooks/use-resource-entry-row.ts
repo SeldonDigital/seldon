@@ -1,12 +1,12 @@
-import { MenuEntry } from "@app/menus"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { useMemo } from "react"
 
-import { Variant } from "@seldon/core"
+import { useEditState } from "./use-edit-state"
 
 import type { ResourceRowConfig } from "../helpers/resource-row-config"
-import { useEditState } from "./use-edit-state"
+import type { MenuEntry } from "@app/menus"
+import type { Variant } from "@seldon/core"
 
 type EntrySnapshot = {
   label: string
@@ -17,8 +17,8 @@ type EntrySnapshot = {
 interface UseResourceEntryRowInput {
   config: ResourceRowConfig
   entryId: string
-  entry?: EntrySnapshot
   isSelected: boolean
+  entry?: EntrySnapshot
 }
 
 /**
@@ -55,9 +55,7 @@ export function useResourceEntryRow({
     if (buildDuplicateAction) {
       entries.push({
         id: "duplicate",
-        label: entry.isDefault
-          ? `Duplicate ${entry.label} Default`
-          : `Duplicate ${entry.label}`,
+        label: entry.isDefault ? `Duplicate ${entry.label} Default` : `Duplicate ${entry.label}`,
         onSelect: () => dispatch(buildDuplicateAction(entryId)),
         testId: `${config.testId}-${entryId}-duplicate`,
       })

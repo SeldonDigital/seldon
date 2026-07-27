@@ -1,7 +1,9 @@
-import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { isPresetProperty } from "@seldon/editor/lib/properties/property-types"
 
-import { type Value, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
+
+import type { Value } from "@seldon/core"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 /**
  * The value shown for a property row, resolving dimmed/compound/shorthand/preset
@@ -34,15 +36,18 @@ export function getPropertyValueForDisplay(property: FlatProperty): Value {
     if (property.actualValue && property.actualValue !== "unset") {
       return { type: ValueType.EXACT, value: property.actualValue }
     }
+
     return { type: ValueType.EMPTY, value: null }
   }
 
   if (property.isSubProperty && property.key.includes(".")) {
     const [parentKey] = property.key.split(".")
+
     if (isPresetProperty(parentKey)) {
       if (property.actualValue && property.actualValue !== "unset") {
         return { type: ValueType.EXACT, value: property.actualValue }
       }
+
       return { type: ValueType.EMPTY, value: null }
     }
   }
@@ -53,6 +58,7 @@ export function getPropertyValueForDisplay(property: FlatProperty): Value {
 
   const value = property.value
   const typedValue = value as { type?: ValueType } | null | undefined
+
   if (
     property.actualValue &&
     value &&
@@ -67,8 +73,7 @@ export function getPropertyValueForDisplay(property: FlatProperty): Value {
 
   if (
     property.actualValue &&
-    (property.key.startsWith("swatch.") ||
-      property.key === "colorHarmony.baseColor")
+    (property.key.startsWith("swatch.") || property.key === "colorHarmony.baseColor")
   ) {
     return { type: ValueType.EXACT, value: property.actualValue }
   }

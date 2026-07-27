@@ -6,8 +6,9 @@ import {
   getSubPropertyKeys,
   isShorthandProperty,
 } from "@seldon/editor/lib/properties/property-types"
-import { Properties, Value } from "@seldon/core"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
+import type { Properties, Value } from "@seldon/core"
 
 interface UpdatePropertyOptions {
   property: FlatProperty
@@ -35,6 +36,7 @@ export function updateProperty({
 }: UpdatePropertyOptions): void {
   if (property.isSubProperty) {
     const parsed = parsePropertyPath(property.key)
+
     if (parsed.kind === "layered-facet") {
       // Materialize the whole effective stack and set just this facet, so the
       // node owns the layer count and order and the edit never truncates or
@@ -43,14 +45,10 @@ export function updateProperty({
       const base =
         effectiveLayers && effectiveLayers.length > parsed.index
           ? effectiveLayers.map((layer) =>
-              layer && typeof layer === "object" && !Array.isArray(layer)
-                ? { ...layer }
-                : {},
+              layer && typeof layer === "object" && !Array.isArray(layer) ? { ...layer } : {},
             )
-          : Array.from(
-              { length: parsed.index + 1 },
-              () => ({}) as Record<string, unknown>,
-            )
+          : Array.from({ length: parsed.index + 1 }, () => ({}) as Record<string, unknown>)
+
       base[parsed.index] = {
         ...base[parsed.index],
         [parsed.facet]: value,
@@ -61,8 +59,10 @@ export function updateProperty({
         } as Properties,
         { mergeSubProperties: false },
       )
+
       return
     }
+
     if (parsed.kind === "facet") {
       setProperties(
         {
@@ -72,19 +72,18 @@ export function updateProperty({
         },
         { mergeSubProperties: true },
       )
+
       return
     }
   } else {
     if (isShorthandProperty(property.key)) {
       const subPropertyKeys = getSubPropertyKeys(property.key)
       const compoundProperty: Record<string, unknown> = {}
+
       subPropertyKeys.forEach((subKey) => {
         compoundProperty[subKey] = value
       })
-      setProperties(
-        { [property.key]: compoundProperty },
-        { mergeSubProperties: false },
-      )
+      setProperties({ [property.key]: compoundProperty }, { mergeSubProperties: false })
     } else {
       setProperties({
         [property.key]: value,

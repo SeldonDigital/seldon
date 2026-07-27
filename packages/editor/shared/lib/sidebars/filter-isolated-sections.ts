@@ -1,12 +1,14 @@
 import { ComponentLevel } from "@seldon/core"
-import type { Board, Workspace } from "@seldon/core/workspace/types"
 import { ISOLATION_EXCLUDED_CATALOG_IDS } from "../isolation/excluded-boards"
 import { getIsolationUsage } from "../isolation/get-isolation-usage"
+
 import type { BoardSection } from "./get-board-sections"
+import type { Board, Workspace } from "@seldon/core/workspace/types"
 
 /** Catalog id for a component board, or the map key for an authored board. */
 function boardKey(board: Board): string | undefined {
   if ("catalogId" in board && board.catalogId) return board.catalogId
+
   return (board as { id?: string }).id
 }
 
@@ -23,11 +25,7 @@ export function filterIsolatedSections(
   isolatedVariantRootId: string | null,
   workspace: Workspace,
 ): BoardSection[] {
-  const usage = getIsolationUsage(
-    isolatedBoard,
-    isolatedVariantRootId,
-    workspace,
-  )
+  const usage = getIsolationUsage(isolatedBoard, isolatedVariantRootId, workspace)
   const isolatedKey = boardKey(isolatedBoard)
 
   // Frame boards are excluded from isolation, so the Frames section would only
@@ -38,9 +36,11 @@ export function filterIsolatedSections(
       ...section,
       boards: section.boards.filter((board) => {
         const key = boardKey(board)
+
         if (!key) return false
         if (key === isolatedKey) return true
         if (ISOLATION_EXCLUDED_CATALOG_IDS.has(key)) return false
+
         return usage.has(key)
       }),
     }))

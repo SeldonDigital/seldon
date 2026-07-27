@@ -10,15 +10,19 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { LiHTMLAttributes } from "react"
-
-import { Chip, ChipProps } from "../elements/Chip"
+import { Chip } from "../elements/Chip"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { InputCheckbox } from "../primitives/InputCheckbox"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ChipProps } from "../elements/Chip"
+import type { IconProps } from "../primitives/Icon"
+import type { InputCheckboxProps } from "../primitives/InputCheckbox"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemToDoItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -80,10 +84,7 @@ export function ItemToDoItem({
       : {
           ...sdn.inputCheckbox,
           ...inputCheckbox,
-          className: combineClassNames(
-            sdn.inputCheckbox?.className,
-            inputCheckbox?.className,
-          ),
+          className: combineClassNames(sdn.inputCheckbox?.className, inputCheckbox?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -93,10 +94,7 @@ export function ItemToDoItem({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const chipProps = applyRef(
@@ -126,10 +124,7 @@ export function ItemToDoItem({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const chip2Props = applyRef(
@@ -159,10 +154,7 @@ export function ItemToDoItem({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const chip3Props = applyRef(
@@ -182,48 +174,33 @@ export function ItemToDoItem({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
 
   return (
-    <HTMLLi
-      className={itemToDoItemClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLLi className={itemToDoItemClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
-          {inputCheckbox && inputCheckboxProps && (
-            <InputCheckbox {...inputCheckboxProps} />
-          )}
+          {inputCheckbox && inputCheckboxProps && <InputCheckbox {...inputCheckboxProps} />}
           {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
           {chipProps !== null && (
             <Chip {...chipProps}>
               {icon && iconProps && <Icon {...iconProps} />}
-              {textLabel2 && textLabel2Props && (
-                <TextLabel {...textLabel2Props} />
-              )}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
             </Chip>
           )}
           {chip2Props !== null && (
             <Chip {...chip2Props}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel3 && textLabel3Props && (
-                <TextLabel {...textLabel3Props} />
-              )}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
             </Chip>
           )}
           {chip3Props !== null && (
             <Chip {...chip3Props}>
-              {textLabel4 && textLabel4Props && (
-                <TextLabel {...textLabel4Props} />
-              )}
+              {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
             </Chip>
           )}
         </>

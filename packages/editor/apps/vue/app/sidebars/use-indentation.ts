@@ -18,6 +18,8 @@ export function useIndentation(): number {
 /** Provides the next indentation level for nested rows. */
 export function provideNextIndentation(): number {
   const next = useIndentation() + 1
+
   provide(INDENTATION_KEY, next)
+
   return next
 }

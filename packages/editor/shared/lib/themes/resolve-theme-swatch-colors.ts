@@ -1,6 +1,7 @@
-import { ComputedTheme, ThemeSwatchKey } from "@seldon/core"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
+
+import type { ComputedTheme, ThemeSwatchKey } from "@seldon/core"
 
 const SWATCH_KEYS: ThemeSwatchKey[] = [
   "@swatch.primary",
@@ -18,7 +19,6 @@ const SWATCH_KEYS: ThemeSwatchKey[] = [
  */
 export function resolveThemeSwatchColors(theme: ComputedTheme): string[] {
   return SWATCH_KEYS.map(
-    (key) =>
-      themeSwatchToCssBackground(getThemeOption(key, theme)) ?? "transparent",
+    (key) => themeSwatchToCssBackground(getThemeOption(key, theme)) ?? "transparent",
   )
 }

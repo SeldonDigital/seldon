@@ -19,8 +19,10 @@ type PersistedDebug = {
 
 function loadPersisted(): Partial<PersistedDebug> {
   if (typeof localStorage === "undefined") return {}
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
+
     return raw ? (JSON.parse(raw) as Partial<PersistedDebug>) : {}
   } catch {
     return {}
@@ -55,33 +57,43 @@ export const useDebugStore = defineStore("debug", () => {
   function toggleCanvasProfiling(): void {
     canvasProfiling.value = !canvasProfiling.value
   }
+
   function toggleShowNodeIds(): void {
     showNodeIds.value = !showNodeIds.value
   }
+
   function toggleShowNodeTypes(): void {
     showNodeTypes.value = !showNodeTypes.value
   }
+
   function toggleShowPropertyTypes(): void {
     showPropertyTypes.value = !showPropertyTypes.value
   }
+
   function toggleVerboseLogging(): void {
     verboseLogging.value = !verboseLogging.value
   }
+
   function toggleDispatchLogging(): void {
     dispatchLogging.value = !dispatchLogging.value
   }
+
   function toggleWorkspaceLogging(): void {
     workspaceLogging.value = !workspaceLogging.value
   }
+
   function toggleAiLogging(): void {
     aiLogging.value = !aiLogging.value
   }
+
   function toggleShowTools(): void {
     showTools.value = !showTools.value
   }
+
   function toggleShowOutcome(): void {
     showOutcome.value = !showOutcome.value
   }
+
   function toggleNoThink(): void {
     noThink.value = !noThink.value
   }
@@ -115,6 +127,7 @@ export const useDebugStore = defineStore("debug", () => {
         showOutcome: showOutcome.value,
         noThink: noThink.value,
       }
+
       localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))
     },
     { deep: false },

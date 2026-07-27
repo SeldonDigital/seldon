@@ -5,7 +5,6 @@
  * and UI metadata.
  */
 import { getPropertyRegistryEntry } from "@seldon/editor/lib/icons/icons-registry"
-import type { ControlType } from "@seldon/editor/lib/icons/icons-registry"
 import { THEME_TOKEN_ICON } from "@seldon/editor/lib/icons/resolve-option-icon"
 import {
   getCompoundLayerValue,
@@ -21,17 +20,7 @@ import {
   formatPropertyLabel,
   getValueType,
 } from "@seldon/editor/lib/properties/shared-utils"
-import {
-  Board,
-  Instance,
-  Properties,
-  PropertyKey,
-  Theme,
-  ValueType,
-  Variant,
-  Workspace,
-  getCompoundSelectorFacet,
-} from "@seldon/core"
+import { ValueType, getCompoundSelectorFacet } from "@seldon/core"
 import { findInObject } from "@seldon/core/helpers"
 import {
   formatCompoundDisplay as coreFormatCompoundDisplay,
@@ -40,30 +29,40 @@ import {
   getCompoundPropertyStructure,
 } from "@seldon/core/helpers/properties/properties-bridge"
 import { EMPTY_VALUE } from "@seldon/core/properties"
-import {
-  getCompoundSubPropertySchema,
-  getPropertyCategory,
-} from "@seldon/core/properties/schemas"
+import { getCompoundSubPropertySchema, getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
   getCatalogKeyForPropertyPath,
   getPropertySchema,
   validatePropertyValue,
 } from "@seldon/core/properties/schemas/helpers"
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
-import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { getPropertiesSubjectId } from "./flat-property"
-import type { FlatProperty, PropertyStatus } from "./flat-property"
 import { resolveMatchSiblingLock } from "./match-color-lock"
 import { resolvePropertyValueForDisplay } from "./properties-read"
+
+import type { FlatProperty, PropertyStatus } from "./flat-property"
+import type {
+  Board,
+  Instance,
+  Properties,
+  PropertyKey,
+  Theme,
+  Variant,
+  Workspace,
+} from "@seldon/core"
+import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
+import type { ControlType } from "@seldon/editor/lib/icons/icons-registry"
 
 const UNKNOWN_VALUE = "unknown"
 const UNKNOWN_DISPLAY = "Error"
 
 function facetAllowsAuthoredComputed(subPropertyPath: string): boolean {
   const catalogKey = getCatalogKeyForPropertyPath(subPropertyPath)
+
   if (!catalogKey) return false
   const schema = getPropertySchema(catalogKey)
+
   return schema?.supports.includes("computed") ?? false
 }
 
@@ -80,9 +79,11 @@ function hasCompoundSelectorCombo(
   if (!isCompoundProperty(propertyKey)) {
     return false
   }
+
   if (getCompoundSelectorFacet(propertyKey) === "kind") {
     return true
   }
+
   return hasCompoundPresetOptions(propertyKey, theme, workspace)
 }
 
@@ -102,8 +103,10 @@ function hasCompoundPresetOptions(
   }
 
   const presetSchema = getCompoundSubPropertySchema(propertyKey, "preset")
+
   if (presetSchema?.presetOptions) {
     const presetSchemaKey = `${propertyKey}Preset`
+
     if (getPresetOptions(presetSchemaKey, workspace).length > 0) {
       return true
     }
@@ -115,15 +118,15 @@ function hasCompoundPresetOptions(
 
   // Check if theme has a section for this property (e.g., theme.border)
   const section = (theme as Record<string, unknown>)[propertyKey]
+
   if (!section || typeof section !== "object") {
     return false
   }
 
   // Check if the section has any preset entries (objects with a "name" property)
   const entries = Object.entries(section)
-  return entries.some(
-    ([, v]: [string, unknown]) => v && typeof v === "object" && "name" in v,
-  )
+
+  return entries.some(([, v]: [string, unknown]) => v && typeof v === "object" && "name" in v)
 }
 
 /**
@@ -132,10 +135,7 @@ function hasCompoundPresetOptions(
  * @param propertyKey - The parent property key
  * @returns Filtered array of keys
  */
-function filterCompoundPropertyKeys(
-  keys: string[],
-  propertyKey: string,
-): string[] {
+function filterCompoundPropertyKeys(keys: string[], propertyKey: string): string[] {
   let filteredKeys = keys
 
   if (isCompoundProperty(propertyKey)) {
@@ -143,22 +143,17 @@ function filterCompoundPropertyKeys(
   }
 
   if (isShorthandProperty(propertyKey)) {
-    filteredKeys = filteredKeys.filter(
-      (key) => key !== "type" && key !== "value",
-    )
+    filteredKeys = filteredKeys.filter((key) => key !== "type" && key !== "value")
   }
 
   return filteredKeys
 }
 
-function subPropertyPathFor(
-  parentKey: string,
-  subKey: string,
-  layerIndex: number = 0,
-): string {
+function subPropertyPathFor(parentKey: string, subKey: string, layerIndex: number = 0): string {
   if (isLayeredPaintRoot(parentKey)) {
     return layeredFacetPath(parentKey as LayeredPaintKey, subKey, layerIndex)
   }
+
   return `${parentKey}.${subKey}`
 }
 
@@ -176,6 +171,7 @@ export function getShorthandSubProperties(
   theme?: Theme,
 ): FlatProperty[] {
   const subEntries: string[] = []
+
   for (const key of Object.keys(mergedProperties)) {
     if (key.startsWith(`${propertyKey}.`)) {
       subEntries.push(key.substring(propertyKey.length + 1))
@@ -184,6 +180,7 @@ export function getShorthandSubProperties(
 
   if (subEntries.length === 0) {
     const registryEntry = getPropertyRegistryEntry(propertyKey)
+
     if (registryEntry?.subProperties) {
       subEntries.push(...Object.keys(registryEntry.subProperties))
     }
@@ -193,8 +190,7 @@ export function getShorthandSubProperties(
 
   for (const subKey of subEntries) {
     const subPropertyPath = `${propertyKey}.${subKey}`
-    const subPropertyValue =
-      findInObject(mergedProperties, subPropertyPath) || EMPTY_VALUE
+    const subPropertyValue = findInObject(mergedProperties, subPropertyPath) || EMPTY_VALUE
     const subStatus = propertyStatus[subPropertyPath] || "not used"
 
     subProperties.push(
@@ -230,13 +226,10 @@ function isInvalidExactStringValue(
     return false
   }
 
-  const basePropertyName = propertyPath.includes(".")
-    ? propertyPath.split(".").pop()
-    : propertyPath
+  const basePropertyName = propertyPath.includes(".") ? propertyPath.split(".").pop() : propertyPath
 
   const isComboControl = controlType === "combo"
-  const isImageProperty =
-    basePropertyName === "source" || basePropertyName === "image"
+  const isImageProperty = basePropertyName === "source" || basePropertyName === "image"
 
   if (isComboControl || isImageProperty || !basePropertyName) {
     return false
@@ -315,12 +308,7 @@ export function createFlatProperty(
 
   if (
     !hasError &&
-    isInvalidExactStringValue(
-      propertyKey,
-      propertyValue,
-      registryEntry?.control,
-      theme,
-    )
+    isInvalidExactStringValue(propertyKey, propertyValue, registryEntry?.control, theme)
   ) {
     hasError = true
     actualValue = (propertyValue as Record<string, unknown>).value as string
@@ -328,6 +316,7 @@ export function createFlatProperty(
 
   // Determine final status
   let finalStatus: PropertyStatus = status
+
   if (hasError) {
     finalStatus = "error"
   }
@@ -388,12 +377,14 @@ function createFlatSubProperty(
 
   let actualValue = UNKNOWN_VALUE
   let formatFailed = false
+
   try {
     actualValue = coreFormatValue(subValue, theme)
   } catch {
     actualValue = UNKNOWN_DISPLAY
     formatFailed = true
   }
+
   if (!formatFailed && isInvalidExact) {
     actualValue = (subValue as Record<string, unknown>).value as string
   }
@@ -434,29 +425,19 @@ export function getSubProperties(
     rawLayerArray !== undefined
       ? rawLayerArray
       : mergedProperties !== undefined
-        ? (resolvePropertyValueForDisplay(mergedProperties, propertyKey) ??
-          propertyValue)
+        ? (resolvePropertyValueForDisplay(mergedProperties, propertyKey) ?? propertyValue)
         : propertyValue
 
   const layer = getCompoundLayerValue(compoundValue, layerIndex)
 
   const subPropertyKeys = filterCompoundPropertyKeys(
-    getCompoundPropertyStructure(
-      propertyKey,
-      layer ?? compoundValue,
-      node,
-      workspace,
-    ),
+    getCompoundPropertyStructure(propertyKey, layer ?? compoundValue, node, workspace),
     propertyKey,
   )
 
   // The compound's selector facet (`preset` or `kind`) is shown on the parent
   // row's combo, so filter it out of the child facet list to avoid a duplicate.
-  const hasSelectorCombo = hasCompoundSelectorCombo(
-    propertyKey,
-    theme,
-    workspace,
-  )
+  const hasSelectorCombo = hasCompoundSelectorCombo(propertyKey, theme, workspace)
   const selectorFacet = getCompoundSelectorFacet(propertyKey)
 
   for (const subKey of subPropertyKeys) {

@@ -9,19 +9,13 @@ import {
   layeredParentPath,
 } from "@seldon/editor/lib/properties/property-paths"
 import { formatPropertyLabel } from "@seldon/editor/lib/properties/shared-utils"
-import type {
-  Board,
-  Instance,
-  Properties,
-  Theme,
-  Variant,
-  Workspace,
-} from "@seldon/core"
 import { EMPTY_VALUE } from "@seldon/core/properties"
+import { createFlatProperty, getSubProperties } from "./flat-property-factory"
+
+import type { FlatProperty, PropertyStatus } from "./flat-property"
+import type { Board, Instance, Properties, Theme, Variant, Workspace } from "@seldon/core"
 import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
-import type { FlatProperty, PropertyStatus } from "./flat-property"
-import { createFlatProperty, getSubProperties } from "./flat-property-factory"
 
 /**
  * Emits one parent row plus facet children for every paint layer of a layered
@@ -40,33 +34,22 @@ export function flattenLayeredPaintProperty(
 ): FlatProperty[] {
   const out: FlatProperty[] = []
   const rawArray = mergedProperties[propertyKey as keyof Properties]
-  const layerCount = Array.isArray(rawArray)
-    ? rawArray.length
-    : rawArray
-      ? 1
-      : 0
+  const layerCount = Array.isArray(rawArray) ? rawArray.length : rawArray ? 1 : 0
   const count = Math.max(layerCount, 1)
-  const baseLabel =
-    getPropertyRegistryEntry(propertyKey)?.label ||
-    formatPropertyLabel(propertyKey)
+  const baseLabel = getPropertyRegistryEntry(propertyKey)?.label || formatPropertyLabel(propertyKey)
 
   for (let i = count - 1; i >= 0; i--) {
     if (i === 0) {
       const layer0 = getCompoundLayerValue(rawArray, 0) || EMPTY_VALUE
       const status = propertyStatus[propertyKey] || "unset"
-      const parent = createFlatProperty(
-        propertyKey,
-        layer0,
-        status,
-        node,
-        workspace,
-        theme,
-        state,
-      )
+      const parent = createFlatProperty(propertyKey, layer0, status, node, workspace, theme, state)
+
       parent.layerIndex = 0
+
       if (count > 1) {
         parent.label = `${baseLabel} 1`
       }
+
       out.push(parent)
       out.push(
         ...getSubProperties(
@@ -95,6 +78,7 @@ export function flattenLayeredPaintProperty(
         null,
         i,
       )
+
       parent.key = layeredParentPath(propertyKey, i)
       parent.label = `${baseLabel} ${i + 1}`
       parent.layerIndex = i

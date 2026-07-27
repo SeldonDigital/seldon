@@ -1,5 +1,5 @@
-import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 
 type WireFile = {
   path: string
@@ -10,9 +10,11 @@ type WireFile = {
 function base64ToBytes(base64: string): Uint8Array {
   const binary = atob(base64)
   const bytes = new Uint8Array(binary.length)
+
   for (let i = 0; i < binary.length; i += 1) {
     bytes[i] = binary.charCodeAt(i)
   }
+
   return bytes
 }
 
@@ -20,6 +22,7 @@ function fromWireFile(file: WireFile): FileToExport {
   if (file.encoding === "utf8") {
     return { path: file.path, content: file.content }
   }
+
   return {
     path: file.path,
     content: base64ToBytes(file.content).buffer as ArrayBuffer,
@@ -46,15 +49,19 @@ export async function runLocalExport(
 
   if (!response.ok) {
     let message = "Export failed."
+
     try {
       const data = (await response.json()) as { error?: string }
+
       if (data?.error) message = data.error
     } catch {
       // Response was not JSON; keep the default message.
     }
+
     throw new Error(message)
   }
 
   const data = (await response.json()) as { files: WireFile[] }
+
   return data.files.map(fromWireFile)
 }

@@ -1,6 +1,7 @@
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { useCallback } from "react"
+
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 /**
  * Maps font collection family property edits to workspace actions on the active
@@ -15,6 +16,7 @@ export function useFontCollectionProperties(fontCollectionId: string | null) {
       if (!fontCollectionId) return
 
       const segments = property.key.split(".")
+
       if (segments[0] !== "family" || !segments[1]) return
       const slot = segments[1]
       const variant = segments[2]
@@ -22,11 +24,13 @@ export function useFontCollectionProperties(fontCollectionId: string | null) {
       // Preset row: `family.<slot>`
       if (!variant) {
         const preset = newValue.toLowerCase()
+
         if (preset !== "all" && preset !== "none") return
         dispatch({
           type: "set_font_collection_family_preset",
           payload: { fontCollectionId, slot, preset },
         })
+
         return
       }
 

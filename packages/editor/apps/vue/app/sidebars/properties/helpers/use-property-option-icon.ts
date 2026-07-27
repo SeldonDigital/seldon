@@ -1,12 +1,12 @@
 import { resolvePropertyOptionIconBinding } from "@seldon/editor/lib/icons/property-option-icon"
-import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 import type { Theme, Workspace } from "@seldon/core"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 interface ResolverDeps {
   property: FlatProperty
-  theme?: Theme
   workspace: Workspace
+  theme?: Theme
 }
 
 /**
@@ -28,6 +28,7 @@ export function createPropertyOptionIconResolver({
       workspace,
       option: value ? { value } : undefined,
     })
+
     switch (binding.kind) {
       case "iconId":
         return binding.icon

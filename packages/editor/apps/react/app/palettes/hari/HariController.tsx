@@ -1,33 +1,29 @@
 "use client"
 
-import { type HariStatus, type HariTurn, useHari } from "@app/ai/use-ai-chat"
+import { useHari } from "@app/ai/use-ai-chat"
 import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
-import { MenuController, type MenuEntry } from "@app/menus"
+import { MenuController } from "@app/menus"
 import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
-import {
-  type SelectionScope,
-  useSelectionScope,
-} from "@app/workspace/hooks/use-selection-scope"
-import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
+import { useSelectionScope } from "@app/workspace/hooks/use-selection-scope"
 import { PanelHari } from "@seldon/components/modules/PanelHari"
-import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
-import {
-  type CSSProperties,
-  type ChangeEvent,
-  type KeyboardEvent,
-  type PointerEvent,
-  type MouseEvent as ReactMouseEvent,
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import { HariTranscript } from "./HariTranscript"
+
+import type { HariStatus, HariTurn } from "@app/ai/use-ai-chat"
+import type { MenuEntry } from "@app/menus"
+import type { SelectionScope } from "@app/workspace/hooks/use-selection-scope"
+import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
+import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
+import type {
+  CSSProperties,
+  ChangeEvent,
+  KeyboardEvent,
+  PointerEvent,
+  MouseEvent as ReactMouseEvent,
+  ReactNode,
+} from "react"
 
 import "./hari.css"
 
@@ -43,8 +39,10 @@ const ACTIVE_TOGGLE_CLASS = "sdn-state-activated"
  */
 function levelLabel(options: ThinkingMenuOption[], value: string): string {
   const option = options.find((entry) => entry.value === value)
+
   if (option) return option.label
   if (!value) return "Default"
+
   return value[0]!.toUpperCase() + value.slice(1)
 }
 
@@ -111,10 +109,10 @@ interface HariProps {
   turns: HariTurn[]
   reset: () => void
   config: AgentConfig | null
-  model?: string
-  thinkingLevel?: ThinkingLevelOption
   setModel: (model: string) => void
   setThinkingLevel: (thinkingLevel: ThinkingLevelOption) => void
+  model?: string
+  thinkingLevel?: ThinkingLevelOption
 }
 
 /**
@@ -144,14 +142,8 @@ function Hari({
 
   const scope = useSelectionScope()
 
-  const {
-    showTools,
-    toggleShowTools,
-    showOutcome,
-    toggleShowOutcome,
-    noThink,
-    toggleNoThink,
-  } = useDebugMode()
+  const { showTools, toggleShowTools, showOutcome, toggleShowOutcome, noThink, toggleNoThink } =
+    useDebugMode()
 
   const {
     x,
@@ -191,8 +183,7 @@ function Hari({
   const modelThinking = config?.thinkingByModel?.[modelValue]
   const thinkingOptions = modelThinking?.options ?? []
   // A non-thinking model has no menu, and Clamp locks the menu for the turn.
-  const thinkingDisabled =
-    controlsDisabled || noThink || thinkingOptions.length === 0
+  const thinkingDisabled = controlsDisabled || noThink || thinkingOptions.length === 0
   // The button shows the label of the active level, falling back to a titled
   // value. Clamp overrides the turn, so it shows the level Clamp resolves to for
   // the active model instead.
@@ -204,6 +195,7 @@ function Hari({
   const submit = useCallback(() => {
     if (isPending) return
     const value = draft.trim()
+
     if (!value) return
     setDraft("")
     pinnedToBottomRef.current = true
@@ -214,8 +206,10 @@ function Hari({
   // streaming only auto-scrolls when the user has not scrolled up to read back.
   const onTranscriptScroll = useCallback(() => {
     const el = transcriptRef.current
+
     if (!el) return
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+
     pinnedToBottomRef.current = distanceFromBottom < 40
   }, [])
 
@@ -223,13 +217,13 @@ function Hari({
   // user has scrolled up. Runs before paint so the content never flashes mid-scroll.
   useLayoutEffect(() => {
     const el = transcriptRef.current
+
     if (!el || !pinnedToBottomRef.current) return
     el.scrollTop = el.scrollHeight
   }, [turns])
 
   const onDraftChange = useCallback(
-    (event: ChangeEvent<HTMLTextAreaElement>) =>
-      setDraft(event.currentTarget.value),
+    (event: ChangeEvent<HTMLTextAreaElement>) => setDraft(event.currentTarget.value),
     [],
   )
 
@@ -242,26 +236,17 @@ function Hari({
     [submit],
   )
 
-  const startDrag = useCallback(
-    (event: PointerEvent) => moveControls.start(event),
-    [moveControls],
-  )
+  const startDrag = useCallback((event: PointerEvent) => moveControls.start(event), [moveControls])
 
-  const openModelMenu = useCallback(
-    (event: ReactMouseEvent<HTMLButtonElement>) => {
-      modelAnchor.current = event.currentTarget
-      setModelOpen((open) => !open)
-    },
-    [],
-  )
+  const openModelMenu = useCallback((event: ReactMouseEvent<HTMLButtonElement>) => {
+    modelAnchor.current = event.currentTarget
+    setModelOpen((open) => !open)
+  }, [])
 
-  const openThinkingMenu = useCallback(
-    (event: ReactMouseEvent<HTMLButtonElement>) => {
-      thinkingAnchor.current = event.currentTarget
-      setThinkingOpen((open) => !open)
-    },
-    [],
-  )
+  const openThinkingMenu = useCallback((event: ReactMouseEvent<HTMLButtonElement>) => {
+    thinkingAnchor.current = event.currentTarget
+    setThinkingOpen((open) => !open)
+  }, [])
 
   const closeModelMenu = useCallback(() => setModelOpen(false), [])
   const closeThinkingMenu = useCallback(() => setThinkingOpen(false), [])
@@ -284,9 +269,11 @@ function Hari({
           // Reset the level when it is not in the new model's menu, so switching
           // to a model with different thinking never leaves a stale selection.
           const next = config?.thinkingByModel?.[value]
+
           if (next && !next.options.some((o) => o.value === thinkingValue)) {
             setThinkingLevel(next.default)
           }
+
           setModelOpen(false)
         },
         selected: value === modelValue,
@@ -378,9 +365,7 @@ function Hari({
   const basisChipSlot = {}
   const basisLabelSlot = { children: SCOPE_LABELS[scope] }
   const sendSlot = { onClick: isPending ? stop : submit }
-  const sendIconSlot = isPending
-    ? { icon: "material-stop" as const }
-    : undefined
+  const sendIconSlot = isPending ? { icon: "material-stop" as const } : undefined
 
   return (
     <WindowSurface

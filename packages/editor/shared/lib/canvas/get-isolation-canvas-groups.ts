@@ -1,21 +1,10 @@
-import {
-  Board,
-  ComponentLevel,
-  ORDERED_COMPONENT_LEVELS,
-  Workspace,
-  getComponentSchema,
-  isComponentId,
-} from "@seldon/core"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
+import { ORDERED_COMPONENT_LEVELS, getComponentSchema, isComponentId } from "@seldon/core"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 import { ISOLATION_EXCLUDED_CATALOG_IDS } from "../isolation/excluded-boards"
 import { getIsolationUsage } from "../isolation/get-isolation-usage"
-import {
-  getBoardVariantRootIds,
-  getComponentKey,
-} from "../workspace/workspace-accessors"
+import { getBoardVariantRootIds, getComponentKey } from "../workspace/workspace-accessors"
+
+import type { Board, ComponentLevel, Workspace } from "@seldon/core"
 
 export interface IsolationCanvasItem {
   board: Board
@@ -39,9 +28,11 @@ function getBoardLevel(board: Board): ComponentLevel | null {
   if (isComponentBoard(board) && isComponentId(board.catalogId)) {
     return getComponentSchema(board.catalogId).level
   }
+
   if (isAuthoredBoard(board)) {
     return board.level as ComponentLevel
   }
+
   return null
 }
 
@@ -57,19 +48,14 @@ export function getIsolationCanvasGroups(
   workspace: Workspace,
   boards: Board[],
 ): IsolationCanvasGroup[] {
-  const usage = getIsolationUsage(
-    isolatedBoard,
-    isolatedVariantRootId,
-    workspace,
-  )
+  const usage = getIsolationUsage(isolatedBoard, isolatedVariantRootId, workspace)
   const isolatedKey = getComponentKey(isolatedBoard)
 
   const anchoredVariantRoot =
     isolatedVariantRootId ?? getBoardVariantRootIds(isolatedBoard)[0] ?? null
   const variantName =
-    (anchoredVariantRoot
-      ? workspace.nodes[anchoredVariantRoot]?.label
-      : null) ?? isolatedBoard.label
+    (anchoredVariantRoot ? workspace.nodes[anchoredVariantRoot]?.label : null) ??
+    isolatedBoard.label
 
   const items: IsolationCanvasItem[] = [
     {
@@ -84,13 +70,14 @@ export function getIsolationCanvasGroups(
   // objects sidebar. Usage only gates inclusion and trims each board's variants.
   for (const board of boards) {
     const key = getComponentKey(board)
+
     if (key === isolatedKey) continue
     if (ISOLATION_EXCLUDED_CATALOG_IDS.has(key)) continue
     const usedRoots = usage.get(key)
+
     if (!usedRoots) continue
-    const orderedRoots = getBoardVariantRootIds(board).filter((id) =>
-      usedRoots.has(id),
-    )
+    const orderedRoots = getBoardVariantRootIds(board).filter((id) => usedRoots.has(id))
+
     if (orderedRoots.length === 0) continue
     items.push({
       board,
@@ -101,11 +88,12 @@ export function getIsolationCanvasGroups(
   }
 
   const groups: IsolationCanvasGroup[] = []
+
   for (const level of ORDERED_COMPONENT_LEVELS) {
-    const levelItems = items.filter(
-      (item) => getBoardLevel(item.board) === level,
-    )
+    const levelItems = items.filter((item) => getBoardLevel(item.board) === level)
+
     if (levelItems.length > 0) groups.push({ level, items: levelItems })
   }
+
   return groups
 }

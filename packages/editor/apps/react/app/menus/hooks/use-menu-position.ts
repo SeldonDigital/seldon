@@ -1,12 +1,11 @@
 "use client"
 
-import {
-  type MenuPosition,
-  computeMenuPosition,
-} from "@seldon/editor/lib/menus/anchor-position"
-import { RefObject, useLayoutEffect, useState } from "react"
+import { computeMenuPosition } from "@seldon/editor/lib/menus/anchor-position"
+import { useLayoutEffect, useState } from "react"
 
-import { MenuAlign } from "../types"
+import type { MenuAlign } from "../types"
+import type { MenuPosition } from "@seldon/editor/lib/menus/anchor-position"
+import type { RefObject } from "react"
 
 export type { MenuPosition }
 
@@ -35,6 +34,7 @@ export function useMenuPosition({
 
     const update = () => {
       const element = anchorRef.current
+
       if (!element) return
       setPosition(
         computeMenuPosition(
@@ -48,6 +48,7 @@ export function useMenuPosition({
     update()
     window.addEventListener("scroll", update, true)
     window.addEventListener("resize", update)
+
     return () => {
       window.removeEventListener("scroll", update, true)
       window.removeEventListener("resize", update)

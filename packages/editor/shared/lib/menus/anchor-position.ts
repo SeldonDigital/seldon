@@ -91,17 +91,17 @@ export function computeListPosition(
   const w = width ?? rect.width
 
   let positionAbove: boolean
+
   if (options?.minSpaceBelow !== undefined) {
     const spaceBelow = viewport.height - rect.bottom
+
     positionAbove = spaceBelow < options.minSpaceBelow && rect.top > spaceBelow
   } else {
     positionAbove = rect.top >= viewport.height * 0.6
   }
 
-  const x =
-    align === "end" && width !== undefined
-      ? Math.max(8, rect.right - width)
-      : rect.left
+  const x = align === "end" && width !== undefined ? Math.max(8, rect.right - width) : rect.left
   const y = positionAbove ? rect.top - gap : rect.top + rect.height + gap
+
   return { x, y, w, positionAbove }
 }

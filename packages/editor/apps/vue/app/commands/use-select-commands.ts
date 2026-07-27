@@ -28,6 +28,7 @@ export function useSelectCommands() {
 
   const targets = computed(() => {
     const id = currentId.value
+
     if (!id) {
       return {
         original: null,
@@ -38,7 +39,9 @@ export function useSelectCommands() {
         previousSibling: null,
       }
     }
+
     const ws = workspace.value
+
     return {
       original: resolveOriginalNodeId(ws, id),
       source: resolveSourceNodeId(ws, id),
@@ -71,8 +74,6 @@ export function useSelectCommands() {
     canSelectParent: computed(() => canMove(targets.value.parent)),
     canSelectFirstChild: computed(() => canMove(targets.value.firstChild)),
     canSelectNextSibling: computed(() => canMove(targets.value.nextSibling)),
-    canSelectPreviousSibling: computed(() =>
-      canMove(targets.value.previousSibling),
-    ),
+    canSelectPreviousSibling: computed(() => canMove(targets.value.previousSibling)),
   }
 }

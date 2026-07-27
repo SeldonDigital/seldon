@@ -15,12 +15,13 @@ import { ListboxOption } from "@seldon/components/elements/ListboxOption"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Listbox } from "@seldon/components/parts/Listbox"
 import { Hr } from "@seldon/components/primitives/Hr"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
-import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
+import { Fragment } from "react"
 import { createPortal } from "react-dom"
 
-import { ComboboxOptionItem, OptionIconRender } from "./types"
+import type { ComboboxOptionItem, OptionIconRender } from "./types"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { CSSProperties, MouseEvent, ReactNode } from "react"
 
 interface Position {
   x: number
@@ -37,10 +38,10 @@ interface ComboboxListboxProps {
   filteredOptions: ComboboxOptionItem[] | ComboboxOptionItem[][]
   hasSections: boolean
   value: string
-  highlightedValue?: string
   resolveIcon: (option?: { value: string; name: string }) => OptionIconRender
   onSelect: (value: string) => void
   onHighlight: (value: string | undefined) => void
+  highlightedValue?: string
 }
 
 // Keyboard-highlighted option. The class hooks the workspace `Activated` state
@@ -76,6 +77,7 @@ export function ComboboxListbox({
 }: ComboboxListboxProps) {
   const { chromeTheme } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
+
   if (!open) {
     return null
   }
@@ -105,6 +107,7 @@ export function ComboboxListbox({
       event.preventDefault()
       onSelect(option.value)
     }
+
     const handleMouseEnter = () => {
       if (!option.disabled) onHighlight(option.value)
     }
@@ -124,13 +127,9 @@ export function ComboboxListbox({
       // renders the label; `optionLabel`/`optionIcon` refs alone would not.
       const iconSlot = { icon: icon.icon as IconProps["icon"] }
       const textLabelSlot = { children: option.name }
+
       return (
-        <ListboxOption
-          key={option.value}
-          {...common}
-          icon={iconSlot}
-          textLabel={textLabelSlot}
-        />
+        <ListboxOption key={option.value} {...common} icon={iconSlot} textLabel={textLabelSlot} />
       )
     }
 
@@ -146,6 +145,7 @@ export function ComboboxListbox({
     ? (filteredOptions as ComboboxOptionItem[][]).map((group, index) => {
         const divider = index > 0 ? <Hr /> : null
         const options = group.map(renderOption)
+
         return (
           <Fragment key={index}>
             {divider}
@@ -156,11 +156,7 @@ export function ComboboxListbox({
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
-    <Frame
-      data-theme={chromeTheme}
-      data-mode={resolvedMode}
-      style={themeScopeStyle}
-    >
+    <Frame data-theme={chromeTheme} data-mode={resolvedMode} style={themeScopeStyle}>
       <Frame onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}

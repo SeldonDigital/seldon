@@ -1,15 +1,15 @@
 import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 import { useMoveObjects } from "@app/workspace/hooks/use-move-objects"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  ElementDragPayload,
-  monitorForElements,
-} from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import type { DropTargetRecord } from "@atlaskit/pragmatic-drag-and-drop/types"
-import { Placement } from "@seldon/editor/lib/types"
+import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { useEffect } from "react"
 
-import { Instance, Variant, invariant } from "@seldon/core"
+import { invariant } from "@seldon/core"
+
+import type { ElementDragPayload } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
+import type { DropTargetRecord } from "@atlaskit/pragmatic-drag-and-drop/types"
+import type { Instance, Variant } from "@seldon/core"
+import type { Placement } from "@seldon/editor/lib/types"
 
 /**
  * How long the hovered target must stay settled before the canvas preview is
@@ -31,12 +31,8 @@ const PREVIEW_SETTLE_MS = 150
  * outside a target discards the preview.
  */
 export function useDraggableMonitor() {
-  const {
-    moveNodeNextTo,
-    moveNodeInside,
-    duplicateNodeInside,
-    duplicateNodeNextTo,
-  } = useMoveObjects()
+  const { moveNodeNextTo, moveNodeInside, duplicateNodeInside, duplicateNodeNextTo } =
+    useMoveObjects()
   const { startPreviewSession, rollbackPreview } = useWorkspace()
   const setIsDragging = useDragStateStore((state) => state.setIsDragging)
 
@@ -91,8 +87,10 @@ export function useDraggableMonitor() {
               })
             }
           }
+
           break
         }
+
         default: {
           throw new Error(`Invalid action: ${action}`)
         }
@@ -100,8 +98,7 @@ export function useDraggableMonitor() {
     }
 
     const cleanupMonitor = monitorForElements({
-      canMonitor: ({ source }) =>
-        source.data.action === "object-panel-move-node",
+      canMonitor: ({ source }) => source.data.action === "object-panel-move-node",
 
       onDragStart() {
         setIsDragging(true)
@@ -110,12 +107,14 @@ export function useDraggableMonitor() {
 
       onDropTargetChange({ source, location }) {
         const destination = location.current.dropTargets[0]
+
         clearSettleTimer()
 
         // No target under the cursor: drop the preview right away so the canvas
         // returns to the committed order without waiting on the settle timer.
         if (!destination) {
           rollbackPreview()
+
           return
         }
 
@@ -140,6 +139,7 @@ export function useDraggableMonitor() {
         if (destination) {
           applyMove(destination, source, false)
         }
+
         rollbackPreview()
         setIsDragging(false)
       },

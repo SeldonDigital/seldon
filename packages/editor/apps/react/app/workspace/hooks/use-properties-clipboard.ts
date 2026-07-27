@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-import { Properties } from "@seldon/core"
+import type { Properties } from "@seldon/core"
 
 type PropertiesClipboardState = {
   properties: Properties | null
@@ -14,10 +14,8 @@ type PropertiesClipboardState = {
  * applies the compatible subset onto the target node through
  * `paste_node_properties`.
  */
-export const usePropertiesClipboard = create<PropertiesClipboardState>()(
-  (set) => ({
-    properties: null,
-    setProperties: (properties) => set({ properties }),
-    clearProperties: () => set({ properties: null }),
-  }),
-)
+export const usePropertiesClipboard = create<PropertiesClipboardState>()((set) => ({
+  properties: null,
+  setProperties: (properties) => set({ properties }),
+  clearProperties: () => set({ properties: null }),
+}))

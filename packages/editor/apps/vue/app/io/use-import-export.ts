@@ -43,36 +43,42 @@ export function useImportExport() {
   const { selectedItem, selectedNode } = useSelection()
 
   function exportWorkspaceToFile(): void {
-    const name = window.prompt(
-      "Enter a name for the exported file",
-      "workspace",
-    )
+    const name = window.prompt("Enter a name for the exported file", "workspace")
+
     if (name === null) return
     const ordered = orderWorkspaceNodeKeys(workspace.value)
     const blob = new Blob([JSON.stringify(ordered, null, 2)], {
       type: "application/json",
     })
+
     triggerDownload(blob, `${slugify(name)}.json`)
   }
 
   async function exportSelectionToClipboard(): Promise<void> {
     const selection = selectedItem.value
+
     if (!selection) {
       toast.addToast("Nothing selected")
+
       return
     }
+
     await navigator.clipboard.writeText(JSON.stringify(selection, null, 2))
     toast.addToast("Selection copied to clipboard")
   }
 
   async function copySchemaJsonToClipboard(): Promise<void> {
     const node = selectedNode.value
+
     if (!node) {
       toast.addToast("Select a default or variant to copy schema JSON")
+
       return
     }
+
     if (node.type === "instance") {
       toast.addToast("Nested children cannot be copied as schema JSON")
+
       return
     }
 
@@ -83,6 +89,7 @@ export function useImportExport() {
 
     if (!snippet) {
       toast.addToast("Could not resolve a catalog component for the selection")
+
       return
     }
 
@@ -94,6 +101,7 @@ export function useImportExport() {
     try {
       const text = await file.text()
       const parsed = parseWorkspace(text)
+
       dispatch({
         type: "set_workspace",
         payload: { workspace: parsed },
@@ -106,19 +114,25 @@ export function useImportExport() {
 
   async function importWeb(): Promise<void> {
     const url = window.prompt("Enter the website URL to import")?.trim()
+
     if (!url) return
+
     try {
       const directory = await pickExportDirectory()
+
       if (!directory) {
         toast.addToast("Folder picker is not supported in this browser")
+
         return
       }
+
       exportStatus.setExporting(true)
       const { files, summary } = await runImportWeb(url)
       const reportFiles = files.map((file) => ({
         path: `Components Report/${file.path}`,
         content: file.content,
       }))
+
       await writeExportToDirectory(directory, reportFiles)
       toast.addToast(
         `Imported ${summary.matchedCount} matched, ${summary.unmatchedCount} new schemas (${summary.classifiedCount} named by AI)`,

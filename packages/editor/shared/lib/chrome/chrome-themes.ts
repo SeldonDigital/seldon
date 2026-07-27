@@ -60,6 +60,7 @@ export function getChromeThemes(slugs: string[]): ChromeTheme[] {
     .sort((a, b) => {
       if (a.slug === DEFAULT_CHROME_THEME) return -1
       if (b.slug === DEFAULT_CHROME_THEME) return 1
+
       return a.label.localeCompare(b.label)
     })
 }

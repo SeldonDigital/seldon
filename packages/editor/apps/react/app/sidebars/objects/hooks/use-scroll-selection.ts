@@ -16,12 +16,9 @@ export function useScrollSelection() {
   const { autoScrollToSelection } = useEditorConfig()
 
   useEffect(() => {
-    if (
-      !(selectedBoardId || selectedNodeId) ||
-      !autoScrollToSelection ||
-      !scrollerRef.current
-    )
+    if (!(selectedBoardId || selectedNodeId) || !autoScrollToSelection || !scrollerRef.current) {
       return
+    }
 
     const selector = selectedBoardId
       ? `[data-componentid="${selectedBoardId}"]`

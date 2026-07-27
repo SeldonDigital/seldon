@@ -3,9 +3,10 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
 
-import { Board, Instance, Variant } from "@seldon/core"
-import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+
+import type { Board, Instance, Variant } from "@seldon/core"
+import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 
 /**
  * Theme-assignment command. Boards set their component theme; nodes set their
@@ -21,8 +22,7 @@ export function useSetObjectTheme() {
         dispatch({
           type: "set_component_theme",
           payload: {
-            boardKey:
-              selectedBoardId ?? resolveComponentKey(subject, workspace),
+            boardKey: selectedBoardId ?? resolveComponentKey(subject, workspace),
             theme: themeId || "seldon",
           },
         })

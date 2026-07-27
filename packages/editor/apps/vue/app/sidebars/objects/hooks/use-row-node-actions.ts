@@ -1,4 +1,3 @@
-import type { MenuEntry } from "@app/menus/types"
 import { useToastStore } from "@app/toaster/toast-store"
 import { usePropertiesClipboardStore } from "@app/workspace/properties-clipboard-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
@@ -11,9 +10,8 @@ import {
 import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 
-import { InstanceId, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
@@ -27,7 +25,11 @@ import {
   resolveSourceNodeId,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { MenuEntry } from "@app/menus/types"
+import type { InstanceId, VariantId } from "@seldon/core"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
+import type { ComputedRef } from "vue"
 
 interface RowNodeActionsInput {
   node: () => EntryNode
@@ -42,9 +44,7 @@ interface RowNodeActionsInput {
  * the node resolves through its template chain. Mirrors the React
  * `useRowNodeActions`, dispatching the same core actions.
  */
-export function useRowNodeActions(
-  input: RowNodeActionsInput,
-): ComputedRef<MenuEntry[]> {
+export function useRowNodeActions(input: RowNodeActionsInput): ComputedRef<MenuEntry[]> {
   const dispatch = useDispatch()
   const { selectNode } = useSelection()
   const clipboard = usePropertiesClipboardStore()
@@ -71,19 +71,12 @@ export function useRowNodeActions(
       !!catalogComponentId &&
       isComponentId(catalogComponentId) &&
       (getComponentSchema(catalogComponentId).variants ?? []).some(
-        (variant) =>
-          componentBoardSchemaVariantNodeId(catalogComponentId, variant.id) ===
-          node.id,
+        (variant) => componentBoardSchemaVariantNodeId(catalogComponentId, variant.id) === node.id,
       )
 
-    const isInstanceNode =
-      nodeExistsInWorkspace && typeCheckingService.isInstance(node)
-    const instanceSourceId = isInstanceNode
-      ? resolveSourceNodeId(workspace, node.id)
-      : null
-    const instanceOriginalId = isInstanceNode
-      ? resolveOriginalNodeId(workspace, node.id)
-      : null
+    const isInstanceNode = nodeExistsInWorkspace && typeCheckingService.isInstance(node)
+    const instanceSourceId = isInstanceNode ? resolveSourceNodeId(workspace, node.id) : null
+    const instanceOriginalId = isInstanceNode ? resolveOriginalNodeId(workspace, node.id) : null
     const canResetToSource = !!instanceSourceId && instanceSourceId !== node.id
     const canResetToOriginal =
       !!instanceOriginalId &&
@@ -105,24 +98,28 @@ export function useRowNodeActions(
         payload: { defaultVariantRootId: node.id as VariantId },
       })
     }
+
     function handleResetVariantToCatalog(): void {
       dispatch({
         type: "reset_variant_to_catalog",
         payload: { variantRootId: node.id as VariantId },
       })
     }
+
     function handleResetVariantInstances(): void {
       dispatch({
         type: "reset_variant_instances",
         payload: { variantRootId: node.id as VariantId },
       })
     }
+
     function handleResetInstanceToSource(): void {
       dispatch({
         type: "reset_instance_to_source",
         payload: { instanceId: node.id as InstanceId },
       })
     }
+
     function handleResetInstanceToOriginal(): void {
       dispatch({
         type: "reset_instance_to_original",
@@ -139,6 +136,7 @@ export function useRowNodeActions(
           testId: `object-panel-node-${node.id}-reset-to-catalog`,
         })
       }
+
       return buildResetMenuEntry({
         id: "reset-to-catalog",
         label: "Reset to Catalog",
@@ -177,33 +175,40 @@ export function useRowNodeActions(
     async function handleCopyJson(): Promise<void> {
       if (typeCheckingService.isInstance(node)) {
         toast.addToast("Nested children cannot be copied as schema JSON")
+
         return
       }
+
       const snippet = typeCheckingService.isDefaultVariant(node)
         ? buildDefaultSnippet(node, workspace)
         : buildVariantSnippet(node, workspace)
+
       if (!snippet) {
-        toast.addToast(
-          "Could not resolve a catalog component for the selection",
-        )
+        toast.addToast("Could not resolve a catalog component for the selection")
+
         return
       }
+
       await navigator.clipboard.writeText(serializeSchemaSnippet(snippet))
       toast.addToast("Schema JSON copied to clipboard")
     }
 
     function handleCopyProperties(): void {
       const effective = coreGetEffectiveProperties(node.id, workspace)
+
       clipboard.setProperties(structuredClone(effective))
       toast.addToast("Properties copied")
     }
 
     function handlePasteProperties(): void {
       const properties = clipboard.properties
+
       if (!properties) {
         toast.addToast("No properties to paste")
+
         return
       }
+
       dispatch({
         type: "paste_node_properties",
         payload: {
@@ -215,18 +220,21 @@ export function useRowNodeActions(
 
     function handleDelete(): void {
       const isVariant = typeCheckingService.isVariant(node)
+
       if (isVariant && isVariantInUse(node.id, workspace)) {
         const confirmed = window.confirm(
           "This variant is used in other components. Deleting it will also remove it from those components. Delete anyway?",
         )
+
         if (!confirmed) return
       }
+
       const subject = nodeRetrievalService.getNode(node.id, workspace)
       const adjacentId =
-        nodeRelationshipService.findAdjacent(subject, "before", workspace)
-          ?.id ??
+        nodeRelationshipService.findAdjacent(subject, "before", workspace)?.id ??
         nodeRelationshipService.findAdjacent(subject, "after", workspace)?.id ??
         null
+
       if (isVariant) {
         dispatch({
           type: "remove_variant",
@@ -238,6 +246,7 @@ export function useRowNodeActions(
           payload: { instanceId: node.id as InstanceId },
         })
       }
+
       selectNode(adjacentId as VariantId | InstanceId | null)
     }
 
@@ -319,9 +328,7 @@ export function useRowNodeActions(
       const entries: MenuEntry[] = [
         {
           id: "duplicate",
-          label: isDefault
-            ? `Duplicate ${node.label} Default`
-            : `Duplicate ${node.label}`,
+          label: isDefault ? `Duplicate ${node.label} Default` : `Duplicate ${node.label}`,
           onSelect: handleDuplicate,
           testId: `object-panel-node-${node.id}-duplicate`,
         },
@@ -370,6 +377,7 @@ export function useRowNodeActions(
       if (!isAuthored) {
         entries.push(buildVariantResetAction())
       }
+
       return entries
     }
 

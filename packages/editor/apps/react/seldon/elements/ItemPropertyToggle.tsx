@@ -10,20 +10,23 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { LiHTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import {
-  FormControlCombobox,
-  FormControlComboboxProps,
-} from "../elements/FormControlCombobox"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { FormControlCombobox } from "../elements/FormControlCombobox"
+import { Frame } from "../frames/Frame"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
-import { ToggleSwitch, ToggleSwitchProps } from "../primitives/ToggleSwitch"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
+import { ToggleSwitch } from "../primitives/ToggleSwitch"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { ToggleSwitchProps } from "../primitives/ToggleSwitch"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemPropertyToggleProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -76,10 +79,7 @@ export function ItemPropertyToggle({
   seldonRefs,
   ...props
 }: ItemPropertyToggleProps) {
-  const itemPropertyToggleClassName = combineClassNames(
-    "sdn-item-property",
-    className,
-  )
+  const itemPropertyToggleClassName = combineClassNames("sdn-item-property", className)
   const buttonIconicProps = applyRef(
     seldonRefs,
     buttonIconic === null
@@ -87,10 +87,7 @@ export function ItemPropertyToggle({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -153,10 +150,7 @@ export function ItemPropertyToggle({
       : {
           ...sdn.toggleSwitch,
           ...toggleSwitch,
-          className: combineClassNames(
-            sdn.toggleSwitch?.className,
-            toggleSwitch?.className,
-          ),
+          className: combineClassNames(sdn.toggleSwitch?.className, toggleSwitch?.className),
         },
   )
   const buttonIconic2Props = applyRef(
@@ -166,10 +160,7 @@ export function ItemPropertyToggle({
       : {
           ...sdn.buttonIconic2,
           ...buttonIconic2,
-          className: combineClassNames(
-            sdn.buttonIconic2?.className,
-            buttonIconic2?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic2?.className, buttonIconic2?.className),
         },
   )
   const icon3Props = applyRef(
@@ -184,11 +175,7 @@ export function ItemPropertyToggle({
   )
 
   return (
-    <HTMLLi
-      className={itemPropertyToggleClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLLi className={itemPropertyToggleClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -201,9 +188,7 @@ export function ItemPropertyToggle({
               {input && inputProps && <Input {...inputProps} />}
               <Frame {...frameProps}>
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {toggleSwitch && toggleSwitchProps && (
-                  <ToggleSwitch {...toggleSwitchProps} />
-                )}
+                {toggleSwitch && toggleSwitchProps && <ToggleSwitch {...toggleSwitchProps} />}
               </Frame>
             </FormControlCombobox>
           )}

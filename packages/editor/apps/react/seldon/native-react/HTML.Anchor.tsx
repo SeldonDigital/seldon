@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { AnchorHTMLAttributes } from "react"
+import type { AnchorHTMLAttributes } from "react"
 
 export const HTMLAnchor = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
   return <a {...props} />

@@ -1,42 +1,24 @@
-import {
-  isAiLoggingEnabled,
-  useDebugStore,
-} from "@app/editor/hooks/use-debug-mode"
+import { isAiLoggingEnabled, useDebugStore } from "@app/editor/hooks/use-debug-mode"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useDispatch } from "@app/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace } from "@app/workspace/hooks/use-history"
 import { useStore as useSelectionStore } from "@app/workspace/hooks/use-selection"
-import {
-  getResourceTargetId,
-  getSelectionScope,
-} from "@app/workspace/hooks/use-selection-scope"
-import type {
-  ActionRepair,
-  AgentStreamEvent,
-  AgentToolCall,
-  ThinkingLevelOption,
-} from "@seldon/ai"
-import {
-  type RejectedAction,
-  buildTurnReport,
-  findActiveBoardKey,
-} from "@seldon/editor/lib/ai/apply-report"
+import { getResourceTargetId, getSelectionScope } from "@app/workspace/hooks/use-selection-scope"
+import { buildTurnReport, findActiveBoardKey } from "@seldon/editor/lib/ai/apply-report"
 import { describeChanges } from "@seldon/editor/lib/ai/change-summary"
 import { checkTurnIntegrity } from "@seldon/editor/lib/ai/check-turn-integrity"
 import { logAiTurn, logWarm } from "@seldon/editor/lib/ai/log-turn"
-import {
-  type AgentConfig,
-  getAgentConfig,
-  runAgentChat,
-  warmAgent,
-} from "@seldon/editor/lib/ai/run-agent-chat"
+import { getAgentConfig, runAgentChat, warmAgent } from "@seldon/editor/lib/ai/run-agent-chat"
 import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
 import { useCallback } from "react"
 import { create } from "zustand"
 
+import type { ActionRepair, AgentStreamEvent, AgentToolCall, ThinkingLevelOption } from "@seldon/ai"
 import type { BoardKey } from "@seldon/core/workspace/types"
+import type { RejectedAction } from "@seldon/editor/lib/ai/apply-report"
+import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
 
 export type AiChatRole = "user" | "assistant"
 
@@ -91,9 +73,6 @@ interface AiChatState {
   error: string | null
   /** Session-config choices from the agent, loaded when the panel opens. */
   config: AgentConfig | null
-  /** Selected model and thinking level for the next turn. */
-  model?: string
-  thinkingLevel?: ThinkingLevelOption
   startTurn: (prompt: string) => string
   updateTurn: (id: string, patch: Partial<HariTurn>) => void
   mutateTurn: (id: string, update: (turn: HariTurn) => HariTurn) => void
@@ -103,6 +82,9 @@ interface AiChatState {
   setModel: (model: string) => void
   setThinkingLevel: (thinkingLevel: ThinkingLevelOption) => void
   reset: () => void
+  /** Selected model and thinking level for the next turn. */
+  model?: string
+  thinkingLevel?: ThinkingLevelOption
 }
 
 let turnSequence = 0
@@ -114,18 +96,18 @@ const useStore = create<AiChatState>((set) => ({
   config: null,
   startTurn: (prompt) => {
     const id = `turn-${(turnSequence += 1)}`
+
     set((state) => ({
       turns: [...state.turns, { id, prompt, status: "pending" }],
       status: "pending",
       error: null,
     }))
+
     return id
   },
   updateTurn: (id, patch) =>
     set((state) => ({
-      turns: state.turns.map((turn) =>
-        turn.id === id ? { ...turn, ...patch } : turn,
-      ),
+      turns: state.turns.map((turn) => (turn.id === id ? { ...turn, ...patch } : turn)),
     })),
   mutateTurn: (id, update) =>
     set((state) => ({
@@ -160,6 +142,7 @@ export function resetChat(): void {
  */
 function applyTurnEvent(turnId: string, event: AgentStreamEvent): void {
   const { mutateTurn } = useStore.getState()
+
   switch (event.type) {
     case "thinking":
       mutateTurn(turnId, (turn) => ({
@@ -186,7 +169,9 @@ function applyTurnEvent(turnId: string, event: AgentStreamEvent): void {
       mutateTurn(turnId, (turn) => {
         const toolCalls = [...(turn.toolCalls ?? [])]
         const last = toolCalls[toolCalls.length - 1]
+
         if (last) toolCalls[toolCalls.length - 1] = { ...last, ok: event.ok }
+
         return { ...turn, toolCalls }
       })
       break
@@ -196,10 +181,12 @@ function applyTurnEvent(turnId: string, event: AgentStreamEvent): void {
 /** Flattens completed turns into the role/content history the agent expects. */
 function buildHistory(turns: HariTurn[]): AiChatMessage[] {
   const history: AiChatMessage[] = []
+
   for (const turn of turns) {
     history.push({ role: "user", content: turn.prompt })
     if (turn.reply) history.push({ role: "assistant", content: turn.reply })
   }
+
   return history
 }
 
@@ -233,8 +220,7 @@ export function useHari() {
   const { activePanel, openPanel, closePanel } = usePanel()
   const dispatch = useDispatch()
   const { activeBoard } = useActiveBoard()
-  const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
-    useEditorConfig()
+  const { isolatedView, isolatedBoardKey, isolatedVariantRootId } = useEditorConfig()
 
   const turns = useStore((state) => state.turns)
   const status = useStore((state) => state.status)
@@ -243,6 +229,7 @@ export function useHari() {
   const send = useCallback(
     async (rawMessage: string) => {
       const message = rawMessage.trim()
+
       if (!message) return
 
       const store = useStore.getState()
@@ -250,20 +237,18 @@ export function useHari() {
       const { model, thinkingLevel } = store
       // The turn trusts the model's discovered capability over the server's
       // name check, so a newly installed thinking model reasons end to end.
-      const mode = model
-        ? store.config?.thinkingByModel?.[model]?.mode
-        : undefined
+      const mode = model ? store.config?.thinkingByModel?.[model]?.mode : undefined
       const thinkingCapable = mode === undefined ? undefined : mode !== "none"
       const turnId = store.startTurn(message)
 
       const controller = new AbortController()
+
       activeController = controller
 
       try {
         const current = getCurrentWorkspace()
         const activeBoardKey = findActiveBoardKey(current, activeBoard)
-        const { selectedNodeId, selectedNodeRootId, selectedBoardId } =
-          useSelectionStore.getState()
+        const { selectedNodeId, selectedNodeRootId, selectedBoardId } = useSelectionStore.getState()
         const scope = getSelectionScope(current)
         const resourceTargetId = getResourceTargetId(current)
         // Forward Isolation Mode only when it is on and has captured a board, so
@@ -277,36 +262,32 @@ export function useHari() {
             : undefined
         const noThink = useDebugStore.getState().noThink
 
-        const { actions, workspace, reply, ineffective, rejected, debug } =
-          await runAgentChat(
-            {
-              workspace: current,
-              message,
-              history,
-              activeBoardKey,
-              selectedNodeId: selectedNodeId ?? undefined,
-              selectedNodeRootId: selectedNodeRootId ?? undefined,
-              selectedBoardId: selectedBoardId ?? undefined,
-              scope,
-              isolation,
-              resourceTargetId,
-              model,
-              thinkingLevel,
-              thinkingCapable,
-              noThink,
-            },
-            (event) => applyTurnEvent(turnId, event),
-            controller.signal,
-          )
-
-        const report = buildTurnReport(
-          workspace,
-          actions,
-          ineffective,
-          rejected,
+        const { actions, workspace, reply, ineffective, rejected, debug } = await runAgentChat(
+          {
+            workspace: current,
+            message,
+            history,
+            activeBoardKey,
+            selectedNodeId: selectedNodeId ?? undefined,
+            selectedNodeRootId: selectedNodeRootId ?? undefined,
+            selectedBoardId: selectedBoardId ?? undefined,
+            scope,
+            isolation,
+            resourceTargetId,
+            model,
+            thinkingLevel,
+            thinkingCapable,
+            noThink,
+          },
+          (event) => applyTurnEvent(turnId, event),
+          controller.signal,
         )
-        if (isAiLoggingEnabled())
+
+        const report = buildTurnReport(workspace, actions, ineffective, rejected)
+
+        if (isAiLoggingEnabled()) {
           logAiTurn(message, debug, actions, report, current, activeBoardKey)
+        }
 
         // Records an error turn and stops. Used when the turn built a workspace
         // we refuse to adopt, so a bad turn surfaces plainly and never lands.
@@ -330,12 +311,13 @@ export function useHari() {
         // throws on a broken workspace. Either failure keeps the current state.
         if (report.applied.length > 0) {
           const integrity = checkTurnIntegrity(current, workspace, actions)
+
           if (!integrity.ok) {
-            failTurn(
-              `Change discarded to protect the workspace: ${integrity.reason}.`,
-            )
+            failTurn(`Change discarded to protect the workspace: ${integrity.reason}.`)
+
             return
           }
+
           try {
             dispatch({ type: "set_workspace", payload: { workspace } })
           } catch (caught) {
@@ -344,6 +326,7 @@ export function useHari() {
                 ? `Change rejected by the workspace: ${caught.message}`
                 : "The workspace change was rejected.",
             )
+
             return
           }
         }
@@ -356,6 +339,7 @@ export function useHari() {
               ? "ineffective"
               : "none"
         const warnings = collectVocabularyWarnings(current, actions)
+
         useStore.getState().updateTurn(turnId, {
           thinking: debug.thinking,
           thinkingMs: debug.thinkingMs,
@@ -374,26 +358,20 @@ export function useHari() {
         if (isAbortError(caught)) {
           useStore.getState().updateTurn(turnId, { status: "stopped" })
           useStore.getState().setStatus("idle")
+
           return
         }
-        const messageText =
-          caught instanceof Error ? caught.message : "Agent request failed."
-        useStore
-          .getState()
-          .updateTurn(turnId, { error: messageText, status: "error" })
+
+        const messageText = caught instanceof Error ? caught.message : "Agent request failed."
+
+        useStore.getState().updateTurn(turnId, { error: messageText, status: "error" })
         useStore.getState().setStatus("error")
         useStore.getState().setError(messageText)
       } finally {
         if (activeController === controller) activeController = null
       }
     },
-    [
-      activeBoard,
-      dispatch,
-      isolatedView,
-      isolatedBoardKey,
-      isolatedVariantRootId,
-    ],
+    [activeBoard, dispatch, isolatedView, isolatedBoardKey, isolatedVariantRootId],
   )
 
   const stop = useCallback(() => {
@@ -405,9 +383,11 @@ export function useHari() {
     warmInFlight = (async () => {
       try {
         const config = await getAgentConfig()
+
         if (config) useStore.getState().setConfig(config)
         const { model } = useStore.getState()
         const { metrics } = await warmAgent({ model })
+
         if (isAiLoggingEnabled()) logWarm(metrics)
       } catch {
         // Warm-up is best-effort; a failure just means the first turn loads cold.
@@ -415,6 +395,7 @@ export function useHari() {
         warmInFlight = null
       }
     })()
+
     return warmInFlight
   }, [])
 

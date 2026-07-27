@@ -1,13 +1,11 @@
 import { type Workspace } from "@seldon/core"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
+import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
+import { canMoveInstance } from "@seldon/core/workspace/services/nodes/node-move-navigation.service"
+
 import type { Board } from "@seldon/core/workspace/model/components"
 import type { EntryNode } from "@seldon/core/workspace/model/entry-node"
-import {
-  nodeRelationshipService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import { canMoveInstance } from "@seldon/core/workspace/services/nodes/node-move-navigation.service"
 
 export type MoveDirection = "forward" | "backward" | "front" | "back"
 
@@ -69,6 +67,7 @@ export function getVariantMoveIndex(
   if (newIndex < 1 || newIndex > lastIndex || newIndex === currentIndex) {
     return null
   }
+
   return newIndex
 }
 
@@ -88,6 +87,7 @@ export function getMoveCapabilities(
     const count = Object.keys(workspace.boards).length
     const notFirst = order > 0
     const notLast = order < count - 1
+
     return {
       forward: notFirst,
       backward: notLast,
@@ -107,15 +107,14 @@ export function getMoveCapabilities(
 
   if (typeCheckingService.isVariant(selection)) {
     if (typeCheckingService.isDefaultVariant(selection)) return NO_MOVE
-    const board = nodeRelationshipService.findBoardForVariant(
-      selection,
-      workspace,
-    )
+    const board = nodeRelationshipService.findBoardForVariant(selection, workspace)
+
     if (!board) return NO_MOVE
     const variantRootIds = getBoardVariantRootIds(board)
     const index = variantRootIds.indexOf(selection.id)
     const notFirst = index > 1
     const notLast = index >= 1 && index < variantRootIds.length - 1
+
     return {
       forward: notFirst,
       backward: notLast,

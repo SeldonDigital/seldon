@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { BlockquoteHTMLAttributes } from "react"
-
 import { HTMLBlockquote } from "../native-react/HTML.Blockquote"
 import { combineClassNames } from "../utils/class-name"
+
+import type { BlockquoteHTMLAttributes } from "react"
 
 export interface BlockquoteProps extends BlockquoteHTMLAttributes<HTMLQuoteElement> {
   className?: string
@@ -35,22 +35,14 @@ export interface BlockquoteProps extends BlockquoteHTMLAttributes<HTMLQuoteEleme
  * />
  * ```
  *****/
-export function Blockquote({
-  className = "",
-  children = sdn.children,
-  ...props
-}: BlockquoteProps) {
+export function Blockquote({ className = "", children = sdn.children, ...props }: BlockquoteProps) {
   const blockquoteClassName = combineClassNames("sdn-blockquote", className)
 
   //
   // React JSX component with merged default and custom properties
   //
   return (
-    <HTMLBlockquote
-      className={blockquoteClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLBlockquote className={blockquoteClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children}
     </HTMLBlockquote>
   )

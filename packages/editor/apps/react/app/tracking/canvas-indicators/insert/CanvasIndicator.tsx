@@ -5,19 +5,17 @@ import {
   getHtmlElementByBoardId,
   getHtmlElementByNodeId,
 } from "@seldon/editor/lib/canvas/dom/canvas-elements"
-import { Placement } from "@seldon/editor/lib/types"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
-import { CSSProperties } from "react"
 
-import { ComponentId } from "@seldon/core/components/constants"
-import { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
-import {
-  nodeRetrievalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
+import { nodeRetrievalService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
+
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
+import type { Placement } from "@seldon/editor/lib/types"
+import type { CSSProperties } from "react"
 
 type CanvasIndicatorProps = {
   placement: Placement
@@ -41,8 +39,7 @@ export function CanvasIndicator({
   const isBoardObject = typeCheckingService.isBoard(object)
 
   const canHaveChildren =
-    !isBoardObject &&
-    canNodeAcceptChildren(object as Variant | Instance, workspace)
+    !isBoardObject && canNodeAcceptChildren(object as Variant | Instance, workspace)
 
   if (!canHaveChildren && !typeCheckingService.isBoard(object)) return null
 

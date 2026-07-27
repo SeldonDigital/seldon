@@ -1,17 +1,18 @@
 import { Frame } from "@seldon/components/frames/Frame"
 import { Input } from "@seldon/components/primitives/Input"
-import { CSSProperties, ChangeEvent, DragEvent, ReactNode, Ref } from "react"
+
+import type { CSSProperties, ChangeEvent, DragEvent, ReactNode, Ref } from "react"
 
 interface DropzoneSurfaceProps {
   fileInputRef: Ref<HTMLInputElement>
   onFileChange: (event: ChangeEvent<HTMLInputElement>) => void
+  children: ReactNode
   accept?: string
   style?: CSSProperties
   onDragOver?: (event: DragEvent) => void
   onDragLeave?: (event: DragEvent) => void
   onDrop?: (event: DragEvent) => void
   onClick?: () => void
-  children: ReactNode
 }
 
 const hiddenInputStyle: CSSProperties = { display: "none" }

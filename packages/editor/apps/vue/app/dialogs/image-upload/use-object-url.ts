@@ -1,4 +1,6 @@
-import { type Ref, onUnmounted, ref, watch } from "vue"
+import { onUnmounted, ref, watch } from "vue"
+
+import type { Ref } from "vue"
 
 /**
  * Reactive object URL for a file, revoked when the file changes or the owner
@@ -19,10 +21,13 @@ export function useObjectURL(file: Ref<File | null>): Ref<string | null> {
     file,
     (next) => {
       revoke()
+
       if (!next) {
         objectURL.value = null
+
         return
       }
+
       current = URL.createObjectURL(next)
       objectURL.value = current
     },

@@ -1,29 +1,23 @@
-import {
-  Colorspace,
-  type Harmony,
-  LOOK_FACETS,
-  type LookFacetEntry,
-  type Ratio,
-  type ScaleTokenInput,
-  type ScaleTokenSection,
-  type ThemeCustomSwatchId,
-  type ThemeFontId,
-  type ThemeLineHeightId,
-  Unit,
-  type WorkspaceAction,
-  isBridgedLookFacet,
-  isLookSection,
-} from "@seldon/core"
-import {
-  parseHSLString,
-  toHSLString,
-} from "@seldon/core/helpers/color/convert-color"
+import { Colorspace, LOOK_FACETS, Unit, isBridgedLookFacet, isLookSection } from "@seldon/core"
+import { parseHSLString, toHSLString } from "@seldon/core/helpers/color/convert-color"
 import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
 import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
-import type { EntryThemeId, Workspace } from "@seldon/core/workspace/types"
 import { serializeColor } from "../properties/serialize-color"
 import { serializeValue } from "../properties/serialize-value"
+
+import type {
+  Harmony,
+  LookFacetEntry,
+  Ratio,
+  ScaleTokenInput,
+  ScaleTokenSection,
+  ThemeCustomSwatchId,
+  ThemeFontId,
+  ThemeLineHeightId,
+  WorkspaceAction,
+} from "@seldon/core"
+import type { EntryThemeId, Workspace } from "@seldon/core/workspace/types"
 
 /** Scale sections whose `.step` row edits route through `set_theme_scale_slot`. */
 const SCALE_SLOT_SECTIONS = new Set<ScaleTokenSection>([
@@ -44,18 +38,13 @@ function isScaleSlotSection(section: string): section is ScaleTokenSection {
 }
 
 /** Computed-section groups handled by the generic setter path. */
-const COMPUTED_GENERIC_GROUPS = new Set([
-  "matchColor",
-  "highContrast",
-  "opticalPadding",
-  "autoFit",
-])
+const COMPUTED_GENERIC_GROUPS = new Set(["matchColor", "highContrast", "opticalPadding", "autoFit"])
 
-function parseComputedGroupKey(
-  key: string,
-): { group: string; facet: string } | null {
+function parseComputedGroupKey(key: string): { group: string; facet: string } | null {
   const [group, facet] = key.split(".")
+
   if (!group || !facet || !COMPUTED_GENERIC_GROUPS.has(group)) return null
+
   return { group, facet }
 }
 
@@ -63,15 +52,19 @@ function parseComputedGroupKey(
 function parseNumericInput(raw: string): number | null {
   try {
     const parsed = JSON.parse(raw)
+
     if (typeof parsed === "object" && parsed !== null && "value" in parsed) {
       const n = Number((parsed as { value: unknown }).value)
+
       return Number.isFinite(n) ? n : null
     }
   } catch {
     // Not JSON; fall through to plain numeric parsing.
   }
+
   const cleaned = raw.replace(/\s*(%|px|rem|deg|em|vw|vh)\s*$/i, "").trim()
   const n = Number(cleaned)
+
   return Number.isFinite(n) ? n : null
 }
 
@@ -81,16 +74,21 @@ function parseNumericInput(raw: string): number | null {
  */
 function parseScaleInput(raw: string): ScaleTokenInput | null {
   const match = /^(-?\d*\.?\d+)\s*(px|rem)?$/i.exec(raw.trim())
+
   if (!match) return null
   const numeric = parseFloat(match[1]!)
+
   if (!Number.isFinite(numeric)) return null
   const unit = match[2]?.toLowerCase()
+
   if (unit === "px") {
     return { kind: "exact", parameters: { unit: Unit.PX, value: numeric } }
   }
+
   if (unit === "rem") {
     return { kind: "exact", parameters: { unit: Unit.REM, value: numeric } }
   }
+
   return { kind: "modulated", parameters: { step: numeric } }
 }
 
@@ -99,6 +97,7 @@ function mergeRecord(
   patch: Record<string, unknown>,
 ): Record<string, unknown> {
   const next = { ...base }
+
   for (const [key, value] of Object.entries(patch)) {
     if (
       value &&
@@ -116,14 +115,11 @@ function mergeRecord(
       next[key] = value
     }
   }
+
   return next
 }
 
-function setOverride(
-  themeId: EntryThemeId,
-  path: string,
-  value: unknown,
-): WorkspaceAction {
+function setOverride(themeId: EntryThemeId, path: string, value: unknown): WorkspaceAction {
   return { type: "set_theme_override", payload: { themeId, path, value } }
 }
 
@@ -135,12 +131,14 @@ function mergeOverride(
   patch: Record<string, unknown>,
 ): WorkspaceAction | null {
   const entry = workspace.themes[themeId]
+
   if (!entry) return null
   const merged = getThemeOverrides(entry, workspace)
   const current =
     (getOverrideAtPath(merged as Record<string, unknown>, path) as
       | Record<string, unknown>
       | undefined) ?? {}
+
   return setOverride(themeId, path, mergeRecord(current, patch))
 }
 
@@ -168,50 +166,44 @@ export function buildThemeEditActions(
   rawValue: string,
   workspace: Workspace,
 ): WorkspaceAction[] {
-  const only = (action: WorkspaceAction | null): WorkspaceAction[] =>
-    action ? [action] : []
+  const only = (action: WorkspaceAction | null): WorkspaceAction[] => (action ? [action] : [])
 
   // Modulation group.
   if (key === "modulation.ratio") {
-    return only(
-      setOverride(
-        themeId,
-        "modulation.parameters.ratio",
-        Number(rawValue) as Ratio,
-      ),
-    )
+    return only(setOverride(themeId, "modulation.parameters.ratio", Number(rawValue) as Ratio))
   }
+
   if (key === "modulation.baseFontSize") {
     const n = parseNumericInput(rawValue)
-    return n === null
-      ? []
-      : only(setOverride(themeId, "modulation.parameters.baseFontSize", n))
+
+    return n === null ? [] : only(setOverride(themeId, "modulation.parameters.baseFontSize", n))
   }
+
   if (key === "modulation.baseSize") {
     const n = parseNumericInput(rawValue)
-    return n === null
-      ? []
-      : only(setOverride(themeId, "modulation.parameters.baseSize", n))
+
+    return n === null ? [] : only(setOverride(themeId, "modulation.parameters.baseSize", n))
   }
 
   // Color harmony group.
   if (key === "colorHarmony.baseColor") {
     const hsl = parseHSLString(toHSLString(rawValue))
+
     return only(setOverride(themeId, "colorHarmony.parameters.baseColor", hsl))
   }
+
   if (key === "colorHarmony.harmony") {
     return only(
-      setOverride(
-        themeId,
-        "colorHarmony.parameters.harmony",
-        Number(rawValue) as Harmony,
-      ),
+      setOverride(themeId, "colorHarmony.parameters.harmony", Number(rawValue) as Harmony),
     )
   }
+
   if (key.startsWith("colorHarmony.")) {
     const colorKey = key.split(".")[1]!
     const n = parseNumericInput(rawValue)
+
     if (n === null) return []
+
     return only(
       mergeOverride(themeId, workspace, "colorHarmony.parameters", {
         [colorKey]: n,
@@ -222,17 +214,16 @@ export function buildThemeEditActions(
   // Display mode group.
   if (key === "displayMode.mode") {
     return only(
-      setOverride(
-        themeId,
-        "displayMode.parameters.mode",
-        rawValue === "dark" ? "dark" : "light",
-      ),
+      setOverride(themeId, "displayMode.parameters.mode", rawValue === "dark" ? "dark" : "light"),
     )
   }
+
   if (key.startsWith("displayMode.")) {
     const colorKey = key.split(".")[1]!
     const n = parseNumericInput(rawValue)
+
     if (n === null) return []
+
     return only(
       mergeOverride(themeId, workspace, "displayMode.parameters", {
         [colorKey]: n,
@@ -243,27 +234,21 @@ export function buildThemeEditActions(
   // Font family group.
   if (key === "fontFamily.primary" || key === "fontFamily.secondary") {
     const slot = key.split(".")[1]!
+
     return only(setOverride(themeId, `fontFamily.parameters.${slot}`, rawValue))
   }
 
   // Other Computed-section groups: matchColor, highContrast, opticalPadding, autoFit.
   const computedFacet = parseComputedGroupKey(key)
+
   if (computedFacet) {
     const { group, facet } = computedFacet
+
     if (facet === "fallbackColor") {
-      return only(
-        setOverride(
-          themeId,
-          `${group}.parameters.${facet}`,
-          serializeColor(rawValue),
-        ),
-      )
+      return only(setOverride(themeId, `${group}.parameters.${facet}`, serializeColor(rawValue)))
     }
-    if (
-      facet === "includeBrightness" ||
-      facet === "includeOpacity" ||
-      facet === "includeBleed"
-    ) {
+
+    if (facet === "includeBrightness" || facet === "includeOpacity" || facet === "includeBleed") {
       return only(
         setOverride(
           themeId,
@@ -272,8 +257,11 @@ export function buildThemeEditActions(
         ),
       )
     }
+
     const n = parseNumericInput(rawValue)
+
     if (n === null) return []
+
     return only(setOverride(themeId, `${group}.parameters.${facet}`, n))
   }
 
@@ -281,6 +269,7 @@ export function buildThemeEditActions(
   if (key.startsWith("swatch.")) {
     const swatchId = key.split(".").slice(2).join(".") as ThemeCustomSwatchId
     const hsl = parseHSLString(toHSLString(rawValue))
+
     return only(
       mergeOverride(themeId, workspace, "swatch", {
         [swatchId]: { parameters: { colorspace: Colorspace.HSL, value: hsl } },
@@ -297,18 +286,15 @@ export function buildThemeEditActions(
 
     if (section === "lineHeight") {
       return only(
-        mergeOverride(
-          themeId,
-          workspace,
-          `lineHeight.${subKey as ThemeLineHeightId}.parameters`,
-          {
-            step: Number(rawValue),
-          },
-        ),
+        mergeOverride(themeId, workspace, `lineHeight.${subKey as ThemeLineHeightId}.parameters`, {
+          step: Number(rawValue),
+        }),
       )
     }
+
     if (isScaleSlotSection(section)) {
       const parsed = parseScaleInput(rawValue)
+
       return parsed ? [scaleSlot(themeId, section, subKey, parsed)] : []
     }
   }
@@ -316,6 +302,7 @@ export function buildThemeEditActions(
   // Font weight.
   if (key.startsWith("fontWeight.")) {
     const fontWeightKey = key.split(".")[1] as ThemeFontId
+
     return only(
       mergeOverride(themeId, workspace, `fontWeight.${fontWeightKey}`, {
         value: Number(rawValue),
@@ -325,20 +312,18 @@ export function buildThemeEditActions(
 
   // Look facets (shadow, border, background, gradient, font, scrollbar).
   const [section, lookId, facet] = key.split(".")
+
   if (isLookSection(section) && lookId && facet) {
     const entry = (LOOK_FACETS[section] as readonly LookFacetEntry[]).find(
       (item) => item.facet === facet,
     )
+
     if (!entry) return []
 
     let serialized: unknown
+
     if (isBridgedLookFacet(entry)) {
-      serialized = serializeValue(
-        rawValue,
-        undefined,
-        undefined,
-        entry.propertyKey,
-      )
+      serialized = serializeValue(rawValue, undefined, undefined, entry.propertyKey)
     } else if (entry.valueType === "color") {
       serialized = serializeColor(rawValue)
     } else if (entry.valueType === "boolean") {
@@ -358,11 +343,10 @@ export function buildThemeEditActions(
 }
 
 /** Builds the reset action that drops one token's override, or null. */
-export function buildThemeResetAction(
-  themeId: EntryThemeId,
-  key: string,
-): WorkspaceAction | null {
+export function buildThemeResetAction(themeId: EntryThemeId, key: string): WorkspaceAction | null {
   const path = getThemeOverridePath(key)
+
   if (!path) return null
+
   return { type: "reset_theme_override", payload: { themeId, path } }
 }

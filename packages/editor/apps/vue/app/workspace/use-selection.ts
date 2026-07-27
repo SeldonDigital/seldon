@@ -1,9 +1,6 @@
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
-import {
-  getComponent,
-  getNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
+import { getComponent, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
 import { computed } from "vue"
 
@@ -32,54 +29,36 @@ export function useSelection() {
   const { workspace } = useWorkspace()
 
   const selectedThemeEntryId = computed(() =>
-    selectedResourceEntry.value?.kind === "theme"
-      ? selectedResourceEntry.value.id
-      : null,
+    selectedResourceEntry.value?.kind === "theme" ? selectedResourceEntry.value.id : null,
   )
   const selectedFontCollectionEntryId = computed(() =>
-    selectedResourceEntry.value?.kind === "fontCollection"
-      ? selectedResourceEntry.value.id
-      : null,
+    selectedResourceEntry.value?.kind === "fontCollection" ? selectedResourceEntry.value.id : null,
   )
   const selectedIconSetEntryId = computed(() =>
-    selectedResourceEntry.value?.kind === "iconSet"
-      ? selectedResourceEntry.value.id
-      : null,
+    selectedResourceEntry.value?.kind === "iconSet" ? selectedResourceEntry.value.id : null,
   )
   const selectedMediaEntryId = computed(() =>
-    selectedResourceEntry.value?.kind === "media"
-      ? selectedResourceEntry.value.id
-      : null,
+    selectedResourceEntry.value?.kind === "media" ? selectedResourceEntry.value.id : null,
   )
 
   const selectedNode = computed<Variant | Instance | null>(() =>
-    selectedNodeId.value
-      ? (getNode(workspace.value, selectedNodeId.value) ?? null)
-      : null,
+    selectedNodeId.value ? (getNode(workspace.value, selectedNodeId.value) ?? null) : null,
   )
   const selectedBoard = computed<Board | null>(() =>
-    selectedBoardId.value
-      ? (getComponent(workspace.value, selectedBoardId.value) ?? null)
-      : null,
+    selectedBoardId.value ? (getComponent(workspace.value, selectedBoardId.value) ?? null) : null,
   )
   const selectedItem = computed<Variant | Instance | Board | null>(
     () => selectedNode.value ?? selectedBoard.value,
   )
   const selectedId = computed(
-    () =>
-      selectedNodeId.value ??
-      selectedBoardId.value ??
-      selectedResourceEntry.value?.id ??
-      null,
+    () => selectedNodeId.value ?? selectedBoardId.value ?? selectedResourceEntry.value?.id ?? null,
   )
 
   function selectBoard(id: BoardKey | null): void {
     selection.selectBoard(id)
   }
-  function selectNode(
-    id: VariantId | InstanceId | null,
-    rootId: string | null = null,
-  ): void {
+
+  function selectNode(id: VariantId | InstanceId | null, rootId: string | null = null): void {
     selection.selectNode(id, rootId)
   }
 

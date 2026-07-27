@@ -1,24 +1,24 @@
 /**
  * Utility functions for formatting display values in property controls
  */
-import { ComputedFunction, Theme, Value, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { formatValue } from "@seldon/core/helpers/properties/properties-bridge"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
 import { DEFAULT_COMPUTED_DISPLAY } from "./property-control-constants"
 
+import type { ComputedFunction, Theme, Value } from "@seldon/core"
+
 type Option = { value: string; name: string }
 type OptionGroup = Option[]
 
 /** Finds the display name for a raw value among flat or grouped options. */
-function findOptionName(
-  rawValue: string,
-  options: Option[] | OptionGroup[],
-): string | null {
+function findOptionName(rawValue: string, options: Option[] | OptionGroup[]): string | null {
   const flatOptions = Array.isArray(options[0])
     ? (options as OptionGroup[]).flat()
     : (options as Option[])
   const matchingOption = flatOptions.find((option) => option.value === rawValue)
+
   return matchingOption ? matchingOption.name : null
 }
 
@@ -43,12 +43,12 @@ function formatComputedDisplayValue(
 
     if (options) {
       const optionName = findOptionName(functionName, options)
+
       if (optionName) return optionName
     }
 
     return (
-      COMPUTED_FUNCTION_DISPLAY_NAMES[functionName as ComputedFunction] ||
-      DEFAULT_COMPUTED_DISPLAY
+      COMPUTED_FUNCTION_DISPLAY_NAMES[functionName as ComputedFunction] || DEFAULT_COMPUTED_DISPLAY
     )
   }
 
@@ -70,8 +70,7 @@ function formatEnumOptionDisplayValue(
     !propertyValue ||
     typeof propertyValue !== "object" ||
     !("type" in propertyValue) ||
-    (propertyValue.type !== ValueType.EXACT &&
-      propertyValue.type !== ValueType.OPTION) ||
+    (propertyValue.type !== ValueType.EXACT && propertyValue.type !== ValueType.OPTION) ||
     !options ||
     options.length === 0
   ) {
@@ -79,6 +78,7 @@ function formatEnumOptionDisplayValue(
   }
 
   const rawValue = stringifyValue(propertyValue)
+
   if (!rawValue) return null
 
   return findOptionName(rawValue, options)
@@ -102,10 +102,12 @@ export function getDisplayValue(
 ): string {
   // Check for computed value first (handled consistently)
   const computedDisplay = formatComputedDisplayValue(propertyValue, options)
+
   if (computedDisplay) return computedDisplay
 
   // For enum values (EXACT or OPTION, like Harmony or direction), match names
   const enumOptionDisplay = formatEnumOptionDisplayValue(propertyValue, options)
+
   if (enumOptionDisplay) return enumOptionDisplay
 
   // For theme values, try option matching first (UI optimization)
@@ -119,8 +121,10 @@ export function getDisplayValue(
       propertyValue.type === ValueType.THEME_CATEGORICAL)
   ) {
     const rawValue = stringifyValue(propertyValue)
+
     if (rawValue) {
       const themeDisplay = findOptionName(rawValue, options)
+
       if (themeDisplay) return themeDisplay
     }
   }

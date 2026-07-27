@@ -10,13 +10,15 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
+import { ButtonSimple } from "../elements/ButtonSimple"
 import { Frame } from "../frames/Frame"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface BarMenusProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -69,10 +71,7 @@ export function BarMenus({
       : {
           ...sdn.buttonSimple,
           ...buttonSimple,
-          className: combineClassNames(
-            sdn.buttonSimple?.className,
-            buttonSimple?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -82,10 +81,7 @@ export function BarMenus({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const buttonSimple2Props = applyRef(
@@ -95,10 +91,7 @@ export function BarMenus({
       : {
           ...sdn.buttonSimple2,
           ...buttonSimple2,
-          className: combineClassNames(
-            sdn.buttonSimple2?.className,
-            buttonSimple2?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple2?.className, buttonSimple2?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -108,10 +101,7 @@ export function BarMenus({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const buttonSimple3Props = applyRef(
@@ -121,10 +111,7 @@ export function BarMenus({
       : {
           ...sdn.buttonSimple3,
           ...buttonSimple3,
-          className: combineClassNames(
-            sdn.buttonSimple3?.className,
-            buttonSimple3?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple3?.className, buttonSimple3?.className),
         },
   )
   const textLabel3Props = applyRef(
@@ -134,10 +121,7 @@ export function BarMenus({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const buttonSimple4Props = applyRef(
@@ -147,10 +131,7 @@ export function BarMenus({
       : {
           ...sdn.buttonSimple4,
           ...buttonSimple4,
-          className: combineClassNames(
-            sdn.buttonSimple4?.className,
-            buttonSimple4?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple4?.className, buttonSimple4?.className),
         },
   )
   const textLabel4Props = applyRef(
@@ -160,10 +141,7 @@ export function BarMenus({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
 
@@ -185,23 +163,17 @@ export function BarMenus({
           )}
           {buttonSimple2Props !== null && (
             <ButtonSimple {...buttonSimple2Props}>
-              {textLabel2 && textLabel2Props && (
-                <TextLabel {...textLabel2Props} />
-              )}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
             </ButtonSimple>
           )}
           {buttonSimple3Props !== null && (
             <ButtonSimple {...buttonSimple3Props}>
-              {textLabel3 && textLabel3Props && (
-                <TextLabel {...textLabel3Props} />
-              )}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
             </ButtonSimple>
           )}
           {buttonSimple4Props !== null && (
             <ButtonSimple {...buttonSimple4Props}>
-              {textLabel4 && textLabel4Props && (
-                <TextLabel {...textLabel4Props} />
-              )}
+              {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
             </ButtonSimple>
           )}
         </>

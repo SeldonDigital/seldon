@@ -10,16 +10,22 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Image, ImageProps } from "../primitives/Image"
-import { LinkPlain, LinkPlainProps } from "../primitives/LinkPlain"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Button } from "../elements/Button"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { Image } from "../primitives/Image"
+import { LinkPlain } from "../primitives/LinkPlain"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { ImageProps } from "../primitives/Image"
+import type { LinkPlainProps } from "../primitives/LinkPlain"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface TopbarProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -102,10 +108,7 @@ export function Topbar({
       : {
           ...sdn.image2,
           ...image2,
-          className: combineClassNames(
-            sdn.image2?.className,
-            image2?.className,
-          ),
+          className: combineClassNames(sdn.image2?.className, image2?.className),
         },
   )
   const frame2Props = applyRef(
@@ -115,10 +118,7 @@ export function Topbar({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const buttonProps = applyRef(
@@ -128,10 +128,7 @@ export function Topbar({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -141,10 +138,7 @@ export function Topbar({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const iconProps = applyRef(
@@ -164,10 +158,7 @@ export function Topbar({
       : {
           ...sdn.linkPlain,
           ...linkPlain,
-          className: combineClassNames(
-            sdn.linkPlain?.className,
-            linkPlain?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain?.className, linkPlain?.className),
         },
   )
   const linkPlain2Props = applyRef(
@@ -177,10 +168,7 @@ export function Topbar({
       : {
           ...sdn.linkPlain2,
           ...linkPlain2,
-          className: combineClassNames(
-            sdn.linkPlain2?.className,
-            linkPlain2?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain2?.className, linkPlain2?.className),
         },
   )
   const linkPlain3Props = applyRef(
@@ -190,10 +178,7 @@ export function Topbar({
       : {
           ...sdn.linkPlain3,
           ...linkPlain3,
-          className: combineClassNames(
-            sdn.linkPlain3?.className,
-            linkPlain3?.className,
-          ),
+          className: combineClassNames(sdn.linkPlain3?.className, linkPlain3?.className),
         },
   )
   const button2Props = applyRef(
@@ -203,10 +188,7 @@ export function Topbar({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -226,10 +208,7 @@ export function Topbar({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
 
@@ -251,25 +230,17 @@ export function Topbar({
           <Frame {...frame2Props}>
             {button && buttonProps && (
               <Button {...buttonProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                 {icon && iconProps && <Icon {...iconProps} />}
               </Button>
             )}
             {linkPlain && linkPlainProps && <LinkPlain {...linkPlainProps} />}
-            {linkPlain2 && linkPlain2Props && (
-              <LinkPlain {...linkPlain2Props} />
-            )}
-            {linkPlain3 && linkPlain3Props && (
-              <LinkPlain {...linkPlain3Props} />
-            )}
+            {linkPlain2 && linkPlain2Props && <LinkPlain {...linkPlain2Props} />}
+            {linkPlain3 && linkPlain3Props && <LinkPlain {...linkPlain3Props} />}
             {button2 && button2Props && (
               <Button {...button2Props}>
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
               </Button>
             )}
           </Frame>

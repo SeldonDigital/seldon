@@ -74,14 +74,17 @@ export function CanvasScrollToSelection() {
   // Otherwise unrelated re-renders (e.g. workspace edits) would re-trigger an
   // animated pan and make the canvas feel laggy.
   const setTransformRef = useRef(setTransform)
+
   setTransformRef.current = setTransform
   const transformContextRef = useRef(transformContext)
+
   transformContextRef.current = transformContext
 
   useEffect(() => {
     if (!autoScrollToSelection || !selectionId) return
 
     const canvasEl = document.getElementById("canvas")
+
     if (!canvasEl) return
 
     let rafId = 0
@@ -97,6 +100,7 @@ export function CanvasScrollToSelection() {
         if (frames++ < MAX_TARGET_FRAMES) {
           rafId = requestAnimationFrame(run)
         }
+
         return
       }
 
@@ -106,23 +110,12 @@ export function CanvasScrollToSelection() {
       // transform translate maps 1:1 to screen pixels regardless of scale, so
       // the delta between the current target center and that point can be added
       // directly to the current position. Scale is preserved.
-      const { scale, positionX, positionY } =
-        transformContextRef.current.transformState
-      const deltaX =
-        canvasRect.left +
-        canvasRect.width / 2 -
-        (target.left + target.width / 2)
+      const { scale, positionX, positionY } = transformContextRef.current.transformState
+      const deltaX = canvasRect.left + canvasRect.width / 2 - (target.left + target.width / 2)
       const deltaY =
-        canvasRect.top +
-        canvasRect.height * VERTICAL_BIAS -
-        (target.top + target.height / 2)
+        canvasRect.top + canvasRect.height * VERTICAL_BIAS - (target.top + target.height / 2)
 
-      setTransformRef.current(
-        positionX + deltaX,
-        positionY + deltaY,
-        scale,
-        SCROLL_ANIMATION_MS,
-      )
+      setTransformRef.current(positionX + deltaX, positionY + deltaY, scale, SCROLL_ANIMATION_MS)
     }
 
     rafId = requestAnimationFrame(run)

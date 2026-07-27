@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-import { Workspace } from "@seldon/core"
+import type { Workspace } from "@seldon/core"
 
 interface PreviewStore {
   preview: Workspace | null

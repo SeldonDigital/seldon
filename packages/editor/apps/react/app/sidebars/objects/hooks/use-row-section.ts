@@ -1,22 +1,21 @@
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { MenuEntry } from "@app/menus"
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { MouseEvent, useMemo } from "react"
+import { useMemo } from "react"
 
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 
-import { BoardSection } from "../../helpers/get-board-sections"
-import {
-  useIsSectionExpanded,
-  useSectionExpansion,
-} from "../../hooks/use-section-expansion"
+import { useIsSectionExpanded, useSectionExpansion } from "../../hooks/use-section-expansion"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"
+
+import type { BoardSection } from "../../helpers/get-board-sections"
+import type { MenuEntry } from "@app/menus"
+import type { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { MouseEvent } from "react"
 
 /**
  * Hook that provides state and handlers for rendering a section header in the objects sidebar.
@@ -28,8 +27,7 @@ import { useRowToggle } from "./use-row-toggle"
 export function useRowSection(section: BoardSection) {
   // Expansion state: section-level and node-level expansion
   const { toggleSection } = useSectionExpansion()
-  const { expandObjects, collapseObjects, getAllDescendantNodeIds } =
-    useExpansion()
+  const { expandObjects, collapseObjects, getAllDescendantNodeIds } = useExpansion()
   const { openPanel } = usePanel()
   const { setActiveTool } = useTool()
   const { addPlayground, newTheme } = useAddRemoveCommands()
@@ -48,15 +46,19 @@ export function useRowSection(section: BoardSection) {
     collapseObjects,
     getAllIdsForAltClick: () => {
       const allIds: string[] = []
+
       section.boards.forEach((board) => {
         allIds.push(getComponentKey(board))
         const variantRootIds = getBoardVariantRootIds(board)
+
         variantRootIds.forEach((variantId) => {
           allIds.push(variantId)
           const descendantIds = getAllDescendantNodeIds(variantId)
+
           allIds.push(...descendantIds)
         })
       })
+
       return allIds
     },
     hasChildren: true,
@@ -68,6 +70,7 @@ export function useRowSection(section: BoardSection) {
   function onToggleWithSection(event?: MouseEvent<HTMLButtonElement>) {
     if (event?.altKey) {
       const shouldExpand = !isExpanded
+
       onToggle(event)
       toggleSection(section.level, shouldExpand)
     } else {
@@ -80,9 +83,7 @@ export function useRowSection(section: BoardSection) {
   }
 
   // Icon: changes based on expansion state
-  const iconId: IconProps["icon"] = isExpanded
-    ? "material-unfoldLess"
-    : "material-unfoldMore"
+  const iconId: IconProps["icon"] = isExpanded ? "material-unfoldLess" : "material-unfoldMore"
 
   // Disclosure button: leading toggle with accessibility attributes
   const buttonIconic = {
@@ -95,6 +96,7 @@ export function useRowSection(section: BoardSection) {
   // section has no add flow, so it gets no button.
   const buttonIconic2 = useMemo<ButtonIconicProps | undefined>(() => {
     const level = section.level
+
     if (level === "MEDIA") return undefined
     // Frames are not user-creatable boards: the only frame schema is Sandbox,
     // which belongs to playgrounds. Hide the add control on the Frames section.
@@ -103,6 +105,7 @@ export function useRowSection(section: BoardSection) {
     return {
       onClick: (event) => {
         event.stopPropagation()
+
         if (level === "THEME") {
           openPanel("add-theme")
         } else if (level === "FONT_COLLECTION") {
@@ -114,6 +117,7 @@ export function useRowSection(section: BoardSection) {
         } else {
           openPanel("add-board", { level })
         }
+
         setActiveTool("select")
       },
       "aria-label": "Add",
@@ -125,6 +129,7 @@ export function useRowSection(section: BoardSection) {
   // sections keep their single add button, so their menu list stays empty.
   const sectionMenuItems = useMemo<MenuEntry[]>(() => {
     if (section.level !== "THEME") return []
+
     return [
       {
         id: "new-theme",

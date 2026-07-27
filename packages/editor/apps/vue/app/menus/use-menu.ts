@@ -1,4 +1,6 @@
-import { type Ref, ref } from "vue"
+import { ref } from "vue"
+
+import type { Ref } from "vue"
 
 export type MenuController = {
   open: Ref<boolean>

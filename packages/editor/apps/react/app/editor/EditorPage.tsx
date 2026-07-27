@@ -4,6 +4,7 @@ import { ProjectInitialize } from "@app/editor/ProjectInitialize"
 import { useWorkspaceRecord } from "@app/persistence/hooks/use-workspace-record"
 import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { Frame } from "@seldon/components/frames/Frame"
+
 import type { CSSProperties } from "react"
 
 const message: CSSProperties = {
@@ -33,6 +34,7 @@ export default function EditorPage() {
 
   if (error || !record) {
     const errorMessage = error ?? "Workspace not found"
+
     return (
       <Frame wrapperElement="p" style={message}>
         {errorMessage}

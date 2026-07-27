@@ -7,20 +7,16 @@ import {
   useHoveredKind,
   useHoveredRootId,
 } from "@app/workspace/hooks/use-object-hover"
-import {
-  useSelectedNodeId,
-  useSelectedNodeRootId,
-} from "@app/workspace/hooks/use-selection"
+import { useSelectedNodeId, useSelectedNodeRootId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useSelectedId } from "@app/workspace/selection-target"
-import {
-  type OverlayTracker,
-  createOverlayTracker,
-} from "@seldon/editor/lib/canvas/overlay/overlay-tracker"
+import { createOverlayTracker } from "@seldon/editor/lib/canvas/overlay/overlay-tracker"
 import { useEffect, useRef } from "react"
 import { useTransformContext } from "react-zoom-pan-pinch"
 
 import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
+
+import type { OverlayTracker } from "@seldon/editor/lib/canvas/overlay/overlay-tracker"
 
 /**
  * Wires the current hover, selection, workspace, and pan/zoom transform into the
@@ -38,14 +34,13 @@ export function CanvasOverlayTracker() {
   const selectedNodeId = useSelectedNodeId()
   const selectedNodeRootId = useSelectedNodeRootId()
   const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
-  const isTransforming = useCanvasRemeasureStore(
-    (state) => state.isTransforming,
-  )
+  const isTransforming = useCanvasRemeasureStore((state) => state.isTransforming)
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
   const { activeTool } = useTool()
 
   const transformContextRef = useRef(transformContext)
+
   transformContextRef.current = transformContext
 
   // Latest reactive values, read by the tracker's accessors so the persistent
@@ -61,6 +56,7 @@ export function CanvasOverlayTracker() {
     activeBoard,
     activeTool,
   })
+
   stateRef.current = {
     hoveredId,
     hoveredKind,
@@ -90,10 +86,11 @@ export function CanvasOverlayTracker() {
       getWorkspace: () => stateRef.current.workspace,
       getActiveBoard: () => stateRef.current.activeBoard,
       getActiveTool: () => stateRef.current.activeTool,
-      subscribeTransform: (listener) =>
-        transformContextRef.current.onChange(listener),
+      subscribeTransform: (listener) => transformContextRef.current.onChange(listener),
     })
+
     trackerRef.current = tracker
+
     return () => {
       tracker.destroy()
       trackerRef.current = null

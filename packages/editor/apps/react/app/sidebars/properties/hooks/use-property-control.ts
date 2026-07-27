@@ -1,26 +1,25 @@
-import type { ComboboxOptionItems } from "@app/menus"
 import { useThemes } from "@app/themes/hooks/use-themes"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import { RefObject, useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
-import { Board, Instance, Theme, Variant } from "@seldon/core"
-
-import {
-  OptionIconRender,
-  createPropertyOptionIconResolver,
-} from "../helpers/render-property-option-icon"
+import { createPropertyOptionIconResolver } from "../helpers/render-property-option-icon"
 import { useCommitPropertyValue } from "./use-commit-property-value"
 import { usePropertyCombobox } from "./use-property-combobox"
 import { usePropertyControlData } from "./use-property-control-data"
 import { usePropertyDisplay } from "./use-property-display"
 import { usePropertyValidation } from "./use-property-validation"
+
+import type { OptionIconRender } from "../helpers/render-property-option-icon"
+import type { ComboboxOptionItems } from "@app/menus"
+import type { Board, Instance, Theme, Variant } from "@seldon/core"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { RefObject } from "react"
 
 export interface PropertyControlProps {
   property: FlatProperty
@@ -51,8 +50,8 @@ interface FieldControlView {
     onValueChange: (value: string) => void
     onSubmit: (value: string) => void
     onCancel: () => void
-    validate?: (value: string) => boolean
     autoFocus: boolean
+    validate?: (value: string) => boolean
   }
 }
 
@@ -80,10 +79,10 @@ interface ComboboxControlView {
     filteredOptions: ComboboxOptionItems
     hasSections: boolean
     value: string
-    highlightedValue?: string
     resolveIcon: (option?: { value: string; name: string }) => OptionIconRender
     onSelect: (value: string) => void
     onHighlight: (value: string | undefined) => void
+    highlightedValue?: string
   }
 }
 
@@ -192,6 +191,7 @@ export function usePropertyControl({
   // list used, so the write router serializes them unchanged.
   if (effectiveControlType === "switch") {
     const stored = display.comboboxStoredValue
+
     return {
       kind: "switch",
       checked: stored === "true",
@@ -245,8 +245,7 @@ export function usePropertyControl({
       handleClose: combo.handleComboboxClose,
       // Drop the hover highlight when the pointer leaves the list so only the
       // selected option still reads as active.
-      onPointerLeave: () =>
-        combo.setHighlightedValue(display.comboboxStoredValue),
+      onPointerLeave: () => combo.setHighlightedValue(display.comboboxStoredValue),
     },
     optionList: {
       filteredOptions: combo.filteredOptions,

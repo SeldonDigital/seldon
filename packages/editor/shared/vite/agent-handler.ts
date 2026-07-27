@@ -1,24 +1,23 @@
 import {
-  type AgentDebug,
-  type AgentMetrics,
-  type AgentStreamEvent,
-  type ChatMessage,
-  type IsolationScope,
-  type ModelThinking,
-  type RejectedActionResult,
-  type SelectionScope,
-  type ThinkingLevelOption,
   chatToActions,
   clampedThinkingLevel,
   deriveModelThinking,
   resolvePiModelId,
   warmModel,
 } from "@seldon/ai"
+
 import type {
-  BoardKey,
-  Workspace,
-  WorkspaceAction,
-} from "@seldon/core/workspace/types"
+  AgentDebug,
+  AgentMetrics,
+  AgentStreamEvent,
+  ChatMessage,
+  IsolationScope,
+  ModelThinking,
+  RejectedActionResult,
+  SelectionScope,
+  ThinkingLevelOption,
+} from "@seldon/ai"
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 export type AgentRequestBody = {
   workspace: Workspace
@@ -62,29 +61,29 @@ export async function runAgent(
   if (!body?.workspace) {
     throw new Error("Missing workspace in request body.")
   }
+
   if (typeof body.message !== "string" || body.message.trim() === "") {
     throw new Error("Missing message in request body.")
   }
 
-  const { actions, workspace, reply, ineffective, rejected, debug } =
-    await chatToActions({
-      workspace: body.workspace,
-      message: body.message,
-      history: body.history,
-      activeBoardKey: body.activeBoardKey,
-      selectedNodeId: body.selectedNodeId,
-      selectedNodeRootId: body.selectedNodeRootId,
-      selectedBoardId: body.selectedBoardId,
-      scope: body.scope,
-      isolation: body.isolation,
-      resourceTargetId: body.resourceTargetId,
-      model: body.model,
-      thinkingLevel: body.thinkingLevel,
-      thinkingCapable: body.thinkingCapable,
-      noThink: body.noThink,
-      onEvent,
-      signal,
-    })
+  const { actions, workspace, reply, ineffective, rejected, debug } = await chatToActions({
+    workspace: body.workspace,
+    message: body.message,
+    history: body.history,
+    activeBoardKey: body.activeBoardKey,
+    selectedNodeId: body.selectedNodeId,
+    selectedNodeRootId: body.selectedNodeRootId,
+    selectedBoardId: body.selectedBoardId,
+    scope: body.scope,
+    isolation: body.isolation,
+    resourceTargetId: body.resourceTargetId,
+    model: body.model,
+    thinkingLevel: body.thinkingLevel,
+    thinkingCapable: body.thinkingCapable,
+    noThink: body.noThink,
+    onEvent,
+    signal,
+  })
 
   return { actions, workspace, reply, ineffective, rejected, debug }
 }
@@ -108,6 +107,7 @@ const OLLAMA_HOST = process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434"
 async function listOllamaModels(): Promise<string[]> {
   try {
     const response = await fetch(`${OLLAMA_HOST}/api/tags`)
+
     if (!response.ok) return []
     const data = (await response.json()) as {
       models?: { name?: string; model?: string }[]
@@ -115,6 +115,7 @@ async function listOllamaModels(): Promise<string[]> {
     const names = (data.models ?? [])
       .map((entry) => entry.model ?? entry.name)
       .filter((name): name is string => typeof name === "string")
+
     return [...new Set(names)].sort()
   } catch {
     return []
@@ -127,17 +128,17 @@ async function listOllamaModels(): Promise<string[]> {
  * server is unreachable or omits the field, so the caller falls back to the
  * name-based thinking check.
  */
-async function showModelCapabilities(
-  model: string,
-): Promise<string[] | undefined> {
+async function showModelCapabilities(model: string): Promise<string[] | undefined> {
   try {
     const response = await fetch(`${OLLAMA_HOST}/api/show`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ model }),
     })
+
     if (!response.ok) return undefined
     const data = (await response.json()) as { capabilities?: string[] }
+
     return Array.isArray(data.capabilities) ? data.capabilities : undefined
   } catch {
     return undefined
@@ -153,18 +154,19 @@ async function showModelCapabilities(
 export async function agentConfig(): Promise<AgentConfig> {
   const defaultModel = resolvePiModelId()
   const discovered = await listOllamaModels()
-  const models = discovered.includes(defaultModel)
-    ? discovered
-    : [defaultModel, ...discovered]
+  const models = discovered.includes(defaultModel) ? discovered : [defaultModel, ...discovered]
   const thinkingByModel: Record<string, ModelThinking> = {}
   const clampedLevels: Record<string, ThinkingLevelOption> = {}
+
   await Promise.all(
     models.map(async (model) => {
       const capabilities = await showModelCapabilities(model)
+
       thinkingByModel[model] = deriveModelThinking(model, capabilities)
       clampedLevels[model] = clampedThinkingLevel(model)
     }),
   )
+
   return {
     models,
     thinkingByModel,
@@ -186,9 +188,8 @@ export type WarmResult = {
  * turn, so the first real request skips the cold load and reuses the cached
  * system-prompt prefix. Called when the AI chat panel opens.
  */
-export async function warmAgent(body?: {
-  model?: string
-}): Promise<WarmResult> {
+export async function warmAgent(body?: { model?: string }): Promise<WarmResult> {
   const metrics = await warmModel({ model: body?.model })
+
   return { ok: true, metrics }
 }

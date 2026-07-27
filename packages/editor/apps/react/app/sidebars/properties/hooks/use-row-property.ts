@@ -3,7 +3,6 @@ import {
   useImageUploadPanel,
 } from "@app/dialogs/image-upload/hooks/use-upload-image-panel"
 import { useDebugMode } from "@app/editor/hooks/use-debug-mode"
-import { MenuEntry } from "@app/menus"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   buildActivatedRefProps,
@@ -15,24 +14,13 @@ import {
   useNodeActiveState,
 } from "@app/workspace/hooks/use-node-active-state"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
-import {
-  getCurrentOptionValue,
-  getOptionIcon,
-} from "@seldon/editor/lib/icons/resolve-option-icon"
+import { getCurrentOptionValue, getOptionIcon } from "@seldon/editor/lib/icons/resolve-option-icon"
 import { ICONIC_BUTTON_SELECTOR } from "@seldon/editor/lib/menus/iconic-button"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { dispatchPropertyReset } from "@seldon/editor/lib/properties/commit-helpers"
 import { getDisplayValue } from "@seldon/editor/lib/properties/display-value-utils"
 import { buildPropertyOptions } from "@seldon/editor/lib/properties/inspector/build-property-options"
-import {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import {
-  FlatProperty,
-  getCompoundChildRows,
-} from "@seldon/editor/lib/properties/inspector/properties-data"
+import { getCompoundChildRows } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { getPropertyDebugColor } from "@seldon/editor/lib/properties/property-styling"
 import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
@@ -40,31 +28,16 @@ import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "@seldon/editor/lib/themes/theme-token-icon-color"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-import {
-  Board,
-  Instance,
-  type LayeredPaintKey,
-  PropertyKey,
-  Theme,
-  type ThemeCustomTokenSection,
-  ValueType,
-  Variant,
-  Workspace,
-  isReservedTokenName,
-} from "@seldon/core"
+import { ValueType, isReservedTokenName } from "@seldon/core"
 import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 
 import { useRenameInput } from "../../hooks/use-rename-input"
-import type { LayerDragContext } from "../LayerDragRow"
-import {
-  FRAME_REF_SELECTOR,
-  buildPropertyRowProps,
-} from "../helpers/build-property-row-props"
+import { FRAME_REF_SELECTOR, buildPropertyRowProps } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
@@ -72,17 +45,34 @@ import {
   usePropertyEditNavigation,
   usePropertyEditRowRegistration,
 } from "./use-property-edit-navigation"
-import {
-  useIsPropertyExpanded,
-  usePropertyExpansion,
-} from "./use-property-expansion"
+import { useIsPropertyExpanded, usePropertyExpansion } from "./use-property-expansion"
+
+import type { LayerDragContext } from "../LayerDragRow"
+import type { MenuEntry } from "@app/menus"
+import type {
+  Board,
+  Instance,
+  LayeredPaintKey,
+  PropertyKey,
+  Theme,
+  ThemeCustomTokenSection,
+  Variant,
+  Workspace,
+} from "@seldon/core"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type React from "react"
 
 export interface RowPropertyProps {
   property: FlatProperty
   workspace: Workspace
   node: Variant | Instance | Board
-  theme?: Theme
   allProperties: FlatProperty[]
+  theme?: Theme
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
@@ -97,15 +87,13 @@ function resolveLayerDrag({
   property,
   node,
   allProperties,
-}: Pick<
-  RowPropertyProps,
-  "property" | "node" | "allProperties"
->): LayerDragContext | null {
+}: Pick<RowPropertyProps, "property" | "node" | "allProperties">): LayerDragContext | null {
   if (isBoard(node)) return null
   if (property.isSubProperty) return null
   if (property.layerIndex === undefined) return null
 
   const root = property.key.split(".")[0]
+
   if (!isLayeredPaintProperty(root as PropertyKey)) return null
 
   const layerCount = allProperties.filter(
@@ -114,6 +102,7 @@ function resolveLayerDrag({
       !candidate.isSubProperty &&
       candidate.key.split(".")[0] === root,
   ).length
+
   if (layerCount < 2) return null
 
   return {
@@ -143,8 +132,7 @@ export function useRowProperty({
   const { showPropertyTypes } = useDebugMode()
   const { resetProperty, removeNodeLayer } = useObjectProperties()
   const { toggleProperty } = usePropertyExpansion()
-  const { getPropertyValueForDisplay, shouldShowMenuIcon } =
-    usePropertyControlData({ property })
+  const { getPropertyValueForDisplay, shouldShowMenuIcon } = usePropertyControlData({ property })
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const frameRef = useRef<HTMLDivElement>(null)
@@ -159,15 +147,14 @@ export function useRowProperty({
   // shows the value the user just entered) until `property.value` changes, then
   // switch to display. A timer guards no-op commits that never change the value.
   const deferredCloseBaselineRef = useRef<string | null>(null)
-  const deferredCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null,
-  )
+  const deferredCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const cancelDeferredClose = useCallback(() => {
     if (deferredCloseTimerRef.current !== null) {
       clearTimeout(deferredCloseTimerRef.current)
       deferredCloseTimerRef.current = null
     }
+
     deferredCloseBaselineRef.current = null
   }, [])
 
@@ -176,12 +163,16 @@ export function useRowProperty({
       if (editing) {
         cancelDeferredClose()
         setIsEditingProperty(true)
+
         return
       }
+
       deferredCloseBaselineRef.current = JSON.stringify(property.value ?? null)
+
       if (deferredCloseTimerRef.current !== null) {
         clearTimeout(deferredCloseTimerRef.current)
       }
+
       deferredCloseTimerRef.current = setTimeout(() => {
         deferredCloseTimerRef.current = null
         deferredCloseBaselineRef.current = null
@@ -194,6 +185,7 @@ export function useRowProperty({
   useEffect(() => {
     if (deferredCloseBaselineRef.current === null) return
     const currentKey = JSON.stringify(property.value ?? null)
+
     if (currentKey !== deferredCloseBaselineRef.current) {
       cancelDeferredClose()
       setIsEditingProperty(false)
@@ -234,15 +226,14 @@ export function useRowProperty({
     section: ThemeCustomTokenSection
     key: string
   } | null>(() => {
-    if (
-      !themeEditingContext?.isThemeEditing ||
-      !themeEditingContext.canAddCustom
-    ) {
+    if (!themeEditingContext?.isThemeEditing || !themeEditingContext.canAddCustom) {
       return null
     }
+
     const parts = property.key.split(".")
     const section = parts[0]
     let id: string | undefined
+
     if (section === "swatch") {
       // Swatch rows nest under a group: `swatch.<group>.<id>`. Only a custom
       // swatch (`swatch.custom.customN`) can be renamed in place.
@@ -254,7 +245,9 @@ export function useRowProperty({
     } else if (parts.length === 3 && parts[2] === "step") {
       id = parts[1]
     }
+
     if (!section || !id || !/^custom\d+$/.test(id)) return null
+
     return { section: section as ThemeCustomTokenSection, key: id }
   }, [property.key, themeEditingContext])
 
@@ -266,15 +259,18 @@ export function useRowProperty({
   } | null>(() => {
     if (themeEditingContext?.isThemeEditing) return null
     const parsed = parsePropertyPath(property.key)
+
     if (parsed.kind === "layered-parent" && parsed.index >= 1) {
       return { property: parsed.root, index: parsed.index }
     }
+
     return null
   }, [property.key, themeEditingContext])
 
   // Sub-properties for this compound/shorthand property.
   const children = useMemo(() => {
     if (!property.isCompound && !property.isShorthand) return []
+
     return getCompoundChildRows(property.key, allProperties)
   }, [allProperties, property.key, property.isCompound, property.isShorthand])
 
@@ -296,9 +292,7 @@ export function useRowProperty({
     property.icon,
   )
   const iconId =
-    currentIconDescriptor.kind === "static"
-      ? currentIconDescriptor.icon
-      : property.icon
+    currentIconDescriptor.kind === "static" ? currentIconDescriptor.icon : property.icon
 
   // Can reset only when overridden. Font collection family rows (`family.*`) and
   // icon set rows (`icon.*`) carry an override status for color only; they have
@@ -337,22 +331,19 @@ export function useRowProperty({
   // single combobox value field. There is no separate unit element. A look-parent
   // row (theme look groups and computed groups like Modulation) owns no value, so
   // it shows nothing rather than formatting EMPTY into a "Default" placeholder.
-  const value = property.isLookParent
-    ? ""
-    : getDisplayValue(propertyValue, theme, options)
+  const value = property.isLookParent ? "" : getDisplayValue(propertyValue, theme, options)
 
   // Outside debug mode, property status maps to a generated leaf state
   // (activated, invalid, disabled) applied on the row's refs, so the label
   // carries no inline status color. Debug mode keeps the inline status colors
   // for its type visualization.
-  const labelColor = showPropertyTypes
-    ? getPropertyDebugColor(property)
-    : undefined
+  const labelColor = showPropertyTypes ? getPropertyDebugColor(property) : undefined
 
   const swatchChipColor = useMemo(() => {
     if (!theme || !isSwatchIconPropertyKey(property.key)) {
       return undefined
     }
+
     return getThemeTokenIconColorFromPropertyValue(property.value, theme)
   }, [property.key, property.value, theme])
 
@@ -361,6 +352,7 @@ export function useRowProperty({
   // exactly like `swatchChipColor`.
   const themeSwatchColors = useMemo(() => {
     if (!isThemeAssignment || !theme) return undefined
+
     return resolveThemeSwatchColors(theme)
   }, [isThemeAssignment, theme])
 
@@ -388,6 +380,7 @@ export function useRowProperty({
   useEffect(() => {
     if (isEditingProperty && control.kind === "field") {
       const input = valueInputRef.current
+
       if (input) {
         input.focus()
         input.select()
@@ -395,18 +388,12 @@ export function useRowProperty({
     }
   }, [isEditingProperty, control.kind])
 
-  const valueRef =
-    control.kind === "combobox" ? control.field.inputRef : valueInputRef
+  const valueRef = control.kind === "combobox" ? control.field.inputRef : valueInputRef
 
   // Keyboard Tab moves edit focus without firing pointer events, so the row the
   // mouse rests on keeps its hover outline. Hand the hover setter to the
   // navigation coordinator so it can clear the source row and outline the target.
-  usePropertyEditRowRegistration(
-    property.key,
-    frameRef,
-    () => setEditing(true),
-    isNavigable,
-  )
+  usePropertyEditRowRegistration(property.key, frameRef, () => setEditing(true), isNavigable)
 
   // Image rows (source attribute, background image facet) support upload.
   const uploadTarget = imageUploadTargetForKey(property.key)
@@ -422,8 +409,10 @@ export function useRowProperty({
     // Theme rows reset their entry override; node dispatches do not apply.
     if (themeEditingContext?.isThemeEditing) {
       themeEditingContext.resetThemeProperty(property)
+
       return
     }
+
     dispatchPropertyReset(property.key, property.isSubProperty, resetProperty)
   }
 
@@ -437,20 +426,16 @@ export function useRowProperty({
       if (isStateReadOnly) {
         event.stopPropagation()
         addToast(INSTANCE_STATE_EDIT_MESSAGE)
+
         return
       }
+
       if (!property.isDimmed && property.controlType) {
         event.stopPropagation()
         setEditing(true)
       }
     },
-    [
-      isStateReadOnly,
-      addToast,
-      property.isDimmed,
-      property.controlType,
-      setEditing,
-    ],
+    [isStateReadOnly, addToast, property.isDimmed, property.controlType, setEditing],
   )
 
   const valueLabelProps = buildPropertyValueInput({
@@ -465,6 +450,7 @@ export function useRowProperty({
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement
+
     if (
       target.closest("button") ||
       target.closest(ICONIC_BUTTON_SELECTOR) ||
@@ -486,6 +472,7 @@ export function useRowProperty({
   const handleUploadClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
+
       if (uploadTarget) {
         showUploadPanel({ property: uploadTarget })
       }
@@ -496,10 +483,13 @@ export function useRowProperty({
   const handleMenuClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
+
       if (isStateReadOnly) {
         addToast(INSTANCE_STATE_EDIT_MESSAGE)
+
         return
       }
+
       if (
         !property.isDimmed &&
         !isEditingProperty &&
@@ -528,19 +518,26 @@ export function useRowProperty({
     (value: string) => {
       if (!customTokenTarget || !themeEditingContext?.isThemeEditing) {
         setIsRenaming(false)
+
         return
       }
+
       const trimmed = value.trim()
+
       if (!trimmed) {
         setIsRenaming(false)
+
         return
       }
+
       // The reducer enforces this too; the toast gives instant feedback and
       // keeps the row in edit mode so the user can correct the name.
       if (isReservedTokenName(customTokenTarget.section, trimmed)) {
         addToast(`"${trimmed}" is a reserved ${customTokenTarget.section} name`)
+
         return
       }
+
       themeEditingContext.renameCustomToken(
         customTokenTarget.section,
         customTokenTarget.key,
@@ -589,8 +586,7 @@ export function useRowProperty({
               {
                 id: "delete-layer",
                 label: `Delete ${labelText}`,
-                onSelect: () =>
-                  removeNodeLayer(layerTarget.property, layerTarget.index),
+                onSelect: () => removeNodeLayer(layerTarget.property, layerTarget.index),
                 testId: `property-row-${property.key}-delete`,
               },
             ]
@@ -599,9 +595,7 @@ export function useRowProperty({
           ? [
               buildResetMenuEntry({
                 label:
-                  property.key === "background"
-                    ? "Reset Entire Background"
-                    : `Reset ${labelText}`,
+                  property.key === "background" ? "Reset Entire Background" : `Reset ${labelText}`,
                 onSelect: handleReset,
                 testId: `property-row-${property.key}-reset`,
               }),
@@ -612,8 +606,7 @@ export function useRowProperty({
   // The board-level commands (Apply to All Boards, Reset Board) live on the
   // board category header's actions menu, so the board compound row itself
   // carries no menu entries.
-  const resetActions: MenuEntry[] =
-    isBoard(node) && property.key === "board" ? [] : rowActions
+  const resetActions: MenuEntry[] = isBoard(node) && property.key === "board" ? [] : rowActions
 
   const listItemProps = buildPropertyRowProps({
     property,

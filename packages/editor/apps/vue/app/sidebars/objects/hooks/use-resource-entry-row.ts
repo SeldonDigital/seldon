@@ -1,10 +1,12 @@
-import type { MenuEntry } from "@app/menus/types"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
+
+import { useEditState } from "./use-edit-state"
 
 import type { ResourceRowConfig } from "../helpers/resource-row-config"
-import { useEditState } from "./use-edit-state"
+import type { MenuEntry } from "@app/menus/types"
+import type { ComputedRef } from "vue"
 
 type EntrySnapshot = {
   label: string
@@ -35,18 +37,16 @@ export function useResourceEntryRow(input: UseResourceEntryRowInput) {
 
   const actions: ComputedRef<MenuEntry[]> = computed(() => {
     const entry = input.entry()
+
     if (!input.isSelected() || !entry) return []
 
-    const { buildDuplicateAction, buildDeleteAction, buildResetAction } =
-      input.config
+    const { buildDuplicateAction, buildDeleteAction, buildResetAction } = input.config
     const entries: MenuEntry[] = []
 
     if (buildDuplicateAction) {
       entries.push({
         id: "duplicate",
-        label: entry.isDefault
-          ? `Duplicate ${entry.label} Default`
-          : `Duplicate ${entry.label}`,
+        label: entry.isDefault ? `Duplicate ${entry.label} Default` : `Duplicate ${entry.label}`,
         onSelect: () => dispatch(buildDuplicateAction(input.entryId)),
         testId: `${input.config.testId}-${input.entryId}-duplicate`,
       })

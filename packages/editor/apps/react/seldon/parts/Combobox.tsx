@@ -10,18 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import { ListboxOptionProps } from "../elements/ListboxOption"
+import { ComboboxField } from "../elements/ComboboxField"
 import { Frame } from "../frames/Frame"
-import { Listbox, ListboxProps } from "../parts/Listbox"
-import { IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
-import { TextLabelProps } from "../primitives/TextLabel"
+import { Listbox } from "../parts/Listbox"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { ListboxOptionProps } from "../elements/ListboxOption"
+import type { ListboxProps } from "../parts/Listbox"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface ComboboxProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -96,10 +98,7 @@ export function Combobox({
       : {
           ...sdn.comboboxField,
           ...comboboxField,
-          className: combineClassNames(
-            sdn.comboboxField?.className,
-            comboboxField?.className,
-          ),
+          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
         },
   )
   const iconProps = applyRef(
@@ -129,10 +128,7 @@ export function Combobox({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon2Props = applyRef(
@@ -152,10 +148,7 @@ export function Combobox({
       : {
           ...sdn.listbox,
           ...listbox,
-          className: combineClassNames(
-            sdn.listbox?.className,
-            listbox?.className,
-          ),
+          className: combineClassNames(sdn.listbox?.className, listbox?.className),
         },
   )
   const listboxOptionProps = applyRef(
@@ -165,10 +158,7 @@ export function Combobox({
       : {
           ...sdn.listboxOption,
           ...listboxOption,
-          className: combineClassNames(
-            sdn.listboxOption?.className,
-            listboxOption?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption?.className, listboxOption?.className),
         },
   )
   const icon3Props = applyRef(
@@ -188,10 +178,7 @@ export function Combobox({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const listboxOption2Props = applyRef(
@@ -201,10 +188,7 @@ export function Combobox({
       : {
           ...sdn.listboxOption2,
           ...listboxOption2,
-          className: combineClassNames(
-            sdn.listboxOption2?.className,
-            listboxOption2?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption2?.className, listboxOption2?.className),
         },
   )
   const icon4Props = applyRef(
@@ -224,10 +208,7 @@ export function Combobox({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const listboxOption3Props = applyRef(
@@ -237,10 +218,7 @@ export function Combobox({
       : {
           ...sdn.listboxOption3,
           ...listboxOption3,
-          className: combineClassNames(
-            sdn.listboxOption3?.className,
-            listboxOption3?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption3?.className, listboxOption3?.className),
         },
   )
   const icon5Props = applyRef(
@@ -260,19 +238,12 @@ export function Combobox({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
 
   return (
-    <Frame
-      className={comboboxClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={comboboxClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

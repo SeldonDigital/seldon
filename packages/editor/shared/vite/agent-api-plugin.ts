@@ -1,16 +1,12 @@
-import type { AgentStreamEvent } from "@seldon/ai"
-import { build } from "esbuild"
 import fs from "node:fs/promises"
-import type { IncomingMessage, ServerResponse } from "node:http"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
+import { build } from "esbuild"
+
+import type { AgentRequestBody, agentConfig, runAgent, warmAgent } from "./agent-handler"
+import type { AgentStreamEvent } from "@seldon/ai"
+import type { IncomingMessage, ServerResponse } from "node:http"
 import type { Connect, Plugin } from "vite"
-import type {
-  AgentRequestBody,
-  agentConfig,
-  runAgent,
-  warmAgent,
-} from "./agent-handler"
 
 const ROUTE = "/api/agent"
 
@@ -81,16 +77,17 @@ async function loadAgent(): Promise<AgentModule> {
   })
 
   const outputDir = path.join(aiRoot, "node_modules", ".seldon-agent")
+
   await fs.mkdir(outputDir, { recursive: true })
   buildId += 1
-  const outputFile = path.join(
-    outputDir,
-    `agent-handler-${process.pid}-${buildId}.mjs`,
-  )
+  const outputFile = path.join(outputDir, `agent-handler-${process.pid}-${buildId}.mjs`)
+
   await fs.writeFile(outputFile, result.outputFiles[0].text)
   const staleOutputFile = previousOutputFile
+
   previousOutputFile = outputFile
   if (staleOutputFile) await fs.rm(staleOutputFile, { force: true })
+
   return (await import(pathToFileURL(outputFile).href)) as AgentModule
 }
 
@@ -98,13 +95,16 @@ function getAgent(): Promise<AgentModule> {
   if (!cachedAgent) {
     cachedAgent = loadAgent()
   }
+
   return cachedAgent
 }
 
 /** True when a changed file is part of the agent handler or the `ai` package. */
 function affectsAgent(file: string): boolean {
   const normalized = path.normalize(file)
+
   if (normalized === handlerEntry) return true
+
   return (
     normalized.startsWith(aiRoot + path.sep) &&
     !normalized.includes(`${path.sep}node_modules${path.sep}`)
@@ -113,10 +113,13 @@ function affectsAgent(file: string): boolean {
 
 async function readJsonBody<T>(req: IncomingMessage): Promise<T> {
   const chunks: Buffer[] = []
+
   for await (const chunk of req) {
     chunks.push(chunk as Buffer)
   }
+
   const text = Buffer.concat(chunks).toString("utf8").trim()
+
   return (text ? JSON.parse(text) : {}) as T
 }
 
@@ -156,13 +159,16 @@ async function streamAgentTurn(
   // res.end() triggers on a normal turn.
   const controller = new AbortController()
   let finished = false
+
   res.on("close", () => {
     if (!finished) controller.abort()
   })
 
   const onEvent = (event: AgentStreamEvent) => writeFrame(res, event)
+
   try {
     const result = await agent.runAgent(body, onEvent, controller.signal)
+
     writeFrame(res, { type: "done", ...result })
   } catch (error) {
     writeFrame(res, {
@@ -184,31 +190,40 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
     void (async () => {
       try {
         const agent = await getAgent()
+
         sendJson(res, 200, await agent.agentConfig())
       } catch (error) {
         sendJson(res, 500, {
-          error:
-            error instanceof Error ? error.message : "Agent config failed.",
+          error: error instanceof Error ? error.message : "Agent config failed.",
         })
       }
     })()
+
     return
   }
 
   if (req.method !== "POST") {
     next()
+
     return
   }
+
   const isWarm = url.startsWith("/warm")
+
   void (async () => {
     try {
       const agent = await getAgent()
+
       if (isWarm) {
         const body = await readJsonBody<{ model?: string }>(req)
+
         sendJson(res, 200, await agent.warmAgent(body))
+
         return
       }
+
       const body = await readJsonBody<AgentRequestBody>(req)
+
       await streamAgentTurn(res, agent, body)
     } catch (error) {
       sendJson(res, 500, {
@@ -232,6 +247,7 @@ export function agentApiPlugin(): Plugin {
       // HMR does not cover this Node-side bundle. Watch their sources and drop the
       // cache on change so the next request re-bundles without a server restart.
       server.watcher.add([handlerEntry, aiRoot])
+
       const invalidate = (file: string) => {
         if (!affectsAgent(file)) return
         cachedAgent = null
@@ -239,6 +255,7 @@ export function agentApiPlugin(): Plugin {
           `[seldon-agent] reloading agent after change to ${path.relative(repoRoot, file)}`,
         )
       }
+
       server.watcher.on("change", invalidate)
       server.watcher.on("add", invalidate)
       server.watcher.on("unlink", invalidate)

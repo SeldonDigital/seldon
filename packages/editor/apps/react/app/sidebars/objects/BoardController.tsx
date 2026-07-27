@@ -9,8 +9,6 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { memo, useCallback, useEffect, useRef } from "react"
 
-import { Board as BoardType } from "@seldon/core"
-
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
@@ -21,11 +19,11 @@ import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
 import { usePendingRenameStore } from "./hooks/use-pending-rename"
 import { useRowBoard } from "./hooks/use-row-board"
 
+import type { Board as BoardType } from "@seldon/core"
+
 const BOARD_SELECTION_KIND = "board"
 
-type BoardControllerProps =
-  | { board: BoardType; show?: boolean }
-  | { emptyLabel: string }
+type BoardControllerProps = { board: BoardType; show?: boolean } | { emptyLabel: string }
 
 /**
  * View-model for a board row in the objects sidebar.
@@ -33,12 +31,11 @@ type BoardControllerProps =
  * passed for a section with no boards. Branches before any board hooks run so
  * the empty case never needs board data.
  */
-export const BoardController = memo(function BoardController(
-  props: BoardControllerProps,
-) {
+export const BoardController = memo(function BoardController(props: BoardControllerProps) {
   if ("emptyLabel" in props) {
     return <BoardEmpty label={props.emptyLabel} />
   }
+
   return <BoardRow board={props.board} show={props.show} />
 })
 
@@ -48,6 +45,7 @@ export const BoardController = memo(function BoardController(
  */
 function BoardEmpty({ label }: { label: string }) {
   const seldonRefs = { nodeLabel: { value: label, readOnly: true } }
+
   return (
     <ItemNode
       buttonIconic={null}
@@ -66,13 +64,7 @@ function BoardEmpty({ label }: { label: string }) {
  * Handles board selection, expansion, and canvas tracking. Hover highlight comes
  * from the shared hover bridge via the tree-root controller.
  */
-function BoardRow({
-  board,
-  show = true,
-}: {
-  board: BoardType
-  show?: boolean
-}) {
+function BoardRow({ board, show = true }: { board: BoardType; show?: boolean }) {
   // Core board data: buttons, icons, handlers, state
   const {
     label: baseLabel,
@@ -89,7 +81,7 @@ function BoardRow({
     isBoardSelected,
     boardIsActive,
     variants,
-  } = useRowBoard(board, { show })
+  } = useRowBoard(board)
 
   // A child node or resource is selected under this board, but the board itself
   // is not the direct selection. The row shows the subtler activated state
@@ -100,10 +92,9 @@ function BoardRow({
 
   // A create command can request that this board open its inline rename as soon
   // as its row mounts. Read the pending key once, enter edit mode, then clear it.
-  const pendingBoardKey = usePendingRenameStore(
-    (state) => state.pendingBoardKey,
-  )
+  const pendingBoardKey = usePendingRenameStore((state) => state.pendingBoardKey)
   const clearPendingRename = usePendingRenameStore((state) => state.clear)
+
   useEffect(() => {
     if (pendingBoardKey === boardKey) {
       setEditingName(true)
@@ -157,6 +148,7 @@ function BoardRow({
       ))
     : variants.map((variantId, index) => {
         const disableReordering = index === 0
+
         return (
           <NodeController
             key={variantId}
@@ -208,11 +200,7 @@ function BoardRow({
 
   return (
     <>
-      <RowSelectionTarget
-        ref={rowRef}
-        selectionId={boardKey}
-        selectionKind={BOARD_SELECTION_KIND}
-      >
+      <RowSelectionTarget ref={rowRef} selectionId={boardKey} selectionKind={BOARD_SELECTION_KIND}>
         {/* Boards have no `display` property, so the nodeDisplay slot is off
         (`buttonIconic2={null}`) and only the actions menu (`buttonIconic3`)
         renders. */}

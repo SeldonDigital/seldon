@@ -10,12 +10,13 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLSpan } from "../native-react/HTML.Span"
-import { Icon, IconProps } from "../primitives/Icon"
+import { Icon } from "../primitives/Icon"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { IconProps } from "../primitives/Icon"
+import type { HTMLAttributes } from "react"
 
 export interface ChipIconicProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -59,16 +60,8 @@ export function ChipIconic({
   )
 
   return (
-    <HTMLSpan
-      className={chipIconicClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
-      {children !== undefined ? (
-        children
-      ) : (
-        <>{iconProps !== null && <Icon {...iconProps} />}</>
-      )}
+    <HTMLSpan className={chipIconicClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+      {children !== undefined ? children : <>{iconProps !== null && <Icon {...iconProps} />}</>}
     </HTMLSpan>
   )
 }

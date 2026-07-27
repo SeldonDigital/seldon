@@ -1,5 +1,7 @@
-import { type ComputedRef, computed } from "vue"
+import { computed } from "vue"
 import { useRoute } from "vue-router"
+
+import type { ComputedRef } from "vue"
 
 /** Which top-level screen the app shows. Drives `visibleIn` menu filtering. */
 export type AppState = "project" | "edit"
@@ -12,9 +14,7 @@ export type AppState = "project" | "edit"
 export function useAppState(): { appState: ComputedRef<AppState> } {
   const route = useRoute()
 
-  const appState = computed<AppState>(() =>
-    route.path === "/" ? "project" : "edit",
-  )
+  const appState = computed<AppState>(() => (route.path === "/" ? "project" : "edit"))
 
   return { appState }
 }

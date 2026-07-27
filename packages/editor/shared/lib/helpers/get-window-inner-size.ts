@@ -5,6 +5,7 @@ export function getWindowInnerSize() {
       height: 0,
     }
   }
+
   return {
     width: window.innerWidth,
     height: window.innerHeight,

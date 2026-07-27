@@ -17,13 +17,7 @@
  * Idempotent: re-running overwrites the output file.
  */
 import { execFileSync } from "node:child_process"
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  readdirSync,
-  writeFileSync,
-} from "node:fs"
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -69,9 +63,7 @@ function readLicenseTexts(packagePath) {
   }
 
   const read = (matcher) => {
-    const match = entries.find(
-      (entry) => entry.isFile() && matcher.test(entry.name),
-    )
+    const match = entries.find((entry) => entry.isFile() && matcher.test(entry.name))
     if (!match) return ""
     try {
       return readFileSync(join(packagePath, match.name), "utf8").trim()
@@ -102,9 +94,7 @@ for (const node of nodes) {
   })
 }
 
-const sorted = [...packages.values()].sort((a, b) =>
-  a.name.localeCompare(b.name),
-)
+const sorted = [...packages.values()].sort((a, b) => a.name.localeCompare(b.name))
 
 const divider = "-".repeat(80)
 const sections = sorted.map((pkg) => {
@@ -132,6 +122,4 @@ const output = `${preamble}\n\n${divider}\n\n${sections.join(`\n\n${divider}\n\n
 mkdirSync(destDir, { recursive: true })
 writeFileSync(destFile, output, "utf8")
 
-console.log(
-  `Wrote ${sorted.length} third-party notice(s) to public/THIRD-PARTY-NOTICES.txt`,
-)
+console.log(`Wrote ${sorted.length} third-party notice(s) to public/THIRD-PARTY-NOTICES.txt`)

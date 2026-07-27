@@ -1,20 +1,15 @@
-import {
-  getHoverStateSnapshot,
-  useSetHoverState,
-} from "@app/canvas/hooks/use-canvas-hover-state"
+import { getHoverStateSnapshot, useSetHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  getComponentKey,
-  hasNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
+import { getComponentKey, hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
 
-import { Board, Instance, Variant } from "@seldon/core"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 
 import { checkInsertionPoint } from "../helpers/check-insertion-point"
+
+import type { Board, Instance, Variant } from "@seldon/core"
 
 /**
  * Hook that handles canvas hover tracking for sidebar rows (nodes).
@@ -41,17 +36,12 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
     if (!activeBoard || !nodeExistsInWorkspace) return
 
     try {
-      const nodeBoard = nodeRelationshipService.findBoardForNode(
-        node,
-        workspace,
-      )
-      if (
-        !nodeBoard ||
-        getComponentKey(nodeBoard) !== getComponentKey(activeBoard)
-      ) {
+      const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
+
+      if (!nodeBoard || getComponentKey(nodeBoard) !== getComponentKey(activeBoard)) {
         return
       }
-    } catch (error) {
+    } catch {
       // Node doesn't exist in workspace (virtual node), skip tracking
       return
     }
@@ -59,13 +49,7 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
     // Select-mode highlighting flows through the shared hover bridge now; this
     // hook only feeds component insertion previews.
     if (activeTool === "component") {
-      const insertionAllowed = checkInsertionPoint(
-        node.id,
-        "node",
-        "inside",
-        workspace,
-        activeTool,
-      )
+      const insertionAllowed = checkInsertionPoint(node.id, "node", "inside", workspace, activeTool)
 
       if (insertionAllowed) {
         setHoverState({
@@ -76,17 +60,11 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
         })
       }
     }
-  }, [
-    node,
-    activeBoard,
-    workspace,
-    activeTool,
-    setHoverState,
-    nodeExistsInWorkspace,
-  ])
+  }, [node, activeBoard, workspace, activeTool, setHoverState, nodeExistsInWorkspace])
 
   const handleCanvasTrackingLeave = useCallback(() => {
     const hoverState = getHoverStateSnapshot()
+
     if (hoverState?.objectId === node.id && hoverState?.objectType === "node") {
       setHoverState(null)
     }
@@ -128,10 +106,8 @@ export function useSidebarCanvasTrackingBoard(board: Board) {
 
   const handleCanvasTrackingLeave = useCallback(() => {
     const hoverState = getHoverStateSnapshot()
-    if (
-      hoverState?.objectId === boardKey &&
-      hoverState?.objectType === "board"
-    ) {
+
+    if (hoverState?.objectId === boardKey && hoverState?.objectType === "board") {
       setHoverState(null)
     }
   }, [boardKey, setHoverState])

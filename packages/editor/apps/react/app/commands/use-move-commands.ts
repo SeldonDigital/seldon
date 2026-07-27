@@ -2,7 +2,6 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import {
-  type MoveDirection,
   getBoardMoveIndex,
   getMoveCapabilities,
   getVariantMoveIndex,
@@ -10,8 +9,7 @@ import {
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback, useMemo } from "react"
 
-import { ComponentId } from "@seldon/core/components/constants"
-import { VariantId, invariant } from "@seldon/core/index"
+import { invariant } from "@seldon/core/index"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import {
@@ -19,6 +17,10 @@ import {
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { VariantId } from "@seldon/core/index"
+import type { MoveDirection } from "@seldon/editor/lib/commands/move-decisions"
 
 /**
  * Commands for moving the current selection. Instances move through the core
@@ -48,21 +50,22 @@ export function useMoveCommands() {
   const moveVariant = useCallback(
     (variantId: VariantId, direction: MoveDirection) => {
       const variant = nodeRetrievalService.getVariant(variantId, workspace)
+
       if (typeCheckingService.isDefaultVariant(variant)) {
         addToast("Default variant cannot be moved")
+
         return
       }
 
-      const board = nodeRelationshipService.findBoardForVariant(
-        variant,
-        workspace,
-      )
+      const board = nodeRelationshipService.findBoardForVariant(variant, workspace)
+
       invariant(board, "Board not found")
 
       const variantRootIds = getBoardVariantRootIds(board)
       const currentIndex = variantRootIds.indexOf(variantId)
       const lastIndex = variantRootIds.length - 1
       const newIndex = getVariantMoveIndex(currentIndex, lastIndex, direction)
+
       if (newIndex === null) return
 
       dispatch({
@@ -107,10 +110,7 @@ export function useMoveCommands() {
   const moveSelectionToFront = useCallback(() => move("front"), [move])
   const moveSelectionToBack = useCallback(() => move("back"), [move])
 
-  const can = useMemo(
-    () => getMoveCapabilities(workspace, selection),
-    [selection, workspace],
-  )
+  const can = useMemo(() => getMoveCapabilities(workspace, selection), [selection, workspace])
 
   return {
     moveSelectionForward,

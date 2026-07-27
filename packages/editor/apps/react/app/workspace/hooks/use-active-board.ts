@@ -22,13 +22,12 @@ export function useActiveBoard() {
       // node and board selection but must not switch the canvas. The board it
       // was showing is held in `frozenBoardKey`, so keep rendering that.
       if (workspaceSelected) {
-        return frozenBoardKey
-          ? (workspace.boards[frozenBoardKey] ?? null)
-          : null
+        return frozenBoardKey ? (workspace.boards[frozenBoardKey] ?? null) : null
       }
 
       if (selection) {
         if (isBoard(selection)) return selection
+
         return nodeRelationshipService.findBoardForNode(selection, workspace)
       }
 
@@ -49,6 +48,7 @@ export function useActiveBoard() {
       // active. The key is `${resource}:${boardKey}:${entryId}:${slot}`.
       if (selectedResourceItemKey) {
         const boardKey = selectedResourceItemKey.split(":")[1]
+
         return boardKey ? (workspace.boards[boardKey] ?? null) : null
       }
 

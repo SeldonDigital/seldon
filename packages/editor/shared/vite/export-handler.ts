@@ -1,9 +1,10 @@
-import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
-import { exportWorkspace } from "@seldon/factory/export/export-workspace"
-import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 import fs from "node:fs"
 import path from "node:path"
+import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
+import { exportWorkspace } from "@seldon/factory/export/export-workspace"
+
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 
 export type WireFile = {
   path: string
@@ -23,16 +24,18 @@ export type ExportRequestBody = {
  */
 function resolveRepoRoot(): string {
   let current = process.cwd()
+
   while (true) {
     if (fs.existsSync(path.join(current, "packages/core/icon-sets/catalog"))) {
       return current
     }
+
     const parent = path.dirname(current)
+
     if (parent === current) {
-      throw new Error(
-        "Unable to locate repository root containing packages/core.",
-      )
+      throw new Error("Unable to locate repository root containing packages/core.")
     }
+
     current = parent
   }
 }
@@ -41,6 +44,7 @@ function toWireFile(file: FileToExport): WireFile {
   if (typeof file.content === "string") {
     return { path: file.path, encoding: "utf8", content: file.content }
   }
+
   return {
     path: file.path,
     encoding: "base64",
@@ -53,9 +57,7 @@ function toWireFile(file: FileToExport): WireFile {
  * files the browser writes to the chosen folder. Reads icon and native-react
  * source from disk, so it must run in a Node context.
  */
-export async function runExport(
-  body: ExportRequestBody,
-): Promise<{ files: WireFile[] }> {
+export async function runExport(body: ExportRequestBody): Promise<{ files: WireFile[] }> {
   if (!body?.workspace) {
     throw new Error("Missing workspace in request body.")
   }

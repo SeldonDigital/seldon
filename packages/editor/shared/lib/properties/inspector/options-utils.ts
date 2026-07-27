@@ -1,14 +1,15 @@
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { ComponentId, ComponentLevel, Theme, Workspace } from "@seldon/core"
-import {
-  type PropertyPickerInput,
-  type PropertyPickerResult,
-  getPropertyPickerOptions,
-} from "@seldon/core/helpers/properties/properties-bridge"
+import { getPropertyPickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { Board, Instance, Variant } from "@seldon/core/workspace/types"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
+import type { ComponentId, ComponentLevel, Theme, Workspace } from "@seldon/core"
+import type {
+  PropertyPickerInput,
+  PropertyPickerResult,
+} from "@seldon/core/helpers/properties/properties-bridge"
+import type { Board, Instance, Variant } from "@seldon/core/workspace/types"
 
 export type { PropertyPickerResult }
 
@@ -20,8 +21,10 @@ function resolveSubjectId(
     if (isBoard(node)) {
       return getComponentKey(node)
     }
+
     return node.id
   }
+
   return componentId ?? ""
 }
 
@@ -39,8 +42,7 @@ export function generatePropertyOptions(
   // An upper paint layer parent (`gradient.1`) resolves its preset options
   // through the base key, so every layer offers the same theme presets.
   const parsedPath = parsePropertyPath(property.key)
-  const optionPath =
-    parsedPath.kind === "layered-parent" ? parsedPath.root : property.key
+  const optionPath = parsedPath.kind === "layered-parent" ? parsedPath.root : property.key
 
   const input: PropertyPickerInput = {
     path: optionPath,

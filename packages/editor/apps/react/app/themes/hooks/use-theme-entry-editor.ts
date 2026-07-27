@@ -1,33 +1,33 @@
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { useCallback, useMemo } from "react"
 
-import {
-  type BoardKey,
-  Colorspace,
-  type HSL,
-  type Harmony,
-  type LookSection,
-  type Ratio,
-  type ScaleTokenInput,
-  type ScaleTokenSection,
-  type ThemeBorderWidthId,
-  type ThemeCustomSwatchId,
-  type ThemeCustomTokenSection,
-  type ThemeDimensionId,
-  type ThemeFontFamilyId,
-  type ThemeFontId,
-  type ThemeFontSizeId,
-  type ThemeLineHeightId,
-  type ThemeMode,
-  type ThemeSizeId,
-  type ThemeSpacingId,
-  type WorkspaceAction,
-  buildEmptyCustomTokenPayload,
-} from "@seldon/core"
+import { Colorspace, buildEmptyCustomTokenPayload } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
+
+import type {
+  BoardKey,
+  HSL,
+  Harmony,
+  LookSection,
+  Ratio,
+  ScaleTokenInput,
+  ScaleTokenSection,
+  ThemeBorderWidthId,
+  ThemeCustomSwatchId,
+  ThemeCustomTokenSection,
+  ThemeDimensionId,
+  ThemeFontFamilyId,
+  ThemeFontId,
+  ThemeFontSizeId,
+  ThemeLineHeightId,
+  ThemeMode,
+  ThemeSizeId,
+  ThemeSpacingId,
+  WorkspaceAction,
+} from "@seldon/core"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 
 /** Metadata fields an authored theme can edit from the properties panel. */
@@ -38,6 +38,7 @@ function mergeRecord(
   patch: Record<string, unknown>,
 ): Record<string, unknown> {
   const next = { ...base }
+
   for (const [key, value] of Object.entries(patch)) {
     if (
       value &&
@@ -55,6 +56,7 @@ function mergeRecord(
       next[key] = value
     }
   }
+
   return next
 }
 
@@ -63,6 +65,7 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
 
   const theme = useMemo(() => {
     if (!themeEntryId) return null
+
     return getComputedTheme(themeEntryId, workspace)
   }, [themeEntryId, workspace])
 
@@ -98,14 +101,13 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
   /** Board key that owns this theme entry, used for board-level metadata edits. */
   const boardKey = useMemo<BoardKey | undefined>(() => {
     if (!themeEntryId) return undefined
+
     for (const [key, board] of Object.entries(workspace.boards)) {
-      if (
-        isThemeBoard(board) &&
-        board.variants.some((variant) => variant.id === themeEntryId)
-      ) {
+      if (isThemeBoard(board) && board.variants.some((variant) => variant.id === themeEntryId)) {
         return key as BoardKey
       }
     }
+
     return undefined
   }, [workspace, themeEntryId])
 
@@ -116,6 +118,7 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
   const setMetadataValue = useCallback(
     (field: ThemeMetadataField, value: string) => {
       if (!themeEntryId) return
+
       // Name and author are the theme's identity, owned by the board. The board
       // label is the theme name shown and renamed in the objects sidebar.
       if (field === "name") {
@@ -124,16 +127,20 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
           type: "set_board_label",
           payload: { boardKey, label: value },
         })
+
         return
       }
+
       if (field === "author") {
         if (!boardKey) return
         dispatch({
           type: "set_board_author",
           payload: { boardKey, author: value },
         })
+
         return
       }
+
       setOverride(`metadata.${field}`, value)
     },
     [dispatch, themeEntryId, boardKey, setOverride],
@@ -143,16 +150,21 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
   const resetMetadataValue = useCallback(
     (field: ThemeMetadataField) => {
       if (!themeEntryId) return
+
       if (field === "name") {
         if (!boardKey) return
         dispatch({ type: "reset_board_label", payload: { boardKey } })
+
         return
       }
+
       if (field === "author") {
         if (!boardKey) return
         dispatch({ type: "reset_board_author", payload: { boardKey } })
+
         return
       }
+
       resetOverride(`metadata.${field}`)
     },
     [dispatch, themeEntryId, boardKey, resetOverride],
@@ -162,12 +174,14 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     (path: string, patch: Record<string, unknown>) => {
       if (!themeEntryId) return
       const entry = workspace.themes[themeEntryId]
+
       if (!entry) return
       const merged = getThemeOverrides(entry, workspace)
       const current =
         (getOverrideAtPath(merged as Record<string, unknown>, path) as
           | Record<string, unknown>
           | undefined) ?? {}
+
       setOverride(path, mergeRecord(current, patch))
     },
     [setOverride, themeEntryId, workspace],
@@ -222,6 +236,7 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
         key === "chromaChange" || key === "lightnessChange"
           ? "displayMode.parameters"
           : "colorHarmony.parameters"
+
       mergeOverride(section, { [key]: value })
     },
     [mergeOverride],

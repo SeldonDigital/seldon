@@ -12,10 +12,9 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { Frame } from "@seldon/components/frames/Frame"
 import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { type ReactElement, memo } from "react"
+import { memo } from "react"
 
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
-import type { EntryNode } from "@seldon/core/workspace/types"
 
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
@@ -24,6 +23,9 @@ import { useRenameInput } from "../hooks/use-rename-input"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { useRowDisplayPicker } from "./hooks/use-row-display-picker"
 import { useRowNode } from "./hooks/use-row-node"
+
+import type { EntryNode } from "@seldon/core/workspace/types"
+import type { ReactElement } from "react"
 
 const NODE_SELECTION_KIND = "node"
 
@@ -123,8 +125,7 @@ const NodeInner = function NodeInner({
     resolveIcon: resolveDisplayOptionIcon,
   })
 
-  const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
-    useSidebarCanvasTracking(node)
+  const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } = useSidebarCanvasTracking(node)
 
   // Display shows the row label (which may be a transformed code name), but
   // inline rename always edits and commits the underlying node label.
@@ -138,10 +139,7 @@ const NodeInner = function NodeInner({
 
   const dataTestId = `object-panel-node-${node.id}`
   const dataNodeId = node.id
-  const dataDisplay =
-    properties && "display" in properties
-      ? properties.display?.value
-      : undefined
+  const dataDisplay = properties && "display" in properties ? properties.display?.value : undefined
 
   // Expand a repeated child into its index-0 row plus stripped echo rows.
   function renderChildRows(childNodeId: string): ReactElement[] {
@@ -157,9 +155,8 @@ const NodeInner = function NodeInner({
     )
 
     const childNode = workspace.nodes[childNodeId]
-    const repeat = childNode
-      ? resolveNodeRepeat(childNodeId, workspace)
-      : undefined
+    const repeat = childNode ? resolveNodeRepeat(childNodeId, workspace) : undefined
+
     if (!repeat || repeat.count <= 1) return [indexZeroRow]
 
     const total = Math.min(repeat.count, MAX_REPEAT_COUNT)
@@ -168,8 +165,10 @@ const NodeInner = function NodeInner({
 
     const hasSummary = echoCount > shownEchoes
     const rows: ReactElement[] = [indexZeroRow]
+
     for (let echoIndex = 1; echoIndex <= shownEchoes; echoIndex++) {
       const echoKey = `${childNodeId}#echo${echoIndex}`
+
       rows.push(
         <NodeController
           key={echoKey}
@@ -181,15 +180,13 @@ const NodeInner = function NodeInner({
         />,
       )
     }
+
     if (hasSummary) {
       const summaryCount = echoCount - shownEchoes
-      rows.push(
-        <RepeatEchoSummaryRow
-          key={`${childNodeId}#more`}
-          count={summaryCount}
-        />,
-      )
+
+      rows.push(<RepeatEchoSummaryRow key={`${childNodeId}#more`} count={summaryCount} />)
     }
+
     return rows
   }
 
@@ -208,11 +205,7 @@ const NodeInner = function NodeInner({
     ...icon,
     style: {
       transition: "transform 0.2s ease",
-      ...(hasChildren
-        ? isExpanded
-          ? { transform: "rotate(90deg)" }
-          : {}
-        : { opacity: 0 }),
+      ...(hasChildren ? (isExpanded ? { transform: "rotate(90deg)" } : {}) : { opacity: 0 }),
     },
   }
 
@@ -241,9 +234,7 @@ const NodeInner = function NodeInner({
   // Show Node Types debug tint. Applied inline to the icon and label refs only,
   // so it wins over the field's selection and state cascade there while leaving
   // the disclosure arrow, buttons, border, and background untinted.
-  const nodeTypeStyle = nodeTypeColor
-    ? { style: { color: nodeTypeColor } }
-    : undefined
+  const nodeTypeStyle = nodeTypeColor ? { style: { color: nodeTypeColor } } : undefined
 
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
@@ -251,20 +242,8 @@ const NodeInner = function NodeInner({
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
-    nodeIcon: mergeStateProps(
-      icon2,
-      disabledRef,
-      dimRef,
-      nodeTypeStyle,
-      invalidRef,
-    ),
-    nodeLabel: mergeStateProps(
-      nodeLabel,
-      disabledRef,
-      dimRef,
-      nodeTypeStyle,
-      invalidRef,
-    ),
+    nodeIcon: mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef),
+    nodeLabel: mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef),
     nodeDisplay: { ...displayPicker.buttonProps },
     nodeActions: { ...actionsMenu.buttonIconic },
   }
@@ -287,15 +266,11 @@ const NodeInner = function NodeInner({
   const echoFieldProps = buildRepeatFieldStyleProps(isEcho)
   const comboboxFieldStyle = {
     ...(echoFieldProps.style ?? {}),
-    ...(sharedHighlightBackground
-      ? { backgroundColor: sharedHighlightBackground }
-      : {}),
+    ...(sharedHighlightBackground ? { backgroundColor: sharedHighlightBackground } : {}),
   }
   const comboboxField = {
     ...buildFieldStateProps({ selected: isSelected }),
-    ...(Object.keys(comboboxFieldStyle).length > 0
-      ? { style: comboboxFieldStyle }
-      : {}),
+    ...(Object.keys(comboboxFieldStyle).length > 0 ? { style: comboboxFieldStyle } : {}),
   }
 
   // Echo rows are stripped leaves with no display of their own, so their

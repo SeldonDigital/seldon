@@ -1,5 +1,6 @@
 import { ValueType } from "@seldon/core/properties"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
 
 /** Read-only metadata fields shared by themes and font collections. */
 export interface MetadataInput {
@@ -44,18 +45,9 @@ function createMetadataRow(
  * do not. Rows are read-only unless `editable` is set, which authored themes use
  * to let the user edit their own name, description, intent, and author.
  */
-export function buildMetadataProperties(
-  metadata: MetadataInput,
-  editable = false,
-): FlatProperty[] {
+export function buildMetadataProperties(metadata: MetadataInput, editable = false): FlatProperty[] {
   const rows: FlatProperty[] = [
-    createMetadataRow(
-      "name",
-      "Name",
-      metadata.name,
-      "material-style",
-      editable,
-    ),
+    createMetadataRow("name", "Name", metadata.name, "material-style", editable),
     createMetadataRow(
       "description",
       "Description",
@@ -63,24 +55,12 @@ export function buildMetadataProperties(
       "material-article",
       editable,
     ),
-    createMetadataRow(
-      "intent",
-      "Intent",
-      metadata.intent,
-      "material-article",
-      editable,
-    ),
+    createMetadataRow("intent", "Intent", metadata.intent, "material-article", editable),
   ]
 
   if (metadata.author) {
     rows.push(
-      createMetadataRow(
-        "author",
-        "Author",
-        metadata.author,
-        "material-attribution",
-        editable,
-      ),
+      createMetadataRow("author", "Author", metadata.author, "material-attribution", editable),
     )
   }
 

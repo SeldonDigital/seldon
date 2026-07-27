@@ -10,7 +10,8 @@ import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helper
 
 import { PanelDialogController } from "../PanelDialogController"
 import { useStockCatalog } from "../hooks/use-stock-catalog"
-import { CatalogDialogItem } from "../types"
+
+import type { CatalogDialogItem } from "../types"
 
 const FONT_COLLECTION_ICON = "material-fontDownload"
 
@@ -23,10 +24,7 @@ export function FontCollectionsDialog() {
   const { workspace } = useWorkspace()
   const { addFontCollection } = useAddRemoveCommands()
 
-  const currentBoards = useMemo(
-    () => Object.keys(workspace.boards),
-    [workspace],
-  )
+  const currentBoards = useMemo(() => Object.keys(workspace.boards), [workspace])
 
   const items = useMemo<CatalogDialogItem[]>(
     () =>

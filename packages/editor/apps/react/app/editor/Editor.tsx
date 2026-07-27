@@ -4,7 +4,6 @@ import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { Frame } from "@seldon/components/frames/Frame"
 import { Allotment, LayoutPriority } from "allotment"
-import { CSSProperties } from "react"
 
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
@@ -21,6 +20,8 @@ import { HariController } from "../palettes/hari/HariController"
 import { ObjectsSidebar } from "../sidebars/objects/ObjectsSidebar"
 import { PropertiesSidebar } from "../sidebars/properties/PropertiesSidebar"
 import { EditorCrossfade } from "./EditorCrossfade.bespoke"
+
+import type { CSSProperties } from "react"
 
 export default function Editor() {
   const { showPanels } = useEditorConfig()
@@ -92,5 +93,6 @@ const styles: Record<string, CSSProperties> = {
 
 const EditorShortcuts = () => {
   useEditorShortcuts()
+
   return null
 }

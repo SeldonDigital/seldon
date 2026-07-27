@@ -10,12 +10,13 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface CalendarDayTodayProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -70,10 +71,7 @@ export function CalendarDayToday({
   seldonRefs,
   ...props
 }: CalendarDayTodayProps) {
-  const calendarDayTodayClassName = combineClassNames(
-    "sdn-calendar-day-today",
-    className,
-  )
+  const calendarDayTodayClassName = combineClassNames("sdn-calendar-day-today", className)
   const textLabelProps = applyRef(
     seldonRefs,
     textLabel === null
@@ -81,10 +79,7 @@ export function CalendarDayToday({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 

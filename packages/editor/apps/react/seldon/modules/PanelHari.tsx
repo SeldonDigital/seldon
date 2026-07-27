@@ -10,21 +10,31 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
-import { ButtonToggle, ButtonToggleProps } from "../elements/ButtonToggle"
-import { Chip, ChipProps } from "../elements/Chip"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { ButtonMenu } from "../elements/ButtonMenu"
+import { ButtonToggle } from "../elements/ButtonToggle"
+import { Chip } from "../elements/Chip"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar, BarProps } from "../parts/Bar"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
-import { Textarea, TextareaProps } from "../primitives/Textarea"
+import { Bar } from "../parts/Bar"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextTitle } from "../primitives/TextTitle"
+import { Textarea } from "../primitives/Textarea"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ButtonMenuProps } from "../elements/ButtonMenu"
+import type { ButtonToggleProps } from "../elements/ButtonToggle"
+import type { ChipProps } from "../elements/Chip"
+import type { FrameProps } from "../frames/Frame"
+import type { BarProps } from "../parts/Bar"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { TextareaProps } from "../primitives/Textarea"
+import type { HTMLAttributes } from "react"
 
 export interface PanelHariProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -127,10 +137,7 @@ export function PanelHari({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const frameProps = applyRef(
@@ -150,10 +157,7 @@ export function PanelHari({
       : {
           ...sdn.buttonToggle,
           ...buttonToggle,
-          className: combineClassNames(
-            sdn.buttonToggle?.className,
-            buttonToggle?.className,
-          ),
+          className: combineClassNames(sdn.buttonToggle?.className, buttonToggle?.className),
         },
   )
   const iconProps = applyRef(
@@ -173,10 +177,7 @@ export function PanelHari({
       : {
           ...sdn.buttonToggle2,
           ...buttonToggle2,
-          className: combineClassNames(
-            sdn.buttonToggle2?.className,
-            buttonToggle2?.className,
-          ),
+          className: combineClassNames(sdn.buttonToggle2?.className, buttonToggle2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -196,10 +197,7 @@ export function PanelHari({
       : {
           ...sdn.buttonToggle3,
           ...buttonToggle3,
-          className: combineClassNames(
-            sdn.buttonToggle3?.className,
-            buttonToggle3?.className,
-          ),
+          className: combineClassNames(sdn.buttonToggle3?.className, buttonToggle3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -219,10 +217,7 @@ export function PanelHari({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon4Props = applyRef(
@@ -242,10 +237,7 @@ export function PanelHari({
       : {
           ...sdn.buttonIconic2,
           ...buttonIconic2,
-          className: combineClassNames(
-            sdn.buttonIconic2?.className,
-            buttonIconic2?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic2?.className, buttonIconic2?.className),
         },
   )
   const icon5Props = applyRef(
@@ -265,10 +257,7 @@ export function PanelHari({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const frame3Props = applyRef(
@@ -278,10 +267,7 @@ export function PanelHari({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const textareaProps = applyRef(
@@ -291,10 +277,7 @@ export function PanelHari({
       : {
           ...sdn.textarea,
           ...textarea,
-          className: combineClassNames(
-            sdn.textarea?.className,
-            textarea?.className,
-          ),
+          className: combineClassNames(sdn.textarea?.className, textarea?.className),
         },
   )
   const frame4Props = applyRef(
@@ -304,10 +287,7 @@ export function PanelHari({
       : {
           ...sdn.frame4,
           ...frame4,
-          className: combineClassNames(
-            sdn.frame4?.className,
-            frame4?.className,
-          ),
+          className: combineClassNames(sdn.frame4?.className, frame4?.className),
         },
   )
   const frame5Props = applyRef(
@@ -317,10 +297,7 @@ export function PanelHari({
       : {
           ...sdn.frame5,
           ...frame5,
-          className: combineClassNames(
-            sdn.frame5?.className,
-            frame5?.className,
-          ),
+          className: combineClassNames(sdn.frame5?.className, frame5?.className),
         },
   )
   const buttonMenuProps = applyRef(
@@ -330,10 +307,7 @@ export function PanelHari({
       : {
           ...sdn.buttonMenu,
           ...buttonMenu,
-          className: combineClassNames(
-            sdn.buttonMenu?.className,
-            buttonMenu?.className,
-          ),
+          className: combineClassNames(sdn.buttonMenu?.className, buttonMenu?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -343,10 +317,7 @@ export function PanelHari({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const icon6Props = applyRef(
@@ -366,10 +337,7 @@ export function PanelHari({
       : {
           ...sdn.buttonMenu2,
           ...buttonMenu2,
-          className: combineClassNames(
-            sdn.buttonMenu2?.className,
-            buttonMenu2?.className,
-          ),
+          className: combineClassNames(sdn.buttonMenu2?.className, buttonMenu2?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -379,10 +347,7 @@ export function PanelHari({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const icon7Props = applyRef(
@@ -412,10 +377,7 @@ export function PanelHari({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const buttonIconic3Props = applyRef(
@@ -425,10 +387,7 @@ export function PanelHari({
       : {
           ...sdn.buttonIconic3,
           ...buttonIconic3,
-          className: combineClassNames(
-            sdn.buttonIconic3?.className,
-            buttonIconic3?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic3?.className, buttonIconic3?.className),
         },
   )
   const icon8Props = applyRef(
@@ -483,25 +442,19 @@ export function PanelHari({
             <Frame {...frame5Props}>
               {buttonMenu && buttonMenuProps && (
                 <ButtonMenu {...buttonMenuProps}>
-                  {textLabel && textLabelProps && (
-                    <TextLabel {...textLabelProps} />
-                  )}
+                  {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                   {icon6 && icon6Props && <Icon {...icon6Props} />}
                 </ButtonMenu>
               )}
               {buttonMenu2 && buttonMenu2Props && (
                 <ButtonMenu {...buttonMenu2Props}>
-                  {textLabel2 && textLabel2Props && (
-                    <TextLabel {...textLabel2Props} />
-                  )}
+                  {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
                   {icon7 && icon7Props && <Icon {...icon7Props} />}
                 </ButtonMenu>
               )}
               {chip && chipProps && (
                 <Chip {...chipProps}>
-                  {textLabel3 && textLabel3Props && (
-                    <TextLabel {...textLabel3Props} />
-                  )}
+                  {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
                 </Chip>
               )}
               {buttonIconic3 && buttonIconic3Props && (

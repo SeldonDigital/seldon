@@ -1,7 +1,6 @@
 import { usePanelStore } from "@app/editor/panel-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
-import type { ImageUploadTarget } from "@seldon/editor/lib/dialogs/image-upload-target"
 import { convertBlobToBase64 } from "@seldon/editor/lib/helpers/convert-blob-to-base64"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
@@ -11,6 +10,8 @@ import { BackgroundKind, ValueType } from "@seldon/core/properties"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 import { useImageUploadStore } from "./image-upload-store"
+
+import type { ImageUploadTarget } from "@seldon/editor/lib/dialogs/image-upload-target"
 
 type UploadStatus = "idle" | "pending" | "success" | "error"
 
@@ -35,14 +36,18 @@ export function useImageUploadPanel() {
 
   function setProperties(properties: Record<string, unknown>): void {
     const subject = selectedItem.value
+
     if (!subject) return
+
     if (isBoard(subject)) {
       dispatch({
         type: "set_component_properties",
         payload: { boardKey: getComponentKey(subject), properties },
       } as never)
+
       return
     }
+
     dispatch({
       type: "set_node_properties",
       payload: { nodeId: subject.id, properties },
@@ -68,9 +73,12 @@ export function useImageUploadPanel() {
   async function save(): Promise<void> {
     if (!currentFile.value) return
     status.value = "pending"
+
     try {
       const url = await convertBlobToBase64(currentFile.value)
+
       status.value = "success"
+
       if (property.value === "source") {
         setProperties({ source: { type: ValueType.EXACT, value: url } })
       } else if (property.value === "background-image") {
@@ -85,6 +93,7 @@ export function useImageUploadPanel() {
           ],
         })
       }
+
       close()
     } catch {
       status.value = "error"

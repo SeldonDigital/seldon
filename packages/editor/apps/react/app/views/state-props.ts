@@ -1,5 +1,5 @@
-import { InputProps } from "@seldon/components/primitives/Input"
-import { CSSProperties, Ref } from "react"
+import type { InputProps } from "@seldon/components/primitives/Input"
+import type { CSSProperties, Ref } from "react"
 
 /**
  * Editing-field outline for inline rename/value inputs. The generated input
@@ -92,14 +92,14 @@ export function buildEditingRefProps(editing?: boolean): {
  * together (later fragments win per property), and lets later fragments win
  * other keys, so the state props compose instead of clobbering each other.
  */
-export function mergeStateProps(
-  ...parts: Array<object | undefined>
-): Record<string, unknown> {
+export function mergeStateProps(...parts: Array<object | undefined>): Record<string, unknown> {
   const merged: Record<string, unknown> = {}
   const classes: string[] = []
   let style: CSSProperties | undefined
+
   for (const part of parts) {
     if (!part) continue
+
     for (const [key, value] of Object.entries(part)) {
       if (key === "className") {
         if (typeof value === "string" && value) classes.push(value)
@@ -110,8 +110,10 @@ export function mergeStateProps(
       }
     }
   }
+
   if (classes.length > 0) merged.className = classes.join(" ")
   if (style) merged.style = style
+
   return merged
 }
 
@@ -141,9 +143,7 @@ export function buildActivatedRefProps(activated?: boolean): {
   className?: string
   style?: CSSProperties
 } {
-  return activated
-    ? { className: "sdn-state-activated", style: ACTIVATED_TINT_ONLY }
-    : {}
+  return activated ? { className: "sdn-state-activated", style: ACTIVATED_TINT_ONLY } : {}
 }
 
 /**

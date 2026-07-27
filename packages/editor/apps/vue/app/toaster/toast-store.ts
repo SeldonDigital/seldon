@@ -13,6 +13,7 @@ export const useToastStore = defineStore("toast", () => {
 
   function addToast(message: string): void {
     const id = crypto.randomUUID()
+
     toasts.value = [...toasts.value, { id, message }]
     setTimeout(() => removeToast(id), 5000)
   }

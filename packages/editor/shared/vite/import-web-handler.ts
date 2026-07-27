@@ -1,5 +1,6 @@
-import type { FileToExport } from "@seldon/factory/export/types"
 import { runImportWeb } from "@seldon/factory/import/web"
+
+import type { FileToExport } from "@seldon/factory/export/types"
 
 export type WireFile = {
   path: string
@@ -32,6 +33,7 @@ function toWireFile(file: FileToExport): WireFile {
   if (typeof file.content === "string") {
     return { path: file.path, encoding: "utf8", content: file.content }
   }
+
   return {
     path: file.path,
     encoding: "base64",
@@ -44,13 +46,13 @@ function toWireFile(file: FileToExport): WireFile {
  * the browser writes to the chosen folder, plus a run summary. Fetches and
  * parses the page with happy-dom, so it must run in a Node context.
  */
-export async function runImportWebHandler(
-  body: ImportWebRequestBody,
-): Promise<ImportWebResponse> {
+export async function runImportWebHandler(body: ImportWebRequestBody): Promise<ImportWebResponse> {
   const url = body?.url?.trim()
+
   if (!url) {
     throw new Error("Missing url in request body.")
   }
+
   if (!/^https?:\/\//i.test(url)) {
     throw new Error("Url must start with http:// or https://.")
   }
@@ -60,6 +62,7 @@ export async function runImportWebHandler(
   const result = await runImportWeb(url, {
     classify: { model: AI_MODEL, host: OLLAMA_HOST },
   })
+
   return {
     files: result.files.map(toWireFile),
     summary: result.summary,

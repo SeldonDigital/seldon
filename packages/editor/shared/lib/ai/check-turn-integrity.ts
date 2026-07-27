@@ -17,6 +17,7 @@ function missingKeys(
   after: Record<string, unknown> | undefined,
 ): string[] {
   const next = after ?? {}
+
   return Object.keys(before ?? {}).filter((key) => !(key in next))
 }
 
@@ -35,6 +36,7 @@ export function checkTurnIntegrity(
   actions: WorkspaceAction[],
 ): IntegrityResult {
   const removedBoards = missingKeys(before.boards, after.boards)
+
   if (removedBoards.length > 0) {
     return {
       ok: false,
@@ -43,9 +45,8 @@ export function checkTurnIntegrity(
   }
 
   const removedNodes = missingKeys(before.nodes, after.nodes)
-  const hasRemoval = actions.some((action) =>
-    NODE_REMOVING_ACTION_TYPES.has(action.type),
-  )
+  const hasRemoval = actions.some((action) => NODE_REMOVING_ACTION_TYPES.has(action.type))
+
   if (removedNodes.length > 0 && !hasRemoval) {
     return {
       ok: false,

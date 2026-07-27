@@ -2,8 +2,9 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useImportExport } from "@app/io/use-import-export"
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
-import type { PlatformId } from "@seldon/factory/export/types"
 import { useCallback, useState } from "react"
+
+import type { PlatformId } from "@seldon/factory/export/types"
 
 /** Platforms shown in the dialog picker, in registry order. */
 export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
@@ -30,9 +31,7 @@ export function useExportComponentsPanel() {
   const [allFonts, setAllFonts] = useState(true)
   const [fontLinks, setFontLinks] = useState(false)
   const [allIcons, setAllIcons] = useState(true)
-  const [directory, setDirectory] = useState<FileSystemDirectoryHandle | null>(
-    null,
-  )
+  const [directory, setDirectory] = useState<FileSystemDirectoryHandle | null>(null)
 
   const reset = useCallback(() => {
     setPlatform("react")
@@ -51,6 +50,7 @@ export function useExportComponentsPanel() {
 
   const chooseDirectory = useCallback(async () => {
     const picked = await pickExportDirectory()
+
     if (picked) setDirectory(picked)
   }, [])
 

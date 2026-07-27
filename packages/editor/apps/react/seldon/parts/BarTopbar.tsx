@@ -10,16 +10,22 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
-import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Image, ImageProps } from "../primitives/Image"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { ButtonMenu } from "../elements/ButtonMenu"
+import { ButtonSimple } from "../elements/ButtonSimple"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { Image } from "../primitives/Image"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonMenuProps } from "../elements/ButtonMenu"
+import type { ButtonSimpleProps } from "../elements/ButtonSimple"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { ImageProps } from "../primitives/Image"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -114,10 +120,7 @@ export function BarTopbar({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const imageProps = applyRef(
@@ -137,10 +140,7 @@ export function BarTopbar({
       : {
           ...sdn.image2,
           ...image2,
-          className: combineClassNames(
-            sdn.image2?.className,
-            image2?.className,
-          ),
+          className: combineClassNames(sdn.image2?.className, image2?.className),
         },
   )
   const frame3Props = applyRef(
@@ -150,10 +150,7 @@ export function BarTopbar({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const buttonSimpleProps = applyRef(
@@ -163,10 +160,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonSimple,
           ...buttonSimple,
-          className: combineClassNames(
-            sdn.buttonSimple?.className,
-            buttonSimple?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -176,10 +170,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const buttonSimple2Props = applyRef(
@@ -189,10 +180,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonSimple2,
           ...buttonSimple2,
-          className: combineClassNames(
-            sdn.buttonSimple2?.className,
-            buttonSimple2?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple2?.className, buttonSimple2?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -202,10 +190,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const buttonSimple3Props = applyRef(
@@ -215,10 +200,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonSimple3,
           ...buttonSimple3,
-          className: combineClassNames(
-            sdn.buttonSimple3?.className,
-            buttonSimple3?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple3?.className, buttonSimple3?.className),
         },
   )
   const textLabel3Props = applyRef(
@@ -228,10 +210,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const buttonSimple4Props = applyRef(
@@ -241,10 +220,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonSimple4,
           ...buttonSimple4,
-          className: combineClassNames(
-            sdn.buttonSimple4?.className,
-            buttonSimple4?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple4?.className, buttonSimple4?.className),
         },
   )
   const textLabel4Props = applyRef(
@@ -254,10 +230,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const buttonSimple5Props = applyRef(
@@ -267,10 +240,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonSimple5,
           ...buttonSimple5,
-          className: combineClassNames(
-            sdn.buttonSimple5?.className,
-            buttonSimple5?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple5?.className, buttonSimple5?.className),
         },
   )
   const textLabel5Props = applyRef(
@@ -280,10 +250,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
   const buttonSimple6Props = applyRef(
@@ -293,10 +260,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonSimple6,
           ...buttonSimple6,
-          className: combineClassNames(
-            sdn.buttonSimple6?.className,
-            buttonSimple6?.className,
-          ),
+          className: combineClassNames(sdn.buttonSimple6?.className, buttonSimple6?.className),
         },
   )
   const textLabel6Props = applyRef(
@@ -306,10 +270,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel6,
           ...textLabel6,
-          className: combineClassNames(
-            sdn.textLabel6?.className,
-            textLabel6?.className,
-          ),
+          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
         },
   )
   const frame4Props = applyRef(
@@ -319,10 +280,7 @@ export function BarTopbar({
       : {
           ...sdn.frame4,
           ...frame4,
-          className: combineClassNames(
-            sdn.frame4?.className,
-            frame4?.className,
-          ),
+          className: combineClassNames(sdn.frame4?.className, frame4?.className),
         },
   )
   const buttonMenuProps = applyRef(
@@ -332,10 +290,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonMenu,
           ...buttonMenu,
-          className: combineClassNames(
-            sdn.buttonMenu?.className,
-            buttonMenu?.className,
-          ),
+          className: combineClassNames(sdn.buttonMenu?.className, buttonMenu?.className),
         },
   )
   const textLabel7Props = applyRef(
@@ -345,10 +300,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel7,
           ...textLabel7,
-          className: combineClassNames(
-            sdn.textLabel7?.className,
-            textLabel7?.className,
-          ),
+          className: combineClassNames(sdn.textLabel7?.className, textLabel7?.className),
         },
   )
   const iconProps = applyRef(
@@ -368,10 +320,7 @@ export function BarTopbar({
       : {
           ...sdn.buttonMenu2,
           ...buttonMenu2,
-          className: combineClassNames(
-            sdn.buttonMenu2?.className,
-            buttonMenu2?.className,
-          ),
+          className: combineClassNames(sdn.buttonMenu2?.className, buttonMenu2?.className),
         },
   )
   const textLabel8Props = applyRef(
@@ -381,10 +330,7 @@ export function BarTopbar({
       : {
           ...sdn.textLabel8,
           ...textLabel8,
-          className: combineClassNames(
-            sdn.textLabel8?.className,
-            textLabel8?.className,
-          ),
+          className: combineClassNames(sdn.textLabel8?.className, textLabel8?.className),
         },
   )
   const icon2Props = applyRef(
@@ -417,44 +363,32 @@ export function BarTopbar({
             <Frame {...frame3Props}>
               {buttonSimple && buttonSimpleProps && (
                 <ButtonSimple {...buttonSimpleProps}>
-                  {textLabel && textLabelProps && (
-                    <TextLabel {...textLabelProps} />
-                  )}
+                  {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                 </ButtonSimple>
               )}
               {buttonSimple2 && buttonSimple2Props && (
                 <ButtonSimple {...buttonSimple2Props}>
-                  {textLabel2 && textLabel2Props && (
-                    <TextLabel {...textLabel2Props} />
-                  )}
+                  {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
                 </ButtonSimple>
               )}
               {buttonSimple3 && buttonSimple3Props && (
                 <ButtonSimple {...buttonSimple3Props}>
-                  {textLabel3 && textLabel3Props && (
-                    <TextLabel {...textLabel3Props} />
-                  )}
+                  {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
                 </ButtonSimple>
               )}
               {buttonSimple4 && buttonSimple4Props && (
                 <ButtonSimple {...buttonSimple4Props}>
-                  {textLabel4 && textLabel4Props && (
-                    <TextLabel {...textLabel4Props} />
-                  )}
+                  {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
                 </ButtonSimple>
               )}
               {buttonSimple5 && buttonSimple5Props && (
                 <ButtonSimple {...buttonSimple5Props}>
-                  {textLabel5 && textLabel5Props && (
-                    <TextLabel {...textLabel5Props} />
-                  )}
+                  {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
                 </ButtonSimple>
               )}
               {buttonSimple6 && buttonSimple6Props && (
                 <ButtonSimple {...buttonSimple6Props}>
-                  {textLabel6 && textLabel6Props && (
-                    <TextLabel {...textLabel6Props} />
-                  )}
+                  {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
                 </ButtonSimple>
               )}
             </Frame>
@@ -462,17 +396,13 @@ export function BarTopbar({
           <Frame {...frame4Props}>
             {buttonMenu && buttonMenuProps && (
               <ButtonMenu {...buttonMenuProps}>
-                {textLabel7 && textLabel7Props && (
-                  <TextLabel {...textLabel7Props} />
-                )}
+                {textLabel7 && textLabel7Props && <TextLabel {...textLabel7Props} />}
                 {icon && iconProps && <Icon {...iconProps} />}
               </ButtonMenu>
             )}
             {buttonMenu2 && buttonMenu2Props && (
               <ButtonMenu {...buttonMenu2Props}>
-                {textLabel8 && textLabel8Props && (
-                  <TextLabel {...textLabel8Props} />
-                )}
+                {textLabel8 && textLabel8Props && <TextLabel {...textLabel8Props} />}
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
               </ButtonMenu>
             )}

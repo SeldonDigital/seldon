@@ -1,28 +1,20 @@
-import {
-  type VariantSelection,
-  deriveVariantPreset,
-  isVariantEnabled,
-} from "@seldon/core/font-collections"
-import type { ComputedFontCollection } from "@seldon/core/font-collections/types"
-import {
-  fontVariantDisplayLabel,
-  sortFontVariants,
-} from "@seldon/core/helpers/utils/font-variant"
+import { deriveVariantPreset, isVariantEnabled } from "@seldon/core/font-collections"
+import { fontVariantDisplayLabel, sortFontVariants } from "@seldon/core/helpers/utils/font-variant"
 import { iconLabels } from "@seldon/core/icon-sets"
+import { categorySubcategories, iconCategories } from "@seldon/core/icon-sets/constants"
 import {
-  type IconCategory,
-  categorySubcategories,
-  iconCategories,
-} from "@seldon/core/icon-sets/constants"
-import {
-  type IconInclusion,
   deriveSubcategoryPreset,
   getIconsInSubcategory,
   isIconIncluded,
 } from "@seldon/core/icon-sets/helpers"
-import type { ComputedIconSet } from "@seldon/core/icon-sets/types"
 import { capitalize } from "@seldon/core/themes/helpers/capitalize"
 import { getFontLicenseHref } from "../font-collections/font-license"
+
+import type { VariantSelection } from "@seldon/core/font-collections"
+import type { ComputedFontCollection } from "@seldon/core/font-collections/types"
+import type { IconCategory } from "@seldon/core/icon-sets/constants"
+import type { IconInclusion } from "@seldon/core/icon-sets/helpers"
+import type { ComputedIconSet } from "@seldon/core/icon-sets/types"
 
 /** All/None/Custom preset options for a resource parent row. */
 const PRESET_OPTIONS = [
@@ -101,6 +93,7 @@ export function buildFontCollectionRows(
     }
 
     const preset = deriveVariantPreset(slotSelection, variants)
+
     if (preset === "none" && !showUnusedFonts) continue
 
     rows.push({
@@ -118,6 +111,7 @@ export function buildFontCollectionRows(
 
     for (const variant of sortFontVariants(variants)) {
       const enabled = isVariantEnabled(slotSelection, variant)
+
       rows.push({
         key: `family.${slot}.${variant}`,
         label: fontVariantDisplayLabel(variant),
@@ -148,9 +142,7 @@ export function buildFontCollectionRows(
     }
   }
 
-  return rows.length > 0
-    ? [{ section: "families", label: "Families", rows }]
-    : []
+  return rows.length > 0 ? [{ section: "families", label: "Families", rows }] : []
 }
 
 /**
@@ -171,9 +163,11 @@ export function buildIconSetRows(
     for (const subcategory of categorySubcategories[category as IconCategory]) {
       const subcategoryPath = `${category}/${subcategory}`
       const icons = getIconsInSubcategory(set, subcategoryPath)
+
       if (icons.length === 0) continue
 
       const preset = deriveSubcategoryPreset(set, inclusion, subcategoryPath)
+
       if (preset === "none" && !showUnusedIcons) continue
 
       rows.push({
@@ -191,6 +185,7 @@ export function buildIconSetRows(
 
       for (const iconId of icons) {
         const enabled = isIconIncluded(set, inclusion, iconId)
+
         rows.push({
           key: `icon.${subcategoryPath}.${iconId}`,
           label: iconLabels[iconId as keyof typeof iconLabels] ?? iconId,

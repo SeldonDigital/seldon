@@ -1,16 +1,11 @@
-import {
-  Board,
-  Instance,
-  ThemeInstanceId,
-  ValueType,
-  Variant,
-  Workspace,
-} from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { getBoardThemeRef as readBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getThemeEntryDisplayName } from "@seldon/core/workspace/helpers/themes/get-theme-entry-display-name"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
+import type { Board, Instance, ThemeInstanceId, Variant, Workspace } from "@seldon/core"
 
 const DEFAULT_BOARD_THEME_ID = "seldon" as ThemeInstanceId
 
@@ -23,13 +18,13 @@ export function getBoardThemeRef(board: Board): ThemeInstanceId {
 
 function getThemeDisplayName(themeId: string, workspace: Workspace): string {
   const composedName = getThemeEntryDisplayName(themeId, workspace)
+
   if (composedName) {
     return composedName
   }
 
   try {
-    return workspaceThemeService.getTheme(themeId as ThemeInstanceId, workspace)
-      .metadata.name
+    return workspaceThemeService.getTheme(themeId as ThemeInstanceId, workspace).metadata.name
   } catch {
     return themeId
   }

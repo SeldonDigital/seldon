@@ -10,28 +10,37 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonProps } from "../elements/Button"
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
-import { FormControl, FormControlProps } from "../elements/FormControl"
-import {
-  FormControlCombobox,
-  FormControlComboboxProps,
-} from "../elements/FormControlCombobox"
-import { ItemCatalog, ItemCatalogProps } from "../elements/ItemCatalog"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ComboboxField } from "../elements/ComboboxField"
+import { FormControl } from "../elements/FormControl"
+import { FormControlCombobox } from "../elements/FormControlCombobox"
+import { ItemCatalog } from "../elements/ItemCatalog"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar, BarProps } from "../parts/Bar"
-import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Bar } from "../parts/Bar"
+import { BarButtons } from "../parts/BarButtons"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { FormControlProps } from "../elements/FormControl"
+import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
+import type { ItemCatalogProps } from "../elements/ItemCatalog"
+import type { FrameProps } from "../frames/Frame"
+import type { BarProps } from "../parts/Bar"
+import type { BarButtonsProps } from "../parts/BarButtons"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface DialogCreateComponentProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -150,10 +159,7 @@ export function DialogCreateComponent({
   seldonRefs,
   ...props
 }: DialogCreateComponentProps) {
-  const dialogCreateComponentClassName = combineClassNames(
-    "sdn-dialog",
-    className,
-  )
+  const dialogCreateComponentClassName = combineClassNames("sdn-dialog", className)
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -171,10 +177,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const frameProps = applyRef(
@@ -194,10 +197,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.itemCatalog,
           ...itemCatalog,
-          className: combineClassNames(
-            sdn.itemCatalog?.className,
-            itemCatalog?.className,
-          ),
+          className: combineClassNames(sdn.itemCatalog?.className, itemCatalog?.className),
         },
   )
   const iconProps = applyRef(
@@ -217,10 +217,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const textTitle2Props = applyRef(
@@ -230,10 +227,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textTitle2,
           ...textTitle2,
-          className: combineClassNames(
-            sdn.textTitle2?.className,
-            textTitle2?.className,
-          ),
+          className: combineClassNames(sdn.textTitle2?.className, textTitle2?.className),
         },
   )
   const textSubtitleProps = applyRef(
@@ -243,10 +237,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textSubtitle,
           ...textSubtitle,
-          className: combineClassNames(
-            sdn.textSubtitle?.className,
-            textSubtitle?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
         },
   )
   const itemCatalog2Props = applyRef(
@@ -256,10 +247,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.itemCatalog2,
           ...itemCatalog2,
-          className: combineClassNames(
-            sdn.itemCatalog2?.className,
-            itemCatalog2?.className,
-          ),
+          className: combineClassNames(sdn.itemCatalog2?.className, itemCatalog2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -279,10 +267,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const textTitle3Props = applyRef(
@@ -292,10 +277,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textTitle3,
           ...textTitle3,
-          className: combineClassNames(
-            sdn.textTitle3?.className,
-            textTitle3?.className,
-          ),
+          className: combineClassNames(sdn.textTitle3?.className, textTitle3?.className),
         },
   )
   const textSubtitle2Props = applyRef(
@@ -305,10 +287,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textSubtitle2,
           ...textSubtitle2,
-          className: combineClassNames(
-            sdn.textSubtitle2?.className,
-            textSubtitle2?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle2?.className, textSubtitle2?.className),
         },
   )
   const frame4Props = applyRef(
@@ -318,10 +297,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.frame4,
           ...frame4,
-          className: combineClassNames(
-            sdn.frame4?.className,
-            frame4?.className,
-          ),
+          className: combineClassNames(sdn.frame4?.className, frame4?.className),
         },
   )
   const formControlProps = applyRef(
@@ -331,10 +307,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.formControl,
           ...formControl,
-          className: combineClassNames(
-            sdn.formControl?.className,
-            formControl?.className,
-          ),
+          className: combineClassNames(sdn.formControl?.className, formControl?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -344,10 +317,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const inputProps = applyRef(
@@ -380,10 +350,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const comboboxFieldProps = applyRef(
@@ -393,10 +360,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.comboboxField,
           ...comboboxField,
-          className: combineClassNames(
-            sdn.comboboxField?.className,
-            comboboxField?.className,
-          ),
+          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
         },
   )
   const input2Props = applyRef(
@@ -406,10 +370,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.input2,
           ...input2,
-          className: combineClassNames(
-            sdn.input2?.className,
-            input2?.className,
-          ),
+          className: combineClassNames(sdn.input2?.className, input2?.className),
         },
   )
   const buttonIconicProps = applyRef(
@@ -419,10 +380,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon3Props = applyRef(
@@ -442,10 +400,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.formControl2,
           ...formControl2,
-          className: combineClassNames(
-            sdn.formControl2?.className,
-            formControl2?.className,
-          ),
+          className: combineClassNames(sdn.formControl2?.className, formControl2?.className),
         },
   )
   const textLabel3Props = applyRef(
@@ -455,10 +410,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const input3Props = applyRef(
@@ -468,10 +420,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.input3,
           ...input3,
-          className: combineClassNames(
-            sdn.input3?.className,
-            input3?.className,
-          ),
+          className: combineClassNames(sdn.input3?.className, input3?.className),
         },
   )
   const formControl3Props = applyRef(
@@ -481,10 +430,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.formControl3,
           ...formControl3,
-          className: combineClassNames(
-            sdn.formControl3?.className,
-            formControl3?.className,
-          ),
+          className: combineClassNames(sdn.formControl3?.className, formControl3?.className),
         },
   )
   const textLabel4Props = applyRef(
@@ -494,10 +440,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const input4Props = applyRef(
@@ -507,10 +450,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.input4,
           ...input4,
-          className: combineClassNames(
-            sdn.input4?.className,
-            input4?.className,
-          ),
+          className: combineClassNames(sdn.input4?.className, input4?.className),
         },
   )
   const barButtonsProps = applyRef(
@@ -520,10 +460,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.barButtons,
           ...barButtons,
-          className: combineClassNames(
-            sdn.barButtons?.className,
-            barButtons?.className,
-          ),
+          className: combineClassNames(sdn.barButtons?.className, barButtons?.className),
         },
   )
   const buttonProps = applyRef(
@@ -533,10 +470,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const icon4Props = applyRef(
@@ -556,10 +490,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
   const button2Props = applyRef(
@@ -569,10 +500,7 @@ export function DialogCreateComponent({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon5Props = applyRef(
@@ -592,19 +520,12 @@ export function DialogCreateComponent({
       : {
           ...sdn.textLabel6,
           ...textLabel6,
-          className: combineClassNames(
-            sdn.textLabel6?.className,
-            textLabel6?.className,
-          ),
+          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
         },
   )
 
   return (
-    <HTMLDiv
-      className={dialogCreateComponentClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <HTMLDiv className={dialogCreateComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -619,12 +540,8 @@ export function DialogCreateComponent({
               <ItemCatalog {...itemCatalogProps}>
                 {icon && iconProps && <Icon {...iconProps} />}
                 <Frame {...frame2Props}>
-                  {textTitle2 && textTitle2Props && (
-                    <TextTitle {...textTitle2Props} />
-                  )}
-                  {textSubtitle && textSubtitleProps && (
-                    <TextSubtitle {...textSubtitleProps} />
-                  )}
+                  {textTitle2 && textTitle2Props && <TextTitle {...textTitle2Props} />}
+                  {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
                 </Frame>
               </ItemCatalog>
             )}
@@ -632,12 +549,8 @@ export function DialogCreateComponent({
               <ItemCatalog {...itemCatalog2Props}>
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
                 <Frame {...frame3Props}>
-                  {textTitle3 && textTitle3Props && (
-                    <TextTitle {...textTitle3Props} />
-                  )}
-                  {textSubtitle2 && textSubtitle2Props && (
-                    <TextSubtitle {...textSubtitle2Props} />
-                  )}
+                  {textTitle3 && textTitle3Props && <TextTitle {...textTitle3Props} />}
+                  {textSubtitle2 && textSubtitle2Props && <TextSubtitle {...textSubtitle2Props} />}
                 </Frame>
               </ItemCatalog>
             )}
@@ -645,17 +558,13 @@ export function DialogCreateComponent({
           <Frame {...frame4Props}>
             {formControl && formControlProps && (
               <FormControl {...formControlProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                 {input && inputProps && <Input {...inputProps} />}
               </FormControl>
             )}
             {formControlCombobox && formControlComboboxProps && (
               <FormControlCombobox {...formControlComboboxProps}>
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
                 {comboboxField && comboboxFieldProps && (
                   <ComboboxField
                     {...comboboxFieldProps}
@@ -669,17 +578,13 @@ export function DialogCreateComponent({
             )}
             {formControl2 && formControl2Props && (
               <FormControl {...formControl2Props}>
-                {textLabel3 && textLabel3Props && (
-                  <TextLabel {...textLabel3Props} />
-                )}
+                {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
                 {input3 && input3Props && <Input {...input3Props} />}
               </FormControl>
             )}
             {formControl3 && formControl3Props && (
               <FormControl {...formControl3Props}>
-                {textLabel4 && textLabel4Props && (
-                  <TextLabel {...textLabel4Props} />
-                )}
+                {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
                 {input4 && input4Props && <Input {...input4Props} />}
               </FormControl>
             )}
@@ -771,8 +676,7 @@ const sdn: DialogCreateComponentProps = {
     className: "sdn-text-title sdn-text-title--noun",
   },
   textSubtitle2: {
-    children:
-      "Use for table and grid based layouts, like a calendar or pricing table",
+    children: "Use for table and grid based layouts, like a calendar or pricing table",
     htmlElement: "h5",
     "aria-hidden": "false",
     className: "sdn-text-subtitle sdn-text-subtitle--r4ot",

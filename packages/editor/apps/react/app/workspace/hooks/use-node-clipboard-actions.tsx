@@ -8,9 +8,10 @@ import { resolvePasteTarget } from "@seldon/editor/lib/workspace/paste-target"
 import { getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback } from "react"
 
-import { InstanceId, VariantId } from "@seldon/core/index"
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { typeCheckingService } from "@seldon/core/workspace/services"
+
+import type { InstanceId, VariantId } from "@seldon/core/index"
 
 export function useNodeClipboardActions() {
   const addToast = useAddToast()
@@ -23,8 +24,10 @@ export function useNodeClipboardActions() {
     (clipboardMode: "cut" | "copy") => {
       if (!selectedNode) {
         addToast("Select an object to copy")
+
         return
       }
+
       setClipboard(selectedNode.id, clipboardMode)
     },
     [selectedNode, setClipboard, addToast],
@@ -33,13 +36,16 @@ export function useNodeClipboardActions() {
   const pasteNode = useCallback(() => {
     if (!nodeId) {
       addToast("Nothing to paste")
+
       return
     }
 
     const subject = getNode(workspace, nodeId)
+
     if (!subject) {
       addToast("The copied object no longer exists")
       clearClipboard()
+
       return
     }
 
@@ -52,19 +58,20 @@ export function useNodeClipboardActions() {
 
     if (result.action === "error") {
       addToast(result.message)
+
       return
     }
 
     let newState
+
     if (result.action === "duplicate-into") {
       newState = duplicateNodeInto(subject, result.parentId, result.index)
 
       // Select the freshly created node at the resolved slot.
       if (newState) {
         const parent = getNode(newState, result.parentId)
-        const newNodeId = parent
-          ? getNodeChildIds(parent, newState)[result.index]
-          : undefined
+        const newNodeId = parent ? getNodeChildIds(parent, newState)[result.index] : undefined
+
         if (newNodeId) selectNode(newNodeId as VariantId | InstanceId)
       }
     } else {
@@ -81,6 +88,7 @@ export function useNodeClipboardActions() {
         type: "remove_instance",
         payload: { instanceId: subject.id as InstanceId },
       })
+
       dispatch({
         type: "set_workspace",
         payload: { workspace: afterRemove },

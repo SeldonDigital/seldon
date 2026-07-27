@@ -19,9 +19,7 @@ export function isShorthandCompoundProperty(property: {
   propertyType: string
   key: string
 }): boolean {
-  return (
-    property.propertyType === "shorthand" && isShorthandProperty(property.key)
-  )
+  return property.propertyType === "shorthand" && isShorthandProperty(property.key)
 }
 
 /**
@@ -31,9 +29,7 @@ export function isCompoundCompoundProperty(property: {
   propertyType: string
   key: string
 }): boolean {
-  return (
-    property.propertyType === "compound" && isCompoundProperty(property.key)
-  )
+  return property.propertyType === "compound" && isCompoundProperty(property.key)
 }
 
 /**
@@ -54,6 +50,7 @@ export function getPropertyDebugColor(property: {
     if (isCompoundCompoundProperty(property)) {
       return COLOR_DEBUG_COMPOUND
     }
+
     if (isShorthandCompoundProperty(property)) {
       return COLOR_DEBUG_SHORTHAND
     }
@@ -63,9 +60,11 @@ export function getPropertyDebugColor(property: {
   if (property.status === "unset") {
     return COLOR_SET
   }
+
   if (property.status === "error") {
     return COLOR_ERROR
   }
+
   if (property.status === "override") {
     return COLOR_OVERRIDE
   }

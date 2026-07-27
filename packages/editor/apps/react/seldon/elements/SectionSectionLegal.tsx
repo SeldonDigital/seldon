@@ -10,12 +10,13 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Link, LinkProps } from "../primitives/Link"
+import { Link } from "../primitives/Link"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { LinkProps } from "../primitives/Link"
+import type { HTMLAttributes } from "react"
 
 export interface SectionSectionLegalProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -52,10 +53,7 @@ export function SectionSectionLegal({
   seldonRefs,
   ...props
 }: SectionSectionLegalProps) {
-  const sectionSectionLegalClassName = combineClassNames(
-    "sdn-section",
-    className,
-  )
+  const sectionSectionLegalClassName = combineClassNames("sdn-section", className)
   const linkProps = applyRef(
     seldonRefs,
     link === null
@@ -88,11 +86,7 @@ export function SectionSectionLegal({
   )
 
   return (
-    <Frame
-      className={sectionSectionLegalClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={sectionSectionLegalClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

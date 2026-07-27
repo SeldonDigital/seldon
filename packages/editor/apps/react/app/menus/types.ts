@@ -1,8 +1,8 @@
-import {
+import type {
   MenuEntry as MenuEntryBase,
   MenuItem as MenuItemBase,
 } from "@seldon/editor/lib/menus/types"
-import { CSSProperties, ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 
 export type {
   MenuItemId,
@@ -21,6 +21,4 @@ export type MenuEntry = MenuEntryBase<ReactNode, CSSProperties>
  * How an option's leading icon renders: a theme icon id the generated `Icon`
  * slot can host, or an arbitrary node for dynamic icons the slot cannot.
  */
-export type OptionIconRender =
-  | { kind: "iconId"; icon: string }
-  | { kind: "node"; node: ReactNode }
+export type OptionIconRender = { kind: "iconId"; icon: string } | { kind: "node"; node: ReactNode }

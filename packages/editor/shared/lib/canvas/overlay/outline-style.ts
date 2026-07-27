@@ -24,9 +24,8 @@ export function getSelectionOutlineStyle(
   borderWidth = 1,
 ): OutlineStyle {
   const defaultColor =
-    variant === "hover"
-      ? DEFAULT_HOVER_OUTLINE_COLOR
-      : DEFAULT_SELECTION_OUTLINE_COLOR
+    variant === "hover" ? DEFAULT_HOVER_OUTLINE_COLOR : DEFAULT_SELECTION_OUTLINE_COLOR
+
   return {
     borderStyle: "dashed",
     borderColor: borderColor ?? defaultColor,

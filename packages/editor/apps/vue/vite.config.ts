@@ -22,13 +22,7 @@ export default defineConfig(({ mode }) => ({
   root: editorRoot,
   // Both editors serve the same static assets from the shared editor package.
   publicDir: path.join(sharedRoot, "public"),
-  plugins: [
-    vue(),
-    workspaceApiPlugin(),
-    exportApiPlugin(),
-    importWebApiPlugin(),
-    agentApiPlugin(),
-  ],
+  plugins: [vue(), workspaceApiPlugin(), exportApiPlugin(), importWebApiPlugin(), agentApiPlugin()],
   define: {
     "process.env.NODE_ENV": JSON.stringify(mode),
     "process.env.DEBUG_MODE": JSON.stringify(process.env.DEBUG_MODE ?? ""),

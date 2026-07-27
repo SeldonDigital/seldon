@@ -1,4 +1,4 @@
-import { MouseEvent } from "react"
+import type { MouseEvent } from "react"
 
 /**
  * Hook that provides a click handler for row selection.

@@ -10,9 +10,12 @@ interface PersistedExpansion {
 
 function loadState(): PersistedExpansion {
   if (typeof localStorage === "undefined") return {}
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
+
     if (!raw) return {}
+
     return JSON.parse(raw) as PersistedExpansion
   } catch {
     return {}
@@ -25,53 +28,52 @@ function loadState(): PersistedExpansion {
  * tracks explicit collapses. Compound rows default to collapsed. Mirrors the
  * React `use-property-expansion` store.
  */
-export const usePropertyExpansionStore = defineStore(
-  "properties-expansion",
-  () => {
-    const persisted = loadState()
-    const categories = ref<Record<string, boolean>>(persisted.categories ?? {})
-    const properties = ref<Record<string, boolean>>(persisted.properties ?? {})
+export const usePropertyExpansionStore = defineStore("properties-expansion", () => {
+  const persisted = loadState()
+  const categories = ref<Record<string, boolean>>(persisted.categories ?? {})
+  const properties = ref<Record<string, boolean>>(persisted.properties ?? {})
 
-    function isCategoryExpanded(category: string): boolean {
-      return categories.value[category] ?? true
-    }
+  function isCategoryExpanded(category: string): boolean {
+    return categories.value[category] ?? true
+  }
 
-    function isPropertyExpanded(propertyKey: string): boolean {
-      return properties.value[propertyKey] ?? false
-    }
+  function isPropertyExpanded(propertyKey: string): boolean {
+    return properties.value[propertyKey] ?? false
+  }
 
-    function toggleCategory(category: string, shouldExpand?: boolean): void {
-      const expand = shouldExpand ?? !isCategoryExpanded(category)
-      categories.value = { ...categories.value, [category]: expand }
-    }
+  function toggleCategory(category: string, shouldExpand?: boolean): void {
+    const expand = shouldExpand ?? !isCategoryExpanded(category)
 
-    function toggleProperty(propertyKey: string, shouldExpand?: boolean): void {
-      const expand = shouldExpand ?? !isPropertyExpanded(propertyKey)
-      properties.value = { ...properties.value, [propertyKey]: expand }
-    }
+    categories.value = { ...categories.value, [category]: expand }
+  }
 
-    watch(
-      [categories, properties],
-      () => {
-        if (typeof localStorage === "undefined") return
-        localStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({
-            categories: categories.value,
-            properties: properties.value,
-          }),
-        )
-      },
-      { deep: false },
-    )
+  function toggleProperty(propertyKey: string, shouldExpand?: boolean): void {
+    const expand = shouldExpand ?? !isPropertyExpanded(propertyKey)
 
-    return {
-      categories,
-      properties,
-      isCategoryExpanded,
-      isPropertyExpanded,
-      toggleCategory,
-      toggleProperty,
-    }
-  },
-)
+    properties.value = { ...properties.value, [propertyKey]: expand }
+  }
+
+  watch(
+    [categories, properties],
+    () => {
+      if (typeof localStorage === "undefined") return
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          categories: categories.value,
+          properties: properties.value,
+        }),
+      )
+    },
+    { deep: false },
+  )
+
+  return {
+    categories,
+    properties,
+    isCategoryExpanded,
+    isPropertyExpanded,
+    toggleCategory,
+    toggleProperty,
+  }
+})

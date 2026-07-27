@@ -1,6 +1,7 @@
 import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
+
 import type { Workspace } from "@seldon/core/workspace/types"
 
 type ThemeSpecPreviewBase = {
@@ -22,13 +23,11 @@ export function getThemeSpecPreviewBase(): ThemeSpecPreviewBase {
     return cached
   }
 
-  const workspace = addComponent(
-    { boardKey: ComponentId.THEME_SPEC },
-    createEmptyWorkspace(),
-  )
+  const workspace = addComponent({ boardKey: ComponentId.THEME_SPEC }, createEmptyWorkspace())
   const board = workspace.boards[ComponentId.THEME_SPEC]
   const rootId = board?.variants?.[0]?.id ?? null
 
   cached = { workspace, rootId }
+
   return cached
 }

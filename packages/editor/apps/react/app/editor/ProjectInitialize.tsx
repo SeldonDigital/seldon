@@ -5,6 +5,7 @@ import { useEffect } from "react"
 
 import { createEmptyWorkspace } from "@seldon/core"
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
+
 import type { Workspace } from "@seldon/core/workspace/types"
 
 export function ProjectInitialize({ workspace }: { workspace: Workspace }) {

@@ -1,5 +1,6 @@
 import { Frame } from "@seldon/components/frames/Frame"
-import { CSSProperties, ReactNode } from "react"
+
+import type { CSSProperties, ReactNode } from "react"
 
 interface IndicatorLineProps {
   style: CSSProperties

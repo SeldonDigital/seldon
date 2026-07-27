@@ -14,8 +14,6 @@ import {
 import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { nanoid } from "nanoid"
 
-import { InstanceId, VariantId } from "@seldon/core"
-import { ComponentId } from "@seldon/core/components/constants"
 import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import {
@@ -25,13 +23,16 @@ import {
 } from "@seldon/core/workspace/model/components"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
-import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import {
   nodeRelationshipService,
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { InstanceId, VariantId } from "@seldon/core"
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import type { BoardKey } from "@seldon/core/workspace/types"
 
 /**
@@ -60,15 +61,14 @@ export function useAddRemoveCommands() {
 
   async function addBoard(componentId: ComponentId): Promise<void> {
     const variantFallbacks = await confirmMissingSchemaVariants(componentId)
+
     if (variantFallbacks === null) return
 
     dispatch({
       type: "add_component",
       payload: {
         boardKey: componentId,
-        variantFallbacks: variantFallbacks.length
-          ? variantFallbacks
-          : undefined,
+        variantFallbacks: variantFallbacks.length ? variantFallbacks : undefined,
       },
     })
     selectBoard(componentId)
@@ -102,12 +102,14 @@ export function useAddRemoveCommands() {
 
   function addPlayground(): void {
     const playgroundKey = `playground-${nanoid(8)}` as BoardKey
+
     dispatch({ type: "add_playground", payload: { boardKey: playgroundKey } })
     selectBoard(playgroundKey)
   }
 
   function duplicatePlayground(sourcePlaygroundKey: BoardKey): void {
     const newPlaygroundKey = `playground-${nanoid(8)}` as BoardKey
+
     dispatch({
       type: "duplicate_playground",
       payload: { sourcePlaygroundKey, newPlaygroundKey },
@@ -117,19 +119,23 @@ export function useAddRemoveCommands() {
 
   function addVariant(): void {
     const board = selectedBoard.value
+
     if (!board || !selectedBoardId.value) {
       toast.addToast("No board selected")
+
       return
     }
 
     if (isThemeBoard(board)) {
       const defaultThemeId = board.variants[0]?.id
+
       if (!defaultThemeId) return
       dispatch({
         type: "duplicate_theme",
         payload: { themeId: defaultThemeId },
       })
       tool.setActiveTool("select")
+
       return
     }
 
@@ -140,6 +146,7 @@ export function useAddRemoveCommands() {
         type: "add_sandbox",
         payload: { playgroundKey: selectedBoardId.value as BoardKey },
       })
+
       return
     }
 
@@ -151,10 +158,13 @@ export function useAddRemoveCommands() {
 
   function duplicateSelectedNode(): void {
     const nodeId = selectedNode.value?.id
+
     if (!nodeId) {
       toast.addToast("No node selected")
+
       return
     }
+
     dispatch({ type: "duplicate_node", payload: { nodeId } })
   }
 
@@ -167,6 +177,7 @@ export function useAddRemoveCommands() {
       const confirmed = window.confirm(
         "This variant is used in other components. Deleting it will also remove it from those components. Delete anyway?",
       )
+
       if (!confirmed) return
     }
 
@@ -177,6 +188,7 @@ export function useAddRemoveCommands() {
           null,
       )
     }
+
     if (hover.hoverState?.objectId === nodeId) {
       hover.setHoverState(null)
     }
@@ -186,6 +198,7 @@ export function useAddRemoveCommands() {
         type: "remove_variant",
         payload: { variantRootId: nodeId as VariantId },
       })
+
       return
     }
 
@@ -198,9 +211,11 @@ export function useAddRemoveCommands() {
   function removeBoard(boardKey: BoardKey): void {
     const ws = workspace.value
     const board = ws.boards[boardKey]
+
     if (!board) return
 
     const result = dispatch({ type: "remove_board", payload: { boardKey } })
+
     if (result && boardKey === selectedBoardId.value) {
       selectBoard(null)
     }
@@ -209,6 +224,7 @@ export function useAddRemoveCommands() {
   function removeSelectedThemeEntry(themeId: string): void {
     const ws = workspace.value
     const entry = ws.themes[themeId]
+
     if (!entry || isEntryThemeDefault(entry)) return
 
     if (hover.hoverState?.objectId === themeId) hover.setHoverState(null)
@@ -217,6 +233,7 @@ export function useAddRemoveCommands() {
 
     if (selectedThemeEntryId.value === themeId) {
       const board = findThemeBoard(ws)
+
       selectBoard(board ? (resolveComponentKey(board, ws) as BoardKey) : null)
     }
   }
@@ -224,6 +241,7 @@ export function useAddRemoveCommands() {
   function removeSelectedFontCollectionEntry(fontCollectionId: string): void {
     const ws = workspace.value
     const entry = ws["font-collections"][fontCollectionId]
+
     if (!entry || isEntryFontCollectionDefault(entry)) return
 
     if (hover.hoverState?.objectId === fontCollectionId) {
@@ -234,6 +252,7 @@ export function useAddRemoveCommands() {
 
     if (selectedFontCollectionEntryId.value === fontCollectionId) {
       const board = findFontCollectionBoard(ws)
+
       selectBoard(board ? (resolveComponentKey(board, ws) as BoardKey) : null)
     }
   }
@@ -241,6 +260,7 @@ export function useAddRemoveCommands() {
   function removeSelectedIconSetEntry(iconSetId: string): void {
     const ws = workspace.value
     const entry = ws["icon-sets"][iconSetId]
+
     if (!entry || isEntryIconSetDefault(entry)) return
 
     if (hover.hoverState?.objectId === iconSetId) hover.setHoverState(null)
@@ -249,6 +269,7 @@ export function useAddRemoveCommands() {
 
     if (selectedIconSetEntryId.value === iconSetId) {
       const board = findIconSetBoard(ws)
+
       selectBoard(board ? (resolveComponentKey(board, ws) as BoardKey) : null)
     }
   }
@@ -256,20 +277,28 @@ export function useAddRemoveCommands() {
   function deleteSelection(): void {
     if (selectedNode.value) {
       removeSelectedNode(selectedNode.value.id)
+
       return
     }
+
     if (selectedThemeEntryId.value) {
       removeSelectedThemeEntry(selectedThemeEntryId.value)
+
       return
     }
+
     if (selectedFontCollectionEntryId.value) {
       removeSelectedFontCollectionEntry(selectedFontCollectionEntryId.value)
+
       return
     }
+
     if (selectedIconSetEntryId.value) {
       removeSelectedIconSetEntry(selectedIconSetEntryId.value)
+
       return
     }
+
     if (selectedBoard.value && selectedBoardId.value) {
       removeBoard(selectedBoardId.value)
     }

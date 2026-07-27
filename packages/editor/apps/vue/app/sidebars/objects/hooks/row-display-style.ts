@@ -1,6 +1,6 @@
-import type { CSSProperties } from "vue"
-
 import { Display } from "@seldon/core"
+
+import type { CSSProperties } from "vue"
 
 /**
  * Maps a node's `Display` state, and any state inherited from its instance
@@ -27,16 +27,10 @@ export const DIMMED_DISPLAY_STATES: ReadonlySet<Display> = new Set([
 ])
 
 /** States that fade the row's gray. */
-export const FADED_DISPLAY_STATES: ReadonlySet<Display> = new Set([
-  Display.MOCK,
-  Display.EXCLUDE,
-])
+export const FADED_DISPLAY_STATES: ReadonlySet<Display> = new Set([Display.MOCK, Display.EXCLUDE])
 
 /** States that italicize the row label. */
-export const ITALIC_DISPLAY_STATES: ReadonlySet<Display> = new Set([
-  Display.STUB,
-  Display.EXCLUDE,
-])
+export const ITALIC_DISPLAY_STATES: ReadonlySet<Display> = new Set([Display.STUB, Display.EXCLUDE])
 
 export interface RowDisplayDecoration {
   /** Row reads as disabled/gray. Drives `aria-disabled` on the row leaves. */
@@ -52,9 +46,7 @@ export interface RowDisplayDecoration {
  * Pass the node's own state plus every state inherited from its instance
  * ancestors.
  */
-export function resolveRowDisplayDecoration(
-  states: Iterable<Display>,
-): RowDisplayDecoration {
+export function resolveRowDisplayDecoration(states: Iterable<Display>): RowDisplayDecoration {
   let isDimmed = false
   let isFaded = false
   let isItalic = false
@@ -66,7 +58,9 @@ export function resolveRowDisplayDecoration(
   }
 
   const decoration: RowDisplayDecoration = { isDimmed }
+
   if (isFaded) decoration.dimStyle = { opacity: FADED_OPACITY }
   if (isItalic) decoration.labelStyle = { fontStyle: "italic" }
+
   return decoration
 }

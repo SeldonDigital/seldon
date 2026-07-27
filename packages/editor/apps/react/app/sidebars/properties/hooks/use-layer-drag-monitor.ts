@@ -1,15 +1,13 @@
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-import {
-  type LayerPlacement,
-  computeLayerToIndex,
-} from "@seldon/editor/lib/properties/layer-reorder"
+import { computeLayerToIndex } from "@seldon/editor/lib/properties/layer-reorder"
 import { useEffect } from "react"
-
-import { LayeredPaintKey } from "@seldon/core"
 
 import { useLayerDragStateStore } from "./use-layer-drag-state"
 import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
+
+import type { LayeredPaintKey } from "@seldon/core"
+import type { LayerPlacement } from "@seldon/editor/lib/properties/layer-reorder"
 
 /**
  * Global monitor for layer reorder drags in the properties sidebar. Tracks an
@@ -19,9 +17,7 @@ import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
  */
 export function useLayerDragMonitor() {
   const { reorderNodeLayer } = useObjectProperties()
-  const setIsLayerDragging = useLayerDragStateStore(
-    (state) => state.setIsLayerDragging,
-  )
+  const setIsLayerDragging = useLayerDragStateStore((state) => state.setIsLayerDragging)
 
   useEffect(() => {
     return monitorForElements({
@@ -32,6 +28,7 @@ export function useLayerDragMonitor() {
       onDrop({ source, location }) {
         setIsLayerDragging(false)
         const destination = location.current.dropTargets[0]
+
         if (!destination) return
 
         const sourceProperty = source.data.property as LayeredPaintKey
@@ -43,12 +40,8 @@ export function useLayerDragMonitor() {
 
         if (sourceProperty !== targetProperty) return
 
-        const toIndex = computeLayerToIndex(
-          layerCount,
-          fromIndex,
-          targetIndex,
-          placement,
-        )
+        const toIndex = computeLayerToIndex(layerCount, fromIndex, targetIndex, placement)
+
         if (toIndex === fromIndex) return
 
         reorderNodeLayer(sourceProperty, fromIndex, toIndex)

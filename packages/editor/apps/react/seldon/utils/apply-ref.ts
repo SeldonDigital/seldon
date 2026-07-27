@@ -30,9 +30,11 @@ export function applyRef<T extends Record<string, unknown> | null>(
   if (!seldonRefs || props === null) return props
 
   const ref = (props as Record<string, unknown>)["data-seldon-ref"]
+
   if (typeof ref !== "string") return props
 
   const override = seldonRefs[ref]
+
   if (!override) return props
 
   const merged: Record<string, unknown> = {
@@ -42,10 +44,8 @@ export function applyRef<T extends Record<string, unknown> | null>(
 
   const baseClassName = (props as Record<string, unknown>)["className"]
   const overrideClassName = override["className"]
-  if (
-    typeof baseClassName === "string" ||
-    typeof overrideClassName === "string"
-  ) {
+
+  if (typeof baseClassName === "string" || typeof overrideClassName === "string") {
     merged["className"] = combineClassNames(
       typeof baseClassName === "string" ? baseClassName : undefined,
       typeof overrideClassName === "string" ? overrideClassName : undefined,

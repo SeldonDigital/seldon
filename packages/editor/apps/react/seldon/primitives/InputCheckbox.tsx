@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { InputHTMLAttributes, Ref } from "react"
-
 import { HTMLInput } from "../native-react/HTML.Input"
 import { combineClassNames } from "../utils/class-name"
+
+import type { InputHTMLAttributes, Ref } from "react"
 
 export interface InputCheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
@@ -44,10 +44,7 @@ export function InputCheckbox({
   type = sdn.type,
   ...props
 }: InputCheckboxProps) {
-  const inputCheckboxClassName = combineClassNames(
-    "sdn-input-checkbox",
-    className,
-  )
+  const inputCheckboxClassName = combineClassNames("sdn-input-checkbox", className)
 
   //
   // React JSX component with merged default and custom properties

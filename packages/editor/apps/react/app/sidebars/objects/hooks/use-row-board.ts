@@ -1,7 +1,6 @@
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { MenuEntry } from "@app/menus"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useAutoSelectNode } from "@app/workspace/hooks/use-auto-select-node"
 import {
@@ -9,14 +8,12 @@ import {
   useStore as useSelectionStore,
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { getIsolationUsage } from "@seldon/editor/lib/isolation/get-isolation-usage"
 import { buildResetMenuEntry } from "@seldon/editor/lib/menus/reset-menu"
 import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { MouseEvent, useState } from "react"
+import { useState } from "react"
 
-import { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"
 import { isAuthoredThemeBoard } from "@seldon/core/workspace/helpers/components/resource-board-catalog-ids"
 import {
@@ -34,6 +31,11 @@ import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
 import { useIsBoardContainingSelection } from "./use-selection-relations"
 
+import type { MenuEntry } from "@app/menus"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { Board as BoardType } from "@seldon/core"
+import type { MouseEvent } from "react"
+
 /** Shown when a rename is attempted on a board whose name reflects the catalog. */
 const RENAME_BOARD_BLOCKED_MESSAGE =
   "Component board names come from the catalog and can't be renamed"
@@ -43,31 +45,21 @@ const RENAME_BOARD_BLOCKED_MESSAGE =
  * Handles board selection, expansion, variant management, and button/icon configuration.
  *
  * @param board - The board to render
- * @param options - Optional configuration for visibility and drag-and-drop
  * @returns Object containing label, buttons, handlers, and state for the board row
  */
-export function useRowBoard(
-  board: BoardType,
-  options?: {
-    show?: boolean
-  },
-) {
+export function useRowBoard(board: BoardType) {
   // Core workspace and tool state
   const { activeTool, setActiveTool } = useTool()
-  const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
-    useEditorConfig()
+  const { isolatedView, isolatedBoardKey, isolatedVariantRootId } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace({ usePreview: false })
   const boardKey = getComponentKey(board)
   const allVariantRootIds = getVariantRootIds(board)
   // In isolation, every board lists only the variant roots the isolated
   // variant's tree uses, so unused sibling variants are hidden in the sidebar,
   // matching the canvas.
-  const isolatedBoard =
-    isolatedView && isolatedBoardKey ? workspace.boards[isolatedBoardKey] : null
+  const isolatedBoard = isolatedView && isolatedBoardKey ? workspace.boards[isolatedBoardKey] : null
   const usedVariantRootIds = isolatedBoard
-    ? getIsolationUsage(isolatedBoard, isolatedVariantRootId, workspace).get(
-        boardKey,
-      )
+    ? getIsolationUsage(isolatedBoard, isolatedVariantRootId, workspace).get(boardKey)
     : null
   const variantRootIds = usedVariantRootIds
     ? allVariantRootIds.filter((id) => usedVariantRootIds.has(id))
@@ -78,11 +70,7 @@ export function useRowBoard(
   const addToast = useAddToast()
 
   // Expansion state: toggle, expand/collapse, get descendants
-  const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
-    useExpansion()
-
-  // Options and configuration
-  const show = options?.show ?? true
+  const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } = useExpansion()
 
   // Selection state: each derivation is a granular store subscription, so a
   // board row only re-renders when its own selected/containing status flips.
@@ -103,9 +91,7 @@ export function useRowBoard(
 
   const boardContainsSelectedNode = useIsBoardContainingSelection(boardKey)
   const boardIsActive =
-    isBoardSelected ||
-    boardContainsSelectedNode ||
-    boardContainsSelectedResourceEntry
+    isBoardSelected || boardContainsSelectedNode || boardContainsSelectedResourceEntry
   const hasVariantChildren = variantRootIds.length > 0
 
   // Expansion state
@@ -121,11 +107,14 @@ export function useRowBoard(
     collapseObjects,
     getAllIdsForAltClick: () => {
       const allIds: string[] = [expandedId]
+
       variantRootIds.forEach((variantId) => {
         allIds.push(variantId)
         const descendantIds = getAllDescendantNodeIds(variantId)
+
         allIds.push(...descendantIds)
       })
+
       return allIds
     },
     hasChildren: hasVariantChildren,
@@ -160,8 +149,10 @@ export function useRowBoard(
 
   function submitBoardLabel(label: string) {
     const trimmed = label.trim()
+
     setEditingName(false)
     if (!trimmed || trimmed === board.label) return
+
     // Authored theme names are the board `label`; a duplicate is rejected by
     // validation and the input reverts to the previous name.
     if (isThemeBoard(board)) {
@@ -169,8 +160,10 @@ export function useRowBoard(
         type: "set_board_label",
         payload: { boardKey, label: trimmed },
       })
+
       return
     }
+
     dispatch({
       type: "set_playground_label",
       payload: { playgroundKey: boardKey, label: trimmed },
@@ -180,45 +173,57 @@ export function useRowBoard(
   function onAddVariant(event?: MouseEvent<HTMLButtonElement>) {
     event?.stopPropagation()
     event?.preventDefault()
+
     if (isPlaygroundBoard(board)) {
       dispatchWithAutoSelect({
         type: "add_sandbox",
         payload: { playgroundKey: boardKey },
       })
+
       return
     }
+
     if (isThemeBoard(board)) {
       const defaultThemeId = board.variants[0]?.id
+
       if (!defaultThemeId) return
       dispatch({
         type: "duplicate_theme",
         payload: { themeId: defaultThemeId },
       })
       setActiveTool("select")
+
       return
     }
+
     if (isFontCollectionBoard(board)) {
       // Duplicate the default entry to create a new font collection variant,
       // mirroring the theme add-variant flow.
       const defaultFontCollectionId = board.variants[0]?.id
+
       if (!defaultFontCollectionId) return
       dispatch({
         type: "duplicate_font_collection",
         payload: { fontCollectionId: defaultFontCollectionId },
       })
       setActiveTool("select")
+
       return
     }
+
     if (isIconSetBoard(board)) {
       const defaultIconSetId = board.variants[0]?.id
+
       if (!defaultIconSetId) return
       dispatch({
         type: "duplicate_icon_set",
         payload: { iconSetId: defaultIconSetId },
       })
       setActiveTool("select")
+
       return
     }
+
     dispatchWithAutoSelect({
       type: "add_variant",
       payload: { boardKey },
@@ -228,37 +233,47 @@ export function useRowBoard(
   function handleResetBoard() {
     if (isThemeBoard(board)) {
       const defaultThemeId = board.variants[0]?.id
+
       if (defaultThemeId) {
         dispatch({
           type: "reset_theme_tokens",
           payload: { themeId: defaultThemeId },
         })
       }
+
       return
     }
+
     if (isFontCollectionBoard(board)) {
       const defaultFontCollectionId = board.variants[0]?.id
+
       if (defaultFontCollectionId) {
         dispatch({
           type: "reset_font_collection",
           payload: { fontCollectionId: defaultFontCollectionId },
         })
       }
+
       return
     }
+
     if (isIconSetBoard(board)) {
       const defaultIconSetId = board.variants[0]?.id
+
       if (defaultIconSetId) {
         dispatch({
           type: "reset_icon_set",
           payload: { iconSetId: defaultIconSetId },
         })
       }
+
       return
     }
+
     const confirmed = window.confirm(
       `Reset ${board.label} to catalog? This restores the catalog default and variants and removes your custom variants and overrides.`,
     )
+
     if (!confirmed) return
     dispatch({
       type: "reset_component_to_catalog",
@@ -270,6 +285,7 @@ export function useRowBoard(
     const confirmed = window.confirm(
       `Apply ${board.label} board properties to all other component boards? This overwrites their board properties.`,
     )
+
     if (!confirmed) return
     dispatch({
       type: "apply_component_properties_to_all_boards",
@@ -397,14 +413,18 @@ export function useRowBoard(
     if (isIconSetBoard(board)) {
       return getNodeKindIcon("iconSet")
     }
+
     if (isThemeBoard(board)) {
       return getNodeKindIcon("theme")
     }
+
     if (isFontCollectionBoard(board)) {
       return getNodeKindIcon("fontCollection")
     }
+
     return getNodeKindIcon("component")
   }
+
   const icon2 = createIcon2(getBoardIcon() as IconProps["icon"])
 
   // Trailing "..." actions menu. Shown when the board is active (selected or

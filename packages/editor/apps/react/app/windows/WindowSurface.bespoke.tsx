@@ -7,31 +7,27 @@ import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@app/editor/hooks/use-system-color-scheme"
 import {
   RESIZE_SIDES,
-  Rect,
-  ResizeSide,
   createResizeHandle,
   getResizeHandleStyle,
 } from "@seldon/components/utils/resize"
-import { BoundingBox, DragControls, MotionValue, motion } from "framer-motion"
-import {
-  CSSProperties,
-  MouseEvent,
-  ReactNode,
-  useCallback,
-  useRef,
-} from "react"
+import { motion } from "framer-motion"
+import { useCallback, useRef } from "react"
 import { createPortal } from "react-dom"
+
+import type { Rect, ResizeSide } from "@seldon/components/utils/resize"
+import type { BoundingBox, DragControls, MotionValue } from "framer-motion"
+import type { CSSProperties, MouseEvent, ReactNode } from "react"
 
 interface WindowSurfaceProps {
   x: MotionValue<number>
   y: MotionValue<number>
   moveControls: DragControls
   onClose: () => void
+  children: ReactNode
   testId?: string
   modal?: boolean
   closeOnClickOutside?: boolean
   preventInteractionOutside?: boolean
-  children: ReactNode
   // Resizable-window wiring. Required unless `contentSized` is set, where the
   // surface sizes to its content, centers itself, and cannot resize.
   width?: MotionValue<number>
@@ -89,10 +85,7 @@ export function WindowSurface({
   const resolvedMode = useResolvedInterfaceMode()
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  const stopPropagation = useCallback(
-    (event: MouseEvent) => event.stopPropagation(),
-    [],
-  )
+  const stopPropagation = useCallback((event: MouseEvent) => event.stopPropagation(), [])
 
   const showBackdrop = modal || closeOnClickOutside || preventInteractionOutside
   const backdropClick = modal || closeOnClickOutside ? onClose : undefined
@@ -102,17 +95,10 @@ export function WindowSurface({
     // surface stays on screen. Clicking the overlay closes; clicking the surface
     // does not.
     const contentSurfaceStyle = { x, y, ...styles.contentSurface }
+
     return createPortal(
-      <div
-        data-theme={chromeTheme}
-        data-mode={resolvedMode}
-        style={styles.scope}
-      >
-        <div
-          ref={overlayRef}
-          onClick={backdropClick}
-          style={styles.centerOverlay}
-        >
+      <div data-theme={chromeTheme} data-mode={resolvedMode} style={styles.scope}>
+        <div ref={overlayRef} onClick={backdropClick} style={styles.centerOverlay}>
           <motion.div
             drag
             dragControls={moveControls}
@@ -133,9 +119,7 @@ export function WindowSurface({
   }
 
   const surfaceMotionStyle = { x, y, width, height, ...styles.surface }
-  const backdrop = showBackdrop ? (
-    <div onClick={backdropClick} style={styles.backdrop} />
-  ) : null
+  const backdrop = showBackdrop ? <div onClick={backdropClick} style={styles.backdrop} /> : null
 
   const resizeHandles =
     onResize && getRect
@@ -148,13 +132,8 @@ export function WindowSurface({
             minHeight,
             onStart: onResizeStart,
           })
-          return (
-            <div
-              key={side}
-              onPointerDown={onPointerDown}
-              style={getResizeHandleStyle(side)}
-            />
-          )
+
+          return <div key={side} onPointerDown={onPointerDown} style={getResizeHandleStyle(side)} />
         })
       : null
 

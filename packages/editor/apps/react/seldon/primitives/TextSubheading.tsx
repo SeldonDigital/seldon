@@ -10,8 +10,6 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -26,6 +24,8 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface TextSubheadingProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -82,10 +82,7 @@ export function TextSubheading({
   htmlElement = sdn.htmlElement,
   ...props
 }: TextSubheadingProps) {
-  const textSubheadingClassName = combineClassNames(
-    "sdn-text-subheading",
-    className,
-  )
+  const textSubheadingClassName = combineClassNames("sdn-text-subheading", className)
 
   switch (htmlElement) {
     case "p":
@@ -106,11 +103,7 @@ export function TextSubheading({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLSpan
-          className={textSubheadingClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLSpan className={textSubheadingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLSpan>
       )
@@ -119,11 +112,7 @@ export function TextSubheading({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLAnchor
-          className={textSubheadingClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLAnchor className={textSubheadingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLAnchor>
       )
@@ -132,11 +121,7 @@ export function TextSubheading({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLabel
-          className={textSubheadingClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLabel className={textSubheadingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLabel>
       )
@@ -210,11 +195,7 @@ export function TextSubheading({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLPre
-          className={textSubheadingClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLPre className={textSubheadingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLPre>
       )
@@ -223,11 +204,7 @@ export function TextSubheading({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLCode
-          className={textSubheadingClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLCode className={textSubheadingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLCode>
       )
@@ -236,11 +213,7 @@ export function TextSubheading({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLOption
-          className={textSubheadingClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLOption className={textSubheadingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLOption>
       )

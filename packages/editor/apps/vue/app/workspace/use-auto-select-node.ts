@@ -1,8 +1,9 @@
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 
-import type { Action } from "@seldon/core"
 import { getNodeIdAddedByAction } from "@seldon/core/workspace/helpers/nodes/get-node-id-added-by-action"
+
+import type { Action } from "@seldon/core"
 
 /**
  * Dispatches an action and selects the node it added. Mirrors the React
@@ -16,8 +17,10 @@ export function useAutoSelectNode() {
 
   function dispatchWithAutoSelect(action: Action): void {
     const next = dispatch(action)
+
     if (!next) return
     const addedNodeId = getNodeIdAddedByAction(action, next)
+
     if (addedNodeId && next.nodes[addedNodeId]) {
       selection.selectNode(addedNodeId)
     }

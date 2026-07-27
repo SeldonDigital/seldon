@@ -10,12 +10,12 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLDd } from "../native-react/HTML.Dd"
 import { HTMLDt } from "../native-react/HTML.Dt"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface ListItemTermProps extends HTMLAttributes<
   HTMLElement | HTMLElement | HTMLLIElement
@@ -47,10 +47,7 @@ export function ListItemTerm({
   htmlElement = sdn.htmlElement,
   ...props
 }: ListItemTermProps) {
-  const listItemTermClassName = combineClassNames(
-    "sdn-list-item-term",
-    className,
-  )
+  const listItemTermClassName = combineClassNames("sdn-list-item-term", className)
 
   switch (htmlElement) {
     case "li":
@@ -58,11 +55,7 @@ export function ListItemTerm({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLi
-          className={listItemTermClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLi className={listItemTermClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLi>
       )
@@ -71,11 +64,7 @@ export function ListItemTerm({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLDd
-          className={listItemTermClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLDd className={listItemTermClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLDd>
       )
@@ -84,11 +73,7 @@ export function ListItemTerm({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLDt
-          className={listItemTermClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLDt className={listItemTermClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLDt>
       )

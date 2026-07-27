@@ -42,44 +42,34 @@ export const useDebugStore = create<DebugState>()(
   persist(
     (set) => ({
       canvasProfiling: false,
-      setCanvasProfiling: (enabled) =>
-        set((state) => ({ ...state, canvasProfiling: enabled })),
+      setCanvasProfiling: (enabled) => set((state) => ({ ...state, canvasProfiling: enabled })),
 
       showNodeIds: false,
-      setShowNodeIds: (enabled) =>
-        set((state) => ({ ...state, showNodeIds: enabled })),
+      setShowNodeIds: (enabled) => set((state) => ({ ...state, showNodeIds: enabled })),
 
       showNodeTypes: false,
-      setShowNodeTypes: (enabled) =>
-        set((state) => ({ ...state, showNodeTypes: enabled })),
+      setShowNodeTypes: (enabled) => set((state) => ({ ...state, showNodeTypes: enabled })),
 
       showPropertyTypes: false,
-      setShowPropertyTypes: (enabled) =>
-        set((state) => ({ ...state, showPropertyTypes: enabled })),
+      setShowPropertyTypes: (enabled) => set((state) => ({ ...state, showPropertyTypes: enabled })),
 
       verboseLogging: false,
-      setVerboseLogging: (enabled) =>
-        set((state) => ({ ...state, verboseLogging: enabled })),
+      setVerboseLogging: (enabled) => set((state) => ({ ...state, verboseLogging: enabled })),
 
       dispatchLogging: false,
-      setDispatchLogging: (enabled) =>
-        set((state) => ({ ...state, dispatchLogging: enabled })),
+      setDispatchLogging: (enabled) => set((state) => ({ ...state, dispatchLogging: enabled })),
 
       workspaceLogging: false,
-      setWorkspaceLogging: (enabled) =>
-        set((state) => ({ ...state, workspaceLogging: enabled })),
+      setWorkspaceLogging: (enabled) => set((state) => ({ ...state, workspaceLogging: enabled })),
 
       aiLogging: false,
-      setAiLogging: (enabled) =>
-        set((state) => ({ ...state, aiLogging: enabled })),
+      setAiLogging: (enabled) => set((state) => ({ ...state, aiLogging: enabled })),
 
       showTools: false,
-      setShowTools: (enabled) =>
-        set((state) => ({ ...state, showTools: enabled })),
+      setShowTools: (enabled) => set((state) => ({ ...state, showTools: enabled })),
 
       showOutcome: false,
-      setShowOutcome: (enabled) =>
-        set((state) => ({ ...state, showOutcome: enabled })),
+      setShowOutcome: (enabled) => set((state) => ({ ...state, showOutcome: enabled })),
 
       noThink: false,
       setNoThink: (enabled) => set((state) => ({ ...state, noThink: enabled })),

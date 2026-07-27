@@ -21,10 +21,7 @@ const registry = new Map<string, ComponentType<RegisteredIconProps>>()
  * Registers a React component under an icon id. Call this at startup for each
  * dynamic icon the generated `Icon` should render but that has no catalog SVG.
  */
-export function registerIcon(
-  id: string,
-  component: ComponentType<RegisteredIconProps>,
-): void {
+export function registerIcon(id: string, component: ComponentType<RegisteredIconProps>): void {
   registry.set(id, component)
 }
 
@@ -33,5 +30,6 @@ export function getRegisteredIcon(
   id: string | undefined,
 ): ComponentType<RegisteredIconProps> | undefined {
   if (!id) return undefined
+
   return registry.get(id)
 }

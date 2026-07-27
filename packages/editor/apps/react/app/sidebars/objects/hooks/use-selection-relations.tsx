@@ -1,15 +1,14 @@
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getComponentKey,
-  getNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
-import { type ReactNode, useEffect } from "react"
+import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { useEffect } from "react"
 import { create } from "zustand"
 
 import { nodeTraversalService } from "@seldon/core/workspace/services"
+
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { ReactNode } from "react"
 
 /**
  * Selection facts that are identical for every row in the objects tree.
@@ -36,9 +35,7 @@ const EMPTY_RELATIONS: SelectionRelations = {
   selectedNodeBoardKey: null,
 }
 
-const useSelectionRelationsStore = create<SelectionRelations>(
-  () => EMPTY_RELATIONS,
-)
+const useSelectionRelationsStore = create<SelectionRelations>(() => EMPTY_RELATIONS)
 
 /** Structural equality so an unrelated edit leaves the store value untouched. */
 function relationsEqual(a: SelectionRelations, b: SelectionRelations): boolean {
@@ -50,25 +47,26 @@ function relationsEqual(a: SelectionRelations, b: SelectionRelations): boolean {
   ) {
     return false
   }
+
   for (const id of a.ancestorIdsOfSelected) {
     if (!b.ancestorIdsOfSelected.has(id)) return false
   }
+
   return true
 }
 
 /** Walks the selected node's ancestry into the flat relations record. */
-function computeRelations(
-  workspace: Workspace,
-  selectedNodeId: string | null,
-): SelectionRelations {
+function computeRelations(workspace: Workspace, selectedNodeId: string | null): SelectionRelations {
   if (!selectedNodeId) return EMPTY_RELATIONS
 
   const selectedNode = getNode(workspace, selectedNodeId)
+
   if (!selectedNode) return { ...EMPTY_RELATIONS, selectedNodeId }
 
   const ancestorIdsOfSelected = new Set<string>()
   let parent = nodeTraversalService.findParentNode(selectedNodeId, workspace)
   const parentOfSelectedNodeId = parent?.id ?? null
+
   while (parent) {
     ancestorIdsOfSelected.add(parent.id)
     parent = nodeTraversalService.findParentNode(parent.id, workspace)
@@ -91,16 +89,13 @@ function computeRelations(
  * workspace, but the store is updated only when the relations actually change,
  * so rows stay still on edits that do not move the selection.
  */
-export function SelectionRelationsProvider({
-  children,
-}: {
-  children: ReactNode
-}) {
+export function SelectionRelationsProvider({ children }: { children: ReactNode }) {
   const { workspace } = useWorkspace({ usePreview: false })
   const selectedNodeId = useSelectedNodeId()
 
   useEffect(() => {
     const next = computeRelations(workspace, selectedNodeId)
+
     if (!relationsEqual(useSelectionRelationsStore.getState(), next)) {
       useSelectionRelationsStore.setState(next, true)
     }
@@ -111,21 +106,15 @@ export function SelectionRelationsProvider({
 
 /** Whether `nodeId` is an ancestor of the selected node. */
 export function useIsAncestorOfSelection(nodeId: string): boolean {
-  return useSelectionRelationsStore((state) =>
-    state.ancestorIdsOfSelected.has(nodeId),
-  )
+  return useSelectionRelationsStore((state) => state.ancestorIdsOfSelected.has(nodeId))
 }
 
 /** Whether `nodeId` is the immediate parent of the selected node. */
 export function useIsParentOfSelection(nodeId: string): boolean {
-  return useSelectionRelationsStore(
-    (state) => state.parentOfSelectedNodeId === nodeId,
-  )
+  return useSelectionRelationsStore((state) => state.parentOfSelectedNodeId === nodeId)
 }
 
 /** Whether the board `boardKey` contains the selected node. */
 export function useIsBoardContainingSelection(boardKey: string): boolean {
-  return useSelectionRelationsStore(
-    (state) => state.selectedNodeBoardKey === boardKey,
-  )
+  return useSelectionRelationsStore((state) => state.selectedNodeBoardKey === boardKey)
 }

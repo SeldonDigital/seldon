@@ -10,16 +10,14 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLDd } from "../native-react/HTML.Dd"
 import { HTMLDt } from "../native-react/HTML.Dt"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { combineClassNames } from "../utils/class-name"
 
-export interface ListItemProps extends HTMLAttributes<
-  HTMLElement | HTMLElement | HTMLLIElement
-> {
+import type { HTMLAttributes } from "react"
+
+export interface ListItemProps extends HTMLAttributes<HTMLElement | HTMLElement | HTMLLIElement> {
   className?: string
   "data-seldon-ref"?: string
   htmlElement?: "li" | "dt" | "dd"
@@ -55,11 +53,7 @@ export function ListItem({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLDt
-          className={listItemClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLDt className={listItemClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLDt>
       )
@@ -68,11 +62,7 @@ export function ListItem({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLDd
-          className={listItemClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLDd className={listItemClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLDd>
       )
@@ -81,11 +71,7 @@ export function ListItem({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLi
-          className={listItemClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLi className={listItemClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLi>
       )

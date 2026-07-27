@@ -1,8 +1,7 @@
-import {
-  ORDINAL_SCALES,
-  type OrdinalScale,
-} from "@seldon/editor/lib/themes/ordinal-preview"
+import { ORDINAL_SCALES } from "@seldon/editor/lib/themes/ordinal-preview"
 import { create } from "zustand"
+
+import type { OrdinalScale } from "@seldon/editor/lib/themes/ordinal-preview"
 
 /**
  * Per-preview ordinal step selections for theme boards. The specimen legend
@@ -12,17 +11,10 @@ import { create } from "zustand"
  */
 interface OrdinalPreviewStore {
   selections: Record<string, string>
-  setSelection: (
-    variantEntryId: string,
-    scale: OrdinalScale,
-    step: string,
-  ) => void
+  setSelection: (variantEntryId: string, scale: OrdinalScale, step: string) => void
 }
 
-export function ordinalSelectionKey(
-  variantEntryId: string,
-  scale: OrdinalScale,
-): string {
+export function ordinalSelectionKey(variantEntryId: string, scale: OrdinalScale): string {
   return `${variantEntryId}:${scale}`
 }
 
@@ -38,10 +30,7 @@ export const useOrdinalPreviewStore = create<OrdinalPreviewStore>((set) => ({
 }))
 
 /** Reactive read of one preview scale's step, defaulting to the scale default. */
-export function useOrdinalSelection(
-  variantEntryId: string,
-  scale: OrdinalScale,
-): string {
+export function useOrdinalSelection(variantEntryId: string, scale: OrdinalScale): string {
   return useOrdinalPreviewStore(
     (store) =>
       store.selections[ordinalSelectionKey(variantEntryId, scale)] ??

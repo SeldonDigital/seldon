@@ -6,10 +6,12 @@ export function useObjectURL(file: File | null): string | null {
   useEffect(() => {
     if (!file) {
       setObjectURL(null)
+
       return
     }
 
     const url = URL.createObjectURL(file)
+
     setObjectURL(url)
 
     // Free memory whenever this component is unmounted or file changes

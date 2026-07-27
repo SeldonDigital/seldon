@@ -10,14 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { ButtonIconic } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Input, InputProps } from "../primitives/Input"
+import { Icon } from "../primitives/Icon"
+import { Input } from "../primitives/Input"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { HTMLAttributes } from "react"
 
 export interface ComboboxFieldFilterProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -56,10 +59,7 @@ export function ComboboxFieldFilter({
   seldonRefs,
   ...props
 }: ComboboxFieldFilterProps) {
-  const comboboxFieldFilterClassName = combineClassNames(
-    "sdn-combobox-field",
-    className,
-  )
+  const comboboxFieldFilterClassName = combineClassNames("sdn-combobox-field", className)
   const iconProps = applyRef(
     seldonRefs,
     icon === null
@@ -87,10 +87,7 @@ export function ComboboxFieldFilter({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon2Props = applyRef(
@@ -105,20 +102,14 @@ export function ComboboxFieldFilter({
   )
 
   return (
-    <Frame
-      className={comboboxFieldFilterClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={comboboxFieldFilterClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
           {iconProps !== null && <Icon {...iconProps} />}
           {inputProps !== null && <Input {...inputProps} />}
-          {buttonIconicProps !== null && (
-            <ButtonIconic {...buttonIconicProps} icon={icon2Props} />
-          )}
+          {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={icon2Props} />}
         </>
       )}
     </Frame>

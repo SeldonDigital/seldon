@@ -10,24 +10,29 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import {
-  ComboboxFieldSearch,
-  ComboboxFieldSearchProps,
-} from "../elements/ComboboxFieldSearch"
-import { Frame, FrameProps } from "../frames/Frame"
+import { Button } from "../elements/Button"
+import { ComboboxFieldSearch } from "../elements/ComboboxFieldSearch"
+import { Frame } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar, BarProps } from "../parts/Bar"
-import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { Icon, IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Bar } from "../parts/Bar"
+import { BarButtons } from "../parts/BarButtons"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldSearchProps } from "../elements/ComboboxFieldSearch"
+import type { FrameProps } from "../frames/Frame"
+import type { BarProps } from "../parts/Bar"
+import type { BarButtonsProps } from "../parts/BarButtons"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface PanelDialogProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -126,10 +131,7 @@ export function PanelDialog({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const comboboxFieldSearchProps = applyRef(
@@ -172,10 +174,7 @@ export function PanelDialog({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon2Props = applyRef(
@@ -205,10 +204,7 @@ export function PanelDialog({
       : {
           ...sdn.barButtons,
           ...barButtons,
-          className: combineClassNames(
-            sdn.barButtons?.className,
-            barButtons?.className,
-          ),
+          className: combineClassNames(sdn.barButtons?.className, barButtons?.className),
         },
   )
   const frame2Props = applyRef(
@@ -218,10 +214,7 @@ export function PanelDialog({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const buttonProps = applyRef(
@@ -231,10 +224,7 @@ export function PanelDialog({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const icon3Props = applyRef(
@@ -254,10 +244,7 @@ export function PanelDialog({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const button2Props = applyRef(
@@ -267,10 +254,7 @@ export function PanelDialog({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon4Props = applyRef(
@@ -290,10 +274,7 @@ export function PanelDialog({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const button3Props = applyRef(
@@ -303,10 +284,7 @@ export function PanelDialog({
       : {
           ...sdn.button3,
           ...button3,
-          className: combineClassNames(
-            sdn.button3?.className,
-            button3?.className,
-          ),
+          className: combineClassNames(sdn.button3?.className, button3?.className),
         },
   )
   const icon5Props = applyRef(
@@ -326,10 +304,7 @@ export function PanelDialog({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const frame3Props = applyRef(
@@ -339,10 +314,7 @@ export function PanelDialog({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const button4Props = applyRef(
@@ -352,10 +324,7 @@ export function PanelDialog({
       : {
           ...sdn.button4,
           ...button4,
-          className: combineClassNames(
-            sdn.button4?.className,
-            button4?.className,
-          ),
+          className: combineClassNames(sdn.button4?.className, button4?.className),
         },
   )
   const icon6Props = applyRef(
@@ -375,10 +344,7 @@ export function PanelDialog({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const button5Props = applyRef(
@@ -388,10 +354,7 @@ export function PanelDialog({
       : {
           ...sdn.button5,
           ...button5,
-          className: combineClassNames(
-            sdn.button5?.className,
-            button5?.className,
-          ),
+          className: combineClassNames(sdn.button5?.className, button5?.className),
         },
   )
   const icon7Props = applyRef(
@@ -411,10 +374,7 @@ export function PanelDialog({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
 
@@ -450,25 +410,19 @@ export function PanelDialog({
                 {button && buttonProps && (
                   <Button {...buttonProps}>
                     {icon3 && icon3Props && <Icon {...icon3Props} />}
-                    {textLabel && textLabelProps && (
-                      <TextLabel {...textLabelProps} />
-                    )}
+                    {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
                   </Button>
                 )}
                 {button2 && button2Props && (
                   <Button {...button2Props}>
                     {icon4 && icon4Props && <Icon {...icon4Props} />}
-                    {textLabel2 && textLabel2Props && (
-                      <TextLabel {...textLabel2Props} />
-                    )}
+                    {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
                   </Button>
                 )}
                 {button3 && button3Props && (
                   <Button {...button3Props}>
                     {icon5 && icon5Props && <Icon {...icon5Props} />}
-                    {textLabel3 && textLabel3Props && (
-                      <TextLabel {...textLabel3Props} />
-                    )}
+                    {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
                   </Button>
                 )}
               </Frame>
@@ -476,17 +430,13 @@ export function PanelDialog({
                 {button4 && button4Props && (
                   <Button {...button4Props}>
                     {icon6 && icon6Props && <Icon {...icon6Props} />}
-                    {textLabel4 && textLabel4Props && (
-                      <TextLabel {...textLabel4Props} />
-                    )}
+                    {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
                   </Button>
                 )}
                 {button5 && button5Props && (
                   <Button {...button5Props}>
                     {icon7 && icon7Props && <Icon {...icon7Props} />}
-                    {textLabel5 && textLabel5Props && (
-                      <TextLabel {...textLabel5Props} />
-                    )}
+                    {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
                   </Button>
                 )}
               </Frame>

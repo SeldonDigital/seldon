@@ -8,7 +8,7 @@ const APP_VIEW_BOUNDARY_MESSAGE =
   "app/ and lib/ should render Views only. Move raw DOM markup into a reusable View (seldon/ for design components, lib/ for editor chrome), or mark a genuinely hand-authored view as *.bespoke.*, and consume it from there."
 
 export default defineConfig([
-  globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
+  globalIgnores(["seldon/**", "dist/**", "node_modules/**"]),
   ...seldonBase,
   // Register react-hooks so existing inline eslint-disable directives resolve,
   // and enable the console policy shared by the editor apps.

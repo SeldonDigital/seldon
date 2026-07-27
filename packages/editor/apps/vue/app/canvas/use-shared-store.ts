@@ -1,5 +1,7 @@
+import { onScopeDispose, ref } from "vue"
+
 import type { Store } from "@seldon/editor/lib/canvas/store/observable"
-import { type Ref, onScopeDispose, ref } from "vue"
+import type { Ref } from "vue"
 
 /**
  * Binds a framework-neutral shared store to a Vue ref. The ref updates whenever
@@ -14,6 +16,8 @@ export function useSharedStore<T extends object, S>(
   const unsubscribe = store.subscribe(() => {
     value.value = selector(store.getState())
   })
+
   onScopeDispose(unsubscribe)
+
   return value
 }

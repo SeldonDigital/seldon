@@ -10,10 +10,8 @@ import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessor
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { useMemo } from "react"
 
-import { Board, Properties, ValueType } from "@seldon/core"
-import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
+import { ValueType } from "@seldon/core"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
@@ -21,6 +19,10 @@ import { useFontCollectionBoardSpecimens } from "../hooks/use-font-collection-bo
 import { BoardPreviewNode } from "./BoardPreviewNode"
 import { PreviewItemWrapper } from "./PreviewItemWrapper"
 import { injectBoardBackground } from "./inject-board-background"
+
+import type { Board, Properties } from "@seldon/core"
+import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 export type FontCollectionBoardProps = {
   board: Board
@@ -76,6 +78,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
             entryId,
             slot,
           })
+
           return (
             <FontCollectionTypeSpecimen
               key={`${entryId}-${slot}`}
@@ -138,18 +141,18 @@ function FontCollectionTypeSpecimen({
     if (!rootId) {
       return null
     }
+
     const nodes = Object.fromEntries(
       Object.entries(typeSpecimenBase.nodes).map(([id, node]) => {
         // The specimen title shows the family name. Swap its placeholder content
         // for the family name. This is an editor-only preview override.
         const isSubheading =
-          (node.overrides?.content as { value?: unknown } | undefined)
-            ?.value === "Font Name"
+          (node.overrides?.content as { value?: unknown } | undefined)?.value === "Font Name"
         // The "Font weights" text node lists the family's enabled weights. Swap
         // its placeholder content the same way the family name is swapped.
         const isFontWeights =
-          (node.overrides?.content as { value?: unknown } | undefined)
-            ?.value === "Font weights"
+          (node.overrides?.content as { value?: unknown } | undefined)?.value === "Font weights"
+
         return [
           id,
           {
@@ -176,6 +179,7 @@ function FontCollectionTypeSpecimen({
         ]
       }),
     )
+
     return {
       ...typeSpecimenBase,
       themes,
@@ -203,12 +207,7 @@ function FontCollectionTypeSpecimen({
       selectionId={resourceItemKey}
       selectionKind="resourceItem"
     >
-      <BoardPreviewNode
-        nodeId={rootId}
-        workspace={previewWorkspace}
-        scope={scope}
-        isRoot
-      />
+      <BoardPreviewNode nodeId={rootId} workspace={previewWorkspace} scope={scope} isRoot />
     </PreviewItemWrapper>
   )
 }

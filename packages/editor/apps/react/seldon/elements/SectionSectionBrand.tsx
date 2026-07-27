@@ -10,17 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { Frame } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Image } from "../primitives/Image"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ImageProps } from "../primitives/Image"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface SectionSectionBrandProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -57,10 +57,7 @@ export function SectionSectionBrand({
   seldonRefs,
   ...props
 }: SectionSectionBrandProps) {
-  const sectionSectionBrandClassName = combineClassNames(
-    "sdn-section",
-    className,
-  )
+  const sectionSectionBrandClassName = combineClassNames("sdn-section", className)
   const imageProps = applyRef(
     seldonRefs,
     image === null
@@ -78,10 +75,7 @@ export function SectionSectionBrand({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const textDescriptionProps = applyRef(
@@ -91,28 +85,19 @@ export function SectionSectionBrand({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
 
   return (
-    <Frame
-      className={sectionSectionBrandClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={sectionSectionBrandClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
         <>
           {imageProps !== null && <Image {...imageProps} />}
           {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-          {textDescription && textDescriptionProps && (
-            <TextDescription {...textDescriptionProps} />
-          )}
+          {textDescription && textDescriptionProps && <TextDescription {...textDescriptionProps} />}
         </>
       )}
     </Frame>

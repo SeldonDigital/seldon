@@ -1,23 +1,23 @@
-import type { MenuEntry } from "@app/menus/types"
 import {
   getAllowedBorderSides,
   getPropertiesSubjectId,
 } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 
-import {
-  type Board,
-  type BorderSideKey,
-  type Instance,
-  type LayeredPaintKey,
-  type Variant,
-  type Workspace,
-  getBorderSideOptions,
-} from "@seldon/core"
+import { getBorderSideOptions } from "@seldon/core"
 import { getLayerAddOptions } from "@seldon/core/properties/helpers/layer-add-options"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
 import type { PropertySection } from "../types"
+import type { MenuEntry } from "@app/menus/types"
+import type {
+  Board,
+  BorderSideKey,
+  Instance,
+  LayeredPaintKey,
+  Variant,
+  Workspace,
+} from "@seldon/core"
 
 interface SectionActionsDeps {
   section: PropertySection
@@ -32,11 +32,7 @@ interface SectionActionsDeps {
   addToast: (message: string) => void
 }
 
-async function copyText(
-  text: string,
-  addToast: (m: string) => void,
-  label: string,
-) {
+async function copyText(text: string, addToast: (m: string) => void, label: string) {
   try {
     await navigator.clipboard.writeText(text)
     addToast(`${label} copied to clipboard`)
@@ -66,6 +62,7 @@ export function buildSectionActions({
   // Board attributes: apply this board to all, and reset the board.
   if (isBoard(node) && section.properties.some((p) => p.key === "board")) {
     const boardKey = getComponentKey(node)
+
     return [
       {
         id: "apply-to-all-boards",
@@ -74,6 +71,7 @@ export function buildSectionActions({
           const confirmed = window.confirm(
             "Apply this board's properties and theme to all other component boards? This overwrites their board setup.",
           )
+
           if (!confirmed) return
           dispatch({
             type: "apply_component_properties_to_all_boards",
@@ -90,6 +88,7 @@ export function buildSectionActions({
           const confirmed = window.confirm(
             "Reset this board's properties and theme to their defaults?",
           )
+
           if (!confirmed) return
           dispatch({ type: "reset_component_board", payload: { boardKey } })
         },
@@ -108,6 +107,7 @@ export function buildSectionActions({
         testId: "copy-css",
       },
     ]
+
     if (cssSelector) {
       actions.push({
         id: "copy-selector",
@@ -116,11 +116,13 @@ export function buildSectionActions({
           const rule = `${cssSelector} {\n${cssStrings
             .map((declaration) => `  ${declaration}`)
             .join("\n")}\n}`
+
           void copyText(rule, addToast, "Selector")
         },
         testId: "copy-selector",
       })
     }
+
     return actions
   }
 
@@ -129,16 +131,16 @@ export function buildSectionActions({
   if (!inEditingContext && !isBoard(node)) {
     const layeredKeys: LayeredPaintKey[] = ["background", "shadow"]
     const exposed = layeredKeys.filter((key) =>
-      section.properties.some(
-        (property) => property.key === key && property.status !== "not used",
-      ),
+      section.properties.some((property) => property.key === key && property.status !== "not used"),
     )
     const layerEntries: MenuEntry[] = []
+
     for (const key of exposed) {
       for (const option of getLayerAddOptions(key)) {
         if (option.separatorBefore && layerEntries.length > 0) {
           layerEntries.push("separator")
         }
+
         layerEntries.push({
           id: option.id,
           label: option.label,
@@ -157,19 +159,20 @@ export function buildSectionActions({
     }
 
     const borderEntries: MenuEntry[] = []
+
     if (section.properties.some((property) => property.key === "border")) {
       const subjectId = getPropertiesSubjectId(node)
       const allowed = new Set(getAllowedBorderSides(node, workspace))
+
       for (const option of getBorderSideOptions()) {
         const isAllowed = allowed.has(option.side)
         const isShown = shownBorderSides.has(option.side)
+
         borderEntries.push({
           id: option.id,
           label: `${isShown ? "Hide" : "Show"} ${option.label}`,
           disabled: !isAllowed,
-          onSelect: isAllowed
-            ? () => toggleBorderSide(subjectId, option.side)
-            : undefined,
+          onSelect: isAllowed ? () => toggleBorderSide(subjectId, option.side) : undefined,
           testId: option.id,
         })
       }
@@ -179,6 +182,7 @@ export function buildSectionActions({
       layerEntries.length > 0 && borderEntries.length > 0
         ? [...layerEntries, "separator", ...borderEntries]
         : [...layerEntries, ...borderEntries]
+
     return entries.length > 0 ? entries : undefined
   }
 

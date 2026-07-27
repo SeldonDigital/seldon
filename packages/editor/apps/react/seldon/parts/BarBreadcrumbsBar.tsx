@@ -10,14 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { ButtonIconic } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Link, LinkProps } from "../primitives/Link"
+import { Icon } from "../primitives/Icon"
+import { Link } from "../primitives/Link"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { IconProps } from "../primitives/Icon"
+import type { LinkProps } from "../primitives/Link"
+import type { HTMLAttributes } from "react"
 
 export interface BarBreadcrumbsBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -70,10 +73,7 @@ export function BarBreadcrumbsBar({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -158,9 +158,7 @@ export function BarBreadcrumbsBar({
         children
       ) : (
         <>
-          {buttonIconicProps !== null && (
-            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-          )}
+          {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
           {icon2Props !== null && <Icon {...icon2Props} />}
           {linkProps !== null && <Link {...linkProps} />}
           {icon3Props !== null && <Icon {...icon3Props} />}

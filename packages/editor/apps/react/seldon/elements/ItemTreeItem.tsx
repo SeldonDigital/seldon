@@ -10,15 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { LiHTMLAttributes } from "react"
-
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
+import { ButtonIconic } from "../elements/ButtonIconic"
+import { ComboboxField } from "../elements/ComboboxField"
 import { HTMLLi } from "../native-react/HTML.Li"
-import { IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { LiHTMLAttributes } from "react"
 
 export interface ItemTreeItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -69,10 +71,7 @@ export function ItemTreeItem({
   seldonRefs,
   ...props
 }: ItemTreeItemProps) {
-  const itemTreeItemClassName = combineClassNames(
-    "sdn-item-tree-item",
-    className,
-  )
+  const itemTreeItemClassName = combineClassNames("sdn-item-tree-item", className)
   const buttonIconicProps = applyRef(
     seldonRefs,
     buttonIconic === null
@@ -80,10 +79,7 @@ export function ItemTreeItem({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -103,10 +99,7 @@ export function ItemTreeItem({
       : {
           ...sdn.comboboxField,
           ...comboboxField,
-          className: combineClassNames(
-            sdn.comboboxField?.className,
-            comboboxField?.className,
-          ),
+          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
         },
   )
   const icon2Props = applyRef(
@@ -136,10 +129,7 @@ export function ItemTreeItem({
       : {
           ...sdn.buttonIconic2,
           ...buttonIconic2,
-          className: combineClassNames(
-            sdn.buttonIconic2?.className,
-            buttonIconic2?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic2?.className, buttonIconic2?.className),
         },
   )
   const icon3Props = applyRef(
@@ -159,10 +149,7 @@ export function ItemTreeItem({
       : {
           ...sdn.buttonIconic3,
           ...buttonIconic3,
-          className: combineClassNames(
-            sdn.buttonIconic3?.className,
-            buttonIconic3?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic3?.className, buttonIconic3?.className),
         },
   )
   const icon4Props = applyRef(
@@ -182,10 +169,7 @@ export function ItemTreeItem({
       : {
           ...sdn.buttonIconic4,
           ...buttonIconic4,
-          className: combineClassNames(
-            sdn.buttonIconic4?.className,
-            buttonIconic4?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic4?.className, buttonIconic4?.className),
         },
   )
   const icon5Props = applyRef(
@@ -210,9 +194,7 @@ export function ItemTreeItem({
         children
       ) : (
         <>
-          {buttonIconicProps !== null && (
-            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-          )}
+          {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
           {comboboxFieldProps !== null && (
             <ComboboxField
               {...comboboxFieldProps}

@@ -1,7 +1,4 @@
-import {
-  getHoverStateSnapshot,
-  useSetHoverState,
-} from "@app/canvas/hooks/use-canvas-hover-state"
+import { getHoverStateSnapshot, useSetHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { usePendingRenameStore } from "@app/sidebars/objects/hooks/use-pending-rename"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
@@ -18,8 +15,6 @@ import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-acce
 import { nanoid } from "nanoid"
 import { useCallback } from "react"
 
-import { ComponentId } from "@seldon/core/components/constants"
-import { InstanceId, VariantId } from "@seldon/core/index"
 import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/components/authored-board-key"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import {
@@ -29,13 +24,16 @@ import {
 } from "@seldon/core/workspace/model/components"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
-import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import {
   nodeRelationshipService,
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+
+import type { ComponentId } from "@seldon/core/components/constants"
+import type { InstanceId, VariantId } from "@seldon/core/index"
+import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 import type { BoardKey } from "@seldon/core/workspace/types"
 
 /**
@@ -57,13 +55,12 @@ export function useAddRemoveCommands() {
   const { setActiveTool } = useTool()
   const setHoverState = useSetHoverState()
   const addToast = useAddToast()
-  const requestPendingRename = usePendingRenameStore(
-    (state) => state.requestRename,
-  )
+  const requestPendingRename = usePendingRenameStore((state) => state.requestRename)
 
   const addBoard = useCallback(
     async (componentId: ComponentId) => {
       const variantFallbacks = await confirmMissingSchemaVariants(componentId)
+
       if (variantFallbacks === null) {
         return
       }
@@ -72,9 +69,7 @@ export function useAddRemoveCommands() {
         type: "add_component",
         payload: {
           boardKey: componentId,
-          variantFallbacks: variantFallbacks.length
-            ? variantFallbacks
-            : undefined,
+          variantFallbacks: variantFallbacks.length ? variantFallbacks : undefined,
         },
       })
 
@@ -96,6 +91,7 @@ export function useAddRemoveCommands() {
 
   const newTheme = useCallback(() => {
     const boardKey = `custom-theme-${nanoid(8)}` as BoardKey
+
     dispatch({
       type: "add_authored_theme",
       payload: { boardKey },
@@ -142,6 +138,7 @@ export function useAddRemoveCommands() {
 
   const addPlayground = useCallback(() => {
     const playgroundKey = `playground-${nanoid(8)}` as BoardKey
+
     dispatch({
       type: "add_playground",
       payload: { boardKey: playgroundKey },
@@ -152,6 +149,7 @@ export function useAddRemoveCommands() {
   const duplicatePlayground = useCallback(
     (sourcePlaygroundKey: BoardKey) => {
       const newPlaygroundKey = `playground-${nanoid(8)}` as BoardKey
+
       dispatch({
         type: "duplicate_playground",
         payload: { sourcePlaygroundKey, newPlaygroundKey },
@@ -163,19 +161,23 @@ export function useAddRemoveCommands() {
 
   const addVariant = useCallback(() => {
     const board = selectedBoard
+
     if (!board || !selectedBoardId) {
       addToast("No board selected")
+
       return
     }
 
     if (isThemeBoard(board)) {
       const defaultThemeId = board.variants[0]?.id
+
       if (!defaultThemeId) return
       dispatch({
         type: "duplicate_theme",
         payload: { themeId: defaultThemeId },
       })
       setActiveTool("select")
+
       return
     }
 
@@ -188,6 +190,7 @@ export function useAddRemoveCommands() {
         type: "add_sandbox",
         payload: { playgroundKey: selectedBoardId as BoardKey },
       })
+
       return
     }
 
@@ -195,19 +198,14 @@ export function useAddRemoveCommands() {
       type: "add_variant",
       payload: { boardKey: selectedBoardId as BoardKey },
     })
-  }, [
-    selectedBoard,
-    selectedBoardId,
-    dispatch,
-    dispatchWithAutoSelect,
-    setActiveTool,
-    addToast,
-  ])
+  }, [selectedBoard, selectedBoardId, dispatch, dispatchWithAutoSelect, setActiveTool, addToast])
 
   const duplicateSelectedNode = useCallback(() => {
     const nodeId = selectedNode?.id
+
     if (!nodeId) {
       addToast("No node selected")
+
       return
     }
 
@@ -228,17 +226,18 @@ export function useAddRemoveCommands() {
         const confirmed = window.confirm(
           "This variant is used in other components. Deleting it will also remove it from those components. Delete anyway?",
         )
+
         if (!confirmed) return
       }
 
       if (selectedNode?.id === nodeId) {
         selectNode(
           nodeRelationshipService.findAdjacent(node, "before", workspace)?.id ??
-            nodeRelationshipService.findAdjacent(node, "after", workspace)
-              ?.id ??
+            nodeRelationshipService.findAdjacent(node, "after", workspace)?.id ??
             null,
         )
       }
+
       if (getHoverStateSnapshot()?.objectId === nodeId) {
         setHoverState(null)
       }
@@ -248,6 +247,7 @@ export function useAddRemoveCommands() {
           type: "remove_variant",
           payload: { variantRootId: nodeId as VariantId },
         })
+
         return
       }
 
@@ -261,8 +261,8 @@ export function useAddRemoveCommands() {
 
   const removeBoard = useCallback(
     (boardKey: BoardKey) => {
-      const board =
-        workspace.boards[boardKey] ?? workspace.playgrounds?.[boardKey]
+      const board = workspace.boards[boardKey] ?? workspace.playgrounds?.[boardKey]
+
       if (!board) return
 
       // A single action removes any board type. The default Seldon theme and
@@ -281,6 +281,7 @@ export function useAddRemoveCommands() {
   const removeSelectedThemeEntry = useCallback(
     (themeId: string) => {
       const entry = workspace.themes[themeId]
+
       if (!entry || isEntryThemeDefault(entry)) return
 
       if (getHoverStateSnapshot()?.objectId === themeId) {
@@ -294,6 +295,7 @@ export function useAddRemoveCommands() {
 
       if (selectedThemeEntryId === themeId) {
         const board = findThemeBoard(workspace)
+
         selectBoard(board ? resolveComponentKey(board, workspace) : null)
       }
     },
@@ -303,6 +305,7 @@ export function useAddRemoveCommands() {
   const removeSelectedFontCollectionEntry = useCallback(
     (fontCollectionId: string) => {
       const entry = workspace["font-collections"][fontCollectionId]
+
       if (!entry || isEntryFontCollectionDefault(entry)) return
 
       if (getHoverStateSnapshot()?.objectId === fontCollectionId) {
@@ -316,21 +319,17 @@ export function useAddRemoveCommands() {
 
       if (selectedFontCollectionEntryId === fontCollectionId) {
         const board = findFontCollectionBoard(workspace)
+
         selectBoard(board ? resolveComponentKey(board, workspace) : null)
       }
     },
-    [
-      workspace,
-      selectedFontCollectionEntryId,
-      selectBoard,
-      dispatch,
-      setHoverState,
-    ],
+    [workspace, selectedFontCollectionEntryId, selectBoard, dispatch, setHoverState],
   )
 
   const removeSelectedIconSetEntry = useCallback(
     (iconSetId: string) => {
       const entry = workspace["icon-sets"][iconSetId]
+
       if (!entry || isEntryIconSetDefault(entry)) return
 
       if (getHoverStateSnapshot()?.objectId === iconSetId) {
@@ -344,6 +343,7 @@ export function useAddRemoveCommands() {
 
       if (selectedIconSetEntryId === iconSetId) {
         const board = findIconSetBoard(workspace)
+
         selectBoard(board ? resolveComponentKey(board, workspace) : null)
       }
     },
@@ -353,21 +353,25 @@ export function useAddRemoveCommands() {
   const deleteSelection = useCallback(() => {
     if (selectedNode) {
       removeSelectedNode(selectedNode.id)
+
       return
     }
 
     if (selectedThemeEntryId) {
       removeSelectedThemeEntry(selectedThemeEntryId)
+
       return
     }
 
     if (selectedFontCollectionEntryId) {
       removeSelectedFontCollectionEntry(selectedFontCollectionEntryId)
+
       return
     }
 
     if (selectedIconSetEntryId) {
       removeSelectedIconSetEntry(selectedIconSetEntryId)
+
       return
     }
 

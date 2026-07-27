@@ -1,5 +1,7 @@
 import { Frame } from "@seldon/components/frames/Frame"
-import { CSSProperties, createContext, useContext } from "react"
+import { createContext, useContext } from "react"
+
+import type { CSSProperties } from "react"
 
 /**
  * React context for tracking the current indentation level in the tree.
@@ -13,19 +15,11 @@ const IndentationContext = createContext<number>(0)
  *
  * @param children - React children to wrap with incremented indentation context
  */
-const IndentationContextProvider = ({
-  children,
-}: {
-  children: React.ReactNode
-}) => {
+const IndentationContextProvider = ({ children }: { children: React.ReactNode }) => {
   const indentation = useIndentation()
   const nextLevel = indentation + 1
 
-  return (
-    <IndentationContext.Provider value={nextLevel}>
-      {children}
-    </IndentationContext.Provider>
-  )
+  return <IndentationContext.Provider value={nextLevel}>{children}</IndentationContext.Provider>
 }
 
 /**
@@ -39,11 +33,7 @@ const IndentationContextProvider = ({
  * <IndentationLevel>{children}</IndentationLevel>
  * ```
  */
-export const IndentationLevel = ({
-  children,
-}: {
-  children: React.ReactNode
-}) => {
+export const IndentationLevel = ({ children }: { children: React.ReactNode }) => {
   // Each nested level adds one step of compact padding via the CSS token.
   const indentationPadding = "var(--sdn-paddings-compact)"
 

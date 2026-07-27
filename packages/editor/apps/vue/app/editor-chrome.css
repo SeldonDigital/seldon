@@ -87,25 +87,15 @@ body {
  * (`:focus-visible` on the element or a descendant) and out-specify its rules.
  */
 html:not(.sdn-show-focus)
-  .sdn-combobox-field:is(:focus-visible, :has(:focus-visible)):not(
-    [aria-invalid="true"]
-  ),
+  .sdn-combobox-field:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
 html:not(.sdn-show-focus)
-  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible)):not(
-    [aria-invalid="true"]
-  ),
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
 html:not(.sdn-show-focus)
-  .sdn-item-section:is(:focus-visible, :has(:focus-visible)):not(
-    [aria-invalid="true"]
-  ),
+  .sdn-item-section:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
 html:not(.sdn-show-focus)
-  .sdn-button-menu:is(:focus-visible, :has(:focus-visible)):not(
-    [aria-invalid="true"]
-  ),
+  .sdn-button-menu:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
 html:not(.sdn-show-focus)
-  .sdn-button-iconic:is(:focus-visible, :has(:focus-visible)):not(
-    [aria-invalid="true"]
-  ) {
+  .sdn-button-iconic:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]) {
   border-color: transparent;
 }
 html:not(.sdn-show-focus)
@@ -124,9 +114,7 @@ html:not(.sdn-show-focus)
  * neutralize the border so focus paints nothing when the toggle is off.
  */
 html:not(.sdn-show-focus)
-  .sdn-input:is(:focus-visible, :has(:focus-visible)):not(
-    [aria-invalid="true"]
-  ),
+  .sdn-input:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
 html:not(.sdn-show-focus)
   [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-input"]:not([aria-invalid="true"]) {
@@ -148,17 +136,13 @@ html:not(.sdn-show-focus)
 html:not(.sdn-show-focus)
   .sdn-menu:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
 html:not(.sdn-show-focus)
-  .sdn-listbox:is(:focus-visible, :has(:focus-visible)):not(
-    [aria-invalid="true"]
-  ) {
+  .sdn-listbox:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]) {
   border-color: color-mix(in srgb, var(--sdn-swatch-primary) 80%, transparent);
 }
 html:not(.sdn-show-focus)
   .sdn-menu:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-text-label"],
-html:not(.sdn-show-focus)
-  .sdn-menu:is(:focus-visible, :has(:focus-visible))
-  [class*="sdn-icon"],
+html:not(.sdn-show-focus) .sdn-menu:is(:focus-visible, :has(:focus-visible)) [class*="sdn-icon"],
 html:not(.sdn-show-focus)
   .sdn-listbox:is(:focus-visible, :has(:focus-visible))
   [class*="sdn-text-label"],

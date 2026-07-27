@@ -15,11 +15,7 @@ interface UseRenameValueOptions {
  * The seed runs only when `isEditing` flips on, so a label change mid-edit never
  * clobbers what the user is typing.
  */
-export function useRenameValue({
-  label,
-  isEditing,
-  setEditing,
-}: UseRenameValueOptions) {
+export function useRenameValue({ label, isEditing, setEditing }: UseRenameValueOptions) {
   const [value, setValue] = useState(label)
 
   useEffect(() => {

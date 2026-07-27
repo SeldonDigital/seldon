@@ -10,16 +10,21 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ItemCatalog, ItemCatalogProps } from "../elements/ItemCatalog"
-import { Frame, FrameProps } from "../frames/Frame"
+import { ItemCatalog } from "../elements/ItemCatalog"
+import { Frame } from "../frames/Frame"
 import { HTMLUl } from "../native-react/HTML.Ul"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { TextSubtitle } from "../primitives/TextSubtitle"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ItemCatalogProps } from "../elements/ItemCatalog"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextSubtitleProps } from "../primitives/TextSubtitle"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface ListStandardProductListProps extends HTMLAttributes<HTMLUListElement> {
   className?: string
@@ -95,10 +100,7 @@ export function ListStandardProductList({
       : {
           ...sdn.itemCatalog,
           ...itemCatalog,
-          className: combineClassNames(
-            sdn.itemCatalog?.className,
-            itemCatalog?.className,
-          ),
+          className: combineClassNames(sdn.itemCatalog?.className, itemCatalog?.className),
         },
   )
   const iconProps = applyRef(
@@ -128,10 +130,7 @@ export function ListStandardProductList({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const textSubtitleProps = applyRef(
@@ -141,10 +140,7 @@ export function ListStandardProductList({
       : {
           ...sdn.textSubtitle,
           ...textSubtitle,
-          className: combineClassNames(
-            sdn.textSubtitle?.className,
-            textSubtitle?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
         },
   )
   const itemCatalog2Props = applyRef(
@@ -154,10 +150,7 @@ export function ListStandardProductList({
       : {
           ...sdn.itemCatalog2,
           ...itemCatalog2,
-          className: combineClassNames(
-            sdn.itemCatalog2?.className,
-            itemCatalog2?.className,
-          ),
+          className: combineClassNames(sdn.itemCatalog2?.className, itemCatalog2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -177,10 +170,7 @@ export function ListStandardProductList({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const textTitle2Props = applyRef(
@@ -190,10 +180,7 @@ export function ListStandardProductList({
       : {
           ...sdn.textTitle2,
           ...textTitle2,
-          className: combineClassNames(
-            sdn.textTitle2?.className,
-            textTitle2?.className,
-          ),
+          className: combineClassNames(sdn.textTitle2?.className, textTitle2?.className),
         },
   )
   const textSubtitle2Props = applyRef(
@@ -203,10 +190,7 @@ export function ListStandardProductList({
       : {
           ...sdn.textSubtitle2,
           ...textSubtitle2,
-          className: combineClassNames(
-            sdn.textSubtitle2?.className,
-            textSubtitle2?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle2?.className, textSubtitle2?.className),
         },
   )
   const itemCatalog3Props = applyRef(
@@ -216,10 +200,7 @@ export function ListStandardProductList({
       : {
           ...sdn.itemCatalog3,
           ...itemCatalog3,
-          className: combineClassNames(
-            sdn.itemCatalog3?.className,
-            itemCatalog3?.className,
-          ),
+          className: combineClassNames(sdn.itemCatalog3?.className, itemCatalog3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -239,10 +220,7 @@ export function ListStandardProductList({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const textTitle3Props = applyRef(
@@ -252,10 +230,7 @@ export function ListStandardProductList({
       : {
           ...sdn.textTitle3,
           ...textTitle3,
-          className: combineClassNames(
-            sdn.textTitle3?.className,
-            textTitle3?.className,
-          ),
+          className: combineClassNames(sdn.textTitle3?.className, textTitle3?.className),
         },
   )
   const textSubtitle3Props = applyRef(
@@ -265,10 +240,7 @@ export function ListStandardProductList({
       : {
           ...sdn.textSubtitle3,
           ...textSubtitle3,
-          className: combineClassNames(
-            sdn.textSubtitle3?.className,
-            textSubtitle3?.className,
-          ),
+          className: combineClassNames(sdn.textSubtitle3?.className, textSubtitle3?.className),
         },
   )
 
@@ -286,12 +258,8 @@ export function ListStandardProductList({
             <ItemCatalog {...itemCatalogProps}>
               {icon && iconProps && <Icon {...iconProps} />}
               <Frame {...frameProps}>
-                {textTitle && textTitleProps && (
-                  <TextTitle {...textTitleProps} />
-                )}
-                {textSubtitle && textSubtitleProps && (
-                  <TextSubtitle {...textSubtitleProps} />
-                )}
+                {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
+                {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
               </Frame>
             </ItemCatalog>
           )}
@@ -299,12 +267,8 @@ export function ListStandardProductList({
             <ItemCatalog {...itemCatalog2Props}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}
               <Frame {...frame2Props}>
-                {textTitle2 && textTitle2Props && (
-                  <TextTitle {...textTitle2Props} />
-                )}
-                {textSubtitle2 && textSubtitle2Props && (
-                  <TextSubtitle {...textSubtitle2Props} />
-                )}
+                {textTitle2 && textTitle2Props && <TextTitle {...textTitle2Props} />}
+                {textSubtitle2 && textSubtitle2Props && <TextSubtitle {...textSubtitle2Props} />}
               </Frame>
             </ItemCatalog>
           )}
@@ -312,12 +276,8 @@ export function ListStandardProductList({
             <ItemCatalog {...itemCatalog3Props}>
               {icon3 && icon3Props && <Icon {...icon3Props} />}
               <Frame {...frame3Props}>
-                {textTitle3 && textTitle3Props && (
-                  <TextTitle {...textTitle3Props} />
-                )}
-                {textSubtitle3 && textSubtitle3Props && (
-                  <TextSubtitle {...textSubtitle3Props} />
-                )}
+                {textTitle3 && textTitle3Props && <TextTitle {...textTitle3Props} />}
+                {textSubtitle3 && textSubtitle3Props && <TextSubtitle {...textSubtitle3Props} />}
               </Frame>
             </ItemCatalog>
           )}

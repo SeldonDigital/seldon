@@ -65,11 +65,7 @@ const relSpec = /(["'])(\.\.?\/[^"']+)\1/g
 let changed = 0
 for (const file of files) {
   const src = readFileSync(file, "utf8")
-  const fileTree = file.startsWith(libRoot)
-    ? "lib"
-    : file.startsWith(appRoot)
-      ? "app"
-      : null
+  const fileTree = file.startsWith(libRoot) ? "lib" : file.startsWith(appRoot) ? "app" : null
   let next = src.replace(aliasSpec, (m, q, cur, rest) => {
     const p = resolvePrefix(rest, cur)
     return `${q}@${p}/${rest}${q}`
@@ -82,8 +78,7 @@ for (const file of files) {
       if (subrel === null) return m // outside both trees
       const p = resolvePrefix(subrel, fileTree)
       if (p === fileTree) return m // same tree: keep relative
-      if (!existsWithExt(join(p === "lib" ? libRoot : appRoot, subrel)))
-        return m
+      if (!existsWithExt(join(p === "lib" ? libRoot : appRoot, subrel))) return m
       return `${q}@${p}/${subrel}${q}`
     })
   }

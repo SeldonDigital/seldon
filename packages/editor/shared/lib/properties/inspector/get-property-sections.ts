@@ -1,9 +1,7 @@
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
-import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
-import type { IconCategory } from "@seldon/core/icon-sets/constants"
 import {
   PROPERTY_DISPLAY_META,
   PropertyDisplayCategory,
@@ -11,7 +9,10 @@ import {
   getCatalogKeyForPropertyPath,
 } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
+import type { Board, Instance, Variant, Workspace } from "@seldon/core"
+import type { IconCategory } from "@seldon/core/icon-sets/constants"
 
 /**
  * Inspector section ids: the core property display categories, the editor-only
@@ -48,16 +49,20 @@ function getComponentNameForAttributes(
   }
 
   const catalogId = getNodeCatalogComponentId(node, _workspace)
+
   if (catalogId && isComponentId(catalogId)) {
     let componentName = catalogId as string
+
     try {
       componentName = getComponentSchema(catalogId).name
     } catch {
       // Fall back to the catalog id when the schema is unavailable.
     }
+
     if (node.label && node.label !== componentName) {
       return `${componentName} · ${node.label}`
     }
+
     return componentName
   }
 
@@ -77,9 +82,8 @@ function getSectionForProperty(propertyKey: string): PropertyDisplayCategory {
     getCatalogKeyForPropertyPath(baseKey) ??
     getCatalogKeyForPropertyPath(`${baseKey}.kind`) ??
     getCatalogKeyForPropertyPath(`${baseKey}.preset`)
-  const category = catalogKey
-    ? PROPERTY_DISPLAY_META[catalogKey]?.displayCategory
-    : undefined
+  const category = catalogKey ? PROPERTY_DISPLAY_META[catalogKey]?.displayCategory : undefined
+
   return category ?? PropertyDisplayCategory.ATTRIBUTES
 }
 
@@ -92,35 +96,32 @@ export function getPropertySections(
   node?: Variant | Instance | Board,
   workspace?: Workspace,
 ): PropertySection[] {
-  const mainProperties = properties.filter(
-    (property) => !property.isSubProperty,
-  )
+  const mainProperties = properties.filter((property) => !property.isSubProperty)
 
-  const propertiesByCategory = new Map<
-    PropertyDisplayCategory,
-    FlatProperty[]
-  >()
+  const propertiesByCategory = new Map<PropertyDisplayCategory, FlatProperty[]>()
+
   for (const property of mainProperties) {
     const category = getSectionForProperty(property.key)
+
     if (!propertiesByCategory.has(category)) {
       propertiesByCategory.set(category, [])
     }
+
     propertiesByCategory.get(category)!.push(property)
   }
 
   const sections: PropertySection[] = []
+
   for (const sectionSchema of getAllPropertySectionSchemas()) {
     const categoryProperties = propertiesByCategory.get(sectionSchema.id)
+
     if (!categoryProperties || categoryProperties.length === 0) {
       continue
     }
 
     let label = sectionSchema.label
-    if (
-      sectionSchema.id === PropertyDisplayCategory.ATTRIBUTES &&
-      node &&
-      workspace
-    ) {
+
+    if (sectionSchema.id === PropertyDisplayCategory.ATTRIBUTES && node && workspace) {
       label = getComponentNameForAttributes(node, workspace)
     }
 

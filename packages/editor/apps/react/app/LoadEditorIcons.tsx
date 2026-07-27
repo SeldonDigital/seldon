@@ -1,10 +1,5 @@
-import {
-  IconDefault,
-  IconSeldonMissing as IconMissing,
-} from "@seldon/components/icons"
-import { SVGAttributes } from "react"
+import { IconDefault, IconSeldonMissing as IconMissing } from "@seldon/components/icons"
 
-import { IconId } from "@seldon/core/icon-sets"
 import * as CarbonIcons from "@seldon/core/icon-sets/catalog/carbon"
 import * as CarbonIconsAll from "@seldon/core/icon-sets/catalog/carbon/index-all"
 import * as LucideIcons from "@seldon/core/icon-sets/catalog/lucide"
@@ -13,6 +8,9 @@ import * as MaterialIcons from "@seldon/core/icon-sets/catalog/material"
 import * as MaterialIconsAll from "@seldon/core/icon-sets/catalog/material/index-all"
 import * as SeldonIcons from "@seldon/core/icon-sets/catalog/seldon"
 import * as SeldonIconsAll from "@seldon/core/icon-sets/catalog/seldon/index-all"
+
+import type { IconId } from "@seldon/core/icon-sets"
+import type { SVGAttributes } from "react"
 
 /**
  * A workspace icon id chosen by the user (a `symbol` property value).
@@ -26,9 +24,7 @@ import * as SeldonIconsAll from "@seldon/core/icon-sets/catalog/seldon/index-all
 export type SymbolIconId = IconId & { readonly __symbol: unique symbol }
 
 /** Marks a symbol property value as a `SymbolIconId` for `LoadEditorIcons`. */
-export function asSymbolIconId(
-  value: string | null | undefined,
-): SymbolIconId | undefined {
+export function asSymbolIconId(value: string | null | undefined): SymbolIconId | undefined {
   return (value ?? undefined) as SymbolIconId | undefined
 }
 
@@ -44,10 +40,7 @@ export type LoadEditorIconsProps = SVGAttributes<SVGSVGElement> & {
 /** Red used for an icon that is turned off in its workspace icon set. */
 const UNAVAILABLE_ICON_COLOR = "#E5484D"
 
-type IconModule = Record<
-  string,
-  React.ComponentType<SVGAttributes<SVGSVGElement>> | undefined
->
+type IconModule = Record<string, React.ComponentType<SVGAttributes<SVGSVGElement>> | undefined>
 
 /** Merges a set's full catalog with its curated index. The curated index wins
  * so its alias exports keep working. */
@@ -82,22 +75,14 @@ const ICON_MODULES_BY_PREFIX: Record<string, IconModule> = {
  *          "lucide-file" -> IconLucideFile
  *          "seldon-alignTop" -> IconSeldonAlignTop
  */
-export function LoadEditorIcons({
-  iconId,
-  unavailable,
-  ...props
-}: LoadEditorIconsProps) {
+export function LoadEditorIcons({ iconId, unavailable, ...props }: LoadEditorIconsProps) {
   if (unavailable) {
-    return (
-      <IconMissing
-        {...props}
-        style={{ color: UNAVAILABLE_ICON_COLOR, ...props.style }}
-      />
-    )
+    return <IconMissing {...props} style={{ color: UNAVAILABLE_ICON_COLOR, ...props.style }} />
   }
 
   if (!iconId) {
     console.warn(`[LoadEditorIcons] No iconId provided`)
+
     return <IconMissing {...props} />
   }
 
@@ -124,8 +109,7 @@ export function LoadEditorIcons({
     const iconNameParts = id.split("-").slice(1) // ["folderOpen"], ["document"], etc.
 
     // Capitalize set prefix: "material" -> "Material", "carbon" -> "Carbon", etc.
-    const capitalizedSetPrefix =
-      iconSetPrefix.charAt(0).toUpperCase() + iconSetPrefix.slice(1)
+    const capitalizedSetPrefix = iconSetPrefix.charAt(0).toUpperCase() + iconSetPrefix.slice(1)
 
     // Capitalize each part of icon name: "folderOpen" -> "FolderOpen", "alignTop" -> "AlignTop"
     const capitalizedIconName = iconNameParts
@@ -136,10 +120,7 @@ export function LoadEditorIcons({
 
     // Seldon IconSocial* components are exported as IconSocialX, not IconSeldonIconSocialX
     // capitalizedIconName is already "IconSocialFacebook" (capitalized form of "iconSocialFacebook")
-    if (
-      iconSetPrefix === "seldon" &&
-      iconNameParts[0]?.toLowerCase().startsWith("iconsocial")
-    ) {
+    if (iconSetPrefix === "seldon" && iconNameParts[0]?.toLowerCase().startsWith("iconsocial")) {
       componentName = capitalizedIconName // e.g. IconSocialFacebook
     }
 
@@ -148,6 +129,7 @@ export function LoadEditorIcons({
 
   if (!Icon) {
     console.warn(`[LoadEditorIcons] Icon not found: ${id}`)
+
     return <IconMissing {...props} />
   }
 

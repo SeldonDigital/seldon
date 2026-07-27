@@ -1,18 +1,14 @@
 import { useToastStore } from "@app/toaster/toast-store"
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
-import type { Placement } from "@seldon/editor/lib/types"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 
-import {
-  Instance,
-  InstanceId,
-  Variant,
-  VariantId,
-  invariant,
-} from "@seldon/core"
+import { invariant } from "@seldon/core"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { typeCheckingService } from "@seldon/core/workspace/services"
+
+import type { Instance, InstanceId, Variant, VariantId } from "@seldon/core"
+import type { Placement } from "@seldon/editor/lib/types"
 
 /**
  * Instance drag-and-drop moves for the objects tree. Index math reads the
@@ -25,11 +21,7 @@ export function useMoveObjects() {
   const dispatch = useDispatch()
   const toast = useToastStore()
 
-  function moveChildTo(
-    nodeId: InstanceId,
-    parentId: VariantId | InstanceId,
-    index: number,
-  ): void {
+  function moveChildTo(nodeId: InstanceId, parentId: VariantId | InstanceId, index: number): void {
     dispatch({
       type: "move_instance",
       payload: { instanceId: nodeId, target: { parentId, index } },
@@ -43,12 +35,15 @@ export function useMoveObjects() {
   ): void {
     const workspace = getCurrentWorkspace()
     const subject = workspace.nodes[subjectId as InstanceId]
+
     if (!subject || !typeCheckingService.isInstance(subject)) {
       toast.addToast("Only instances can be moved here")
+
       return
     }
 
     const parent = findParentNode(targetId as InstanceId, workspace)
+
     invariant(parent, "Parent not found")
     const childIds = getNodeChildIds(parent, workspace)
 
@@ -62,19 +57,17 @@ export function useMoveObjects() {
         type: "reorder_instance_in_parent",
         payload: { instanceId: subjectId as InstanceId, newIndex },
       })
+
       return
     }
 
-    moveChildTo(
-      subjectId as InstanceId,
-      parent.id as VariantId | InstanceId,
-      newIndex,
-    )
+    moveChildTo(subjectId as InstanceId, parent.id as VariantId | InstanceId, newIndex)
   }
 
   function moveNodeInside(targetId: string, subjectId: string): void {
     const workspace = getCurrentWorkspace()
     const target = workspace.nodes[targetId as InstanceId]
+
     if (!target) return
     const childIds = getNodeChildIds(target, workspace)
     const subject = workspace.nodes[subjectId as InstanceId]
@@ -90,19 +83,17 @@ export function useMoveObjects() {
           },
         },
       })
+
       return
     }
 
     if (!subject || !typeCheckingService.isInstance(subject)) {
       toast.addToast("Only instances can be nested here")
+
       return
     }
 
-    moveChildTo(
-      subjectId as InstanceId,
-      targetId as VariantId | InstanceId,
-      childIds.length,
-    )
+    moveChildTo(subjectId as InstanceId, targetId as VariantId | InstanceId, childIds.length)
   }
 
   // Shared duplicate primitive. Holds the only variant-vs-instance branch so
@@ -123,6 +114,7 @@ export function useMoveObjects() {
         },
       })
     }
+
     return dispatch({
       type: "insert_duplicate_instance",
       payload: {
@@ -149,24 +141,23 @@ export function useMoveObjects() {
   ): void {
     const workspace = getCurrentWorkspace()
     const subject = workspace.nodes[subjectId as InstanceId]
+
     if (!subject) return
 
     if (typeCheckingService.isVariant(subject)) {
       duplicateVariantOnBoard(subject.id as VariantId)
+
       return
     }
 
     const parent = findParentNode(targetId as InstanceId, workspace)
+
     invariant(parent, "Parent not found")
     const childIds = getNodeChildIds(parent, workspace)
     const targetIndex = childIds.indexOf(targetId)
     const newIndex = position === "before" ? targetIndex : targetIndex + 1
 
-    duplicateNodeInto(
-      subject as Instance | Variant,
-      parent.id as VariantId | InstanceId,
-      newIndex,
-    )
+    duplicateNodeInto(subject as Instance | Variant, parent.id as VariantId | InstanceId, newIndex)
   }
 
   return {

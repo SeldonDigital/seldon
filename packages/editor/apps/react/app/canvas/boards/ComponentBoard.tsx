@@ -9,13 +9,11 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { getVisibleVariantRootIds } from "@seldon/editor/lib/canvas/get-visible-variant-root-ids"
 import { resolveComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
-import { CSSProperties, ReactNode, useMemo, useRef } from "react"
+import { useMemo, useRef } from "react"
 
-import { Board, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
-import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
-import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
@@ -24,6 +22,11 @@ import { CssPortal } from "../CssPortal"
 import { StyleTag } from "../StyleTag.bespoke"
 import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
+
+import type { Board } from "@seldon/core"
+import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
+import type { ThemeInstanceId } from "@seldon/core/themes/types"
+import type { CSSProperties, ReactNode } from "react"
 
 export type ComponentBoardProps = {
   board: Board
@@ -72,10 +75,7 @@ const TABLE_PART_WRAPPERS: Partial<Record<ComponentId, TableWrapperKind>> = {
 }
 const tableWrapperStyle: CSSProperties = { width: "100%" }
 
-function wrapTablePartBoard(
-  kind: TableWrapperKind | undefined,
-  children: ReactNode,
-): ReactNode {
+function wrapTablePartBoard(kind: TableWrapperKind | undefined, children: ReactNode): ReactNode {
   switch (kind) {
     case "cell":
       return (
@@ -125,6 +125,7 @@ export function ComponentBoard({
   const activeState = useActiveBoardState(stateBoardKey)
   const properties = getNodeProperties(boardEntry, workspace)
   const boardRootRef = useRef<HTMLDivElement>(null)
+
   useCanvasReorderFlip(boardRootRef, workspace)
 
   const baseFontFamily = useMemo(
@@ -132,10 +133,7 @@ export function ComponentBoard({
     [theme],
   )
   const rootStyle = useMemo<CSSProperties>(
-    () =>
-      baseFontFamily
-        ? { ...boardRootStyle, fontFamily: baseFontFamily }
-        : boardRootStyle,
+    () => (baseFontFamily ? { ...boardRootStyle, fontFamily: baseFontFamily } : boardRootStyle),
     [baseFontFamily],
   )
 
@@ -143,20 +141,14 @@ export function ComponentBoard({
     explicitVariantRootIds ??
     getVisibleVariantRootIds(boardEntry, { isolatedView, selectedNodeRootId })
   const tableWrapperKind = TABLE_PART_WRAPPERS[boardKey as ComponentId]
-  const initialThemeId = (getBoardThemeRef(boardEntry) ??
-    "default") as ThemeInstanceId
+  const initialThemeId = (getBoardThemeRef(boardEntry) ?? "default") as ThemeInstanceId
 
   // The canvas is pinned to the default (light) theme, so its swatch variables
   // never invert. Pick the interface-mode foreground here so the chrome caption
   // follows the editor mode: dark text in light mode, light text in dark mode.
   const labelColor =
-    resolvedMode === "dark"
-      ? "var(--sdn-swatch-offWhite)"
-      : "var(--sdn-swatch-offBlack)"
-  const labelStyle = useMemo<CSSProperties>(
-    () => ({ color: labelColor }),
-    [labelColor],
-  )
+    resolvedMode === "dark" ? "var(--sdn-swatch-offWhite)" : "var(--sdn-swatch-offBlack)"
+  const labelStyle = useMemo<CSSProperties>(() => ({ color: labelColor }), [labelColor])
   const labelNode = boardLabel ? (
     <Frame className="isolation-board-label" style={labelStyle}>
       {boardLabel}
@@ -180,12 +172,7 @@ export function ComponentBoard({
       </CssPortal>
       <Frame style={boardWrapperStyle}>
         {labelNode}
-        <Frame
-          ref={boardRootRef}
-          data-board-id={boardKey}
-          className={className}
-          style={rootStyle}
-        >
+        <Frame ref={boardRootRef} data-board-id={boardKey} className={className} style={rootStyle}>
           {wrapTablePartBoard(
             tableWrapperKind,
             visibleVariantRootIds.map((variantId) => {

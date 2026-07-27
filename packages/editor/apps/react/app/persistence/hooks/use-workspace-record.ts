@@ -1,11 +1,9 @@
 "use client"
 
-import {
-  type StoredWorkspace,
-  getStoredWorkspace,
-  saveStoredWorkspace,
-} from "@seldon/editor/lib/storage/workspace-store"
+import { getStoredWorkspace, saveStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 import { useCallback, useEffect, useState } from "react"
+
+import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
 export function useWorkspaceRecord(workspaceId: string | null) {
   const [record, setRecord] = useState<StoredWorkspace | null>(null)
@@ -16,29 +14,31 @@ export function useWorkspaceRecord(workspaceId: string | null) {
     if (!workspaceId) {
       setRecord(null)
       setLoading(false)
+
       return
     }
 
     let cancelled = false
+
     setLoading(true)
     setError(null)
 
     getStoredWorkspace(workspaceId)
       .then((stored) => {
         if (cancelled) return
+
         if (!stored) {
           setError("Workspace not found")
           setRecord(null)
         } else {
           setRecord(stored)
         }
+
         setLoading(false)
       })
       .catch((err) => {
         if (cancelled) return
-        setError(
-          err instanceof Error ? err.message : "Failed to load workspace",
-        )
+        setError(err instanceof Error ? err.message : "Failed to load workspace")
         setLoading(false)
       })
 
@@ -55,6 +55,7 @@ export function useWorkspaceRecord(workspaceId: string | null) {
         ...patch,
         updatedAt: new Date().toISOString(),
       }
+
       await saveStoredWorkspace(next)
       setRecord(next)
     },

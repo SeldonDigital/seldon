@@ -1,16 +1,19 @@
 import { useRowActionsMenu } from "@app/menus/hooks/use-row-actions-menu"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { mergeStateProps } from "@app/views/state-props"
-import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
 import { ItemPropertyToggle } from "@seldon/components/elements/ItemPropertyToggle"
-import { ChangeEvent, memo, useCallback } from "react"
+import { memo, useCallback } from "react"
 
 import { IndentationLevel } from "../hooks/use-indentation"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
-import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
+import { useRowProperty } from "./hooks/use-row-property"
+
+import type { RowPropertyProps } from "./hooks/use-row-property"
+import type { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
+import type { ChangeEvent } from "react"
 
 /**
  * View-model for a property row. Value rows bind the generated `ItemProperty`.
@@ -51,9 +54,7 @@ function PropertyInner(props: RowPropertyProps) {
     [switchControl],
   )
 
-  const toggleAriaChecked = switchControl?.mixed
-    ? "mixed"
-    : (switchControl?.checked ?? false)
+  const toggleAriaChecked = switchControl?.mixed ? "mixed" : (switchControl?.checked ?? false)
 
   // Sub-property rows for a compound or shorthand parent. Wrapped in
   // `IndentationLevel` so each nesting depth adds one indent step and shifts the
@@ -77,8 +78,7 @@ function PropertyInner(props: RowPropertyProps) {
     // "activated" tint must not also land on it, or an overridden "off" toggle
     // reads as active. Drop activated for the control while keeping invalid and
     // disabled; the label and icon still carry the override tint.
-    const toggleStateRef =
-      props.property.status === "override" ? undefined : stateRef
+    const toggleStateRef = props.property.status === "override" ? undefined : stateRef
     const toggleRefs: Record<string, Record<string, unknown>> = {
       propertyToggle: { ...listItemProps.buttonIconic },
       propertyToggleIcon: { ...listItemProps.icon },
@@ -94,6 +94,7 @@ function PropertyInner(props: RowPropertyProps) {
         toggleStateRef,
       ),
     }
+
     if (listItemProps.icon2) {
       toggleRefs.toggleIcon = mergeStateProps(listItemProps.icon2, stateRef)
     }
@@ -137,6 +138,7 @@ function PropertyInner(props: RowPropertyProps) {
     valueOptionsMenu: { ...listItemProps.buttonIconic2 },
     propertyActions: { ...optionsMenu.buttonIconic },
   }
+
   if (listItemProps.icon2) {
     seldonRefs.valueIcon = mergeStateProps(listItemProps.icon2, stateRef)
   }

@@ -11,8 +11,10 @@ import { ListItem } from "@seldon/components/primitives/ListItem"
 import { Text } from "@seldon/components/primitives/Text"
 import { TextCodeblock } from "@seldon/components/primitives/TextCodeblock"
 import { TextHeading } from "@seldon/components/primitives/TextHeading"
-import ReactMarkdown, { type Components } from "react-markdown"
+import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+
+import type { Components } from "react-markdown"
 
 interface HariMarkdownProps {
   content: string
@@ -27,10 +29,7 @@ const REMARK_PLUGINS = [remarkGfm]
  */
 export function HariMarkdown({ content }: HariMarkdownProps) {
   return (
-    <ReactMarkdown
-      remarkPlugins={REMARK_PLUGINS}
-      components={MARKDOWN_COMPONENTS}
-    >
+    <ReactMarkdown remarkPlugins={REMARK_PLUGINS} components={MARKDOWN_COMPONENTS}>
       {content}
     </ReactMarkdown>
   )
@@ -46,17 +45,11 @@ const MARKDOWN_COMPONENTS: Components = {
       {children}
     </Link>
   ),
-  code: ({ children }) => (
-    <TextCodeblock htmlElement="code">{children}</TextCodeblock>
-  ),
-  pre: ({ children }) => (
-    <TextCodeblock htmlElement="pre">{children}</TextCodeblock>
-  ),
+  code: ({ children }) => <TextCodeblock htmlElement="code">{children}</TextCodeblock>,
+  pre: ({ children }) => <TextCodeblock htmlElement="pre">{children}</TextCodeblock>,
   blockquote: ({ children }) => <Blockquote>{children}</Blockquote>,
   ul: ({ children }) => <HTMLUl className="sdn-list">{children}</HTMLUl>,
-  ol: ({ children }) => (
-    <HTMLOl className="sdn-list sdn-list-ordered">{children}</HTMLOl>
-  ),
+  ol: ({ children }) => <HTMLOl className="sdn-list sdn-list-ordered">{children}</HTMLOl>,
   li: ({ children }) => <ListItem htmlElement="li">{children}</ListItem>,
   hr: () => <Hr />,
 }

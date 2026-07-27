@@ -10,14 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { MenuItemRadio, MenuItemRadioProps } from "../elements/MenuItemRadio"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { MenuItemRadio } from "../elements/MenuItemRadio"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { MenuItemRadioProps } from "../elements/MenuItemRadio"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface FormControlRadioProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -66,10 +70,7 @@ export function FormControlRadio({
   seldonRefs,
   ...props
 }: FormControlRadioProps) {
-  const formControlRadioClassName = combineClassNames(
-    "sdn-form-control",
-    className,
-  )
+  const formControlRadioClassName = combineClassNames("sdn-form-control", className)
   const textLabelProps = applyRef(
     seldonRefs,
     textLabel === null
@@ -77,10 +78,7 @@ export function FormControlRadio({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const frameProps = applyRef(
@@ -100,10 +98,7 @@ export function FormControlRadio({
       : {
           ...sdn.menuItemRadio,
           ...menuItemRadio,
-          className: combineClassNames(
-            sdn.menuItemRadio?.className,
-            menuItemRadio?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio?.className, menuItemRadio?.className),
         },
   )
   const iconProps = applyRef(
@@ -123,10 +118,7 @@ export function FormControlRadio({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const menuItemRadio2Props = applyRef(
@@ -136,10 +128,7 @@ export function FormControlRadio({
       : {
           ...sdn.menuItemRadio2,
           ...menuItemRadio2,
-          className: combineClassNames(
-            sdn.menuItemRadio2?.className,
-            menuItemRadio2?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio2?.className, menuItemRadio2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -159,19 +148,12 @@ export function FormControlRadio({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
 
   return (
-    <Frame
-      className={formControlRadioClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={formControlRadioClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -181,17 +163,13 @@ export function FormControlRadio({
             {menuItemRadio && menuItemRadioProps && (
               <MenuItemRadio {...menuItemRadioProps}>
                 {icon && iconProps && <Icon {...iconProps} />}
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
               </MenuItemRadio>
             )}
             {menuItemRadio2 && menuItemRadio2Props && (
               <MenuItemRadio {...menuItemRadio2Props}>
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {textLabel3 && textLabel3Props && (
-                  <TextLabel {...textLabel3Props} />
-                )}
+                {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
               </MenuItemRadio>
             )}
           </Frame>

@@ -1,29 +1,22 @@
-import {
-  buildDisplayInputProps,
-  buildEditingRefProps,
-} from "@app/views/state-props"
-import { InputProps } from "@seldon/components/primitives/Input"
-import {
-  type ChangeEvent,
-  type KeyboardEvent,
-  type Ref,
-  useEffect,
-  useRef,
-} from "react"
+import { buildDisplayInputProps, buildEditingRefProps } from "@app/views/state-props"
+import { useEffect, useRef } from "react"
 
 import { useRenameValue } from "./use-rename-value"
 
+import type { InputProps } from "@seldon/components/primitives/Input"
+import type { ChangeEvent, KeyboardEvent, Ref } from "react"
+
 interface UseRenameInputOptions {
   label: string
+  isEditing: boolean
+  setEditing: (editing: boolean) => void
+  onSubmit: (value: string) => void
   /**
    * Seed value for edit mode. Defaults to {@link label}. Lets a row display a
    * transformed label (for example export code names) while inline rename still
    * edits and commits the underlying name.
    */
   editLabel?: string
-  isEditing: boolean
-  setEditing: (editing: boolean) => void
-  onSubmit: (value: string) => void
 }
 
 /**
@@ -55,7 +48,9 @@ export function useRenameInput({
   // text, which a plain `setSelectionRange` cannot clear.
   const clearSelection = () => {
     const input = ref.current
+
     if (input) input.setSelectionRange(0, 0)
+
     if (typeof window !== "undefined") {
       window.getSelection()?.removeAllRanges()
     }
@@ -63,18 +58,22 @@ export function useRenameInput({
 
   useEffect(() => {
     const input = ref.current
+
     if (isEditing) {
       // Drop the double-click's document selection, then select the contents so
       // typing replaces the name.
       if (typeof window !== "undefined") {
         window.getSelection()?.removeAllRanges()
       }
+
       if (input) {
         input.focus()
         input.select()
       }
+
       return
     }
+
     // Leaving edit mode: drop focus so the readOnly display input sheds its
     // focus-state border (the generated `.sdn-input:focus-visible` border keeps
     // matching a still-focused input after commit), then clear both selections.
@@ -92,8 +91,7 @@ export function useRenameInput({
     value,
     readOnly: false,
     ...buildEditingRefProps(true),
-    onChange: (event: ChangeEvent<HTMLInputElement>) =>
-      setValue(event.currentTarget.value),
+    onChange: (event: ChangeEvent<HTMLInputElement>) => setValue(event.currentTarget.value),
     onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter") {
         event.preventDefault()

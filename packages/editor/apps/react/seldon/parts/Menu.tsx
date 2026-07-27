@@ -10,20 +10,23 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { MenuItem, MenuItemProps } from "../elements/MenuItem"
-import {
-  MenuItemCheckbox,
-  MenuItemCheckboxProps,
-} from "../elements/MenuItemCheckbox"
-import { MenuItemRadio, MenuItemRadioProps } from "../elements/MenuItemRadio"
+import { MenuItem } from "../elements/MenuItem"
+import { MenuItemCheckbox } from "../elements/MenuItemCheckbox"
+import { MenuItemRadio } from "../elements/MenuItemRadio"
 import { Frame } from "../frames/Frame"
-import { Hr, HrProps } from "../primitives/Hr"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Hr } from "../primitives/Hr"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { MenuItemProps } from "../elements/MenuItem"
+import type { MenuItemCheckboxProps } from "../elements/MenuItemCheckbox"
+import type { MenuItemRadioProps } from "../elements/MenuItemRadio"
+import type { HrProps } from "../primitives/Hr"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface MenuProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -90,10 +93,7 @@ export function Menu({
       : {
           ...sdn.menuItem,
           ...menuItem,
-          className: combineClassNames(
-            sdn.menuItem?.className,
-            menuItem?.className,
-          ),
+          className: combineClassNames(sdn.menuItem?.className, menuItem?.className),
         },
   )
   const iconProps = applyRef(
@@ -113,10 +113,7 @@ export function Menu({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -126,10 +123,7 @@ export function Menu({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const menuItem2Props = applyRef(
@@ -139,10 +133,7 @@ export function Menu({
       : {
           ...sdn.menuItem2,
           ...menuItem2,
-          className: combineClassNames(
-            sdn.menuItem2?.className,
-            menuItem2?.className,
-          ),
+          className: combineClassNames(sdn.menuItem2?.className, menuItem2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -162,10 +153,7 @@ export function Menu({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
   const textLabel4Props = applyRef(
@@ -175,10 +163,7 @@ export function Menu({
       : {
           ...sdn.textLabel4,
           ...textLabel4,
-          className: combineClassNames(
-            sdn.textLabel4?.className,
-            textLabel4?.className,
-          ),
+          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
         },
   )
   const hrProps = applyRef(
@@ -221,10 +206,7 @@ export function Menu({
       : {
           ...sdn.textLabel5,
           ...textLabel5,
-          className: combineClassNames(
-            sdn.textLabel5?.className,
-            textLabel5?.className,
-          ),
+          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
         },
   )
   const menuItemRadioProps = applyRef(
@@ -234,10 +216,7 @@ export function Menu({
       : {
           ...sdn.menuItemRadio,
           ...menuItemRadio,
-          className: combineClassNames(
-            sdn.menuItemRadio?.className,
-            menuItemRadio?.className,
-          ),
+          className: combineClassNames(sdn.menuItemRadio?.className, menuItemRadio?.className),
         },
   )
   const icon4Props = applyRef(
@@ -257,20 +236,12 @@ export function Menu({
       : {
           ...sdn.textLabel6,
           ...textLabel6,
-          className: combineClassNames(
-            sdn.textLabel6?.className,
-            textLabel6?.className,
-          ),
+          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
         },
   )
 
   return (
-    <Frame
-      className={menuClassName}
-      role={sdn["role"]}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={menuClassName} role={sdn["role"]} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -279,37 +250,27 @@ export function Menu({
             <MenuItem {...menuItemProps}>
               {icon && iconProps && <Icon {...iconProps} />}
               {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-              {textLabel2 && textLabel2Props && (
-                <TextLabel {...textLabel2Props} />
-              )}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
             </MenuItem>
           )}
           {menuItem2Props !== null && (
             <MenuItem {...menuItem2Props}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel3 && textLabel3Props && (
-                <TextLabel {...textLabel3Props} />
-              )}
-              {textLabel4 && textLabel4Props && (
-                <TextLabel {...textLabel4Props} />
-              )}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
+              {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
             </MenuItem>
           )}
           {hrProps !== null && <Hr {...hrProps} />}
           {menuItemCheckboxProps !== null && (
             <MenuItemCheckbox {...menuItemCheckboxProps}>
               {icon3 && icon3Props && <Icon {...icon3Props} />}
-              {textLabel5 && textLabel5Props && (
-                <TextLabel {...textLabel5Props} />
-              )}
+              {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
             </MenuItemCheckbox>
           )}
           {menuItemRadioProps !== null && (
             <MenuItemRadio {...menuItemRadioProps}>
               {icon4 && icon4Props && <Icon {...icon4Props} />}
-              {textLabel6 && textLabel6Props && (
-                <TextLabel {...textLabel6Props} />
-              )}
+              {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
             </MenuItemRadio>
           )}
         </>

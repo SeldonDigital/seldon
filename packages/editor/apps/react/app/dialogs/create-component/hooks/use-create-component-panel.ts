@@ -9,6 +9,7 @@ import {
   authoredBoardKeyFromName,
   authoredExportNameFromName,
 } from "@seldon/core/workspace/helpers/components/authored-board-key"
+
 import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
 
 export type AuthoredRootKind = "container" | "frame"
@@ -57,18 +58,22 @@ export function useCreateComponentPanel() {
   const nameError = useMemo(() => {
     if (!trimmedName) return null
     if (!boardKey) return "Name must contain a letter or number."
+
     if (
       workspace.boards[boardKey] !== undefined ||
       workspace.playgrounds?.[boardKey] !== undefined
     ) {
       return "A component with this name already exists in this workspace."
     }
+
     if (isComponentId(boardKey)) {
       return `Name collides with the catalog component "${boardKey}".`
     }
+
     if (CATALOG_COMPONENT_NAMES.has(exportName)) {
       return `Name collides with the catalog component "${exportName}".`
     }
+
     return null
   }, [trimmedName, boardKey, exportName, workspace])
 
@@ -94,6 +99,7 @@ export function useCreateComponentPanel() {
       .map((tag) => tag.trim())
       .filter(Boolean)
     const trimmedIntent = intent.trim()
+
     addAuthoredComponent({
       name: trimmedName,
       rootKind,
@@ -102,16 +108,7 @@ export function useCreateComponentPanel() {
       tags: parsedTags.length > 0 ? parsedTags : undefined,
     })
     close()
-  }, [
-    canSubmit,
-    tags,
-    intent,
-    addAuthoredComponent,
-    trimmedName,
-    rootKind,
-    level,
-    close,
-  ])
+  }, [canSubmit, tags, intent, addAuthoredComponent, trimmedName, rootKind, level, close])
 
   return {
     isOpen,

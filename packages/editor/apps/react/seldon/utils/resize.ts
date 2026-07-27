@@ -68,14 +68,17 @@ export function getResizeHandleStyle(
     style.bottom = 0
     style.height = thickness
   }
+
   if (side.includes("top")) {
     style.top = 0
     style.height = thickness
   }
+
   if (side.includes("left")) {
     style.left = 0
     style.width = thickness
   }
+
   if (side.includes("right")) {
     style.right = 0
     style.width = thickness
@@ -129,13 +132,16 @@ export function computeResizedRect(args: {
   if (side.includes("right")) {
     width = Math.max(minWidth, startRect.width + offsetX)
   }
+
   if (side.includes("left")) {
     width = Math.max(minWidth, startRect.width - offsetX)
     x = startRect.x + startRect.width - width
   }
+
   if (side.includes("bottom")) {
     height = Math.max(minHeight, startRect.height + offsetY)
   }
+
   if (side.includes("top")) {
     height = Math.max(minHeight, startRect.height - offsetY)
     y = startRect.y + startRect.height - height
@@ -165,6 +171,7 @@ export function createResizeHandle(args: {
     const startRect = args.getRect()
     const originX = event.clientX
     const originY = event.clientY
+
     args.onStart?.()
 
     function handleMove(moveEvent: PointerEvent) {
@@ -176,6 +183,7 @@ export function createResizeHandle(args: {
         minWidth: args.minWidth,
         minHeight: args.minHeight,
       })
+
       args.onResize(next)
     }
 

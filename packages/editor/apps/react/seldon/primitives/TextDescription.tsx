@@ -10,8 +10,6 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -26,6 +24,8 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
+
+import type { HTMLAttributes } from "react"
 
 export interface TextDescriptionProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -82,10 +82,7 @@ export function TextDescription({
   htmlElement = sdn.htmlElement,
   ...props
 }: TextDescriptionProps) {
-  const textDescriptionClassName = combineClassNames(
-    "sdn-text-description",
-    className,
-  )
+  const textDescriptionClassName = combineClassNames("sdn-text-description", className)
 
   switch (htmlElement) {
     case "span":
@@ -93,11 +90,7 @@ export function TextDescription({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLSpan
-          className={textDescriptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLSpan className={textDescriptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLSpan>
       )
@@ -119,11 +112,7 @@ export function TextDescription({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLabel
-          className={textDescriptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLLabel className={textDescriptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLLabel>
       )
@@ -210,11 +199,7 @@ export function TextDescription({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLPre
-          className={textDescriptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLPre className={textDescriptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLPre>
       )
@@ -223,11 +208,7 @@ export function TextDescription({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLCode
-          className={textDescriptionClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        >
+        <HTMLCode className={textDescriptionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
           {children}
         </HTMLCode>
       )

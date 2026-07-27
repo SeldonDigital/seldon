@@ -1,8 +1,4 @@
-import type { SelectionScope } from "@seldon/ai"
-import {
-  type SelectionSnapshot,
-  resolveSelectionScope,
-} from "@seldon/editor/lib/workspace/selection-scope"
+import { resolveSelectionScope } from "@seldon/editor/lib/workspace/selection-scope"
 import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
 
 import {
@@ -11,11 +7,14 @@ import {
   isMediaBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import type { Workspace } from "@seldon/core/workspace/types"
 
 import { getCurrentWorkspace } from "./use-history"
 import { useStore as useSelectionStore } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
+
+import type { SelectionScope } from "@seldon/ai"
+import type { Workspace } from "@seldon/core/workspace/types"
+import type { SelectionSnapshot } from "@seldon/editor/lib/workspace/selection-scope"
 
 export type { SelectionScope }
 export { resolveSelectionScope }
@@ -23,6 +22,7 @@ export { resolveSelectionScope }
 /** Reads the current selection snapshot without subscribing to the store. */
 function selectionSnapshot(): SelectionSnapshot {
   const state = useSelectionStore.getState()
+
   return {
     selectedNodeId: state.selectedNodeId,
     selectedBoardId: state.selectedBoardId,
@@ -37,9 +37,7 @@ function selectionSnapshot(): SelectionSnapshot {
  * callbacks that need the live scope at call time. Pass the workspace the
  * selection resolves against; defaults to the committed workspace.
  */
-export function getSelectionScope(
-  workspace: Workspace = getCurrentWorkspace(),
-): SelectionScope {
+export function getSelectionScope(workspace: Workspace = getCurrentWorkspace()): SelectionScope {
   return resolveSelectionScope(selectionSnapshot(), workspace)
 }
 
@@ -63,6 +61,7 @@ export function getResourceTargetId(
 
   if (state.selectedBoardId) {
     const board = getComponent(workspace, state.selectedBoardId)
+
     if (
       board &&
       (isThemeBoard(board) ||
@@ -85,15 +84,9 @@ export function getResourceTargetId(
 export function useSelectionScope(): SelectionScope {
   const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
   const selectedBoardId = useSelectionStore((state) => state.selectedBoardId)
-  const selectedResourceEntry = useSelectionStore(
-    (state) => state.selectedResourceEntry,
-  )
-  const selectedResourceItemKey = useSelectionStore(
-    (state) => state.selectedResourceItemKey,
-  )
-  const workspaceSelected = useSelectionStore(
-    (state) => state.workspaceSelected,
-  )
+  const selectedResourceEntry = useSelectionStore((state) => state.selectedResourceEntry)
+  const selectedResourceItemKey = useSelectionStore((state) => state.selectedResourceItemKey)
+  const workspaceSelected = useSelectionStore((state) => state.workspaceSelected)
   const { workspace } = useWorkspace()
 
   return resolveSelectionScope(

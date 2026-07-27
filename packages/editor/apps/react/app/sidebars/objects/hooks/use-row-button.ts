@@ -1,10 +1,10 @@
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { MouseEvent } from "react"
+import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { MouseEvent } from "react"
 
 interface UseRowButtonOptions {
   isExpanded: boolean
-  hasChildren?: boolean
   onToggle: (event?: MouseEvent<HTMLButtonElement>) => void
+  hasChildren?: boolean
 }
 
 /**
@@ -13,11 +13,7 @@ interface UseRowButtonOptions {
  * is owned by the generated component CSS and by explicit VM-level state, not by
  * inline styles here.
  */
-export function useRowButton({
-  isExpanded,
-  hasChildren = true,
-  onToggle,
-}: UseRowButtonOptions) {
+export function useRowButton({ isExpanded, hasChildren = true, onToggle }: UseRowButtonOptions) {
   // Leaf rows keep the toggle slot for layout but mark it inert to stay out of
   // focus and tab order. Rows with children stay interactive.
   const createToggleButton = () => ({

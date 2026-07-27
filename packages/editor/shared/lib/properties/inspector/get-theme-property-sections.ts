@@ -3,8 +3,9 @@ import {
   getAllThemeTokenSectionSchemas,
   getThemeTokenSchema,
 } from "@seldon/core/themes/schemas"
-import { Theme } from "@seldon/core/themes/types"
-import { FlatProperty } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
+import type { Theme } from "@seldon/core/themes/types"
 
 export type ThemePropertyCategoryType =
   | "core"
@@ -37,9 +38,7 @@ export interface ThemePropertySection {
  * Extracts section ID from a theme property key
  * Examples: "swatch.primary" -> "swatch", "shadow.xlight.offsetX" -> "shadow"
  */
-function getSectionFromPropertyKey(
-  key: string,
-): ThemePropertyCategoryType | null {
+function getSectionFromPropertyKey(key: string): ThemePropertyCategoryType | null {
   const parts = key.split(".")
   const firstPart = parts[0]
 
@@ -84,10 +83,8 @@ export function getThemePropertySections(
 
   // Dynamic schemas (theme-derived tokens such as custom slots) resolve section
   // and order for keys the static registry does not know.
-  const dynamicSchemas = new Map<
-    string,
-    { section: ThemePropertyCategoryType; order: number }
-  >()
+  const dynamicSchemas = new Map<string, { section: ThemePropertyCategoryType; order: number }>()
+
   if (theme) {
     for (const schema of getAllThemeTokenSchemas(theme)) {
       dynamicSchemas.set(schema.key, {
@@ -98,26 +95,22 @@ export function getThemePropertySections(
   }
 
   // Group properties by section
-  const propertiesBySection = new Map<
-    ThemePropertyCategoryType,
-    FlatProperty[]
-  >()
+  const propertiesBySection = new Map<ThemePropertyCategoryType, FlatProperty[]>()
 
   // Facet rows render nested inside their look parent via the disclosure, so keep
   // them out of the top-level section list to avoid rendering them twice.
-  const topLevelProperties = properties.filter(
-    (property) => !property.isSubProperty,
-  )
+  const topLevelProperties = properties.filter((property) => !property.isSubProperty)
 
   for (const property of topLevelProperties) {
-    const schema =
-      getThemeTokenSchema(property.key) ?? dynamicSchemas.get(property.key)
+    const schema = getThemeTokenSchema(property.key) ?? dynamicSchemas.get(property.key)
     const sectionId = schema
       ? (schema.section as ThemePropertyCategoryType)
       : getSectionFromPropertyKey(property.key)
+
     if (!sectionId) continue
 
     const bucket = propertiesBySection.get(sectionId)
+
     if (bucket) {
       bucket.push(property)
     } else {
@@ -130,18 +123,16 @@ export function getThemePropertySections(
 
   // Convert to sections array in schema order
   const sections: ThemePropertySection[] = []
+
   for (const sectionSchema of sectionSchemas) {
-    const sectionProperties = propertiesBySection.get(
-      sectionSchema.id as ThemePropertyCategoryType,
-    )
+    const sectionProperties = propertiesBySection.get(sectionSchema.id as ThemePropertyCategoryType)
+
     if (!sectionProperties || sectionProperties.length === 0) continue
 
     sections.push({
       label: sectionSchema.label,
       category: sectionSchema.id as ThemePropertyCategoryType,
-      properties: sectionProperties.sort(
-        (a, b) => schemaOrder(a.key) - schemaOrder(b.key),
-      ),
+      properties: sectionProperties.sort((a, b) => schemaOrder(a.key) - schemaOrder(b.key)),
     })
   }
 

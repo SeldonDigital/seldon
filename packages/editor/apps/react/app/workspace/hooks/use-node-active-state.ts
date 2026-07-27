@@ -1,16 +1,15 @@
 import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 
-import type { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import {
-  NORMAL_STATE,
-  type NodeState,
-} from "@seldon/core/workspace/model/node-state"
+import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 
 import { getCurrentWorkspace } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
+
+import type { Board, Instance, Variant, Workspace } from "@seldon/core"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 /** Shown when an instance edit is attempted while a non-Normal state is active. */
 export const INSTANCE_STATE_EDIT_MESSAGE =
@@ -36,12 +35,11 @@ export function getActiveStateForNode(
   node: Variant | Instance | Board | null | undefined,
 ): NodeState {
   if (!node || isBoard(node)) return NORMAL_STATE
-  const board = nodeRelationshipService.findBoardForNode(
-    node,
-    getActiveStateWorkspace(),
-  )
+  const board = nodeRelationshipService.findBoardForNode(node, getActiveStateWorkspace())
   const boardKey = board ? getComponentKey(board) : undefined
+
   if (!boardKey) return NORMAL_STATE
+
   return useBoardStateStore.getState().activeStates[boardKey] ?? NORMAL_STATE
 }
 
@@ -54,16 +52,12 @@ export function getActiveStateForNode(
  * so a property edit alone does not re-render the consumer. The active state
  * still updates reactively when the user switches a board's state.
  */
-export function useNodeActiveState(
-  node: Variant | Instance | Board | null | undefined,
-): NodeState {
+export function useNodeActiveState(node: Variant | Instance | Board | null | undefined): NodeState {
   const activeStates = useBoardStateStore((store) => store.activeStates)
 
   if (!node || isBoard(node)) return NORMAL_STATE
-  const board = nodeRelationshipService.findBoardForNode(
-    node,
-    getActiveStateWorkspace(),
-  )
+  const board = nodeRelationshipService.findBoardForNode(node, getActiveStateWorkspace())
   const boardKey = board ? getComponentKey(board) : undefined
+
   return boardKey ? (activeStates[boardKey] ?? NORMAL_STATE) : NORMAL_STATE
 }

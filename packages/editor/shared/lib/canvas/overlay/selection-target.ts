@@ -13,9 +13,7 @@ import { SELECTION_ROOT_ID_ATTR } from "../../workspace/selection-dom"
 export const CANVAS_SELECTION_ID_ATTR = "data-canvas-selection-id"
 
 /** Joins the selection ids an element belongs to into the attribute value. */
-export function canvasSelectionId(
-  ...ids: Array<string | null | undefined>
-): string {
+export function canvasSelectionId(...ids: Array<string | null | undefined>): string {
   return ids.filter((id): id is string => Boolean(id)).join(" ")
 }
 
@@ -29,11 +27,11 @@ export function canvasSelectionId(
  */
 export function getCanvasSelectionElements(selectionId: string): HTMLElement[] {
   const canvasEl = document.getElementById("canvas")
+
   if (!canvasEl) return []
+
   return Array.from(
-    canvasEl.querySelectorAll<HTMLElement>(
-      `[${CANVAS_SELECTION_ID_ATTR}~="${selectionId}"]`,
-    ),
+    canvasEl.querySelectorAll<HTMLElement>(`[${CANVAS_SELECTION_ID_ATTR}~="${selectionId}"]`),
   )
 }
 
@@ -53,13 +51,17 @@ export function getScopedSelectionElement(
   pathKey: string | null | undefined,
 ): HTMLElement | null {
   const elements = getCanvasSelectionElements(selectionId)
+
   if (elements.length === 0) return null
+
   if (pathKey) {
     const scoped = elements.find(
       (element) => element.getAttribute(SELECTION_ROOT_ID_ATTR) === pathKey,
     )
+
     if (scoped) return scoped
   }
+
   return elements[0]
 }
 
@@ -74,6 +76,7 @@ export function getUnionRect(elements: HTMLElement[]): DOMRect | null {
 
   for (const element of elements) {
     const rect = element.getBoundingClientRect()
+
     top = Math.min(top, rect.top)
     left = Math.min(left, rect.left)
     right = Math.max(right, rect.right)

@@ -1,12 +1,10 @@
-import type { Instance, Variant, Workspace } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import {
-  nodeRelationshipService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
-import type { EntryNode } from "@seldon/core/workspace/types"
-import type { Placement } from "../types"
+import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 import { getNodeCatalogComponentId } from "./node-tree"
+
+import type { Placement } from "../types"
+import type { Instance, Variant, Workspace } from "@seldon/core"
+import type { EntryNode } from "@seldon/core/workspace/types"
 
 /**
  * Whether `subject` can be dropped at `placement` relative to `target`. Pure and
@@ -27,6 +25,7 @@ export function isValidDropTarget(
 
   if (placement === "inside") {
     const targetEntityType = typeCheckingService.getEntityType(target)
+
     if (!rules.mutations.insertInto[targetEntityType].allowed) return false
   }
 
@@ -42,17 +41,11 @@ export function isValidDropTarget(
   ) {
     if (placement === "inside") {
       return (
-        typeCheckingService.canComponentBeParentOf(
-          targetComponentId,
-          subjectComponentId,
-        ) &&
-        !nodeRelationshipService.hasAncestorWithComponentId(
-          subjectComponentId,
-          target,
-          workspace,
-        )
+        typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
+        !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
       )
     }
+
     return true
   }
 
@@ -66,18 +59,12 @@ export function isValidDropTarget(
     targetComponentId
   ) {
     const subjectEntityType = typeCheckingService.getEntityType(subject)
+
     if (!rules.mutations.instantiate[subjectEntityType].allowed) return false
 
     return (
-      typeCheckingService.canComponentBeParentOf(
-        targetComponentId,
-        subjectComponentId,
-      ) &&
-      !nodeRelationshipService.hasAncestorWithComponentId(
-        subjectComponentId,
-        target,
-        workspace,
-      )
+      typeCheckingService.canComponentBeParentOf(targetComponentId, subjectComponentId) &&
+      !nodeRelationshipService.hasAncestorWithComponentId(subjectComponentId, target, workspace)
     )
   }
 

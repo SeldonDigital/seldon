@@ -1,7 +1,8 @@
 import { ICONIC_BUTTON_ATTR } from "@seldon/editor/lib/menus/iconic-button"
-import { type MaybeRefOrGetter, computed, ref, toValue } from "vue"
+import { computed, ref, toValue } from "vue"
 
 import type { MenuEntry } from "./types"
+import type { MaybeRefOrGetter } from "vue"
 
 interface UseRowActionsMenuOptions {
   ariaLabel?: string
@@ -55,6 +56,7 @@ export function useRowActionsMenu(
         },
       }
     }
+
     return {
       type: "button",
       [ICONIC_BUTTON_ATTR]: true,

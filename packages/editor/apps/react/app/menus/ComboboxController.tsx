@@ -8,7 +8,9 @@
  */
 import { Frame } from "@seldon/components/frames/Frame"
 import { Input } from "@seldon/components/primitives/Input"
-import { CSSProperties, RefObject, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
+
+import type { CSSProperties, RefObject } from "react"
 
 // Functional resets so the generated `Input` primitive blends into a property
 // row. Appearance theming still comes from authored CSS; these only strip the
@@ -41,9 +43,10 @@ const comboboxWrapperStyle: CSSProperties = {
 }
 
 interface InputProps {
-  mode?: "combobox" | "standalone"
+  [key: string]: unknown
   value: string
   onValueChange: (value: string) => void
+  mode?: "combobox" | "standalone"
   onSubmit?: (value: string) => void
   inputRef?: RefObject<HTMLInputElement | null>
   open?: boolean
@@ -60,7 +63,6 @@ interface InputProps {
   validate?: (value: string) => boolean
   className?: string
   style?: React.CSSProperties
-  [key: string]: unknown
 }
 
 function notifyCommit(
@@ -105,15 +107,14 @@ export function ComboboxController({
 
   useEffect(() => {
     if (wrapperRef.current) {
-      const inputElement = wrapperRef.current.querySelector(
-        "input",
-      ) as HTMLInputElement | null
+      const inputElement = wrapperRef.current.querySelector("input") as HTMLInputElement | null
+
       if (inputElement) {
         internalInputRef.current = inputElement
+
         if (externalInputRef && "current" in externalInputRef) {
-          ;(
-            externalInputRef as React.MutableRefObject<HTMLInputElement | null>
-          ).current = inputElement
+          ;(externalInputRef as React.MutableRefObject<HTMLInputElement | null>).current =
+            inputElement
         }
       }
     }
@@ -121,12 +122,14 @@ export function ComboboxController({
 
   const inputPropsStyle = inputProps?.style as React.CSSProperties | undefined
   const restInputProps = { ...inputProps }
+
   if (restInputProps.style) {
     delete restInputProps.style
   }
 
   function handleFocus(event: React.FocusEvent<HTMLInputElement>) {
     const input = event.currentTarget
+
     if (mode === "combobox") {
       setOpen?.(true)
     }
@@ -157,11 +160,14 @@ export function ComboboxController({
       if (event.key === "ArrowDown") {
         event.preventDefault()
         onHighlightNext?.()
+
         return
       }
+
       if (event.key === "ArrowUp") {
         event.preventDefault()
         onHighlightPrev?.()
+
         return
       }
 
@@ -171,7 +177,9 @@ export function ComboboxController({
       if (event.key === "Tab") {
         handleSubmit?.({ keepFocus: true })
         const moved = event.shiftKey ? onTabPrev?.() : onTabNext?.()
+
         if (moved) event.preventDefault()
+
         return
       }
     }
@@ -180,12 +188,14 @@ export function ComboboxController({
       if (mode === "combobox" && handleSubmit) {
         event.preventDefault()
         handleSubmit()
+
         return
       }
 
       if (mode === "standalone") {
         event.preventDefault()
         const trimmedValue = event.currentTarget.value.trim()
+
         handledEnterRef.current = true
 
         if (validate && !validate(trimmedValue)) {
@@ -194,6 +204,7 @@ export function ComboboxController({
             handledEnterRef.current = false
           }, 0)
           event.currentTarget.blur()
+
           return
         }
 
@@ -205,23 +216,22 @@ export function ComboboxController({
           handledEnterRef.current = false
         }, 0)
         event.currentTarget.blur()
+
         return
       }
 
       event.currentTarget.blur()
+
       return
     }
 
     // Standalone fields commit the typed value on Tab, then hand off edit focus
     // to the adjacent property row. When no row was activated (start or end of
     // the list) the input blurs so the browser can move focus out of the list.
-    if (
-      event.key === "Tab" &&
-      mode === "standalone" &&
-      (onTabNext || onTabPrev)
-    ) {
+    if (event.key === "Tab" && mode === "standalone" && (onTabNext || onTabPrev)) {
       event.preventDefault()
       const trimmedValue = event.currentTarget.value.trim()
+
       handledEnterRef.current = true
 
       if (validate && !validate(trimmedValue)) {
@@ -231,11 +241,13 @@ export function ComboboxController({
       }
 
       const moved = event.shiftKey ? onTabPrev?.() : onTabNext?.()
+
       if (!moved) event.currentTarget.blur()
 
       setTimeout(() => {
         handledEnterRef.current = false
       }, 0)
+
       return
     }
 
@@ -251,6 +263,7 @@ export function ComboboxController({
 
     if (handledEnterRef.current) {
       handledEnterRef.current = false
+
       return
     }
 
@@ -258,11 +271,13 @@ export function ComboboxController({
 
     if (trimmedValue === commitValueRef.current) {
       notifyCommit(trimmedValue, onValueChange, onSubmit)
+
       return
     }
 
     if (validate && !validate(trimmedValue)) {
       onCancel?.()
+
       return
     }
 
@@ -300,6 +315,7 @@ export function ComboboxController({
 
   function handleInputClick(event: React.MouseEvent) {
     event.stopPropagation()
+
     if (setOpen && !open) {
       setOpen(true)
     }
@@ -317,16 +333,8 @@ export function ComboboxController({
 
   if (mode === "combobox") {
     return (
-      <Frame
-        className="sdn-frame"
-        style={comboboxFrameMergedStyle}
-        onClick={handleFrameClick}
-      >
-        <Frame
-          wrapperElement="div"
-          ref={wrapperRef}
-          style={comboboxWrapperStyle}
-        >
+      <Frame className="sdn-frame" style={comboboxFrameMergedStyle} onClick={handleFrameClick}>
+        <Frame wrapperElement="div" ref={wrapperRef} style={comboboxWrapperStyle}>
           <Input
             value={value}
             onChange={handleInputChange}

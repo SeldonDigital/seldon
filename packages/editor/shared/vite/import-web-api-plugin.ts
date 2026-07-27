@@ -1,13 +1,11 @@
-import { build } from "esbuild"
 import fs from "node:fs/promises"
-import type { IncomingMessage, ServerResponse } from "node:http"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
+import { build } from "esbuild"
+
+import type { ImportWebRequestBody, runImportWebHandler } from "./import-web-handler"
+import type { IncomingMessage, ServerResponse } from "node:http"
 import type { Connect, Plugin } from "vite"
-import type {
-  ImportWebRequestBody,
-  runImportWebHandler,
-} from "./import-web-handler"
 
 const ROUTE = "/api/import-web"
 
@@ -52,15 +50,15 @@ async function loadHandler(): Promise<RunImportWebHandler> {
   })
 
   const outputDir = path.join(repoRoot, "node_modules", ".seldon-import-web")
+
   await fs.mkdir(outputDir, { recursive: true })
-  const outputFile = path.join(
-    outputDir,
-    `import-web-handler-${process.pid}.mjs`,
-  )
+  const outputFile = path.join(outputDir, `import-web-handler-${process.pid}.mjs`)
+
   await fs.writeFile(outputFile, result.outputFiles[0].text)
   const mod = (await import(pathToFileURL(outputFile).href)) as {
     runImportWebHandler: RunImportWebHandler
   }
+
   return mod.runImportWebHandler
 }
 
@@ -68,17 +66,19 @@ function getHandler(): Promise<RunImportWebHandler> {
   if (!cachedHandler) {
     cachedHandler = loadHandler()
   }
+
   return cachedHandler
 }
 
-async function readJsonBody(
-  req: IncomingMessage,
-): Promise<ImportWebRequestBody> {
+async function readJsonBody(req: IncomingMessage): Promise<ImportWebRequestBody> {
   const chunks: Buffer[] = []
+
   for await (const chunk of req) {
     chunks.push(chunk as Buffer)
   }
+
   const text = Buffer.concat(chunks).toString("utf8").trim()
+
   return (text ? JSON.parse(text) : {}) as ImportWebRequestBody
 }
 
@@ -91,6 +91,7 @@ function sendJson(res: ServerResponse, status: number, payload: unknown): void {
 const middleware: Connect.NextHandleFunction = (req, res, next) => {
   if (req.method !== "POST") {
     next()
+
     return
   }
 
@@ -100,8 +101,10 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
   // per-session token and/or check req.headers.origin and req.headers.host
   // against an allowlist, rejecting with 401/403 otherwise.
   const contentType = req.headers["content-type"] ?? ""
+
   if (!contentType.includes("application/json")) {
     sendJson(res, 415, { error: "Expected an application/json request body." })
+
     return
   }
 
@@ -110,6 +113,7 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
       const body = await readJsonBody(req)
       const run = await getHandler()
       const result = await run(body)
+
       sendJson(res, 200, result)
     } catch (error) {
       sendJson(res, 500, {

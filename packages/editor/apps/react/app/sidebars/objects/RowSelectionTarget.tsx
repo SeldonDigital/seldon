@@ -1,9 +1,11 @@
 import { Frame } from "@seldon/components/frames/Frame"
-import { ReactNode, Ref } from "react"
+
+import type { ReactNode, Ref } from "react"
 
 interface RowSelectionTargetProps {
   selectionId: string
   selectionKind: string
+  children: ReactNode
   /**
    * Node-id path of this copy, from the variant-root down to this row, joined
    * by "/". Stamped as `data-selection-root-id` so the shared selection
@@ -11,7 +13,6 @@ interface RowSelectionTargetProps {
    */
   selectionRootId?: string
   ref?: Ref<HTMLElement>
-  children: ReactNode
 }
 
 /**

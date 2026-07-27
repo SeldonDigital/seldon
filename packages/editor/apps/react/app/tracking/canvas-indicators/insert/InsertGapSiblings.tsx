@@ -6,6 +6,7 @@ import { Frame } from "@seldon/components/frames/Frame"
 import { getHtmlElementByNodeId } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { resolveOutlineColorsForNode } from "@seldon/editor/lib/canvas/overlay/outline-colors"
 import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
+
 import type { CSSProperties } from "react"
 
 /** Seldon accent token used for the edge touching the insertion gap. */
@@ -44,10 +45,12 @@ export function InsertGapSiblings() {
   if (!hoverState || hoverState.objectType !== "node") return null
 
   const { objectId, lastChildNodeBeforeCursor } = hoverState
+
   if (!lastChildNodeBeforeCursor) return null
 
   const canvasElement = document.getElementById("canvas")
   const boundaryElement = getHtmlElementByNodeId(lastChildNodeBeforeCursor)
+
   if (!canvasElement || !boundaryElement) return null
 
   const nextElement = boundaryElement.nextElementSibling as HTMLElement | null
@@ -57,15 +60,16 @@ export function InsertGapSiblings() {
   const fallbackContrast = resolveOutlineColorsForNode(objectId).hover
 
   const contrastFor = (element: HTMLElement): string => {
-    const id =
-      element.getAttribute("data-canvas-node-id") ??
-      element.getAttribute("data-node-id")
+    const id = element.getAttribute("data-canvas-node-id") ?? element.getAttribute("data-node-id")
+
     if (!id) return fallbackContrast
+
     return resolveOutlineColorsForNode(id).hover
   }
 
   const toBox = (element: HTMLElement, accentSide: AccentSide): SiblingBox => {
     const rect = element.getBoundingClientRect()
+
     return {
       top: rect.top - canvasRect.top - BORDER_PX,
       left: rect.left - canvasRect.left - BORDER_PX,
@@ -77,6 +81,7 @@ export function InsertGapSiblings() {
   }
 
   const boxes: SiblingBox[] = []
+
   if (orientation === "horizontal") {
     boxes.push(toBox(boundaryElement, "right"))
     if (nextElement) boxes.push(toBox(nextElement, "left"))
@@ -107,6 +112,7 @@ export function InsertGapSiblings() {
             borderBottomColor: ACCENT_COLOR,
           }),
         }
+
         return <Frame key={`${box.accentSide}-${index}`} style={style} />
       })}
     </>

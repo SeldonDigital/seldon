@@ -2,8 +2,10 @@
 
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { FocusRing } from "@app/overlays"
-import { CSSProperties, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
+
+import type { CSSProperties } from "react"
 
 interface RingRect {
   top: number
@@ -29,12 +31,17 @@ function isElementVisible(element: HTMLElement): boolean {
       checkVisibilityCSS: true,
     })
   }
+
   const style = window.getComputedStyle(element)
+
   if (style.display === "none") return false
+
   if (style.visibility === "hidden" || style.visibility === "collapse") {
     return false
   }
+
   if (parseFloat(style.opacity) === 0) return false
+
   return true
 }
 
@@ -49,12 +56,14 @@ function isTrackableTarget(element: Element | null): element is HTMLElement {
   if (element === document.body) return false
   if (element === document.documentElement) return false
   if (!isElementVisible(element as HTMLElement)) return false
+
   return true
 }
 
 /** Measures the ring box, inflated by RING_OFFSET so it clears the element. */
 function readRingRect(element: HTMLElement): RingRect | null {
   const rect = element.getBoundingClientRect()
+
   if (rect.width === 0 && rect.height === 0) return null
   // Grow the corner radius with the offset so the rounded ring stays concentric
   // with the target instead of looking square at the corners.
@@ -62,6 +71,7 @@ function readRingRect(element: HTMLElement): RingRect | null {
   const radius = Number.isFinite(baseRadius)
     ? `${baseRadius + RING_OFFSET}px`
     : window.getComputedStyle(element).borderRadius
+
   return {
     top: rect.top - RING_OFFSET,
     left: rect.left - RING_OFFSET,
@@ -74,6 +84,7 @@ function readRingRect(element: HTMLElement): RingRect | null {
 function ringRectsEqual(a: RingRect | null, b: RingRect | null): boolean {
   if (a === b) return true
   if (!a || !b) return false
+
   return (
     a.top === b.top &&
     a.left === b.left &&
@@ -102,7 +113,9 @@ export function FocusRingOverlay() {
   // same way the overlay ring below is gated.
   useEffect(() => {
     const root = document.documentElement
+
     root.classList.toggle("sdn-show-focus", showFocus)
+
     return () => root.classList.remove("sdn-show-focus")
   }, [showFocus])
 
@@ -110,6 +123,7 @@ export function FocusRingOverlay() {
     if (!showFocus) {
       rectRef.current = null
       setRect(null)
+
       return
     }
 
@@ -136,8 +150,10 @@ export function FocusRingOverlay() {
       if (!target || !target.isConnected) {
         update(null)
         frame = 0
+
         return
       }
+
       update(readRingRect(target))
       frame = requestAnimationFrame(measure)
     }
@@ -145,8 +161,10 @@ export function FocusRingOverlay() {
     // Resolve the current focus target and start or stop the follow loop.
     const track = () => {
       const active = document.activeElement
+
       target = isTrackableTarget(active) ? active : null
       stopLoop()
+
       if (target) {
         frame = requestAnimationFrame(measure)
       } else {

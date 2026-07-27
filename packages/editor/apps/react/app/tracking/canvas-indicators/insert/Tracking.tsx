@@ -25,17 +25,10 @@ export function InsertTracking() {
   invariant(activeTool === "component", "Must be used in component mode")
   invariant(hoverState, "This component requires a hover state")
 
-  const { objectId, objectType, placement, lastChildNodeBeforeCursor } =
-    hoverState
+  const { objectId, objectType, placement, lastChildNodeBeforeCursor } = hoverState
 
   const insertionAllowed = useMemo(() => {
-    return checkInsertionPoint(
-      objectId,
-      objectType,
-      placement,
-      workspace,
-      "component",
-    )
+    return checkInsertionPoint(objectId, objectType, placement, workspace, "component")
   }, [objectId, objectType, placement, workspace])
 
   if (!hoverBelongsToActiveBoard) return null

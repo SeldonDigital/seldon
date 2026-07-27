@@ -1,17 +1,9 @@
-import {
-  type Board,
-  type InstanceId,
-  type VariantId,
-  type Workspace,
-  nodeRetrievalService,
-} from "@seldon/core"
+import { nodeRetrievalService } from "@seldon/core"
 import { canNodeAcceptChildren } from "../../workspace/can-node-accept-children"
-import type { SelectionKind } from "../../workspace/selection-kind"
 import { remeasureStore } from "../remeasure/remeasure-store"
 import { measureNode, measureSelection, rectsEqual } from "./measure"
 import {
   DEFAULT_OUTLINE_COLORS,
-  type OutlineColors,
   resolveOutlineColorsForBoard,
   resolveOutlineColorsForNode,
 } from "./outline-colors"
@@ -22,6 +14,10 @@ import {
   setSelectionOutlineColors,
   setSelectionRect,
 } from "./overlay-store"
+
+import type { SelectionKind } from "../../workspace/selection-kind"
+import type { OutlineColors } from "./outline-colors"
+import type { Board, InstanceId, VariantId, Workspace } from "@seldon/core"
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30
@@ -66,11 +62,10 @@ function resolveComponentHoverColors(
   baseColors: OutlineColors | null,
 ): OutlineColors | null {
   let acceptsChildren = false
+
   try {
-    const node = nodeRetrievalService.getNode(
-      hoveredId as InstanceId | VariantId,
-      workspace,
-    )
+    const node = nodeRetrievalService.getNode(hoveredId as InstanceId | VariantId, workspace)
+
     acceptsChildren = canNodeAcceptChildren(node, workspace)
   } catch {
     acceptsChildren = false
@@ -91,9 +86,7 @@ function resolveComponentHoverColors(
  * window scroll and resize, so the outlines stay glued. A bounded rAF retry
  * covers the frames after a board switch before the target element mounts.
  */
-export function createOverlayTracker(
-  ctx: OverlayTrackerContext,
-): OverlayTracker {
+export function createOverlayTracker(ctx: OverlayTrackerContext): OverlayTracker {
   let retryRaf = 0
   let scheduledRaf = 0
   let frames = 0
@@ -106,6 +99,7 @@ export function createOverlayTracker(
     if (remeasureStore.getState().isTransforming) {
       if (overlayStore.getState().hoverRect !== null) setHoverRect(null)
       if (overlayStore.getState().selectionRect !== null) setSelectionRect(null)
+
       return
     }
 
@@ -125,11 +119,13 @@ export function createOverlayTracker(
     if (!rectsEqual(overlayStore.getState().hoverRect, hover)) {
       setHoverRect(hover)
     }
+
     if (!rectsEqual(overlayStore.getState().selectionRect, selection)) {
       setSelectionRect(selection)
     }
 
     const missing = (hovered.id && !hover) || (selected.id && !selection)
+
     if (missing && frames++ < MAX_TARGET_FRAMES) {
       retryRaf = requestAnimationFrame(apply)
     }
@@ -168,6 +164,7 @@ export function createOverlayTracker(
         activeTool === "component" && hovered.kind === "node"
           ? resolveComponentHoverColors(hovered.id, workspace, colors)
           : colors
+
       setHoverOutlineColors(hoverColors)
     }
 
@@ -181,6 +178,7 @@ export function createOverlayTracker(
         : activeBoard
           ? resolveOutlineColorsForBoard(activeBoard)
           : null
+
       setSelectionOutlineColors(colors)
     }
   }
@@ -192,6 +190,7 @@ export function createOverlayTracker(
   }
 
   const unsubscribeTransform = ctx.subscribeTransform(schedule)
+
   window.addEventListener("scroll", schedule, { passive: true, capture: true })
   window.addEventListener("resize", schedule)
 

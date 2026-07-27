@@ -1,12 +1,9 @@
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  getChildNodeIds,
-  getVariantRootIds,
-} from "@seldon/editor/lib/workspace/component-tree"
+import { getChildNodeIds, getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
 import { useMemo } from "react"
 
-import { InstanceId, VariantId } from "@seldon/core/index"
+import type { InstanceId, VariantId } from "@seldon/core/index"
 
 export interface VisibleNode {
   id: VariantId | InstanceId
@@ -30,6 +27,7 @@ export function useVisibleNodes() {
       if (visited.has(nodeId)) return
       visited.add(nodeId)
       nodes.push({ id: nodeId, depth })
+
       for (const childId of getChildNodeIds(board, nodeId)) {
         walk(childId as VariantId | InstanceId, depth + 1)
       }

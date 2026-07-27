@@ -2,10 +2,7 @@ import { WorkspaceValidationError, workspaceReducer } from "@app/core"
 import { useDebugStore } from "@app/editor/debug-store"
 import { useDirtyStore } from "@app/persistence/dirty-store"
 import { useToastStore } from "@app/toaster/toast-store"
-import {
-  getCurrentWorkspace,
-  useHistoryStore,
-} from "@app/workspace/history-store"
+import { getCurrentWorkspace, useHistoryStore } from "@app/workspace/history-store"
 import { usePreviewStore } from "@app/workspace/preview-store"
 
 import type { Action } from "@seldon/core"

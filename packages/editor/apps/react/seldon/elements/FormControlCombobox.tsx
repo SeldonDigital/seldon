@@ -10,16 +10,18 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ButtonIconicProps } from "../elements/ButtonIconic"
-import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
+import { ComboboxField } from "../elements/ComboboxField"
 import { Frame } from "../frames/Frame"
-import { IconProps } from "../primitives/Icon"
-import { InputProps } from "../primitives/Input"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { ComboboxFieldProps } from "../elements/ComboboxField"
+import type { IconProps } from "../primitives/Icon"
+import type { InputProps } from "../primitives/Input"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface FormControlComboboxProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -64,10 +66,7 @@ export function FormControlCombobox({
   seldonRefs,
   ...props
 }: FormControlComboboxProps) {
-  const formControlComboboxClassName = combineClassNames(
-    "sdn-form-control",
-    className,
-  )
+  const formControlComboboxClassName = combineClassNames("sdn-form-control", className)
   const textLabelProps = applyRef(
     seldonRefs,
     textLabel === null
@@ -75,10 +74,7 @@ export function FormControlCombobox({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const comboboxFieldProps = applyRef(
@@ -88,10 +84,7 @@ export function FormControlCombobox({
       : {
           ...sdn.comboboxField,
           ...comboboxField,
-          className: combineClassNames(
-            sdn.comboboxField?.className,
-            comboboxField?.className,
-          ),
+          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
         },
   )
   const iconProps = applyRef(
@@ -121,10 +114,7 @@ export function FormControlCombobox({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const icon2Props = applyRef(
@@ -139,11 +129,7 @@ export function FormControlCombobox({
   )
 
   return (
-    <Frame
-      className={formControlComboboxClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={formControlComboboxClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (

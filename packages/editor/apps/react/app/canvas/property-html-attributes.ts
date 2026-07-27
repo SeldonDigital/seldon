@@ -1,6 +1,5 @@
-import type { Properties } from "@seldon/core"
-
 import type { CanvasHtmlAttributes } from "./ComponentRenderer"
+import type { Properties } from "@seldon/core"
 
 /**
  * Maps the node properties that must render as real HTML attributes (rather than
@@ -8,9 +7,7 @@ import type { CanvasHtmlAttributes } from "./ComponentRenderer"
  * spans, and ARIA state. Shared by the live canvas node and the non-persisted
  * board previews so both surfaces emit the same attributes.
  */
-export function getPropertyHtmlAttributes(
-  properties: Properties,
-): CanvasHtmlAttributes {
+export function getPropertyHtmlAttributes(properties: Properties): CanvasHtmlAttributes {
   const htmlAttributes: CanvasHtmlAttributes = {}
 
   if (properties.source?.value) {
@@ -44,10 +41,10 @@ export function getPropertyHtmlAttributes(
     "aria-readonly": properties.ariaReadonly?.value,
     "aria-live": properties.ariaLive?.value,
   }
+
   for (const [attribute, value] of Object.entries(ariaAttributeValues)) {
     if (value == null) continue
-    htmlAttributes[attribute] =
-      typeof value === "boolean" ? value : String(value)
+    htmlAttributes[attribute] = typeof value === "boolean" ? value : String(value)
   }
 
   if (properties.inputType?.value) {
@@ -63,6 +60,7 @@ export function getPropertyHtmlAttributes(
       typeof properties.columns.value === "number"
         ? properties.columns.value
         : properties.columns.value.value
+
     htmlAttributes.colSpan = columnValue.toString()
   }
 
@@ -71,6 +69,7 @@ export function getPropertyHtmlAttributes(
       typeof properties.rows.value === "number"
         ? properties.rows.value
         : properties.rows.value.value
+
     htmlAttributes.rowSpan = rowValue.toString()
   }
 

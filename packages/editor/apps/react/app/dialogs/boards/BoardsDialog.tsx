@@ -9,11 +9,9 @@ import { useCallback, useMemo } from "react"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 
 import { PanelDialogController } from "../PanelDialogController"
-import {
-  CatalogComponentItem,
-  FilterComponentPredicate,
-  useDialog,
-} from "../hooks/use-dialog"
+import { useDialog } from "../hooks/use-dialog"
+
+import type { CatalogComponentItem, FilterComponentPredicate } from "../hooks/use-dialog"
 
 const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
   [ComponentLevel.SCREEN]: "screen",
@@ -34,10 +32,7 @@ export function BoardsDialog() {
   const { addBoard } = useAddRemoveCommands()
   const { selectBoard } = useSelection()
 
-  const currentBoards = useMemo(
-    () => Object.keys(workspace.boards),
-    [workspace],
-  )
+  const currentBoards = useMemo(() => Object.keys(workspace.boards), [workspace])
 
   const shouldShowComponent = useCallback<FilterComponentPredicate>(
     (schema) => {
@@ -72,9 +67,7 @@ export function BoardsDialog() {
     [addBoard, selectBoard],
   )
 
-  const title = dialogLevel
-    ? `Add ${LEVEL_LABELS[dialogLevel] ?? "component"}`
-    : "Add component"
+  const title = dialogLevel ? `Add ${LEVEL_LABELS[dialogLevel] ?? "component"}` : "Add component"
 
   if (activePanel !== "add-board") return null
 

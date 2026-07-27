@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ImgHTMLAttributes } from "react"
-
 import { HTMLImg } from "../native-react/HTML.Img"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ImgHTMLAttributes } from "react"
 
 export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   className?: string
@@ -43,12 +43,7 @@ export function Image({ className = "", src = sdn.src, ...props }: ImageProps) {
   // React JSX component with merged default and custom properties
   //
   return (
-    <HTMLImg
-      className={imageClassName}
-      src={src}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    />
+    <HTMLImg className={imageClassName} src={src} aria-hidden={sdn["aria-hidden"]} {...props} />
   )
 }
 

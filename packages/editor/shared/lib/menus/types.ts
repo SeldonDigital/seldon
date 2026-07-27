@@ -1,4 +1,4 @@
-import { HSL } from "@seldon/core"
+import type { HSL } from "@seldon/core"
 
 export type MenuItemId = string
 

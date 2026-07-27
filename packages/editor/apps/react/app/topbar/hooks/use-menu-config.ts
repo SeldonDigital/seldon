@@ -36,7 +36,7 @@ import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 
-import { MenuConfig, MenuItem } from "../menus/types"
+import type { MenuConfig, MenuItem } from "../menus/types"
 
 /**
  * Builds the topbar menu configuration with all required menus and actions.
@@ -74,7 +74,7 @@ export function useMenuConfig(): MenuConfig {
     directSelect,
     toggleDirectSelect,
   } = useEditorConfig()
-  const { dispatch, workspace } = useWorkspace()
+  const { workspace } = useWorkspace()
   const {
     canvasProfiling,
     toggleCanvasProfiling,
@@ -107,8 +107,7 @@ export function useMenuConfig(): MenuConfig {
     importWorkspaceFromFile,
     importWeb,
   } = useImportExport()
-  const { addVariant, deleteSelection, duplicateSelection } =
-    useAddRemoveCommands()
+  const { addVariant, deleteSelection, duplicateSelection } = useAddRemoveCommands()
   const {
     moveSelectionForward,
     moveSelectionBackward,
@@ -157,43 +156,41 @@ export function useMenuConfig(): MenuConfig {
       ) {
         return true
       }
+
       // The default Seldon theme board and the System font collection board are
       // always kept. Other theme and font collection boards can be removed.
       if (isThemeBoard(selectedBoard)) {
-        return (
-          resolveComponentKey(selectedBoard, workspace) !==
-          DEFAULT_THEME_BOARD_KEY
-        )
+        return resolveComponentKey(selectedBoard, workspace) !== DEFAULT_THEME_BOARD_KEY
       }
+
       if (isFontCollectionBoard(selectedBoard)) {
-        return (
-          resolveComponentKey(selectedBoard, workspace) !==
-          DEFAULT_FONT_COLLECTION_BOARD_KEY
-        )
+        return resolveComponentKey(selectedBoard, workspace) !== DEFAULT_FONT_COLLECTION_BOARD_KEY
       }
+
       // The default Seldon icon set board is always kept. Other icon set boards
       // can be removed.
       if (isIconSetBoard(selectedBoard)) {
-        return (
-          resolveComponentKey(selectedBoard, workspace) !==
-          DEFAULT_ICON_SET_BOARD_KEY
-        )
+        return resolveComponentKey(selectedBoard, workspace) !== DEFAULT_ICON_SET_BOARD_KEY
       }
+
       return false
     }
 
     if (selectedThemeEntryId) {
       const entry = workspace.themes[selectedThemeEntryId]
+
       return Boolean(entry) && !isEntryThemeDefault(entry)
     }
 
     if (selectedFontCollectionEntryId) {
       const entry = workspace["font-collections"][selectedFontCollectionEntryId]
+
       return Boolean(entry) && !isEntryFontCollectionDefault(entry)
     }
 
     if (selectedIconSetEntryId) {
       const entry = workspace["icon-sets"][selectedIconSetEntryId]
+
       return Boolean(entry) && !isEntryIconSetDefault(entry)
     }
 
@@ -221,6 +218,7 @@ export function useMenuConfig(): MenuConfig {
         label: "Open Workspace…",
         action: async () => {
           const result = await selectFile()
+
           if (!result.success) return
           await importWorkspaceFromFile(result.file)
         },
@@ -253,13 +251,7 @@ export function useMenuConfig(): MenuConfig {
     ]
 
     return items
-  }, [
-    openPanel,
-    setActiveTool,
-    exportWorkspaceToFile,
-    goToProjects,
-    importWorkspaceFromFile,
-  ])
+  }, [openPanel, setActiveTool, exportWorkspaceToFile, goToProjects, importWorkspaceFromFile])
 
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [

@@ -1,4 +1,5 @@
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
+
 import type { Board } from "@seldon/core/workspace/types"
 
 /** Minimal insertion hover shape the sibling-gap check needs. */
@@ -26,10 +27,7 @@ export function getActiveBoardIsTheme(activeBoard: Board | null): boolean {
  * the siblings. Insert-into-node hovers (no boundary child) keep the full-node
  * accent box.
  */
-export function getIsSiblingGap(
-  activeTool: string,
-  hoverState: InsertHoverLike | null,
-): boolean {
+export function getIsSiblingGap(activeTool: string, hoverState: InsertHoverLike | null): boolean {
   return (
     activeTool === "component" &&
     hoverState?.objectType === "node" &&

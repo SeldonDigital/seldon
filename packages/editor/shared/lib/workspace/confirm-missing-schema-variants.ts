@@ -1,8 +1,9 @@
-import { ComponentId } from "@seldon/core/components/constants"
 import {
   collectMissingSchemaVariants,
   getMissingSchemaVariantMessage,
 } from "@seldon/core/workspace/helpers/nodes/collect-missing-schema-variants"
+
+import type { ComponentId } from "@seldon/core/components/constants"
 
 /**
  * Prompts for each missing catalog variant referenced in a component composition.
@@ -13,6 +14,7 @@ export async function confirmMissingSchemaVariants(
   componentId: ComponentId,
 ): Promise<string[] | null> {
   const issues = collectMissingSchemaVariants(componentId)
+
   if (!issues.length) {
     return []
   }
@@ -21,9 +23,11 @@ export async function confirmMissingSchemaVariants(
 
   for (const issue of issues) {
     const accepted = window.confirm(getMissingSchemaVariantMessage(issue))
+
     if (!accepted) {
       return null
     }
+
     variantFallbacks.push(issue.slotKey)
   }
 

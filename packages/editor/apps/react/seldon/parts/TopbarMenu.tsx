@@ -10,15 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { Image, ImageProps } from "../primitives/Image"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Button } from "../elements/Button"
+import { Frame } from "../frames/Frame"
+import { Icon } from "../primitives/Icon"
+import { Image } from "../primitives/Image"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { FrameProps } from "../frames/Frame"
+import type { IconProps } from "../primitives/Icon"
+import type { ImageProps } from "../primitives/Image"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface TopbarMenuProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -87,10 +92,7 @@ export function TopbarMenu({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const iconProps = applyRef(
@@ -110,10 +112,7 @@ export function TopbarMenu({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const frame2Props = applyRef(
@@ -123,10 +122,7 @@ export function TopbarMenu({
       : {
           ...sdn.frame2,
           ...frame2,
-          className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
-          ),
+          className: combineClassNames(sdn.frame2?.className, frame2?.className),
         },
   )
   const imageProps = applyRef(
@@ -146,10 +142,7 @@ export function TopbarMenu({
       : {
           ...sdn.image2,
           ...image2,
-          className: combineClassNames(
-            sdn.image2?.className,
-            image2?.className,
-          ),
+          className: combineClassNames(sdn.image2?.className, image2?.className),
         },
   )
   const frame3Props = applyRef(
@@ -159,10 +152,7 @@ export function TopbarMenu({
       : {
           ...sdn.frame3,
           ...frame3,
-          className: combineClassNames(
-            sdn.frame3?.className,
-            frame3?.className,
-          ),
+          className: combineClassNames(sdn.frame3?.className, frame3?.className),
         },
   )
   const button2Props = applyRef(
@@ -172,10 +162,7 @@ export function TopbarMenu({
       : {
           ...sdn.button2,
           ...button2,
-          className: combineClassNames(
-            sdn.button2?.className,
-            button2?.className,
-          ),
+          className: combineClassNames(sdn.button2?.className, button2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -195,10 +182,7 @@ export function TopbarMenu({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
 
@@ -217,9 +201,7 @@ export function TopbarMenu({
             {button && buttonProps && (
               <Button {...buttonProps}>
                 {icon && iconProps && <Icon {...iconProps} />}
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
               </Button>
             )}
           </Frame>
@@ -231,9 +213,7 @@ export function TopbarMenu({
             {button2 && button2Props && (
               <Button {...button2Props}>
                 {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
+                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
               </Button>
             )}
           </Frame>

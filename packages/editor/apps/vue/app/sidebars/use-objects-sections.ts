@@ -1,14 +1,14 @@
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { filterIsolatedSections } from "@seldon/editor/lib/sidebars/filter-isolated-sections"
-import {
-  type BoardSection,
-  getBoardSections,
-} from "@seldon/editor/lib/sidebars/get-board-sections"
+import { getBoardSections } from "@seldon/editor/lib/sidebars/get-board-sections"
 import { storeToRefs } from "pinia"
-import { type Ref, computed } from "vue"
+import { computed } from "vue"
 
 import { boardOrderService } from "@seldon/core/workspace/services"
+
 import type { Workspace } from "@seldon/core/workspace/types"
+import type { BoardSection } from "@seldon/editor/lib/sidebars/get-board-sections"
+import type { Ref } from "vue"
 
 /** Section levels that belong to the Resources view of the objects sidebar. */
 const RESOURCE_SECTION_LEVELS: ReadonlySet<BoardSection["level"]> = new Set([
@@ -23,17 +23,10 @@ const RESOURCE_SECTION_LEVELS: ReadonlySet<BoardSection["level"]> = new Set([
  * active Components/Resources view and the Show Playgrounds toggle. Mirrors the
  * React `useObjectsSidebar` grouping on top of the shared `getBoardSections`.
  */
-export function useObjectsSections(
-  workspace: Ref<Workspace>,
-): Ref<BoardSection[]> {
+export function useObjectsSections(workspace: Ref<Workspace>): Ref<BoardSection[]> {
   const config = useEditorConfigStore()
-  const {
-    objectsView,
-    showPlayground,
-    isolatedView,
-    isolatedBoardKey,
-    isolatedVariantRootId,
-  } = storeToRefs(config)
+  const { objectsView, showPlayground, isolatedView, isolatedBoardKey, isolatedVariantRootId } =
+    storeToRefs(config)
 
   return computed(() => {
     const boards = boardOrderService.getBoards(workspace.value)
@@ -49,9 +42,8 @@ export function useObjectsSections(
       : viewSections.filter((section) => section.level !== "PLAYGROUND")
 
     const isolatedKey = isolatedBoardKey.value
-    const isolatedBoard = isolatedKey
-      ? workspace.value.boards[isolatedKey]
-      : null
+    const isolatedBoard = isolatedKey ? workspace.value.boards[isolatedKey] : null
+
     if (isolatedView.value && isolatedBoard) {
       return filterIsolatedSections(
         withPlayground,
@@ -60,6 +52,7 @@ export function useObjectsSections(
         workspace.value,
       )
     }
+
     return withPlayground
   })
 }

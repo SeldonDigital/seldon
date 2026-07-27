@@ -3,12 +3,21 @@
  */
 import { parsePropertyPath } from "@seldon/editor/lib/properties/property-paths"
 import { getSubPropertyKeys } from "@seldon/editor/lib/properties/property-types"
-import { ComputedFunction, Properties, Value, Workspace } from "@seldon/core"
-import { Board, Instance, Variant } from "@seldon/core"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import { canApplyComputedSafely, createComputedValue } from "./computed-utils"
-import { FlatProperty, getPropertiesSubjectId } from "./properties-data"
+import { getPropertiesSubjectId } from "./properties-data"
+
+import type { FlatProperty } from "./properties-data"
+import type {
+  Board,
+  ComputedFunction,
+  Instance,
+  Properties,
+  Value,
+  Variant,
+  Workspace,
+} from "@seldon/core"
 
 interface HandleComputedValueOptions {
   property: FlatProperty
@@ -37,13 +46,11 @@ export function handleComputedValueChange({
   try {
     const computedFunction = newValue as ComputedFunction
 
-    if (
-      selection &&
-      !canApplyComputedSafely(computedFunction, workspace, selection)
-    ) {
+    if (selection && !canApplyComputedSafely(computedFunction, workspace, selection)) {
       console.error(
         `[PropertiesPane] Cannot apply computed function ${newValue} to ${property.key}: required inputs missing.`,
       )
+
       return false
     }
 
@@ -53,18 +60,19 @@ export function handleComputedValueChange({
     // layered shape. The generic sub-property path below would collapse the key
     // to two segments and store the root as an object, breaking the layer.
     const parsed = parsePropertyPath(property.key)
+
     if (parsed.kind === "layered-facet" && selection) {
       const computedValue = createComputedValue(computedFunction)
 
-      const current = coreGetEffectiveProperties(
-        getPropertiesSubjectId(selection),
-        workspace,
-      )[parsed.root as keyof Properties]
+      const current = coreGetEffectiveProperties(getPropertiesSubjectId(selection), workspace)[
+        parsed.root as keyof Properties
+      ]
       const layers = Array.isArray(current)
         ? [...(current as Array<Record<string, unknown>>)]
         : current
           ? [current as Record<string, unknown>]
           : []
+
       while (layers.length <= parsed.index) layers.push({})
       layers[parsed.index] = {
         ...(layers[parsed.index] as Record<string, unknown>),
@@ -72,6 +80,7 @@ export function handleComputedValueChange({
       }
 
       setProperties({ [parsed.root]: layers }, { mergeSubProperties: false })
+
       return true
     }
 
@@ -79,6 +88,7 @@ export function handleComputedValueChange({
     if (property.isSubProperty) {
       const [compoundKey, subKey] = property.key.split(".")
       const computedValue = createComputedValue(computedFunction)
+
       setProperties({
         [compoundKey]: {
           ...cleanCompoundValue(property.value),
@@ -87,12 +97,14 @@ export function handleComputedValueChange({
       })
     } else {
       const computedValue = createComputedValue(computedFunction)
+
       applyComputedValueToProperty(property.key, computedValue, setProperties)
     }
 
     return true
   } catch (error) {
     console.error("Failed to create computed value:", error)
+
     return false
   }
 }
@@ -117,6 +129,7 @@ function applyComputedValueToProperty(
   } else if (propertyType === "shorthand") {
     const subPropertyKeys = getSubPropertyKeys(propertyKey)
     const compound: Record<string, unknown> = {}
+
     subPropertyKeys.forEach((subKey) => {
       compound[subKey] = computedValue
     })

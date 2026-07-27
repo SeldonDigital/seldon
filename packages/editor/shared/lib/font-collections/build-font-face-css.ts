@@ -17,6 +17,7 @@ function quoteFamily(name: string): string {
 function buildFontFace(name: string, slot: string, variant: string): string {
   const { weight, italic } = parseFontVariant(variant)
   const src = getFontFileHref(slot, variant)
+
   return [
     "@font-face {",
     `  font-family: ${quoteFamily(name)};`,
@@ -35,9 +36,7 @@ function buildFontFace(name: string, slot: string, variant: string): string {
 export function buildFontFaceCss(families: FontFaceFamily[]): string {
   return families
     .flatMap((family) =>
-      family.variants.map((variant) =>
-        buildFontFace(family.name, family.slot, variant),
-      ),
+      family.variants.map((variant) => buildFontFace(family.name, family.slot, variant)),
     )
     .join("\n\n")
 }

@@ -10,19 +10,22 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Chip, ChipProps } from "../elements/Chip"
-import { Frame, FrameProps } from "../frames/Frame"
-import { Image, ImageProps } from "../primitives/Image"
-import {
-  TextDescription,
-  TextDescriptionProps,
-} from "../primitives/TextDescription"
-import { TextHeading, TextHeadingProps } from "../primitives/TextHeading"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Chip } from "../elements/Chip"
+import { Frame } from "../frames/Frame"
+import { Image } from "../primitives/Image"
+import { TextDescription } from "../primitives/TextDescription"
+import { TextHeading } from "../primitives/TextHeading"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ChipProps } from "../elements/Chip"
+import type { FrameProps } from "../frames/Frame"
+import type { ImageProps } from "../primitives/Image"
+import type { TextDescriptionProps } from "../primitives/TextDescription"
+import type { TextHeadingProps } from "../primitives/TextHeading"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface ArticleCardHorizontalProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -68,10 +71,7 @@ export function ArticleCardHorizontal({
   seldonRefs,
   ...props
 }: ArticleCardHorizontalProps) {
-  const articleCardHorizontalClassName = combineClassNames(
-    "sdn-article-card-horizontal",
-    className,
-  )
+  const articleCardHorizontalClassName = combineClassNames("sdn-article-card-horizontal", className)
   const imageProps = applyRef(
     seldonRefs,
     image === null
@@ -109,10 +109,7 @@ export function ArticleCardHorizontal({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const textHeadingProps = applyRef(
@@ -122,10 +119,7 @@ export function ArticleCardHorizontal({
       : {
           ...sdn.textHeading,
           ...textHeading,
-          className: combineClassNames(
-            sdn.textHeading?.className,
-            textHeading?.className,
-          ),
+          className: combineClassNames(sdn.textHeading?.className, textHeading?.className),
         },
   )
   const textDescriptionProps = applyRef(
@@ -135,19 +129,12 @@ export function ArticleCardHorizontal({
       : {
           ...sdn.textDescription,
           ...textDescription,
-          className: combineClassNames(
-            sdn.textDescription?.className,
-            textDescription?.className,
-          ),
+          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
         },
   )
 
   return (
-    <Frame
-      className={articleCardHorizontalClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
+    <Frame className={articleCardHorizontalClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -156,14 +143,10 @@ export function ArticleCardHorizontal({
           <Frame {...frameProps}>
             {chip && chipProps && (
               <Chip {...chipProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
+                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
               </Chip>
             )}
-            {textHeading && textHeadingProps && (
-              <TextHeading {...textHeadingProps} />
-            )}
+            {textHeading && textHeadingProps && <TextHeading {...textHeadingProps} />}
             {textDescription && textDescriptionProps && (
               <TextDescription {...textDescriptionProps} />
             )}

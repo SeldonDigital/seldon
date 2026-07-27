@@ -1,3 +1,6 @@
+import { defineStore } from "pinia"
+import { ref } from "vue"
+
 import type {
   ActionRepair,
   AgentToolCall,
@@ -5,8 +8,6 @@ import type {
   ThinkingLevelOption,
 } from "@seldon/ai"
 import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
-import { defineStore } from "pinia"
-import { ref } from "vue"
 
 export type HariStatus = "idle" | "pending" | "error"
 
@@ -51,22 +52,20 @@ export const useAiChatStore = defineStore("ai-chat", () => {
 
   function startTurn(prompt: string): string {
     const id = `turn-${(turnSequence += 1)}`
+
     turns.value = [...turns.value, { id, prompt, status: "pending" }]
     status.value = "pending"
     error.value = null
+
     return id
   }
 
   function updateTurn(id: string, patch: Partial<HariTurn>): void {
-    turns.value = turns.value.map((turn) =>
-      turn.id === id ? { ...turn, ...patch } : turn,
-    )
+    turns.value = turns.value.map((turn) => (turn.id === id ? { ...turn, ...patch } : turn))
   }
 
   function mutateTurn(id: string, update: (turn: HariTurn) => HariTurn): void {
-    turns.value = turns.value.map((turn) =>
-      turn.id === id ? update(turn) : turn,
-    )
+    turns.value = turns.value.map((turn) => (turn.id === id ? update(turn) : turn))
   }
 
   function setStatus(next: HariStatus): void {
@@ -80,6 +79,7 @@ export const useAiChatStore = defineStore("ai-chat", () => {
   function setConfig(next: AgentConfig): void {
     config.value = next
     if (model.value === undefined) model.value = next.defaults.model
+
     if (thinkingLevel.value === undefined) {
       thinkingLevel.value = next.defaults.thinkingLevel
     }

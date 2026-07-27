@@ -1,5 +1,4 @@
 import { defineConfig, globalIgnores } from "eslint/config"
-import tseslint from "typescript-eslint"
 import { seldonBase } from "../../../eslint.config.base.mjs"
 
 /**

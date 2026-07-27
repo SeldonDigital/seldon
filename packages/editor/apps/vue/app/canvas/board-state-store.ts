@@ -1,10 +1,9 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
-import {
-  NORMAL_STATE,
-  type NodeState,
-} from "@seldon/core/workspace/model/node-state"
+import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
+
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 /**
  * Per-board active interaction state for the canvas. The board state switcher

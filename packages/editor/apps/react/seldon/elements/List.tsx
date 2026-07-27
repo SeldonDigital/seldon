@@ -10,17 +10,16 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
 import { HTMLOl } from "../native-react/HTML.Ol"
 import { HTMLUl } from "../native-react/HTML.Ul"
-import { ListItem, ListItemProps } from "../primitives/ListItem"
+import { ListItem } from "../primitives/ListItem"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface ListProps extends HTMLAttributes<
-  HTMLOListElement | HTMLUListElement
-> {
+import type { ListItemProps } from "../primitives/ListItem"
+import type { HTMLAttributes } from "react"
+
+export interface ListProps extends HTMLAttributes<HTMLOListElement | HTMLUListElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
@@ -58,10 +57,7 @@ export function List({
       : {
           ...sdn.listItem,
           ...listItem,
-          className: combineClassNames(
-            sdn.listItem?.className,
-            listItem?.className,
-          ),
+          className: combineClassNames(sdn.listItem?.className, listItem?.className),
         },
   )
 
@@ -70,24 +66,12 @@ export function List({
       //
       // React JSX component with merged default and custom properties
       //
-      return (
-        <HTMLOl
-          className={listClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        />
-      )
+      return <HTMLOl className={listClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
     default:
       //
       // React JSX component with merged default and custom properties
       //
-      return (
-        <HTMLUl
-          className={listClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        />
-      )
+      return <HTMLUl className={listClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
   }
 }
 

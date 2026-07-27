@@ -98,9 +98,7 @@ async function main() {
     return
   }
 
-  console.log(
-    `Ollama not detected at ${HOST}. Starting it with ${perfSummary()}...`,
-  )
+  console.log(`Ollama not detected at ${HOST}. Starting it with ${perfSummary()}...`)
   const spawned = await startServer()
   if (!spawned) return
 

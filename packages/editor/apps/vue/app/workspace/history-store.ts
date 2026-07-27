@@ -3,6 +3,7 @@ import { defineStore } from "pinia"
 import { computed, shallowRef } from "vue"
 
 import { createEmptyWorkspace } from "@seldon/core"
+
 import type { Workspace } from "@seldon/core/workspace/types"
 
 const REVISION_LIMIT = 50
@@ -30,6 +31,7 @@ export const useHistoryStore = defineStore("history", () => {
 
   function push(workspace: Workspace): void {
     const next = history.value.slice(0, currentIndex.value + 1)
+
     next.push(workspace)
     if (next.length > REVISION_LIMIT) next.shift()
     history.value = next
@@ -76,5 +78,6 @@ export const useHistoryStore = defineStore("history", () => {
  */
 export function getCurrentWorkspace(): Workspace {
   const store = useHistoryStore()
+
   return store.current
 }

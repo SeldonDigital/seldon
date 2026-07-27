@@ -1,46 +1,20 @@
-import { MenuController, MenuEntry } from "@app/menus"
+import { MenuController } from "@app/menus"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useObjectProperties } from "@app/workspace/hooks/use-object-properties"
 import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
-import {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
 import { filterPropertySections } from "@seldon/editor/lib/properties/inspector/filter-property-sections"
-import { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
-import { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
 import { getIconRowCategory } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
 import {
-  FlatProperty,
   getAllowedBorderSides,
   getPropertiesSubjectId,
 } from "@seldon/editor/lib/properties/inspector/properties-data"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { LayoutGroup } from "framer-motion"
-import {
-  Fragment,
-  type MouseEvent as ReactMouseEvent,
-  useCallback,
-  useDeferredValue,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { Fragment, useCallback, useDeferredValue, useMemo, useRef, useState } from "react"
 
-import {
-  Board,
-  Instance,
-  type LayeredPaintKey,
-  Theme,
-  Variant,
-  Workspace,
-  getBorderSideOptions,
-  getLayerAddOptions,
-  isThemeCustomTokenSection,
-} from "@seldon/core"
+import { getBorderSideOptions, getLayerAddOptions, isThemeCustomTokenSection } from "@seldon/core"
 import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 
@@ -48,21 +22,34 @@ import { Category } from "./Category"
 import { CssBlock } from "./CssBlock"
 import { Property } from "./Property"
 import { useBoardStateMenu } from "./hooks/use-board-state-menu"
-import {
-  useBorderSideVisibility,
-  useRevealedBorderSides,
-} from "./hooks/use-border-side-visibility"
+import { useBorderSideVisibility, useRevealedBorderSides } from "./hooks/use-border-side-visibility"
 import { useFilterInput } from "./hooks/use-filter-input"
 import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 
+import type { MenuEntry } from "@app/menus"
+import type { Board, Instance, LayeredPaintKey, Theme, Variant, Workspace } from "@seldon/core"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { PropertySection } from "@seldon/editor/lib/properties/inspector/get-property-sections"
+import type { ThemePropertySection } from "@seldon/editor/lib/properties/inspector/get-theme-property-sections"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import type { MouseEvent as ReactMouseEvent } from "react"
+
 const PROPERTIES_TREE_GAP = "var(--sdn-gaps-tight)"
 
 export interface PropertyTreeProps {
   workspace: Workspace
   node: Variant | Instance | Board
+  sections: Array<PropertySection | ThemePropertySection>
+  allProperties: FlatProperty[]
+  cssStrings: string[]
+  cssSelector: string | null
   theme?: Theme
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
@@ -77,10 +64,6 @@ export interface PropertyTreeProps {
    * parent subcategory rows and their child icon rows in one flat list.
    */
   iconProperties?: FlatProperty[]
-  sections: Array<PropertySection | ThemePropertySection>
-  allProperties: FlatProperty[]
-  cssStrings: string[]
-  cssSelector: string | null
 }
 
 /**
@@ -117,13 +100,10 @@ export function PropertiesSidebar() {
   const stateMenu = useBoardStateMenu()
   const [stateMenuOpen, setStateMenuOpen] = useState(false)
   const stateMenuAnchor = useRef<HTMLElement | null>(null)
-  const openStateMenu = useCallback(
-    (event: ReactMouseEvent<HTMLButtonElement>) => {
-      stateMenuAnchor.current = event.currentTarget
-      setStateMenuOpen((open) => !open)
-    },
-    [],
-  )
+  const openStateMenu = useCallback((event: ReactMouseEvent<HTMLButtonElement>) => {
+    stateMenuAnchor.current = event.currentTarget
+    setStateMenuOpen((open) => !open)
+  }, [])
   const closeStateMenu = useCallback(() => setStateMenuOpen(false), [])
 
   const menuStateSlot = {
@@ -162,9 +142,7 @@ export function PropertiesSidebar() {
   const seldonRefs = {
     propertiesContainer: {
       style: styles.frame,
-      children: (
-        <PropertiesTree {...deferredState.treeProps} sections={sections} />
-      ),
+      children: <PropertiesTree {...deferredState.treeProps} sections={sections} />,
     },
   }
 
@@ -238,10 +216,10 @@ interface TreeSectionProps {
   section: PropertySection | ThemePropertySection
   workspace: Workspace
   node: Variant | Instance | Board
-  theme?: Theme
   cssStrings: string[]
   cssSelector: string | null
   allProperties: FlatProperty[]
+  theme?: Theme
   familyProperties?: FlatProperty[]
   iconProperties?: FlatProperty[]
   themeEditingContext?: ThemeEditingContext | null
@@ -270,8 +248,7 @@ function TreeSection({
 }: TreeSectionProps) {
   const isExpanded = useIsCategoryExpanded(section.category)
   const isFamilies = section.category === "families"
-  const isIconCategory =
-    !!iconProperties && getIconRowCategory(`icon.${section.category}`) !== null
+  const isIconCategory = !!iconProperties && getIconRowCategory(`icon.${section.category}`) !== null
 
   const rowAllProperties =
     isFamilies && familyProperties
@@ -279,14 +256,13 @@ function TreeSection({
       : isIconCategory && iconProperties
         ? iconProperties
         : allProperties
-  const rowFontCollectionContext = isFamilies
-    ? fontCollectionEditingContext
-    : null
+  const rowFontCollectionContext = isFamilies ? fontCollectionEditingContext : null
   const rowIconSetContext = isIconCategory ? iconSetEditingContext : null
 
   const addToast = useAddToast()
   const handleCopyCss = useCallback(async () => {
     const cssText = cssStrings.join("\n")
+
     try {
       await navigator.clipboard.writeText(cssText)
       addToast("CSS copied to clipboard")
@@ -297,10 +273,9 @@ function TreeSection({
 
   const handleCopySelector = useCallback(async () => {
     if (!cssSelector) return
-    const indentedDeclarations = cssStrings
-      .map((declaration) => `  ${declaration}`)
-      .join("\n")
+    const indentedDeclarations = cssStrings.map((declaration) => `  ${declaration}`).join("\n")
     const ruleText = `${cssSelector} {\n${indentedDeclarations}\n}`
+
     try {
       await navigator.clipboard.writeText(ruleText)
       addToast("Selector copied to clipboard")
@@ -316,6 +291,7 @@ function TreeSection({
     if (!themeEditingContext.canAddCustom) return undefined
     if (!isThemeCustomTokenSection(section.category)) return undefined
     const themeSection = section.category
+
     return () => themeEditingContext.addCustomToken(themeSection)
   }, [themeEditingContext, section.category])
 
@@ -334,6 +310,7 @@ function TreeSection({
     if (section.category !== PropertyDisplayCategory.ATTRIBUTES) return []
 
     const boardKey = getComponentKey(node)
+
     return [
       {
         id: "apply-to-all-boards",
@@ -342,6 +319,7 @@ function TreeSection({
           const confirmed = window.confirm(
             "Apply this board's properties and theme to all other component boards? This overwrites their board setup.",
           )
+
           if (!confirmed) return
           applyBoardPropertiesToAllBoards({ sourceBoardKey: boardKey })
         },
@@ -355,18 +333,14 @@ function TreeSection({
           const confirmed = window.confirm(
             "Reset this board's properties and theme to their defaults?",
           )
+
           if (!confirmed) return
           resetComponentBoard({ boardKey })
         },
         testId: "board-reset",
       },
     ]
-  }, [
-    node,
-    section.category,
-    applyBoardPropertiesToAllBoards,
-    resetComponentBoard,
-  ])
+  }, [node, section.category, applyBoardPropertiesToAllBoards, resetComponentBoard])
 
   // A component node can stack extra paint layers. Offer "Add Background/Gradient/
   // Shadow" on the category that owns each exposed layered property.
@@ -375,23 +349,24 @@ function TreeSection({
       !!themeEditingContext?.isThemeEditing ||
       !!fontCollectionEditingContext?.isFontCollectionEditing ||
       !!iconSetEditingContext?.isIconSetEditing
+
     if (inEditingMode || isBoard(node)) return []
 
     const layeredKeys: LayeredPaintKey[] = ["background", "shadow"]
     const exposedKeys = layeredKeys.filter((key) =>
-      section.properties.some(
-        (property) => property.key === key && property.status !== "not used",
-      ),
+      section.properties.some((property) => property.key === key && property.status !== "not used"),
     )
 
     // Core decides each layered property's add options (Background splits into
     // typed Color/Image/Gradient seeds; others add a single empty layer).
     const entries: MenuEntry[] = []
+
     for (const key of exposedKeys) {
       for (const option of getLayerAddOptions(key)) {
         if (option.separatorBefore && entries.length > 0) {
           entries.push("separator")
         }
+
         entries.push({
           id: option.id,
           label: option.label,
@@ -400,6 +375,7 @@ function TreeSection({
         })
       }
     }
+
     return entries
   }, [
     node,
@@ -418,24 +394,24 @@ function TreeSection({
       !!themeEditingContext?.isThemeEditing ||
       !!fontCollectionEditingContext?.isFontCollectionEditing ||
       !!iconSetEditingContext?.isIconSetEditing
+
     if (inEditingMode || isBoard(node)) return []
 
-    const hasBorderRow = section.properties.some(
-      (property) => property.key === "border",
-    )
+    const hasBorderRow = section.properties.some((property) => property.key === "border")
+
     if (!hasBorderRow) return []
 
     const allowed = new Set(getAllowedBorderSides(node, workspace))
+
     return getBorderSideOptions().map((option) => {
       const isAllowed = allowed.has(option.side)
       const isShown = shownBorderSides.has(option.side)
+
       return {
         id: option.id,
         label: `${isShown ? "Hide" : "Show"} ${option.label}`,
         disabled: !isAllowed,
-        onSelect: isAllowed
-          ? () => toggleBorderSide(borderSubjectId, option.side)
-          : undefined,
+        onSelect: isAllowed ? () => toggleBorderSide(borderSubjectId, option.side) : undefined,
         testId: option.id,
       }
     })
@@ -453,6 +429,7 @@ function TreeSection({
 
   const sectionActions = useMemo((): MenuEntry[] | undefined => {
     if (boardActions.length > 0) return boardActions
+
     if (section.category === "css" && cssStrings.length > 0) {
       const actions: MenuEntry[] = [
         {
@@ -464,6 +441,7 @@ function TreeSection({
           testId: "copy-css",
         },
       ]
+
       if (cssSelector) {
         actions.push({
           id: "copy-selector",
@@ -474,12 +452,15 @@ function TreeSection({
           testId: "copy-selector",
         })
       }
+
       return actions
     }
+
     const appearanceActions: MenuEntry[] =
       layerAddActions.length > 0 && borderSideActions.length > 0
         ? [...layerAddActions, "separator", ...borderSideActions]
         : [...layerAddActions, ...borderSideActions]
+
     return appearanceActions.length > 0 ? appearanceActions : undefined
   }, [
     section.category,
@@ -513,11 +494,7 @@ function TreeSection({
 
   return (
     <Fragment>
-      <Category
-        section={section}
-        actions={sectionActions}
-        onAddCustom={onAddCustom}
-      />
+      <Category section={section} actions={sectionActions} onAddCustom={onAddCustom} />
       <FramerExpandable isExpanded={isExpanded}>{content}</FramerExpandable>
     </Fragment>
   )

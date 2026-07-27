@@ -1,9 +1,10 @@
-import type { IconId } from "@seldon/core/icon-sets"
 import {
   getAddedIconSetPrefixes,
   getWorkspaceEnabledIcons,
   isIconUnavailable,
 } from "@seldon/core/icon-sets/helpers"
+
+import type { IconId } from "@seldon/core/icon-sets"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 type IconAvailability = {
@@ -20,6 +21,7 @@ const cache = new WeakMap<Workspace, IconAvailability>()
 
 export function getIconAvailability(workspace: Workspace): IconAvailability {
   let value = cache.get(workspace)
+
   if (!value) {
     value = {
       enabled: new Set(getWorkspaceEnabledIcons(workspace)),
@@ -27,6 +29,7 @@ export function getIconAvailability(workspace: Workspace): IconAvailability {
     }
     cache.set(workspace, value)
   }
+
   return value
 }
 
@@ -40,5 +43,6 @@ export function isWorkspaceIconUnavailable(
 ): boolean {
   if (!iconId) return false
   const { enabled, addedPrefixes } = getIconAvailability(workspace)
+
   return isIconUnavailable(iconId, enabled, addedPrefixes)
 }

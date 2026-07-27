@@ -7,7 +7,6 @@ import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/frames/Frame"
 import React, { Profiler } from "react"
 
-import { Board } from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import {
   isFontCollectionBoard,
@@ -24,6 +23,8 @@ import { SandboxCanvas } from "./boards/SandboxCanvas"
 import { ThemeBoard } from "./boards/ThemeBoard"
 import { useCanvas } from "./hooks/use-canvas"
 
+import type { Board } from "@seldon/core"
+
 export function CanvasWorkspace() {
   const {
     onCanvasMouseMove,
@@ -38,13 +39,8 @@ export function CanvasWorkspace() {
   // Isolation renders a multi-board gallery of the anchored board and its used
   // dependencies; otherwise the canvas shows the single active board.
   const showIsolationGallery =
-    isolatedView &&
-    Boolean(isolatedBoardKey && workspace.boards[isolatedBoardKey])
-  const content = showIsolationGallery ? (
-    <IsolationBoards />
-  ) : (
-    <MemoizedActiveBoard />
-  )
+    isolatedView && Boolean(isolatedBoardKey && workspace.boards[isolatedBoardKey])
+  const content = showIsolationGallery ? <IsolationBoards /> : <MemoizedActiveBoard />
 
   return (
     <Frame
@@ -66,9 +62,11 @@ function renderBoard(board: Board) {
     if (isIconSetBoard(board)) {
       return <IconSetBoard board={board} />
     }
+
     if (isThemeBoard(board)) {
       return <ThemeBoard board={board} />
     }
+
     if (isFontCollectionBoard(board)) {
       return <FontCollectionBoard board={board} />
     }
@@ -93,11 +91,7 @@ function ActiveBoard() {
       <Profiler
         id="canvas"
         onRender={(_id, _phase, actualDuration) =>
-          console.info(
-            "[performance] Canvas rendering took: " +
-              Math.round(actualDuration) +
-              "ms",
-          )
+          console.info("[performance] Canvas rendering took: " + Math.round(actualDuration) + "ms")
         }
       >
         {board}

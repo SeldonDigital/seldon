@@ -13,14 +13,11 @@ import { useSelectCommands } from "./use-select-commands"
 /** Whether the event originates from an editable field, where most shortcuts pause. */
 function isTypingTarget(event: KeyboardEvent): boolean {
   const target = event.target as HTMLElement | null
+
   if (!target) return false
   const tag = target.tagName
-  return (
-    tag === "INPUT" ||
-    tag === "TEXTAREA" ||
-    tag === "SELECT" ||
-    target.isContentEditable
-  )
+
+  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target.isContentEditable
 }
 
 /**
@@ -31,14 +28,9 @@ function isTypingTarget(event: KeyboardEvent): boolean {
  * commands in later stages.
  */
 export function useEditorShortcuts(): void {
-  const { addVariant, deleteSelection, duplicateSelection } =
-    useAddRemoveCommands()
-  const {
-    moveSelectionForward,
-    moveSelectionBackward,
-    moveSelectionToFront,
-    moveSelectionToBack,
-  } = useMoveCommands()
+  const { addVariant, deleteSelection, duplicateSelection } = useAddRemoveCommands()
+  const { moveSelectionForward, moveSelectionBackward, moveSelectionToFront, moveSelectionToBack } =
+    useMoveCommands()
   const {
     selectOriginal,
     selectSource,
@@ -65,11 +57,14 @@ export function useEditorShortcuts(): void {
     if (mod && key === "z" && !shift) {
       event.preventDefault()
       history.undo()
+
       return
     }
+
     if (mod && key === "z" && shift) {
       event.preventDefault()
       history.redo()
+
       return
     }
 
@@ -77,6 +72,7 @@ export function useEditorShortcuts(): void {
     if (mod && key === "d") {
       event.preventDefault()
       duplicateSelection()
+
       return
     }
 
@@ -85,6 +81,7 @@ export function useEditorShortcuts(): void {
     // Delete selection, disabled while a panel is open.
     if ((key === "backspace" || key === "delete") && !panel.activePanel) {
       deleteSelection()
+
       return
     }
 
@@ -101,14 +98,17 @@ export function useEditorShortcuts(): void {
           event.preventDefault()
           config.toggleDirectSelect()
         }
+
         return
       case "t":
         event.preventDefault()
         panel.openPanel("create-component")
         tool.setActiveTool("select")
+
         return
       case "`":
         event.preventDefault()
+
         if (alt) {
           selectSource()
         } else if (shift) {
@@ -118,67 +118,82 @@ export function useEditorShortcuts(): void {
         } else {
           panel.openPanel("ai-chat")
         }
+
         return
       case "[":
         event.preventDefault()
         if (shift) moveSelectionToFront()
         else moveSelectionForward()
+
         return
       case "]":
         event.preventDefault()
         if (shift) moveSelectionToBack()
         else moveSelectionBackward()
+
         return
       case ",":
         event.preventDefault()
         if (shift) selectParent()
         else selectPreviousSibling()
+
         return
       case ".":
         event.preventDefault()
         if (shift) selectFirstChild()
         else selectNextSibling()
+
         return
       case "\\":
         event.preventDefault()
         config.showPanels = !config.showPanels
+
         return
       case "escape":
         if (tool.activeTool === "component") tool.setActiveTool("select")
+
         return
       case "i":
         event.preventDefault()
         if (shift) tool.setActiveTool("component")
         else toggleIsolation()
+
         return
       case "v":
         tool.setActiveTool("select")
+
         return
       case "h":
         event.preventDefault()
         config.showSelection = !config.showSelection
+
         return
       case "w":
         event.preventDefault()
         config.toggleWireframeMode()
+
         return
       case "r":
         event.preventDefault()
         config.showUnusedProperties = !config.showUnusedProperties
+
         return
       case "f":
         event.preventDefault()
         config.showUnusedFonts = !config.showUnusedFonts
+
         return
       case "n":
         event.preventDefault()
         config.showUnusedIcons = !config.showUnusedIcons
+
         return
       case "q":
         if (shift) {
           event.preventDefault()
           void router.push("/")
         }
+
         return
     }
   }

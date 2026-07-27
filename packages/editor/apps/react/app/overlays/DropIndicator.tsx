@@ -1,7 +1,7 @@
-import { CSSProperties } from "react"
-
 import { IndicatorDot } from "./IndicatorDot"
 import { IndicatorLine } from "./IndicatorLine"
+
+import type { CSSProperties } from "react"
 
 const DOT_SIZE = "var(--sdn-sizes-xsmall)"
 
@@ -18,11 +18,7 @@ interface DropIndicatorProps {
  * share one recipe; callers pass the accent color and the line's position. Used
  * by the sidebar insert/select indicators and the layer-reorder drop bands.
  */
-export function DropIndicator({
-  color,
-  position,
-  dotSize = DOT_SIZE,
-}: DropIndicatorProps) {
+export function DropIndicator({ color, position, dotSize = DOT_SIZE }: DropIndicatorProps) {
   const lineStyle: CSSProperties = {
     position: "absolute",
     zIndex: 20,

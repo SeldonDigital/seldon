@@ -1,5 +1,6 @@
-import type { Board } from "@seldon/core/workspace/types"
 import { getBoardVariantRootIds } from "../workspace/workspace-accessors"
+
+import type { Board } from "@seldon/core/workspace/types"
 
 interface VisibleVariantOptions {
   isolatedView: boolean
@@ -16,12 +17,10 @@ export function getVisibleVariantRootIds(
   { isolatedView, selectedNodeRootId }: VisibleVariantOptions,
 ): string[] {
   const rootIds = getBoardVariantRootIds(board)
-  if (
-    isolatedView &&
-    selectedNodeRootId &&
-    rootIds.includes(selectedNodeRootId)
-  ) {
+
+  if (isolatedView && selectedNodeRootId && rootIds.includes(selectedNodeRootId)) {
     return [selectedNodeRootId]
   }
+
   return rootIds
 }

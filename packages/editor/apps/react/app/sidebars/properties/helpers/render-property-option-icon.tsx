@@ -1,26 +1,25 @@
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { IconCustomColorValue, ThemeSwatches } from "@app/icons/custom"
 import { type OptionIconRender } from "@app/menus"
-import { useThemes } from "@app/themes/hooks/use-themes"
 import { IconSeldonTheme } from "@seldon/components/icons/seldon/system/settings/IconSeldonTheme"
-import {
-  type PropertyOptionIconBinding,
-  resolvePropertyOptionIconBinding,
-} from "@seldon/editor/lib/icons/property-option-icon"
-import { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
+import { resolvePropertyOptionIconBinding } from "@seldon/editor/lib/icons/property-option-icon"
 import { resolveThemeSwatchColors } from "@seldon/editor/lib/themes/resolve-theme-swatch-colors"
 import React from "react"
 
-import { Theme, Workspace } from "@seldon/core"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
+
+import type { useThemes } from "@app/themes/hooks/use-themes"
+import type { Theme, Workspace } from "@seldon/core"
+import type { PropertyOptionIconBinding } from "@seldon/editor/lib/icons/property-option-icon"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 type OptionIcon = { value: string; name: string } | undefined
 
 interface RenderPropertyOptionIconDeps {
   property: FlatProperty
-  theme?: Theme
   workspace: Workspace
   themes: ReturnType<typeof useThemes>
+  theme?: Theme
 }
 
 export type { OptionIconRender } from "@app/menus"
@@ -37,13 +36,8 @@ export function createPropertyOptionIconResolver({
   theme,
   workspace,
   themes,
-}: RenderPropertyOptionIconDeps): (option?: {
-  value: string
-  name: string
-}) => OptionIconRender {
-  return function resolvePropertyOptionIcon(
-    option: OptionIcon,
-  ): OptionIconRender {
+}: RenderPropertyOptionIconDeps): (option?: { value: string; name: string }) => OptionIconRender {
+  return function resolvePropertyOptionIcon(option: OptionIcon): OptionIconRender {
     return renderBinding(
       resolvePropertyOptionIconBinding({ property, theme, workspace, option }),
       property,
@@ -67,28 +61,25 @@ function renderBinding(
       return { kind: "iconId", icon: binding.icon }
     case "none":
       return { kind: "node", node: null }
+
     case "themeSwatches": {
       const optionTheme = themes.find((t) => t.id === binding.themeId)
+
       if (optionTheme) {
         return {
           kind: "node",
-          node: (
-            <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />
-          ),
+          node: <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />,
         }
       }
+
       return { kind: "node", node: null }
     }
+
     case "symbolUnavailable":
       // Icon turned off in its workspace set renders as a red Missing icon.
       return {
         kind: "node",
-        node: (
-          <LoadEditorIcons
-            iconId={asSymbolIconId(binding.iconId)}
-            unavailable
-          />
-        ),
+        node: <LoadEditorIcons iconId={asSymbolIconId(binding.iconId)} unavailable />,
       }
     case "symbolUnused":
       return { kind: "node", node: <IconSeldonMissing /> }

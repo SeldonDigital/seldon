@@ -1,7 +1,8 @@
-import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 
 import { useSharedStore } from "../../canvas/hooks/use-shared-store"
+
+import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 
 export type { NodeRect }
 

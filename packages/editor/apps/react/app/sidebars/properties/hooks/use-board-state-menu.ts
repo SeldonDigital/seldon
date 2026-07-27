@@ -1,8 +1,4 @@
-import {
-  useActiveBoardState,
-  useBoardStateStore,
-} from "@app/canvas/hooks/use-board-state-store"
-import { MenuEntry, MenuItem } from "@app/menus"
+import { useActiveBoardState, useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { walkComponentTree } from "@seldon/editor/lib/workspace/component-tree"
@@ -11,15 +7,19 @@ import { useMemo } from "react"
 
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import {
-  type CustomState,
   NORMAL_STATE,
-  type NodeState,
   RESERVED_STATE_GROUPS,
   RESERVED_STATE_LABELS,
-  type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
+
+import type { MenuEntry, MenuItem } from "@app/menus"
+import type {
+  CustomState,
+  NodeState,
+  ReservedStateName,
+} from "@seldon/core/workspace/model/node-state"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
 // Marks board states whose override lives only on a child, matching the punch
@@ -28,9 +28,11 @@ const CHILD_OVERRIDE_COLOR = "var(--sdn-swatch-punch)"
 
 function stateLabel(state: NodeState, customStates: CustomState[]): string {
   if (state === NORMAL_STATE) return "Normal"
+
   if (state in RESERVED_STATE_LABELS) {
     return RESERVED_STATE_LABELS[state as ReservedStateName]
   }
+
   return customStates.find((entry) => entry.key === state)?.label ?? state
 }
 
@@ -61,6 +63,7 @@ export function useBoardStateMenu(): BoardStateMenu {
     if (!selection) return undefined
     if (isBoard(selection)) return getComponentKey(selection)
     const board = nodeRelationshipService.findBoardForNode(selection, workspace)
+
     return board ? getComponentKey(board) : undefined
   }, [selection, workspace])
 
@@ -74,14 +77,13 @@ export function useBoardStateMenu(): BoardStateMenu {
   // Option-1 (Normal) through Option-0 (Dragged), numbered top to bottom in menu
   // display order, matching the hotkeys in `useEditorShortcuts`.
   const stateShortcuts = useMemo(() => {
-    const order = [
-      NORMAL_STATE,
-      ...RESERVED_STATE_GROUPS.flatMap((group) => group.states),
-    ]
+    const order = [NORMAL_STATE, ...RESERVED_STATE_GROUPS.flatMap((group) => group.states)]
     const map: Record<string, string> = {}
+
     order.forEach((state, index) => {
       map[state] = `⌥${(index + 1) % 10}`
     })
+
     return map
   }, [])
 
@@ -94,24 +96,30 @@ export function useBoardStateMenu(): BoardStateMenu {
     const ownOverride = new Set<NodeState>()
     const childOverride = new Set<NodeState>()
     const board = boardKey ? workspace.boards[boardKey] : undefined
-    if (!board)
+
+    if (!board) {
       return {
         ownOverrideStates: ownOverride,
         childOverrideStates: childOverride,
       }
+    }
 
     const addStatesFromChain = (startId: string, target: Set<NodeState>) => {
       const visited = new Set<string>()
       let currentId: string | null = startId
+
       while (currentId && !visited.has(currentId)) {
         visited.add(currentId)
         const node: EntryNode | undefined = workspace.nodes[currentId]
+
         if (!node) break
+
         if (node.states) {
           for (const [state, bag] of Object.entries(node.states)) {
             if (bag && Object.keys(bag).length > 0) target.add(state)
           }
         }
+
         currentId = parseNodeLink(node.template)?.nodeId ?? null
       }
     }
@@ -119,6 +127,7 @@ export function useBoardStateMenu(): BoardStateMenu {
     walkComponentTree(board, (ref, parent) => {
       addStatesFromChain(ref.id, parent === null ? ownOverride : childOverride)
     })
+
     return {
       ownOverrideStates: ownOverride,
       childOverrideStates: childOverride,
@@ -135,8 +144,10 @@ export function useBoardStateMenu(): BoardStateMenu {
   const addCustomState = () => {
     const existing = new Set(customStates.map((entry) => entry.key))
     let index = 1
+
     while (existing.has(`custom-${index}`)) index += 1
     const key = `custom-${index}`
+
     dispatch({
       type: "add_custom_state",
       payload: { key, label: `Custom ${index}` },
@@ -148,8 +159,8 @@ export function useBoardStateMenu(): BoardStateMenu {
   // current state, `active` tints rows whose own node carries overrides, and the
   // punch accent colors rows where only descendants carry overrides.
   const stateItem = (state: NodeState, label: string): MenuItem => {
-    const childOnly =
-      childOverrideStates.has(state) && !ownOverrideStates.has(state)
+    const childOnly = childOverrideStates.has(state) && !ownOverrideStates.has(state)
+
     return {
       id: `state-${state}`,
       label,
@@ -167,6 +178,7 @@ export function useBoardStateMenu(): BoardStateMenu {
 
   for (const group of RESERVED_STATE_GROUPS) {
     items.push("separator")
+
     for (const state of group.states) {
       items.push(stateItem(state, RESERVED_STATE_LABELS[state]))
     }
@@ -174,6 +186,7 @@ export function useBoardStateMenu(): BoardStateMenu {
 
   if (customStates.length > 0) {
     items.push("separator")
+
     for (const entry of customStates) {
       items.push(stateItem(entry.key, entry.label))
     }

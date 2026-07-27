@@ -10,16 +10,21 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { Button, ButtonProps } from "../elements/Button"
-import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { Button } from "../elements/Button"
+import { ButtonIconic } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
-import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
+import { TextTitle } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ButtonProps } from "../elements/Button"
+import type { ButtonIconicProps } from "../elements/ButtonIconic"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { TextTitleProps } from "../primitives/TextTitle"
+import type { HTMLAttributes } from "react"
 
 export interface BarProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -72,10 +77,7 @@ export function Bar({
       : {
           ...sdn.textTitle,
           ...textTitle,
-          className: combineClassNames(
-            sdn.textTitle?.className,
-            textTitle?.className,
-          ),
+          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
         },
   )
   const buttonIconicProps = applyRef(
@@ -85,10 +87,7 @@ export function Bar({
       : {
           ...sdn.buttonIconic,
           ...buttonIconic,
-          className: combineClassNames(
-            sdn.buttonIconic?.className,
-            buttonIconic?.className,
-          ),
+          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
         },
   )
   const iconProps = applyRef(
@@ -108,10 +107,7 @@ export function Bar({
       : {
           ...sdn.button,
           ...button,
-          className: combineClassNames(
-            sdn.button?.className,
-            button?.className,
-          ),
+          className: combineClassNames(sdn.button?.className, button?.className),
         },
   )
   const icon2Props = applyRef(
@@ -131,10 +127,7 @@ export function Bar({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
 
@@ -145,9 +138,7 @@ export function Bar({
       ) : (
         <>
           {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-          {buttonIconicProps !== null && (
-            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-          )}
+          {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
           {buttonProps !== null && (
             <Button {...buttonProps}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}

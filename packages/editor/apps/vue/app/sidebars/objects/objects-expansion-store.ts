@@ -1,18 +1,13 @@
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import { findComponentForNode } from "@seldon/editor/lib/workspace/node-tree"
-import {
-  getComponentKey,
-  getNode,
-} from "@seldon/editor/lib/workspace/workspace-accessors"
+import { getComponentKey, getNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
+import { nodeTraversalService, typeCheckingService } from "@seldon/core/workspace/services"
+
 import type { InstanceId, VariantId } from "@seldon/core"
-import {
-  nodeTraversalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 
 /**
@@ -26,12 +21,14 @@ export const useObjectsExpansionStore = defineStore("objects-expansion", () => {
 
   function expandObjects(ids: string[]): void {
     const next = new Set(expandedObjects.value)
+
     ids.forEach((id) => next.add(id))
     expandedObjects.value = next
   }
 
   function collapseObjects(ids: string[]): void {
     const next = new Set(expandedObjects.value)
+
     ids.forEach((id) => next.delete(id))
     expandedObjects.value = next
   }
@@ -55,6 +52,7 @@ export const useObjectsExpansionStore = defineStore("objects-expansion", () => {
     if (!options?.includeAncestors) {
       if (expand) expandObjects([id])
       else collapseObjects([id])
+
       return
     }
 
@@ -65,14 +63,15 @@ export const useObjectsExpansionStore = defineStore("objects-expansion", () => {
 
     while (currentNode) {
       idsToToggle.push(currentNode.id)
+
       if (typeCheckingService.isVariant(currentNode)) {
         const board = findComponentForNode(currentNode, workspace)
+
         if (board) idsToToggle.push(getComponentKey(board))
       }
-      const parentNode = nodeTraversalService.findParentNode(
-        currentNode.id,
-        workspace,
-      )
+
+      const parentNode = nodeTraversalService.findParentNode(currentNode.id, workspace)
+
       if (!parentNode) break
       currentNode = parentNode as EntryNode
     }
@@ -85,9 +84,12 @@ export const useObjectsExpansionStore = defineStore("objects-expansion", () => {
   function getAllDescendantNodeIds(nodeId: string): string[] {
     const workspace = getCurrentWorkspace()
     const node = getNode(workspace, nodeId)
+
     if (!node) return []
     const board = findComponentForNode(node, workspace)
+
     if (!board) return []
+
     return collectDescendantNodeIds(board, nodeId)
   }
 

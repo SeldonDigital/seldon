@@ -1,5 +1,4 @@
 import {
-  type OptionsType,
   filterOptions,
   flattenOptions,
   isNavigableOption,
@@ -8,21 +7,20 @@ import {
 import { resolveComboboxSubmit } from "@seldon/editor/lib/menus/combobox-submit"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-import { HSL } from "@seldon/core"
+import type { HSL } from "@seldon/core"
+import type { OptionsType } from "@seldon/editor/lib/menus/combobox-selection"
 
 export type { OptionsType }
 
 interface ComboboxStateProps<ItemT> {
-  value?: string
   options: OptionsType<ItemT>
   onValueChange: (value: string) => void
-  validateCustomValue?: (value: string) => boolean
   inputRef: React.RefObject<HTMLInputElement | null>
+  value?: string
+  validateCustomValue?: (value: string) => boolean
 }
 
-export function useComboboxState<
-  ItemT extends { name: string; value: string; color?: HSL },
->({
+export function useComboboxState<ItemT extends { name: string; value: string; color?: HSL }>({
   value,
   options,
   onValueChange,
@@ -32,9 +30,7 @@ export function useComboboxState<
   const [open, setOpen] = useState(false)
   const [shouldFilter, setShouldFilter] = useState(false)
   const [inputValue, setInputValue] = useState("")
-  const [highlightedValue, setHighlightedValue] = useState<string | undefined>(
-    undefined,
-  )
+  const [highlightedValue, setHighlightedValue] = useState<string | undefined>(undefined)
   const isManualSubmit = useRef(false)
   // True while the highlight is being driven by Arrow-key navigation, so Enter
   // selects the highlighted option instead of matching the typed text.
@@ -42,15 +38,13 @@ export function useComboboxState<
 
   const flatOptions = useMemo(() => flattenOptions(options), [options])
 
-  const navigableOptions = useMemo(
-    () => flatOptions.filter(isNavigableOption),
-    [flatOptions],
-  )
+  const navigableOptions = useMemo(() => flatOptions.filter(isNavigableOption), [flatOptions])
 
   const currentValueOption = flatOptions.find((o) => o.value === value)
 
   const filteredOptions = useMemo(() => {
     if (!inputValue || !shouldFilter) return options
+
     return filterOptions(options, inputValue)
   }, [options, inputValue, shouldFilter])
 
@@ -64,21 +58,20 @@ export function useComboboxState<
   useEffect(() => {
     if (!open) {
       setHighlightedValue(undefined)
+
       return
     }
 
     keyboardNavRef.current = false
-    const currentIndex = navigableOptions.findIndex(
-      (option) => option.value === value,
-    )
-    setHighlightedValue(
-      navigableOptions[currentIndex >= 0 ? currentIndex : 0]?.value,
-    )
+    const currentIndex = navigableOptions.findIndex((option) => option.value === value)
+
+    setHighlightedValue(navigableOptions[currentIndex >= 0 ? currentIndex : 0]?.value)
   }, [open, value, navigableOptions])
 
   const moveHighlight = useCallback(
     (direction: 1 | -1) => {
       const items = navigableFilteredOptions
+
       if (items.length === 0) return
       keyboardNavRef.current = true
       if (!open) setOpen(true)
@@ -108,10 +101,12 @@ export function useComboboxState<
   function handleSelect(selectedValue: string) {
     if (isManualSubmit.current) {
       isManualSubmit.current = false
+
       return
     }
 
     const option = flatOptions.find((o) => o.value === selectedValue)
+
     if (option) {
       setInputValue(option.name)
       onValueChange(option.value)
@@ -143,8 +138,7 @@ export function useComboboxState<
       useHighlighted: keyboardNavRef.current,
       flatOptions,
       highlightSource: navigableFilteredOptions,
-      allowCustom: (candidate) =>
-        !!validateCustomValue && validateCustomValue(candidate),
+      allowCustom: (candidate) => !!validateCustomValue && validateCustomValue(candidate),
     })
 
     if (resolution.kind === "select") {

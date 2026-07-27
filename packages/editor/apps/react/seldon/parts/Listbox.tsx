@@ -10,14 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes } from "react"
-
-import { ListboxOption, ListboxOptionProps } from "../elements/ListboxOption"
+import { ListboxOption } from "../elements/ListboxOption"
 import { Frame } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
-import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { Icon } from "../primitives/Icon"
+import { TextLabel } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
+
+import type { ListboxOptionProps } from "../elements/ListboxOption"
+import type { IconProps } from "../primitives/Icon"
+import type { TextLabelProps } from "../primitives/TextLabel"
+import type { HTMLAttributes } from "react"
 
 export interface ListboxProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -72,10 +75,7 @@ export function Listbox({
       : {
           ...sdn.listboxOption,
           ...listboxOption,
-          className: combineClassNames(
-            sdn.listboxOption?.className,
-            listboxOption?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption?.className, listboxOption?.className),
         },
   )
   const iconProps = applyRef(
@@ -95,10 +95,7 @@ export function Listbox({
       : {
           ...sdn.textLabel,
           ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
+          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
         },
   )
   const listboxOption2Props = applyRef(
@@ -108,10 +105,7 @@ export function Listbox({
       : {
           ...sdn.listboxOption2,
           ...listboxOption2,
-          className: combineClassNames(
-            sdn.listboxOption2?.className,
-            listboxOption2?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption2?.className, listboxOption2?.className),
         },
   )
   const icon2Props = applyRef(
@@ -131,10 +125,7 @@ export function Listbox({
       : {
           ...sdn.textLabel2,
           ...textLabel2,
-          className: combineClassNames(
-            sdn.textLabel2?.className,
-            textLabel2?.className,
-          ),
+          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
         },
   )
   const listboxOption3Props = applyRef(
@@ -144,10 +135,7 @@ export function Listbox({
       : {
           ...sdn.listboxOption3,
           ...listboxOption3,
-          className: combineClassNames(
-            sdn.listboxOption3?.className,
-            listboxOption3?.className,
-          ),
+          className: combineClassNames(sdn.listboxOption3?.className, listboxOption3?.className),
         },
   )
   const icon3Props = applyRef(
@@ -167,10 +155,7 @@ export function Listbox({
       : {
           ...sdn.textLabel3,
           ...textLabel3,
-          className: combineClassNames(
-            sdn.textLabel3?.className,
-            textLabel3?.className,
-          ),
+          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
         },
   )
 
@@ -194,17 +179,13 @@ export function Listbox({
           {listboxOption2Props !== null && (
             <ListboxOption {...listboxOption2Props}>
               {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel2 && textLabel2Props && (
-                <TextLabel {...textLabel2Props} />
-              )}
+              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
             </ListboxOption>
           )}
           {listboxOption3Props !== null && (
             <ListboxOption {...listboxOption3Props}>
               {icon3 && icon3Props && <Icon {...icon3Props} />}
-              {textLabel3 && textLabel3Props && (
-                <TextLabel {...textLabel3Props} />
-              )}
+              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
             </ListboxOption>
           )}
         </>

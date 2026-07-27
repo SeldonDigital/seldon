@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { TextareaHTMLAttributes } from "react"
-
 import { HTMLTextarea } from "../native-react/HTML.Textarea"
 import { combineClassNames } from "../utils/class-name"
+
+import type { TextareaHTMLAttributes } from "react"
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string
@@ -45,13 +45,7 @@ export function Textarea({
   //
   // React JSX component with merged default and custom properties
   //
-  return (
-    <HTMLTextarea
-      className={textareaClassName}
-      placeholder={placeholder}
-      {...props}
-    />
-  )
+  return <HTMLTextarea className={textareaClassName} placeholder={placeholder} {...props} />
 }
 
 //

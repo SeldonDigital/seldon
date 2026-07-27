@@ -3,7 +3,7 @@ import { preserveOffsetOnSource } from "@atlaskit/pragmatic-drag-and-drop/elemen
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
 import { useEffect, useRef, useState } from "react"
 
-import { Instance, Variant } from "@seldon/core"
+import type { Instance, Variant } from "@seldon/core"
 
 /**
  * Makes an element draggable for drag-and-drop operations in the objects sidebar.
@@ -14,8 +14,8 @@ export function useDraggable({
   target,
   onDragStart,
 }: {
-  enable?: boolean
   target: Variant | Instance
+  enable?: boolean
   onDragStart?: () => void
 }) {
   const [dragging, setDragging] = useState<boolean>(false)
@@ -44,9 +44,9 @@ export function useDraggable({
         // the field has no surface, so pin its width and paint the sidebar
         // background. `preserveOffsetOnSource` keeps the image under the cursor
         // at the exact point the row was grabbed.
-        const field =
-          (el.querySelector(".sdn-combobox-field") as HTMLElement | null) ?? el
+        const field = (el.querySelector(".sdn-combobox-field") as HTMLElement | null) ?? el
         const width = field.getBoundingClientRect().width
+
         setCustomNativeDragPreview({
           getOffset: preserveOffsetOnSource({
             element: field,
@@ -54,6 +54,7 @@ export function useDraggable({
           }),
           render: ({ container }) => {
             const clone = field.cloneNode(true) as HTMLElement
+
             clone.style.width = `${width}px`
             clone.style.margin = "0"
             clone.style.backgroundColor = "var(--sdn-swatch-offWhite)"
@@ -61,6 +62,7 @@ export function useDraggable({
               .querySelectorAll('[data-dragging="true"]')
               .forEach((node) => node.removeAttribute("data-dragging"))
             container.appendChild(clone)
+
             return () => clone.remove()
           },
           nativeSetDragImage,

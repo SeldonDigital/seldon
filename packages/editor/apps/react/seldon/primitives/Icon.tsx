@@ -10,11 +10,11 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { SVGAttributes } from "react"
-
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
 import { getRegisteredIcon } from "../utils/icon-registry"
+
+import type { SVGAttributes } from "react"
 
 export interface IconProps extends SVGAttributes<SVGElement> {
   className?: string
@@ -513,34 +513,28 @@ export function Icon({ className = "", icon = sdn.icon, ...props }: IconProps) {
   const iconClassName = combineClassNames("sdn-icon", className)
 
   let Icon = iconMap[icon || "__default__"]
+
   if (!Icon) {
     // Ids absent from the static map may be registered at runtime as dynamic,
     // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
     const RegisteredIcon = getRegisteredIcon(icon)
+
     if (RegisteredIcon) {
       //
       // React JSX component resolved from the runtime icon registry
       //
       return (
-        <RegisteredIcon
-          className={iconClassName}
-          aria-hidden={sdn["aria-hidden"]}
-          {...props}
-        />
+        <RegisteredIcon className={iconClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     }
+
     Icon = iconMap["__default__"]
   }
+
   //
   // React JSX component with merged default and custom properties
   //
-  return (
-    <Icon
-      className={iconClassName}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    />
-  )
+  return <Icon className={iconClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
 }
 
 //
@@ -752,11 +746,9 @@ const iconMap = {
   "material-sports": Icons.IconMaterialSports,
   "material-airlineSeatFlat": Icons.IconMaterialAirlineSeatFlat,
   "material-airlineSeatFlatAngled": Icons.IconMaterialAirlineSeatFlatAngled,
-  "material-airlineSeatIndividualSuite":
-    Icons.IconMaterialAirlineSeatIndividualSuite,
+  "material-airlineSeatIndividualSuite": Icons.IconMaterialAirlineSeatIndividualSuite,
   "material-airlineSeatReclineExtra": Icons.IconMaterialAirlineSeatReclineExtra,
-  "material-airlineSeatReclineNormal":
-    Icons.IconMaterialAirlineSeatReclineNormal,
+  "material-airlineSeatReclineNormal": Icons.IconMaterialAirlineSeatReclineNormal,
   "material-carpenter": Icons.IconMaterialCarpenter,
   "material-directions": Icons.IconMaterialDirections,
   "material-directionsBike": Icons.IconMaterialDirectionsBike,
@@ -972,8 +964,7 @@ const iconMap = {
   "material-alignJustifyFlexEnd": Icons.IconMaterialAlignJustifyFlexEnd,
   "material-alignJustifyFlexStart": Icons.IconMaterialAlignJustifyFlexStart,
   "material-alignJustifySpaceAround": Icons.IconMaterialAlignJustifySpaceAround,
-  "material-alignJustifySpaceBetween":
-    Icons.IconMaterialAlignJustifySpaceBetween,
+  "material-alignJustifySpaceBetween": Icons.IconMaterialAlignJustifySpaceBetween,
   "material-alignJustifySpaceEven": Icons.IconMaterialAlignJustifySpaceEven,
   "material-alignJustifyStretch": Icons.IconMaterialAlignJustifyStretch,
   "material-alignSelfStretch": Icons.IconMaterialAlignSelfStretch,
@@ -1001,8 +992,7 @@ const iconMap = {
   "material-formatSize": Icons.IconMaterialFormatSize,
   "material-formatTextdirectionLToR": Icons.IconMaterialFormatTextdirectionLToR,
   "material-formatTextdirectionRToL": Icons.IconMaterialFormatTextdirectionRToL,
-  "material-formatTextdirectionVertical":
-    Icons.IconMaterialFormatTextdirectionVertical,
+  "material-formatTextdirectionVertical": Icons.IconMaterialFormatTextdirectionVertical,
   "material-formatUnderlined": Icons.IconMaterialFormatUnderlined,
   "material-lineEndCircle": Icons.IconMaterialLineEndCircle,
   "material-lineStartCircle": Icons.IconMaterialLineStartCircle,

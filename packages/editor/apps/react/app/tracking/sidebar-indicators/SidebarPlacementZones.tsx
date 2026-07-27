@@ -3,14 +3,15 @@
 import { useTool } from "@app/editor/hooks/use-tool"
 import { OverlayLayer, PlacementZoneSurface } from "@app/overlays"
 import { Frame } from "@seldon/components/frames/Frame"
-import { Placement } from "@seldon/editor/lib/types"
-import { CSSProperties } from "react"
 
-import { Instance, Variant } from "@seldon/core"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
 import { SidebarIndicator } from "./insert/SidebarIndicator"
+
+import type { Instance, Variant } from "@seldon/core"
+import type { Placement } from "@seldon/editor/lib/types"
+import type { CSSProperties } from "react"
 
 interface SidebarPlacementZonesProps {
   node: Variant | Instance
@@ -104,6 +105,7 @@ export function SidebarPlacementZones({
 
   const renderZones = () => {
     if (activeTool === "component") return renderComponentToolZones()
+
     return null // Select tool is handled separately with dropzones
   }
 
@@ -123,13 +125,13 @@ const relativeFillStyle: CSSProperties = {
 
 interface PlacementZoneProps {
   placement: Placement
-  onClick?: () => void
-  onDoubleClick?: () => void
   onMouseEnter: () => void
   onMouseLeave: () => void
   isHovered: boolean
   isAllowed: boolean
   tool: "component"
+  onClick?: () => void
+  onDoubleClick?: () => void
 }
 
 function PlacementZone({
@@ -171,9 +173,7 @@ function PlacementZone({
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
     >
-      {isHovered && isAllowed && Indicator && (
-        <Indicator placement={placement} />
-      )}
+      {isHovered && isAllowed && Indicator && <Indicator placement={placement} />}
     </PlacementZoneSurface>
   )
 }

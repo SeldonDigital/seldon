@@ -1,11 +1,12 @@
-import { build } from "esbuild"
 import fs from "node:fs/promises"
-import type { IncomingMessage, ServerResponse } from "node:http"
 import os from "node:os"
 import path from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
-import type { Connect, Plugin } from "vite"
+import { build } from "esbuild"
+
 import type { ExportRequestBody, runExport } from "./export-handler"
+import type { IncomingMessage, ServerResponse } from "node:http"
+import type { Connect, Plugin } from "vite"
 
 const ROUTE = "/api/export"
 
@@ -46,14 +47,13 @@ async function loadRunExport(): Promise<RunExport> {
     },
   })
 
-  const outputFile = path.join(
-    os.tmpdir(),
-    `seldon-export-handler-${process.pid}.mjs`,
-  )
+  const outputFile = path.join(os.tmpdir(), `seldon-export-handler-${process.pid}.mjs`)
+
   await fs.writeFile(outputFile, result.outputFiles[0].text)
   const mod = (await import(pathToFileURL(outputFile).href)) as {
     runExport: RunExport
   }
+
   return mod.runExport
 }
 
@@ -61,22 +61,26 @@ function getRunExport(): Promise<RunExport> {
   if (!cachedRunExport) {
     cachedRunExport = loadRunExport()
   }
+
   return cachedRunExport
 }
 
 async function readJsonBody(req: IncomingMessage): Promise<ExportRequestBody> {
   const chunks: Buffer[] = []
   let total = 0
+
   for await (const chunk of req) {
     const buffer = chunk as Buffer
+
     total += buffer.length
+
     if (total > MAX_BODY_BYTES) {
-      throw new PayloadTooLargeError(
-        `Export request body exceeds ${MAX_BODY_BYTES} bytes.`,
-      )
+      throw new PayloadTooLargeError(`Export request body exceeds ${MAX_BODY_BYTES} bytes.`)
     }
+
     chunks.push(buffer)
   }
+
   return JSON.parse(Buffer.concat(chunks).toString("utf8")) as ExportRequestBody
 }
 
@@ -89,6 +93,7 @@ function sendJson(res: ServerResponse, status: number, payload: unknown): void {
 const middleware: Connect.NextHandleFunction = (req, res, next) => {
   if (req.method !== "POST") {
     next()
+
     return
   }
 
@@ -99,8 +104,10 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
   // it on the request (header or query param), and/or check req.headers.origin
   // and req.headers.host against an allowlist, rejecting with 401/403 otherwise.
   const contentType = req.headers["content-type"] ?? ""
+
   if (!contentType.includes("application/json")) {
     sendJson(res, 415, { error: "Expected an application/json request body." })
+
     return
   }
 
@@ -109,12 +116,15 @@ const middleware: Connect.NextHandleFunction = (req, res, next) => {
       const body = await readJsonBody(req)
       const run = await getRunExport()
       const result = await run(body)
+
       sendJson(res, 200, result)
     } catch (error) {
       if (error instanceof PayloadTooLargeError) {
         sendJson(res, 413, { error: error.message })
+
         return
       }
+
       sendJson(res, 500, {
         error: error instanceof Error ? error.message : "Export failed.",
       })

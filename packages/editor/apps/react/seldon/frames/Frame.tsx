@@ -10,7 +10,9 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes, ReactNode, Ref, createElement } from "react"
+import { createElement } from "react"
+
+import type { HTMLAttributes, ReactNode, Ref } from "react"
 
 export type FrameProps = HTMLAttributes<HTMLElement> & {
   children?: ReactNode

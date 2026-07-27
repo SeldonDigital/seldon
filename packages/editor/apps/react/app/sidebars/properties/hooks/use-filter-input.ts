@@ -1,20 +1,10 @@
-import {
-  buildDisplayInputProps,
-  buildEditingRefProps,
-} from "@app/views/state-props"
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import { ComboboxFieldFilterProps } from "@seldon/components/elements/ComboboxFieldFilter"
-import { InputProps } from "@seldon/components/primitives/Input"
-import {
-  type ChangeEvent,
-  type KeyboardEvent,
-  type MouseEvent,
-  type Ref,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import { buildDisplayInputProps, buildEditingRefProps } from "@app/views/state-props"
+import { useCallback, useEffect, useRef, useState } from "react"
+
+import type { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
+import type { ComboboxFieldFilterProps } from "@seldon/components/elements/ComboboxFieldFilter"
+import type { InputProps } from "@seldon/components/primitives/Input"
+import type { ChangeEvent, KeyboardEvent, MouseEvent, Ref } from "react"
 
 const PLACEHOLDER = "Filter..."
 
@@ -90,8 +80,7 @@ export function useFilterInput(): FilterInput {
       placeholder: PLACEHOLDER,
       readOnly: false,
       ...buildEditingRefProps(true),
-      onChange: (event: ChangeEvent<HTMLInputElement>) =>
-        setQuery(event.currentTarget.value),
+      onChange: (event: ChangeEvent<HTMLInputElement>) => setQuery(event.currentTarget.value),
       onBlur: () => setEditing(false),
       onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Escape") {

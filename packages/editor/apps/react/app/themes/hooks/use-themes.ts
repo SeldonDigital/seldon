@@ -1,7 +1,4 @@
-import {
-  getCurrentWorkspace,
-  useHistoryStore,
-} from "@app/workspace/hooks/use-history"
+import { getCurrentWorkspace, useHistoryStore } from "@app/workspace/hooks/use-history"
 import { usePreviewStore } from "@app/workspace/hooks/use-preview-store"
 import { useMemo } from "react"
 
@@ -14,14 +11,12 @@ import { workspaceThemeService } from "@seldon/core/workspace/services/theme/the
  * the themes reference, so recomputation only happens when themes change.
  */
 export function useThemes() {
-  const committedThemes = useHistoryStore(
-    (state) => state.history[state.currentIndex].themes,
-  )
+  const committedThemes = useHistoryStore((state) => state.history[state.currentIndex].themes)
   const previewThemes = usePreviewStore((state) => state.preview?.themes)
 
   return useMemo(() => {
-    const workspace =
-      usePreviewStore.getState().preview ?? getCurrentWorkspace()
+    const workspace = usePreviewStore.getState().preview ?? getCurrentWorkspace()
+
     return workspaceThemeService.getThemes(workspace)
   }, [committedThemes, previewThemes])
 }

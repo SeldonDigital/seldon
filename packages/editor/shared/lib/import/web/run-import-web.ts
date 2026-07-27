@@ -24,9 +24,11 @@ export type ImportWebResult = {
 function base64ToBytes(base64: string): Uint8Array {
   const binary = atob(base64)
   const bytes = new Uint8Array(binary.length)
+
   for (let i = 0; i < binary.length; i += 1) {
     bytes[i] = binary.charCodeAt(i)
   }
+
   return bytes
 }
 
@@ -34,6 +36,7 @@ function fromWireFile(file: WireFile): FileToExport {
   if (file.encoding === "utf8") {
     return { path: file.path, content: file.content }
   }
+
   return {
     path: file.path,
     content: base64ToBytes(file.content).buffer as ArrayBuffer,
@@ -55,12 +58,15 @@ export async function runImportWeb(url: string): Promise<ImportWebResult> {
 
   if (!response.ok) {
     let message = "Import failed."
+
     try {
       const data = (await response.json()) as { error?: string }
+
       if (data?.error) message = data.error
     } catch {
       // Response was not JSON; keep the default message.
     }
+
     throw new Error(message)
   }
 
@@ -68,6 +74,7 @@ export async function runImportWeb(url: string): Promise<ImportWebResult> {
     files: WireFile[]
     summary: ImportWebSummary
   }
+
   return {
     files: data.files.map(fromWireFile),
     summary: data.summary,

@@ -3,8 +3,10 @@
 // owns the runtime pieces a static schema cannot: the expand/collapse state,
 // the dynamic header label, and the collapsed/expanded body text treatment.
 import { MessageThinking } from "@seldon/components/elements/MessageThinking"
+import { useState } from "react"
+
 import type { IconProps } from "@seldon/components/primitives/Icon"
-import { type CSSProperties, useState } from "react"
+import type { CSSProperties } from "react"
 
 interface HariThinkingProps {
   text: string
@@ -34,9 +36,7 @@ export function HariThinking({ text, durationMs, clamped }: HariThinkingProps) {
     "aria-expanded": open,
     "aria-label": open ? "Hide reasoning" : "Show reasoning",
   }
-  const bodySlot = text
-    ? { children: text, style: open ? expandedStyle : collapsedStyle }
-    : null
+  const bodySlot = text ? { children: text, style: open ? expandedStyle : collapsedStyle } : null
 
   return (
     <MessageThinking

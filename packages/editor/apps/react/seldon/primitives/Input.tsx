@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { InputHTMLAttributes, Ref } from "react"
-
 import { HTMLInput } from "../native-react/HTML.Input"
 import { combineClassNames } from "../utils/class-name"
+
+import type { InputHTMLAttributes, Ref } from "react"
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
@@ -49,14 +49,7 @@ export function Input({
   //
   // React JSX component with merged default and custom properties
   //
-  return (
-    <HTMLInput
-      className={inputClassName}
-      placeholder={placeholder}
-      type={type}
-      {...props}
-    />
-  )
+  return <HTMLInput className={inputClassName} placeholder={placeholder} type={type} {...props} />
 }
 
 //
