@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": 15,
+    "version": 16,
     "label": ""
   },
   "boards": {
@@ -204,11 +204,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -244,6 +241,24 @@
         "gap": {
           "type": "theme.ordinal",
           "value": "@gap.cozy"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
         }
       },
       "variants": [
@@ -298,11 +313,12 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -338,6 +354,24 @@
         "gap": {
           "type": "theme.ordinal",
           "value": "@gap.cozy"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
         }
       },
       "variants": [
@@ -359,11 +393,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -526,7 +557,7 @@
         }
       ],
       "__editor": {
-        "order": 11
+        "order": 16
       }
     },
     "input": {
@@ -539,11 +570,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -579,6 +607,24 @@
         "gap": {
           "type": "theme.ordinal",
           "value": "@gap.cozy"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
         }
       },
       "variants": [
@@ -606,11 +652,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -727,7 +770,7 @@
         }
       ],
       "__editor": {
-        "order": 14
+        "order": 13
       }
     },
     "link": {
@@ -810,7 +853,7 @@
             "type": "exact",
             "value": {
               "unit": "px",
-              "value": 900
+              "value": 600
             }
           }
         },
@@ -1231,7 +1274,7 @@
         }
       ],
       "__editor": {
-        "order": 4
+        "order": 5
       }
     },
     "frame": {
@@ -1465,7 +1508,7 @@
         }
       ],
       "__editor": {
-        "order": 10
+        "order": 12
       }
     },
     "chip": {
@@ -1478,11 +1521,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -1580,7 +1620,7 @@
         }
       ],
       "__editor": {
-        "order": 13
+        "order": 18
       }
     },
     "formControl": {
@@ -1593,11 +1633,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -1711,7 +1748,7 @@
         }
       ],
       "__editor": {
-        "order": 15
+        "order": 11
       }
     },
     "item": {
@@ -1724,11 +1761,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -2126,7 +2160,7 @@
         }
       ],
       "__editor": {
-        "order": 16
+        "order": 10
       }
     },
     "earth": {
@@ -2351,7 +2385,7 @@
         }
       ],
       "__editor": {
-        "order": 17
+        "order": 19
       }
     },
     "hr": {
@@ -2589,11 +2623,8 @@
       "componentProperties": {
         "board": {
           "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 500
-            }
+            "type": "option",
+            "value": "fit"
           }
         },
         "background": [
@@ -2670,7 +2701,7 @@
         }
       ],
       "__editor": {
-        "order": 19
+        "order": 21
       }
     },
     "menu": {
@@ -2991,7 +3022,7 @@
         }
       ],
       "__editor": {
-        "order": 5
+        "order": 3
       }
     },
     "sidebar": {
@@ -3026,7 +3057,7 @@
             "type": "exact",
             "value": {
               "unit": "px",
-              "value": 500
+              "value": 600
             }
           }
         },
@@ -3794,7 +3825,7 @@
         }
       ],
       "__editor": {
-        "order": 12
+        "order": 17
       }
     },
     "calendar": {
@@ -5590,7 +5621,7 @@
         }
       ],
       "__editor": {
-        "order": 3
+        "order": 4
       }
     },
     "topbar": {
@@ -6632,6 +6663,30 @@
           ]
         },
         {
+          "id": "component-panel-palette",
+          "children": [
+            {
+              "id": "component-bar-9xs7e205",
+              "children": [
+                {
+                  "id": "component-text-ULidm7d6"
+                },
+                {
+                  "id": "component-button-obd2KRE6",
+                  "children": [
+                    {
+                      "id": "component-icon-4D5EvE2s"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-frame-sNEk8UGH"
+            }
+          ]
+        },
+        {
           "id": "component-panel-modal",
           "children": [
             {
@@ -6699,30 +6754,6 @@
               ]
             }
           ]
-        },
-        {
-          "id": "component-panel-palette",
-          "children": [
-            {
-              "id": "component-bar-9xs7e205",
-              "children": [
-                {
-                  "id": "component-text-ULidm7d6"
-                },
-                {
-                  "id": "component-button-obd2KRE6",
-                  "children": [
-                    {
-                      "id": "component-icon-4D5EvE2s"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "component-frame-sNEk8UGH"
-            }
-          ]
         }
       ],
       "__editor": {
@@ -6771,7 +6802,17 @@
       "label": "Textareas",
       "author": "Seldon Digital",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        }
+      },
       "variants": [
         {
           "id": "component-textarea-default"
@@ -6939,7 +6980,7 @@
         }
       ],
       "__editor": {
-        "order": 20
+        "order": 14
       }
     },
     "blockquote": {
@@ -7031,7 +7072,7 @@
         }
       ],
       "__editor": {
-        "order": 18
+        "order": 20
       }
     },
     "section": {
@@ -7150,7 +7191,7 @@
         }
       ],
       "__editor": {
-        "order": 21
+        "order": 15
       }
     },
     "dialog": {
@@ -7179,6 +7220,14 @@
             "value": "@padding.open"
           },
           "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.open"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.open"
+          },
+          "left": {
             "type": "theme.ordinal",
             "value": "@padding.open"
           }
@@ -7441,18 +7490,18 @@
           ]
         },
         {
-          "id": "component-dialog-3GBq6hJL",
+          "id": "component-panel-3GBq6hJL",
           "children": [
             {
-              "id": "component-dialog-h3zITesL",
+              "id": "component-panel-h3zITesL",
               "children": [
                 {
-                  "id": "component-dialog-Mt5jv86Z"
+                  "id": "component-panel-Mt5jv86Z"
                 }
               ]
             },
             {
-              "id": "component-dialog-wwvDjgGM",
+              "id": "component-panel-wwvDjgGM",
               "children": [
                 {
                   "id": "component-formControl-VMxpUQed",
@@ -7466,10 +7515,10 @@
                   ]
                 },
                 {
-                  "id": "component-dialog-v5j9ARUH",
+                  "id": "component-panel-v5j9ARUH",
                   "children": [
                     {
-                      "id": "component-dialog-nrBJ9rh4"
+                      "id": "component-panel-nrBJ9rh4"
                     },
                     {
                       "id": "component-comboboxField-uLL6h72c",
@@ -7490,13 +7539,13 @@
                   ]
                 },
                 {
-                  "id": "component-dialog-9DpDq8KT",
+                  "id": "component-panel-9DpDq8KT",
                   "children": [
                     {
                       "id": "component-frame-eJHaFSrh",
                       "children": [
                         {
-                          "id": "component-dialog-S1QRLOFw"
+                          "id": "component-panel-S1QRLOFw"
                         },
                         {
                           "id": "component-text-ljMdWNGD"
@@ -7504,70 +7553,27 @@
                       ]
                     },
                     {
-                      "id": "component-dialog-PwEsxnYz",
+                      "id": "component-panel-PwEsxnYz",
                       "children": [
                         {
-                          "id": "component-dialog-wIfMpjAU",
+                          "id": "component-panel-wIfMpjAU",
                           "children": [
                             {
-                              "id": "component-dialog-WG67k8nP"
+                              "id": "component-panel-WG67k8nP"
                             },
                             {
-                              "id": "component-dialog-LXy0JdpD"
+                              "id": "component-panel-LXy0JdpD"
                             }
                           ]
                         },
                         {
-                          "id": "component-dialog-cM5q9shs",
+                          "id": "component-panel-cM5q9shs",
                           "children": [
                             {
-                              "id": "component-dialog-BZN5sI4T"
+                              "id": "component-panel-BZN5sI4T"
                             },
                             {
-                              "id": "component-dialog-yqnzd5dv"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "component-dialog-LDoNfyNl",
-                  "children": [
-                    {
-                      "id": "component-dialog-EbAPjUa6",
-                      "children": [
-                        {
-                          "id": "component-dialog-0GGGLiz6"
-                        },
-                        {
-                          "id": "component-dialog-bZGjgsvA"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "component-dialog-TyqHmA9t",
-                      "children": [
-                        {
-                          "id": "component-dialog-Ll8MAURr",
-                          "children": [
-                            {
-                              "id": "component-dialog-6zRYcjko"
-                            },
-                            {
-                              "id": "component-dialog-vwVVvBc0"
-                            }
-                          ]
-                        },
-                        {
-                          "id": "component-dialog-dHhbJMnp",
-                          "children": [
-                            {
-                              "id": "component-dialog-dE3r3x5s"
-                            },
-                            {
-                              "id": "component-dialog-wFGm6tUv"
+                              "id": "component-panel-yqnzd5dv"
                             }
                           ]
                         }
@@ -7576,41 +7582,41 @@
                   ]
                 },
                 {
-                  "id": "component-dialog-UvbzIVHJ",
+                  "id": "component-panel-LDoNfyNl",
                   "children": [
                     {
-                      "id": "component-dialog-Gsec7Cyo",
+                      "id": "component-panel-EbAPjUa6",
                       "children": [
                         {
-                          "id": "component-dialog-f2oHl8l5"
+                          "id": "component-panel-0GGGLiz6"
                         },
                         {
-                          "id": "component-dialog-zscqDLg1"
+                          "id": "component-panel-bZGjgsvA"
                         }
                       ]
                     },
                     {
-                      "id": "component-dialog-dLnCtI4z",
+                      "id": "component-panel-TyqHmA9t",
                       "children": [
                         {
-                          "id": "component-dialog-e48Xe2Fa",
+                          "id": "component-panel-Ll8MAURr",
                           "children": [
                             {
-                              "id": "component-dialog-AAAIIBZA"
+                              "id": "component-panel-6zRYcjko"
                             },
                             {
-                              "id": "component-dialog-UyxvpHBO"
+                              "id": "component-panel-vwVVvBc0"
                             }
                           ]
                         },
                         {
-                          "id": "component-dialog-yVKBdxqz",
+                          "id": "component-panel-dHhbJMnp",
                           "children": [
                             {
-                              "id": "component-dialog-ELZAfUu6"
+                              "id": "component-panel-dE3r3x5s"
                             },
                             {
-                              "id": "component-dialog-5YCUxOJ3"
+                              "id": "component-panel-wFGm6tUv"
                             }
                           ]
                         }
@@ -7619,41 +7625,41 @@
                   ]
                 },
                 {
-                  "id": "component-dialog-4PTSuHoi",
+                  "id": "component-panel-UvbzIVHJ",
                   "children": [
                     {
-                      "id": "component-dialog-2IPpIcBZ",
+                      "id": "component-panel-Gsec7Cyo",
                       "children": [
                         {
-                          "id": "component-dialog-tPfI3gZQ"
+                          "id": "component-panel-f2oHl8l5"
                         },
                         {
-                          "id": "component-dialog-KWByvm7F"
+                          "id": "component-panel-zscqDLg1"
                         }
                       ]
                     },
                     {
-                      "id": "component-dialog-sCN7yai0",
+                      "id": "component-panel-dLnCtI4z",
                       "children": [
                         {
-                          "id": "component-dialog-lKDfX83Z",
+                          "id": "component-panel-e48Xe2Fa",
                           "children": [
                             {
-                              "id": "component-dialog-XOpVCSGs"
+                              "id": "component-panel-AAAIIBZA"
                             },
                             {
-                              "id": "component-dialog-wANZOuvS"
+                              "id": "component-panel-UyxvpHBO"
                             }
                           ]
                         },
                         {
-                          "id": "component-dialog-ckamBjyC",
+                          "id": "component-panel-yVKBdxqz",
                           "children": [
                             {
-                              "id": "component-dialog-L4bLvhoP"
+                              "id": "component-panel-ELZAfUu6"
                             },
                             {
-                              "id": "component-dialog-W4rbneLQ"
+                              "id": "component-panel-5YCUxOJ3"
                             }
                           ]
                         }
@@ -7662,41 +7668,84 @@
                   ]
                 },
                 {
-                  "id": "component-dialog-KkUmZjBn",
+                  "id": "component-panel-4PTSuHoi",
                   "children": [
                     {
-                      "id": "component-dialog-7c3fWQgg",
+                      "id": "component-panel-2IPpIcBZ",
                       "children": [
                         {
-                          "id": "component-dialog-YjT3B6kJ"
+                          "id": "component-panel-tPfI3gZQ"
                         },
                         {
-                          "id": "component-dialog-ruQ0GCT6"
+                          "id": "component-panel-KWByvm7F"
                         }
                       ]
                     },
                     {
-                      "id": "component-dialog-0L3esXEi",
+                      "id": "component-panel-sCN7yai0",
                       "children": [
                         {
-                          "id": "component-dialog-6ZzKEgPL",
+                          "id": "component-panel-lKDfX83Z",
                           "children": [
                             {
-                              "id": "component-dialog-uhkDW6j5"
+                              "id": "component-panel-XOpVCSGs"
                             },
                             {
-                              "id": "component-dialog-tfkkusX3"
+                              "id": "component-panel-wANZOuvS"
                             }
                           ]
                         },
                         {
-                          "id": "component-dialog-rugVimbb",
+                          "id": "component-panel-ckamBjyC",
                           "children": [
                             {
-                              "id": "component-dialog-HvqKiDjV"
+                              "id": "component-panel-L4bLvhoP"
                             },
                             {
-                              "id": "component-dialog-c0lQkp2V"
+                              "id": "component-panel-W4rbneLQ"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "component-panel-KkUmZjBn",
+                  "children": [
+                    {
+                      "id": "component-panel-7c3fWQgg",
+                      "children": [
+                        {
+                          "id": "component-panel-YjT3B6kJ"
+                        },
+                        {
+                          "id": "component-panel-ruQ0GCT6"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-panel-0L3esXEi",
+                      "children": [
+                        {
+                          "id": "component-panel-6ZzKEgPL",
+                          "children": [
+                            {
+                              "id": "component-panel-uhkDW6j5"
+                            },
+                            {
+                              "id": "component-panel-tfkkusX3"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "component-panel-rugVimbb",
+                          "children": [
+                            {
+                              "id": "component-panel-HvqKiDjV"
+                            },
+                            {
+                              "id": "component-panel-c0lQkp2V"
                             }
                           ]
                         }
@@ -7707,27 +7756,27 @@
               ]
             },
             {
-              "id": "component-dialog-ANSXSKZF",
+              "id": "component-panel-ANSXSKZF",
               "children": [
                 {
-                  "id": "component-dialog-0g7dRdqO",
+                  "id": "component-panel-0g7dRdqO",
                   "children": [
                     {
-                      "id": "component-dialog-LLyDTZe0"
+                      "id": "component-panel-LLyDTZe0"
                     },
                     {
-                      "id": "component-dialog-yQrrsfVr"
+                      "id": "component-panel-yQrrsfVr"
                     }
                   ]
                 },
                 {
-                  "id": "component-dialog-Zd52I5RB",
+                  "id": "component-panel-Zd52I5RB",
                   "children": [
                     {
-                      "id": "component-dialog-SfGX2ph2"
+                      "id": "component-panel-SfGX2ph2"
                     },
                     {
-                      "id": "component-dialog-oYUMImJS"
+                      "id": "component-panel-oYUMImJS"
                     }
                   ]
                 }
@@ -14342,7 +14391,7 @@
         },
         "display": {
           "type": "option",
-          "value": "exclude"
+          "value": "show"
         }
       },
       "__editor": {
@@ -18796,7 +18845,7 @@
             "type": "exact",
             "value": {
               "unit": "%",
-              "value": 20
+              "value": 50
             }
           },
           "preset": {
@@ -18806,6 +18855,25 @@
         },
         "shadow": [
           {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.light"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.primary"
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 30
+              }
+            },
             "offsetX": {
               "type": "exact",
               "value": {
@@ -18817,39 +18885,16 @@
               "type": "exact",
               "value": {
                 "unit": "px",
-                "value": 1
+                "value": 0
               }
             },
             "blur": {
               "type": "theme.ordinal",
-              "value": "@blur.small"
+              "value": "@blur.xxsmall"
             },
             "spread": {
               "type": "theme.ordinal",
               "value": "@spread.tiny"
-            },
-            "color": {
-              "type": "exact",
-              "value": {
-                "hue": 0,
-                "saturation": 0,
-                "lightness": 0
-              }
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 20
-              }
-            },
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.light"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
             }
           },
           {
@@ -18873,30 +18918,36 @@
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 8
+                "value": 30
               }
             },
             "offsetX": {
               "type": "exact",
               "value": {
                 "unit": "px",
-                "value": 0
+                "value": 0.5
               }
             },
             "offsetY": {
               "type": "exact",
               "value": {
                 "unit": "px",
-                "value": 2
+                "value": 0.5
               }
             },
             "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xsmall"
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0.5
+              }
             },
             "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
             },
             "style": {
               "type": "option",
@@ -18924,30 +18975,36 @@
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 12
+                "value": 20
               }
             },
             "offsetX": {
               "type": "exact",
               "value": {
                 "unit": "px",
-                "value": 0
+                "value": -0.5
               }
             },
             "offsetY": {
               "type": "exact",
               "value": {
                 "unit": "px",
-                "value": -2
+                "value": -0.5
               }
             },
             "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.small"
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0.5
+              }
             },
             "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.xxsmall"
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
             },
             "style": {
               "type": "option",
@@ -54718,10 +54775,14 @@
       "states": {
         "active": {
           "border": {},
-          "background": [{}]
+          "background": [
+            {}
+          ]
         },
         "hover": {
-          "background": [{}]
+          "background": [
+            {}
+          ]
         },
         "disabled": {
           "border": {},
@@ -59519,7 +59580,7 @@
       "overrides": {
         "display": {
           "type": "option",
-          "value": "mock"
+          "value": "show"
         }
       },
       "origin": "user"
@@ -62569,7 +62630,7 @@
       "origin": "user",
       "__editor": {
         "repeat": {
-          "count": 3
+          "count": 5
         }
       }
     },
@@ -63687,8 +63748,8 @@
         }
       }
     },
-    "component-dialog-3GBq6hJL": {
-      "id": "component-dialog-3GBq6hJL",
+    "component-panel-3GBq6hJL": {
+      "id": "component-panel-3GBq6hJL",
       "type": "variant",
       "level": "module",
       "label": "Export Component",
@@ -63765,13 +63826,13 @@
           "type": "exact",
           "value": {
             "unit": "px",
-            "value": 600
+            "value": 550
           }
         }
       }
     },
-    "component-dialog-h3zITesL": {
-      "id": "component-dialog-h3zITesL",
+    "component-panel-h3zITesL": {
+      "id": "component-panel-h3zITesL",
       "type": "instance",
       "level": "part",
       "label": "Bar",
@@ -63783,8 +63844,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-Mt5jv86Z": {
-      "id": "component-dialog-Mt5jv86Z",
+    "component-panel-Mt5jv86Z": {
+      "id": "component-panel-Mt5jv86Z",
       "type": "instance",
       "level": "primitive",
       "label": "Title",
@@ -63801,8 +63862,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-wwvDjgGM": {
-      "id": "component-dialog-wwvDjgGM",
+    "component-panel-wwvDjgGM": {
+      "id": "component-panel-wwvDjgGM",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -63841,8 +63902,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-ANSXSKZF": {
-      "id": "component-dialog-ANSXSKZF",
+    "component-panel-ANSXSKZF": {
+      "id": "component-panel-ANSXSKZF",
       "type": "instance",
       "level": "part",
       "label": "Buttons",
@@ -63863,8 +63924,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-0g7dRdqO": {
-      "id": "component-dialog-0g7dRdqO",
+    "component-panel-0g7dRdqO": {
+      "id": "component-panel-0g7dRdqO",
       "ref": "exportCancel",
       "type": "instance",
       "level": "element",
@@ -63877,8 +63938,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-LLyDTZe0": {
-      "id": "component-dialog-LLyDTZe0",
+    "component-panel-LLyDTZe0": {
+      "id": "component-panel-LLyDTZe0",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -63890,8 +63951,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-yQrrsfVr": {
-      "id": "component-dialog-yQrrsfVr",
+    "component-panel-yQrrsfVr": {
+      "id": "component-panel-yQrrsfVr",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -63903,8 +63964,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-Zd52I5RB": {
-      "id": "component-dialog-Zd52I5RB",
+    "component-panel-Zd52I5RB": {
+      "id": "component-panel-Zd52I5RB",
       "ref": "exportConfirm",
       "type": "instance",
       "level": "element",
@@ -63917,8 +63978,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-SfGX2ph2": {
-      "id": "component-dialog-SfGX2ph2",
+    "component-panel-SfGX2ph2": {
+      "id": "component-panel-SfGX2ph2",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -63935,8 +63996,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-oYUMImJS": {
-      "id": "component-dialog-oYUMImJS",
+    "component-panel-oYUMImJS": {
+      "id": "component-panel-oYUMImJS",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -64153,8 +64214,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-9DpDq8KT": {
-      "id": "component-dialog-9DpDq8KT",
+    "component-panel-9DpDq8KT": {
+      "id": "component-panel-9DpDq8KT",
       "type": "instance",
       "level": "element",
       "label": "Radio",
@@ -64164,12 +64225,16 @@
         "align": {
           "type": "option",
           "value": "top-left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.cozy"
         }
       },
       "origin": "user"
     },
-    "component-dialog-S1QRLOFw": {
-      "id": "component-dialog-S1QRLOFw",
+    "component-panel-S1QRLOFw": {
+      "id": "component-panel-S1QRLOFw",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -64196,8 +64261,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-PwEsxnYz": {
-      "id": "component-dialog-PwEsxnYz",
+    "component-panel-PwEsxnYz": {
+      "id": "component-panel-PwEsxnYz",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -64247,8 +64312,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-wIfMpjAU": {
-      "id": "component-dialog-wIfMpjAU",
+    "component-panel-wIfMpjAU": {
+      "id": "component-panel-wIfMpjAU",
       "ref": "exportHiddenYes",
       "type": "instance",
       "level": "element",
@@ -64295,8 +64360,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-WG67k8nP": {
-      "id": "component-dialog-WG67k8nP",
+    "component-panel-WG67k8nP": {
+      "id": "component-panel-WG67k8nP",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -64321,8 +64386,8 @@
         }
       }
     },
-    "component-dialog-LXy0JdpD": {
-      "id": "component-dialog-LXy0JdpD",
+    "component-panel-LXy0JdpD": {
+      "id": "component-panel-LXy0JdpD",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -64353,8 +64418,8 @@
         }
       }
     },
-    "component-dialog-cM5q9shs": {
-      "id": "component-dialog-cM5q9shs",
+    "component-panel-cM5q9shs": {
+      "id": "component-panel-cM5q9shs",
       "ref": "exportHiddenNo",
       "type": "instance",
       "level": "element",
@@ -64401,8 +64466,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-BZN5sI4T": {
-      "id": "component-dialog-BZN5sI4T",
+    "component-panel-BZN5sI4T": {
+      "id": "component-panel-BZN5sI4T",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -64427,8 +64492,8 @@
         }
       }
     },
-    "component-dialog-yqnzd5dv": {
-      "id": "component-dialog-yqnzd5dv",
+    "component-panel-yqnzd5dv": {
+      "id": "component-panel-yqnzd5dv",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -64632,8 +64697,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-KkUmZjBn": {
-      "id": "component-dialog-KkUmZjBn",
+    "component-panel-KkUmZjBn": {
+      "id": "component-panel-KkUmZjBn",
       "type": "instance",
       "level": "element",
       "label": "Radio",
@@ -64643,12 +64708,16 @@
         "align": {
           "type": "option",
           "value": "top-left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.cozy"
         }
       },
       "origin": "user"
     },
-    "component-dialog-7c3fWQgg": {
-      "id": "component-dialog-7c3fWQgg",
+    "component-panel-7c3fWQgg": {
+      "id": "component-panel-7c3fWQgg",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -64705,8 +64774,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-YjT3B6kJ": {
-      "id": "component-dialog-YjT3B6kJ",
+    "component-panel-YjT3B6kJ": {
+      "id": "component-panel-YjT3B6kJ",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -64733,8 +64802,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-ruQ0GCT6": {
-      "id": "component-dialog-ruQ0GCT6",
+    "component-panel-ruQ0GCT6": {
+      "id": "component-panel-ruQ0GCT6",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -64761,8 +64830,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-0L3esXEi": {
-      "id": "component-dialog-0L3esXEi",
+    "component-panel-0L3esXEi": {
+      "id": "component-panel-0L3esXEi",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -64812,8 +64881,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-6ZzKEgPL": {
-      "id": "component-dialog-6ZzKEgPL",
+    "component-panel-6ZzKEgPL": {
+      "id": "component-panel-6ZzKEgPL",
       "ref": "exportAllIconsYes",
       "type": "instance",
       "level": "element",
@@ -64860,8 +64929,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-uhkDW6j5": {
-      "id": "component-dialog-uhkDW6j5",
+    "component-panel-uhkDW6j5": {
+      "id": "component-panel-uhkDW6j5",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -64886,8 +64955,8 @@
         }
       }
     },
-    "component-dialog-tfkkusX3": {
-      "id": "component-dialog-tfkkusX3",
+    "component-panel-tfkkusX3": {
+      "id": "component-panel-tfkkusX3",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -64918,8 +64987,8 @@
         }
       }
     },
-    "component-dialog-rugVimbb": {
-      "id": "component-dialog-rugVimbb",
+    "component-panel-rugVimbb": {
+      "id": "component-panel-rugVimbb",
       "ref": "exportAllIconsNo",
       "type": "instance",
       "level": "element",
@@ -64966,8 +65035,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-HvqKiDjV": {
-      "id": "component-dialog-HvqKiDjV",
+    "component-panel-HvqKiDjV": {
+      "id": "component-panel-HvqKiDjV",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -64992,8 +65061,8 @@
         }
       }
     },
-    "component-dialog-c0lQkp2V": {
-      "id": "component-dialog-c0lQkp2V",
+    "component-panel-c0lQkp2V": {
+      "id": "component-panel-c0lQkp2V",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65024,8 +65093,8 @@
         }
       }
     },
-    "component-dialog-4PTSuHoi": {
-      "id": "component-dialog-4PTSuHoi",
+    "component-panel-4PTSuHoi": {
+      "id": "component-panel-4PTSuHoi",
       "type": "instance",
       "level": "element",
       "label": "Radio",
@@ -65035,12 +65104,16 @@
         "align": {
           "type": "option",
           "value": "top-left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.cozy"
         }
       },
       "origin": "user"
     },
-    "component-dialog-2IPpIcBZ": {
-      "id": "component-dialog-2IPpIcBZ",
+    "component-panel-2IPpIcBZ": {
+      "id": "component-panel-2IPpIcBZ",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -65097,8 +65170,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-tPfI3gZQ": {
-      "id": "component-dialog-tPfI3gZQ",
+    "component-panel-tPfI3gZQ": {
+      "id": "component-panel-tPfI3gZQ",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65125,8 +65198,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-KWByvm7F": {
-      "id": "component-dialog-KWByvm7F",
+    "component-panel-KWByvm7F": {
+      "id": "component-panel-KWByvm7F",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -65153,8 +65226,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-sCN7yai0": {
-      "id": "component-dialog-sCN7yai0",
+    "component-panel-sCN7yai0": {
+      "id": "component-panel-sCN7yai0",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -65204,8 +65277,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-lKDfX83Z": {
-      "id": "component-dialog-lKDfX83Z",
+    "component-panel-lKDfX83Z": {
+      "id": "component-panel-lKDfX83Z",
       "ref": "exportFontLinksYes",
       "type": "instance",
       "level": "element",
@@ -65252,8 +65325,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-XOpVCSGs": {
-      "id": "component-dialog-XOpVCSGs",
+    "component-panel-XOpVCSGs": {
+      "id": "component-panel-XOpVCSGs",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -65278,8 +65351,8 @@
         }
       }
     },
-    "component-dialog-wANZOuvS": {
-      "id": "component-dialog-wANZOuvS",
+    "component-panel-wANZOuvS": {
+      "id": "component-panel-wANZOuvS",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65310,8 +65383,8 @@
         }
       }
     },
-    "component-dialog-ckamBjyC": {
-      "id": "component-dialog-ckamBjyC",
+    "component-panel-ckamBjyC": {
+      "id": "component-panel-ckamBjyC",
       "ref": "exportFontLinksNo",
       "type": "instance",
       "level": "element",
@@ -65358,8 +65431,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-L4bLvhoP": {
-      "id": "component-dialog-L4bLvhoP",
+    "component-panel-L4bLvhoP": {
+      "id": "component-panel-L4bLvhoP",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -65384,8 +65457,8 @@
         }
       }
     },
-    "component-dialog-W4rbneLQ": {
-      "id": "component-dialog-W4rbneLQ",
+    "component-panel-W4rbneLQ": {
+      "id": "component-panel-W4rbneLQ",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65416,8 +65489,8 @@
         }
       }
     },
-    "component-dialog-UvbzIVHJ": {
-      "id": "component-dialog-UvbzIVHJ",
+    "component-panel-UvbzIVHJ": {
+      "id": "component-panel-UvbzIVHJ",
       "type": "instance",
       "level": "element",
       "label": "Radio",
@@ -65427,12 +65500,16 @@
         "align": {
           "type": "option",
           "value": "top-left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.cozy"
         }
       },
       "origin": "user"
     },
-    "component-dialog-Gsec7Cyo": {
-      "id": "component-dialog-Gsec7Cyo",
+    "component-panel-Gsec7Cyo": {
+      "id": "component-panel-Gsec7Cyo",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -65489,8 +65566,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-f2oHl8l5": {
-      "id": "component-dialog-f2oHl8l5",
+    "component-panel-f2oHl8l5": {
+      "id": "component-panel-f2oHl8l5",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65517,8 +65594,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-zscqDLg1": {
-      "id": "component-dialog-zscqDLg1",
+    "component-panel-zscqDLg1": {
+      "id": "component-panel-zscqDLg1",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -65545,8 +65622,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-dLnCtI4z": {
-      "id": "component-dialog-dLnCtI4z",
+    "component-panel-dLnCtI4z": {
+      "id": "component-panel-dLnCtI4z",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -65596,8 +65673,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-e48Xe2Fa": {
-      "id": "component-dialog-e48Xe2Fa",
+    "component-panel-e48Xe2Fa": {
+      "id": "component-panel-e48Xe2Fa",
       "ref": "exportAllFontsYes",
       "type": "instance",
       "level": "element",
@@ -65644,8 +65721,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-AAAIIBZA": {
-      "id": "component-dialog-AAAIIBZA",
+    "component-panel-AAAIIBZA": {
+      "id": "component-panel-AAAIIBZA",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -65670,8 +65747,8 @@
         }
       }
     },
-    "component-dialog-UyxvpHBO": {
-      "id": "component-dialog-UyxvpHBO",
+    "component-panel-UyxvpHBO": {
+      "id": "component-panel-UyxvpHBO",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65702,8 +65779,8 @@
         }
       }
     },
-    "component-dialog-yVKBdxqz": {
-      "id": "component-dialog-yVKBdxqz",
+    "component-panel-yVKBdxqz": {
+      "id": "component-panel-yVKBdxqz",
       "ref": "exportAllFontsNo",
       "type": "instance",
       "level": "element",
@@ -65750,8 +65827,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-ELZAfUu6": {
-      "id": "component-dialog-ELZAfUu6",
+    "component-panel-ELZAfUu6": {
+      "id": "component-panel-ELZAfUu6",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -65776,8 +65853,8 @@
         }
       }
     },
-    "component-dialog-5YCUxOJ3": {
-      "id": "component-dialog-5YCUxOJ3",
+    "component-panel-5YCUxOJ3": {
+      "id": "component-panel-5YCUxOJ3",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65808,8 +65885,8 @@
         }
       }
     },
-    "component-dialog-LDoNfyNl": {
-      "id": "component-dialog-LDoNfyNl",
+    "component-panel-LDoNfyNl": {
+      "id": "component-panel-LDoNfyNl",
       "type": "instance",
       "level": "element",
       "label": "Radio",
@@ -65819,12 +65896,16 @@
         "align": {
           "type": "option",
           "value": "top-left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.cozy"
         }
       },
       "origin": "user"
     },
-    "component-dialog-EbAPjUa6": {
-      "id": "component-dialog-EbAPjUa6",
+    "component-panel-EbAPjUa6": {
+      "id": "component-panel-EbAPjUa6",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -65881,8 +65962,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-0GGGLiz6": {
-      "id": "component-dialog-0GGGLiz6",
+    "component-panel-0GGGLiz6": {
+      "id": "component-panel-0GGGLiz6",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -65909,8 +65990,8 @@
         "initialOverrides": {}
       }
     },
-    "component-dialog-bZGjgsvA": {
-      "id": "component-dialog-bZGjgsvA",
+    "component-panel-bZGjgsvA": {
+      "id": "component-panel-bZGjgsvA",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -65937,8 +66018,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-TyqHmA9t": {
-      "id": "component-dialog-TyqHmA9t",
+    "component-panel-TyqHmA9t": {
+      "id": "component-panel-TyqHmA9t",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -65988,8 +66069,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-Ll8MAURr": {
-      "id": "component-dialog-Ll8MAURr",
+    "component-panel-Ll8MAURr": {
+      "id": "component-panel-Ll8MAURr",
       "ref": "exportAllThemesYes",
       "type": "instance",
       "level": "element",
@@ -66036,8 +66117,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-6zRYcjko": {
-      "id": "component-dialog-6zRYcjko",
+    "component-panel-6zRYcjko": {
+      "id": "component-panel-6zRYcjko",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -66062,8 +66143,8 @@
         }
       }
     },
-    "component-dialog-vwVVvBc0": {
-      "id": "component-dialog-vwVVvBc0",
+    "component-panel-vwVVvBc0": {
+      "id": "component-panel-vwVVvBc0",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -66094,8 +66175,8 @@
         }
       }
     },
-    "component-dialog-dHhbJMnp": {
-      "id": "component-dialog-dHhbJMnp",
+    "component-panel-dHhbJMnp": {
+      "id": "component-panel-dHhbJMnp",
       "ref": "exportAllThemesNo",
       "type": "instance",
       "level": "element",
@@ -66142,8 +66223,8 @@
       },
       "origin": "user"
     },
-    "component-dialog-dE3r3x5s": {
-      "id": "component-dialog-dE3r3x5s",
+    "component-panel-dE3r3x5s": {
+      "id": "component-panel-dE3r3x5s",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -66168,8 +66249,8 @@
         }
       }
     },
-    "component-dialog-wFGm6tUv": {
-      "id": "component-dialog-wFGm6tUv",
+    "component-panel-wFGm6tUv": {
+      "id": "component-panel-wFGm6tUv",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -66380,8 +66461,8 @@
         }
       }
     },
-    "component-dialog-v5j9ARUH": {
-      "id": "component-dialog-v5j9ARUH",
+    "component-panel-v5j9ARUH": {
+      "id": "component-panel-v5j9ARUH",
       "type": "instance",
       "level": "element",
       "label": "Form Control",
@@ -66390,8 +66471,8 @@
       "overrides": {},
       "origin": "user"
     },
-    "component-dialog-nrBJ9rh4": {
-      "id": "component-dialog-nrBJ9rh4",
+    "component-panel-nrBJ9rh4": {
+      "id": "component-panel-nrBJ9rh4",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
