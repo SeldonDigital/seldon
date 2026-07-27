@@ -10,7 +10,6 @@ import {
   isAuthoredBoard,
   isComponentBoard,
 } from "@seldon/core/workspace/model/components"
-
 import { ISOLATION_EXCLUDED_CATALOG_IDS } from "../isolation/excluded-boards"
 import { getIsolationUsage } from "../isolation/get-isolation-usage"
 import {
@@ -68,8 +67,9 @@ export function getIsolationCanvasGroups(
   const anchoredVariantRoot =
     isolatedVariantRootId ?? getBoardVariantRootIds(isolatedBoard)[0] ?? null
   const variantName =
-    (anchoredVariantRoot ? workspace.nodes[anchoredVariantRoot]?.label : null) ??
-    isolatedBoard.label
+    (anchoredVariantRoot
+      ? workspace.nodes[anchoredVariantRoot]?.label
+      : null) ?? isolatedBoard.label
 
   const items: IsolationCanvasItem[] = [
     {
