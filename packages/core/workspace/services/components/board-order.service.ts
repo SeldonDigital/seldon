@@ -4,29 +4,44 @@ import {
   ComponentLevel,
   ORDERED_COMPONENT_LEVELS,
 } from "../../../components/constants"
+import { boardKey } from "../../helpers/components/board-ref-resolver"
 import {
   getBoardOrder,
   setBoardOrder,
 } from "../../helpers/components/board-sort-order"
+import { getBoardUsageCounts } from "../../helpers/components/get-board-usage-counts"
 import { isComponentBoard } from "../../model/components"
 import { Board, Workspace } from "../../types"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 
-/** Orders the boards in `workspace.boards` by component level then label. */
+/**
+ * Orders the boards in `workspace.boards` by component level, then within a level
+ * by how many other same-level boards each one composes (most first), then label.
+ */
 export class BoardOrderService {
-  /** Sorts boards by component level then label and rewrites their stored order. */
+  /** Sorts boards by level, then out-degree, then label, and stores the order. */
   public realignBoardOrder(workspace: Workspace): Workspace {
     return mutateWorkspace(workspace, (draft) => {
+      const usageCounts = getBoardUsageCounts(
+        draft,
+        Object.values(draft.boards),
+      )
+
       const boardEntries = Object.entries(draft.boards) as [
         ComponentId,
         Board,
       ][]
 
       boardEntries.sort(([aId, aBoard], [bId, bBoard]) =>
-        compareBoardOrder(aId, aBoard, bId, bBoard),
+        compareBoardOrder(aId, aBoard, bId, bBoard, usageCounts),
       )
 
-      boardEntries.forEach(([, board], index) => setBoardOrder(board, index))
+      // Only rewrite a board whose index actually changed, so realigning an
+      // already-sorted workspace makes no draft mutation and Immer returns the
+      // same reference. The on-load repair relies on this to stay idempotent.
+      boardEntries.forEach(([, board], index) => {
+        if (getBoardOrder(board) !== index) setBoardOrder(board, index)
+      })
     })
   }
 
@@ -48,14 +63,16 @@ export class BoardOrderService {
 export const boardOrderService = new BoardOrderService()
 
 /**
- * Orders boards by component level, then component boards alphabetically by label.
- * Boards without a registered component schema keep their stored order.
+ * Orders boards by component level, then within a level by out-degree descending
+ * (a board that composes more same-level boards sorts first), then alphabetically
+ * by label. Boards without a registered component schema keep their stored order.
  */
 function compareBoardOrder(
   aId: ComponentId,
   aBoard: Board,
   bId: ComponentId,
   bBoard: Board,
+  usageCounts: Map<string, number>,
 ): number {
   const aSchema = findComponentSchema(aId)
   const bSchema = findComponentSchema(bId)
@@ -67,6 +84,11 @@ function compareBoardOrder(
       return aLevelIndex - bLevelIndex
     }
     if (isComponentBoard(aBoard) && isComponentBoard(bBoard)) {
+      const aUses = usageCounts.get(boardKey(aBoard) ?? aId) ?? 0
+      const bUses = usageCounts.get(boardKey(bBoard) ?? bId) ?? 0
+      if (aUses !== bUses) {
+        return bUses - aUses
+      }
       return aBoard.label.localeCompare(bBoard.label)
     }
   }

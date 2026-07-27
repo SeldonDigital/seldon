@@ -15,6 +15,7 @@ import { migrateV13BooleanClipWrapChildren } from "./steps/migrate-00013-boolean
 import { migrateV14EnumBooleanOption } from "./steps/migrate-00014-enum-boolean-option"
 import { migrateV15DisplayPlaceholderToStub } from "./steps/migrate-00015-display-placeholder-to-stub"
 import { migrateV16LayeredOverrideLength } from "./steps/migrate-00016-layered-override-length"
+import { repairBoardOrder } from "./steps/repair-board-order"
 
 /** Current workspace file version after migration steps on load. */
 export const CURRENT_WORKSPACE_VERSION = 16
@@ -56,11 +57,16 @@ if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
  * open or select the wrong board. Each repair guards itself and only rewrites
  * the references it matches, so it is safe to re-run and applies each rename
  * independently rather than all-or-nothing.
+ *
+ * Board order is derived rather than authored, so `repairBoardOrder` also runs
+ * here to re-sort a loaded file with the current ordering logic instead of the
+ * order stored when it was saved.
  */
 const REPAIR_STEPS: MigrationStep[] = [
   migrateV3ThemeRenames,
   migrateV6IconSetRenames,
   migrateV12DialogToPanels,
+  repairBoardOrder,
 ]
 
 /**

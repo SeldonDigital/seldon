@@ -39,6 +39,11 @@ export function nodeToTemplate(node: JSXNode, indent: number): string {
     let out = `\n${pad}<Frame v-bind="${node.propVarName}"${vIf(node.condition)}>`
     if (node.children) {
       for (const child of node.children) out += nodeToTemplate(child, next)
+    } else if (node.ref) {
+      // An empty ref'd frame is a content injection point. Expose it as a named
+      // slot keyed by the ref so callers can fill it, matching the React target
+      // where the same ref keys the `seldonRefs` children injection.
+      out += `\n${" ".repeat(next)}<slot name="${node.ref}" />`
     }
     out += `\n${pad}</Frame>`
     return out

@@ -21,6 +21,13 @@ export interface PiTurnState {
   ineffective: string[]
   /** Actions the reducer rejected this turn, with the reducer's reason. */
   rejected: RejectedActionResult[]
+  /**
+   * Isolation closure, present only when Isolation Mode is on. `commit` rejects
+   * an action whose anchor node/board falls outside these sets, and grows them
+   * as inserts mint new ids in scope. Undefined means no isolation gate.
+   */
+  allowedNodeIds?: Set<string>
+  allowedBoardKeys?: Set<string>
 }
 
 /** Creates a fresh turn state seeded from the request workspace. */

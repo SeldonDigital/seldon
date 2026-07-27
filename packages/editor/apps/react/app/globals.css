@@ -1,0 +1,257 @@
+@import "../seldon/styles/seldon.css";
+@import "../seldon/styles.css";
+
+/*
+ * Self-hosted editor chrome fonts, registered under their literal family names so
+ * the chrome renders them without any network request to a font host. local()
+ * first lets an installed copy win; otherwise the vendored woff2 in ./fonts is
+ * used. The woff2 files live in ./fonts/plex and ./fonts/inconsolata.
+ */
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("IBM Plex Sans"),
+    url("./fonts/plex/IBMPlexSans-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("IBM Plex Sans Italic"),
+    url("./fonts/plex/IBMPlexSans-Italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local("IBM Plex Sans Medium"),
+    url("./fonts/plex/IBMPlexSans-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local("IBM Plex Sans SemiBold"),
+    url("./fonts/plex/IBMPlexSans-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("IBM Plex Sans"),
+    url("./fonts/plex/IBMPlexSans-Bold.woff2") format("woff2");
+}
+
+/* Self-hosted IBM Plex Serif, the secondary chrome family. */
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif"),
+    url("./fonts/plex/IBMPlexSerif-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif Medium"),
+    url("./fonts/plex/IBMPlexSerif-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif SemiBold"),
+    url("./fonts/plex/IBMPlexSerif-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Serif";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("IBM Plex Serif"),
+    url("./fonts/plex/IBMPlexSerif-Bold.woff2") format("woff2");
+}
+
+/* Self-hosted Inconsolata, the monospace chrome family used by code blocks. */
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-200.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-300.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-800.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    url("./fonts/inconsolata/inconsolata-900.woff2") format("woff2");
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+html,
+:host {
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+}
+
+:root {
+  --separator-border: var(--sdn-swatch-black) !important;
+  --hairline: 1px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.split-view-view > * {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+*[contenteditable] {
+  outline: none;
+}
+.scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
+}
+
+/* For devices with a 2x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi) {
+  :root {
+    --hairline: 0.5px;
+  }
+}
+
+/* For devices with a 3x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 3),
+  only screen and (min-resolution: 288dpi) {
+  :root {
+    --hairline: 0.33px;
+  }
+}
+
+/* For devices with a 4x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 4),
+  only screen and (min-resolution: 384dpi) {
+  :root {
+    --hairline: 0.25px;
+  }
+}
+
+/* Override for react-pan-zoom-pinch to allow images to be clickable */
+/* hhttps://github.com/BetterTyped/react-zoom-pan-pinch/issues/135 */
+body .react-transform-wrapper img {
+  pointer-events: auto;
+}
+
+/*
+ * Canvas nodes read as selectable objects, not live controls. Force the cursor
+ * to inherit the canvas cursor (arrow normally, grab while panning) so buttons,
+ * links, and inputs never show the pointer hand or a text I-beam. The cursor
+ * returns to text only while an input is focused, which the canvas allows only
+ * when the user enters edit on a selected node.
+ */
+#root-tree [data-canvas-node-id] {
+  cursor: inherit;
+}
+#root-tree input:focus,
+#root-tree textarea:focus,
+#root-tree [contenteditable]:not([contenteditable="false"]):focus {
+  cursor: text;
+}

@@ -217,14 +217,18 @@ export function nodeSubtreeSection(
 export function workspaceShallowSection(
   workspace: Workspace,
   maxDepth: number = 3,
+  allowedBoardKeys?: Set<string>,
 ): { lines: string[]; treeCatalogIds: Set<string> } {
   const lines: string[] = [
     "",
-    `Workspace boards (each walked ${maxDepth} levels deep; call widen_scope, describe_node, or get_active_board to go deeper):`,
+    allowedBoardKeys
+      ? `Boards in scope (Isolation Mode; each walked ${maxDepth} levels deep; call widen_scope, describe_node, or get_active_board to go deeper):`
+      : `Workspace boards (each walked ${maxDepth} levels deep; call widen_scope, describe_node, or get_active_board to go deeper):`,
   ]
   const visited: EntryNode[] = []
   for (const [boardKey, board] of Object.entries(workspace.boards)) {
     if (!isEditableComponentBoard(board)) continue
+    if (allowedBoardKeys && !allowedBoardKeys.has(boardKey)) continue
     lines.push(
       `Board ${boardKey} -> ${boardCatalogLabel(board)} -> "${board.label}":`,
     )

@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "noErrorTruncation": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "types": ["vite/client"],
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@seldon/editor/*": ["../../shared/*"],
+      "@seldon/components/*": ["./seldon/*"],
+      "@seldon/core/*": ["../../../core/*"],
+      "@seldon/factory/*": ["../../../factory/*"],
+      "@seldon/ai": ["../../../ai/index.ts"],
+      "@seldon/ai/*": ["../../../ai/*"]
+    },
+    "target": "ES2017"
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.vue"],
+  "exclude": ["node_modules", "dist"]
+}
