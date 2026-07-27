@@ -1,3 +1,8 @@
+import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
+import {
+  isAuthoredBoard,
+  isComponentBoard,
+} from "@seldon/core/workspace/model/components"
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
 import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
@@ -103,10 +108,36 @@ function getActionAnchor(action: WorkspaceAction): ActionAnchor {
   }
 }
 
+/** The workspace board map key whose variant trees list this node id, if any. */
+function boardKeyOfNode(
+  workspace: Workspace,
+  nodeId: string,
+): string | undefined {
+  for (const [key, board] of Object.entries(workspace.boards)) {
+    if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
+    let found = false
+    walkBoardTreeRefs(board.variants, (ref) => {
+      if (ref.id !== nodeId) return
+      found = true
+      return true
+    })
+    if (found) return key
+  }
+  return undefined
+}
+
 /**
  * The reason an action is out of the isolation closure, or null when it is in
- * scope or isolation is off. A node or board anchor outside the allowed sets is
- * rejected; additive and resource actions (null anchor) always pass.
+ * scope or isolation is off. Additive and resource actions (null anchor) always
+ * pass.
+ *
+ * A node anchor is judged by its owning board, not by exact id membership: the
+ * closure's `allowedNodeIds` only covers the specific variant subtrees the
+ * isolated variant instantiates, but a "scope all" edit legitimately targets a
+ * dependency's source variant root (e.g. a component's default variant), which
+ * lives on an in-scope board even though that exact id was never instantiated.
+ * So a node passes when its board is in scope, or when it is a fresh id minted
+ * in scope this turn (tracked in `allowedNodeIds`).
  */
 function isolationRejection(
   state: PiTurnState,
@@ -118,7 +149,9 @@ function isolationRejection(
   if (!anchor) return null
   if (anchor.kind === "node") {
     if (!anchor.id || allowedNodeIds.has(anchor.id)) return null
-    return `Isolation Mode: node ${anchor.id} is outside the isolated board and the components its variant uses, so "${action.type}" is rejected. Target a node inside the isolated closure, or tell the user this needs exiting Isolation Mode.`
+    const owner = boardKeyOfNode(state.workspace, anchor.id)
+    if (owner && allowedBoardKeys.has(owner)) return null
+    return `Isolation Mode: node ${anchor.id} is on a board outside the isolated closure, so "${action.type}" is rejected. Target a node on the isolated board or one of the dependency components in scope, or tell the user this needs exiting Isolation Mode.`
   }
   if (!anchor.key || allowedBoardKeys.has(anchor.key)) return null
   return `Isolation Mode: board ${anchor.key} is outside the isolated closure, so "${action.type}" is rejected. Target the isolated board or a dependency component in scope, or tell the user this needs exiting Isolation Mode.`
