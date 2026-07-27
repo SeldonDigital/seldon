@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 
 import { getListStyles } from "./get-list-styles"
+
+import type { Properties } from "@seldon/core"
 
 describe("getListStyles", () => {
   it("emits list style type and position from option values", () => {
@@ -10,6 +12,7 @@ describe("getListStyles", () => {
       listStyleType: { type: ValueType.OPTION, value: "disc" },
       listStylePosition: { type: ValueType.OPTION, value: "inside" },
     } as unknown as Properties
+
     expect(getListStyles({ properties })).toEqual({
       listStyleType: "disc",
       listStylePosition: "inside",
@@ -20,12 +23,11 @@ describe("getListStyles", () => {
     const properties = {
       listStyleType: { type: ValueType.EMPTY, value: null },
     } as unknown as Properties
+
     expect(getListStyles({ properties })).toEqual({})
   })
 
   it("returns no styles when unset", () => {
-    expect(getListStyles({ properties: {} as unknown as Properties })).toEqual(
-      {},
-    )
+    expect(getListStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 })

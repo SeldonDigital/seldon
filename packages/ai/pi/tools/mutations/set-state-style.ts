@@ -10,12 +10,12 @@ import { getSourceNodeId } from "@seldon/core/workspace/helpers/components/get-s
 import { resolveNodeTarget } from "../resolve-target"
 import { commit, textResult } from "./commit"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-import type { CustomStateChoice } from "@seldon/core/rules/config/design-semantics.resolve"
-import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ResolvedContext } from "../../editor-context"
 import type { TargetSpec } from "../resolve-target"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { CustomStateChoice } from "@seldon/core/rules/config/design-semantics.resolve"
+import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** The workspace custom states as name choices, or an empty list. */
 function customStateChoices(workspace: Workspace): CustomStateChoice[] {

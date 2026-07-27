@@ -1,11 +1,8 @@
 import { BackgroundPosition } from "@seldon/core"
 
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
 
-export const backgroundPositionMap: Record<
-  BackgroundPosition,
-  CSSObject["backgroundPosition"]
-> = {
+export const backgroundPositionMap: Record<BackgroundPosition, CSSObject["backgroundPosition"]> = {
   [BackgroundPosition.DEFAULT]: "auto",
   [BackgroundPosition.TOP_LEFT]: "top left",
   [BackgroundPosition.TOP_CENTER]: "top center",

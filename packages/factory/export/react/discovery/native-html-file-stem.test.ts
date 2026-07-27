@@ -9,15 +9,13 @@ describe("getNativeFileStemsForUsedElements", () => {
     const stems = getNativeFileStemsForUsedElements(
       new Set([HtmlElement.DIV, HtmlElement.P, HtmlElement.A]),
     )
-    expect(stems).toEqual(
-      new Set(["HTML.Div", "HTML.Paragraph", "HTML.Anchor"]),
-    )
+
+    expect(stems).toEqual(new Set(["HTML.Div", "HTML.Paragraph", "HTML.Anchor"]))
   })
 
   it("deduplicates repeated stems", () => {
-    const stems = getNativeFileStemsForUsedElements(
-      new Set([HtmlElement.H1, HtmlElement.H1]),
-    )
+    const stems = getNativeFileStemsForUsedElements(new Set([HtmlElement.H1, HtmlElement.H1]))
+
     expect(stems).toEqual(new Set(["HTML.Heading1"]))
   })
 
@@ -25,6 +23,7 @@ describe("getNativeFileStemsForUsedElements", () => {
     const stems = getNativeFileStemsForUsedElements(
       new Set([HtmlElement.DIV, HtmlElement.MENU, HtmlElement.DL]),
     )
+
     expect(stems).toEqual(new Set(["HTML.Div"]))
   })
 

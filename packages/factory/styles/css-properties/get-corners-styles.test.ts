@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest"
 
-import { Corner, Properties, Unit, ValueType } from "@seldon/core"
+import { Corner, Unit, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
 
 import { getCornersStyles } from "./get-corners-styles"
+
+import type { Properties } from "@seldon/core"
 
 const px = (value: number) => ({
   type: ValueType.EXACT,
@@ -20,6 +22,7 @@ describe("getCornersStyles", () => {
         bottomRight: px(4),
       },
     } as unknown as Properties
+
     expect(getCornersStyles({ properties, theme: defaultTheme })).toEqual({
       borderTopLeftRadius: "1px",
       borderTopRightRadius: "2px",
@@ -32,6 +35,7 @@ describe("getCornersStyles", () => {
     const properties = {
       corners: { topLeft: { type: ValueType.OPTION, value: Corner.ROUNDED } },
     } as unknown as Properties
+
     expect(getCornersStyles({ properties, theme: defaultTheme })).toEqual({
       borderTopLeftRadius: "99999px",
     })

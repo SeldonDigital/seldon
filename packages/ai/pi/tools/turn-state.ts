@@ -1,6 +1,6 @@
-import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ActionRepair } from "../../repair/normalize-actions"
 import type { RejectedActionResult } from "../../types"
+import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 /**
  * Mutable state shared by a turn's tools. Seldon never lets this package write a

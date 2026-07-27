@@ -1,7 +1,7 @@
-import { CSSProperties } from "react"
-
-import { ComponentToExport, DataBinding, JSONTreeNode } from "../../../types"
 import { getConditionalPropPaths } from "./get-conditional-prop-paths"
+
+import type { ComponentToExport, DataBinding, JSONTreeNode } from "../../../types"
+import type { CSSProperties } from "react"
 
 type DefaultPropsValue = Record<
   string,
@@ -38,6 +38,7 @@ export function generateDefaultProps(
 
   function traverse(node: JSONTreeNode) {
     const propName = propNames.get(node.dataBinding.path)
+
     if (!propName) {
       throw new Error(
         `Prop path "${node.dataBinding.path}" not found in prop names for component "${component.name}"`,
@@ -57,21 +58,26 @@ export function generateDefaultProps(
           nodeIdToClass,
           node.classNames,
         )
+
         if (node.ref) {
           entry["data-seldon-ref"] = node.ref
         }
+
         defaultProps[propName] = entry
       } else {
         const className = getClassName(node, nodeIdToClass)
         const entry: DefaultPropsValue = {}
+
         if (className) {
           entry.className = className
         }
+
         // A child instance has no literal JSX attribute site; its ref rides the
         // sdn default props through the `{...props}` spread onto the child root.
         if (node.ref) {
           entry["data-seldon-ref"] = node.ref
         }
+
         if (Object.keys(entry).length > 0) {
           defaultProps[propName] = entry
         }
@@ -83,9 +89,11 @@ export function generateDefaultProps(
         nodeIdToClass,
         node.classNames,
       )
+
       if (node.ref) {
         entry["data-seldon-ref"] = node.ref
       }
+
       defaultProps[propName] = entry
     }
 
@@ -108,9 +116,11 @@ function getClassName(
   if (node.classNames && node.classNames.length > 0) {
     return node.classNames.filter(Boolean).join(" ")
   }
+
   if (node.nodeId && nodeIdToClass && nodeIdToClass[node.nodeId]) {
     return nodeIdToClass[node.nodeId]
   }
+
   return undefined
 }
 
@@ -123,8 +133,8 @@ function flattenProps(
   const flattened: DefaultPropsValue = {}
 
   for (const [key, propValue] of Object.entries(props)) {
-    const value =
-      propValue.value !== undefined ? propValue.value : propValue.defaultValue
+    const value = propValue.value !== undefined ? propValue.value : propValue.defaultValue
+
     flattened[key] = value
   }
 

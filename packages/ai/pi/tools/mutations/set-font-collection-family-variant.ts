@@ -3,10 +3,10 @@ import { Type } from "typebox"
 
 import { commit, textResult } from "./commit"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** Turns one weight (variant) of a font family on or off. */
 export function createSetFontCollectionFamilyVariantTool(

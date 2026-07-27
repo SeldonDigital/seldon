@@ -8,9 +8,9 @@ import {
 
 import { commit, textResult } from "./commit"
 
+import type { PiTurnState } from "../turn-state"
 import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
-import type { PiTurnState } from "../turn-state"
 
 /**
  * Intent verb: set the whole theme's spacing density. A holistic request like

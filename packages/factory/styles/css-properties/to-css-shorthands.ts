@@ -1,4 +1,4 @@
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
 
 /**
  * Group matching values into a single shorthand
@@ -24,6 +24,7 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
     if (!styles.padding) {
       styles.padding = styles.paddingTop
     }
+
     delete styles.paddingTop
     delete styles.paddingInlineEnd
     delete styles.paddingBottom
@@ -42,19 +43,19 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
     if (!styles.margin) {
       styles.margin = styles.marginTop
     }
+
     delete styles.marginTop
     delete styles.marginInlineEnd
     delete styles.marginBottom
     delete styles.marginInlineStart
   }
 
-  if (
-    areAllValuesEqual([styles.top, styles.right, styles.bottom, styles.left])
-  ) {
+  if (areAllValuesEqual([styles.top, styles.right, styles.bottom, styles.left])) {
     // Only create shorthand if inset doesn't already exist
     if (!styles.inset) {
       styles.inset = styles.top
     }
+
     delete styles.top
     delete styles.right
     delete styles.bottom
@@ -73,6 +74,7 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
     if (!styles.borderWidth) {
       styles.borderWidth = styles.borderTopWidth
     }
+
     delete styles.borderTopWidth
     delete styles.borderRightWidth
     delete styles.borderBottomWidth
@@ -91,6 +93,7 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
     if (!styles.borderColor) {
       styles.borderColor = styles.borderTopColor
     }
+
     delete styles.borderTopColor
     delete styles.borderRightColor
     delete styles.borderBottomColor
@@ -109,6 +112,7 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
     if (!styles.borderStyle) {
       styles.borderStyle = styles.borderTopStyle
     }
+
     delete styles.borderTopStyle
     delete styles.borderRightStyle
     delete styles.borderBottomStyle
@@ -127,6 +131,7 @@ export function toCSSShorthands(base: CSSObject): CSSObject {
     if (!styles.borderRadius) {
       styles.borderRadius = styles.borderTopLeftRadius
     }
+
     delete styles.borderTopLeftRadius
     delete styles.borderTopRightRadius
     delete styles.borderBottomLeftRadius

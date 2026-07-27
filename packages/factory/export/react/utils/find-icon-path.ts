@@ -1,9 +1,9 @@
 import fs from "node:fs"
 import path from "node:path"
 
-import { IconId } from "@seldon/core/icon-sets"
-
 import { getIconComponentName } from "../discovery/get-icon-component-name"
+
+import type { IconId } from "@seldon/core/icon-sets"
 
 export type ResolvedIconExport = {
   /** Exported component name, taken from the matched catalog file basename */
@@ -31,6 +31,7 @@ const catalogIndexCache = new Map<string, Map<string, ResolvedIconExport>>()
  */
 function getCatalogIndex(catalogDir: string): Map<string, ResolvedIconExport> {
   const cached = catalogIndexCache.get(catalogDir)
+
   if (cached) {
     return cached
   }
@@ -41,8 +42,10 @@ function getCatalogIndex(catalogDir: string): Map<string, ResolvedIconExport> {
     if (!fs.existsSync(dir)) {
       return
     }
+
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const fullPath = path.join(dir, entry.name)
+
       if (entry.isDirectory() && !entry.name.startsWith(".")) {
         scanDir(fullPath)
       } else if (entry.isFile() && entry.name.endsWith(".tsx")) {
@@ -51,6 +54,7 @@ function getCatalogIndex(catalogDir: string): Map<string, ResolvedIconExport> {
           .relative(catalogDir, fullPath)
           .replace(/\\/g, "/")
           .replace(/\.tsx$/, "")
+
         index.set(normalizeName(componentName), { componentName, relativePath })
       }
     }
@@ -58,6 +62,7 @@ function getCatalogIndex(catalogDir: string): Map<string, ResolvedIconExport> {
 
   scanDir(catalogDir)
   catalogIndexCache.set(catalogDir, index)
+
   return index
 }
 
@@ -86,21 +91,26 @@ export function resolveIconExport(
 
   const candidates = [getIconComponentName(iconId)]
   const dashIndex = iconId.indexOf("-")
+
   if (dashIndex > 0) {
     const suffix = iconId.slice(dashIndex + 1)
+
     candidates.push(getIconComponentName(suffix))
   }
 
   for (const candidate of candidates) {
     const hit = index.get(normalizeName(candidate))
+
     if (hit) {
       return hit
     }
+
     // getIconComponentName prefixes "Icon"; ids like "seldon-iconSocialGithub"
     // already carry it, producing "IconIconSocialGithub". Try without the
     // doubled prefix.
     if (candidate.startsWith("IconIcon")) {
       const dedupedHit = index.get(normalizeName(candidate.slice(4)))
+
       if (dedupedHit) {
         return dedupedHit
       }
@@ -113,9 +123,6 @@ export function resolveIconExport(
 /**
  * Absolute path to the catalog source file for a resolved icon.
  */
-export function getIconSourcePath(
-  resolved: ResolvedIconExport,
-  rootDirectory: string,
-): string {
+export function getIconSourcePath(resolved: ResolvedIconExport, rootDirectory: string): string {
   return path.join(getCatalogDir(rootDirectory), `${resolved.relativePath}.tsx`)
 }

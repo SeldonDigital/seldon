@@ -1,8 +1,5 @@
-import { Properties, Theme } from "@seldon/core"
-import type {
-  ComputeContext,
-  LayoutMode,
-} from "@seldon/core/properties/compute"
+import type { Properties, Theme } from "@seldon/core"
+import type { ComputeContext, LayoutMode } from "@seldon/core/properties/compute"
 
 export type StyleGenerationContext = {
   properties: Properties

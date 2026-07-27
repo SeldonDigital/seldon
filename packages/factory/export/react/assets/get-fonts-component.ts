@@ -1,11 +1,13 @@
-import { Workspace, getRemoteFontUrl, isRemoteFontFamily } from "@seldon/core"
+import { getRemoteFontUrl, isRemoteFontFamily } from "@seldon/core"
 import {
   workspaceFontCollectionService,
   workspaceThemeService,
 } from "@seldon/core/workspace/services"
 
-import { ExportOptions, FileToExport } from "../../types"
 import { format } from "../format"
+
+import type { ExportOptions, FileToExport } from "../../types"
+import type { Workspace } from "@seldon/core"
 
 /**
  * Builds the exported `Fonts` component from the workspace's font collections
@@ -26,13 +28,13 @@ export async function getFontsComponent(
   if (options.enableRemoteFonts) {
     const seen = new Set<string>()
     const linkedFamilies = new Set<string>()
-    const enabledByFamily =
-      workspaceFontCollectionService.getEnabledVariantsByFamily(workspace)
+    const enabledByFamily = workspaceFontCollectionService.getEnabledVariantsByFamily(workspace)
 
     /** Emits one font host link for a remote family, deduped by family and url. */
     const pushFamily = (familyName: string, variants?: string[]): void => {
       if (linkedFamilies.has(familyName)) return
       const url = getRemoteFontUrl(familyName, variants)
+
       if (!url) return
       linkedFamilies.add(familyName)
       if (seen.has(url)) return
@@ -44,11 +46,12 @@ export async function getFontsComponent(
     //    `exportAllFontCollections` is off, skip this source so only families a
     //    theme references (source 2) emit a link.
     if (options.exportAllFontCollections !== false) {
-      const families =
-        workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
+      const families = workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
+
       for (const family of families) {
         if (family.origin !== "remote") continue
         const enabled = enabledByFamily[family.name]
+
         // An explicit empty selection (preset None) requests no weights, so skip.
         if (enabled && enabled.length === 0) continue
         pushFamily(family.name, enabled)
@@ -60,13 +63,15 @@ export async function getFontsComponent(
     //    Board-enabled variants are used when known; otherwise every weight loads.
     for (const themeId of Object.keys(workspace.themes ?? {})) {
       const theme = workspaceThemeService.getTheme(themeId, workspace)
+
       if (!theme?.fontFamily) continue
+
       for (const slot of [
         theme.fontFamily.parameters.primary,
         theme.fontFamily.parameters.secondary,
       ]) {
-        const familyName =
-          typeof slot?.parameters === "string" ? slot.parameters : undefined
+        const familyName = typeof slot?.parameters === "string" ? slot.parameters : undefined
+
         if (!familyName || !isRemoteFontFamily(familyName)) continue
         pushFamily(familyName, enabledByFamily[familyName])
       }

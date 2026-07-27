@@ -1,22 +1,15 @@
-import {
-  BoardHeightValue,
-  BoardWidthValue,
-  EmptyValue,
-  Orientation,
-  Resize,
-  ScreenSize,
-  Scroll,
-  ValueType,
-} from "@seldon/core"
+import { Orientation, Resize, ScreenSize, Scroll, ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { modulateWithTheme } from "@seldon/core/themes/helpers/modulate"
-import { ThemeModulation } from "@seldon/core/themes/types"
 
-import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
 import { getThemeTokenVarReference } from "./get-theme-token-reference"
-import { CSSObject } from "./types"
+
+import type { StyleGenerationContext } from "../types"
+import type { CSSObject } from "./types"
+import type { BoardHeightValue, BoardWidthValue, EmptyValue } from "@seldon/core"
+import type { ThemeModulation } from "@seldon/core/themes/types"
 
 /**
  * Convert screen size preset to pixel value
@@ -41,9 +34,7 @@ function getScreenSizePixelValue(screenSize: ScreenSize): number {
 }
 
 function applyBoardDimensionStyle(
-  dimension:
-    | Exclude<BoardWidthValue | BoardHeightValue, EmptyValue>
-    | undefined,
+  dimension: Exclude<BoardWidthValue | BoardHeightValue, EmptyValue> | undefined,
   axis: "width" | "height",
   styles: CSSObject,
 ): void {
@@ -51,6 +42,7 @@ function applyBoardDimensionStyle(
 
   if (dimension.type === ValueType.EXACT) {
     styles[axis] = getCssValue(dimension) as string
+
     return
   }
 
@@ -86,18 +78,14 @@ export function getSizeStyles({
   // ellipsis unless the automatic minimum is lifted along the main axis.
   const truncatesText = resolveValue(properties.wrapText)?.value === false
 
-  const ownOrientation = properties.orientation
-    ? resolveValue(properties.orientation)?.value
-    : null
+  const ownOrientation = properties.orientation ? resolveValue(properties.orientation)?.value : null
 
   // A node only needs to shrink below its content height when it manages its
   // own vertical overflow. Without this, a vertical fill item falls back to its
   // content height instead of collapsing when the parent has no free space.
   const scroll = resolveValue(properties.scroll)?.value
   const clipsVertically =
-    scroll === Scroll.NONE ||
-    scroll === Scroll.VERTICAL ||
-    scroll === Scroll.BOTH
+    scroll === Scroll.NONE || scroll === Scroll.VERTICAL || scroll === Scroll.BOTH
 
   const boardWidth = resolveValue(properties.board?.width)
   const boardHeight = resolveValue(properties.board?.height)
@@ -112,17 +100,17 @@ export function getSizeStyles({
     if (screenWidth.type === ValueType.EXACT) {
       // Check if this is actually a screen size preset that got stored as EXACT
       const value = (screenWidth as { value: unknown }).value
-      if (
-        typeof value === "string" &&
-        Object.values(ScreenSize).includes(value as ScreenSize)
-      ) {
+
+      if (typeof value === "string" && Object.values(ScreenSize).includes(value as ScreenSize)) {
         const pixelValue = getScreenSizePixelValue(value as ScreenSize)
+
         styles.width = `${pixelValue}px`
       } else {
         styles.width = getCssValue(screenWidth) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
     } else if (screenWidth.type === ValueType.OPTION) {
       const value = (screenWidth as { value: unknown }).value
+
       if (value === Resize.FIT) {
         styles.width = "fit-content"
       } else if (value === Resize.FILL) {
@@ -133,6 +121,7 @@ export function getSizeStyles({
       ) {
         // Handle device-specific screen size presets
         const pixelValue = getScreenSizePixelValue(value as ScreenSize)
+
         styles.width = `${pixelValue}px`
       }
     }
@@ -142,17 +131,17 @@ export function getSizeStyles({
     if (screenHeight.type === ValueType.EXACT) {
       // Check if this is actually a screen size preset that got stored as EXACT
       const value = (screenHeight as { value: unknown }).value
-      if (
-        typeof value === "string" &&
-        Object.values(ScreenSize).includes(value as ScreenSize)
-      ) {
+
+      if (typeof value === "string" && Object.values(ScreenSize).includes(value as ScreenSize)) {
         const pixelValue = getScreenSizePixelValue(value as ScreenSize)
+
         styles.height = `${pixelValue}px`
       } else {
         styles.height = getCssValue(screenHeight) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
     } else if (screenHeight.type === ValueType.OPTION) {
       const value = (screenHeight as { value: unknown }).value
+
       if (value === Resize.FIT) {
         styles.height = "fit-content"
       } else if (value === Resize.FILL) {
@@ -163,6 +152,7 @@ export function getSizeStyles({
       ) {
         // Handle device-specific screen size presets
         const pixelValue = getScreenSizePixelValue(value as ScreenSize)
+
         styles.height = `${pixelValue}px`
       }
     }
@@ -170,10 +160,7 @@ export function getSizeStyles({
 
   if ("width" in properties) {
     // If position.left & position.right are set, width is ignored
-    if (
-      resolveValue(properties.position?.left) &&
-      resolveValue(properties.position?.right)
-    ) {
+    if (resolveValue(properties.position?.left) && resolveValue(properties.position?.right)) {
       return styles
     }
 
@@ -216,6 +203,7 @@ export function getSizeStyles({
         styles.width = reference
       } else {
         const themeValue = getThemeOption(width.value, theme) as ThemeModulation
+
         styles.width =
           modulateWithTheme({
             theme,
@@ -247,6 +235,7 @@ export function getSizeStyles({
         }
       } else {
         styles.width = "fit-content"
+
         if (!parentIsGrid && parentOrientation === Orientation.HORIZONTAL) {
           styles.flexShrink = 0
         }
@@ -256,13 +245,12 @@ export function getSizeStyles({
 
   if ("height" in properties) {
     // If position.top & position.bottom are set, height is ignored
-    if (
-      resolveValue(properties.position?.top) &&
-      resolveValue(properties.position?.bottom)
-    ) {
+    if (resolveValue(properties.position?.top) && resolveValue(properties.position?.bottom)) {
       return styles
     }
+
     const height = resolveValue(properties.height)
+
     if (properties.height && properties.height.type === ValueType.EMPTY) {
       // Do nothing for EMPTY values
     } else if (!height) {
@@ -282,10 +270,8 @@ export function getSizeStyles({
       if (reference) {
         styles.height = reference
       } else {
-        const themeValue = getThemeOption(
-          height.value,
-          theme,
-        ) as ThemeModulation
+        const themeValue = getThemeOption(height.value, theme) as ThemeModulation
+
         styles.height =
           modulateWithTheme({
             theme,
@@ -317,6 +303,7 @@ export function getSizeStyles({
         }
       } else {
         styles.height = "fit-content"
+
         if (!parentIsGrid && parentOrientation === Orientation.VERTICAL) {
           styles.flexShrink = 0
         }

@@ -3,13 +3,14 @@ import { fileURLToPath } from "node:url"
 
 import { beforeAll, describe, expect, it } from "vitest"
 
-import type { ExtractPayload, Workspace } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
 
 import { exportWorkspace } from "../export-workspace"
-import { ExportOptions, FileToExport } from "../types"
+
+import type { ExportOptions, FileToExport } from "../types"
+import type { ExtractPayload, Workspace } from "@seldon/core"
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(here, "../../../..")
@@ -32,11 +33,14 @@ const options: ExportOptions = {
 }
 
 let files: FileToExport[]
+
 const content = (predicate: (f: FileToExport) => boolean): string => {
   const file = files.find(predicate)
+
   if (!file || typeof file.content !== "string") {
     throw new Error("expected file content not found")
   }
+
   return file.content
 }
 
@@ -47,11 +51,13 @@ beforeAll(async () => {
 describe("generated Button SFC", () => {
   it("emits a .vue single-file component", () => {
     const file = files.find((f) => /\/Button\.vue$/.test(f.path))
+
     expect(file).toBeDefined()
   })
 
   it("uses script setup with typed defineProps", () => {
     const source = content((f) => /\/Button\.vue$/.test(f.path))
+
     expect(source).toContain('<script setup lang="ts">')
     expect(source).toContain("defineProps<{")
     expect(source).toContain("className?: string")
@@ -59,17 +65,20 @@ describe("generated Button SFC", () => {
 
   it("wires the className through combineClassNames with the variant class", () => {
     const source = content((f) => /\/Button\.vue$/.test(f.path))
+
     expect(source).toContain('combineClassNames("sdn-button", props.className)')
   })
 
   it("renders a template block", () => {
     const source = content((f) => /\/Button\.vue$/.test(f.path))
+
     expect(source).toContain("<template>")
     expect(source).toContain(':class="rootClassName"')
   })
 
   it("emits the shared class-names utility", () => {
     const source = content((f) => /\/utils\/class-names\.ts$/.test(f.path))
+
     expect(source).toContain("export function combineClassNames")
     expect(source).toContain("export function mergeSlot")
   })
@@ -78,6 +87,7 @@ describe("generated Button SFC", () => {
 describe("generated stylesheet", () => {
   it("emits a base rule for the default Button variant", () => {
     const css = content((f) => f.path === "/src/components/styles.css")
+
     expect(css).toContain(".sdn-button")
   })
 })

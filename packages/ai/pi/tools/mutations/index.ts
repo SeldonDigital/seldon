@@ -23,9 +23,9 @@ import { createSetStateStyleTool } from "./set-state-style"
 import { createSetTextRoleTool } from "./set-text-role"
 import { createSetThemeOverrideTool } from "./set-theme-override"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /**
  * The Seldon mutation tools for one turn. Each tool proposes one or more

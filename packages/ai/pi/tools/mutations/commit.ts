@@ -5,8 +5,8 @@ import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
 import { collectDesignViolations } from "../../../repair/design-lint"
 import { normalizeActions } from "../../../repair/normalize-actions"
 
-import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { PiTurnState } from "../turn-state"
+import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** Wraps a plain string in the tool result shape Pi expects. */
 export function textResult(text: string) {

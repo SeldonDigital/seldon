@@ -1,13 +1,10 @@
-import { Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 
-import { CSSObject } from "./types"
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
 
-export function getScrollStyles({
-  properties,
-}: {
-  properties: Properties
-}): CSSObject {
+export function getScrollStyles({ properties }: { properties: Properties }): CSSObject {
   const styles: CSSObject = {}
 
   const scroll = resolveValue(properties.scroll)

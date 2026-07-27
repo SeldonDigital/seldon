@@ -1,10 +1,11 @@
 import * as path from "path"
 
-import { Workspace } from "@seldon/core"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
 import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
-import { ExportOptions, ImageToExportMap } from "../../types"
+
+import type { ExportOptions, ImageToExportMap } from "../../types"
+import type { Workspace } from "@seldon/core"
 
 const DATA_URL_EXTENSIONS: Record<string, string> = {
   "image/png": "png",
@@ -23,10 +24,12 @@ const DATA_URL_EXTENSIONS: Record<string, string> = {
  */
 function hashString(value: string): string {
   let hash = 0x811c9dc5
+
   for (let i = 0; i < value.length; i += 1) {
     hash ^= value.charCodeAt(i)
     hash = Math.imul(hash, 0x01000193)
   }
+
   return (hash >>> 0).toString(16)
 }
 
@@ -34,18 +37,17 @@ function getDataUrlFilename(value: string): string {
   const match = value.match(/^data:([^;,]+)/)
   const mime = match?.[1] ?? "image/png"
   const ext = DATA_URL_EXTENSIONS[mime] ?? "png"
+
   return `image-${hashString(value)}.${ext}`
 }
 
-export async function getImagesToExport(
-  workspace: Workspace,
-  options: ExportOptions,
-) {
+export async function getImagesToExport(workspace: Workspace, options: ExportOptions) {
   const images: ImageToExportMap = {}
 
   for (const node of getWorkspaceNodeList(workspace)) {
     const properties = getNodeProperties(node, workspace)
     const backgroundImage = properties?.background?.[0]?.image?.value
+
     if (backgroundImage) {
       await addIfNotExist(backgroundImage)
     }
@@ -61,19 +63,18 @@ export async function getImagesToExport(
     }
 
     let filename: string
+
     if (value.startsWith("data:")) {
       filename = getDataUrlFilename(value)
     } else {
       filename = value.split("/").pop() ?? ""
+
       if (!filename || !filename.includes(".")) {
         filename = `${filename || "image"}.png`
       }
     }
 
-    const relativePath = path.posix.join(
-      options.output.assetPublicPath,
-      filename,
-    )
+    const relativePath = path.posix.join(options.output.assetPublicPath, filename)
 
     images[value] = {
       relativePath,

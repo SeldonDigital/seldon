@@ -1,9 +1,9 @@
-import { Workspace } from "@seldon/core/workspace/types"
-
-import { NodeIdToClass } from "../../css/types"
-import { ComponentToExport, ExportOptions, FileToExport } from "../../types"
 import { resolveVueReturns } from "../shared/vue-native-tags"
 import { generateVueComponent } from "./generate-vue-component"
+
+import type { NodeIdToClass } from "../../css/types"
+import type { ComponentToExport, ExportOptions, FileToExport } from "../../types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Generates a `.vue` SFC for every component in the export list. Failures are
@@ -17,10 +17,12 @@ export function generateComponentFiles(
   _options: ExportOptions,
 ): FileToExport[] {
   const files: FileToExport[] = []
+
   for (const component of componentsToExport) {
     // The Icon primitive (returns "iconMap") is rendered by the hand-authored
     // Icon.vue emitted from shared icon data, not from a generated SFC.
     if (resolveVueReturns(component).returns === "iconMap") continue
+
     try {
       files.push({
         path: component.output.path,
@@ -33,5 +35,6 @@ export function generateComponentFiles(
       )
     }
   }
+
   return files
 }

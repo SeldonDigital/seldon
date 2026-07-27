@@ -1,7 +1,8 @@
-import { NodeIdToClass } from "../../../css/types"
-import { ComponentToExport, JSONTreeNode } from "../../../types"
 import { camelCase } from "../../utils/case-utils"
 import { getVariantClassNames } from "../../utils/class-name"
+
+import type { NodeIdToClass } from "../../../css/types"
+import type { ComponentToExport, JSONTreeNode } from "../../../types"
 
 /**
  * Generates the component's variable declarations.
@@ -23,6 +24,7 @@ export function generateVariableDeclarations(
 
   const declarations: string[] = []
   const variantClassNames = getVariantClassNames(component, nodeIdToClass)
+
   declarations.push(
     `const ${classNameVarName} = combineClassNames("${variantClassNames}", className)`,
   )
@@ -38,6 +40,7 @@ export function generateVariableDeclarations(
 
   function traverse(node: JSONTreeNode) {
     const propsName = propNames.get(node.dataBinding.path)
+
     if (!propsName) {
       throw new Error(
         `Prop path "${node.dataBinding.path}" not found in prop names for component "${component.name}"`,
@@ -45,6 +48,7 @@ export function generateVariableDeclarations(
     }
 
     const propsVarName = `${propsName}Props`
+
     if (!declared.has(propsVarName)) {
       declared.add(propsVarName)
       // Wrap the merged slot props with `applyRef` so a caller can override this
@@ -63,8 +67,7 @@ export function generateVariableDeclarations(
   tree.children.forEach(traverse)
 
   return {
-    declarations:
-      declarations.length > 0 ? "\n  " + declarations.join("\n  ") + "\n" : "",
+    declarations: declarations.length > 0 ? "\n  " + declarations.join("\n  ") + "\n" : "",
     classNameVarName,
   }
 }

@@ -17,17 +17,11 @@ describe("getAbsoluteSizeCssValue", () => {
 
   it("serializes an option value", () => {
     expect(
-      getAbsoluteSizeCssValue(
-        { type: ValueType.OPTION, value: Margin.NONE },
-        defaultTheme,
-      ),
+      getAbsoluteSizeCssValue({ type: ValueType.OPTION, value: Margin.NONE }, defaultTheme),
     ).toBe("0")
 
     expect(
-      getAbsoluteSizeCssValue(
-        { type: ValueType.OPTION, value: Corner.SQUARED },
-        defaultTheme,
-      ),
+      getAbsoluteSizeCssValue({ type: ValueType.OPTION, value: Corner.SQUARED }, defaultTheme),
     ).toBe("0px")
   })
 
@@ -36,6 +30,7 @@ describe("getAbsoluteSizeCssValue", () => {
       { type: ValueType.THEME_ORDINAL, value: "@margin.compact" },
       defaultTheme,
     )
+
     expect(result).toMatch(/^-?[\d.]+rem$/)
   })
 

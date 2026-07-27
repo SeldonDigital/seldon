@@ -3,11 +3,8 @@ import { camelCase } from "change-case"
 import { ComponentLevel } from "@seldon/core/components/constants"
 
 import { describeTree } from "./structure"
-import type {
-  ClassifyOptions,
-  DedupedPiece,
-  PieceClassification,
-} from "./types"
+
+import type { ClassifyOptions, DedupedPiece, PieceClassification } from "./types"
 
 const DEFAULT_HOST = "http://127.0.0.1:11434"
 const DEFAULT_MODEL = "gpt-oss:20b"
@@ -34,13 +31,17 @@ function buildPrompt(piece: DedupedPiece): string {
     `This fragment appears ${piece.count} time(s) on the page.`,
     `Root element: <${sample.tag}>${sample.role ? ` role="${sample.role}"` : ""}.`,
   ]
+
   if (sample.evidence.classes?.length) {
     lines.push(`Root classes: ${sample.evidence.classes.join(" ")}`)
   }
+
   if (sample.evidence.attrs) {
     lines.push(`Root attributes: ${JSON.stringify(sample.evidence.attrs)}`)
   }
+
   lines.push("Structure:", describeTree(sample, 3))
+
   return lines.join("\n")
 }
 
@@ -50,17 +51,13 @@ interface OllamaChatResponse {
 
 /** Coerces a raw model level string to a valid level, else null. */
 function toLevel(value: unknown): ComponentLevel | null {
-  return typeof value === "string" && LEVEL_VALUES.has(value)
-    ? (value as ComponentLevel)
-    : null
+  return typeof value === "string" && LEVEL_VALUES.has(value) ? (value as ComponentLevel) : null
 }
 
 /** Validates and normalizes the model's JSON into a classification. */
-function parseClassification(
-  content: string,
-  piece: DedupedPiece,
-): PieceClassification | null {
+function parseClassification(content: string, piece: DedupedPiece): PieceClassification | null {
   let raw: Record<string, unknown>
+
   try {
     raw = JSON.parse(content) as Record<string, unknown>
   } catch {
@@ -68,12 +65,11 @@ function parseClassification(
   }
 
   const name = typeof raw.name === "string" ? raw.name.trim() : ""
+
   if (name === "") return null
 
   const id =
-    typeof raw.id === "string" && raw.id.trim() !== ""
-      ? camelCase(raw.id)
-      : camelCase(name)
+    typeof raw.id === "string" && raw.id.trim() !== "" ? camelCase(raw.id) : camelCase(name)
   const level = toLevel(raw.level) ?? piece.sample.level
   const intent =
     typeof raw.intent === "string" && raw.intent.trim() !== ""
@@ -101,6 +97,7 @@ export async function classifyPiece(
 ): Promise<PieceClassification | null> {
   const host = options.host ?? DEFAULT_HOST
   const model = options.model ?? DEFAULT_MODEL
+
   try {
     const response = await fetch(`${host}/api/chat`, {
       method: "POST",
@@ -117,10 +114,13 @@ export async function classifyPiece(
       }),
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     })
+
     if (!response.ok) return null
     const data = (await response.json()) as OllamaChatResponse
     const content = data.message?.content
+
     if (!content) return null
+
     return parseClassification(content, piece)
   } catch {
     return null
@@ -137,8 +137,10 @@ export async function classifyPieces(
   options: ClassifyOptions = {},
 ): Promise<Array<PieceClassification | null>> {
   const results: Array<PieceClassification | null> = []
+
   for (const piece of pieces) {
     results.push(await classifyPiece(piece, options))
   }
+
   return results
 }

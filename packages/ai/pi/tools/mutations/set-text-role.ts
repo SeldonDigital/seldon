@@ -4,10 +4,10 @@ import { Type } from "typebox"
 import { textResult } from "./commit"
 import { applyPropertyEdit } from "./set-properties"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { TargetSpec } from "../resolve-target"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Typographic roles that map to the theme font look ids. */
 const ROLES = [

@@ -36,6 +36,7 @@ const REACT_TO_SVG_ATTRS: Array<[RegExp, string]> = [
  */
 export function parseIconSource(source: string): IconGeometry | null {
   const svgMatch = source.match(/<svg([^>]*)>([\s\S]*?)<\/svg>/)
+
   if (!svgMatch) return null
 
   const svgAttrs = svgMatch[1]
@@ -48,9 +49,11 @@ export function parseIconSource(source: string): IconGeometry | null {
   const fill = fillMatch ? fillMatch[1] : undefined
 
   let body = rawBody
+
   for (const [pattern, replacement] of REACT_TO_SVG_ATTRS) {
     body = body.replace(pattern, replacement)
   }
+
   // Drop the React props spread that only appears on the root element.
   body = body.replace(/\{\.\.\.props\}/g, "").trim()
 

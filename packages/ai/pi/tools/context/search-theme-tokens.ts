@@ -4,8 +4,8 @@ import { Type } from "typebox"
 import { searchThemeTokensSection } from "../../../prompt/context-sections/theme-tokens"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns theme tokens whose scope or key matches the query. */
 export function createSearchThemeTokensTool(resolved: ResolvedContext): ToolDefinition {

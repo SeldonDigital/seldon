@@ -17,8 +17,6 @@ describe("pluralizeLevel", () => {
   })
 
   it("throws for an unknown level", () => {
-    expect(() => pluralizeLevel("widget" as ComponentLevel)).toThrow(
-      /Unknown level/,
-    )
+    expect(() => pluralizeLevel("widget" as ComponentLevel)).toThrow(/Unknown level/)
   })
 })

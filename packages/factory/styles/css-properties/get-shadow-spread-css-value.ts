@@ -1,8 +1,9 @@
-import { ShadowSpreadValue } from "@seldon/core"
 import { resolveShadowSpread } from "@seldon/core/helpers/resolution/resolve-shadow-spread"
-import { Theme } from "@seldon/core/themes/types"
 
 import { getCssValue } from "./get-css-value"
+
+import type { ShadowSpreadValue } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 /**
  * Retrieves the CSS spread value based on the provided spread value and theme.

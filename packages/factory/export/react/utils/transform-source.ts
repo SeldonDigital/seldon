@@ -30,8 +30,6 @@ export function transformSource(config: TransformConfig): string {
       return `${config.content}\n${config.source}`
 
     default:
-      throw new Error(
-        `Unknown transformation config: ${JSON.stringify(config)}`,
-      )
+      throw new Error(`Unknown transformation config: ${JSON.stringify(config)}`)
   }
 }

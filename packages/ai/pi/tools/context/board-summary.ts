@@ -6,9 +6,9 @@ import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/
 import { boardSummarySection } from "../../../prompt/context-sections/board-summary"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns a cheap summary of the active board, with no ids, to locate a target. */
 export function createBoardSummaryTool(

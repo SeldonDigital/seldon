@@ -6,9 +6,9 @@ import { authoredBoardKeyFromName } from "@seldon/core/workspace/helpers/compone
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
 
+import type { PiTurnState } from "../turn-state"
 import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
-import type { PiTurnState } from "../turn-state"
 
 /**
  * Creates an authored component: a user-defined board with no catalog schema,

@@ -15,9 +15,9 @@ import {
 } from "../../../prompt/context-sections/resource-board"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /**
  * Climbs exactly one level up from the selection and returns that view. A node

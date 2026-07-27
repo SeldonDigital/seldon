@@ -1,8 +1,3 @@
-import { IconId } from "@seldon/core/icon-sets"
-import { Workspace } from "@seldon/core/workspace/types"
-
-import { NodeIdToClass } from "../../../css/types"
-import { ComponentToExport, ExportOptions, FileToExport } from "../../../types"
 import { format } from "../../format"
 import { insertComponentFunction } from "../inserts/insert-component-function"
 import { insertDefaultProps } from "../inserts/insert-default-props"
@@ -10,6 +5,11 @@ import { insertIconMap } from "../inserts/insert-icon-map"
 import { insertImports } from "../inserts/insert-imports"
 import { insertInterface } from "../inserts/insert-interface"
 import { generateJSXStructure } from "../preprocess/generate-jsx-structure"
+
+import type { NodeIdToClass } from "../../../css/types"
+import type { ComponentToExport, ExportOptions, FileToExport } from "../../../types"
+import type { IconId } from "@seldon/core/icon-sets"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Generates React component files for all components in the export list.
@@ -39,11 +39,7 @@ export async function generateComponentFiles(
     try {
       let source: string = ""
 
-      const { root: jsxRoot, propNames } = generateJSXStructure(
-        component,
-        nodeIdToClass,
-        workspace,
-      )
+      const { root: jsxRoot, propNames } = generateJSXStructure(component, nodeIdToClass, workspace)
 
       source = insertInterface(source, component, propNames)
       source = insertComponentFunction(

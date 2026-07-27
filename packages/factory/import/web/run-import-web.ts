@@ -1,4 +1,3 @@
-import type { FileToExport } from "../../export/types"
 import { classifyPieces } from "./classify"
 import { countNodes, deconstruct } from "./deconstruct"
 import { dedupe } from "./dedupe"
@@ -6,11 +5,9 @@ import { fetchDom } from "./fetch-dom"
 import { matchPieces } from "./match-catalog"
 import { buildReport } from "./report"
 import { suggestSchemas } from "./suggest-schema"
-import type {
-  ImportWebResult,
-  PieceClassification,
-  RunImportWebOptions,
-} from "./types"
+
+import type { FileToExport } from "../../export/types"
+import type { ImportWebResult, PieceClassification, RunImportWebOptions } from "./types"
 
 /**
  * Runs the web import pipeline for one URL: fetch and parse the DOM,
@@ -27,6 +24,7 @@ export async function runImportWeb(
 ): Promise<ImportWebResult> {
   const document = await fetchDom(url)
   const root = deconstruct(document)
+
   if (!root) {
     throw new Error(`No <body> content found at ${url}.`)
   }
@@ -34,15 +32,14 @@ export async function runImportWeb(
   const rawNodeCount = countNodes(root)
   const pieces = dedupe(root)
   const results = matchPieces(pieces)
-  const matchedCount = results.filter(
-    (result) => result.matched !== null,
-  ).length
+  const matchedCount = results.filter((result) => result.matched !== null).length
   const unmatched = results.filter((result) => result.matched === null)
 
   let classifications: Array<PieceClassification | null> = []
+
   if (options.classify !== false) {
-    const classifyOptions =
-      options.classify === undefined ? {} : options.classify
+    const classifyOptions = options.classify === undefined ? {} : options.classify
+
     classifications = await classifyPieces(
       unmatched.map((result) => result.piece),
       classifyOptions,
@@ -50,9 +47,7 @@ export async function runImportWeb(
   }
 
   const suggestions = suggestSchemas(unmatched, classifications)
-  const classifiedCount = suggestions.filter(
-    (suggestion) => suggestion.source === "model",
-  ).length
+  const classifiedCount = suggestions.filter((suggestion) => suggestion.source === "model").length
 
   const report = buildReport({
     url,
@@ -63,6 +58,7 @@ export async function runImportWeb(
   })
 
   const files: FileToExport[] = [{ path: "report.md", content: report }]
+
   for (const suggestion of suggestions) {
     files.push({
       path: `schemas/${suggestion.id}.schema.json`,

@@ -1,4 +1,4 @@
-import { ExportOptions, FileToExport } from "../../../types"
+import type { ExportOptions, FileToExport } from "../../../types"
 
 /**
  * Generates a comprehensive README.md file with instructions for using Seldon components

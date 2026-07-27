@@ -1,4 +1,6 @@
-import { type Document, Window } from "happy-dom"
+import { Window } from "happy-dom"
+
+import type { Document } from "happy-dom"
 
 /**
  * A short, browser-like User-Agent so sites that gate on a missing agent still
@@ -20,13 +22,15 @@ export async function fetchDom(url: string): Promise<Document> {
     headers: { "User-Agent": USER_AGENT, Accept: "text/html" },
     redirect: "follow",
   })
+
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch ${url}: ${response.status} ${response.statusText}`,
-    )
+    throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`)
   }
+
   const html = await response.text()
   const window = new Window({ url })
+
   window.document.write(html)
+
   return window.document
 }

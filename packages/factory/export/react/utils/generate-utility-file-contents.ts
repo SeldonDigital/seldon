@@ -1,4 +1,4 @@
-import { ExportOptions, FileToExport } from "../../types"
+import type { ExportOptions, FileToExport } from "../../types"
 
 /**
  * Generates utility files needed by the exported components

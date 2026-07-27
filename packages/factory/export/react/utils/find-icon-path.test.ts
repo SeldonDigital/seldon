@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
-import { IconId } from "@seldon/core/icon-sets"
-
 import { getIconSourcePath, resolveIconExport } from "./find-icon-path"
+
+import type { IconId } from "@seldon/core/icon-sets"
 
 describe("resolveIconExport", () => {
   it("returns the default icon export for the default id", () => {
@@ -13,12 +13,7 @@ describe("resolveIconExport", () => {
   })
 
   it("returns null when no catalog file matches", () => {
-    expect(
-      resolveIconExport(
-        "seldon-iconDoesNotExist" as IconId,
-        "/nonexistent/root",
-      ),
-    ).toBeNull()
+    expect(resolveIconExport("seldon-iconDoesNotExist" as IconId, "/nonexistent/root")).toBeNull()
   })
 })
 
@@ -28,6 +23,7 @@ describe("getIconSourcePath", () => {
       componentName: "IconDefault",
       relativePath: "IconDefault",
     }
+
     expect(getIconSourcePath(resolved, "/root")).toBe(
       "/root/packages/core/icon-sets/catalog/IconDefault.tsx",
     )

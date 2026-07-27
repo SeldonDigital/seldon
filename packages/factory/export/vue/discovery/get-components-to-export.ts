@@ -1,8 +1,8 @@
-import { Workspace } from "@seldon/core/workspace/types"
-
-import { NodeIdToClass } from "../../css/types"
 import { getComponentsToExport as getReactComponentsToExport } from "../../react/discovery/get-components-to-export"
-import { ComponentToExport, ExportOptions } from "../../types"
+
+import type { NodeIdToClass } from "../../css/types"
+import type { ComponentToExport, ExportOptions } from "../../types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
  * Resolves the component export list for the Vue target. The discovery IR is
@@ -15,11 +15,8 @@ export function getComponentsToExport(
   options: ExportOptions,
   nodeIdToClass: NodeIdToClass,
 ): ComponentToExport[] {
-  const components = getReactComponentsToExport(
-    workspace,
-    options,
-    nodeIdToClass,
-  )
+  const components = getReactComponentsToExport(workspace, options, nodeIdToClass)
+
   return components.map((component) => ({
     ...component,
     output: {

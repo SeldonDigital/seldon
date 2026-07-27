@@ -1,14 +1,11 @@
-import { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 
 import { objectFitMap } from "./image-fit-map"
-import { CSSObject } from "./types"
 
-export function getImageStyles({
-  properties,
-}: {
-  properties: Properties
-}): CSSObject {
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
+
+export function getImageStyles({ properties }: { properties: Properties }): CSSObject {
   const styles: CSSObject = {}
 
   const source = resolveValue(properties.source)

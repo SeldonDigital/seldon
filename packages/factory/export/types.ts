@@ -1,10 +1,8 @@
-import { CSSProperties } from "react"
-
-import { InstanceId, VariantId } from "@seldon/core"
-import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import { ComponentExport } from "@seldon/core/components/types"
-
 import type { ExportAssetReader } from "./asset-reader"
+import type { InstanceId, VariantId } from "@seldon/core"
+import type { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+import type { ComponentExport } from "@seldon/core/components/types"
+import type { CSSProperties } from "react"
 
 /**
  * Export options
@@ -108,10 +106,7 @@ export type FileToExport = {
  * So uploadPath the file will be uploaded to. The relativePath is the path we will replace the full url with.
  * E.g. relativePath = '/assets/' -> https://url.com/image.png becomes /assets/image.png
  */
-export type ImageToExportMap = Record<
-  string,
-  { relativePath: string; uploadPath: string }
->
+export type ImageToExportMap = Record<string, { relativePath: string; uploadPath: string }>
 
 /**
  * This is used to create a JSON representation of the entire tree that needs to be exported.

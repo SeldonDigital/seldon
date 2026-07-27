@@ -1,23 +1,18 @@
 import { invariant } from "@seldon/core"
-import {
-  CUSTOM_REACT_TEMPLATE_META,
-  CustomReactTemplateMeta,
-} from "@seldon/core/components/catalog/custom/registry"
+import { CUSTOM_REACT_TEMPLATE_META } from "@seldon/core/components/catalog/custom/registry"
 
-import { ComponentToExport } from "../../../types"
+import type { ComponentToExport } from "../../../types"
+import type { CustomReactTemplateMeta } from "@seldon/core/components/catalog/custom/registry"
 
 /**
  * Resolves the emit metadata for a component that returns `"custom"`. Throws
  * when the export config omits the `react.custom` block.
  */
-export function getCustomTemplateMeta(
-  component: ComponentToExport,
-): CustomReactTemplateMeta {
+export function getCustomTemplateMeta(component: ComponentToExport): CustomReactTemplateMeta {
   const custom = component.config.react.custom
-  invariant(
-    custom,
-    `Custom component ${component.name} is missing react.custom`,
-  )
+
+  invariant(custom, `Custom component ${component.name} is missing react.custom`)
+
   return CUSTOM_REACT_TEMPLATE_META[custom.template]
 }
 
@@ -28,8 +23,10 @@ export function getCustomTemplateMeta(
  */
 export function getReactReturnTag(component: ComponentToExport): string {
   const { config } = component
+
   if (config.react.returns === "custom") {
     return getCustomTemplateMeta(component).importName
   }
+
   return config.react.returns
 }

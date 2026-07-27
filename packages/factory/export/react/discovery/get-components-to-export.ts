@@ -1,37 +1,25 @@
 import { invariant } from "@seldon/core"
-import {
-  getComponentExportConfig,
-  getComponentSchema,
-} from "@seldon/core/components/catalog"
+import { getComponentExportConfig, getComponentSchema } from "@seldon/core/components/catalog"
 import {
   ComponentId,
-  ComponentLevel,
   NATIVE_REACT_PRIMITIVES,
   isComponentId,
 } from "@seldon/core/components/constants"
-import {
-  ComponentExport,
-  NativeReactPrimitive,
-} from "@seldon/core/components/types"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getAllVariants } from "@seldon/core/workspace/helpers/general/get-all-variants"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 import { nodeRetrievalService } from "@seldon/core/workspace/services"
-import type {
-  EntryNode,
-  VariantId,
-  Workspace,
-} from "@seldon/core/workspace/types"
 
-import { NodeIdToClass } from "../../css/types"
-import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../types"
 import { pluralizeLevel } from "../utils/pluralize-level"
 import { getComponentName } from "./get-component-name"
 import { getJsonTreeFromChildren } from "./get-json-tree-from-children"
+
+import type { NodeIdToClass } from "../../css/types"
+import type { ComponentToExport, ExportOptions, JSONTreeNode } from "../../types"
+import type { ComponentLevel } from "@seldon/core/components/constants"
+import type { ComponentExport, NativeReactPrimitive } from "@seldon/core/components/types"
+import type { EntryNode, VariantId, Workspace } from "@seldon/core/workspace/types"
 
 const SKIP_EXPORT_CATALOG_IDS = new Set<ComponentId>([ComponentId.FRAME])
 
@@ -44,12 +32,15 @@ const SKIP_EXPORT_CATALOG_IDS = new Set<ComponentId>([ComponentId.FRAME])
  */
 function getAuthoredReturnPrimitive(tree: JSONTreeNode): NativeReactPrimitive {
   const wrapper = tree.dataBinding.props?.wrapperElement?.defaultValue
+
   if (typeof wrapper === "string") {
     const hit = Object.entries(NATIVE_REACT_PRIMITIVES).find(
       ([, meta]) => meta.wrapperElementOption === wrapper,
     )
+
     if (hit) return hit[0] as NativeReactPrimitive
   }
+
   return "HTMLDiv"
 }
 
@@ -60,6 +51,7 @@ export function getComponentsToExport(
 ) {
   const variants = getAllVariants(workspace).filter((variant) => {
     const board = getBoardByNodeId(workspace, variant.id)
+
     if (!board) return false
 
     // Authored boards export their authored root and user variants regardless
@@ -69,6 +61,7 @@ export function getComponentsToExport(
     if (!isComponentBoard(board)) return false
 
     const catalogId = getNodeCatalogId(variant, workspace)
+
     if (!catalogId || !isComponentId(catalogId)) {
       return false
     }
@@ -78,6 +71,7 @@ export function getComponentsToExport(
 
   const items: ComponentToExport[] = variants.map((variant) => {
     const board = getBoardByNodeId(workspace, variant.id)
+
     invariant(board, `Missing board for ${variant.id}`)
 
     const componentId = getNodeCatalogId(variant, workspace) as ComponentId
@@ -90,6 +84,7 @@ export function getComponentsToExport(
       options.includeHiddenComponents === true,
     )
     const config = getComponentExportConfig(componentId)
+
     invariant(config, `Config of component ${componentId} not found`)
 
     if (isAuthoredBoard(board)) {
@@ -100,11 +95,13 @@ export function getComponentsToExport(
       const authoredConfig: ComponentExport = {
         react: { returns: getAuthoredReturnPrimitive(tree) },
       }
+
       // The root now renders a fixed primitive tag, so the inherited
       // `wrapperElement` root prop is dead surface. Drop it to flatten the root
       // like a normal component, whose Part or Module root never exposes it.
       // Child Frames keep their own `wrapperElement`, matching normal output.
       delete tree.dataBinding.props.wrapperElement
+
       return {
         componentId,
         variantId: variantId as VariantId,
@@ -123,10 +120,7 @@ export function getComponentsToExport(
       }
     }
 
-    invariant(
-      isComponentBoard(board),
-      `Missing component board for ${variant.id}`,
-    )
+    invariant(isComponentBoard(board), `Missing component board for ${variant.id}`)
     const schema = getComponentSchema(componentId)
     const outputPath = `${options.output.componentsFolder}/${pluralizeLevel(schema.level)}/${name}.tsx`
 

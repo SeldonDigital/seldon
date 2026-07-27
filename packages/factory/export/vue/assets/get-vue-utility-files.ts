@@ -1,4 +1,4 @@
-import { ExportOptions, FileToExport } from "../../types"
+import type { ExportOptions, FileToExport } from "../../types"
 
 /**
  * Emits the small runtime helpers the generated Vue components import: class

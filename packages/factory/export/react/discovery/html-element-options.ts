@@ -22,9 +22,7 @@ const TEXT_ELEMENTS: readonly HtmlElement[] = [
  * Drives the generated switch statement, its native-react imports, and the
  * prop union in the component interface.
  */
-export const HTML_ELEMENT_OPTIONS: Partial<
-  Record<ComponentId, readonly HtmlElement[]>
-> = {
+export const HTML_ELEMENT_OPTIONS: Partial<Record<ComponentId, readonly HtmlElement[]>> = {
   [ComponentId.TEXT]: TEXT_ELEMENTS,
   [ComponentId.OPTION_GROUP]: [HtmlElement.OPTGROUP],
   [ComponentId.LIST]: [HtmlElement.UL, HtmlElement.OL],

@@ -1,9 +1,4 @@
-import {
-  ComponentToExport,
-  ExportOptions,
-  FileToExport,
-  JSONTreeNode,
-} from "../../types"
+import type { ComponentToExport, ExportOptions, FileToExport, JSONTreeNode } from "../../types"
 
 /**
  * One entry in the generated refs registry. `className` scopes DOM lookups to
@@ -37,12 +32,14 @@ export function generateRefsRegistry(
         node.classNames && node.classNames.length > 0
           ? node.classNames.filter(Boolean).join(" ")
           : (nodeIdToClass[node.nodeId] ?? "")
+
       refs.set(node.ref, {
         component: node.name,
         nodeId: node.nodeId,
         className,
       })
     }
+
     if (Array.isArray(node.children)) {
       node.children.forEach(visit)
     }
@@ -56,18 +53,12 @@ export function generateRefsRegistry(
     return null
   }
 
-  const sortedRefs = Array.from(refs.entries()).sort(([a], [b]) =>
-    a.localeCompare(b),
-  )
+  const sortedRefs = Array.from(refs.entries()).sort(([a], [b]) => a.localeCompare(b))
 
-  const unionType = sortedRefs
-    .map(([ref]) => `  | ${JSON.stringify(ref)}`)
-    .join("\n")
+  const unionType = sortedRefs.map(([ref]) => `  | ${JSON.stringify(ref)}`).join("\n")
 
   const mapEntries = sortedRefs
-    .map(
-      ([ref, entry]) => `  ${JSON.stringify(ref)}: ${JSON.stringify(entry)},`,
-    )
+    .map(([ref, entry]) => `  ${JSON.stringify(ref)}: ${JSON.stringify(entry)},`)
     .join("\n")
 
   const content = `export type SeldonRef =
@@ -84,8 +75,7 @@ ${mapEntries}
 }
 `
 
-  const indexPath =
-    `${options.output.componentsFolder}/refs/index.ts`.replaceAll("//", "/")
+  const indexPath = `${options.output.componentsFolder}/refs/index.ts`.replaceAll("//", "/")
 
   return {
     path: indexPath,

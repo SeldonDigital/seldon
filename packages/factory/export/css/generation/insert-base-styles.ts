@@ -1,7 +1,4 @@
-import {
-  TransformStrategy,
-  transformSource,
-} from "../../react/utils/transform-source"
+import { TransformStrategy, transformSource } from "../../react/utils/transform-source"
 
 /**
  * Insert the base styles into the stylesheet, like the font size and the hairline

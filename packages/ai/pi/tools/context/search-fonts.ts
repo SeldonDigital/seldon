@@ -4,8 +4,8 @@ import { Type } from "typebox"
 import { searchFontsSection } from "../../../prompt/context-sections/fonts"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns enabled font family values whose value or name matches the query. */
 export function createSearchFontsTool(resolved: ResolvedContext): ToolDefinition {

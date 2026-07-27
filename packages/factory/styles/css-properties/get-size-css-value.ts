@@ -1,10 +1,12 @@
-import { SizeValue, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { resolveSize } from "@seldon/core/helpers/resolution/resolve-size"
-import { Theme } from "@seldon/core/themes/types"
 
-import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
 import { getThemeTokenVarReference } from "./get-theme-token-reference"
+
+import type { StyleGenerationContext } from "../types"
+import type { SizeValue } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 /**
  * Retrieves the CSS size value based on the provided size value and theme.
@@ -28,6 +30,7 @@ export function getSizeCSSValue({
 }) {
   if (useThemeVariableReferences && size.type === ValueType.THEME_ORDINAL) {
     const reference = getThemeTokenVarReference(size.value)
+
     if (reference) return reference
   }
 
@@ -39,10 +42,9 @@ export function getSizeCSSValue({
 
   const cssValue = getCssValue(resolvedSize)
 
-  if (typeof cssValue === "number" && cssValue !== 0)
-    throw new Error(
-      "In CSS, size can only be 0 or a string. Size is " + cssValue,
-    )
+  if (typeof cssValue === "number" && cssValue !== 0) {
+    throw new Error("In CSS, size can only be 0 or a string. Size is " + cssValue)
+  }
 
   return cssValue
 }

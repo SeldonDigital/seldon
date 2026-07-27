@@ -4,9 +4,7 @@ import { getCssStringFromCssObject } from "./get-css-string-from-css-object"
 
 describe("getCssStringFromCssObject", () => {
   it("renders a single declaration scoped to the class", () => {
-    expect(getCssStringFromCssObject({ color: "red" }, "my-class")).toBe(
-      ".my-class {color: red;}",
-    )
+    expect(getCssStringFromCssObject({ color: "red" }, "my-class")).toBe(".my-class {color: red;}")
   })
 
   it("kebab-cases camelCase property keys", () => {

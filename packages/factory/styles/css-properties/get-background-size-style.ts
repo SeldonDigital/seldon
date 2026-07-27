@@ -1,10 +1,10 @@
-import { ImageFit, SingleBackgroundSizeValue, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 
 import { backgroundSizeMap } from "./image-fit-map"
 
-export function getBackgroundSizeStyle(
-  size: SingleBackgroundSizeValue,
-): string {
+import type { ImageFit, SingleBackgroundSizeValue } from "@seldon/core"
+
+export function getBackgroundSizeStyle(size: SingleBackgroundSizeValue): string {
   if (size.type === ValueType.EXACT) {
     // Lengths are stored as an exact measure payload.
     return `${size.value.value}${size.value.unit}`

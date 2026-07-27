@@ -6,9 +6,9 @@ import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/
 import { activeBoardSection } from "../../../prompt/context-sections/active-board"
 import { textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns the active board's variant node trees with ids, levels, catalog ids. */
 export function createGetActiveBoardTool(

@@ -4,8 +4,8 @@ import { Type } from "typebox"
 import { describeNodeSection } from "../../../prompt/context-sections/describe-node"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns a shallow view of one node: identity, parent, children, set properties. */
 export function createDescribeNodeTool(state: PiTurnState): ToolDefinition {

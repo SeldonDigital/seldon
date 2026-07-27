@@ -6,8 +6,8 @@ import { activeBoardSection } from "../../prompt/context-sections/active-board"
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
 import { matchNodeStrings } from "../../prompt/context-sections/node-strings"
 
-import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 import type { SelectionScope } from "../../types"
+import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 /** How the model names a node to edit: the current selection or an explicit id. */
 export type TargetSpec = "selection" | { nodeId: string }

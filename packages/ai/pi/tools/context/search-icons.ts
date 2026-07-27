@@ -4,8 +4,8 @@ import { Type } from "typebox"
 import { searchIconsSection } from "../../../prompt/context-sections/icons"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns enabled icon ids whose id or label matches the query. */
 export function createSearchIconsTool(resolved: ResolvedContext): ToolDefinition {

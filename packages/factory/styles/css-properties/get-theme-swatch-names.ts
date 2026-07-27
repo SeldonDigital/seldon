@@ -1,10 +1,8 @@
-import { Theme } from "@seldon/core/themes/types"
-import {
-  THEME_INTERFACE_SLOTS,
-  THEME_PALETTE_SLOTS,
-} from "@seldon/core/themes/values"
+import { THEME_INTERFACE_SLOTS, THEME_PALETTE_SLOTS } from "@seldon/core/themes/values"
 
 import { brightnessSuffix } from "../computed-variables/names"
+
+import type { Theme } from "@seldon/core/themes/types"
 
 /**
  * Reserved swatch slots that emit a stable `var(--sdn-...swatch-*)` reference.
@@ -29,19 +27,20 @@ function slugify(name: string): string {
  * Disambiguates swatch display names that collide by appending an index, so
  * each swatch maps to a stable, unique CSS variable suffix.
  */
-function ensureUniqueSwatchNames(
-  swatchNames: Record<string, string>,
-): Record<string, string> {
+function ensureUniqueSwatchNames(swatchNames: Record<string, string>): Record<string, string> {
   const nameCount = new Map<string, number>()
+
   Object.values(swatchNames).forEach((name) => {
     nameCount.set(name, (nameCount.get(name) || 0) + 1)
   })
 
   const result: Record<string, string> = {}
   const nameInstanceCount = new Map<string, number>()
+
   Object.entries(swatchNames).forEach(([key, name]) => {
     if (nameCount.get(name)! > 1) {
       const instanceCount = (nameInstanceCount.get(name) || 0) + 1
+
       nameInstanceCount.set(name, instanceCount)
       result[key] = `${name}${instanceCount}`
     } else {
@@ -64,6 +63,7 @@ export function getThemeSwatchVarNames(theme: Theme): Record<string, string> {
 
   Object.entries(theme.swatch).forEach(([key, value]) => {
     if (!value) return
+
     if (key.startsWith("custom") && value.name) {
       swatchNames[key] = slugify(value.name)
     } else {
@@ -80,18 +80,18 @@ export function getThemeSwatchVarNames(theme: Theme): Record<string, string> {
  * theme file defines these variables under the same unprefixed names, scoped by
  * `[data-theme]`, so the reference swaps with the active theme.
  */
-export function getThemeSwatchVarReference(
-  swatchKey: string,
-  theme: Theme,
-): string | undefined {
+export function getThemeSwatchVarReference(swatchKey: string, theme: Theme): string | undefined {
   if (!swatchKey.startsWith("@swatch.")) return undefined
   const id = swatchKey.slice("@swatch.".length)
+
   if (!REFERENCEABLE_SWATCH_SLOTS.has(id)) return undefined
+
   if (!theme.swatch || !theme.swatch[id as keyof typeof theme.swatch]) {
     return undefined
   }
 
   const name = getThemeSwatchVarNames(theme)[id]
+
   if (!name) return undefined
 
   return `var(--sdn-swatch-${name})`
@@ -112,12 +112,15 @@ export function getBrightnessSwatchVarReference(
   if (brightness === 0) return undefined
   if (!swatchKey.startsWith("@swatch.")) return undefined
   const id = swatchKey.slice("@swatch.".length)
+
   if (!REFERENCEABLE_SWATCH_SLOTS.has(id)) return undefined
+
   if (!theme.swatch || !theme.swatch[id as keyof typeof theme.swatch]) {
     return undefined
   }
 
   const name = getThemeSwatchVarNames(theme)[id]
+
   if (!name) return undefined
 
   return `var(--sdn-swatch-${name}-${brightnessSuffix(brightness)})`

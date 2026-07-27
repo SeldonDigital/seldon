@@ -19,12 +19,12 @@ import { resolveNodeTarget } from "../resolve-target"
 import { textResult } from "./commit"
 import { applyPropertyEdit } from "./set-properties"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-import type { Theme } from "@seldon/core/themes/types"
-import type { Workspace } from "@seldon/core/workspace/types"
 import type { ResolvedContext } from "../../editor-context"
 import type { TargetSpec } from "../resolve-target"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { Theme } from "@seldon/core/themes/types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /** A component's catalog id, level, and settable keys. */
 interface Facts {

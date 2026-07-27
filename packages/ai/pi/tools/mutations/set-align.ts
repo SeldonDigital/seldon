@@ -11,11 +11,11 @@ import { resolveNodeTarget } from "../resolve-target"
 import { textResult } from "./commit"
 import { applyPropertyEdit } from "./set-properties"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-import type { Workspace } from "@seldon/core/workspace/types"
 import type { ResolvedContext } from "../../editor-context"
 import type { TargetSpec } from "../resolve-target"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 /** Position words the tool accepts, mapped to the 2D container anchor. */
 const ALIGN_BY_POSITION: Record<string, string> = {

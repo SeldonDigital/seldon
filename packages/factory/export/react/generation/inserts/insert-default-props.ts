@@ -1,11 +1,8 @@
-import { CSSProperties } from "react"
-
-import { ComponentToExport } from "../../../types"
-import {
-  TransformStrategy,
-  transformSource,
-} from "../../utils/transform-source"
+import { TransformStrategy, transformSource } from "../../utils/transform-source"
 import { generateDefaultProps } from "../shared/generate-default-props"
+
+import type { ComponentToExport } from "../../../types"
+import type { CSSProperties } from "react"
 
 /**
  * We build a defaultProps object to make sure nested children have
@@ -29,10 +26,7 @@ export function insertDefaultProps(
 ) {
   const defaultProps: Record<
     string,
-    Record<
-      string,
-      string | CSSProperties | boolean | number | object | string[] | number[]
-    >
+    Record<string, string | CSSProperties | boolean | number | object | string[] | number[]>
   > = generateDefaultProps(component, nodeIdToClass, propNames)
 
   if (Object.keys(defaultProps).length === 0) {
@@ -46,11 +40,7 @@ export function insertDefaultProps(
 //
 // Default property values
 //
-const sdn: ${component.tree.dataBinding.interfaceName} = ${JSON.stringify(
-      defaultProps,
-      null,
-      2,
-    )}`,
+const sdn: ${component.tree.dataBinding.interfaceName} = ${JSON.stringify(defaultProps, null, 2)}`,
   })
 
   return source

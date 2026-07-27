@@ -1,7 +1,4 @@
-import {
-  TransformStrategy,
-  transformSource,
-} from "../../utils/transform-source"
+import { TransformStrategy, transformSource } from "../../utils/transform-source"
 
 export const LICENSE_HEADER = `/*****
  *

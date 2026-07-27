@@ -1,13 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  ImageFit,
-  SingleBackgroundSizeValue,
-  Unit,
-  ValueType,
-} from "@seldon/core"
+import { ImageFit, Unit, ValueType } from "@seldon/core"
 
 import { getBackgroundSizeStyle } from "./get-background-size-style"
+
+import type { SingleBackgroundSizeValue } from "@seldon/core"
 
 describe("getBackgroundSizeStyle", () => {
   it("maps a named fit stored as an option string", () => {

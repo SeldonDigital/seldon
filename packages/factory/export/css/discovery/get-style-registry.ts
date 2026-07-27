@@ -1,9 +1,7 @@
 import { isEqual } from "lodash"
 
-import { Workspace } from "@seldon/core"
 import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
-import type { NodeParentIndex } from "@seldon/core/workspace/compute"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { getAllVariants } from "@seldon/core/workspace/helpers/general/get-all-variants"
@@ -15,7 +13,6 @@ import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-n
 import { isComponentBoard } from "@seldon/core/workspace/model/components"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import type { EntryNode } from "@seldon/core/workspace/types"
 
 import { getStyleContext } from "../../../helpers/build-export-context"
 import {
@@ -25,29 +22,31 @@ import {
 } from "../../../helpers/workspace-nodes"
 import { resetBrightnessSwatches } from "../../../styles/computed-variables/brightness-swatches"
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
-import { CSSObject } from "../../../styles/css-properties/types"
 import { kebabCase } from "../../react/utils/case-utils"
-import {
-  Classes,
-  DescendantStateClasses,
-  NodeIdToClass,
-  StateClasses,
-} from "../types"
 import { getClassNameForNode } from "./get-class-name"
+
+import type { CSSObject } from "../../../styles/css-properties/types"
+import type { Classes, DescendantStateClasses, NodeIdToClass, StateClasses } from "../types"
+import type { Workspace } from "@seldon/core"
+import type { NodeParentIndex } from "@seldon/core/workspace/compute"
+import type { EntryNode } from "@seldon/core/workspace/types"
 
 /** Collects every interaction-state key authored anywhere in the workspace. */
 function collectUsedStates(workspace: Workspace): string[] {
   const used = new Set<string>()
+
   for (const node of Object.values(workspace.nodes)) {
     if (node.states) {
       for (const key of Object.keys(node.states)) used.add(key)
     }
   }
+
   return [...used]
 }
 
 function getNodeTreeDepth(nodeId: string, workspace: Workspace): number {
   const node = workspace.nodes[nodeId]
+
   if (!node || isVariantNode(node)) {
     return 0
   }
@@ -57,6 +56,7 @@ function getNodeTreeDepth(nodeId: string, workspace: Workspace): number {
 
   while (currentId) {
     const parent = findParentNode(currentId, workspace)
+
     if (!parent) break
     depth++
     if (isVariantNode(parent)) break
@@ -66,10 +66,7 @@ function getNodeTreeDepth(nodeId: string, workspace: Workspace): number {
   return depth
 }
 
-function calculateCssDifferences(
-  baseCss: CSSObject,
-  instanceCss: CSSObject,
-): CSSObject {
+function calculateCssDifferences(baseCss: CSSObject, instanceCss: CSSObject): CSSObject {
   const differences: CSSObject = {}
 
   // The base class is applied unconditionally (by the component and the shared
@@ -85,6 +82,7 @@ function calculateCssDifferences(
   // instance does emit (e.g. `flex`) still overrides a longhand reset it implies
   // (e.g. `flex-shrink`).
   const writableDifferences = differences as Record<string, string>
+
   for (const [key, baseValue] of Object.entries(baseCss)) {
     if (key in instanceCss) continue
     if (baseValue === undefined || baseValue === null) continue
@@ -95,6 +93,7 @@ function calculateCssDifferences(
 
   for (const [key, value] of Object.entries(instanceCss)) {
     const baseValue = baseCss[key as keyof CSSObject]
+
     if (baseValue === undefined || !isEqual(baseValue, value)) {
       differences[key as keyof CSSObject] = value
     }
@@ -104,10 +103,7 @@ function calculateCssDifferences(
 }
 
 function isInstanceWithTemplateSource(node: EntryNode): boolean {
-  return (
-    typeCheckingService.isInstance(node) &&
-    getTemplateSourceNodeId(node) !== null
-  )
+  return typeCheckingService.isInstance(node) && getTemplateSourceNodeId(node) !== null
 }
 
 /** Family base class shared by every variant of a component, e.g. `sdn-item`. */
@@ -162,6 +158,7 @@ export const buildStyleRegistry = (
   ): void => {
     const byState = (descendantStateClasses[rootClass] ??= {})
     const rules = (byState[stateName] ??= [])
+
     if (rules.some((rule) => rule.descendantClass === descendantClass)) return
     rules.push({ descendantClass, css })
   }
@@ -169,6 +166,7 @@ export const buildStyleRegistry = (
   /** Full computed CSS for a node in its own context, optionally for a state. */
   const computeNodeCss = (nodeId: string, state?: string): CSSObject => {
     const context = getStyleContext(nodeId, workspace, parentIndex, state)
+
     return getCssObjectFromProperties(context.properties, {
       ...context,
       useThemeVariableReferences: true,
@@ -183,17 +181,21 @@ export const buildStyleRegistry = (
    */
   const collectSubtreeIds = (rootId: string): string[] => {
     const board = getBoardByNodeId(workspace, rootId)
+
     if (!board || !isComponentBoard(board)) return []
     const ids: string[] = []
     const seen = new Set<string>()
     const stack = [...getChildrenIds(board, rootId)]
+
     while (stack.length > 0) {
       const id = stack.pop() as string
+
       if (seen.has(id)) continue
       seen.add(id)
       ids.push(id)
       for (const childId of getChildrenIds(board, id)) stack.push(childId)
     }
+
     return ids
   }
 
@@ -211,11 +213,13 @@ export const buildStyleRegistry = (
     if (!aIsVariant && bIsVariant) return 1
     if (aIsInstance && !bIsInstance) return -1
     if (!aIsInstance && bIsInstance) return 1
+
     return 0
   })
 
   sortedNodes.forEach((node) => {
     const className = getClassNameForNode(node, workspace)
+
     nodeTreeDepths[node.id] = getNodeTreeDepth(node.id, workspace)
 
     const sourceVariantId = typeCheckingService.isInstance(node)
@@ -235,17 +239,15 @@ export const buildStyleRegistry = (
         useThemeVariableReferences: true,
       })
 
-      const instanceCss = getCssObjectFromProperties(
-        instanceContext.properties,
-        {
-          ...instanceContext,
-          useThemeVariableReferences: true,
-        },
-      )
+      const instanceCss = getCssObjectFromProperties(instanceContext.properties, {
+        ...instanceContext,
+        useThemeVariableReferences: true,
+      })
 
       css = calculateCssDifferences(variantCss, instanceCss)
     } else {
       const context = getStyleContext(node.id, workspace, parentIndex)
+
       css = getCssObjectFromProperties(context.properties, {
         ...context,
         useThemeVariableReferences: true,
@@ -257,25 +259,24 @@ export const buildStyleRegistry = (
     // delta is materialized on the variant's class, so instances inherit it for
     // free through the variant class they already carry.
     const nodeStateDeltas: Record<string, CSSObject> = {}
+
     if (typeCheckingService.isVariant(node) && !hasTemplateSource) {
       for (const state of usedStates) {
-        const stateContext = getStyleContext(
-          node.id,
-          workspace,
-          parentIndex,
-          state,
-        )
+        const stateContext = getStyleContext(node.id, workspace, parentIndex, state)
         const stateCss = getCssObjectFromProperties(stateContext.properties, {
           ...stateContext,
           useThemeVariableReferences: true,
         })
         const delta = calculateCssDifferences(css, stateCss)
+
         if (Object.keys(delta).length > 0) {
           nodeStateDeltas[state] = delta
         }
       }
     }
+
     const hasStateDeltas = Object.keys(nodeStateDeltas).length > 0
+
     if (hasStateDeltas) {
       variantOwnedStates[node.id] = new Set(Object.keys(nodeStateDeltas))
     }
@@ -296,15 +297,16 @@ export const buildStyleRegistry = (
     // self-scoped rule for standalone use.
     const isContainerVariant =
       hasStateDeltas && (containerNodeIds.has(node.id) || isCustomComponent)
+
     if (isContainerVariant) {
       const rootClass = getClassNameForNode(node, workspace)
+
       for (const [stateName, stateCss] of Object.entries(nodeStateDeltas)) {
         addRootScopedRule(rootClass, stateName, null, stateCss)
       }
     }
 
-    const isDefault =
-      typeCheckingService.isVariant(node) && isDefaultVariant(node)
+    const isDefault = typeCheckingService.isVariant(node) && isDefaultVariant(node)
 
     if (
       !forceRegeneration &&
@@ -318,19 +320,20 @@ export const buildStyleRegistry = (
 
     const componentId = getNodeCatalogId(node, workspace) ?? node.id
 
-    const existing = Object.entries(classes).find(
-      ([existingClassName, existingCss]) => {
-        const existingComponentId = classNameToComponentId[existingClassName]
-        return isEqual(existingCss, css) && existingComponentId === componentId
-      },
-    )
+    const existing = Object.entries(classes).find(([existingClassName, existingCss]) => {
+      const existingComponentId = classNameToComponentId[existingClassName]
+
+      return isEqual(existingCss, css) && existingComponentId === componentId
+    })
 
     if (existing) {
       nodeIdToClass[node.id] = existing[0]
       classNameToNodeId[existing[0]] = node.id
+
       if (!classNameToComponentId[existing[0]]) {
         classNameToComponentId[existing[0]] = componentId
       }
+
       if (hasStateDeltas && !isContainerVariant && !stateClasses[existing[0]]) {
         stateClasses[existing[0]] = nodeStateDeltas
       }
@@ -339,6 +342,7 @@ export const buildStyleRegistry = (
       nodeIdToClass[node.id] = className
       classNameToNodeId[className] = node.id
       classNameToComponentId[className] = componentId
+
       if (hasStateDeltas && !isContainerVariant) {
         stateClasses[className] = nodeStateDeltas
       }
@@ -364,9 +368,12 @@ export const buildStyleRegistry = (
   // change the canvas does not show.
   const exportComponentRoots = getAllVariants(workspace).filter((variant) => {
     const board = getBoardByNodeId(workspace, variant.id)
+
     if (!board || !isComponentBoard(board)) return false
     const catalogId = getNodeCatalogId(variant, workspace)
+
     if (!catalogId || !isComponentId(catalogId)) return false
+
     return catalogId !== ComponentId.FRAME
   })
 
@@ -376,6 +383,7 @@ export const buildStyleRegistry = (
     // root rule; it does not turn the state on for the container. A root that
     // owns no state cascades nothing.
     const ownedStates = variantOwnedStates[root.id]
+
     if (!ownedStates || ownedStates.size === 0) continue
 
     // Root the cascade at the variant's own rendered class (`.sdn-item-node`),
@@ -384,20 +392,23 @@ export const buildStyleRegistry = (
     // variant (the row) and match only the default variant (the board).
     const rootClass = getClassNameForNode(root, workspace)
     const rootFamily = getFamilyBaseClass(root, workspace)
+
     for (const descendantId of collectSubtreeIds(root.id)) {
       const descendantNode = workspace.nodes[descendantId]
+
       if (!descendantNode) continue
 
       // Skip a same-family nesting so a row never scopes a delta onto itself.
       if (getFamilyBaseClass(descendantNode, workspace) === rootFamily) continue
 
       const descendantClass =
-        nodeIdToClass[descendantId] ??
-        getClassNameForNode(descendantNode, workspace)
+        nodeIdToClass[descendantId] ?? getClassNameForNode(descendantNode, workspace)
       const normalCss = computeNodeCss(descendantId)
+
       for (const stateName of ownedStates) {
         const stateCss = computeNodeCss(descendantId, stateName)
         const delta = calculateCssDifferences(normalCss, stateCss)
+
         if (Object.keys(delta).length > 0) {
           addRootScopedRule(rootClass, stateName, descendantClass, delta)
         }
@@ -413,20 +424,16 @@ export const buildStyleRegistry = (
         const className = getClassNameForNode(node, workspace)
         const componentId = getNodeCatalogId(node, workspace) ?? node.id
 
-        const existing = Object.entries(classes).find(
-          ([existingClassName, existingCss]) => {
-            const existingComponentId =
-              classNameToComponentId[existingClassName]
-            return (
-              Object.keys(existingCss).length === 0 &&
-              existingComponentId === componentId
-            )
-          },
-        )
+        const existing = Object.entries(classes).find(([existingClassName, existingCss]) => {
+          const existingComponentId = classNameToComponentId[existingClassName]
+
+          return Object.keys(existingCss).length === 0 && existingComponentId === componentId
+        })
 
         if (existing) {
           nodeIdToClass[node.id] = existing[0]
           classNameToNodeId[existing[0]] = node.id
+
           if (!classNameToComponentId[existing[0]]) {
             classNameToComponentId[existing[0]] = componentId
           }
@@ -434,6 +441,7 @@ export const buildStyleRegistry = (
           nodeIdToClass[node.id] = className
           classNameToNodeId[className] = node.id
           classNameToComponentId[className] = componentId
+
           if (!classes[className]) {
             classes[className] = {}
           }
@@ -444,11 +452,8 @@ export const buildStyleRegistry = (
 
   getWorkspaceNodeList(workspace).forEach((node) => {
     const templateSourceId = getTemplateSourceNodeId(node)
-    if (
-      isEntryNodeInstance(node) &&
-      templateSourceId &&
-      !nodeIdToClass[node.id]
-    ) {
+
+    if (isEntryNodeInstance(node) && templateSourceId && !nodeIdToClass[node.id]) {
       const className = getClassNameForNode(node, workspace)
       const componentId = getNodeCatalogId(node, workspace) ?? node.id
 

@@ -13,10 +13,10 @@ import { createContextTools } from "./tools/context"
 import { createMutationTools } from "./tools/mutations"
 import { createTurnState } from "./tools/turn-state"
 
-import type { AgentSession } from "@earendil-works/pi-coding-agent"
 import type { EditorContextInput, ResolvedContext } from "./editor-context"
 import type { ThinkingLevelOption } from "./model"
 import type { PiTurnState } from "./tools/turn-state"
+import type { AgentSession } from "@earendil-works/pi-coding-agent"
 
 /**
  * Options for building a Seldon Pi session. `thinkingCapable` is whether the

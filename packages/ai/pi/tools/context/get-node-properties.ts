@@ -4,8 +4,8 @@ import { Type } from "typebox"
 import { nodePropertiesSection } from "../../../prompt/context-sections/node-properties"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns the effective, merged property values for one node. */
 export function createGetNodePropertiesTool(state: PiTurnState): ToolDefinition {

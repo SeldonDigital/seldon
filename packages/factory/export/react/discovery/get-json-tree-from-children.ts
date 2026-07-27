@@ -1,18 +1,7 @@
-import {
-  Display,
-  InstanceId,
-  Properties,
-  ValueType,
-  VariantId,
-} from "@seldon/core"
+import { Display, ValueType } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import {
-  ComponentId,
-  ComponentLevel,
-  isComponentId,
-} from "@seldon/core/components/constants"
+import { isComponentId } from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
-import { IconId } from "@seldon/core/icon-sets"
 import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
 import { WrapperElement } from "@seldon/core/properties"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
@@ -21,23 +10,21 @@ import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-ch
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import {
-  isAuthoredBoard,
-  isComponentBoard,
-} from "@seldon/core/workspace/model/components"
+import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import type { Board, EntryNode, Workspace } from "@seldon/core/workspace/types"
 
-import {
-  getTemplateSourceNodeId,
-  resolveSourceVariantId,
-} from "../../../helpers/workspace-nodes"
-import { DataBinding, JSONTreeNode } from "../../types"
+import { getTemplateSourceNodeId, resolveSourceVariantId } from "../../../helpers/workspace-nodes"
 import { camelCase, pascalCase } from "../utils/case-utils"
 import { getComponentName } from "./get-component-name"
 import { getNodeOriginChain } from "./get-node-origin-chain"
 import { getUsedIconIds } from "./get-used-icon-ids"
 import { HTML_ELEMENT_OPTIONS } from "./html-element-options"
+
+import type { DataBinding, JSONTreeNode } from "../../types"
+import type { InstanceId, Properties, VariantId } from "@seldon/core"
+import type { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+import type { IconId } from "@seldon/core/icon-sets"
+import type { Board, EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 /** Composition boards that own exportable node trees. */
 function isExportableCompositionBoard(board: Board): boolean {
@@ -51,6 +38,7 @@ export function getJsonTreeFromChildren(
   includeHidden: boolean = false,
 ): JSONTreeNode {
   const board = getBoardByNodeId(workspace, variant.id)
+
   if (!board || !isExportableCompositionBoard(board)) {
     throw new Error(`Component board not found for variant ${variant.id}`)
   }
@@ -69,9 +57,7 @@ export function getJsonTreeFromChildren(
   const schema = getComponentSchema(componentId)
   // An authored root's declared board level overrides its Container/Frame
   // template level so the exported component keeps its authored level.
-  const componentLevel = isAuthoredBoard(board)
-    ? (board.level as ComponentLevel)
-    : schema.level
+  const componentLevel = isAuthoredBoard(board) ? (board.level as ComponentLevel) : schema.level
   const schemaVariantId = getSchemaVariantId(variant, componentId, workspace)
 
   const tree = {
@@ -84,12 +70,7 @@ export function getJsonTreeFromChildren(
     dataBinding: {
       interfaceName: name + "Props",
       path: camelCase(name),
-      props: getVariantProps(
-        variantProperties,
-        schema?.properties ?? {},
-        componentId,
-        workspace,
-      ),
+      props: getVariantProps(variantProperties, schema?.properties ?? {}, componentId, workspace),
     },
     children: children.length > 0 ? children : null,
     classNames: [
@@ -110,14 +91,13 @@ export function getJsonTreeFromChildren(
       const childNode = getNodeById(child, workspace)
       const childProperties = getNodeProperties(childNode, workspace)
       const displayValue = childProperties.display?.value
+
       return displayValue !== Display.EXCLUDE && displayValue !== Display.MOCK
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes("Circular reference")
-      ) {
+      if (error instanceof Error && error.message.includes("Circular reference")) {
         return false
       }
+
       throw error
     }
   }
@@ -139,26 +119,24 @@ export function getJsonTreeFromChildren(
     const node = getNodeById(id, workspace)
 
     let nodeProperties: Properties
+
     try {
       nodeProperties = getNodeProperties(node, workspace)
     } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes("Circular reference")
-      ) {
+      if (error instanceof Error && error.message.includes("Circular reference")) {
         nodeProperties = {}
       } else {
         throw error
       }
     }
 
-    const isStub =
-      inheritedStub || nodeProperties.display?.value === Display.STUB
+    const isStub = inheritedStub || nodeProperties.display?.value === Display.STUB
 
     const name = getComponentName(node, workspace)
     const catalogId = getNodeCatalogId(node, workspace) ?? node.id
 
     let reference: string = camelCase(name)
+
     if (referenceMap[catalogId]) {
       reference += referenceMap[catalogId].length + 1
       referenceMap[catalogId].push(node.id)
@@ -170,14 +148,14 @@ export function getJsonTreeFromChildren(
 
     const nodeBoard = getBoardByNodeId(workspace, node.id)
     let children: JSONTreeNode[] | null = null
+
     if (nodeBoard && isExportableCompositionBoard(nodeBoard)) {
       const childReferenceMap: Record<string, string[]> = {}
       const childIds = getChildrenIds(nodeBoard, node.id)
+
       children = childIds
         .filter((childId) => shouldExportChild(childId))
-        .map((childId) =>
-          convertNode(childId, childReferenceMap, path, newPathNodes, isStub),
-        )
+        .map((childId) => convertNode(childId, childReferenceMap, path, newPathNodes, isStub))
     }
 
     const referenceName = pascalCase(reference) + "Props"
@@ -187,17 +165,21 @@ export function getJsonTreeFromChildren(
 
     if (typeCheckingService.isVariant(node)) {
       const variantClass = nodeIdToClass[node.id]
+
       if (variantClass) {
         classNamesArray.push(variantClass)
       }
     } else if (typeCheckingService.isInstance(node)) {
       const sourceId = resolveSourceVariantId(node, workspace)
+
       if (sourceId) {
         const variantClass = nodeIdToClass[sourceId]
         const instanceClass = nodeIdToClass[node.id]
+
         if (variantClass) {
           classNamesArray.push(variantClass)
         }
+
         if (instanceClass) {
           classNamesArray.push(instanceClass)
         }
@@ -210,11 +192,7 @@ export function getJsonTreeFromChildren(
 
     const childComponentId = getComponentIdOrThrow(node, workspace)
     const childSchema = getComponentSchema(childComponentId)
-    const childSchemaVariantId = getSchemaVariantId(
-      node,
-      childComponentId,
-      workspace,
-    )
+    const childSchemaVariantId = getSchemaVariantId(node, childComponentId, workspace)
 
     return {
       name,
@@ -239,14 +217,13 @@ export function getJsonTreeFromChildren(
   }
 }
 
-function getComponentIdOrThrow(
-  node: EntryNode,
-  workspace: Workspace,
-): ComponentId {
+function getComponentIdOrThrow(node: EntryNode, workspace: Workspace): ComponentId {
   const catalogId = getNodeCatalogId(node, workspace)
+
   if (!catalogId || !isComponentId(catalogId)) {
     throw new Error(`Component id not found for node ${node.id}`)
   }
+
   return catalogId
 }
 
@@ -256,6 +233,7 @@ function getSchemaVariantId(
   workspace: Workspace,
 ): string | null {
   const schema = getComponentSchema(componentId)
+
   if (!isComplexSchema(schema) || !schema.variants?.length) {
     return null
   }
@@ -273,11 +251,13 @@ function getSchemaVariantId(
   while (current && !visited.has(current.id)) {
     visited.add(current.id)
     const schemaVariantId = schemaVariantIdByNodeId.get(current.id)
+
     if (schemaVariantId) {
       return schemaVariantId
     }
 
     const sourceNodeId = getTemplateSourceNodeId(current)
+
     if (!sourceNodeId) {
       return null
     }
@@ -290,33 +270,33 @@ function getSchemaVariantId(
 
 function getChildNodeProps(properties: Properties) {
   const props: DataBinding["props"] = {}
-  const {
-    content,
-    symbol,
-    source,
-    htmlElement,
-    wrapperElement,
-    inputType,
-    placeholder,
-  } = properties
+  const { content, symbol, source, htmlElement, wrapperElement, inputType, placeholder } =
+    properties
+
   if (content?.value) {
     props.children = { defaultValue: escapeHtml(content.value) }
   }
+
   if (symbol?.value) {
     props.icon = { defaultValue: symbol.value }
   }
+
   if (placeholder?.value) {
     props.placeholder = { defaultValue: escapeHtml(placeholder.value) }
   }
+
   if (source?.value) {
     props.src = { defaultValue: source.value }
   }
+
   if (htmlElement?.value) {
     props.htmlElement = { defaultValue: htmlElement.value }
   }
+
   if (wrapperElement?.value) {
     props.wrapperElement = { defaultValue: wrapperElement.value }
   }
+
   if (inputType?.value) {
     props.type = { defaultValue: inputType.value }
   }
@@ -349,10 +329,12 @@ function getAriaAttributeProps(properties: Properties): DataBinding["props"] {
     "aria-readonly": properties.ariaReadonly?.value,
     "aria-live": properties.ariaLive?.value,
   }
+
   for (const [attribute, value] of Object.entries(ariaAttributeValues)) {
     if (value == null) continue
     props[attribute] = { defaultValue: String(value) }
   }
+
   return props
 }
 
@@ -369,20 +351,17 @@ function getVariantProps(
   const { symbol, htmlElement, wrapperElement } = schemaProperties
 
   const htmlElementOptions = HTML_ELEMENT_OPTIONS[componentId]
+
   if (htmlElementOptions?.length) {
     props.htmlElement = {
-      defaultValue:
-        properties.htmlElement?.value ||
-        htmlElement?.value ||
-        htmlElementOptions[0],
+      defaultValue: properties.htmlElement?.value || htmlElement?.value || htmlElementOptions[0],
       options: [...htmlElementOptions],
     }
   }
 
   if (wrapperElement?.type === ValueType.OPTION && wrapperElement.value) {
     props.wrapperElement = {
-      defaultValue:
-        (properties.wrapperElement?.value as string) ?? wrapperElement.value,
+      defaultValue: (properties.wrapperElement?.value as string) ?? wrapperElement.value,
       options: Object.values(WrapperElement),
     }
   }
@@ -391,10 +370,13 @@ function getVariantProps(
     // Match the widened set used for the iconMap and icon file emission so
     // the generated IconProps["icon"] union covers every exported icon.
     const iconIds = getUsedIconIds(workspace)
+
     for (const iconId of getWorkspaceEnabledIcons(workspace)) {
       iconIds.add(iconId)
     }
+
     const options: IconId[] = Array.from(iconIds)
+
     props.icon = {
       defaultValue: properties.symbol?.value || options[0],
       options,

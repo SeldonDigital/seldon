@@ -1,9 +1,10 @@
-import { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
-import { Theme } from "@seldon/core/themes/types"
 
 import { getAbsoluteSizeCssValue } from "./get-absolute-size-css-value"
-import { CSSObject } from "./types"
+
+import type { CSSObject } from "./types"
+import type { Properties } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 export function getMarginStyles({
   properties,
@@ -23,32 +24,19 @@ export function getMarginStyles({
     const left = resolveValue(properties.margin.left)
 
     if (top) {
-      styles.marginTop = getAbsoluteSizeCssValue(
-        top,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.marginTop = getAbsoluteSizeCssValue(top, theme, useThemeVariableReferences)
     }
+
     if (right) {
-      styles.marginInlineEnd = getAbsoluteSizeCssValue(
-        right,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.marginInlineEnd = getAbsoluteSizeCssValue(right, theme, useThemeVariableReferences)
     }
+
     if (bottom) {
-      styles.marginBottom = getAbsoluteSizeCssValue(
-        bottom,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.marginBottom = getAbsoluteSizeCssValue(bottom, theme, useThemeVariableReferences)
     }
+
     if (left) {
-      styles.marginInlineStart = getAbsoluteSizeCssValue(
-        left,
-        theme,
-        useThemeVariableReferences,
-      )
+      styles.marginInlineStart = getAbsoluteSizeCssValue(left, theme, useThemeVariableReferences)
     }
   }
 

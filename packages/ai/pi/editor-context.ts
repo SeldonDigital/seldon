@@ -22,9 +22,9 @@ import { themeIdsSection } from "../prompt/context-sections/theme-ids"
 import { themeTokensSection } from "../prompt/context-sections/theme-tokens"
 import { buildIsolationClosure } from "./isolation"
 
-import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
 import type { IsolationScope, SelectionScope } from "../types"
 import type { IsolationClosure } from "./isolation"
+import type { Board, BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 /** The editor state the agent needs to target the right board and node. */
 export interface EditorContextInput {

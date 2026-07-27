@@ -4,9 +4,9 @@ import { Type } from "typebox"
 import { findNodesSection } from "../../../prompt/context-sections/workspace-index"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Searches every board for nodes matching a label or catalog id query. */
 export function createFindNodesTool(state: PiTurnState, resolved: ResolvedContext): ToolDefinition {

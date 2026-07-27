@@ -4,9 +4,9 @@ import { Type } from "typebox"
 import { commit, textResult } from "./commit"
 import { withCreatedIdentity } from "./created-nodes"
 
+import type { PiTurnState } from "../turn-state"
 import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
-import type { PiTurnState } from "../turn-state"
 
 /**
  * Duplicates an existing node. With a parent, it pastes a copy of an instance

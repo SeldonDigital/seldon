@@ -8,10 +8,7 @@ import { getBorderWidthCSSValue } from "./get-border-width-css-value"
 describe("getBorderWidthCSSValue", () => {
   it("returns the hairline variable for the hairline option", () => {
     expect(
-      getBorderWidthCSSValue(
-        { type: ValueType.OPTION, value: BorderWidth.HAIRLINE },
-        defaultTheme,
-      ),
+      getBorderWidthCSSValue({ type: ValueType.OPTION, value: BorderWidth.HAIRLINE }, defaultTheme),
     ).toBe("var(--hairline)")
   })
 

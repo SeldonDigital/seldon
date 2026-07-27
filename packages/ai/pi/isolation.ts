@@ -2,8 +2,8 @@ import { boardKey } from "@seldon/core/workspace/helpers/components/board-ref-re
 import { getIsolatedVariantUsage } from "@seldon/core/workspace/helpers/components/get-isolated-variant-usage"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 
-import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 import type { IsolationScope } from "../types"
+import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 /**
  * The resolved reach of Isolation Mode for one turn. The harness pins the active

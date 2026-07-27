@@ -1,13 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  BackgroundPosition,
-  BackgroundPositionValue,
-  Unit,
-  ValueType,
-} from "@seldon/core"
+import { BackgroundPosition, Unit, ValueType } from "@seldon/core"
 
 import { getBackgroundPositionStyle } from "./get-background-position-style"
+
+import type { BackgroundPositionValue } from "@seldon/core"
 
 describe("getBackgroundPositionStyle", () => {
   it("serializes a single exact length", () => {

@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, Unit, ValueType } from "@seldon/core"
+import { Unit, ValueType } from "@seldon/core"
 
 import { getRotationStyles } from "./get-rotation-styles"
+
+import type { Properties } from "@seldon/core"
 
 describe("getRotationStyles", () => {
   it("emits a rotate transform for an exact degrees value", () => {
@@ -29,8 +31,6 @@ describe("getRotationStyles", () => {
   })
 
   it("returns no styles when rotation is unset", () => {
-    expect(
-      getRotationStyles({ properties: {} as unknown as Properties }),
-    ).toEqual({})
+    expect(getRotationStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 })

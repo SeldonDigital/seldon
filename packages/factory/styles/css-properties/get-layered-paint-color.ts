@@ -1,7 +1,7 @@
-import { ColorValue, EmptyValue, PercentageValue } from "@seldon/core"
-import { Theme } from "@seldon/core/themes/types"
-
 import { getColorCSSValue } from "./get-color-css-value"
+
+import type { ColorValue, EmptyValue, PercentageValue } from "@seldon/core"
+import type { Theme } from "@seldon/core/themes/types"
 
 /**
  * Resolves a layered paint color (background, gradient stop, or shadow) to CSS.

@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest"
 
-import { Properties, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 
 import { getClipStyles } from "./get-clip-styles"
+
+import type { Properties } from "@seldon/core"
 
 const clip = (value: unknown): Properties =>
   ({ clip: { type: ValueType.OPTION, value } }) as unknown as Properties
@@ -36,8 +38,6 @@ describe("getClipStyles", () => {
   })
 
   it("returns no styles when clip is unset", () => {
-    expect(getClipStyles({ properties: {} as unknown as Properties })).toEqual(
-      {},
-    )
+    expect(getClipStyles({ properties: {} as unknown as Properties })).toEqual({})
   })
 })

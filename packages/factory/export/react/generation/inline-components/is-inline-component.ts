@@ -1,6 +1,6 @@
 import { ComponentLevel } from "@seldon/core/components/constants"
 
-import { ComponentToExport } from "../../../types"
+import type { ComponentToExport } from "../../../types"
 
 /**
  * Inline Component:
@@ -23,7 +23,5 @@ export function isInlineComponent(component: ComponentToExport): boolean {
   }
 
   // Check if component has any direct child with level === ComponentLevel.FRAME
-  return component.tree.children.some(
-    (child) => child.level === ComponentLevel.FRAME,
-  )
+  return component.tree.children.some((child) => child.level === ComponentLevel.FRAME)
 }

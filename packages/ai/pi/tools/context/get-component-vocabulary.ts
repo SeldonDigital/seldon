@@ -9,8 +9,8 @@ import { propertyVocabularySection } from "../../../prompt/context-sections/prop
 import { themeTokensSection } from "../../../prompt/context-sections/theme-tokens"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 const PROPERTY_CATEGORY_VALUES = Object.values(PropertyDisplayCategory)
 

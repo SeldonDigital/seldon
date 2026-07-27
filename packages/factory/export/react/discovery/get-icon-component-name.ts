@@ -10,5 +10,6 @@ export function getIconComponentName(key: string): string {
   if (key === "__default__") {
     return "IconDefault"
   }
+
   return `Icon${pascalCase(key)}`
 }

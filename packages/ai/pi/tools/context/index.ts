@@ -18,9 +18,9 @@ import { createSearchThemeTokensTool } from "./search-theme-tokens"
 import { createSuggestActionTool } from "./suggest-action"
 import { createWidenScopeTool } from "./widen-scope"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /**
  * Read-only tools that surface Seldon reference data on demand. Keeping the

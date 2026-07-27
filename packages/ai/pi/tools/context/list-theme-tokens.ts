@@ -5,8 +5,8 @@ import { themeIdsSection } from "../../../prompt/context-sections/theme-ids"
 import { themeTokensSection } from "../../../prompt/context-sections/theme-tokens"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns the theme ids for set_theme_override and the referenceable token ids. */
 export function createListThemeTokensTool(resolved: ResolvedContext): ToolDefinition {

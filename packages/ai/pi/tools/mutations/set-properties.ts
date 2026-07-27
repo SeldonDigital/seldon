@@ -8,11 +8,11 @@ import { isAuthoredBoard, isComponentBoard } from "@seldon/core/workspace/model/
 import { resolveNodeTarget } from "../resolve-target"
 import { commit, textResult } from "./commit"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
-import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ResolvedContext } from "../../editor-context"
 import type { TargetSpec } from "../resolve-target"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** The component board key whose variant trees list this node id, if any. */
 function boardKeyOfNode(workspace: Workspace, nodeId: string): BoardKey | undefined {

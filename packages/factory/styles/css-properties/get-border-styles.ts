@@ -1,16 +1,15 @@
-import { BorderCompound, ValueType } from "@seldon/core"
+import { ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import { Theme, ThemeBorder } from "@seldon/core/themes/types"
 
 import { getComputedCssValue } from "../computed-variables"
-import { StyleGenerationContext } from "../types"
 import { getBorderWidthCSSValue } from "./get-border-width-css-value"
-import {
-  applyTransformsToColorReference,
-  getColorCSSValue,
-} from "./get-color-css-value"
-import { CSSObject } from "./types"
+import { applyTransformsToColorReference, getColorCSSValue } from "./get-color-css-value"
+
+import type { StyleGenerationContext } from "../types"
+import type { CSSObject } from "./types"
+import type { BorderCompound } from "@seldon/core"
+import type { Theme, ThemeBorder } from "@seldon/core/themes/types"
 
 type Side = "top" | "right" | "bottom" | "left"
 
@@ -20,11 +19,7 @@ type BorderWidthKey =
   | "borderBottomWidth"
   | "borderLeftWidth"
 
-type BorderSideKey =
-  | "borderTopStyle"
-  | "borderRightStyle"
-  | "borderBottomStyle"
-  | "borderLeftStyle"
+type BorderSideKey = "borderTopStyle" | "borderRightStyle" | "borderBottomStyle" | "borderLeftStyle"
 
 type BorderColorKey =
   | "borderTopColor"
@@ -32,15 +27,13 @@ type BorderColorKey =
   | "borderBottomColor"
   | "borderLeftColor"
 
-const SIDE_COMPOUND_KEY: Record<
-  Side,
-  "borderTop" | "borderRight" | "borderBottom" | "borderLeft"
-> = {
-  top: "borderTop",
-  right: "borderRight",
-  bottom: "borderBottom",
-  left: "borderLeft",
-}
+const SIDE_COMPOUND_KEY: Record<Side, "borderTop" | "borderRight" | "borderBottom" | "borderLeft"> =
+  {
+    top: "borderTop",
+    right: "borderRight",
+    bottom: "borderBottom",
+    left: "borderLeft",
+  }
 
 export function getBorderStyles({
   properties,
@@ -53,8 +46,10 @@ export function getBorderStyles({
   const shorthand = properties.border
 
   const sides: Side[] = ["top", "right", "bottom", "left"]
+
   sides.forEach((side) => {
     const sideBorder = properties[SIDE_COMPOUND_KEY[side]]
+
     Object.assign(
       styles,
       getBorderSideStyles(
@@ -86,8 +81,7 @@ function getBorderSideStyles(
   const capitalizedSide = side.charAt(0).toUpperCase() + side.slice(1)
   const styles: CSSObject = {}
 
-  const preset =
-    resolveValue(sideBorder?.preset) || resolveValue(shorthand?.preset)
+  const preset = resolveValue(sideBorder?.preset) || resolveValue(shorthand?.preset)
   const themeBorder: ThemeBorder | undefined = preset
     ? getThemeOption(preset.value, theme)
     : undefined
@@ -98,12 +92,11 @@ function getBorderSideStyles(
     resolveValue(themeBorder?.parameters.width)
 
   if (width) {
-    styles[`border${capitalizedSide}Width` as BorderWidthKey] =
-      getBorderWidthCSSValue(
-        width,
-        theme,
-        useThemeVariableReferences,
-      ) as CSSObject["borderWidth"]
+    styles[`border${capitalizedSide}Width` as BorderWidthKey] = getBorderWidthCSSValue(
+      width,
+      theme,
+      useThemeVariableReferences,
+    ) as CSSObject["borderWidth"]
   }
 
   const style =

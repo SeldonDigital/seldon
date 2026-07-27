@@ -1,15 +1,15 @@
-import { Workspace } from "@seldon/core"
 import {
-  type NodeParentIndex,
   buildNodeParentIndex,
   computeNodeProperties,
   getNodeComputeContext,
   resolveLayoutMode,
 } from "@seldon/core/workspace/compute"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 
-import { StyleGenerationContext } from "../styles/types"
+import type { StyleGenerationContext } from "../styles/types"
+import type { Workspace } from "@seldon/core"
+import type { NodeParentIndex } from "@seldon/core/workspace/compute"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 export type ExportContext = {
   parentIndex: NodeParentIndex
@@ -44,9 +44,7 @@ export function getStyleContext(
   })
 
   const parentId = parentIndex.get(nodeId)
-  const parentContext = parentId
-    ? getStyleContext(parentId, workspace, parentIndex, state)
-    : null
+  const parentContext = parentId ? getStyleContext(parentId, workspace, parentIndex, state) : null
 
   const theme = workspaceThemeService.getNodeTheme(nodeId, workspace)
 

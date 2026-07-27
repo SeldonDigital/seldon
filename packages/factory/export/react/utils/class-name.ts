@@ -1,7 +1,6 @@
-import { InstanceId, VariantId } from "@seldon/core"
-
-import { NodeIdToClass } from "../../css/types"
-import { ComponentToExport } from "../../types"
+import type { NodeIdToClass } from "../../css/types"
+import type { ComponentToExport } from "../../types"
+import type { InstanceId, VariantId } from "@seldon/core"
 
 /**
  * Get the class name for a specific node ID from the nodeIdToClass mapping

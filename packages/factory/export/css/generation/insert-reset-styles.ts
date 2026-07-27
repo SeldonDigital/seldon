@@ -1,7 +1,4 @@
-import {
-  TransformStrategy,
-  transformSource,
-} from "../../react/utils/transform-source"
+import { TransformStrategy, transformSource } from "../../react/utils/transform-source"
 
 /**
  * Insert the reset styles into the stylesheet

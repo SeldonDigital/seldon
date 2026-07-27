@@ -4,9 +4,9 @@ import { Type } from "typebox"
 import { workspaceBoardsSection } from "../../../prompt/context-sections/workspace-index"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns every component board, to locate one other than the active. */
 export function createListBoardsTool(

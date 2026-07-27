@@ -4,9 +4,9 @@ import { Type } from "typebox"
 import { selectionSection } from "../../../prompt/context-sections/selection"
 import { joinOrEmpty, textResult } from "./shared"
 
-import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { ResolvedContext } from "../../editor-context"
 import type { PiTurnState } from "../turn-state"
+import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 
 /** Returns the node selected on the canvas, with its identity and set properties. */
 export function createGetSelectionTool(

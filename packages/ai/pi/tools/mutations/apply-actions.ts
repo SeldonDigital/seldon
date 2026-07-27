@@ -4,9 +4,9 @@ import { Type } from "typebox"
 import { ALL_ACTION_TYPES } from "../../../schema/action-schema"
 import { commit, textResult } from "./commit"
 
+import type { PiTurnState } from "../turn-state"
 import type { ToolDefinition } from "@earendil-works/pi-coding-agent"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
-import type { PiTurnState } from "../turn-state"
 
 const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
 

@@ -32,15 +32,16 @@ const HTML_ELEMENT_TO_FILE_STEM: Partial<Record<HtmlElement, string>> = {
   [HtmlElement.OPTGROUP]: "HTML.Optgroup",
 }
 
-export function getNativeFileStemsForUsedElements(
-  usedElements: Set<HtmlElement>,
-): Set<string> {
+export function getNativeFileStemsForUsedElements(usedElements: Set<HtmlElement>): Set<string> {
   const stems = new Set<string>()
+
   for (const element of usedElements) {
     const stem = HTML_ELEMENT_TO_FILE_STEM[element]
+
     if (stem) {
       stems.add(stem)
     }
   }
+
   return stems
 }

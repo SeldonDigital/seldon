@@ -1,4 +1,4 @@
-import { ExportOptions, FileToExport } from "../../types"
+import type { ExportOptions, FileToExport } from "../../types"
 
 /**
  * Emits the shared `Frame.vue` wrapper. A Frame is the cross-level container:
@@ -27,6 +27,7 @@ const rootClassName = computed(() => combineClassNames(props.className))
   </component>
 </template>
 `
+
   return {
     path: `${folder}/frames/Frame.vue`.replaceAll("//", "/"),
     content,

@@ -1,6 +1,6 @@
-import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 import type { ThinkingLevelOption } from "./pi/model"
 import type { ActionRepair } from "./repair/normalize-actions"
+import type { BoardKey, Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 /** One turn of the chat conversation, passed back for context on later turns. */
 export interface ChatMessage {

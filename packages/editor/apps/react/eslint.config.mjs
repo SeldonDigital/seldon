@@ -1,6 +1,7 @@
 import reactHooks from "eslint-plugin-react-hooks"
 import { defineConfig, globalIgnores } from "eslint/config"
-import tseslint from "typescript-eslint"
+
+import { seldonBase } from "../../../../eslint.config.base.mjs"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =
@@ -8,55 +9,20 @@ const APP_VIEW_BOUNDARY_MESSAGE =
 
 export default defineConfig([
   globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
-  // Parse TypeScript and JSX. Rules stay opt-in below; the recommended
-  // typescript-eslint rulesets are intentionally not enabled here.
+  ...seldonBase,
+  // Register react-hooks so existing inline eslint-disable directives resolve,
+  // and enable the console policy shared by the editor apps.
   {
     files: ["**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-      },
-    },
-    // Register plugins so existing inline eslint-disable directives resolve.
-    // No rules from these sets are enabled here.
     plugins: {
-      "@typescript-eslint": tseslint.plugin,
       "react-hooks": reactHooks,
     },
-  },
-  {
     rules: {
       "no-console": [
         "warn",
         {
-          allow: [
-            "warn",
-            "error",
-            "info",
-            "dir",
-            "group",
-            "groupCollapsed",
-            "groupEnd",
-          ],
+          allow: ["warn", "error", "info", "dir", "group", "groupCollapsed", "groupEnd"],
         },
-      ],
-      curly: ["error", "multi-line"],
-      "@typescript-eslint/consistent-type-imports": [
-        "error",
-        { prefer: "type-imports", fixStyle: "separate-type-imports" },
-      ],
-      "@typescript-eslint/member-ordering": [
-        "warn",
-        { default: { optionalityOrder: "required-first" } },
-      ],
-      "padding-line-between-statements": [
-        "error",
-        { blankLine: "always", prev: ["const", "let"], next: "*" },
-        { blankLine: "any", prev: ["const", "let"], next: ["const", "let"] },
-        { blankLine: "always", prev: "*", next: "return" },
-        { blankLine: "always", prev: "block-like", next: "*" },
-        { blankLine: "always", prev: "*", next: "block-like" },
       ],
     },
   },
@@ -100,8 +66,7 @@ export default defineConfig([
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
         {
-          selector:
-            "JSXOpeningElement[name.type='JSXMemberExpression'][name.object.name='motion']",
+          selector: "JSXOpeningElement[name.type='JSXMemberExpression'][name.object.name='motion']",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
       ],
