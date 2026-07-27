@@ -769,7 +769,6 @@ export function useMenuConfig(): MenuConfig {
             action: toggleShowCodeNames,
             active: showCodeNames,
           },
-          "separator",
           {
             id: "show-unused-properties",
             label: "Show Unused Properties",

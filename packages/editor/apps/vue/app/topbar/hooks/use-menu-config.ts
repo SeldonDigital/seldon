@@ -562,7 +562,6 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       action: config.toggleShowCodeNames,
       active: config.showCodeNames,
     },
-    "separator",
     {
       id: "show-unused-properties",
       label: "Show Unused Properties",

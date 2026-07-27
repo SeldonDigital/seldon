@@ -192,7 +192,10 @@ export function ObjectsSidebar() {
 
 function ObjectsSectionGroup({ section }: { section: BoardSection }) {
   const isExpanded = useIsSectionExpanded(section.level)
-  const emptyLabel = `No ${section.label.toLowerCase()}`
+  const { isolatedView } = useEditorConfig()
+  const emptyLabel = isolatedView
+    ? "Currently in Isolation Mode"
+    : `No ${section.label.toLowerCase()}`
   const boardRows =
     section.boards.length === 0 ? (
       <BoardController emptyLabel={emptyLabel} />

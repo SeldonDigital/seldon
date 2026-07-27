@@ -25,8 +25,14 @@ const save = useWorkspaceSaveStore()
 const toast = useToastStore()
 
 const { workspaceSelected } = storeToRefs(selection)
-const { objectsView } = storeToRefs(config)
+const { objectsView, isolatedView } = storeToRefs(config)
 const { record } = storeToRefs(save)
+
+function emptySectionLabel(label: string): string {
+  return isolatedView.value
+    ? "Currently in Isolation Mode"
+    : `No ${label.toLowerCase()}`
+}
 
 const sections = useObjectsSections(toRef(props, "workspace"))
 
@@ -148,7 +154,7 @@ function asBoard(board: unknown): BoardType {
             :button-iconic="null"
             :combobox-field="{}"
             :icon2="null"
-            :input="{ value: `No ${section.label.toLowerCase()}`, readonly: true }"
+            :input="{ value: emptySectionLabel(section.label), readonly: true }"
             :button-iconic2="null"
             :button-iconic3="null"
           />
