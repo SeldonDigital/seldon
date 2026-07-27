@@ -12,29 +12,20 @@
  *****/
 
 /**
- * Utility function to combine default and custom classNames while removing duplicates
+ * Combines any number of className sources while removing duplicates.
  *
- * @param defaultClassName - The base className(s)
- * @param customClassName - Optional additional className(s) to append
+ * @param names - The className sources, in order of increasing precedence
  * @returns A clean, deduplicated className string
  *
  * @example
  * ```ts
  * combineClassNames("btn primary", "primary large") // "btn primary large"
  * combineClassNames("btn", undefined) // "btn"
- * combineClassNames("btn", "") // "btn"
+ * combineClassNames("btn", null, "large") // "btn large"
  * ```
  */
-export function combineClassNames(defaultClassName?: string, customClassName?: string): string {
-  if (!defaultClassName) return customClassName || ""
-  if (!customClassName) return defaultClassName
+export function combineClassNames(...names: Array<string | null | undefined>): string {
+  const classes = names.flatMap((name) => (name ? name.split(" ") : [])).filter(Boolean)
 
-  const defaultClasses = defaultClassName.split(" ").filter(Boolean)
-  const customClasses = customClassName.split(" ").filter(Boolean)
-  const allClasses = [...defaultClasses, ...customClasses]
-
-  // Remove duplicates using Set
-  const uniqueClasses = Array.from(new Set(allClasses))
-
-  return uniqueClasses.join(" ")
+  return Array.from(new Set(classes)).join(" ")
 }

@@ -12,12 +12,31 @@
  *
  *****/
 
-/*****
+/**
  * Panel: PanelModal
  * Level: Module
  * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
  * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
  * Type: Inline
+ *
+ * Structure:
+ *   Bar                    bar
+ *     TextTitle            textTitle
+ *     ComboboxFieldSearch  comboboxFieldSearch
+ *       Icon               icon
+ *       Input              input
+ *       ButtonIconic       buttonIconic
+ *         Icon             icon2
+ *   Frame                  frame
+ *   BarButtons             barButtons
+ *     Frame                frame2
+ *     Frame                frame3
+ *     Button               button
+ *       Icon               icon3
+ *       TextLabel          textLabel
+ *     Button               button2
+ *       Icon               icon4
+ *       TextLabel          textLabel2
  *
  * @example
  * ```vue
@@ -26,13 +45,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Bar from "../parts/Bar.vue"
 import BarButtons from "../parts/BarButtons.vue"
@@ -61,6 +80,7 @@ const props = defineProps<{
   button2?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
   textLabel2?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -69,7 +89,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "dialog",
   "aria-hidden": "false",
-  "className": "sdn-panel-modal sdn-panel",
   "bar": {
     "aria-hidden": "false",
     "className": "sdn-bar sdn-bar--zhvk"
@@ -145,46 +164,46 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-panel-modal", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const barProps = computed(() => mergeSlot(sdn.bar, props.bar))
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const comboboxFieldSearchProps = computed(() => mergeSlot(sdn.comboboxFieldSearch, props.comboboxFieldSearch))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const barButtonsProps = computed(() => mergeSlot(sdn.barButtons, props.barButtons))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
-const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const button2Props = computed(() => mergeSlot(sdn.button2, props.button2))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
+const barProps = computed(() => mergeSlot(sdn.bar, props.bar, props.seldonRefs))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const comboboxFieldSearchProps = computed(() => mergeOptionalSlot(sdn.comboboxFieldSearch, props.comboboxFieldSearch, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const barButtonsProps = computed(() => mergeSlot(sdn.barButtons, props.barButtons, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const button2Props = computed(() => mergeSlot(sdn.button2, props.button2, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Bar v-if="barProps !== null" v-bind="barProps">
-          <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
-          <ComboboxFieldSearch v-if="comboboxFieldSearch && comboboxFieldSearchProps" v-bind="comboboxFieldSearchProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
+          <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+          <ComboboxFieldSearch v-if="comboboxFieldSearchProps !== null" v-bind="comboboxFieldSearchProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
         </Bar>
         <Frame v-bind="frameProps">
         </Frame>
         <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps">
-          <Frame v-bind="frame2Props" v-if="frame2">
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
           </Frame>
-          <Frame v-bind="frame3Props" v-if="frame3">
+          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
           </Frame>
           <Button v-if="buttonProps !== null" v-bind="buttonProps">
             <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-            <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
           </Button>
           <Button v-if="button2Props !== null" v-bind="button2Props">
             <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
-            <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
           </Button>
         </BarButtons>
       </slot>

@@ -12,12 +12,17 @@
  *
  *****/
 
-/*****
+/**
  * Section: Section
  * Level: Element
  * Intent: Navigation section containing links to important pages. Can be used in footers, headers, sidebars, or any other layout context. Follows Material Design navigation patterns.
  * Tags: section, navigation, links, menu, element, layout, header, footer, sidebar
  * Type: Default
+ *
+ * Structure:
+ *   Link  link
+ *   Link  link2
+ *   Link  link3
  *
  * @example
  * ```vue
@@ -28,7 +33,7 @@
  *   link3="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -42,6 +47,7 @@ const props = defineProps<{
   link?: Record<string, unknown> | null
   link2?: Record<string, unknown> | null
   link3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -49,7 +55,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-section",
   "link": {
     "children": "About",
     "aria-hidden": "false",
@@ -69,9 +74,9 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-section", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const linkProps = computed(() => mergeSlot(sdn.link, props.link))
-const link2Props = computed(() => mergeSlot(sdn.link2, props.link2))
-const link3Props = computed(() => mergeSlot(sdn.link3, props.link3))
+const linkProps = computed(() => mergeSlot(sdn.link, props.link, props.seldonRefs))
+const link2Props = computed(() => mergeSlot(sdn.link2, props.link2, props.seldonRefs))
+const link3Props = computed(() => mergeSlot(sdn.link3, props.link3, props.seldonRefs))
 </script>
 
 <template>

@@ -12,12 +12,50 @@
  *
  *****/
 
-/*****
+/**
  * Module: DialogCreateComponent
  * Level: Module
  * Intent: 
  * Tags: 
  * Type: Inline
+ *
+ * Structure:
+ *   Bar                    bar
+ *     TextTitle            textTitle
+ *   Frame                  frame
+ *     ItemCatalog          itemCatalog          -> createComponentFrame
+ *       Icon               icon
+ *       Frame              frame2
+ *         TextTitle        textTitle2
+ *         TextSubtitle     textSubtitle
+ *     ItemCatalog          itemCatalog2         -> createComponentContainer
+ *       Icon               icon2
+ *       Frame              frame3
+ *         TextTitle        textTitle3
+ *         TextSubtitle     textSubtitle2
+ *   Frame                  frame4
+ *     FormControl          formControl
+ *       TextLabel          textLabel
+ *       Input              input                -> createComponentName
+ *     FormControlCombobox  formControlCombobox
+ *       TextLabel          textLabel2
+ *       ComboboxField      comboboxField        -> createComponentLevel
+ *         Input            input2
+ *         ButtonIconic     buttonIconic
+ *           Icon           icon3
+ *     FormControl          formControl2
+ *       TextLabel          textLabel3
+ *       Input              input3               -> createComponentIntent
+ *     FormControl          formControl3
+ *       TextLabel          textLabel4
+ *       Input              input4               -> createComponentTags
+ *   BarButtons             barButtons
+ *     Button               button
+ *       Icon               icon4
+ *       TextLabel          textLabel5
+ *     Button               button2
+ *       Icon               icon5
+ *       TextLabel          textLabel6
  *
  * @example
  * ```vue
@@ -44,13 +82,13 @@
  *   button2={() => {}}
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Bar from "../parts/Bar.vue"
 import BarButtons from "../parts/BarButtons.vue"
@@ -102,6 +140,7 @@ const props = defineProps<{
   button2?: Record<string, unknown> | null
   icon5?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -109,7 +148,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-dialog",
   "bar": {
     "aria-hidden": "false",
     "className": "sdn-bar sdn-bar--zhvk"
@@ -298,85 +336,85 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-dialog", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const barProps = computed(() => mergeSlot(sdn.bar, props.bar))
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const itemCatalogProps = computed(() => mergeSlot(sdn.itemCatalog, props.itemCatalog))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const textTitle2Props = computed(() => mergeSlot(sdn.textTitle2, props.textTitle2))
-const textSubtitleProps = computed(() => mergeSlot(sdn.textSubtitle, props.textSubtitle))
-const itemCatalog2Props = computed(() => mergeSlot(sdn.itemCatalog2, props.itemCatalog2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
-const textTitle3Props = computed(() => mergeSlot(sdn.textTitle3, props.textTitle3))
-const textSubtitle2Props = computed(() => mergeSlot(sdn.textSubtitle2, props.textSubtitle2))
-const frame4Props = computed(() => mergeSlot(sdn.frame4, props.frame4))
-const formControlProps = computed(() => mergeSlot(sdn.formControl, props.formControl))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const formControlComboboxProps = computed(() => mergeSlot(sdn.formControlCombobox, props.formControlCombobox))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField))
-const input2Props = computed(() => mergeSlot(sdn.input2, props.input2))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const formControl2Props = computed(() => mergeSlot(sdn.formControl2, props.formControl2))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
-const input3Props = computed(() => mergeSlot(sdn.input3, props.input3))
-const formControl3Props = computed(() => mergeSlot(sdn.formControl3, props.formControl3))
-const textLabel4Props = computed(() => mergeSlot(sdn.textLabel4, props.textLabel4))
-const input4Props = computed(() => mergeSlot(sdn.input4, props.input4))
-const barButtonsProps = computed(() => mergeSlot(sdn.barButtons, props.barButtons))
-const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel5))
-const button2Props = computed(() => mergeSlot(sdn.button2, props.button2))
-const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5))
-const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel6))
+const barProps = computed(() => mergeSlot(sdn.bar, props.bar, props.seldonRefs))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const itemCatalogProps = computed(() => mergeOptionalSlot(sdn.itemCatalog, props.itemCatalog, props.seldonRefs))
+const iconProps = computed(() => mergeOptionalSlot(sdn.icon, props.icon, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const textTitle2Props = computed(() => mergeOptionalSlot(sdn.textTitle2, props.textTitle2, props.seldonRefs))
+const textSubtitleProps = computed(() => mergeOptionalSlot(sdn.textSubtitle, props.textSubtitle, props.seldonRefs))
+const itemCatalog2Props = computed(() => mergeOptionalSlot(sdn.itemCatalog2, props.itemCatalog2, props.seldonRefs))
+const icon2Props = computed(() => mergeOptionalSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
+const textTitle3Props = computed(() => mergeOptionalSlot(sdn.textTitle3, props.textTitle3, props.seldonRefs))
+const textSubtitle2Props = computed(() => mergeOptionalSlot(sdn.textSubtitle2, props.textSubtitle2, props.seldonRefs))
+const frame4Props = computed(() => mergeSlot(sdn.frame4, props.frame4, props.seldonRefs))
+const formControlProps = computed(() => mergeOptionalSlot(sdn.formControl, props.formControl, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const formControlComboboxProps = computed(() => mergeOptionalSlot(sdn.formControlCombobox, props.formControlCombobox, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const input2Props = computed(() => mergeSlot(sdn.input2, props.input2, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const formControl2Props = computed(() => mergeOptionalSlot(sdn.formControl2, props.formControl2, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const input3Props = computed(() => mergeSlot(sdn.input3, props.input3, props.seldonRefs))
+const formControl3Props = computed(() => mergeOptionalSlot(sdn.formControl3, props.formControl3, props.seldonRefs))
+const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
+const input4Props = computed(() => mergeSlot(sdn.input4, props.input4, props.seldonRefs))
+const barButtonsProps = computed(() => mergeSlot(sdn.barButtons, props.barButtons, props.seldonRefs))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const textLabel5Props = computed(() => mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs))
+const button2Props = computed(() => mergeSlot(sdn.button2, props.button2, props.seldonRefs))
+const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
+const textLabel6Props = computed(() => mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Bar v-if="barProps !== null" v-bind="barProps">
-          <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
+          <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
         </Bar>
         <Frame v-bind="frameProps">
-          <ItemCatalog v-if="itemCatalog && itemCatalogProps" v-bind="itemCatalogProps">
-            <Icon v-if="icon && iconProps" v-bind="iconProps" />
-            <Frame v-bind="frame2Props" v-if="frame2">
-              <TextTitle v-if="textTitle2 && textTitle2Props" v-bind="textTitle2Props" />
-              <TextSubtitle v-if="textSubtitle && textSubtitleProps" v-bind="textSubtitleProps" />
+          <ItemCatalog v-if="itemCatalogProps !== null" v-bind="itemCatalogProps">
+            <Icon v-if="iconProps !== null" v-bind="iconProps" />
+            <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+              <TextTitle v-if="textTitle2Props !== null" v-bind="textTitle2Props" />
+              <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
             </Frame>
           </ItemCatalog>
-          <ItemCatalog v-if="itemCatalog2 && itemCatalog2Props" v-bind="itemCatalog2Props">
-            <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
-            <Frame v-bind="frame3Props" v-if="frame3">
-              <TextTitle v-if="textTitle3 && textTitle3Props" v-bind="textTitle3Props" />
-              <TextSubtitle v-if="textSubtitle2 && textSubtitle2Props" v-bind="textSubtitle2Props" />
+          <ItemCatalog v-if="itemCatalog2Props !== null" v-bind="itemCatalog2Props">
+            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+            <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+              <TextTitle v-if="textTitle3Props !== null" v-bind="textTitle3Props" />
+              <TextSubtitle v-if="textSubtitle2Props !== null" v-bind="textSubtitle2Props" />
             </Frame>
           </ItemCatalog>
         </Frame>
         <Frame v-bind="frame4Props">
-          <FormControl v-if="formControl && formControlProps" v-bind="formControlProps">
-            <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+          <FormControl v-if="formControlProps !== null" v-bind="formControlProps">
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
             <Input v-if="inputProps !== null" v-bind="inputProps" />
           </FormControl>
-          <FormControlCombobox v-if="formControlCombobox && formControlComboboxProps" v-bind="formControlComboboxProps">
-            <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+          <FormControlCombobox v-if="formControlComboboxProps !== null" v-bind="formControlComboboxProps">
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
             <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :input="input2Props" :buttonIconic="buttonIconicProps" :icon2="icon3Props" :icon="null" />
           </FormControlCombobox>
-          <FormControl v-if="formControl2 && formControl2Props" v-bind="formControl2Props">
-            <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+          <FormControl v-if="formControl2Props !== null" v-bind="formControl2Props">
+            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
             <Input v-if="input3Props !== null" v-bind="input3Props" />
           </FormControl>
-          <FormControl v-if="formControl3 && formControl3Props" v-bind="formControl3Props">
-            <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
+          <FormControl v-if="formControl3Props !== null" v-bind="formControl3Props">
+            <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
             <Input v-if="input4Props !== null" v-bind="input4Props" />
           </FormControl>
         </Frame>
-        <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps" :button4="buttonProps" :icon4="icon4Props" :textLabel4="textLabel5 && textLabel5Props" :button5="button2Props" :icon5="icon5Props" :textLabel5="textLabel6 && textLabel6Props" />
+        <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps" :button4="buttonProps" :icon4="icon4Props" :textLabel4="textLabel5Props" :button5="button2Props" :icon5="icon5Props" :textLabel5="textLabel6Props" />
       </slot>
     </div>
 </template>

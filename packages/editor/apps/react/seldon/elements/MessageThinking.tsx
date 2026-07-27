@@ -10,153 +10,27 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonIconic } from "../elements/ButtonIconic"
-import { Frame } from "../frames/Frame"
-import { TextDescription } from "../primitives/TextDescription"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { FrameProps } from "../frames/Frame"
-import type { IconProps } from "../primitives/Icon"
-import type { TextDescriptionProps } from "../primitives/TextDescription"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { Frame, FrameProps } from "../frames/Frame"
+import { IconProps } from "../primitives/Icon"
+import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface MessageThinkingProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   frame?: FrameProps | null
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   textDescription?: TextDescriptionProps | null
   textDescription2?: TextDescriptionProps | null
+
   textDescription3?: TextDescriptionProps | null
-}
-
-/*****
- * Message: MessageThinking
- * Level: Element
- * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
- * Tags: message, chat, transcript, ai, element, text, bubble
- * Type: Inline
- *
- * @example
- * ```tsx
- * <MessageThinking
- *   aria-hidden="false"
- *   frame="{}"
- *   buttonIconic={() => {}}
- *   icon="material-star"
- *   textDescription="{}"
- *   textDescription2="{}"
- * />
- * ```
- *****/
-export function MessageThinking({
-  className = "",
-  frame = sdn.frame,
-  buttonIconic,
-  icon = sdn.icon,
-  textDescription,
-  textDescription2,
-  textDescription3,
-  children,
-  seldonRefs,
-  ...props
-}: MessageThinkingProps) {
-  const messageThinkingClassName = combineClassNames("sdn-message-thinking", className)
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textDescriptionProps = applyRef(
-    seldonRefs,
-    textDescription === null
-      ? null
-      : {
-          ...sdn.textDescription,
-          ...textDescription,
-          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
-        },
-  )
-  const textDescription2Props = applyRef(
-    seldonRefs,
-    textDescription2 === null
-      ? null
-      : {
-          ...sdn.textDescription2,
-          ...textDescription2,
-          className: combineClassNames(
-            sdn.textDescription2?.className,
-            textDescription2?.className,
-          ),
-        },
-  )
-  const textDescription3Props = applyRef(
-    seldonRefs,
-    textDescription3 === null
-      ? null
-      : {
-          ...sdn.textDescription3,
-          ...textDescription3,
-          className: combineClassNames(
-            sdn.textDescription3?.className,
-            textDescription3?.className,
-          ),
-        },
-  )
-
-  return (
-    <Frame className={messageThinkingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          <Frame {...frameProps}>
-            {buttonIconic && buttonIconicProps && (
-              <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-            )}
-            {textDescription && textDescriptionProps && (
-              <TextDescription {...textDescriptionProps} />
-            )}
-            {textDescription2 && textDescription2Props && (
-              <TextDescription {...textDescription2Props} />
-            )}
-          </Frame>
-          {textDescription3 && textDescription3Props && (
-            <TextDescription {...textDescription3Props} />
-          )}
-        </>
-      )}
-    </Frame>
-  )
 }
 
 //
@@ -164,7 +38,6 @@ export function MessageThinking({
 //
 const sdn: MessageThinkingProps = {
   "aria-hidden": "false",
-  className: "sdn-message-thinking sdn-message",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -184,7 +57,85 @@ const sdn: MessageThinkingProps = {
   textDescription2: {
     className: "sdn-text-description sdn-text-description--aeeo",
   },
+
   textDescription3: {
     className: "sdn-text-description sdn-text-description--choa",
   },
+}
+
+/**
+ * Message: MessageThinking
+ * Level: Element
+ * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
+ * Tags: message, chat, transcript, ai, element, text, bubble
+ * Type: Inline
+ *
+ * Structure:
+ *   Frame              frame
+ *     ButtonIconic     buttonIconic
+ *       Icon           icon
+ *     TextDescription  textDescription
+ *     TextDescription  textDescription2
+ *   TextDescription    textDescription3
+ *
+ * @example
+ * ```tsx
+ * <MessageThinking
+ *   aria-hidden="false"
+ *   frame="{}"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
+ *   textDescription="{}"
+ *   textDescription2="{}"
+ * />
+ * ```
+ */
+export function MessageThinking({
+  className = "",
+  frame,
+  buttonIconic,
+  icon,
+  textDescription,
+  textDescription2,
+
+  textDescription3,
+
+  children,
+  seldonRefs,
+  ...props
+}: MessageThinkingProps) {
+  const messageThinkingClassName = combineClassNames("sdn-message-thinking", className)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const buttonIconicProps = mergeOptionalSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
+  const textDescription2Props = mergeOptionalSlot(
+    sdn.textDescription2,
+    textDescription2,
+    seldonRefs,
+  )
+
+  const textDescription3Props = mergeOptionalSlot(
+    sdn.textDescription3,
+    textDescription3,
+    seldonRefs,
+  )
+
+  return (
+    <Frame className={messageThinkingClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          <Frame {...frameProps}>
+            {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
+            {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
+            {textDescription2Props !== null && <TextDescription {...textDescription2Props} />}
+          </Frame>
+          {textDescription3Props !== null && <TextDescription {...textDescription3Props} />}
+        </>
+      )}
+    </Frame>
+  )
 }

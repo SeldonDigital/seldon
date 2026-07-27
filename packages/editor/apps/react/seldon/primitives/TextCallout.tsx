@@ -10,6 +10,9 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { HTMLAttributes } from "react"
+
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -24,8 +27,6 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
-
-import type { HTMLAttributes } from "react"
 
 export interface TextCalloutProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -42,7 +43,6 @@ export interface TextCalloutProps extends HTMLAttributes<
   | HTMLPreElement
   | HTMLElement
 > {
-  className?: string
   "data-seldon-ref"?: string
   htmlElement?:
     | "p"
@@ -60,7 +60,16 @@ export interface TextCalloutProps extends HTMLAttributes<
     | "option"
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: TextCalloutProps = {
+  children: "Callout",
+  htmlElement: "h6",
+  "aria-hidden": "false",
+}
+
+/**
  * Text: TextCallout
  * Level: Primitive
  * Intent: Base text component for general-purpose inline content.
@@ -75,7 +84,7 @@ export interface TextCalloutProps extends HTMLAttributes<
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function TextCallout({
   className = "",
   children = sdn.children,
@@ -203,14 +212,4 @@ export function TextCallout({
         </HTMLHeading6>
       )
   }
-}
-
-//
-// Default property values
-//
-const sdn: TextCalloutProps = {
-  children: "Callout",
-  htmlElement: "h6",
-  "aria-hidden": "false",
-  className: "sdn-text-callout sdn-text",
 }

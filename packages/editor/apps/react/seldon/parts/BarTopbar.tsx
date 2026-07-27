@@ -10,27 +10,22 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonMenu } from "../elements/ButtonMenu"
-import { ButtonSimple } from "../elements/ButtonSimple"
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { Image } from "../primitives/Image"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonMenuProps } from "../elements/ButtonMenu"
-import type { ButtonSimpleProps } from "../elements/ButtonSimple"
-import type { FrameProps } from "../frames/Frame"
-import type { IconProps } from "../primitives/Icon"
-import type { ImageProps } from "../primitives/Image"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonMenu, ButtonMenuProps } from "../elements/ButtonMenu"
+import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
+import { Frame, FrameProps } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { Image, ImageProps } from "../primitives/Image"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   frame?: FrameProps | null
   frame2?: FrameProps | null
   image?: ImageProps | null
@@ -48,6 +43,7 @@ export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
   textLabel5?: TextLabelProps | null
   buttonSimple6?: ButtonSimpleProps | null
   textLabel6?: TextLabelProps | null
+
   frame4?: FrameProps | null
   buttonMenu?: ButtonMenuProps | null
   textLabel7?: TextLabelProps | null
@@ -57,369 +53,12 @@ export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
   icon2?: IconProps | null
 }
 
-/*****
- * Bar: BarTopbar
- * Level: Part
- * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
- * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
- * Type: Inline
- *
- * @example
- * ```tsx
- * <BarTopbar
- *   role="menubar"
- *   aria-hidden="false"
- * />
- * ```
- *****/
-export function BarTopbar({
-  className = "",
-  frame = sdn.frame,
-  frame2 = sdn.frame2,
-  image,
-  image2,
-  frame3 = sdn.frame3,
-  buttonSimple,
-  textLabel,
-  buttonSimple2,
-  textLabel2,
-  buttonSimple3,
-  textLabel3,
-  buttonSimple4,
-  textLabel4,
-  buttonSimple5,
-  textLabel5,
-  buttonSimple6,
-  textLabel6,
-  frame4 = sdn.frame4,
-  buttonMenu,
-  textLabel7,
-  icon = sdn.icon,
-  buttonMenu2,
-  textLabel8,
-  icon2 = sdn.icon2,
-  children,
-  seldonRefs,
-  ...props
-}: BarTopbarProps) {
-  const barTopbarClassName = combineClassNames("sdn-bar-topbar", className)
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(sdn.frame2?.className, frame2?.className),
-        },
-  )
-  const imageProps = applyRef(
-    seldonRefs,
-    image === null
-      ? null
-      : {
-          ...sdn.image,
-          ...image,
-          className: combineClassNames(sdn.image?.className, image?.className),
-        },
-  )
-  const image2Props = applyRef(
-    seldonRefs,
-    image2 === null
-      ? null
-      : {
-          ...sdn.image2,
-          ...image2,
-          className: combineClassNames(sdn.image2?.className, image2?.className),
-        },
-  )
-  const frame3Props = applyRef(
-    seldonRefs,
-    frame3 === null
-      ? null
-      : {
-          ...sdn.frame3,
-          ...frame3,
-          className: combineClassNames(sdn.frame3?.className, frame3?.className),
-        },
-  )
-  const buttonSimpleProps = applyRef(
-    seldonRefs,
-    buttonSimple === null
-      ? null
-      : {
-          ...sdn.buttonSimple,
-          ...buttonSimple,
-          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const buttonSimple2Props = applyRef(
-    seldonRefs,
-    buttonSimple2 === null
-      ? null
-      : {
-          ...sdn.buttonSimple2,
-          ...buttonSimple2,
-          className: combineClassNames(sdn.buttonSimple2?.className, buttonSimple2?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const buttonSimple3Props = applyRef(
-    seldonRefs,
-    buttonSimple3 === null
-      ? null
-      : {
-          ...sdn.buttonSimple3,
-          ...buttonSimple3,
-          className: combineClassNames(sdn.buttonSimple3?.className, buttonSimple3?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-  const buttonSimple4Props = applyRef(
-    seldonRefs,
-    buttonSimple4 === null
-      ? null
-      : {
-          ...sdn.buttonSimple4,
-          ...buttonSimple4,
-          className: combineClassNames(sdn.buttonSimple4?.className, buttonSimple4?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
-        },
-  )
-  const buttonSimple5Props = applyRef(
-    seldonRefs,
-    buttonSimple5 === null
-      ? null
-      : {
-          ...sdn.buttonSimple5,
-          ...buttonSimple5,
-          className: combineClassNames(sdn.buttonSimple5?.className, buttonSimple5?.className),
-        },
-  )
-  const textLabel5Props = applyRef(
-    seldonRefs,
-    textLabel5 === null
-      ? null
-      : {
-          ...sdn.textLabel5,
-          ...textLabel5,
-          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
-        },
-  )
-  const buttonSimple6Props = applyRef(
-    seldonRefs,
-    buttonSimple6 === null
-      ? null
-      : {
-          ...sdn.buttonSimple6,
-          ...buttonSimple6,
-          className: combineClassNames(sdn.buttonSimple6?.className, buttonSimple6?.className),
-        },
-  )
-  const textLabel6Props = applyRef(
-    seldonRefs,
-    textLabel6 === null
-      ? null
-      : {
-          ...sdn.textLabel6,
-          ...textLabel6,
-          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
-        },
-  )
-  const frame4Props = applyRef(
-    seldonRefs,
-    frame4 === null
-      ? null
-      : {
-          ...sdn.frame4,
-          ...frame4,
-          className: combineClassNames(sdn.frame4?.className, frame4?.className),
-        },
-  )
-  const buttonMenuProps = applyRef(
-    seldonRefs,
-    buttonMenu === null
-      ? null
-      : {
-          ...sdn.buttonMenu,
-          ...buttonMenu,
-          className: combineClassNames(sdn.buttonMenu?.className, buttonMenu?.className),
-        },
-  )
-  const textLabel7Props = applyRef(
-    seldonRefs,
-    textLabel7 === null
-      ? null
-      : {
-          ...sdn.textLabel7,
-          ...textLabel7,
-          className: combineClassNames(sdn.textLabel7?.className, textLabel7?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const buttonMenu2Props = applyRef(
-    seldonRefs,
-    buttonMenu2 === null
-      ? null
-      : {
-          ...sdn.buttonMenu2,
-          ...buttonMenu2,
-          className: combineClassNames(sdn.buttonMenu2?.className, buttonMenu2?.className),
-        },
-  )
-  const textLabel8Props = applyRef(
-    seldonRefs,
-    textLabel8 === null
-      ? null
-      : {
-          ...sdn.textLabel8,
-          ...textLabel8,
-          className: combineClassNames(sdn.textLabel8?.className, textLabel8?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-
-  return (
-    <Frame
-      className={barTopbarClassName}
-      role={sdn["role"]}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          <Frame {...frameProps}>
-            <Frame {...frame2Props}>
-              {image && imageProps && <Image {...imageProps} />}
-              {image2 && image2Props && <Image {...image2Props} />}
-            </Frame>
-            <Frame {...frame3Props}>
-              {buttonSimple && buttonSimpleProps && (
-                <ButtonSimple {...buttonSimpleProps}>
-                  {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple2 && buttonSimple2Props && (
-                <ButtonSimple {...buttonSimple2Props}>
-                  {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple3 && buttonSimple3Props && (
-                <ButtonSimple {...buttonSimple3Props}>
-                  {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple4 && buttonSimple4Props && (
-                <ButtonSimple {...buttonSimple4Props}>
-                  {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple5 && buttonSimple5Props && (
-                <ButtonSimple {...buttonSimple5Props}>
-                  {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
-                </ButtonSimple>
-              )}
-              {buttonSimple6 && buttonSimple6Props && (
-                <ButtonSimple {...buttonSimple6Props}>
-                  {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
-                </ButtonSimple>
-              )}
-            </Frame>
-          </Frame>
-          <Frame {...frame4Props}>
-            {buttonMenu && buttonMenuProps && (
-              <ButtonMenu {...buttonMenuProps}>
-                {textLabel7 && textLabel7Props && <TextLabel {...textLabel7Props} />}
-                {icon && iconProps && <Icon {...iconProps} />}
-              </ButtonMenu>
-            )}
-            {buttonMenu2 && buttonMenu2Props && (
-              <ButtonMenu {...buttonMenu2Props}>
-                {textLabel8 && textLabel8Props && <TextLabel {...textLabel8Props} />}
-                {icon2 && icon2Props && <Icon {...icon2Props} />}
-              </ButtonMenu>
-            )}
-          </Frame>
-        </>
-      )}
-    </Frame>
-  )
-}
-
 //
 // Default property values
 //
 const sdn: BarTopbarProps = {
   role: "menubar",
   "aria-hidden": "false",
-  className: "sdn-bar-topbar sdn-bar",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -484,6 +123,7 @@ const sdn: BarTopbarProps = {
   textLabel6: {
     className: "sdn-text-label sdn-text-label--lbxv",
   },
+
   frame4: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -513,4 +153,174 @@ const sdn: BarTopbarProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
   },
+}
+
+/**
+ * Bar: BarTopbar
+ * Level: Part
+ * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
+ * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
+ * Type: Inline
+ *
+ * Structure:
+ *   Frame             frame
+ *     Frame           frame2         -> logo
+ *       Image         image
+ *       Image         image2
+ *     Frame           frame3         -> menus
+ *       ButtonSimple  buttonSimple   -> menuFile
+ *         TextLabel   textLabel
+ *       ButtonSimple  buttonSimple2  -> menuEdit
+ *         TextLabel   textLabel2
+ *       ButtonSimple  buttonSimple3  -> menuComponent
+ *         TextLabel   textLabel3
+ *       ButtonSimple  buttonSimple4  -> menuView
+ *         TextLabel   textLabel4
+ *       ButtonSimple  buttonSimple5
+ *         TextLabel   textLabel5
+ *       ButtonSimple  buttonSimple6  -> menuDev
+ *         TextLabel   textLabel6
+ *   Frame             frame4
+ *     ButtonMenu      buttonMenu     -> menuTheme
+ *       TextLabel     textLabel7
+ *       Icon          icon
+ *     ButtonMenu      buttonMenu2    -> menuMode
+ *       TextLabel     textLabel8
+ *       Icon          icon2
+ *
+ * @example
+ * ```tsx
+ * <BarTopbar
+ *   role="menubar"
+ *   aria-hidden="false"
+ * />
+ * ```
+ */
+export function BarTopbar({
+  className = "",
+  frame,
+  frame2,
+  image,
+  image2,
+  frame3,
+  buttonSimple,
+  textLabel,
+  buttonSimple2,
+  textLabel2,
+  buttonSimple3,
+  textLabel3,
+  buttonSimple4,
+  textLabel4,
+  buttonSimple5,
+  textLabel5,
+  buttonSimple6,
+  textLabel6,
+
+  frame4,
+  buttonMenu,
+  textLabel7,
+  icon,
+  buttonMenu2,
+  textLabel8,
+  icon2,
+
+  children,
+  seldonRefs,
+  ...props
+}: BarTopbarProps) {
+  const barTopbarClassName = combineClassNames("sdn-bar-topbar", className)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
+  const imageProps = mergeOptionalSlot(sdn.image, image, seldonRefs)
+  const image2Props = mergeOptionalSlot(sdn.image2, image2, seldonRefs)
+  const frame3Props = mergeSlot(sdn.frame3, frame3, seldonRefs)
+  const buttonSimpleProps = mergeOptionalSlot(sdn.buttonSimple, buttonSimple, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const buttonSimple2Props = mergeOptionalSlot(sdn.buttonSimple2, buttonSimple2, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const buttonSimple3Props = mergeOptionalSlot(sdn.buttonSimple3, buttonSimple3, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const buttonSimple4Props = mergeOptionalSlot(sdn.buttonSimple4, buttonSimple4, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
+  const buttonSimple5Props = mergeOptionalSlot(sdn.buttonSimple5, buttonSimple5, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
+  const buttonSimple6Props = mergeOptionalSlot(sdn.buttonSimple6, buttonSimple6, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+
+  const frame4Props = mergeSlot(sdn.frame4, frame4, seldonRefs)
+  const buttonMenuProps = mergeOptionalSlot(sdn.buttonMenu, buttonMenu, seldonRefs)
+  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const buttonMenu2Props = mergeOptionalSlot(sdn.buttonMenu2, buttonMenu2, seldonRefs)
+  const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+
+  return (
+    <Frame
+      className={barTopbarClassName}
+      role={sdn["role"]}
+      aria-hidden={sdn["aria-hidden"]}
+      {...props}
+    >
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          <Frame {...frameProps}>
+            <Frame {...frame2Props}>
+              {imageProps !== null && <Image {...imageProps} />}
+              {image2Props !== null && <Image {...image2Props} />}
+            </Frame>
+            <Frame {...frame3Props}>
+              {buttonSimpleProps !== null && (
+                <ButtonSimple {...buttonSimpleProps}>
+                  {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                </ButtonSimple>
+              )}
+              {buttonSimple2Props !== null && (
+                <ButtonSimple {...buttonSimple2Props}>
+                  {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                </ButtonSimple>
+              )}
+              {buttonSimple3Props !== null && (
+                <ButtonSimple {...buttonSimple3Props}>
+                  {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                </ButtonSimple>
+              )}
+              {buttonSimple4Props !== null && (
+                <ButtonSimple {...buttonSimple4Props}>
+                  {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                </ButtonSimple>
+              )}
+              {buttonSimple5Props !== null && (
+                <ButtonSimple {...buttonSimple5Props}>
+                  {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
+                </ButtonSimple>
+              )}
+              {buttonSimple6Props !== null && (
+                <ButtonSimple {...buttonSimple6Props}>
+                  {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+                </ButtonSimple>
+              )}
+            </Frame>
+          </Frame>
+          <Frame {...frame4Props}>
+            {buttonMenuProps !== null && (
+              <ButtonMenu {...buttonMenuProps}>
+                {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+                {iconProps !== null && <Icon {...iconProps} />}
+              </ButtonMenu>
+            )}
+            {buttonMenu2Props !== null && (
+              <ButtonMenu {...buttonMenu2Props}>
+                {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
+                {icon2Props !== null && <Icon {...icon2Props} />}
+              </ButtonMenu>
+            )}
+          </Frame>
+        </>
+      )}
+    </Frame>
+  )
 }

@@ -12,12 +12,24 @@
  *
  *****/
 
-/*****
+/**
  * Item: ItemToDoItem
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Custom
+ *
+ * Structure:
+ *   InputCheckbox  inputCheckbox
+ *   TextLabel      textLabel
+ *   Chip           chip
+ *     Icon         icon
+ *     TextLabel    textLabel2
+ *   Chip           chip2
+ *     Icon         icon2
+ *     TextLabel    textLabel3
+ *   Chip           chip3
+ *     TextLabel    textLabel4
  *
  * @example
  * ```vue
@@ -31,13 +43,13 @@
  *   chip3="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import Chip from "../elements/Chip.vue"
 import Icon from "../primitives/Icon.vue"
 import InputCheckbox from "../primitives/InputCheckbox.vue"
@@ -55,6 +67,7 @@ const props = defineProps<{
   textLabel3?: Record<string, unknown> | null
   chip3?: Record<string, unknown> | null
   textLabel4?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -62,7 +75,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-item",
   "inputCheckbox": {
     "className": "sdn-input-checkbox sdn-input-checkbox--vajr"
   },
@@ -100,33 +112,33 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-item", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const inputCheckboxProps = computed(() => mergeSlot(sdn.inputCheckbox, props.inputCheckbox))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const chipProps = computed(() => mergeSlot(sdn.chip, props.chip))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const chip2Props = computed(() => mergeSlot(sdn.chip2, props.chip2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
-const chip3Props = computed(() => mergeSlot(sdn.chip3, props.chip3))
-const textLabel4Props = computed(() => mergeSlot(sdn.textLabel4, props.textLabel4))
+const inputCheckboxProps = computed(() => mergeOptionalSlot(sdn.inputCheckbox, props.inputCheckbox, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const chipProps = computed(() => mergeSlot(sdn.chip, props.chip, props.seldonRefs))
+const iconProps = computed(() => mergeOptionalSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const chip2Props = computed(() => mergeSlot(sdn.chip2, props.chip2, props.seldonRefs))
+const icon2Props = computed(() => mergeOptionalSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const chip3Props = computed(() => mergeSlot(sdn.chip3, props.chip3, props.seldonRefs))
+const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
 </script>
 
 <template>
     <li :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <InputCheckbox v-if="inputCheckbox && inputCheckboxProps" v-bind="inputCheckboxProps" />
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        <InputCheckbox v-if="inputCheckboxProps !== null" v-bind="inputCheckboxProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         <Chip v-if="chipProps !== null" v-bind="chipProps">
-          <Icon v-if="icon && iconProps" v-bind="iconProps" />
-          <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+          <Icon v-if="iconProps !== null" v-bind="iconProps" />
+          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
         </Chip>
         <Chip v-if="chip2Props !== null" v-bind="chip2Props">
-          <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
-          <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
         </Chip>
         <Chip v-if="chip3Props !== null" v-bind="chip3Props">
-          <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
+          <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
         </Chip>
       </slot>
     </li>

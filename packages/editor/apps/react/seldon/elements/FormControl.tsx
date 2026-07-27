@@ -10,30 +10,50 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { Input } from "../primitives/Input"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { InputProps } from "../primitives/Input"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { Input, InputProps } from "../primitives/Input"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface FormControlProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   textLabel?: TextLabelProps | null
+
   input?: InputProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: FormControlProps = {
+  "aria-hidden": "false",
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--fwkw",
+  },
+
+  input: {
+    placeholder: "Placeholder text",
+    type: "text",
+    className: "sdn-input sdn-input--8ux3",
+  },
+}
+
+/**
  * Form Control: FormControl
  * Level: Element
  * Intent: Captures plain text input from the user for forms or interactions.
  * Tags: UI, UI control, binary, boolean, checkbox, choice, control, decorated, dropdown, editable, exclusive, field, form, icon, input, menu, options, query, radio, search, select, single choice, text, toggle, user entry
  * Type: Default
+ *
+ * Structure:
+ *   TextLabel  textLabel
+ *   Input      input
  *
  * @example
  * ```tsx
@@ -43,36 +63,22 @@ export interface FormControlProps extends HTMLAttributes<HTMLElement> {
  *   input="{}"
  * />
  * ```
- *****/
+ */
 export function FormControl({
   className = "",
   textLabel,
-  input = sdn.input,
+
+  input,
+
   children,
   seldonRefs,
   ...props
 }: FormControlProps) {
   const formControlClassName = combineClassNames("sdn-form-control", className)
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const inputProps = applyRef(
-    seldonRefs,
-    input === null
-      ? null
-      : {
-          ...sdn.input,
-          ...input,
-          className: combineClassNames(sdn.input?.className, input?.className),
-        },
-  )
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  const inputProps = mergeSlot(sdn.input, input, seldonRefs)
 
   return (
     <Frame className={formControlClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -80,26 +86,10 @@ export function FormControl({
         children
       ) : (
         <>
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {textLabelProps !== null && <TextLabel {...textLabelProps} />}
           {inputProps !== null && <Input {...inputProps} />}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: FormControlProps = {
-  "aria-hidden": "false",
-  className: "sdn-form-control",
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--fwkw",
-  },
-  input: {
-    placeholder: "Placeholder text",
-    type: "text",
-    className: "sdn-input sdn-input--8ux3",
-  },
 }

@@ -12,12 +12,16 @@
  *
  *****/
 
-/*****
+/**
  * Form Control: FormControl
  * Level: Element
  * Intent: Captures plain text input from the user for forms or interactions.
  * Tags: UI, UI control, binary, boolean, checkbox, choice, control, decorated, dropdown, editable, exclusive, field, form, icon, input, menu, options, query, radio, search, select, single choice, text, toggle, user entry
  * Type: Default
+ *
+ * Structure:
+ *   TextLabel  textLabel
+ *   Input      input
  *
  * @example
  * ```vue
@@ -27,13 +31,13 @@
  *   input="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import Input from "../primitives/Input.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 
@@ -41,6 +45,7 @@ const props = defineProps<{
   className?: string
   textLabel?: Record<string, unknown> | null
   input?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -48,7 +53,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-form-control",
   "textLabel": {
     "className": "sdn-text-label sdn-text-label--fwkw"
   },
@@ -61,14 +65,14 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-form-control", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         <Input v-if="inputProps !== null" v-bind="inputProps" />
       </slot>
     </div>

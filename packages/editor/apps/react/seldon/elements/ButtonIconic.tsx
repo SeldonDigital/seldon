@@ -10,59 +10,20 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { forwardRef } from "react"
+
+import { ButtonHTMLAttributes } from "react"
 
 import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon } from "../primitives/Icon"
-import { applyRef } from "../utils/apply-ref"
+import { Icon, IconProps } from "../primitives/Icon"
 import { combineClassNames } from "../utils/class-name"
-
-import type { IconProps } from "../primitives/Icon"
-import type { ButtonHTMLAttributes } from "react"
+import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
 
 export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
 }
-
-/*****
- * Button: Iconic
- * Level: Element
- * Intent: Standard button for triggering actions like submit, confirm, or cancel.
- * Tags: button, action, UI, primary, click, control, submit, call to action
- * Type: Custom
- *
- * @example
- * ```tsx
- * <ButtonIconic
- *   icon="material-star"
- * />
- * ```
- *****/
-export const ButtonIconic = forwardRef<HTMLButtonElement, ButtonIconicProps>(function ButtonIconic(
-  { className = "", icon = sdn.icon, children, seldonRefs, ...props },
-  ref,
-) {
-  const buttonIconicClassName = combineClassNames("sdn-button-iconic", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-
-  return (
-    <HTMLButton className={buttonIconicClassName} ref={ref} {...props}>
-      {children !== undefined ? children : <>{iconProps !== null && <Icon {...iconProps} />}</>}
-    </HTMLButton>
-  )
-})
 
 //
 // Default property values
@@ -73,4 +34,40 @@ const sdn: ButtonIconicProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
   },
+}
+
+/**
+ * Button: Iconic
+ * Level: Element
+ * Intent: Standard button for triggering actions like submit, confirm, or cancel.
+ * Tags: button, action, UI, primary, click, control, submit, call to action
+ * Type: Custom
+ *
+ * Structure:
+ *   Icon  icon
+ *
+ * @example
+ * ```tsx
+ * <ButtonIconic
+ *   icon="material-star"
+ * />
+ * ```
+ */
+export function ButtonIconic({
+  className = "",
+  icon,
+
+  children,
+  seldonRefs,
+  ...props
+}: ButtonIconicProps) {
+  const buttonIconicClassName = combineClassNames("sdn-button-iconic", className)
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  return (
+    <HTMLButton className={buttonIconicClassName} {...props}>
+      {children !== undefined ? children : <>{iconProps !== null && <Icon {...iconProps} />}</>}
+    </HTMLButton>
+  )
 }

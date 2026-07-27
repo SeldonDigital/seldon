@@ -12,12 +12,15 @@
  *
  *****/
 
-/*****
+/**
  * Avatar: Avatar
  * Level: Element
  * Intent: Displays a user or entity's image or initials in UI elements like lists, headers, or profiles.
  * Tags: avatar, user image, profile, identity, initials, picture, circle, UI element
  * Type: Default
+ *
+ * Structure:
+ *   Image  image
  *
  * @example
  * ```vue
@@ -26,7 +29,7 @@
  *   image="/image.jpg"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -38,6 +41,7 @@ import Image from "../primitives/Image.vue"
 const props = defineProps<{
   className?: string
   image?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -45,7 +49,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-avatar",
   "image": {
     "src": "/avatar-user.png",
     "aria-hidden": "false",
@@ -55,7 +58,7 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-avatar", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const imageProps = computed(() => mergeSlot(sdn.image, props.image))
+const imageProps = computed(() => mergeSlot(sdn.image, props.image, props.seldonRefs))
 </script>
 
 <template>

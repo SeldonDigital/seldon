@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Text: TextDisplay
  * Level: Primitive
  * Intent: Base text component for general-purpose inline content.
@@ -27,7 +27,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -47,8 +47,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "children": "Display",
   "htmlElement": "h1",
-  "aria-hidden": "false",
-  "className": "sdn-text-display sdn-text"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-text-display", props.className))

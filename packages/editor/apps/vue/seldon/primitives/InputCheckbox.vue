@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Input: Checkbox
  * Level: Primitive
  * Intent: Low-level text input control for collecting user input.
@@ -26,7 +26,7 @@
  *   type="checkbox"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -45,8 +45,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "placeholder": "Placeholder text",
-  "type": "checkbox",
-  "className": "sdn-input-checkbox sdn-input"
+  "type": "checkbox"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-input-checkbox", props.className))

@@ -12,12 +12,29 @@
  *
  *****/
 
-/*****
+/**
  * List: StandardProductList
  * Level: Part
  * Intent: General-purpose vertical list schema for rendering repeated content items such as posts, links, or summaries.
  * Tags: list, standard, vertical, ui, content, items, generic, repeater
  * Type: Custom
+ *
+ * Structure:
+ *   ItemCatalog       itemCatalog
+ *     Icon            icon
+ *     Frame           frame
+ *       TextTitle     textTitle
+ *       TextSubtitle  textSubtitle
+ *   ItemCatalog       itemCatalog2
+ *     Icon            icon2
+ *     Frame           frame2
+ *       TextTitle     textTitle2
+ *       TextSubtitle  textSubtitle2
+ *   ItemCatalog       itemCatalog3   -> Default
+ *     Icon            icon3
+ *     Frame           frame3
+ *       TextTitle     textTitle3
+ *       TextSubtitle  textSubtitle3
  *
  * @example
  * ```vue
@@ -32,13 +49,13 @@
  *   itemCatalog3="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Icon from "../primitives/Icon.vue"
 import ItemCatalog from "../elements/ItemCatalog.vue"
@@ -62,6 +79,7 @@ const props = defineProps<{
   frame3?: Record<string, unknown> | null
   textTitle3?: Record<string, unknown> | null
   textSubtitle3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -69,7 +87,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-list-standard-product-list sdn-list-standard",
   "itemCatalog": {
     "aria-hidden": "false",
     "className": "sdn-item-catalog sdn-item-catalog--bg0n"
@@ -127,45 +144,45 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-list-standard-product-list", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const itemCatalogProps = computed(() => mergeSlot(sdn.itemCatalog, props.itemCatalog))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const textSubtitleProps = computed(() => mergeSlot(sdn.textSubtitle, props.textSubtitle))
-const itemCatalog2Props = computed(() => mergeSlot(sdn.itemCatalog2, props.itemCatalog2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const textTitle2Props = computed(() => mergeSlot(sdn.textTitle2, props.textTitle2))
-const textSubtitle2Props = computed(() => mergeSlot(sdn.textSubtitle2, props.textSubtitle2))
-const itemCatalog3Props = computed(() => mergeSlot(sdn.itemCatalog3, props.itemCatalog3))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
-const textTitle3Props = computed(() => mergeSlot(sdn.textTitle3, props.textTitle3))
-const textSubtitle3Props = computed(() => mergeSlot(sdn.textSubtitle3, props.textSubtitle3))
+const itemCatalogProps = computed(() => mergeSlot(sdn.itemCatalog, props.itemCatalog, props.seldonRefs))
+const iconProps = computed(() => mergeOptionalSlot(sdn.icon, props.icon, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const textSubtitleProps = computed(() => mergeOptionalSlot(sdn.textSubtitle, props.textSubtitle, props.seldonRefs))
+const itemCatalog2Props = computed(() => mergeOptionalSlot(sdn.itemCatalog2, props.itemCatalog2, props.seldonRefs))
+const icon2Props = computed(() => mergeOptionalSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const textTitle2Props = computed(() => mergeOptionalSlot(sdn.textTitle2, props.textTitle2, props.seldonRefs))
+const textSubtitle2Props = computed(() => mergeOptionalSlot(sdn.textSubtitle2, props.textSubtitle2, props.seldonRefs))
+const itemCatalog3Props = computed(() => mergeOptionalSlot(sdn.itemCatalog3, props.itemCatalog3, props.seldonRefs))
+const icon3Props = computed(() => mergeOptionalSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
+const textTitle3Props = computed(() => mergeOptionalSlot(sdn.textTitle3, props.textTitle3, props.seldonRefs))
+const textSubtitle3Props = computed(() => mergeOptionalSlot(sdn.textSubtitle3, props.textSubtitle3, props.seldonRefs))
 </script>
 
 <template>
     <ul :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <ItemCatalog v-if="itemCatalogProps !== null" v-bind="itemCatalogProps">
-          <Icon v-if="icon && iconProps" v-bind="iconProps" />
-          <Frame v-bind="frameProps" v-if="frame">
-            <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
-            <TextSubtitle v-if="textSubtitle && textSubtitleProps" v-bind="textSubtitleProps" />
+          <Icon v-if="iconProps !== null" v-bind="iconProps" />
+          <Frame v-bind="frameProps" v-if="frameProps !== null">
+            <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+            <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
           </Frame>
         </ItemCatalog>
-        <ItemCatalog v-if="itemCatalog2 && itemCatalog2Props" v-bind="itemCatalog2Props">
-          <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
-          <Frame v-bind="frame2Props" v-if="frame2">
-            <TextTitle v-if="textTitle2 && textTitle2Props" v-bind="textTitle2Props" />
-            <TextSubtitle v-if="textSubtitle2 && textSubtitle2Props" v-bind="textSubtitle2Props" />
+        <ItemCatalog v-if="itemCatalog2Props !== null" v-bind="itemCatalog2Props">
+          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <TextTitle v-if="textTitle2Props !== null" v-bind="textTitle2Props" />
+            <TextSubtitle v-if="textSubtitle2Props !== null" v-bind="textSubtitle2Props" />
           </Frame>
         </ItemCatalog>
-        <ItemCatalog v-if="itemCatalog3 && itemCatalog3Props" v-bind="itemCatalog3Props">
-          <Icon v-if="icon3 && icon3Props" v-bind="icon3Props" />
-          <Frame v-bind="frame3Props" v-if="frame3">
-            <TextTitle v-if="textTitle3 && textTitle3Props" v-bind="textTitle3Props" />
-            <TextSubtitle v-if="textSubtitle3 && textSubtitle3Props" v-bind="textSubtitle3Props" />
+        <ItemCatalog v-if="itemCatalog3Props !== null" v-bind="itemCatalog3Props">
+          <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
+          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+            <TextTitle v-if="textTitle3Props !== null" v-bind="textTitle3Props" />
+            <TextSubtitle v-if="textSubtitle3Props !== null" v-bind="textSubtitle3Props" />
           </Frame>
         </ItemCatalog>
       </slot>

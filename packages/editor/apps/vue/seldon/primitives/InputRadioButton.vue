@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Input: RadioButton
  * Level: Primitive
  * Intent: Low-level text input control for collecting user input.
@@ -26,7 +26,7 @@
  *   type="radio"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -45,8 +45,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "placeholder": "Placeholder text",
-  "type": "radio",
-  "className": "sdn-input-checkbox sdn-input"
+  "type": "radio"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-input-checkbox", props.className))

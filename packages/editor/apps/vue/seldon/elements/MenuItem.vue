@@ -12,12 +12,17 @@
  *
  *****/
 
-/*****
+/**
  * Menu Item: MenuItem
  * Level: Element
  * Intent: Single actionable row inside a menu.
  * Tags: menu, menuitem, action, row, element, UI
  * Type: Default
+ *
+ * Structure:
+ *   Icon       icon
+ *   TextLabel  textLabel
+ *   TextLabel  textLabel2
  *
  * @example
  * ```vue
@@ -26,13 +31,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 
@@ -41,6 +46,7 @@ const props = defineProps<{
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
   textLabel2?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -49,7 +55,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "menuitem",
   "aria-hidden": "false",
-  "className": "sdn-menu-item",
   "icon": {
     "icon": "seldon-component",
     "aria-hidden": "true",
@@ -65,17 +70,17 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-menu-item", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
 </script>
 
 <template>
     <button :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Icon v-if="iconProps !== null" v-bind="iconProps" />
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-        <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
       </slot>
     </button>
 </template>

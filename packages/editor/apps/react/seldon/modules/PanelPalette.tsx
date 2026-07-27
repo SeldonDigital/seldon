@@ -10,134 +10,28 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonIconic } from "../elements/ButtonIconic"
-import { Frame } from "../frames/Frame"
-import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar } from "../parts/Bar"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { FrameProps } from "../frames/Frame"
-import type { BarProps } from "../parts/Bar"
-import type { IconProps } from "../primitives/Icon"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLDiv } from "../native-react/HTML.Div"
+import { Bar, BarProps } from "../parts/Bar"
+import { IconProps } from "../primitives/Icon"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface PanelPaletteProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
+
   frame?: FrameProps | null
-}
-
-/*****
- * Panel: PanelPalette
- * Level: Module
- * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
- * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
- * Type: Inline
- *
- * @example
- * ```tsx
- * <PanelPalette
- *   role="dialog"
- *   aria-hidden="false"
- * />
- * ```
- *****/
-export function PanelPalette({
-  className = "",
-  bar = sdn.bar,
-  textTitle,
-  buttonIconic = sdn.buttonIconic,
-  icon = sdn.icon,
-  frame = sdn.frame,
-  children,
-  seldonRefs,
-  ...props
-}: PanelPaletteProps) {
-  const panelPaletteClassName = combineClassNames("sdn-panel-palette", className)
-  const barProps = applyRef(
-    seldonRefs,
-    bar === null
-      ? null
-      : {
-          ...sdn.bar,
-          ...bar,
-          className: combineClassNames(sdn.bar?.className, bar?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-
-  return (
-    <HTMLDiv
-      className={panelPaletteClassName}
-      role={sdn["role"]}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {barProps !== null && (
-            <Bar {...barProps}>
-              {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-              {buttonIconic && buttonIconicProps && (
-                <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-              )}
-            </Bar>
-          )}
-          <Frame {...frameProps}></Frame>
-        </>
-      )}
-    </HTMLDiv>
-  )
 }
 
 //
@@ -146,7 +40,6 @@ export function PanelPalette({
 const sdn: PanelPaletteProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-panel-palette sdn-panel",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--9xs7",
@@ -162,9 +55,80 @@ const sdn: PanelPaletteProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--rezm",
   },
+
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--88jo",
   },
+}
+
+/**
+ * Panel: PanelPalette
+ * Level: Module
+ * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
+ * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
+ * Type: Inline
+ *
+ * Structure:
+ *   Bar             bar
+ *     TextTitle     textTitle
+ *     ButtonIconic  buttonIconic
+ *       Icon        icon
+ *   Frame           frame
+ *
+ * @example
+ * ```tsx
+ * <PanelPalette
+ *   role="dialog"
+ *   aria-hidden="false"
+ * />
+ * ```
+ */
+export function PanelPalette({
+  className = "",
+  bar,
+  textTitle,
+  buttonIconic,
+  icon,
+
+  frame,
+
+  children,
+  seldonRefs,
+  ...props
+}: PanelPaletteProps) {
+  const panelPaletteClassName = combineClassNames("sdn-panel-palette", className)
+
+  const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+  const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+
+  return (
+    <HTMLDiv
+      className={panelPaletteClassName}
+      role={sdn["role"]}
+      aria-hidden={sdn["aria-hidden"]}
+      {...props}
+    >
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {barProps !== null && (
+            <Bar {...barProps}>
+              {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+              {buttonIconicProps !== null && (
+                <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+              )}
+            </Bar>
+          )}
+          <Frame {...frameProps}></Frame>
+        </>
+      )}
+    </HTMLDiv>
+  )
 }

@@ -10,44 +10,34 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ComboboxField } from "../elements/ComboboxField"
-import { FormControl } from "../elements/FormControl"
-import { FormControlCombobox } from "../elements/FormControlCombobox"
-import { ItemCatalog } from "../elements/ItemCatalog"
-import { Frame } from "../frames/Frame"
-import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar } from "../parts/Bar"
-import { BarButtons } from "../parts/BarButtons"
-import { Icon } from "../primitives/Icon"
-import { Input } from "../primitives/Input"
-import { TextLabel } from "../primitives/TextLabel"
-import { TextSubtitle } from "../primitives/TextSubtitle"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonProps } from "../elements/Button"
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { ComboboxFieldProps } from "../elements/ComboboxField"
-import type { FormControlProps } from "../elements/FormControl"
-import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
-import type { ItemCatalogProps } from "../elements/ItemCatalog"
-import type { FrameProps } from "../frames/Frame"
-import type { BarProps } from "../parts/Bar"
-import type { BarButtonsProps } from "../parts/BarButtons"
-import type { IconProps } from "../primitives/Icon"
-import type { InputProps } from "../primitives/Input"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { TextSubtitleProps } from "../primitives/TextSubtitle"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonProps } from "../elements/Button"
+import { ButtonIconicProps } from "../elements/ButtonIconic"
+import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
+import { FormControl, FormControlProps } from "../elements/FormControl"
+import { FormControlCombobox, FormControlComboboxProps } from "../elements/FormControlCombobox"
+import { ItemCatalog, ItemCatalogProps } from "../elements/ItemCatalog"
+import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLDiv } from "../native-react/HTML.Div"
+import { Bar, BarProps } from "../parts/Bar"
+import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
+import { Icon, IconProps } from "../primitives/Icon"
+import { Input, InputProps } from "../primitives/Input"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface DialogCreateComponentProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
+
   frame?: FrameProps | null
   itemCatalog?: ItemCatalogProps | null
   icon?: IconProps | null
@@ -59,6 +49,7 @@ export interface DialogCreateComponentProps extends HTMLAttributes<HTMLElement> 
   frame3?: FrameProps | null
   textTitle3?: TextTitleProps | null
   textSubtitle2?: TextSubtitleProps | null
+
   frame4?: FrameProps | null
   formControl?: FormControlProps | null
   textLabel?: TextLabelProps | null
@@ -75,6 +66,7 @@ export interface DialogCreateComponentProps extends HTMLAttributes<HTMLElement> 
   formControl3?: FormControlProps | null
   textLabel4?: TextLabelProps | null
   input4?: InputProps | null
+
   barButtons?: BarButtonsProps | null
   button?: ButtonProps | null
   icon4?: IconProps | null
@@ -84,534 +76,11 @@ export interface DialogCreateComponentProps extends HTMLAttributes<HTMLElement> 
   textLabel6?: TextLabelProps | null
 }
 
-/*****
- * Module: DialogCreateComponent
- * Level: Module
- * Intent:
- * Tags:
- * Type: Inline
- *
- * @example
- * ```tsx
- * <DialogCreateComponent
- *   aria-hidden="false"
- *   bar="{}"
- *   textTitle="Product Title"
- *   frame="{}"
- *   itemCatalog="{}"
- *   icon="material-star"
- *   textSubtitle2="Product Title"
- *   itemCatalog2="{}"
- *   frame2="{}"
- *   formControl="{}"
- *   textLabel="{}"
- *   input="{}"
- *   formControlCombobox2="{}"
- *   comboboxField="{}"
- *   buttonIconic={() => {}}
- *   formControl3="{}"
- *   formControl4="{}"
- *   barButtons2="{}"
- *   button={() => {}}
- *   button2={() => {}}
- * />
- * ```
- *****/
-export function DialogCreateComponent({
-  className = "",
-  bar = sdn.bar,
-  textTitle,
-  frame = sdn.frame,
-  itemCatalog,
-  icon,
-  frame2 = sdn.frame2,
-  textTitle2,
-  textSubtitle,
-  itemCatalog2,
-  icon2,
-  frame3 = sdn.frame3,
-  textTitle3,
-  textSubtitle2,
-  frame4 = sdn.frame4,
-  formControl,
-  textLabel,
-  input = sdn.input,
-  formControlCombobox,
-  textLabel2,
-  comboboxField = sdn.comboboxField,
-  input2 = sdn.input2,
-  buttonIconic = sdn.buttonIconic,
-  icon3 = sdn.icon3,
-  formControl2,
-  textLabel3,
-  input3 = sdn.input3,
-  formControl3,
-  textLabel4,
-  input4 = sdn.input4,
-  barButtons = sdn.barButtons,
-  button = sdn.button,
-  icon4 = sdn.icon4,
-  textLabel5,
-  button2 = sdn.button2,
-  icon5 = sdn.icon5,
-  textLabel6,
-  children,
-  seldonRefs,
-  ...props
-}: DialogCreateComponentProps) {
-  const dialogCreateComponentClassName = combineClassNames("sdn-dialog", className)
-  const barProps = applyRef(
-    seldonRefs,
-    bar === null
-      ? null
-      : {
-          ...sdn.bar,
-          ...bar,
-          className: combineClassNames(sdn.bar?.className, bar?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const itemCatalogProps = applyRef(
-    seldonRefs,
-    itemCatalog === null
-      ? null
-      : {
-          ...sdn.itemCatalog,
-          ...itemCatalog,
-          className: combineClassNames(sdn.itemCatalog?.className, itemCatalog?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(sdn.frame2?.className, frame2?.className),
-        },
-  )
-  const textTitle2Props = applyRef(
-    seldonRefs,
-    textTitle2 === null
-      ? null
-      : {
-          ...sdn.textTitle2,
-          ...textTitle2,
-          className: combineClassNames(sdn.textTitle2?.className, textTitle2?.className),
-        },
-  )
-  const textSubtitleProps = applyRef(
-    seldonRefs,
-    textSubtitle === null
-      ? null
-      : {
-          ...sdn.textSubtitle,
-          ...textSubtitle,
-          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
-        },
-  )
-  const itemCatalog2Props = applyRef(
-    seldonRefs,
-    itemCatalog2 === null
-      ? null
-      : {
-          ...sdn.itemCatalog2,
-          ...itemCatalog2,
-          className: combineClassNames(sdn.itemCatalog2?.className, itemCatalog2?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const frame3Props = applyRef(
-    seldonRefs,
-    frame3 === null
-      ? null
-      : {
-          ...sdn.frame3,
-          ...frame3,
-          className: combineClassNames(sdn.frame3?.className, frame3?.className),
-        },
-  )
-  const textTitle3Props = applyRef(
-    seldonRefs,
-    textTitle3 === null
-      ? null
-      : {
-          ...sdn.textTitle3,
-          ...textTitle3,
-          className: combineClassNames(sdn.textTitle3?.className, textTitle3?.className),
-        },
-  )
-  const textSubtitle2Props = applyRef(
-    seldonRefs,
-    textSubtitle2 === null
-      ? null
-      : {
-          ...sdn.textSubtitle2,
-          ...textSubtitle2,
-          className: combineClassNames(sdn.textSubtitle2?.className, textSubtitle2?.className),
-        },
-  )
-  const frame4Props = applyRef(
-    seldonRefs,
-    frame4 === null
-      ? null
-      : {
-          ...sdn.frame4,
-          ...frame4,
-          className: combineClassNames(sdn.frame4?.className, frame4?.className),
-        },
-  )
-  const formControlProps = applyRef(
-    seldonRefs,
-    formControl === null
-      ? null
-      : {
-          ...sdn.formControl,
-          ...formControl,
-          className: combineClassNames(sdn.formControl?.className, formControl?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const inputProps = applyRef(
-    seldonRefs,
-    input === null
-      ? null
-      : {
-          ...sdn.input,
-          ...input,
-          className: combineClassNames(sdn.input?.className, input?.className),
-        },
-  )
-  const formControlComboboxProps = applyRef(
-    seldonRefs,
-    formControlCombobox === null
-      ? null
-      : {
-          ...sdn.formControlCombobox,
-          ...formControlCombobox,
-          className: combineClassNames(
-            sdn.formControlCombobox?.className,
-            formControlCombobox?.className,
-          ),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const comboboxFieldProps = applyRef(
-    seldonRefs,
-    comboboxField === null
-      ? null
-      : {
-          ...sdn.comboboxField,
-          ...comboboxField,
-          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
-        },
-  )
-  const input2Props = applyRef(
-    seldonRefs,
-    input2 === null
-      ? null
-      : {
-          ...sdn.input2,
-          ...input2,
-          className: combineClassNames(sdn.input2?.className, input2?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const formControl2Props = applyRef(
-    seldonRefs,
-    formControl2 === null
-      ? null
-      : {
-          ...sdn.formControl2,
-          ...formControl2,
-          className: combineClassNames(sdn.formControl2?.className, formControl2?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-  const input3Props = applyRef(
-    seldonRefs,
-    input3 === null
-      ? null
-      : {
-          ...sdn.input3,
-          ...input3,
-          className: combineClassNames(sdn.input3?.className, input3?.className),
-        },
-  )
-  const formControl3Props = applyRef(
-    seldonRefs,
-    formControl3 === null
-      ? null
-      : {
-          ...sdn.formControl3,
-          ...formControl3,
-          className: combineClassNames(sdn.formControl3?.className, formControl3?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
-        },
-  )
-  const input4Props = applyRef(
-    seldonRefs,
-    input4 === null
-      ? null
-      : {
-          ...sdn.input4,
-          ...input4,
-          className: combineClassNames(sdn.input4?.className, input4?.className),
-        },
-  )
-  const barButtonsProps = applyRef(
-    seldonRefs,
-    barButtons === null
-      ? null
-      : {
-          ...sdn.barButtons,
-          ...barButtons,
-          className: combineClassNames(sdn.barButtons?.className, barButtons?.className),
-        },
-  )
-  const buttonProps = applyRef(
-    seldonRefs,
-    button === null
-      ? null
-      : {
-          ...sdn.button,
-          ...button,
-          className: combineClassNames(sdn.button?.className, button?.className),
-        },
-  )
-  const icon4Props = applyRef(
-    seldonRefs,
-    icon4 === null
-      ? null
-      : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        },
-  )
-  const textLabel5Props = applyRef(
-    seldonRefs,
-    textLabel5 === null
-      ? null
-      : {
-          ...sdn.textLabel5,
-          ...textLabel5,
-          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
-        },
-  )
-  const button2Props = applyRef(
-    seldonRefs,
-    button2 === null
-      ? null
-      : {
-          ...sdn.button2,
-          ...button2,
-          className: combineClassNames(sdn.button2?.className, button2?.className),
-        },
-  )
-  const icon5Props = applyRef(
-    seldonRefs,
-    icon5 === null
-      ? null
-      : {
-          ...sdn.icon5,
-          ...icon5,
-          className: combineClassNames(sdn.icon5?.className, icon5?.className),
-        },
-  )
-  const textLabel6Props = applyRef(
-    seldonRefs,
-    textLabel6 === null
-      ? null
-      : {
-          ...sdn.textLabel6,
-          ...textLabel6,
-          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
-        },
-  )
-
-  return (
-    <HTMLDiv className={dialogCreateComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {barProps !== null && (
-            <Bar {...barProps}>
-              {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-            </Bar>
-          )}
-          <Frame {...frameProps}>
-            {itemCatalog && itemCatalogProps && (
-              <ItemCatalog {...itemCatalogProps}>
-                {icon && iconProps && <Icon {...iconProps} />}
-                <Frame {...frame2Props}>
-                  {textTitle2 && textTitle2Props && <TextTitle {...textTitle2Props} />}
-                  {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
-                </Frame>
-              </ItemCatalog>
-            )}
-            {itemCatalog2 && itemCatalog2Props && (
-              <ItemCatalog {...itemCatalog2Props}>
-                {icon2 && icon2Props && <Icon {...icon2Props} />}
-                <Frame {...frame3Props}>
-                  {textTitle3 && textTitle3Props && <TextTitle {...textTitle3Props} />}
-                  {textSubtitle2 && textSubtitle2Props && <TextSubtitle {...textSubtitle2Props} />}
-                </Frame>
-              </ItemCatalog>
-            )}
-          </Frame>
-          <Frame {...frame4Props}>
-            {formControl && formControlProps && (
-              <FormControl {...formControlProps}>
-                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-                {input && inputProps && <Input {...inputProps} />}
-              </FormControl>
-            )}
-            {formControlCombobox && formControlComboboxProps && (
-              <FormControlCombobox {...formControlComboboxProps}>
-                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-                {comboboxField && comboboxFieldProps && (
-                  <ComboboxField
-                    {...comboboxFieldProps}
-                    input={input2Props}
-                    buttonIconic={buttonIconicProps}
-                    icon2={icon3Props}
-                    icon={null}
-                  />
-                )}
-              </FormControlCombobox>
-            )}
-            {formControl2 && formControl2Props && (
-              <FormControl {...formControl2Props}>
-                {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
-                {input3 && input3Props && <Input {...input3Props} />}
-              </FormControl>
-            )}
-            {formControl3 && formControl3Props && (
-              <FormControl {...formControl3Props}>
-                {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
-                {input4 && input4Props && <Input {...input4Props} />}
-              </FormControl>
-            )}
-          </Frame>
-          {barButtonsProps !== null && (
-            <BarButtons
-              {...barButtonsProps}
-              button4={buttonProps}
-              icon4={icon4Props}
-              textLabel4={textLabel5 && textLabel5Props}
-              button5={button2Props}
-              icon5={icon5Props}
-              textLabel5={textLabel6 && textLabel6Props}
-            />
-          )}
-        </>
-      )}
-    </HTMLDiv>
-  )
-}
-
 //
 // Default property values
 //
 const sdn: DialogCreateComponentProps = {
   "aria-hidden": "false",
-  className: "sdn-dialog",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--zhvk",
@@ -622,6 +91,7 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "false",
     className: "sdn-text-title sdn-text-title--eodu",
   },
+
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -681,6 +151,7 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "false",
     className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
   },
+
   frame4: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -764,6 +235,7 @@ const sdn: DialogCreateComponentProps = {
     className: "sdn-input sdn-input--qirj",
     "data-seldon-ref": "createComponentTags",
   },
+
   barButtons: {
     "aria-hidden": "false",
     className: "sdn-bar-buttons sdn-bar-buttons--36qz",
@@ -796,4 +268,247 @@ const sdn: DialogCreateComponentProps = {
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
+}
+
+/**
+ * Module: DialogCreateComponent
+ * Level: Module
+ * Intent:
+ * Tags:
+ * Type: Inline
+ *
+ * Structure:
+ *   Bar                    bar
+ *     TextTitle            textTitle
+ *   Frame                  frame
+ *     ItemCatalog          itemCatalog          -> createComponentFrame
+ *       Icon               icon
+ *       Frame              frame2
+ *         TextTitle        textTitle2
+ *         TextSubtitle     textSubtitle
+ *     ItemCatalog          itemCatalog2         -> createComponentContainer
+ *       Icon               icon2
+ *       Frame              frame3
+ *         TextTitle        textTitle3
+ *         TextSubtitle     textSubtitle2
+ *   Frame                  frame4
+ *     FormControl          formControl
+ *       TextLabel          textLabel
+ *       Input              input                -> createComponentName
+ *     FormControlCombobox  formControlCombobox
+ *       TextLabel          textLabel2
+ *       ComboboxField      comboboxField        -> createComponentLevel
+ *         Input            input2
+ *         ButtonIconic     buttonIconic
+ *           Icon           icon3
+ *     FormControl          formControl2
+ *       TextLabel          textLabel3
+ *       Input              input3               -> createComponentIntent
+ *     FormControl          formControl3
+ *       TextLabel          textLabel4
+ *       Input              input4               -> createComponentTags
+ *   BarButtons             barButtons
+ *     Button               button
+ *       Icon               icon4
+ *       TextLabel          textLabel5
+ *     Button               button2
+ *       Icon               icon5
+ *       TextLabel          textLabel6
+ *
+ * @example
+ * ```tsx
+ * <DialogCreateComponent
+ *   aria-hidden="false"
+ *   bar="{}"
+ *   textTitle="Product Title"
+ *   frame="{}"
+ *   itemCatalog="{}"
+ *   icon="material-star"
+ *   textSubtitle2="Product Title"
+ *   itemCatalog2="{}"
+ *   frame2="{}"
+ *   formControl="{}"
+ *   textLabel="{}"
+ *   input="{}"
+ *   formControlCombobox2="{}"
+ *   comboboxField="{}"
+ *   buttonIconic={() => {}}
+ *   formControl3="{}"
+ *   formControl4="{}"
+ *   barButtons2="{}"
+ *   button={() => {}}
+ *   button2={() => {}}
+ * />
+ * ```
+ */
+export function DialogCreateComponent({
+  className = "",
+  bar,
+  textTitle,
+
+  frame,
+  itemCatalog,
+  icon,
+  frame2,
+  textTitle2,
+  textSubtitle,
+  itemCatalog2,
+  icon2,
+  frame3,
+  textTitle3,
+  textSubtitle2,
+
+  frame4,
+  formControl,
+  textLabel,
+  input,
+  formControlCombobox,
+  textLabel2,
+  comboboxField,
+  input2,
+  buttonIconic,
+  icon3,
+  formControl2,
+  textLabel3,
+  input3,
+  formControl3,
+  textLabel4,
+  input4,
+
+  barButtons,
+  button,
+  icon4,
+  textLabel5,
+  button2,
+  icon5,
+  textLabel6,
+
+  children,
+  seldonRefs,
+  ...props
+}: DialogCreateComponentProps) {
+  const dialogCreateComponentClassName = combineClassNames("sdn-dialog", className)
+
+  const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const itemCatalogProps = mergeOptionalSlot(sdn.itemCatalog, itemCatalog, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
+  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
+  const textTitle2Props = mergeOptionalSlot(sdn.textTitle2, textTitle2, seldonRefs)
+  const textSubtitleProps = mergeOptionalSlot(sdn.textSubtitle, textSubtitle, seldonRefs)
+  const itemCatalog2Props = mergeOptionalSlot(sdn.itemCatalog2, itemCatalog2, seldonRefs)
+  const icon2Props = mergeOptionalSlot(sdn.icon2, icon2, seldonRefs)
+  const frame3Props = mergeSlot(sdn.frame3, frame3, seldonRefs)
+  const textTitle3Props = mergeOptionalSlot(sdn.textTitle3, textTitle3, seldonRefs)
+  const textSubtitle2Props = mergeOptionalSlot(sdn.textSubtitle2, textSubtitle2, seldonRefs)
+
+  const frame4Props = mergeSlot(sdn.frame4, frame4, seldonRefs)
+  const formControlProps = mergeOptionalSlot(sdn.formControl, formControl, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const inputProps = mergeSlot(sdn.input, input, seldonRefs)
+  const formControlComboboxProps = mergeOptionalSlot(
+    sdn.formControlCombobox,
+    formControlCombobox,
+    seldonRefs,
+  )
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const comboboxFieldProps = mergeSlot(sdn.comboboxField, comboboxField, seldonRefs)
+  const input2Props = mergeSlot(sdn.input2, input2, seldonRefs)
+  const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+  const formControl2Props = mergeOptionalSlot(sdn.formControl2, formControl2, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const input3Props = mergeSlot(sdn.input3, input3, seldonRefs)
+  const formControl3Props = mergeOptionalSlot(sdn.formControl3, formControl3, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
+  const input4Props = mergeSlot(sdn.input4, input4, seldonRefs)
+
+  const barButtonsProps = mergeSlot(sdn.barButtons, barButtons, seldonRefs)
+  const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
+  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
+  const button2Props = mergeSlot(sdn.button2, button2, seldonRefs)
+  const icon5Props = mergeSlot(sdn.icon5, icon5, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+
+  return (
+    <HTMLDiv className={dialogCreateComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {barProps !== null && (
+            <Bar {...barProps}>{textTitleProps !== null && <TextTitle {...textTitleProps} />}</Bar>
+          )}
+          <Frame {...frameProps}>
+            {itemCatalogProps !== null && (
+              <ItemCatalog {...itemCatalogProps}>
+                {iconProps !== null && <Icon {...iconProps} />}
+                <Frame {...frame2Props}>
+                  {textTitle2Props !== null && <TextTitle {...textTitle2Props} />}
+                  {textSubtitleProps !== null && <TextSubtitle {...textSubtitleProps} />}
+                </Frame>
+              </ItemCatalog>
+            )}
+            {itemCatalog2Props !== null && (
+              <ItemCatalog {...itemCatalog2Props}>
+                {icon2Props !== null && <Icon {...icon2Props} />}
+                <Frame {...frame3Props}>
+                  {textTitle3Props !== null && <TextTitle {...textTitle3Props} />}
+                  {textSubtitle2Props !== null && <TextSubtitle {...textSubtitle2Props} />}
+                </Frame>
+              </ItemCatalog>
+            )}
+          </Frame>
+          <Frame {...frame4Props}>
+            {formControlProps !== null && (
+              <FormControl {...formControlProps}>
+                {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                {inputProps !== null && <Input {...inputProps} />}
+              </FormControl>
+            )}
+            {formControlComboboxProps !== null && (
+              <FormControlCombobox {...formControlComboboxProps}>
+                {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                {comboboxFieldProps !== null && (
+                  <ComboboxField
+                    {...comboboxFieldProps}
+                    input={input2Props}
+                    buttonIconic={buttonIconicProps}
+                    icon2={icon3Props}
+                    icon={null}
+                  />
+                )}
+              </FormControlCombobox>
+            )}
+            {formControl2Props !== null && (
+              <FormControl {...formControl2Props}>
+                {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                {input3Props !== null && <Input {...input3Props} />}
+              </FormControl>
+            )}
+            {formControl3Props !== null && (
+              <FormControl {...formControl3Props}>
+                {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                {input4Props !== null && <Input {...input4Props} />}
+              </FormControl>
+            )}
+          </Frame>
+          {barButtonsProps !== null && (
+            <BarButtons
+              {...barButtonsProps}
+              button4={buttonProps}
+              icon4={icon4Props}
+              textLabel4={textLabel5Props}
+              button5={button2Props}
+              icon5={icon5Props}
+              textLabel5={textLabel6Props}
+            />
+          )}
+        </>
+      )}
+    </HTMLDiv>
+  )
 }

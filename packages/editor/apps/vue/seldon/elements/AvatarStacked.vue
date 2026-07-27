@@ -12,12 +12,17 @@
  *
  *****/
 
-/*****
+/**
  * Avatar: AvatarStacked
  * Level: Element
  * Intent: Displays a user or entity's image or initials in UI elements like lists, headers, or profiles.
  * Tags: avatar, user image, profile, identity, initials, picture, circle, UI element
  * Type: Custom
+ *
+ * Structure:
+ *   Image  image
+ *   Image  image2
+ *   Image  image3
  *
  * @example
  * ```vue
@@ -28,7 +33,7 @@
  *   image3="/image.jpg"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -42,6 +47,7 @@ const props = defineProps<{
   image?: Record<string, unknown> | null
   image2?: Record<string, unknown> | null
   image3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -49,7 +55,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-avatar-badged sdn-avatar",
   "image": {
     "src": "/avatar-user.png",
     "aria-hidden": "false",
@@ -69,9 +74,9 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-avatar-badged", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const imageProps = computed(() => mergeSlot(sdn.image, props.image))
-const image2Props = computed(() => mergeSlot(sdn.image2, props.image2))
-const image3Props = computed(() => mergeSlot(sdn.image3, props.image3))
+const imageProps = computed(() => mergeSlot(sdn.image, props.image, props.seldonRefs))
+const image2Props = computed(() => mergeSlot(sdn.image2, props.image2, props.seldonRefs))
+const image3Props = computed(() => mergeSlot(sdn.image3, props.image3, props.seldonRefs))
 </script>
 
 <template>

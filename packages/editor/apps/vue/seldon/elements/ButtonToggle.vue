@@ -12,12 +12,15 @@
  *
  *****/
 
-/*****
+/**
  * Button: Toggle
  * Level: Element
  * Intent: Standard button for triggering actions like submit, confirm, or cancel.
  * Tags: button, action, UI, primary, click, control, submit, call to action
  * Type: Custom
+ *
+ * Structure:
+ *   Icon  icon
  *
  * @example
  * ```vue
@@ -25,7 +28,7 @@
  *   icon="material-star"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -37,6 +40,7 @@ import Icon from "../primitives/Icon.vue"
 const props = defineProps<{
   className?: string
   icon?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -51,7 +55,7 @@ const sdn: Record<string, any> = {
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-button-toggle", props.className))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 </script>
 
 <template>

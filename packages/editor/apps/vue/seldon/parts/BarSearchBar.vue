@@ -12,12 +12,19 @@
  *
  *****/
 
-/*****
+/**
  * Bar: BarSearchBar
  * Level: Part
  * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
  * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
  * Type: Custom
+ *
+ * Structure:
+ *   ComboboxFieldSearch  comboboxFieldSearch
+ *     Icon               icon
+ *     Input              input
+ *     ButtonIconic       buttonIconic
+ *       Icon             icon2
  *
  * @example
  * ```vue
@@ -29,7 +36,7 @@
  *   buttonIconic={() => {}}
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -45,6 +52,7 @@ const props = defineProps<{
   input?: Record<string, unknown> | null
   buttonIconic?: Record<string, unknown> | null
   icon2?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -52,7 +60,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-bar",
   "comboboxFieldSearch": {
     "aria-hidden": "false",
     "className": "sdn-combobox-field-search sdn-combobox-field-search--vbyg"
@@ -81,11 +88,11 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-bar", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const comboboxFieldSearchProps = computed(() => mergeSlot(sdn.comboboxFieldSearch, props.comboboxFieldSearch))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
+const comboboxFieldSearchProps = computed(() => mergeSlot(sdn.comboboxFieldSearch, props.comboboxFieldSearch, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 </script>
 
 <template>

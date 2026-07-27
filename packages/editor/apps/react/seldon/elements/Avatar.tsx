@@ -10,27 +10,42 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { Image } from "../primitives/Image"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ImageProps } from "../primitives/Image"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { Image, ImageProps } from "../primitives/Image"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
 
 export interface AvatarProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   image?: ImageProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: AvatarProps = {
+  "aria-hidden": "false",
+  image: {
+    src: "/avatar-user.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--to5v",
+  },
+}
+
+/**
  * Avatar: Avatar
  * Level: Element
  * Intent: Displays a user or entity's image or initials in UI elements like lists, headers, or profiles.
  * Tags: avatar, user image, profile, identity, initials, picture, circle, UI element
  * Type: Default
+ *
+ * Structure:
+ *   Image  image
  *
  * @example
  * ```tsx
@@ -39,42 +54,22 @@ export interface AvatarProps extends HTMLAttributes<HTMLElement> {
  *   image="/image.jpg"
  * />
  * ```
- *****/
+ */
 export function Avatar({
   className = "",
-  image = sdn.image,
+  image,
+
   children,
   seldonRefs,
   ...props
 }: AvatarProps) {
   const avatarClassName = combineClassNames("sdn-avatar", className)
-  const imageProps = applyRef(
-    seldonRefs,
-    image === null
-      ? null
-      : {
-          ...sdn.image,
-          ...image,
-          className: combineClassNames(sdn.image?.className, image?.className),
-        },
-  )
+
+  const imageProps = mergeSlot(sdn.image, image, seldonRefs)
 
   return (
     <Frame className={avatarClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? children : <>{imageProps !== null && <Image {...imageProps} />}</>}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: AvatarProps = {
-  "aria-hidden": "false",
-  className: "sdn-avatar",
-  image: {
-    src: "/avatar-user.png",
-    "aria-hidden": "false",
-    className: "sdn-image sdn-image--to5v",
-  },
 }

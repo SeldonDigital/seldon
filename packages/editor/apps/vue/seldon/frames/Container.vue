@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Container: Container
  * Level: Frame
  * Intent: Grid container schema used to arrange children in a CSS grid with a configurable number of columns and rows. Use it instead of Frame when children should align to a shared grid; Frame remains the flexbox container.
@@ -26,7 +26,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -44,8 +44,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "wrapperElement": "div",
-  "aria-hidden": "false",
-  "className": "sdn-container"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-container", props.className))

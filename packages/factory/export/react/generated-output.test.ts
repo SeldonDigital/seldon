@@ -53,13 +53,13 @@ describe("generated Button component", () => {
     const source = content((f) => /\/Button\.tsx$/.test(f.path))
 
     expect(source).toContain("export interface ButtonProps")
-    expect(source).toContain("className?: string")
+    expect(source).toContain(`"data-seldon-ref"?: string`)
   })
 
   it("declares the component function", () => {
     const source = content((f) => /\/Button\.tsx$/.test(f.path))
 
-    expect(source).toMatch(/export (function Button\(|const Button = forwardRef)/)
+    expect(source).toMatch(/export function Button\(/)
   })
 
   it("wires the className through combineClassNames with the variant class", () => {

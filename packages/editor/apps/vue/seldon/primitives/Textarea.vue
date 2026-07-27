@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Textarea: Textarea
  * Level: Primitive
  * Intent: Multi-line text input control for collecting longer user input.
@@ -25,7 +25,7 @@
  *   placeholder="Placeholder text"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -42,8 +42,7 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  "placeholder": "Placeholder text",
-  "className": "sdn-textarea"
+  "placeholder": "Placeholder text"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-textarea", props.className))

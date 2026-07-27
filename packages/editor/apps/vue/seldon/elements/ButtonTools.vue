@@ -12,12 +12,23 @@
  *
  *****/
 
-/*****
+/**
  * Button: Tools
  * Level: Element
  * Intent: Standard button for triggering actions like submit, confirm, or cancel.
  * Tags: button, action, UI, primary, click, control, submit, call to action
  * Type: Custom
+ *
+ * Structure:
+ *   Button       button
+ *     Icon       icon
+ *     TextLabel  textLabel
+ *   Button       button2
+ *     Icon       icon2
+ *     TextLabel  textLabel2
+ *   Button       button3
+ *     Icon       icon3
+ *     TextLabel  textLabel3
  *
  * @example
  * ```vue
@@ -29,13 +40,13 @@
  *   button3={() => {}}
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Button from "../elements/Button.vue"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
@@ -51,6 +62,7 @@ const props = defineProps<{
   button3?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
   textLabel3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -93,15 +105,15 @@ const sdn: Record<string, any> = {
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-button-tools", props.className))
-const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const button2Props = computed(() => mergeSlot(sdn.button2, props.button2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const button3Props = computed(() => mergeSlot(sdn.button3, props.button3))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const button2Props = computed(() => mergeSlot(sdn.button2, props.button2, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const button3Props = computed(() => mergeSlot(sdn.button3, props.button3, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
 </script>
 
 <template>
@@ -109,15 +121,15 @@ const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel
       <slot>
         <Button v-if="buttonProps !== null" v-bind="buttonProps">
           <Icon v-if="iconProps !== null" v-bind="iconProps" />
-          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         </Button>
         <Button v-if="button2Props !== null" v-bind="button2Props">
           <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-          <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
         </Button>
         <Button v-if="button3Props !== null" v-bind="button3Props">
           <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-          <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
         </Button>
       </slot>
     </button>

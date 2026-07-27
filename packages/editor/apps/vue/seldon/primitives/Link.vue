@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Link: Link
  * Level: Primitive
  * Intent: A clickable link component that can be used for navigation, external links, or any clickable text. Supports various styling and accessibility options.
@@ -26,7 +26,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -44,8 +44,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "children": "Link",
-  "aria-hidden": "false",
-  "className": "sdn-link"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-link", props.className))

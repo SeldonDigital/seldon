@@ -12,12 +12,25 @@
  *
  *****/
 
-/*****
+/**
  * Item: ItemTreeItem
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Custom
+ *
+ * Structure:
+ *   ButtonIconic    buttonIconic
+ *     Icon          icon
+ *   ComboboxField   comboboxField
+ *     Icon          icon2
+ *     Input         input
+ *     ButtonIconic  buttonIconic2
+ *       Icon        icon3
+ *   ButtonIconic    buttonIconic3
+ *     Icon          icon4
+ *   ButtonIconic    buttonIconic4
+ *     Icon          icon5
  *
  * @example
  * ```vue
@@ -26,7 +39,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -49,6 +62,7 @@ const props = defineProps<{
   icon4?: Record<string, unknown> | null
   buttonIconic4?: Record<string, unknown> | null
   icon5?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -57,7 +71,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "treeitem",
   "aria-hidden": "false",
-  "className": "sdn-item-tree-item sdn-item",
   "buttonIconic": {
     "className": "sdn-button-iconic sdn-button-iconic--pgsr"
   },
@@ -110,17 +123,17 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-item-tree-item", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const buttonIconic3Props = computed(() => mergeSlot(sdn.buttonIconic3, props.buttonIconic3))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const buttonIconic4Props = computed(() => mergeSlot(sdn.buttonIconic4, props.buttonIconic4))
-const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const buttonIconic3Props = computed(() => mergeSlot(sdn.buttonIconic3, props.buttonIconic3, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const buttonIconic4Props = computed(() => mergeSlot(sdn.buttonIconic4, props.buttonIconic4, props.seldonRefs))
+const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
 </script>
 
 <template>

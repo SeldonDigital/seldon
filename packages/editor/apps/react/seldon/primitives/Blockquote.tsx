@@ -10,17 +10,25 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { BlockquoteHTMLAttributes } from "react"
+
 import { HTMLBlockquote } from "../native-react/HTML.Blockquote"
 import { combineClassNames } from "../utils/class-name"
 
-import type { BlockquoteHTMLAttributes } from "react"
-
 export interface BlockquoteProps extends BlockquoteHTMLAttributes<HTMLQuoteElement> {
-  className?: string
   "data-seldon-ref"?: string
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: BlockquoteProps = {
+  children: "Blockquote",
+  "aria-hidden": "false",
+}
+
+/**
  * Blockquote: Blockquote
  * Level: Primitive
  * Intent: Displays a block-level quotation for cited or referenced content.
@@ -34,7 +42,7 @@ export interface BlockquoteProps extends BlockquoteHTMLAttributes<HTMLQuoteEleme
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function Blockquote({ className = "", children = sdn.children, ...props }: BlockquoteProps) {
   const blockquoteClassName = combineClassNames("sdn-blockquote", className)
 
@@ -46,13 +54,4 @@ export function Blockquote({ className = "", children = sdn.children, ...props }
       {children}
     </HTMLBlockquote>
   )
-}
-
-//
-// Default property values
-//
-const sdn: BlockquoteProps = {
-  children: "Blockquote",
-  "aria-hidden": "false",
-  className: "sdn-blockquote",
 }

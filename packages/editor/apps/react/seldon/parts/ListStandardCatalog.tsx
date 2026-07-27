@@ -10,29 +10,25 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ItemCatalog } from "../elements/ItemCatalog"
-import { Container } from "../frames/Container"
-import { Frame } from "../frames/Frame"
-import { HTMLUl } from "../native-react/HTML.Ul"
-import { Icon } from "../primitives/Icon"
-import { TextSubtitle } from "../primitives/TextSubtitle"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ItemCatalogProps } from "../elements/ItemCatalog"
-import type { ContainerProps } from "../frames/Container"
-import type { FrameProps } from "../frames/Frame"
-import type { IconProps } from "../primitives/Icon"
-import type { TextSubtitleProps } from "../primitives/TextSubtitle"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ItemCatalog, ItemCatalogProps } from "../elements/ItemCatalog"
+import { Container, ContainerProps } from "../frames/Container"
+import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLUl } from "../native-react/HTML.Ul"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ListStandardCatalogProps extends HTMLAttributes<HTMLUListElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   textSubtitle?: TextSubtitleProps | null
+
   container?: ContainerProps | null
   itemCatalog?: ItemCatalogProps | null
   icon?: IconProps | null
@@ -56,340 +52,15 @@ export interface ListStandardCatalogProps extends HTMLAttributes<HTMLUListElemen
   textSubtitle5?: TextSubtitleProps | null
 }
 
-/*****
- * List: StandardCatalog
- * Level: Part
- * Intent: General-purpose vertical list schema for rendering repeated content items such as posts, links, or summaries.
- * Tags: list, standard, vertical, ui, content, items, generic, repeater
- * Type: Inline
- *
- * @example
- * ```tsx
- * <ListStandardCatalog
- *   aria-hidden="false"
- *   textSubtitle="Product Title"
- *   container="{}"
- *   itemCatalog="{}"
- *   icon="material-star"
- *   frame="{}"
- *   textTitle="Product Title"
- *   textSubtitle2="Product Title"
- *   itemCatalog2="{}"
- *   itemCatalog3="{}"
- *   itemCatalog4="{}"
- * />
- * ```
- *****/
-export function ListStandardCatalog({
-  className = "",
-  textSubtitle,
-  container = sdn.container,
-  itemCatalog,
-  icon,
-  frame = sdn.frame,
-  textTitle,
-  textSubtitle2,
-  itemCatalog2,
-  icon2,
-  frame2 = sdn.frame2,
-  textTitle2,
-  textSubtitle3,
-  itemCatalog3,
-  icon3,
-  frame3 = sdn.frame3,
-  textTitle3,
-  textSubtitle4,
-  itemCatalog4,
-  icon4,
-  frame4 = sdn.frame4,
-  textTitle4,
-  textSubtitle5,
-  children,
-  seldonRefs,
-  ...props
-}: ListStandardCatalogProps) {
-  const listStandardCatalogClassName = combineClassNames("sdn-list-standard-catalog", className)
-  const textSubtitleProps = applyRef(
-    seldonRefs,
-    textSubtitle === null
-      ? null
-      : {
-          ...sdn.textSubtitle,
-          ...textSubtitle,
-          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
-        },
-  )
-  const containerProps = applyRef(
-    seldonRefs,
-    container === null
-      ? null
-      : {
-          ...sdn.container,
-          ...container,
-          className: combineClassNames(sdn.container?.className, container?.className),
-        },
-  )
-  const itemCatalogProps = applyRef(
-    seldonRefs,
-    itemCatalog === null
-      ? null
-      : {
-          ...sdn.itemCatalog,
-          ...itemCatalog,
-          className: combineClassNames(sdn.itemCatalog?.className, itemCatalog?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const textSubtitle2Props = applyRef(
-    seldonRefs,
-    textSubtitle2 === null
-      ? null
-      : {
-          ...sdn.textSubtitle2,
-          ...textSubtitle2,
-          className: combineClassNames(sdn.textSubtitle2?.className, textSubtitle2?.className),
-        },
-  )
-  const itemCatalog2Props = applyRef(
-    seldonRefs,
-    itemCatalog2 === null
-      ? null
-      : {
-          ...sdn.itemCatalog2,
-          ...itemCatalog2,
-          className: combineClassNames(sdn.itemCatalog2?.className, itemCatalog2?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(sdn.frame2?.className, frame2?.className),
-        },
-  )
-  const textTitle2Props = applyRef(
-    seldonRefs,
-    textTitle2 === null
-      ? null
-      : {
-          ...sdn.textTitle2,
-          ...textTitle2,
-          className: combineClassNames(sdn.textTitle2?.className, textTitle2?.className),
-        },
-  )
-  const textSubtitle3Props = applyRef(
-    seldonRefs,
-    textSubtitle3 === null
-      ? null
-      : {
-          ...sdn.textSubtitle3,
-          ...textSubtitle3,
-          className: combineClassNames(sdn.textSubtitle3?.className, textSubtitle3?.className),
-        },
-  )
-  const itemCatalog3Props = applyRef(
-    seldonRefs,
-    itemCatalog3 === null
-      ? null
-      : {
-          ...sdn.itemCatalog3,
-          ...itemCatalog3,
-          className: combineClassNames(sdn.itemCatalog3?.className, itemCatalog3?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const frame3Props = applyRef(
-    seldonRefs,
-    frame3 === null
-      ? null
-      : {
-          ...sdn.frame3,
-          ...frame3,
-          className: combineClassNames(sdn.frame3?.className, frame3?.className),
-        },
-  )
-  const textTitle3Props = applyRef(
-    seldonRefs,
-    textTitle3 === null
-      ? null
-      : {
-          ...sdn.textTitle3,
-          ...textTitle3,
-          className: combineClassNames(sdn.textTitle3?.className, textTitle3?.className),
-        },
-  )
-  const textSubtitle4Props = applyRef(
-    seldonRefs,
-    textSubtitle4 === null
-      ? null
-      : {
-          ...sdn.textSubtitle4,
-          ...textSubtitle4,
-          className: combineClassNames(sdn.textSubtitle4?.className, textSubtitle4?.className),
-        },
-  )
-  const itemCatalog4Props = applyRef(
-    seldonRefs,
-    itemCatalog4 === null
-      ? null
-      : {
-          ...sdn.itemCatalog4,
-          ...itemCatalog4,
-          className: combineClassNames(sdn.itemCatalog4?.className, itemCatalog4?.className),
-        },
-  )
-  const icon4Props = applyRef(
-    seldonRefs,
-    icon4 === null
-      ? null
-      : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        },
-  )
-  const frame4Props = applyRef(
-    seldonRefs,
-    frame4 === null
-      ? null
-      : {
-          ...sdn.frame4,
-          ...frame4,
-          className: combineClassNames(sdn.frame4?.className, frame4?.className),
-        },
-  )
-  const textTitle4Props = applyRef(
-    seldonRefs,
-    textTitle4 === null
-      ? null
-      : {
-          ...sdn.textTitle4,
-          ...textTitle4,
-          className: combineClassNames(sdn.textTitle4?.className, textTitle4?.className),
-        },
-  )
-  const textSubtitle5Props = applyRef(
-    seldonRefs,
-    textSubtitle5 === null
-      ? null
-      : {
-          ...sdn.textSubtitle5,
-          ...textSubtitle5,
-          className: combineClassNames(sdn.textSubtitle5?.className, textSubtitle5?.className),
-        },
-  )
-
-  return (
-    <HTMLUl className={listStandardCatalogClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
-          <Frame {...containerProps}>
-            {itemCatalog && itemCatalogProps && (
-              <ItemCatalog {...itemCatalogProps}>
-                {icon && iconProps && <Icon {...iconProps} />}
-                <Frame {...frameProps}>
-                  {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-                  {textSubtitle2 && textSubtitle2Props && <TextSubtitle {...textSubtitle2Props} />}
-                </Frame>
-              </ItemCatalog>
-            )}
-            {itemCatalog2 && itemCatalog2Props && (
-              <ItemCatalog {...itemCatalog2Props}>
-                {icon2 && icon2Props && <Icon {...icon2Props} />}
-                <Frame {...frame2Props}>
-                  {textTitle2 && textTitle2Props && <TextTitle {...textTitle2Props} />}
-                  {textSubtitle3 && textSubtitle3Props && <TextSubtitle {...textSubtitle3Props} />}
-                </Frame>
-              </ItemCatalog>
-            )}
-            {itemCatalog3 && itemCatalog3Props && (
-              <ItemCatalog {...itemCatalog3Props}>
-                {icon3 && icon3Props && <Icon {...icon3Props} />}
-                <Frame {...frame3Props}>
-                  {textTitle3 && textTitle3Props && <TextTitle {...textTitle3Props} />}
-                  {textSubtitle4 && textSubtitle4Props && <TextSubtitle {...textSubtitle4Props} />}
-                </Frame>
-              </ItemCatalog>
-            )}
-            {itemCatalog4 && itemCatalog4Props && (
-              <ItemCatalog {...itemCatalog4Props}>
-                {icon4 && icon4Props && <Icon {...icon4Props} />}
-                <Frame {...frame4Props}>
-                  {textTitle4 && textTitle4Props && <TextTitle {...textTitle4Props} />}
-                  {textSubtitle5 && textSubtitle5Props && <TextSubtitle {...textSubtitle5Props} />}
-                </Frame>
-              </ItemCatalog>
-            )}
-          </Frame>
-        </>
-      )}
-    </HTMLUl>
-  )
-}
-
 //
 // Default property values
 //
 const sdn: ListStandardCatalogProps = {
   "aria-hidden": "false",
-  className: "sdn-list-standard-catalog sdn-list-standard",
   textSubtitle: {
     className: "sdn-text-subtitle sdn-text-label--yqnd",
   },
+
   container: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -464,4 +135,159 @@ const sdn: ListStandardCatalogProps = {
   textSubtitle5: {
     className: "sdn-text-subtitle sdn-text-subtitle--b0xy",
   },
+}
+
+/**
+ * List: StandardCatalog
+ * Level: Part
+ * Intent: General-purpose vertical list schema for rendering repeated content items such as posts, links, or summaries.
+ * Tags: list, standard, vertical, ui, content, items, generic, repeater
+ * Type: Inline
+ *
+ * Structure:
+ *   TextSubtitle        textSubtitle
+ *   Container           container      -> catalogItems
+ *     ItemCatalog       itemCatalog
+ *       Icon            icon
+ *       Frame           frame
+ *         TextTitle     textTitle
+ *         TextSubtitle  textSubtitle2
+ *     ItemCatalog       itemCatalog2
+ *       Icon            icon2
+ *       Frame           frame2
+ *         TextTitle     textTitle2
+ *         TextSubtitle  textSubtitle3
+ *     ItemCatalog       itemCatalog3
+ *       Icon            icon3
+ *       Frame           frame3
+ *         TextTitle     textTitle3
+ *         TextSubtitle  textSubtitle4
+ *     ItemCatalog       itemCatalog4
+ *       Icon            icon4
+ *       Frame           frame4
+ *         TextTitle     textTitle4
+ *         TextSubtitle  textSubtitle5
+ *
+ * @example
+ * ```tsx
+ * <ListStandardCatalog
+ *   aria-hidden="false"
+ *   textSubtitle="Product Title"
+ *   container="{}"
+ *   itemCatalog="{}"
+ *   icon="material-star"
+ *   frame="{}"
+ *   textTitle="Product Title"
+ *   textSubtitle2="Product Title"
+ *   itemCatalog2="{}"
+ *   itemCatalog3="{}"
+ *   itemCatalog4="{}"
+ * />
+ * ```
+ */
+export function ListStandardCatalog({
+  className = "",
+  textSubtitle,
+
+  container,
+  itemCatalog,
+  icon,
+  frame,
+  textTitle,
+  textSubtitle2,
+  itemCatalog2,
+  icon2,
+  frame2,
+  textTitle2,
+  textSubtitle3,
+  itemCatalog3,
+  icon3,
+  frame3,
+  textTitle3,
+  textSubtitle4,
+  itemCatalog4,
+  icon4,
+  frame4,
+  textTitle4,
+  textSubtitle5,
+
+  children,
+  seldonRefs,
+  ...props
+}: ListStandardCatalogProps) {
+  const listStandardCatalogClassName = combineClassNames("sdn-list-standard-catalog", className)
+
+  const textSubtitleProps = mergeOptionalSlot(sdn.textSubtitle, textSubtitle, seldonRefs)
+
+  const containerProps = mergeSlot(sdn.container, container, seldonRefs)
+  const itemCatalogProps = mergeOptionalSlot(sdn.itemCatalog, itemCatalog, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+  const textSubtitle2Props = mergeOptionalSlot(sdn.textSubtitle2, textSubtitle2, seldonRefs)
+  const itemCatalog2Props = mergeOptionalSlot(sdn.itemCatalog2, itemCatalog2, seldonRefs)
+  const icon2Props = mergeOptionalSlot(sdn.icon2, icon2, seldonRefs)
+  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
+  const textTitle2Props = mergeOptionalSlot(sdn.textTitle2, textTitle2, seldonRefs)
+  const textSubtitle3Props = mergeOptionalSlot(sdn.textSubtitle3, textSubtitle3, seldonRefs)
+  const itemCatalog3Props = mergeOptionalSlot(sdn.itemCatalog3, itemCatalog3, seldonRefs)
+  const icon3Props = mergeOptionalSlot(sdn.icon3, icon3, seldonRefs)
+  const frame3Props = mergeSlot(sdn.frame3, frame3, seldonRefs)
+  const textTitle3Props = mergeOptionalSlot(sdn.textTitle3, textTitle3, seldonRefs)
+  const textSubtitle4Props = mergeOptionalSlot(sdn.textSubtitle4, textSubtitle4, seldonRefs)
+  const itemCatalog4Props = mergeOptionalSlot(sdn.itemCatalog4, itemCatalog4, seldonRefs)
+  const icon4Props = mergeOptionalSlot(sdn.icon4, icon4, seldonRefs)
+  const frame4Props = mergeSlot(sdn.frame4, frame4, seldonRefs)
+  const textTitle4Props = mergeOptionalSlot(sdn.textTitle4, textTitle4, seldonRefs)
+  const textSubtitle5Props = mergeOptionalSlot(sdn.textSubtitle5, textSubtitle5, seldonRefs)
+
+  return (
+    <HTMLUl className={listStandardCatalogClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {textSubtitleProps !== null && <TextSubtitle {...textSubtitleProps} />}
+          <Frame {...containerProps}>
+            {itemCatalogProps !== null && (
+              <ItemCatalog {...itemCatalogProps}>
+                {iconProps !== null && <Icon {...iconProps} />}
+                <Frame {...frameProps}>
+                  {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+                  {textSubtitle2Props !== null && <TextSubtitle {...textSubtitle2Props} />}
+                </Frame>
+              </ItemCatalog>
+            )}
+            {itemCatalog2Props !== null && (
+              <ItemCatalog {...itemCatalog2Props}>
+                {icon2Props !== null && <Icon {...icon2Props} />}
+                <Frame {...frame2Props}>
+                  {textTitle2Props !== null && <TextTitle {...textTitle2Props} />}
+                  {textSubtitle3Props !== null && <TextSubtitle {...textSubtitle3Props} />}
+                </Frame>
+              </ItemCatalog>
+            )}
+            {itemCatalog3Props !== null && (
+              <ItemCatalog {...itemCatalog3Props}>
+                {icon3Props !== null && <Icon {...icon3Props} />}
+                <Frame {...frame3Props}>
+                  {textTitle3Props !== null && <TextTitle {...textTitle3Props} />}
+                  {textSubtitle4Props !== null && <TextSubtitle {...textSubtitle4Props} />}
+                </Frame>
+              </ItemCatalog>
+            )}
+            {itemCatalog4Props !== null && (
+              <ItemCatalog {...itemCatalog4Props}>
+                {icon4Props !== null && <Icon {...icon4Props} />}
+                <Frame {...frame4Props}>
+                  {textTitle4Props !== null && <TextTitle {...textTitle4Props} />}
+                  {textSubtitle5Props !== null && <TextSubtitle {...textSubtitle5Props} />}
+                </Frame>
+              </ItemCatalog>
+            )}
+          </Frame>
+        </>
+      )}
+    </HTMLUl>
+  )
 }

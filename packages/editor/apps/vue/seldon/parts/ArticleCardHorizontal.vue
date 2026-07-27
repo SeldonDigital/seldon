@@ -12,12 +12,20 @@
  *
  *****/
 
-/*****
+/**
  * Article Card: ArticleCardHorizontal
  * Level: Part
  * Intent: Content preview card with a featured image, headline, short excerpt, and author metadata to drive click-throughs.
  * Tags: card, article, blog, preview, excerpt, author, content, UI
  * Type: Inline
+ *
+ * Structure:
+ *   Image              image
+ *   Frame              frame
+ *     Chip             chip
+ *       TextLabel      textLabel
+ *     TextHeading      textHeading
+ *     TextDescription  textDescription
  *
  * @example
  * ```vue
@@ -31,13 +39,13 @@
  *   textDescription2="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Chip from "../elements/Chip.vue"
 import Image from "../primitives/Image.vue"
@@ -53,6 +61,7 @@ const props = defineProps<{
   textLabel?: Record<string, unknown> | null
   textHeading?: Record<string, unknown> | null
   textDescription?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -60,7 +69,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-article-card-horizontal sdn-article-card",
   "image": {
     "src": "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
@@ -87,12 +95,12 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-article-card-horizontal", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const imageProps = computed(() => mergeSlot(sdn.image, props.image))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const chipProps = computed(() => mergeSlot(sdn.chip, props.chip))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const textHeadingProps = computed(() => mergeSlot(sdn.textHeading, props.textHeading))
-const textDescriptionProps = computed(() => mergeSlot(sdn.textDescription, props.textDescription))
+const imageProps = computed(() => mergeSlot(sdn.image, props.image, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const chipProps = computed(() => mergeOptionalSlot(sdn.chip, props.chip, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textHeadingProps = computed(() => mergeOptionalSlot(sdn.textHeading, props.textHeading, props.seldonRefs))
+const textDescriptionProps = computed(() => mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs))
 </script>
 
 <template>
@@ -100,11 +108,11 @@ const textDescriptionProps = computed(() => mergeSlot(sdn.textDescription, props
       <slot>
         <Image v-if="imageProps !== null" v-bind="imageProps" />
         <Frame v-bind="frameProps">
-          <Chip v-if="chip && chipProps" v-bind="chipProps">
-            <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+          <Chip v-if="chipProps !== null" v-bind="chipProps">
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
           </Chip>
-          <TextHeading v-if="textHeading && textHeadingProps" v-bind="textHeadingProps" />
-          <TextDescription v-if="textDescription && textDescriptionProps" v-bind="textDescriptionProps" />
+          <TextHeading v-if="textHeadingProps !== null" v-bind="textHeadingProps" />
+          <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
         </Frame>
       </slot>
     </div>

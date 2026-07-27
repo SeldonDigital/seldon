@@ -12,12 +12,22 @@
  *
  *****/
 
-/*****
+/**
  * Form Control: FormControlRadio
  * Level: Element
  * Intent: Captures plain text input from the user for forms or interactions.
  * Tags: UI, UI control, binary, boolean, checkbox, choice, control, decorated, dropdown, editable, exclusive, field, form, icon, input, menu, options, query, radio, search, select, single choice, text, toggle, user entry
  * Type: Inline
+ *
+ * Structure:
+ *   TextLabel        textLabel
+ *   Frame            frame
+ *     MenuItemRadio  menuItemRadio
+ *       Icon         icon
+ *       TextLabel    textLabel2
+ *     MenuItemRadio  menuItemRadio2
+ *       Icon         icon2
+ *       TextLabel    textLabel3
  *
  * @example
  * ```vue
@@ -30,13 +40,13 @@
  *   menuItemRadio2="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Icon from "../primitives/Icon.vue"
 import MenuItemRadio from "../elements/MenuItemRadio.vue"
@@ -52,6 +62,7 @@ const props = defineProps<{
   menuItemRadio2?: Record<string, unknown> | null
   icon2?: Record<string, unknown> | null
   textLabel3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -59,7 +70,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-form-control",
   "textLabel": {
     "className": "sdn-text-label sdn-text-label--fwkw"
   },
@@ -94,28 +104,28 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-form-control", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const menuItemRadioProps = computed(() => mergeSlot(sdn.menuItemRadio, props.menuItemRadio))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const menuItemRadio2Props = computed(() => mergeSlot(sdn.menuItemRadio2, props.menuItemRadio2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const menuItemRadioProps = computed(() => mergeOptionalSlot(sdn.menuItemRadio, props.menuItemRadio, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const menuItemRadio2Props = computed(() => mergeOptionalSlot(sdn.menuItemRadio2, props.menuItemRadio2, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-        <Frame v-bind="frameProps" v-if="frame">
-          <MenuItemRadio v-if="menuItemRadio && menuItemRadioProps" v-bind="menuItemRadioProps">
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+        <Frame v-bind="frameProps" v-if="frameProps !== null">
+          <MenuItemRadio v-if="menuItemRadioProps !== null" v-bind="menuItemRadioProps">
             <Icon v-if="iconProps !== null" v-bind="iconProps" />
-            <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
           </MenuItemRadio>
-          <MenuItemRadio v-if="menuItemRadio2 && menuItemRadio2Props" v-bind="menuItemRadio2Props">
+          <MenuItemRadio v-if="menuItemRadio2Props !== null" v-bind="menuItemRadio2Props">
             <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-            <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
           </MenuItemRadio>
         </Frame>
       </slot>

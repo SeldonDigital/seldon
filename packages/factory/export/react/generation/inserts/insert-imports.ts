@@ -6,6 +6,7 @@ import { pluralizeLevel } from "../../utils/pluralize-level"
 import { TransformStrategy, transformSource } from "../../utils/transform-source"
 import { validateTreeNodeProps } from "../../validation/validate-component-props"
 import { getCustomTemplateMeta } from "../shared/custom-react"
+import { getConditionalPropPaths } from "../shared/get-conditional-prop-paths"
 
 import type { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
 import type { JSXNode } from "../preprocess/types"
@@ -36,15 +37,6 @@ export function insertImports(
   const { config, tree } = component
 
   const imports = getReactImports(component)
-
-  // forwardRef components pull the helper from react alongside the props type.
-  if (config.react.forwardRef) {
-    imports["react"] = imports["react"] ?? []
-
-    if (!imports["react"].includes("forwardRef")) {
-      imports["react"].push("forwardRef")
-    }
-  }
 
   if (config.react.returns === "Frame") {
     imports["../frames/Frame"] = ["Frame"]
@@ -311,11 +303,26 @@ export function insertImports(
   // Always add combineClassNames utility import since we always generate className declarations
   imports["../utils/class-name"] = ["combineClassNames"]
 
-  // Components that compose children wrap each merged slot props with applyRef
-  // to support the ref override channel. Leaf components have no slot props, so
-  // they skip the import to avoid an unused binding.
+  // Components that compose children layer each slot through the merge helpers.
+  // Leaf components have no slot props, so they skip the import to avoid an
+  // unused binding.
   if (Array.isArray(component.tree.children) && component.tree.children.length > 0) {
-    imports["../utils/apply-ref"] = ["applyRef"]
+    const conditionalPaths = getConditionalPropPaths(component)
+    const mergeHelpers = new Set<string>()
+
+    function collectMergeHelpers(node: JSONTreeNode) {
+      mergeHelpers.add(
+        conditionalPaths.has(node.dataBinding.path) ? "mergeOptionalSlot" : "mergeSlot",
+      )
+
+      if (Array.isArray(node.children)) {
+        node.children.forEach(collectMergeHelpers)
+      }
+    }
+
+    component.tree.children.forEach(collectMergeHelpers)
+
+    imports["../utils/merge-slot"] = [...Array.from(mergeHelpers), "SeldonRefs"]
   }
 
   let importString = ""

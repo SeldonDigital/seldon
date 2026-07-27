@@ -12,12 +12,37 @@
  *
  *****/
 
-/*****
+/**
  * Combobox: ComboboxGrouped
  * Level: Part
  * Intent: Editable field paired with a listbox of options to choose from.
  * Tags: combobox, select, dropdown, input, part, UI
  * Type: Custom
+ *
+ * Structure:
+ *   ComboboxField      comboboxField
+ *     Icon             icon
+ *     Input            input
+ *     ButtonIconic     buttonIconic
+ *       Icon           icon2
+ *   ListboxGrouped     listboxGrouped
+ *     Frame            frame
+ *       TextLabel      textLabel
+ *       ListboxOption  listboxOption
+ *         Icon         icon3
+ *         TextLabel    textLabel2
+ *       ListboxOption  listboxOption2
+ *         Icon         icon4
+ *         TextLabel    textLabel3
+ *     Hr               hr
+ *     Frame            frame2
+ *       TextLabel      textLabel4
+ *       ListboxOption  listboxOption3
+ *         Icon         icon5
+ *         TextLabel    textLabel5
+ *       ListboxOption  listboxOption4
+ *         Icon         icon6
+ *         TextLabel    textLabel6
  *
  * @example
  * ```vue
@@ -36,13 +61,13 @@
  *   frame2="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import ComboboxField from "../elements/ComboboxField.vue"
 import Hr from "../primitives/Hr.vue"
@@ -76,6 +101,7 @@ const props = defineProps<{
   listboxOption4?: Record<string, unknown> | null
   icon6?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -83,7 +109,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-combobox",
   "comboboxField": {
     "aria-hidden": "false",
     "className": "sdn-combobox-field sdn-combobox-field--z3a0"
@@ -183,29 +208,29 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-combobox", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const listboxGroupedProps = computed(() => mergeSlot(sdn.listboxGrouped, props.listboxGrouped))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const listboxOptionProps = computed(() => mergeSlot(sdn.listboxOption, props.listboxOption))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const listboxOption2Props = computed(() => mergeSlot(sdn.listboxOption2, props.listboxOption2))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
-const hrProps = computed(() => mergeSlot(sdn.hr, props.hr))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const textLabel4Props = computed(() => mergeSlot(sdn.textLabel4, props.textLabel4))
-const listboxOption3Props = computed(() => mergeSlot(sdn.listboxOption3, props.listboxOption3))
-const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5))
-const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel5))
-const listboxOption4Props = computed(() => mergeSlot(sdn.listboxOption4, props.listboxOption4))
-const icon6Props = computed(() => mergeSlot(sdn.icon6, props.icon6))
-const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel6))
+const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const listboxGroupedProps = computed(() => mergeSlot(sdn.listboxGrouped, props.listboxGrouped, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const listboxOptionProps = computed(() => mergeOptionalSlot(sdn.listboxOption, props.listboxOption, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const listboxOption2Props = computed(() => mergeOptionalSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const hrProps = computed(() => mergeSlot(sdn.hr, props.hr, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
+const listboxOption3Props = computed(() => mergeOptionalSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs))
+const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
+const textLabel5Props = computed(() => mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs))
+const listboxOption4Props = computed(() => mergeOptionalSlot(sdn.listboxOption4, props.listboxOption4, props.seldonRefs))
+const icon6Props = computed(() => mergeSlot(sdn.icon6, props.icon6, props.seldonRefs))
+const textLabel6Props = computed(() => mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs))
 </script>
 
 <template>
@@ -213,27 +238,27 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
       <slot>
         <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
         <ListboxGrouped v-if="listboxGroupedProps !== null" v-bind="listboxGroupedProps">
-          <Frame v-bind="frameProps" v-if="frame">
-            <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-            <ListboxOption v-if="listboxOption && listboxOptionProps" v-bind="listboxOptionProps">
+          <Frame v-bind="frameProps" v-if="frameProps !== null">
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+            <ListboxOption v-if="listboxOptionProps !== null" v-bind="listboxOptionProps">
               <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-              <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+              <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
             </ListboxOption>
-            <ListboxOption v-if="listboxOption2 && listboxOption2Props" v-bind="listboxOption2Props">
+            <ListboxOption v-if="listboxOption2Props !== null" v-bind="listboxOption2Props">
               <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
-              <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+              <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
             </ListboxOption>
           </Frame>
           <Hr v-if="hrProps !== null" v-bind="hrProps" />
-          <Frame v-bind="frame2Props" v-if="frame2">
-            <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
-            <ListboxOption v-if="listboxOption3 && listboxOption3Props" v-bind="listboxOption3Props">
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+            <ListboxOption v-if="listboxOption3Props !== null" v-bind="listboxOption3Props">
               <Icon v-if="icon5Props !== null" v-bind="icon5Props" />
-              <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
+              <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
             </ListboxOption>
-            <ListboxOption v-if="listboxOption4 && listboxOption4Props" v-bind="listboxOption4Props">
+            <ListboxOption v-if="listboxOption4Props !== null" v-bind="listboxOption4Props">
               <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
-              <TextLabel v-if="textLabel6 && textLabel6Props" v-bind="textLabel6Props" />
+              <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
             </ListboxOption>
           </Frame>
         </ListboxGrouped>

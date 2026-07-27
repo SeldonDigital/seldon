@@ -3,19 +3,18 @@ import type { JSXNode } from "../../react/generation/preprocess/types"
 type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
 
 /**
- * Renders a forwarded grandchild as a Vue bound attribute. Conditional leaves
- * are guarded by their source prop so an omitted caller value keeps the slot
- * empty; canonical leaves forward directly; dropped slots forward `null`.
+ * Renders a forwarded grandchild as a Vue bound attribute. The merged variable
+ * already carries the slot's render decision, so a suppressed leaf forwards
+ * null; dropped slots forward `null` outright.
  *
- * The guard and prop-var identifiers are the same JS expressions the React
- * emitter uses; in a Vue template they resolve to the component's props and the
- * merged slot variables declared in `<script setup>`.
+ * The prop-var identifiers are the same JS expressions the React emitter uses;
+ * in a Vue template they resolve to the merged slot variables declared in
+ * `<script setup>`.
  */
 function grandchildPropAttr(gp: GrandchildProp): string {
   if (gp.nullLiteral) return `:${gp.propKeyName}="null"`
-  const value = gp.guard ? `${gp.guard} && ${gp.propVarName}` : gp.propVarName
 
-  return `:${gp.propKeyName}="${value}"`
+  return `:${gp.propKeyName}="${gp.propVarName}"`
 }
 
 function grandchildPropsString(node: JSXNode): string {

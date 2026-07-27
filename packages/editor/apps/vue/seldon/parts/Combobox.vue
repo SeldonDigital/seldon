@@ -12,12 +12,29 @@
  *
  *****/
 
-/*****
+/**
  * Combobox: Combobox
  * Level: Part
  * Intent: Editable field paired with a listbox of options to choose from.
  * Tags: combobox, select, dropdown, input, part, UI
  * Type: Default
+ *
+ * Structure:
+ *   ComboboxField    comboboxField
+ *     Icon           icon
+ *     Input          input
+ *     ButtonIconic   buttonIconic
+ *       Icon         icon2
+ *   Listbox          listbox
+ *     ListboxOption  listboxOption
+ *       Icon         icon3
+ *       TextLabel    textLabel
+ *     ListboxOption  listboxOption2
+ *       Icon         icon4
+ *       TextLabel    textLabel2
+ *     ListboxOption  listboxOption3
+ *       Icon         icon5
+ *       TextLabel    textLabel3
  *
  * @example
  * ```vue
@@ -34,13 +51,13 @@
  *   listboxOption3="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import ComboboxField from "../elements/ComboboxField.vue"
 import Listbox from "../parts/Listbox.vue"
 
@@ -61,6 +78,7 @@ const props = defineProps<{
   listboxOption3?: Record<string, unknown> | null
   icon5?: Record<string, unknown> | null
   textLabel3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -68,7 +86,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-combobox",
   "comboboxField": {
     "aria-hidden": "false",
     "className": "sdn-combobox-field sdn-combobox-field--z3a0"
@@ -141,28 +158,28 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-combobox", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const listboxProps = computed(() => mergeSlot(sdn.listbox, props.listbox))
-const listboxOptionProps = computed(() => mergeSlot(sdn.listboxOption, props.listboxOption))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const listboxOption2Props = computed(() => mergeSlot(sdn.listboxOption2, props.listboxOption2))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const listboxOption3Props = computed(() => mergeSlot(sdn.listboxOption3, props.listboxOption3))
-const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
+const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const listboxProps = computed(() => mergeSlot(sdn.listbox, props.listbox, props.seldonRefs))
+const listboxOptionProps = computed(() => mergeSlot(sdn.listboxOption, props.listboxOption, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const listboxOption2Props = computed(() => mergeSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const listboxOption3Props = computed(() => mergeSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs))
+const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
-        <Listbox v-if="listboxProps !== null" v-bind="listboxProps" :listboxOption="listboxOptionProps" :icon="icon3Props" :textLabel="textLabel && textLabelProps" :listboxOption2="listboxOption2Props" :icon2="icon4Props" :textLabel2="textLabel2 && textLabel2Props" :listboxOption3="listboxOption3Props" :icon3="icon5Props" :textLabel3="textLabel3 && textLabel3Props" />
+        <Listbox v-if="listboxProps !== null" v-bind="listboxProps" :listboxOption="listboxOptionProps" :icon="icon3Props" :textLabel="textLabelProps" :listboxOption2="listboxOption2Props" :icon2="icon4Props" :textLabel2="textLabel2Props" :listboxOption3="listboxOption3Props" :icon3="icon5Props" :textLabel3="textLabel3Props" />
       </slot>
     </div>
 </template>

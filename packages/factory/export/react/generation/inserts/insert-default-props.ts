@@ -1,8 +1,12 @@
 import { TransformStrategy, transformSource } from "../../utils/transform-source"
 import { generateDefaultProps } from "../shared/generate-default-props"
+import { getSubtreeBoundaryPropNames } from "../shared/get-subtree-boundaries"
 
 import type { ComponentToExport } from "../../../types"
 import type { CSSProperties } from "react"
+
+/** Matches a top-level key of the serialized `sdn` object, at indent two. */
+const TOP_LEVEL_KEY = /^ {2}"([^"]+)":/
 
 /**
  * We build a defaultProps object to make sure nested children have
@@ -33,6 +37,11 @@ export function insertDefaultProps(
     return source
   }
 
+  const serialized = groupBySubtree(
+    JSON.stringify(defaultProps, null, 2),
+    getSubtreeBoundaryPropNames(component, propNames),
+  )
+
   source = transformSource({
     source,
     strategy: TransformStrategy.APPEND,
@@ -40,8 +49,29 @@ export function insertDefaultProps(
 //
 // Default property values
 //
-const sdn: ${component.tree.dataBinding.interfaceName} = ${JSON.stringify(defaultProps, null, 2)}`,
+const sdn: ${component.tree.dataBinding.interfaceName} = ${serialized}`,
   })
 
   return source
+}
+
+/**
+ * Opens a new cluster in the serialized object at each top-level subtree
+ * boundary, so the `sdn` block breaks at the same places as the interface, the
+ * signature, and the declaration list.
+ */
+function groupBySubtree(serialized: string, boundaries: Set<string>): string {
+  const lines: string[] = []
+
+  serialized.split("\n").forEach((line, index) => {
+    const key = line.match(TOP_LEVEL_KEY)?.[1]
+
+    if (index > 0 && key !== undefined && boundaries.has(key)) {
+      lines.push("")
+    }
+
+    lines.push(line)
+  })
+
+  return lines.join("\n")
 }

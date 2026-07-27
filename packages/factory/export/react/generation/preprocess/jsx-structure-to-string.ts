@@ -8,15 +8,14 @@ import type { JSXNode } from "./types"
 type GrandchildProp = NonNullable<JSXNode["grandchildProps"]>[number]
 
 /**
- * Renders a forwarded grandchild as a JSX attribute. Conditional leaves are
- * guarded by their source prop (`textLabel={textLabel && textLabelProps}`) so an
- * omitted caller value keeps the slot empty; canonical leaves forward directly.
+ * Renders a forwarded grandchild as a JSX attribute. The merged variable already
+ * carries the slot's render decision: it is null when the slot must not render,
+ * so a suppressed leaf forwards null and stays absent.
  */
 function grandchildPropAttr(gp: GrandchildProp): string {
   if (gp.nullLiteral) return `${gp.propKeyName}={null}`
-  const value = gp.guard ? `${gp.guard} && ${gp.propVarName}` : gp.propVarName
 
-  return `${gp.propKeyName}={${value}}`
+  return `${gp.propKeyName}={${gp.propVarName}}`
 }
 
 /**
@@ -34,7 +33,6 @@ export function jsxStructureToString(
   jsxRoot: JSXNode,
   component: ComponentToExport,
   classNameVarName: string,
-  withRef: boolean = false,
 ): string {
   // Build JSX string recursively
   function nodeToString(node: JSXNode, indent: number = 0): string {
@@ -120,10 +118,9 @@ export function jsxStructureToString(
   // would be silently discarded by React's explicit-children precedence.
   const rootRefAttr = dataSeldonRefAttr(jsxRoot.ref)
   const rootAttrProps = generateRootAttributePropsString(component)
-  const forwardedRefProp = withRef ? " ref={ref}" : ""
   const rootTag = getReactReturnTag(component)
   let content = `
-  return (\n    <${rootTag} className={${classNameVarName}}${rootRefAttr}${rootAttrProps}${forwardedRefProp} {...props}>`
+  return (\n    <${rootTag} className={${classNameVarName}}${rootRefAttr}${rootAttrProps} {...props}>`
 
   if (jsxRoot.children && jsxRoot.children.length > 0) {
     content += `\n      {children !== undefined ? (\n        children\n      ) : (\n        <>`

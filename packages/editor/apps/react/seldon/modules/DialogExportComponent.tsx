@@ -10,44 +10,34 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ComboboxField } from "../elements/ComboboxField"
-import { FormControl } from "../elements/FormControl"
-import { FormControlRadio } from "../elements/FormControlRadio"
-import { MenuItemRadio } from "../elements/MenuItemRadio"
-import { Frame } from "../frames/Frame"
-import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar } from "../parts/Bar"
-import { BarButtons } from "../parts/BarButtons"
-import { Icon } from "../primitives/Icon"
-import { Input } from "../primitives/Input"
-import { TextDescription } from "../primitives/TextDescription"
-import { TextLabel } from "../primitives/TextLabel"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonProps } from "../elements/Button"
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { ComboboxFieldProps } from "../elements/ComboboxField"
-import type { FormControlProps } from "../elements/FormControl"
-import type { FormControlRadioProps } from "../elements/FormControlRadio"
-import type { MenuItemRadioProps } from "../elements/MenuItemRadio"
-import type { FrameProps } from "../frames/Frame"
-import type { BarProps } from "../parts/Bar"
-import type { BarButtonsProps } from "../parts/BarButtons"
-import type { IconProps } from "../primitives/Icon"
-import type { InputProps } from "../primitives/Input"
-import type { TextDescriptionProps } from "../primitives/TextDescription"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonProps } from "../elements/Button"
+import { ButtonIconicProps } from "../elements/ButtonIconic"
+import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
+import { FormControl, FormControlProps } from "../elements/FormControl"
+import { FormControlRadio, FormControlRadioProps } from "../elements/FormControlRadio"
+import { MenuItemRadio, MenuItemRadioProps } from "../elements/MenuItemRadio"
+import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLDiv } from "../native-react/HTML.Div"
+import { Bar, BarProps } from "../parts/Bar"
+import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
+import { Icon, IconProps } from "../primitives/Icon"
+import { Input, InputProps } from "../primitives/Input"
+import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface DialogExportComponentProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
+
   frame?: FrameProps | null
   formControl?: FormControlProps | null
   textLabel?: TextLabelProps | null
@@ -113,6 +103,7 @@ export interface DialogExportComponentProps extends HTMLAttributes<HTMLElement> 
   menuItemRadio10?: MenuItemRadioProps | null
   icon11?: IconProps | null
   textLabel17?: TextLabelProps | null
+
   barButtons?: BarButtonsProps | null
   button?: ButtonProps | null
   icon12?: IconProps | null
@@ -122,1067 +113,11 @@ export interface DialogExportComponentProps extends HTMLAttributes<HTMLElement> 
   textLabel19?: TextLabelProps | null
 }
 
-/*****
- * Module: DialogExportComponent
- * Level: Module
- * Intent:
- * Tags:
- * Type: Inline
- *
- * @example
- * ```tsx
- * <DialogExportComponent
- *   aria-hidden="false"
- *   bar="{}"
- *   textTitle="Product Title"
- *   frame="{}"
- *   formControl="{}"
- *   textLabel="{}"
- *   input="{}"
- *   formControl2="{}"
- *   comboboxField="{}"
- *   buttonIconic={() => {}}
- *   icon="material-star"
- *   formControlRadio3="{}"
- *   textDescription2="{}"
- *   frame2="{}"
- *   menuItemRadio="{}"
- *   menuItemRadio2="{}"
- *   formControlRadio4="{}"
- *   formControlRadio5="{}"
- *   formControlRadio6="{}"
- *   formControlRadio7="{}"
- *   barButtons2="{}"
- *   button={() => {}}
- *   button2={() => {}}
- * />
- * ```
- *****/
-export function DialogExportComponent({
-  className = "",
-  bar = sdn.bar,
-  textTitle,
-  frame = sdn.frame,
-  formControl,
-  textLabel,
-  input = sdn.input,
-  formControl2,
-  textLabel2,
-  comboboxField,
-  input2 = sdn.input2,
-  buttonIconic = sdn.buttonIconic,
-  icon = sdn.icon,
-  formControlRadio,
-  frame2 = sdn.frame2,
-  textLabel3,
-  textDescription,
-  frame3 = sdn.frame3,
-  menuItemRadio,
-  icon2 = sdn.icon2,
-  textLabel4,
-  menuItemRadio2,
-  icon3 = sdn.icon3,
-  textLabel5,
-  formControlRadio2,
-  frame4 = sdn.frame4,
-  textLabel6,
-  textDescription2,
-  frame5 = sdn.frame5,
-  menuItemRadio3,
-  icon4 = sdn.icon4,
-  textLabel7,
-  menuItemRadio4,
-  icon5 = sdn.icon5,
-  textLabel8,
-  formControlRadio3,
-  frame6 = sdn.frame6,
-  textLabel9,
-  textDescription3,
-  frame7 = sdn.frame7,
-  menuItemRadio5,
-  icon6 = sdn.icon6,
-  textLabel10,
-  menuItemRadio6,
-  icon7 = sdn.icon7,
-  textLabel11,
-  formControlRadio4,
-  frame8 = sdn.frame8,
-  textLabel12,
-  textDescription4,
-  frame9 = sdn.frame9,
-  menuItemRadio7,
-  icon8 = sdn.icon8,
-  textLabel13,
-  menuItemRadio8,
-  icon9 = sdn.icon9,
-  textLabel14,
-  formControlRadio5,
-  frame10 = sdn.frame10,
-  textLabel15,
-  textDescription5,
-  frame11 = sdn.frame11,
-  menuItemRadio9,
-  icon10 = sdn.icon10,
-  textLabel16,
-  menuItemRadio10,
-  icon11 = sdn.icon11,
-  textLabel17,
-  barButtons = sdn.barButtons,
-  button = sdn.button,
-  icon12 = sdn.icon12,
-  textLabel18,
-  button2 = sdn.button2,
-  icon13 = sdn.icon13,
-  textLabel19,
-  children,
-  seldonRefs,
-  ...props
-}: DialogExportComponentProps) {
-  const dialogExportComponentClassName = combineClassNames("sdn-dialog-export-component", className)
-  const barProps = applyRef(
-    seldonRefs,
-    bar === null
-      ? null
-      : {
-          ...sdn.bar,
-          ...bar,
-          className: combineClassNames(sdn.bar?.className, bar?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const formControlProps = applyRef(
-    seldonRefs,
-    formControl === null
-      ? null
-      : {
-          ...sdn.formControl,
-          ...formControl,
-          className: combineClassNames(sdn.formControl?.className, formControl?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const inputProps = applyRef(
-    seldonRefs,
-    input === null
-      ? null
-      : {
-          ...sdn.input,
-          ...input,
-          className: combineClassNames(sdn.input?.className, input?.className),
-        },
-  )
-  const formControl2Props = applyRef(
-    seldonRefs,
-    formControl2 === null
-      ? null
-      : {
-          ...sdn.formControl2,
-          ...formControl2,
-          className: combineClassNames(sdn.formControl2?.className, formControl2?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const comboboxFieldProps = applyRef(
-    seldonRefs,
-    comboboxField === null
-      ? null
-      : {
-          ...sdn.comboboxField,
-          ...comboboxField,
-          className: combineClassNames(sdn.comboboxField?.className, comboboxField?.className),
-        },
-  )
-  const input2Props = applyRef(
-    seldonRefs,
-    input2 === null
-      ? null
-      : {
-          ...sdn.input2,
-          ...input2,
-          className: combineClassNames(sdn.input2?.className, input2?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const formControlRadioProps = applyRef(
-    seldonRefs,
-    formControlRadio === null
-      ? null
-      : {
-          ...sdn.formControlRadio,
-          ...formControlRadio,
-          className: combineClassNames(
-            sdn.formControlRadio?.className,
-            formControlRadio?.className,
-          ),
-        },
-  )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(sdn.frame2?.className, frame2?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-  const textDescriptionProps = applyRef(
-    seldonRefs,
-    textDescription === null
-      ? null
-      : {
-          ...sdn.textDescription,
-          ...textDescription,
-          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
-        },
-  )
-  const frame3Props = applyRef(
-    seldonRefs,
-    frame3 === null
-      ? null
-      : {
-          ...sdn.frame3,
-          ...frame3,
-          className: combineClassNames(sdn.frame3?.className, frame3?.className),
-        },
-  )
-  const menuItemRadioProps = applyRef(
-    seldonRefs,
-    menuItemRadio === null
-      ? null
-      : {
-          ...sdn.menuItemRadio,
-          ...menuItemRadio,
-          className: combineClassNames(sdn.menuItemRadio?.className, menuItemRadio?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
-        },
-  )
-  const menuItemRadio2Props = applyRef(
-    seldonRefs,
-    menuItemRadio2 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio2,
-          ...menuItemRadio2,
-          className: combineClassNames(sdn.menuItemRadio2?.className, menuItemRadio2?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const textLabel5Props = applyRef(
-    seldonRefs,
-    textLabel5 === null
-      ? null
-      : {
-          ...sdn.textLabel5,
-          ...textLabel5,
-          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
-        },
-  )
-  const formControlRadio2Props = applyRef(
-    seldonRefs,
-    formControlRadio2 === null
-      ? null
-      : {
-          ...sdn.formControlRadio2,
-          ...formControlRadio2,
-          className: combineClassNames(
-            sdn.formControlRadio2?.className,
-            formControlRadio2?.className,
-          ),
-        },
-  )
-  const frame4Props = applyRef(
-    seldonRefs,
-    frame4 === null
-      ? null
-      : {
-          ...sdn.frame4,
-          ...frame4,
-          className: combineClassNames(sdn.frame4?.className, frame4?.className),
-        },
-  )
-  const textLabel6Props = applyRef(
-    seldonRefs,
-    textLabel6 === null
-      ? null
-      : {
-          ...sdn.textLabel6,
-          ...textLabel6,
-          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
-        },
-  )
-  const textDescription2Props = applyRef(
-    seldonRefs,
-    textDescription2 === null
-      ? null
-      : {
-          ...sdn.textDescription2,
-          ...textDescription2,
-          className: combineClassNames(
-            sdn.textDescription2?.className,
-            textDescription2?.className,
-          ),
-        },
-  )
-  const frame5Props = applyRef(
-    seldonRefs,
-    frame5 === null
-      ? null
-      : {
-          ...sdn.frame5,
-          ...frame5,
-          className: combineClassNames(sdn.frame5?.className, frame5?.className),
-        },
-  )
-  const menuItemRadio3Props = applyRef(
-    seldonRefs,
-    menuItemRadio3 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio3,
-          ...menuItemRadio3,
-          className: combineClassNames(sdn.menuItemRadio3?.className, menuItemRadio3?.className),
-        },
-  )
-  const icon4Props = applyRef(
-    seldonRefs,
-    icon4 === null
-      ? null
-      : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        },
-  )
-  const textLabel7Props = applyRef(
-    seldonRefs,
-    textLabel7 === null
-      ? null
-      : {
-          ...sdn.textLabel7,
-          ...textLabel7,
-          className: combineClassNames(sdn.textLabel7?.className, textLabel7?.className),
-        },
-  )
-  const menuItemRadio4Props = applyRef(
-    seldonRefs,
-    menuItemRadio4 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio4,
-          ...menuItemRadio4,
-          className: combineClassNames(sdn.menuItemRadio4?.className, menuItemRadio4?.className),
-        },
-  )
-  const icon5Props = applyRef(
-    seldonRefs,
-    icon5 === null
-      ? null
-      : {
-          ...sdn.icon5,
-          ...icon5,
-          className: combineClassNames(sdn.icon5?.className, icon5?.className),
-        },
-  )
-  const textLabel8Props = applyRef(
-    seldonRefs,
-    textLabel8 === null
-      ? null
-      : {
-          ...sdn.textLabel8,
-          ...textLabel8,
-          className: combineClassNames(sdn.textLabel8?.className, textLabel8?.className),
-        },
-  )
-  const formControlRadio3Props = applyRef(
-    seldonRefs,
-    formControlRadio3 === null
-      ? null
-      : {
-          ...sdn.formControlRadio3,
-          ...formControlRadio3,
-          className: combineClassNames(
-            sdn.formControlRadio3?.className,
-            formControlRadio3?.className,
-          ),
-        },
-  )
-  const frame6Props = applyRef(
-    seldonRefs,
-    frame6 === null
-      ? null
-      : {
-          ...sdn.frame6,
-          ...frame6,
-          className: combineClassNames(sdn.frame6?.className, frame6?.className),
-        },
-  )
-  const textLabel9Props = applyRef(
-    seldonRefs,
-    textLabel9 === null
-      ? null
-      : {
-          ...sdn.textLabel9,
-          ...textLabel9,
-          className: combineClassNames(sdn.textLabel9?.className, textLabel9?.className),
-        },
-  )
-  const textDescription3Props = applyRef(
-    seldonRefs,
-    textDescription3 === null
-      ? null
-      : {
-          ...sdn.textDescription3,
-          ...textDescription3,
-          className: combineClassNames(
-            sdn.textDescription3?.className,
-            textDescription3?.className,
-          ),
-        },
-  )
-  const frame7Props = applyRef(
-    seldonRefs,
-    frame7 === null
-      ? null
-      : {
-          ...sdn.frame7,
-          ...frame7,
-          className: combineClassNames(sdn.frame7?.className, frame7?.className),
-        },
-  )
-  const menuItemRadio5Props = applyRef(
-    seldonRefs,
-    menuItemRadio5 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio5,
-          ...menuItemRadio5,
-          className: combineClassNames(sdn.menuItemRadio5?.className, menuItemRadio5?.className),
-        },
-  )
-  const icon6Props = applyRef(
-    seldonRefs,
-    icon6 === null
-      ? null
-      : {
-          ...sdn.icon6,
-          ...icon6,
-          className: combineClassNames(sdn.icon6?.className, icon6?.className),
-        },
-  )
-  const textLabel10Props = applyRef(
-    seldonRefs,
-    textLabel10 === null
-      ? null
-      : {
-          ...sdn.textLabel10,
-          ...textLabel10,
-          className: combineClassNames(sdn.textLabel10?.className, textLabel10?.className),
-        },
-  )
-  const menuItemRadio6Props = applyRef(
-    seldonRefs,
-    menuItemRadio6 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio6,
-          ...menuItemRadio6,
-          className: combineClassNames(sdn.menuItemRadio6?.className, menuItemRadio6?.className),
-        },
-  )
-  const icon7Props = applyRef(
-    seldonRefs,
-    icon7 === null
-      ? null
-      : {
-          ...sdn.icon7,
-          ...icon7,
-          className: combineClassNames(sdn.icon7?.className, icon7?.className),
-        },
-  )
-  const textLabel11Props = applyRef(
-    seldonRefs,
-    textLabel11 === null
-      ? null
-      : {
-          ...sdn.textLabel11,
-          ...textLabel11,
-          className: combineClassNames(sdn.textLabel11?.className, textLabel11?.className),
-        },
-  )
-  const formControlRadio4Props = applyRef(
-    seldonRefs,
-    formControlRadio4 === null
-      ? null
-      : {
-          ...sdn.formControlRadio4,
-          ...formControlRadio4,
-          className: combineClassNames(
-            sdn.formControlRadio4?.className,
-            formControlRadio4?.className,
-          ),
-        },
-  )
-  const frame8Props = applyRef(
-    seldonRefs,
-    frame8 === null
-      ? null
-      : {
-          ...sdn.frame8,
-          ...frame8,
-          className: combineClassNames(sdn.frame8?.className, frame8?.className),
-        },
-  )
-  const textLabel12Props = applyRef(
-    seldonRefs,
-    textLabel12 === null
-      ? null
-      : {
-          ...sdn.textLabel12,
-          ...textLabel12,
-          className: combineClassNames(sdn.textLabel12?.className, textLabel12?.className),
-        },
-  )
-  const textDescription4Props = applyRef(
-    seldonRefs,
-    textDescription4 === null
-      ? null
-      : {
-          ...sdn.textDescription4,
-          ...textDescription4,
-          className: combineClassNames(
-            sdn.textDescription4?.className,
-            textDescription4?.className,
-          ),
-        },
-  )
-  const frame9Props = applyRef(
-    seldonRefs,
-    frame9 === null
-      ? null
-      : {
-          ...sdn.frame9,
-          ...frame9,
-          className: combineClassNames(sdn.frame9?.className, frame9?.className),
-        },
-  )
-  const menuItemRadio7Props = applyRef(
-    seldonRefs,
-    menuItemRadio7 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio7,
-          ...menuItemRadio7,
-          className: combineClassNames(sdn.menuItemRadio7?.className, menuItemRadio7?.className),
-        },
-  )
-  const icon8Props = applyRef(
-    seldonRefs,
-    icon8 === null
-      ? null
-      : {
-          ...sdn.icon8,
-          ...icon8,
-          className: combineClassNames(sdn.icon8?.className, icon8?.className),
-        },
-  )
-  const textLabel13Props = applyRef(
-    seldonRefs,
-    textLabel13 === null
-      ? null
-      : {
-          ...sdn.textLabel13,
-          ...textLabel13,
-          className: combineClassNames(sdn.textLabel13?.className, textLabel13?.className),
-        },
-  )
-  const menuItemRadio8Props = applyRef(
-    seldonRefs,
-    menuItemRadio8 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio8,
-          ...menuItemRadio8,
-          className: combineClassNames(sdn.menuItemRadio8?.className, menuItemRadio8?.className),
-        },
-  )
-  const icon9Props = applyRef(
-    seldonRefs,
-    icon9 === null
-      ? null
-      : {
-          ...sdn.icon9,
-          ...icon9,
-          className: combineClassNames(sdn.icon9?.className, icon9?.className),
-        },
-  )
-  const textLabel14Props = applyRef(
-    seldonRefs,
-    textLabel14 === null
-      ? null
-      : {
-          ...sdn.textLabel14,
-          ...textLabel14,
-          className: combineClassNames(sdn.textLabel14?.className, textLabel14?.className),
-        },
-  )
-  const formControlRadio5Props = applyRef(
-    seldonRefs,
-    formControlRadio5 === null
-      ? null
-      : {
-          ...sdn.formControlRadio5,
-          ...formControlRadio5,
-          className: combineClassNames(
-            sdn.formControlRadio5?.className,
-            formControlRadio5?.className,
-          ),
-        },
-  )
-  const frame10Props = applyRef(
-    seldonRefs,
-    frame10 === null
-      ? null
-      : {
-          ...sdn.frame10,
-          ...frame10,
-          className: combineClassNames(sdn.frame10?.className, frame10?.className),
-        },
-  )
-  const textLabel15Props = applyRef(
-    seldonRefs,
-    textLabel15 === null
-      ? null
-      : {
-          ...sdn.textLabel15,
-          ...textLabel15,
-          className: combineClassNames(sdn.textLabel15?.className, textLabel15?.className),
-        },
-  )
-  const textDescription5Props = applyRef(
-    seldonRefs,
-    textDescription5 === null
-      ? null
-      : {
-          ...sdn.textDescription5,
-          ...textDescription5,
-          className: combineClassNames(
-            sdn.textDescription5?.className,
-            textDescription5?.className,
-          ),
-        },
-  )
-  const frame11Props = applyRef(
-    seldonRefs,
-    frame11 === null
-      ? null
-      : {
-          ...sdn.frame11,
-          ...frame11,
-          className: combineClassNames(sdn.frame11?.className, frame11?.className),
-        },
-  )
-  const menuItemRadio9Props = applyRef(
-    seldonRefs,
-    menuItemRadio9 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio9,
-          ...menuItemRadio9,
-          className: combineClassNames(sdn.menuItemRadio9?.className, menuItemRadio9?.className),
-        },
-  )
-  const icon10Props = applyRef(
-    seldonRefs,
-    icon10 === null
-      ? null
-      : {
-          ...sdn.icon10,
-          ...icon10,
-          className: combineClassNames(sdn.icon10?.className, icon10?.className),
-        },
-  )
-  const textLabel16Props = applyRef(
-    seldonRefs,
-    textLabel16 === null
-      ? null
-      : {
-          ...sdn.textLabel16,
-          ...textLabel16,
-          className: combineClassNames(sdn.textLabel16?.className, textLabel16?.className),
-        },
-  )
-  const menuItemRadio10Props = applyRef(
-    seldonRefs,
-    menuItemRadio10 === null
-      ? null
-      : {
-          ...sdn.menuItemRadio10,
-          ...menuItemRadio10,
-          className: combineClassNames(sdn.menuItemRadio10?.className, menuItemRadio10?.className),
-        },
-  )
-  const icon11Props = applyRef(
-    seldonRefs,
-    icon11 === null
-      ? null
-      : {
-          ...sdn.icon11,
-          ...icon11,
-          className: combineClassNames(sdn.icon11?.className, icon11?.className),
-        },
-  )
-  const textLabel17Props = applyRef(
-    seldonRefs,
-    textLabel17 === null
-      ? null
-      : {
-          ...sdn.textLabel17,
-          ...textLabel17,
-          className: combineClassNames(sdn.textLabel17?.className, textLabel17?.className),
-        },
-  )
-  const barButtonsProps = applyRef(
-    seldonRefs,
-    barButtons === null
-      ? null
-      : {
-          ...sdn.barButtons,
-          ...barButtons,
-          className: combineClassNames(sdn.barButtons?.className, barButtons?.className),
-        },
-  )
-  const buttonProps = applyRef(
-    seldonRefs,
-    button === null
-      ? null
-      : {
-          ...sdn.button,
-          ...button,
-          className: combineClassNames(sdn.button?.className, button?.className),
-        },
-  )
-  const icon12Props = applyRef(
-    seldonRefs,
-    icon12 === null
-      ? null
-      : {
-          ...sdn.icon12,
-          ...icon12,
-          className: combineClassNames(sdn.icon12?.className, icon12?.className),
-        },
-  )
-  const textLabel18Props = applyRef(
-    seldonRefs,
-    textLabel18 === null
-      ? null
-      : {
-          ...sdn.textLabel18,
-          ...textLabel18,
-          className: combineClassNames(sdn.textLabel18?.className, textLabel18?.className),
-        },
-  )
-  const button2Props = applyRef(
-    seldonRefs,
-    button2 === null
-      ? null
-      : {
-          ...sdn.button2,
-          ...button2,
-          className: combineClassNames(sdn.button2?.className, button2?.className),
-        },
-  )
-  const icon13Props = applyRef(
-    seldonRefs,
-    icon13 === null
-      ? null
-      : {
-          ...sdn.icon13,
-          ...icon13,
-          className: combineClassNames(sdn.icon13?.className, icon13?.className),
-        },
-  )
-  const textLabel19Props = applyRef(
-    seldonRefs,
-    textLabel19 === null
-      ? null
-      : {
-          ...sdn.textLabel19,
-          ...textLabel19,
-          className: combineClassNames(sdn.textLabel19?.className, textLabel19?.className),
-        },
-  )
-
-  return (
-    <HTMLDiv className={dialogExportComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {barProps !== null && (
-            <Bar {...barProps}>
-              {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-            </Bar>
-          )}
-          <Frame {...frameProps}>
-            {formControl && formControlProps && (
-              <FormControl {...formControlProps}>
-                {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-                {input && inputProps && <Input {...inputProps} />}
-              </FormControl>
-            )}
-            {formControl2 && formControl2Props && (
-              <FormControl {...formControl2Props}>
-                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-                {comboboxField && comboboxFieldProps && (
-                  <ComboboxField
-                    {...comboboxFieldProps}
-                    input={input2Props}
-                    buttonIconic={buttonIconicProps}
-                    icon2={iconProps}
-                    icon={null}
-                  />
-                )}
-              </FormControl>
-            )}
-            {formControlRadio && formControlRadioProps && (
-              <FormControlRadio {...formControlRadioProps}>
-                <Frame {...frame2Props}>
-                  {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
-                  {textDescription && textDescriptionProps && (
-                    <TextDescription {...textDescriptionProps} />
-                  )}
-                </Frame>
-                <Frame {...frame3Props}>
-                  {menuItemRadio && menuItemRadioProps && (
-                    <MenuItemRadio {...menuItemRadioProps}>
-                      {icon2 && icon2Props && <Icon {...icon2Props} />}
-                      {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
-                    </MenuItemRadio>
-                  )}
-                  {menuItemRadio2 && menuItemRadio2Props && (
-                    <MenuItemRadio {...menuItemRadio2Props}>
-                      {icon3 && icon3Props && <Icon {...icon3Props} />}
-                      {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
-                    </MenuItemRadio>
-                  )}
-                </Frame>
-              </FormControlRadio>
-            )}
-            {formControlRadio2 && formControlRadio2Props && (
-              <FormControlRadio {...formControlRadio2Props}>
-                <Frame {...frame4Props}>
-                  {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
-                  {textDescription2 && textDescription2Props && (
-                    <TextDescription {...textDescription2Props} />
-                  )}
-                </Frame>
-                <Frame {...frame5Props}>
-                  {menuItemRadio3 && menuItemRadio3Props && (
-                    <MenuItemRadio {...menuItemRadio3Props}>
-                      {icon4 && icon4Props && <Icon {...icon4Props} />}
-                      {textLabel7 && textLabel7Props && <TextLabel {...textLabel7Props} />}
-                    </MenuItemRadio>
-                  )}
-                  {menuItemRadio4 && menuItemRadio4Props && (
-                    <MenuItemRadio {...menuItemRadio4Props}>
-                      {icon5 && icon5Props && <Icon {...icon5Props} />}
-                      {textLabel8 && textLabel8Props && <TextLabel {...textLabel8Props} />}
-                    </MenuItemRadio>
-                  )}
-                </Frame>
-              </FormControlRadio>
-            )}
-            {formControlRadio3 && formControlRadio3Props && (
-              <FormControlRadio {...formControlRadio3Props}>
-                <Frame {...frame6Props}>
-                  {textLabel9 && textLabel9Props && <TextLabel {...textLabel9Props} />}
-                  {textDescription3 && textDescription3Props && (
-                    <TextDescription {...textDescription3Props} />
-                  )}
-                </Frame>
-                <Frame {...frame7Props}>
-                  {menuItemRadio5 && menuItemRadio5Props && (
-                    <MenuItemRadio {...menuItemRadio5Props}>
-                      {icon6 && icon6Props && <Icon {...icon6Props} />}
-                      {textLabel10 && textLabel10Props && <TextLabel {...textLabel10Props} />}
-                    </MenuItemRadio>
-                  )}
-                  {menuItemRadio6 && menuItemRadio6Props && (
-                    <MenuItemRadio {...menuItemRadio6Props}>
-                      {icon7 && icon7Props && <Icon {...icon7Props} />}
-                      {textLabel11 && textLabel11Props && <TextLabel {...textLabel11Props} />}
-                    </MenuItemRadio>
-                  )}
-                </Frame>
-              </FormControlRadio>
-            )}
-            {formControlRadio4 && formControlRadio4Props && (
-              <FormControlRadio {...formControlRadio4Props}>
-                <Frame {...frame8Props}>
-                  {textLabel12 && textLabel12Props && <TextLabel {...textLabel12Props} />}
-                  {textDescription4 && textDescription4Props && (
-                    <TextDescription {...textDescription4Props} />
-                  )}
-                </Frame>
-                <Frame {...frame9Props}>
-                  {menuItemRadio7 && menuItemRadio7Props && (
-                    <MenuItemRadio {...menuItemRadio7Props}>
-                      {icon8 && icon8Props && <Icon {...icon8Props} />}
-                      {textLabel13 && textLabel13Props && <TextLabel {...textLabel13Props} />}
-                    </MenuItemRadio>
-                  )}
-                  {menuItemRadio8 && menuItemRadio8Props && (
-                    <MenuItemRadio {...menuItemRadio8Props}>
-                      {icon9 && icon9Props && <Icon {...icon9Props} />}
-                      {textLabel14 && textLabel14Props && <TextLabel {...textLabel14Props} />}
-                    </MenuItemRadio>
-                  )}
-                </Frame>
-              </FormControlRadio>
-            )}
-            {formControlRadio5 && formControlRadio5Props && (
-              <FormControlRadio {...formControlRadio5Props}>
-                <Frame {...frame10Props}>
-                  {textLabel15 && textLabel15Props && <TextLabel {...textLabel15Props} />}
-                  {textDescription5 && textDescription5Props && (
-                    <TextDescription {...textDescription5Props} />
-                  )}
-                </Frame>
-                <Frame {...frame11Props}>
-                  {menuItemRadio9 && menuItemRadio9Props && (
-                    <MenuItemRadio {...menuItemRadio9Props}>
-                      {icon10 && icon10Props && <Icon {...icon10Props} />}
-                      {textLabel16 && textLabel16Props && <TextLabel {...textLabel16Props} />}
-                    </MenuItemRadio>
-                  )}
-                  {menuItemRadio10 && menuItemRadio10Props && (
-                    <MenuItemRadio {...menuItemRadio10Props}>
-                      {icon11 && icon11Props && <Icon {...icon11Props} />}
-                      {textLabel17 && textLabel17Props && <TextLabel {...textLabel17Props} />}
-                    </MenuItemRadio>
-                  )}
-                </Frame>
-              </FormControlRadio>
-            )}
-          </Frame>
-          {barButtonsProps !== null && (
-            <BarButtons
-              {...barButtonsProps}
-              button4={buttonProps}
-              icon4={icon12Props}
-              textLabel4={textLabel18 && textLabel18Props}
-              button5={button2Props}
-              icon5={icon13Props}
-              textLabel5={textLabel19 && textLabel19Props}
-            />
-          )}
-        </>
-      )}
-    </HTMLDiv>
-  )
-}
-
 //
 // Default property values
 //
 const sdn: DialogExportComponentProps = {
   "aria-hidden": "false",
-  className: "sdn-dialog-export-component sdn-dialog",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--zhvk",
@@ -1193,6 +128,7 @@ const sdn: DialogExportComponentProps = {
     "aria-hidden": "false",
     className: "sdn-text-title sdn-text-title--eodu",
   },
+
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -1545,6 +481,7 @@ const sdn: DialogExportComponentProps = {
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--xohb",
   },
+
   barButtons: {
     "aria-hidden": "false",
     className: "sdn-bar-buttons sdn-bar-buttons--36qz",
@@ -1579,4 +516,472 @@ const sdn: DialogExportComponentProps = {
     "aria-hidden": "false",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
+}
+
+/**
+ * Module: DialogExportComponent
+ * Level: Module
+ * Intent:
+ * Tags:
+ * Type: Inline
+ *
+ * Structure:
+ *   Bar                    bar
+ *     TextTitle            textTitle
+ *   Frame                  frame
+ *     FormControl          formControl
+ *       TextLabel          textLabel
+ *       Input              input              -> exportRootPath
+ *     FormControl          formControl2
+ *       TextLabel          textLabel2
+ *       ComboboxField      comboboxField
+ *         Input            input2             -> exportPlatform
+ *         ButtonIconic     buttonIconic
+ *           Icon           icon
+ *     FormControlRadio     formControlRadio
+ *       Frame              frame2
+ *         TextLabel        textLabel3
+ *         TextDescription  textDescription
+ *       Frame              frame3
+ *         MenuItemRadio    menuItemRadio      -> exportHiddenYes
+ *           Icon           icon2
+ *           TextLabel      textLabel4
+ *         MenuItemRadio    menuItemRadio2     -> exportHiddenNo
+ *           Icon           icon3
+ *           TextLabel      textLabel5
+ *     FormControlRadio     formControlRadio2
+ *       Frame              frame4
+ *         TextLabel        textLabel6
+ *         TextDescription  textDescription2
+ *       Frame              frame5
+ *         MenuItemRadio    menuItemRadio3     -> exportAllThemesYes
+ *           Icon           icon4
+ *           TextLabel      textLabel7
+ *         MenuItemRadio    menuItemRadio4     -> exportAllThemesNo
+ *           Icon           icon5
+ *           TextLabel      textLabel8
+ *     FormControlRadio     formControlRadio3
+ *       Frame              frame6
+ *         TextLabel        textLabel9
+ *         TextDescription  textDescription3
+ *       Frame              frame7
+ *         MenuItemRadio    menuItemRadio5     -> exportAllFontsYes
+ *           Icon           icon6
+ *           TextLabel      textLabel10
+ *         MenuItemRadio    menuItemRadio6     -> exportAllFontsNo
+ *           Icon           icon7
+ *           TextLabel      textLabel11
+ *     FormControlRadio     formControlRadio4
+ *       Frame              frame8
+ *         TextLabel        textLabel12
+ *         TextDescription  textDescription4
+ *       Frame              frame9
+ *         MenuItemRadio    menuItemRadio7     -> exportFontLinksYes
+ *           Icon           icon8
+ *           TextLabel      textLabel13
+ *         MenuItemRadio    menuItemRadio8     -> exportFontLinksNo
+ *           Icon           icon9
+ *           TextLabel      textLabel14
+ *     FormControlRadio     formControlRadio5
+ *       Frame              frame10
+ *         TextLabel        textLabel15
+ *         TextDescription  textDescription5
+ *       Frame              frame11
+ *         MenuItemRadio    menuItemRadio9     -> exportAllIconsYes
+ *           Icon           icon10
+ *           TextLabel      textLabel16
+ *         MenuItemRadio    menuItemRadio10    -> exportAllIconsNo
+ *           Icon           icon11
+ *           TextLabel      textLabel17
+ *   BarButtons             barButtons
+ *     Button               button             -> exportCancel
+ *       Icon               icon12
+ *       TextLabel          textLabel18
+ *     Button               button2            -> exportConfirm
+ *       Icon               icon13
+ *       TextLabel          textLabel19
+ *
+ * @example
+ * ```tsx
+ * <DialogExportComponent
+ *   aria-hidden="false"
+ *   bar="{}"
+ *   textTitle="Product Title"
+ *   frame="{}"
+ *   formControl="{}"
+ *   textLabel="{}"
+ *   input="{}"
+ *   formControl2="{}"
+ *   comboboxField="{}"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
+ *   formControlRadio3="{}"
+ *   textDescription2="{}"
+ *   frame2="{}"
+ *   menuItemRadio="{}"
+ *   menuItemRadio2="{}"
+ *   formControlRadio4="{}"
+ *   formControlRadio5="{}"
+ *   formControlRadio6="{}"
+ *   formControlRadio7="{}"
+ *   barButtons2="{}"
+ *   button={() => {}}
+ *   button2={() => {}}
+ * />
+ * ```
+ */
+export function DialogExportComponent({
+  className = "",
+  bar,
+  textTitle,
+
+  frame,
+  formControl,
+  textLabel,
+  input,
+  formControl2,
+  textLabel2,
+  comboboxField,
+  input2,
+  buttonIconic,
+  icon,
+  formControlRadio,
+  frame2,
+  textLabel3,
+  textDescription,
+  frame3,
+  menuItemRadio,
+  icon2,
+  textLabel4,
+  menuItemRadio2,
+  icon3,
+  textLabel5,
+  formControlRadio2,
+  frame4,
+  textLabel6,
+  textDescription2,
+  frame5,
+  menuItemRadio3,
+  icon4,
+  textLabel7,
+  menuItemRadio4,
+  icon5,
+  textLabel8,
+  formControlRadio3,
+  frame6,
+  textLabel9,
+  textDescription3,
+  frame7,
+  menuItemRadio5,
+  icon6,
+  textLabel10,
+  menuItemRadio6,
+  icon7,
+  textLabel11,
+  formControlRadio4,
+  frame8,
+  textLabel12,
+  textDescription4,
+  frame9,
+  menuItemRadio7,
+  icon8,
+  textLabel13,
+  menuItemRadio8,
+  icon9,
+  textLabel14,
+  formControlRadio5,
+  frame10,
+  textLabel15,
+  textDescription5,
+  frame11,
+  menuItemRadio9,
+  icon10,
+  textLabel16,
+  menuItemRadio10,
+  icon11,
+  textLabel17,
+
+  barButtons,
+  button,
+  icon12,
+  textLabel18,
+  button2,
+  icon13,
+  textLabel19,
+
+  children,
+  seldonRefs,
+  ...props
+}: DialogExportComponentProps) {
+  const dialogExportComponentClassName = combineClassNames("sdn-dialog-export-component", className)
+
+  const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const formControlProps = mergeOptionalSlot(sdn.formControl, formControl, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const inputProps = mergeSlot(sdn.input, input, seldonRefs)
+  const formControl2Props = mergeOptionalSlot(sdn.formControl2, formControl2, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const comboboxFieldProps = mergeOptionalSlot(sdn.comboboxField, comboboxField, seldonRefs)
+  const input2Props = mergeSlot(sdn.input2, input2, seldonRefs)
+  const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const formControlRadioProps = mergeOptionalSlot(
+    sdn.formControlRadio,
+    formControlRadio,
+    seldonRefs,
+  )
+  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
+  const frame3Props = mergeSlot(sdn.frame3, frame3, seldonRefs)
+  const menuItemRadioProps = mergeOptionalSlot(sdn.menuItemRadio, menuItemRadio, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
+  const menuItemRadio2Props = mergeOptionalSlot(sdn.menuItemRadio2, menuItemRadio2, seldonRefs)
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
+  const formControlRadio2Props = mergeOptionalSlot(
+    sdn.formControlRadio2,
+    formControlRadio2,
+    seldonRefs,
+  )
+  const frame4Props = mergeSlot(sdn.frame4, frame4, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+  const textDescription2Props = mergeOptionalSlot(
+    sdn.textDescription2,
+    textDescription2,
+    seldonRefs,
+  )
+  const frame5Props = mergeSlot(sdn.frame5, frame5, seldonRefs)
+  const menuItemRadio3Props = mergeOptionalSlot(sdn.menuItemRadio3, menuItemRadio3, seldonRefs)
+  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
+  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
+  const menuItemRadio4Props = mergeOptionalSlot(sdn.menuItemRadio4, menuItemRadio4, seldonRefs)
+  const icon5Props = mergeSlot(sdn.icon5, icon5, seldonRefs)
+  const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
+  const formControlRadio3Props = mergeOptionalSlot(
+    sdn.formControlRadio3,
+    formControlRadio3,
+    seldonRefs,
+  )
+  const frame6Props = mergeSlot(sdn.frame6, frame6, seldonRefs)
+  const textLabel9Props = mergeOptionalSlot(sdn.textLabel9, textLabel9, seldonRefs)
+  const textDescription3Props = mergeOptionalSlot(
+    sdn.textDescription3,
+    textDescription3,
+    seldonRefs,
+  )
+  const frame7Props = mergeSlot(sdn.frame7, frame7, seldonRefs)
+  const menuItemRadio5Props = mergeOptionalSlot(sdn.menuItemRadio5, menuItemRadio5, seldonRefs)
+  const icon6Props = mergeSlot(sdn.icon6, icon6, seldonRefs)
+  const textLabel10Props = mergeOptionalSlot(sdn.textLabel10, textLabel10, seldonRefs)
+  const menuItemRadio6Props = mergeOptionalSlot(sdn.menuItemRadio6, menuItemRadio6, seldonRefs)
+  const icon7Props = mergeSlot(sdn.icon7, icon7, seldonRefs)
+  const textLabel11Props = mergeOptionalSlot(sdn.textLabel11, textLabel11, seldonRefs)
+  const formControlRadio4Props = mergeOptionalSlot(
+    sdn.formControlRadio4,
+    formControlRadio4,
+    seldonRefs,
+  )
+  const frame8Props = mergeSlot(sdn.frame8, frame8, seldonRefs)
+  const textLabel12Props = mergeOptionalSlot(sdn.textLabel12, textLabel12, seldonRefs)
+  const textDescription4Props = mergeOptionalSlot(
+    sdn.textDescription4,
+    textDescription4,
+    seldonRefs,
+  )
+  const frame9Props = mergeSlot(sdn.frame9, frame9, seldonRefs)
+  const menuItemRadio7Props = mergeOptionalSlot(sdn.menuItemRadio7, menuItemRadio7, seldonRefs)
+  const icon8Props = mergeSlot(sdn.icon8, icon8, seldonRefs)
+  const textLabel13Props = mergeOptionalSlot(sdn.textLabel13, textLabel13, seldonRefs)
+  const menuItemRadio8Props = mergeOptionalSlot(sdn.menuItemRadio8, menuItemRadio8, seldonRefs)
+  const icon9Props = mergeSlot(sdn.icon9, icon9, seldonRefs)
+  const textLabel14Props = mergeOptionalSlot(sdn.textLabel14, textLabel14, seldonRefs)
+  const formControlRadio5Props = mergeOptionalSlot(
+    sdn.formControlRadio5,
+    formControlRadio5,
+    seldonRefs,
+  )
+  const frame10Props = mergeSlot(sdn.frame10, frame10, seldonRefs)
+  const textLabel15Props = mergeOptionalSlot(sdn.textLabel15, textLabel15, seldonRefs)
+  const textDescription5Props = mergeOptionalSlot(
+    sdn.textDescription5,
+    textDescription5,
+    seldonRefs,
+  )
+  const frame11Props = mergeSlot(sdn.frame11, frame11, seldonRefs)
+  const menuItemRadio9Props = mergeOptionalSlot(sdn.menuItemRadio9, menuItemRadio9, seldonRefs)
+  const icon10Props = mergeSlot(sdn.icon10, icon10, seldonRefs)
+  const textLabel16Props = mergeOptionalSlot(sdn.textLabel16, textLabel16, seldonRefs)
+  const menuItemRadio10Props = mergeOptionalSlot(sdn.menuItemRadio10, menuItemRadio10, seldonRefs)
+  const icon11Props = mergeSlot(sdn.icon11, icon11, seldonRefs)
+  const textLabel17Props = mergeOptionalSlot(sdn.textLabel17, textLabel17, seldonRefs)
+
+  const barButtonsProps = mergeSlot(sdn.barButtons, barButtons, seldonRefs)
+  const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
+  const icon12Props = mergeSlot(sdn.icon12, icon12, seldonRefs)
+  const textLabel18Props = mergeOptionalSlot(sdn.textLabel18, textLabel18, seldonRefs)
+  const button2Props = mergeSlot(sdn.button2, button2, seldonRefs)
+  const icon13Props = mergeSlot(sdn.icon13, icon13, seldonRefs)
+  const textLabel19Props = mergeOptionalSlot(sdn.textLabel19, textLabel19, seldonRefs)
+
+  return (
+    <HTMLDiv className={dialogExportComponentClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {barProps !== null && (
+            <Bar {...barProps}>{textTitleProps !== null && <TextTitle {...textTitleProps} />}</Bar>
+          )}
+          <Frame {...frameProps}>
+            {formControlProps !== null && (
+              <FormControl {...formControlProps}>
+                {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                {inputProps !== null && <Input {...inputProps} />}
+              </FormControl>
+            )}
+            {formControl2Props !== null && (
+              <FormControl {...formControl2Props}>
+                {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                {comboboxFieldProps !== null && (
+                  <ComboboxField
+                    {...comboboxFieldProps}
+                    input={input2Props}
+                    buttonIconic={buttonIconicProps}
+                    icon2={iconProps}
+                    icon={null}
+                  />
+                )}
+              </FormControl>
+            )}
+            {formControlRadioProps !== null && (
+              <FormControlRadio {...formControlRadioProps}>
+                <Frame {...frame2Props}>
+                  {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+                  {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
+                </Frame>
+                <Frame {...frame3Props}>
+                  {menuItemRadioProps !== null && (
+                    <MenuItemRadio {...menuItemRadioProps}>
+                      {icon2Props !== null && <Icon {...icon2Props} />}
+                      {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+                    </MenuItemRadio>
+                  )}
+                  {menuItemRadio2Props !== null && (
+                    <MenuItemRadio {...menuItemRadio2Props}>
+                      {icon3Props !== null && <Icon {...icon3Props} />}
+                      {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
+                    </MenuItemRadio>
+                  )}
+                </Frame>
+              </FormControlRadio>
+            )}
+            {formControlRadio2Props !== null && (
+              <FormControlRadio {...formControlRadio2Props}>
+                <Frame {...frame4Props}>
+                  {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+                  {textDescription2Props !== null && <TextDescription {...textDescription2Props} />}
+                </Frame>
+                <Frame {...frame5Props}>
+                  {menuItemRadio3Props !== null && (
+                    <MenuItemRadio {...menuItemRadio3Props}>
+                      {icon4Props !== null && <Icon {...icon4Props} />}
+                      {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+                    </MenuItemRadio>
+                  )}
+                  {menuItemRadio4Props !== null && (
+                    <MenuItemRadio {...menuItemRadio4Props}>
+                      {icon5Props !== null && <Icon {...icon5Props} />}
+                      {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
+                    </MenuItemRadio>
+                  )}
+                </Frame>
+              </FormControlRadio>
+            )}
+            {formControlRadio3Props !== null && (
+              <FormControlRadio {...formControlRadio3Props}>
+                <Frame {...frame6Props}>
+                  {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
+                  {textDescription3Props !== null && <TextDescription {...textDescription3Props} />}
+                </Frame>
+                <Frame {...frame7Props}>
+                  {menuItemRadio5Props !== null && (
+                    <MenuItemRadio {...menuItemRadio5Props}>
+                      {icon6Props !== null && <Icon {...icon6Props} />}
+                      {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
+                    </MenuItemRadio>
+                  )}
+                  {menuItemRadio6Props !== null && (
+                    <MenuItemRadio {...menuItemRadio6Props}>
+                      {icon7Props !== null && <Icon {...icon7Props} />}
+                      {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
+                    </MenuItemRadio>
+                  )}
+                </Frame>
+              </FormControlRadio>
+            )}
+            {formControlRadio4Props !== null && (
+              <FormControlRadio {...formControlRadio4Props}>
+                <Frame {...frame8Props}>
+                  {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
+                  {textDescription4Props !== null && <TextDescription {...textDescription4Props} />}
+                </Frame>
+                <Frame {...frame9Props}>
+                  {menuItemRadio7Props !== null && (
+                    <MenuItemRadio {...menuItemRadio7Props}>
+                      {icon8Props !== null && <Icon {...icon8Props} />}
+                      {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
+                    </MenuItemRadio>
+                  )}
+                  {menuItemRadio8Props !== null && (
+                    <MenuItemRadio {...menuItemRadio8Props}>
+                      {icon9Props !== null && <Icon {...icon9Props} />}
+                      {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
+                    </MenuItemRadio>
+                  )}
+                </Frame>
+              </FormControlRadio>
+            )}
+            {formControlRadio5Props !== null && (
+              <FormControlRadio {...formControlRadio5Props}>
+                <Frame {...frame10Props}>
+                  {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
+                  {textDescription5Props !== null && <TextDescription {...textDescription5Props} />}
+                </Frame>
+                <Frame {...frame11Props}>
+                  {menuItemRadio9Props !== null && (
+                    <MenuItemRadio {...menuItemRadio9Props}>
+                      {icon10Props !== null && <Icon {...icon10Props} />}
+                      {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
+                    </MenuItemRadio>
+                  )}
+                  {menuItemRadio10Props !== null && (
+                    <MenuItemRadio {...menuItemRadio10Props}>
+                      {icon11Props !== null && <Icon {...icon11Props} />}
+                      {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
+                    </MenuItemRadio>
+                  )}
+                </Frame>
+              </FormControlRadio>
+            )}
+          </Frame>
+          {barButtonsProps !== null && (
+            <BarButtons
+              {...barButtonsProps}
+              button4={buttonProps}
+              icon4={icon12Props}
+              textLabel4={textLabel18Props}
+              button5={button2Props}
+              icon5={icon13Props}
+              textLabel5={textLabel19Props}
+            />
+          )}
+        </>
+      )}
+    </HTMLDiv>
+  )
 }

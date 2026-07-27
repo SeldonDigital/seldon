@@ -12,12 +12,40 @@
  *
  *****/
 
-/*****
+/**
  * Panel: Panel
  * Level: Module
  * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
  * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
  * Type: Inline
+ *
+ * Structure:
+ *   Bar              bar
+ *     TextTitle      textTitle
+ *     ButtonIconic   buttonIconic
+ *       Icon         icon
+ *     Button         button
+ *       Icon         icon2
+ *       TextLabel    textLabel
+ *   Frame            frame
+ *   BarButtons       barButtons
+ *     Frame          frame2
+ *       Button       button2
+ *         Icon       icon3
+ *         TextLabel  textLabel2
+ *       Button       button3
+ *         Icon       icon4
+ *         TextLabel  textLabel3
+ *       Button       button4
+ *         Icon       icon5
+ *         TextLabel  textLabel4
+ *     Frame          frame3
+ *       Button       button5
+ *         Icon       icon6
+ *         TextLabel  textLabel5
+ *       Button       button6
+ *         Icon       icon7
+ *         TextLabel  textLabel6
  *
  * @example
  * ```vue
@@ -26,13 +54,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Bar from "../parts/Bar.vue"
 import BarButtons from "../parts/BarButtons.vue"
@@ -70,6 +98,7 @@ const props = defineProps<{
   button6?: Record<string, unknown> | null
   icon7?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -78,7 +107,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "dialog",
   "aria-hidden": "false",
-  "className": "sdn-panel",
   "bar": {
     "aria-hidden": "false",
     "className": "sdn-bar sdn-bar--yje0"
@@ -177,70 +205,70 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-panel", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const barProps = computed(() => mergeSlot(sdn.bar, props.bar))
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const barButtonsProps = computed(() => mergeSlot(sdn.barButtons, props.barButtons))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const button2Props = computed(() => mergeSlot(sdn.button2, props.button2))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const button3Props = computed(() => mergeSlot(sdn.button3, props.button3))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
-const button4Props = computed(() => mergeSlot(sdn.button4, props.button4))
-const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5))
-const textLabel4Props = computed(() => mergeSlot(sdn.textLabel4, props.textLabel4))
-const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
-const button5Props = computed(() => mergeSlot(sdn.button5, props.button5))
-const icon6Props = computed(() => mergeSlot(sdn.icon6, props.icon6))
-const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel5))
-const button6Props = computed(() => mergeSlot(sdn.button6, props.button6))
-const icon7Props = computed(() => mergeSlot(sdn.icon7, props.icon7))
-const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel6))
+const barProps = computed(() => mergeSlot(sdn.bar, props.bar, props.seldonRefs))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const barButtonsProps = computed(() => mergeSlot(sdn.barButtons, props.barButtons, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const button2Props = computed(() => mergeOptionalSlot(sdn.button2, props.button2, props.seldonRefs))
+const icon3Props = computed(() => mergeOptionalSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const button3Props = computed(() => mergeOptionalSlot(sdn.button3, props.button3, props.seldonRefs))
+const icon4Props = computed(() => mergeOptionalSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const button4Props = computed(() => mergeOptionalSlot(sdn.button4, props.button4, props.seldonRefs))
+const icon5Props = computed(() => mergeOptionalSlot(sdn.icon5, props.icon5, props.seldonRefs))
+const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
+const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
+const button5Props = computed(() => mergeOptionalSlot(sdn.button5, props.button5, props.seldonRefs))
+const icon6Props = computed(() => mergeSlot(sdn.icon6, props.icon6, props.seldonRefs))
+const textLabel5Props = computed(() => mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs))
+const button6Props = computed(() => mergeOptionalSlot(sdn.button6, props.button6, props.seldonRefs))
+const icon7Props = computed(() => mergeSlot(sdn.icon7, props.icon7, props.seldonRefs))
+const textLabel6Props = computed(() => mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Bar v-if="barProps !== null" v-bind="barProps">
-          <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
+          <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
           <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
           <Button v-if="buttonProps !== null" v-bind="buttonProps">
             <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-            <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
           </Button>
         </Bar>
         <Frame v-bind="frameProps">
         </Frame>
         <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps">
-          <Frame v-bind="frame2Props" v-if="frame2">
-            <Button v-if="button2 && button2Props" v-bind="button2Props">
-              <Icon v-if="icon3 && icon3Props" v-bind="icon3Props" />
-              <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <Button v-if="button2Props !== null" v-bind="button2Props">
+              <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
+              <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
             </Button>
-            <Button v-if="button3 && button3Props" v-bind="button3Props">
-              <Icon v-if="icon4 && icon4Props" v-bind="icon4Props" />
-              <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+            <Button v-if="button3Props !== null" v-bind="button3Props">
+              <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
+              <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
             </Button>
-            <Button v-if="button4 && button4Props" v-bind="button4Props">
-              <Icon v-if="icon5 && icon5Props" v-bind="icon5Props" />
-              <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
+            <Button v-if="button4Props !== null" v-bind="button4Props">
+              <Icon v-if="icon5Props !== null" v-bind="icon5Props" />
+              <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
             </Button>
           </Frame>
-          <Frame v-bind="frame3Props" v-if="frame3">
-            <Button v-if="button5 && button5Props" v-bind="button5Props">
+          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+            <Button v-if="button5Props !== null" v-bind="button5Props">
               <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
-              <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
+              <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
             </Button>
-            <Button v-if="button6 && button6Props" v-bind="button6Props">
+            <Button v-if="button6Props !== null" v-bind="button6Props">
               <Icon v-if="icon7Props !== null" v-bind="icon7Props" />
-              <TextLabel v-if="textLabel6 && textLabel6Props" v-bind="textLabel6Props" />
+              <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
             </Button>
           </Frame>
         </BarButtons>

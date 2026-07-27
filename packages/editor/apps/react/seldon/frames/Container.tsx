@@ -10,6 +10,9 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { HTMLAttributes } from "react"
+
 import { HTMLArticle } from "../native-react/HTML.Article"
 import { HTMLAside } from "../native-react/HTML.Aside"
 import { HTMLBlockquote } from "../native-react/HTML.Blockquote"
@@ -32,8 +35,6 @@ import { HTMLThead } from "../native-react/HTML.Thead"
 import { HTMLTr } from "../native-react/HTML.Tr"
 import { HTMLUl } from "../native-react/HTML.Ul"
 import { combineClassNames } from "../utils/class-name"
-
-import type { HTMLAttributes } from "react"
 
 export interface ContainerProps extends HTMLAttributes<
   | HTMLElement
@@ -58,7 +59,6 @@ export interface ContainerProps extends HTMLAttributes<
   | HTMLTableRowElement
   | HTMLUListElement
 > {
-  className?: string
   "data-seldon-ref"?: string
   wrapperElement?:
     | "div"
@@ -84,7 +84,15 @@ export interface ContainerProps extends HTMLAttributes<
     | "tr"
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ContainerProps = {
+  wrapperElement: "div",
+  "aria-hidden": "false",
+}
+
+/**
  * Container: Container
  * Level: Frame
  * Intent: Grid container schema used to arrange children in a CSS grid with a configurable number of columns and rows. Use it instead of Frame when children should align to a shared grid; Frame remains the flexbox container.
@@ -98,7 +106,7 @@ export interface ContainerProps extends HTMLAttributes<
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function Container({
   className = "",
   wrapperElement = sdn.wrapperElement,
@@ -241,13 +249,4 @@ export function Container({
       //
       return <HTMLDiv className={containerClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
   }
-}
-
-//
-// Default property values
-//
-const sdn: ContainerProps = {
-  wrapperElement: "div",
-  "aria-hidden": "false",
-  className: "sdn-container",
 }

@@ -10,14 +10,14 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { SVGAttributes } from "react"
+
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
 import { getRegisteredIcon } from "../utils/icon-registry"
 
-import type { SVGAttributes } from "react"
-
 export interface IconProps extends SVGAttributes<SVGElement> {
-  className?: string
   "data-seldon-ref"?: string
   icon?:
     | "__default__"
@@ -494,7 +494,15 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-watch"
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: IconProps = {
+  icon: "seldon-component",
+  "aria-hidden": "true",
+}
+
+/**
  * Icon: Icon
  * Level: Primitive
  * Intent: Displays a vector or symbolic icon representing an action or concept.
@@ -508,17 +516,15 @@ export interface IconProps extends SVGAttributes<SVGElement> {
  *   aria-hidden="true"
  * />
  * ```
- *****/
+ */
 export function Icon({ className = "", icon = sdn.icon, ...props }: IconProps) {
   const iconClassName = combineClassNames("sdn-icon", className)
 
   let Icon = iconMap[icon || "__default__"]
-
   if (!Icon) {
     // Ids absent from the static map may be registered at runtime as dynamic,
     // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
     const RegisteredIcon = getRegisteredIcon(icon)
-
     if (RegisteredIcon) {
       //
       // React JSX component resolved from the runtime icon registry
@@ -527,23 +533,12 @@ export function Icon({ className = "", icon = sdn.icon, ...props }: IconProps) {
         <RegisteredIcon className={iconClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
       )
     }
-
     Icon = iconMap["__default__"]
   }
-
   //
   // React JSX component with merged default and custom properties
   //
   return <Icon className={iconClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
-}
-
-//
-// Default property values
-//
-const sdn: IconProps = {
-  icon: "seldon-component",
-  "aria-hidden": "true",
-  className: "sdn-icon",
 }
 const iconMap = {
   __default__: Icons.IconDefault,

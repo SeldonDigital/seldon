@@ -10,6 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
 import type { LabelHTMLAttributes } from "react"
 
 export const HTMLLabel = (props: LabelHTMLAttributes<HTMLLabelElement>) => {

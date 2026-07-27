@@ -10,29 +10,60 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { Image } from "../primitives/Image"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ImageProps } from "../primitives/Image"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { Image, ImageProps } from "../primitives/Image"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
 
 export interface AvatarStackedProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   image?: ImageProps | null
+
   image2?: ImageProps | null
+
   image3?: ImageProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: AvatarStackedProps = {
+  "aria-hidden": "false",
+  image: {
+    src: "/avatar-user.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--zjyq",
+  },
+
+  image2: {
+    src: "/avatar-user.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--yscg",
+  },
+
+  image3: {
+    src: "/avatar-user.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--hzdf",
+  },
+}
+
+/**
  * Avatar: AvatarStacked
  * Level: Element
  * Intent: Displays a user or entity's image or initials in UI elements like lists, headers, or profiles.
  * Tags: avatar, user image, profile, identity, initials, picture, circle, UI element
  * Type: Custom
+ *
+ * Structure:
+ *   Image  image
+ *   Image  image2
+ *   Image  image3
  *
  * @example
  * ```tsx
@@ -43,47 +74,26 @@ export interface AvatarStackedProps extends HTMLAttributes<HTMLElement> {
  *   image3="/image.jpg"
  * />
  * ```
- *****/
+ */
 export function AvatarStacked({
   className = "",
-  image = sdn.image,
-  image2 = sdn.image2,
-  image3 = sdn.image3,
+  image,
+
+  image2,
+
+  image3,
+
   children,
   seldonRefs,
   ...props
 }: AvatarStackedProps) {
   const avatarStackedClassName = combineClassNames("sdn-avatar-badged", className)
-  const imageProps = applyRef(
-    seldonRefs,
-    image === null
-      ? null
-      : {
-          ...sdn.image,
-          ...image,
-          className: combineClassNames(sdn.image?.className, image?.className),
-        },
-  )
-  const image2Props = applyRef(
-    seldonRefs,
-    image2 === null
-      ? null
-      : {
-          ...sdn.image2,
-          ...image2,
-          className: combineClassNames(sdn.image2?.className, image2?.className),
-        },
-  )
-  const image3Props = applyRef(
-    seldonRefs,
-    image3 === null
-      ? null
-      : {
-          ...sdn.image3,
-          ...image3,
-          className: combineClassNames(sdn.image3?.className, image3?.className),
-        },
-  )
+
+  const imageProps = mergeSlot(sdn.image, image, seldonRefs)
+
+  const image2Props = mergeSlot(sdn.image2, image2, seldonRefs)
+
+  const image3Props = mergeSlot(sdn.image3, image3, seldonRefs)
 
   return (
     <Frame className={avatarStackedClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -98,27 +108,4 @@ export function AvatarStacked({
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: AvatarStackedProps = {
-  "aria-hidden": "false",
-  className: "sdn-avatar-badged sdn-avatar",
-  image: {
-    src: "/avatar-user.png",
-    "aria-hidden": "false",
-    className: "sdn-image sdn-image--zjyq",
-  },
-  image2: {
-    src: "/avatar-user.png",
-    "aria-hidden": "false",
-    className: "sdn-image sdn-image--yscg",
-  },
-  image3: {
-    src: "/avatar-user.png",
-    "aria-hidden": "false",
-    className: "sdn-image sdn-image--hzdf",
-  },
 }

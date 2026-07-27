@@ -10,39 +10,95 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonIconic } from "../elements/ButtonIconic"
-import { FormControlCombobox } from "../elements/FormControlCombobox"
-import { HTMLLi } from "../native-react/HTML.Li"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { FormControlComboboxProps } from "../elements/FormControlCombobox"
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { LiHTMLAttributes } from "react"
+import { LiHTMLAttributes } from "react"
+
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { FormControlCombobox, FormControlComboboxProps } from "../elements/FormControlCombobox"
+import { HTMLLi } from "../native-react/HTML.Li"
+import { IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ItemSectionProps extends LiHTMLAttributes<HTMLLIElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
+
   formControlCombobox?: FormControlComboboxProps | null
   textLabel?: TextLabelProps | null
+
   buttonIconic2?: ButtonIconicProps | null
   icon2?: IconProps | null
+
   buttonIconic3?: ButtonIconicProps | null
   icon3?: IconProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ItemSectionProps = {
+  "aria-hidden": "false",
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "sectionToggle",
+  },
+  icon: {
+    icon: "material-unfoldMore",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
+    "data-seldon-ref": "sectionToggleIcon",
+  },
+
+  formControlCombobox: {
+    className: "sdn-form-control sdn-form-control-combobox--gqrl",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--z34z",
+    "data-seldon-ref": "sectionLabel",
+  },
+
+  buttonIconic2: {
+    className: "sdn-button-iconic sdn-button-iconic--sdjv",
+    "data-seldon-ref": "sectionAdd",
+  },
+  icon2: {
+    icon: "material-add",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--0qvc",
+  },
+
+  buttonIconic3: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "sectionActions",
+  },
+  icon3: {
+    icon: "seldon-more",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--0qvc",
+  },
+}
+
+/**
  * Item: ItemSection
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Custom
+ *
+ * Structure:
+ *   ButtonIconic         buttonIconic         -> sectionToggle
+ *     Icon               icon                 -> sectionToggleIcon
+ *   FormControlCombobox  formControlCombobox
+ *     TextLabel          textLabel            -> sectionLabel
+ *   ButtonIconic         buttonIconic2        -> sectionAdd
+ *     Icon               icon2
+ *   ButtonIconic         buttonIconic3        -> sectionActions
+ *     Icon               icon3
  *
  * @example
  * ```tsx
@@ -56,105 +112,42 @@ export interface ItemSectionProps extends LiHTMLAttributes<HTMLLIElement> {
  *   buttonIconic3={() => {}}
  * />
  * ```
- *****/
+ */
 export function ItemSection({
   className = "",
   buttonIconic,
-  icon = sdn.icon,
+  icon,
+
   formControlCombobox,
   textLabel,
+
   buttonIconic2,
-  icon2 = sdn.icon2,
+  icon2,
+
   buttonIconic3,
-  icon3 = sdn.icon3,
+  icon3,
+
   children,
   seldonRefs,
   ...props
 }: ItemSectionProps) {
   const itemSectionClassName = combineClassNames("sdn-item-section", className)
-  const buttonIconicProps = applyRef(
+
+  const buttonIconicProps = mergeOptionalSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const formControlComboboxProps = mergeOptionalSlot(
+    sdn.formControlCombobox,
+    formControlCombobox,
     seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
   )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const formControlComboboxProps = applyRef(
-    seldonRefs,
-    formControlCombobox === null
-      ? null
-      : {
-          ...sdn.formControlCombobox,
-          ...formControlCombobox,
-          className: combineClassNames(
-            sdn.formControlCombobox?.className,
-            formControlCombobox?.className,
-          ),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const buttonIconic2Props = applyRef(
-    seldonRefs,
-    buttonIconic2 === null
-      ? null
-      : {
-          ...sdn.buttonIconic2,
-          ...buttonIconic2,
-          className: combineClassNames(sdn.buttonIconic2?.className, buttonIconic2?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const buttonIconic3Props = applyRef(
-    seldonRefs,
-    buttonIconic3 === null
-      ? null
-      : {
-          ...sdn.buttonIconic3,
-          ...buttonIconic3,
-          className: combineClassNames(sdn.buttonIconic3?.className, buttonIconic3?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  const buttonIconic2Props = mergeOptionalSlot(sdn.buttonIconic2, buttonIconic2, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+
+  const buttonIconic3Props = mergeOptionalSlot(sdn.buttonIconic3, buttonIconic3, seldonRefs)
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
 
   return (
     <HTMLLi className={itemSectionClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -162,65 +155,20 @@ export function ItemSection({
         children
       ) : (
         <>
-          {buttonIconic && buttonIconicProps && (
-            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-          )}
-          {formControlCombobox && formControlComboboxProps && (
+          {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
+          {formControlComboboxProps !== null && (
             <FormControlCombobox {...formControlComboboxProps}>
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
             </FormControlCombobox>
           )}
-          {buttonIconic2 && buttonIconic2Props && (
+          {buttonIconic2Props !== null && (
             <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
           )}
-          {buttonIconic3 && buttonIconic3Props && (
+          {buttonIconic3Props !== null && (
             <ButtonIconic {...buttonIconic3Props} icon={icon3Props} />
           )}
         </>
       )}
     </HTMLLi>
   )
-}
-
-//
-// Default property values
-//
-const sdn: ItemSectionProps = {
-  "aria-hidden": "false",
-  className: "sdn-item-section sdn-item",
-  buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "sectionToggle",
-  },
-  icon: {
-    icon: "material-unfoldMore",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
-    "data-seldon-ref": "sectionToggleIcon",
-  },
-  formControlCombobox: {
-    className: "sdn-form-control sdn-form-control-combobox--gqrl",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--z34z",
-    "data-seldon-ref": "sectionLabel",
-  },
-  buttonIconic2: {
-    className: "sdn-button-iconic sdn-button-iconic--sdjv",
-    "data-seldon-ref": "sectionAdd",
-  },
-  icon2: {
-    icon: "material-add",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--0qvc",
-  },
-  buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "sectionActions",
-  },
-  icon3: {
-    icon: "seldon-more",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--0qvc",
-  },
 }

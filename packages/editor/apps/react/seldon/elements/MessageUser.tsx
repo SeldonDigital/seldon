@@ -10,27 +10,40 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { TextDescription } from "../primitives/TextDescription"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { TextDescriptionProps } from "../primitives/TextDescription"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
 export interface MessageUserProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   textDescription?: TextDescriptionProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: MessageUserProps = {
+  "aria-hidden": "false",
+  textDescription: {
+    className: "sdn-text-description sdn-text-description--welb",
+  },
+}
+
+/**
  * Message: MessageUser
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
  * Type: Custom
+ *
+ * Structure:
+ *   TextDescription  textDescription
  *
  * @example
  * ```tsx
@@ -39,46 +52,26 @@ export interface MessageUserProps extends HTMLAttributes<HTMLElement> {
  *   textDescription="{}"
  * />
  * ```
- *****/
+ */
 export function MessageUser({
   className = "",
   textDescription,
+
   children,
   seldonRefs,
   ...props
 }: MessageUserProps) {
   const messageUserClassName = combineClassNames("sdn-message-user", className)
-  const textDescriptionProps = applyRef(
-    seldonRefs,
-    textDescription === null
-      ? null
-      : {
-          ...sdn.textDescription,
-          ...textDescription,
-          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
-        },
-  )
+
+  const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
 
   return (
     <Frame className={messageUserClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
-        <>
-          {textDescription && textDescriptionProps && <TextDescription {...textDescriptionProps} />}
-        </>
+        <>{textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}</>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: MessageUserProps = {
-  "aria-hidden": "false",
-  className: "sdn-message-user sdn-message",
-  textDescription: {
-    className: "sdn-text-description sdn-text-description--welb",
-  },
 }

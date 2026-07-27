@@ -12,12 +12,17 @@
  *
  *****/
 
-/*****
+/**
  * Avatar: AvatarBadged
  * Level: Element
  * Intent: Displays a user or entity's image or initials in UI elements like lists, headers, or profiles.
  * Tags: avatar, user image, profile, identity, initials, picture, circle, UI element
  * Type: Custom
+ *
+ * Structure:
+ *   Image   image
+ *   Chip    chip
+ *     Text  text
  *
  * @example
  * ```vue
@@ -28,13 +33,13 @@
  *   text="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Chip from "../elements/Chip.vue"
 import Image from "../primitives/Image.vue"
 import Text from "../primitives/Text.vue"
@@ -44,6 +49,7 @@ const props = defineProps<{
   image?: Record<string, unknown> | null
   chip?: Record<string, unknown> | null
   text?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -51,7 +57,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-avatar-badged sdn-avatar",
   "image": {
     "src": "/avatar-user.png",
     "aria-hidden": "false",
@@ -68,9 +73,9 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-avatar-badged", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const imageProps = computed(() => mergeSlot(sdn.image, props.image))
-const chipProps = computed(() => mergeSlot(sdn.chip, props.chip))
-const textProps = computed(() => mergeSlot(sdn.text, props.text))
+const imageProps = computed(() => mergeSlot(sdn.image, props.image, props.seldonRefs))
+const chipProps = computed(() => mergeSlot(sdn.chip, props.chip, props.seldonRefs))
+const textProps = computed(() => mergeOptionalSlot(sdn.text, props.text, props.seldonRefs))
 </script>
 
 <template>
@@ -78,7 +83,7 @@ const textProps = computed(() => mergeSlot(sdn.text, props.text))
       <slot>
         <Image v-if="imageProps !== null" v-bind="imageProps" />
         <Chip v-if="chipProps !== null" v-bind="chipProps">
-          <Text v-if="text && textProps" v-bind="textProps" />
+          <Text v-if="textProps !== null" v-bind="textProps" />
         </Chip>
       </slot>
     </div>

@@ -10,29 +10,43 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { HTMLAttributes } from "react"
+
 import { HTMLOl } from "../native-react/HTML.Ol"
 import { HTMLUl } from "../native-react/HTML.Ul"
-import { ListItem } from "../primitives/ListItem"
-import { applyRef } from "../utils/apply-ref"
+import { ListItem, ListItemProps } from "../primitives/ListItem"
 import { combineClassNames } from "../utils/class-name"
-
-import type { ListItemProps } from "../primitives/ListItem"
-import type { HTMLAttributes } from "react"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
 export interface ListProps extends HTMLAttributes<HTMLOListElement | HTMLUListElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
   htmlElement?: "ul" | "ol"
+
   listItem?: ListItemProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ListProps = {
+  htmlElement: "ul",
+  "aria-hidden": "false",
+  listItem: {
+    className: "sdn-list-item sdn-list-item--uvyv",
+  },
+}
+
+/**
  * List: List
  * Level: Element
  * Intent: Displays a list of items. Renders as an unordered bulleted list or an ordered numbered list.
  * Tags: list, ul, ol, element, bulleted, numbered, sequence, text, UI
  * Type: Default
+ *
+ * Structure:
+ *   ListItem  listItem
  *
  * @example
  * ```tsx
@@ -41,25 +55,18 @@ export interface ListProps extends HTMLAttributes<HTMLOListElement | HTMLUListEl
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function List({
   className = "",
   htmlElement = sdn.htmlElement,
   listItem,
+
   seldonRefs,
   ...props
 }: ListProps) {
   const listClassName = combineClassNames("sdn-list", className)
-  const listItemProps = applyRef(
-    seldonRefs,
-    listItem === null
-      ? null
-      : {
-          ...sdn.listItem,
-          ...listItem,
-          className: combineClassNames(sdn.listItem?.className, listItem?.className),
-        },
-  )
+
+  const listItemProps = mergeOptionalSlot(sdn.listItem, listItem, seldonRefs)
 
   switch (htmlElement) {
     case "ol":
@@ -73,16 +80,4 @@ export function List({
       //
       return <HTMLUl className={listClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
   }
-}
-
-//
-// Default property values
-//
-const sdn: ListProps = {
-  htmlElement: "ul",
-  "aria-hidden": "false",
-  className: "sdn-list",
-  listItem: {
-    className: "sdn-list-item sdn-list-item--uvyv",
-  },
 }

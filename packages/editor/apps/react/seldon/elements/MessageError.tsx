@@ -10,38 +10,67 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonSimple } from "../elements/ButtonSimple"
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { TextDescription } from "../primitives/TextDescription"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonSimpleProps } from "../elements/ButtonSimple"
-import type { FrameProps } from "../frames/Frame"
-import type { IconProps } from "../primitives/Icon"
-import type { TextDescriptionProps } from "../primitives/TextDescription"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
+import { Frame, FrameProps } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface MessageErrorProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   frame?: FrameProps | null
   icon?: IconProps | null
   textDescription?: TextDescriptionProps | null
+
   buttonSimple?: ButtonSimpleProps | null
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: MessageErrorProps = {
+  "aria-hidden": "false",
+  frame: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ieew",
+  },
+  icon: {
+    className: "sdn-icon sdn-icon--gm8j",
+  },
+  textDescription: {
+    className: "sdn-text-description sdn-text-label--lbxv",
+  },
+
+  buttonSimple: {
+    className: "sdn-button-simple sdn-button-iconic--iklu",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--aftu",
+  },
+}
+
+/**
  * Message: MessageError
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
  * Type: Inline
+ *
+ * Structure:
+ *   Frame              frame
+ *     Icon             icon
+ *     TextDescription  textDescription
+ *   ButtonSimple       buttonSimple
+ *     TextLabel        textLabel
  *
  * @example
  * ```tsx
@@ -54,69 +83,28 @@ export interface MessageErrorProps extends HTMLAttributes<HTMLElement> {
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export function MessageError({
   className = "",
-  frame = sdn.frame,
+  frame,
   icon,
   textDescription,
-  buttonSimple = sdn.buttonSimple,
+
+  buttonSimple,
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: MessageErrorProps) {
   const messageErrorClassName = combineClassNames("sdn-message-error", className)
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textDescriptionProps = applyRef(
-    seldonRefs,
-    textDescription === null
-      ? null
-      : {
-          ...sdn.textDescription,
-          ...textDescription,
-          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
-        },
-  )
-  const buttonSimpleProps = applyRef(
-    seldonRefs,
-    buttonSimple === null
-      ? null
-      : {
-          ...sdn.buttonSimple,
-          ...buttonSimple,
-          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
+  const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
+
+  const buttonSimpleProps = mergeSlot(sdn.buttonSimple, buttonSimple, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <Frame className={messageErrorClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -125,43 +113,16 @@ export function MessageError({
       ) : (
         <>
           <Frame {...frameProps}>
-            {icon && iconProps && <Icon {...iconProps} />}
-            {textDescription && textDescriptionProps && (
-              <TextDescription {...textDescriptionProps} />
-            )}
+            {iconProps !== null && <Icon {...iconProps} />}
+            {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
           </Frame>
           {buttonSimpleProps !== null && (
             <ButtonSimple {...buttonSimpleProps}>
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
             </ButtonSimple>
           )}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: MessageErrorProps = {
-  "aria-hidden": "false",
-  className: "sdn-message-error sdn-message",
-  frame: {
-    wrapperElement: "div",
-    "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--ieew",
-  },
-  icon: {
-    className: "sdn-icon sdn-icon--gm8j",
-  },
-  textDescription: {
-    className: "sdn-text-description sdn-text-label--lbxv",
-  },
-  buttonSimple: {
-    className: "sdn-button-simple sdn-button-iconic--iklu",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--aftu",
-  },
 }

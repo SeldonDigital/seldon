@@ -10,6 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
 import type { ComponentType } from "react"
 
 /** Props any registered icon may receive; the generated `Icon` spreads its own props through. */
@@ -30,6 +31,5 @@ export function getRegisteredIcon(
   id: string | undefined,
 ): ComponentType<RegisteredIconProps> | undefined {
   if (!id) return undefined
-
   return registry.get(id)
 }

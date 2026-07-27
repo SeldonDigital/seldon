@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Toggle Switch: ToggleSwitch
  * Level: Primitive
  * Intent: Toggles a single setting on or off with a sliding thumb.
@@ -26,7 +26,7 @@
  *   aria-checked="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -43,8 +43,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "role": "switch",
-  "aria-checked": "false",
-  "className": "sdn-toggle-switch"
+  "aria-checked": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-toggle-switch", props.className))

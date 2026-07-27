@@ -67,12 +67,9 @@ function handleTriggerEnter(id: string, element: HTMLElement): void {
 
 // Alt+Shift+click anywhere on the logo frame (cube + wordmark) toggles the
 // export rainbow, a hidden gesture for previewing the animation without running
-// an export. A plain click is inert. Vue has no `seldonRefs`, so the gesture is
-// delegated on the header against the baked `data-seldon-ref="logo"` marker.
-function handleHeaderClick(event: MouseEvent): void {
+// an export. A plain click is inert.
+function handleLogoClick(event: MouseEvent): void {
   if (!event.altKey || !event.shiftKey) return
-  const target = event.target as HTMLElement | null
-  if (!target?.closest('[data-seldon-ref="logo"]')) return
   exportStatus.setExporting(!exportStatus.isExporting)
 }
 
@@ -207,12 +204,16 @@ const menuOpen = computed(() => openMenuId.value !== null)
 const logoProps = { src: "/logo.svg", alt: "Seldon" }
 const wordmarkProps = { src: "/wordmark-light.svg", alt: "Seldon" }
 const emptySlot = {}
+
+// Inject the gesture onto the generated `logo` frame that wraps both images.
+const seldonRefs = { logo: { onClick: handleLogoClick } }
 </script>
 
 <template>
-  <header ref="header" class="topbar-header" @click="handleHeaderClick">
+  <header ref="header" class="topbar-header">
     <BarTopbar
       data-testid="topbar"
+      :seldon-refs="seldonRefs"
       :frame="emptySlot"
       :frame2="emptySlot"
       :image="logoProps"

@@ -12,30 +12,22 @@ export function getUtilityFileContents(options: ExportOptions): FileToExport[] {
 
   // Generate the class-name file
   const classNameUtilsContent = `/**
- * Utility function to combine default and custom classNames while removing duplicates
- * 
- * @param defaultClassName - The base className(s)
- * @param customClassName - Optional additional className(s) to append
+ * Combines any number of className sources while removing duplicates.
+ *
+ * @param names - The className sources, in order of increasing precedence
  * @returns A clean, deduplicated className string
- * 
+ *
  * @example
  * \`\`\`ts
  * combineClassNames("btn primary", "primary large") // "btn primary large"
  * combineClassNames("btn", undefined) // "btn"
- * combineClassNames("btn", "") // "btn"
+ * combineClassNames("btn", null, "large") // "btn large"
  * \`\`\`
  */
-export function combineClassNames(defaultClassName?: string, customClassName?: string): string {
-  if (!defaultClassName) return customClassName || ""
-  if (!customClassName) return defaultClassName
-  
-  const defaultClasses = defaultClassName.split(' ').filter(Boolean)
-  const customClasses = customClassName.split(' ').filter(Boolean)
-  const allClasses = [...defaultClasses, ...customClasses]
-  
-  // Remove duplicates using Set
-  const uniqueClasses = Array.from(new Set(allClasses))
-  return uniqueClasses.join(' ')
+export function combineClassNames(...names: Array<string | null | undefined>): string {
+  const classes = names.flatMap((name) => (name ? name.split(' ') : [])).filter(Boolean)
+
+  return Array.from(new Set(classes)).join(' ')
 }
 `
 
@@ -44,50 +36,99 @@ export function combineClassNames(defaultClassName?: string, customClassName?: s
     content: classNameUtilsContent,
   })
 
-  // Generate the ref-override file
-  const applyRefUtilsContent = `import { combineClassNames } from "./class-name"
+  // Generate the slot-merge file. Every generated component layers its slot props
+  // through these helpers: the baked \`sdn\` default, then the caller's prop, then
+  // the caller's ref-keyed override. Returning null when a slot must not render
+  // lets every generated guard be a single \`!== null\` check.
+  const mergeSlotUtilsContent = `import { combineClassNames } from "./class-name"
+
+/** Map of \`data-seldon-ref\` name to override props. */
+export type SeldonRefs = Record<string, Record<string, unknown>>
+
+function readString(source: object | null | undefined, key: string) {
+  const value = (source as Record<string, unknown> | null | undefined)?.[key]
+
+  return typeof value === "string" ? value : undefined
+}
 
 /**
- * Layers a caller-supplied override onto a slot's merged props, keyed by the
- * slot's \`data-seldon-ref\` name. This is the ref override channel: a view model
- * passes \`seldonRefs\` to a component, and each slot whose ref matches receives
- * the override last. \`className\` is merged with the slot's existing classes so
- * generated styles are preserved while extra classes are added.
- *
- * @param seldonRefs - Map of ref name to override props, or undefined
- * @param props - The slot's merged props (carries its \`data-seldon-ref\`), or null
- * @returns The props with the matching override applied, or the input unchanged
+ * Resolves the override a caller addressed to this slot by its baked
+ * \`data-seldon-ref\` name. The ref rides on the slot's defaults, so a view model
+ * can drive a slot by a stable name instead of a positional prop.
  */
-export function applyRef<T extends Record<string, unknown> | null>(
-  seldonRefs: Record<string, Record<string, unknown>> | undefined,
-  props: T,
+function readRefOverride(base: object | null | undefined, refs: SeldonRefs | undefined) {
+  const name = readString(base, "data-seldon-ref")
+
+  if (name === undefined) return undefined
+
+  return refs?.[name]
+}
+
+function layer<T extends object>(
+  base: T | null | undefined,
+  override: T | null | undefined,
+  refOverride: Record<string, unknown> | undefined,
 ): T {
-  if (!seldonRefs || props === null) return props
-
-  const ref = (props as Record<string, unknown>)["data-seldon-ref"]
-  if (typeof ref !== "string") return props
-
-  const override = seldonRefs[ref]
-  if (!override) return props
-
-  const merged: Record<string, unknown> = { ...(props as Record<string, unknown>), ...override }
-
-  const baseClassName = (props as Record<string, unknown>)["className"]
-  const overrideClassName = override["className"]
-  if (typeof baseClassName === "string" || typeof overrideClassName === "string") {
-    merged["className"] = combineClassNames(
-      typeof baseClassName === "string" ? baseClassName : undefined,
-      typeof overrideClassName === "string" ? overrideClassName : undefined,
-    )
+  const merged: Record<string, unknown> = {
+    ...base,
+    ...override,
+    ...refOverride,
   }
 
+  const className = combineClassNames(
+    readString(base, "className"),
+    readString(override, "className"),
+    readString(refOverride, "className"),
+  )
+
+  if (className) merged["className"] = className
+
   return merged as T
+}
+
+/**
+ * Layers a caller's slot props over the slot's baked defaults, then applies the
+ * matching \`seldonRefs\` override last. Class names from all three sources are
+ * combined so generated styles survive.
+ *
+ * Returns \`null\` when the caller passes \`null\`, which suppresses the slot.
+ *
+ * @param base - The slot's baked default props from \`sdn\`
+ * @param override - The caller's props for this slot
+ * @param refs - The caller's ref-keyed overrides
+ */
+export function mergeSlot<T extends object>(
+  base: T | null | undefined,
+  override: T | null | undefined,
+  refs?: SeldonRefs,
+): T | null {
+  if (override === null) return null
+
+  return layer(base, override, readRefOverride(base, refs))
+}
+
+/**
+ * The opt-in form of \`mergeSlot\`, for a slot the component does not render by
+ * default. It returns \`null\` unless the caller passes props for the slot.
+ *
+ * @param base - The slot's baked default props from \`sdn\`
+ * @param override - The caller's props for this slot
+ * @param refs - The caller's ref-keyed overrides
+ */
+export function mergeOptionalSlot<T extends object>(
+  base: T | null | undefined,
+  override: T | null | undefined,
+  refs?: SeldonRefs,
+): T | null {
+  if (override === null || override === undefined) return null
+
+  return layer(base, override, readRefOverride(base, refs))
 }
 `
 
   utilityFiles.push({
-    path: `${options.output.componentsFolder}/utils/apply-ref.ts`,
-    content: applyRefUtilsContent,
+    path: `${options.output.componentsFolder}/utils/merge-slot.ts`,
+    content: mergeSlotUtilsContent,
   })
 
   // Generate the icon-registry file. The generated `Icon` renders static catalog

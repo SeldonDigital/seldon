@@ -10,20 +10,29 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { HTMLAttributes } from "react"
+
 import { HTMLDd } from "../native-react/HTML.Dd"
 import { HTMLDt } from "../native-react/HTML.Dt"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { combineClassNames } from "../utils/class-name"
 
-import type { HTMLAttributes } from "react"
-
 export interface ListItemProps extends HTMLAttributes<HTMLElement | HTMLElement | HTMLLIElement> {
-  className?: string
   "data-seldon-ref"?: string
   htmlElement?: "li" | "dt" | "dd"
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ListItemProps = {
+  children: "List item",
+  htmlElement: "li",
+  "aria-hidden": "false",
+}
+
+/**
  * List Item: Item
  * Level: Primitive
  * Intent: Text item inside a list. Renders as li in ordered and unordered lists, or as dt and dd in description lists.
@@ -38,7 +47,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLElement | HTMLElement 
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function ListItem({
   className = "",
   children = sdn.children,
@@ -76,14 +85,4 @@ export function ListItem({
         </HTMLLi>
       )
   }
-}
-
-//
-// Default property values
-//
-const sdn: ListItemProps = {
-  children: "List item",
-  htmlElement: "li",
-  "aria-hidden": "false",
-  className: "sdn-list-item",
 }

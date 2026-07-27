@@ -10,18 +10,26 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { ImgHTMLAttributes } from "react"
+
 import { HTMLImg } from "../native-react/HTML.Img"
 import { combineClassNames } from "../utils/class-name"
 
-import type { ImgHTMLAttributes } from "react"
-
 export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
-  className?: string
   "data-seldon-ref"?: string
   src?: string
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ImageProps = {
+  src: "https://static.seldon.app/background-default-dark.jpg",
+  "aria-hidden": "false",
+}
+
+/**
  * Image: Image
  * Level: Primitive
  * Intent: Renders an image asset within the UI, supporting alt text and sizing.
@@ -35,7 +43,7 @@ export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function Image({ className = "", src = sdn.src, ...props }: ImageProps) {
   const imageClassName = combineClassNames("sdn-image", className)
 
@@ -45,13 +53,4 @@ export function Image({ className = "", src = sdn.src, ...props }: ImageProps) {
   return (
     <HTMLImg className={imageClassName} src={src} aria-hidden={sdn["aria-hidden"]} {...props} />
   )
-}
-
-//
-// Default property values
-//
-const sdn: ImageProps = {
-  src: "https://static.seldon.app/background-default-dark.jpg",
-  "aria-hidden": "false",
-  className: "sdn-image",
 }

@@ -12,12 +12,15 @@
  *
  *****/
 
-/*****
+/**
  * Button: Simple
  * Level: Element
  * Intent: Standard button for triggering actions like submit, confirm, or cancel.
  * Tags: button, action, UI, primary, click, control, submit, call to action
  * Type: Custom
+ *
+ * Structure:
+ *   TextLabel  textLabel
  *
  * @example
  * ```vue
@@ -25,18 +28,19 @@
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot } from "../utils/class-names"
 import TextLabel from "../primitives/TextLabel.vue"
 
 const props = defineProps<{
   className?: string
   textLabel?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -49,13 +53,13 @@ const sdn: Record<string, any> = {
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-button-simple", props.className))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
 </script>
 
 <template>
     <button :class="rootClassName">
       <slot>
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
       </slot>
     </button>
 </template>

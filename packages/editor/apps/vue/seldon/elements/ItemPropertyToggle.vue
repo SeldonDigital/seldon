@@ -12,12 +12,23 @@
  *
  *****/
 
-/*****
+/**
  * Item: ItemPropertyToggle
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Custom
+ *
+ * Structure:
+ *   ButtonIconic         buttonIconic         -> propertyToggle
+ *     Icon               icon                 -> propertyToggleIcon
+ *   FormControlCombobox  formControlCombobox
+ *     Input              input                -> propertyLabel
+ *     Frame              frame
+ *       Icon             icon2                -> toggleIcon
+ *       ToggleSwitch     toggleSwitch         -> toggleValue
+ *   ButtonIconic         buttonIconic2        -> propertyActions
+ *     Icon               icon3
  *
  * @example
  * ```vue
@@ -32,13 +43,13 @@
  *   buttonIconic2={() => {}}
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import ButtonIconic from "../elements/ButtonIconic.vue"
 import FormControlCombobox from "../elements/FormControlCombobox.vue"
@@ -57,6 +68,7 @@ const props = defineProps<{
   toggleSwitch?: Record<string, unknown> | null
   buttonIconic2?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -64,7 +76,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-item-property sdn-item",
   "buttonIconic": {
     "className": "sdn-button-iconic sdn-button-iconic--pgsr",
     "data-seldon-ref": "propertyToggle"
@@ -108,29 +119,29 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-item-property", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const formControlComboboxProps = computed(() => mergeSlot(sdn.formControlCombobox, props.formControlCombobox))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const toggleSwitchProps = computed(() => mergeSlot(sdn.toggleSwitch, props.toggleSwitch))
-const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
+const buttonIconicProps = computed(() => mergeOptionalSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const formControlComboboxProps = computed(() => mergeOptionalSlot(sdn.formControlCombobox, props.formControlCombobox, props.seldonRefs))
+const inputProps = computed(() => mergeOptionalSlot(sdn.input, props.input, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const icon2Props = computed(() => mergeOptionalSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const toggleSwitchProps = computed(() => mergeOptionalSlot(sdn.toggleSwitch, props.toggleSwitch, props.seldonRefs))
+const buttonIconic2Props = computed(() => mergeOptionalSlot(sdn.buttonIconic2, props.buttonIconic2, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
 </script>
 
 <template>
     <li :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <ButtonIconic v-if="buttonIconic && buttonIconicProps" v-bind="buttonIconicProps" :icon="iconProps" />
-        <FormControlCombobox v-if="formControlCombobox && formControlComboboxProps" v-bind="formControlComboboxProps">
-          <Input v-if="input && inputProps" v-bind="inputProps" />
-          <Frame v-bind="frameProps" v-if="frame">
-            <Icon v-if="icon2 && icon2Props" v-bind="icon2Props" />
-            <ToggleSwitch v-if="toggleSwitch && toggleSwitchProps" v-bind="toggleSwitchProps" />
+        <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
+        <FormControlCombobox v-if="formControlComboboxProps !== null" v-bind="formControlComboboxProps">
+          <Input v-if="inputProps !== null" v-bind="inputProps" />
+          <Frame v-bind="frameProps" v-if="frameProps !== null">
+            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+            <ToggleSwitch v-if="toggleSwitchProps !== null" v-bind="toggleSwitchProps" />
           </Frame>
         </FormControlCombobox>
-        <ButtonIconic v-if="buttonIconic2 && buttonIconic2Props" v-bind="buttonIconic2Props" :icon="icon3Props" />
+        <ButtonIconic v-if="buttonIconic2Props !== null" v-bind="buttonIconic2Props" :icon="icon3Props" />
       </slot>
     </li>
 </template>

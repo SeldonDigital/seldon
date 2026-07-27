@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Horizontal Rule: Hr
  * Level: Primitive
  * Intent: Renders a horizontal rule for visual separation of content.
@@ -25,7 +25,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -41,8 +41,7 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  "aria-hidden": "false",
-  "className": "sdn-hr"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-hr", props.className))

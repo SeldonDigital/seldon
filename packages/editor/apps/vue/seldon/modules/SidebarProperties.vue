@@ -12,12 +12,24 @@
  *
  *****/
 
-/*****
+/**
  * Sidebar: SidebarProperties
  * Level: Module
  * Intent: Provides a structured sidebar panel with tabbed navigation, content area, and status footer for application interfaces.
  * Tags: sidebar, panel, module, ui, layout, navigation, tabs, structured
  * Type: Inline
+ *
+ * Structure:
+ *   Frame                  frame
+ *     ComboboxFieldFilter  comboboxFieldFilter
+ *       Icon               icon
+ *       Input              input                -> propertyFilter
+ *       ButtonIconic       buttonIconic         -> propertyFilterClear
+ *         Icon             icon2
+ *     ButtonMenu           buttonMenu           -> menuState
+ *       TextLabel          textLabel
+ *       Icon               icon3
+ *   Frame                  frame2               -> propertiesContainer
  *
  * @example
  * ```vue
@@ -26,13 +38,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import ButtonMenu from "../elements/ButtonMenu.vue"
 import ComboboxFieldFilter from "../elements/ComboboxFieldFilter.vue"
@@ -51,6 +63,7 @@ const props = defineProps<{
   textLabel?: Record<string, unknown> | null
   icon3?: Record<string, unknown> | null
   frame2?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -59,7 +72,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "complementary",
   "aria-hidden": "false",
-  "className": "sdn-sidebar-objects sdn-sidebar",
   "frame": {
     "wrapperElement": "div",
     "aria-hidden": "false",
@@ -112,29 +124,29 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-sidebar-objects", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const comboboxFieldFilterProps = computed(() => mergeSlot(sdn.comboboxFieldFilter, props.comboboxFieldFilter))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const buttonMenuProps = computed(() => mergeSlot(sdn.buttonMenu, props.buttonMenu))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const comboboxFieldFilterProps = computed(() => mergeOptionalSlot(sdn.comboboxFieldFilter, props.comboboxFieldFilter, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const buttonMenuProps = computed(() => mergeOptionalSlot(sdn.buttonMenu, props.buttonMenu, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Frame v-bind="frameProps">
-          <ComboboxFieldFilter v-if="comboboxFieldFilter && comboboxFieldFilterProps" v-bind="comboboxFieldFilterProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
-          <ButtonMenu v-if="buttonMenu && buttonMenuProps" v-bind="buttonMenuProps">
-            <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+          <ComboboxFieldFilter v-if="comboboxFieldFilterProps !== null" v-bind="comboboxFieldFilterProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
+          <ButtonMenu v-if="buttonMenuProps !== null" v-bind="buttonMenuProps">
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
             <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
           </ButtonMenu>
         </Frame>
-        <Frame v-bind="frame2Props" v-if="frame2">
+        <Frame v-bind="frame2Props" v-if="frame2Props !== null">
           <slot name="propertiesContainer" />
         </Frame>
       </slot>

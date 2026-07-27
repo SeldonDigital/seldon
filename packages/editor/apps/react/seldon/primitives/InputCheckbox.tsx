@@ -10,20 +10,28 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { InputHTMLAttributes, Ref } from "react"
+
 import { HTMLInput } from "../native-react/HTML.Input"
 import { combineClassNames } from "../utils/class-name"
 
-import type { InputHTMLAttributes, Ref } from "react"
-
 export interface InputCheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  className?: string
   "data-seldon-ref"?: string
   ref?: Ref<HTMLInputElement>
   placeholder?: string
   type?: string
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: InputCheckboxProps = {
+  placeholder: "Placeholder text",
+  type: "checkbox",
+}
+
+/**
  * Input: Checkbox
  * Level: Primitive
  * Intent: Low-level text input control for collecting user input.
@@ -37,7 +45,7 @@ export interface InputCheckboxProps extends InputHTMLAttributes<HTMLInputElement
  *   type="checkbox"
  * />
  * ```
- *****/
+ */
 export function InputCheckbox({
   className = "",
   placeholder = sdn.placeholder,
@@ -57,13 +65,4 @@ export function InputCheckbox({
       {...props}
     />
   )
-}
-
-//
-// Default property values
-//
-const sdn: InputCheckboxProps = {
-  placeholder: "Placeholder text",
-  type: "checkbox",
-  className: "sdn-input-checkbox sdn-input",
 }

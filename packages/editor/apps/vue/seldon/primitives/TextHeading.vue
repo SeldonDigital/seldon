@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Text: TextHeading
  * Level: Primitive
  * Intent: Base text component for general-purpose inline content.
@@ -27,7 +27,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -47,8 +47,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "children": "Heading",
   "htmlElement": "h2",
-  "aria-hidden": "false",
-  "className": "sdn-text-heading sdn-text"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-text-heading", props.className))

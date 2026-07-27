@@ -10,192 +10,32 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { forwardRef } from "react"
 
-import { Button } from "../elements/Button"
+import { ButtonHTMLAttributes } from "react"
+
+import { Button, ButtonProps } from "../elements/Button"
 import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-
-import type { ButtonProps } from "../elements/Button"
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { ButtonHTMLAttributes } from "react"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ButtonToolsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
+
   button2?: ButtonProps | null
   icon2?: IconProps | null
   textLabel2?: TextLabelProps | null
+
   button3?: ButtonProps | null
   icon3?: IconProps | null
   textLabel3?: TextLabelProps | null
 }
-
-/*****
- * Button: Tools
- * Level: Element
- * Intent: Standard button for triggering actions like submit, confirm, or cancel.
- * Tags: button, action, UI, primary, click, control, submit, call to action
- * Type: Custom
- *
- * @example
- * ```tsx
- * <ButtonTools
- *   button={() => {}}
- *   icon="material-star"
- *   textLabel="{}"
- *   button2={() => {}}
- *   button3={() => {}}
- * />
- * ```
- *****/
-export const ButtonTools = forwardRef<HTMLButtonElement, ButtonToolsProps>(function ButtonTools(
-  {
-    className = "",
-    button = sdn.button,
-    icon = sdn.icon,
-    textLabel,
-    button2 = sdn.button2,
-    icon2 = sdn.icon2,
-    textLabel2,
-    button3 = sdn.button3,
-    icon3 = sdn.icon3,
-    textLabel3,
-    children,
-    seldonRefs,
-    ...props
-  },
-  ref,
-) {
-  const buttonToolsClassName = combineClassNames("sdn-button-tools", className)
-  const buttonProps = applyRef(
-    seldonRefs,
-    button === null
-      ? null
-      : {
-          ...sdn.button,
-          ...button,
-          className: combineClassNames(sdn.button?.className, button?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const button2Props = applyRef(
-    seldonRefs,
-    button2 === null
-      ? null
-      : {
-          ...sdn.button2,
-          ...button2,
-          className: combineClassNames(sdn.button2?.className, button2?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const button3Props = applyRef(
-    seldonRefs,
-    button3 === null
-      ? null
-      : {
-          ...sdn.button3,
-          ...button3,
-          className: combineClassNames(sdn.button3?.className, button3?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-
-  return (
-    <HTMLButton className={buttonToolsClassName} ref={ref} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {buttonProps !== null && (
-            <Button {...buttonProps}>
-              {icon && iconProps && <Icon {...iconProps} />}
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-            </Button>
-          )}
-          {button2Props !== null && (
-            <Button {...button2Props}>
-              {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-            </Button>
-          )}
-          {button3Props !== null && (
-            <Button {...button3Props}>
-              {icon3 && icon3Props && <Icon {...icon3Props} />}
-              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
-            </Button>
-          )}
-        </>
-      )}
-    </HTMLButton>
-  )
-})
 
 //
 // Default property values
@@ -212,6 +52,7 @@ const sdn: ButtonToolsProps = {
   textLabel: {
     className: "sdn-text-label sdn-text-label--7mza",
   },
+
   button2: {
     className: "sdn-button sdn-button--ivvu",
   },
@@ -223,6 +64,7 @@ const sdn: ButtonToolsProps = {
   textLabel2: {
     className: "sdn-text-label sdn-text-label--7mza",
   },
+
   button3: {
     className: "sdn-button sdn-button--ivvu",
   },
@@ -234,4 +76,95 @@ const sdn: ButtonToolsProps = {
   textLabel3: {
     className: "sdn-text-label sdn-text-label--7mza",
   },
+}
+
+/**
+ * Button: Tools
+ * Level: Element
+ * Intent: Standard button for triggering actions like submit, confirm, or cancel.
+ * Tags: button, action, UI, primary, click, control, submit, call to action
+ * Type: Custom
+ *
+ * Structure:
+ *   Button       button
+ *     Icon       icon
+ *     TextLabel  textLabel
+ *   Button       button2
+ *     Icon       icon2
+ *     TextLabel  textLabel2
+ *   Button       button3
+ *     Icon       icon3
+ *     TextLabel  textLabel3
+ *
+ * @example
+ * ```tsx
+ * <ButtonTools
+ *   button={() => {}}
+ *   icon="material-star"
+ *   textLabel="{}"
+ *   button2={() => {}}
+ *   button3={() => {}}
+ * />
+ * ```
+ */
+export function ButtonTools({
+  className = "",
+  button,
+  icon,
+  textLabel,
+
+  button2,
+  icon2,
+  textLabel2,
+
+  button3,
+  icon3,
+  textLabel3,
+
+  children,
+  seldonRefs,
+  ...props
+}: ButtonToolsProps) {
+  const buttonToolsClassName = combineClassNames("sdn-button-tools", className)
+
+  const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  const button2Props = mergeSlot(sdn.button2, button2, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+
+  const button3Props = mergeSlot(sdn.button3, button3, seldonRefs)
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+
+  return (
+    <HTMLButton className={buttonToolsClassName} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {buttonProps !== null && (
+            <Button {...buttonProps}>
+              {iconProps !== null && <Icon {...iconProps} />}
+              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+            </Button>
+          )}
+          {button2Props !== null && (
+            <Button {...button2Props}>
+              {icon2Props !== null && <Icon {...icon2Props} />}
+              {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+            </Button>
+          )}
+          {button3Props !== null && (
+            <Button {...button3Props}>
+              {icon3Props !== null && <Icon {...icon3Props} />}
+              {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+            </Button>
+          )}
+        </>
+      )}
+    </HTMLButton>
+  )
 }

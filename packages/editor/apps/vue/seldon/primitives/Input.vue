@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Input: Input
  * Level: Primitive
  * Intent: Low-level text input control for collecting user input.
@@ -26,7 +26,7 @@
  *   type="text"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -45,8 +45,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "placeholder": "Placeholder text",
-  "type": "text",
-  "className": "sdn-input"
+  "type": "text"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-input", props.className))

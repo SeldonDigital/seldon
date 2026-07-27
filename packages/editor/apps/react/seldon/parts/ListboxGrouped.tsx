@@ -10,25 +10,21 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ListboxOption } from "../elements/ListboxOption"
-import { Frame } from "../frames/Frame"
-import { Hr } from "../primitives/Hr"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ListboxOptionProps } from "../elements/ListboxOption"
-import type { FrameProps } from "../frames/Frame"
-import type { HrProps } from "../primitives/Hr"
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ListboxOption, ListboxOptionProps } from "../elements/ListboxOption"
+import { Frame, FrameProps } from "../frames/Frame"
+import { Hr, HrProps } from "../primitives/Hr"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ListboxGroupedProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   frame?: FrameProps | null
   textLabel?: TextLabelProps | null
   listboxOption?: ListboxOptionProps | null
@@ -37,7 +33,9 @@ export interface ListboxGroupedProps extends HTMLAttributes<HTMLElement> {
   listboxOption2?: ListboxOptionProps | null
   icon2?: IconProps | null
   textLabel3?: TextLabelProps | null
+
   hr?: HrProps | null
+
   frame2?: FrameProps | null
   textLabel4?: TextLabelProps | null
   listboxOption3?: ListboxOptionProps | null
@@ -48,271 +46,12 @@ export interface ListboxGroupedProps extends HTMLAttributes<HTMLElement> {
   textLabel6?: TextLabelProps | null
 }
 
-/*****
- * List: boxGrouped
- * Level: Part
- * Intent: Floating list of selectable options for a combobox or select.
- * Tags: listbox, options, select, combobox, part, overlay, UI
- * Type: Inline
- *
- * @example
- * ```tsx
- * <ListboxGrouped
- *   role="listbox"
- *   aria-hidden="false"
- * />
- * ```
- *****/
-export function ListboxGrouped({
-  className = "",
-  frame = sdn.frame,
-  textLabel,
-  listboxOption,
-  icon = sdn.icon,
-  textLabel2,
-  listboxOption2,
-  icon2 = sdn.icon2,
-  textLabel3,
-  hr = sdn.hr,
-  frame2 = sdn.frame2,
-  textLabel4,
-  listboxOption3,
-  icon3 = sdn.icon3,
-  textLabel5,
-  listboxOption4,
-  icon4 = sdn.icon4,
-  textLabel6,
-  children,
-  seldonRefs,
-  ...props
-}: ListboxGroupedProps) {
-  const listboxGroupedClassName = combineClassNames("sdn-listbox", className)
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const listboxOptionProps = applyRef(
-    seldonRefs,
-    listboxOption === null
-      ? null
-      : {
-          ...sdn.listboxOption,
-          ...listboxOption,
-          className: combineClassNames(sdn.listboxOption?.className, listboxOption?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const listboxOption2Props = applyRef(
-    seldonRefs,
-    listboxOption2 === null
-      ? null
-      : {
-          ...sdn.listboxOption2,
-          ...listboxOption2,
-          className: combineClassNames(sdn.listboxOption2?.className, listboxOption2?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-  const hrProps = applyRef(
-    seldonRefs,
-    hr === null
-      ? null
-      : {
-          ...sdn.hr,
-          ...hr,
-          className: combineClassNames(sdn.hr?.className, hr?.className),
-        },
-  )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(sdn.frame2?.className, frame2?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
-        },
-  )
-  const listboxOption3Props = applyRef(
-    seldonRefs,
-    listboxOption3 === null
-      ? null
-      : {
-          ...sdn.listboxOption3,
-          ...listboxOption3,
-          className: combineClassNames(sdn.listboxOption3?.className, listboxOption3?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const textLabel5Props = applyRef(
-    seldonRefs,
-    textLabel5 === null
-      ? null
-      : {
-          ...sdn.textLabel5,
-          ...textLabel5,
-          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
-        },
-  )
-  const listboxOption4Props = applyRef(
-    seldonRefs,
-    listboxOption4 === null
-      ? null
-      : {
-          ...sdn.listboxOption4,
-          ...listboxOption4,
-          className: combineClassNames(sdn.listboxOption4?.className, listboxOption4?.className),
-        },
-  )
-  const icon4Props = applyRef(
-    seldonRefs,
-    icon4 === null
-      ? null
-      : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        },
-  )
-  const textLabel6Props = applyRef(
-    seldonRefs,
-    textLabel6 === null
-      ? null
-      : {
-          ...sdn.textLabel6,
-          ...textLabel6,
-          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
-        },
-  )
-
-  return (
-    <Frame
-      className={listboxGroupedClassName}
-      role={sdn["role"]}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          <Frame {...frameProps}>
-            {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-            {listboxOption && listboxOptionProps && (
-              <ListboxOption {...listboxOptionProps}>
-                {icon && iconProps && <Icon {...iconProps} />}
-                {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-              </ListboxOption>
-            )}
-            {listboxOption2 && listboxOption2Props && (
-              <ListboxOption {...listboxOption2Props}>
-                {icon2 && icon2Props && <Icon {...icon2Props} />}
-                {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
-              </ListboxOption>
-            )}
-          </Frame>
-          {hrProps !== null && <Hr {...hrProps} />}
-          <Frame {...frame2Props}>
-            {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
-            {listboxOption3 && listboxOption3Props && (
-              <ListboxOption {...listboxOption3Props}>
-                {icon3 && icon3Props && <Icon {...icon3Props} />}
-                {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
-              </ListboxOption>
-            )}
-            {listboxOption4 && listboxOption4Props && (
-              <ListboxOption {...listboxOption4Props}>
-                {icon4 && icon4Props && <Icon {...icon4Props} />}
-                {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
-              </ListboxOption>
-            )}
-          </Frame>
-        </>
-      )}
-    </Frame>
-  )
-}
-
 //
 // Default property values
 //
 const sdn: ListboxGroupedProps = {
   role: "listbox",
   "aria-hidden": "false",
-  className: "sdn-listbox",
   frame: {
     wrapperElement: "div",
     role: "group",
@@ -344,10 +83,12 @@ const sdn: ListboxGroupedProps = {
   textLabel3: {
     className: "sdn-text-label sdn-text-label--xohb",
   },
+
   hr: {
     "aria-hidden": "false",
     className: "sdn-hr sdn-hr--xtig",
   },
+
   frame2: {
     wrapperElement: "div",
     role: "group",
@@ -379,4 +120,134 @@ const sdn: ListboxGroupedProps = {
   textLabel6: {
     className: "sdn-text-label sdn-text-label--xohb",
   },
+}
+
+/**
+ * List: boxGrouped
+ * Level: Part
+ * Intent: Floating list of selectable options for a combobox or select.
+ * Tags: listbox, options, select, combobox, part, overlay, UI
+ * Type: Inline
+ *
+ * Structure:
+ *   Frame            frame
+ *     TextLabel      textLabel
+ *     ListboxOption  listboxOption
+ *       Icon         icon
+ *       TextLabel    textLabel2
+ *     ListboxOption  listboxOption2
+ *       Icon         icon2
+ *       TextLabel    textLabel3
+ *   Hr               hr
+ *   Frame            frame2
+ *     TextLabel      textLabel4
+ *     ListboxOption  listboxOption3
+ *       Icon         icon3
+ *       TextLabel    textLabel5
+ *     ListboxOption  listboxOption4
+ *       Icon         icon4
+ *       TextLabel    textLabel6
+ *
+ * @example
+ * ```tsx
+ * <ListboxGrouped
+ *   role="listbox"
+ *   aria-hidden="false"
+ * />
+ * ```
+ */
+export function ListboxGrouped({
+  className = "",
+  frame,
+  textLabel,
+  listboxOption,
+  icon,
+  textLabel2,
+  listboxOption2,
+  icon2,
+  textLabel3,
+
+  hr,
+
+  frame2,
+  textLabel4,
+  listboxOption3,
+  icon3,
+  textLabel5,
+  listboxOption4,
+  icon4,
+  textLabel6,
+
+  children,
+  seldonRefs,
+  ...props
+}: ListboxGroupedProps) {
+  const listboxGroupedClassName = combineClassNames("sdn-listbox", className)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const listboxOptionProps = mergeOptionalSlot(sdn.listboxOption, listboxOption, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const listboxOption2Props = mergeOptionalSlot(sdn.listboxOption2, listboxOption2, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+
+  const hrProps = mergeSlot(sdn.hr, hr, seldonRefs)
+
+  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
+  const listboxOption3Props = mergeOptionalSlot(sdn.listboxOption3, listboxOption3, seldonRefs)
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
+  const listboxOption4Props = mergeOptionalSlot(sdn.listboxOption4, listboxOption4, seldonRefs)
+  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+
+  return (
+    <Frame
+      className={listboxGroupedClassName}
+      role={sdn["role"]}
+      aria-hidden={sdn["aria-hidden"]}
+      {...props}
+    >
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          <Frame {...frameProps}>
+            {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+            {listboxOptionProps !== null && (
+              <ListboxOption {...listboxOptionProps}>
+                {iconProps !== null && <Icon {...iconProps} />}
+                {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+              </ListboxOption>
+            )}
+            {listboxOption2Props !== null && (
+              <ListboxOption {...listboxOption2Props}>
+                {icon2Props !== null && <Icon {...icon2Props} />}
+                {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+              </ListboxOption>
+            )}
+          </Frame>
+          {hrProps !== null && <Hr {...hrProps} />}
+          <Frame {...frame2Props}>
+            {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+            {listboxOption3Props !== null && (
+              <ListboxOption {...listboxOption3Props}>
+                {icon3Props !== null && <Icon {...icon3Props} />}
+                {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
+              </ListboxOption>
+            )}
+            {listboxOption4Props !== null && (
+              <ListboxOption {...listboxOption4Props}>
+                {icon4Props !== null && <Icon {...icon4Props} />}
+                {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+              </ListboxOption>
+            )}
+          </Frame>
+        </>
+      )}
+    </Frame>
+  )
 }

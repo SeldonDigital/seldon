@@ -10,30 +10,50 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLSpan } from "../native-react/HTML.Span"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { HTMLSpan } from "../native-react/HTML.Span"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ChipAssistProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
+
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ChipAssistProps = {
+  "aria-hidden": "false",
+  icon: {
+    icon: "material-calendarToday",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--eyw9",
+  },
+
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--lug5",
+  },
+}
+
+/**
  * Chip: ChipAssist
  * Level: Element
  * Intent: Schema for a small, interactive UI element used to display information, categories, or actions with optional removal or selection states.
  * Tags: chip, ui, tag, label, badge, filter, category, pill
  * Type: Custom
+ *
+ * Structure:
+ *   Icon       icon
+ *   TextLabel  textLabel
  *
  * @example
  * ```tsx
@@ -43,36 +63,22 @@ export interface ChipAssistProps extends HTMLAttributes<HTMLElement> {
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export function ChipAssist({
   className = "",
-  icon = sdn.icon,
+  icon,
+
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: ChipAssistProps) {
   const chipAssistClassName = combineClassNames("sdn-chip", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <HTMLSpan className={chipAssistClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -81,25 +87,9 @@ export function ChipAssist({
       ) : (
         <>
           {iconProps !== null && <Icon {...iconProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {textLabelProps !== null && <TextLabel {...textLabelProps} />}
         </>
       )}
     </HTMLSpan>
   )
-}
-
-//
-// Default property values
-//
-const sdn: ChipAssistProps = {
-  "aria-hidden": "false",
-  className: "sdn-chip",
-  icon: {
-    icon: "material-calendarToday",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--eyw9",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--lug5",
-  },
 }

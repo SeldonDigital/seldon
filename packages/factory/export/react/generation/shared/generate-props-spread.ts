@@ -1,14 +1,26 @@
 import { isAttributeKey } from "./attribute-props"
-import { getConditionalPropPaths } from "./get-conditional-prop-paths"
+import { getSubtreeBoundaryPropNames, joinWithSubtreeBreaks } from "./get-subtree-boundaries"
 
 import type { ComponentToExport, JSONTreeNode } from "../../../types"
+
+interface SpreadEntry {
+  line: string
+  name?: string
+}
 
 /**
  * Generates the function signature props spread.
  *
- * Root-level props and non-conditional children get a default value sourced
- * from `sdn`. Conditional children (inline extras) are destructured without a
- * default, so they only render when the caller passes them.
+ * Root-level props get a default value sourced from `sdn` because they are read
+ * straight from the signature. Child slots take no default: the merge helpers
+ * layer `sdn` in themselves, and an absent slot prop is what tells
+ * `mergeOptionalSlot` the caller opted out.
+ *
+ * A component with slots emits one name per line, with a blank line at each
+ * top-level subtree boundary and before the trailing `children` / `seldonRefs` /
+ * rest group, so the signature breaks at the same places as the interface, the
+ * `sdn` block, and the declaration list. A leaf primitive has no slots, so its
+ * signature stays on one line.
  *
  * When `options.includeChildren` is set, `children` is destructured without a
  * default so the component body can render caller-provided children in place
@@ -19,7 +31,7 @@ export function generatePropsSpread(
   propNames: Map<string, string>,
   options?: { includeChildren?: boolean },
 ): string {
-  const props = [`className = ""`]
+  const slots: SpreadEntry[] = [{ line: `className = ""` }]
   const used = new Set<string>(["className"])
 
   const rootProps = component.tree.dataBinding.props
@@ -33,23 +45,16 @@ export function generatePropsSpread(
 
     if (!used.has(propKey)) {
       used.add(propKey)
-      props.push(`${propKey} = sdn.${propKey}`)
+      slots.push({ line: `${propKey} = sdn.${propKey}` })
     }
   }
-
-  const conditionalPaths = getConditionalPropPaths(component)
 
   function traverse(node: JSONTreeNode) {
     const propName = propNames.get(node.dataBinding.path)
 
     if (propName && !used.has(propName)) {
       used.add(propName)
-
-      if (conditionalPaths.has(node.dataBinding.path)) {
-        props.push(propName)
-      } else {
-        props.push(`${propName} = sdn.${propName}`)
-      }
+      slots.push({ line: propName, name: propName })
     }
 
     if (Array.isArray(node.children)) {
@@ -61,21 +66,34 @@ export function generatePropsSpread(
     component.tree.children.forEach(traverse)
   }
 
+  const tail: string[] = []
+
   if (options?.includeChildren && !used.has("children")) {
     used.add("children")
-    props.push("children")
+    tail.push("children")
   }
 
   // Pull the ref override channel out of the rest so it is never spread onto a
-  // DOM element. Only components that compose children read it through
-  // `applyRef`, so leaf primitives omit it to avoid an unused binding.
+  // DOM element. Only components that compose children pass it to the merge
+  // helpers, so leaf primitives omit it to avoid an unused binding.
   const hasChildren = Array.isArray(component.tree.children) && component.tree.children.length > 0
 
   if (hasChildren) {
-    props.push("seldonRefs")
+    tail.push("seldonRefs")
   }
 
-  props.push("...props")
+  if (!hasChildren) {
+    return `{${[...slots.map((entry) => entry.line), ...tail, "...props"].join(",")}}`
+  }
 
-  return `{${props.join(",")}}`
+  const boundaries = getSubtreeBoundaryPropNames(component, propNames)
+  const slotLines = joinWithSubtreeBreaks(
+    slots.map((entry) => ({ ...entry, line: `${entry.line},` })),
+    boundaries,
+  )
+
+  // The rest element must stay last, so no trailing comma follows it.
+  const tailLines = [...tail.map((name) => `${name},`), "...props"].join("\n")
+
+  return `{\n${slotLines}\n\n${tailLines}\n}`
 }

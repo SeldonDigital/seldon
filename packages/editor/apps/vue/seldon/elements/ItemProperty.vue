@@ -12,12 +12,25 @@
  *
  *****/
 
-/*****
+/**
  * Item: ItemProperty
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Custom
+ *
+ * Structure:
+ *   ButtonIconic         buttonIconic         -> propertyToggle
+ *     Icon               icon                 -> propertyToggleIcon
+ *   FormControlCombobox  formControlCombobox
+ *     Input              input                -> propertyLabel
+ *     ComboboxField      comboboxField
+ *       Icon             icon2                -> valueIcon
+ *       Input            input2               -> valueLabel
+ *       ButtonIconic     buttonIconic2        -> valueOptionsMenu
+ *         Icon           icon3
+ *   ButtonIconic         buttonIconic3        -> propertyActions
+ *     Icon               icon4
  *
  * @example
  * ```vue
@@ -31,13 +44,13 @@
  *   buttonIconic2={() => {}}
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import ButtonIconic from "../elements/ButtonIconic.vue"
 import ComboboxField from "../elements/ComboboxField.vue"
 import FormControlCombobox from "../elements/FormControlCombobox.vue"
@@ -56,6 +69,7 @@ const props = defineProps<{
   icon3?: Record<string, unknown> | null
   buttonIconic3?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -63,7 +77,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-item-property sdn-item",
   "buttonIconic": {
     "className": "sdn-button-iconic sdn-button-iconic--pgsr",
     "data-seldon-ref": "propertyToggle"
@@ -122,17 +135,17 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-item-property", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const formControlComboboxProps = computed(() => mergeSlot(sdn.formControlCombobox, props.formControlCombobox))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const input2Props = computed(() => mergeSlot(sdn.input2, props.input2))
-const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const buttonIconic3Props = computed(() => mergeSlot(sdn.buttonIconic3, props.buttonIconic3))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const formControlComboboxProps = computed(() => mergeSlot(sdn.formControlCombobox, props.formControlCombobox, props.seldonRefs))
+const inputProps = computed(() => mergeOptionalSlot(sdn.input, props.input, props.seldonRefs))
+const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const input2Props = computed(() => mergeSlot(sdn.input2, props.input2, props.seldonRefs))
+const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const buttonIconic3Props = computed(() => mergeSlot(sdn.buttonIconic3, props.buttonIconic3, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
 </script>
 
 <template>
@@ -140,7 +153,7 @@ const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
       <slot>
         <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
         <FormControlCombobox v-if="formControlComboboxProps !== null" v-bind="formControlComboboxProps">
-          <Input v-if="input && inputProps" v-bind="inputProps" />
+          <Input v-if="inputProps !== null" v-bind="inputProps" />
           <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :icon="icon2Props" :input="input2Props" :buttonIconic="buttonIconic2Props" :icon2="icon3Props" />
         </FormControlCombobox>
         <ButtonIconic v-if="buttonIconic3Props !== null" v-bind="buttonIconic3Props" :icon="icon4Props" />
