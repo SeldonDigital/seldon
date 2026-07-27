@@ -6,6 +6,7 @@ import {
 import { applyActions } from "@seldon/core/workspace/reducers/apply-actions"
 import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
+import { collectDesignViolations } from "../../../repair/design-lint"
 import { normalizeActions } from "../../../repair/normalize-actions"
 import type { PiTurnState } from "../turn-state"
 
@@ -196,7 +197,21 @@ export function commit(state: PiTurnState, rawAction: WorkspaceAction): string {
   }
 
   const before = state.workspace
-  const { actions: normalized, repairs } = normalizeActions([rawAction])
+  const { actions: normalized, repairs } = normalizeActions([rawAction], before)
+
+  // Design linter: reject an edit that targets a key the component cannot take,
+  // or an option outside the key's set, before the dry-run. Core would silently
+  // drop the unknown key, so the turn would look applied while the value never
+  // lands; throwing feeds the exact rule back to the model to retarget.
+  const violations = normalized.flatMap((action) =>
+    collectDesignViolations(before, action),
+  )
+  if (violations.length > 0) {
+    const reason = violations.join(" ")
+    state.rejected.push({ type: rawAction.type, reason })
+    throw new Error(reason)
+  }
+
   let next
   try {
     next = applyActions(before, normalized)

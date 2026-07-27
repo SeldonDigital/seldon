@@ -1,6 +1,9 @@
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import { getCatalogKeyForPropertyPath } from "@seldon/core/properties/schemas/helpers/property-path"
-import type { WorkspaceAction } from "@seldon/core/workspace/types"
+import { resolveToken } from "@seldon/core/rules/config/design-semantics.resolve"
+import type { Theme } from "@seldon/core/themes/types"
+import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"
+import type { Workspace, WorkspaceAction } from "@seldon/core/workspace/types"
 
 import { isTaggedValue, themeRefTag } from "../prompt/property-taxonomy"
 
@@ -51,6 +54,7 @@ function coerceLeaf(
   value: unknown,
   actionType: string,
   repairs: ActionRepair[],
+  theme?: Theme,
 ): unknown {
   if (isTaggedValue(value)) {
     const tagged = value as { type: unknown; value: unknown }
@@ -96,6 +100,17 @@ function coerceLeaf(
       })
       return { type: "option", value }
     }
+    if (typeof value === "string") {
+      const token = resolveToken(value, schemaKey, theme)
+      if (token) {
+        repairs.push({
+          actionType,
+          propertyKey: schemaKey,
+          reason: `resolved "${value}" to the theme token ${token.token}`,
+        })
+        return { type: token.tag, value: token.token }
+      }
+    }
     repairs.push({
       actionType,
       propertyKey: schemaKey,
@@ -120,10 +135,11 @@ function coerceTree(
   value: unknown,
   actionType: string,
   repairs: ActionRepair[],
+  theme?: Theme,
 ): unknown {
   if (Array.isArray(value)) {
     return value.map((item, index) =>
-      coerceTree(`${path}.${index}`, item, actionType, repairs),
+      coerceTree(`${path}.${index}`, item, actionType, repairs, theme),
     )
   }
   if (isPlainObject(value) && !isTaggedValue(value)) {
@@ -134,6 +150,7 @@ function coerceTree(
         facetValue,
         actionType,
         repairs,
+        theme,
       )
     }
     return out
@@ -145,6 +162,7 @@ function coerceTree(
     value,
     actionType,
     repairs,
+    theme,
   )
 }
 
@@ -180,13 +198,30 @@ function assignPath(
  * Deterministically repairs the property shape of model actions before the
  * reducer validates them. It rebuilds each `properties` map so a dotted key
  * becomes a nested facet, and every leaf value is tagged, using one recursive
- * walk keyed off the core path resolver. Anything it cannot place is left for
- * core validation to reject with a precise message. Never mutates the input.
+ * walk keyed off the core path resolver. When a `workspace` is passed, a bare
+ * descriptive word on a themeable key resolves to a real theme token, so "big"
+ * becomes `@fontSize.xxlarge` rather than an invalid exact value. Anything it
+ * cannot place is left for core validation to reject with a precise message.
+ * Never mutates the input.
  */
 export function normalizeActions(
   actions: readonly WorkspaceAction[],
+  workspace?: Workspace,
 ): NormalizeResult {
   const repairs: ActionRepair[] = []
+
+  // Theme computation can throw on a malformed workspace, so a failure drops
+  // token resolution rather than the whole repair pass.
+  let theme: Theme | undefined
+  if (workspace) {
+    try {
+      theme = computeWorkspaceThemes(workspace)[0] as unknown as
+        | Theme
+        | undefined
+    } catch {
+      theme = undefined
+    }
+  }
 
   const repaired = actions.map((action) => {
     if (!action || !PROPERTY_ACTION_TYPES.has(action.type)) return action
@@ -199,7 +234,7 @@ export function normalizeActions(
 
     const nextProperties: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(properties)) {
-      const coerced = coerceTree(key, value, action.type, repairs)
+      const coerced = coerceTree(key, value, action.type, repairs, theme)
       const segments = key.split(".")
       if (segments.length > 1) {
         repairs.push({

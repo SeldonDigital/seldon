@@ -43,6 +43,8 @@ The package groups a few parts that work together:
 | **Tools** | Mutation and read tools the model calls | [pi/tools/](./pi/tools) |
 | **Context sections** | Build the reusable context blocks | [prompt/context-sections/](./prompt/context-sections) |
 | **Repair** | Fix common shape mistakes before validation | [repair/normalize-actions.ts](./repair/normalize-actions.ts) |
+| **Design semantics** | Map a design concept to a property, token, or verb | `@seldon/core` `rules/config/design-semantics.config.ts` |
+| **Design linter** | Reject an edit a component cannot take before commit | [repair/design-lint.ts](./repair/design-lint.ts) |
 | **Action schema** | List the allowed actions and their payload specs | [schema/action-schema.ts](./schema/action-schema.ts) |
 | **Model** | Resolve the local Ollama model for Pi | [pi/model.ts](./pi/model.ts) |
 
@@ -180,6 +182,27 @@ Each part is one context section under [prompt/context-sections/](./prompt/conte
 
 ---
 
+## Design Semantics
+
+The design rules the model follows come from one typed source in core,
+`rules/config/design-semantics.config.ts`, so the prompt, the value resolver, and
+the design linter never drift. Three consumers read it:
+
+- The prompt renders the intent map as the Design intents section, so the model
+  routes a concept to the right property, such as `content` for visible text or
+  `direction` for reading order.
+- `normalizeActions` resolves a descriptive word to a real theme token against
+  the computed theme, so "big" becomes `@fontSize.xxlarge` without the model
+  recalling the scale. It only returns a token the theme carries.
+- `commit` runs the design linter, which rejects an edit whose key the component
+  cannot take, or whose option is out of range, and feeds the exact rule back to
+  the model so it retargets.
+
+Intent verb tools carry the same rules as a closed choice. `set_text_role`,
+`set_emphasis`, and `set_direction` let the model pick a role, weight, or
+direction, and the tool writes the right facet and token, so it composes nothing
+by hand. `set_properties` stays as the low-level escape hatch.
+
 ## Finding A Target
 
 The narrow context means the target is not always on screen. Two mechanisms widen the search without bloating every prompt.
@@ -195,11 +218,12 @@ The model never writes the workspace. All file tools are off, and each mutation 
 
 `commit` in [pi/tools/mutations/commit.ts](./pi/tools/mutations/commit.ts) handles each proposed action:
 
-1. Run the deterministic shape repair from [repair/normalize-actions.ts](./repair/normalize-actions.ts).
-2. Dry-run the action against the working copy through the same reducer the editor uses.
-3. On a reducer rejection, record it on the turn state and throw, so Pi feeds the exact error text back to the model, which is how the model self-corrects.
-4. On a validated action that changes nothing, record it as ineffective and report it without recording the action, so the model retargets instead of the caller applying a no-op.
-5. On a real change, advance the working copy and record the action.
+1. Run the deterministic shape repair from [repair/normalize-actions.ts](./repair/normalize-actions.ts), which also resolves a descriptive word to a theme token.
+2. Run the design linter from [repair/design-lint.ts](./repair/design-lint.ts). On a violation, record it and throw, so the model reads the exact rule and retargets.
+3. Dry-run the action against the working copy through the same reducer the editor uses.
+4. On a reducer rejection, record it on the turn state and throw, so Pi feeds the exact error text back to the model, which is how the model self-corrects.
+5. On a validated action that changes nothing, record it as ineffective and report it without recording the action, so the model retargets instead of the caller applying a no-op.
+6. On a real change, advance the working copy and record the action.
 
 The turn returns the working copy it built, not just the actions. The editor adopts that workspace with one `set_workspace` dispatch, so an id a create tool minted mid-turn stays stable and a follow-on edit that targets it lands. Re-applying the actions would re-mint those random ids and drop the follow-on edit.
 
@@ -216,6 +240,7 @@ Tools come in two groups, assembled per turn in [pi/tools/](./pi/tools), one too
 | Tool | Proposes |
 | --- | --- |
 | `set_properties` | Property values on a node or its component source |
+| `set_text_role` / `set_emphasis` / `set_direction` | A typographic role, a weight, or the reading direction on a node |
 | `add_component` | Add a catalog component to the workspace as its own board; reports the new board key and node id |
 | `insert_component` | Insert a catalog component under a parent, creating its board if needed; reports the new node id |
 | `insert_variant_instance` | Insert an instance of a specific existing variant; reports the new node id |

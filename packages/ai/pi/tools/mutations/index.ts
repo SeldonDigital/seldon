@@ -13,11 +13,14 @@ import { createMoveComponentTool } from "./move-component"
 import { createRemoveInstanceTool } from "./remove-instance"
 import { createReorderComponentTool } from "./reorder-component"
 import { createSetBoardLabelTool } from "./set-board-label"
+import { createSetDirectionTool } from "./set-direction"
+import { createSetEmphasisTool } from "./set-emphasis"
 import { createSetFontCollectionFamilyPresetTool } from "./set-font-collection-family-preset"
 import { createSetFontCollectionFamilyVariantTool } from "./set-font-collection-family-variant"
 import { createSetIconSetOverrideTool } from "./set-icon-set-override"
 import { createSetIconSetSubcategoryPresetTool } from "./set-icon-set-subcategory-preset"
 import { createSetPropertiesTool } from "./set-properties"
+import { createSetTextRoleTool } from "./set-text-role"
 import { createSetThemeOverrideTool } from "./set-theme-override"
 
 /**
@@ -53,6 +56,25 @@ export function createMutationTools(
     createRemoveInstanceTool(state),
     createSetBoardLabelTool(state),
   ]
+
+  // Intent verb tools bake a design rule into a closed choice, so the model
+  // picks a role, weight, or direction instead of assembling facets and tokens.
+  // They act on component nodes, so they are gated out of resource and media
+  // turns to keep those schemas small.
+  const componentScope =
+    turnScope === undefined ||
+    turnScope === "workspace" ||
+    turnScope === "board" ||
+    turnScope === "variant" ||
+    turnScope === "instance"
+  if (componentScope) {
+    tools.push(
+      createSetTextRoleTool(state, resolved),
+      createSetEmphasisTool(state, resolved),
+      createSetDirectionTool(state, resolved),
+    )
+  }
+
   if (includeAll) {
     tools.push(createApplyActionsTool(state))
   }

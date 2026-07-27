@@ -252,6 +252,12 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@swatch.punch",
               },
+              font: {
+                weight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontWeight.bold",
+                },
+              },
             },
           },
           {
@@ -358,6 +364,12 @@ export const schema = {
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.punch",
+                },
+                font: {
+                  weight: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontWeight.bold",
+                  },
                 },
               },
             },
