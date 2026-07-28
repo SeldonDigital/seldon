@@ -21,6 +21,11 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 
 ### Naming
 
+- Name a file, function, type, or constant with words the codebase already uses. Do not invent an architectural term or jargon for a name.
+- Take vocabulary from `GLOSSARY.md` first, then from the area you are editing. When a concept has no term yet, describe what the code does in plain words.
+- Do not coin a compound term for something that already has a name. A name that repeats its folder, such as `refs/build-refs-binding-rows.ts`, reads as a new concept. `refs/build-binding-rows.ts` uses the words already there.
+- Use one term for one concept. Do not introduce a near synonym for a term the code already uses.
+- When a concept genuinely needs a new term, add it to `GLOSSARY.md` in the same change.
 - Match the local filename convention of the area you are editing.
 - Most general TypeScript modules use lowercase kebab-case, such as `set-node-properties.ts`.
 - Component schema files use `PascalCase.schema.ts`.
@@ -41,6 +46,16 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 - Keep export concerns in the `factory`. CSS variable refs and language-specific output belong to factory export, not to `core` or the editor.
 - When a value or ordering looks wrong in the editor, fix it in `core` so every consumer gets the same result. Do not patch it in the editor.
 - Persist user edits as workspace actions and reducers. Do not store design state as editor-only side state.
+
+### Style Values
+
+- Style values come from theme tokens. Write them as `var(--sdn-*)` references. Never hard-code a pixel size, color, radius, border width, font size, or line height.
+- This applies to hand-authored CSS, inline `style` objects, and every helper that returns a `CSSProperties` value.
+- Pick the nearest step on the scale instead of introducing a new value. The scales are `--sdn-paddings-*`, `--sdn-margins-*`, `--sdn-gaps-*`, `--sdn-sizes-*`, `--sdn-corners-*`, `--sdn-border-width-*`, `--sdn-font-size-*`, `--sdn-font-weight-*`, `--sdn-line-height-*`, and `--sdn-swatch-*`.
+- Build a translucent color with `color-mix`, such as `color-mix(in srgb, var(--sdn-swatch-black) 35%, transparent)`. Do not write an `rgb()` or `rgba()` literal.
+- Put SVG paint and width in a `style` object, not in a presentation attribute. A `var()` reference does not resolve in an attribute.
+- Some values have no token, such as `z-index`, `opacity`, and an SVG dash pattern. Keep those numeric and give each one a named constant.
+- Canvas geometry is not a style value. Overlay math that computes positions and sizes in device pixels stays numeric. Keep those numbers in one constants block and do not read tokens for them.
 
 ### Consistency Over Special Cases
 

@@ -1,8 +1,8 @@
 import { useProjectLink } from "@app/project/hooks/use-project-link"
 import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { collectWorkspaceNodeRefs } from "@seldon/editor/lib/refs/collect-workspace-node-refs"
-import { joinRefBindings } from "@seldon/editor/lib/refs/join-ref-bindings"
+import { collectNodeRefs } from "@seldon/editor/lib/refs/collect-node-refs"
+import { joinRefsAndBindings } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import { readBindingsManifest } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import { readRefsRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import {
@@ -14,7 +14,7 @@ import {
 import { useEffect, useMemo } from "react"
 import { create } from "zustand"
 
-import type { RefBinding } from "@seldon/editor/lib/refs/join-ref-bindings"
+import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import type { ValidatedBindings } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import type { ValidatedRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
@@ -161,9 +161,9 @@ export function useRefBindings() {
     }
   }, [loadedFor, workspaceId])
 
-  const nodeRefs = useMemo(() => collectWorkspaceNodeRefs(workspace), [workspace])
+  const nodeRefs = useMemo(() => collectNodeRefs(workspace), [workspace])
   const refBindings: RefBinding[] = useMemo(
-    () => joinRefBindings({ nodeRefs, registry, bindings }),
+    () => joinRefsAndBindings({ nodeRefs, registry, bindings }),
     [nodeRefs, registry, bindings],
   )
 

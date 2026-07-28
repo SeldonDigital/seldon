@@ -1,19 +1,19 @@
 import type { NodeRect } from "../overlay/geometry"
 
 /** One referenced node that needs a connector, in canvas-relative pixels. */
-export interface ConnectionSource {
+export interface ConnectorSource {
   key: string
   label: string
   rect: NodeRect
   muted: boolean
 }
 
-export interface ConnectionPoint {
+export interface ConnectorPoint {
   x: number
   y: number
 }
 
-export interface ConnectionChipBox {
+export interface ChipBox {
   top: number
   left: number
   width: number
@@ -24,13 +24,13 @@ export interface ConnectionChipBox {
  * Where one connector draws. `anchor` sits on the node's edge, `chip` is the
  * label box in the gutter, and `points` is the elbow between them.
  */
-export interface ConnectionPlacement {
+export interface ConnectorPlacement {
   key: string
   label: string
   muted: boolean
-  anchor: ConnectionPoint
-  chip: ConnectionChipBox
-  points: ConnectionPoint[]
+  anchor: ConnectorPoint
+  chip: ChipBox
+  points: ConnectorPoint[]
 }
 
 /**
@@ -41,27 +41,27 @@ export interface ConnectionPlacement {
  * over other chrome, the extras are left out and counted. `omittedChip` is the box
  * to report that count in, held back from the column for the purpose.
  */
-export interface ConnectionLayoutResult {
-  placements: ConnectionPlacement[]
+export interface ConnectorLayoutResult {
+  placements: ConnectorPlacement[]
   omitted: number
-  omittedChip: ConnectionChipBox | null
+  omittedChip: ChipBox | null
 }
 
 /**
- * Viewport-fixed position of the detail card.
+ * Viewport-fixed position of the ref card.
  *
  * Exactly one of `top` and `bottom` is set. `top` opens the card below its chip,
  * `bottom` opens it above, and the unset edge is what lets the card grow away
  * from the chip without its height being known first.
  */
-export interface DetailCardPosition {
+export interface RefCardPosition {
   left: number
   maxHeight: number
   top?: number
   bottom?: number
 }
 
-export interface ConnectionLayoutOptions {
+export interface ConnectorLayoutOptions {
   canvasWidth: number
   canvasHeight: number
   chipWidth: number
@@ -72,13 +72,16 @@ export interface ConnectionLayoutOptions {
 }
 
 /** Chip metrics the overlay draws with. Sizes are chrome pixels, not scaled. */
-export const CONNECTION_LAYOUT_DEFAULTS = {
+export const CONNECTOR_LAYOUT_DEFAULTS = {
   chipWidth: 168,
   chipHeight: 20,
   chipGap: 4,
   stub: 16,
   margin: 12,
 } as const
+
+/** Radius of the dot on a node's edge, in the same canvas pixels as the elbow. */
+export const CONNECTOR_ANCHOR_RADIUS = 2
 
 /**
  * Places a label chip for every referenced node and routes an elbow to it.
@@ -95,10 +98,10 @@ export const CONNECTION_LAYOUT_DEFAULTS = {
  * because overlays render outside the pan and zoom transform. Chip metrics stay
  * literal chrome pixels for the same reason.
  */
-export function layoutConnections(
-  sources: ConnectionSource[],
-  options: ConnectionLayoutOptions,
-): ConnectionLayoutResult {
+export function layoutConnectors(
+  sources: ConnectorSource[],
+  options: ConnectorLayoutOptions,
+): ConnectorLayoutResult {
   const empty = { placements: [], omitted: 0, omittedChip: null }
 
   if (sources.length === 0) return empty
@@ -114,7 +117,7 @@ export function layoutConnections(
   // Walk top to bottom, letting each chip take its node's center unless the one
   // above already claimed that space. A chip that would cross the floor stops the
   // column, and everything below it is reported as a count instead.
-  const stacked: Array<{ source: ConnectionSource; anchor: ConnectionPoint; top: number }> = []
+  const stacked: Array<{ source: ConnectorSource; anchor: ConnectorPoint; top: number }> = []
   let cursor = margin
 
   for (const { source, anchor } of anchored) {
@@ -182,7 +185,7 @@ function getOmittedChip(input: {
   gutterLeft: number
   chipWidth: number
   chipHeight: number
-}): ConnectionChipBox | null {
+}): ChipBox | null {
   if (input.omitted === 0) return null
   if (input.top + input.chipHeight > input.floor) return null
 
@@ -194,12 +197,12 @@ function getOmittedChip(input: {
   }
 }
 
-/** Widest the detail card is allowed to draw, and the gap it keeps off its chip. */
-export const DETAIL_CARD_MAX_WIDTH = 420
-export const DETAIL_CARD_GAP = 4
+/** Widest the ref card is allowed to draw, and the gap it keeps off its chip. */
+export const REF_CARD_MAX_WIDTH = 420
+export const REF_CARD_GAP = 4
 
 /**
- * Places the detail card clear of its chip, in viewport pixels for a fixed element.
+ * Places the ref card clear of its chip, in viewport pixels for a fixed element.
  *
  * The card opens leftward, because chips sit against the right edge, and away from
  * the chip's nearer horizontal edge, so the chip it belongs to stays readable. It
@@ -208,32 +211,32 @@ export const DETAIL_CARD_GAP = 4
  * space for a full-height one, it is capped to the room on the chosen side and
  * scrolls past that.
  */
-export function getDetailCardPosition(
+export function getRefCardPosition(
   chipRect: { top: number; bottom: number; right: number },
   viewport: { width: number; height: number },
-  margin = CONNECTION_LAYOUT_DEFAULTS.margin,
-): DetailCardPosition {
+  margin = CONNECTOR_LAYOUT_DEFAULTS.margin,
+): RefCardPosition {
   const left = clamp(
-    chipRect.right - DETAIL_CARD_MAX_WIDTH,
+    chipRect.right - REF_CARD_MAX_WIDTH,
     margin,
-    viewport.width - DETAIL_CARD_MAX_WIDTH - margin,
+    viewport.width - REF_CARD_MAX_WIDTH - margin,
   )
-  const below = viewport.height - chipRect.bottom - DETAIL_CARD_GAP - margin
-  const above = chipRect.top - DETAIL_CARD_GAP - margin
+  const below = viewport.height - chipRect.bottom - REF_CARD_GAP - margin
+  const above = chipRect.top - REF_CARD_GAP - margin
 
   if (below >= above) {
-    return { left, maxHeight: Math.max(below, 0), top: chipRect.bottom + DETAIL_CARD_GAP }
+    return { left, maxHeight: Math.max(below, 0), top: chipRect.bottom + REF_CARD_GAP }
   }
 
   return {
     left,
     maxHeight: Math.max(above, 0),
-    bottom: viewport.height - chipRect.top + DETAIL_CARD_GAP,
+    bottom: viewport.height - chipRect.top + REF_CARD_GAP,
   }
 }
 
 /** An SVG `d` string for one elbow, as a polyline through its points. */
-export function toElbowPath(points: ConnectionPoint[]): string {
+export function toElbowPath(points: ConnectorPoint[]): string {
   return points
     .map((point, index) => `${index === 0 ? "M" : "L"} ${round(point.x)} ${round(point.y)}`)
     .join(" ")
@@ -251,7 +254,7 @@ function getAnchor(
   gutterLeft: number,
   canvasHeight: number,
   margin: number,
-): ConnectionPoint {
+): ConnectorPoint {
   return {
     x: clamp(rect.left + rect.width, margin, gutterLeft),
     y: clamp(rect.top + rect.height / 2, margin, canvasHeight - margin),
@@ -264,11 +267,11 @@ function getAnchor(
  * runs vertically.
  */
 function getElbowPoints(input: {
-  anchor: ConnectionPoint
+  anchor: ConnectorPoint
   chipCenterY: number
   gutterLeft: number
   stub: number
-}): ConnectionPoint[] {
+}): ConnectorPoint[] {
   const turnX = Math.min(input.anchor.x + input.stub, input.gutterLeft - input.stub)
 
   return simplify([
@@ -283,8 +286,8 @@ function getElbowPoints(input: {
  * Drops repeated and mid-line points, so a chip level with its node collapses the
  * elbow to a single straight run instead of three segments on the same line.
  */
-function simplify(points: ConnectionPoint[]): ConnectionPoint[] {
-  const kept: ConnectionPoint[] = []
+function simplify(points: ConnectorPoint[]): ConnectorPoint[] {
+  const kept: ConnectorPoint[] = []
 
   for (const point of points) {
     const previous = kept[kept.length - 1]

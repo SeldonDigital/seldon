@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 268,
+  "scannedFiles": 272,
   "refs": {
     "createComponentContainer": [
       {
@@ -4713,17 +4713,17 @@
           "spread": false
         },
         {
-          "file": "app/tracking/canvas-indicators/connections/ConnectionChip.tsx",
-          "component": "ConnectionChip",
-          "line": 87,
-          "expression": "toggleCard",
+          "file": "app/tracking/canvas-indicators/ref-bindings/RefChip.tsx",
+          "component": "RefChip",
+          "line": 41,
+          "expression": "toggle",
           "inputs": [
             {
-              "name": "toggleCard",
+              "name": "toggle",
               "declaredAt": {
-                "line": 40,
+                "line": 26,
                 "kind": "const",
-                "via": "useCallback"
+                "via": "useRefCard"
               }
             }
           ],

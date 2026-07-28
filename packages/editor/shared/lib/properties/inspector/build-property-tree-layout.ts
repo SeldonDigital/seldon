@@ -3,10 +3,10 @@ import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { typeCheckingService } from "@seldon/core/workspace/services"
+import { buildRefBindingRows } from "./build-ref-binding-rows"
 import { getPropertySections } from "./get-property-sections"
 import { getThemePropertySections } from "./get-theme-property-sections"
 import { getIconRowCategory, titleCase } from "./icon-set-properties-data"
-import { buildReferenceBindingRows } from "./reference-bindings-rows"
 import { buildReferenceProperty } from "./reference-display"
 import { injectRepeatRows } from "./repeat-display"
 import { buildThemeAssignmentProperty } from "./theme-assignment-display"
@@ -16,7 +16,7 @@ import type { PropertySection } from "./get-property-sections"
 import type { ThemePropertySection } from "./get-theme-property-sections"
 import type { FlatProperty } from "./properties-data"
 import type { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
-import type { RefBinding } from "@seldon/editor/lib/refs/join-ref-bindings"
+import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 
 /** A reference is only editable where `setRef` rules allow it (boards excluded). */
 function isReferenceFieldAllowed(node: Variant | Instance | Board): boolean {
@@ -40,7 +40,7 @@ function buildLeadingNodeFieldRows(
   refBinding: RefBinding | null,
 ): FlatProperty[] {
   const rows: FlatProperty[] = []
-  const bindingRows = buildReferenceBindingRows(refBinding)
+  const bindingRows = buildRefBindingRows(refBinding)
 
   for (const field of NODE_FIELD_DISPLAY_ORDER) {
     if (field === "theme") {

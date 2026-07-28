@@ -44,8 +44,8 @@ interface EditorConfigState {
   toggleWireframeMode: (mode?: "on" | "off") => void
 
   // Ref connector overlay, drawing referenced nodes out to their consumers
-  showRefConnections: boolean
-  setShowRefConnections: (enabled: boolean) => void
+  showRefConnectors: boolean
+  setShowRefConnectors: (enabled: boolean) => void
 
   // Panel settings
   showPanels: boolean
@@ -141,9 +141,8 @@ const useStore = create<EditorConfigState>()(
       // Ref connector overlay. Left out of `partialize` on purpose: the bindings
       // it draws are read from a linked folder during a gesture and are not
       // persisted, so restoring this on load would show an empty overlay.
-      showRefConnections: false,
-      setShowRefConnections: (enabled) =>
-        set((state) => ({ ...state, showRefConnections: enabled })),
+      showRefConnectors: false,
+      setShowRefConnectors: (enabled) => set((state) => ({ ...state, showRefConnectors: enabled })),
 
       // Panel settings
       showPanels: true,
@@ -259,8 +258,8 @@ export function useEditorConfig() {
     setShowFocus,
     wireframeMode,
     toggleWireframeMode,
-    showRefConnections,
-    setShowRefConnections,
+    showRefConnectors,
+    setShowRefConnectors,
     showPanels,
     setShowPanels,
     autoScrollToSelection,
@@ -302,8 +301,8 @@ export function useEditorConfig() {
       setShowFocus: state.setShowFocus,
       wireframeMode: state.wireframeMode,
       toggleWireframeMode: state.toggleWireframeMode,
-      showRefConnections: state.showRefConnections,
-      setShowRefConnections: state.setShowRefConnections,
+      showRefConnectors: state.showRefConnectors,
+      setShowRefConnectors: state.setShowRefConnectors,
       showPanels: state.showPanels,
       setShowPanels: state.setShowPanels,
       autoScrollToSelection: state.autoScrollToSelection,
@@ -404,10 +403,10 @@ export function useEditorConfig() {
     wireframeMode,
     toggleWireframeMode,
 
-    // Ref connector overlay. Toggled through `useRefConnections`, which reads the
+    // Ref connector overlay. Toggled through `useRefConnectors`, which reads the
     // linked folder on the same gesture that turns it on.
-    showRefConnections,
-    setShowRefConnections,
+    showRefConnectors,
+    setShowRefConnectors,
 
     // Panel methods
     showPanels,

@@ -8,18 +8,22 @@ interface ToastProps {
   message: string
 }
 
+/** How far a toast rises as it arrives, in animation pixels rather than layout. */
+const RISE_DISTANCE = 10
+
 const toastVariants = {
-  initial: { opacity: 0, y: 10 },
+  initial: { opacity: 0, y: RISE_DISTANCE },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 10 },
+  exit: { opacity: 0, y: RISE_DISTANCE },
 }
 
 const toastStyle: CSSProperties = {
-  padding: "1rem 1.5rem",
+  padding: "var(--sdn-paddings-cozy)",
   backgroundColor: "var(--sdn-swatch-white)",
-  borderRadius: "0.75rem",
-  boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-  outline: "1px solid var(--sdn-swatch-black)",
+  borderRadius: "var(--sdn-corners-compact)",
+  boxShadow:
+    "0 var(--sdn-sizes-xsmall) var(--sdn-sizes-small) color-mix(in srgb, var(--sdn-swatch-black) 15%, transparent)",
+  outline: "var(--sdn-border-width-small) solid var(--sdn-swatch-black)",
   color: "var(--sdn-swatch-black)",
 }
 

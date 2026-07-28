@@ -1,50 +1,49 @@
+"use client"
+
 import { useSharedStore } from "@app/canvas/hooks/use-shared-store"
-import { ConnectorPaths } from "@app/overlays"
 import { useRefBindings } from "@app/refs/use-ref-bindings"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import {
-  CONNECTION_LAYOUT_DEFAULTS,
-  layoutConnections,
-  toElbowPath,
-} from "@seldon/editor/lib/canvas/connections/connection-layout"
+  CONNECTOR_LAYOUT_DEFAULTS,
+  layoutConnectors,
+} from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 import { collectDescendantNodeIds } from "@seldon/editor/lib/workspace/component-tree"
 import { useMemo } from "react"
 
-import { useCanvasSize } from "../../hooks/use-canvas-size"
-import { ConnectionChip } from "./ConnectionChip"
-import { OmittedChip } from "./OmittedChip"
-import { connectionStrokeStyle, connectionSvgStyle } from "./connection-style"
+import { useCanvasSize } from "../../../hooks/use-canvas-size"
 
-import type { ConnectorShape } from "@app/overlays/ConnectorPaths.bespoke"
 import type { Board, EntryNodeId } from "@seldon/core/workspace/types"
 import type {
-  ConnectionPlacement,
-  ConnectionSource,
-} from "@seldon/editor/lib/canvas/connections/connection-layout"
+  ConnectorLayoutResult,
+  ConnectorPlacement,
+  ConnectorSource,
+} from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
-import type { RefBinding } from "@seldon/editor/lib/refs/join-ref-bindings"
+import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 
-interface ConnectionEntry {
-  placement: ConnectionPlacement
+/** One placed connector and the binding it reports, paired for the chip that draws it. */
+export interface PlacedBinding {
+  placement: ConnectorPlacement
   binding: RefBinding
 }
 
+interface RefConnectorState {
+  entries: PlacedBinding[]
+  canvasSize: { width: number; height: number }
+  omitted: number
+  omittedChip: ConnectorLayoutResult["omittedChip"]
+}
+
 /**
- * Draws the refs inside the selected component out to named chips.
+ * The connectors to draw for the current selection, already laid out.
  *
  * Scoped to the selection rather than the whole board. A board can carry dozens of
  * refs, and a column of dozens of chips reads as noise, so selecting a component in
  * the objects sidebar is what asks the question "what is wired up in here".
- *
- * Only nodes the canvas is tracking get a connector, so a node that is not on
- * screen is not pointed at.
- *
- * A ref with no consumers still draws, faint and dashed. That a ref reached
- * generated code but nothing drives it is the useful thing to see.
  */
-export function ConnectionsOverlay() {
+export function useRefConnector(): RefConnectorState {
   const { refBindings } = useRefBindings()
   const selectedNodeId = useSelectedNodeId()
   const { activeBoard } = useActiveBoard()
@@ -63,10 +62,10 @@ export function ConnectionsOverlay() {
 
   const layout = useMemo(
     () =>
-      layoutConnections(sources, {
+      layoutConnectors(sources, {
         canvasWidth: canvasSize.width,
         canvasHeight: canvasSize.height,
-        ...CONNECTION_LAYOUT_DEFAULTS,
+        ...CONNECTOR_LAYOUT_DEFAULTS,
       }),
     [sources, canvasSize.width, canvasSize.height],
   )
@@ -76,37 +75,7 @@ export function ConnectionsOverlay() {
     [layout.placements, refBindings],
   )
 
-  const shapes = useMemo(() => layout.placements.map(toShape), [layout.placements])
-
-  const chipElements = useMemo(
-    () =>
-      entries.map((entry) => (
-        <ConnectionChip
-          key={entry.placement.key}
-          placement={entry.placement}
-          binding={entry.binding}
-        />
-      )),
-    [entries],
-  )
-
-  const omittedChip = useMemo(() => {
-    if (!layout.omittedChip) return null
-
-    return <OmittedChip chip={layout.omittedChip} count={layout.omitted} />
-  }, [layout.omitted, layout.omittedChip])
-
-  if (entries.length === 0) return null
-
-  const { width, height } = canvasSize
-
-  return (
-    <>
-      <ConnectorPaths shapes={shapes} width={width} height={height} style={connectionSvgStyle} />
-      {chipElements}
-      {omittedChip}
-    </>
-  )
+  return { entries, canvasSize, omitted: layout.omitted, omittedChip: layout.omittedChip }
 }
 
 /**
@@ -127,15 +96,16 @@ function collectScopedNodeIds(board: Board | null, selectedNodeId: string | null
 /**
  * The refs worth drawing, in the order the layout will sort anyway.
  *
- * A stale binding has no workspace node, so there is nothing on the canvas to
+ * Only nodes the canvas is tracking get a connector, so a node that is not on screen
+ * is not pointed at. A stale binding has no workspace node, so there is nothing to
  * anchor to and it is left to the sidebar to report.
  */
 function buildSources(
   bindings: RefBinding[],
   rects: Record<string, NodeRect | null>,
   scopedNodeIds: Set<string>,
-): ConnectionSource[] {
-  const sources: ConnectionSource[] = []
+): ConnectorSource[] {
+  const sources: ConnectorSource[] = []
 
   for (const binding of bindings) {
     const nodeId = binding.node?.nodeId
@@ -159,12 +129,9 @@ function buildSources(
 }
 
 /** Pairs each placement back to its binding so a chip can show the detail. */
-function buildEntries(
-  placements: ConnectionPlacement[],
-  bindings: RefBinding[],
-): ConnectionEntry[] {
+function buildEntries(placements: ConnectorPlacement[], bindings: RefBinding[]): PlacedBinding[] {
   const byRef = new Map(bindings.map((binding) => [binding.ref, binding]))
-  const entries: ConnectionEntry[] = []
+  const entries: PlacedBinding[] = []
 
   for (const placement of placements) {
     const binding = byRef.get(placement.key)
@@ -175,19 +142,4 @@ function buildEntries(
   }
 
   return entries
-}
-
-function toShape(placement: ConnectionPlacement): ConnectorShape {
-  const stroke = connectionStrokeStyle(placement.muted)
-
-  return {
-    key: placement.key,
-    d: toElbowPath(placement.points),
-    stroke: stroke.stroke,
-    strokeWidth: stroke.strokeWidth,
-    strokeOpacity: stroke.strokeOpacity,
-    anchorX: placement.anchor.x,
-    anchorY: placement.anchor.y,
-    strokeDasharray: stroke.strokeDasharray,
-  }
 }

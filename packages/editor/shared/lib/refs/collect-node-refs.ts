@@ -10,7 +10,7 @@ import type { Workspace } from "@seldon/core/workspace/types"
  * `boardLabel` is the board's own label, so a binding can be reported as
  * belonging to something the user recognizes on the canvas.
  */
-export interface WorkspaceNodeRef {
+export interface NodeRef {
   ref: string
   nodeId: string
   componentId: string | null
@@ -32,12 +32,12 @@ export interface WorkspaceNodeRef {
  * Named for node refs on purpose. Other helpers named `*Ref*` in core deal with
  * component tree refs and theme refs, which are unrelated.
  */
-export function collectWorkspaceNodeRefs(workspace: Workspace): WorkspaceNodeRef[] {
+export function collectNodeRefs(workspace: Workspace): NodeRef[] {
   const nodes = workspace.nodes
 
   if (!nodes) return []
 
-  const refs: WorkspaceNodeRef[] = []
+  const refs: NodeRef[] = []
 
   for (const node of Object.values(nodes)) {
     const ref = node.ref?.trim()

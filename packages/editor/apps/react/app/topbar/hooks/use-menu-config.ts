@@ -11,7 +11,7 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useImportExport } from "@app/io/use-import-export"
-import { useRefConnections } from "@app/refs/use-ref-connections"
+import { useRefConnectors } from "@app/refs/use-ref-connectors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useHistory } from "@app/workspace/hooks/use-history"
 import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
@@ -75,7 +75,7 @@ export function useMenuConfig(): MenuConfig {
     directSelect,
     toggleDirectSelect,
   } = useEditorConfig()
-  const { showRefConnections, toggleRefConnections } = useRefConnections()
+  const { showRefConnectors, toggleRefConnectors } = useRefConnectors()
   const { workspace } = useWorkspace()
   const {
     canvasProfiling,
@@ -735,11 +735,11 @@ export function useMenuConfig(): MenuConfig {
             shortcut: "W",
           },
           {
-            id: "show-ref-connections",
-            label: "Show Connections",
-            action: toggleRefConnections,
-            active: showRefConnections,
-            shortcut: "C",
+            id: "show-reference-bindings",
+            label: "Show Reference Bindings",
+            action: toggleRefConnectors,
+            active: showRefConnectors,
+            shortcut: "R",
           },
           "separator",
           {
@@ -789,7 +789,7 @@ export function useMenuConfig(): MenuConfig {
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
             active: showUnusedProperties,
-            shortcut: "R",
+            shortcut: "P",
           },
           {
             id: "show-unused-fonts",
@@ -848,8 +848,8 @@ export function useMenuConfig(): MenuConfig {
       showFocus,
       toggleWireframeMode,
       wireframeMode,
-      showRefConnections,
-      toggleRefConnections,
+      showRefConnectors,
+      toggleRefConnectors,
       autoExpandOnSelection,
       toggleAutoExpandOnSelection,
       autoScrollToSelection,

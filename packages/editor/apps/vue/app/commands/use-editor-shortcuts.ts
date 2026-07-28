@@ -173,7 +173,7 @@ export function useEditorShortcuts(): void {
         config.toggleWireframeMode()
 
         return
-      case "r":
+      case "p":
         event.preventDefault()
         config.showUnusedProperties = !config.showUnusedProperties
 

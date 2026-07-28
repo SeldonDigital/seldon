@@ -1,4 +1,4 @@
-import type { WorkspaceNodeRef } from "./collect-workspace-node-refs"
+import type { NodeRef } from "./collect-node-refs"
 import type { ValidatedBindings } from "./read-bindings-manifest"
 import type { ValidatedRegistry } from "./read-refs-registry"
 import type { RefConsumer } from "@seldon/factory/bindings/types"
@@ -28,13 +28,13 @@ export interface RefBinding {
   ref: string
   state: RefBindingState
   /** Absent for a `stale` binding, since no workspace node carries that ref. */
-  node: WorkspaceNodeRef | null
+  node: NodeRef | null
   views: SeldonRefView[]
   consumers: RefConsumer[]
 }
 
 export interface RefBindingSources {
-  nodeRefs: WorkspaceNodeRef[]
+  nodeRefs: NodeRef[]
   registry: ValidatedRegistry | null
   bindings: ValidatedBindings | null
 }
@@ -57,7 +57,11 @@ export interface RefBindingSources {
  * alone, so neither can say which node was meant, and reporting both is the honest
  * answer. Core rejects a duplicate ref, so this is the degenerate case.
  */
-export function joinRefBindings({ nodeRefs, registry, bindings }: RefBindingSources): RefBinding[] {
+export function joinRefsAndBindings({
+  nodeRefs,
+  registry,
+  bindings,
+}: RefBindingSources): RefBinding[] {
   const consumersByRef = bindings?.refs ?? new Map<string, RefConsumer[]>()
   const joined: RefBinding[] = []
   const seen = new Set<string>()

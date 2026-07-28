@@ -571,7 +571,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "Show Unused Properties",
       action: config.toggleShowUnusedProperties,
       active: config.showUnusedProperties,
-      shortcut: "R",
+      shortcut: "P",
     },
     {
       id: "show-unused-fonts",

@@ -17,23 +17,23 @@ import { loadRefBindings } from "./use-ref-bindings"
  * and problem state, which the overlay reports, so waiting here would only delay
  * the overlay appearing.
  */
-export function useRefConnections() {
+export function useRefConnectors() {
   const workspaceId = useWorkspaceId()
-  const { showRefConnections, setShowRefConnections } = useEditorConfig()
+  const { showRefConnectors, setShowRefConnectors } = useEditorConfig()
 
-  const toggleRefConnections = useCallback(() => {
-    if (showRefConnections) {
-      setShowRefConnections(false)
+  const toggleRefConnectors = useCallback(() => {
+    if (showRefConnectors) {
+      setShowRefConnectors(false)
 
       return
     }
 
-    setShowRefConnections(true)
+    setShowRefConnectors(true)
 
     if (workspaceId) {
       void loadRefBindings(workspaceId)
     }
-  }, [setShowRefConnections, showRefConnections, workspaceId])
+  }, [setShowRefConnectors, showRefConnectors, workspaceId])
 
-  return { showRefConnections, toggleRefConnections }
+  return { showRefConnectors, toggleRefConnectors }
 }
