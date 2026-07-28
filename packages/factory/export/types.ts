@@ -48,9 +48,9 @@ export type ExportOptions = {
    */
   exportAllFontCollections?: boolean
   /**
-   * Emit a copy of the workspace as `workspace.json` at the root of the
-   * components folder. Off by default. The copy holds the authoring workspace,
-   * not the export-rewritten one, so its image values are the originals.
+   * Emit a copy of the workspace at the root of the components folder, named
+   * from its label. Off by default. The copy holds the authoring workspace, not
+   * the export-rewritten one, so its image values are the originals.
    */
   includeWorkspace?: boolean
   /**

@@ -1,4 +1,5 @@
 import { createStore, del, get, set } from "idb-keyval"
+import { queryHandlePermission, requestHandlePermission } from "./handle-permission"
 
 import type { UseStore } from "idb-keyval"
 
@@ -36,17 +37,6 @@ export interface ProjectLink {
   /** Components folder path relative to the project root, as exported. */
   componentsFolder: string
   linkedAt: string
-}
-
-type PermissionMode = "read" | "readwrite"
-
-/**
- * `queryPermission` and `requestPermission` are not in the DOM lib types, so the
- * handle is widened where they are called, the same way the directory picker is.
- */
-type HandleWithPermission = FileSystemDirectoryHandle & {
-  queryPermission?: (descriptor: { mode: PermissionMode }) => Promise<PermissionState>
-  requestPermission?: (descriptor: { mode: PermissionMode }) => Promise<PermissionState>
 }
 
 /** Whether this browser can hold a link at all. */
@@ -91,32 +81,16 @@ export async function deleteProjectLink(workspaceId: string): Promise<void> {
  * after a reload, which means the link is intact but dormant until a gesture
  * re-grants it.
  */
-export async function getLinkPermission(link: ProjectLink): Promise<PermissionState> {
-  const handle = link.directory as HandleWithPermission
-
-  if (!handle.queryPermission) return "granted"
-
-  try {
-    return await handle.queryPermission({ mode: "read" })
-  } catch {
-    return "denied"
-  }
+export function getLinkPermission(link: ProjectLink): Promise<PermissionState> {
+  return queryHandlePermission(link.directory, "read")
 }
 
 /**
  * Asks for read access on a link. Browsers only allow this during a user
  * gesture, so call it from an interaction rather than on load.
  */
-export async function requestLinkPermission(link: ProjectLink): Promise<PermissionState> {
-  const handle = link.directory as HandleWithPermission
-
-  if (!handle.requestPermission) return "granted"
-
-  try {
-    return await handle.requestPermission({ mode: "read" })
-  } catch {
-    return "denied"
-  }
+export function requestLinkPermission(link: ProjectLink): Promise<PermissionState> {
+  return requestHandlePermission(link.directory, "read")
 }
 
 /**

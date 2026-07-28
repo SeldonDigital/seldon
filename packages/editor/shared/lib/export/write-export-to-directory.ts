@@ -50,11 +50,13 @@ async function ensureDirectory(
 async function resolveDirectories(
   root: FileSystemDirectoryHandle,
   dirPaths: Set<string>,
+  signal?: AbortSignal,
 ): Promise<Map<string, FileSystemDirectoryHandle>> {
   const handles = new Map<string, FileSystemDirectoryHandle>([["", root]])
   const ordered = [...dirPaths].sort((a, b) => a.split("/").length - b.split("/").length)
 
   for (const dirPath of ordered) {
+    if (signal?.aborted) break
     if (handles.has(dirPath)) continue
     handles.set(dirPath, await ensureDirectory(root, dirPath))
   }
@@ -74,15 +76,26 @@ async function writeFile(
   await writable.close()
 }
 
+/**
+ * Writes an export into a picked directory and reports how many files landed.
+ *
+ * An aborted `signal` stops the run between writes, so it takes effect within the
+ * writes already in flight. Nothing is undone: whatever reached disk stays, and
+ * created directories stay too, so the folder is left partially updated. A caller
+ * that needs to tell a cancelled run from a finished one checks `signal.aborted`
+ * against the returned count.
+ */
 export async function writeExportToDirectory(
   directory: FileSystemDirectoryHandle,
   files: FileToExport[],
+  signal?: AbortSignal,
 ): Promise<number> {
   const parsed = files.map(parseFile).filter((file): file is ParsedFile => file !== null)
 
   const dirHandles = await resolveDirectories(
     directory,
     new Set(parsed.map((file) => file.dirPath)),
+    signal,
   )
 
   let written = 0
@@ -90,6 +103,10 @@ export async function writeExportToDirectory(
 
   async function worker(): Promise<void> {
     while (cursor < parsed.length) {
+      // Checked before the write, so an abort during directory creation cannot
+      // reach the fallback handle and write a file to the wrong folder.
+      if (signal?.aborted) return
+
       const file = parsed[cursor]
 
       cursor += 1

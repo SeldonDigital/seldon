@@ -61,13 +61,23 @@ function ExportComponentsDialog({
   setIncludeScripts,
   directory,
   chooseDirectory,
+  exporting,
   save,
+  cancel,
   close,
 }: ExportComponentsDialogProps) {
-  useHotkeys("esc", close)
+  // Dismissing by clicking away or by the surface's own control must not stop an
+  // export, because neither reads as "cancel". Only Cancel and Esc do that.
+  const closeUnlessExporting = useCallback(() => {
+    if (exporting) return
+
+    close()
+  }, [exporting, close])
+
+  useHotkeys("esc", cancel)
 
   const { x, y, moveControls } = useDraggableWindow({
-    handleClose: close,
+    handleClose: closeUnlessExporting,
     contentSized: true,
     closeOnEscape: false,
   })
@@ -118,6 +128,10 @@ function ExportComponentsDialog({
   )
 
   const directoryLabel = directory?.name ?? ""
+
+  // Only Export dims, so Cancel and the title bar stay usable during a run. Its
+  // pointer events go with it, which is what stops a second export from landing.
+  const confirmStyle = exporting ? styles.busy : undefined
 
   const barHandle = useMemo(
     () => ({ onPointerDown: startDrag, style: styles.dragHandle }),
@@ -184,8 +198,8 @@ function ExportComponentsDialog({
       exportScriptsNo: radioItem(!includeScripts, () => setIncludeScripts(false)),
       exportScriptsNoIcon: radioDot(!includeScripts),
 
-      exportCancel: { onClick: close },
-      exportConfirm: { onClick: save },
+      exportCancel: { onClick: cancel },
+      exportConfirm: { onClick: save, "aria-disabled": exporting, style: confirmStyle },
     }),
     [
       workspaceName,
@@ -211,7 +225,9 @@ function ExportComponentsDialog({
       setSavedWorkspace,
       includeScripts,
       setIncludeScripts,
-      close,
+      exporting,
+      confirmStyle,
+      cancel,
       save,
     ],
   )
@@ -286,9 +302,17 @@ function ExportComponentsDialog({
   )
 
   return (
-    <WindowSurface modal contentSized onClose={close} x={x} y={y} moveControls={moveControls}>
+    <WindowSurface
+      modal
+      contentSized
+      onClose={closeUnlessExporting}
+      x={x}
+      y={y}
+      moveControls={moveControls}
+    >
       <DialogExportComponent
         data-testid="export-components-dialog"
+        aria-busy={exporting}
         bar={barHandle}
         {...slots}
         seldonRefs={seldonRefs}
@@ -345,6 +369,10 @@ const styles: Record<string, CSSProperties> = {
   radioItem: {
     cursor: "pointer",
     backgroundColor: "transparent",
+  },
+  busy: {
+    opacity: 0.5,
+    pointerEvents: "none",
   },
 }
 

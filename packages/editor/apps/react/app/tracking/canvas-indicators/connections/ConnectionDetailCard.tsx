@@ -8,20 +8,23 @@ import {
 import { useMemo } from "react"
 
 import {
-  connectionHoverCardStyle,
-  hoverCardDimRowStyle,
-  hoverCardRowStyle,
-  hoverCardSectionStyle,
-  hoverCardTitleStyle,
+  connectionDetailCardStyle,
+  detailCardDimRowStyle,
+  detailCardRowStyle,
+  detailCardSectionStyle,
+  detailCardTitleStyle,
 } from "./connection-style"
 
+import type { DetailCardPosition } from "@seldon/editor/lib/canvas/connections/connection-layout"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-ref-bindings"
 import type { RefConsumer } from "@seldon/factory/bindings/types"
-import type { CSSProperties } from "react"
+import type { CSSProperties, Ref } from "react"
 
-interface ConnectionHoverCardProps {
+interface ConnectionDetailCardProps {
   binding: RefBinding
-  position: { top: number; left: number }
+  position: DetailCardPosition
+  /** Lets the chip tell a click inside the card from a click away. */
+  cardRef: Ref<HTMLElement>
 }
 
 interface CardLine {
@@ -42,8 +45,8 @@ const STATE_NOTES: Record<string, string> = {
  * The chip carries the name and the sidebar row carries a summary. This is where
  * the detail lives, because it is too long for either.
  */
-export function ConnectionHoverCard({ binding, position }: ConnectionHoverCardProps) {
-  const cardStyle = useMemo(() => connectionHoverCardStyle(position), [position])
+export function ConnectionDetailCard({ binding, position, cardRef }: ConnectionDetailCardProps) {
+  const cardStyle = useMemo(() => connectionDetailCardStyle(position), [position])
   const stateNote = STATE_NOTES[binding.state] ?? null
 
   const viewLines = useMemo(() => buildViewLines(binding.views), [binding.views])
@@ -72,7 +75,7 @@ export function ConnectionHoverCard({ binding, position }: ConnectionHoverCardPr
   const noteRow = useMemo(() => {
     if (!stateNote) return null
 
-    return <Frame style={hoverCardSectionStyle}>{stateNote}</Frame>
+    return <Frame style={detailCardSectionStyle}>{stateNote}</Frame>
   }, [stateNote])
 
   const viewsSection = useMemo(() => {
@@ -80,7 +83,7 @@ export function ConnectionHoverCard({ binding, position }: ConnectionHoverCardPr
 
     return (
       <>
-        <Frame style={hoverCardSectionStyle}>Exposed by</Frame>
+        <Frame style={detailCardSectionStyle}>Exposed by</Frame>
         {viewRows}
       </>
     )
@@ -91,15 +94,15 @@ export function ConnectionHoverCard({ binding, position }: ConnectionHoverCardPr
 
     return (
       <>
-        <Frame style={hoverCardSectionStyle}>Driven by</Frame>
+        <Frame style={detailCardSectionStyle}>Driven by</Frame>
         {consumerRows}
       </>
     )
   }, [consumerRows])
 
   return (
-    <Frame style={cardStyle}>
-      <Frame style={hoverCardTitleStyle}>{binding.ref}</Frame>
+    <Frame ref={cardRef} style={cardStyle}>
+      <Frame style={detailCardTitleStyle}>{binding.ref}</Frame>
       {noteRow}
       {viewsSection}
       {consumersSection}
@@ -111,7 +114,7 @@ function buildViewLines(views: RefBinding["views"]): CardLine[] {
   return views.map((view, index) => ({
     key: `view-${index}`,
     text: describeRefView(view),
-    style: hoverCardRowStyle,
+    style: detailCardRowStyle,
   }))
 }
 
@@ -131,14 +134,14 @@ function buildConsumerLines(consumers: RefConsumer[]): CardLine[] {
     lines.push({
       key: `consumer-${index}`,
       text: `${name} · ${describeConsumerLocation(consumer)}${conditional}`,
-      style: hoverCardRowStyle,
+      style: detailCardRowStyle,
     })
 
     if (consumer.expression) {
       lines.push({
         key: `consumer-${index}-expression`,
         text: consumer.expression,
-        style: hoverCardDimRowStyle,
+        style: detailCardDimRowStyle,
       })
     }
 
@@ -146,7 +149,7 @@ function buildConsumerLines(consumers: RefConsumer[]): CardLine[] {
       lines.push({
         key: `consumer-${index}-input-${inputIndex}`,
         text: describeExpressionInput(input),
-        style: hoverCardDimRowStyle,
+        style: detailCardDimRowStyle,
       })
     })
   })

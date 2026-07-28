@@ -47,10 +47,18 @@ export interface ConnectionLayoutResult {
   omittedChip: ConnectionChipBox | null
 }
 
-/** Viewport-fixed position of the detail card. */
-export interface HoverCardPosition {
-  top: number
+/**
+ * Viewport-fixed position of the detail card.
+ *
+ * Exactly one of `top` and `bottom` is set. `top` opens the card below its chip,
+ * `bottom` opens it above, and the unset edge is what lets the card grow away
+ * from the chip without its height being known first.
+ */
+export interface DetailCardPosition {
   left: number
+  maxHeight: number
+  top?: number
+  bottom?: number
 }
 
 export interface ConnectionLayoutOptions {
@@ -186,32 +194,41 @@ function getOmittedChip(input: {
   }
 }
 
-/** Widest and tallest the detail card is allowed to draw, in viewport pixels. */
-export const HOVER_CARD_MAX_WIDTH = 420
-export const HOVER_CARD_MAX_HEIGHT_RATIO = 0.5
+/** Widest the detail card is allowed to draw, and the gap it keeps off its chip. */
+export const DETAIL_CARD_MAX_WIDTH = 420
+export const DETAIL_CARD_GAP = 4
 
 /**
- * Places the detail card beside its chip, in viewport pixels for a fixed element.
+ * Places the detail card clear of its chip, in viewport pixels for a fixed element.
  *
- * The card opens leftward because chips sit against the right edge. Its height is
- * unknown before it renders, so the top is held far enough up for a card at its
- * full allowed height to fit. A short card near the bottom therefore sits a little
- * above its chip, which is the cost of never clipping the content.
+ * The card opens leftward, because chips sit against the right edge, and away from
+ * the chip's nearer horizontal edge, so the chip it belongs to stays readable. It
+ * takes whichever side has more room, since a chip low in the gutter has none
+ * below it. The card's height is unknown before it renders, so rather than reserve
+ * space for a full-height one, it is capped to the room on the chosen side and
+ * scrolls past that.
  */
-export function getHoverCardPosition(
-  chipRect: { top: number; right: number },
+export function getDetailCardPosition(
+  chipRect: { top: number; bottom: number; right: number },
   viewport: { width: number; height: number },
   margin = CONNECTION_LAYOUT_DEFAULTS.margin,
-): HoverCardPosition {
-  const maxHeight = viewport.height * HOVER_CARD_MAX_HEIGHT_RATIO
+): DetailCardPosition {
+  const left = clamp(
+    chipRect.right - DETAIL_CARD_MAX_WIDTH,
+    margin,
+    viewport.width - DETAIL_CARD_MAX_WIDTH - margin,
+  )
+  const below = viewport.height - chipRect.bottom - DETAIL_CARD_GAP - margin
+  const above = chipRect.top - DETAIL_CARD_GAP - margin
+
+  if (below >= above) {
+    return { left, maxHeight: Math.max(below, 0), top: chipRect.bottom + DETAIL_CARD_GAP }
+  }
 
   return {
-    left: clamp(
-      chipRect.right - HOVER_CARD_MAX_WIDTH,
-      margin,
-      viewport.width - HOVER_CARD_MAX_WIDTH - margin,
-    ),
-    top: clamp(chipRect.top, margin, viewport.height - maxHeight - margin),
+    left,
+    maxHeight: Math.max(above, 0),
+    bottom: viewport.height - chipRect.top + DETAIL_CARD_GAP,
   }
 }
 

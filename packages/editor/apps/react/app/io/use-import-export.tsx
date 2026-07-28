@@ -18,6 +18,10 @@ import {
   buildVariantSnippet,
 } from "@seldon/editor/lib/schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
+import {
+  ensureExportTargetWritable,
+  saveExportTarget,
+} from "@seldon/editor/lib/storage/export-target-store"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
 
@@ -129,10 +133,11 @@ export function useImportExport() {
 
   const exportToFolder = useCallback(
     async (options?: Partial<ExportOptions>, preselectedDirectory?: FileSystemDirectoryHandle) => {
-      const { setExporting } = useExportStatusStore.getState()
+      const { setExporting, setCancelExport } = useExportStatusStore.getState()
+      const controller = new AbortController()
 
       try {
-        const directory = preselectedDirectory ?? (await pickExportDirectory())
+        const directory = await resolveExportDirectory(preselectedDirectory)
 
         if (!directory) {
           addToast("Folder picker is not supported in this browser")
@@ -141,23 +146,37 @@ export function useImportExport() {
         }
 
         setExporting(true)
+        setCancelExport(() => controller.abort())
+
         const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
         const files = await runLocalExport(workspace, options)
-        const count = await writeExportToDirectory(directory, files)
+        const count = await writeExportToDirectory(directory, files, controller.signal)
+
+        // Nothing is rolled back, so the count is the whole story: it says how far
+        // the folder got. Linking is skipped, because a half-written tree may have
+        // no registry to read and would report itself as current.
+        if (controller.signal.aborted) {
+          addToast(`Export cancelled after ${count} files. ${directory.name} is partially updated.`)
+
+          return
+        }
 
         addToast(`Exported ${count} files`)
 
         // Remember where this workspace landed, so the editor can read back what
-        // the project reports about its own use of the generated components.
+        // the project reports about its own use of the generated components, and
+        // so the dialog offers the same folder next time.
         if (workspaceId) {
           const componentsFolder = options?.output?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
 
+          await saveExportTarget(workspaceId, directory)
           await linkExportedFolder(workspaceId, directory, componentsFolder)
         }
       } catch (error) {
         addToast(error instanceof Error ? error.message : "Export failed")
       } finally {
         setExporting(false)
+        setCancelExport(null)
       }
     },
     [addToast, workspace, workspaceId],
@@ -207,4 +226,22 @@ export function useImportExport() {
     copySchemaJsonToClipboard,
     exportToFolder,
   }
+}
+
+/**
+ * The folder to write into, preferring one the caller already has.
+ *
+ * A remembered folder comes back from storage with its grant lapsed, so writing
+ * through it would fail. Asking here works because an export starts from a click.
+ * A user who declines gets the picker rather than an error, which also covers a
+ * folder that has since been moved or deleted.
+ */
+async function resolveExportDirectory(
+  preselected?: FileSystemDirectoryHandle,
+): Promise<FileSystemDirectoryHandle | null> {
+  if (!preselected) return pickExportDirectory()
+
+  if (await ensureExportTargetWritable(preselected)) return preselected
+
+  return pickExportDirectory()
 }

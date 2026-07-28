@@ -1,11 +1,13 @@
 import { usePanel } from "@app/editor/hooks/use-panel"
+import { useExportCancel, useExportStatus } from "@app/io/export-status-store"
 import { useImportExport } from "@app/io/use-import-export"
-import { useWorkspaceRecord } from "@app/persistence/hooks/use-workspace-record"
+import { useSaveWorkspace, useWorkspaceName } from "@app/persistence/workspace-save-store"
 import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
+import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import type { PlatformId } from "@seldon/factory/export/types"
 
@@ -29,13 +31,19 @@ export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
  * stored record so the Home list agrees. The field falls back to the record name
  * while the label is unset, which is the case for every workspace saved before
  * the label existed.
+ *
+ * The output folder is not dialog state either. It is remembered per workspace,
+ * so `reset` clears the field and the next open fills it from storage.
  */
 export function useExportComponentsPanel() {
   const { activePanel, closePanel } = usePanel()
   const { exportToFolder } = useImportExport()
   const { workspace, dispatch } = useWorkspace()
   const workspaceId = useWorkspaceId()
-  const { record, updateRecord } = useWorkspaceRecord(workspaceId)
+  const storedName = useWorkspaceName()
+  const saveNow = useSaveWorkspace()
+  const exporting = useExportStatus()
+  const cancelExport = useExportCancel()
 
   const isOpen = activePanel === "export-components"
 
@@ -54,7 +62,7 @@ export function useExportComponentsPanel() {
   const [nameDraft, setNameDraft] = useState<string | null>(null)
 
   // An empty label counts as unset, so it falls through to the record name.
-  const workspaceName = nameDraft ?? (workspace.metadata.label || record?.name || "")
+  const workspaceName = nameDraft ?? (workspace.metadata.label || storedName)
 
   const setWorkspaceName = useCallback(
     (value: string) => {
@@ -68,6 +76,9 @@ export function useExportComponentsPanel() {
    * Settles the name the field shows into both stores. This also covers the case
    * where the field only ever displayed the fallback record name, so an export
    * that never touched the field still carries a label.
+   *
+   * The rename goes through the shared writer, the same way the inline title
+   * rename does, so it saves the live workspace rather than a snapshot.
    */
   const commitWorkspaceName = useCallback(() => {
     const name = workspaceName.trim()
@@ -78,10 +89,10 @@ export function useExportComponentsPanel() {
       dispatch({ type: "set_workspace_label", payload: { value: name } })
     }
 
-    if (name !== record?.name) {
-      void updateRecord({ name })
+    if (name !== storedName) {
+      void saveNow(workspace, { name })
     }
-  }, [workspaceName, workspace.metadata.label, record, updateRecord, dispatch])
+  }, [workspaceName, workspace, storedName, saveNow, dispatch])
 
   const reset = useCallback(() => {
     setPlatform("react")
@@ -101,13 +112,46 @@ export function useExportComponentsPanel() {
     closePanel()
   }, [reset, closePanel])
 
+  /**
+   * The dialog's one dismissal. It stops a running export, which then closes the
+   * dialog on its own once the write loop returns, and otherwise just closes.
+   */
+  const cancel = useCallback(() => {
+    if (exporting) {
+      cancelExport?.()
+
+      return
+    }
+
+    close()
+  }, [exporting, cancelExport, close])
+
+  // Offers the folder this workspace last exported into. A pick that lands while
+  // this is in flight wins, since the user asked for it more recently.
+  useEffect(() => {
+    if (!isOpen || !workspaceId) return
+
+    void getExportTarget(workspaceId).then((target) => {
+      if (target) setDirectory((current) => current ?? target.directory)
+    })
+  }, [isOpen, workspaceId])
+
+  /** Remembers the pick itself, so choosing a folder and cancelling still sticks. */
   const chooseDirectory = useCallback(async () => {
     const picked = await pickExportDirectory()
 
-    if (picked) setDirectory(picked)
-  }, [])
+    if (!picked) return
 
+    setDirectory(picked)
+
+    if (workspaceId) await saveExportTarget(workspaceId, picked)
+  }, [workspaceId])
+
+  // The dialog dims while an export runs, but the guard is here so a second run
+  // cannot start however the click arrived.
   const save = useCallback(async () => {
+    if (exporting) return
+
     commitWorkspaceName()
     await exportToFolder(
       {
@@ -124,6 +168,7 @@ export function useExportComponentsPanel() {
     )
     close()
   }, [
+    exporting,
     commitWorkspaceName,
     exportToFolder,
     platform,
@@ -161,7 +206,9 @@ export function useExportComponentsPanel() {
     setIncludeScripts,
     directory,
     chooseDirectory,
+    exporting,
     save,
+    cancel,
     close,
   }
 }

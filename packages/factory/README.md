@@ -158,7 +158,7 @@ utils/class-name.ts                    # combineClassNames helper
 Fonts.tsx                              # font loading component
 styles.css                             # component stylesheet
 styles/{slug}.css                      # one stylesheet per workspace theme
-workspace.json                         # workspace copy, emitted only with includeWorkspace
+{workspace-label}.json                 # workspace copy, emitted only with includeWorkspace
 scripts/generate-bindings.mjs          # bindings scanner, emitted only with includeScripts
 scripts/lib/*.mjs                      # scanner library, flat, one file per bindings module
 scripts/INTEGRITY.json                 # sha256 per emitted script file
@@ -193,7 +193,9 @@ Factory writes one theme stylesheet for every entry in `workspace.themes`, both 
 
 ### Workspace Copy
 
-Setting `includeWorkspace` emits `workspace.json` at the root of the components folder. `generateWorkspaceCopy` in [export/shared/generate-workspace-copy.ts](./export/shared/generate-workspace-copy.ts) produces it.
+Setting `includeWorkspace` emits a copy of the workspace at the root of the components folder. `generateWorkspaceCopy` in [export/shared/generate-workspace-copy.ts](./export/shared/generate-workspace-copy.ts) produces it.
+
+The file is named from the workspace label, kebab-cased, which is how a downloaded workspace names itself too. A label of `Seldon Editor` gives `seldon-editor.json`. A workspace with no label falls back to `workspace.json`. Renaming a workspace changes the file the next export writes, and the export prunes nothing, so the copy under the old name stays until it is deleted.
 
 The copy holds the workspace as authored. It is written by `exportWorkspace` rather than by a target, because each target rewrites image paths on its own copy before generating, so a target-side copy would carry export paths instead of the original image values.
 
@@ -215,7 +217,7 @@ The emitted entry owns what the library leaves to a host. It reads the filesyste
 
 Important: a check the script runs on itself proves nothing, because a modified script can report any hash. The check that means something is external. The factory is deterministic, so re-exporting the same workspace emits the same bytes, and any difference under `scripts/` is a factory update or a local edit. The emitted `scripts/README.md` tells the user this.
 
-Both `workspace.json` and `scripts/` are written by `exportWorkspace` rather than by a target, because the React target adds a license header to every string file it emits, which would make either JSON file unparseable.
+Both the workspace copy and `scripts/` are written by `exportWorkspace` rather than by a target, because the React target adds a license header to every string file it emits, which would make either JSON file unparseable.
 
 Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
 
