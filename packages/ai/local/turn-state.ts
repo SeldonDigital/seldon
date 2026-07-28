@@ -21,9 +21,22 @@ export interface TurnState {
   ineffective: string[]
   /** Actions the reducer rejected this turn, with the reducer's reason. */
   rejected: RejectedActionResult[]
+  /**
+   * Node ids minted by this turn's commits, in creation order. Lets a later
+   * step resolve "the new card" straight to the node an earlier step created,
+   * with no search and no model call.
+   */
+  createdIds: Set<string>
 }
 
 /** Creates a fresh turn state seeded from the request workspace. */
 export function createTurnState(workspace: Workspace): TurnState {
-  return { workspace, actions: [], repairs: [], ineffective: [], rejected: [] }
+  return {
+    workspace,
+    actions: [],
+    repairs: [],
+    ineffective: [],
+    rejected: [],
+    createdIds: new Set(),
+  }
 }

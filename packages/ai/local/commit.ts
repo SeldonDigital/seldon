@@ -35,6 +35,12 @@ export function commit(state: TurnState, rawAction: WorkspaceAction): string {
     state.ineffective.push(rawAction.type)
     return `Action "${rawAction.type}" validated but changed nothing. It likely matched no node or set a value already in place. Check the target id and try a different edit.`
   }
+  // Record ids this action minted, so a later step can resolve "the new X"
+  // deterministically. Same cheap key diff withCreatedIdentity reports from.
+  const before = state.workspace.nodes ?? {}
+  for (const id of Object.keys(next.nodes ?? {})) {
+    if (!(id in before)) state.createdIds.add(id)
+  }
   state.workspace = next
   state.actions.push(...normalized)
   state.repairs.push(...repairs)
