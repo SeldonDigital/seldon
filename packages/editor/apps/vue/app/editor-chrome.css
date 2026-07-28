@@ -128,6 +128,23 @@ html:not(.sdn-show-focus)
 }
 
 /*
+ * The Export Components dialog authors a resting border on its fields, so
+ * blanking the border above would drop it for as long as the field holds focus.
+ * Restore the resting color instead, the way the menu and listbox rules do.
+ */
+html:not(.sdn-show-focus)
+  .sdn-dialog-export-component
+  .sdn-form-control
+  > .sdn-input:is(:focus-visible, :has(:focus-visible)):not([aria-invalid="true"]),
+html:not(.sdn-show-focus)
+  .sdn-dialog-export-component
+  [class*="sdn-combobox-field"]:is(:focus-visible, :has(:focus-visible)):not(
+    [aria-invalid="true"]
+  ) {
+  border-color: var(--sdn-swatch-primary);
+}
+
+/*
  * Menus and listboxes author a focused state that exports as a visible-focus
  * cascade (punch border on the surface, punch tint on every item leaf). Gate
  * it like the other focus visuals. Activated and disabled leaves keep their
