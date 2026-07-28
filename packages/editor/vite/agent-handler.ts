@@ -10,7 +10,7 @@ import {
   chatToActions,
   clampedThinkingLevel,
   deriveModelThinking,
-  resolvePiModelId,
+  resolveModelId,
   warmModel,
 } from "@seldon/ai"
 import type {
@@ -148,7 +148,7 @@ async function showModelCapabilities(
  * best-effort and come from the local Ollama server.
  */
 export async function agentConfig(): Promise<AgentConfig> {
-  const defaultModel = resolvePiModelId()
+  const defaultModel = resolveModelId()
   const discovered = await listOllamaModels()
   const models = discovered.includes(defaultModel)
     ? discovered
