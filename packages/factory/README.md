@@ -8,13 +8,16 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 ## What The Factory Contains
 
-Factory groups three stages that work together:
+Factory groups four areas that work together:
 
 | Area | Role | Deep reference |
 | --- | --- | --- |
 | **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers) |
 | **Styles** | Convert resolved properties into CSS for one class | [styles/css-properties/](./styles/css-properties) |
 | **Export** | Orchestrate React, CSS, and asset generation into files | [export/](./export) |
+| **Bindings** | Scan a project's own code for the refs and slots it drives | [bindings/](./bindings/README.md) |
+
+Bindings is the only area that reads a project's source rather than a workspace. It runs in the project it scans, never in the editor.
 
 The export stage splits into two subsystems with their own guides:
 

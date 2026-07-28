@@ -1,0 +1,131 @@
+# Bindings
+
+The bindings scan reads a project's own source and reports which code drives which ref and slot on the generated components. It is the consumer half of the binding manifest. The view half is the `views` array in the generated `refs/index.ts`, described in the [factory README](../README.md).
+
+Joining the two answers the question a reader has when looking at a component on the canvas: which controller drives this node, which prop keys does it set, and which const or hook produced each value.
+
+---
+
+## Directory Layout
+
+The code is grouped by stage:
+
+1. **Config** (`config.ts`) fills defaults and decides which files and imports count.
+2. **Front ends** (`react/`, `vue/`) read one file and report its bindings.
+3. **Orchestration** (`scan.ts`) walks a project through a `FileSource` and merges the results.
+4. **Serialization** (`serialize.ts`) writes a stable-ordered `bindings.json`.
+5. **Shared** (`shared/`) resolves identifiers to object literals and describes expressions.
+
+`types.ts` holds every shape. `cli.ts` is the standalone Node entry point.
+
+---
+
+## Reading Sources
+
+The scan reads through a `FileSource`, which has two methods:
+
+```typescript
+export interface FileSource {
+  list(): Promise<string[]>
+  read(path: string): Promise<string>
+}
+```
+
+A Node host backs it with `fs`, a browser host with a directory handle, and a test with a plain map. The library never touches a filesystem, so `node:fs` lives only in `cli.ts`.
+
+Important: the editor must not import this folder. The editor bundles factory for in-browser export, and the scan depends on the TypeScript compiler, which does not belong in that bundle. The scan runs in the project it is scanning.
+
+---
+
+## What Gets Scanned
+
+`resolveBindingsConfig` fills the defaults. `include` and `exclude` hold folder paths relative to the scan root and are matched by path prefix, so no pattern library is needed. An empty `include` scans everything the excludes leave behind.
+
+The generated components folder is always excluded. That also covers the `scripts/` folder emitted inside it, so a generated tree never reports itself as a consumer of its own refs.
+
+A component counts as generated when the file imports it from the components folder, either through a path alias such as `@seldon/components/` or by a relative path into the folder.
+
+---
+
+## How Bindings Are Found
+
+Consumers never write a refs map inline. They hoist it into a `const`, a `useMemo`, or a Vue `computed`, then pass the identifier:
+
+```typescript
+const seldonRefs = {
+  dialogCancel: { onClick: onClose },
+}
+```
+
+So the scan resolves the identifier to its declaration and unwraps whatever holds the literal. Three details follow from how the code is really written:
+
+- The map is keyed on the attribute name, not the variable name, because one consumer passes a map named `toggleRefs` under the `seldonRefs` attribute.
+- Keys added after the literal are included, such as `seldonRefs.valueIcon = ...`, and are marked `conditional` when they sit behind a branch.
+- A value built by a helper call has no visible prop keys, so the entry reports the whole `expression` and leaves `props` empty.
+
+Parsing is single-file and syntax-only, with no program and no type checker. An identifier imported from another module reports that import rather than being followed into it. Following it needs full module resolution, which would tie the scan to a filesystem and break the browser host.
+
+Vue reads both blocks. The template says which component receives what, and the script holds the declarations behind each expression. Script line numbers stay absolute because the block content is padded to its position in the file.
+
+---
+
+## Slots
+
+A controller can drive a slot with a positional prop and no ref, so slots are reported too, keyed by generated component then slot name. An object spread is resolved to the keys it carries, and those entries are marked `spread` so a reader knows the name never appears at the call site.
+
+The scan has no slot vocabulary of its own. Every attribute that is not obviously excluded is reported as a candidate, and a candidate that matches no slot in the generated registry is dropped when the two halves are joined. That keeps a root-level attribute spread from being guessed at with a heuristic.
+
+---
+
+## Output
+
+```jsonc
+{
+  "version": 1,
+  "framework": "react",
+  "scannedFiles": 258,
+  "refs": {
+    "exportRootPath": [
+      {
+        "file": "app/dialogs/export-components/ExportComponentsController.tsx",
+        "component": "ExportComponentsDialog",
+        "line": 137,
+        "conditional": false,
+        "expression": "{ value: directoryLabel, readOnly: true, onClick: chooseDirectory }",
+        "inputs": [
+          { "name": "directoryLabel", "declaredAt": { "line": 120, "kind": "const" } }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "directoryLabel",
+            "inputs": [
+              { "name": "directoryLabel", "declaredAt": { "line": 120, "kind": "const" } }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "slots": {}
+}
+```
+
+`declaredAt.kind` is one of `const`, `let`, `function`, `import`, or `parameter`. `via` names the call a declaration initializes from, which is what identifies the hook behind a value, such as `useMemo`, `computed`, or `ref`. `module` names the source module for an import.
+
+Keys are sorted and consumers are ordered by file then line, so re-running the scan on unchanged sources produces a byte-identical file.
+
+---
+
+## Running It
+
+```bash
+bun packages/factory/bindings/cli.ts <projectRoot> [--framework react|vue] [--components seldon] [--out bindings.json]
+```
+
+Against this repo's own editors:
+
+```bash
+bun packages/factory/bindings/cli.ts packages/editor/apps/react --framework react
+bun packages/factory/bindings/cli.ts packages/editor/apps/vue --framework vue
+```
