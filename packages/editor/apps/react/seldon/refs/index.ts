@@ -29,19 +29,38 @@ export type SeldonRef =
   | "dialogContent"
   | "dialogTitle"
   | "exportAllFontsNo"
+  | "exportAllFontsNoIcon"
   | "exportAllFontsYes"
+  | "exportAllFontsYesIcon"
   | "exportAllIconsNo"
+  | "exportAllIconsNoIcon"
   | "exportAllIconsYes"
+  | "exportAllIconsYesIcon"
   | "exportAllThemesNo"
+  | "exportAllThemesNoIcon"
   | "exportAllThemesYes"
+  | "exportAllThemesYesIcon"
   | "exportCancel"
   | "exportConfirm"
   | "exportFontLinksNo"
+  | "exportFontLinksNoIcon"
   | "exportFontLinksYes"
+  | "exportFontLinksYesIcon"
   | "exportHiddenNo"
+  | "exportHiddenNoIcon"
   | "exportHiddenYes"
+  | "exportHiddenYesIcon"
   | "exportPlatform"
   | "exportRootPath"
+  | "exportSavedWorkspaceNo"
+  | "exportSavedWorkspaceNoIcon"
+  | "exportSavedWorkspaceYes"
+  | "exportSavedWorkspaceYesIcon"
+  | "exportScriptsNo"
+  | "exportScriptsNoIcon"
+  | "exportScriptsYes"
+  | "exportScriptsYesIcon"
+  | "exportWorkspaceName"
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
@@ -195,30 +214,60 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-panel-yVKBdxqz",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
   },
+  exportAllFontsNoIcon: {
+    component: "Icon",
+    nodeId: "component-panel-ELZAfUu6",
+    className: "sdn-icon sdn-icon--3qou",
+  },
   exportAllFontsYes: {
     component: "MenuItemRadio",
     nodeId: "component-panel-e48Xe2Fa",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllFontsYesIcon: {
+    component: "Icon",
+    nodeId: "component-panel-AAAIIBZA",
+    className: "sdn-icon sdn-icon--3qou",
   },
   exportAllIconsNo: {
     component: "MenuItemRadio",
     nodeId: "component-panel-rugVimbb",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
   },
+  exportAllIconsNoIcon: {
+    component: "Icon",
+    nodeId: "component-panel-HvqKiDjV",
+    className: "sdn-icon sdn-icon--3qou",
+  },
   exportAllIconsYes: {
     component: "MenuItemRadio",
     nodeId: "component-panel-6ZzKEgPL",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllIconsYesIcon: {
+    component: "Icon",
+    nodeId: "component-panel-uhkDW6j5",
+    className: "sdn-icon sdn-icon--3qou",
   },
   exportAllThemesNo: {
     component: "MenuItemRadio",
     nodeId: "component-panel-dHhbJMnp",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
   },
+  exportAllThemesNoIcon: {
+    component: "Icon",
+    nodeId: "component-panel-dE3r3x5s",
+    className: "sdn-icon sdn-icon--3qou",
+  },
   exportAllThemesYes: {
     component: "MenuItemRadio",
     nodeId: "component-panel-Ll8MAURr",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportAllThemesYesIcon: {
+    component: "Icon",
+    nodeId: "component-panel-6zRYcjko",
+    className: "sdn-icon sdn-icon--3qou",
   },
   exportCancel: {
     component: "Button",
@@ -235,30 +284,95 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
     nodeId: "component-panel-ckamBjyC",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
   },
+  exportFontLinksNoIcon: {
+    component: "Icon",
+    nodeId: "component-panel-L4bLvhoP",
+    className: "sdn-icon sdn-icon--3qou",
+  },
   exportFontLinksYes: {
     component: "MenuItemRadio",
     nodeId: "component-panel-lKDfX83Z",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportFontLinksYesIcon: {
+    component: "Icon",
+    nodeId: "component-panel-XOpVCSGs",
+    className: "sdn-icon sdn-icon--3qou",
   },
   exportHiddenNo: {
     component: "MenuItemRadio",
     nodeId: "component-panel-cM5q9shs",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
   },
+  exportHiddenNoIcon: {
+    component: "Icon",
+    nodeId: "component-panel-BZN5sI4T",
+    className: "sdn-icon sdn-icon--3qou",
+  },
   exportHiddenYes: {
     component: "MenuItemRadio",
     nodeId: "component-panel-wIfMpjAU",
     className: "sdn-menu-item sdn-menu-item-radio--wifm",
   },
+  exportHiddenYesIcon: {
+    component: "Icon",
+    nodeId: "component-panel-WG67k8nP",
+    className: "sdn-icon sdn-icon--3qou",
+  },
   exportPlatform: {
     component: "Input",
-    nodeId: "component-comboboxField-DsXk84N6",
-    className: "sdn-input sdn-input--twyx",
+    nodeId: "component-comboboxField-kbxUrlMi",
+    className: "sdn-input sdn-input--pzcf",
   },
   exportRootPath: {
     component: "Input",
+    nodeId: "component-panel-brFiKeXr",
+    className: "sdn-input sdn-input--j1ro",
+  },
+  exportSavedWorkspaceNo: {
+    component: "MenuItemRadio",
+    nodeId: "component-panel-7E0knrLz",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportSavedWorkspaceNoIcon: {
+    component: "Icon",
+    nodeId: "component-panel-EwRweg8T",
+    className: "sdn-icon sdn-icon--3qou",
+  },
+  exportSavedWorkspaceYes: {
+    component: "MenuItemRadio",
+    nodeId: "component-panel-PabJ3D96",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportSavedWorkspaceYesIcon: {
+    component: "Icon",
+    nodeId: "component-panel-wqWys28h",
+    className: "sdn-icon sdn-icon--3qou",
+  },
+  exportScriptsNo: {
+    component: "MenuItemRadio",
+    nodeId: "component-panel-yNBXWgOb",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportScriptsNoIcon: {
+    component: "Icon",
+    nodeId: "component-panel-xrKjwATK",
+    className: "sdn-icon sdn-icon--3qou",
+  },
+  exportScriptsYes: {
+    component: "MenuItemRadio",
+    nodeId: "component-panel-6KIgaAzM",
+    className: "sdn-menu-item sdn-menu-item-radio--wifm",
+  },
+  exportScriptsYesIcon: {
+    component: "Icon",
+    nodeId: "component-panel-dCrsBN4m",
+    className: "sdn-icon sdn-icon--3qou",
+  },
+  exportWorkspaceName: {
+    component: "Input",
     nodeId: "component-formControl-j1rONFyf",
-    className: "sdn-input sdn-input--qirj",
+    className: "sdn-input sdn-input--j1ro",
   },
   filterActions: {
     component: "ButtonIconic",
