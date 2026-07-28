@@ -21,7 +21,7 @@ const factoryRoot = path.join(editorRoot, "../../../factory")
 const handlerEntry = path.join(editorRoot, "../../shared/vite/export-handler.ts")
 const workspaceFile = path.join(repoRoot, "seldon-editor.json")
 
-async function loadRunExport() {
+async function loadHandler() {
   const result = await build({
     entryPoints: [handlerEntry],
     bundle: true,
@@ -39,16 +39,16 @@ async function loadRunExport() {
   const outputFile = path.join(os.tmpdir(), `seldon-vue-export-${process.pid}.mjs`)
   await fsp.writeFile(outputFile, result.outputFiles[0].text)
   try {
-    const mod = await import(pathToFileURL(outputFile).href)
-    return mod.runExport
+    return await import(pathToFileURL(outputFile).href)
   } finally {
     await fsp.rm(outputFile, { force: true })
   }
 }
 
 async function main() {
-  const runExport = await loadRunExport()
-  const workspace = JSON.parse(fs.readFileSync(workspaceFile, "utf8"))
+  const { runExport, loadWorkspace } = await loadHandler()
+  // Read through Core so the file is migrated and verified before it is exported.
+  const workspace = loadWorkspace(fs.readFileSync(workspaceFile, "utf8"))
 
   const { files } = await runExport({
     workspace,

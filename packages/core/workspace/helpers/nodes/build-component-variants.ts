@@ -49,7 +49,7 @@ export type BuildContext = {
   variantFallbacks?: ReadonlySet<string>
 }
 
-/** Builds a workspace entry node, attaching editor metadata when requested. */
+/** Builds a workspace entry node. */
 export function makeEntryNode(params: {
   id: string
   type: EntryNode["type"]
@@ -58,7 +58,6 @@ export function makeEntryNode(params: {
   template: string
   overrides: Properties
   origin?: EntryNode["origin"]
-  withInitialOverrides?: boolean
 }): EntryNode {
   const node: EntryNode = {
     id: params.id,
@@ -72,10 +71,6 @@ export function makeEntryNode(params: {
 
   if (params.origin) {
     node.origin = params.origin
-  }
-
-  if (params.withInitialOverrides) {
-    node.__editor = { initialOverrides: structuredClone(params.overrides) }
   }
 
   return node
@@ -99,7 +94,6 @@ export function makePrimitiveVariantNode(
       label: catalogVariant.label,
       template: formatNodeLink(componentBoardDefaultNodeId(componentId)),
       overrides,
-      withInitialOverrides: true,
     }),
   }
 }
@@ -191,7 +185,6 @@ function cloneSubtreeChainingToSource(
     template: formatNodeLink(sourceRef.id),
     overrides: {},
     origin: "schema",
-    withInitialOverrides: true,
   })
 
   const used = new Set<number>()
@@ -233,7 +226,6 @@ function buildComposedChild(
     template: formatNodeLink(resolved.templateNodeId),
     overrides,
     origin: "schema",
-    withInitialOverrides: true,
   })
 
   let childRefs: ComponentTreeRef[]
@@ -347,7 +339,6 @@ function buildChainedChild(
     template: formatNodeLink(defaultChildRef.id),
     overrides: mergeProperties({}, slot.overrides ?? {}),
     origin: "schema",
-    withInitialOverrides: true,
   })
 
   const childRefs = buildVariantChildRefs(slot.children, defaultChildRef.children, ctx, existingRef)
@@ -426,7 +417,6 @@ export function buildVariantTree(
     label: treeOptions.label,
     template: treeOptions.template,
     overrides: treeOptions.overrides,
-    withInitialOverrides: true,
   })
 
   const childRefs = buildVariantChildRefs(

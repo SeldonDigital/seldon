@@ -70,8 +70,8 @@ export function isMeaningfulRepeat(
 
 /**
  * Writes the repeat preview state onto a node, preserving any other `__editor`
- * keys such as `initialOverrides`. Clears the key (and an emptied `__editor`)
- * when the repeat is not meaningful.
+ * keys. Clears the key (and an emptied `__editor`) when the repeat is not
+ * meaningful.
  */
 export function applyNodeRepeat(node: EditorBearing, repeat: RepeatEditorData | undefined): void {
   if (!isMeaningfulRepeat(repeat)) {

@@ -32,6 +32,7 @@ The MCP server wraps these Core entry points directly. None of them require a br
 | Capability | Core entry point | Module |
 | --- | --- | --- |
 | Create a workspace | `createEmptyWorkspace` | `@seldon/core` |
+| Read a workspace file | `loadWorkspace` | `@seldon/core/workspace/reducers/load-workspace` |
 | Apply one action | `workspaceReducer` | `@seldon/core/workspace/reducers/reducer` |
 | Apply a batch of actions | `applyActions` | `@seldon/core/workspace/reducers/apply-actions` |
 | Action contract | `WorkspaceAction` | `workspace/reducers/types.ts` |
@@ -145,12 +146,12 @@ For ergonomics, add thin typed wrappers such as `add_component`, `set_node_prope
 | Tool | Maps to |
 | --- | --- |
 | `workspace_create` | `createEmptyWorkspace` |
-| `workspace_open` | storage adapter, then `set_workspace` action |
+| `workspace_open` | storage adapter, then `loadWorkspace` |
 | `workspace_save` | storage adapter |
 | `workspace_export` | `exportWorkspace` |
 | `undo` and `redo` | history stack |
 
-Load and import flows run the loaded JSON through `set_workspace` so migration can upgrade `metadata.version` and verification can check integrity.
+Load and import flows run the loaded JSON through `set_workspace` so migration can upgrade `metadata.version` and verification can check integrity. Call `loadWorkspace` to get that sequence in one step. It also restores each node's `id` from its key in `nodes`, which serialized files omit.
 
 ### Read tools
 

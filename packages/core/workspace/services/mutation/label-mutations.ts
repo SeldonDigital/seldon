@@ -49,8 +49,8 @@ export function setNodeEditorData(
 
 /**
  * Sets the editor-only repeat preview state on a node. Merge-safe: preserves
- * other `__editor` keys such as `initialOverrides`. A non-meaningful repeat
- * (count <= 1 with no data) or `undefined` clears the repeat state.
+ * other `__editor` keys. A non-meaningful repeat (count <= 1 with no data) or
+ * `undefined` clears the repeat state.
  */
 export function setNodeRepeat(
   nodeId: VariantId | InstanceId,

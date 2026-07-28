@@ -7,7 +7,7 @@ import type { EntryNode } from "../../model/entry-node"
 const node = (overrides: Record<string, unknown>): EntryNode => overrides as unknown as EntryNode
 
 describe("orderEntryNodeKeys", () => {
-  it("emits canonical key order, skips unset keys, and keeps extras", () => {
+  it("emits canonical key order, skips unset keys, drops id, and keeps extras", () => {
     const ordered = orderEntryNodeKeys(
       node({
         overrides: {},
@@ -22,7 +22,6 @@ describe("orderEntryNodeKeys", () => {
     )
 
     expect(Object.keys(ordered)).toEqual([
-      "id",
       "type",
       "level",
       "label",
@@ -60,7 +59,8 @@ describe("orderWorkspaceNodeKeys", () => {
 
     const result = orderWorkspaceNodeKeys(workspace)
 
-    expect(Object.keys(result.nodes.n1).slice(0, 2)).toEqual(["id", "type"])
+    expect(Object.keys(result.nodes.n1).slice(0, 2)).toEqual(["type", "level"])
+    expect(result.nodes.n1).not.toHaveProperty("id")
     expect(result.themes).toBe(themes)
   })
 })

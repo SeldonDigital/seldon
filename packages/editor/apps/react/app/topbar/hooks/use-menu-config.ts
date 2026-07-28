@@ -102,6 +102,7 @@ export function useMenuConfig(): MenuConfig {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
+    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -234,6 +235,12 @@ export function useMenuConfig(): MenuConfig {
         },
         visibleIn: ["edit"],
       },
+      {
+        id: "export-compressed-workspace",
+        label: "Export Compressed Workspace…",
+        action: exportCompressedWorkspaceToFile,
+        visibleIn: ["edit"],
+      },
       "separator",
       {
         id: "export-workspace",
@@ -251,7 +258,14 @@ export function useMenuConfig(): MenuConfig {
     ]
 
     return items
-  }, [openPanel, setActiveTool, exportWorkspaceToFile, goToProjects, importWorkspaceFromFile])
+  }, [
+    openPanel,
+    setActiveTool,
+    exportWorkspaceToFile,
+    exportCompressedWorkspaceToFile,
+    goToProjects,
+    importWorkspaceFromFile,
+  ])
 
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [

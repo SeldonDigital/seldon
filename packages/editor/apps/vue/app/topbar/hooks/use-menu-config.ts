@@ -67,6 +67,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
+    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -165,6 +166,12 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         panel.openPanel("export-components")
         tool.setActiveTool("select")
       },
+      visibleIn: ["edit"],
+    },
+    {
+      id: "export-compressed-workspace",
+      label: "Export Compressed Workspace…",
+      action: exportCompressedWorkspaceToFile,
       visibleIn: ["edit"],
     },
     "separator",

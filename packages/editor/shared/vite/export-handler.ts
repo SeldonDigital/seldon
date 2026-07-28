@@ -2,9 +2,14 @@ import fs from "node:fs"
 import path from "node:path"
 import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
 import { exportWorkspace } from "@seldon/factory/export/export-workspace"
+import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
+
+// Re-exported so the `export-seldon` scripts, which bundle this module to reach
+// `runExport`, can read a workspace file through Core instead of `JSON.parse`.
+export { loadWorkspace }
 
 export type WireFile = {
   path: string

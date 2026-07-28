@@ -157,7 +157,6 @@ export function buildSandboxNode(
       },
     },
     origin: "user",
-    __editor: { initialOverrides: {} },
   }
 
   return { id, node }
