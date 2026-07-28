@@ -20,14 +20,14 @@
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic         buttonIconic         -> propertyToggle
- *     Icon               icon                 -> propertyToggleIcon
+ *   ButtonIconic         buttonIconic
+ *     Icon               icon
  *   FormControlCombobox  formControlCombobox
- *     Input              input                -> propertyLabel
+ *     Input              input
  *     Frame              frame
  *       Icon             icon2                -> toggleIcon
  *       ToggleSwitch     toggleSwitch         -> toggleValue
- *   ButtonIconic         buttonIconic2        -> propertyActions
+ *   ButtonIconic         buttonIconic2
  *     Icon               icon3
  *
  * @example
@@ -77,21 +77,18 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "propertyToggle"
+    "className": "sdn-button-iconic sdn-button-iconic--pgsr"
   },
   "icon": {
     "icon": "material-chevronDown",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--vsau",
-    "data-seldon-ref": "propertyToggleIcon"
+    "className": "sdn-icon sdn-icon--vsau"
   },
   "formControlCombobox": {
     "className": "sdn-form-control sdn-form-control-combobox--qmop"
   },
   "input": {
-    "className": "sdn-input sdn-input--jvsw",
-    "data-seldon-ref": "propertyLabel"
+    "className": "sdn-input sdn-input--jvsw"
   },
   "frame": {
     "wrapperElement": "div",
@@ -107,8 +104,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "toggleValue"
   },
   "buttonIconic2": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "propertyActions"
+    "className": "sdn-button-iconic sdn-button-iconic--pgsr"
   },
   "icon3": {
     "icon": "seldon-more",

@@ -1326,13 +1326,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         type: "ButtonIconicProps",
         rendersWhen: "unless-null",
       },
-      {
-        component: "ItemPropertyToggle",
-        file: "elements/ItemPropertyToggle.vue",
-        slot: "buttonIconic2",
-        type: "ButtonIconicProps",
-        rendersWhen: "when-passed",
-      },
     ],
   },
   propertyFilter: {
@@ -1375,13 +1368,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         type: "InputProps",
         rendersWhen: "when-passed",
       },
-      {
-        component: "ItemPropertyToggle",
-        file: "elements/ItemPropertyToggle.vue",
-        slot: "input",
-        type: "InputProps",
-        rendersWhen: "when-passed",
-      },
     ],
   },
   propertyToggle: {
@@ -1396,13 +1382,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         type: "ButtonIconicProps",
         rendersWhen: "unless-null",
       },
-      {
-        component: "ItemPropertyToggle",
-        file: "elements/ItemPropertyToggle.vue",
-        slot: "buttonIconic",
-        type: "ButtonIconicProps",
-        rendersWhen: "when-passed",
-      },
     ],
   },
   propertyToggleIcon: {
@@ -1413,13 +1392,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "ItemProperty",
         file: "elements/ItemProperty.vue",
-        slot: "icon",
-        type: "IconProps",
-        rendersWhen: "unless-null",
-      },
-      {
-        component: "ItemPropertyToggle",
-        file: "elements/ItemPropertyToggle.vue",
         slot: "icon",
         type: "IconProps",
         rendersWhen: "unless-null",

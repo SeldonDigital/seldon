@@ -35,7 +35,12 @@ export interface FileSource {
 
 A Node host backs it with `fs`, a browser host with a directory handle, and a test with a plain map. The library never touches a filesystem, so `node:fs` lives only in `cli.ts`.
 
-Important: the editor must not import this folder. The editor bundles factory for in-browser export, and the scan depends on the TypeScript compiler, which does not belong in that bundle. The scan runs in the project it is scanning.
+Important: the editor must not import the scan. The editor bundles factory for in-browser export, and the scan depends on the TypeScript compiler, which does not belong in that bundle. The scan runs in the project it is scanning.
+
+Two narrow exceptions carry no code into that bundle, and the editor uses both to read a manifest without repeating its shape:
+
+- `import type` from `types.ts`, which erases completely.
+- `version.ts`, which has no imports of its own. That is why the version sits alone in a module.
 
 The export reads these files as text to emit them, and never imports them. See [Emitting This Library](#emitting-this-library).
 

@@ -47,13 +47,11 @@ const sdn: ItemPropertyToggleProps = {
   "aria-hidden": "false",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "propertyToggle",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
-    "data-seldon-ref": "propertyToggleIcon",
   },
 
   formControlCombobox: {
@@ -61,7 +59,6 @@ const sdn: ItemPropertyToggleProps = {
   },
   input: {
     className: "sdn-input sdn-input--jvsw",
-    "data-seldon-ref": "propertyLabel",
   },
   frame: {
     wrapperElement: "div",
@@ -79,7 +76,6 @@ const sdn: ItemPropertyToggleProps = {
 
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "propertyActions",
   },
   icon3: {
     icon: "seldon-more",
@@ -96,14 +92,14 @@ const sdn: ItemPropertyToggleProps = {
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic         buttonIconic         -> propertyToggle
- *     Icon               icon                 -> propertyToggleIcon
+ *   ButtonIconic         buttonIconic
+ *     Icon               icon
  *   FormControlCombobox  formControlCombobox
- *     Input              input                -> propertyLabel
+ *     Input              input
  *     Frame              frame
  *       Icon             icon2                -> toggleIcon
  *       ToggleSwitch     toggleSwitch         -> toggleValue
- *   ButtonIconic         buttonIconic2        -> propertyActions
+ *   ButtonIconic         buttonIconic2
  *     Icon               icon3
  *
  * @example

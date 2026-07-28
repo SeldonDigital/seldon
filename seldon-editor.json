@@ -34114,7 +34114,6 @@
       }
     },
     "component-item-HiKfAFK5": {
-      "ref": "propertyToggle",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -34124,7 +34123,6 @@
       "origin": "schema"
     },
     "component-item-jmuthUmH": {
-      "ref": "propertyToggleIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -34159,7 +34157,6 @@
       "origin": "schema"
     },
     "component-item-K7Y9jqAr": {
-      "ref": "propertyLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -34223,7 +34220,6 @@
       "origin": "schema"
     },
     "component-item-qeIxCmeu": {
-      "ref": "propertyActions",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
