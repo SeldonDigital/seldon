@@ -14,6 +14,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs}\"",
     "quality": "npm run format:check && npm run quality --workspace @seldon/editor-react",
     "format": "node scripts/format.mjs",
+    "bindings": "npm run bindings --workspace @seldon/editor-react --workspace @seldon/editor-vue",
+    "bindings:check": "npm run bindings:check --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",

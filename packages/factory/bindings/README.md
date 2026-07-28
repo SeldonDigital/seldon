@@ -8,17 +8,19 @@ Joining the two answers the question a reader has when looking at a component on
 
 ## Directory Layout
 
-The code is grouped by stage:
+The folder is flat, because the export emits it as a flat `lib/`. The code is grouped by stage:
 
 1. **Config** (`config.ts`) fills defaults and decides which files and imports count.
-2. **Front ends** (`react/`, `vue/`) read one file and report its bindings.
+2. **Front ends** (`scan-typescript.ts`, `scan-vue.ts`) read one file and report its bindings.
 3. **Orchestration** (`scan.ts`) walks a project through a `FileSource` and merges the results.
 4. **Serialization** (`serialize.ts`) writes a stable-ordered `bindings.json`.
-5. **Shared** (`shared/`) resolves identifiers to object literals and describes expressions.
+5. **Support** (`declaration-index.ts`, `describe-expression.ts`, `resolve-object-literal.ts`) resolves identifiers to object literals and describes expressions.
 
 `types.ts` holds every shape. `version.ts` holds the manifest version alone, so reading the version never pulls in a parser. `shallow.ts` is the degraded scan. `cli.ts` is the standalone Node entry point.
 
-`scan.ts` loads a front end the first time a file calls for one. A project with no `.vue` files never loads the Vue compiler, which is what lets the scan run against `typescript` alone.
+`scan.ts` routes a file to a front end by extension, and loads that front end the first time a file calls for one. A project with no `.vue` files never loads the Vue compiler, which is what lets the scan run against `typescript` alone.
+
+Routing by extension means both frameworks use `scan-typescript.ts`, since a Vue project holds plain TypeScript consumers alongside its `.vue` files. Only `scan-vue.ts` belongs to one framework.
 
 ---
 
@@ -141,7 +143,9 @@ A reader must check `mode` before presenting a binding as complete. Shallow mode
 
 ## Emitting This Library
 
-The export emits this folder into `<components>/scripts/lib/` so a user can run the scan in their own project. `export/shared/generate-scripts.ts` reads each file as text and transpiles it, which strips types and leaves everything else in place, so each emitted module stays one-to-one with its source.
+The export emits this folder into `<components>/scripts/lib/` so a user can run the scan in their own project. `export/shared/generate-scripts.ts` reads each file as text and transpiles it, which strips types and leaves everything else in place, so each emitted module stays one-to-one with its source. This folder is flat so the emitted `lib/` is flat too, and no import needs rewriting.
+
+An export emits only the front ends its framework reaches. A React export leaves `scan-vue.ts` out, because a React scan reads no `.vue` file. Both keep `scan-typescript.ts`. `FRAMEWORK_ONLY_SOURCES` in the generator records that, so a new front end declares its framework in one place.
 
 That puts one constraint on this folder: avoid TypeScript-only runtime features. No enums, no decorators, no parameter properties, no namespaces. Types, interfaces, and plain JavaScript all emit correctly.
 
@@ -154,13 +158,19 @@ Two more rules follow from the same pipeline:
 
 ## Running It
 
+Both editors keep an emitted copy of the scanner, so the normal path is an npm script:
+
+```bash
+npm run bindings        # writes both manifests
+npm run bindings:check  # fails on a stale manifest
+```
+
+Each runs `seldon/scripts/generate-bindings.mjs` inside the app and writes `seldon/refs/bindings.json`. That is the same file a consuming project runs, so this repo exercises what it ships. CI runs the check, so a committed manifest cannot fall behind the code that drives the refs.
+
+`cli.ts` runs the library directly, without needing an export first:
+
 ```bash
 bun packages/factory/bindings/cli.ts <projectRoot> [--framework react|vue] [--components seldon] [--out bindings.json]
 ```
 
-Against this repo's own editors:
-
-```bash
-bun packages/factory/bindings/cli.ts packages/editor/apps/react --framework react
-bun packages/factory/bindings/cli.ts packages/editor/apps/vue --framework vue
-```
+Note: it writes `bindings.json` at the project root unless `--out` says otherwise. Pass `--out seldon/refs/bindings.json` to write where the emitted script writes.

@@ -1,10 +1,17 @@
 import ts from "typescript"
 
-import type { ExpressionInput } from "../types"
 import type { DeclarationIndex } from "./declaration-index"
+import type { ExpressionInput } from "./types"
 
 /** Longest expression text kept in the manifest, so one entry cannot dominate it. */
 const MAX_EXPRESSION_LENGTH = 160
+
+/**
+ * Identifiers that name no producer. `undefined` parses as an identifier rather
+ * than a keyword, so it would otherwise be reported as an input with no
+ * declaration, which tells a reader nothing.
+ */
+const IGNORED_IDENTIFIERS = new Set(["undefined", "NaN", "Infinity"])
 
 export interface DescribedExpression {
   expression: string
@@ -53,7 +60,7 @@ function collectReadIdentifiers(expression: ts.Expression): string[] {
       return
     }
 
-    if (ts.isIdentifier(node) && !seen.has(node.text)) {
+    if (ts.isIdentifier(node) && !seen.has(node.text) && !IGNORED_IDENTIFIERS.has(node.text)) {
       seen.add(node.text)
       names.push(node.text)
     }

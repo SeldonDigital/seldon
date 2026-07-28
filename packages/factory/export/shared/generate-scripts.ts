@@ -4,6 +4,7 @@ import path from "node:path"
 import { format } from "../react/format"
 import { insertLicense } from "../react/generation/inserts/insert-license"
 
+import type { BindingsFramework } from "../../bindings/types"
 import type { ExportOptions, FileToExport } from "../types"
 import type * as TypeScriptModule from "typescript"
 
@@ -15,13 +16,24 @@ import type * as TypeScriptModule from "typescript"
 const REPLACED_BY_ENTRY = "cli.ts"
 
 /**
+ * Sources that belong to one framework, so the other never emits them. Only the
+ * Vue front end qualifies: a React scan reads no `.vue` file and can never reach
+ * it, while a Vue scan routes its `.ts` and `.tsx` files through the TypeScript
+ * front end, which therefore ships in both.
+ */
+const FRAMEWORK_ONLY_SOURCES: Record<string, BindingsFramework> = {
+  "scan-vue.ts": "vue",
+}
+
+/**
  * Emits the bindings scanner into `<components>/scripts/` as source the user can
  * read before running.
  *
  * The library is transpiled from `packages/factory/bindings` rather than written
  * out as templates, so the emitted `lib/` tracks the factory automatically and
- * the scanner has one implementation. Transpiling only strips types, so each
- * emitted module stays one-to-one with its source, comments included.
+ * the scanner has one implementation. That folder is flat, so `lib/` mirrors it
+ * without rewriting an import. Transpiling only strips types, so each emitted
+ * module stays one-to-one with its source, comments included.
  *
  * This means the bindings library must avoid TypeScript-only runtime features.
  * See `packages/factory/bindings/README.md`.
@@ -43,10 +55,15 @@ export async function generateScripts(options: ExportOptions): Promise<FileToExp
   }
 
   const scriptsFolder = `${options.output.componentsFolder}/scripts`
+  const framework = getFramework(options)
   const files: FileToExport[] = []
 
   for (const source of sources) {
     if (source === REPLACED_BY_ENTRY) continue
+
+    const frameworkOnly = FRAMEWORK_ONLY_SOURCES[source]
+
+    if (frameworkOnly && frameworkOnly !== framework) continue
 
     const text = reader.readBindingsSource(source)
 
@@ -85,6 +102,22 @@ export async function generateScripts(options: ExportOptions): Promise<FileToExp
   return files
 }
 
+/** The bindings framework this export targets. Anything but Vue scans as React. */
+function getFramework(options: ExportOptions): BindingsFramework {
+  return options.target.framework === "vue" ? "vue" : "react"
+}
+
+/** Parsers the full scan needs, in the prose the emitted docs quote them as. */
+function getParsers(framework: BindingsFramework): string[] {
+  return framework === "vue" ? ["typescript", "@vue/compiler-sfc"] : ["typescript"]
+}
+
+function getParserList(framework: BindingsFramework): string {
+  return getParsers(framework)
+    .map((parser) => "`" + parser + "`")
+    .join(" and ")
+}
+
 type TypeScript = typeof TypeScriptModule
 
 /**
@@ -121,7 +154,7 @@ function transpile(ts: TypeScript, source: string): string {
   return addExtensions(output)
 }
 
-/** `from "./config"` and `import("./vue/scan-vue")` both need the extension. */
+/** `from "./config"` and `import("./scan-vue")` both need the extension. */
 function addExtensions(code: string): string {
   return code.replace(
     /((?:from|import)\s*\(?\s*)(["'])(\.\.?\/[^"']+)\2/g,
@@ -149,12 +182,14 @@ function hasRuntimeCode(code: string): boolean {
  * shallow scan, and writing the manifest.
  *
  * The framework and components folder are baked from this export, so the common
- * case takes no arguments, and flags stay available for a project that moved
- * either one.
+ * case takes no arguments, and flags stay available for a project that moved the
+ * folder. The framework takes no flag, because this export emitted only the front
+ * ends that framework reaches.
  */
 function getEntryScript(options: ExportOptions): string {
-  const framework = options.target.framework === "vue" ? "vue" : "react"
+  const framework = getFramework(options)
   const componentsFolder = options.output.componentsFolder
+  const parserList = getParserList(framework)
 
   return `/**
  * Generates the Seldon binding manifest for this project.
@@ -174,10 +209,10 @@ function getEntryScript(options: ExportOptions): string {
  *   One file, \`${componentsFolder}/refs/bindings.json\`. It creates and changes nothing else.
  *
  * What it needs
- *   \`typescript\` for the full scan, resolved from this project's own
- *   \`node_modules\`, plus \`@vue/compiler-sfc\` to scan \`.vue\` files. When a parser
- *   is missing, the scan falls back to a shallow mode that reports ref and prop
- *   keys with their file and line, and reports that it did so.
+ *   ${parserList} for the full scan, resolved
+ *   from this project's own \`node_modules\`. When a parser is missing, the scan
+ *   falls back to a shallow mode that reports ref and prop keys with their file
+ *   and line, and reports that it did so.
  *
  * It makes no network requests and runs offline.
  *
@@ -191,7 +226,6 @@ function getEntryScript(options: ExportOptions): string {
  *   --root <path>        Project root to scan. Defaults to the folder holding
  *                        \`${componentsFolder}\`.
  *   --components <path>  Generated components folder, relative to the root.
- *   --framework <name>   \`react\` or \`vue\`.
  *   --out <path>         Manifest path, relative to the root.
  *   --check              Compare against the manifest on disk and exit 1 on any
  *                        difference, writing nothing. For continuous integration.
@@ -203,6 +237,12 @@ import { fileURLToPath } from "node:url"
 
 const FRAMEWORK = "${framework}"
 const COMPONENTS_FOLDER = "${componentsFolder}"
+
+/**
+ * Parsers the full scan needs. This export emitted the ${framework} front ends only,
+ * so the framework is fixed and the list with it.
+ */
+const REQUIRED_PARSERS = ${JSON.stringify(getParsers(framework))}
 
 /** Never walked, however the config is set, so a scan cannot stall on a dependency tree. */
 const PRUNED_DIRECTORIES = new Set([
@@ -217,23 +257,17 @@ const PRUNED_DIRECTORIES = new Set([
 
 const args = process.argv.slice(2)
 
-const framework = readFlag("framework") ?? FRAMEWORK
 const componentsFolder = readFlag("components") ?? COMPONENTS_FOLDER
 const root = path.resolve(readFlag("root") ?? getDefaultRoot())
 const outRelative = readFlag("out") ?? componentsFolder + "/refs/bindings.json"
 const check = args.includes("--check")
 
-if (framework !== "react" && framework !== "vue") {
-  console.error('Unknown framework "' + framework + '". Use "react" or "vue".')
-  process.exit(1)
-}
-
 const { resolveBindingsConfig } = await import("./lib/config.mjs")
 const { serializeBindings } = await import("./lib/serialize.mjs")
 
-const config = resolveBindingsConfig({ framework, componentsFolder })
+const config = resolveBindingsConfig({ framework: FRAMEWORK, componentsFolder })
 const source = createNodeFileSource(root, config)
-const missing = await findMissingParsers(framework)
+const missing = await findMissingParsers()
 
 const manifest =
   missing.length === 0
@@ -305,11 +339,10 @@ function isPruned(relative, name, bindingsConfig) {
 }
 
 /** Parsers this project does not provide. An empty list means the full scan runs. */
-async function findMissingParsers(target) {
-  const required = target === "vue" ? ["typescript", "@vue/compiler-sfc"] : ["typescript"]
+async function findMissingParsers() {
   const absent = []
 
-  for (const specifier of required) {
+  for (const specifier of REQUIRED_PARSERS) {
     try {
       await import(specifier)
     } catch {
@@ -375,7 +408,8 @@ function report() {
 /** Explains what the scripts do, how to run them, and what integrity does not cover. */
 function getScriptsReadme(options: ExportOptions): string {
   const componentsFolder = options.output.componentsFolder
-  const framework = options.target.framework === "vue" ? "vue" : "react"
+  const framework = getFramework(options)
+  const parserList = getParserList(framework)
 
   return `# Seldon Scripts
 
@@ -401,8 +435,10 @@ Run \`--check\` in continuous integration to fail on a stale manifest:
 node ${componentsFolder}/scripts/generate-bindings.mjs --check
 \`\`\`
 
-Use \`--root\`, \`--components\`, \`--framework\`, and \`--out\` when your project moved
-any of those. This export baked in \`${framework}\` and \`${componentsFolder}\`.
+Use \`--root\`, \`--components\`, and \`--out\` when your project moved any of those.
+This export baked in \`${framework}\` and \`${componentsFolder}\`. The framework takes no flag, because
+this export emitted only the front ends a ${framework} project reaches. Re-export to
+change it.
 
 ## What the manifest holds
 
@@ -414,9 +450,8 @@ node that declares it through to the code that sets it.
 
 ## Dependencies
 
-The full scan needs \`typescript\`, and \`@vue/compiler-sfc\` as well to read \`.vue\`
-files. Both resolve from this project's own \`node_modules\`. Neither is bundled
-here.
+The full scan needs ${parserList},
+resolved from this project's own \`node_modules\` rather than bundled here.
 
 When a parser is missing the script still runs, in a shallow mode that records
 ref and prop keys with their file and line. Shallow mode reports no expressions,

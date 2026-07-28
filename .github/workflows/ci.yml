@@ -50,6 +50,20 @@ jobs:
       - run: npm run quality --workspace @seldon/editor-react
       - run: npm run quality --workspace @seldon/editor-vue
 
+  bindings:
+    name: Bindings (drift)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.0
+          cache: npm
+      - run: npm ci
+      # Runs the emitted scanner, the same file any consuming project runs, so a
+      # committed manifest cannot fall behind the code that drives the refs.
+      - run: npm run bindings:check
+
   test:
     name: Unit tests (core, factory)
     runs-on: ubuntu-latest

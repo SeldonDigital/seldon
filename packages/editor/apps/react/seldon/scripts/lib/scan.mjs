@@ -1,14 +1,18 @@
-import { isScannablePath } from "./config"
-import { BINDINGS_VERSION } from "./version"
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it, in whole or in part,
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * any machine learning or artificial intelligence system without written permission.
+ *
+ *****/
 
-import type {
-  BindingsConfig,
-  BindingsManifest,
-  FileBindings,
-  FileSource,
-  RefConsumer,
-  SlotConsumer,
-} from "./types"
+import { isScannablePath } from "./config.mjs"
+import { BINDINGS_VERSION } from "./version.mjs"
 
 /**
  * Scans a project for the refs and slots its code drives on generated components.
@@ -18,33 +22,23 @@ import type {
  * extension, and a file that fails to parse is skipped with a warning rather than
  * aborting the run, matching how the export isolates per-file failures.
  */
-export async function scanBindings(
-  source: FileSource,
-  config: BindingsConfig,
-): Promise<BindingsManifest> {
+export async function scanBindings(source, config) {
   const paths = (await source.list()).filter((path) => isScannablePath(path, config)).sort()
-
-  const refs: Record<string, RefConsumer[]> = {}
-  const slots: Record<string, Record<string, SlotConsumer[]>> = {}
-
+  const refs = {}
+  const slots = {}
   let scannedFiles = 0
-
   for (const path of paths) {
     const scan = await getFrontEnd(path)
-
     if (!scan) continue
-
     try {
       const text = await source.read(path)
       const bindings = scan(path, text, config)
-
       scannedFiles += 1
       collect(bindings, refs, slots)
     } catch (error) {
       console.warn(`Failed to scan "${path}":`, error)
     }
   }
-
   return {
     version: BINDINGS_VERSION,
     mode: "full",
@@ -54,9 +48,6 @@ export async function scanBindings(
     slots,
   }
 }
-
-type FrontEnd = (path: string, text: string, config: BindingsConfig) => FileBindings
-
 /**
  * Loads a front end the first time a file needs it, so a project only pays for
  * the parser its own files call for. A project with no `.vue` files never loads
@@ -66,34 +57,24 @@ type FrontEnd = (path: string, text: string, config: BindingsConfig) => FileBind
  * at a file that is not there. Nothing reaches it, because a React config treats
  * no `.vue` path as scannable and the extensions are fixed at export.
  */
-async function getFrontEnd(path: string): Promise<FrontEnd | null> {
+async function getFrontEnd(path) {
   if (path.endsWith(".vue")) {
-    return (await import("./scan-vue")).scanVueFile
+    return (await import("./scan-vue.mjs")).scanVueFile
   }
-
   if (path.endsWith(".ts") || path.endsWith(".tsx")) {
-    return (await import("./scan-typescript")).scanTypeScriptFile
+    return (await import("./scan-typescript.mjs")).scanTypeScriptFile
   }
-
   return null
 }
-
-function collect(
-  bindings: FileBindings,
-  refs: Record<string, RefConsumer[]>,
-  slots: Record<string, Record<string, SlotConsumer[]>>,
-) {
+function collect(bindings, refs, slots) {
   for (const { ref, consumer } of bindings.refs) {
     const consumers = refs[ref] ?? []
-
     consumers.push(consumer)
     refs[ref] = consumers
   }
-
   for (const { component, slot, consumer } of bindings.slots) {
     const bySlot = slots[component] ?? {}
     const consumers = bySlot[slot] ?? []
-
     consumers.push(consumer)
     bySlot[slot] = consumers
     slots[component] = bySlot

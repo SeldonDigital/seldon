@@ -61,6 +61,11 @@ async function main() {
         // keeping the generated library self-contained.
         componentsFolder: "seldon",
       },
+
+      // This editor is its own consumer, so it keeps the bindings scanner it
+      // hands to any other project. `npm run bindings` runs it to write
+      // `seldon/refs/bindings.json`, which the connections overlay reads.
+      includeScripts: true,
     },
   })
 

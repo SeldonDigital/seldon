@@ -160,7 +160,7 @@ styles.css                             # component stylesheet
 styles/{slug}.css                      # one stylesheet per workspace theme
 workspace.json                         # workspace copy, emitted only with includeWorkspace
 scripts/generate-bindings.mjs          # bindings scanner, emitted only with includeScripts
-scripts/lib/*.mjs                      # scanner library
+scripts/lib/*.mjs                      # scanner library, flat, one file per bindings module
 scripts/INTEGRITY.json                 # sha256 per emitted script file
 scripts/README.md                      # how to run the scripts
 README.md                              # generated usage guide
@@ -201,11 +201,15 @@ Important: the copy drops each node's `id`, because an id always repeats the key
 
 ### Scripts
 
-Setting `includeScripts` emits the bindings scanner into `<components>/scripts/`. The user runs it in their own project to write `<components>/refs/bindings.json`, the consumer half of the binding manifest. Neither the factory nor the editor ever runs it. `generateScripts` in [export/shared/generate-scripts.ts](./export/shared/generate-scripts.ts) produces it.
+Setting `includeScripts` emits the bindings scanner into `<components>/scripts/`. A project runs it to write `<components>/refs/bindings.json`, the consumer half of the binding manifest. Nothing in the factory or the editor runs it during a session. `generateScripts` in [export/shared/generate-scripts.ts](./export/shared/generate-scripts.ts) produces it.
+
+Both editors in this repo export with `includeScripts` and keep the result, because each one consumes the components it generates. `npm run bindings` writes their manifests and `npm run bindings:check` fails on a stale one. CI runs the check, so a committed manifest cannot fall behind the code.
 
 The library under `scripts/lib/` is transpiled from [bindings/](./bindings/README.md) rather than written out as templates, so the emitted code tracks the factory and the scanner has one implementation. Transpiling only strips types, so each emitted module stays one-to-one with its source, comments included. That puts one constraint on the bindings folder: it must avoid TypeScript-only runtime features. The [bindings README](./bindings/README.md#emitting-this-library) covers it.
 
-The emitted entry owns what the library leaves to a host. It reads the filesystem, parses flags, writes the manifest, and chooses between the full and the shallow scan. The full scan needs `typescript`, and `@vue/compiler-sfc` as well for `.vue` files, both resolved from the user's own `node_modules`. When one is missing the script falls back to the shallow scan and says so. The framework and components folder are baked from the export, so the common case takes no arguments.
+An export emits only the front ends its framework reaches, because generated components for one framework only run in an app for that framework. A React export leaves the Vue front end out. Both keep the TypeScript front end, since the scan routes by file extension and a Vue project holds plain TypeScript consumers alongside its `.vue` files.
+
+The emitted entry owns what the library leaves to a host. It reads the filesystem, parses flags, writes the manifest, and chooses between the full and the shallow scan. The full scan needs `typescript`, plus `@vue/compiler-sfc` for a Vue export, resolved from the user's own `node_modules`. When one is missing the script falls back to the shallow scan and says so. The framework and components folder are baked from the export, so the common case takes no arguments. The framework takes no flag, because the emitted front ends are fixed at export.
 
 `scripts/INTEGRITY.json` lists a sha256 per emitted file. `generateScriptsIntegrity` in [export/shared/generate-scripts-integrity.ts](./export/shared/generate-scripts-integrity.ts) produces it, and it runs last because the hashes must cover the bytes that reach disk, after the license header and the format pass.
 
