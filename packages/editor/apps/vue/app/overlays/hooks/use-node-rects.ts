@@ -1,11 +1,10 @@
 import { useActiveBoard } from "@app/canvas/use-active-board"
+import { useSharedStore } from "@app/canvas/use-shared-store"
 import { remeasureStore } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 import { createNodeRectsTracker } from "@seldon/editor/lib/canvas/tracking/node-rects-tracker"
 import { getVisibleNodeIds } from "@seldon/editor/lib/canvas/tracking/visible-nodes"
 import { computed, onScopeDispose, watch } from "vue"
-
-import { useSharedStore } from "@app/canvas/use-shared-store"
 
 import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 import type { Ref } from "vue"
