@@ -4,8 +4,8 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
-import type { ThinkingLevelOption } from "./pi/model"
 import type { ActionRepair } from "./repair/normalize-actions"
+import type { ThinkingLevelOption } from "./shared/model-thinking"
 
 /** One turn of the chat conversation, passed back for context on later turns. */
 export interface ChatMessage {

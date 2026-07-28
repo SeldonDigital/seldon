@@ -1,15 +1,16 @@
-export { chatToActions, warmModel } from "./orchestrate"
+export { chatToActions } from "./local/orchestrate"
+export { warmModel } from "./local/warm"
 export { ALL_ACTION_TYPES, buildActionReference } from "./schema/action-schema"
 export {
   clampedThinkingLevel,
   deriveModelThinking,
-  resolvePiModelId,
-} from "./pi/model"
+  resolveModelId,
+} from "./shared/model-thinking"
 export type {
   ModelThinking,
   ThinkingLevelOption,
   ThinkingMenuOption,
-} from "./pi/model"
+} from "./shared/model-thinking"
 export type {
   AgentDebug,
   AgentMetrics,
