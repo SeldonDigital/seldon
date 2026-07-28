@@ -11,6 +11,7 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useImportExport } from "@app/io/use-import-export"
+import { useRefConnections } from "@app/refs/use-ref-connections"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useHistory } from "@app/workspace/hooks/use-history"
 import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
@@ -74,6 +75,7 @@ export function useMenuConfig(): MenuConfig {
     directSelect,
     toggleDirectSelect,
   } = useEditorConfig()
+  const { showRefConnections, toggleRefConnections } = useRefConnections()
   const { workspace } = useWorkspace()
   const {
     canvasProfiling,
@@ -732,6 +734,13 @@ export function useMenuConfig(): MenuConfig {
             active: wireframeMode === "on",
             shortcut: "W",
           },
+          {
+            id: "show-ref-connections",
+            label: "Show Connections",
+            action: toggleRefConnections,
+            active: showRefConnections,
+            shortcut: "C",
+          },
           "separator",
           {
             id: "show-focus",
@@ -839,6 +848,8 @@ export function useMenuConfig(): MenuConfig {
       showFocus,
       toggleWireframeMode,
       wireframeMode,
+      showRefConnections,
+      toggleRefConnections,
       autoExpandOnSelection,
       toggleAutoExpandOnSelection,
       autoScrollToSelection,

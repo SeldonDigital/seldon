@@ -1,3 +1,8 @@
+import {
+  describeConsumerLocation,
+  describeRefSlot,
+  getRefFileName,
+} from "@seldon/editor/lib/refs/describe-ref-binding"
 import { ValueType } from "@seldon/core"
 
 import type { FlatProperty } from "./properties-data"
@@ -31,8 +36,8 @@ export function buildReferenceBindingRows(binding: RefBinding | null): FlatPrope
       propertyType: "atomic",
       label: view.component,
       icon: "seldon-component",
-      value: { type: ValueType.EXACT, value: describeSlot(view.slot, view.rendersWhen) },
-      actualValue: describeSlot(view.slot, view.rendersWhen),
+      value: { type: ValueType.EXACT, value: describeRefSlot(view.slot, view.rendersWhen) },
+      actualValue: describeRefSlot(view.slot, view.rendersWhen),
       valueType: ValueType.EXACT,
       controlType: undefined,
       isCompound: false,
@@ -44,12 +49,12 @@ export function buildReferenceBindingRows(binding: RefBinding | null): FlatPrope
   })
 
   binding.consumers.forEach((consumer, index) => {
-    const location = `${consumer.file}:${consumer.line}`
+    const location = describeConsumerLocation(consumer)
 
     rows.push({
       key: `${CONSUMER_KEY_PREFIX}${index}`,
       propertyType: "atomic",
-      label: consumer.component || getFileName(consumer.file),
+      label: consumer.component || getRefFileName(consumer.file),
       icon: "seldon-text",
       value: { type: ValueType.EXACT, value: location },
       actualValue: location,
@@ -64,20 +69,4 @@ export function buildReferenceBindingRows(binding: RefBinding | null): FlatPrope
   })
 
   return rows
-}
-
-/**
- * Names the slot a view exposes. A `when-passed` slot is called out, because a ref
- * override alone cannot bring it on screen and that surprises a caller who set one.
- */
-function describeSlot(slot: string | null, rendersWhen: string): string {
-  const name = slot ?? "root"
-
-  return rendersWhen === "when-passed" ? `${name} (when passed)` : name
-}
-
-function getFileName(file: string): string {
-  const parts = file.split("/")
-
-  return parts[parts.length - 1] || file
 }

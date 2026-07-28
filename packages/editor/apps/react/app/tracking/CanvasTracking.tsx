@@ -13,6 +13,7 @@ import {
 } from "@seldon/editor/lib/canvas/tracking/overlay-visibility"
 
 import { useCanvasRemeasureStore } from "../canvas/hooks/use-canvas-remeasure-store"
+import { ConnectionsOverlay } from "./canvas-indicators/connections/ConnectionsOverlay"
 import { InsertTracking } from "./canvas-indicators/insert/Tracking"
 import { HoverOverlay } from "./canvas-indicators/select/HoverOverlay"
 import { NodeWireframe } from "./canvas-indicators/select/NodeWireframe"
@@ -28,7 +29,7 @@ export function CanvasTracking() {
   const hasHoverState = useHasHoverState()
   const { hoverState } = useCanvasHoverState()
   const nodeIds = visibleNodes.map((node) => node.id)
-  const { showSelection, wireframeMode } = useEditorConfig()
+  const { showSelection, wireframeMode, showRefConnections } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
@@ -51,6 +52,12 @@ export function CanvasTracking() {
 
   useTrackNodeRects(nodeIds)
 
+  // Node rects go stale during a pan or zoom, since the rect tracker measures on
+  // settle rather than every frame, and a connector anchored to a stale rect would
+  // point at nothing. Theme boards have no node tree to reference.
+  const showConnections = showRefConnections && !isTransforming && !activeBoardIsTheme
+  const connectionsOverlay = showConnections ? <ConnectionsOverlay /> : null
+
   return (
     <>
       {activeTool === "select" &&
@@ -71,6 +78,7 @@ export function CanvasTracking() {
       )}
       {activeTool === "component" && !isSiblingGap && <HoverOverlay />}
       {activeTool === "component" && hasHoverState && <InsertTracking />}
+      {connectionsOverlay}
     </>
   )
 }

@@ -43,6 +43,10 @@ interface EditorConfigState {
   wireframeMode: "auto" | "on" | "off"
   toggleWireframeMode: (mode?: "on" | "off") => void
 
+  // Ref connector overlay, drawing referenced nodes out to their consumers
+  showRefConnections: boolean
+  setShowRefConnections: (enabled: boolean) => void
+
   // Panel settings
   showPanels: boolean
   setShowPanels: (showPanels: boolean) => void
@@ -133,6 +137,13 @@ const useStore = create<EditorConfigState>()(
 
           return { ...state, wireframeMode: newMode }
         }),
+
+      // Ref connector overlay. Left out of `partialize` on purpose: the bindings
+      // it draws are read from a linked folder during a gesture and are not
+      // persisted, so restoring this on load would show an empty overlay.
+      showRefConnections: false,
+      setShowRefConnections: (enabled) =>
+        set((state) => ({ ...state, showRefConnections: enabled })),
 
       // Panel settings
       showPanels: true,
@@ -248,6 +259,8 @@ export function useEditorConfig() {
     setShowFocus,
     wireframeMode,
     toggleWireframeMode,
+    showRefConnections,
+    setShowRefConnections,
     showPanels,
     setShowPanels,
     autoScrollToSelection,
@@ -289,6 +302,8 @@ export function useEditorConfig() {
       setShowFocus: state.setShowFocus,
       wireframeMode: state.wireframeMode,
       toggleWireframeMode: state.toggleWireframeMode,
+      showRefConnections: state.showRefConnections,
+      setShowRefConnections: state.setShowRefConnections,
       showPanels: state.showPanels,
       setShowPanels: state.setShowPanels,
       autoScrollToSelection: state.autoScrollToSelection,
@@ -388,6 +403,11 @@ export function useEditorConfig() {
     // Wireframe methods
     wireframeMode,
     toggleWireframeMode,
+
+    // Ref connector overlay. Toggled through `useRefConnections`, which reads the
+    // linked folder on the same gesture that turns it on.
+    showRefConnections,
+    setShowRefConnections,
 
     // Panel methods
     showPanels,
