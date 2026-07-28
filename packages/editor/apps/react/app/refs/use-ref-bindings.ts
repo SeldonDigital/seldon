@@ -5,114 +5,161 @@ import { collectWorkspaceNodeRefs } from "@seldon/editor/lib/refs/collect-worksp
 import { joinRefBindings } from "@seldon/editor/lib/refs/join-ref-bindings"
 import { readBindingsManifest } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import { readRefsRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
-import { readLinkedTextFile } from "@seldon/editor/lib/storage/project-link-store"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import {
+  getLinkPermission,
+  getProjectLink,
+  readLinkedTextFile,
+  requestLinkPermission,
+} from "@seldon/editor/lib/storage/project-link-store"
+import { useEffect, useMemo } from "react"
+import { create } from "zustand"
 
 import type { RefBinding } from "@seldon/editor/lib/refs/join-ref-bindings"
 import type { ValidatedBindings } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import type { ValidatedRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
+import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
 
 /** Both files sit under the linked components folder. */
 const REGISTRY_PATH = "refs/registry.json"
 const MANIFEST_PATH = "refs/bindings.json"
 
 /**
- * Joins the refs the open workspace declares with the views the export generated
- * and the consumers reported by the manifest, both read from the linked project.
+ * What was read from the linked project, held once for the whole editor.
  *
- * The workspace half is always available, so refs list even with no link at all.
- * That matters: an unbound ref is still worth showing, and it is the state every
- * ref starts in.
- *
- * Reading is explicit rather than automatic. Both files sit behind a directory
- * permission that a browser only re-grants during a gesture, so a caller loads
- * them when the user asks to see connections.
+ * A store rather than component state, because the sidebar and the canvas overlay
+ * show the same bindings. Reading costs a directory permission that a browser only
+ * grants during a gesture, so one load has to serve every surface.
  */
-export function useRefBindings() {
-  const workspaceId = useWorkspaceId()
-  const { workspace } = useWorkspace()
-  const { link, status, grantPermission } = useProjectLink(workspaceId)
+interface RefBindingsState {
+  workspaceId: string | null
+  registry: ValidatedRegistry | null
+  bindings: ValidatedBindings | null
+  problem: string | null
+  loading: boolean
+}
 
-  const [registry, setRegistry] = useState<ValidatedRegistry | null>(null)
-  const [bindings, setBindings] = useState<ValidatedBindings | null>(null)
-  const [problem, setProblem] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+const useStore = create<RefBindingsState>()(() => ({
+  workspaceId: null,
+  registry: null,
+  bindings: null,
+  problem: null,
+  loading: false,
+}))
 
-  // What was read from one project says nothing about the next one.
-  useEffect(() => {
-    setRegistry(null)
-    setBindings(null)
-    setProblem(null)
-  }, [workspaceId])
+/**
+ * Reads the refs registry and the binding manifest from the linked folder.
+ *
+ * Call this from a user gesture. A browser only re-grants a directory permission
+ * during one, and the permission is requested here when it has lapsed.
+ *
+ * Returns whether both arrived. A partial read still keeps what it got: the
+ * registry alone describes every view, which is worth showing even when no
+ * manifest has been written yet.
+ */
+export async function loadRefBindings(workspaceId: string): Promise<boolean> {
+  const link = await getProjectLink(workspaceId)
 
-  const load = useCallback(async () => {
-    if (!link) {
-      setProblem("No exported folder is linked to this workspace yet.")
+  if (!link) {
+    useStore.setState({
+      workspaceId,
+      problem: "No exported folder is linked to this workspace yet.",
+    })
+
+    return false
+  }
+
+  useStore.setState({ workspaceId, loading: true })
+
+  try {
+    if (!(await hasReadPermission(link))) {
+      useStore.setState({ problem: "Reading the linked folder needs permission." })
 
       return false
     }
 
-    setLoading(true)
+    const registryText = await readLinkedTextFile(link, REGISTRY_PATH)
 
-    try {
-      const granted = status === "linked" || (await grantPermission())
+    if (registryText === null) {
+      useStore.setState({
+        problem: "No refs registry found in the linked folder. Export again to write one.",
+      })
 
-      if (!granted) {
-        setProblem("Reading the linked folder needs permission.")
-
-        return false
-      }
-
-      const registryText = await readLinkedTextFile(link, REGISTRY_PATH)
-
-      if (registryText === null) {
-        setProblem("No refs registry found in the linked folder. Export again to write one.")
-
-        return false
-      }
-
-      const registryResult = readRefsRegistry(registryText)
-
-      if (!registryResult.ok) {
-        setRegistry(null)
-        setBindings(null)
-        setProblem(registryResult.reason)
-
-        return false
-      }
-
-      const manifestText = await readLinkedTextFile(link, MANIFEST_PATH)
-
-      if (manifestText === null) {
-        // The registry alone still describes every view, so it is worth keeping.
-        setRegistry(registryResult.registry)
-        setBindings(null)
-        setProblem(
-          "No binding manifest found. Run the bindings script in your project to write one.",
-        )
-
-        return false
-      }
-
-      const manifestResult = readBindingsManifest(manifestText)
-
-      if (!manifestResult.ok) {
-        setRegistry(registryResult.registry)
-        setBindings(null)
-        setProblem(manifestResult.reason)
-
-        return false
-      }
-
-      setRegistry(registryResult.registry)
-      setBindings(manifestResult.bindings)
-      setProblem(getFrameworkMismatch(registryResult.registry, manifestResult.bindings))
-
-      return true
-    } finally {
-      setLoading(false)
+      return false
     }
-  }, [link, status, grantPermission])
+
+    const registryResult = readRefsRegistry(registryText)
+
+    if (!registryResult.ok) {
+      useStore.setState({ registry: null, bindings: null, problem: registryResult.reason })
+
+      return false
+    }
+
+    const registry = registryResult.registry
+    const manifestText = await readLinkedTextFile(link, MANIFEST_PATH)
+
+    if (manifestText === null) {
+      useStore.setState({
+        registry,
+        bindings: null,
+        problem: "No binding manifest found. Run the bindings script in your project to write one.",
+      })
+
+      return false
+    }
+
+    const manifestResult = readBindingsManifest(manifestText)
+
+    if (!manifestResult.ok) {
+      useStore.setState({ registry, bindings: null, problem: manifestResult.reason })
+
+      return false
+    }
+
+    useStore.setState({
+      registry,
+      bindings: manifestResult.bindings,
+      problem: getFrameworkMismatch(registry, manifestResult.bindings),
+    })
+
+    return true
+  } finally {
+    useStore.setState({ loading: false })
+  }
+}
+
+/** Drops what was read, so nothing from one project shows against another. */
+export function clearRefBindings(): void {
+  useStore.setState({ registry: null, bindings: null, problem: null })
+}
+
+/** Asks for the folder permission only when the standing grant has lapsed. */
+async function hasReadPermission(link: ProjectLink): Promise<boolean> {
+  if ((await getLinkPermission(link)) === "granted") return true
+
+  return (await requestLinkPermission(link)) === "granted"
+}
+
+/**
+ * Joins the refs the open workspace declares with the views the export generated
+ * and the consumers the manifest reports.
+ *
+ * The workspace half is always available, so refs list even with no link at all.
+ * That matters: an unbound ref is still worth showing, and it is the state every
+ * ref starts in. The other two halves arrive only after `loadRefBindings`.
+ */
+export function useRefBindings() {
+  const workspaceId = useWorkspaceId()
+  const { workspace } = useWorkspace()
+  const { status } = useProjectLink(workspaceId)
+  const { registry, bindings, problem, loading, workspaceId: loadedFor } = useStore()
+
+  // What was read against one project says nothing about the next one.
+  useEffect(() => {
+    if (loadedFor && loadedFor !== workspaceId) {
+      clearRefBindings()
+    }
+  }, [loadedFor, workspaceId])
 
   const nodeRefs = useMemo(() => collectWorkspaceNodeRefs(workspace), [workspace])
   const refBindings: RefBinding[] = useMemo(
@@ -128,7 +175,6 @@ export function useRefBindings() {
     linkStatus: status,
     loading,
     problem,
-    load,
   }
 }
 
