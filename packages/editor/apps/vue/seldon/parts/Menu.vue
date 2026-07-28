@@ -12,12 +12,29 @@
  *
  *****/
 
-/*****
+/**
  * Menu: Menu
  * Level: Part
  * Intent: Floating list of actions anchored to a trigger.
  * Tags: menu, dropdown, actions, part, overlay, UI
  * Type: Default
+ *
+ * Structure:
+ *   MenuItem          menuItem
+ *     Icon            icon
+ *     TextLabel       textLabel
+ *     TextLabel       textLabel2
+ *   MenuItem          menuItem2
+ *     Icon            icon2
+ *     TextLabel       textLabel3
+ *     TextLabel       textLabel4
+ *   Hr                hr
+ *   MenuItemCheckbox  menuItemCheckbox
+ *     Icon            icon3
+ *     TextLabel       textLabel5
+ *   MenuItemRadio     menuItemRadio
+ *     Icon            icon4
+ *     TextLabel       textLabel6
  *
  * @example
  * ```vue
@@ -26,13 +43,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Hr from "../primitives/Hr.vue"
 import Icon from "../primitives/Icon.vue"
 import MenuItem from "../elements/MenuItem.vue"
@@ -57,6 +74,7 @@ const props = defineProps<{
   menuItemRadio?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -65,7 +83,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "menu",
   "aria-hidden": "false",
-  "className": "sdn-menu",
   "menuItem": {
     "role": "menuitem",
     "aria-hidden": "false",
@@ -132,21 +149,21 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-menu", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const menuItemProps = computed(() => mergeSlot(sdn.menuItem, props.menuItem))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const menuItem2Props = computed(() => mergeSlot(sdn.menuItem2, props.menuItem2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
-const textLabel4Props = computed(() => mergeSlot(sdn.textLabel4, props.textLabel4))
-const hrProps = computed(() => mergeSlot(sdn.hr, props.hr))
-const menuItemCheckboxProps = computed(() => mergeSlot(sdn.menuItemCheckbox, props.menuItemCheckbox))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel5))
-const menuItemRadioProps = computed(() => mergeSlot(sdn.menuItemRadio, props.menuItemRadio))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel6))
+const menuItemProps = computed(() => mergeSlot(sdn.menuItem, props.menuItem, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const menuItem2Props = computed(() => mergeSlot(sdn.menuItem2, props.menuItem2, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
+const hrProps = computed(() => mergeSlot(sdn.hr, props.hr, props.seldonRefs))
+const menuItemCheckboxProps = computed(() => mergeSlot(sdn.menuItemCheckbox, props.menuItemCheckbox, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabel5Props = computed(() => mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs))
+const menuItemRadioProps = computed(() => mergeSlot(sdn.menuItemRadio, props.menuItemRadio, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const textLabel6Props = computed(() => mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs))
 </script>
 
 <template>
@@ -154,22 +171,22 @@ const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel
       <slot>
         <MenuItem v-if="menuItemProps !== null" v-bind="menuItemProps">
           <Icon v-if="iconProps !== null" v-bind="iconProps" />
-          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-          <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
         </MenuItem>
         <MenuItem v-if="menuItem2Props !== null" v-bind="menuItem2Props">
           <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-          <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
-          <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
+          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+          <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
         </MenuItem>
         <Hr v-if="hrProps !== null" v-bind="hrProps" />
         <MenuItemCheckbox v-if="menuItemCheckboxProps !== null" v-bind="menuItemCheckboxProps">
           <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-          <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
+          <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
         </MenuItemCheckbox>
         <MenuItemRadio v-if="menuItemRadioProps !== null" v-bind="menuItemRadioProps">
           <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
-          <TextLabel v-if="textLabel6 && textLabel6Props" v-bind="textLabel6Props" />
+          <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
         </MenuItemRadio>
       </slot>
     </div>

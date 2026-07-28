@@ -10,33 +10,58 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { Image } from "../primitives/Image"
-import { TextDescription } from "../primitives/TextDescription"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ImageProps } from "../primitives/Image"
-import type { TextDescriptionProps } from "../primitives/TextDescription"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { Image, ImageProps } from "../primitives/Image"
+import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface SectionSectionBrandProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   image?: ImageProps | null
+
   textTitle?: TextTitleProps | null
+
   textDescription?: TextDescriptionProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: SectionSectionBrandProps = {
+  "aria-hidden": "false",
+  image: {
+    src: "https://static.seldon.app/logo.svg",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--wxaq",
+  },
+
+  textTitle: {
+    className: "sdn-text-title sdn-text-title--unrf",
+  },
+
+  textDescription: {
+    className: "sdn-text-description sdn-text-title--unrf",
+  },
+}
+
+/**
  * Section: SectionBrand
  * Level: Element
  * Intent: Navigation section containing links to important pages. Can be used in footers, headers, sidebars, or any other layout context. Follows Material Design navigation patterns.
  * Tags: section, navigation, links, menu, element, layout, header, footer, sidebar
  * Type: Custom
+ *
+ * Structure:
+ *   Image            image
+ *   TextTitle        textTitle
+ *   TextDescription  textDescription
  *
  * @example
  * ```tsx
@@ -47,47 +72,26 @@ export interface SectionSectionBrandProps extends HTMLAttributes<HTMLElement> {
  *   textDescription2="{}"
  * />
  * ```
- *****/
+ */
 export function SectionSectionBrand({
   className = "",
-  image = sdn.image,
+  image,
+
   textTitle,
+
   textDescription,
+
   children,
   seldonRefs,
   ...props
 }: SectionSectionBrandProps) {
   const sectionSectionBrandClassName = combineClassNames("sdn-section", className)
-  const imageProps = applyRef(
-    seldonRefs,
-    image === null
-      ? null
-      : {
-          ...sdn.image,
-          ...image,
-          className: combineClassNames(sdn.image?.className, image?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const textDescriptionProps = applyRef(
-    seldonRefs,
-    textDescription === null
-      ? null
-      : {
-          ...sdn.textDescription,
-          ...textDescription,
-          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
-        },
-  )
+
+  const imageProps = mergeSlot(sdn.image, image, seldonRefs)
+
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+
+  const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
 
   return (
     <Frame className={sectionSectionBrandClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -96,29 +100,10 @@ export function SectionSectionBrand({
       ) : (
         <>
           {imageProps !== null && <Image {...imageProps} />}
-          {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-          {textDescription && textDescriptionProps && <TextDescription {...textDescriptionProps} />}
+          {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+          {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: SectionSectionBrandProps = {
-  "aria-hidden": "false",
-  className: "sdn-section",
-  image: {
-    src: "https://static.seldon.app/logo.svg",
-    "aria-hidden": "false",
-    className: "sdn-image sdn-image--wxaq",
-  },
-  textTitle: {
-    className: "sdn-text-title sdn-text-title--unrf",
-  },
-  textDescription: {
-    className: "sdn-text-description sdn-text-title--unrf",
-  },
 }

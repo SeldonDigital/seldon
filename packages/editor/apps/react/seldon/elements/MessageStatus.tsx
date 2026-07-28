@@ -10,30 +10,50 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface MessageStatusProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
+
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: MessageStatusProps = {
+  "aria-hidden": "false",
+  icon: {
+    icon: "material-robot",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--8ds9",
+  },
+
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--ue8m",
+  },
+}
+
+/**
  * Message: MessageStatus
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
  * Type: Custom
+ *
+ * Structure:
+ *   Icon       icon
+ *   TextLabel  textLabel
  *
  * @example
  * ```tsx
@@ -43,36 +63,22 @@ export interface MessageStatusProps extends HTMLAttributes<HTMLElement> {
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export function MessageStatus({
   className = "",
-  icon = sdn.icon,
+  icon,
+
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: MessageStatusProps) {
   const messageStatusClassName = combineClassNames("sdn-message-status", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <Frame className={messageStatusClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -81,25 +87,9 @@ export function MessageStatus({
       ) : (
         <>
           {iconProps !== null && <Icon {...iconProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {textLabelProps !== null && <TextLabel {...textLabelProps} />}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: MessageStatusProps = {
-  "aria-hidden": "false",
-  className: "sdn-message-status sdn-message",
-  icon: {
-    icon: "material-robot",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--8ds9",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--ue8m",
-  },
 }

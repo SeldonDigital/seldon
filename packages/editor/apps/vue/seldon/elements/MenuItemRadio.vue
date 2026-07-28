@@ -12,12 +12,16 @@
  *
  *****/
 
-/*****
+/**
  * Menu Item: MenuItemRadio
  * Level: Element
  * Intent: Single actionable row inside a menu.
  * Tags: menu, menuitem, action, row, element, UI
  * Type: Custom
+ *
+ * Structure:
+ *   Icon       icon
+ *   TextLabel  textLabel
  *
  * @example
  * ```vue
@@ -26,13 +30,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 
@@ -40,6 +44,7 @@ const props = defineProps<{
   className?: string
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -48,7 +53,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "menuitemradio",
   "aria-hidden": "false",
-  "className": "sdn-menu-item",
   "icon": {
     "icon": "material-radioButtonChecked",
     "aria-hidden": "true",
@@ -61,15 +65,15 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-menu-item", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
 </script>
 
 <template>
     <button :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Icon v-if="iconProps !== null" v-bind="iconProps" />
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
       </slot>
     </button>
 </template>

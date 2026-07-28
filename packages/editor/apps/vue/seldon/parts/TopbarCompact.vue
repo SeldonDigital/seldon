@@ -12,12 +12,28 @@
  *
  *****/
 
-/*****
+/**
  * Topbar: TopbarCompact
  * Level: Part
  * Intent: Site header that pairs a brand logo and wordmark with primary navigation and a call-to-action.
  * Tags: topbar, navbar, header, navigation, brand, menu, part, UI
  * Type: Inline
+ *
+ * Structure:
+ *   Frame        frame
+ *     Image      image
+ *     Image      image2
+ *   Frame        frame2
+ *     LinkPlain  linkPlain
+ *     LinkPlain  linkPlain2
+ *     LinkPlain  linkPlain3
+ *     LinkPlain  linkPlain4
+ *   Frame        frame3
+ *     LinkPlain  linkPlain5
+ *     Text       text
+ *     LinkPlain  linkPlain6
+ *   Button       button
+ *     TextLabel  textLabel
  *
  * @example
  * ```vue
@@ -26,13 +42,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Button from "../elements/Button.vue"
 import Image from "../primitives/Image.vue"
@@ -56,6 +72,7 @@ const props = defineProps<{
   linkPlain6?: Record<string, unknown> | null
   button?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -64,7 +81,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "banner",
   "aria-hidden": "false",
-  "className": "sdn-topbar",
   "frame": {
     "wrapperElement": "div",
     "aria-hidden": "false",
@@ -117,42 +133,42 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-topbar", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const imageProps = computed(() => mergeSlot(sdn.image, props.image))
-const image2Props = computed(() => mergeSlot(sdn.image2, props.image2))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const linkPlainProps = computed(() => mergeSlot(sdn.linkPlain, props.linkPlain))
-const linkPlain2Props = computed(() => mergeSlot(sdn.linkPlain2, props.linkPlain2))
-const linkPlain3Props = computed(() => mergeSlot(sdn.linkPlain3, props.linkPlain3))
-const linkPlain4Props = computed(() => mergeSlot(sdn.linkPlain4, props.linkPlain4))
-const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
-const linkPlain5Props = computed(() => mergeSlot(sdn.linkPlain5, props.linkPlain5))
-const textProps = computed(() => mergeSlot(sdn.text, props.text))
-const linkPlain6Props = computed(() => mergeSlot(sdn.linkPlain6, props.linkPlain6))
-const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const imageProps = computed(() => mergeOptionalSlot(sdn.image, props.image, props.seldonRefs))
+const image2Props = computed(() => mergeOptionalSlot(sdn.image2, props.image2, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const linkPlainProps = computed(() => mergeOptionalSlot(sdn.linkPlain, props.linkPlain, props.seldonRefs))
+const linkPlain2Props = computed(() => mergeOptionalSlot(sdn.linkPlain2, props.linkPlain2, props.seldonRefs))
+const linkPlain3Props = computed(() => mergeOptionalSlot(sdn.linkPlain3, props.linkPlain3, props.seldonRefs))
+const linkPlain4Props = computed(() => mergeOptionalSlot(sdn.linkPlain4, props.linkPlain4, props.seldonRefs))
+const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
+const linkPlain5Props = computed(() => mergeOptionalSlot(sdn.linkPlain5, props.linkPlain5, props.seldonRefs))
+const textProps = computed(() => mergeOptionalSlot(sdn.text, props.text, props.seldonRefs))
+const linkPlain6Props = computed(() => mergeOptionalSlot(sdn.linkPlain6, props.linkPlain6, props.seldonRefs))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Frame v-bind="frameProps">
-          <Image v-if="image && imageProps" v-bind="imageProps" />
-          <Image v-if="image2 && image2Props" v-bind="image2Props" />
+          <Image v-if="imageProps !== null" v-bind="imageProps" />
+          <Image v-if="image2Props !== null" v-bind="image2Props" />
         </Frame>
         <Frame v-bind="frame2Props">
-          <LinkPlain v-if="linkPlain && linkPlainProps" v-bind="linkPlainProps" />
-          <LinkPlain v-if="linkPlain2 && linkPlain2Props" v-bind="linkPlain2Props" />
-          <LinkPlain v-if="linkPlain3 && linkPlain3Props" v-bind="linkPlain3Props" />
-          <LinkPlain v-if="linkPlain4 && linkPlain4Props" v-bind="linkPlain4Props" />
+          <LinkPlain v-if="linkPlainProps !== null" v-bind="linkPlainProps" />
+          <LinkPlain v-if="linkPlain2Props !== null" v-bind="linkPlain2Props" />
+          <LinkPlain v-if="linkPlain3Props !== null" v-bind="linkPlain3Props" />
+          <LinkPlain v-if="linkPlain4Props !== null" v-bind="linkPlain4Props" />
         </Frame>
         <Frame v-bind="frame3Props">
-          <LinkPlain v-if="linkPlain5 && linkPlain5Props" v-bind="linkPlain5Props" />
-          <Text v-if="text && textProps" v-bind="textProps" />
-          <LinkPlain v-if="linkPlain6 && linkPlain6Props" v-bind="linkPlain6Props" />
+          <LinkPlain v-if="linkPlain5Props !== null" v-bind="linkPlain5Props" />
+          <Text v-if="textProps !== null" v-bind="textProps" />
+          <LinkPlain v-if="linkPlain6Props !== null" v-bind="linkPlain6Props" />
         </Frame>
         <Button v-if="buttonProps !== null" v-bind="buttonProps">
-          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         </Button>
       </slot>
     </div>

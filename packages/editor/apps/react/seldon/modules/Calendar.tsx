@@ -10,34 +10,26 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonIconic } from "../elements/ButtonIconic"
-import { CalendarDay } from "../elements/CalendarDay"
-import { CalendarDayGridCell } from "../elements/CalendarDayGridCell"
-import { CalendarDaySelected } from "../elements/CalendarDaySelected"
-import { CalendarDayToday } from "../elements/CalendarDayToday"
-import { Container } from "../frames/Container"
-import { Frame } from "../frames/Frame"
-import { TextLabel } from "../primitives/TextLabel"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { CalendarDayProps } from "../elements/CalendarDay"
-import type { CalendarDayGridCellProps } from "../elements/CalendarDayGridCell"
-import type { CalendarDaySelectedProps } from "../elements/CalendarDaySelected"
-import type { CalendarDayTodayProps } from "../elements/CalendarDayToday"
-import type { ContainerProps } from "../frames/Container"
-import type { FrameProps } from "../frames/Frame"
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { CalendarDay, CalendarDayProps } from "../elements/CalendarDay"
+import { CalendarDayGridCell, CalendarDayGridCellProps } from "../elements/CalendarDayGridCell"
+import { CalendarDaySelected, CalendarDaySelectedProps } from "../elements/CalendarDaySelected"
+import { CalendarDayToday, CalendarDayTodayProps } from "../elements/CalendarDayToday"
+import { Container, ContainerProps } from "../frames/Container"
+import { Frame, FrameProps } from "../frames/Frame"
+import { IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface CalendarProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   frame?: FrameProps | null
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
@@ -48,6 +40,7 @@ export interface CalendarProps extends HTMLAttributes<HTMLElement> {
   icon3?: IconProps | null
   buttonIconic4?: ButtonIconicProps | null
   icon4?: IconProps | null
+
   container?: ContainerProps | null
   textLabel?: TextLabelProps | null
   textLabel2?: TextLabelProps | null
@@ -56,6 +49,7 @@ export interface CalendarProps extends HTMLAttributes<HTMLElement> {
   textLabel5?: TextLabelProps | null
   textLabel6?: TextLabelProps | null
   textLabel7?: TextLabelProps | null
+
   frame2?: FrameProps | null
   container2?: ContainerProps | null
   calendarDay?: CalendarDayProps | null
@@ -131,1375 +125,11 @@ export interface CalendarProps extends HTMLAttributes<HTMLElement> {
   textLabel40?: TextLabelProps | null
 }
 
-/*****
- * Calendar: Calendar
- * Level: Module
- * Intent: Month calendar with a navigable header, weekday labels, and a day grid. The default shows a single bordered month; variants cover a two-month range picker and a single month with event markers.
- * Tags: calendar, ui, month, date, navigation, selection, range, events
- * Type: Inline
- *
- * @example
- * ```tsx
- * <Calendar
- *   aria-hidden="false"
- *   frame="{}"
- *   buttonIconic={() => {}}
- *   icon="material-star"
- *   buttonIconic2={() => {}}
- *   textTitle="Product Title"
- *   buttonIconic3={() => {}}
- *   buttonIconic4={() => {}}
- *   container="{}"
- *   textLabel="{}"
- *   textLabel2="{}"
- *   textLabel3="{}"
- *   textLabel4="{}"
- *   textLabel5="{}"
- *   textLabel6="{}"
- *   textLabel7="{}"
- *   frame2="{}"
- *   calendarDay="{}"
- *   calendarDayGridCell2="{}"
- *   calendarDayGridCell3="{}"
- *   container2="{}"
- *   calendarDayGridCell="{}"
- *   calendarDayGridCell4="{}"
- *   calendarDayGridCell5="{}"
- *   calendarDayGridCell6="{}"
- *   calendarDayGridCell7="{}"
- *   container3="{}"
- *   container4="{}"
- *   calendarDayToday2="{}"
- *   calendarDaySelected4="{}"
- *   container5="{}"
- *   container6="{}"
- *   calendarDay2="{}"
- * />
- * ```
- *****/
-export function Calendar({
-  className = "",
-  frame = sdn.frame,
-  buttonIconic,
-  icon = sdn.icon,
-  buttonIconic2,
-  icon2 = sdn.icon2,
-  textTitle,
-  buttonIconic3,
-  icon3 = sdn.icon3,
-  buttonIconic4,
-  icon4 = sdn.icon4,
-  container = sdn.container,
-  textLabel,
-  textLabel2,
-  textLabel3,
-  textLabel4,
-  textLabel5,
-  textLabel6,
-  textLabel7,
-  frame2 = sdn.frame2,
-  container2 = sdn.container2,
-  calendarDay,
-  textLabel8,
-  calendarDayGridCell,
-  textLabel9,
-  calendarDayGridCell2,
-  textLabel10,
-  container3 = sdn.container3,
-  calendarDayGridCell3,
-  textLabel11,
-  calendarDayGridCell4,
-  textLabel12,
-  calendarDayGridCell5,
-  textLabel13,
-  calendarDayGridCell6,
-  textLabel14,
-  calendarDayGridCell7,
-  textLabel15,
-  calendarDayGridCell8,
-  textLabel16,
-  calendarDayGridCell9,
-  textLabel17,
-  container4 = sdn.container4,
-  calendarDayGridCell10,
-  textLabel18,
-  calendarDayGridCell11,
-  textLabel19,
-  calendarDayGridCell12,
-  textLabel20,
-  calendarDayGridCell13,
-  textLabel21,
-  calendarDayGridCell14,
-  textLabel22,
-  calendarDayGridCell15,
-  textLabel23,
-  calendarDayGridCell16,
-  textLabel24,
-  container5 = sdn.container5,
-  calendarDayGridCell17,
-  textLabel25,
-  calendarDayToday,
-  textLabel26,
-  calendarDayGridCell18,
-  textLabel27,
-  calendarDaySelected,
-  textLabel28,
-  calendarDayGridCell19,
-  textLabel29,
-  calendarDayGridCell20,
-  textLabel30,
-  calendarDayGridCell21,
-  textLabel31,
-  container6 = sdn.container6,
-  calendarDayGridCell22,
-  textLabel32,
-  calendarDayGridCell23,
-  textLabel33,
-  calendarDayGridCell24,
-  textLabel34,
-  calendarDayGridCell25,
-  textLabel35,
-  calendarDayGridCell26,
-  textLabel36,
-  calendarDayGridCell27,
-  textLabel37,
-  calendarDayGridCell28,
-  textLabel38,
-  container7 = sdn.container7,
-  calendarDayGridCell29,
-  textLabel39,
-  calendarDay2,
-  textLabel40,
-  children,
-  seldonRefs,
-  ...props
-}: CalendarProps) {
-  const calendarClassName = combineClassNames("sdn-calendar", className)
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const buttonIconic2Props = applyRef(
-    seldonRefs,
-    buttonIconic2 === null
-      ? null
-      : {
-          ...sdn.buttonIconic2,
-          ...buttonIconic2,
-          className: combineClassNames(sdn.buttonIconic2?.className, buttonIconic2?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const buttonIconic3Props = applyRef(
-    seldonRefs,
-    buttonIconic3 === null
-      ? null
-      : {
-          ...sdn.buttonIconic3,
-          ...buttonIconic3,
-          className: combineClassNames(sdn.buttonIconic3?.className, buttonIconic3?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const buttonIconic4Props = applyRef(
-    seldonRefs,
-    buttonIconic4 === null
-      ? null
-      : {
-          ...sdn.buttonIconic4,
-          ...buttonIconic4,
-          className: combineClassNames(sdn.buttonIconic4?.className, buttonIconic4?.className),
-        },
-  )
-  const icon4Props = applyRef(
-    seldonRefs,
-    icon4 === null
-      ? null
-      : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        },
-  )
-  const containerProps = applyRef(
-    seldonRefs,
-    container === null
-      ? null
-      : {
-          ...sdn.container,
-          ...container,
-          className: combineClassNames(sdn.container?.className, container?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
-        },
-  )
-  const textLabel5Props = applyRef(
-    seldonRefs,
-    textLabel5 === null
-      ? null
-      : {
-          ...sdn.textLabel5,
-          ...textLabel5,
-          className: combineClassNames(sdn.textLabel5?.className, textLabel5?.className),
-        },
-  )
-  const textLabel6Props = applyRef(
-    seldonRefs,
-    textLabel6 === null
-      ? null
-      : {
-          ...sdn.textLabel6,
-          ...textLabel6,
-          className: combineClassNames(sdn.textLabel6?.className, textLabel6?.className),
-        },
-  )
-  const textLabel7Props = applyRef(
-    seldonRefs,
-    textLabel7 === null
-      ? null
-      : {
-          ...sdn.textLabel7,
-          ...textLabel7,
-          className: combineClassNames(sdn.textLabel7?.className, textLabel7?.className),
-        },
-  )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(sdn.frame2?.className, frame2?.className),
-        },
-  )
-  const container2Props = applyRef(
-    seldonRefs,
-    container2 === null
-      ? null
-      : {
-          ...sdn.container2,
-          ...container2,
-          className: combineClassNames(sdn.container2?.className, container2?.className),
-        },
-  )
-  const calendarDayProps = applyRef(
-    seldonRefs,
-    calendarDay === null
-      ? null
-      : {
-          ...sdn.calendarDay,
-          ...calendarDay,
-          className: combineClassNames(sdn.calendarDay?.className, calendarDay?.className),
-        },
-  )
-  const textLabel8Props = applyRef(
-    seldonRefs,
-    textLabel8 === null
-      ? null
-      : {
-          ...sdn.textLabel8,
-          ...textLabel8,
-          className: combineClassNames(sdn.textLabel8?.className, textLabel8?.className),
-        },
-  )
-  const calendarDayGridCellProps = applyRef(
-    seldonRefs,
-    calendarDayGridCell === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell,
-          ...calendarDayGridCell,
-          className: combineClassNames(
-            sdn.calendarDayGridCell?.className,
-            calendarDayGridCell?.className,
-          ),
-        },
-  )
-  const textLabel9Props = applyRef(
-    seldonRefs,
-    textLabel9 === null
-      ? null
-      : {
-          ...sdn.textLabel9,
-          ...textLabel9,
-          className: combineClassNames(sdn.textLabel9?.className, textLabel9?.className),
-        },
-  )
-  const calendarDayGridCell2Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell2 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell2,
-          ...calendarDayGridCell2,
-          className: combineClassNames(
-            sdn.calendarDayGridCell2?.className,
-            calendarDayGridCell2?.className,
-          ),
-        },
-  )
-  const textLabel10Props = applyRef(
-    seldonRefs,
-    textLabel10 === null
-      ? null
-      : {
-          ...sdn.textLabel10,
-          ...textLabel10,
-          className: combineClassNames(sdn.textLabel10?.className, textLabel10?.className),
-        },
-  )
-  const container3Props = applyRef(
-    seldonRefs,
-    container3 === null
-      ? null
-      : {
-          ...sdn.container3,
-          ...container3,
-          className: combineClassNames(sdn.container3?.className, container3?.className),
-        },
-  )
-  const calendarDayGridCell3Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell3 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell3,
-          ...calendarDayGridCell3,
-          className: combineClassNames(
-            sdn.calendarDayGridCell3?.className,
-            calendarDayGridCell3?.className,
-          ),
-        },
-  )
-  const textLabel11Props = applyRef(
-    seldonRefs,
-    textLabel11 === null
-      ? null
-      : {
-          ...sdn.textLabel11,
-          ...textLabel11,
-          className: combineClassNames(sdn.textLabel11?.className, textLabel11?.className),
-        },
-  )
-  const calendarDayGridCell4Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell4 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell4,
-          ...calendarDayGridCell4,
-          className: combineClassNames(
-            sdn.calendarDayGridCell4?.className,
-            calendarDayGridCell4?.className,
-          ),
-        },
-  )
-  const textLabel12Props = applyRef(
-    seldonRefs,
-    textLabel12 === null
-      ? null
-      : {
-          ...sdn.textLabel12,
-          ...textLabel12,
-          className: combineClassNames(sdn.textLabel12?.className, textLabel12?.className),
-        },
-  )
-  const calendarDayGridCell5Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell5 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell5,
-          ...calendarDayGridCell5,
-          className: combineClassNames(
-            sdn.calendarDayGridCell5?.className,
-            calendarDayGridCell5?.className,
-          ),
-        },
-  )
-  const textLabel13Props = applyRef(
-    seldonRefs,
-    textLabel13 === null
-      ? null
-      : {
-          ...sdn.textLabel13,
-          ...textLabel13,
-          className: combineClassNames(sdn.textLabel13?.className, textLabel13?.className),
-        },
-  )
-  const calendarDayGridCell6Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell6 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell6,
-          ...calendarDayGridCell6,
-          className: combineClassNames(
-            sdn.calendarDayGridCell6?.className,
-            calendarDayGridCell6?.className,
-          ),
-        },
-  )
-  const textLabel14Props = applyRef(
-    seldonRefs,
-    textLabel14 === null
-      ? null
-      : {
-          ...sdn.textLabel14,
-          ...textLabel14,
-          className: combineClassNames(sdn.textLabel14?.className, textLabel14?.className),
-        },
-  )
-  const calendarDayGridCell7Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell7 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell7,
-          ...calendarDayGridCell7,
-          className: combineClassNames(
-            sdn.calendarDayGridCell7?.className,
-            calendarDayGridCell7?.className,
-          ),
-        },
-  )
-  const textLabel15Props = applyRef(
-    seldonRefs,
-    textLabel15 === null
-      ? null
-      : {
-          ...sdn.textLabel15,
-          ...textLabel15,
-          className: combineClassNames(sdn.textLabel15?.className, textLabel15?.className),
-        },
-  )
-  const calendarDayGridCell8Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell8 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell8,
-          ...calendarDayGridCell8,
-          className: combineClassNames(
-            sdn.calendarDayGridCell8?.className,
-            calendarDayGridCell8?.className,
-          ),
-        },
-  )
-  const textLabel16Props = applyRef(
-    seldonRefs,
-    textLabel16 === null
-      ? null
-      : {
-          ...sdn.textLabel16,
-          ...textLabel16,
-          className: combineClassNames(sdn.textLabel16?.className, textLabel16?.className),
-        },
-  )
-  const calendarDayGridCell9Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell9 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell9,
-          ...calendarDayGridCell9,
-          className: combineClassNames(
-            sdn.calendarDayGridCell9?.className,
-            calendarDayGridCell9?.className,
-          ),
-        },
-  )
-  const textLabel17Props = applyRef(
-    seldonRefs,
-    textLabel17 === null
-      ? null
-      : {
-          ...sdn.textLabel17,
-          ...textLabel17,
-          className: combineClassNames(sdn.textLabel17?.className, textLabel17?.className),
-        },
-  )
-  const container4Props = applyRef(
-    seldonRefs,
-    container4 === null
-      ? null
-      : {
-          ...sdn.container4,
-          ...container4,
-          className: combineClassNames(sdn.container4?.className, container4?.className),
-        },
-  )
-  const calendarDayGridCell10Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell10 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell10,
-          ...calendarDayGridCell10,
-          className: combineClassNames(
-            sdn.calendarDayGridCell10?.className,
-            calendarDayGridCell10?.className,
-          ),
-        },
-  )
-  const textLabel18Props = applyRef(
-    seldonRefs,
-    textLabel18 === null
-      ? null
-      : {
-          ...sdn.textLabel18,
-          ...textLabel18,
-          className: combineClassNames(sdn.textLabel18?.className, textLabel18?.className),
-        },
-  )
-  const calendarDayGridCell11Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell11 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell11,
-          ...calendarDayGridCell11,
-          className: combineClassNames(
-            sdn.calendarDayGridCell11?.className,
-            calendarDayGridCell11?.className,
-          ),
-        },
-  )
-  const textLabel19Props = applyRef(
-    seldonRefs,
-    textLabel19 === null
-      ? null
-      : {
-          ...sdn.textLabel19,
-          ...textLabel19,
-          className: combineClassNames(sdn.textLabel19?.className, textLabel19?.className),
-        },
-  )
-  const calendarDayGridCell12Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell12 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell12,
-          ...calendarDayGridCell12,
-          className: combineClassNames(
-            sdn.calendarDayGridCell12?.className,
-            calendarDayGridCell12?.className,
-          ),
-        },
-  )
-  const textLabel20Props = applyRef(
-    seldonRefs,
-    textLabel20 === null
-      ? null
-      : {
-          ...sdn.textLabel20,
-          ...textLabel20,
-          className: combineClassNames(sdn.textLabel20?.className, textLabel20?.className),
-        },
-  )
-  const calendarDayGridCell13Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell13 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell13,
-          ...calendarDayGridCell13,
-          className: combineClassNames(
-            sdn.calendarDayGridCell13?.className,
-            calendarDayGridCell13?.className,
-          ),
-        },
-  )
-  const textLabel21Props = applyRef(
-    seldonRefs,
-    textLabel21 === null
-      ? null
-      : {
-          ...sdn.textLabel21,
-          ...textLabel21,
-          className: combineClassNames(sdn.textLabel21?.className, textLabel21?.className),
-        },
-  )
-  const calendarDayGridCell14Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell14 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell14,
-          ...calendarDayGridCell14,
-          className: combineClassNames(
-            sdn.calendarDayGridCell14?.className,
-            calendarDayGridCell14?.className,
-          ),
-        },
-  )
-  const textLabel22Props = applyRef(
-    seldonRefs,
-    textLabel22 === null
-      ? null
-      : {
-          ...sdn.textLabel22,
-          ...textLabel22,
-          className: combineClassNames(sdn.textLabel22?.className, textLabel22?.className),
-        },
-  )
-  const calendarDayGridCell15Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell15 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell15,
-          ...calendarDayGridCell15,
-          className: combineClassNames(
-            sdn.calendarDayGridCell15?.className,
-            calendarDayGridCell15?.className,
-          ),
-        },
-  )
-  const textLabel23Props = applyRef(
-    seldonRefs,
-    textLabel23 === null
-      ? null
-      : {
-          ...sdn.textLabel23,
-          ...textLabel23,
-          className: combineClassNames(sdn.textLabel23?.className, textLabel23?.className),
-        },
-  )
-  const calendarDayGridCell16Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell16 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell16,
-          ...calendarDayGridCell16,
-          className: combineClassNames(
-            sdn.calendarDayGridCell16?.className,
-            calendarDayGridCell16?.className,
-          ),
-        },
-  )
-  const textLabel24Props = applyRef(
-    seldonRefs,
-    textLabel24 === null
-      ? null
-      : {
-          ...sdn.textLabel24,
-          ...textLabel24,
-          className: combineClassNames(sdn.textLabel24?.className, textLabel24?.className),
-        },
-  )
-  const container5Props = applyRef(
-    seldonRefs,
-    container5 === null
-      ? null
-      : {
-          ...sdn.container5,
-          ...container5,
-          className: combineClassNames(sdn.container5?.className, container5?.className),
-        },
-  )
-  const calendarDayGridCell17Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell17 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell17,
-          ...calendarDayGridCell17,
-          className: combineClassNames(
-            sdn.calendarDayGridCell17?.className,
-            calendarDayGridCell17?.className,
-          ),
-        },
-  )
-  const textLabel25Props = applyRef(
-    seldonRefs,
-    textLabel25 === null
-      ? null
-      : {
-          ...sdn.textLabel25,
-          ...textLabel25,
-          className: combineClassNames(sdn.textLabel25?.className, textLabel25?.className),
-        },
-  )
-  const calendarDayTodayProps = applyRef(
-    seldonRefs,
-    calendarDayToday === null
-      ? null
-      : {
-          ...sdn.calendarDayToday,
-          ...calendarDayToday,
-          className: combineClassNames(
-            sdn.calendarDayToday?.className,
-            calendarDayToday?.className,
-          ),
-        },
-  )
-  const textLabel26Props = applyRef(
-    seldonRefs,
-    textLabel26 === null
-      ? null
-      : {
-          ...sdn.textLabel26,
-          ...textLabel26,
-          className: combineClassNames(sdn.textLabel26?.className, textLabel26?.className),
-        },
-  )
-  const calendarDayGridCell18Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell18 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell18,
-          ...calendarDayGridCell18,
-          className: combineClassNames(
-            sdn.calendarDayGridCell18?.className,
-            calendarDayGridCell18?.className,
-          ),
-        },
-  )
-  const textLabel27Props = applyRef(
-    seldonRefs,
-    textLabel27 === null
-      ? null
-      : {
-          ...sdn.textLabel27,
-          ...textLabel27,
-          className: combineClassNames(sdn.textLabel27?.className, textLabel27?.className),
-        },
-  )
-  const calendarDaySelectedProps = applyRef(
-    seldonRefs,
-    calendarDaySelected === null
-      ? null
-      : {
-          ...sdn.calendarDaySelected,
-          ...calendarDaySelected,
-          className: combineClassNames(
-            sdn.calendarDaySelected?.className,
-            calendarDaySelected?.className,
-          ),
-        },
-  )
-  const textLabel28Props = applyRef(
-    seldonRefs,
-    textLabel28 === null
-      ? null
-      : {
-          ...sdn.textLabel28,
-          ...textLabel28,
-          className: combineClassNames(sdn.textLabel28?.className, textLabel28?.className),
-        },
-  )
-  const calendarDayGridCell19Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell19 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell19,
-          ...calendarDayGridCell19,
-          className: combineClassNames(
-            sdn.calendarDayGridCell19?.className,
-            calendarDayGridCell19?.className,
-          ),
-        },
-  )
-  const textLabel29Props = applyRef(
-    seldonRefs,
-    textLabel29 === null
-      ? null
-      : {
-          ...sdn.textLabel29,
-          ...textLabel29,
-          className: combineClassNames(sdn.textLabel29?.className, textLabel29?.className),
-        },
-  )
-  const calendarDayGridCell20Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell20 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell20,
-          ...calendarDayGridCell20,
-          className: combineClassNames(
-            sdn.calendarDayGridCell20?.className,
-            calendarDayGridCell20?.className,
-          ),
-        },
-  )
-  const textLabel30Props = applyRef(
-    seldonRefs,
-    textLabel30 === null
-      ? null
-      : {
-          ...sdn.textLabel30,
-          ...textLabel30,
-          className: combineClassNames(sdn.textLabel30?.className, textLabel30?.className),
-        },
-  )
-  const calendarDayGridCell21Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell21 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell21,
-          ...calendarDayGridCell21,
-          className: combineClassNames(
-            sdn.calendarDayGridCell21?.className,
-            calendarDayGridCell21?.className,
-          ),
-        },
-  )
-  const textLabel31Props = applyRef(
-    seldonRefs,
-    textLabel31 === null
-      ? null
-      : {
-          ...sdn.textLabel31,
-          ...textLabel31,
-          className: combineClassNames(sdn.textLabel31?.className, textLabel31?.className),
-        },
-  )
-  const container6Props = applyRef(
-    seldonRefs,
-    container6 === null
-      ? null
-      : {
-          ...sdn.container6,
-          ...container6,
-          className: combineClassNames(sdn.container6?.className, container6?.className),
-        },
-  )
-  const calendarDayGridCell22Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell22 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell22,
-          ...calendarDayGridCell22,
-          className: combineClassNames(
-            sdn.calendarDayGridCell22?.className,
-            calendarDayGridCell22?.className,
-          ),
-        },
-  )
-  const textLabel32Props = applyRef(
-    seldonRefs,
-    textLabel32 === null
-      ? null
-      : {
-          ...sdn.textLabel32,
-          ...textLabel32,
-          className: combineClassNames(sdn.textLabel32?.className, textLabel32?.className),
-        },
-  )
-  const calendarDayGridCell23Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell23 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell23,
-          ...calendarDayGridCell23,
-          className: combineClassNames(
-            sdn.calendarDayGridCell23?.className,
-            calendarDayGridCell23?.className,
-          ),
-        },
-  )
-  const textLabel33Props = applyRef(
-    seldonRefs,
-    textLabel33 === null
-      ? null
-      : {
-          ...sdn.textLabel33,
-          ...textLabel33,
-          className: combineClassNames(sdn.textLabel33?.className, textLabel33?.className),
-        },
-  )
-  const calendarDayGridCell24Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell24 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell24,
-          ...calendarDayGridCell24,
-          className: combineClassNames(
-            sdn.calendarDayGridCell24?.className,
-            calendarDayGridCell24?.className,
-          ),
-        },
-  )
-  const textLabel34Props = applyRef(
-    seldonRefs,
-    textLabel34 === null
-      ? null
-      : {
-          ...sdn.textLabel34,
-          ...textLabel34,
-          className: combineClassNames(sdn.textLabel34?.className, textLabel34?.className),
-        },
-  )
-  const calendarDayGridCell25Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell25 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell25,
-          ...calendarDayGridCell25,
-          className: combineClassNames(
-            sdn.calendarDayGridCell25?.className,
-            calendarDayGridCell25?.className,
-          ),
-        },
-  )
-  const textLabel35Props = applyRef(
-    seldonRefs,
-    textLabel35 === null
-      ? null
-      : {
-          ...sdn.textLabel35,
-          ...textLabel35,
-          className: combineClassNames(sdn.textLabel35?.className, textLabel35?.className),
-        },
-  )
-  const calendarDayGridCell26Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell26 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell26,
-          ...calendarDayGridCell26,
-          className: combineClassNames(
-            sdn.calendarDayGridCell26?.className,
-            calendarDayGridCell26?.className,
-          ),
-        },
-  )
-  const textLabel36Props = applyRef(
-    seldonRefs,
-    textLabel36 === null
-      ? null
-      : {
-          ...sdn.textLabel36,
-          ...textLabel36,
-          className: combineClassNames(sdn.textLabel36?.className, textLabel36?.className),
-        },
-  )
-  const calendarDayGridCell27Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell27 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell27,
-          ...calendarDayGridCell27,
-          className: combineClassNames(
-            sdn.calendarDayGridCell27?.className,
-            calendarDayGridCell27?.className,
-          ),
-        },
-  )
-  const textLabel37Props = applyRef(
-    seldonRefs,
-    textLabel37 === null
-      ? null
-      : {
-          ...sdn.textLabel37,
-          ...textLabel37,
-          className: combineClassNames(sdn.textLabel37?.className, textLabel37?.className),
-        },
-  )
-  const calendarDayGridCell28Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell28 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell28,
-          ...calendarDayGridCell28,
-          className: combineClassNames(
-            sdn.calendarDayGridCell28?.className,
-            calendarDayGridCell28?.className,
-          ),
-        },
-  )
-  const textLabel38Props = applyRef(
-    seldonRefs,
-    textLabel38 === null
-      ? null
-      : {
-          ...sdn.textLabel38,
-          ...textLabel38,
-          className: combineClassNames(sdn.textLabel38?.className, textLabel38?.className),
-        },
-  )
-  const container7Props = applyRef(
-    seldonRefs,
-    container7 === null
-      ? null
-      : {
-          ...sdn.container7,
-          ...container7,
-          className: combineClassNames(sdn.container7?.className, container7?.className),
-        },
-  )
-  const calendarDayGridCell29Props = applyRef(
-    seldonRefs,
-    calendarDayGridCell29 === null
-      ? null
-      : {
-          ...sdn.calendarDayGridCell29,
-          ...calendarDayGridCell29,
-          className: combineClassNames(
-            sdn.calendarDayGridCell29?.className,
-            calendarDayGridCell29?.className,
-          ),
-        },
-  )
-  const textLabel39Props = applyRef(
-    seldonRefs,
-    textLabel39 === null
-      ? null
-      : {
-          ...sdn.textLabel39,
-          ...textLabel39,
-          className: combineClassNames(sdn.textLabel39?.className, textLabel39?.className),
-        },
-  )
-  const calendarDay2Props = applyRef(
-    seldonRefs,
-    calendarDay2 === null
-      ? null
-      : {
-          ...sdn.calendarDay2,
-          ...calendarDay2,
-          className: combineClassNames(sdn.calendarDay2?.className, calendarDay2?.className),
-        },
-  )
-  const textLabel40Props = applyRef(
-    seldonRefs,
-    textLabel40 === null
-      ? null
-      : {
-          ...sdn.textLabel40,
-          ...textLabel40,
-          className: combineClassNames(sdn.textLabel40?.className, textLabel40?.className),
-        },
-  )
-
-  return (
-    <Frame className={calendarClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          <Frame {...frameProps}>
-            {buttonIconic && buttonIconicProps && (
-              <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-            )}
-            {buttonIconic2 && buttonIconic2Props && (
-              <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
-            )}
-            {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-            {buttonIconic3 && buttonIconic3Props && (
-              <ButtonIconic {...buttonIconic3Props} icon={icon3Props} />
-            )}
-            {buttonIconic4 && buttonIconic4Props && (
-              <ButtonIconic {...buttonIconic4Props} icon={icon4Props} />
-            )}
-          </Frame>
-          <Frame {...containerProps}>
-            {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-            {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-            {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
-            {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
-            {textLabel5 && textLabel5Props && <TextLabel {...textLabel5Props} />}
-            {textLabel6 && textLabel6Props && <TextLabel {...textLabel6Props} />}
-            {textLabel7 && textLabel7Props && <TextLabel {...textLabel7Props} />}
-          </Frame>
-          <Frame {...frame2Props}>
-            <Frame {...container2Props}>
-              {calendarDay && calendarDayProps && (
-                <CalendarDay {...calendarDayProps}>
-                  {textLabel8 && textLabel8Props && <TextLabel {...textLabel8Props} />}
-                </CalendarDay>
-              )}
-              {calendarDayGridCell && calendarDayGridCellProps && (
-                <CalendarDayGridCell {...calendarDayGridCellProps}>
-                  {textLabel9 && textLabel9Props && <TextLabel {...textLabel9Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell2 && calendarDayGridCell2Props && (
-                <CalendarDayGridCell {...calendarDayGridCell2Props}>
-                  {textLabel10 && textLabel10Props && <TextLabel {...textLabel10Props} />}
-                </CalendarDayGridCell>
-              )}
-            </Frame>
-            <Frame {...container3Props}>
-              {calendarDayGridCell3 && calendarDayGridCell3Props && (
-                <CalendarDayGridCell {...calendarDayGridCell3Props}>
-                  {textLabel11 && textLabel11Props && <TextLabel {...textLabel11Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell4 && calendarDayGridCell4Props && (
-                <CalendarDayGridCell {...calendarDayGridCell4Props}>
-                  {textLabel12 && textLabel12Props && <TextLabel {...textLabel12Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell5 && calendarDayGridCell5Props && (
-                <CalendarDayGridCell {...calendarDayGridCell5Props}>
-                  {textLabel13 && textLabel13Props && <TextLabel {...textLabel13Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell6 && calendarDayGridCell6Props && (
-                <CalendarDayGridCell {...calendarDayGridCell6Props}>
-                  {textLabel14 && textLabel14Props && <TextLabel {...textLabel14Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell7 && calendarDayGridCell7Props && (
-                <CalendarDayGridCell {...calendarDayGridCell7Props}>
-                  {textLabel15 && textLabel15Props && <TextLabel {...textLabel15Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell8 && calendarDayGridCell8Props && (
-                <CalendarDayGridCell {...calendarDayGridCell8Props}>
-                  {textLabel16 && textLabel16Props && <TextLabel {...textLabel16Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell9 && calendarDayGridCell9Props && (
-                <CalendarDayGridCell {...calendarDayGridCell9Props}>
-                  {textLabel17 && textLabel17Props && <TextLabel {...textLabel17Props} />}
-                </CalendarDayGridCell>
-              )}
-            </Frame>
-            <Frame {...container4Props}>
-              {calendarDayGridCell10 && calendarDayGridCell10Props && (
-                <CalendarDayGridCell {...calendarDayGridCell10Props}>
-                  {textLabel18 && textLabel18Props && <TextLabel {...textLabel18Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell11 && calendarDayGridCell11Props && (
-                <CalendarDayGridCell {...calendarDayGridCell11Props}>
-                  {textLabel19 && textLabel19Props && <TextLabel {...textLabel19Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell12 && calendarDayGridCell12Props && (
-                <CalendarDayGridCell {...calendarDayGridCell12Props}>
-                  {textLabel20 && textLabel20Props && <TextLabel {...textLabel20Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell13 && calendarDayGridCell13Props && (
-                <CalendarDayGridCell {...calendarDayGridCell13Props}>
-                  {textLabel21 && textLabel21Props && <TextLabel {...textLabel21Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell14 && calendarDayGridCell14Props && (
-                <CalendarDayGridCell {...calendarDayGridCell14Props}>
-                  {textLabel22 && textLabel22Props && <TextLabel {...textLabel22Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell15 && calendarDayGridCell15Props && (
-                <CalendarDayGridCell {...calendarDayGridCell15Props}>
-                  {textLabel23 && textLabel23Props && <TextLabel {...textLabel23Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell16 && calendarDayGridCell16Props && (
-                <CalendarDayGridCell {...calendarDayGridCell16Props}>
-                  {textLabel24 && textLabel24Props && <TextLabel {...textLabel24Props} />}
-                </CalendarDayGridCell>
-              )}
-            </Frame>
-            <Frame {...container5Props}>
-              {calendarDayGridCell17 && calendarDayGridCell17Props && (
-                <CalendarDayGridCell {...calendarDayGridCell17Props}>
-                  {textLabel25 && textLabel25Props && <TextLabel {...textLabel25Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayToday && calendarDayTodayProps && (
-                <CalendarDayToday {...calendarDayTodayProps}>
-                  {textLabel26 && textLabel26Props && <TextLabel {...textLabel26Props} />}
-                </CalendarDayToday>
-              )}
-              {calendarDayGridCell18 && calendarDayGridCell18Props && (
-                <CalendarDayGridCell {...calendarDayGridCell18Props}>
-                  {textLabel27 && textLabel27Props && <TextLabel {...textLabel27Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDaySelected && calendarDaySelectedProps && (
-                <CalendarDaySelected {...calendarDaySelectedProps}>
-                  {textLabel28 && textLabel28Props && <TextLabel {...textLabel28Props} />}
-                </CalendarDaySelected>
-              )}
-              {calendarDayGridCell19 && calendarDayGridCell19Props && (
-                <CalendarDayGridCell {...calendarDayGridCell19Props}>
-                  {textLabel29 && textLabel29Props && <TextLabel {...textLabel29Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell20 && calendarDayGridCell20Props && (
-                <CalendarDayGridCell {...calendarDayGridCell20Props}>
-                  {textLabel30 && textLabel30Props && <TextLabel {...textLabel30Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell21 && calendarDayGridCell21Props && (
-                <CalendarDayGridCell {...calendarDayGridCell21Props}>
-                  {textLabel31 && textLabel31Props && <TextLabel {...textLabel31Props} />}
-                </CalendarDayGridCell>
-              )}
-            </Frame>
-            <Frame {...container6Props}>
-              {calendarDayGridCell22 && calendarDayGridCell22Props && (
-                <CalendarDayGridCell {...calendarDayGridCell22Props}>
-                  {textLabel32 && textLabel32Props && <TextLabel {...textLabel32Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell23 && calendarDayGridCell23Props && (
-                <CalendarDayGridCell {...calendarDayGridCell23Props}>
-                  {textLabel33 && textLabel33Props && <TextLabel {...textLabel33Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell24 && calendarDayGridCell24Props && (
-                <CalendarDayGridCell {...calendarDayGridCell24Props}>
-                  {textLabel34 && textLabel34Props && <TextLabel {...textLabel34Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell25 && calendarDayGridCell25Props && (
-                <CalendarDayGridCell {...calendarDayGridCell25Props}>
-                  {textLabel35 && textLabel35Props && <TextLabel {...textLabel35Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell26 && calendarDayGridCell26Props && (
-                <CalendarDayGridCell {...calendarDayGridCell26Props}>
-                  {textLabel36 && textLabel36Props && <TextLabel {...textLabel36Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell27 && calendarDayGridCell27Props && (
-                <CalendarDayGridCell {...calendarDayGridCell27Props}>
-                  {textLabel37 && textLabel37Props && <TextLabel {...textLabel37Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDayGridCell28 && calendarDayGridCell28Props && (
-                <CalendarDayGridCell {...calendarDayGridCell28Props}>
-                  {textLabel38 && textLabel38Props && <TextLabel {...textLabel38Props} />}
-                </CalendarDayGridCell>
-              )}
-            </Frame>
-            <Frame {...container7Props}>
-              {calendarDayGridCell29 && calendarDayGridCell29Props && (
-                <CalendarDayGridCell {...calendarDayGridCell29Props}>
-                  {textLabel39 && textLabel39Props && <TextLabel {...textLabel39Props} />}
-                </CalendarDayGridCell>
-              )}
-              {calendarDay2 && calendarDay2Props && (
-                <CalendarDay {...calendarDay2Props}>
-                  {textLabel40 && textLabel40Props && <TextLabel {...textLabel40Props} />}
-                </CalendarDay>
-              )}
-            </Frame>
-          </Frame>
-        </>
-      )}
-    </Frame>
-  )
-}
-
 //
 // Default property values
 //
 const sdn: CalendarProps = {
   "aria-hidden": "false",
-  className: "sdn-calendar",
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -1540,6 +170,7 @@ const sdn: CalendarProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--nlt7",
   },
+
   container: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -1566,6 +197,7 @@ const sdn: CalendarProps = {
   textLabel7: {
     className: "sdn-text-label sdn-text-label--sxr5",
   },
+
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -1799,4 +431,676 @@ const sdn: CalendarProps = {
   textLabel40: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
+}
+
+/**
+ * Calendar: Calendar
+ * Level: Module
+ * Intent: Month calendar with a navigable header, weekday labels, and a day grid. The default shows a single bordered month; variants cover a two-month range picker and a single month with event markers.
+ * Tags: calendar, ui, month, date, navigation, selection, range, events
+ * Type: Inline
+ *
+ * Structure:
+ *   Frame                    frame
+ *     ButtonIconic           buttonIconic
+ *       Icon                 icon
+ *     ButtonIconic           buttonIconic2
+ *       Icon                 icon2
+ *     TextTitle              textTitle
+ *     ButtonIconic           buttonIconic3
+ *       Icon                 icon3
+ *     ButtonIconic           buttonIconic4
+ *       Icon                 icon4
+ *   Container                container
+ *     TextLabel              textLabel
+ *     TextLabel              textLabel2
+ *     TextLabel              textLabel3
+ *     TextLabel              textLabel4
+ *     TextLabel              textLabel5
+ *     TextLabel              textLabel6
+ *     TextLabel              textLabel7
+ *   Frame                    frame2
+ *     Container              container2
+ *       CalendarDay          calendarDay
+ *         TextLabel          textLabel8
+ *       CalendarDayGridCell  calendarDayGridCell
+ *         TextLabel          textLabel9
+ *       CalendarDayGridCell  calendarDayGridCell2
+ *         TextLabel          textLabel10
+ *     Container              container3
+ *       CalendarDayGridCell  calendarDayGridCell3
+ *         TextLabel          textLabel11
+ *       CalendarDayGridCell  calendarDayGridCell4
+ *         TextLabel          textLabel12
+ *       CalendarDayGridCell  calendarDayGridCell5
+ *         TextLabel          textLabel13
+ *       CalendarDayGridCell  calendarDayGridCell6
+ *         TextLabel          textLabel14
+ *       CalendarDayGridCell  calendarDayGridCell7
+ *         TextLabel          textLabel15
+ *       CalendarDayGridCell  calendarDayGridCell8
+ *         TextLabel          textLabel16
+ *       CalendarDayGridCell  calendarDayGridCell9
+ *         TextLabel          textLabel17
+ *     Container              container4
+ *       CalendarDayGridCell  calendarDayGridCell10
+ *         TextLabel          textLabel18
+ *       CalendarDayGridCell  calendarDayGridCell11
+ *         TextLabel          textLabel19
+ *       CalendarDayGridCell  calendarDayGridCell12
+ *         TextLabel          textLabel20
+ *       CalendarDayGridCell  calendarDayGridCell13
+ *         TextLabel          textLabel21
+ *       CalendarDayGridCell  calendarDayGridCell14
+ *         TextLabel          textLabel22
+ *       CalendarDayGridCell  calendarDayGridCell15
+ *         TextLabel          textLabel23
+ *       CalendarDayGridCell  calendarDayGridCell16
+ *         TextLabel          textLabel24
+ *     Container              container5
+ *       CalendarDayGridCell  calendarDayGridCell17
+ *         TextLabel          textLabel25
+ *       CalendarDayToday     calendarDayToday
+ *         TextLabel          textLabel26
+ *       CalendarDayGridCell  calendarDayGridCell18
+ *         TextLabel          textLabel27
+ *       CalendarDaySelected  calendarDaySelected
+ *         TextLabel          textLabel28
+ *       CalendarDayGridCell  calendarDayGridCell19
+ *         TextLabel          textLabel29
+ *       CalendarDayGridCell  calendarDayGridCell20
+ *         TextLabel          textLabel30
+ *       CalendarDayGridCell  calendarDayGridCell21
+ *         TextLabel          textLabel31
+ *     Container              container6
+ *       CalendarDayGridCell  calendarDayGridCell22
+ *         TextLabel          textLabel32
+ *       CalendarDayGridCell  calendarDayGridCell23
+ *         TextLabel          textLabel33
+ *       CalendarDayGridCell  calendarDayGridCell24
+ *         TextLabel          textLabel34
+ *       CalendarDayGridCell  calendarDayGridCell25
+ *         TextLabel          textLabel35
+ *       CalendarDayGridCell  calendarDayGridCell26
+ *         TextLabel          textLabel36
+ *       CalendarDayGridCell  calendarDayGridCell27
+ *         TextLabel          textLabel37
+ *       CalendarDayGridCell  calendarDayGridCell28
+ *         TextLabel          textLabel38
+ *     Container              container7
+ *       CalendarDayGridCell  calendarDayGridCell29
+ *         TextLabel          textLabel39
+ *       CalendarDay          calendarDay2
+ *         TextLabel          textLabel40
+ *
+ * @example
+ * ```tsx
+ * <Calendar
+ *   aria-hidden="false"
+ *   frame="{}"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
+ *   buttonIconic2={() => {}}
+ *   textTitle="Product Title"
+ *   buttonIconic3={() => {}}
+ *   buttonIconic4={() => {}}
+ *   container="{}"
+ *   textLabel="{}"
+ *   textLabel2="{}"
+ *   textLabel3="{}"
+ *   textLabel4="{}"
+ *   textLabel5="{}"
+ *   textLabel6="{}"
+ *   textLabel7="{}"
+ *   frame2="{}"
+ *   calendarDay="{}"
+ *   calendarDayGridCell2="{}"
+ *   calendarDayGridCell3="{}"
+ *   container2="{}"
+ *   calendarDayGridCell="{}"
+ *   calendarDayGridCell4="{}"
+ *   calendarDayGridCell5="{}"
+ *   calendarDayGridCell6="{}"
+ *   calendarDayGridCell7="{}"
+ *   container3="{}"
+ *   container4="{}"
+ *   calendarDayToday2="{}"
+ *   calendarDaySelected4="{}"
+ *   container5="{}"
+ *   container6="{}"
+ *   calendarDay2="{}"
+ * />
+ * ```
+ */
+export function Calendar({
+  className = "",
+  frame,
+  buttonIconic,
+  icon,
+  buttonIconic2,
+  icon2,
+  textTitle,
+  buttonIconic3,
+  icon3,
+  buttonIconic4,
+  icon4,
+
+  container,
+  textLabel,
+  textLabel2,
+  textLabel3,
+  textLabel4,
+  textLabel5,
+  textLabel6,
+  textLabel7,
+
+  frame2,
+  container2,
+  calendarDay,
+  textLabel8,
+  calendarDayGridCell,
+  textLabel9,
+  calendarDayGridCell2,
+  textLabel10,
+  container3,
+  calendarDayGridCell3,
+  textLabel11,
+  calendarDayGridCell4,
+  textLabel12,
+  calendarDayGridCell5,
+  textLabel13,
+  calendarDayGridCell6,
+  textLabel14,
+  calendarDayGridCell7,
+  textLabel15,
+  calendarDayGridCell8,
+  textLabel16,
+  calendarDayGridCell9,
+  textLabel17,
+  container4,
+  calendarDayGridCell10,
+  textLabel18,
+  calendarDayGridCell11,
+  textLabel19,
+  calendarDayGridCell12,
+  textLabel20,
+  calendarDayGridCell13,
+  textLabel21,
+  calendarDayGridCell14,
+  textLabel22,
+  calendarDayGridCell15,
+  textLabel23,
+  calendarDayGridCell16,
+  textLabel24,
+  container5,
+  calendarDayGridCell17,
+  textLabel25,
+  calendarDayToday,
+  textLabel26,
+  calendarDayGridCell18,
+  textLabel27,
+  calendarDaySelected,
+  textLabel28,
+  calendarDayGridCell19,
+  textLabel29,
+  calendarDayGridCell20,
+  textLabel30,
+  calendarDayGridCell21,
+  textLabel31,
+  container6,
+  calendarDayGridCell22,
+  textLabel32,
+  calendarDayGridCell23,
+  textLabel33,
+  calendarDayGridCell24,
+  textLabel34,
+  calendarDayGridCell25,
+  textLabel35,
+  calendarDayGridCell26,
+  textLabel36,
+  calendarDayGridCell27,
+  textLabel37,
+  calendarDayGridCell28,
+  textLabel38,
+  container7,
+  calendarDayGridCell29,
+  textLabel39,
+  calendarDay2,
+  textLabel40,
+
+  children,
+  seldonRefs,
+  ...props
+}: CalendarProps) {
+  const calendarClassName = combineClassNames("sdn-calendar", className)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const buttonIconicProps = mergeOptionalSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const buttonIconic2Props = mergeOptionalSlot(sdn.buttonIconic2, buttonIconic2, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+  const buttonIconic3Props = mergeOptionalSlot(sdn.buttonIconic3, buttonIconic3, seldonRefs)
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+  const buttonIconic4Props = mergeOptionalSlot(sdn.buttonIconic4, buttonIconic4, seldonRefs)
+  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
+
+  const containerProps = mergeSlot(sdn.container, container, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
+  const textLabel5Props = mergeOptionalSlot(sdn.textLabel5, textLabel5, seldonRefs)
+  const textLabel6Props = mergeOptionalSlot(sdn.textLabel6, textLabel6, seldonRefs)
+  const textLabel7Props = mergeOptionalSlot(sdn.textLabel7, textLabel7, seldonRefs)
+
+  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
+  const container2Props = mergeSlot(sdn.container2, container2, seldonRefs)
+  const calendarDayProps = mergeOptionalSlot(sdn.calendarDay, calendarDay, seldonRefs)
+  const textLabel8Props = mergeOptionalSlot(sdn.textLabel8, textLabel8, seldonRefs)
+  const calendarDayGridCellProps = mergeOptionalSlot(
+    sdn.calendarDayGridCell,
+    calendarDayGridCell,
+    seldonRefs,
+  )
+  const textLabel9Props = mergeOptionalSlot(sdn.textLabel9, textLabel9, seldonRefs)
+  const calendarDayGridCell2Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell2,
+    calendarDayGridCell2,
+    seldonRefs,
+  )
+  const textLabel10Props = mergeOptionalSlot(sdn.textLabel10, textLabel10, seldonRefs)
+  const container3Props = mergeSlot(sdn.container3, container3, seldonRefs)
+  const calendarDayGridCell3Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell3,
+    calendarDayGridCell3,
+    seldonRefs,
+  )
+  const textLabel11Props = mergeOptionalSlot(sdn.textLabel11, textLabel11, seldonRefs)
+  const calendarDayGridCell4Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell4,
+    calendarDayGridCell4,
+    seldonRefs,
+  )
+  const textLabel12Props = mergeOptionalSlot(sdn.textLabel12, textLabel12, seldonRefs)
+  const calendarDayGridCell5Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell5,
+    calendarDayGridCell5,
+    seldonRefs,
+  )
+  const textLabel13Props = mergeOptionalSlot(sdn.textLabel13, textLabel13, seldonRefs)
+  const calendarDayGridCell6Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell6,
+    calendarDayGridCell6,
+    seldonRefs,
+  )
+  const textLabel14Props = mergeOptionalSlot(sdn.textLabel14, textLabel14, seldonRefs)
+  const calendarDayGridCell7Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell7,
+    calendarDayGridCell7,
+    seldonRefs,
+  )
+  const textLabel15Props = mergeOptionalSlot(sdn.textLabel15, textLabel15, seldonRefs)
+  const calendarDayGridCell8Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell8,
+    calendarDayGridCell8,
+    seldonRefs,
+  )
+  const textLabel16Props = mergeOptionalSlot(sdn.textLabel16, textLabel16, seldonRefs)
+  const calendarDayGridCell9Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell9,
+    calendarDayGridCell9,
+    seldonRefs,
+  )
+  const textLabel17Props = mergeOptionalSlot(sdn.textLabel17, textLabel17, seldonRefs)
+  const container4Props = mergeSlot(sdn.container4, container4, seldonRefs)
+  const calendarDayGridCell10Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell10,
+    calendarDayGridCell10,
+    seldonRefs,
+  )
+  const textLabel18Props = mergeOptionalSlot(sdn.textLabel18, textLabel18, seldonRefs)
+  const calendarDayGridCell11Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell11,
+    calendarDayGridCell11,
+    seldonRefs,
+  )
+  const textLabel19Props = mergeOptionalSlot(sdn.textLabel19, textLabel19, seldonRefs)
+  const calendarDayGridCell12Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell12,
+    calendarDayGridCell12,
+    seldonRefs,
+  )
+  const textLabel20Props = mergeOptionalSlot(sdn.textLabel20, textLabel20, seldonRefs)
+  const calendarDayGridCell13Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell13,
+    calendarDayGridCell13,
+    seldonRefs,
+  )
+  const textLabel21Props = mergeOptionalSlot(sdn.textLabel21, textLabel21, seldonRefs)
+  const calendarDayGridCell14Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell14,
+    calendarDayGridCell14,
+    seldonRefs,
+  )
+  const textLabel22Props = mergeOptionalSlot(sdn.textLabel22, textLabel22, seldonRefs)
+  const calendarDayGridCell15Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell15,
+    calendarDayGridCell15,
+    seldonRefs,
+  )
+  const textLabel23Props = mergeOptionalSlot(sdn.textLabel23, textLabel23, seldonRefs)
+  const calendarDayGridCell16Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell16,
+    calendarDayGridCell16,
+    seldonRefs,
+  )
+  const textLabel24Props = mergeOptionalSlot(sdn.textLabel24, textLabel24, seldonRefs)
+  const container5Props = mergeSlot(sdn.container5, container5, seldonRefs)
+  const calendarDayGridCell17Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell17,
+    calendarDayGridCell17,
+    seldonRefs,
+  )
+  const textLabel25Props = mergeOptionalSlot(sdn.textLabel25, textLabel25, seldonRefs)
+  const calendarDayTodayProps = mergeOptionalSlot(
+    sdn.calendarDayToday,
+    calendarDayToday,
+    seldonRefs,
+  )
+  const textLabel26Props = mergeOptionalSlot(sdn.textLabel26, textLabel26, seldonRefs)
+  const calendarDayGridCell18Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell18,
+    calendarDayGridCell18,
+    seldonRefs,
+  )
+  const textLabel27Props = mergeOptionalSlot(sdn.textLabel27, textLabel27, seldonRefs)
+  const calendarDaySelectedProps = mergeOptionalSlot(
+    sdn.calendarDaySelected,
+    calendarDaySelected,
+    seldonRefs,
+  )
+  const textLabel28Props = mergeOptionalSlot(sdn.textLabel28, textLabel28, seldonRefs)
+  const calendarDayGridCell19Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell19,
+    calendarDayGridCell19,
+    seldonRefs,
+  )
+  const textLabel29Props = mergeOptionalSlot(sdn.textLabel29, textLabel29, seldonRefs)
+  const calendarDayGridCell20Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell20,
+    calendarDayGridCell20,
+    seldonRefs,
+  )
+  const textLabel30Props = mergeOptionalSlot(sdn.textLabel30, textLabel30, seldonRefs)
+  const calendarDayGridCell21Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell21,
+    calendarDayGridCell21,
+    seldonRefs,
+  )
+  const textLabel31Props = mergeOptionalSlot(sdn.textLabel31, textLabel31, seldonRefs)
+  const container6Props = mergeSlot(sdn.container6, container6, seldonRefs)
+  const calendarDayGridCell22Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell22,
+    calendarDayGridCell22,
+    seldonRefs,
+  )
+  const textLabel32Props = mergeOptionalSlot(sdn.textLabel32, textLabel32, seldonRefs)
+  const calendarDayGridCell23Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell23,
+    calendarDayGridCell23,
+    seldonRefs,
+  )
+  const textLabel33Props = mergeOptionalSlot(sdn.textLabel33, textLabel33, seldonRefs)
+  const calendarDayGridCell24Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell24,
+    calendarDayGridCell24,
+    seldonRefs,
+  )
+  const textLabel34Props = mergeOptionalSlot(sdn.textLabel34, textLabel34, seldonRefs)
+  const calendarDayGridCell25Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell25,
+    calendarDayGridCell25,
+    seldonRefs,
+  )
+  const textLabel35Props = mergeOptionalSlot(sdn.textLabel35, textLabel35, seldonRefs)
+  const calendarDayGridCell26Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell26,
+    calendarDayGridCell26,
+    seldonRefs,
+  )
+  const textLabel36Props = mergeOptionalSlot(sdn.textLabel36, textLabel36, seldonRefs)
+  const calendarDayGridCell27Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell27,
+    calendarDayGridCell27,
+    seldonRefs,
+  )
+  const textLabel37Props = mergeOptionalSlot(sdn.textLabel37, textLabel37, seldonRefs)
+  const calendarDayGridCell28Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell28,
+    calendarDayGridCell28,
+    seldonRefs,
+  )
+  const textLabel38Props = mergeOptionalSlot(sdn.textLabel38, textLabel38, seldonRefs)
+  const container7Props = mergeSlot(sdn.container7, container7, seldonRefs)
+  const calendarDayGridCell29Props = mergeOptionalSlot(
+    sdn.calendarDayGridCell29,
+    calendarDayGridCell29,
+    seldonRefs,
+  )
+  const textLabel39Props = mergeOptionalSlot(sdn.textLabel39, textLabel39, seldonRefs)
+  const calendarDay2Props = mergeOptionalSlot(sdn.calendarDay2, calendarDay2, seldonRefs)
+  const textLabel40Props = mergeOptionalSlot(sdn.textLabel40, textLabel40, seldonRefs)
+
+  return (
+    <Frame className={calendarClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          <Frame {...frameProps}>
+            {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
+            {buttonIconic2Props !== null && (
+              <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
+            )}
+            {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+            {buttonIconic3Props !== null && (
+              <ButtonIconic {...buttonIconic3Props} icon={icon3Props} />
+            )}
+            {buttonIconic4Props !== null && (
+              <ButtonIconic {...buttonIconic4Props} icon={icon4Props} />
+            )}
+          </Frame>
+          <Frame {...containerProps}>
+            {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+            {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+            {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
+            {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
+            {textLabel5Props !== null && <TextLabel {...textLabel5Props} />}
+            {textLabel6Props !== null && <TextLabel {...textLabel6Props} />}
+            {textLabel7Props !== null && <TextLabel {...textLabel7Props} />}
+          </Frame>
+          <Frame {...frame2Props}>
+            <Frame {...container2Props}>
+              {calendarDayProps !== null && (
+                <CalendarDay {...calendarDayProps}>
+                  {textLabel8Props !== null && <TextLabel {...textLabel8Props} />}
+                </CalendarDay>
+              )}
+              {calendarDayGridCellProps !== null && (
+                <CalendarDayGridCell {...calendarDayGridCellProps}>
+                  {textLabel9Props !== null && <TextLabel {...textLabel9Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell2Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell2Props}>
+                  {textLabel10Props !== null && <TextLabel {...textLabel10Props} />}
+                </CalendarDayGridCell>
+              )}
+            </Frame>
+            <Frame {...container3Props}>
+              {calendarDayGridCell3Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell3Props}>
+                  {textLabel11Props !== null && <TextLabel {...textLabel11Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell4Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell4Props}>
+                  {textLabel12Props !== null && <TextLabel {...textLabel12Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell5Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell5Props}>
+                  {textLabel13Props !== null && <TextLabel {...textLabel13Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell6Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell6Props}>
+                  {textLabel14Props !== null && <TextLabel {...textLabel14Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell7Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell7Props}>
+                  {textLabel15Props !== null && <TextLabel {...textLabel15Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell8Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell8Props}>
+                  {textLabel16Props !== null && <TextLabel {...textLabel16Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell9Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell9Props}>
+                  {textLabel17Props !== null && <TextLabel {...textLabel17Props} />}
+                </CalendarDayGridCell>
+              )}
+            </Frame>
+            <Frame {...container4Props}>
+              {calendarDayGridCell10Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell10Props}>
+                  {textLabel18Props !== null && <TextLabel {...textLabel18Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell11Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell11Props}>
+                  {textLabel19Props !== null && <TextLabel {...textLabel19Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell12Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell12Props}>
+                  {textLabel20Props !== null && <TextLabel {...textLabel20Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell13Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell13Props}>
+                  {textLabel21Props !== null && <TextLabel {...textLabel21Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell14Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell14Props}>
+                  {textLabel22Props !== null && <TextLabel {...textLabel22Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell15Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell15Props}>
+                  {textLabel23Props !== null && <TextLabel {...textLabel23Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell16Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell16Props}>
+                  {textLabel24Props !== null && <TextLabel {...textLabel24Props} />}
+                </CalendarDayGridCell>
+              )}
+            </Frame>
+            <Frame {...container5Props}>
+              {calendarDayGridCell17Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell17Props}>
+                  {textLabel25Props !== null && <TextLabel {...textLabel25Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayTodayProps !== null && (
+                <CalendarDayToday {...calendarDayTodayProps}>
+                  {textLabel26Props !== null && <TextLabel {...textLabel26Props} />}
+                </CalendarDayToday>
+              )}
+              {calendarDayGridCell18Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell18Props}>
+                  {textLabel27Props !== null && <TextLabel {...textLabel27Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDaySelectedProps !== null && (
+                <CalendarDaySelected {...calendarDaySelectedProps}>
+                  {textLabel28Props !== null && <TextLabel {...textLabel28Props} />}
+                </CalendarDaySelected>
+              )}
+              {calendarDayGridCell19Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell19Props}>
+                  {textLabel29Props !== null && <TextLabel {...textLabel29Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell20Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell20Props}>
+                  {textLabel30Props !== null && <TextLabel {...textLabel30Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell21Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell21Props}>
+                  {textLabel31Props !== null && <TextLabel {...textLabel31Props} />}
+                </CalendarDayGridCell>
+              )}
+            </Frame>
+            <Frame {...container6Props}>
+              {calendarDayGridCell22Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell22Props}>
+                  {textLabel32Props !== null && <TextLabel {...textLabel32Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell23Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell23Props}>
+                  {textLabel33Props !== null && <TextLabel {...textLabel33Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell24Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell24Props}>
+                  {textLabel34Props !== null && <TextLabel {...textLabel34Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell25Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell25Props}>
+                  {textLabel35Props !== null && <TextLabel {...textLabel35Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell26Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell26Props}>
+                  {textLabel36Props !== null && <TextLabel {...textLabel36Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell27Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell27Props}>
+                  {textLabel37Props !== null && <TextLabel {...textLabel37Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDayGridCell28Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell28Props}>
+                  {textLabel38Props !== null && <TextLabel {...textLabel38Props} />}
+                </CalendarDayGridCell>
+              )}
+            </Frame>
+            <Frame {...container7Props}>
+              {calendarDayGridCell29Props !== null && (
+                <CalendarDayGridCell {...calendarDayGridCell29Props}>
+                  {textLabel39Props !== null && <TextLabel {...textLabel39Props} />}
+                </CalendarDayGridCell>
+              )}
+              {calendarDay2Props !== null && (
+                <CalendarDay {...calendarDay2Props}>
+                  {textLabel40Props !== null && <TextLabel {...textLabel40Props} />}
+                </CalendarDay>
+              )}
+            </Frame>
+          </Frame>
+        </>
+      )}
+    </Frame>
+  )
 }

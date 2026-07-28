@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Text: TextLabel
  * Level: Primitive
  * Intent: Base text component for general-purpose inline content.
@@ -27,7 +27,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -47,8 +47,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "children": "Label",
   "htmlElement": "label",
-  "aria-hidden": "false",
-  "className": "sdn-text-label sdn-text"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-text-label", props.className))

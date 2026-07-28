@@ -12,12 +12,20 @@
  *
  *****/
 
-/*****
+/**
  * Form Control: FormControlCombobox
  * Level: Element
  * Intent: Captures plain text input from the user for forms or interactions.
  * Tags: UI, UI control, binary, boolean, checkbox, choice, control, decorated, dropdown, editable, exclusive, field, form, icon, input, menu, options, query, radio, search, select, single choice, text, toggle, user entry
  * Type: Custom
+ *
+ * Structure:
+ *   TextLabel       textLabel
+ *   ComboboxField   comboboxField
+ *     Icon          icon
+ *     Input         input
+ *     ButtonIconic  buttonIconic
+ *       Icon        icon2
  *
  * @example
  * ```vue
@@ -30,13 +38,13 @@
  *   buttonIconic={() => {}}
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import ComboboxField from "../elements/ComboboxField.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 
@@ -48,6 +56,7 @@ const props = defineProps<{
   input?: Record<string, unknown> | null
   buttonIconic?: Record<string, unknown> | null
   icon2?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -55,7 +64,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-form-control",
   "textLabel": {
     "className": "sdn-text-label sdn-text-label--fwkw"
   },
@@ -87,18 +95,18 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-form-control", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
       </slot>
     </div>

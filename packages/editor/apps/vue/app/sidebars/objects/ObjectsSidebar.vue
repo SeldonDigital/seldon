@@ -104,14 +104,16 @@ const resourcesToggle = computed(() => ({
   onClick: () => config.setObjectsView("resources"),
 }))
 
-// Grow the generated objects container so the tree fills and scrolls, matching
-// the React `seldonRefs.objectsContainer` style override.
-const containerFrame = {
-  style: {
-    flex: 1,
-    minHeight: 0,
-    display: "flex",
-    flexDirection: "column",
+// Grow the generated objects container so the tree fills and scrolls, addressed
+// by the frame's baked `objectsContainer` ref.
+const seldonRefs = {
+  objectsContainer: {
+    style: {
+      flex: 1,
+      minHeight: 0,
+      display: "flex",
+      flexDirection: "column",
+    },
   },
 }
 
@@ -125,13 +127,13 @@ function asBoard(board: unknown): BoardType {
     ref="sidebarRef"
     class="objects-sidebar"
     data-testid="objects-sidebar"
+    :seldon-refs="seldonRefs"
     :combobox-field-project="projectField"
     :input="inputProps"
     :button-iconic="projectActions"
     :frame2="{}"
     :button-toggle="componentsToggle"
     :button-toggle2="resourcesToggle"
-    :frame3="containerFrame"
   >
     <template #objectsContainer>
       <Frame class="objects-sidebar__scroll">

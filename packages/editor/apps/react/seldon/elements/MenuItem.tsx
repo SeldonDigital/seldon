@@ -10,31 +10,58 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes } from "react"
+
+import { HTMLButton } from "../native-react/HTML.Button"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface MenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
+
   textLabel?: TextLabelProps | null
+
   textLabel2?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: MenuItemProps = {
+  role: "menuitem",
+  "aria-hidden": "false",
+  icon: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--3qou",
+  },
+
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--xohb",
+  },
+
+  textLabel2: {
+    className: "sdn-text-label sdn-text-label--fdei",
+  },
+}
+
+/**
  * Menu Item: MenuItem
  * Level: Element
  * Intent: Single actionable row inside a menu.
  * Tags: menu, menuitem, action, row, element, UI
  * Type: Default
+ *
+ * Structure:
+ *   Icon       icon
+ *   TextLabel  textLabel
+ *   TextLabel  textLabel2
  *
  * @example
  * ```tsx
@@ -43,47 +70,26 @@ export interface MenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function MenuItem({
   className = "",
-  icon = sdn.icon,
+  icon,
+
   textLabel,
+
   textLabel2,
+
   children,
   seldonRefs,
   ...props
 }: MenuItemProps) {
   const menuItemClassName = combineClassNames("sdn-menu-item", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
 
   return (
     <HTMLButton
@@ -97,30 +103,10 @@ export function MenuItem({
       ) : (
         <>
           {iconProps !== null && <Icon {...iconProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-          {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
+          {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+          {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
         </>
       )}
     </HTMLButton>
   )
-}
-
-//
-// Default property values
-//
-const sdn: MenuItemProps = {
-  role: "menuitem",
-  "aria-hidden": "false",
-  className: "sdn-menu-item",
-  icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--xohb",
-  },
-  textLabel2: {
-    className: "sdn-text-label sdn-text-label--fdei",
-  },
 }

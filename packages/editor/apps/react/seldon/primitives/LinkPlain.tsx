@@ -10,17 +10,25 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { AnchorHTMLAttributes } from "react"
+
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { combineClassNames } from "../utils/class-name"
 
-import type { AnchorHTMLAttributes } from "react"
-
 export interface LinkPlainProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  className?: string
   "data-seldon-ref"?: string
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: LinkPlainProps = {
+  children: "Link",
+  "aria-hidden": "false",
+}
+
+/**
  * Link: LinkPlain
  * Level: Primitive
  * Intent: A clickable link component that can be used for navigation, external links, or any clickable text. Supports various styling and accessibility options.
@@ -34,7 +42,7 @@ export interface LinkPlainProps extends AnchorHTMLAttributes<HTMLAnchorElement> 
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function LinkPlain({ className = "", children = sdn.children, ...props }: LinkPlainProps) {
   const linkPlainClassName = combineClassNames("sdn-link-plain", className)
 
@@ -46,13 +54,4 @@ export function LinkPlain({ className = "", children = sdn.children, ...props }:
       {children}
     </HTMLAnchor>
   )
-}
-
-//
-// Default property values
-//
-const sdn: LinkPlainProps = {
-  children: "Link",
-  "aria-hidden": "false",
-  className: "sdn-link-plain sdn-link",
 }

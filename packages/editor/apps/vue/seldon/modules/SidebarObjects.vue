@@ -12,12 +12,26 @@
  *
  *****/
 
-/*****
+/**
  * Sidebar: SidebarObjects
  * Level: Module
  * Intent: Provides a structured sidebar panel with tabbed navigation, content area, and status footer for application interfaces.
  * Tags: sidebar, panel, module, ui, layout, navigation, tabs, structured
  * Type: Inline
+ *
+ * Structure:
+ *   Frame                   frame
+ *     ComboboxFieldProject  comboboxFieldProject
+ *       Icon                icon
+ *       Input               input                 -> workspaceName
+ *       ButtonIconic        buttonIconic          -> workspaceSave
+ *         Icon              icon2
+ *     Frame                 frame2
+ *       ButtonToggle        buttonToggle          -> sidebarComponents
+ *         Icon              icon3
+ *       ButtonToggle        buttonToggle2         -> sidebarResources
+ *         Icon              icon4
+ *   Frame                   frame3                -> objectsContainer
  *
  * @example
  * ```vue
@@ -26,13 +40,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import ButtonToggle from "../elements/ButtonToggle.vue"
 import ComboboxFieldProject from "../elements/ComboboxFieldProject.vue"
@@ -51,6 +65,7 @@ const props = defineProps<{
   buttonToggle2?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
   frame3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -59,7 +74,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "complementary",
   "aria-hidden": "false",
-  "className": "sdn-sidebar-objects sdn-sidebar",
   "frame": {
     "wrapperElement": "div",
     "aria-hidden": "false",
@@ -123,31 +137,31 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-sidebar-objects", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const comboboxFieldProjectProps = computed(() => mergeSlot(sdn.comboboxFieldProject, props.comboboxFieldProject))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const buttonToggleProps = computed(() => mergeSlot(sdn.buttonToggle, props.buttonToggle))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const buttonToggle2Props = computed(() => mergeSlot(sdn.buttonToggle2, props.buttonToggle2))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const comboboxFieldProjectProps = computed(() => mergeOptionalSlot(sdn.comboboxFieldProject, props.comboboxFieldProject, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const buttonToggleProps = computed(() => mergeOptionalSlot(sdn.buttonToggle, props.buttonToggle, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const buttonToggle2Props = computed(() => mergeOptionalSlot(sdn.buttonToggle2, props.buttonToggle2, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Frame v-bind="frameProps">
-          <ComboboxFieldProject v-if="comboboxFieldProject && comboboxFieldProjectProps" v-bind="comboboxFieldProjectProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
-          <Frame v-bind="frame2Props" v-if="frame2">
-            <ButtonToggle v-if="buttonToggle && buttonToggleProps" v-bind="buttonToggleProps" :icon="icon3Props" />
-            <ButtonToggle v-if="buttonToggle2 && buttonToggle2Props" v-bind="buttonToggle2Props" :icon="icon4Props" />
+          <ComboboxFieldProject v-if="comboboxFieldProjectProps !== null" v-bind="comboboxFieldProjectProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <ButtonToggle v-if="buttonToggleProps !== null" v-bind="buttonToggleProps" :icon="icon3Props" />
+            <ButtonToggle v-if="buttonToggle2Props !== null" v-bind="buttonToggle2Props" :icon="icon4Props" />
           </Frame>
         </Frame>
-        <Frame v-bind="frame3Props" v-if="frame3">
+        <Frame v-bind="frame3Props" v-if="frame3Props !== null">
           <slot name="objectsContainer" />
         </Frame>
       </slot>

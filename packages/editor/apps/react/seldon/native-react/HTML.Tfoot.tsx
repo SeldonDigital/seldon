@@ -10,6 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
 import type { HTMLAttributes } from "react"
 
 export const HTMLTfoot = ({ style, ...props }: HTMLAttributes<HTMLTableSectionElement>) => {

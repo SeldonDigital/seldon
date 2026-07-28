@@ -12,12 +12,23 @@
  *
  *****/
 
-/*****
+/**
  * Item: ItemNode
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Custom
+ *
+ * Structure:
+ *   ButtonIconic    buttonIconic   -> nodeToggle
+ *     Icon          icon           -> nodeToggleIcon
+ *   ComboboxField   comboboxField
+ *     Icon          icon2          -> nodeIcon
+ *     Input         input          -> nodeLabel
+ *     ButtonIconic  buttonIconic2  -> nodeDisplay
+ *       Icon        icon3
+ *   ButtonIconic    buttonIconic3  -> nodeActions
+ *     Icon          icon4
  *
  * @example
  * ```vue
@@ -26,13 +37,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import ButtonIconic from "../elements/ButtonIconic.vue"
 import ComboboxField from "../elements/ComboboxField.vue"
 
@@ -47,6 +58,7 @@ const props = defineProps<{
   icon3?: Record<string, unknown> | null
   buttonIconic3?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -55,7 +67,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "treeitem",
   "aria-hidden": "false",
-  "className": "sdn-item-node sdn-item",
   "buttonIconic": {
     "className": "sdn-button-iconic sdn-button-iconic--pgsr",
     "data-seldon-ref": "nodeToggle"
@@ -105,23 +116,23 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-item-node", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const buttonIconic3Props = computed(() => mergeSlot(sdn.buttonIconic3, props.buttonIconic3))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
+const buttonIconicProps = computed(() => mergeOptionalSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const comboboxFieldProps = computed(() => mergeOptionalSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const buttonIconic3Props = computed(() => mergeOptionalSlot(sdn.buttonIconic3, props.buttonIconic3, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
 </script>
 
 <template>
     <li :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <ButtonIconic v-if="buttonIconic && buttonIconicProps" v-bind="buttonIconicProps" :icon="iconProps" />
-        <ComboboxField v-if="comboboxField && comboboxFieldProps" v-bind="comboboxFieldProps" :icon="icon2Props" :input="inputProps" :buttonIconic="buttonIconic2Props" :icon2="icon3Props" />
-        <ButtonIconic v-if="buttonIconic3 && buttonIconic3Props" v-bind="buttonIconic3Props" :icon="icon4Props" />
+        <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
+        <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :icon="icon2Props" :input="inputProps" :buttonIconic="buttonIconic2Props" :icon2="icon3Props" />
+        <ButtonIconic v-if="buttonIconic3Props !== null" v-bind="buttonIconic3Props" :icon="icon4Props" />
       </slot>
     </li>
 </template>

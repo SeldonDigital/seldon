@@ -12,9 +12,12 @@ type DefaultPropsValue = Record<
  * Generates the component's default property values (the `sdn` object).
  *
  * Non-conditional nodes contribute their full flattened props. Conditional
- * nodes only contribute a className, because variable declarations reference
- * `sdn.<prop>?.className` for every node even when the prop has no default in
- * the function signature.
+ * nodes on a catalog component contribute only a className and a ref, so their
+ * inline extras stay consumer-supplied while the merge helpers still find the
+ * class and the ref name.
+ *
+ * The root entry drops its `className`: the root class is inlined at the render
+ * site from the variant class names, so nothing reads it here.
  */
 export function generateDefaultProps(
   component: ComponentToExport,
@@ -25,15 +28,18 @@ export function generateDefaultProps(
   const conditionalPaths = getConditionalPropPaths(component)
 
   if (Object.keys(component.tree.dataBinding.props).length > 0) {
-    Object.assign(
-      defaultProps,
-      flattenProps(
-        component.tree.dataBinding.props,
-        component.tree.nodeId,
-        nodeIdToClass,
-        component.tree.classNames,
-      ),
+    const rootEntry = flattenProps(
+      component.tree.dataBinding.props,
+      component.tree.nodeId,
+      nodeIdToClass,
+      component.tree.classNames,
     )
+
+    // The root element takes its class from the variant class names inlined at
+    // the render site, so a root `className` entry here is never read.
+    delete rootEntry.className
+
+    Object.assign(defaultProps, rootEntry)
   }
 
   function traverse(node: JSONTreeNode) {

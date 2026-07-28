@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Text: TextCodeblock
  * Level: Primitive
  * Intent: Base text component for general-purpose inline content.
@@ -27,7 +27,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -47,8 +47,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "children": "Codeblock",
   "htmlElement": "pre",
-  "aria-hidden": "false",
-  "className": "sdn-text-codeblock sdn-text"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-text-codeblock", props.className))

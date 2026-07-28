@@ -10,6 +10,9 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { HTMLAttributes } from "react"
+
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -24,8 +27,6 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
-
-import type { HTMLAttributes } from "react"
 
 export interface TextProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -42,7 +43,6 @@ export interface TextProps extends HTMLAttributes<
   | HTMLPreElement
   | HTMLElement
 > {
-  className?: string
   "data-seldon-ref"?: string
   htmlElement?:
     | "p"
@@ -60,7 +60,16 @@ export interface TextProps extends HTMLAttributes<
     | "option"
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: TextProps = {
+  children: "Body",
+  htmlElement: "p",
+  "aria-hidden": "false",
+}
+
+/**
  * Text: Text
  * Level: Primitive
  * Intent: Base text component for general-purpose inline content.
@@ -75,7 +84,7 @@ export interface TextProps extends HTMLAttributes<
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function Text({
   className = "",
   children = sdn.children,
@@ -203,14 +212,4 @@ export function Text({
         </HTMLParagraph>
       )
   }
-}
-
-//
-// Default property values
-//
-const sdn: TextProps = {
-  children: "Body",
-  htmlElement: "p",
-  "aria-hidden": "false",
-  className: "sdn-text",
 }

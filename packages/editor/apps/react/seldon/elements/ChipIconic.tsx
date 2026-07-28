@@ -10,27 +10,42 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLSpan } from "../native-react/HTML.Span"
-import { Icon } from "../primitives/Icon"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { IconProps } from "../primitives/Icon"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { HTMLSpan } from "../native-react/HTML.Span"
+import { Icon, IconProps } from "../primitives/Icon"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
 
 export interface ChipIconicProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ChipIconicProps = {
+  "aria-hidden": "false",
+  icon: {
+    icon: "material-inbox",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--gh8m",
+  },
+}
+
+/**
  * Chip: ChipIconic
  * Level: Element
  * Intent: Schema for a small, interactive UI element used to display information, categories, or actions with optional removal or selection states.
  * Tags: chip, ui, tag, label, badge, filter, category, pill
  * Type: Custom
+ *
+ * Structure:
+ *   Icon  icon
  *
  * @example
  * ```tsx
@@ -39,42 +54,22 @@ export interface ChipIconicProps extends HTMLAttributes<HTMLElement> {
  *   icon="material-star"
  * />
  * ```
- *****/
+ */
 export function ChipIconic({
   className = "",
-  icon = sdn.icon,
+  icon,
+
   children,
   seldonRefs,
   ...props
 }: ChipIconicProps) {
   const chipIconicClassName = combineClassNames("sdn-chip-iconic", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
 
   return (
     <HTMLSpan className={chipIconicClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? children : <>{iconProps !== null && <Icon {...iconProps} />}</>}
     </HTMLSpan>
   )
-}
-
-//
-// Default property values
-//
-const sdn: ChipIconicProps = {
-  "aria-hidden": "false",
-  className: "sdn-chip-iconic sdn-chip",
-  icon: {
-    icon: "material-inbox",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--gh8m",
-  },
 }

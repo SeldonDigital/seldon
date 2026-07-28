@@ -12,12 +12,31 @@
  *
  *****/
 
-/*****
+/**
  * List: boxGrouped
  * Level: Part
  * Intent: Floating list of selectable options for a combobox or select.
  * Tags: listbox, options, select, combobox, part, overlay, UI
  * Type: Inline
+ *
+ * Structure:
+ *   Frame            frame
+ *     TextLabel      textLabel
+ *     ListboxOption  listboxOption
+ *       Icon         icon
+ *       TextLabel    textLabel2
+ *     ListboxOption  listboxOption2
+ *       Icon         icon2
+ *       TextLabel    textLabel3
+ *   Hr               hr
+ *   Frame            frame2
+ *     TextLabel      textLabel4
+ *     ListboxOption  listboxOption3
+ *       Icon         icon3
+ *       TextLabel    textLabel5
+ *     ListboxOption  listboxOption4
+ *       Icon         icon4
+ *       TextLabel    textLabel6
  *
  * @example
  * ```vue
@@ -26,13 +45,13 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Hr from "../primitives/Hr.vue"
 import Icon from "../primitives/Icon.vue"
@@ -58,6 +77,7 @@ const props = defineProps<{
   listboxOption4?: Record<string, unknown> | null
   icon4?: Record<string, unknown> | null
   textLabel6?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -66,7 +86,6 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "role": "listbox",
   "aria-hidden": "false",
-  "className": "sdn-listbox",
   "frame": {
     "wrapperElement": "div",
     "role": "group",
@@ -137,49 +156,49 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-listbox", props.className))
 const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const listboxOptionProps = computed(() => mergeSlot(sdn.listboxOption, props.listboxOption))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const listboxOption2Props = computed(() => mergeSlot(sdn.listboxOption2, props.listboxOption2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
-const hrProps = computed(() => mergeSlot(sdn.hr, props.hr))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const textLabel4Props = computed(() => mergeSlot(sdn.textLabel4, props.textLabel4))
-const listboxOption3Props = computed(() => mergeSlot(sdn.listboxOption3, props.listboxOption3))
-const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3))
-const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel5))
-const listboxOption4Props = computed(() => mergeSlot(sdn.listboxOption4, props.listboxOption4))
-const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4))
-const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel6))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const listboxOptionProps = computed(() => mergeOptionalSlot(sdn.listboxOption, props.listboxOption, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const listboxOption2Props = computed(() => mergeOptionalSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const hrProps = computed(() => mergeSlot(sdn.hr, props.hr, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
+const listboxOption3Props = computed(() => mergeOptionalSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs))
+const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
+const textLabel5Props = computed(() => mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs))
+const listboxOption4Props = computed(() => mergeOptionalSlot(sdn.listboxOption4, props.listboxOption4, props.seldonRefs))
+const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
+const textLabel6Props = computed(() => mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Frame v-bind="frameProps">
-          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-          <ListboxOption v-if="listboxOption && listboxOptionProps" v-bind="listboxOptionProps">
+          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+          <ListboxOption v-if="listboxOptionProps !== null" v-bind="listboxOptionProps">
             <Icon v-if="iconProps !== null" v-bind="iconProps" />
-            <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
           </ListboxOption>
-          <ListboxOption v-if="listboxOption2 && listboxOption2Props" v-bind="listboxOption2Props">
+          <ListboxOption v-if="listboxOption2Props !== null" v-bind="listboxOption2Props">
             <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-            <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
+            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
           </ListboxOption>
         </Frame>
         <Hr v-if="hrProps !== null" v-bind="hrProps" />
         <Frame v-bind="frame2Props">
-          <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
-          <ListboxOption v-if="listboxOption3 && listboxOption3Props" v-bind="listboxOption3Props">
+          <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+          <ListboxOption v-if="listboxOption3Props !== null" v-bind="listboxOption3Props">
             <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-            <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
+            <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
           </ListboxOption>
-          <ListboxOption v-if="listboxOption4 && listboxOption4Props" v-bind="listboxOption4Props">
+          <ListboxOption v-if="listboxOption4Props !== null" v-bind="listboxOption4Props">
             <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
-            <TextLabel v-if="textLabel6 && textLabel6Props" v-bind="textLabel6Props" />
+            <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
           </ListboxOption>
         </Frame>
       </slot>

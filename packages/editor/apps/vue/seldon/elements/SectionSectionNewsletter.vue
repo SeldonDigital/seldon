@@ -12,12 +12,20 @@
  *
  *****/
 
-/*****
+/**
  * Section: SectionNewsletter
  * Level: Element
  * Intent: Navigation section containing links to important pages. Can be used in footers, headers, sidebars, or any other layout context. Follows Material Design navigation patterns.
  * Tags: section, navigation, links, menu, element, layout, header, footer, sidebar
  * Type: Custom
+ *
+ * Structure:
+ *   TextTitle        textTitle
+ *   TextDescription  textDescription
+ *   Input            input
+ *   Button           button
+ *     Icon           icon
+ *     TextLabel      textLabel
  *
  * @example
  * ```vue
@@ -31,13 +39,13 @@
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import Button from "../elements/Button.vue"
 import Icon from "../primitives/Icon.vue"
 import Input from "../primitives/Input.vue"
@@ -53,6 +61,7 @@ const props = defineProps<{
   button?: Record<string, unknown> | null
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -60,7 +69,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-section",
   "textTitle": {
     "className": "sdn-text-title sdn-text-title--a5sd"
   },
@@ -87,23 +95,23 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-section", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const textDescriptionProps = computed(() => mergeSlot(sdn.textDescription, props.textDescription))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const textDescriptionProps = computed(() => mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
-        <TextDescription v-if="textDescription && textDescriptionProps" v-bind="textDescriptionProps" />
+        <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+        <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
         <Input v-if="inputProps !== null" v-bind="inputProps" />
         <Button v-if="buttonProps !== null" v-bind="buttonProps">
           <Icon v-if="iconProps !== null" v-bind="iconProps" />
-          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         </Button>
       </slot>
     </div>

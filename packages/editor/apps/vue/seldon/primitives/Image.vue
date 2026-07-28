@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Image: Image
  * Level: Primitive
  * Intent: Renders an image asset within the UI, supporting alt text and sizing.
@@ -26,7 +26,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -44,8 +44,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "src": "https://static.seldon.app/background-default-dark.jpg",
-  "aria-hidden": "false",
-  "className": "sdn-image"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-image", props.className))

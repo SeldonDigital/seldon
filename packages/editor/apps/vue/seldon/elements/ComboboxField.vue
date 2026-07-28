@@ -12,12 +12,18 @@
  *
  *****/
 
-/*****
+/**
  * Combobox Field: ComboboxField
  * Level: Element
  * Intent: Field box that holds the combobox input and opens its listbox.
  * Tags: combobox, trigger, input, field, select, element, UI
  * Type: Default
+ *
+ * Structure:
+ *   Icon          icon
+ *   Input         input
+ *   ButtonIconic  buttonIconic
+ *     Icon        icon2
  *
  * @example
  * ```vue
@@ -28,7 +34,7 @@
  *   buttonIconic={() => {}}
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -45,6 +51,7 @@ const props = defineProps<{
   input?: Record<string, unknown> | null
   buttonIconic?: Record<string, unknown> | null
   icon2?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -52,7 +59,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-combobox-field",
   "icon": {
     "icon": "seldon-component",
     "aria-hidden": "true",
@@ -77,10 +83,10 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-combobox-field", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const inputProps = computed(() => mergeSlot(sdn.input, props.input))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 </script>
 
 <template>

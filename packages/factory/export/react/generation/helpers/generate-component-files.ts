@@ -16,7 +16,7 @@ import type { Workspace } from "@seldon/core/workspace/types"
  *
  * Processes each component through the generation pipeline:
  * 1. Build the JSX structure and its prop name map
- * 2. Build component source: interface → function → defaults → imports → special handling
+ * 2. Build component source: interface → defaults → function → imports → special handling
  * 3. Format and add to files list
  *
  * @param componentsToExport - Array of components to generate files for
@@ -42,6 +42,7 @@ export async function generateComponentFiles(
       const { root: jsxRoot, propNames } = generateJSXStructure(component, nodeIdToClass, workspace)
 
       source = insertInterface(source, component, propNames)
+      source = insertDefaultProps(source, component, nodeIdToClass, propNames)
       source = insertComponentFunction(
         source,
         component,
@@ -50,7 +51,6 @@ export async function generateComponentFiles(
         workspace,
         jsxRoot,
       )
-      source = insertDefaultProps(source, component, nodeIdToClass, propNames)
       source = insertImports(source, component, jsxRoot, options)
 
       if (component.config.react.returns === "iconMap") {

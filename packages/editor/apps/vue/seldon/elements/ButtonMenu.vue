@@ -12,12 +12,16 @@
  *
  *****/
 
-/*****
+/**
  * Button: Menu
  * Level: Element
  * Intent: Standard button for triggering actions like submit, confirm, or cancel.
  * Tags: button, action, UI, primary, click, control, submit, call to action
  * Type: Custom
+ *
+ * Structure:
+ *   TextLabel  textLabel
+ *   Icon       icon
  *
  * @example
  * ```vue
@@ -26,13 +30,13 @@
  *   icon="material-star"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 
@@ -40,6 +44,7 @@ const props = defineProps<{
   className?: string
   textLabel?: Record<string, unknown> | null
   icon?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -57,14 +62,14 @@ const sdn: Record<string, any> = {
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-button-menu", props.className))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 </script>
 
 <template>
     <button :class="rootClassName">
       <slot>
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         <Icon v-if="iconProps !== null" v-bind="iconProps" />
       </slot>
     </button>

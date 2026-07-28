@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * Blockquote: Blockquote
  * Level: Primitive
  * Intent: Displays a block-level quotation for cited or referenced content.
@@ -26,7 +26,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -44,8 +44,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "children": "Blockquote",
-  "aria-hidden": "false",
-  "className": "sdn-blockquote"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-blockquote", props.className))

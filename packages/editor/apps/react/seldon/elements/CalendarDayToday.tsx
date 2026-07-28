@@ -10,18 +10,17 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot } from "../utils/merge-slot"
 
 export interface CalendarDayTodayProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
   wrapperElement?:
     | "div"
     | "section"
@@ -44,15 +43,31 @@ export interface CalendarDayTodayProps extends HTMLAttributes<HTMLElement> {
     | "tbody"
     | "tfoot"
     | "tr"
+
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: CalendarDayTodayProps = {
+  wrapperElement: "div",
+  "aria-hidden": "false",
+  "aria-current": "date",
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--g3ro",
+  },
+}
+
+/**
  * Calendar Day: CalendarDayToday
  * Level: Element
  * Intent: A single day cell for a calendar grid. The default renders a plain number; variants cover muted out-of-month days, the selected day, and the current day.
  * Tags: calendar, day, date, cell, ui, grid
  * Type: Custom
+ *
+ * Structure:
+ *   TextLabel  textLabel
  *
  * @example
  * ```tsx
@@ -62,26 +77,19 @@ export interface CalendarDayTodayProps extends HTMLAttributes<HTMLElement> {
  *   aria-current="date"
  * />
  * ```
- *****/
+ */
 export function CalendarDayToday({
   className = "",
   wrapperElement = sdn.wrapperElement,
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: CalendarDayTodayProps) {
   const calendarDayTodayClassName = combineClassNames("sdn-calendar-day-today", className)
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <Frame
@@ -93,21 +101,8 @@ export function CalendarDayToday({
       {children !== undefined ? (
         children
       ) : (
-        <>{textLabel && textLabelProps && <TextLabel {...textLabelProps} />}</>
+        <>{textLabelProps !== null && <TextLabel {...textLabelProps} />}</>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: CalendarDayTodayProps = {
-  wrapperElement: "div",
-  "aria-hidden": "false",
-  "aria-current": "date",
-  className: "sdn-calendar-day-today sdn-calendar-day",
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--g3ro",
-  },
 }

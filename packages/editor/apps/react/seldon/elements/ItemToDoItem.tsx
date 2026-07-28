@@ -10,42 +10,99 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Chip } from "../elements/Chip"
-import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon } from "../primitives/Icon"
-import { InputCheckbox } from "../primitives/InputCheckbox"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ChipProps } from "../elements/Chip"
-import type { IconProps } from "../primitives/Icon"
-import type { InputCheckboxProps } from "../primitives/InputCheckbox"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { LiHTMLAttributes } from "react"
+import { LiHTMLAttributes } from "react"
+
+import { Chip, ChipProps } from "../elements/Chip"
+import { HTMLLi } from "../native-react/HTML.Li"
+import { Icon, IconProps } from "../primitives/Icon"
+import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ItemToDoItemProps extends LiHTMLAttributes<HTMLLIElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   inputCheckbox?: InputCheckboxProps | null
+
   textLabel?: TextLabelProps | null
+
   chip?: ChipProps | null
   icon?: IconProps | null
   textLabel2?: TextLabelProps | null
+
   chip2?: ChipProps | null
   icon2?: IconProps | null
   textLabel3?: TextLabelProps | null
+
   chip3?: ChipProps | null
   textLabel4?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ItemToDoItemProps = {
+  "aria-hidden": "false",
+  inputCheckbox: {
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+  },
+
+  textLabel: {
+    className: "sdn-text-label sdn-text--s4kj",
+  },
+
+  chip: {
+    "aria-hidden": "false",
+    className: "sdn-chip sdn-chip--o0xb",
+  },
+  icon: {
+    className: "sdn-icon sdn-icon--eyw9",
+  },
+  textLabel2: {
+    className: "sdn-text-label sdn-text-label--lug5",
+  },
+
+  chip2: {
+    "aria-hidden": "false",
+    className: "sdn-chip sdn-chip--o0xb",
+  },
+  icon2: {
+    className: "sdn-icon sdn-icon--eyw9",
+  },
+  textLabel3: {
+    className: "sdn-text-label sdn-text-label--lug5",
+  },
+
+  chip3: {
+    "aria-hidden": "false",
+    className: "sdn-chip sdn-chip--o0xb",
+  },
+  textLabel4: {
+    className: "sdn-text-label sdn-text-label--lug5",
+  },
+}
+
+/**
  * Item: ItemToDoItem
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Custom
+ *
+ * Structure:
+ *   InputCheckbox  inputCheckbox
+ *   TextLabel      textLabel
+ *   Chip           chip
+ *     Icon         icon
+ *     TextLabel    textLabel2
+ *   Chip           chip2
+ *     Icon         icon2
+ *     TextLabel    textLabel3
+ *   Chip           chip3
+ *     TextLabel    textLabel4
  *
  * @example
  * ```tsx
@@ -59,124 +116,44 @@ export interface ItemToDoItemProps extends LiHTMLAttributes<HTMLLIElement> {
  *   chip3="{}"
  * />
  * ```
- *****/
+ */
 export function ItemToDoItem({
   className = "",
   inputCheckbox,
+
   textLabel,
-  chip = sdn.chip,
+
+  chip,
   icon,
   textLabel2,
-  chip2 = sdn.chip2,
+
+  chip2,
   icon2,
   textLabel3,
-  chip3 = sdn.chip3,
+
+  chip3,
   textLabel4,
+
   children,
   seldonRefs,
   ...props
 }: ItemToDoItemProps) {
   const itemToDoItemClassName = combineClassNames("sdn-item", className)
-  const inputCheckboxProps = applyRef(
-    seldonRefs,
-    inputCheckbox === null
-      ? null
-      : {
-          ...sdn.inputCheckbox,
-          ...inputCheckbox,
-          className: combineClassNames(sdn.inputCheckbox?.className, inputCheckbox?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const chipProps = applyRef(
-    seldonRefs,
-    chip === null
-      ? null
-      : {
-          ...sdn.chip,
-          ...chip,
-          className: combineClassNames(sdn.chip?.className, chip?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const chip2Props = applyRef(
-    seldonRefs,
-    chip2 === null
-      ? null
-      : {
-          ...sdn.chip2,
-          ...chip2,
-          className: combineClassNames(sdn.chip2?.className, chip2?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-  const chip3Props = applyRef(
-    seldonRefs,
-    chip3 === null
-      ? null
-      : {
-          ...sdn.chip3,
-          ...chip3,
-          className: combineClassNames(sdn.chip3?.className, chip3?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
-        },
-  )
+
+  const inputCheckboxProps = mergeOptionalSlot(sdn.inputCheckbox, inputCheckbox, seldonRefs)
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  const chipProps = mergeSlot(sdn.chip, chip, seldonRefs)
+  const iconProps = mergeOptionalSlot(sdn.icon, icon, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+
+  const chip2Props = mergeSlot(sdn.chip2, chip2, seldonRefs)
+  const icon2Props = mergeOptionalSlot(sdn.icon2, icon2, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+
+  const chip3Props = mergeSlot(sdn.chip3, chip3, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
 
   return (
     <HTMLLi className={itemToDoItemClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -184,68 +161,27 @@ export function ItemToDoItem({
         children
       ) : (
         <>
-          {inputCheckbox && inputCheckboxProps && <InputCheckbox {...inputCheckboxProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {inputCheckboxProps !== null && <InputCheckbox {...inputCheckboxProps} />}
+          {textLabelProps !== null && <TextLabel {...textLabelProps} />}
           {chipProps !== null && (
             <Chip {...chipProps}>
-              {icon && iconProps && <Icon {...iconProps} />}
-              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
+              {iconProps !== null && <Icon {...iconProps} />}
+              {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
             </Chip>
           )}
           {chip2Props !== null && (
             <Chip {...chip2Props}>
-              {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
+              {icon2Props !== null && <Icon {...icon2Props} />}
+              {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
             </Chip>
           )}
           {chip3Props !== null && (
             <Chip {...chip3Props}>
-              {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
+              {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
             </Chip>
           )}
         </>
       )}
     </HTMLLi>
   )
-}
-
-//
-// Default property values
-//
-const sdn: ItemToDoItemProps = {
-  "aria-hidden": "false",
-  className: "sdn-item",
-  inputCheckbox: {
-    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text--s4kj",
-  },
-  chip: {
-    "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
-  },
-  icon: {
-    className: "sdn-icon sdn-icon--eyw9",
-  },
-  textLabel2: {
-    className: "sdn-text-label sdn-text-label--lug5",
-  },
-  chip2: {
-    "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
-  },
-  icon2: {
-    className: "sdn-icon sdn-icon--eyw9",
-  },
-  textLabel3: {
-    className: "sdn-text-label sdn-text-label--lug5",
-  },
-  chip3: {
-    "aria-hidden": "false",
-    className: "sdn-chip sdn-chip--o0xb",
-  },
-  textLabel4: {
-    className: "sdn-text-label sdn-text-label--lug5",
-  },
 }

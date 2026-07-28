@@ -10,34 +10,27 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Button } from "../elements/Button"
-import { ComboboxFieldSearch } from "../elements/ComboboxFieldSearch"
-import { Frame } from "../frames/Frame"
-import { HTMLDiv } from "../native-react/HTML.Div"
-import { Bar } from "../parts/Bar"
-import { BarButtons } from "../parts/BarButtons"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonProps } from "../elements/Button"
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { ComboboxFieldSearchProps } from "../elements/ComboboxFieldSearch"
-import type { FrameProps } from "../frames/Frame"
-import type { BarProps } from "../parts/Bar"
-import type { BarButtonsProps } from "../parts/BarButtons"
-import type { IconProps } from "../primitives/Icon"
-import type { InputProps } from "../primitives/Input"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Button, ButtonProps } from "../elements/Button"
+import { ButtonIconicProps } from "../elements/ButtonIconic"
+import { ComboboxFieldSearch, ComboboxFieldSearchProps } from "../elements/ComboboxFieldSearch"
+import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLDiv } from "../native-react/HTML.Div"
+import { Bar, BarProps } from "../parts/Bar"
+import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
+import { Icon, IconProps } from "../primitives/Icon"
+import { InputProps } from "../primitives/Input"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface PanelModalProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   comboboxFieldSearch?: ComboboxFieldSearchProps | null
@@ -45,7 +38,9 @@ export interface PanelModalProps extends HTMLAttributes<HTMLElement> {
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
   icon2?: IconProps | null
+
   frame?: FrameProps | null
+
   barButtons?: BarButtonsProps | null
   frame2?: FrameProps | null
   frame3?: FrameProps | null
@@ -57,276 +52,12 @@ export interface PanelModalProps extends HTMLAttributes<HTMLElement> {
   textLabel2?: TextLabelProps | null
 }
 
-/*****
- * Panel: PanelModal
- * Level: Module
- * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
- * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
- * Type: Inline
- *
- * @example
- * ```tsx
- * <PanelModal
- *   role="dialog"
- *   aria-hidden="false"
- * />
- * ```
- *****/
-export function PanelModal({
-  className = "",
-  bar = sdn.bar,
-  textTitle,
-  comboboxFieldSearch,
-  icon = sdn.icon,
-  input = sdn.input,
-  buttonIconic = sdn.buttonIconic,
-  icon2 = sdn.icon2,
-  frame = sdn.frame,
-  barButtons = sdn.barButtons,
-  frame2 = sdn.frame2,
-  frame3 = sdn.frame3,
-  button = sdn.button,
-  icon3 = sdn.icon3,
-  textLabel,
-  button2 = sdn.button2,
-  icon4 = sdn.icon4,
-  textLabel2,
-  children,
-  seldonRefs,
-  ...props
-}: PanelModalProps) {
-  const panelModalClassName = combineClassNames("sdn-panel-modal", className)
-  const barProps = applyRef(
-    seldonRefs,
-    bar === null
-      ? null
-      : {
-          ...sdn.bar,
-          ...bar,
-          className: combineClassNames(sdn.bar?.className, bar?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const comboboxFieldSearchProps = applyRef(
-    seldonRefs,
-    comboboxFieldSearch === null
-      ? null
-      : {
-          ...sdn.comboboxFieldSearch,
-          ...comboboxFieldSearch,
-          className: combineClassNames(
-            sdn.comboboxFieldSearch?.className,
-            comboboxFieldSearch?.className,
-          ),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const inputProps = applyRef(
-    seldonRefs,
-    input === null
-      ? null
-      : {
-          ...sdn.input,
-          ...input,
-          className: combineClassNames(sdn.input?.className, input?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const barButtonsProps = applyRef(
-    seldonRefs,
-    barButtons === null
-      ? null
-      : {
-          ...sdn.barButtons,
-          ...barButtons,
-          className: combineClassNames(sdn.barButtons?.className, barButtons?.className),
-        },
-  )
-  const frame2Props = applyRef(
-    seldonRefs,
-    frame2 === null
-      ? null
-      : {
-          ...sdn.frame2,
-          ...frame2,
-          className: combineClassNames(sdn.frame2?.className, frame2?.className),
-        },
-  )
-  const frame3Props = applyRef(
-    seldonRefs,
-    frame3 === null
-      ? null
-      : {
-          ...sdn.frame3,
-          ...frame3,
-          className: combineClassNames(sdn.frame3?.className, frame3?.className),
-        },
-  )
-  const buttonProps = applyRef(
-    seldonRefs,
-    button === null
-      ? null
-      : {
-          ...sdn.button,
-          ...button,
-          className: combineClassNames(sdn.button?.className, button?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const button2Props = applyRef(
-    seldonRefs,
-    button2 === null
-      ? null
-      : {
-          ...sdn.button2,
-          ...button2,
-          className: combineClassNames(sdn.button2?.className, button2?.className),
-        },
-  )
-  const icon4Props = applyRef(
-    seldonRefs,
-    icon4 === null
-      ? null
-      : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-
-  return (
-    <HTMLDiv
-      className={panelModalClassName}
-      role={sdn["role"]}
-      aria-hidden={sdn["aria-hidden"]}
-      {...props}
-    >
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {barProps !== null && (
-            <Bar {...barProps}>
-              {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-              {comboboxFieldSearch && comboboxFieldSearchProps && (
-                <ComboboxFieldSearch
-                  {...comboboxFieldSearchProps}
-                  icon={iconProps}
-                  input={inputProps}
-                  buttonIconic={buttonIconicProps}
-                  icon2={icon2Props}
-                />
-              )}
-            </Bar>
-          )}
-          <Frame {...frameProps}></Frame>
-          {barButtonsProps !== null && (
-            <BarButtons {...barButtonsProps}>
-              <Frame {...frame2Props}></Frame>
-              <Frame {...frame3Props}></Frame>
-              {button && buttonProps && (
-                <Button {...buttonProps}>
-                  {icon3 && icon3Props && <Icon {...icon3Props} />}
-                  {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-                </Button>
-              )}
-              {button2 && button2Props && (
-                <Button {...button2Props}>
-                  {icon4 && icon4Props && <Icon {...icon4Props} />}
-                  {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-                </Button>
-              )}
-            </BarButtons>
-          )}
-        </>
-      )}
-    </HTMLDiv>
-  )
-}
-
 //
 // Default property values
 //
 const sdn: PanelModalProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-panel-modal sdn-panel",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--zhvk",
@@ -357,11 +88,13 @@ const sdn: PanelModalProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--rezm",
   },
+
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--zjuk",
   },
+
   barButtons: {
     "aria-hidden": "false",
     className: "sdn-bar-buttons sdn-bar-buttons--0pge",
@@ -398,4 +131,140 @@ const sdn: PanelModalProps = {
   textLabel2: {
     className: "sdn-text-label sdn-text-label--wxqf",
   },
+}
+
+/**
+ * Panel: PanelModal
+ * Level: Module
+ * Intent: Schema for modal-style dialog panels with overlay behavior, used for alerts, confirmations, or embedded interactive content.
+ * Tags: panel, dialog, modal, ui, overlay, popup, interaction, alert
+ * Type: Inline
+ *
+ * Structure:
+ *   Bar                    bar
+ *     TextTitle            textTitle
+ *     ComboboxFieldSearch  comboboxFieldSearch
+ *       Icon               icon
+ *       Input              input
+ *       ButtonIconic       buttonIconic
+ *         Icon             icon2
+ *   Frame                  frame
+ *   BarButtons             barButtons
+ *     Frame                frame2
+ *     Frame                frame3
+ *     Button               button
+ *       Icon               icon3
+ *       TextLabel          textLabel
+ *     Button               button2
+ *       Icon               icon4
+ *       TextLabel          textLabel2
+ *
+ * @example
+ * ```tsx
+ * <PanelModal
+ *   role="dialog"
+ *   aria-hidden="false"
+ * />
+ * ```
+ */
+export function PanelModal({
+  className = "",
+  bar,
+  textTitle,
+  comboboxFieldSearch,
+  icon,
+  input,
+  buttonIconic,
+  icon2,
+
+  frame,
+
+  barButtons,
+  frame2,
+  frame3,
+  button,
+  icon3,
+  textLabel,
+  button2,
+  icon4,
+  textLabel2,
+
+  children,
+  seldonRefs,
+  ...props
+}: PanelModalProps) {
+  const panelModalClassName = combineClassNames("sdn-panel-modal", className)
+
+  const barProps = mergeSlot(sdn.bar, bar, seldonRefs)
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+  const comboboxFieldSearchProps = mergeOptionalSlot(
+    sdn.comboboxFieldSearch,
+    comboboxFieldSearch,
+    seldonRefs,
+  )
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const inputProps = mergeSlot(sdn.input, input, seldonRefs)
+  const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+
+  const barButtonsProps = mergeSlot(sdn.barButtons, barButtons, seldonRefs)
+  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
+  const frame3Props = mergeSlot(sdn.frame3, frame3, seldonRefs)
+  const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+  const button2Props = mergeSlot(sdn.button2, button2, seldonRefs)
+  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+
+  return (
+    <HTMLDiv
+      className={panelModalClassName}
+      role={sdn["role"]}
+      aria-hidden={sdn["aria-hidden"]}
+      {...props}
+    >
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {barProps !== null && (
+            <Bar {...barProps}>
+              {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+              {comboboxFieldSearchProps !== null && (
+                <ComboboxFieldSearch
+                  {...comboboxFieldSearchProps}
+                  icon={iconProps}
+                  input={inputProps}
+                  buttonIconic={buttonIconicProps}
+                  icon2={icon2Props}
+                />
+              )}
+            </Bar>
+          )}
+          <Frame {...frameProps}></Frame>
+          {barButtonsProps !== null && (
+            <BarButtons {...barButtonsProps}>
+              <Frame {...frame2Props}></Frame>
+              <Frame {...frame3Props}></Frame>
+              {buttonProps !== null && (
+                <Button {...buttonProps}>
+                  {icon3Props !== null && <Icon {...icon3Props} />}
+                  {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+                </Button>
+              )}
+              {button2Props !== null && (
+                <Button {...button2Props}>
+                  {icon4Props !== null && <Icon {...icon4Props} />}
+                  {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
+                </Button>
+              )}
+            </BarButtons>
+          )}
+        </>
+      )}
+    </HTMLDiv>
+  )
 }

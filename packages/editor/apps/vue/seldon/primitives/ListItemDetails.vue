@@ -12,7 +12,7 @@
  *
  *****/
 
-/*****
+/**
  * List Item: Details
  * Level: Primitive
  * Intent: Text item inside a list. Renders as li in ordered and unordered lists, or as dt and dd in description lists.
@@ -27,7 +27,7 @@
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -47,8 +47,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "children": "Details",
   "htmlElement": "dd",
-  "aria-hidden": "false",
-  "className": "sdn-list-item-details sdn-list-item"
+  "aria-hidden": "false"
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-list-item-details", props.className))

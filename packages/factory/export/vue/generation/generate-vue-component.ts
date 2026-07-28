@@ -68,7 +68,6 @@ export function generateVueComponent(
   const { tree } = component
   const { root: jsxRoot, propNames } = generateJSXStructure(component, nodeIdToClass, workspace)
 
-  applyVueGuards(jsxRoot, getConditionalPropPaths(component))
   const defaults = generateDefaultProps(component, nodeIdToClass, propNames)
 
   const hasChildren = Array.isArray(tree.children) && tree.children.length > 0
@@ -84,22 +83,21 @@ export function generateVueComponent(
 
   const childImports = collectChildImports(jsxRoot, pathToLevel)
   const propDeclarations = collectPropDeclarations(component, propNames)
-  const mergedDeclarations = collectMergedDeclarations(propNames)
+  const { declarations: mergedDeclarations, helpers: mergeHelpers } = collectMergedDeclarations(
+    propNames,
+    getConditionalPropPaths(component),
+  )
 
   const variantClassNames = getVariantClassNames(component, nodeIdToClass)
   const rootAttrs = buildRootAttrs(component)
 
-  const usesMergeSlot = mergedDeclarations.length > 0
+  const classNameImports = ["combineClassNames", ...mergeHelpers]
 
   const importLines: string[] = []
 
   // `rootClassName` is always a computed value, so `computed` is always needed.
   importLines.push(`import { computed } from "vue"`)
-  importLines.push(
-    usesMergeSlot
-      ? `import { combineClassNames, mergeSlot } from "../utils/class-names"`
-      : `import { combineClassNames } from "../utils/class-names"`,
-  )
+  importLines.push(`import { ${classNameImports.join(", ")} } from "../utils/class-names"`)
   const usesFrame = treeHasFrame(jsxRoot)
 
   if (usesFrame) importLines.push(`import Frame from "../frames/Frame.vue"`)
@@ -137,7 +135,7 @@ export function generateVueComponent(
   // on an `export default` in a plain `<script>` block, so the doc comment lives
   // there rather than in `<script setup>`. The example fence is switched from
   // `tsx` to `vue` to match the emitted single-file component.
-  const jsDoc = generateJSDocComment(component, workspace).replace("```tsx", "```vue")
+  const jsDoc = generateJSDocComment(component, workspace, propNames).replace("```tsx", "```vue")
 
   return `<script lang="ts">
 ${LICENSE_HEADER}
@@ -176,22 +174,57 @@ function collectPropDeclarations(
     decls.push(`${propName}?: Record<string, unknown> | null`)
   }
 
-  return decls
-}
+  // Components that compose children expose the ref override channel. A caller
+  // keys overrides by a descendant's `data-seldon-ref` name, and the merge
+  // helpers layer them onto that slot, so view models drive nested slots by
+  // stable ref name instead of positional prop name. A declared prop is excluded
+  // from `$attrs`, so this never lands on the DOM.
+  const hasChildren = Array.isArray(component.tree.children) && component.tree.children.length > 0
 
-function collectMergedDeclarations(propNames: Map<string, string>): string[] {
-  const decls: string[] = []
-  const seen = new Set<string>()
-
-  for (const propName of propNames.values()) {
-    if (seen.has(propName)) continue
-    seen.add(propName)
-    decls.push(
-      `const ${propName}Props = computed(() => mergeSlot(sdn.${propName}, props.${propName}))`,
-    )
+  if (hasChildren) {
+    decls.push(`seldonRefs?: Record<string, Record<string, unknown>>`)
   }
 
   return decls
+}
+
+interface MergedDeclarations {
+  declarations: string[]
+  helpers: string[]
+}
+
+/**
+ * Emits one merged `computed` per slot. A conditional slot (an inline extra or a
+ * stub) goes through `mergeOptionalSlot`, so it stays null until the caller
+ * passes props for it; every other slot goes through `mergeSlot` and renders its
+ * `sdn` default. Either way a suppressed slot is null, which is what the
+ * template guards on. Each call also receives `seldonRefs`, so a caller can
+ * drive the slot by its `data-seldon-ref` name.
+ */
+function collectMergedDeclarations(
+  propNames: Map<string, string>,
+  conditionalPaths: Set<string>,
+): MergedDeclarations {
+  const declarations: string[] = []
+  const helpers = new Set<string>()
+  const seen = new Set<string>()
+
+  for (const [path, propName] of propNames) {
+    if (seen.has(propName)) continue
+    seen.add(propName)
+
+    const helper = conditionalPaths.has(path) ? "mergeOptionalSlot" : "mergeSlot"
+
+    helpers.add(helper)
+    declarations.push(
+      `const ${propName}Props = computed(() => ${helper}(sdn.${propName}, props.${propName}, props.seldonRefs))`,
+    )
+  }
+
+  return {
+    declarations,
+    helpers: Array.from(helpers),
+  }
 }
 
 function collectChildImports(jsxRoot: JSXNode, pathToLevel: Map<string, string>): ChildImport[] {
@@ -289,31 +322,6 @@ function buildTemplate(
       <slot>${childMarkup}
       </slot>
     </${tag}>`
-}
-
-/**
- * React renders a canonical nested leaf by defaulting its slot prop to `sdn`
- * in the function signature while keeping the `X && XProps` guard, so an
- * omitted decoration such as a chevron still renders. Vue has no signature
- * default, so the raw prop is `undefined` and the guard hides the leaf.
- *
- * Rewrite the guard for every non-conditional child to render from its merged
- * sdn default, which matches React. Conditional leaves (inline extras and
- * stubs) keep the opt-in guard so they render only when the caller passes them.
- */
-function applyVueGuards(node: JSXNode, conditionalPaths: Set<string>): void {
-  if (
-    node.condition &&
-    node.propKeyName &&
-    node.condition === `${node.propKeyName} && ${node.propVarName}` &&
-    !conditionalPaths.has(node.path)
-  ) {
-    node.condition = `${node.propVarName} !== null`
-  }
-
-  if (node.children) {
-    for (const child of node.children) applyVueGuards(child, conditionalPaths)
-  }
 }
 
 /**

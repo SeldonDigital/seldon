@@ -10,34 +10,72 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonIconic } from "../elements/ButtonIconic"
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { Input } from "../primitives/Input"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { IconProps } from "../primitives/Icon"
-import type { InputProps } from "../primitives/Input"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { Frame } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { Input, InputProps } from "../primitives/Input"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
 
 export interface ComboboxFieldProjectProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
+
   input?: InputProps | null
+
   buttonIconic?: ButtonIconicProps | null
   icon2?: IconProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ComboboxFieldProjectProps = {
+  "aria-hidden": "false",
+  icon: {
+    icon: "material-dataObject",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "projectIcon",
+  },
+
+  input: {
+    placeholder: "Project Name",
+    type: "text",
+    role: "combobox",
+    "aria-haspopup": "listbox",
+    className: "sdn-input sdn-input--twyx",
+    "data-seldon-ref": "projectLabel",
+  },
+
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "projectActions",
+  },
+  icon2: {
+    icon: "material-save",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--vsau",
+  },
+}
+
+/**
  * Combobox Field: ComboboxFieldProject
  * Level: Element
  * Intent: Field box that holds the combobox input and opens its listbox.
  * Tags: combobox, trigger, input, field, select, element, UI
  * Type: Custom
+ *
+ * Structure:
+ *   Icon          icon          -> projectIcon
+ *   Input         input         -> projectLabel
+ *   ButtonIconic  buttonIconic  -> projectActions
+ *     Icon        icon2
  *
  * @example
  * ```tsx
@@ -48,58 +86,28 @@ export interface ComboboxFieldProjectProps extends HTMLAttributes<HTMLElement> {
  *   buttonIconic={() => {}}
  * />
  * ```
- *****/
+ */
 export function ComboboxFieldProject({
   className = "",
-  icon = sdn.icon,
-  input = sdn.input,
-  buttonIconic = sdn.buttonIconic,
-  icon2 = sdn.icon2,
+  icon,
+
+  input,
+
+  buttonIconic,
+  icon2,
+
   children,
   seldonRefs,
   ...props
 }: ComboboxFieldProjectProps) {
   const comboboxFieldProjectClassName = combineClassNames("sdn-combobox-field", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const inputProps = applyRef(
-    seldonRefs,
-    input === null
-      ? null
-      : {
-          ...sdn.input,
-          ...input,
-          className: combineClassNames(sdn.input?.className, input?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const inputProps = mergeSlot(sdn.input, input, seldonRefs)
+
+  const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
 
   return (
     <Frame className={comboboxFieldProjectClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -114,35 +122,4 @@ export function ComboboxFieldProject({
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: ComboboxFieldProjectProps = {
-  "aria-hidden": "false",
-  className: "sdn-combobox-field",
-  icon: {
-    icon: "material-dataObject",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "projectIcon",
-  },
-  input: {
-    placeholder: "Project Name",
-    type: "text",
-    role: "combobox",
-    "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--twyx",
-    "data-seldon-ref": "projectLabel",
-  },
-  buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "projectActions",
-  },
-  icon2: {
-    icon: "material-save",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
-  },
 }

@@ -12,12 +12,20 @@
  *
  *****/
 
-/*****
+/**
  * Message: MessageThinking
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
  * Type: Inline
+ *
+ * Structure:
+ *   Frame              frame
+ *     ButtonIconic     buttonIconic
+ *       Icon           icon
+ *     TextDescription  textDescription
+ *     TextDescription  textDescription2
+ *   TextDescription    textDescription3
  *
  * @example
  * ```vue
@@ -30,13 +38,13 @@
  *   textDescription2="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import ButtonIconic from "../elements/ButtonIconic.vue"
 import TextDescription from "../primitives/TextDescription.vue"
@@ -49,6 +57,7 @@ const props = defineProps<{
   textDescription?: Record<string, unknown> | null
   textDescription2?: Record<string, unknown> | null
   textDescription3?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -56,7 +65,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-message-thinking sdn-message",
   "frame": {
     "wrapperElement": "div",
     "aria-hidden": "false",
@@ -83,23 +91,23 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-message-thinking", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textDescriptionProps = computed(() => mergeSlot(sdn.textDescription, props.textDescription))
-const textDescription2Props = computed(() => mergeSlot(sdn.textDescription2, props.textDescription2))
-const textDescription3Props = computed(() => mergeSlot(sdn.textDescription3, props.textDescription3))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeOptionalSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textDescriptionProps = computed(() => mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs))
+const textDescription2Props = computed(() => mergeOptionalSlot(sdn.textDescription2, props.textDescription2, props.seldonRefs))
+const textDescription3Props = computed(() => mergeOptionalSlot(sdn.textDescription3, props.textDescription3, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Frame v-bind="frameProps">
-          <ButtonIconic v-if="buttonIconic && buttonIconicProps" v-bind="buttonIconicProps" :icon="iconProps" />
-          <TextDescription v-if="textDescription && textDescriptionProps" v-bind="textDescriptionProps" />
-          <TextDescription v-if="textDescription2 && textDescription2Props" v-bind="textDescription2Props" />
+          <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
+          <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
+          <TextDescription v-if="textDescription2Props !== null" v-bind="textDescription2Props" />
         </Frame>
-        <TextDescription v-if="textDescription3 && textDescription3Props" v-bind="textDescription3Props" />
+        <TextDescription v-if="textDescription3Props !== null" v-bind="textDescription3Props" />
       </slot>
     </div>
 </template>

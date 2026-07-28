@@ -10,20 +10,28 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { InputHTMLAttributes, Ref } from "react"
+
 import { HTMLInput } from "../native-react/HTML.Input"
 import { combineClassNames } from "../utils/class-name"
 
-import type { InputHTMLAttributes, Ref } from "react"
-
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  className?: string
   "data-seldon-ref"?: string
   ref?: Ref<HTMLInputElement>
   placeholder?: string
   type?: string
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: InputProps = {
+  placeholder: "Placeholder text",
+  type: "text",
+}
+
+/**
  * Input: Input
  * Level: Primitive
  * Intent: Low-level text input control for collecting user input.
@@ -37,7 +45,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  *   type="text"
  * />
  * ```
- *****/
+ */
 export function Input({
   className = "",
   placeholder = sdn.placeholder,
@@ -50,13 +58,4 @@ export function Input({
   // React JSX component with merged default and custom properties
   //
   return <HTMLInput className={inputClassName} placeholder={placeholder} type={type} {...props} />
-}
-
-//
-// Default property values
-//
-const sdn: InputProps = {
-  placeholder: "Placeholder text",
-  type: "text",
-  className: "sdn-input",
 }

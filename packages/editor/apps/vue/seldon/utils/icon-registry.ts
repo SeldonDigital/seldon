@@ -10,6 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
 import type { IconGeometry } from "../icons/index"
 
 // Prop-driven dynamic icons (color chips, theme swatches) register geometry at

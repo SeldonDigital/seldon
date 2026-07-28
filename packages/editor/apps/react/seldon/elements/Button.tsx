@@ -10,80 +10,23 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { forwardRef } from "react"
+
+import { ButtonHTMLAttributes } from "react"
 
 import { HTMLButton } from "../native-react/HTML.Button"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { combineClassNames } from "../utils/class-name"
-
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { ButtonHTMLAttributes } from "react"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
+
   textLabel?: TextLabelProps | null
 }
-
-/*****
- * Button: Button
- * Level: Element
- * Intent: Standard button for triggering actions like submit, confirm, or cancel.
- * Tags: button, action, UI, primary, click, control, submit, call to action
- * Type: Default
- *
- * @example
- * ```tsx
- * <Button
- *   icon="material-star"
- *   textLabel="{}"
- * />
- * ```
- *****/
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { className = "", icon = sdn.icon, textLabel, children, seldonRefs, ...props },
-  ref,
-) {
-  const buttonClassName = combineClassNames("sdn-button", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-
-  return (
-    <HTMLButton className={buttonClassName} ref={ref} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {iconProps !== null && <Icon {...iconProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-        </>
-      )}
-    </HTMLButton>
-  )
-})
 
 //
 // Default property values
@@ -94,7 +37,57 @@ const sdn: ButtonProps = {
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--umgs",
   },
+
   textLabel: {
     className: "sdn-text-label sdn-text-label--ylte",
   },
+}
+
+/**
+ * Button: Button
+ * Level: Element
+ * Intent: Standard button for triggering actions like submit, confirm, or cancel.
+ * Tags: button, action, UI, primary, click, control, submit, call to action
+ * Type: Default
+ *
+ * Structure:
+ *   Icon       icon
+ *   TextLabel  textLabel
+ *
+ * @example
+ * ```tsx
+ * <Button
+ *   icon="material-star"
+ *   textLabel="{}"
+ * />
+ * ```
+ */
+export function Button({
+  className = "",
+  icon,
+
+  textLabel,
+
+  children,
+  seldonRefs,
+  ...props
+}: ButtonProps) {
+  const buttonClassName = combineClassNames("sdn-button", className)
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  return (
+    <HTMLButton className={buttonClassName} {...props}>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {iconProps !== null && <Icon {...iconProps} />}
+          {textLabelProps !== null && <TextLabel {...textLabelProps} />}
+        </>
+      )}
+    </HTMLButton>
+  )
 }

@@ -12,12 +12,17 @@
  *
  *****/
 
-/*****
+/**
  * Section: SectionBrand
  * Level: Element
  * Intent: Navigation section containing links to important pages. Can be used in footers, headers, sidebars, or any other layout context. Follows Material Design navigation patterns.
  * Tags: section, navigation, links, menu, element, layout, header, footer, sidebar
  * Type: Custom
+ *
+ * Structure:
+ *   Image            image
+ *   TextTitle        textTitle
+ *   TextDescription  textDescription
  *
  * @example
  * ```vue
@@ -28,13 +33,13 @@
  *   textDescription2="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Image from "../primitives/Image.vue"
 import TextDescription from "../primitives/TextDescription.vue"
 import TextTitle from "../primitives/TextTitle.vue"
@@ -44,6 +49,7 @@ const props = defineProps<{
   image?: Record<string, unknown> | null
   textTitle?: Record<string, unknown> | null
   textDescription?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -51,7 +57,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-section",
   "image": {
     "src": "https://static.seldon.app/logo.svg",
     "aria-hidden": "false",
@@ -67,17 +72,17 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-section", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const imageProps = computed(() => mergeSlot(sdn.image, props.image))
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const textDescriptionProps = computed(() => mergeSlot(sdn.textDescription, props.textDescription))
+const imageProps = computed(() => mergeSlot(sdn.image, props.image, props.seldonRefs))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const textDescriptionProps = computed(() => mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Image v-if="imageProps !== null" v-bind="imageProps" />
-        <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
-        <TextDescription v-if="textDescription && textDescriptionProps" v-bind="textDescriptionProps" />
+        <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+        <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
       </slot>
     </div>
 </template>

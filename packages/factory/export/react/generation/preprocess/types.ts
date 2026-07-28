@@ -19,11 +19,6 @@ export type JSXNode = {
   grandchildProps?: Array<{
     propKeyName: string // child component's slot name, e.g. "icon"
     propVarName: string // parent's variable name, e.g. "buttonIconicIconProps"
-    // Present when the forwarded leaf is a conditional (inline-extra) prop. The
-    // guard is the source prop name, so the attribute only renders when the
-    // caller supplies it, e.g. `textLabel={textLabel && textLabelProps}`. Absent
-    // for canonical leaves, which forward unconditionally.
-    guard?: string
     // Present when the authored instance dropped this canonical slot. The
     // attribute forwards `null` so the embedded element suppresses its own
     // default child, e.g. `icon={null}`.

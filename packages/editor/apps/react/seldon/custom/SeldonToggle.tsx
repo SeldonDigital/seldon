@@ -10,6 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
 import type { InputHTMLAttributes, Ref } from "react"
 
 const TOGGLE_SWITCH_CLASS = "sdn-toggle-switch"

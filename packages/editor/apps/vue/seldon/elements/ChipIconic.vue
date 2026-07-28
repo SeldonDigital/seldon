@@ -12,12 +12,15 @@
  *
  *****/
 
-/*****
+/**
  * Chip: ChipIconic
  * Level: Element
  * Intent: Schema for a small, interactive UI element used to display information, categories, or actions with optional removal or selection states.
  * Tags: chip, ui, tag, label, badge, filter, category, pill
  * Type: Custom
+ *
+ * Structure:
+ *   Icon  icon
  *
  * @example
  * ```vue
@@ -26,7 +29,7 @@
  *   icon="material-star"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
@@ -38,6 +41,7 @@ import Icon from "../primitives/Icon.vue"
 const props = defineProps<{
   className?: string
   icon?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -45,7 +49,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-chip-iconic sdn-chip",
   "icon": {
     "icon": "material-inbox",
     "aria-hidden": "true",
@@ -55,7 +58,7 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-chip-iconic", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 </script>
 
 <template>

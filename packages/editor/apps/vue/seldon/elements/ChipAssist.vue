@@ -12,12 +12,16 @@
  *
  *****/
 
-/*****
+/**
  * Chip: ChipAssist
  * Level: Element
  * Intent: Schema for a small, interactive UI element used to display information, categories, or actions with optional removal or selection states.
  * Tags: chip, ui, tag, label, badge, filter, category, pill
  * Type: Custom
+ *
+ * Structure:
+ *   Icon       icon
+ *   TextLabel  textLabel
  *
  * @example
  * ```vue
@@ -27,13 +31,13 @@
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 
@@ -41,6 +45,7 @@ const props = defineProps<{
   className?: string
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -48,7 +53,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-chip",
   "icon": {
     "icon": "material-calendarToday",
     "aria-hidden": "true",
@@ -61,15 +65,15 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-chip", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
 </script>
 
 <template>
     <span :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Icon v-if="iconProps !== null" v-bind="iconProps" />
-        <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
       </slot>
     </span>
 </template>

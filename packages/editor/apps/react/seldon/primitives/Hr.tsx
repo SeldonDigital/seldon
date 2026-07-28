@@ -10,17 +10,24 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { HTMLAttributes } from "react"
+
 import { HTMLHr } from "../native-react/HTML.Hr"
 import { combineClassNames } from "../utils/class-name"
 
-import type { HTMLAttributes } from "react"
-
 export interface HrProps extends HTMLAttributes<HTMLHRElement> {
-  className?: string
   "data-seldon-ref"?: string
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: HrProps = {
+  "aria-hidden": "false",
+}
+
+/**
  * Horizontal Rule: Hr
  * Level: Primitive
  * Intent: Renders a horizontal rule for visual separation of content.
@@ -33,7 +40,7 @@ export interface HrProps extends HTMLAttributes<HTMLHRElement> {
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function Hr({ className = "", ...props }: HrProps) {
   const hrClassName = combineClassNames("sdn-hr", className)
 
@@ -41,12 +48,4 @@ export function Hr({ className = "", ...props }: HrProps) {
   // React JSX component with merged default and custom properties
   //
   return <HTMLHr className={hrClassName} aria-hidden={sdn["aria-hidden"]} {...props} />
-}
-
-//
-// Default property values
-//
-const sdn: HrProps = {
-  "aria-hidden": "false",
-  className: "sdn-hr",
 }

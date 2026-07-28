@@ -10,36 +10,87 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonSimple } from "../elements/ButtonSimple"
-import { Frame } from "../frames/Frame"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonSimpleProps } from "../elements/ButtonSimple"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
+import { Frame } from "../frames/Frame"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface BarMenusProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   buttonSimple?: ButtonSimpleProps | null
   textLabel?: TextLabelProps | null
+
   buttonSimple2?: ButtonSimpleProps | null
   textLabel2?: TextLabelProps | null
+
   buttonSimple3?: ButtonSimpleProps | null
   textLabel3?: TextLabelProps | null
+
   buttonSimple4?: ButtonSimpleProps | null
   textLabel4?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: BarMenusProps = {
+  role: "menubar",
+  "aria-hidden": "false",
+  buttonSimple: {
+    "aria-haspopup": "menu",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--ylte",
+  },
+
+  buttonSimple2: {
+    "aria-haspopup": "menu",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
+  },
+  textLabel2: {
+    className: "sdn-text-label sdn-text-label--ylte",
+  },
+
+  buttonSimple3: {
+    "aria-haspopup": "menu",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
+  },
+  textLabel3: {
+    className: "sdn-text-label sdn-text-label--ylte",
+  },
+
+  buttonSimple4: {
+    "aria-haspopup": "menu",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
+  },
+  textLabel4: {
+    className: "sdn-text-label sdn-text-label--ylte",
+  },
+}
+
+/**
  * Bar: BarMenus
  * Level: Part
  * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
  * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
  * Type: Custom
+ *
+ * Structure:
+ *   ButtonSimple  buttonSimple
+ *     TextLabel   textLabel
+ *   ButtonSimple  buttonSimple2
+ *     TextLabel   textLabel2
+ *   ButtonSimple  buttonSimple3
+ *     TextLabel   textLabel3
+ *   ButtonSimple  buttonSimple4
+ *     TextLabel   textLabel4
  *
  * @example
  * ```tsx
@@ -48,102 +99,38 @@ export interface BarMenusProps extends HTMLAttributes<HTMLElement> {
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function BarMenus({
   className = "",
-  buttonSimple = sdn.buttonSimple,
+  buttonSimple,
   textLabel,
-  buttonSimple2 = sdn.buttonSimple2,
+
+  buttonSimple2,
   textLabel2,
-  buttonSimple3 = sdn.buttonSimple3,
+
+  buttonSimple3,
   textLabel3,
-  buttonSimple4 = sdn.buttonSimple4,
+
+  buttonSimple4,
   textLabel4,
+
   children,
   seldonRefs,
   ...props
 }: BarMenusProps) {
   const barMenusClassName = combineClassNames("sdn-bar-menus", className)
-  const buttonSimpleProps = applyRef(
-    seldonRefs,
-    buttonSimple === null
-      ? null
-      : {
-          ...sdn.buttonSimple,
-          ...buttonSimple,
-          className: combineClassNames(sdn.buttonSimple?.className, buttonSimple?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
-  const buttonSimple2Props = applyRef(
-    seldonRefs,
-    buttonSimple2 === null
-      ? null
-      : {
-          ...sdn.buttonSimple2,
-          ...buttonSimple2,
-          className: combineClassNames(sdn.buttonSimple2?.className, buttonSimple2?.className),
-        },
-  )
-  const textLabel2Props = applyRef(
-    seldonRefs,
-    textLabel2 === null
-      ? null
-      : {
-          ...sdn.textLabel2,
-          ...textLabel2,
-          className: combineClassNames(sdn.textLabel2?.className, textLabel2?.className),
-        },
-  )
-  const buttonSimple3Props = applyRef(
-    seldonRefs,
-    buttonSimple3 === null
-      ? null
-      : {
-          ...sdn.buttonSimple3,
-          ...buttonSimple3,
-          className: combineClassNames(sdn.buttonSimple3?.className, buttonSimple3?.className),
-        },
-  )
-  const textLabel3Props = applyRef(
-    seldonRefs,
-    textLabel3 === null
-      ? null
-      : {
-          ...sdn.textLabel3,
-          ...textLabel3,
-          className: combineClassNames(sdn.textLabel3?.className, textLabel3?.className),
-        },
-  )
-  const buttonSimple4Props = applyRef(
-    seldonRefs,
-    buttonSimple4 === null
-      ? null
-      : {
-          ...sdn.buttonSimple4,
-          ...buttonSimple4,
-          className: combineClassNames(sdn.buttonSimple4?.className, buttonSimple4?.className),
-        },
-  )
-  const textLabel4Props = applyRef(
-    seldonRefs,
-    textLabel4 === null
-      ? null
-      : {
-          ...sdn.textLabel4,
-          ...textLabel4,
-          className: combineClassNames(sdn.textLabel4?.className, textLabel4?.className),
-        },
-  )
+
+  const buttonSimpleProps = mergeSlot(sdn.buttonSimple, buttonSimple, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
+
+  const buttonSimple2Props = mergeSlot(sdn.buttonSimple2, buttonSimple2, seldonRefs)
+  const textLabel2Props = mergeOptionalSlot(sdn.textLabel2, textLabel2, seldonRefs)
+
+  const buttonSimple3Props = mergeSlot(sdn.buttonSimple3, buttonSimple3, seldonRefs)
+  const textLabel3Props = mergeOptionalSlot(sdn.textLabel3, textLabel3, seldonRefs)
+
+  const buttonSimple4Props = mergeSlot(sdn.buttonSimple4, buttonSimple4, seldonRefs)
+  const textLabel4Props = mergeOptionalSlot(sdn.textLabel4, textLabel4, seldonRefs)
 
   return (
     <Frame
@@ -158,63 +145,26 @@ export function BarMenus({
         <>
           {buttonSimpleProps !== null && (
             <ButtonSimple {...buttonSimpleProps}>
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
             </ButtonSimple>
           )}
           {buttonSimple2Props !== null && (
             <ButtonSimple {...buttonSimple2Props}>
-              {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
+              {textLabel2Props !== null && <TextLabel {...textLabel2Props} />}
             </ButtonSimple>
           )}
           {buttonSimple3Props !== null && (
             <ButtonSimple {...buttonSimple3Props}>
-              {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
+              {textLabel3Props !== null && <TextLabel {...textLabel3Props} />}
             </ButtonSimple>
           )}
           {buttonSimple4Props !== null && (
             <ButtonSimple {...buttonSimple4Props}>
-              {textLabel4 && textLabel4Props && <TextLabel {...textLabel4Props} />}
+              {textLabel4Props !== null && <TextLabel {...textLabel4Props} />}
             </ButtonSimple>
           )}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: BarMenusProps = {
-  role: "menubar",
-  "aria-hidden": "false",
-  className: "sdn-bar-menus sdn-bar",
-  buttonSimple: {
-    "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button-simple--fjtm",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--ylte",
-  },
-  buttonSimple2: {
-    "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button-simple--fjtm",
-  },
-  textLabel2: {
-    className: "sdn-text-label sdn-text-label--ylte",
-  },
-  buttonSimple3: {
-    "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button-simple--fjtm",
-  },
-  textLabel3: {
-    className: "sdn-text-label sdn-text-label--ylte",
-  },
-  buttonSimple4: {
-    "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button-simple--fjtm",
-  },
-  textLabel4: {
-    className: "sdn-text-label sdn-text-label--ylte",
-  },
 }

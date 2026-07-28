@@ -12,12 +12,183 @@
  *
  *****/
 
-/*****
+/**
  * Calendar: CalendarRange
  * Level: Module
  * Intent: Month calendar with a navigable header, weekday labels, and a day grid. The default shows a single bordered month; variants cover a two-month range picker and a single month with event markers.
  * Tags: calendar, ui, month, date, navigation, selection, range, events
  * Type: Inline
+ *
+ * Structure:
+ *   Frame                      frame
+ *     Frame                    frame2
+ *       ButtonIconic           buttonIconic
+ *         Icon                 icon
+ *       TextTitle              textTitle
+ *     Container                container
+ *       TextLabel              textLabel
+ *       TextLabel              textLabel2
+ *       TextLabel              textLabel3
+ *       TextLabel              textLabel4
+ *       TextLabel              textLabel5
+ *       TextLabel              textLabel6
+ *       TextLabel              textLabel7
+ *     Frame                    frame3
+ *       Container              container2
+ *         CalendarDay          calendarDay
+ *           TextLabel          textLabel8
+ *         CalendarDayMuted     calendarDayMuted
+ *           TextLabel          textLabel9
+ *         CalendarDayMuted     calendarDayMuted2
+ *           TextLabel          textLabel10
+ *         CalendarDayMuted     calendarDayMuted3
+ *           TextLabel          textLabel11
+ *         CalendarDayMuted     calendarDayMuted4
+ *           TextLabel          textLabel12
+ *       Container              container3
+ *         CalendarDayMuted     calendarDayMuted5
+ *           TextLabel          textLabel13
+ *         CalendarDayMuted     calendarDayMuted6
+ *           TextLabel          textLabel14
+ *         CalendarDayMuted     calendarDayMuted7
+ *           TextLabel          textLabel15
+ *         CalendarDayMuted     calendarDayMuted8
+ *           TextLabel          textLabel16
+ *         CalendarDayMuted     calendarDayMuted9
+ *           TextLabel          textLabel17
+ *         CalendarDay          calendarDay2
+ *           TextLabel          textLabel18
+ *         CalendarDay          calendarDay3
+ *           TextLabel          textLabel19
+ *       Container              container4
+ *         CalendarDay          calendarDay4
+ *           TextLabel          textLabel20
+ *         CalendarDay          calendarDay5
+ *           TextLabel          textLabel21
+ *         CalendarDay          calendarDay6
+ *           TextLabel          textLabel22
+ *         CalendarDay          calendarDay7
+ *           TextLabel          textLabel23
+ *         CalendarDaySelected  calendarDaySelected
+ *           TextLabel          textLabel24
+ *         CalendarDay          calendarDay8
+ *           TextLabel          textLabel25
+ *         CalendarDaySelected  calendarDaySelected2
+ *           TextLabel          textLabel26
+ *       Container              container5
+ *         CalendarDay          calendarDay9
+ *           TextLabel          textLabel27
+ *         CalendarDay          calendarDay10
+ *           TextLabel          textLabel28
+ *         CalendarDay          calendarDay11
+ *           TextLabel          textLabel29
+ *         CalendarDay          calendarDay12
+ *           TextLabel          textLabel30
+ *         CalendarDay          calendarDay13
+ *           TextLabel          textLabel31
+ *         CalendarDay          calendarDay14
+ *           TextLabel          textLabel32
+ *         CalendarDay          calendarDay15
+ *           TextLabel          textLabel33
+ *       Container              container6
+ *         CalendarDay          calendarDay16
+ *           TextLabel          textLabel34
+ *         CalendarDay          calendarDay17
+ *           TextLabel          textLabel35
+ *         CalendarDay          calendarDay18
+ *           TextLabel          textLabel36
+ *         CalendarDay          calendarDay19
+ *           TextLabel          textLabel37
+ *         CalendarDay          calendarDay20
+ *           TextLabel          textLabel38
+ *         CalendarDay          calendarDay21
+ *           TextLabel          textLabel39
+ *         CalendarDay          calendarDay22
+ *           TextLabel          textLabel40
+ *   Frame                      frame4
+ *     Frame                    frame5
+ *       TextTitle              textTitle2
+ *       ButtonIconic           buttonIconic2
+ *         Icon                 icon2
+ *     Container                container7
+ *       TextLabel              textLabel41
+ *       TextLabel              textLabel42
+ *       TextLabel              textLabel43
+ *       TextLabel              textLabel44
+ *       TextLabel              textLabel45
+ *       TextLabel              textLabel46
+ *       TextLabel              textLabel47
+ *     Frame                    frame6
+ *       Container              container8
+ *         CalendarDay          calendarDay23
+ *           TextLabel          textLabel48
+ *         CalendarDay          calendarDay24
+ *           TextLabel          textLabel49
+ *       Container              container9
+ *         CalendarDay          calendarDay25
+ *           TextLabel          textLabel50
+ *         CalendarDay          calendarDay26
+ *           TextLabel          textLabel51
+ *         CalendarDay          calendarDay27
+ *           TextLabel          textLabel52
+ *         CalendarDay          calendarDay28
+ *           TextLabel          textLabel53
+ *         CalendarDay          calendarDay29
+ *           TextLabel          textLabel54
+ *         CalendarDay          calendarDay30
+ *           TextLabel          textLabel55
+ *         CalendarDay          calendarDay31
+ *           TextLabel          textLabel56
+ *       Container              container10
+ *         CalendarDay          calendarDay32
+ *           TextLabel          textLabel57
+ *         CalendarDay          calendarDay33
+ *           TextLabel          textLabel58
+ *         CalendarDay          calendarDay34
+ *           TextLabel          textLabel59
+ *         CalendarDay          calendarDay35
+ *           TextLabel          textLabel60
+ *         CalendarDay          calendarDay36
+ *           TextLabel          textLabel61
+ *         CalendarDay          calendarDay37
+ *           TextLabel          textLabel62
+ *         CalendarDay          calendarDay38
+ *           TextLabel          textLabel63
+ *       Container              container11
+ *         CalendarDay          calendarDay39
+ *           TextLabel          textLabel64
+ *         CalendarDay          calendarDay40
+ *           TextLabel          textLabel65
+ *         CalendarDay          calendarDay41
+ *           TextLabel          textLabel66
+ *         CalendarDay          calendarDay42
+ *           TextLabel          textLabel67
+ *         CalendarDay          calendarDay43
+ *           TextLabel          textLabel68
+ *         CalendarDay          calendarDay44
+ *           TextLabel          textLabel69
+ *         CalendarDay          calendarDay45
+ *           TextLabel          textLabel70
+ *       Container              container12
+ *         CalendarDay          calendarDay46
+ *           TextLabel          textLabel71
+ *         CalendarDay          calendarDay47
+ *           TextLabel          textLabel72
+ *         CalendarDay          calendarDay48
+ *           TextLabel          textLabel73
+ *         CalendarDay          calendarDay49
+ *           TextLabel          textLabel74
+ *         CalendarDay          calendarDay50
+ *           TextLabel          textLabel75
+ *         CalendarDay          calendarDay51
+ *           TextLabel          textLabel76
+ *         CalendarDay          calendarDay52
+ *           TextLabel          textLabel77
+ *       Container              container13
+ *         CalendarDay          calendarDay53
+ *           TextLabel          textLabel78
+ *         CalendarDay          calendarDay54
+ *           TextLabel          textLabel79
  *
  * @example
  * ```vue
@@ -57,13 +228,13 @@
  *   container6="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import ButtonIconic from "../elements/ButtonIconic.vue"
 import CalendarDay from "../elements/CalendarDay.vue"
@@ -243,6 +414,7 @@ const props = defineProps<{
   textLabel78?: Record<string, unknown> | null
   calendarDay54?: Record<string, unknown> | null
   textLabel79?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -250,7 +422,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-calendar-range sdn-calendar",
   "frame": {
     "wrapperElement": "div",
     "aria-hidden": "false",
@@ -804,427 +975,427 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-calendar-range", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const containerProps = computed(() => mergeSlot(sdn.container, props.container))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
-const textLabel2Props = computed(() => mergeSlot(sdn.textLabel2, props.textLabel2))
-const textLabel3Props = computed(() => mergeSlot(sdn.textLabel3, props.textLabel3))
-const textLabel4Props = computed(() => mergeSlot(sdn.textLabel4, props.textLabel4))
-const textLabel5Props = computed(() => mergeSlot(sdn.textLabel5, props.textLabel5))
-const textLabel6Props = computed(() => mergeSlot(sdn.textLabel6, props.textLabel6))
-const textLabel7Props = computed(() => mergeSlot(sdn.textLabel7, props.textLabel7))
-const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3))
-const container2Props = computed(() => mergeSlot(sdn.container2, props.container2))
-const calendarDayProps = computed(() => mergeSlot(sdn.calendarDay, props.calendarDay))
-const textLabel8Props = computed(() => mergeSlot(sdn.textLabel8, props.textLabel8))
-const calendarDayMutedProps = computed(() => mergeSlot(sdn.calendarDayMuted, props.calendarDayMuted))
-const textLabel9Props = computed(() => mergeSlot(sdn.textLabel9, props.textLabel9))
-const calendarDayMuted2Props = computed(() => mergeSlot(sdn.calendarDayMuted2, props.calendarDayMuted2))
-const textLabel10Props = computed(() => mergeSlot(sdn.textLabel10, props.textLabel10))
-const calendarDayMuted3Props = computed(() => mergeSlot(sdn.calendarDayMuted3, props.calendarDayMuted3))
-const textLabel11Props = computed(() => mergeSlot(sdn.textLabel11, props.textLabel11))
-const calendarDayMuted4Props = computed(() => mergeSlot(sdn.calendarDayMuted4, props.calendarDayMuted4))
-const textLabel12Props = computed(() => mergeSlot(sdn.textLabel12, props.textLabel12))
-const container3Props = computed(() => mergeSlot(sdn.container3, props.container3))
-const calendarDayMuted5Props = computed(() => mergeSlot(sdn.calendarDayMuted5, props.calendarDayMuted5))
-const textLabel13Props = computed(() => mergeSlot(sdn.textLabel13, props.textLabel13))
-const calendarDayMuted6Props = computed(() => mergeSlot(sdn.calendarDayMuted6, props.calendarDayMuted6))
-const textLabel14Props = computed(() => mergeSlot(sdn.textLabel14, props.textLabel14))
-const calendarDayMuted7Props = computed(() => mergeSlot(sdn.calendarDayMuted7, props.calendarDayMuted7))
-const textLabel15Props = computed(() => mergeSlot(sdn.textLabel15, props.textLabel15))
-const calendarDayMuted8Props = computed(() => mergeSlot(sdn.calendarDayMuted8, props.calendarDayMuted8))
-const textLabel16Props = computed(() => mergeSlot(sdn.textLabel16, props.textLabel16))
-const calendarDayMuted9Props = computed(() => mergeSlot(sdn.calendarDayMuted9, props.calendarDayMuted9))
-const textLabel17Props = computed(() => mergeSlot(sdn.textLabel17, props.textLabel17))
-const calendarDay2Props = computed(() => mergeSlot(sdn.calendarDay2, props.calendarDay2))
-const textLabel18Props = computed(() => mergeSlot(sdn.textLabel18, props.textLabel18))
-const calendarDay3Props = computed(() => mergeSlot(sdn.calendarDay3, props.calendarDay3))
-const textLabel19Props = computed(() => mergeSlot(sdn.textLabel19, props.textLabel19))
-const container4Props = computed(() => mergeSlot(sdn.container4, props.container4))
-const calendarDay4Props = computed(() => mergeSlot(sdn.calendarDay4, props.calendarDay4))
-const textLabel20Props = computed(() => mergeSlot(sdn.textLabel20, props.textLabel20))
-const calendarDay5Props = computed(() => mergeSlot(sdn.calendarDay5, props.calendarDay5))
-const textLabel21Props = computed(() => mergeSlot(sdn.textLabel21, props.textLabel21))
-const calendarDay6Props = computed(() => mergeSlot(sdn.calendarDay6, props.calendarDay6))
-const textLabel22Props = computed(() => mergeSlot(sdn.textLabel22, props.textLabel22))
-const calendarDay7Props = computed(() => mergeSlot(sdn.calendarDay7, props.calendarDay7))
-const textLabel23Props = computed(() => mergeSlot(sdn.textLabel23, props.textLabel23))
-const calendarDaySelectedProps = computed(() => mergeSlot(sdn.calendarDaySelected, props.calendarDaySelected))
-const textLabel24Props = computed(() => mergeSlot(sdn.textLabel24, props.textLabel24))
-const calendarDay8Props = computed(() => mergeSlot(sdn.calendarDay8, props.calendarDay8))
-const textLabel25Props = computed(() => mergeSlot(sdn.textLabel25, props.textLabel25))
-const calendarDaySelected2Props = computed(() => mergeSlot(sdn.calendarDaySelected2, props.calendarDaySelected2))
-const textLabel26Props = computed(() => mergeSlot(sdn.textLabel26, props.textLabel26))
-const container5Props = computed(() => mergeSlot(sdn.container5, props.container5))
-const calendarDay9Props = computed(() => mergeSlot(sdn.calendarDay9, props.calendarDay9))
-const textLabel27Props = computed(() => mergeSlot(sdn.textLabel27, props.textLabel27))
-const calendarDay10Props = computed(() => mergeSlot(sdn.calendarDay10, props.calendarDay10))
-const textLabel28Props = computed(() => mergeSlot(sdn.textLabel28, props.textLabel28))
-const calendarDay11Props = computed(() => mergeSlot(sdn.calendarDay11, props.calendarDay11))
-const textLabel29Props = computed(() => mergeSlot(sdn.textLabel29, props.textLabel29))
-const calendarDay12Props = computed(() => mergeSlot(sdn.calendarDay12, props.calendarDay12))
-const textLabel30Props = computed(() => mergeSlot(sdn.textLabel30, props.textLabel30))
-const calendarDay13Props = computed(() => mergeSlot(sdn.calendarDay13, props.calendarDay13))
-const textLabel31Props = computed(() => mergeSlot(sdn.textLabel31, props.textLabel31))
-const calendarDay14Props = computed(() => mergeSlot(sdn.calendarDay14, props.calendarDay14))
-const textLabel32Props = computed(() => mergeSlot(sdn.textLabel32, props.textLabel32))
-const calendarDay15Props = computed(() => mergeSlot(sdn.calendarDay15, props.calendarDay15))
-const textLabel33Props = computed(() => mergeSlot(sdn.textLabel33, props.textLabel33))
-const container6Props = computed(() => mergeSlot(sdn.container6, props.container6))
-const calendarDay16Props = computed(() => mergeSlot(sdn.calendarDay16, props.calendarDay16))
-const textLabel34Props = computed(() => mergeSlot(sdn.textLabel34, props.textLabel34))
-const calendarDay17Props = computed(() => mergeSlot(sdn.calendarDay17, props.calendarDay17))
-const textLabel35Props = computed(() => mergeSlot(sdn.textLabel35, props.textLabel35))
-const calendarDay18Props = computed(() => mergeSlot(sdn.calendarDay18, props.calendarDay18))
-const textLabel36Props = computed(() => mergeSlot(sdn.textLabel36, props.textLabel36))
-const calendarDay19Props = computed(() => mergeSlot(sdn.calendarDay19, props.calendarDay19))
-const textLabel37Props = computed(() => mergeSlot(sdn.textLabel37, props.textLabel37))
-const calendarDay20Props = computed(() => mergeSlot(sdn.calendarDay20, props.calendarDay20))
-const textLabel38Props = computed(() => mergeSlot(sdn.textLabel38, props.textLabel38))
-const calendarDay21Props = computed(() => mergeSlot(sdn.calendarDay21, props.calendarDay21))
-const textLabel39Props = computed(() => mergeSlot(sdn.textLabel39, props.textLabel39))
-const calendarDay22Props = computed(() => mergeSlot(sdn.calendarDay22, props.calendarDay22))
-const textLabel40Props = computed(() => mergeSlot(sdn.textLabel40, props.textLabel40))
-const frame4Props = computed(() => mergeSlot(sdn.frame4, props.frame4))
-const frame5Props = computed(() => mergeSlot(sdn.frame5, props.frame5))
-const textTitle2Props = computed(() => mergeSlot(sdn.textTitle2, props.textTitle2))
-const buttonIconic2Props = computed(() => mergeSlot(sdn.buttonIconic2, props.buttonIconic2))
-const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2))
-const container7Props = computed(() => mergeSlot(sdn.container7, props.container7))
-const textLabel41Props = computed(() => mergeSlot(sdn.textLabel41, props.textLabel41))
-const textLabel42Props = computed(() => mergeSlot(sdn.textLabel42, props.textLabel42))
-const textLabel43Props = computed(() => mergeSlot(sdn.textLabel43, props.textLabel43))
-const textLabel44Props = computed(() => mergeSlot(sdn.textLabel44, props.textLabel44))
-const textLabel45Props = computed(() => mergeSlot(sdn.textLabel45, props.textLabel45))
-const textLabel46Props = computed(() => mergeSlot(sdn.textLabel46, props.textLabel46))
-const textLabel47Props = computed(() => mergeSlot(sdn.textLabel47, props.textLabel47))
-const frame6Props = computed(() => mergeSlot(sdn.frame6, props.frame6))
-const container8Props = computed(() => mergeSlot(sdn.container8, props.container8))
-const calendarDay23Props = computed(() => mergeSlot(sdn.calendarDay23, props.calendarDay23))
-const textLabel48Props = computed(() => mergeSlot(sdn.textLabel48, props.textLabel48))
-const calendarDay24Props = computed(() => mergeSlot(sdn.calendarDay24, props.calendarDay24))
-const textLabel49Props = computed(() => mergeSlot(sdn.textLabel49, props.textLabel49))
-const container9Props = computed(() => mergeSlot(sdn.container9, props.container9))
-const calendarDay25Props = computed(() => mergeSlot(sdn.calendarDay25, props.calendarDay25))
-const textLabel50Props = computed(() => mergeSlot(sdn.textLabel50, props.textLabel50))
-const calendarDay26Props = computed(() => mergeSlot(sdn.calendarDay26, props.calendarDay26))
-const textLabel51Props = computed(() => mergeSlot(sdn.textLabel51, props.textLabel51))
-const calendarDay27Props = computed(() => mergeSlot(sdn.calendarDay27, props.calendarDay27))
-const textLabel52Props = computed(() => mergeSlot(sdn.textLabel52, props.textLabel52))
-const calendarDay28Props = computed(() => mergeSlot(sdn.calendarDay28, props.calendarDay28))
-const textLabel53Props = computed(() => mergeSlot(sdn.textLabel53, props.textLabel53))
-const calendarDay29Props = computed(() => mergeSlot(sdn.calendarDay29, props.calendarDay29))
-const textLabel54Props = computed(() => mergeSlot(sdn.textLabel54, props.textLabel54))
-const calendarDay30Props = computed(() => mergeSlot(sdn.calendarDay30, props.calendarDay30))
-const textLabel55Props = computed(() => mergeSlot(sdn.textLabel55, props.textLabel55))
-const calendarDay31Props = computed(() => mergeSlot(sdn.calendarDay31, props.calendarDay31))
-const textLabel56Props = computed(() => mergeSlot(sdn.textLabel56, props.textLabel56))
-const container10Props = computed(() => mergeSlot(sdn.container10, props.container10))
-const calendarDay32Props = computed(() => mergeSlot(sdn.calendarDay32, props.calendarDay32))
-const textLabel57Props = computed(() => mergeSlot(sdn.textLabel57, props.textLabel57))
-const calendarDay33Props = computed(() => mergeSlot(sdn.calendarDay33, props.calendarDay33))
-const textLabel58Props = computed(() => mergeSlot(sdn.textLabel58, props.textLabel58))
-const calendarDay34Props = computed(() => mergeSlot(sdn.calendarDay34, props.calendarDay34))
-const textLabel59Props = computed(() => mergeSlot(sdn.textLabel59, props.textLabel59))
-const calendarDay35Props = computed(() => mergeSlot(sdn.calendarDay35, props.calendarDay35))
-const textLabel60Props = computed(() => mergeSlot(sdn.textLabel60, props.textLabel60))
-const calendarDay36Props = computed(() => mergeSlot(sdn.calendarDay36, props.calendarDay36))
-const textLabel61Props = computed(() => mergeSlot(sdn.textLabel61, props.textLabel61))
-const calendarDay37Props = computed(() => mergeSlot(sdn.calendarDay37, props.calendarDay37))
-const textLabel62Props = computed(() => mergeSlot(sdn.textLabel62, props.textLabel62))
-const calendarDay38Props = computed(() => mergeSlot(sdn.calendarDay38, props.calendarDay38))
-const textLabel63Props = computed(() => mergeSlot(sdn.textLabel63, props.textLabel63))
-const container11Props = computed(() => mergeSlot(sdn.container11, props.container11))
-const calendarDay39Props = computed(() => mergeSlot(sdn.calendarDay39, props.calendarDay39))
-const textLabel64Props = computed(() => mergeSlot(sdn.textLabel64, props.textLabel64))
-const calendarDay40Props = computed(() => mergeSlot(sdn.calendarDay40, props.calendarDay40))
-const textLabel65Props = computed(() => mergeSlot(sdn.textLabel65, props.textLabel65))
-const calendarDay41Props = computed(() => mergeSlot(sdn.calendarDay41, props.calendarDay41))
-const textLabel66Props = computed(() => mergeSlot(sdn.textLabel66, props.textLabel66))
-const calendarDay42Props = computed(() => mergeSlot(sdn.calendarDay42, props.calendarDay42))
-const textLabel67Props = computed(() => mergeSlot(sdn.textLabel67, props.textLabel67))
-const calendarDay43Props = computed(() => mergeSlot(sdn.calendarDay43, props.calendarDay43))
-const textLabel68Props = computed(() => mergeSlot(sdn.textLabel68, props.textLabel68))
-const calendarDay44Props = computed(() => mergeSlot(sdn.calendarDay44, props.calendarDay44))
-const textLabel69Props = computed(() => mergeSlot(sdn.textLabel69, props.textLabel69))
-const calendarDay45Props = computed(() => mergeSlot(sdn.calendarDay45, props.calendarDay45))
-const textLabel70Props = computed(() => mergeSlot(sdn.textLabel70, props.textLabel70))
-const container12Props = computed(() => mergeSlot(sdn.container12, props.container12))
-const calendarDay46Props = computed(() => mergeSlot(sdn.calendarDay46, props.calendarDay46))
-const textLabel71Props = computed(() => mergeSlot(sdn.textLabel71, props.textLabel71))
-const calendarDay47Props = computed(() => mergeSlot(sdn.calendarDay47, props.calendarDay47))
-const textLabel72Props = computed(() => mergeSlot(sdn.textLabel72, props.textLabel72))
-const calendarDay48Props = computed(() => mergeSlot(sdn.calendarDay48, props.calendarDay48))
-const textLabel73Props = computed(() => mergeSlot(sdn.textLabel73, props.textLabel73))
-const calendarDay49Props = computed(() => mergeSlot(sdn.calendarDay49, props.calendarDay49))
-const textLabel74Props = computed(() => mergeSlot(sdn.textLabel74, props.textLabel74))
-const calendarDay50Props = computed(() => mergeSlot(sdn.calendarDay50, props.calendarDay50))
-const textLabel75Props = computed(() => mergeSlot(sdn.textLabel75, props.textLabel75))
-const calendarDay51Props = computed(() => mergeSlot(sdn.calendarDay51, props.calendarDay51))
-const textLabel76Props = computed(() => mergeSlot(sdn.textLabel76, props.textLabel76))
-const calendarDay52Props = computed(() => mergeSlot(sdn.calendarDay52, props.calendarDay52))
-const textLabel77Props = computed(() => mergeSlot(sdn.textLabel77, props.textLabel77))
-const container13Props = computed(() => mergeSlot(sdn.container13, props.container13))
-const calendarDay53Props = computed(() => mergeSlot(sdn.calendarDay53, props.calendarDay53))
-const textLabel78Props = computed(() => mergeSlot(sdn.textLabel78, props.textLabel78))
-const calendarDay54Props = computed(() => mergeSlot(sdn.calendarDay54, props.calendarDay54))
-const textLabel79Props = computed(() => mergeSlot(sdn.textLabel79, props.textLabel79))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
+const buttonIconicProps = computed(() => mergeOptionalSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const containerProps = computed(() => mergeSlot(sdn.container, props.container, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
+const textLabel5Props = computed(() => mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs))
+const textLabel6Props = computed(() => mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs))
+const textLabel7Props = computed(() => mergeOptionalSlot(sdn.textLabel7, props.textLabel7, props.seldonRefs))
+const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
+const container2Props = computed(() => mergeSlot(sdn.container2, props.container2, props.seldonRefs))
+const calendarDayProps = computed(() => mergeOptionalSlot(sdn.calendarDay, props.calendarDay, props.seldonRefs))
+const textLabel8Props = computed(() => mergeOptionalSlot(sdn.textLabel8, props.textLabel8, props.seldonRefs))
+const calendarDayMutedProps = computed(() => mergeOptionalSlot(sdn.calendarDayMuted, props.calendarDayMuted, props.seldonRefs))
+const textLabel9Props = computed(() => mergeOptionalSlot(sdn.textLabel9, props.textLabel9, props.seldonRefs))
+const calendarDayMuted2Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted2, props.calendarDayMuted2, props.seldonRefs))
+const textLabel10Props = computed(() => mergeOptionalSlot(sdn.textLabel10, props.textLabel10, props.seldonRefs))
+const calendarDayMuted3Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted3, props.calendarDayMuted3, props.seldonRefs))
+const textLabel11Props = computed(() => mergeOptionalSlot(sdn.textLabel11, props.textLabel11, props.seldonRefs))
+const calendarDayMuted4Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted4, props.calendarDayMuted4, props.seldonRefs))
+const textLabel12Props = computed(() => mergeOptionalSlot(sdn.textLabel12, props.textLabel12, props.seldonRefs))
+const container3Props = computed(() => mergeSlot(sdn.container3, props.container3, props.seldonRefs))
+const calendarDayMuted5Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted5, props.calendarDayMuted5, props.seldonRefs))
+const textLabel13Props = computed(() => mergeOptionalSlot(sdn.textLabel13, props.textLabel13, props.seldonRefs))
+const calendarDayMuted6Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted6, props.calendarDayMuted6, props.seldonRefs))
+const textLabel14Props = computed(() => mergeOptionalSlot(sdn.textLabel14, props.textLabel14, props.seldonRefs))
+const calendarDayMuted7Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted7, props.calendarDayMuted7, props.seldonRefs))
+const textLabel15Props = computed(() => mergeOptionalSlot(sdn.textLabel15, props.textLabel15, props.seldonRefs))
+const calendarDayMuted8Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted8, props.calendarDayMuted8, props.seldonRefs))
+const textLabel16Props = computed(() => mergeOptionalSlot(sdn.textLabel16, props.textLabel16, props.seldonRefs))
+const calendarDayMuted9Props = computed(() => mergeOptionalSlot(sdn.calendarDayMuted9, props.calendarDayMuted9, props.seldonRefs))
+const textLabel17Props = computed(() => mergeOptionalSlot(sdn.textLabel17, props.textLabel17, props.seldonRefs))
+const calendarDay2Props = computed(() => mergeOptionalSlot(sdn.calendarDay2, props.calendarDay2, props.seldonRefs))
+const textLabel18Props = computed(() => mergeOptionalSlot(sdn.textLabel18, props.textLabel18, props.seldonRefs))
+const calendarDay3Props = computed(() => mergeOptionalSlot(sdn.calendarDay3, props.calendarDay3, props.seldonRefs))
+const textLabel19Props = computed(() => mergeOptionalSlot(sdn.textLabel19, props.textLabel19, props.seldonRefs))
+const container4Props = computed(() => mergeSlot(sdn.container4, props.container4, props.seldonRefs))
+const calendarDay4Props = computed(() => mergeOptionalSlot(sdn.calendarDay4, props.calendarDay4, props.seldonRefs))
+const textLabel20Props = computed(() => mergeOptionalSlot(sdn.textLabel20, props.textLabel20, props.seldonRefs))
+const calendarDay5Props = computed(() => mergeOptionalSlot(sdn.calendarDay5, props.calendarDay5, props.seldonRefs))
+const textLabel21Props = computed(() => mergeOptionalSlot(sdn.textLabel21, props.textLabel21, props.seldonRefs))
+const calendarDay6Props = computed(() => mergeOptionalSlot(sdn.calendarDay6, props.calendarDay6, props.seldonRefs))
+const textLabel22Props = computed(() => mergeOptionalSlot(sdn.textLabel22, props.textLabel22, props.seldonRefs))
+const calendarDay7Props = computed(() => mergeOptionalSlot(sdn.calendarDay7, props.calendarDay7, props.seldonRefs))
+const textLabel23Props = computed(() => mergeOptionalSlot(sdn.textLabel23, props.textLabel23, props.seldonRefs))
+const calendarDaySelectedProps = computed(() => mergeOptionalSlot(sdn.calendarDaySelected, props.calendarDaySelected, props.seldonRefs))
+const textLabel24Props = computed(() => mergeOptionalSlot(sdn.textLabel24, props.textLabel24, props.seldonRefs))
+const calendarDay8Props = computed(() => mergeOptionalSlot(sdn.calendarDay8, props.calendarDay8, props.seldonRefs))
+const textLabel25Props = computed(() => mergeOptionalSlot(sdn.textLabel25, props.textLabel25, props.seldonRefs))
+const calendarDaySelected2Props = computed(() => mergeOptionalSlot(sdn.calendarDaySelected2, props.calendarDaySelected2, props.seldonRefs))
+const textLabel26Props = computed(() => mergeOptionalSlot(sdn.textLabel26, props.textLabel26, props.seldonRefs))
+const container5Props = computed(() => mergeSlot(sdn.container5, props.container5, props.seldonRefs))
+const calendarDay9Props = computed(() => mergeOptionalSlot(sdn.calendarDay9, props.calendarDay9, props.seldonRefs))
+const textLabel27Props = computed(() => mergeOptionalSlot(sdn.textLabel27, props.textLabel27, props.seldonRefs))
+const calendarDay10Props = computed(() => mergeOptionalSlot(sdn.calendarDay10, props.calendarDay10, props.seldonRefs))
+const textLabel28Props = computed(() => mergeOptionalSlot(sdn.textLabel28, props.textLabel28, props.seldonRefs))
+const calendarDay11Props = computed(() => mergeOptionalSlot(sdn.calendarDay11, props.calendarDay11, props.seldonRefs))
+const textLabel29Props = computed(() => mergeOptionalSlot(sdn.textLabel29, props.textLabel29, props.seldonRefs))
+const calendarDay12Props = computed(() => mergeOptionalSlot(sdn.calendarDay12, props.calendarDay12, props.seldonRefs))
+const textLabel30Props = computed(() => mergeOptionalSlot(sdn.textLabel30, props.textLabel30, props.seldonRefs))
+const calendarDay13Props = computed(() => mergeOptionalSlot(sdn.calendarDay13, props.calendarDay13, props.seldonRefs))
+const textLabel31Props = computed(() => mergeOptionalSlot(sdn.textLabel31, props.textLabel31, props.seldonRefs))
+const calendarDay14Props = computed(() => mergeOptionalSlot(sdn.calendarDay14, props.calendarDay14, props.seldonRefs))
+const textLabel32Props = computed(() => mergeOptionalSlot(sdn.textLabel32, props.textLabel32, props.seldonRefs))
+const calendarDay15Props = computed(() => mergeOptionalSlot(sdn.calendarDay15, props.calendarDay15, props.seldonRefs))
+const textLabel33Props = computed(() => mergeOptionalSlot(sdn.textLabel33, props.textLabel33, props.seldonRefs))
+const container6Props = computed(() => mergeSlot(sdn.container6, props.container6, props.seldonRefs))
+const calendarDay16Props = computed(() => mergeOptionalSlot(sdn.calendarDay16, props.calendarDay16, props.seldonRefs))
+const textLabel34Props = computed(() => mergeOptionalSlot(sdn.textLabel34, props.textLabel34, props.seldonRefs))
+const calendarDay17Props = computed(() => mergeOptionalSlot(sdn.calendarDay17, props.calendarDay17, props.seldonRefs))
+const textLabel35Props = computed(() => mergeOptionalSlot(sdn.textLabel35, props.textLabel35, props.seldonRefs))
+const calendarDay18Props = computed(() => mergeOptionalSlot(sdn.calendarDay18, props.calendarDay18, props.seldonRefs))
+const textLabel36Props = computed(() => mergeOptionalSlot(sdn.textLabel36, props.textLabel36, props.seldonRefs))
+const calendarDay19Props = computed(() => mergeOptionalSlot(sdn.calendarDay19, props.calendarDay19, props.seldonRefs))
+const textLabel37Props = computed(() => mergeOptionalSlot(sdn.textLabel37, props.textLabel37, props.seldonRefs))
+const calendarDay20Props = computed(() => mergeOptionalSlot(sdn.calendarDay20, props.calendarDay20, props.seldonRefs))
+const textLabel38Props = computed(() => mergeOptionalSlot(sdn.textLabel38, props.textLabel38, props.seldonRefs))
+const calendarDay21Props = computed(() => mergeOptionalSlot(sdn.calendarDay21, props.calendarDay21, props.seldonRefs))
+const textLabel39Props = computed(() => mergeOptionalSlot(sdn.textLabel39, props.textLabel39, props.seldonRefs))
+const calendarDay22Props = computed(() => mergeOptionalSlot(sdn.calendarDay22, props.calendarDay22, props.seldonRefs))
+const textLabel40Props = computed(() => mergeOptionalSlot(sdn.textLabel40, props.textLabel40, props.seldonRefs))
+const frame4Props = computed(() => mergeSlot(sdn.frame4, props.frame4, props.seldonRefs))
+const frame5Props = computed(() => mergeSlot(sdn.frame5, props.frame5, props.seldonRefs))
+const textTitle2Props = computed(() => mergeOptionalSlot(sdn.textTitle2, props.textTitle2, props.seldonRefs))
+const buttonIconic2Props = computed(() => mergeOptionalSlot(sdn.buttonIconic2, props.buttonIconic2, props.seldonRefs))
+const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
+const container7Props = computed(() => mergeSlot(sdn.container7, props.container7, props.seldonRefs))
+const textLabel41Props = computed(() => mergeOptionalSlot(sdn.textLabel41, props.textLabel41, props.seldonRefs))
+const textLabel42Props = computed(() => mergeOptionalSlot(sdn.textLabel42, props.textLabel42, props.seldonRefs))
+const textLabel43Props = computed(() => mergeOptionalSlot(sdn.textLabel43, props.textLabel43, props.seldonRefs))
+const textLabel44Props = computed(() => mergeOptionalSlot(sdn.textLabel44, props.textLabel44, props.seldonRefs))
+const textLabel45Props = computed(() => mergeOptionalSlot(sdn.textLabel45, props.textLabel45, props.seldonRefs))
+const textLabel46Props = computed(() => mergeOptionalSlot(sdn.textLabel46, props.textLabel46, props.seldonRefs))
+const textLabel47Props = computed(() => mergeOptionalSlot(sdn.textLabel47, props.textLabel47, props.seldonRefs))
+const frame6Props = computed(() => mergeSlot(sdn.frame6, props.frame6, props.seldonRefs))
+const container8Props = computed(() => mergeSlot(sdn.container8, props.container8, props.seldonRefs))
+const calendarDay23Props = computed(() => mergeOptionalSlot(sdn.calendarDay23, props.calendarDay23, props.seldonRefs))
+const textLabel48Props = computed(() => mergeOptionalSlot(sdn.textLabel48, props.textLabel48, props.seldonRefs))
+const calendarDay24Props = computed(() => mergeOptionalSlot(sdn.calendarDay24, props.calendarDay24, props.seldonRefs))
+const textLabel49Props = computed(() => mergeOptionalSlot(sdn.textLabel49, props.textLabel49, props.seldonRefs))
+const container9Props = computed(() => mergeSlot(sdn.container9, props.container9, props.seldonRefs))
+const calendarDay25Props = computed(() => mergeOptionalSlot(sdn.calendarDay25, props.calendarDay25, props.seldonRefs))
+const textLabel50Props = computed(() => mergeOptionalSlot(sdn.textLabel50, props.textLabel50, props.seldonRefs))
+const calendarDay26Props = computed(() => mergeOptionalSlot(sdn.calendarDay26, props.calendarDay26, props.seldonRefs))
+const textLabel51Props = computed(() => mergeOptionalSlot(sdn.textLabel51, props.textLabel51, props.seldonRefs))
+const calendarDay27Props = computed(() => mergeOptionalSlot(sdn.calendarDay27, props.calendarDay27, props.seldonRefs))
+const textLabel52Props = computed(() => mergeOptionalSlot(sdn.textLabel52, props.textLabel52, props.seldonRefs))
+const calendarDay28Props = computed(() => mergeOptionalSlot(sdn.calendarDay28, props.calendarDay28, props.seldonRefs))
+const textLabel53Props = computed(() => mergeOptionalSlot(sdn.textLabel53, props.textLabel53, props.seldonRefs))
+const calendarDay29Props = computed(() => mergeOptionalSlot(sdn.calendarDay29, props.calendarDay29, props.seldonRefs))
+const textLabel54Props = computed(() => mergeOptionalSlot(sdn.textLabel54, props.textLabel54, props.seldonRefs))
+const calendarDay30Props = computed(() => mergeOptionalSlot(sdn.calendarDay30, props.calendarDay30, props.seldonRefs))
+const textLabel55Props = computed(() => mergeOptionalSlot(sdn.textLabel55, props.textLabel55, props.seldonRefs))
+const calendarDay31Props = computed(() => mergeOptionalSlot(sdn.calendarDay31, props.calendarDay31, props.seldonRefs))
+const textLabel56Props = computed(() => mergeOptionalSlot(sdn.textLabel56, props.textLabel56, props.seldonRefs))
+const container10Props = computed(() => mergeSlot(sdn.container10, props.container10, props.seldonRefs))
+const calendarDay32Props = computed(() => mergeOptionalSlot(sdn.calendarDay32, props.calendarDay32, props.seldonRefs))
+const textLabel57Props = computed(() => mergeOptionalSlot(sdn.textLabel57, props.textLabel57, props.seldonRefs))
+const calendarDay33Props = computed(() => mergeOptionalSlot(sdn.calendarDay33, props.calendarDay33, props.seldonRefs))
+const textLabel58Props = computed(() => mergeOptionalSlot(sdn.textLabel58, props.textLabel58, props.seldonRefs))
+const calendarDay34Props = computed(() => mergeOptionalSlot(sdn.calendarDay34, props.calendarDay34, props.seldonRefs))
+const textLabel59Props = computed(() => mergeOptionalSlot(sdn.textLabel59, props.textLabel59, props.seldonRefs))
+const calendarDay35Props = computed(() => mergeOptionalSlot(sdn.calendarDay35, props.calendarDay35, props.seldonRefs))
+const textLabel60Props = computed(() => mergeOptionalSlot(sdn.textLabel60, props.textLabel60, props.seldonRefs))
+const calendarDay36Props = computed(() => mergeOptionalSlot(sdn.calendarDay36, props.calendarDay36, props.seldonRefs))
+const textLabel61Props = computed(() => mergeOptionalSlot(sdn.textLabel61, props.textLabel61, props.seldonRefs))
+const calendarDay37Props = computed(() => mergeOptionalSlot(sdn.calendarDay37, props.calendarDay37, props.seldonRefs))
+const textLabel62Props = computed(() => mergeOptionalSlot(sdn.textLabel62, props.textLabel62, props.seldonRefs))
+const calendarDay38Props = computed(() => mergeOptionalSlot(sdn.calendarDay38, props.calendarDay38, props.seldonRefs))
+const textLabel63Props = computed(() => mergeOptionalSlot(sdn.textLabel63, props.textLabel63, props.seldonRefs))
+const container11Props = computed(() => mergeSlot(sdn.container11, props.container11, props.seldonRefs))
+const calendarDay39Props = computed(() => mergeOptionalSlot(sdn.calendarDay39, props.calendarDay39, props.seldonRefs))
+const textLabel64Props = computed(() => mergeOptionalSlot(sdn.textLabel64, props.textLabel64, props.seldonRefs))
+const calendarDay40Props = computed(() => mergeOptionalSlot(sdn.calendarDay40, props.calendarDay40, props.seldonRefs))
+const textLabel65Props = computed(() => mergeOptionalSlot(sdn.textLabel65, props.textLabel65, props.seldonRefs))
+const calendarDay41Props = computed(() => mergeOptionalSlot(sdn.calendarDay41, props.calendarDay41, props.seldonRefs))
+const textLabel66Props = computed(() => mergeOptionalSlot(sdn.textLabel66, props.textLabel66, props.seldonRefs))
+const calendarDay42Props = computed(() => mergeOptionalSlot(sdn.calendarDay42, props.calendarDay42, props.seldonRefs))
+const textLabel67Props = computed(() => mergeOptionalSlot(sdn.textLabel67, props.textLabel67, props.seldonRefs))
+const calendarDay43Props = computed(() => mergeOptionalSlot(sdn.calendarDay43, props.calendarDay43, props.seldonRefs))
+const textLabel68Props = computed(() => mergeOptionalSlot(sdn.textLabel68, props.textLabel68, props.seldonRefs))
+const calendarDay44Props = computed(() => mergeOptionalSlot(sdn.calendarDay44, props.calendarDay44, props.seldonRefs))
+const textLabel69Props = computed(() => mergeOptionalSlot(sdn.textLabel69, props.textLabel69, props.seldonRefs))
+const calendarDay45Props = computed(() => mergeOptionalSlot(sdn.calendarDay45, props.calendarDay45, props.seldonRefs))
+const textLabel70Props = computed(() => mergeOptionalSlot(sdn.textLabel70, props.textLabel70, props.seldonRefs))
+const container12Props = computed(() => mergeSlot(sdn.container12, props.container12, props.seldonRefs))
+const calendarDay46Props = computed(() => mergeOptionalSlot(sdn.calendarDay46, props.calendarDay46, props.seldonRefs))
+const textLabel71Props = computed(() => mergeOptionalSlot(sdn.textLabel71, props.textLabel71, props.seldonRefs))
+const calendarDay47Props = computed(() => mergeOptionalSlot(sdn.calendarDay47, props.calendarDay47, props.seldonRefs))
+const textLabel72Props = computed(() => mergeOptionalSlot(sdn.textLabel72, props.textLabel72, props.seldonRefs))
+const calendarDay48Props = computed(() => mergeOptionalSlot(sdn.calendarDay48, props.calendarDay48, props.seldonRefs))
+const textLabel73Props = computed(() => mergeOptionalSlot(sdn.textLabel73, props.textLabel73, props.seldonRefs))
+const calendarDay49Props = computed(() => mergeOptionalSlot(sdn.calendarDay49, props.calendarDay49, props.seldonRefs))
+const textLabel74Props = computed(() => mergeOptionalSlot(sdn.textLabel74, props.textLabel74, props.seldonRefs))
+const calendarDay50Props = computed(() => mergeOptionalSlot(sdn.calendarDay50, props.calendarDay50, props.seldonRefs))
+const textLabel75Props = computed(() => mergeOptionalSlot(sdn.textLabel75, props.textLabel75, props.seldonRefs))
+const calendarDay51Props = computed(() => mergeOptionalSlot(sdn.calendarDay51, props.calendarDay51, props.seldonRefs))
+const textLabel76Props = computed(() => mergeOptionalSlot(sdn.textLabel76, props.textLabel76, props.seldonRefs))
+const calendarDay52Props = computed(() => mergeOptionalSlot(sdn.calendarDay52, props.calendarDay52, props.seldonRefs))
+const textLabel77Props = computed(() => mergeOptionalSlot(sdn.textLabel77, props.textLabel77, props.seldonRefs))
+const container13Props = computed(() => mergeSlot(sdn.container13, props.container13, props.seldonRefs))
+const calendarDay53Props = computed(() => mergeOptionalSlot(sdn.calendarDay53, props.calendarDay53, props.seldonRefs))
+const textLabel78Props = computed(() => mergeOptionalSlot(sdn.textLabel78, props.textLabel78, props.seldonRefs))
+const calendarDay54Props = computed(() => mergeOptionalSlot(sdn.calendarDay54, props.calendarDay54, props.seldonRefs))
+const textLabel79Props = computed(() => mergeOptionalSlot(sdn.textLabel79, props.textLabel79, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
         <Frame v-bind="frameProps">
-          <Frame v-bind="frame2Props" v-if="frame2">
-            <ButtonIconic v-if="buttonIconic && buttonIconicProps" v-bind="buttonIconicProps" :icon="iconProps" />
-            <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
+          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+            <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
+            <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
           </Frame>
-          <Frame v-bind="containerProps" v-if="container">
-            <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
-            <TextLabel v-if="textLabel2 && textLabel2Props" v-bind="textLabel2Props" />
-            <TextLabel v-if="textLabel3 && textLabel3Props" v-bind="textLabel3Props" />
-            <TextLabel v-if="textLabel4 && textLabel4Props" v-bind="textLabel4Props" />
-            <TextLabel v-if="textLabel5 && textLabel5Props" v-bind="textLabel5Props" />
-            <TextLabel v-if="textLabel6 && textLabel6Props" v-bind="textLabel6Props" />
-            <TextLabel v-if="textLabel7 && textLabel7Props" v-bind="textLabel7Props" />
+          <Frame v-bind="containerProps" v-if="containerProps !== null">
+            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+            <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+            <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
+            <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
+            <TextLabel v-if="textLabel7Props !== null" v-bind="textLabel7Props" />
           </Frame>
-          <Frame v-bind="frame3Props" v-if="frame3">
-            <Frame v-bind="container2Props" v-if="container2">
-              <CalendarDay v-if="calendarDay && calendarDayProps" v-bind="calendarDayProps">
-                <TextLabel v-if="textLabel8 && textLabel8Props" v-bind="textLabel8Props" />
+          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+            <Frame v-bind="container2Props" v-if="container2Props !== null">
+              <CalendarDay v-if="calendarDayProps !== null" v-bind="calendarDayProps">
+                <TextLabel v-if="textLabel8Props !== null" v-bind="textLabel8Props" />
               </CalendarDay>
-              <CalendarDayMuted v-if="calendarDayMuted && calendarDayMutedProps" v-bind="calendarDayMutedProps">
-                <TextLabel v-if="textLabel9 && textLabel9Props" v-bind="textLabel9Props" />
+              <CalendarDayMuted v-if="calendarDayMutedProps !== null" v-bind="calendarDayMutedProps">
+                <TextLabel v-if="textLabel9Props !== null" v-bind="textLabel9Props" />
               </CalendarDayMuted>
-              <CalendarDayMuted v-if="calendarDayMuted2 && calendarDayMuted2Props" v-bind="calendarDayMuted2Props">
-                <TextLabel v-if="textLabel10 && textLabel10Props" v-bind="textLabel10Props" />
+              <CalendarDayMuted v-if="calendarDayMuted2Props !== null" v-bind="calendarDayMuted2Props">
+                <TextLabel v-if="textLabel10Props !== null" v-bind="textLabel10Props" />
               </CalendarDayMuted>
-              <CalendarDayMuted v-if="calendarDayMuted3 && calendarDayMuted3Props" v-bind="calendarDayMuted3Props">
-                <TextLabel v-if="textLabel11 && textLabel11Props" v-bind="textLabel11Props" />
+              <CalendarDayMuted v-if="calendarDayMuted3Props !== null" v-bind="calendarDayMuted3Props">
+                <TextLabel v-if="textLabel11Props !== null" v-bind="textLabel11Props" />
               </CalendarDayMuted>
-              <CalendarDayMuted v-if="calendarDayMuted4 && calendarDayMuted4Props" v-bind="calendarDayMuted4Props">
-                <TextLabel v-if="textLabel12 && textLabel12Props" v-bind="textLabel12Props" />
+              <CalendarDayMuted v-if="calendarDayMuted4Props !== null" v-bind="calendarDayMuted4Props">
+                <TextLabel v-if="textLabel12Props !== null" v-bind="textLabel12Props" />
               </CalendarDayMuted>
             </Frame>
-            <Frame v-bind="container3Props" v-if="container3">
-              <CalendarDayMuted v-if="calendarDayMuted5 && calendarDayMuted5Props" v-bind="calendarDayMuted5Props">
-                <TextLabel v-if="textLabel13 && textLabel13Props" v-bind="textLabel13Props" />
+            <Frame v-bind="container3Props" v-if="container3Props !== null">
+              <CalendarDayMuted v-if="calendarDayMuted5Props !== null" v-bind="calendarDayMuted5Props">
+                <TextLabel v-if="textLabel13Props !== null" v-bind="textLabel13Props" />
               </CalendarDayMuted>
-              <CalendarDayMuted v-if="calendarDayMuted6 && calendarDayMuted6Props" v-bind="calendarDayMuted6Props">
-                <TextLabel v-if="textLabel14 && textLabel14Props" v-bind="textLabel14Props" />
+              <CalendarDayMuted v-if="calendarDayMuted6Props !== null" v-bind="calendarDayMuted6Props">
+                <TextLabel v-if="textLabel14Props !== null" v-bind="textLabel14Props" />
               </CalendarDayMuted>
-              <CalendarDayMuted v-if="calendarDayMuted7 && calendarDayMuted7Props" v-bind="calendarDayMuted7Props">
-                <TextLabel v-if="textLabel15 && textLabel15Props" v-bind="textLabel15Props" />
+              <CalendarDayMuted v-if="calendarDayMuted7Props !== null" v-bind="calendarDayMuted7Props">
+                <TextLabel v-if="textLabel15Props !== null" v-bind="textLabel15Props" />
               </CalendarDayMuted>
-              <CalendarDayMuted v-if="calendarDayMuted8 && calendarDayMuted8Props" v-bind="calendarDayMuted8Props">
-                <TextLabel v-if="textLabel16 && textLabel16Props" v-bind="textLabel16Props" />
+              <CalendarDayMuted v-if="calendarDayMuted8Props !== null" v-bind="calendarDayMuted8Props">
+                <TextLabel v-if="textLabel16Props !== null" v-bind="textLabel16Props" />
               </CalendarDayMuted>
-              <CalendarDayMuted v-if="calendarDayMuted9 && calendarDayMuted9Props" v-bind="calendarDayMuted9Props">
-                <TextLabel v-if="textLabel17 && textLabel17Props" v-bind="textLabel17Props" />
+              <CalendarDayMuted v-if="calendarDayMuted9Props !== null" v-bind="calendarDayMuted9Props">
+                <TextLabel v-if="textLabel17Props !== null" v-bind="textLabel17Props" />
               </CalendarDayMuted>
-              <CalendarDay v-if="calendarDay2 && calendarDay2Props" v-bind="calendarDay2Props">
-                <TextLabel v-if="textLabel18 && textLabel18Props" v-bind="textLabel18Props" />
+              <CalendarDay v-if="calendarDay2Props !== null" v-bind="calendarDay2Props">
+                <TextLabel v-if="textLabel18Props !== null" v-bind="textLabel18Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay3 && calendarDay3Props" v-bind="calendarDay3Props">
-                <TextLabel v-if="textLabel19 && textLabel19Props" v-bind="textLabel19Props" />
+              <CalendarDay v-if="calendarDay3Props !== null" v-bind="calendarDay3Props">
+                <TextLabel v-if="textLabel19Props !== null" v-bind="textLabel19Props" />
               </CalendarDay>
             </Frame>
-            <Frame v-bind="container4Props" v-if="container4">
-              <CalendarDay v-if="calendarDay4 && calendarDay4Props" v-bind="calendarDay4Props">
-                <TextLabel v-if="textLabel20 && textLabel20Props" v-bind="textLabel20Props" />
+            <Frame v-bind="container4Props" v-if="container4Props !== null">
+              <CalendarDay v-if="calendarDay4Props !== null" v-bind="calendarDay4Props">
+                <TextLabel v-if="textLabel20Props !== null" v-bind="textLabel20Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay5 && calendarDay5Props" v-bind="calendarDay5Props">
-                <TextLabel v-if="textLabel21 && textLabel21Props" v-bind="textLabel21Props" />
+              <CalendarDay v-if="calendarDay5Props !== null" v-bind="calendarDay5Props">
+                <TextLabel v-if="textLabel21Props !== null" v-bind="textLabel21Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay6 && calendarDay6Props" v-bind="calendarDay6Props">
-                <TextLabel v-if="textLabel22 && textLabel22Props" v-bind="textLabel22Props" />
+              <CalendarDay v-if="calendarDay6Props !== null" v-bind="calendarDay6Props">
+                <TextLabel v-if="textLabel22Props !== null" v-bind="textLabel22Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay7 && calendarDay7Props" v-bind="calendarDay7Props">
-                <TextLabel v-if="textLabel23 && textLabel23Props" v-bind="textLabel23Props" />
+              <CalendarDay v-if="calendarDay7Props !== null" v-bind="calendarDay7Props">
+                <TextLabel v-if="textLabel23Props !== null" v-bind="textLabel23Props" />
               </CalendarDay>
-              <CalendarDaySelected v-if="calendarDaySelected && calendarDaySelectedProps" v-bind="calendarDaySelectedProps">
-                <TextLabel v-if="textLabel24 && textLabel24Props" v-bind="textLabel24Props" />
+              <CalendarDaySelected v-if="calendarDaySelectedProps !== null" v-bind="calendarDaySelectedProps">
+                <TextLabel v-if="textLabel24Props !== null" v-bind="textLabel24Props" />
               </CalendarDaySelected>
-              <CalendarDay v-if="calendarDay8 && calendarDay8Props" v-bind="calendarDay8Props">
-                <TextLabel v-if="textLabel25 && textLabel25Props" v-bind="textLabel25Props" />
+              <CalendarDay v-if="calendarDay8Props !== null" v-bind="calendarDay8Props">
+                <TextLabel v-if="textLabel25Props !== null" v-bind="textLabel25Props" />
               </CalendarDay>
-              <CalendarDaySelected v-if="calendarDaySelected2 && calendarDaySelected2Props" v-bind="calendarDaySelected2Props">
-                <TextLabel v-if="textLabel26 && textLabel26Props" v-bind="textLabel26Props" />
+              <CalendarDaySelected v-if="calendarDaySelected2Props !== null" v-bind="calendarDaySelected2Props">
+                <TextLabel v-if="textLabel26Props !== null" v-bind="textLabel26Props" />
               </CalendarDaySelected>
             </Frame>
-            <Frame v-bind="container5Props" v-if="container5">
-              <CalendarDay v-if="calendarDay9 && calendarDay9Props" v-bind="calendarDay9Props">
-                <TextLabel v-if="textLabel27 && textLabel27Props" v-bind="textLabel27Props" />
+            <Frame v-bind="container5Props" v-if="container5Props !== null">
+              <CalendarDay v-if="calendarDay9Props !== null" v-bind="calendarDay9Props">
+                <TextLabel v-if="textLabel27Props !== null" v-bind="textLabel27Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay10 && calendarDay10Props" v-bind="calendarDay10Props">
-                <TextLabel v-if="textLabel28 && textLabel28Props" v-bind="textLabel28Props" />
+              <CalendarDay v-if="calendarDay10Props !== null" v-bind="calendarDay10Props">
+                <TextLabel v-if="textLabel28Props !== null" v-bind="textLabel28Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay11 && calendarDay11Props" v-bind="calendarDay11Props">
-                <TextLabel v-if="textLabel29 && textLabel29Props" v-bind="textLabel29Props" />
+              <CalendarDay v-if="calendarDay11Props !== null" v-bind="calendarDay11Props">
+                <TextLabel v-if="textLabel29Props !== null" v-bind="textLabel29Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay12 && calendarDay12Props" v-bind="calendarDay12Props">
-                <TextLabel v-if="textLabel30 && textLabel30Props" v-bind="textLabel30Props" />
+              <CalendarDay v-if="calendarDay12Props !== null" v-bind="calendarDay12Props">
+                <TextLabel v-if="textLabel30Props !== null" v-bind="textLabel30Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay13 && calendarDay13Props" v-bind="calendarDay13Props">
-                <TextLabel v-if="textLabel31 && textLabel31Props" v-bind="textLabel31Props" />
+              <CalendarDay v-if="calendarDay13Props !== null" v-bind="calendarDay13Props">
+                <TextLabel v-if="textLabel31Props !== null" v-bind="textLabel31Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay14 && calendarDay14Props" v-bind="calendarDay14Props">
-                <TextLabel v-if="textLabel32 && textLabel32Props" v-bind="textLabel32Props" />
+              <CalendarDay v-if="calendarDay14Props !== null" v-bind="calendarDay14Props">
+                <TextLabel v-if="textLabel32Props !== null" v-bind="textLabel32Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay15 && calendarDay15Props" v-bind="calendarDay15Props">
-                <TextLabel v-if="textLabel33 && textLabel33Props" v-bind="textLabel33Props" />
+              <CalendarDay v-if="calendarDay15Props !== null" v-bind="calendarDay15Props">
+                <TextLabel v-if="textLabel33Props !== null" v-bind="textLabel33Props" />
               </CalendarDay>
             </Frame>
-            <Frame v-bind="container6Props" v-if="container6">
-              <CalendarDay v-if="calendarDay16 && calendarDay16Props" v-bind="calendarDay16Props">
-                <TextLabel v-if="textLabel34 && textLabel34Props" v-bind="textLabel34Props" />
+            <Frame v-bind="container6Props" v-if="container6Props !== null">
+              <CalendarDay v-if="calendarDay16Props !== null" v-bind="calendarDay16Props">
+                <TextLabel v-if="textLabel34Props !== null" v-bind="textLabel34Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay17 && calendarDay17Props" v-bind="calendarDay17Props">
-                <TextLabel v-if="textLabel35 && textLabel35Props" v-bind="textLabel35Props" />
+              <CalendarDay v-if="calendarDay17Props !== null" v-bind="calendarDay17Props">
+                <TextLabel v-if="textLabel35Props !== null" v-bind="textLabel35Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay18 && calendarDay18Props" v-bind="calendarDay18Props">
-                <TextLabel v-if="textLabel36 && textLabel36Props" v-bind="textLabel36Props" />
+              <CalendarDay v-if="calendarDay18Props !== null" v-bind="calendarDay18Props">
+                <TextLabel v-if="textLabel36Props !== null" v-bind="textLabel36Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay19 && calendarDay19Props" v-bind="calendarDay19Props">
-                <TextLabel v-if="textLabel37 && textLabel37Props" v-bind="textLabel37Props" />
+              <CalendarDay v-if="calendarDay19Props !== null" v-bind="calendarDay19Props">
+                <TextLabel v-if="textLabel37Props !== null" v-bind="textLabel37Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay20 && calendarDay20Props" v-bind="calendarDay20Props">
-                <TextLabel v-if="textLabel38 && textLabel38Props" v-bind="textLabel38Props" />
+              <CalendarDay v-if="calendarDay20Props !== null" v-bind="calendarDay20Props">
+                <TextLabel v-if="textLabel38Props !== null" v-bind="textLabel38Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay21 && calendarDay21Props" v-bind="calendarDay21Props">
-                <TextLabel v-if="textLabel39 && textLabel39Props" v-bind="textLabel39Props" />
+              <CalendarDay v-if="calendarDay21Props !== null" v-bind="calendarDay21Props">
+                <TextLabel v-if="textLabel39Props !== null" v-bind="textLabel39Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay22 && calendarDay22Props" v-bind="calendarDay22Props">
-                <TextLabel v-if="textLabel40 && textLabel40Props" v-bind="textLabel40Props" />
+              <CalendarDay v-if="calendarDay22Props !== null" v-bind="calendarDay22Props">
+                <TextLabel v-if="textLabel40Props !== null" v-bind="textLabel40Props" />
               </CalendarDay>
             </Frame>
           </Frame>
         </Frame>
         <Frame v-bind="frame4Props">
-          <Frame v-bind="frame5Props" v-if="frame5">
-            <TextTitle v-if="textTitle2 && textTitle2Props" v-bind="textTitle2Props" />
-            <ButtonIconic v-if="buttonIconic2 && buttonIconic2Props" v-bind="buttonIconic2Props" :icon="icon2Props" />
+          <Frame v-bind="frame5Props" v-if="frame5Props !== null">
+            <TextTitle v-if="textTitle2Props !== null" v-bind="textTitle2Props" />
+            <ButtonIconic v-if="buttonIconic2Props !== null" v-bind="buttonIconic2Props" :icon="icon2Props" />
           </Frame>
-          <Frame v-bind="container7Props" v-if="container7">
-            <TextLabel v-if="textLabel41 && textLabel41Props" v-bind="textLabel41Props" />
-            <TextLabel v-if="textLabel42 && textLabel42Props" v-bind="textLabel42Props" />
-            <TextLabel v-if="textLabel43 && textLabel43Props" v-bind="textLabel43Props" />
-            <TextLabel v-if="textLabel44 && textLabel44Props" v-bind="textLabel44Props" />
-            <TextLabel v-if="textLabel45 && textLabel45Props" v-bind="textLabel45Props" />
-            <TextLabel v-if="textLabel46 && textLabel46Props" v-bind="textLabel46Props" />
-            <TextLabel v-if="textLabel47 && textLabel47Props" v-bind="textLabel47Props" />
+          <Frame v-bind="container7Props" v-if="container7Props !== null">
+            <TextLabel v-if="textLabel41Props !== null" v-bind="textLabel41Props" />
+            <TextLabel v-if="textLabel42Props !== null" v-bind="textLabel42Props" />
+            <TextLabel v-if="textLabel43Props !== null" v-bind="textLabel43Props" />
+            <TextLabel v-if="textLabel44Props !== null" v-bind="textLabel44Props" />
+            <TextLabel v-if="textLabel45Props !== null" v-bind="textLabel45Props" />
+            <TextLabel v-if="textLabel46Props !== null" v-bind="textLabel46Props" />
+            <TextLabel v-if="textLabel47Props !== null" v-bind="textLabel47Props" />
           </Frame>
-          <Frame v-bind="frame6Props" v-if="frame6">
-            <Frame v-bind="container8Props" v-if="container8">
-              <CalendarDay v-if="calendarDay23 && calendarDay23Props" v-bind="calendarDay23Props">
-                <TextLabel v-if="textLabel48 && textLabel48Props" v-bind="textLabel48Props" />
+          <Frame v-bind="frame6Props" v-if="frame6Props !== null">
+            <Frame v-bind="container8Props" v-if="container8Props !== null">
+              <CalendarDay v-if="calendarDay23Props !== null" v-bind="calendarDay23Props">
+                <TextLabel v-if="textLabel48Props !== null" v-bind="textLabel48Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay24 && calendarDay24Props" v-bind="calendarDay24Props">
-                <TextLabel v-if="textLabel49 && textLabel49Props" v-bind="textLabel49Props" />
-              </CalendarDay>
-            </Frame>
-            <Frame v-bind="container9Props" v-if="container9">
-              <CalendarDay v-if="calendarDay25 && calendarDay25Props" v-bind="calendarDay25Props">
-                <TextLabel v-if="textLabel50 && textLabel50Props" v-bind="textLabel50Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay26 && calendarDay26Props" v-bind="calendarDay26Props">
-                <TextLabel v-if="textLabel51 && textLabel51Props" v-bind="textLabel51Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay27 && calendarDay27Props" v-bind="calendarDay27Props">
-                <TextLabel v-if="textLabel52 && textLabel52Props" v-bind="textLabel52Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay28 && calendarDay28Props" v-bind="calendarDay28Props">
-                <TextLabel v-if="textLabel53 && textLabel53Props" v-bind="textLabel53Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay29 && calendarDay29Props" v-bind="calendarDay29Props">
-                <TextLabel v-if="textLabel54 && textLabel54Props" v-bind="textLabel54Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay30 && calendarDay30Props" v-bind="calendarDay30Props">
-                <TextLabel v-if="textLabel55 && textLabel55Props" v-bind="textLabel55Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay31 && calendarDay31Props" v-bind="calendarDay31Props">
-                <TextLabel v-if="textLabel56 && textLabel56Props" v-bind="textLabel56Props" />
+              <CalendarDay v-if="calendarDay24Props !== null" v-bind="calendarDay24Props">
+                <TextLabel v-if="textLabel49Props !== null" v-bind="textLabel49Props" />
               </CalendarDay>
             </Frame>
-            <Frame v-bind="container10Props" v-if="container10">
-              <CalendarDay v-if="calendarDay32 && calendarDay32Props" v-bind="calendarDay32Props">
-                <TextLabel v-if="textLabel57 && textLabel57Props" v-bind="textLabel57Props" />
+            <Frame v-bind="container9Props" v-if="container9Props !== null">
+              <CalendarDay v-if="calendarDay25Props !== null" v-bind="calendarDay25Props">
+                <TextLabel v-if="textLabel50Props !== null" v-bind="textLabel50Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay33 && calendarDay33Props" v-bind="calendarDay33Props">
-                <TextLabel v-if="textLabel58 && textLabel58Props" v-bind="textLabel58Props" />
+              <CalendarDay v-if="calendarDay26Props !== null" v-bind="calendarDay26Props">
+                <TextLabel v-if="textLabel51Props !== null" v-bind="textLabel51Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay34 && calendarDay34Props" v-bind="calendarDay34Props">
-                <TextLabel v-if="textLabel59 && textLabel59Props" v-bind="textLabel59Props" />
+              <CalendarDay v-if="calendarDay27Props !== null" v-bind="calendarDay27Props">
+                <TextLabel v-if="textLabel52Props !== null" v-bind="textLabel52Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay35 && calendarDay35Props" v-bind="calendarDay35Props">
-                <TextLabel v-if="textLabel60 && textLabel60Props" v-bind="textLabel60Props" />
+              <CalendarDay v-if="calendarDay28Props !== null" v-bind="calendarDay28Props">
+                <TextLabel v-if="textLabel53Props !== null" v-bind="textLabel53Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay36 && calendarDay36Props" v-bind="calendarDay36Props">
-                <TextLabel v-if="textLabel61 && textLabel61Props" v-bind="textLabel61Props" />
+              <CalendarDay v-if="calendarDay29Props !== null" v-bind="calendarDay29Props">
+                <TextLabel v-if="textLabel54Props !== null" v-bind="textLabel54Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay37 && calendarDay37Props" v-bind="calendarDay37Props">
-                <TextLabel v-if="textLabel62 && textLabel62Props" v-bind="textLabel62Props" />
+              <CalendarDay v-if="calendarDay30Props !== null" v-bind="calendarDay30Props">
+                <TextLabel v-if="textLabel55Props !== null" v-bind="textLabel55Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay38 && calendarDay38Props" v-bind="calendarDay38Props">
-                <TextLabel v-if="textLabel63 && textLabel63Props" v-bind="textLabel63Props" />
-              </CalendarDay>
-            </Frame>
-            <Frame v-bind="container11Props" v-if="container11">
-              <CalendarDay v-if="calendarDay39 && calendarDay39Props" v-bind="calendarDay39Props">
-                <TextLabel v-if="textLabel64 && textLabel64Props" v-bind="textLabel64Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay40 && calendarDay40Props" v-bind="calendarDay40Props">
-                <TextLabel v-if="textLabel65 && textLabel65Props" v-bind="textLabel65Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay41 && calendarDay41Props" v-bind="calendarDay41Props">
-                <TextLabel v-if="textLabel66 && textLabel66Props" v-bind="textLabel66Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay42 && calendarDay42Props" v-bind="calendarDay42Props">
-                <TextLabel v-if="textLabel67 && textLabel67Props" v-bind="textLabel67Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay43 && calendarDay43Props" v-bind="calendarDay43Props">
-                <TextLabel v-if="textLabel68 && textLabel68Props" v-bind="textLabel68Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay44 && calendarDay44Props" v-bind="calendarDay44Props">
-                <TextLabel v-if="textLabel69 && textLabel69Props" v-bind="textLabel69Props" />
-              </CalendarDay>
-              <CalendarDay v-if="calendarDay45 && calendarDay45Props" v-bind="calendarDay45Props">
-                <TextLabel v-if="textLabel70 && textLabel70Props" v-bind="textLabel70Props" />
+              <CalendarDay v-if="calendarDay31Props !== null" v-bind="calendarDay31Props">
+                <TextLabel v-if="textLabel56Props !== null" v-bind="textLabel56Props" />
               </CalendarDay>
             </Frame>
-            <Frame v-bind="container12Props" v-if="container12">
-              <CalendarDay v-if="calendarDay46 && calendarDay46Props" v-bind="calendarDay46Props">
-                <TextLabel v-if="textLabel71 && textLabel71Props" v-bind="textLabel71Props" />
+            <Frame v-bind="container10Props" v-if="container10Props !== null">
+              <CalendarDay v-if="calendarDay32Props !== null" v-bind="calendarDay32Props">
+                <TextLabel v-if="textLabel57Props !== null" v-bind="textLabel57Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay47 && calendarDay47Props" v-bind="calendarDay47Props">
-                <TextLabel v-if="textLabel72 && textLabel72Props" v-bind="textLabel72Props" />
+              <CalendarDay v-if="calendarDay33Props !== null" v-bind="calendarDay33Props">
+                <TextLabel v-if="textLabel58Props !== null" v-bind="textLabel58Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay48 && calendarDay48Props" v-bind="calendarDay48Props">
-                <TextLabel v-if="textLabel73 && textLabel73Props" v-bind="textLabel73Props" />
+              <CalendarDay v-if="calendarDay34Props !== null" v-bind="calendarDay34Props">
+                <TextLabel v-if="textLabel59Props !== null" v-bind="textLabel59Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay49 && calendarDay49Props" v-bind="calendarDay49Props">
-                <TextLabel v-if="textLabel74 && textLabel74Props" v-bind="textLabel74Props" />
+              <CalendarDay v-if="calendarDay35Props !== null" v-bind="calendarDay35Props">
+                <TextLabel v-if="textLabel60Props !== null" v-bind="textLabel60Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay50 && calendarDay50Props" v-bind="calendarDay50Props">
-                <TextLabel v-if="textLabel75 && textLabel75Props" v-bind="textLabel75Props" />
+              <CalendarDay v-if="calendarDay36Props !== null" v-bind="calendarDay36Props">
+                <TextLabel v-if="textLabel61Props !== null" v-bind="textLabel61Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay51 && calendarDay51Props" v-bind="calendarDay51Props">
-                <TextLabel v-if="textLabel76 && textLabel76Props" v-bind="textLabel76Props" />
+              <CalendarDay v-if="calendarDay37Props !== null" v-bind="calendarDay37Props">
+                <TextLabel v-if="textLabel62Props !== null" v-bind="textLabel62Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay52 && calendarDay52Props" v-bind="calendarDay52Props">
-                <TextLabel v-if="textLabel77 && textLabel77Props" v-bind="textLabel77Props" />
+              <CalendarDay v-if="calendarDay38Props !== null" v-bind="calendarDay38Props">
+                <TextLabel v-if="textLabel63Props !== null" v-bind="textLabel63Props" />
               </CalendarDay>
             </Frame>
-            <Frame v-bind="container13Props" v-if="container13">
-              <CalendarDay v-if="calendarDay53 && calendarDay53Props" v-bind="calendarDay53Props">
-                <TextLabel v-if="textLabel78 && textLabel78Props" v-bind="textLabel78Props" />
+            <Frame v-bind="container11Props" v-if="container11Props !== null">
+              <CalendarDay v-if="calendarDay39Props !== null" v-bind="calendarDay39Props">
+                <TextLabel v-if="textLabel64Props !== null" v-bind="textLabel64Props" />
               </CalendarDay>
-              <CalendarDay v-if="calendarDay54 && calendarDay54Props" v-bind="calendarDay54Props">
-                <TextLabel v-if="textLabel79 && textLabel79Props" v-bind="textLabel79Props" />
+              <CalendarDay v-if="calendarDay40Props !== null" v-bind="calendarDay40Props">
+                <TextLabel v-if="textLabel65Props !== null" v-bind="textLabel65Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay41Props !== null" v-bind="calendarDay41Props">
+                <TextLabel v-if="textLabel66Props !== null" v-bind="textLabel66Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay42Props !== null" v-bind="calendarDay42Props">
+                <TextLabel v-if="textLabel67Props !== null" v-bind="textLabel67Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay43Props !== null" v-bind="calendarDay43Props">
+                <TextLabel v-if="textLabel68Props !== null" v-bind="textLabel68Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay44Props !== null" v-bind="calendarDay44Props">
+                <TextLabel v-if="textLabel69Props !== null" v-bind="textLabel69Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay45Props !== null" v-bind="calendarDay45Props">
+                <TextLabel v-if="textLabel70Props !== null" v-bind="textLabel70Props" />
+              </CalendarDay>
+            </Frame>
+            <Frame v-bind="container12Props" v-if="container12Props !== null">
+              <CalendarDay v-if="calendarDay46Props !== null" v-bind="calendarDay46Props">
+                <TextLabel v-if="textLabel71Props !== null" v-bind="textLabel71Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay47Props !== null" v-bind="calendarDay47Props">
+                <TextLabel v-if="textLabel72Props !== null" v-bind="textLabel72Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay48Props !== null" v-bind="calendarDay48Props">
+                <TextLabel v-if="textLabel73Props !== null" v-bind="textLabel73Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay49Props !== null" v-bind="calendarDay49Props">
+                <TextLabel v-if="textLabel74Props !== null" v-bind="textLabel74Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay50Props !== null" v-bind="calendarDay50Props">
+                <TextLabel v-if="textLabel75Props !== null" v-bind="textLabel75Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay51Props !== null" v-bind="calendarDay51Props">
+                <TextLabel v-if="textLabel76Props !== null" v-bind="textLabel76Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay52Props !== null" v-bind="calendarDay52Props">
+                <TextLabel v-if="textLabel77Props !== null" v-bind="textLabel77Props" />
+              </CalendarDay>
+            </Frame>
+            <Frame v-bind="container13Props" v-if="container13Props !== null">
+              <CalendarDay v-if="calendarDay53Props !== null" v-bind="calendarDay53Props">
+                <TextLabel v-if="textLabel78Props !== null" v-bind="textLabel78Props" />
+              </CalendarDay>
+              <CalendarDay v-if="calendarDay54Props !== null" v-bind="calendarDay54Props">
+                <TextLabel v-if="textLabel79Props !== null" v-bind="textLabel79Props" />
               </CalendarDay>
             </Frame>
           </Frame>

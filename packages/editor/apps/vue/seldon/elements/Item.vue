@@ -12,12 +12,21 @@
  *
  *****/
 
-/*****
+/**
  * Item: Item
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Inline
+ *
+ * Structure:
+ *   InputCheckbox   inputCheckbox
+ *   Frame           frame
+ *     TextTitle     textTitle
+ *     TextSubtitle  textSubtitle
+ *   Button          button
+ *     Icon          icon
+ *     TextLabel     textLabel
  *
  * @example
  * ```vue
@@ -32,13 +41,13 @@
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 import Frame from "../frames/Frame.vue"
 import Button from "../elements/Button.vue"
 import Icon from "../primitives/Icon.vue"
@@ -56,6 +65,7 @@ const props = defineProps<{
   button?: Record<string, unknown> | null
   icon?: Record<string, unknown> | null
   textLabel?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -63,7 +73,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-item",
   "inputCheckbox": {
     "className": "sdn-input-checkbox sdn-input-checkbox--vajr"
   },
@@ -93,26 +102,26 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-item", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const inputCheckboxProps = computed(() => mergeSlot(sdn.inputCheckbox, props.inputCheckbox))
-const frameProps = computed(() => mergeSlot(sdn.frame, props.frame))
-const textTitleProps = computed(() => mergeSlot(sdn.textTitle, props.textTitle))
-const textSubtitleProps = computed(() => mergeSlot(sdn.textSubtitle, props.textSubtitle))
-const buttonProps = computed(() => mergeSlot(sdn.button, props.button))
-const iconProps = computed(() => mergeSlot(sdn.icon, props.icon))
-const textLabelProps = computed(() => mergeSlot(sdn.textLabel, props.textLabel))
+const inputCheckboxProps = computed(() => mergeOptionalSlot(sdn.inputCheckbox, props.inputCheckbox, props.seldonRefs))
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
+const textSubtitleProps = computed(() => mergeOptionalSlot(sdn.textSubtitle, props.textSubtitle, props.seldonRefs))
+const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
+const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
 </script>
 
 <template>
     <li :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <InputCheckbox v-if="inputCheckbox && inputCheckboxProps" v-bind="inputCheckboxProps" />
+        <InputCheckbox v-if="inputCheckboxProps !== null" v-bind="inputCheckboxProps" />
         <Frame v-bind="frameProps">
-          <TextTitle v-if="textTitle && textTitleProps" v-bind="textTitleProps" />
-          <TextSubtitle v-if="textSubtitle && textSubtitleProps" v-bind="textSubtitleProps" />
+          <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+          <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
         </Frame>
         <Button v-if="buttonProps !== null" v-bind="buttonProps">
           <Icon v-if="iconProps !== null" v-bind="iconProps" />
-          <TextLabel v-if="textLabel && textLabelProps" v-bind="textLabelProps" />
+          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
         </Button>
       </slot>
     </li>

@@ -10,18 +10,25 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { TextareaHTMLAttributes } from "react"
+
 import { HTMLTextarea } from "../native-react/HTML.Textarea"
 import { combineClassNames } from "../utils/class-name"
 
-import type { TextareaHTMLAttributes } from "react"
-
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  className?: string
   "data-seldon-ref"?: string
   placeholder?: string
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: TextareaProps = {
+  placeholder: "Placeholder text",
+}
+
+/**
  * Textarea: Textarea
  * Level: Primitive
  * Intent: Multi-line text input control for collecting longer user input.
@@ -34,7 +41,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
  *   placeholder="Placeholder text"
  * />
  * ```
- *****/
+ */
 export function Textarea({
   className = "",
   placeholder = sdn.placeholder,
@@ -46,12 +53,4 @@ export function Textarea({
   // React JSX component with merged default and custom properties
   //
   return <HTMLTextarea className={textareaClassName} placeholder={placeholder} {...props} />
-}
-
-//
-// Default property values
-//
-const sdn: TextareaProps = {
-  placeholder: "Placeholder text",
-  className: "sdn-textarea",
 }

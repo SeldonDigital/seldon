@@ -9,12 +9,12 @@ const options = {
 } as unknown as ExportOptions
 
 describe("getUtilityFileContents", () => {
-  it("emits the class-name, apply-ref, icon-registry, and resize utility files", () => {
+  it("emits the class-name, merge-slot, icon-registry, and resize utility files", () => {
     const files = getUtilityFileContents(options)
 
     expect(files.map((f) => f.path)).toEqual([
       "/src/components/utils/class-name.ts",
-      "/src/components/utils/apply-ref.ts",
+      "/src/components/utils/merge-slot.ts",
       "/src/components/utils/icon-registry.ts",
       "/src/components/utils/resize.ts",
     ])
@@ -41,10 +41,11 @@ describe("getUtilityFileContents", () => {
     expect(file?.content).toContain("export function combineClassNames")
   })
 
-  it("imports combineClassNames into the apply-ref file", () => {
-    const file = getUtilityFileContents(options).find((f) => f.path.endsWith("apply-ref.ts"))
+  it("imports combineClassNames into the merge-slot file", () => {
+    const file = getUtilityFileContents(options).find((f) => f.path.endsWith("merge-slot.ts"))
 
     expect(file?.content).toContain('import { combineClassNames } from "./class-name"')
-    expect(file?.content).toContain("export function applyRef")
+    expect(file?.content).toContain("export function mergeSlot")
+    expect(file?.content).toContain("export function mergeOptionalSlot")
   })
 })

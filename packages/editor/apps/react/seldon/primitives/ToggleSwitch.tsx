@@ -10,20 +10,26 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { forwardRef } from "react"
+
+import { InputHTMLAttributes, Ref } from "react"
 
 import { SeldonToggle } from "../custom/SeldonToggle"
 import { combineClassNames } from "../utils/class-name"
 
-import type { InputHTMLAttributes, Ref } from "react"
-
 export interface ToggleSwitchProps extends InputHTMLAttributes<HTMLInputElement> {
-  className?: string
   "data-seldon-ref"?: string
   ref?: Ref<HTMLInputElement>
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ToggleSwitchProps = {
+  role: "switch",
+  "aria-checked": "false",
+}
+
+/**
  * Toggle Switch: ToggleSwitch
  * Level: Primitive
  * Intent: Toggles a single setting on or off with a sliding thumb.
@@ -37,11 +43,8 @@ export interface ToggleSwitchProps extends InputHTMLAttributes<HTMLInputElement>
  *   aria-checked="false"
  * />
  * ```
- *****/
-export const ToggleSwitch = forwardRef<HTMLInputElement, ToggleSwitchProps>(function ToggleSwitch(
-  { className = "", ...props },
-  ref,
-) {
+ */
+export function ToggleSwitch({ className = "", ...props }: ToggleSwitchProps) {
   const toggleSwitchClassName = combineClassNames("sdn-toggle-switch", className)
 
   //
@@ -52,17 +55,7 @@ export const ToggleSwitch = forwardRef<HTMLInputElement, ToggleSwitchProps>(func
       className={toggleSwitchClassName}
       role={sdn["role"]}
       aria-checked={sdn["aria-checked"]}
-      ref={ref}
       {...props}
     />
   )
-})
-
-//
-// Default property values
-//
-const sdn: ToggleSwitchProps = {
-  role: "switch",
-  "aria-checked": "false",
-  className: "sdn-toggle-switch",
 }

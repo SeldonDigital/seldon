@@ -10,38 +10,105 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonIconic } from "../elements/ButtonIconic"
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { Link } from "../primitives/Link"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { IconProps } from "../primitives/Icon"
-import type { LinkProps } from "../primitives/Link"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { Frame } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { Link, LinkProps } from "../primitives/Link"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeSlot } from "../utils/merge-slot"
 
 export interface BarBreadcrumbsBarProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
+
   icon2?: IconProps | null
+
   link?: LinkProps | null
+
   icon3?: IconProps | null
+
   link2?: LinkProps | null
+
   icon4?: IconProps | null
+
   link3?: LinkProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: BarBreadcrumbsBarProps = {
+  role: "navigation",
+  "aria-hidden": "false",
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  icon: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--rezm",
+  },
+
+  icon2: {
+    icon: "material-chevronRight",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--ucf5",
+  },
+
+  link: {
+    children: "Home",
+    "aria-hidden": "false",
+    className: "sdn-link sdn-link--yqey",
+  },
+
+  icon3: {
+    icon: "material-chevronRight",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--ucf5",
+  },
+
+  link2: {
+    children: "Profile",
+    "aria-hidden": "false",
+    className: "sdn-link sdn-link--yqey",
+  },
+
+  icon4: {
+    icon: "material-chevronRight",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--ucf5",
+  },
+
+  link3: {
+    children: "Settings",
+    "aria-hidden": "false",
+    "aria-current": "page",
+    className: "sdn-link sdn-link--yqey",
+  },
+}
+
+/**
  * Bar: BarBreadcrumbsBar
  * Level: Part
  * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
  * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
  * Type: Custom
+ *
+ * Structure:
+ *   ButtonIconic  buttonIconic
+ *     Icon        icon
+ *   Icon          icon2
+ *   Link          link
+ *   Icon          icon3
+ *   Link          link2
+ *   Icon          icon4
+ *   Link          link3
  *
  * @example
  * ```tsx
@@ -50,102 +117,44 @@ export interface BarBreadcrumbsBarProps extends HTMLAttributes<HTMLElement> {
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function BarBreadcrumbsBar({
   className = "",
-  buttonIconic = sdn.buttonIconic,
-  icon = sdn.icon,
-  icon2 = sdn.icon2,
-  link = sdn.link,
-  icon3 = sdn.icon3,
-  link2 = sdn.link2,
-  icon4 = sdn.icon4,
-  link3 = sdn.link3,
+  buttonIconic,
+  icon,
+
+  icon2,
+
+  link,
+
+  icon3,
+
+  link2,
+
+  icon4,
+
+  link3,
+
   children,
   seldonRefs,
   ...props
 }: BarBreadcrumbsBarProps) {
   const barBreadcrumbsBarClassName = combineClassNames("sdn-bar", className)
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const linkProps = applyRef(
-    seldonRefs,
-    link === null
-      ? null
-      : {
-          ...sdn.link,
-          ...link,
-          className: combineClassNames(sdn.link?.className, link?.className),
-        },
-  )
-  const icon3Props = applyRef(
-    seldonRefs,
-    icon3 === null
-      ? null
-      : {
-          ...sdn.icon3,
-          ...icon3,
-          className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        },
-  )
-  const link2Props = applyRef(
-    seldonRefs,
-    link2 === null
-      ? null
-      : {
-          ...sdn.link2,
-          ...link2,
-          className: combineClassNames(sdn.link2?.className, link2?.className),
-        },
-  )
-  const icon4Props = applyRef(
-    seldonRefs,
-    icon4 === null
-      ? null
-      : {
-          ...sdn.icon4,
-          ...icon4,
-          className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        },
-  )
-  const link3Props = applyRef(
-    seldonRefs,
-    link3 === null
-      ? null
-      : {
-          ...sdn.link3,
-          ...link3,
-          className: combineClassNames(sdn.link3?.className, link3?.className),
-        },
-  )
+
+  const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+
+  const linkProps = mergeSlot(sdn.link, link, seldonRefs)
+
+  const icon3Props = mergeSlot(sdn.icon3, icon3, seldonRefs)
+
+  const link2Props = mergeSlot(sdn.link2, link2, seldonRefs)
+
+  const icon4Props = mergeSlot(sdn.icon4, icon4, seldonRefs)
+
+  const link3Props = mergeSlot(sdn.link3, link3, seldonRefs)
 
   return (
     <Frame
@@ -169,52 +178,4 @@ export function BarBreadcrumbsBar({
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: BarBreadcrumbsBarProps = {
-  role: "navigation",
-  "aria-hidden": "false",
-  className: "sdn-bar",
-  buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-  },
-  icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--rezm",
-  },
-  icon2: {
-    icon: "material-chevronRight",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
-  },
-  link: {
-    children: "Home",
-    "aria-hidden": "false",
-    className: "sdn-link sdn-link--yqey",
-  },
-  icon3: {
-    icon: "material-chevronRight",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
-  },
-  link2: {
-    children: "Profile",
-    "aria-hidden": "false",
-    className: "sdn-link sdn-link--yqey",
-  },
-  icon4: {
-    icon: "material-chevronRight",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
-  },
-  link3: {
-    children: "Settings",
-    "aria-hidden": "false",
-    "aria-current": "page",
-    className: "sdn-link sdn-link--yqey",
-  },
 }

@@ -29,13 +29,7 @@ describe("jsxStructureToString", () => {
     expect(out).toContain("</HTML.Div>")
   })
 
-  it("forwards a ref when requested", () => {
-    const out = jsxStructureToString(rootNode(), component("HTML.Div"), "cls", true)
-
-    expect(out).toContain("ref={ref}")
-  })
-
-  it("omits the ref binding by default", () => {
+  it("never binds a ref, because a caller's ref rides the props spread", () => {
     const out = jsxStructureToString(rootNode(), component("HTML.Div"), "cls")
 
     expect(out).not.toContain("ref={ref}")

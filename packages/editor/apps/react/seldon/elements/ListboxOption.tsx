@@ -10,30 +10,53 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Frame } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ListboxOptionProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   icon?: IconProps | null
+
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ListboxOptionProps = {
+  role: "option",
+  "aria-hidden": "false",
+  icon: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--3qou",
+    "data-seldon-ref": "optionIcon",
+  },
+
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--xohb",
+    "data-seldon-ref": "optionLabel",
+  },
+}
+
+/**
  * List: boxOption
  * Level: Element
  * Intent: Single selectable row inside a listbox.
  * Tags: listbox, option, select, row, element, UI
  * Type: Default
+ *
+ * Structure:
+ *   Icon       icon       -> optionIcon
+ *   TextLabel  textLabel  -> optionLabel
  *
  * @example
  * ```tsx
@@ -42,36 +65,22 @@ export interface ListboxOptionProps extends HTMLAttributes<HTMLElement> {
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function ListboxOption({
   className = "",
-  icon = sdn.icon,
+  icon,
+
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: ListboxOptionProps) {
   const listboxOptionClassName = combineClassNames("sdn-listbox-option", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <Frame
@@ -85,28 +94,9 @@ export function ListboxOption({
       ) : (
         <>
           {iconProps !== null && <Icon {...iconProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {textLabelProps !== null && <TextLabel {...textLabelProps} />}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: ListboxOptionProps = {
-  role: "option",
-  "aria-hidden": "false",
-  className: "sdn-listbox-option",
-  icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--3qou",
-    "data-seldon-ref": "optionIcon",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--xohb",
-    "data-seldon-ref": "optionLabel",
-  },
 }

@@ -10,6 +10,9 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
+
+import { HTMLAttributes } from "react"
+
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
 import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
@@ -24,8 +27,6 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
-
-import type { HTMLAttributes } from "react"
 
 export interface TextSubtitleProps extends HTMLAttributes<
   | HTMLAnchorElement
@@ -42,7 +43,6 @@ export interface TextSubtitleProps extends HTMLAttributes<
   | HTMLPreElement
   | HTMLElement
 > {
-  className?: string
   "data-seldon-ref"?: string
   htmlElement?:
     | "p"
@@ -60,7 +60,16 @@ export interface TextSubtitleProps extends HTMLAttributes<
     | "option"
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: TextSubtitleProps = {
+  children: "Subtitle",
+  htmlElement: "h5",
+  "aria-hidden": "false",
+}
+
+/**
  * Text: TextSubtitle
  * Level: Primitive
  * Intent: Base text component for general-purpose inline content.
@@ -75,7 +84,7 @@ export interface TextSubtitleProps extends HTMLAttributes<
  *   aria-hidden="false"
  * />
  * ```
- *****/
+ */
 export function TextSubtitle({
   className = "",
   children = sdn.children,
@@ -207,14 +216,4 @@ export function TextSubtitle({
         </HTMLHeading5>
       )
   }
-}
-
-//
-// Default property values
-//
-const sdn: TextSubtitleProps = {
-  children: "Subtitle",
-  htmlElement: "h5",
-  "aria-hidden": "false",
-  className: "sdn-text-subtitle sdn-text",
 }

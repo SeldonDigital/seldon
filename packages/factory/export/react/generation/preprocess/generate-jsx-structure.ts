@@ -11,7 +11,6 @@ import {
 } from "../../validation/validate-component-props"
 import { assignPropNames } from "../shared/assign-prop-names"
 import { getReactReturnTag } from "../shared/custom-react"
-import { getConditionalPropPaths } from "../shared/get-conditional-prop-paths"
 
 import type { NodeIdToClass } from "../../../css/types"
 import type { ComponentToExport, JSONTreeNode } from "../../../types"
@@ -233,11 +232,6 @@ export function generateJSXStructure(
   // Validate component props
   const validation = validateExportedComponentProps(component)
 
-  // Classification signal: which nodes are inline extras (conditional) rather
-  // than canonical schema children. A forwarded conditional leaf is guarded by
-  // its source prop so it only renders when the caller supplies it.
-  const conditionalPaths = getConditionalPropPaths(component)
-
   // Build JSX structure recursively
   function buildJSXNode(node: JSONTreeNode): JSXNode {
     const propName = nodeIdToPropName.get(node.nodeId)
@@ -262,24 +256,17 @@ export function generateJSXStructure(
         )
       : false
 
+    // Every slot resolves through a merge helper that returns null when the slot
+    // must not render: `mergeSlot` when the caller passes null, and
+    // `mergeOptionalSlot` when an inline extra or stub slot was never passed. So
+    // one guard covers both cases, and it narrows the variable for the spread.
     if (node.level === ComponentLevel.FRAME) {
       nodeType = "frame"
 
-      // Frame should be conditionally rendered if it's an invalid prop or a
-      // stub slot.
       if (!isValidProp || node.isStub) {
-        condition = propName
+        condition = `${propVarName} !== null`
       }
-    } else if (!isValidProp || node.isStub) {
-      // Inline extras and stub slots render only when the caller passes
-      // the prop. The merged props variable is checked as well so TypeScript
-      // narrows it to non-null.
-      nodeType = "conditional"
-      condition = `${propName} && ${propVarName}`
     } else {
-      // Canonical children render their sdn default when the prop is omitted
-      // and are suppressed when the caller passes null. Guarding the merged
-      // props variable narrows it for the spread below.
       nodeType = "conditional"
       condition = `${propVarName} !== null`
     }
@@ -289,7 +276,6 @@ export function generateJSXStructure(
     const grandchildProps: Array<{
       propKeyName: string
       propVarName: string
-      guard?: string
       nullLiteral?: boolean
     }> = []
 
@@ -327,16 +313,12 @@ export function generateJSXStructure(
               )
             }
 
-            const isConditional =
-              conditionalPaths.has(descendant.dataBinding.path) || Boolean(descendant.isStub)
-
+            // A conditional or stub leaf the caller never passed already resolves
+            // to null through `mergeOptionalSlot`, so forwarding the merged
+            // variable keeps the leaf absent and preserves baseline layout.
             grandchildProps.push({
               propKeyName: slotName,
               propVarName: `${grandchildPropValue}Props`,
-              // Guard conditional and stub leaves with their source prop
-              // so an omitted caller value keeps the leaf absent, preserving
-              // baseline layout.
-              guard: isConditional ? grandchildPropValue : undefined,
             })
 
             // Recurse on the wiring signal only: a real child component with its

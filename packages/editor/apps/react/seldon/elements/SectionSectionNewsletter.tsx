@@ -10,42 +10,80 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Button } from "../elements/Button"
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { Input } from "../primitives/Input"
-import { TextDescription } from "../primitives/TextDescription"
-import { TextLabel } from "../primitives/TextLabel"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonProps } from "../elements/Button"
-import type { IconProps } from "../primitives/Icon"
-import type { InputProps } from "../primitives/Input"
-import type { TextDescriptionProps } from "../primitives/TextDescription"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Button, ButtonProps } from "../elements/Button"
+import { Frame } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { Input, InputProps } from "../primitives/Input"
+import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface SectionSectionNewsletterProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   textTitle?: TextTitleProps | null
+
   textDescription?: TextDescriptionProps | null
+
   input?: InputProps | null
+
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: SectionSectionNewsletterProps = {
+  "aria-hidden": "false",
+  textTitle: {
+    className: "sdn-text-title sdn-text-title--a5sd",
+  },
+
+  textDescription: {
+    className: "sdn-text-description sdn-text-description--tjnl",
+  },
+
+  input: {
+    placeholder: "Enter your email",
+    type: "email",
+    className: "sdn-input sdn-input--rfy8",
+  },
+
+  button: {
+    className: "sdn-button sdn-button--x8e4",
+  },
+  icon: {
+    icon: "material-notifications",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--eyw9",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--zk5o",
+  },
+}
+
+/**
  * Section: SectionNewsletter
  * Level: Element
  * Intent: Navigation section containing links to important pages. Can be used in footers, headers, sidebars, or any other layout context. Follows Material Design navigation patterns.
  * Tags: section, navigation, links, menu, element, layout, header, footer, sidebar
  * Type: Custom
+ *
+ * Structure:
+ *   TextTitle        textTitle
+ *   TextDescription  textDescription
+ *   Input            input
+ *   Button           button
+ *     Icon           icon
+ *     TextLabel      textLabel
  *
  * @example
  * ```tsx
@@ -59,80 +97,34 @@ export interface SectionSectionNewsletterProps extends HTMLAttributes<HTMLElemen
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export function SectionSectionNewsletter({
   className = "",
   textTitle,
+
   textDescription,
-  input = sdn.input,
-  button = sdn.button,
-  icon = sdn.icon,
+
+  input,
+
+  button,
+  icon,
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: SectionSectionNewsletterProps) {
   const sectionSectionNewsletterClassName = combineClassNames("sdn-section", className)
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const textDescriptionProps = applyRef(
-    seldonRefs,
-    textDescription === null
-      ? null
-      : {
-          ...sdn.textDescription,
-          ...textDescription,
-          className: combineClassNames(sdn.textDescription?.className, textDescription?.className),
-        },
-  )
-  const inputProps = applyRef(
-    seldonRefs,
-    input === null
-      ? null
-      : {
-          ...sdn.input,
-          ...input,
-          className: combineClassNames(sdn.input?.className, input?.className),
-        },
-  )
-  const buttonProps = applyRef(
-    seldonRefs,
-    button === null
-      ? null
-      : {
-          ...sdn.button,
-          ...button,
-          className: combineClassNames(sdn.button?.className, button?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+
+  const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
+
+  const inputProps = mergeSlot(sdn.input, input, seldonRefs)
+
+  const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <Frame
@@ -144,47 +136,17 @@ export function SectionSectionNewsletter({
         children
       ) : (
         <>
-          {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-          {textDescription && textDescriptionProps && <TextDescription {...textDescriptionProps} />}
+          {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+          {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
           {inputProps !== null && <Input {...inputProps} />}
           {buttonProps !== null && (
             <Button {...buttonProps}>
-              {icon && iconProps && <Icon {...iconProps} />}
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+              {iconProps !== null && <Icon {...iconProps} />}
+              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
             </Button>
           )}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: SectionSectionNewsletterProps = {
-  "aria-hidden": "false",
-  className: "sdn-section",
-  textTitle: {
-    className: "sdn-text-title sdn-text-title--a5sd",
-  },
-  textDescription: {
-    className: "sdn-text-description sdn-text-description--tjnl",
-  },
-  input: {
-    placeholder: "Enter your email",
-    type: "email",
-    className: "sdn-input sdn-input--rfy8",
-  },
-  button: {
-    className: "sdn-button sdn-button--x8e4",
-  },
-  icon: {
-    icon: "material-notifications",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--eyw9",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--zk5o",
-  },
 }

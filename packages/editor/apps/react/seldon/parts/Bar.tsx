@@ -10,40 +10,77 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { Button } from "../elements/Button"
-import { ButtonIconic } from "../elements/ButtonIconic"
-import { Frame } from "../frames/Frame"
-import { Icon } from "../primitives/Icon"
-import { TextLabel } from "../primitives/TextLabel"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { ButtonProps } from "../elements/Button"
-import type { ButtonIconicProps } from "../elements/ButtonIconic"
-import type { IconProps } from "../primitives/Icon"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { HTMLAttributes } from "react"
+import { HTMLAttributes } from "react"
+
+import { Button, ButtonProps } from "../elements/Button"
+import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
+import { Frame } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface BarProps extends HTMLAttributes<HTMLElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   textTitle?: TextTitleProps | null
+
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
+
   button?: ButtonProps | null
   icon2?: IconProps | null
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: BarProps = {
+  "aria-hidden": "false",
+  textTitle: {
+    className: "sdn-text-title sdn-text-title--qbtu",
+  },
+
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  icon: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--rezm",
+  },
+
+  button: {
+    className: "sdn-button sdn-button-iconic--pgsr",
+  },
+  icon2: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--ylte",
+  },
+}
+
+/**
  * Bar: Bar
  * Level: Part
  * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
  * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
  * Type: Default
+ *
+ * Structure:
+ *   TextTitle     textTitle
+ *   ButtonIconic  buttonIconic
+ *     Icon        icon
+ *   Button        button
+ *     Icon        icon2
+ *     TextLabel   textLabel
  *
  * @example
  * ```tsx
@@ -56,80 +93,32 @@ export interface BarProps extends HTMLAttributes<HTMLElement> {
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export function Bar({
   className = "",
   textTitle,
-  buttonIconic = sdn.buttonIconic,
-  icon = sdn.icon,
-  button = sdn.button,
-  icon2 = sdn.icon2,
+
+  buttonIconic,
+  icon,
+
+  button,
+  icon2,
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: BarProps) {
   const barClassName = combineClassNames("sdn-bar", className)
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const buttonIconicProps = applyRef(
-    seldonRefs,
-    buttonIconic === null
-      ? null
-      : {
-          ...sdn.buttonIconic,
-          ...buttonIconic,
-          className: combineClassNames(sdn.buttonIconic?.className, buttonIconic?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const buttonProps = applyRef(
-    seldonRefs,
-    button === null
-      ? null
-      : {
-          ...sdn.button,
-          ...button,
-          className: combineClassNames(sdn.button?.className, button?.className),
-        },
-  )
-  const icon2Props = applyRef(
-    seldonRefs,
-    icon2 === null
-      ? null
-      : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+
+  const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+
+  const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
+  const icon2Props = mergeSlot(sdn.icon2, icon2, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <Frame className={barClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -137,46 +126,16 @@ export function Bar({
         children
       ) : (
         <>
-          {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
+          {textTitleProps !== null && <TextTitle {...textTitleProps} />}
           {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
           {buttonProps !== null && (
             <Button {...buttonProps}>
-              {icon2 && icon2Props && <Icon {...icon2Props} />}
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+              {icon2Props !== null && <Icon {...icon2Props} />}
+              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
             </Button>
           )}
         </>
       )}
     </Frame>
   )
-}
-
-//
-// Default property values
-//
-const sdn: BarProps = {
-  "aria-hidden": "false",
-  className: "sdn-bar",
-  textTitle: {
-    className: "sdn-text-title sdn-text-title--qbtu",
-  },
-  buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-  },
-  icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--rezm",
-  },
-  button: {
-    className: "sdn-button sdn-button-iconic--pgsr",
-  },
-  icon2: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--ylte",
-  },
 }

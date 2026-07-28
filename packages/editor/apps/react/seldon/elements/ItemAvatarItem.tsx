@@ -10,50 +10,101 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { AvatarRounded } from "../elements/AvatarRounded"
-import { Button } from "../elements/Button"
-import { Frame } from "../frames/Frame"
-import { HTMLLi } from "../native-react/HTML.Li"
-import { Icon } from "../primitives/Icon"
-import { InputCheckbox } from "../primitives/InputCheckbox"
-import { TextLabel } from "../primitives/TextLabel"
-import { TextSubtitle } from "../primitives/TextSubtitle"
-import { TextTitle } from "../primitives/TextTitle"
-import { applyRef } from "../utils/apply-ref"
-import { combineClassNames } from "../utils/class-name"
 
-import type { AvatarRoundedProps } from "../elements/AvatarRounded"
-import type { ButtonProps } from "../elements/Button"
-import type { FrameProps } from "../frames/Frame"
-import type { IconProps } from "../primitives/Icon"
-import type { ImageProps } from "../primitives/Image"
-import type { InputCheckboxProps } from "../primitives/InputCheckbox"
-import type { TextLabelProps } from "../primitives/TextLabel"
-import type { TextSubtitleProps } from "../primitives/TextSubtitle"
-import type { TextTitleProps } from "../primitives/TextTitle"
-import type { LiHTMLAttributes } from "react"
+import { LiHTMLAttributes } from "react"
+
+import { AvatarRounded, AvatarRoundedProps } from "../elements/AvatarRounded"
+import { Button, ButtonProps } from "../elements/Button"
+import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLLi } from "../native-react/HTML.Li"
+import { Icon, IconProps } from "../primitives/Icon"
+import { ImageProps } from "../primitives/Image"
+import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
 export interface ItemAvatarItemProps extends LiHTMLAttributes<HTMLLIElement> {
-  className?: string
   "data-seldon-ref"?: string
-  seldonRefs?: Record<string, Record<string, unknown>>
+  seldonRefs?: SeldonRefs
+
   inputCheckbox?: InputCheckboxProps | null
+
   avatarRounded?: AvatarRoundedProps | null
   image?: ImageProps | null
+
   frame?: FrameProps | null
   textTitle?: TextTitleProps | null
   textSubtitle?: TextSubtitleProps | null
+
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
 }
 
-/*****
+//
+// Default property values
+//
+const sdn: ItemAvatarItemProps = {
+  "aria-hidden": "false",
+  inputCheckbox: {
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+  },
+
+  avatarRounded: {
+    "aria-hidden": "false",
+    className: "sdn-avatar sdn-avatar--a890",
+  },
+  image: {
+    src: "/avatar-user.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--zjyq",
+  },
+
+  frame: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--nhfs",
+  },
+  textTitle: {
+    className: "sdn-text-title sdn-text-title--ulqm",
+  },
+  textSubtitle: {
+    className: "sdn-text-subtitle sdn-text-subtitle--nxwj",
+  },
+
+  button: {
+    className: "sdn-button sdn-button-iconic--pgsr",
+  },
+  icon: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--ylte",
+  },
+}
+
+/**
  * Item: ItemAvatarItem
  * Level: Element
  * Intent: Default list item used for general content with flexible layout.
  * Tags: list, item, standard, default, row, UI, layout, general
  * Type: Inline
+ *
+ * Structure:
+ *   InputCheckbox   inputCheckbox
+ *   AvatarRounded   avatarRounded
+ *     Image         image
+ *   Frame           frame
+ *     TextTitle     textTitle
+ *     TextSubtitle  textSubtitle
+ *   Button          button
+ *     Icon          icon
+ *     TextLabel     textLabel
  *
  * @example
  * ```tsx
@@ -70,113 +121,40 @@ export interface ItemAvatarItemProps extends LiHTMLAttributes<HTMLLIElement> {
  *   textLabel="{}"
  * />
  * ```
- *****/
+ */
 export function ItemAvatarItem({
   className = "",
   inputCheckbox,
-  avatarRounded = sdn.avatarRounded,
-  image = sdn.image,
-  frame = sdn.frame,
+
+  avatarRounded,
+  image,
+
+  frame,
   textTitle,
   textSubtitle,
-  button = sdn.button,
-  icon = sdn.icon,
+
+  button,
+  icon,
   textLabel,
+
   children,
   seldonRefs,
   ...props
 }: ItemAvatarItemProps) {
   const itemAvatarItemClassName = combineClassNames("sdn-item", className)
-  const inputCheckboxProps = applyRef(
-    seldonRefs,
-    inputCheckbox === null
-      ? null
-      : {
-          ...sdn.inputCheckbox,
-          ...inputCheckbox,
-          className: combineClassNames(sdn.inputCheckbox?.className, inputCheckbox?.className),
-        },
-  )
-  const avatarRoundedProps = applyRef(
-    seldonRefs,
-    avatarRounded === null
-      ? null
-      : {
-          ...sdn.avatarRounded,
-          ...avatarRounded,
-          className: combineClassNames(sdn.avatarRounded?.className, avatarRounded?.className),
-        },
-  )
-  const imageProps = applyRef(
-    seldonRefs,
-    image === null
-      ? null
-      : {
-          ...sdn.image,
-          ...image,
-          className: combineClassNames(sdn.image?.className, image?.className),
-        },
-  )
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const textTitleProps = applyRef(
-    seldonRefs,
-    textTitle === null
-      ? null
-      : {
-          ...sdn.textTitle,
-          ...textTitle,
-          className: combineClassNames(sdn.textTitle?.className, textTitle?.className),
-        },
-  )
-  const textSubtitleProps = applyRef(
-    seldonRefs,
-    textSubtitle === null
-      ? null
-      : {
-          ...sdn.textSubtitle,
-          ...textSubtitle,
-          className: combineClassNames(sdn.textSubtitle?.className, textSubtitle?.className),
-        },
-  )
-  const buttonProps = applyRef(
-    seldonRefs,
-    button === null
-      ? null
-      : {
-          ...sdn.button,
-          ...button,
-          className: combineClassNames(sdn.button?.className, button?.className),
-        },
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(sdn.textLabel?.className, textLabel?.className),
-        },
-  )
+
+  const inputCheckboxProps = mergeOptionalSlot(sdn.inputCheckbox, inputCheckbox, seldonRefs)
+
+  const avatarRoundedProps = mergeSlot(sdn.avatarRounded, avatarRounded, seldonRefs)
+  const imageProps = mergeSlot(sdn.image, image, seldonRefs)
+
+  const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
+  const textTitleProps = mergeOptionalSlot(sdn.textTitle, textTitle, seldonRefs)
+  const textSubtitleProps = mergeOptionalSlot(sdn.textSubtitle, textSubtitle, seldonRefs)
+
+  const buttonProps = mergeSlot(sdn.button, button, seldonRefs)
+  const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
+  const textLabelProps = mergeOptionalSlot(sdn.textLabel, textLabel, seldonRefs)
 
   return (
     <HTMLLi className={itemAvatarItemClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
@@ -184,64 +162,22 @@ export function ItemAvatarItem({
         children
       ) : (
         <>
-          {inputCheckbox && inputCheckboxProps && <InputCheckbox {...inputCheckboxProps} />}
+          {inputCheckboxProps !== null && <InputCheckbox {...inputCheckboxProps} />}
           {avatarRoundedProps !== null && (
             <AvatarRounded {...avatarRoundedProps} image={imageProps} />
           )}
           <Frame {...frameProps}>
-            {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-            {textSubtitle && textSubtitleProps && <TextSubtitle {...textSubtitleProps} />}
+            {textTitleProps !== null && <TextTitle {...textTitleProps} />}
+            {textSubtitleProps !== null && <TextSubtitle {...textSubtitleProps} />}
           </Frame>
           {buttonProps !== null && (
             <Button {...buttonProps}>
-              {icon && iconProps && <Icon {...iconProps} />}
-              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+              {iconProps !== null && <Icon {...iconProps} />}
+              {textLabelProps !== null && <TextLabel {...textLabelProps} />}
             </Button>
           )}
         </>
       )}
     </HTMLLi>
   )
-}
-
-//
-// Default property values
-//
-const sdn: ItemAvatarItemProps = {
-  "aria-hidden": "false",
-  className: "sdn-item",
-  inputCheckbox: {
-    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
-  },
-  avatarRounded: {
-    "aria-hidden": "false",
-    className: "sdn-avatar sdn-avatar--a890",
-  },
-  image: {
-    src: "/avatar-user.png",
-    "aria-hidden": "false",
-    className: "sdn-image sdn-image--zjyq",
-  },
-  frame: {
-    wrapperElement: "div",
-    "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--nhfs",
-  },
-  textTitle: {
-    className: "sdn-text-title sdn-text-title--ulqm",
-  },
-  textSubtitle: {
-    className: "sdn-text-subtitle sdn-text-subtitle--nxwj",
-  },
-  button: {
-    className: "sdn-button sdn-button-iconic--pgsr",
-  },
-  icon: {
-    icon: "seldon-component",
-    "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
-  },
-  textLabel: {
-    className: "sdn-text-label sdn-text-label--ylte",
-  },
 }

@@ -12,12 +12,15 @@
  *
  *****/
 
-/*****
+/**
  * Message: Message
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
  * Type: Default
+ *
+ * Structure:
+ *   TextDescription  textDescription
  *
  * @example
  * ```vue
@@ -26,18 +29,19 @@
  *   textDescription="{}"
  * />
  * ```
- *****/
+ */
 export default {}
 </script>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot } from "../utils/class-names"
 import TextDescription from "../primitives/TextDescription.vue"
 
 const props = defineProps<{
   className?: string
   textDescription?: Record<string, unknown> | null
+  seldonRefs?: Record<string, Record<string, unknown>>
 }>()
 
 //
@@ -45,7 +49,6 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "className": "sdn-message",
   "textDescription": {
     "className": "sdn-text-description sdn-text-description--welb"
   }
@@ -53,13 +56,13 @@ const sdn: Record<string, any> = {
 
 const rootClassName = computed(() => combineClassNames("sdn-message", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textDescriptionProps = computed(() => mergeSlot(sdn.textDescription, props.textDescription))
+const textDescriptionProps = computed(() => mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs))
 </script>
 
 <template>
     <div :class="rootClassName" v-bind="rootAttrs">
       <slot>
-        <TextDescription v-if="textDescription && textDescriptionProps" v-bind="textDescriptionProps" />
+        <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
       </slot>
     </div>
 </template>

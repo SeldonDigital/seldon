@@ -4,13 +4,20 @@ import { ComponentLevel } from "@seldon/core/components/constants"
 import { isCustomComponent } from "../custom-components/is-custom-component"
 import { isInlineComponent } from "../inline-components/is-inline-component"
 
-import type { ComponentToExport } from "../../../types"
+import type { ComponentToExport, JSONTreeNode } from "../../../types"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 /** Loose prop descriptor used only to render JSDoc example values. */
 type JsdocPropValue = {
   defaultValue?: unknown
   options?: unknown[]
+}
+
+/** One line of the structure map: the indented node, its slot, and its ref. */
+interface StructureRow {
+  label: string
+  propName: string
+  ref?: string
 }
 
 /** Minimal tree node shape walked when deriving example props from children. */
@@ -20,20 +27,29 @@ type JsdocChild = {
 }
 
 /**
- * Generates a JSDoc comment for a React component based on its schema
+ * Generates a JSDoc comment for a React component based on its schema.
+ *
+ * Pass `propNames` to include the structure map, which pairs each node in the
+ * tree with the slot prop that drives it and the `data-seldon-ref` name that
+ * addresses it. A comment is the one place real indentation survives, so the map
+ * shows the nesting that the flat prop list cannot.
  */
-export function generateJSDocComment(component: ComponentToExport, workspace: Workspace): string {
+export function generateJSDocComment(
+  component: ComponentToExport,
+  workspace: Workspace,
+  propNames?: Map<string, string>,
+): string {
   // Handle cases where componentId might not be available (e.g., in tests)
   // Note: fallback doesn't use workspace, so it defaults to "Default"
   if (!component.componentId) {
-    return generateFallbackJSDocComment(component)
+    return generateFallbackJSDocComment(component, propNames)
   }
 
   // Authored components resolve their `componentId` to the Container/Frame root
   // template, so its schema would report the wrong level, intent, and tags. Use
   // the board's own metadata carried on the component instead.
   if (component.authored) {
-    return generateAuthoredJSDocComment(component, workspace)
+    return generateAuthoredJSDocComment(component, workspace, propNames)
   }
 
   const schema = getComponentSchema(component.componentId)
@@ -62,27 +78,31 @@ export function generateJSDocComment(component: ComponentToExport, workspace: Wo
   // Generate props list for the example
   const propsExample = generatePropsExample(tree.dataBinding.props, component)
 
-  return `/*****
+  return `/**
  * ${formattedComponentName}: ${shortName}
  * Level: ${level}
  * Intent: ${intent}
  * Tags: ${tags}
  * Type: ${componentType}
- *
+${generateStructureSection(component, propNames)} *
  * @example
  * \`\`\`tsx
  * <${tree.name}
 ${propsExample}
  * />
  * \`\`\`
- *****/`
+ */`
 }
 
 /**
  * Generates a JSDoc comment for an authored component from the board metadata
  * carried on the component, rather than the root template's schema.
  */
-function generateAuthoredJSDocComment(component: ComponentToExport, workspace: Workspace): string {
+function generateAuthoredJSDocComment(
+  component: ComponentToExport,
+  workspace: Workspace,
+  propNames?: Map<string, string>,
+): string {
   const { tree, authored } = component
   const level = getLevelString(authored!.level)
   const intent = authored!.intent ?? ""
@@ -94,43 +114,91 @@ function generateAuthoredJSDocComment(component: ComponentToExport, workspace: W
 
   const propsExample = generatePropsExample(tree.dataBinding.props, component)
 
-  return `/*****
+  return `/**
  * ${level}: ${tree.name}
  * Level: ${level}
  * Intent: ${intent}
  * Tags: ${tags}
  * Type: ${componentType}
- *
+${generateStructureSection(component, propNames)} *
  * @example
  * \`\`\`tsx
  * <${tree.name}
 ${propsExample}
  * />
  * \`\`\`
- *****/`
+ */`
 }
 
 /**
  * Generates a fallback JSDoc comment when schema information is not available
  */
-function generateFallbackJSDocComment(component: ComponentToExport): string {
+function generateFallbackJSDocComment(
+  component: ComponentToExport,
+  propNames?: Map<string, string>,
+): string {
   const { tree } = component
   const propsExample = generatePropsExample(tree.dataBinding.props, component)
 
-  return `/*****
+  return `/**
  * ${tree.name}
  * Level: Component
  * Intent: React component
  * Tags: component
  * Type: Default
- *
+${generateStructureSection(component, propNames)} *
  * @example
  * \`\`\`tsx
  * <${tree.name}
 ${propsExample}
  * />
  * \`\`\`
- *****/`
+ */`
+}
+
+/**
+ * Renders the component's tree as an aligned three-column map: the node name
+ * indented by depth, the slot prop that drives it, and the `data-seldon-ref`
+ * name a caller addresses it by. Returns an empty string when the component has
+ * no children or the prop name map was not supplied.
+ */
+function generateStructureSection(
+  component: ComponentToExport,
+  propNames?: Map<string, string>,
+): string {
+  const children = component.tree.children
+
+  if (!propNames) return ""
+  if (!Array.isArray(children) || children.length === 0) return ""
+
+  const names = propNames
+  const rows: StructureRow[] = []
+
+  function walk(node: JSONTreeNode, depth: number) {
+    rows.push({
+      label: "  ".repeat(depth) + node.name,
+      propName: names.get(node.dataBinding.path) ?? "",
+      ref: node.ref,
+    })
+
+    if (Array.isArray(node.children)) {
+      node.children.forEach((child) => walk(child, depth + 1))
+    }
+  }
+
+  children.forEach((child) => walk(child, 1))
+
+  const labelWidth = Math.max(...rows.map((row) => row.label.length))
+  const propWidth = Math.max(...rows.map((row) => row.propName.length))
+
+  const lines = rows.map((row) => {
+    const propName = row.ref ? row.propName.padEnd(propWidth) : row.propName
+    const ref = row.ref ? `  -> ${row.ref}` : ""
+
+    return ` * ${row.label.padEnd(labelWidth)}  ${propName}${ref}`.trimEnd()
+  })
+
+  return ` *\n * Structure:\n${lines.join("\n")}\n`
 }
 
 /**

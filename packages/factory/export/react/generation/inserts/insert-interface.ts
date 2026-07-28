@@ -34,7 +34,9 @@ export function insertInterface(
   // Build props array with proper formatting. Every component may be a ref
   // target, and child refs ride the `sdn` default props through the
   // `{...props}` spread onto the child root, so declare the ref attribute.
-  const allProps = ["className?: string", `"data-seldon-ref"?: string`]
+  // `className` needs no line here: every generic the interface extends is an
+  // `HTMLAttributes` descendant, which already declares it.
+  const allProps = [`"data-seldon-ref"?: string`]
 
   // Components that return a native wrapper which forwards `ref` expose a typed
   // `ref` prop. The ref rides the `{...props}` spread onto the wrapper. Custom
@@ -51,13 +53,13 @@ export function insertInterface(
   }
 
   // Components that compose children expose a ref override channel. A caller
-  // keys overrides by a descendant's `data-seldon-ref` name, and the merged
-  // slot props pick them up via `applyRef`, so view models drive nested slots
-  // by stable ref name instead of positional prop name.
+  // keys overrides by a descendant's `data-seldon-ref` name, and the merge
+  // helpers layer them onto that slot, so view models drive nested slots by
+  // stable ref name instead of positional prop name.
   const hasChildren = Array.isArray(component.tree.children) && component.tree.children.length > 0
 
   if (hasChildren) {
-    allProps.push("seldonRefs?: Record<string, Record<string, unknown>>")
+    allProps.push("seldonRefs?: SeldonRefs")
   }
 
   if (ownProps.trim()) {
@@ -69,13 +71,16 @@ export function insertInterface(
     )
   }
 
+  // Children props arrive with a blank line at each top-level subtree boundary,
+  // so trailing empties are dropped but interior ones are kept as the grouping.
   if (childrenProps.trim()) {
-    allProps.push(
-      ...childrenProps
-        .split("\n")
-        .filter((line) => line.trim())
-        .map((line) => line.trim()),
-    )
+    const childrenLines = childrenProps.split("\n").map((line) => line.trim())
+
+    while (childrenLines.length > 0 && childrenLines[childrenLines.length - 1] === "") {
+      childrenLines.pop()
+    }
+
+    allProps.push("", ...childrenLines)
   }
 
   const content = `export interface ${component.tree.dataBinding.interfaceName} extends ${generic}<${parameters.join(" | ")}> {
