@@ -23,7 +23,7 @@ import ImageUploadController from "@app/dialogs/image-upload/ImageUploadControll
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
 import PropertiesSidebar from "@app/sidebars/properties/PropertiesSidebar.vue"
 import TopbarController from "@app/topbar/TopbarController.vue"
-import FocusRingOverlay from "@app/focus/FocusRingOverlay.vue"
+import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 
 const route = useRoute()

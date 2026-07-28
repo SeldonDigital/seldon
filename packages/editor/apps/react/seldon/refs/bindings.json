@@ -4697,23 +4697,7 @@
           "spread": false
         },
         {
-          "file": "app/overlays/PlacementZoneSurface.tsx",
-          "component": "PlacementZoneSurface",
-          "line": 38,
-          "expression": "onClick",
-          "inputs": [
-            {
-              "name": "onClick",
-              "declaredAt": {
-                "line": 21,
-                "kind": "parameter"
-              }
-            }
-          ],
-          "spread": false
-        },
-        {
-          "file": "app/tracking/canvas-indicators/ref-bindings/RefChip.tsx",
+          "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefChip",
           "line": 41,
           "expression": "toggle",
@@ -4724,6 +4708,22 @@
                 "line": 26,
                 "kind": "const",
                 "via": "useRefCard"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/overlays/primitives/PlacementZoneSurface.tsx",
+          "component": "PlacementZoneSurface",
+          "line": 38,
+          "expression": "onClick",
+          "inputs": [
+            {
+              "name": "onClick",
+              "declaredAt": {
+                "line": 21,
+                "kind": "parameter"
               }
             }
           ],
@@ -4749,7 +4749,7 @@
           "spread": false
         },
         {
-          "file": "app/overlays/PlacementZoneSurface.tsx",
+          "file": "app/overlays/primitives/PlacementZoneSurface.tsx",
           "component": "PlacementZoneSurface",
           "line": 39,
           "expression": "onDoubleClick",
@@ -4858,7 +4858,7 @@
       ],
       "onMouseEnter": [
         {
-          "file": "app/overlays/PlacementZoneSurface.tsx",
+          "file": "app/overlays/primitives/PlacementZoneSurface.tsx",
           "component": "PlacementZoneSurface",
           "line": 36,
           "expression": "onMouseEnter",
@@ -4893,7 +4893,7 @@
           "spread": false
         },
         {
-          "file": "app/overlays/PlacementZoneSurface.tsx",
+          "file": "app/overlays/primitives/PlacementZoneSurface.tsx",
           "component": "PlacementZoneSurface",
           "line": 37,
           "expression": "onMouseLeave",

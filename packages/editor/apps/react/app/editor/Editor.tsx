@@ -15,7 +15,7 @@ import { FontCollectionsDialog } from "../dialogs/font-collections/FontCollectio
 import { IconSetsDialog } from "../dialogs/icon-sets/IconSetsDialog"
 import { ImageUploadController } from "../dialogs/image-upload/ImageUploadController"
 import { ThemesDialog } from "../dialogs/themes/ThemesDialog"
-import { FocusRingOverlay } from "../focus/FocusRingOverlay"
+import { FocusRingOverlay } from "../overlays/FocusRingOverlay"
 import { HariController } from "../palettes/hari/HariController"
 import { ObjectsSidebar } from "../sidebars/objects/ObjectsSidebar"
 import { PropertiesSidebar } from "../sidebars/properties/PropertiesSidebar"

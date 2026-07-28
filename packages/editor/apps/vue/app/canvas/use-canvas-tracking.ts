@@ -28,7 +28,7 @@ const SINGLE_CLICK_DELAY_MS = 200
  * Canvas pointer tracking: resolves the selection target from the DOM through
  * the shared `getSelectionTarget`, so clicking or hovering a canvas element
  * selects/highlights the same object a sidebar row would. Mirrors the React
- * `CanvasTracking` selection and hover behavior. When the component tool is
+ * `CanvasOverlays` selection and hover behavior. When the component tool is
  * active, clicking a node that accepts children opens the insert panel targeted
  * at the end of that node's child list; clicking anywhere else cancels the tool.
  */

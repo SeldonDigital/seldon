@@ -25,7 +25,7 @@ import { workspaceThemeService } from "@seldon/core/workspace/services/theme/the
 import type { Board } from "@seldon/core/workspace/types"
 
 import CanvasNode from "./CanvasNode.vue"
-import CanvasTracking from "./CanvasTracking.vue"
+import CanvasOverlays from "@app/overlays/canvas/CanvasOverlays.vue"
 import IsolationBoard from "./IsolationBoard.vue"
 import ZoomControls from "./ZoomControls.vue"
 
@@ -285,7 +285,7 @@ watch(
         </div>
       </section>
     </div>
-    <CanvasTracking :subscribe-transform="subscribeTransform" />
+    <CanvasOverlays :subscribe-transform="subscribeTransform" />
     <ZoomControls />
   </div>
 </template>

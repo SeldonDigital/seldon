@@ -9,7 +9,7 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { memo, useCallback, useEffect, useRef } from "react"
 
-import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
+import { useSidebarCanvasTrackingBoard } from "../../overlays/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { NodeController } from "./NodeController"

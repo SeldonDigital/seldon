@@ -15,7 +15,7 @@ import { isHotkeyPressed } from "react-hotkeys-hook"
 import { TransformComponent, useControls, useTransformContext } from "react-zoom-pan-pinch"
 import { useThrottledCallback } from "use-debounce"
 
-import { CanvasTracking } from "../tracking/CanvasTracking"
+import { CanvasOverlays } from "../overlays/canvas/CanvasOverlays"
 import {
   TRANSFORM_WRAPPER_INITIAL_POSITION_X,
   TRANSFORM_WRAPPER_INITIAL_POSITION_Y,
@@ -142,7 +142,7 @@ export const Canvas = () => {
       onClick={handleCanvasClick}
       onMouseMove={handleMouseMove}
     >
-      <CanvasTracking />
+      <CanvasOverlays />
       <TransformWrapper>
         <CanvasContainer />
       </TransformWrapper>

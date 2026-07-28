@@ -1,4 +1,4 @@
-import { DropIndicator, OverlayLayer, PlacementZoneSurface } from "@app/overlays"
+import { DropIndicator, OverlayLayer, PlacementZoneSurface } from "@app/overlays/primitives"
 import { Frame } from "@seldon/components/frames/Frame"
 
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
