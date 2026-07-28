@@ -699,14 +699,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 169,
+        "line": 183,
         "conditional": false,
         "expression": "radioItem(!allFonts, () => setAllFonts(false))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -732,14 +732,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 170,
+        "line": 184,
         "conditional": false,
         "expression": "radioDot(!allFonts)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -758,14 +758,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 167,
+        "line": 181,
         "conditional": false,
         "expression": "radioItem(allFonts, () => setAllFonts(true))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -791,14 +791,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 168,
+        "line": 182,
         "conditional": false,
         "expression": "radioDot(allFonts)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -817,14 +817,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 174,
+        "line": 188,
         "conditional": false,
         "expression": "radioItem(!allIcons, () => setAllIcons(false))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -850,14 +850,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 175,
+        "line": 189,
         "conditional": false,
         "expression": "radioDot(!allIcons)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -876,14 +876,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 172,
+        "line": 186,
         "conditional": false,
         "expression": "radioItem(allIcons, () => setAllIcons(true))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -909,14 +909,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 173,
+        "line": 187,
         "conditional": false,
         "expression": "radioDot(allIcons)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -935,14 +935,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 164,
+        "line": 178,
         "conditional": false,
         "expression": "radioItem(!allThemes, () => setAllThemes(false))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -968,14 +968,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 165,
+        "line": 179,
         "conditional": false,
         "expression": "radioDot(!allThemes)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -994,14 +994,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 162,
+        "line": 176,
         "conditional": false,
         "expression": "radioItem(allThemes, () => setAllThemes(true))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1027,14 +1027,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 163,
+        "line": 177,
         "conditional": false,
         "expression": "radioDot(allThemes)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1053,12 +1053,12 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 187,
+        "line": 201,
         "conditional": false,
-        "expression": "{ onClick: close }",
+        "expression": "{ onClick: cancel }",
         "inputs": [
           {
-            "name": "close",
+            "name": "cancel",
             "declaredAt": {
               "line": 42,
               "kind": "parameter"
@@ -1068,10 +1068,10 @@
         "props": [
           {
             "key": "onClick",
-            "expression": "close",
+            "expression": "cancel",
             "inputs": [
               {
-                "name": "close",
+                "name": "cancel",
                 "declaredAt": {
                   "line": 42,
                   "kind": "parameter"
@@ -1086,15 +1086,29 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 188,
+        "line": 202,
         "conditional": false,
-        "expression": "{ onClick: save }",
+        "expression": "{ onClick: save, \"aria-disabled\": exporting, style: confirmStyle }",
         "inputs": [
           {
             "name": "save",
             "declaredAt": {
               "line": 42,
               "kind": "parameter"
+            }
+          },
+          {
+            "name": "exporting",
+            "declaredAt": {
+              "line": 42,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "confirmStyle",
+            "declaredAt": {
+              "line": 134,
+              "kind": "const"
             }
           }
         ],
@@ -1111,6 +1125,32 @@
                 }
               }
             ]
+          },
+          {
+            "key": "aria-disabled",
+            "expression": "exporting",
+            "inputs": [
+              {
+                "name": "exporting",
+                "declaredAt": {
+                  "line": 42,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "confirmStyle",
+            "inputs": [
+              {
+                "name": "confirmStyle",
+                "declaredAt": {
+                  "line": 134,
+                  "kind": "const"
+                }
+              }
+            ]
           }
         ]
       }
@@ -1119,14 +1159,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 154,
+        "line": 168,
         "conditional": false,
         "expression": "radioItem(!fontLinks, () => setFontLinks(false))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1152,14 +1192,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 155,
+        "line": 169,
         "conditional": false,
         "expression": "radioDot(!fontLinks)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1178,14 +1218,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 152,
+        "line": 166,
         "conditional": false,
         "expression": "radioItem(fontLinks, () => setFontLinks(true))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1211,14 +1251,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 153,
+        "line": 167,
         "conditional": false,
         "expression": "radioDot(fontLinks)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1237,14 +1277,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 159,
+        "line": 173,
         "conditional": false,
         "expression": "radioItem(!includeHidden, () => setIncludeHidden(false))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1270,14 +1310,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 160,
+        "line": 174,
         "conditional": false,
         "expression": "radioDot(!includeHidden)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1296,14 +1336,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 157,
+        "line": 171,
         "conditional": false,
         "expression": "radioItem(includeHidden, () => setIncludeHidden(true))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1329,14 +1369,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 158,
+        "line": 172,
         "conditional": false,
         "expression": "radioDot(includeHidden)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1355,14 +1395,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 144,
+        "line": 158,
         "conditional": false,
         "expression": "{ value: platformLabel, readOnly: true, onClick: openPlatform, \"aria-expanded\": platformOpen, style: styles.opaquePointer, }",
         "inputs": [
           {
             "name": "platformLabel",
             "declaredAt": {
-              "line": 85,
+              "line": 95,
               "kind": "const",
               "via": "useMemo"
             }
@@ -1370,7 +1410,7 @@
           {
             "name": "openPlatform",
             "declaredAt": {
-              "line": 79,
+              "line": 89,
               "kind": "const",
               "via": "useCallback"
             }
@@ -1378,7 +1418,7 @@
           {
             "name": "platformOpen",
             "declaredAt": {
-              "line": 76,
+              "line": 86,
               "kind": "const",
               "via": "useState"
             }
@@ -1386,7 +1426,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 332,
+              "line": 356,
               "kind": "const"
             }
           }
@@ -1399,7 +1439,7 @@
               {
                 "name": "platformLabel",
                 "declaredAt": {
-                  "line": 85,
+                  "line": 95,
                   "kind": "const",
                   "via": "useMemo"
                 }
@@ -1418,7 +1458,7 @@
               {
                 "name": "openPlatform",
                 "declaredAt": {
-                  "line": 79,
+                  "line": 89,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -1432,7 +1472,7 @@
               {
                 "name": "platformOpen",
                 "declaredAt": {
-                  "line": 76,
+                  "line": 86,
                   "kind": "const",
                   "via": "useState"
                 }
@@ -1446,7 +1486,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 332,
+                  "line": 356,
                   "kind": "const"
                 }
               }
@@ -1459,14 +1499,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 137,
+        "line": 151,
         "conditional": false,
         "expression": "{ value: directoryLabel, placeholder: \"Choose a folder…\", readOnly: true, onClick: chooseDirectory, style: styles.opaquePointer, }",
         "inputs": [
           {
             "name": "directoryLabel",
             "declaredAt": {
-              "line": 120,
+              "line": 130,
               "kind": "const"
             }
           },
@@ -1480,7 +1520,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 332,
+              "line": 356,
               "kind": "const"
             }
           }
@@ -1493,7 +1533,7 @@
               {
                 "name": "directoryLabel",
                 "declaredAt": {
-                  "line": 120,
+                  "line": 130,
                   "kind": "const"
                 }
               }
@@ -1529,7 +1569,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 332,
+                  "line": 356,
                   "kind": "const"
                 }
               }
@@ -1542,14 +1582,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 179,
+        "line": 193,
         "conditional": false,
         "expression": "radioItem(!savedWorkspace, () => setSavedWorkspace(false))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1575,14 +1615,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 180,
+        "line": 194,
         "conditional": false,
         "expression": "radioDot(!savedWorkspace)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1601,14 +1641,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 177,
+        "line": 191,
         "conditional": false,
         "expression": "radioItem(savedWorkspace, () => setSavedWorkspace(true))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1634,14 +1674,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 178,
+        "line": 192,
         "conditional": false,
         "expression": "radioDot(savedWorkspace)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1660,14 +1700,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 184,
+        "line": 198,
         "conditional": false,
         "expression": "radioItem(!includeScripts, () => setIncludeScripts(false))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1693,14 +1733,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 185,
+        "line": 199,
         "conditional": false,
         "expression": "radioDot(!includeScripts)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1719,14 +1759,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 182,
+        "line": 196,
         "conditional": false,
         "expression": "radioItem(includeScripts, () => setIncludeScripts(true))",
         "inputs": [
           {
             "name": "radioItem",
             "declaredAt": {
-              "line": 310,
+              "line": 334,
               "kind": "function"
             }
           },
@@ -1752,14 +1792,14 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 183,
+        "line": 197,
         "conditional": false,
         "expression": "radioDot(includeScripts)",
         "inputs": [
           {
             "name": "radioDot",
             "declaredAt": {
-              "line": 323,
+              "line": 347,
               "kind": "function"
             }
           },
@@ -1778,7 +1818,7 @@
       {
         "file": "app/dialogs/export-components/ExportComponentsController.tsx",
         "component": "ExportComponentsDialog",
-        "line": 129,
+        "line": 143,
         "conditional": false,
         "expression": "{ value: workspaceName, placeholder: \"Untitled workspace\", onChange: changeWorkspaceName, onBlur: commitWorkspaceName, onKeyDown: commitNameOnEnter, style: styl...",
         "inputs": [
@@ -1792,7 +1832,7 @@
           {
             "name": "changeWorkspaceName",
             "declaredAt": {
-              "line": 103,
+              "line": 113,
               "kind": "const",
               "via": "useCallback"
             }
@@ -1807,7 +1847,7 @@
           {
             "name": "commitNameOnEnter",
             "declaredAt": {
-              "line": 110,
+              "line": 120,
               "kind": "const",
               "via": "useCallback"
             }
@@ -1815,7 +1855,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 332,
+              "line": 356,
               "kind": "const"
             }
           }
@@ -1846,7 +1886,7 @@
               {
                 "name": "changeWorkspaceName",
                 "declaredAt": {
-                  "line": 103,
+                  "line": 113,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -1873,7 +1913,7 @@
               {
                 "name": "commitNameOnEnter",
                 "declaredAt": {
-                  "line": 110,
+                  "line": 120,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -1887,7 +1927,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 332,
+                  "line": 356,
                   "kind": "const"
                 }
               }
@@ -1967,6 +2007,76 @@
           }
         ],
         "props": []
+      }
+    ],
+    "nodeDisclosure": [
+      {
+        "file": "app/sidebars/objects/NodeController.tsx",
+        "component": "NodeInner",
+        "line": 243,
+        "conditional": false,
+        "expression": "{ ...buttonIconic }",
+        "inputs": [
+          {
+            "name": "buttonIconic",
+            "declaredAt": {
+              "line": 74,
+              "kind": "const",
+              "via": "useRowNode"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "nodeDisclosureIcon": [
+      {
+        "file": "app/sidebars/objects/NodeController.tsx",
+        "component": "NodeInner",
+        "line": 244,
+        "conditional": false,
+        "expression": "mergeStateProps(toggleIcon, disabledRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 4,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "toggleIcon",
+            "declaredAt": {
+              "line": 204,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "disabledRef",
+            "declaredAt": {
+              "line": 223,
+              "kind": "const",
+              "via": "buildDisabledRefProps"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/objects/ResourceEntry.tsx",
+        "component": "ResourceEntry",
+        "line": 88,
+        "conditional": false,
+        "expression": "{ style: { opacity: 0 } }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "style",
+            "expression": "{ opacity: 0 }",
+            "inputs": []
+          }
+        ]
       }
     ],
     "nodeDisplay": [
@@ -2211,76 +2321,6 @@
         "props": []
       }
     ],
-    "nodeToggle": [
-      {
-        "file": "app/sidebars/objects/NodeController.tsx",
-        "component": "NodeInner",
-        "line": 243,
-        "conditional": false,
-        "expression": "{ ...buttonIconic }",
-        "inputs": [
-          {
-            "name": "buttonIconic",
-            "declaredAt": {
-              "line": 74,
-              "kind": "const",
-              "via": "useRowNode"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "nodeToggleIcon": [
-      {
-        "file": "app/sidebars/objects/NodeController.tsx",
-        "component": "NodeInner",
-        "line": 244,
-        "conditional": false,
-        "expression": "mergeStateProps(toggleIcon, disabledRef)",
-        "inputs": [
-          {
-            "name": "mergeStateProps",
-            "declaredAt": {
-              "line": 4,
-              "kind": "import",
-              "module": "@app/views/state-props"
-            }
-          },
-          {
-            "name": "toggleIcon",
-            "declaredAt": {
-              "line": 204,
-              "kind": "const"
-            }
-          },
-          {
-            "name": "disabledRef",
-            "declaredAt": {
-              "line": 223,
-              "kind": "const",
-              "via": "buildDisabledRefProps"
-            }
-          }
-        ],
-        "props": []
-      },
-      {
-        "file": "app/sidebars/objects/ResourceEntry.tsx",
-        "component": "ResourceEntry",
-        "line": 88,
-        "conditional": false,
-        "expression": "{ style: { opacity: 0 } }",
-        "inputs": [],
-        "props": [
-          {
-            "key": "style",
-            "expression": "{ opacity: 0 }",
-            "inputs": []
-          }
-        ]
-      }
-    ],
     "objectsContainer": [
       {
         "file": "app/sidebars/objects/ObjectsSidebar.tsx",
@@ -2423,34 +2463,54 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 86,
+        "line": 144,
         "conditional": false,
         "expression": "{ ...optionsMenu.buttonIconic }",
         "inputs": [
           {
             "name": "optionsMenu",
             "declaredAt": {
-              "line": 26,
+              "line": 30,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
           }
         ],
         "props": []
-      },
+      }
+    ],
+    "propertyDisclosure": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 139,
+        "line": 132,
         "conditional": false,
-        "expression": "{ ...optionsMenu.buttonIconic }",
+        "expression": "{ ...listItemProps.buttonIconic }",
         "inputs": [
           {
-            "name": "optionsMenu",
+            "name": "listItemProps",
             "declaredAt": {
-              "line": 26,
-              "kind": "const",
-              "via": "useRowActionsMenu"
+              "line": 34,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyDisclosureIcon": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 133,
+        "conditional": false,
+        "expression": "{ ...listItemProps.icon }",
+        "inputs": [
+          {
+            "name": "listItemProps",
+            "declaredAt": {
+              "line": 34,
+              "kind": "const"
             }
           }
         ],
@@ -2461,7 +2521,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 85,
+        "line": 134,
         "conditional": false,
         "expression": "mergeStateProps(view.nameLabelProps, stateRef)",
         "inputs": [
@@ -2476,7 +2536,7 @@
           {
             "name": "view",
             "declaredAt": {
-              "line": 25,
+              "line": 29,
               "kind": "const",
               "via": "useRowProperty"
             }
@@ -2484,40 +2544,7 @@
           {
             "name": "stateRef",
             "declaredAt": {
-              "line": 37,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": []
-      },
-      {
-        "file": "app/sidebars/properties/Property.tsx",
-        "component": "PropertyInner",
-        "line": 129,
-        "conditional": false,
-        "expression": "mergeStateProps(view.nameLabelProps, stateRef)",
-        "inputs": [
-          {
-            "name": "mergeStateProps",
-            "declaredAt": {
-              "line": 3,
-              "kind": "import",
-              "module": "@app/views/state-props"
-            }
-          },
-          {
-            "name": "view",
-            "declaredAt": {
-              "line": 25,
-              "kind": "const",
-              "via": "useRowProperty"
-            }
-          },
-          {
-            "name": "stateRef",
-            "declaredAt": {
-              "line": 37,
+              "line": 41,
               "kind": "const"
             }
           }
@@ -2525,35 +2552,57 @@
         "props": []
       }
     ],
-    "propertyToggle": [
+    "propertyToggleActions": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 83,
+        "line": 91,
+        "conditional": false,
+        "expression": "{ ...optionsMenu.buttonIconic }",
+        "inputs": [
+          {
+            "name": "optionsMenu",
+            "declaredAt": {
+              "line": 30,
+              "kind": "const",
+              "via": "useRowActionsMenu"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyToggleDisclosure": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 88,
         "conditional": false,
         "expression": "{ ...listItemProps.buttonIconic }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 30,
+              "line": 34,
               "kind": "const"
             }
           }
         ],
         "props": []
-      },
+      }
+    ],
+    "propertyToggleDisclosureIcon": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 127,
+        "line": 89,
         "conditional": false,
-        "expression": "{ ...listItemProps.buttonIconic }",
+        "expression": "{ ...listItemProps.icon }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 30,
+              "line": 34,
               "kind": "const"
             }
           }
@@ -2565,31 +2614,216 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 84,
-        "conditional": false,
-        "expression": "{ ...listItemProps.icon }",
+        "line": 104,
+        "conditional": true,
+        "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
         "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 30,
+              "line": 34,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "stateRef",
+            "declaredAt": {
+              "line": 41,
               "kind": "const"
             }
           }
         ],
         "props": []
-      },
+      }
+    ],
+    "propertyToggleLabel": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 128,
+        "line": 90,
         "conditional": false,
-        "expression": "{ ...listItemProps.icon }",
+        "expression": "mergeStateProps(view.nameLabelProps, stateRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "view",
+            "declaredAt": {
+              "line": 29,
+              "kind": "const",
+              "via": "useRowProperty"
+            }
+          },
+          {
+            "name": "stateRef",
+            "declaredAt": {
+              "line": 41,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyToggleSwitch": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 92,
+        "conditional": false,
+        "expression": "mergeStateProps( { checked: switchControl.checked, \"aria-checked\": toggleAriaChecked, ref: toggleSwitchRef, onChange: onToggleSwitchChange, }, toggleStateRef, )",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "switchControl",
+            "declaredAt": {
+              "line": 35,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "toggleAriaChecked",
+            "declaredAt": {
+              "line": 61,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "toggleSwitchRef",
+            "declaredAt": {
+              "line": 45,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "onToggleSwitchChange",
+            "declaredAt": {
+              "line": 54,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "toggleStateRef",
+            "declaredAt": {
+              "line": 86,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyValueIcon": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 148,
+        "conditional": true,
+        "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "listItemProps",
+            "declaredAt": {
+              "line": 34,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "stateRef",
+            "declaredAt": {
+              "line": 41,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyValueLabel": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 138,
+        "conditional": false,
+        "expression": "mergeStateProps( view.valueLabelProps, props.property.isLookParent ? { placeholder: \"\" } : undefined, stateRef, )",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "view",
+            "declaredAt": {
+              "line": 29,
+              "kind": "const",
+              "via": "useRowProperty"
+            }
+          },
+          {
+            "name": "props",
+            "declaredAt": {
+              "line": 28,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "stateRef",
+            "declaredAt": {
+              "line": 41,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyValueMenu": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 143,
+        "conditional": false,
+        "expression": "{ ...listItemProps.buttonIconic2 }",
         "inputs": [
           {
             "name": "listItemProps",
             "declaredAt": {
-              "line": 30,
+              "line": 34,
               "kind": "const"
             }
           }
@@ -2651,6 +2885,112 @@
           }
         ],
         "props": []
+      }
+    ],
+    "sectionDisclosure": [
+      {
+        "file": "app/sidebars/objects/Section.tsx",
+        "component": "Section",
+        "line": 36,
+        "conditional": false,
+        "expression": "{ ...buttonIconic }",
+        "inputs": [
+          {
+            "name": "buttonIconic",
+            "declaredAt": {
+              "line": 19,
+              "kind": "const",
+              "via": "useRowSection"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/properties/Category.tsx",
+        "component": "Category",
+        "line": 48,
+        "conditional": false,
+        "expression": "{ ...buttonIconic }",
+        "inputs": [
+          {
+            "name": "buttonIconic",
+            "declaredAt": {
+              "line": 26,
+              "kind": "const",
+              "via": "useRowCategory"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "sectionDisclosureIcon": [
+      {
+        "file": "app/sidebars/objects/Section.tsx",
+        "component": "Section",
+        "line": 37,
+        "conditional": false,
+        "expression": "{ icon }",
+        "inputs": [
+          {
+            "name": "icon",
+            "declaredAt": {
+              "line": 19,
+              "kind": "const",
+              "via": "useRowSection"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "icon",
+            "inputs": [
+              {
+                "name": "icon",
+                "declaredAt": {
+                  "line": 19,
+                  "kind": "const",
+                  "via": "useRowSection"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/Category.tsx",
+        "component": "Category",
+        "line": 49,
+        "conditional": false,
+        "expression": "{ icon }",
+        "inputs": [
+          {
+            "name": "icon",
+            "declaredAt": {
+              "line": 26,
+              "kind": "const",
+              "via": "useRowCategory"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "icon",
+            "inputs": [
+              {
+                "name": "icon",
+                "declaredAt": {
+                  "line": 26,
+                  "kind": "const",
+                  "via": "useRowCategory"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "sectionLabel": [
@@ -2719,298 +3059,6 @@
             ]
           }
         ]
-      }
-    ],
-    "sectionToggle": [
-      {
-        "file": "app/sidebars/objects/Section.tsx",
-        "component": "Section",
-        "line": 36,
-        "conditional": false,
-        "expression": "{ ...buttonIconic }",
-        "inputs": [
-          {
-            "name": "buttonIconic",
-            "declaredAt": {
-              "line": 19,
-              "kind": "const",
-              "via": "useRowSection"
-            }
-          }
-        ],
-        "props": []
-      },
-      {
-        "file": "app/sidebars/properties/Category.tsx",
-        "component": "Category",
-        "line": 48,
-        "conditional": false,
-        "expression": "{ ...buttonIconic }",
-        "inputs": [
-          {
-            "name": "buttonIconic",
-            "declaredAt": {
-              "line": 26,
-              "kind": "const",
-              "via": "useRowCategory"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "sectionToggleIcon": [
-      {
-        "file": "app/sidebars/objects/Section.tsx",
-        "component": "Section",
-        "line": 37,
-        "conditional": false,
-        "expression": "{ icon }",
-        "inputs": [
-          {
-            "name": "icon",
-            "declaredAt": {
-              "line": 19,
-              "kind": "const",
-              "via": "useRowSection"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "icon",
-            "expression": "icon",
-            "inputs": [
-              {
-                "name": "icon",
-                "declaredAt": {
-                  "line": 19,
-                  "kind": "const",
-                  "via": "useRowSection"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "file": "app/sidebars/properties/Category.tsx",
-        "component": "Category",
-        "line": 49,
-        "conditional": false,
-        "expression": "{ icon }",
-        "inputs": [
-          {
-            "name": "icon",
-            "declaredAt": {
-              "line": 26,
-              "kind": "const",
-              "via": "useRowCategory"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "icon",
-            "expression": "icon",
-            "inputs": [
-              {
-                "name": "icon",
-                "declaredAt": {
-                  "line": 26,
-                  "kind": "const",
-                  "via": "useRowCategory"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "toggleIcon": [
-      {
-        "file": "app/sidebars/properties/Property.tsx",
-        "component": "PropertyInner",
-        "line": 99,
-        "conditional": true,
-        "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
-        "inputs": [
-          {
-            "name": "mergeStateProps",
-            "declaredAt": {
-              "line": 3,
-              "kind": "import",
-              "module": "@app/views/state-props"
-            }
-          },
-          {
-            "name": "listItemProps",
-            "declaredAt": {
-              "line": 30,
-              "kind": "const"
-            }
-          },
-          {
-            "name": "stateRef",
-            "declaredAt": {
-              "line": 37,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "toggleValue": [
-      {
-        "file": "app/sidebars/properties/Property.tsx",
-        "component": "PropertyInner",
-        "line": 87,
-        "conditional": false,
-        "expression": "mergeStateProps( { checked: switchControl.checked, \"aria-checked\": toggleAriaChecked, ref: toggleSwitchRef, onChange: onToggleSwitchChange, }, toggleStateRef, )",
-        "inputs": [
-          {
-            "name": "mergeStateProps",
-            "declaredAt": {
-              "line": 3,
-              "kind": "import",
-              "module": "@app/views/state-props"
-            }
-          },
-          {
-            "name": "switchControl",
-            "declaredAt": {
-              "line": 31,
-              "kind": "const"
-            }
-          },
-          {
-            "name": "toggleAriaChecked",
-            "declaredAt": {
-              "line": 57,
-              "kind": "const"
-            }
-          },
-          {
-            "name": "toggleSwitchRef",
-            "declaredAt": {
-              "line": 41,
-              "kind": "const",
-              "via": "useCallback"
-            }
-          },
-          {
-            "name": "onToggleSwitchChange",
-            "declaredAt": {
-              "line": 50,
-              "kind": "const",
-              "via": "useCallback"
-            }
-          },
-          {
-            "name": "toggleStateRef",
-            "declaredAt": {
-              "line": 81,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "valueIcon": [
-      {
-        "file": "app/sidebars/properties/Property.tsx",
-        "component": "PropertyInner",
-        "line": 143,
-        "conditional": true,
-        "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
-        "inputs": [
-          {
-            "name": "mergeStateProps",
-            "declaredAt": {
-              "line": 3,
-              "kind": "import",
-              "module": "@app/views/state-props"
-            }
-          },
-          {
-            "name": "listItemProps",
-            "declaredAt": {
-              "line": 30,
-              "kind": "const"
-            }
-          },
-          {
-            "name": "stateRef",
-            "declaredAt": {
-              "line": 37,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "valueLabel": [
-      {
-        "file": "app/sidebars/properties/Property.tsx",
-        "component": "PropertyInner",
-        "line": 133,
-        "conditional": false,
-        "expression": "mergeStateProps( view.valueLabelProps, props.property.isLookParent ? { placeholder: \"\" } : undefined, stateRef, )",
-        "inputs": [
-          {
-            "name": "mergeStateProps",
-            "declaredAt": {
-              "line": 3,
-              "kind": "import",
-              "module": "@app/views/state-props"
-            }
-          },
-          {
-            "name": "view",
-            "declaredAt": {
-              "line": 25,
-              "kind": "const",
-              "via": "useRowProperty"
-            }
-          },
-          {
-            "name": "props",
-            "declaredAt": {
-              "line": 24,
-              "kind": "parameter"
-            }
-          },
-          {
-            "name": "stateRef",
-            "declaredAt": {
-              "line": 37,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": []
-      }
-    ],
-    "valueOptionsMenu": [
-      {
-        "file": "app/sidebars/properties/Property.tsx",
-        "component": "PropertyInner",
-        "line": 138,
-        "conditional": false,
-        "expression": "{ ...listItemProps.buttonIconic2 }",
-        "inputs": [
-          {
-            "name": "listItemProps",
-            "declaredAt": {
-              "line": 30,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": []
       }
     ]
   },
@@ -3816,13 +3864,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 292,
+          "line": 316,
           "expression": "barHandle",
           "inputs": [
             {
               "name": "barHandle",
               "declaredAt": {
-                "line": 122,
+                "line": 136,
                 "kind": "const",
                 "via": "useMemo"
               }
@@ -3835,7 +3883,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 229,
+          "line": 245,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -3845,7 +3893,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 238,
+          "line": 254,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -3855,7 +3903,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 223,
+          "line": 239,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -3865,7 +3913,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 225,
+          "line": 241,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -3875,7 +3923,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 227,
+          "line": 243,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -3885,13 +3933,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 231,
+          "line": 247,
           "expression": "radioGroup(\"Generate Google Font API Links\")",
           "inputs": [
             {
               "name": "radioGroup",
               "declaredAt": {
-                "line": 328,
+                "line": 352,
                 "kind": "function"
               }
             }
@@ -3903,13 +3951,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 240,
+          "line": 256,
           "expression": "radioGroup(\"Hidden Components\")",
           "inputs": [
             {
               "name": "radioGroup",
               "declaredAt": {
-                "line": 328,
+                "line": 352,
                 "kind": "function"
               }
             }
@@ -3921,13 +3969,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 247,
+          "line": 263,
           "expression": "radioGroup(\"All Themes\")",
           "inputs": [
             {
               "name": "radioGroup",
               "declaredAt": {
-                "line": 328,
+                "line": 352,
                 "kind": "function"
               }
             }
@@ -3939,13 +3987,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 254,
+          "line": 270,
           "expression": "radioGroup(\"All Enabled Fonts\")",
           "inputs": [
             {
               "name": "radioGroup",
               "declaredAt": {
-                "line": 328,
+                "line": 352,
                 "kind": "function"
               }
             }
@@ -3957,13 +4005,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 261,
+          "line": 277,
           "expression": "radioGroup(\"All Enabled Icons\")",
           "inputs": [
             {
               "name": "radioGroup",
               "declaredAt": {
-                "line": 328,
+                "line": 352,
                 "kind": "function"
               }
             }
@@ -3975,13 +4023,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 268,
+          "line": 284,
           "expression": "radioGroup(\"Saved Workspace\")",
           "inputs": [
             {
               "name": "radioGroup",
               "declaredAt": {
-                "line": 328,
+                "line": 352,
                 "kind": "function"
               }
             }
@@ -3993,13 +4041,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 275,
+          "line": 291,
           "expression": "radioGroup(\"CLI Utility Scripts\")",
           "inputs": [
             {
               "name": "radioGroup",
               "declaredAt": {
-                "line": 328,
+                "line": 352,
                 "kind": "function"
               }
             }
@@ -4011,7 +4059,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 233,
+          "line": 249,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4021,7 +4069,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 265,
+          "line": 281,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4031,7 +4079,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 270,
+          "line": 286,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4041,7 +4089,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 272,
+          "line": 288,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4051,7 +4099,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 277,
+          "line": 293,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4061,7 +4109,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 279,
+          "line": 295,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4071,7 +4119,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 235,
+          "line": 251,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4081,7 +4129,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 242,
+          "line": 258,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4091,7 +4139,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 244,
+          "line": 260,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4101,7 +4149,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 249,
+          "line": 265,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4111,7 +4159,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 251,
+          "line": 267,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4121,7 +4169,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 256,
+          "line": 272,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4131,7 +4179,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 258,
+          "line": 274,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4141,7 +4189,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 263,
+          "line": 279,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4151,7 +4199,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 224,
+          "line": 240,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4161,7 +4209,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 248,
+          "line": 264,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4171,13 +4219,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 250,
+          "line": 266,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4189,13 +4237,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 252,
+          "line": 268,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4207,7 +4255,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 255,
+          "line": 271,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4217,13 +4265,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 257,
+          "line": 273,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4235,13 +4283,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 259,
+          "line": 275,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4253,7 +4301,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 262,
+          "line": 278,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4263,13 +4311,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 264,
+          "line": 280,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4281,13 +4329,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 266,
+          "line": 282,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4299,7 +4347,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 269,
+          "line": 285,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4309,7 +4357,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 226,
+          "line": 242,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4319,13 +4367,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 271,
+          "line": 287,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4337,13 +4385,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 273,
+          "line": 289,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4355,7 +4403,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 276,
+          "line": 292,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4365,13 +4413,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 278,
+          "line": 294,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4383,13 +4431,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 280,
+          "line": 296,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4401,7 +4449,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 282,
+          "line": 298,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4411,7 +4459,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 283,
+          "line": 299,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4421,7 +4469,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 228,
+          "line": 244,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4431,7 +4479,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 232,
+          "line": 248,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4441,13 +4489,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 234,
+          "line": 250,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4459,13 +4507,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 236,
+          "line": 252,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4477,7 +4525,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 241,
+          "line": 257,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4487,13 +4535,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 243,
+          "line": 259,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4505,13 +4553,13 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 245,
+          "line": 261,
           "expression": "radioLabel",
           "inputs": [
             {
               "name": "radioLabel",
               "declaredAt": {
-                "line": 352,
+                "line": 380,
                 "kind": "const"
               }
             }
@@ -4523,7 +4571,7 @@
         {
           "file": "app/dialogs/export-components/ExportComponentsController.tsx",
           "component": "ExportComponentsDialog",
-          "line": 221,
+          "line": 237,
           "expression": "{}",
           "inputs": [],
           "spread": true
@@ -4659,6 +4707,23 @@
               "declaredAt": {
                 "line": 21,
                 "kind": "parameter"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/tracking/canvas-indicators/connections/ConnectionChip.tsx",
+          "component": "ConnectionChip",
+          "line": 87,
+          "expression": "toggleCard",
+          "inputs": [
+            {
+              "name": "toggleCard",
+              "declaredAt": {
+                "line": 40,
+                "kind": "const",
+                "via": "useCallback"
               }
             }
           ],
@@ -4807,23 +4872,6 @@
             }
           ],
           "spread": false
-        },
-        {
-          "file": "app/tracking/canvas-indicators/connections/ConnectionChip.tsx",
-          "component": "ConnectionChip",
-          "line": 62,
-          "expression": "showCard",
-          "inputs": [
-            {
-              "name": "showCard",
-              "declaredAt": {
-                "line": 35,
-                "kind": "const",
-                "via": "useCallback"
-              }
-            }
-          ],
-          "spread": false
         }
       ],
       "onMouseLeave": [
@@ -4855,23 +4903,6 @@
               "declaredAt": {
                 "line": 21,
                 "kind": "parameter"
-              }
-            }
-          ],
-          "spread": false
-        },
-        {
-          "file": "app/tracking/canvas-indicators/connections/ConnectionChip.tsx",
-          "component": "ConnectionChip",
-          "line": 62,
-          "expression": "hideCard",
-          "inputs": [
-            {
-              "name": "hideCard",
-              "declaredAt": {
-                "line": 47,
-                "kind": "const",
-                "via": "useCallback"
               }
             }
           ],
@@ -6312,13 +6343,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 187,
+          "line": 192,
           "expression": "comboboxField",
           "inputs": [
             {
               "name": "comboboxField",
               "declaredAt": {
-                "line": 156,
+                "line": 161,
                 "kind": "const"
               }
             }
@@ -6330,13 +6361,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 188,
+          "line": 193,
           "expression": "valueIconSlot",
           "inputs": [
             {
               "name": "valueIconSlot",
               "declaredAt": {
-                "line": 170,
+                "line": 175,
                 "kind": "const"
               }
             }
@@ -6348,13 +6379,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 189,
+          "line": 194,
           "expression": "listItemProps.icon3",
           "inputs": [
             {
               "name": "listItemProps",
               "declaredAt": {
-                "line": 30,
+                "line": 34,
                 "kind": "const"
               }
             }
@@ -6366,7 +6397,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 186,
+          "line": 191,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6376,13 +6407,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 191,
+          "line": 196,
           "expression": "view.onRowClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 25,
+                "line": 29,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -6395,13 +6426,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 192,
+          "line": 197,
           "expression": "view.onRowDoubleClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 25,
+                "line": 29,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -6416,7 +6447,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 105,
+          "line": 110,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6426,7 +6457,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 110,
+          "line": 115,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6436,7 +6467,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 106,
+          "line": 111,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6446,7 +6477,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 108,
+          "line": 113,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6456,7 +6487,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 107,
+          "line": 112,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6466,13 +6497,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 112,
+          "line": 117,
           "expression": "view.onRowClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 25,
+                "line": 29,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -6485,13 +6516,13 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 113,
+          "line": 118,
           "expression": "view.onRowDoubleClick",
           "inputs": [
             {
               "name": "view",
               "declaredAt": {
-                "line": 25,
+                "line": 29,
                 "kind": "const",
                 "via": "useRowProperty"
               }
@@ -6504,7 +6535,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 109,
+          "line": 114,
           "expression": "{}",
           "inputs": [],
           "spread": false

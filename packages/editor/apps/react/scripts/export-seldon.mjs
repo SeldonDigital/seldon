@@ -7,8 +7,14 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 import { build } from "esbuild"
 
 /**
- * Runs the factory export on `seldon-editor.json` and writes the generated
- * components into `packages/editor-react/seldon/`.
+ * Runs the factory export on this editor's own workspace copy and writes the
+ * generated components into `packages/editor/apps/react/seldon/`.
+ *
+ * The input is the copy that ships beside the components, written by the Export
+ * Components dialog when "Save Workspace with Components" is on. The dialog
+ * names it from the workspace label, so renaming the workspace renames the file
+ * and this path has to follow. This script only reads it; regenerating the copy
+ * stays with the dialog.
  *
  * The export handler (`vite/export-handler.ts`) imports `@seldon/core` and
  * `@seldon/factory` through workspace aliases, so it is bundled with esbuild
@@ -16,11 +22,10 @@ import { build } from "esbuild"
  */
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const editorRoot = path.dirname(scriptDir)
-const repoRoot = path.join(editorRoot, "../../../..")
 const coreRoot = path.join(editorRoot, "../../../core")
 const factoryRoot = path.join(editorRoot, "../../../factory")
 const handlerEntry = path.join(editorRoot, "../../shared/vite/export-handler.ts")
-const workspaceFile = path.join(repoRoot, "seldon-editor.json")
+const workspaceFile = path.join(editorRoot, "seldon/seldon-editor.json")
 
 async function loadHandler() {
   const result = await build({

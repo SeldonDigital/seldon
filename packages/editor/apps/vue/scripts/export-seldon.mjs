@@ -7,19 +7,20 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 import { build } from "esbuild"
 
 /**
- * Runs the factory Vue export on `seldon-editor.json` and writes the generated
- * `.vue` chrome into `packages/editor-vue/seldon/`.
+ * Runs the factory Vue export on this editor's own workspace copy and writes the
+ * generated `.vue` chrome into `packages/editor/apps/vue/seldon/`.
  *
- * Mirrors the React editor's export-seldon script but targets the Vue platform,
- * so each editor regenerates its own chrome from the same canonical file.
+ * Mirrors the React editor's export-seldon script but targets the Vue platform.
+ * Each editor reads the copy beside its own components, so exporting one editor
+ * never regenerates the other from a workspace it did not load. Both copies come
+ * from the same workspace, so export both after changing it.
  */
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const editorRoot = path.dirname(scriptDir)
-const repoRoot = path.join(editorRoot, "../../../..")
 const coreRoot = path.join(editorRoot, "../../../core")
 const factoryRoot = path.join(editorRoot, "../../../factory")
 const handlerEntry = path.join(editorRoot, "../../shared/vite/export-handler.ts")
-const workspaceFile = path.join(repoRoot, "seldon-editor.json")
+const workspaceFile = path.join(editorRoot, "seldon/seldon-editor.json")
 
 async function loadHandler() {
   const result = await build({

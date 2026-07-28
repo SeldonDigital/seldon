@@ -45,13 +45,13 @@ const sdn: ItemSectionProps = {
   "aria-hidden": "false",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "sectionToggle",
+    "data-seldon-ref": "sectionDisclosure",
   },
   icon: {
     icon: "material-unfoldMore",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--umgs",
-    "data-seldon-ref": "sectionToggleIcon",
+    "data-seldon-ref": "sectionDisclosureIcon",
   },
 
   formControlCombobox: {
@@ -91,8 +91,8 @@ const sdn: ItemSectionProps = {
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic         buttonIconic         -> sectionToggle
- *     Icon               icon                 -> sectionToggleIcon
+ *   ButtonIconic         buttonIconic         -> sectionDisclosure
+ *     Icon               icon                 -> sectionDisclosureIcon
  *   FormControlCombobox  formControlCombobox
  *     TextLabel          textLabel            -> sectionLabel
  *   ButtonIconic         buttonIconic2        -> sectionAdd

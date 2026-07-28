@@ -20,13 +20,13 @@
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic    buttonIconic   -> nodeToggle
- *     Icon          icon           -> nodeToggleIcon
+ *   ButtonIconic    buttonIconic   -> nodeDisclosure
+ *     Icon          icon           -> nodeDisclosureIcon
  *   ComboboxField   comboboxField
  *     Icon          icon2          -> nodeIcon
  *     Input         input          -> nodeLabel
  *     ButtonIconic  buttonIconic2  -> nodeDisplay
- *       Icon        icon3
+ *       Icon        icon3          -> nodeDisplayIcon
  *   ButtonIconic    buttonIconic3  -> nodeActions
  *     Icon          icon4
  *
@@ -69,13 +69,13 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "buttonIconic": {
     "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "nodeToggle"
+    "data-seldon-ref": "nodeDisclosure"
   },
   "icon": {
     "icon": "material-chevronDown",
     "aria-hidden": "true",
     "className": "sdn-icon sdn-icon--vsau",
-    "data-seldon-ref": "nodeToggleIcon"
+    "data-seldon-ref": "nodeDisclosureIcon"
   },
   "comboboxField": {
     "className": "sdn-combobox-field sdn-combobox-field--lmje"
@@ -101,7 +101,8 @@ const sdn: Record<string, any> = {
   "icon3": {
     "icon": "seldon-display",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--xi68"
+    "className": "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "nodeDisplayIcon"
   },
   "buttonIconic3": {
     "className": "sdn-button-iconic sdn-button-iconic--pgsr",

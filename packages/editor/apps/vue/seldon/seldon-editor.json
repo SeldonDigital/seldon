@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": 17,
-    "label": ""
+    "label": "seldon-editor"
   },
   "boards": {
     "seldon": {
@@ -14104,7 +14104,7 @@
       }
     },
     "component-button-iVVLVSBT": {
-      "ref": "propertyToggle",
+      "ref": "propertyDisclosure",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -14114,7 +14114,7 @@
       "origin": "schema"
     },
     "component-icon-Aa4AD1wO": {
-      "ref": "propertyToggleIcon",
+      "ref": "propertyDisclosureIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -14158,7 +14158,7 @@
       "origin": "schema"
     },
     "component-icon-V1g4W5fN": {
-      "ref": "valueIcon",
+      "ref": "propertyValueIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -14168,7 +14168,7 @@
       "origin": "schema"
     },
     "component-input-IeGTgo7S": {
-      "ref": "valueLabel",
+      "ref": "propertyValueLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -14234,7 +14234,7 @@
       "origin": "schema"
     },
     "component-button-HqmnST2I": {
-      "ref": "valueOptionsMenu",
+      "ref": "propertyValueMenu",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -14389,7 +14389,7 @@
       }
     },
     "component-item-HSgjhz6b": {
-      "ref": "nodeToggle",
+      "ref": "nodeDisclosure",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -14399,7 +14399,7 @@
       "origin": "schema"
     },
     "component-item-zn8GFZsT": {
-      "ref": "nodeToggleIcon",
+      "ref": "nodeDisclosureIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -14983,7 +14983,7 @@
       }
     },
     "component-item-OCtkZUuF": {
-      "ref": "sectionToggle",
+      "ref": "sectionDisclosure",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -14993,7 +14993,7 @@
       "origin": "schema"
     },
     "component-item-7MKLAjub": {
-      "ref": "sectionToggleIcon",
+      "ref": "sectionDisclosureIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -34114,6 +34114,7 @@
       }
     },
     "component-item-HiKfAFK5": {
+      "ref": "propertyToggleDisclosure",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -34123,6 +34124,7 @@
       "origin": "schema"
     },
     "component-item-jmuthUmH": {
+      "ref": "propertyToggleDisclosureIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -34157,6 +34159,7 @@
       "origin": "schema"
     },
     "component-item-K7Y9jqAr": {
+      "ref": "propertyToggleLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -34210,7 +34213,7 @@
       "origin": "user"
     },
     "component-item-YzeMLx3R": {
-      "ref": "toggleIcon",
+      "ref": "propertyToggleIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -34220,6 +34223,7 @@
       "origin": "schema"
     },
     "component-item-qeIxCmeu": {
+      "ref": "propertyToggleActions",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -34247,7 +34251,7 @@
       "origin": "schema"
     },
     "component-toggleSwitch-pelhFQXa": {
-      "ref": "toggleValue",
+      "ref": "propertyToggleSwitch",
       "type": "instance",
       "level": "primitive",
       "label": "Toggle Switch",
@@ -40438,6 +40442,7 @@
       "origin": "schema"
     },
     "component-item-vfutzRjn": {
+      "ref": "nodeDisplayIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",

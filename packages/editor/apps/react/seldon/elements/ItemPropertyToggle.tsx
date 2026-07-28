@@ -47,11 +47,13 @@ const sdn: ItemPropertyToggleProps = {
   "aria-hidden": "false",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "propertyToggleDisclosure",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "propertyToggleDisclosureIcon",
   },
 
   formControlCombobox: {
@@ -59,6 +61,7 @@ const sdn: ItemPropertyToggleProps = {
   },
   input: {
     className: "sdn-input sdn-input--jvsw",
+    "data-seldon-ref": "propertyToggleLabel",
   },
   frame: {
     wrapperElement: "div",
@@ -67,15 +70,16 @@ const sdn: ItemPropertyToggleProps = {
   },
   icon2: {
     className: "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "toggleIcon",
+    "data-seldon-ref": "propertyToggleIcon",
   },
   toggleSwitch: {
     className: "sdn-toggle-switch sdn-toggle-switch--pelh",
-    "data-seldon-ref": "toggleValue",
+    "data-seldon-ref": "propertyToggleSwitch",
   },
 
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "propertyToggleActions",
   },
   icon3: {
     icon: "seldon-more",
@@ -92,14 +96,14 @@ const sdn: ItemPropertyToggleProps = {
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic         buttonIconic
- *     Icon               icon
+ *   ButtonIconic         buttonIconic         -> propertyToggleDisclosure
+ *     Icon               icon                 -> propertyToggleDisclosureIcon
  *   FormControlCombobox  formControlCombobox
- *     Input              input
+ *     Input              input                -> propertyToggleLabel
  *     Frame              frame
- *       Icon             icon2                -> toggleIcon
- *       ToggleSwitch     toggleSwitch         -> toggleValue
- *   ButtonIconic         buttonIconic2
+ *       Icon             icon2                -> propertyToggleIcon
+ *       ToggleSwitch     toggleSwitch         -> propertyToggleSwitch
+ *   ButtonIconic         buttonIconic2        -> propertyToggleActions
  *     Icon               icon3
  *
  * @example

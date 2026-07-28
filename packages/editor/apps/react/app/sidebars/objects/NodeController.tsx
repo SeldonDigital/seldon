@@ -240,8 +240,8 @@ const NodeInner = function NodeInner({
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
   // the actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
-    nodeToggle: { ...buttonIconic },
-    nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
+    nodeDisclosure: { ...buttonIconic },
+    nodeDisclosureIcon: mergeStateProps(toggleIcon, disabledRef),
     nodeIcon: mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef),
     nodeLabel: mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef),
     nodeDisplay: { ...displayPicker.buttonProps },

@@ -181,8 +181,8 @@ function BoardRow({ board, show = true }: { board: BoardType; show?: boolean }) 
   // has no ref; it keeps the generated `seldon-more` default and is hidden by the
   // actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
-    nodeToggle: { ...buttonIconic },
-    nodeToggleIcon: { ...toggleIcon },
+    nodeDisclosure: { ...buttonIconic },
+    nodeDisclosureIcon: { ...toggleIcon },
     nodeIcon: mergeStateProps(icon2, activatedRef),
     nodeLabel: mergeStateProps(nameInput, activatedRef),
     nodeActions: { ...actionsMenu.buttonIconic },

@@ -84,11 +84,12 @@ export type SeldonRef =
   | "menuTheme"
   | "menuView"
   | "nodeActions"
+  | "nodeDisclosure"
+  | "nodeDisclosureIcon"
   | "nodeDisplay"
+  | "nodeDisplayIcon"
   | "nodeIcon"
   | "nodeLabel"
-  | "nodeToggle"
-  | "nodeToggleIcon"
   | "objectsContainer"
   | "optionIcon"
   | "optionLabel"
@@ -97,28 +98,32 @@ export type SeldonRef =
   | "projectLabel"
   | "propertiesContainer"
   | "propertyActions"
+  | "propertyDisclosure"
+  | "propertyDisclosureIcon"
   | "propertyFilter"
   | "propertyFilterClear"
   | "propertyLabel"
-  | "propertyToggle"
+  | "propertyToggleActions"
+  | "propertyToggleDisclosure"
+  | "propertyToggleDisclosureIcon"
   | "propertyToggleIcon"
+  | "propertyToggleLabel"
+  | "propertyToggleSwitch"
+  | "propertyValueIcon"
+  | "propertyValueLabel"
+  | "propertyValueMenu"
   | "searchActions"
   | "searchIcon"
   | "searchLabel"
   | "sectionActions"
   | "sectionAdd"
+  | "sectionDisclosure"
+  | "sectionDisclosureIcon"
   | "sectionLabel"
-  | "sectionToggle"
-  | "sectionToggleIcon"
   | "sidebarComponents"
   | "sidebarResources"
-  | "toggleIcon"
-  | "toggleValue"
   | "tool"
   | "turns"
-  | "valueIcon"
-  | "valueLabel"
-  | "valueOptionsMenu"
   | "workspaceName"
   | "workspaceSave"
 
@@ -1146,6 +1151,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  nodeDisclosure: {
+    component: "ButtonIconic",
+    nodeId: "component-item-HSgjhz6b",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "ItemNode",
+        file: "elements/ItemNode.tsx",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  nodeDisclosureIcon: {
+    component: "Icon",
+    nodeId: "component-item-zn8GFZsT",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "ItemNode",
+        file: "elements/ItemNode.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   nodeDisplay: {
     component: "ButtonIconic",
     nodeId: "component-item-A2qQLKuh",
@@ -1156,6 +1189,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "elements/ItemNode.tsx",
         slot: "buttonIconic2",
         type: "ButtonIconicProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  nodeDisplayIcon: {
+    component: "Icon",
+    nodeId: "component-item-vfutzRjn",
+    className: "sdn-icon sdn-icon--xi68",
+    views: [
+      {
+        component: "ItemNode",
+        file: "elements/ItemNode.tsx",
+        slot: "icon3",
+        type: "IconProps",
         rendersWhen: "unless-null",
       },
     ],
@@ -1184,34 +1231,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "elements/ItemNode.tsx",
         slot: "input",
         type: "InputProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  nodeToggle: {
-    component: "ButtonIconic",
-    nodeId: "component-item-HSgjhz6b",
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "ItemNode",
-        file: "elements/ItemNode.tsx",
-        slot: "buttonIconic",
-        type: "ButtonIconicProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  nodeToggleIcon: {
-    component: "Icon",
-    nodeId: "component-item-zn8GFZsT",
-    className: "sdn-icon sdn-icon--vsau",
-    views: [
-      {
-        component: "ItemNode",
-        file: "elements/ItemNode.tsx",
-        slot: "icon",
-        type: "IconProps",
         rendersWhen: "unless-null",
       },
     ],
@@ -1328,6 +1347,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  propertyDisclosure: {
+    component: "ButtonIconic",
+    nodeId: "component-button-iVVLVSBT",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyDisclosureIcon: {
+    component: "Icon",
+    nodeId: "component-icon-Aa4AD1wO",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   propertyFilter: {
     component: "Input",
     nodeId: "component-comboboxField-Lg6E5jtv",
@@ -1370,30 +1417,128 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  propertyToggle: {
+  propertyToggleActions: {
     component: "ButtonIconic",
-    nodeId: "component-button-iVVLVSBT",
+    nodeId: "component-item-qeIxCmeu",
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
     views: [
       {
-        component: "ItemProperty",
-        file: "elements/ItemProperty.tsx",
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
+        slot: "buttonIconic2",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyToggleDisclosure: {
+    component: "ButtonIconic",
+    nodeId: "component-item-HiKfAFK5",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
         slot: "buttonIconic",
         type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyToggleDisclosureIcon: {
+    component: "Icon",
+    nodeId: "component-item-jmuthUmH",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
+        slot: "icon",
+        type: "IconProps",
         rendersWhen: "unless-null",
       },
     ],
   },
   propertyToggleIcon: {
     component: "Icon",
-    nodeId: "component-icon-Aa4AD1wO",
-    className: "sdn-icon sdn-icon--vsau",
+    nodeId: "component-item-YzeMLx3R",
+    className: "sdn-icon sdn-icon--xi68",
+    views: [
+      {
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyToggleLabel: {
+    component: "Input",
+    nodeId: "component-item-K7Y9jqAr",
+    className: "sdn-input sdn-input--jvsw",
+    views: [
+      {
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
+        slot: "input",
+        type: "InputProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyToggleSwitch: {
+    component: "ToggleSwitch",
+    nodeId: "component-toggleSwitch-pelhFQXa",
+    className: "sdn-toggle-switch sdn-toggle-switch--pelh",
+    views: [
+      {
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
+        slot: "toggleSwitch",
+        type: "ToggleSwitchProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyValueIcon: {
+    component: "Icon",
+    nodeId: "component-icon-V1g4W5fN",
+    className: "sdn-icon sdn-icon--xi68",
     views: [
       {
         component: "ItemProperty",
         file: "elements/ItemProperty.tsx",
-        slot: "icon",
+        slot: "icon2",
         type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyValueLabel: {
+    component: "Input",
+    nodeId: "component-input-IeGTgo7S",
+    className: "sdn-input sdn-input--iegt",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "input2",
+        type: "InputProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyValueMenu: {
+    component: "ButtonIconic",
+    nodeId: "component-button-HqmnST2I",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "buttonIconic2",
+        type: "ButtonIconicProps",
         rendersWhen: "unless-null",
       },
     ],
@@ -1468,21 +1613,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  sectionLabel: {
-    component: "TextLabel",
-    nodeId: "component-item-Z34z7Dhr",
-    className: "sdn-text-label sdn-text-label--z34z",
-    views: [
-      {
-        component: "ItemSection",
-        file: "elements/ItemSection.tsx",
-        slot: "textLabel",
-        type: "TextLabelProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  sectionToggle: {
+  sectionDisclosure: {
     component: "ButtonIconic",
     nodeId: "component-item-OCtkZUuF",
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -1496,7 +1627,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  sectionToggleIcon: {
+  sectionDisclosureIcon: {
     component: "Icon",
     nodeId: "component-item-7MKLAjub",
     className: "sdn-icon sdn-icon--umgs",
@@ -1507,6 +1638,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "icon",
         type: "IconProps",
         rendersWhen: "unless-null",
+      },
+    ],
+  },
+  sectionLabel: {
+    component: "TextLabel",
+    nodeId: "component-item-Z34z7Dhr",
+    className: "sdn-text-label sdn-text-label--z34z",
+    views: [
+      {
+        component: "ItemSection",
+        file: "elements/ItemSection.tsx",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
       },
     ],
   },
@@ -1538,34 +1683,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  toggleIcon: {
-    component: "Icon",
-    nodeId: "component-item-YzeMLx3R",
-    className: "sdn-icon sdn-icon--xi68",
-    views: [
-      {
-        component: "ItemPropertyToggle",
-        file: "elements/ItemPropertyToggle.tsx",
-        slot: "icon2",
-        type: "IconProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
-  toggleValue: {
-    component: "ToggleSwitch",
-    nodeId: "component-toggleSwitch-pelhFQXa",
-    className: "sdn-toggle-switch sdn-toggle-switch--pelh",
-    views: [
-      {
-        component: "ItemPropertyToggle",
-        file: "elements/ItemPropertyToggle.tsx",
-        slot: "toggleSwitch",
-        type: "ToggleSwitchProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
   tool: {
     component: "Frame",
     nodeId: "component-frame-RStcYvkF",
@@ -1590,48 +1707,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/PanelHari.tsx",
         slot: "frame2",
         type: "FrameProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  valueIcon: {
-    component: "Icon",
-    nodeId: "component-icon-V1g4W5fN",
-    className: "sdn-icon sdn-icon--xi68",
-    views: [
-      {
-        component: "ItemProperty",
-        file: "elements/ItemProperty.tsx",
-        slot: "icon2",
-        type: "IconProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  valueLabel: {
-    component: "Input",
-    nodeId: "component-input-IeGTgo7S",
-    className: "sdn-input sdn-input--iegt",
-    views: [
-      {
-        component: "ItemProperty",
-        file: "elements/ItemProperty.tsx",
-        slot: "input2",
-        type: "InputProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  valueOptionsMenu: {
-    component: "ButtonIconic",
-    nodeId: "component-button-HqmnST2I",
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "ItemProperty",
-        file: "elements/ItemProperty.tsx",
-        slot: "buttonIconic2",
-        type: "ButtonIconicProps",
         rendersWhen: "unless-null",
       },
     ],
