@@ -69,10 +69,19 @@ type ExportOptions = {
   assetReader?: ExportAssetReader
   skipFormat?: boolean
   enableRemoteFonts?: boolean
+  exportAllIconSetIcons?: boolean
+  includeHiddenComponents?: boolean
+  exportAllThemes?: boolean
+  exportAllFontCollections?: boolean
+  includeWorkspace?: boolean
 }
 ```
 
 `enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx`.
+
+`exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set one to `false` to emit only what a component or theme references.
+
+`includeHiddenComponents` and `includeWorkspace` are off by default.
 
 ---
 
@@ -147,6 +156,7 @@ utils/class-name.ts                    # combineClassNames helper
 Fonts.tsx                              # font loading component
 styles.css                             # component stylesheet
 styles/{slug}.css                      # one stylesheet per workspace theme
+workspace.json                         # workspace copy, emitted only with includeWorkspace
 README.md                              # generated usage guide
 ```
 
@@ -172,6 +182,14 @@ exportRootPath: {
 ```
 
 Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file goes in the `styles/` folder and is named by its slug, such as `styles/seldon.css` and `styles/seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
+
+### Workspace Copy
+
+Setting `includeWorkspace` emits `workspace.json` at the root of the components folder. `generateWorkspaceCopy` in [export/shared/generate-workspace-copy.ts](./export/shared/generate-workspace-copy.ts) produces it.
+
+The copy holds the workspace as authored. It is written by `exportWorkspace` rather than by a target, because each target rewrites image paths on its own copy before generating, so a target-side copy would carry export paths instead of the original image values.
+
+Important: the copy drops each node's `id`, because an id always repeats the key the node is stored under in `nodes`. Read the file back with `loadWorkspace`, which restores them. Parsing it as plain JSON leaves every node without an id.
 
 Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
 

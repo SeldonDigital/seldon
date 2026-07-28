@@ -1,4 +1,5 @@
 import { PLATFORMS } from "./platforms/registry"
+import { generateWorkspaceCopy } from "./shared/generate-workspace-copy"
 
 import type { ExportOptions, FileToExport } from "./types"
 import type { Workspace } from "@seldon/core"
@@ -60,5 +61,15 @@ export async function exportWorkspace(
     throw new Error(`Platform "${platform.label}" is planned but not available yet.`)
   }
 
-  return await platform.export(workspace, options)
+  const files = await platform.export(workspace, options)
+
+  // Emitted here rather than inside a target so the copy holds the workspace as
+  // authored. Each target rewrites image paths on its own copy, and the React
+  // target adds a license header to every string file it emits, which would make
+  // the JSON unparseable.
+  if (options.includeWorkspace) {
+    files.push(generateWorkspaceCopy(workspace, options))
+  }
+
+  return files
 }

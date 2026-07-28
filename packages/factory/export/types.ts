@@ -47,6 +47,12 @@ export type ExportOptions = {
    * referenced by a theme. Only has an effect when `enableRemoteFonts` is on.
    */
   exportAllFontCollections?: boolean
+  /**
+   * Emit a copy of the workspace as `workspace.json` at the root of the
+   * components folder. Off by default. The copy holds the authoring workspace,
+   * not the export-rewritten one, so its image values are the originals.
+   */
+  includeWorkspace?: boolean
 }
 
 /**
