@@ -6,8 +6,8 @@ import { buildExportContext } from "../../helpers/build-export-context"
 import { buildStyleRegistry } from "../css/discovery/get-style-registry"
 import { generateComponentStylesheet } from "../css/generation/generate-css-stylesheet"
 import { generateThemeStylesheetFiles } from "../css/generation/insert-theme-variables"
+import { generateRefsRegistry } from "../shared/generate-refs-registry"
 import { generateIconIndex } from "./assets/generate-icon-index"
-import { generateRefsRegistry } from "./assets/generate-refs-registry"
 import { getFilesToExportFromImagesToExport } from "./assets/get-files-to-export-from-images-to-export"
 import { getFontsComponent } from "./assets/get-fonts-component"
 import { getIcons } from "./assets/get-icons"
@@ -24,6 +24,7 @@ import { getNativeComponentFiles } from "./generation/helpers/get-native-compone
 import { insertLicense } from "./generation/inserts/insert-license"
 import { getUtilityFileContents } from "./utils/generate-utility-file-contents"
 
+import type { RefViewSource } from "../shared/generate-refs-registry"
 import type { ExportOptions, FileToExport } from "../types"
 import type { Workspace } from "@seldon/core"
 
@@ -106,6 +107,8 @@ export async function exportReact(
 
   workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
+  let refSources: RefViewSource[] = []
+
   try {
     const componentFiles = await generateComponentFiles(
       componentsToExport,
@@ -115,7 +118,8 @@ export async function exportReact(
       options,
     )
 
-    filesToExport.push(...componentFiles)
+    filesToExport.push(...componentFiles.files)
+    refSources = componentFiles.refSources
   } catch (error) {
     console.warn("Failed to generate component files:", error)
   }
@@ -153,7 +157,7 @@ export async function exportReact(
   }
 
   try {
-    const refsRegistryFile = generateRefsRegistry(componentsToExport, nodeIdToClass, options)
+    const refsRegistryFile = generateRefsRegistry(refSources, nodeIdToClass, options)
 
     if (refsRegistryFile) {
       filesToExport.push(refsRegistryFile)

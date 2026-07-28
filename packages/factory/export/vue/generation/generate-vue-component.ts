@@ -17,6 +17,16 @@ import type { Workspace } from "@seldon/core/workspace/types"
 type ChildImport = { name: string; path: string }
 
 /**
+ * A generated single-file component and the prop name map behind it. The map is
+ * returned so the caller can report the component's slots without running
+ * discovery a second time.
+ */
+export interface GeneratedVueComponent {
+  content: string
+  propNames: Map<string, string>
+}
+
+/**
  * Void HTML elements cannot hold children. A `<slot />` inside one makes Vue
  * treat the slot as a second root node, which turns the component into a
  * fragment and disables attribute fallthrough, so caller attrs such as `value`
@@ -64,7 +74,7 @@ export function generateVueComponent(
   component: ComponentToExport,
   nodeIdToClass: NodeIdToClass,
   workspace: Workspace,
-): string {
+): GeneratedVueComponent {
   const { tree } = component
   const { root: jsxRoot, propNames } = generateJSXStructure(component, nodeIdToClass, workspace)
 
@@ -137,7 +147,7 @@ export function generateVueComponent(
   // `tsx` to `vue` to match the emitted single-file component.
   const jsDoc = generateJSDocComment(component, workspace, propNames).replace("```tsx", "```vue")
 
-  return `<script lang="ts">
+  const content = `<script lang="ts">
 ${LICENSE_HEADER}
 ${jsDoc}
 export default {}
@@ -151,6 +161,11 @@ ${scriptLines.join("\n")}
 ${template}
 </template>
 `
+
+  return {
+    content,
+    propNames,
+  }
 }
 
 function collectPropDeclarations(

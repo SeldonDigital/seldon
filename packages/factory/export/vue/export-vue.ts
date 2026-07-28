@@ -6,7 +6,6 @@ import { buildExportContext } from "../../helpers/build-export-context"
 import { buildStyleRegistry } from "../css/discovery/get-style-registry"
 import { generateComponentStylesheet } from "../css/generation/generate-css-stylesheet"
 import { generateThemeStylesheetFiles } from "../css/generation/insert-theme-variables"
-import { generateRefsRegistry } from "../react/assets/generate-refs-registry"
 import { getFilesToExportFromImagesToExport } from "../react/assets/get-files-to-export-from-images-to-export"
 import { getImagesToExport } from "../react/assets/get-images-to-export"
 import { replaceImagesWithRelativePaths } from "../react/assets/transform-image-paths"
@@ -14,12 +13,14 @@ import { assertUniqueVariantNames } from "../react/discovery/assert-unique-varia
 import { getUsedIconIds } from "../react/discovery/get-used-icon-ids"
 import { format } from "../react/format"
 import { insertLicense } from "../react/generation/inserts/insert-license"
+import { generateRefsRegistry } from "../shared/generate-refs-registry"
 import { generateFrameComponent } from "./assets/generate-frame"
 import { getVueIcons } from "./assets/get-vue-icons"
 import { getVueUtilityFiles } from "./assets/get-vue-utility-files"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
 import { generateComponentFiles } from "./generation/generate-component-files"
 
+import type { RefViewSource } from "../shared/generate-refs-registry"
 import type { ExportOptions, FileToExport } from "../types"
 import type { Workspace } from "@seldon/core"
 
@@ -89,10 +90,18 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
 
   workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
+  let refSources: RefViewSource[] = []
+
   try {
-    filesToExport.push(
-      ...generateComponentFiles(componentsToExport, workspace, nodeIdToClass, options),
+    const componentFiles = generateComponentFiles(
+      componentsToExport,
+      workspace,
+      nodeIdToClass,
+      options,
     )
+
+    filesToExport.push(...componentFiles.files)
+    refSources = componentFiles.refSources
   } catch (error) {
     console.warn("Failed to generate Vue component files:", error)
   }
@@ -116,7 +125,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
   }
 
   try {
-    const refsRegistryFile = generateRefsRegistry(componentsToExport, nodeIdToClass, options)
+    const refsRegistryFile = generateRefsRegistry(refSources, nodeIdToClass, options)
 
     if (refsRegistryFile) filesToExport.push(refsRegistryFile)
   } catch {
