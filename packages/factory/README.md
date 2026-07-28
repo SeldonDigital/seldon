@@ -74,6 +74,7 @@ type ExportOptions = {
   exportAllThemes?: boolean
   exportAllFontCollections?: boolean
   includeWorkspace?: boolean
+  includeScripts?: boolean
 }
 ```
 
@@ -81,7 +82,7 @@ type ExportOptions = {
 
 `exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set one to `false` to emit only what a component or theme references.
 
-`includeHiddenComponents` and `includeWorkspace` are off by default.
+`includeHiddenComponents`, `includeWorkspace`, and `includeScripts` are off by default.
 
 ---
 
@@ -157,6 +158,10 @@ Fonts.tsx                              # font loading component
 styles.css                             # component stylesheet
 styles/{slug}.css                      # one stylesheet per workspace theme
 workspace.json                         # workspace copy, emitted only with includeWorkspace
+scripts/generate-bindings.mjs          # bindings scanner, emitted only with includeScripts
+scripts/lib/*.mjs                      # scanner library
+scripts/INTEGRITY.json                 # sha256 per emitted script file
+scripts/README.md                      # how to run the scripts
 README.md                              # generated usage guide
 ```
 
@@ -190,6 +195,20 @@ Setting `includeWorkspace` emits `workspace.json` at the root of the components 
 The copy holds the workspace as authored. It is written by `exportWorkspace` rather than by a target, because each target rewrites image paths on its own copy before generating, so a target-side copy would carry export paths instead of the original image values.
 
 Important: the copy drops each node's `id`, because an id always repeats the key the node is stored under in `nodes`. Read the file back with `loadWorkspace`, which restores them. Parsing it as plain JSON leaves every node without an id.
+
+### Scripts
+
+Setting `includeScripts` emits the bindings scanner into `<components>/scripts/`. The user runs it in their own project to write `<components>/refs/bindings.json`, the consumer half of the binding manifest. Neither the factory nor the editor ever runs it. `generateScripts` in [export/shared/generate-scripts.ts](./export/shared/generate-scripts.ts) produces it.
+
+The library under `scripts/lib/` is transpiled from [bindings/](./bindings/README.md) rather than written out as templates, so the emitted code tracks the factory and the scanner has one implementation. Transpiling only strips types, so each emitted module stays one-to-one with its source, comments included. That puts one constraint on the bindings folder: it must avoid TypeScript-only runtime features. The [bindings README](./bindings/README.md#emitting-this-library) covers it.
+
+The emitted entry owns what the library leaves to a host. It reads the filesystem, parses flags, writes the manifest, and chooses between the full and the shallow scan. The full scan needs `typescript`, and `@vue/compiler-sfc` as well for `.vue` files, both resolved from the user's own `node_modules`. When one is missing the script falls back to the shallow scan and says so. The framework and components folder are baked from the export, so the common case takes no arguments.
+
+`scripts/INTEGRITY.json` lists a sha256 per emitted file. `generateScriptsIntegrity` in [export/shared/generate-scripts-integrity.ts](./export/shared/generate-scripts-integrity.ts) produces it, and it runs last because the hashes must cover the bytes that reach disk, after the license header and the format pass.
+
+Important: a check the script runs on itself proves nothing, because a modified script can report any hash. The check that means something is external. The factory is deterministic, so re-exporting the same workspace emits the same bytes, and any difference under `scripts/` is a factory update or a local edit. The emitted `scripts/README.md` tells the user this.
+
+Both `workspace.json` and `scripts/` are written by `exportWorkspace` rather than by a target, because the React target adds a license header to every string file it emits, which would make either JSON file unparseable.
 
 Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
 

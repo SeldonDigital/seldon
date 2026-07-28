@@ -1,10 +1,18 @@
-import type { BindingsConfig, BindingsConfigInput } from "./types"
+import type { BindingsConfig, BindingsConfigInput, BindingsFramework } from "./types"
 
 const DEFAULT_COMPONENTS_FOLDER = "seldon"
 
 const DEFAULT_COMPONENT_IMPORT_PREFIX = "@seldon/components/"
 
-const DEFAULT_EXTENSIONS = [".ts", ".tsx", ".vue"]
+/**
+ * Extensions each framework's consumers are written in. A React scan leaves
+ * `.vue` out, so it never needs the Vue compiler. A Vue scan keeps `.ts`, since
+ * a Vue project holds plain TypeScript consumers too.
+ */
+const DEFAULT_EXTENSIONS: Record<BindingsFramework, string[]> = {
+  react: [".ts", ".tsx"],
+  vue: [".ts", ".tsx", ".vue"],
+}
 
 /**
  * Folders that never hold consumer code. The components folder is excluded
@@ -36,7 +44,7 @@ export function resolveBindingsConfig(input: BindingsConfigInput): BindingsConfi
     componentImportPrefixes,
     include: (input.include ?? []).map(trimSlashes),
     exclude: Array.from(new Set(exclude)),
-    extensions: input.extensions ?? DEFAULT_EXTENSIONS,
+    extensions: input.extensions ?? DEFAULT_EXTENSIONS[input.framework],
   }
 }
 

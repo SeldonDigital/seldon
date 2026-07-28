@@ -53,6 +53,12 @@ export type ExportOptions = {
    * not the export-rewritten one, so its image values are the originals.
    */
   includeWorkspace?: boolean
+  /**
+   * Emit the bindings scanner into `<components>/scripts/` as readable source,
+   * with an `INTEGRITY.json` of per-file hashes. Off by default. The user runs
+   * these scripts in their own project; the export never runs them.
+   */
+  includeScripts?: boolean
 }
 
 /**

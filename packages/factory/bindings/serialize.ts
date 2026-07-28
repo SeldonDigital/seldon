@@ -10,6 +10,7 @@ import type { BindingsManifest, RefConsumer, SlotConsumer } from "./types"
 export function serializeBindings(manifest: BindingsManifest): string {
   const ordered = {
     version: manifest.version,
+    mode: manifest.mode,
     framework: manifest.framework,
     scannedFiles: manifest.scannedFiles,
     refs: orderRefs(manifest.refs),

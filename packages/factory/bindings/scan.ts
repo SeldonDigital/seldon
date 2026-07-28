@@ -1,6 +1,5 @@
 import { isScannablePath } from "./config"
-import { scanReactFile } from "./react/scan-react"
-import { scanVueFile } from "./vue/scan-vue"
+import { BINDINGS_VERSION } from "./version"
 
 import type {
   BindingsConfig,
@@ -10,9 +9,6 @@ import type {
   RefConsumer,
   SlotConsumer,
 } from "./types"
-
-/** Bumped when the emitted shape changes, so a reader can reject an old manifest. */
-export const BINDINGS_VERSION = 1
 
 /**
  * Scans a project for the refs and slots its code drives on generated components.
@@ -34,7 +30,7 @@ export async function scanBindings(
   let scannedFiles = 0
 
   for (const path of paths) {
-    const scan = getFrontEnd(path)
+    const scan = await getFrontEnd(path)
 
     if (!scan) continue
 
@@ -51,6 +47,7 @@ export async function scanBindings(
 
   return {
     version: BINDINGS_VERSION,
+    mode: "full",
     framework: config.framework,
     scannedFiles,
     refs,
@@ -60,9 +57,19 @@ export async function scanBindings(
 
 type FrontEnd = (path: string, text: string, config: BindingsConfig) => FileBindings
 
-function getFrontEnd(path: string): FrontEnd | null {
-  if (path.endsWith(".vue")) return scanVueFile
-  if (path.endsWith(".ts") || path.endsWith(".tsx")) return scanReactFile
+/**
+ * Loads a front end the first time a file needs it, so a project only pays for
+ * the parser its own files call for. A project with no `.vue` files never loads
+ * the Vue compiler, which is what lets the scan run against `typescript` alone.
+ */
+async function getFrontEnd(path: string): Promise<FrontEnd | null> {
+  if (path.endsWith(".vue")) {
+    return (await import("./vue/scan-vue")).scanVueFile
+  }
+
+  if (path.endsWith(".ts") || path.endsWith(".tsx")) {
+    return (await import("./react/scan-react")).scanReactFile
+  }
 
   return null
 }

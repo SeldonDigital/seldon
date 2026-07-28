@@ -100,6 +100,16 @@ export interface SlotConsumer {
 }
 
 /**
+ * How much of each binding the scan could resolve.
+ *
+ * `full` parses every file and reports expressions, declaration sites, and
+ * slots. `shallow` runs without a parser and reports ref and prop keys with
+ * their file and line only, leaving `expression` and `inputs` empty and `slots`
+ * empty. A reader must check this before presenting a binding as complete.
+ */
+export type BindingsMode = "full" | "shallow"
+
+/**
  * The consumer half of the binding manifest. `refs` is keyed by ref name, and
  * `slots` is keyed by generated component name then slot name. Joining `refs`
  * and `slots` to the views in the generated `refs/index.ts` yields the full
@@ -107,6 +117,7 @@ export interface SlotConsumer {
  */
 export interface BindingsManifest {
   version: number
+  mode: BindingsMode
   framework: BindingsFramework
   scannedFiles: number
   refs: Record<string, RefConsumer[]>

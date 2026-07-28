@@ -71,5 +71,19 @@ export async function exportWorkspace(
     files.push(generateWorkspaceCopy(workspace, options))
   }
 
+  // Also emitted here, for the same reason and one more: the integrity hashes
+  // must cover the bytes that reach disk, so the scripts carry their own license
+  // and format pass and are hashed only once that is done.
+  if (options.includeScripts) {
+    const { generateScripts } = await import("./shared/generate-scripts")
+    const { generateScriptsIntegrity } = await import("./shared/generate-scripts-integrity")
+
+    const scripts = await generateScripts(options)
+
+    if (scripts.length > 0) {
+      files.push(...scripts, generateScriptsIntegrity(scripts, options))
+    }
+  }
+
   return files
 }

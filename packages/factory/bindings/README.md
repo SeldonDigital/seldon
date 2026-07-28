@@ -16,7 +16,9 @@ The code is grouped by stage:
 4. **Serialization** (`serialize.ts`) writes a stable-ordered `bindings.json`.
 5. **Shared** (`shared/`) resolves identifiers to object literals and describes expressions.
 
-`types.ts` holds every shape. `cli.ts` is the standalone Node entry point.
+`types.ts` holds every shape. `version.ts` holds the manifest version alone, so reading the version never pulls in a parser. `shallow.ts` is the degraded scan. `cli.ts` is the standalone Node entry point.
+
+`scan.ts` loads a front end the first time a file calls for one. A project with no `.vue` files never loads the Vue compiler, which is what lets the scan run against `typescript` alone.
 
 ---
 
@@ -35,11 +37,15 @@ A Node host backs it with `fs`, a browser host with a directory handle, and a te
 
 Important: the editor must not import this folder. The editor bundles factory for in-browser export, and the scan depends on the TypeScript compiler, which does not belong in that bundle. The scan runs in the project it is scanning.
 
+The export reads these files as text to emit them, and never imports them. See [Emitting This Library](#emitting-this-library).
+
 ---
 
 ## What Gets Scanned
 
 `resolveBindingsConfig` fills the defaults. `include` and `exclude` hold folder paths relative to the scan root and are matched by path prefix, so no pattern library is needed. An empty `include` scans everything the excludes leave behind.
+
+Default extensions follow the framework. A React scan reads `.ts` and `.tsx`, so it never needs the Vue compiler. A Vue scan adds `.vue` and keeps `.ts`, since a Vue project holds plain TypeScript consumers too.
 
 The generated components folder is always excluded. That also covers the `scripts/` folder emitted inside it, so a generated tree never reports itself as a consumer of its own refs.
 
@@ -82,6 +88,7 @@ The scan has no slot vocabulary of its own. Every attribute that is not obviousl
 ```jsonc
 {
   "version": 1,
+  "mode": "full",
   "framework": "react",
   "scannedFiles": 258,
   "refs": {
@@ -114,6 +121,29 @@ The scan has no slot vocabulary of its own. Every attribute that is not obviousl
 `declaredAt.kind` is one of `const`, `let`, `function`, `import`, or `parameter`. `via` names the call a declaration initializes from, which is what identifies the hook behind a value, such as `useMemo`, `computed`, or `ref`. `module` names the source module for an import.
 
 Keys are sorted and consumers are ordered by file then line, so re-running the scan on unchanged sources produces a byte-identical file.
+
+---
+
+## Shallow Mode
+
+`shallow.ts` is the scan for a project that has no parser to lend. It reads no dependencies at all, so it always runs.
+
+It reports which refs a file drives and which prop keys it sets on them, with a file and a line. It cannot report the expression behind a value, the declaration that produced it, or positional slot props, because all three need a real parse. Those fields stay empty, and the manifest records `"mode": "shallow"`.
+
+A reader must check `mode` before presenting a binding as complete. Shallow mode also finds fewer refs, because it only reads a map written as an object literal. A map built by a helper call reports nothing.
+
+---
+
+## Emitting This Library
+
+The export emits this folder into `<components>/scripts/lib/` so a user can run the scan in their own project. `export/shared/generate-scripts.ts` reads each file as text and transpiles it, which strips types and leaves everything else in place, so each emitted module stays one-to-one with its source.
+
+That puts one constraint on this folder: avoid TypeScript-only runtime features. No enums, no decorators, no parameter properties, no namespaces. Types, interfaces, and plain JavaScript all emit correctly.
+
+Two more rules follow from the same pipeline:
+
+- Import a type with `import type`, so nothing is left behind pointing at `types.ts`. A types-only module transpiles to nothing and is not emitted.
+- Keep external dependencies to `typescript` and `@vue/compiler-sfc`. Both resolve from the user's own `node_modules` at runtime, and neither is bundled.
 
 ---
 
