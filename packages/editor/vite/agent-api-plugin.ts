@@ -39,20 +39,14 @@ let previousOutputFile: string | null = null
 const repoRoot = path.join(pluginDir, "../../..")
 
 /**
- * Pi and its dependency graph are large and ship runtime assets and dynamic
- * requires, so they are kept external instead of bundled. The bundled handler is
- * written under the `ai` package's `node_modules` (below) so Node's upward
- * resolution reaches wherever npm installed Pi, whether it nests under
- * `packages/ai/node_modules` or hoists to the repo root, and still finds the
- * root-level externals like `typebox`.
+ * Packages that ship native binaries, runtime assets, or dynamic requires are
+ * kept external instead of bundled. `@huggingface/transformers` pulls in the
+ * ONNX runtime (native/WASM) and caches model weights at runtime, so esbuild
+ * must not try to inline it. The bundled handler is written under the `ai`
+ * package's `node_modules` (below) so Node's upward resolution finds the
+ * external wherever npm installed it.
  */
-const externalPackages = [
-  "@earendil-works/pi-coding-agent",
-  "@earendil-works/pi-ai",
-  "@earendil-works/pi-agent-core",
-  "@earendil-works/pi-tui",
-  "typebox",
-]
+const externalPackages = ["@huggingface/transformers"]
 
 /**
  * Bundles the agent handler and its core/ai graph into a single Node module with
