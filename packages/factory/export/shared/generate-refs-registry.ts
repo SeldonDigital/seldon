@@ -16,11 +16,17 @@ export interface RefViewSource {
 }
 
 /**
+ * Bumped when the shape of the emitted `refs/registry.json` changes, so a reader
+ * can reject a registry it does not understand.
+ */
+export const REFS_REGISTRY_VERSION = 1
+
+/**
  * When a slot renders. `unless-null` renders by default and disappears when the
  * caller passes `null`. `when-passed` stays absent until the caller passes props
  * for it, so a `seldonRefs` override alone cannot bring it on screen.
  */
-type RefViewRendersWhen = "unless-null" | "when-passed"
+export type RefViewRendersWhen = "unless-null" | "when-passed"
 
 /**
  * One place a referenced node surfaces as a prop. `component` is the generated
@@ -28,7 +34,7 @@ type RefViewRendersWhen = "unless-null" | "when-passed"
  * passes props to. A `null` slot means the node is that component's own root, so
  * the caller drives it through the component's own props.
  */
-interface SeldonRefView {
+export interface SeldonRefView {
   component: string
   file: string
   slot: string | null
@@ -42,7 +48,7 @@ interface SeldonRefView {
  * the same exported component can render many times. `views` lists every
  * generated component that exposes the node as a prop.
  */
-interface SeldonRefEntry {
+export interface SeldonRefEntry {
   component: string
   nodeId: string
   className: string
@@ -50,20 +56,38 @@ interface SeldonRefEntry {
 }
 
 /**
- * Generates the `refs/index.ts` registry shared by every target. It exports a
- * `SeldonRef` string-literal union of every node ref in the workspace and a
- * `SELDON_REFS` map from ref to its component, node id, class name, and the
- * views that expose it. App code uses it for type-safe ref names alongside the
- * emitted `data-seldon-ref` attributes.
+ * The emitted `refs/registry.json`, which carries the same entries as the
+ * TypeScript registry in a form any tool can read.
  *
- * Returns `null` when no node carries a ref, so the file is only emitted when it
- * has content.
+ * `framework` records which target wrote it, so a reader can tell that a registry
+ * and a binding manifest describe the same project.
+ */
+export interface SeldonRefsRegistry {
+  version: number
+  framework: string
+  refs: Record<string, SeldonRefEntry>
+}
+
+/**
+ * Generates the refs registry shared by every target, as two files.
+ *
+ * `refs/index.ts` exports a `SeldonRef` string-literal union of every node ref in
+ * the workspace and a `SELDON_REFS` map from ref to its component, node id, class
+ * name, and the views that expose it. App code uses it for type-safe ref names
+ * alongside the emitted `data-seldon-ref` attributes.
+ *
+ * `refs/registry.json` carries the same entries as data. A tool that wants the
+ * views without running a TypeScript parser reads that instead, which is how the
+ * editor pairs views with a binding manifest.
+ *
+ * Returns an empty list when no node carries a ref, so neither file is emitted
+ * unless it has content.
  */
 export function generateRefsRegistry(
   sources: RefViewSource[],
   nodeIdToClass: Record<string, string>,
   options: ExportOptions,
-): FileToExport | null {
+): FileToExport[] {
   const refs = new Map<string, SeldonRefEntry>()
 
   for (const { component, propNames, conditionalPaths } of sources) {
@@ -92,7 +116,7 @@ export function generateRefsRegistry(
   }
 
   if (refs.size === 0) {
-    return null
+    return []
   }
 
   const sortedRefs = Array.from(refs.entries()).sort(([a], [b]) => a.localeCompare(b))
@@ -126,12 +150,26 @@ ${mapEntries}
 }
 `
 
-  const indexPath = `${options.output.componentsFolder}/refs/index.ts`.replaceAll("//", "/")
-
-  return {
-    path: indexPath,
-    content,
+  const registry: SeldonRefsRegistry = {
+    version: REFS_REGISTRY_VERSION,
+    framework: options.target.framework,
+    refs: Object.fromEntries(sortedRefs),
   }
+
+  const folder = `${options.output.componentsFolder}/refs`.replaceAll("//", "/")
+
+  return [
+    {
+      path: `${folder}/index.ts`,
+      content,
+    },
+    {
+      // Pretty-printed and sorted, so it reads and diffs like source in the
+      // project it lands in.
+      path: `${folder}/registry.json`,
+      content: `${JSON.stringify(registry, null, 2)}\n`,
+    },
+  ]
 }
 
 function createEntry(node: JSONTreeNode, nodeIdToClass: Record<string, string>): SeldonRefEntry {

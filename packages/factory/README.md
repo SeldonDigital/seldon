@@ -153,6 +153,7 @@ icons/{set}/{category}/Icon{Name}.tsx  # tree-shaken icon components, nested by 
 icons/IconDefault.tsx                  # fallback icon for ids that do not resolve
 icons/index.ts                         # icon index, re-exports the emitted icons
 refs/index.ts                          # ref registry, emitted only when nodes carry refs
+refs/registry.json                     # the same registry as data, for tools that do not parse TypeScript
 utils/class-name.ts                    # combineClassNames helper
 Fonts.tsx                              # font loading component
 styles.css                             # component stylesheet
@@ -168,6 +169,8 @@ README.md                              # generated usage guide
 The `frames/` folder holds both the generated `Frame.tsx` wrapper and any frame-level components, such as `Container.tsx`. Icon files keep their catalog subfolder path, such as `icons/material/user-interface/navigation/IconMaterialChevronUp.tsx`. The `refs/index.ts` file is emitted only when at least one node carries a ref. It exports a `SeldonRef` union and a `SELDON_REFS` map, and each referenced node renders a `data-seldon-ref` attribute so app code can target it by a type-safe ref name.
 
 Every entry also carries a `views` array naming each generated component that exposes the node as a prop. A view holds the owning component, its file, the slot name, the slot type, and `rendersWhen`. A `rendersWhen` of `unless-null` renders by default and disappears when the caller passes `null`. A `when-passed` slot stays absent until the caller passes props for it, so a `seldonRefs` override alone cannot bring it on screen. A `null` slot means the node is that component's own root, so the caller drives it through the component's own props.
+
+`refs/registry.json` holds the same entries as data, next to the TypeScript. It carries a `version`, the `framework` that wrote it, and a `refs` map. Read it when you want the views without running a TypeScript parser. The editor reads it to pair each view with the consumers a binding manifest reports. It gets no license header, because JSON has no comment syntax.
 
 ```typescript
 exportRootPath: {

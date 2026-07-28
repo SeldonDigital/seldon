@@ -157,11 +157,7 @@ export async function exportReact(
   }
 
   try {
-    const refsRegistryFile = generateRefsRegistry(refSources, nodeIdToClass, options)
-
-    if (refsRegistryFile) {
-      filesToExport.push(refsRegistryFile)
-    }
+    filesToExport.push(...generateRefsRegistry(refSources, nodeIdToClass, options))
   } catch {
     // Failed to generate refs registry
   }
@@ -205,7 +201,10 @@ export async function exportReact(
   await Promise.all(
     filesToExport.map(async (file) => {
       if (typeof file.content !== "string") return
-      file.content = insertLicense(file.content)
+
+      if (supportsLicenseHeader(file.path)) {
+        file.content = insertLicense(file.content)
+      }
 
       if (!options.skipFormat && isFormattableSource(file.path)) {
         file.content = await format(file.content)
@@ -220,4 +219,9 @@ const FORMATTABLE_SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".c
 
 function isFormattableSource(path: string): boolean {
   return FORMATTABLE_SOURCE_EXTENSIONS.some((ext) => path.endsWith(ext))
+}
+
+/** JSON has no comment syntax, so a header block would leave the file unparseable. */
+function supportsLicenseHeader(path: string): boolean {
+  return !path.endsWith(".json")
 }
