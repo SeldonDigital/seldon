@@ -2,10 +2,12 @@
 
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { useWorkspaceRecord } from "@app/persistence/hooks/use-workspace-record"
+import { linkExportedFolder } from "@app/project/hooks/use-project-link"
 import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { DEFAULT_COMPONENTS_FOLDER } from "@seldon/editor/lib/export/constants"
 import {
   pickExportDirectory,
   writeExportToDirectory,
@@ -144,13 +146,21 @@ export function useImportExport() {
         const count = await writeExportToDirectory(directory, files)
 
         addToast(`Exported ${count} files`)
+
+        // Remember where this workspace landed, so the editor can read back what
+        // the project reports about its own use of the generated components.
+        if (workspaceId) {
+          const componentsFolder = options?.output?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
+
+          await linkExportedFolder(workspaceId, directory, componentsFolder)
+        }
       } catch (error) {
         addToast(error instanceof Error ? error.message : "Export failed")
       } finally {
         setExporting(false)
       }
     },
-    [addToast, workspace],
+    [addToast, workspace, workspaceId],
   )
 
   const importWeb = useCallback(async () => {

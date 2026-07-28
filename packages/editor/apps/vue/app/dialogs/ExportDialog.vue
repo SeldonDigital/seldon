@@ -161,6 +161,8 @@ async function runExport(): Promise<void> {
     exportAllFontCollections: allFonts.value,
     enableRemoteFonts: fontLinks.value,
     exportAllIconSetIcons: allIcons.value,
+    includeWorkspace: savedWorkspace.value,
+    includeScripts: includeScripts.value,
   }
   exportStatus.setExporting(true)
   try {

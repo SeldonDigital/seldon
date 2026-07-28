@@ -117,6 +117,8 @@ export function useExportComponentsPanel() {
         exportAllFontCollections: allFonts,
         enableRemoteFonts: fontLinks,
         exportAllIconSetIcons: allIcons,
+        includeWorkspace: savedWorkspace,
+        includeScripts,
       },
       directory ?? undefined,
     )
@@ -130,6 +132,8 @@ export function useExportComponentsPanel() {
     allFonts,
     fontLinks,
     allIcons,
+    savedWorkspace,
+    includeScripts,
     directory,
     close,
   ])
