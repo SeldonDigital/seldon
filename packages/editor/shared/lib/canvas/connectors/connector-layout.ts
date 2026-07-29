@@ -3,8 +3,8 @@ import type { NodeRect } from "../overlay/geometry"
 /**
  * One referenced node that needs a connector, in canvas-relative pixels.
  *
- * `order` breaks a tie between two chips that want the same height, ahead of the key,
- * so a caller can keep chips for one node in the order it means them to read.
+ * `order` breaks a tie between two chips on the same node, ahead of the key, so a caller
+ * can keep them in the order it means them to read.
  */
 export interface ConnectorSource {
   key: string
@@ -127,6 +127,9 @@ export const CONNECTOR_TOKENS = {
  * then gives way to the one above it. Every chip takes the caller's `chipWidth`, so
  * the column reads as a block with its labels and its icons in line.
  *
+ * Chips for nodes at the same height read right to left, which is what keeps their
+ * connectors from crossing each other. See `orderColumn`.
+ *
  * The column never draws past the canvas floor. A chip that would cross it is left
  * out and counted, because a chip outside the canvas would paint over other chrome.
  *
@@ -150,14 +153,14 @@ export function layoutConnectors(
   const gutterLeft = Math.max(margin, canvasWidth - gutterRight - chipWidth)
   const floor = canvasHeight - margin
 
-  const anchored = sources
-    .map((source) => ({ source, preferredY: getPreferredChipY(source.rect, canvasHeight, margin) }))
-    .sort(
-      (a, b) =>
-        a.preferredY - b.preferredY ||
-        (a.source.order ?? 0) - (b.source.order ?? 0) ||
-        a.source.key.localeCompare(b.source.key),
-    )
+  const anchored = orderColumn(
+    sources.map((source) => ({
+      source,
+      preferredY: getPreferredChipY(source.rect, canvasHeight, margin),
+      centerX: source.rect.left + source.rect.width / 2,
+    })),
+    chipGap,
+  )
 
   const pitch = chipHeight + chipGap
   const capacity = Math.max(Math.floor((floor - margin + chipGap) / pitch), 0)
@@ -229,6 +232,62 @@ export function layoutConnectors(
       chipHeight,
     }),
   }
+}
+
+/** One source with the heights and centers the column is read by. */
+interface AnchoredChip {
+  source: ConnectorSource
+  preferredY: number
+  centerX: number
+}
+
+/**
+ * Reads the column top to bottom in an order that keeps connectors from crossing.
+ *
+ * A connector runs vertically at its node's horizontal center and then horizontally at
+ * its chip's height, so two of them only ever meet where one's horizontal run passes
+ * through the other's vertical run. That needs the other node to be further right, which
+ * cannot happen while nodes at the same height are read right to left.
+ *
+ * Nodes in one row rarely report the same center once the canvas is zoomed, so heights
+ * within `band` are read as one row. The column's own gap covers that, since two chips
+ * that close take neighboring slots whichever way they are read.
+ *
+ * Height leads, so a chip still sits beside its node. Reading the whole column right to
+ * left would drop the last crossings, but it would also drag chips far from the nodes
+ * they name, which is the point of the column.
+ */
+function orderColumn(anchored: AnchoredChip[], band: number): AnchoredChip[] {
+  const byHeight = [...anchored].sort(
+    (a, b) => a.preferredY - b.preferredY || compareRightToLeft(a, b),
+  )
+
+  const rows: AnchoredChip[][] = []
+
+  for (const chip of byHeight) {
+    const row = rows[rows.length - 1]
+
+    if (row && chip.preferredY - row[0].preferredY <= band) {
+      row.push(chip)
+      continue
+    }
+
+    rows.push([chip])
+  }
+
+  return rows.flatMap((row) => row.sort(compareRightToLeft))
+}
+
+/**
+ * Rightmost node first. Chips on one node tie there, so the caller's `order` settles
+ * them, and the key holds the rest steady between measurements.
+ */
+function compareRightToLeft(a: AnchoredChip, b: AnchoredChip): number {
+  return (
+    b.centerX - a.centerX ||
+    (a.source.order ?? 0) - (b.source.order ?? 0) ||
+    a.source.key.localeCompare(b.source.key)
+  )
 }
 
 /** The slot for the count, under the last drawn chip, or nothing if it cannot fit. */
