@@ -10,14 +10,14 @@ import { getTokenPixels } from "@seldon/editor/lib/themes/token-pixels"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import type {
-  ChipBox,
+  BadgeBox,
   RefCardMetrics,
   RefCardPosition,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { RefObject } from "react"
 
 interface RefCardState {
-  chipRef: RefObject<HTMLElement | null>
+  badgeRef: RefObject<HTMLElement | null>
   cardRef: RefObject<HTMLDivElement | null>
   /** The rect the card opens at, and `null` while it is closed. */
   position: RefCardPosition | null
@@ -33,7 +33,7 @@ interface RefCardSize {
 /**
  * The size the next card opens at.
  *
- * Shared across chips rather than kept per card, because resizing one card says how
+ * Shared across badges rather than kept per card, because resizing one card says how
  * much room these cards need, not how much that one ref needs. Read only when a card
  * opens, so it stays a module value rather than a store and a live drag re-renders
  * nothing. Not persisted, since the bindings behind the cards load per session.
@@ -50,12 +50,12 @@ export function setRefCardSize(size: RefCardSize): void {
 /**
  * What the card keeps clear and how small it may be drawn, in pixels.
  *
- * Read off the chip, which is themed and already drawn, so the spacing is the theme's
+ * Read off the badge, which is themed and already drawn, so the spacing is the theme's
  * current value rather than one captured earlier. The smallest it may be drawn is the
  * window minimum, since a card is a floating window like any other.
  */
-function getRefCardMetrics(chipEl: HTMLElement): RefCardMetrics {
-  const { gap, margin } = getTokenPixels(REF_CARD_TOKENS, chipEl)
+function getRefCardMetrics(badgeEl: HTMLElement): RefCardMetrics {
+  const { gap, margin } = getTokenPixels(REF_CARD_TOKENS, badgeEl)
 
   return {
     gap,
@@ -66,60 +66,60 @@ function getRefCardMetrics(chipEl: HTMLElement): RefCardMetrics {
 }
 
 /**
- * Opens and closes one chip's card, and works out the rect it opens at.
+ * Opens and closes one badge's card, and works out the rect it opens at.
  *
  * The card sticks until it is dismissed, because reading it means looking away from
- * the chip and a hover card would close on the way. Pressing anywhere outside the
- * pair closes it, which also means opening one chip's card closes another's.
+ * the badge and a hover card would close on the way. Pressing anywhere outside the
+ * pair closes it, which also means opening one badge's card closes another's.
  *
  * It opens at the size the last card was dragged to, then owns its own rect, so a
  * reader sizes these cards once rather than per ref.
  *
- * @param chip - The box the chip occupies, so an open card follows it as it moves.
+ * @param badge - The box the badge occupies, so an open card follows it as it moves.
  */
-export function useRefCard(chip: ChipBox): RefCardState {
-  const chipRef = useRef<HTMLElement>(null)
+export function useRefCard(badge: BadgeBox): RefCardState {
+  const badgeRef = useRef<HTMLElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState<RefCardPosition | null>(null)
 
   const close = useCallback(() => setPosition(null), [])
 
   const toggle = useCallback(() => {
-    const chipEl = chipRef.current
+    const badgeEl = badgeRef.current
 
-    if (!chipEl) return
+    if (!badgeEl) return
 
     setPosition((current) => {
       if (current) return null
 
-      const rect = chipEl.getBoundingClientRect()
+      const rect = badgeEl.getBoundingClientRect()
 
-      return getRefCardPosition(rect, getWindowInnerSize(), refCardSize, getRefCardMetrics(chipEl))
+      return getRefCardPosition(rect, getWindowInnerSize(), refCardSize, getRefCardMetrics(badgeEl))
     })
   }, [])
 
-  // Scrolling the canvas moves the chip, and the open card follows it so the pair stays
-  // readable together. The rect is re-measured from the chip rather than offset by the
-  // scroll, because a chip held at the edge of the gutter stops tracking its node.
+  // Scrolling the canvas moves the badge, and the open card follows it so the pair stays
+  // readable together. The rect is re-measured from the badge rather than offset by the
+  // scroll, because a badge held at the edge of the gutter stops tracking its node.
   useEffect(() => {
-    const chipEl = chipRef.current
+    const badgeEl = badgeRef.current
 
-    if (!chipEl) return
+    if (!badgeEl) return
 
     setPosition((current) => {
       if (!current) return current
 
       return getRefCardPosition(
-        chipEl.getBoundingClientRect(),
+        badgeEl.getBoundingClientRect(),
         getWindowInnerSize(),
         refCardSize,
-        getRefCardMetrics(chipEl),
+        getRefCardMetrics(badgeEl),
       )
     })
-  }, [chip.top, chip.left])
+  }, [badge.top, badge.left])
 
   // Closing on `pointerdown` rather than `click` keeps a press on the canvas from
-  // starting a drag under an open card. The chip is excluded so its own click is
+  // starting a drag under an open card. The badge is excluded so its own click is
   // the toggle, and the card so reading or scrolling it does not close it.
   useEffect(() => {
     if (!position) return
@@ -127,7 +127,10 @@ export function useRefCard(chip: ChipBox): RefCardState {
     const closeOnOutsidePress = (event: PointerEvent) => {
       const target = event.target as Node | null
 
-      if (target && (chipRef.current?.contains(target) || cardRef.current?.contains(target))) return
+      const pressedOwnParts =
+        badgeRef.current?.contains(target) || cardRef.current?.contains(target)
+
+      if (target && pressedOwnParts) return
 
       close()
     }
@@ -137,5 +140,5 @@ export function useRefCard(chip: ChipBox): RefCardState {
     return () => document.removeEventListener("pointerdown", closeOnOutsidePress)
   }, [position, close])
 
-  return { chipRef, cardRef, position, toggle, close }
+  return { badgeRef, cardRef, position, toggle, close }
 }

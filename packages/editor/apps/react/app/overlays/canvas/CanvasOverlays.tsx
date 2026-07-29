@@ -18,7 +18,7 @@ import { useNodeBelongsToActiveBoard } from "../hooks/use-belongs-to-active-boar
 import { useTrackNodeRects } from "../hooks/use-track-node-rects"
 import { useVisibleNodes } from "../hooks/use-visible-nodes"
 import { InsertOverlay } from "./insert/InsertOverlay"
-import { RefConnector } from "./ref-bindings/RefConnector"
+import { RefConnector } from "./ref-badges/RefConnector"
 import { HoverOverlay } from "./select/HoverOverlay"
 import { NodeWireframe } from "./select/NodeWireframe"
 import { SelectionOverlay } from "./select/SelectionOverlay"
@@ -33,7 +33,7 @@ export function CanvasOverlays() {
   // array on every render would mean tearing down and rebuilding an observer per node
   // each time anything here changes, several times over during a single pan.
   const nodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
-  const { showSelection, wireframeMode, showRefConnectors } = useEditorConfig()
+  const { showSelection, wireframeMode, showRefBadges } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
@@ -56,13 +56,13 @@ export function CanvasOverlays() {
 
   useTrackNodeRects(nodeIds)
 
-  // Connectors stay drawn through a pan or zoom, unlike the boxes above, which hide
-  // until it settles. Hiding them would take the open card with them, and the chips sit
+  // Badges stay drawn through a pan or zoom, unlike the boxes above, which hide
+  // until it settles. Hiding them would take the open card with them, and the badges sit
   // in the gutter rather than over the canvas, so they have somewhere to stay. The
   // connector view-model re-measures its own nodes per frame to keep up.
   // Theme boards have no node tree to reference.
-  const showRefBindings = showRefConnectors && !activeBoardIsTheme
-  const refConnectors = showRefBindings ? <RefConnector /> : null
+  const drawRefBadges = showRefBadges && !activeBoardIsTheme
+  const refBadges = drawRefBadges ? <RefConnector /> : null
 
   return (
     <>
@@ -84,7 +84,7 @@ export function CanvasOverlays() {
       )}
       {activeTool === "component" && !isSiblingGap && <HoverOverlay />}
       {activeTool === "component" && hasHoverState && <InsertOverlay />}
-      {refConnectors}
+      {refBadges}
     </>
   )
 }

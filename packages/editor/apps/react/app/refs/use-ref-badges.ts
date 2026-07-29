@@ -7,7 +7,7 @@ import { useCallback } from "react"
 import { loadRefBindings } from "./use-ref-bindings"
 
 /**
- * Turns the ref connector overlay on and off.
+ * Turns the reference badge overlay on and off.
  *
  * Enabling it is what reads the linked folder. A browser only grants a directory
  * permission during a gesture, so the menu item and the shortcut both have to be
@@ -17,23 +17,23 @@ import { loadRefBindings } from "./use-ref-bindings"
  * and problem state, which the overlay reports, so waiting here would only delay
  * the overlay appearing.
  */
-export function useRefConnectors() {
+export function useRefBadges() {
   const workspaceId = useWorkspaceId()
-  const { showRefConnectors, setShowRefConnectors } = useEditorConfig()
+  const { showRefBadges, setShowRefBadges } = useEditorConfig()
 
-  const toggleRefConnectors = useCallback(() => {
-    if (showRefConnectors) {
-      setShowRefConnectors(false)
+  const toggleRefBadges = useCallback(() => {
+    if (showRefBadges) {
+      setShowRefBadges(false)
 
       return
     }
 
-    setShowRefConnectors(true)
+    setShowRefBadges(true)
 
     if (workspaceId) {
       void loadRefBindings(workspaceId)
     }
-  }, [setShowRefConnectors, showRefConnectors, workspaceId])
+  }, [setShowRefBadges, showRefBadges, workspaceId])
 
-  return { showRefConnectors, toggleRefConnectors }
+  return { showRefBadges, toggleRefBadges }
 }

@@ -6,39 +6,39 @@ import { useCallback, useMemo } from "react"
 import { RefCardController } from "./RefCardController"
 import { useRefCard } from "./hooks/use-ref-card"
 import {
-  refChipBoxStyle,
-  refChipHiddenCardStyle,
-  refChipMeasureStyle,
-  refChipMutedStyle,
-  refChipPanelStyle,
-  refChipStyle,
+  refBadgeBoxStyle,
+  refBadgeHiddenCardStyle,
+  refBadgeMeasureStyle,
+  refBadgeMutedStyle,
+  refBadgePanelStyle,
+  refBadgeStyle,
   refOmittedStyle,
-} from "./ref-chip-style"
+} from "./ref-badge-style"
 
 import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
 import type {
-  ChipBox,
+  BadgeBox,
   ConnectorPlacement,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import type { Ref } from "react"
 
-interface RefChipProps {
+interface RefBadgeProps {
   placement: ConnectorPlacement
   binding: RefBinding
 }
 
-interface RefSummaryChipProps {
+interface RefSummaryBadgeProps {
   placement: ConnectorPlacement
   nodeId: string
 }
 
 interface RefOmittedProps {
-  chip: ChipBox
+  badge: BadgeBox
   count: number
 }
 
-interface RefChipMeasureProps {
+interface RefBadgeMeasureProps {
   labels: string[]
   measureRef: Ref<HTMLElement>
 }
@@ -46,29 +46,32 @@ interface RefChipMeasureProps {
 /**
  * The ref name at the end of a connector, opening its card when clicked.
  *
- * The chip and the card are the same `PanelRefs` component, drawn twice. This instance
- * hides the card half and the card's instance leaves the chip out, so both surfaces
+ * The badge and the card are the same `PanelRefs` component, drawn twice. This instance
+ * hides the card half and the card's instance leaves the badge out, so both surfaces
  * take their look from one schema.
  *
  * The wrapper carries the placement and the click, because a module takes no `ref`.
+ *
+ * `chipAssist` and `refChipName` are the schema's own names for the badge slot and its
+ * label, so they read as chip here until the workspace renames them.
  */
-export function RefChip({ placement, binding }: RefChipProps) {
-  const { chipRef, cardRef, position, toggle, close } = useRefCard(placement.chip)
+export function RefBadge({ placement, binding }: RefBadgeProps) {
+  const { badgeRef, cardRef, position, toggle, close } = useRefCard(placement.badge)
 
   const wrapperStyle = useMemo(() => {
-    if (placement.muted) return refChipMutedStyle(placement.chip)
+    if (placement.muted) return refBadgeMutedStyle(placement.badge)
 
-    return refChipStyle(placement.chip)
-  }, [placement.chip, placement.muted])
+    return refBadgeStyle(placement.badge)
+  }, [placement.badge, placement.muted])
 
-  const chipBox = useMemo(
-    () => ({ style: refChipBoxStyle(placement.chip.width) }),
-    [placement.chip.width],
+  const badgeBox = useMemo(
+    () => ({ style: refBadgeBoxStyle(placement.badge.width) }),
+    [placement.badge.width],
   )
 
-  const chipRefs = {
+  const badgeRefs = {
     refChipName: { children: placement.label },
-    refCard: { style: refChipHiddenCardStyle },
+    refCard: { style: refBadgeHiddenCardStyle },
   }
 
   const card = useMemo(() => {
@@ -81,12 +84,12 @@ export function RefChip({ placement, binding }: RefChipProps) {
 
   return (
     <>
-      <Frame ref={chipRef} style={wrapperStyle} onClick={toggle}>
+      <Frame ref={badgeRef} style={wrapperStyle} onClick={toggle}>
         <PanelRefs
           role="presentation"
-          style={refChipPanelStyle}
-          seldonRefs={chipRefs}
-          chipAssist={chipBox}
+          style={refBadgePanelStyle}
+          seldonRefs={badgeRefs}
+          chipAssist={badgeBox}
           textLabel={{}}
         />
       </Frame>
@@ -102,37 +105,37 @@ export function RefChip({ placement, binding }: RefChipProps) {
  * node and its descendants, so selecting it redraws these refs one level in, and the
  * count is a way into them rather than a thing to read.
  */
-export function RefSummaryChip({ placement, nodeId }: RefSummaryChipProps) {
+export function RefSummaryBadge({ placement, nodeId }: RefSummaryBadgeProps) {
   const { selectNode } = useSelection()
 
   const wrapperStyle = useMemo(() => {
-    if (placement.muted) return refChipMutedStyle(placement.chip)
+    if (placement.muted) return refBadgeMutedStyle(placement.badge)
 
-    return refChipStyle(placement.chip)
-  }, [placement.chip, placement.muted])
+    return refBadgeStyle(placement.badge)
+  }, [placement.badge, placement.muted])
 
   const select = useCallback(
     () => selectNode(nodeId as VariantId | InstanceId),
     [nodeId, selectNode],
   )
 
-  const chipBox = useMemo(
-    () => ({ style: refChipBoxStyle(placement.chip.width) }),
-    [placement.chip.width],
+  const badgeBox = useMemo(
+    () => ({ style: refBadgeBoxStyle(placement.badge.width) }),
+    [placement.badge.width],
   )
 
   const summaryRefs = {
     refChipName: { children: placement.label },
-    refCard: { style: refChipHiddenCardStyle },
+    refCard: { style: refBadgeHiddenCardStyle },
   }
 
   return (
     <Frame style={wrapperStyle} onClick={select}>
       <PanelRefs
         role="presentation"
-        style={refChipPanelStyle}
+        style={refBadgePanelStyle}
         seldonRefs={summaryRefs}
-        chipAssist={chipBox}
+        chipAssist={badgeBox}
         textLabel={{}}
       />
     </Frame>
@@ -146,22 +149,22 @@ export function RefSummaryChip({ placement, nodeId }: RefSummaryChipProps) {
  * holds says so instead of appearing to have fewer. Carries no connector and opens
  * no card, so it is drawn muted.
  */
-export function RefOmitted({ chip, count }: RefOmittedProps) {
-  const wrapperStyle = useMemo(() => refOmittedStyle(chip), [chip])
-  const chipBox = useMemo(() => ({ style: refChipBoxStyle(chip.width) }), [chip.width])
+export function RefOmitted({ badge, count }: RefOmittedProps) {
+  const wrapperStyle = useMemo(() => refOmittedStyle(badge), [badge])
+  const badgeBox = useMemo(() => ({ style: refBadgeBoxStyle(badge.width) }), [badge.width])
 
   const omittedRefs = {
     refChipName: { children: `+${count} more` },
-    refCard: { style: refChipHiddenCardStyle },
+    refCard: { style: refBadgeHiddenCardStyle },
   }
 
   return (
     <Frame style={wrapperStyle}>
       <PanelRefs
         role="presentation"
-        style={refChipPanelStyle}
+        style={refBadgePanelStyle}
         seldonRefs={omittedRefs}
-        chipAssist={chipBox}
+        chipAssist={badgeBox}
         textLabel={{}}
       />
     </Frame>
@@ -169,25 +172,25 @@ export function RefOmitted({ chip, count }: RefOmittedProps) {
 }
 
 /**
- * Every chip drawn once more, hidden, and measured to place the drawn ones.
+ * Every badge drawn once more, hidden, and measured to place the drawn ones.
  *
- * A chip in the gutter is placed absolutely, so it can neither size itself to its
+ * A badge in the gutter is placed absolutely, so it can neither size itself to its
  * neighbors nor report a height and spacing the column could read before it is placed.
- * These are the same chips at their natural size, which is what the widest width, the
- * height, and the chip's own gap are taken from.
+ * These are the same badges at their natural size, which is what the widest width, the
+ * height, and the badge's own gap are taken from.
  */
-export function RefChipMeasure({ labels, measureRef }: RefChipMeasureProps) {
-  const chips = labels.map((label, index) => {
+export function RefBadgeMeasure({ labels, measureRef }: RefBadgeMeasureProps) {
+  const badges = labels.map((label, index) => {
     const measureRefs = {
       refChipName: { children: label },
-      refCard: { style: refChipHiddenCardStyle },
+      refCard: { style: refBadgeHiddenCardStyle },
     }
 
     return (
       <PanelRefs
         key={`${label}#${index}`}
         role="presentation"
-        style={refChipPanelStyle}
+        style={refBadgePanelStyle}
         seldonRefs={measureRefs}
         chipAssist={{}}
         textLabel={{}}
@@ -196,8 +199,8 @@ export function RefChipMeasure({ labels, measureRef }: RefChipMeasureProps) {
   })
 
   return (
-    <Frame ref={measureRef} style={refChipMeasureStyle}>
-      {chips}
+    <Frame ref={measureRef} style={refBadgeMeasureStyle}>
+      {badges}
     </Frame>
   )
 }

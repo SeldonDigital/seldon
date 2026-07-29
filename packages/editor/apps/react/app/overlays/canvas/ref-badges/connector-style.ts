@@ -2,7 +2,7 @@ import type { CSSProperties } from "react"
 
 /**
  * Styling for the connector itself: the elbow and the anchor dot at its node end.
- * The chip it runs to is dressed by `ref-chip-style`.
+ * The badge it runs to is dressed by `ref-badge-style`.
  *
  * Every style here is finished. A bound connector and an unbound one are separate
  * constants, so each reads as the values it paints with.
@@ -12,12 +12,12 @@ import type { CSSProperties } from "react"
  * Above the selection and wireframe outlines so a connector is never buried, below
  * the insert indicator at 10, which is transient and must win while placing.
  *
- * The chip draws on this layer too, since the two are one mark.
+ * The badge draws on this layer too, since the two are one mark.
  */
 export const CONNECTOR_Z_INDEX = 5
 
 /**
- * An unbound ref is drawn faint rather than in another color, and its chip is faded
+ * An unbound ref is drawn faint rather than in another color, and its badge is faded
  * to match.
  */
 export const MUTED_OPACITY = 0.65

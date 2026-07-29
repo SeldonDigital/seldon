@@ -37,7 +37,7 @@ import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import type { RefObject } from "react"
 
 /**
- * One placed connector and what its chip reports.
+ * One placed connector and what its badge reports.
  *
  * A `ref` entry names one ref and opens its card. A `summary` entry stands for the refs
  * one node holds, which are not drawn one by one, and selects that node instead.
@@ -50,10 +50,10 @@ interface RefConnectorState {
   entries: PlacedConnector[]
   canvasSize: { width: number; height: number }
   omitted: number
-  omittedChip: ConnectorLayoutResult["omittedChip"]
+  omittedBadge: ConnectorLayoutResult["omittedBadge"]
   /** The dot where a connector meets its node, `0` until the metrics are read. */
   anchorRadius: number
-  /** Every chip's label, and the element the metrics are read from. */
+  /** Every badge's label, and the element the metrics are read from. */
   labels: string[]
   measureRef: RefObject<HTMLElement | null>
 }
@@ -61,22 +61,22 @@ interface RefConnectorState {
 /** Marks a source as standing for a node's contents rather than for one ref. */
 const SUMMARY_KEY_PREFIX = "summary:"
 
-/** Chips for one node read in this order, the node's own ref before its summary. */
+/** Badges for one node read in this order, the node's own ref before its summary. */
 const REF_ORDER = 0
 const SUMMARY_ORDER = 1
 
-/** Stands in until the chips have been measured, which is what the column places by. */
+/** Stands in until the badges have been measured, which is what the column places by. */
 const NOTHING_PLACED: ConnectorLayoutResult = {
   placements: [],
   omitted: 0,
-  omittedChip: null,
+  omittedBadge: null,
 }
 
 /**
  * The connectors to draw for the current selection, already laid out.
  *
  * Scoped to the selection rather than the whole board. A board can carry dozens of
- * refs, and a column of dozens of chips reads as noise, so selecting a component in
+ * refs, and a column of dozens of badges reads as noise, so selecting a component in
  * the objects sidebar is what asks the question "what is wired up in here".
  */
 export function useRefConnector(): RefConnectorState {
@@ -112,8 +112,8 @@ export function useRefConnector(): RefConnectorState {
   const labels = useMemo(() => sources.map((source) => source.label), [sources])
   const { metrics, measureRef } = useConnectorMetrics(labels)
 
-  // The chip's own gap spaces the column as well, both between chips and off the canvas
-  // top and bottom, so the spacing follows the chip rather than a number kept here.
+  // The badge's own gap spaces the column as well, both between badges and off the canvas
+  // top and bottom, so the spacing follows the badge rather than a number kept here.
   //
   // The edge the column hangs off is carried between frames, because moving it takes a
   // clear win over where it already is. See `getGutterSide`.
@@ -131,10 +131,10 @@ export function useRefConnector(): RefConnectorState {
     return layoutConnectors(sources, {
       canvasWidth: canvasSize.width,
       canvasHeight: canvasSize.height,
-      chipWidth: metrics.chipWidth,
-      chipHeight: metrics.chipHeight,
-      chipGap: metrics.chipGap,
-      margin: metrics.chipGap,
+      badgeWidth: metrics.badgeWidth,
+      badgeHeight: metrics.badgeHeight,
+      badgeGap: metrics.badgeGap,
+      margin: metrics.badgeGap,
       gutter: metrics.gutter,
       side,
     })
@@ -163,7 +163,7 @@ export function useRefConnector(): RefConnectorState {
     entries,
     canvasSize,
     omitted: layout.omitted,
-    omittedChip: layout.omittedChip,
+    omittedBadge: layout.omittedBadge,
     anchorRadius: metrics?.anchorRadius ?? 0,
     labels,
     measureRef,
@@ -205,27 +205,27 @@ function collectReferencedNodeIds(bindings: RefBinding[]): Set<string> {
  * built out of frames reads as its frames first. A node carrying a ref of its own does
  * too, because its connector leaves from its center and a ref on a node inside it leaves
  * from a center on the same line, so the two runs would be drawn on top of each other.
- * One chip counting the refs inside says the same thing with one line.
+ * One badge counting the refs inside says the same thing with one line.
  *
  * A node with no ref of its own summarizes nothing, since a single run to a node inside
  * it sits on no other run and counting it would hide a name for nothing.
  *
  * The node chosen is the highest one under the selection, so clicking it selects that
  * node and the overlay redraws one level in. Nodes with nothing above them are absent
- * and draw their own chips.
+ * and draw their own badges.
  *
  * Only nodes inside the selection stand in for anything. The climb stops where the
  * selection does, because a node above it is not on screen as part of what was asked
- * about, and summarizing onto one would point the chip away from the selection and up
- * the tree. A selected node carrying its own ref therefore draws its own chip.
+ * about, and summarizing onto one would point the badge away from the selection and up
+ * the tree. A selected node carrying its own ref therefore draws its own badge.
  *
- * A node's own ref is not part of its contents, so it keeps its own chip beside the
+ * A node's own ref is not part of its contents, so it keeps its own badge beside the
  * summary.
  *
  * The level comes from `getEffectiveNodeLevel` rather than the resolved catalog id,
  * because an authored module can be built on the frame schema. Such a node reports
  * `frame` as its catalog id while being a module, and summarizing it would fold a whole
- * component into one chip.
+ * component into one badge.
  */
 function collectSummaryNodes(
   board: Board | null,
@@ -272,7 +272,7 @@ function collectSummaryNodes(
 }
 
 /**
- * The chips worth drawing: one per ref, and one per node standing in for the refs it holds.
+ * The badges worth drawing: one per ref, and one per node standing in for the refs it holds.
  *
  * Only nodes the canvas is tracking get a connector, so a node that is not on screen
  * is not pointed at. A stale binding has no workspace node, so there is nothing to
@@ -321,7 +321,7 @@ function buildSources(
   }
 
   // A summarizing node's own ref counts toward its summary, so the count says how many
-  // chips selecting it draws rather than how many it is hiding. A frame carrying no ref
+  // badges selecting it draws rather than how many it is hiding. A frame carrying no ref
   // has nothing to add, which is why a frame's count already read that way.
   for (const [summaryId, group] of summarized) {
     const rect = rects.get(summaryId)
@@ -351,7 +351,7 @@ function getSummaryLabel(count: number): string {
 /**
  * The nodes the drawn connectors meet.
  *
- * A summary chip counts as its own node, since that is where its connector lands. Refs
+ * A summary badge counts as its own node, since that is where its connector lands. Refs
  * pushed out of the column are absent, because nothing is pointing at them.
  */
 function collectAnchoredNodeIds(entries: PlacedConnector[]): string[] {

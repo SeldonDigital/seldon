@@ -18,7 +18,7 @@ import type { CSSProperties, ReactNode, Ref } from "react"
 
 /**
  * The edges a card offers to drag: the two it grew toward, and the corner between them.
- * Offering the anchored edges would let a drag pull the card over its chip.
+ * Offering the anchored edges would let a drag pull the card over its badge.
  */
 const RESIZE_SIDES: Record<
   RefCardPosition["grows"],
@@ -62,7 +62,7 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
 
   const resizeSides = RESIZE_SIDES[position.grows][position.opens]
 
-  // The chip moves as the canvas scrolls, and the card travels with it. Only the corner
+  // The badge moves as the canvas scrolls, and the card travels with it. Only the corner
   // moves, so the size the reader dragged this card to survives the trip.
   useEffect(() => {
     x.set(position.x)
@@ -129,7 +129,7 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
 /**
  * `nodeLabel: { textLabel }`, the ref and the prop the view takes it as.
  *
- * Named by the ref rather than the file, so the line answers to the chip that opened
+ * Named by the ref rather than the file, so the line answers to the badge that opened
  * the card. The file it is exposed from is the line under it.
  */
 function toViewLine(ref: string, view: BindingViewDescription): string {

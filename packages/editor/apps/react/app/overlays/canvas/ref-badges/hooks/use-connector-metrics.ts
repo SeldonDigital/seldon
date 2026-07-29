@@ -8,11 +8,11 @@ import type { RefObject } from "react"
 
 /** The pixels the column is laid out from, none of them stated here. */
 export interface ConnectorMetrics {
-  /** The width the widest chip needs, which every chip then takes. */
-  chipWidth: number
-  chipHeight: number
-  /** The chip's own gap, which spaces the column and holds it off the canvas edge. */
-  chipGap: number
+  /** The width the widest badge needs, which every badge then takes. */
+  badgeWidth: number
+  badgeHeight: number
+  /** The badge's own gap, which spaces the column and holds it off the canvas edge. */
+  badgeGap: number
   /** The gap the column keeps from whichever canvas edge it hangs off. */
   gutter: number
   anchorRadius: number
@@ -24,18 +24,18 @@ interface ConnectorMetricsState {
 }
 
 /**
- * The pixels the overlay draws with, taken from the chips and the theme rather than
+ * The pixels the overlay draws with, taken from the badges and the theme rather than
  * stated as numbers.
  *
- * The chip schema decides how tall a chip is, how much space it keeps, and how wide its
+ * The badge schema decides how tall a badge is, how much space it keeps, and how wide its
  * label makes it, and the theme decides what the column keeps clear. Restating any of
- * that here would leave the overlay drawing to values those two had moved on from. Chips
+ * that here would leave the overlay drawing to values those two had moved on from. Badges
  * are placed absolutely and cannot size to each other, so a hidden copy of the set is
  * what reports the widest, and it doubles as the themed scope the variables are read in.
  *
  * Read when the labels change, which is when a column is drawn afresh, and before paint,
  * so a column never draws at one size and then jumps. `null` until the first read lands,
- * which is when the overlay has nothing to place chips by.
+ * which is when the overlay has nothing to place badges by.
  */
 export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
   const measureRef = useRef<HTMLElement>(null)
@@ -44,24 +44,25 @@ export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
 
   useLayoutEffect(() => {
     const scope = measureRef.current
-    const chips = scope?.querySelectorAll<HTMLElement>('[data-seldon-ref="refChip"]')
+    // `refChip` is the schema's name for the badge, until the workspace renames it.
+    const badges = scope?.querySelectorAll<HTMLElement>('[data-seldon-ref="refChip"]')
 
-    if (!scope || !chips || chips.length === 0) return
+    if (!scope || !badges || badges.length === 0) return
 
-    let chipWidth = 0
+    let badgeWidth = 0
 
-    chips.forEach((chip) => {
-      chipWidth = Math.max(chipWidth, chip.offsetWidth)
+    badges.forEach((badge) => {
+      badgeWidth = Math.max(badgeWidth, badge.offsetWidth)
     })
 
-    const first = chips[0]
-    const chipGap = Number.parseFloat(window.getComputedStyle(first).rowGap)
+    const first = badges[0]
+    const badgeGap = Number.parseFloat(window.getComputedStyle(first).rowGap)
     const { gutter, anchorRadius } = getTokenPixels(CONNECTOR_TOKENS, scope)
 
     setMetrics({
-      chipWidth,
-      chipHeight: first.offsetHeight,
-      chipGap: Number.isNaN(chipGap) ? 0 : chipGap,
+      badgeWidth,
+      badgeHeight: first.offsetHeight,
+      badgeGap: Number.isNaN(badgeGap) ? 0 : badgeGap,
       gutter,
       anchorRadius,
     })

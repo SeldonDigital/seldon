@@ -3,7 +3,7 @@ import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { useRefConnectors } from "@app/refs/use-ref-connectors"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useHistory } from "@app/workspace/hooks/use-history"
 import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
@@ -53,7 +53,7 @@ export function useEditorShortcuts() {
     toggleShowUnusedIcons,
     toggleDirectSelect,
   } = useEditorConfig()
-  const { toggleRefConnectors } = useRefConnectors()
+  const { toggleRefBadges } = useRefBadges()
   const { toggleIsolation } = useToggleIsolation()
   const { activePanel, openPanel, closePanel } = usePanel()
   const navigate = useNavigate()
@@ -194,7 +194,7 @@ export function useEditorShortcuts() {
 
   // Ref connector overlay. Turning it on reads the linked folder, which needs this
   // keypress to count as the gesture.
-  useHotkeys("r", () => toggleRefConnectors(), { preventDefault: true })
+  useHotkeys("r", () => toggleRefBadges(), { preventDefault: true })
 
   // Show unused properties / fonts / icons in the properties sidebar.
   useHotkeys("p", () => toggleShowUnusedProperties(), { preventDefault: true })

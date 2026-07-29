@@ -25,7 +25,7 @@ export function nodeWireframeStyle(box: OverlayBox): CSSProperties {
 
 /**
  * A node a connector meets, drawn in the connector's own color so the box and the line
- * pointing at it read as one thing. Only ever seen with reference bindings shown, since
+ * pointing at it read as one thing. Only ever seen with reference badges shown, since
  * nothing anchors a connector otherwise.
  */
 export function nodeWireframeAnchoredStyle(box: OverlayBox): CSSProperties {

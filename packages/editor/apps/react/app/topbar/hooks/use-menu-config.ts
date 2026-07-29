@@ -11,7 +11,7 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useImportExport } from "@app/io/use-import-export"
-import { useRefConnectors } from "@app/refs/use-ref-connectors"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useHistory } from "@app/workspace/hooks/use-history"
 import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
@@ -75,7 +75,7 @@ export function useMenuConfig(): MenuConfig {
     directSelect,
     toggleDirectSelect,
   } = useEditorConfig()
-  const { showRefConnectors, toggleRefConnectors } = useRefConnectors()
+  const { showRefBadges, toggleRefBadges } = useRefBadges()
   const { workspace } = useWorkspace()
   const {
     canvasProfiling,
@@ -735,10 +735,10 @@ export function useMenuConfig(): MenuConfig {
             shortcut: "W",
           },
           {
-            id: "show-reference-bindings",
+            id: "show-reference-badges",
             label: "Show Reference Badges",
-            action: toggleRefConnectors,
-            active: showRefConnectors,
+            action: toggleRefBadges,
+            active: showRefBadges,
             shortcut: "R",
           },
           "separator",
@@ -848,8 +848,8 @@ export function useMenuConfig(): MenuConfig {
       showFocus,
       toggleWireframeMode,
       wireframeMode,
-      showRefConnectors,
-      toggleRefConnectors,
+      showRefBadges,
+      toggleRefBadges,
       autoExpandOnSelection,
       toggleAutoExpandOnSelection,
       autoScrollToSelection,
