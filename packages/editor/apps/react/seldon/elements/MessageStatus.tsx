@@ -37,11 +37,13 @@ const sdn: MessageStatusProps = {
     icon: "material-robot",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--8ds9",
+    "data-seldon-ref": "hariStatusIcon",
   },
 
   textLabel: {
     children: "Working...",
     className: "sdn-text-label sdn-text-label--ue8m",
+    "data-seldon-ref": "hariStatusLabel",
   },
 }
 
@@ -53,8 +55,8 @@ const sdn: MessageStatusProps = {
  * Type: Custom
  *
  * Structure:
- *   Icon       icon
- *   TextLabel  textLabel
+ *   Icon       icon       -> hariStatusIcon
+ *   TextLabel  textLabel  -> hariStatusLabel
  *
  * @example
  * ```tsx

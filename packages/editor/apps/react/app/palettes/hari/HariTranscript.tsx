@@ -72,27 +72,28 @@ function buildTranscript(
 }
 
 function userBlock(turn: HariTurn): ReactNode {
-  const textDescription = { children: turn.prompt }
+  const userRefs = { hariUserText: { children: turn.prompt } }
 
-  return <MessageUser key={`${turn.id}-user`} textDescription={textDescription} />
+  return <MessageUser key={`${turn.id}-user`} textDescription={{}} seldonRefs={userRefs} />
 }
 
 function statusBlock(turn: HariTurn): ReactNode {
-  const textLabel = { children: "Working..." }
+  const workingRefs = { hariStatusLabel: { children: "Working..." } }
 
   return (
     <MessageStatus
       key={`${turn.id}-status`}
       className="hari-status-working"
-      textLabel={textLabel}
+      textLabel={{}}
+      seldonRefs={workingRefs}
     />
   )
 }
 
 function stoppedBlock(turn: HariTurn): ReactNode {
-  const textLabel = { children: "Stopped." }
+  const stoppedRefs = { hariStatusLabel: { children: "Stopped." } }
 
-  return <MessageStatus key={`${turn.id}-stopped`} textLabel={textLabel} />
+  return <MessageStatus key={`${turn.id}-stopped`} textLabel={{}} seldonRefs={stoppedRefs} />
 }
 
 function thinkingBlock(turn: HariTurn): ReactNode {
@@ -198,16 +199,19 @@ function outcomeBlock(turn: HariTurn): ReactNode {
     turn.outcome === "applied" && (turn.changes?.length ?? 0) > 0
       ? (turn.changes ?? []).join("\n")
       : meta.description
-  const icon = { icon: meta.icon }
-  const textLabel = { children: meta.label }
-  const textDescription = { children: detail, style: preWrapStyle }
+  const outcomeRefs = {
+    hariOutcomeIcon: { icon: meta.icon },
+    hariOutcomeLabel: { children: meta.label },
+    hariOutcomeText: { children: detail, style: preWrapStyle },
+  }
 
   return (
     <MessageOutcome
       key={`${turn.id}-outcome`}
-      icon={icon}
-      textLabel={textLabel}
-      textDescription={textDescription}
+      icon={{}}
+      textLabel={{}}
+      textDescription={{}}
+      seldonRefs={outcomeRefs}
     />
   )
 }
@@ -226,19 +230,30 @@ function assistantBlock(turn: HariTurn): ReactNode {
   )
 }
 
+/**
+ * The error block. The retry button only exists when the transcript was given a
+ * retry handler, and a ref override cannot turn a slot on, so its presence stays
+ * a positional decision while its handler comes through `hariErrorRetry`.
+ */
 function errorBlock(turn: HariTurn, onRetry: HariTranscriptProps["onRetry"]): ReactNode {
   const text =
     turn.error ?? (turn.rejected ?? []).map((item) => `${item.type}: ${item.reason}`).join("; ")
-  const textDescription = { children: text }
-  const buttonSimple = onRetry ? { onClick: () => onRetry(turn.prompt) } : null
-  const textLabel = onRetry ? { children: "Retry" } : null
+  const retry = onRetry ? { onClick: () => onRetry(turn.prompt) } : {}
+  const errorRefs = {
+    hariErrorText: { children: text },
+    hariErrorRetry: retry,
+  }
+  const buttonSimple = onRetry ? {} : null
+  const textLabel = onRetry ? {} : null
 
   return (
     <MessageError
       key={`${turn.id}-error`}
-      textDescription={textDescription}
+      icon={{}}
+      textDescription={{}}
       buttonSimple={buttonSimple}
       textLabel={textLabel}
+      seldonRefs={errorRefs}
     />
   )
 }

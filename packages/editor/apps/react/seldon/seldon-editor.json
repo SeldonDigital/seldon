@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": 17,
+    "version": 18,
     "label": "seldon-editor"
   },
   "boards": {
@@ -34923,6 +34923,7 @@
       }
     },
     "component-panel-DxDVepgS": {
+      "ref": "hariBar",
       "type": "instance",
       "level": "part",
       "label": "Bar",
@@ -35572,6 +35573,7 @@
       "origin": "user"
     },
     "component-panel-5LdFLd1M": {
+      "ref": "hariThinkingLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -35775,6 +35777,7 @@
       "origin": "user"
     },
     "component-panel-wKKOvQwf": {
+      "ref": "hariModelLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -35916,6 +35919,7 @@
       "origin": "user"
     },
     "component-button-KQWpbKqF": {
+      "ref": "hariSendIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -35973,6 +35977,7 @@
       "origin": "user"
     },
     "component-chip-zawrF4dY": {
+      "ref": "hariSelectionLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36370,6 +36375,7 @@
       }
     },
     "component-text-5X8uWVHu": {
+      "ref": "hariUserText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36402,6 +36408,7 @@
       "origin": "schema"
     },
     "component-text-rdPTp0zG": {
+      "ref": "hariReplyText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36460,6 +36467,7 @@
       "origin": "schema"
     },
     "component-text-0r1JFBYH": {
+      "ref": "hariReasoningLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36492,6 +36500,7 @@
       "origin": "schema"
     },
     "component-button-iKLUV4uP": {
+      "ref": "hariReasoningToggle",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -36536,6 +36545,7 @@
       "origin": "schema"
     },
     "component-icon-KzY9lbAe": {
+      "ref": "hariReasoningChevron",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36558,6 +36568,7 @@
       "origin": "schema"
     },
     "component-text-cHoacyQ2": {
+      "ref": "hariReasoningBody",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36670,6 +36681,7 @@
       "origin": "schema"
     },
     "component-icon-wxT91IpG": {
+      "ref": "hariOutcomeIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36688,6 +36700,7 @@
       "origin": "schema"
     },
     "component-text-PIf8vzL0": {
+      "ref": "hariOutcomeLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36720,6 +36733,7 @@
       "origin": "schema"
     },
     "component-text-UAGUHvkF": {
+      "ref": "hariOutcomeText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36778,6 +36792,7 @@
       "origin": "schema"
     },
     "component-icon-GM8jpOSl": {
+      "ref": "hariErrorIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36796,6 +36811,7 @@
       "origin": "schema"
     },
     "component-text-gaFQYpvP": {
+      "ref": "hariErrorText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36828,6 +36844,7 @@
       "origin": "schema"
     },
     "component-button-AKDnMgFM": {
+      "ref": "hariErrorRetry",
       "type": "instance",
       "level": "element",
       "label": "Simple",
@@ -36842,6 +36859,7 @@
       "origin": "schema"
     },
     "component-text-AfTUkMQr": {
+      "ref": "hariErrorRetryLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36874,6 +36892,7 @@
       "origin": "schema"
     },
     "component-icon-8Ds95Uq5": {
+      "ref": "hariStatusIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36892,6 +36911,7 @@
       "origin": "schema"
     },
     "component-text-UE8Mt3mk": {
+      "ref": "hariStatusLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36948,6 +36968,7 @@
       "origin": "schema"
     },
     "component-panel-ATTVDoTF": {
+      "ref": "hariReset",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -37242,6 +37263,7 @@
       "origin": "user"
     },
     "component-message-aeeOGbms": {
+      "ref": "hariReasoningClamped",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
