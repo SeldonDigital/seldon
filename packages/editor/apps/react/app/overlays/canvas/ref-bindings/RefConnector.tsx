@@ -70,7 +70,7 @@ export function RefConnector() {
 }
 
 function toChip(entry: PlacedConnector): ReactNode {
-  if (entry.kind === "frame") {
+  if (entry.kind === "summary") {
     return (
       <RefSummaryChip key={entry.placement.key} placement={entry.placement} nodeId={entry.nodeId} />
     )

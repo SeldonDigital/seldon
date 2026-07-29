@@ -96,11 +96,11 @@ export function RefChip({ placement, binding }: RefChipProps) {
 }
 
 /**
- * Stands in for the refs inside a frame, counting them rather than naming them.
+ * Stands in for the refs inside one node, counting them rather than naming them.
  *
- * Clicking it selects the frame, which is all it does. The overlay draws the selected
- * node and its descendants, so selecting the frame redraws these refs one level in,
- * and the count is a way into them rather than a thing to read.
+ * Clicking it selects that node, which is all it does. The overlay draws the selected
+ * node and its descendants, so selecting it redraws these refs one level in, and the
+ * count is a way into them rather than a thing to read.
  */
 export function RefSummaryChip({ placement, nodeId }: RefSummaryChipProps) {
   const { selectNode } = useSelection()

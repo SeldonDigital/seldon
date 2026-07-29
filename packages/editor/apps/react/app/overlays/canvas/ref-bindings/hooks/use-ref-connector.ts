@@ -34,12 +34,12 @@ import type { RefObject } from "react"
 /**
  * One placed connector and what its chip reports.
  *
- * A `ref` entry names one ref and opens its card. A `frame` entry stands for the refs
- * inside a frame, which are not drawn one by one, and selects that frame instead.
+ * A `ref` entry names one ref and opens its card. A `summary` entry stands for the refs
+ * inside one node, which are not drawn one by one, and selects that node instead.
  */
 export type PlacedConnector =
   | { kind: "ref"; placement: ConnectorPlacement; binding: RefBinding }
-  | { kind: "frame"; placement: ConnectorPlacement; nodeId: string }
+  | { kind: "summary"; placement: ConnectorPlacement; nodeId: string }
 
 interface RefConnectorState {
   entries: PlacedConnector[]
@@ -53,10 +53,10 @@ interface RefConnectorState {
   measureRef: RefObject<HTMLElement | null>
 }
 
-/** Marks a source as standing for a frame's contents rather than for one ref. */
-const FRAME_KEY_PREFIX = "frame:"
+/** Marks a source as standing for a node's contents rather than for one ref. */
+const SUMMARY_KEY_PREFIX = "summary:"
 
-/** Chips for one node read in this order, the frame's own ref before its summary. */
+/** Chips for one node read in this order, the node's own ref before its summary. */
 const REF_ORDER = 0
 const SUMMARY_ORDER = 1
 
@@ -88,16 +88,19 @@ export function useRefConnector(): RefConnectorState {
     [activeBoard, selectedNodeId],
   )
 
-  const frameAncestors = useMemo(
-    () => collectFrameAncestors(activeBoard, workspace, selectedNodeId, scopedNodeIds),
-    [activeBoard, workspace, selectedNodeId, scopedNodeIds],
+  const referencedNodeIds = useMemo(() => collectReferencedNodeIds(refBindings), [refBindings])
+
+  const summaryNodes = useMemo(
+    () =>
+      collectSummaryNodes(activeBoard, workspace, selectedNodeId, scopedNodeIds, referencedNodeIds),
+    [activeBoard, workspace, selectedNodeId, scopedNodeIds, referencedNodeIds],
   )
 
   useFollowCanvasTransform(scopedNodeIds)
 
   const sources = useMemo(
-    () => buildSources(refBindings, nodeRectsStore.getState().rects, scopedNodeIds, frameAncestors),
-    [refBindings, rectsVersion, scopedNodeIds, frameAncestors],
+    () => buildSources(refBindings, nodeRectsStore.getState().rects, scopedNodeIds, summaryNodes),
+    [refBindings, rectsVersion, scopedNodeIds, summaryNodes],
   )
 
   const labels = useMemo(() => sources.map((source) => source.label), [sources])
@@ -150,46 +153,68 @@ function collectScopedNodeIds(board: Board | null, selectedNodeId: string | null
   return new Set<string>([selectedNodeId, ...descendants])
 }
 
+/** The nodes a ref points at, which is what makes a node worth summarizing onto. */
+function collectReferencedNodeIds(bindings: RefBinding[]): Set<string> {
+  const nodeIds = new Set<string>()
+
+  for (const binding of bindings) {
+    if (binding.node?.nodeId) {
+      nodeIds.add(binding.node.nodeId)
+    }
+  }
+
+  return nodeIds
+}
+
 /**
- * Each node under the selection mapped to the frame that stands in for it.
+ * Each node under the selection mapped to the node that stands in for it.
  *
- * A frame's contents are reported by one chip on the frame rather than a chip per ref,
- * so a component built out of frames reads as its frames first. The frame chosen is the
- * highest one under the selection, so clicking it selects that frame and the overlay
- * redraws one level in. Nodes with no frame above them are absent and draw their own
- * chips.
+ * Two kinds of node stand in for the refs beneath them. A frame does, so a component
+ * built out of frames reads as its frames first. A node carrying a ref of its own does
+ * too, because its connector leaves from its center and a ref on a node inside it leaves
+ * from a center on the same line, so the two runs would be drawn on top of each other.
+ * One chip counting the refs inside says the same thing with one line.
  *
- * Only frames inside the selection stand in for anything. The climb stops where the
- * selection does, because a frame above it is not on screen as part of what was asked
+ * A node with no ref of its own summarizes nothing, since a single run to a node inside
+ * it sits on no other run and counting it would hide a name for nothing.
+ *
+ * The node chosen is the highest one under the selection, so clicking it selects that
+ * node and the overlay redraws one level in. Nodes with nothing above them are absent
+ * and draw their own chips.
+ *
+ * Only nodes inside the selection stand in for anything. The climb stops where the
+ * selection does, because a node above it is not on screen as part of what was asked
  * about, and summarizing onto one would point the chip away from the selection and up
  * the tree. A selected node carrying its own ref therefore draws its own chip.
  *
- * A frame's own ref is not part of its contents, so it keeps its own chip.
+ * A node's own ref is not part of its contents, so it keeps its own chip beside the
+ * summary.
  *
  * The level comes from `getEffectiveNodeLevel` rather than the resolved catalog id,
  * because an authored module can be built on the frame schema. Such a node reports
  * `frame` as its catalog id while being a module, and summarizing it would fold a whole
  * component into one chip.
  */
-function collectFrameAncestors(
+function collectSummaryNodes(
   board: Board | null,
   workspace: Workspace,
   selectedNodeId: string | null,
   scopedNodeIds: Set<string>,
+  referencedNodeIds: Set<string>,
 ): Map<string, string> {
   if (!board || !selectedNodeId) return new Map()
 
-  const frames = new Set<string>()
+  const canSummarize = new Set<string>(referencedNodeIds)
 
   walkComponentTree(board, (ref) => {
     const node = workspace.nodes?.[ref.id]
 
     if (node && getEffectiveNodeLevel(node, workspace) === ComponentLevel.FRAME) {
-      frames.add(ref.id)
+      canSummarize.add(ref.id)
     }
   })
 
-  if (frames.size === 0) return new Map()
+  if (canSummarize.size === 0) return new Map()
 
   const parents = getParentNodeIds(board)
   const summarizedBy = new Map<string, string>()
@@ -199,7 +224,7 @@ function collectFrameAncestors(
     let topmost: string | null = null
 
     while (current && current !== selectedNodeId && scopedNodeIds.has(current)) {
-      if (frames.has(current)) {
+      if (canSummarize.has(current)) {
         topmost = current
       }
 
@@ -215,7 +240,7 @@ function collectFrameAncestors(
 }
 
 /**
- * The chips worth drawing: one per ref, and one per frame holding refs.
+ * The chips worth drawing: one per ref, and one per node standing in for the refs inside it.
  *
  * Only nodes the canvas is tracking get a connector, so a node that is not on screen
  * is not pointed at. A stale binding has no workspace node, so there is nothing to
@@ -225,7 +250,7 @@ function buildSources(
   bindings: RefBinding[],
   rects: Map<string, NodeRect | null>,
   scopedNodeIds: Set<string>,
-  frameAncestors: Map<string, string>,
+  summaryNodes: Map<string, string>,
 ): ConnectorSource[] {
   const sources: ConnectorSource[] = []
   const summarized = new Map<string, RefBinding[]>()
@@ -236,14 +261,14 @@ function buildSources(
     if (!nodeId) continue
     if (!scopedNodeIds.has(nodeId)) continue
 
-    const frameId = frameAncestors.get(nodeId)
-    const frameRect = frameId ? rects.get(frameId) : null
+    const summaryId = summaryNodes.get(nodeId)
+    const summaryRect = summaryId ? rects.get(summaryId) : null
 
-    if (frameId && frameRect) {
-      const group = summarized.get(frameId) ?? []
+    if (summaryId && summaryRect) {
+      const group = summarized.get(summaryId) ?? []
 
       group.push(binding)
-      summarized.set(frameId, group)
+      summarized.set(summaryId, group)
       continue
     }
 
@@ -260,13 +285,13 @@ function buildSources(
     })
   }
 
-  for (const [frameId, group] of summarized) {
-    const rect = rects.get(frameId)
+  for (const [summaryId, group] of summarized) {
+    const rect = rects.get(summaryId)
 
     if (!rect) continue
 
     sources.push({
-      key: `${FRAME_KEY_PREFIX}${frameId}`,
+      key: `${SUMMARY_KEY_PREFIX}${summaryId}`,
       label: getSummaryLabel(group.length),
       rect,
       muted: group.every((binding) => binding.state !== "bound"),
@@ -283,17 +308,17 @@ function getSummaryLabel(count: number): string {
   return `${count} References`
 }
 
-/** Pairs each placement back to the ref or the frame it was built from. */
+/** Pairs each placement back to the ref or the node it was built from. */
 function buildEntries(placements: ConnectorPlacement[], bindings: RefBinding[]): PlacedConnector[] {
   const byRef = new Map(bindings.map((binding) => [binding.ref, binding]))
   const entries: PlacedConnector[] = []
 
   for (const placement of placements) {
-    if (placement.key.startsWith(FRAME_KEY_PREFIX)) {
+    if (placement.key.startsWith(SUMMARY_KEY_PREFIX)) {
       entries.push({
-        kind: "frame",
+        kind: "summary",
         placement,
-        nodeId: placement.key.slice(FRAME_KEY_PREFIX.length),
+        nodeId: placement.key.slice(SUMMARY_KEY_PREFIX.length),
       })
       continue
     }
