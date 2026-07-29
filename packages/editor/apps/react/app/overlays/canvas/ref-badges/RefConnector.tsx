@@ -12,9 +12,9 @@ import {
 } from "./connector-style"
 import { useRefConnector } from "./hooks/use-ref-connector"
 
-import type { PlacedConnector } from "./hooks/use-ref-connector"
 import type { ConnectorShape } from "@app/overlays/primitives/ConnectorPaths.bespoke"
 import type { ConnectorPlacement } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import type { PlacedConnector } from "@seldon/editor/lib/canvas/connectors/ref-connectors"
 import type { ReactNode } from "react"
 
 /**

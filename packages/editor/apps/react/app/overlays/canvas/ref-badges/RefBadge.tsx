@@ -8,6 +8,7 @@ import { useRefCard } from "./hooks/use-ref-card"
 import {
   refBadgeBoxStyle,
   refBadgeHiddenCardStyle,
+  refBadgeMeasureLabelStyle,
   refBadgeMeasureStyle,
   refBadgeMutedStyle,
   refBadgePanelStyle,
@@ -182,7 +183,7 @@ export function RefOmitted({ badge, count }: RefOmittedProps) {
 export function RefBadgeMeasure({ labels, measureRef }: RefBadgeMeasureProps) {
   const badges = labels.map((label, index) => {
     const measureRefs = {
-      refChipName: { children: label },
+      refChipName: { children: label, style: refBadgeMeasureLabelStyle },
       refCard: { style: refBadgeHiddenCardStyle },
     }
 

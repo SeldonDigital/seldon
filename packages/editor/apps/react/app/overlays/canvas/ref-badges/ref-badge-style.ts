@@ -40,6 +40,17 @@ export const refBadgeMeasureStyle: CSSProperties = {
 }
 
 /**
+ * The label in a measured badge, sized to its own text.
+ *
+ * The schema tells the label to fill its badge, which is what holds the icon at the end
+ * of a badge drawn at the column's width. A filling label reports no width of its own
+ * though, since it is free to sit narrower than its text, so the copies the column is
+ * measured from ask theirs for the text instead. Only those copies size this way. A
+ * drawn badge keeps the filling label, and takes the width measured here.
+ */
+export const refBadgeMeasureLabelStyle: CSSProperties = { flex: "0 0 auto" }
+
+/**
  * The badge's own box, held at the width the column shares. The schema draws it at
  * `fit-content` from the start edge, so the width is set here and the slack is put
  * between the label and the icon, keeping the icons in line down the column.

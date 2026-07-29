@@ -39,6 +39,11 @@ const props = withDefaults(
     moveControls: DragControls
     onClose: () => void
     testId?: string
+    // Reports the surface itself, including its resize handles. A non-modal caller
+    // that dismisses on an outside press needs it to tell its own surface from
+    // elsewhere, since it renders no backdrop to catch the press for it. Mirrors
+    // the React `surfaceRef` prop.
+    surfaceRef?: (el: HTMLElement | null) => void
     modal?: boolean
     closeOnClickOutside?: boolean
     preventInteractionOutside?: boolean
@@ -73,6 +78,12 @@ const { chromeTheme } = storeToRefs(useEditorConfigStore())
 const resolvedMode = useResolvedInterfaceMode()
 
 const overlayRef = ref<HTMLElement | null>(null)
+
+// A template ref on a component yields its instance, so the element comes off
+// `$el`. Null on unmount, which is what tells a caller the window has gone.
+function setSurface(instance: unknown): void {
+  props.surfaceRef?.((instance as { $el?: HTMLElement } | null)?.$el ?? null)
+}
 
 const showBackdrop = computed(
   () => props.modal || props.closeOnClickOutside || props.preventInteractionOutside,
@@ -159,6 +170,7 @@ const styles: Record<string, CSSProperties> = {
       <template v-else>
         <div v-if="showBackdrop" :style="styles.backdrop" @click="backdropClose?.()" />
         <motion.div
+          :ref="setSurface"
           :drag="true"
           :drag-controls="moveControls"
           :drag-listener="false"

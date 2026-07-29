@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { useSharedStore } from "@app/canvas/use-shared-store"
 import { useNodeRect } from "@app/overlays/hooks/use-node-rects"
+import { anchoredNodesStore } from "@seldon/editor/lib/canvas/connectors/anchored-nodes-store"
 import { getWireframeMode } from "@seldon/editor/lib/canvas/overlay/geometry"
 import { calculateClippingBox } from "@seldon/editor/lib/canvas/overlay/measure"
 import { computed } from "vue"
+
+import { nodeWireframeAnchoredStyle, nodeWireframeStyle } from "./node-wireframe-style"
 
 import type { CSSProperties } from "vue"
 
@@ -11,6 +15,10 @@ const props = withDefaults(defineProps<{ nodeId: string; isSelected?: boolean }>
 })
 
 const trackedRect = useNodeRect(props.nodeId)
+
+// Read as one boolean, so a box only draws again when a connector starts or stops
+// meeting its own node rather than whenever any of them move.
+const isAnchored = useSharedStore(anchoredNodesStore, (state) => state.nodeIds.has(props.nodeId))
 
 // Hover and selection borders are drawn by the single canvas overlays, so the
 // selected node is skipped here; its selection outline covers it.
@@ -21,19 +29,8 @@ const style = computed<CSSProperties | null>(() => {
   const clipped = calculateClippingBox({ nodeId: props.nodeId, rect })
   if (!clipped) return null
   const box = getWireframeMode(clipped)
-  return {
-    position: "absolute",
-    pointerEvents: "none",
-    boxSizing: box.boxSizing,
-    borderStyle: "dashed",
-    borderColor: "var(--sdn-swatch-primary)",
-    borderWidth: `${box.borderWidth}px`,
-    top: `${box.top}px`,
-    left: `${box.left}px`,
-    width: `${box.width}px`,
-    height: `${box.height}px`,
-    zIndex: 1,
-  }
+
+  return isAnchored.value ? nodeWireframeAnchoredStyle(box) : nodeWireframeStyle(box)
 })
 </script>
 

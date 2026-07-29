@@ -4,8 +4,8 @@ import { onBeforeUnmount, onMounted, ref } from "vue"
 
 import type { Ref } from "vue"
 
-const DEFAULT_MIN_WINDOW_WIDTH = 300
-const DEFAULT_MIN_WINDOW_HEIGHT = 300
+/** The size every floating window opens at, and the smallest it may be dragged to. */
+export const MIN_WINDOW_SIZE = { width: 300, height: 300 }
 
 /** Absolute rect of the window in viewport coordinates. */
 interface Rect {
@@ -46,8 +46,8 @@ export function useDraggableWindow(options: DraggableWindowOptions) {
     initialSize,
     handleClose,
     closeOnEscape = true,
-    minWidth = DEFAULT_MIN_WINDOW_WIDTH,
-    minHeight = DEFAULT_MIN_WINDOW_HEIGHT,
+    minWidth = MIN_WINDOW_SIZE.width,
+    minHeight = MIN_WINDOW_SIZE.height,
     contentSized = false,
   } = options
 

@@ -51,8 +51,10 @@ export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
 
     let badgeWidth = 0
 
+    // Text lands on fractions of a pixel, and a badge held at a rounded-down width
+    // ellipsizes the very label it was measured from, so the widest is rounded up.
     badges.forEach((badge) => {
-      badgeWidth = Math.max(badgeWidth, badge.offsetWidth)
+      badgeWidth = Math.max(badgeWidth, badge.getBoundingClientRect().width)
     })
 
     const first = badges[0]
@@ -60,7 +62,7 @@ export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
     const { gutter, anchorRadius } = getTokenPixels(CONNECTOR_TOKENS, scope)
 
     setMetrics({
-      badgeWidth,
+      badgeWidth: Math.ceil(badgeWidth),
       badgeHeight: first.offsetHeight,
       badgeGap: Number.isNaN(badgeGap) ? 0 : badgeGap,
       gutter,

@@ -2,6 +2,7 @@ import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
 import { useToggleIsolation } from "@app/editor/use-toggle-isolation"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useHistoryStore } from "@app/workspace/history-store"
 import { onMounted, onUnmounted } from "vue"
 import { useRouter } from "vue-router"
@@ -44,6 +45,7 @@ export function useEditorShortcuts(): void {
   const tool = useToolStore()
   const config = useEditorConfigStore()
   const { toggleIsolation } = useToggleIsolation()
+  const { toggleRefBadges } = useRefBadges()
   const panel = usePanelStore()
   const router = useRouter()
 
@@ -178,6 +180,11 @@ export function useEditorShortcuts(): void {
       case "w":
         event.preventDefault()
         config.toggleWireframeMode()
+
+        return
+      case "r":
+        event.preventDefault()
+        toggleRefBadges()
 
         return
       case "p":

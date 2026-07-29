@@ -9,6 +9,7 @@ import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
 import { useToggleIsolation } from "@app/editor/use-toggle-isolation"
 import { useImportExport } from "@app/io/use-import-export"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useHistoryStore } from "@app/workspace/history-store"
 import { useNodeClipboardActions } from "@app/workspace/use-node-clipboard-actions"
@@ -50,6 +51,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const debug = useDebugStore()
   const panel = usePanelStore()
   const { toggleIsolation, canToggleIsolation } = useToggleIsolation()
+  const { toggleRefBadges } = useRefBadges()
   const tool = useToolStore()
   const history = useHistoryStore()
   const aiChat = useAiChatStore()
@@ -522,6 +524,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       action: () => config.toggleWireframeMode(),
       active: config.wireframeMode === "on",
       shortcut: "W",
+    },
+    {
+      id: "show-reference-badges",
+      label: "Show Reference Badges",
+      action: toggleRefBadges,
+      active: config.showRefBadges,
+      shortcut: "R",
     },
     "separator",
     {

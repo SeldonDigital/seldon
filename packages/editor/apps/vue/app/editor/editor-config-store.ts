@@ -85,6 +85,11 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const showUnusedFonts = ref(persisted.showUnusedFonts ?? false)
   const showUnusedIcons = ref(persisted.showUnusedIcons ?? false)
   const showPlayground = ref(persisted.showPlayground ?? false)
+
+  // Reference badge overlay. Left out of the persisted snapshot on purpose: the
+  // bindings it draws are read from a linked folder during a gesture and are not
+  // persisted, so restoring this on load would show an empty overlay.
+  const showRefBadges = ref(false)
   const showCodeNames = ref(persisted.showCodeNames ?? false)
   const objectsView = ref<ObjectsView>(persisted.objectsView ?? "components")
   const isolatedView = ref(persisted.isolatedView ?? false)
@@ -140,6 +145,10 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
 
   function toggleShowPlayground(): void {
     showPlayground.value = !showPlayground.value
+  }
+
+  function setShowRefBadges(enabled: boolean): void {
+    showRefBadges.value = enabled
   }
 
   function enableIsolation(boardKey: string, variantRootId: string | null): void {
@@ -251,6 +260,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     showUnusedFonts,
     showUnusedIcons,
     showPlayground,
+    showRefBadges,
     showCodeNames,
     objectsView,
     isolatedView,
@@ -273,6 +283,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     toggleShowUnusedFonts,
     toggleShowUnusedIcons,
     toggleShowPlayground,
+    setShowRefBadges,
     enableIsolation,
     disableIsolation,
     toggleDirectSelect,

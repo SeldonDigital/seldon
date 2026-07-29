@@ -112,6 +112,19 @@ export type SeldonRef =
   | "propertyValueIcon"
   | "propertyValueLabel"
   | "propertyValueMenu"
+  | "refCard"
+  | "refCardCondition"
+  | "refCardControllerFrom"
+  | "refCardControllerItem"
+  | "refCardControllerName"
+  | "refCardControllerPass"
+  | "refCardControllerPath"
+  | "refCardControllers"
+  | "refCardPath"
+  | "refCardView"
+  | "refChip"
+  | "refChipIcon"
+  | "refChipName"
   | "searchActions"
   | "searchIcon"
   | "searchLabel"
@@ -1540,6 +1553,188 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "buttonIconic2",
         type: "ButtonIconicProps",
         rendersWhen: "unless-null",
+      },
+    ],
+  },
+  refCard: {
+    component: "Frame",
+    nodeId: "component-panel-lAd1YaBS",
+    className: "sdn-frame sdn-frame--lad1",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  refCardCondition: {
+    component: "Text",
+    nodeId: "component-panel-mC6hCHqF",
+    className: "sdn-text sdn-text--mc6h",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "text3",
+        type: "TextProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refCardControllerFrom: {
+    component: "Text",
+    nodeId: "component-message-Ir92uzNa",
+    className: "sdn-text sdn-text--ir92",
+    views: [
+      {
+        component: "MessageRefController",
+        file: "elements/MessageRefController.vue",
+        slot: "text4",
+        type: "TextProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refCardControllerItem: {
+    component: "MessageRefController",
+    nodeId: "component-message-pIx0Khnt",
+    className: "sdn-message-ref-controller sdn-message",
+    views: [
+      {
+        component: "MessageRefController",
+        file: "elements/MessageRefController.vue",
+        slot: null,
+        type: "MessageRefControllerProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  refCardControllerName: {
+    component: "Text",
+    nodeId: "component-text-YDUPxtFS",
+    className: "sdn-text sdn-text--ydup",
+    views: [
+      {
+        component: "MessageRefController",
+        file: "elements/MessageRefController.vue",
+        slot: "text",
+        type: "TextProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refCardControllerPass: {
+    component: "Text",
+    nodeId: "component-message-Y6NPSfwz",
+    className: "sdn-text sdn-text--y6np",
+    views: [
+      {
+        component: "MessageRefController",
+        file: "elements/MessageRefController.vue",
+        slot: "text3",
+        type: "TextProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refCardControllerPath: {
+    component: "Text",
+    nodeId: "component-message-55WSaLzh",
+    className: "sdn-text sdn-text--55ws",
+    views: [
+      {
+        component: "MessageRefController",
+        file: "elements/MessageRefController.vue",
+        slot: "text2",
+        type: "TextProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refCardControllers: {
+    component: "Frame",
+    nodeId: "component-panel-LV6neIkS",
+    className: "sdn-frame sdn-frame--lv6n",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "frame3",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  refCardPath: {
+    component: "Text",
+    nodeId: "component-panel-WVHEGm8i",
+    className: "sdn-text sdn-text--wvhe",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "text2",
+        type: "TextProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refCardView: {
+    component: "Text",
+    nodeId: "component-panel-9wfdKyZu",
+    className: "sdn-text sdn-text--9wfd",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "text",
+        type: "TextProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refChip: {
+    component: "ChipAssist",
+    nodeId: "component-chip-ik8RMteR",
+    className: "sdn-chip sdn-chip-assist--ik8r",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "chipAssist",
+        type: "ChipAssistProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  refChipIcon: {
+    component: "Icon",
+    nodeId: "component-chip-afGp6Yh0",
+    className: "sdn-icon sdn-icon--afgp",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  refChipName: {
+    component: "TextLabel",
+    nodeId: "component-chip-LItzOEcN",
+    className: "sdn-text-label sdn-text-label--litz",
+    views: [
+      {
+        component: "PanelRefs",
+        file: "modules/PanelRefs.vue",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
       },
     ],
   },

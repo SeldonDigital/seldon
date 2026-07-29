@@ -16,6 +16,7 @@ import {
 import { storeToRefs } from "pinia"
 import { computed } from "vue"
 
+import RefConnector from "./ref-badges/RefConnector.vue"
 import HoverOverlay from "./select/HoverOverlay.vue"
 import NodeWireframe from "./select/NodeWireframe.vue"
 import SelectionOverlay from "./select/SelectionOverlay.vue"
@@ -30,7 +31,7 @@ const { activeBoard } = useActiveBoard()
 const selection = useSelectionStore()
 const hover = useObjectHoverStore()
 
-const { wireframeMode, showSelection } = storeToRefs(config)
+const { wireframeMode, showSelection, showRefBadges } = storeToRefs(config)
 const { activeTool } = storeToRefs(tool)
 const { selectedNodeId, selectedNodeRootId } = storeToRefs(selection)
 const { hoveredId, hoveredRootId } = storeToRefs(hover)
@@ -67,6 +68,13 @@ const showSelectHover = computed(
     !hoverCoincidesWithSelection.value,
 )
 const showInsertHover = computed(() => activeTool.value === "component")
+
+// Badges stay drawn through a pan or zoom, unlike the boxes above, which hide
+// until it settles. Hiding them would take the open card with them, and the badges
+// sit in the gutter rather than over the canvas, so they have somewhere to stay. The
+// connector view-model re-measures its own nodes per frame to keep up. Theme boards
+// have no node tree to reference.
+const drawRefBadges = computed(() => showRefBadges.value && !activeBoardIsTheme.value)
 </script>
 
 <template>
@@ -91,4 +99,5 @@ const showInsertHover = computed(() => activeTool.value === "component")
     :wireframe="showWireframes"
   />
   <HoverOverlay v-else-if="showInsertHover" :rect="hoverRect" :colors="hoverColors" />
+  <RefConnector v-if="drawRefBadges" />
 </template>

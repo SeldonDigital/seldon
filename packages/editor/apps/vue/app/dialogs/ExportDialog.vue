@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { usePanelStore } from "@app/editor/panel-store"
 import { useExportStatusStore } from "@app/io/export-status-store"
+import { useImportExport } from "@app/io/use-import-export"
 import MenuController from "@app/menus/MenuController.vue"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
+import { useWorkspaceId } from "@app/project/use-workspace-id"
 import { useToastStore } from "@app/toaster/toast-store"
 import WindowSurface from "@app/windows/WindowSurface.vue"
 import { useDraggableWindow } from "@app/windows/use-draggable-window"
@@ -10,11 +12,8 @@ import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import DialogExportComponent from "@seldon/components/modules/DialogExportComponent.vue"
-import { runLocalExport } from "@seldon/editor/lib/export/run-local-export"
-import {
-  pickExportDirectory,
-  writeExportToDirectory,
-} from "@seldon/editor/lib/export/write-export-to-directory"
+import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
+import { getExportTarget, saveExportTarget } from "@seldon/editor/lib/storage/export-target-store"
 import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
 import { storeToRefs } from "pinia"
 import { computed, ref, watch } from "vue"
@@ -43,7 +42,9 @@ const save = useWorkspaceSaveStore()
 const { record } = storeToRefs(save)
 const exportStatus = useExportStatusStore()
 const toast = useToastStore()
-const { isExporting } = storeToRefs(exportStatus)
+const { isExporting, cancelExport } = storeToRefs(exportStatus)
+const { exportToFolder } = useImportExport()
+const workspaceId = useWorkspaceId()
 
 const isOpen = computed(() => activePanel.value === "export-components")
 
@@ -67,13 +68,13 @@ const workspaceName = computed(
 )
 
 const directoryLabel = computed(() => directory.value?.name ?? "")
-const canExport = computed(() => directory.value !== null && !isExporting.value)
 const platformLabel = computed(
   () => EXPORT_PLATFORM_OPTIONS.find((option) => option.id === platform.value)?.label ?? "",
 )
 
+// Escape reaches the running export, the same way the Cancel button does.
 const { x, y, moveControls } = useDraggableWindow({
-  handleClose: close,
+  handleClose: cancel,
   contentSized: true,
 })
 
@@ -138,17 +139,28 @@ function commitNameOnEnter(event: KeyboardEvent): void {
   input.blur()
 }
 
+/** Remembers the pick itself, so choosing a folder and cancelling still sticks. */
 async function chooseDirectory(): Promise<void> {
   const picked = await pickExportDirectory()
-  if (picked) {
-    directory.value = picked
-  } else {
+
+  if (!picked) {
     toast.addToast("Folder picking is not supported in this browser")
+
+    return
   }
+
+  directory.value = picked
+
+  const id = workspaceId.value
+
+  if (id) await saveExportTarget(id, picked)
 }
 
+// The Export button dims while an export runs, but the guard is here so a second
+// run cannot start however the click arrived. Exporting with no folder chosen
+// opens the picker, which is what the field itself does.
 async function runExport(): Promise<void> {
-  if (!directory.value) return
+  if (isExporting.value) return
   commitName()
   const options: Partial<ExportOptions> = {
     target: { framework: platform.value, styles: "css-properties" },
@@ -160,17 +172,30 @@ async function runExport(): Promise<void> {
     includeWorkspace: savedWorkspace.value,
     includeScripts: includeScripts.value,
   }
-  exportStatus.setExporting(true)
-  try {
-    const files = await runLocalExport(workspace.value, options)
-    const written = await writeExportToDirectory(directory.value, files)
-    toast.addToast(`Exported ${written} file${written === 1 ? "" : "s"}`)
-    close()
-  } catch (error) {
-    toast.addToast(error instanceof Error ? error.message : "Export failed")
-  } finally {
-    exportStatus.setExporting(false)
+
+  await exportToFolder(options, directory.value ?? undefined)
+  close()
+}
+
+/**
+ * The dialog's one dismissal. It stops a running export, which then closes the
+ * dialog on its own once the write loop returns, and otherwise just closes.
+ */
+function cancel(): void {
+  if (isExporting.value) {
+    cancelExport.value?.()
+
+    return
   }
+
+  close()
+}
+
+// The backdrop and the title bar are not a cancel, so neither stops an export.
+function closeUnlessExporting(): void {
+  if (isExporting.value) return
+
+  close()
 }
 
 function reset(): void {
@@ -191,17 +216,30 @@ function close(): void {
   panel.closePanel()
 }
 
+// Offers the folder this workspace last exported into. A pick that lands while
+// this is in flight wins, since the user asked for it more recently.
 watch(isOpen, (open) => {
-  if (open) {
-    x.set(0)
-    y.set(0)
-  }
+  if (!open) return
+
+  x.set(0)
+  y.set(0)
+
+  const id = workspaceId.value
+
+  if (!id) return
+
+  void getExportTarget(id).then((target) => {
+    if (target) directory.value ??= target.directory
+  })
 })
 
 const styles: Record<string, CSSProperties> = {
   dragHandle: { cursor: "grab", userSelect: "none", touchAction: "none" },
   pointer: { cursor: "pointer" },
-  disabled: { opacity: 0.5, pointerEvents: "none" },
+
+  // Only Export dims, so Cancel and the title bar stay usable during a run. Its
+  // pointer events go with it, which is what stops a second export from landing.
+  busy: { opacity: 0.5, pointerEvents: "none" },
 
   // Every control here holds one resting appearance. The generated hover and
   // press rules dim a control to 0.8 and 0.6 opacity, which on a hairline
@@ -309,11 +347,11 @@ const seldonRefs = computed(() => ({
   exportScriptsNo: radioItem(!includeScripts.value, () => (includeScripts.value = false)),
   exportScriptsNoIcon: radioDot(!includeScripts.value),
 
-  exportCancel: { onClick: close },
+  exportCancel: { onClick: cancel },
   exportConfirm: {
     onClick: runExport,
-    "aria-disabled": !canExport.value,
-    style: canExport.value ? undefined : styles.disabled,
+    "aria-disabled": isExporting.value,
+    style: isExporting.value ? styles.busy : undefined,
   },
 }))
 </script>
@@ -323,13 +361,14 @@ const seldonRefs = computed(() => ({
     v-if="isOpen"
     modal
     content-sized
-    :on-close="close"
+    :on-close="closeUnlessExporting"
     :x="x"
     :y="y"
     :move-controls="moveControls"
   >
     <DialogExportComponent
       data-testid="export-components-dialog"
+      :aria-busy="isExporting"
       :bar="barHandle"
       :text-title="showSlot"
       :form-control="showSlot"
