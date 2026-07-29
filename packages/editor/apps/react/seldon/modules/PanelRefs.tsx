@@ -75,16 +75,16 @@ const sdn: PanelRefsProps = {
     className: "sdn-frame sdn-frame--xmfu",
   },
   textLabel2: {
-    children: "View",
+    children: "Reference",
     className: "sdn-text-label sdn-text-label--b5oa",
   },
   text: {
-    children: "ItemNode.tsx: { input2 }",
+    children: "referenceName: { interfaceKey }",
     className: "sdn-text sdn-text--9wfd",
     "data-seldon-ref": "refCardView",
   },
   text2: {
-    children: "seldon/elements/",
+    children: "elements/ItemNode.tsx",
     className: "sdn-text sdn-text--wvhe",
     "data-seldon-ref": "refCardPath",
   },
@@ -94,8 +94,8 @@ const sdn: PanelRefsProps = {
     "data-seldon-ref": "refCardCondition",
   },
   textLabel3: {
-    children: "Controllers",
-    className: "sdn-text-label sdn-text-label--b5oa",
+    children: "Controlled By",
+    className: "sdn-text-label sdn-text-label--csur",
   },
   frame3: {
     wrapperElement: "div",

@@ -46228,7 +46228,7 @@
       "overrides": {
         "content": {
           "type": "exact",
-          "value": "View"
+          "value": "Reference"
         },
         "font": {
           "textCase": {
@@ -46473,7 +46473,7 @@
       "overrides": {
         "content": {
           "type": "exact",
-          "value": "Controllers"
+          "value": "Controlled By"
         },
         "font": {
           "textCase": {
@@ -46499,12 +46499,6 @@
             "unit": "%",
             "value": 40
           }
-        },
-        "margin": {
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
         }
       },
       "origin": "user"
@@ -46519,7 +46513,7 @@
       "overrides": {
         "content": {
           "type": "exact",
-          "value": "ItemNode.tsx: { input2 }"
+          "value": "referenceName: { interfaceKey }"
         },
         "font": {
           "weight": {
@@ -47266,7 +47260,7 @@
       "overrides": {
         "content": {
           "type": "exact",
-          "value": "seldon/elements/"
+          "value": "elements/ItemNode.tsx"
         },
         "wrapText": {
           "type": "option",

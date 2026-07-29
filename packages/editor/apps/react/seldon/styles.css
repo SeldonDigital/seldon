@@ -3919,6 +3919,14 @@ body {
   font-size: var(--sdn-font-size-xsmall);
 }
 
+.sdn-text-label--csur {
+  color: var(--sdn-swatch-offBlack);
+  opacity: 0.4;
+  font-weight: var(--sdn-font-weight-medium);
+  font-size: var(--sdn-font-size-tiny);
+  text-transform: uppercase;
+}
+
 .sdn-text-label--d65z {
   align-self: unset;
   flex-shrink: unset;
