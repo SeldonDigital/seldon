@@ -3,7 +3,6 @@ import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import { buildRefBindingRows } from "./build-ref-binding-rows"
 import { getPropertySections } from "./get-property-sections"
 import { getThemePropertySections } from "./get-theme-property-sections"
 import { getIconRowCategory, titleCase } from "./icon-set-properties-data"
@@ -16,7 +15,6 @@ import type { PropertySection } from "./get-property-sections"
 import type { ThemePropertySection } from "./get-theme-property-sections"
 import type { FlatProperty } from "./properties-data"
 import type { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
-import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 
 /** A reference is only editable where `setRef` rules allow it (boards excluded). */
 function isReferenceFieldAllowed(node: Variant | Instance | Board): boolean {
@@ -30,37 +28,22 @@ function isReferenceFieldAllowed(node: Variant | Instance | Board): boolean {
  * Builds the leading node-field rows shown before the property rows, in the
  * core-owned `NODE_FIELD_DISPLAY_ORDER`. Theme applies to every non-resource
  * node and board; Reference only to nodes where `setRef` is allowed.
- *
- * When a binding is known for this node's ref, the Reference row gains read-only
- * sub-rows naming the generated views and the app code that drives it.
  */
 function buildLeadingNodeFieldRows(
   node: Variant | Instance | Board,
   workspace: Workspace,
-  refBinding: RefBinding | null,
 ): FlatProperty[] {
   const rows: FlatProperty[] = []
-  const bindingRows = buildRefBindingRows(refBinding)
 
   for (const field of NODE_FIELD_DISPLAY_ORDER) {
     if (field === "theme") {
       rows.push(buildThemeAssignmentProperty(node, workspace))
     } else if (field === "reference" && isReferenceFieldAllowed(node)) {
-      rows.push(buildReferenceProperty(node, bindingRows.length > 0), ...bindingRows)
+      rows.push(buildReferenceProperty(node))
     }
   }
 
   return rows
-}
-
-/** The binding for this node's ref, when one is known. */
-function findRefBinding(
-  node: Variant | Instance | Board,
-  refBindings: RefBinding[] | undefined,
-): RefBinding | null {
-  if (!refBindings || isBoard(node)) return null
-
-  return refBindings.find((binding) => binding.node?.nodeId === node.id) ?? null
 }
 
 export interface PropertyTreeLayout {
@@ -84,7 +67,6 @@ export function buildPropertyTreeLayout({
   familyProperties,
   iconProperties,
   cssStringCount,
-  refBindings,
 }: {
   properties: FlatProperty[]
   workspace: Workspace
@@ -97,8 +79,6 @@ export function buildPropertyTreeLayout({
   metadataVariantLabel?: string
   familyProperties?: FlatProperty[]
   iconProperties?: FlatProperty[]
-  /** Ref bindings read from the linked project. Absent until a caller loads them. */
-  refBindings?: RefBinding[]
 }): PropertyTreeLayout {
   // The metadata section heads resource trees the way the attributes section
   // heads component trees: title it "Family · Variant" (just the family when the
@@ -141,7 +121,7 @@ export function buildPropertyTreeLayout({
   const propertiesWithLeadingFields = isResourceType(node as Board)
     ? [...properties]
     : [
-        ...buildLeadingNodeFieldRows(node, workspace, findRefBinding(node, refBindings)),
+        ...buildLeadingNodeFieldRows(node, workspace),
         ...injectRepeatRows(properties, node, workspace),
       ]
 

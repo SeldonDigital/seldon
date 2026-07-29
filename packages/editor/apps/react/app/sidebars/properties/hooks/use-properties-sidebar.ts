@@ -1,5 +1,4 @@
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
-import { useRefBindings } from "@app/refs/use-ref-bindings"
 import { useNodeActiveState } from "@app/workspace/hooks/use-node-active-state"
 import { useSelectedNodeRootId, useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
@@ -444,10 +443,6 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     selectedNodeRootId,
   )
 
-  // Empty until something loads the linked project's registry and manifest, so
-  // the Reference row shows binding sub-rows only once they are known.
-  const { refBindings } = useRefBindings()
-
   const { sections, allProperties } = useMemo(() => {
     if (!propertyTreeNode) {
       return { sections: [], allProperties: [] }
@@ -464,7 +459,6 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       familyProperties,
       iconProperties,
       cssStringCount: cssStrings.length,
-      refBindings,
     })
   }, [
     flatProperties,
@@ -477,7 +471,6 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     familyProperties,
     iconProperties,
     cssStrings.length,
-    refBindings,
   ])
 
   if (!propertyTreeNode) {
