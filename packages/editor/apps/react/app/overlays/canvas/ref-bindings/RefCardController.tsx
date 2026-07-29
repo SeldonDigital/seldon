@@ -8,7 +8,7 @@ import {
   getBindingDirectory,
   getBindingFileName,
 } from "@seldon/editor/lib/refs/describe-binding"
-import { useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 
 import { setRefCardSize } from "./hooks/use-ref-card"
 
@@ -57,6 +57,13 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
     })
 
   const resizeSides = RESIZE_SIDES[position.opens]
+
+  // The chip moves as the canvas scrolls, and the card travels with it. Only the corner
+  // moves, so the size the reader dragged this card to survives the trip.
+  useEffect(() => {
+    x.set(position.x)
+    y.set(position.y)
+  }, [position.x, position.y, x, y])
 
   // The drag drives this card, and the size it lands on is what the next card opens at.
   const handleResize = useCallback(

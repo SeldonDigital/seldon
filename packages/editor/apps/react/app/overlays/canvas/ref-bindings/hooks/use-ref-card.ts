@@ -7,7 +7,10 @@ import {
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
 import { useCallback, useEffect, useRef, useState } from "react"
 
-import type { RefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import type {
+  ChipBox,
+  RefCardPosition,
+} from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { RefObject } from "react"
 
 interface RefCardState {
@@ -47,8 +50,10 @@ export function setRefCardSize(size: RefCardSize): void {
  *
  * It opens at the size the last card was dragged to, then owns its own rect, so a
  * reader sizes these cards once rather than per ref.
+ *
+ * @param chip - The box the chip occupies, so an open card follows it as it moves.
  */
-export function useRefCard(): RefCardState {
+export function useRefCard(chip: ChipBox): RefCardState {
   const chipRef = useRef<HTMLElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState<RefCardPosition | null>(null)
@@ -68,6 +73,21 @@ export function useRefCard(): RefCardState {
       return getRefCardPosition(rect, getWindowInnerSize(), refCardSize)
     })
   }, [])
+
+  // Scrolling the canvas moves the chip, and the open card follows it so the pair stays
+  // readable together. The rect is re-measured from the chip rather than offset by the
+  // scroll, because a chip held at the edge of the gutter stops tracking its node.
+  useEffect(() => {
+    const chipEl = chipRef.current
+
+    if (!chipEl) return
+
+    setPosition((current) => {
+      if (!current) return current
+
+      return getRefCardPosition(chipEl.getBoundingClientRect(), getWindowInnerSize(), refCardSize)
+    })
+  }, [chip.top, chip.left])
 
   // Closing on `pointerdown` rather than `click` keeps a press on the canvas from
   // starting a drag under an open card. The chip is excluded so its own click is

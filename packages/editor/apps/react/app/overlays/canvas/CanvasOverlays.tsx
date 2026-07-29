@@ -52,10 +52,12 @@ export function CanvasOverlays() {
 
   useTrackNodeRects(nodeIds)
 
-  // Node rects go stale during a pan or zoom, since the rect tracker measures on
-  // settle rather than every frame, and a connector anchored to a stale rect would
-  // point at nothing. Theme boards have no node tree to reference.
-  const showRefBindings = showRefConnectors && !isTransforming && !activeBoardIsTheme
+  // Connectors stay drawn through a pan or zoom, unlike the boxes above, which hide
+  // until it settles. Hiding them would take the open card with them, and the chips sit
+  // in the gutter rather than over the canvas, so they have somewhere to stay. The
+  // connector view-model re-measures its own nodes per frame to keep up.
+  // Theme boards have no node tree to reference.
+  const showRefBindings = showRefConnectors && !activeBoardIsTheme
   const refConnectors = showRefBindings ? <RefConnector /> : null
 
   return (

@@ -45,7 +45,7 @@ interface RefOmittedProps {
  * The wrapper carries the placement and the click, because a module takes no `ref`.
  */
 export function RefChip({ placement, binding }: RefChipProps) {
-  const { chipRef, cardRef, position, toggle, close } = useRefCard()
+  const { chipRef, cardRef, position, toggle, close } = useRefCard(placement.chip)
 
   const wrapperStyle = useMemo(() => {
     if (placement.muted) return refChipMutedStyle(placement.chip)

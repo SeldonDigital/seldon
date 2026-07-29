@@ -21,6 +21,7 @@ import { ComponentLevel } from "@seldon/core/components/constants"
 import { getEffectiveNodeLevel } from "@seldon/core/workspace/helpers/nodes/get-effective-node-level"
 
 import { useCanvasSize } from "../../../hooks/use-canvas-size"
+import { useFollowCanvasTransform } from "./use-follow-canvas-transform"
 
 import type { Board, EntryNodeId, Workspace } from "@seldon/core/workspace/types"
 import type {
@@ -79,6 +80,8 @@ export function useRefConnector(): RefConnectorState {
     () => collectFrameAncestors(activeBoard, workspace, selectedNodeId),
     [activeBoard, workspace, selectedNodeId],
   )
+
+  useFollowCanvasTransform(scopedNodeIds)
 
   const sources = useMemo(
     () => buildSources(refBindings, rects, scopedNodeIds, frameAncestors),

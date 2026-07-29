@@ -139,26 +139,31 @@ export function layoutConnectors(
         a.source.key.localeCompare(b.source.key),
     )
 
-  // Walk top to bottom, letting each chip take its node's center unless the one
-  // above already claimed that space. A chip that would cross the floor stops the
-  // column, and everything below it is reported as a count instead.
+  const pitch = chipHeight + chipGap
+  const capacity = Math.max(Math.floor((floor - margin + chipGap) / pitch), 0)
+
+  // Chips only ever leave the column when it cannot hold them all. The count then takes
+  // the bottom slot for itself, unless that would leave nothing, since showing one
+  // connector beats showing none.
+  const fitting = Math.min(anchored.length, capacity)
+  const countTakesSlot = fitting < anchored.length && fitting > 1
+  const placed = countTakesSlot ? fitting - 1 : fitting
+  const chipFloor = countTakesSlot ? floor - pitch : floor
+
+  // Walk top to bottom, letting each chip take its node's center unless the one above
+  // already claimed that space, or the chips still below need the room. Reserving that
+  // room keeps a node scrolled past the floor from crowding its neighbors out: its chip
+  // holds at the bottom of the column with the connector pointing off the edge at it.
   const stacked: Array<{ source: ConnectorSource; top: number }> = []
   let cursor = margin
 
-  for (const { source, preferredY } of anchored) {
-    const top = Math.max(preferredY - chipHeight / 2, cursor)
-
-    if (top + chipHeight > floor) break
+  for (let index = 0; index < placed; index++) {
+    const { source, preferredY } = anchored[index]
+    const ceiling = chipFloor - chipHeight - (placed - 1 - index) * pitch
+    const top = clamp(preferredY - chipHeight / 2, cursor, ceiling)
 
     stacked.push({ source, top })
-    cursor = top + chipHeight + chipGap
-  }
-
-  // The count needs a slot of its own. When the column ends too close to the floor
-  // to add one, the last chip gives up its place, which is known to fit. A single
-  // chip keeps its place instead, since showing one connector beats showing none.
-  if (stacked.length < anchored.length && stacked.length > 1 && cursor + chipHeight > floor) {
-    stacked.pop()
+    cursor = top + pitch
   }
 
   const omitted = anchored.length - stacked.length
