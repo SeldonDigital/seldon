@@ -134,7 +134,7 @@ const sdn: PanelHariProps = {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--vorn",
-    "data-seldon-ref": "turns",
+    "data-seldon-ref": "hariTurns",
   },
 
   frame3: {
@@ -228,7 +228,7 @@ const sdn: PanelHariProps = {
  *       Icon          icon4
  *     ButtonIconic    buttonIconic2  -> hariClose
  *       Icon          icon5
- *   Frame             frame2         -> turns
+ *   Frame             frame2         -> hariTurns
  *   Frame             frame3
  *     Textarea        textarea       -> hariInput
  *   Frame             frame4

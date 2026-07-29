@@ -341,7 +341,7 @@ function Hari({
       },
       hariClose: { onClick: close },
 
-      turns: {
+      hariTurns: {
         children: transcript,
         ref: transcriptRef,
         onScroll: onTranscriptScroll,

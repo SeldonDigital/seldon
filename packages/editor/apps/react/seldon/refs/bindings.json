@@ -3115,6 +3115,72 @@
         ]
       }
     ],
+    "hariToolIcon": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 42,
+        "conditional": false,
+        "expression": "{ icon: tool.icon }",
+        "inputs": [
+          {
+            "name": "tool",
+            "declaredAt": {
+              "line": 40,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "tool.icon",
+            "inputs": [
+              {
+                "name": "tool",
+                "declaredAt": {
+                  "line": 40,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariToolText": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 43,
+        "conditional": false,
+        "expression": "{ children: tool.text }",
+        "inputs": [
+          {
+            "name": "tool",
+            "declaredAt": {
+              "line": 40,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "tool.text",
+            "inputs": [
+              {
+                "name": "tool",
+                "declaredAt": {
+                  "line": 40,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "hariTools": [
       {
         "file": "app/palettes/hari/HariController.tsx",
@@ -3206,6 +3272,197 @@
             "key": "data-testid",
             "expression": "\"ai-chat-tools\"",
             "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariToolsChevron": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 36,
+        "conditional": false,
+        "expression": "{ icon: chevron }",
+        "inputs": [
+          {
+            "name": "chevron",
+            "declaredAt": {
+              "line": 29,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "chevron",
+            "inputs": [
+              {
+                "name": "chevron",
+                "declaredAt": {
+                  "line": 29,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariToolsToggle": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 31,
+        "conditional": false,
+        "expression": "{ onClick: () => setOpen(!open), \"aria-expanded\": open, \"aria-label\": open ? \"Hide tools\" : \"Show tools\", }",
+        "inputs": [
+          {
+            "name": "setOpen",
+            "declaredAt": {
+              "line": 27,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "open",
+            "declaredAt": {
+              "line": 27,
+              "kind": "const",
+              "via": "useState"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "() => setOpen(!open)",
+            "inputs": [
+              {
+                "name": "setOpen",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              },
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-expanded",
+            "expression": "open",
+            "inputs": [
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-label",
+            "expression": "open ? \"Hide tools\" : \"Show tools\"",
+            "inputs": [
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariTurns": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 344,
+        "conditional": false,
+        "expression": "{ children: transcript, ref: transcriptRef, onScroll: onTranscriptScroll, }",
+        "inputs": [
+          {
+            "name": "transcript",
+            "declaredAt": {
+              "line": 305,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          },
+          {
+            "name": "transcriptRef",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const",
+              "via": "useRef"
+            }
+          },
+          {
+            "name": "onTranscriptScroll",
+            "declaredAt": {
+              "line": 210,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "transcript",
+            "inputs": [
+              {
+                "name": "transcript",
+                "declaredAt": {
+                  "line": 305,
+                  "kind": "const",
+                  "via": "useMemo"
+                }
+              }
+            ]
+          },
+          {
+            "key": "ref",
+            "expression": "transcriptRef",
+            "inputs": [
+              {
+                "name": "transcriptRef",
+                "declaredAt": {
+                  "line": 178,
+                  "kind": "const",
+                  "via": "useRef"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onScroll",
+            "expression": "onTranscriptScroll",
+            "inputs": [
+              {
+                "name": "onTranscriptScroll",
+                "declaredAt": {
+                  "line": 210,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
           }
         ]
       }
@@ -5034,85 +5291,6 @@
           }
         ]
       }
-    ],
-    "turns": [
-      {
-        "file": "app/palettes/hari/HariController.tsx",
-        "component": "Hari",
-        "line": 344,
-        "conditional": false,
-        "expression": "{ children: transcript, ref: transcriptRef, onScroll: onTranscriptScroll, }",
-        "inputs": [
-          {
-            "name": "transcript",
-            "declaredAt": {
-              "line": 305,
-              "kind": "const",
-              "via": "useMemo"
-            }
-          },
-          {
-            "name": "transcriptRef",
-            "declaredAt": {
-              "line": 178,
-              "kind": "const",
-              "via": "useRef"
-            }
-          },
-          {
-            "name": "onTranscriptScroll",
-            "declaredAt": {
-              "line": 210,
-              "kind": "const",
-              "via": "useCallback"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "children",
-            "expression": "transcript",
-            "inputs": [
-              {
-                "name": "transcript",
-                "declaredAt": {
-                  "line": 305,
-                  "kind": "const",
-                  "via": "useMemo"
-                }
-              }
-            ]
-          },
-          {
-            "key": "ref",
-            "expression": "transcriptRef",
-            "inputs": [
-              {
-                "name": "transcriptRef",
-                "declaredAt": {
-                  "line": 178,
-                  "kind": "const",
-                  "via": "useRef"
-                }
-              }
-            ]
-          },
-          {
-            "key": "onScroll",
-            "expression": "onTranscriptScroll",
-            "inputs": [
-              {
-                "name": "onTranscriptScroll",
-                "declaredAt": {
-                  "line": 210,
-                  "kind": "const",
-                  "via": "useCallback"
-                }
-              }
-            ]
-          }
-        ]
-      }
     ]
   },
   "slots": {
@@ -5451,44 +5629,6 @@
                 "line": 220,
                 "kind": "const",
                 "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ]
-    },
-    "ButtonIconic": {
-      "icon": [
-        {
-          "file": "app/palettes/hari/HariTools.tsx",
-          "component": "HariTools",
-          "line": 54,
-          "expression": "chevronIcon",
-          "inputs": [
-            {
-              "name": "chevronIcon",
-              "declaredAt": {
-                "line": 46,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "onClick": [
-        {
-          "file": "app/palettes/hari/HariTools.tsx",
-          "component": "HariTools",
-          "line": 55,
-          "expression": "toggle",
-          "inputs": [
-            {
-              "name": "toggle",
-              "declaredAt": {
-                "line": 44,
-                "kind": "const"
               }
             }
           ],
@@ -7231,26 +7371,6 @@
           "line": 242,
           "expression": "\"header\"",
           "inputs": [],
-          "spread": false
-        }
-      ]
-    },
-    "Icon": {
-      "icon": [
-        {
-          "file": "app/palettes/hari/HariTools.tsx",
-          "component": "HariTools",
-          "line": 65,
-          "expression": "row.icon",
-          "inputs": [
-            {
-              "name": "row",
-              "declaredAt": {
-                "line": 63,
-                "kind": "parameter"
-              }
-            }
-          ],
           "spread": false
         }
       ]
@@ -9571,6 +9691,50 @@
               }
             }
           ],
+          "spread": false
+        }
+      ]
+    },
+    "MessageToolsHeader": {
+      "buttonIconic": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 54,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "textDescription": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 54,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ]
+    },
+    "MessageToolsUsed": {
+      "icon": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 47,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "textDescription": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 47,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]

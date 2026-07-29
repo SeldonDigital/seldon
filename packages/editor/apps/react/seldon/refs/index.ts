@@ -93,7 +93,13 @@ export type SeldonRef =
   | "hariStatusLabel"
   | "hariThinking"
   | "hariThinkingLabel"
+  | "hariToolIcon"
   | "hariTools"
+  | "hariToolsChevron"
+  | "hariToolsLabel"
+  | "hariToolsToggle"
+  | "hariToolText"
+  | "hariTurns"
   | "hariUserText"
   | "logo"
   | "menuComponent"
@@ -157,8 +163,6 @@ export type SeldonRef =
   | "sectionLabel"
   | "sidebarComponents"
   | "sidebarResources"
-  | "tool"
-  | "turns"
   | "workspaceName"
   | "workspaceSave"
 
@@ -1312,6 +1316,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  hariToolIcon: {
+    component: "Icon",
+    nodeId: "component-message-GL7BdSOW",
+    className: "sdn-icon sdn-icon--gl7b",
+    views: [
+      {
+        component: "MessageToolsUsed",
+        file: "elements/MessageToolsUsed.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   hariTools: {
     component: "ButtonToggle",
     nodeId: "component-panel-ablPq3kW",
@@ -1323,6 +1341,76 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "buttonToggle2",
         type: "ButtonToggleProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToolsChevron: {
+    component: "Icon",
+    nodeId: "component-message-BMASpmJY",
+    className: "sdn-icon sdn-icon--bmas",
+    views: [
+      {
+        component: "MessageToolsHeader",
+        file: "elements/MessageToolsHeader.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariToolsLabel: {
+    component: "TextDescription",
+    nodeId: "component-message-71GGHVwV",
+    className: "sdn-text-description sdn-text-description--71gg",
+    views: [
+      {
+        component: "MessageToolsHeader",
+        file: "elements/MessageToolsHeader.tsx",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToolsToggle: {
+    component: "ButtonIconic",
+    nodeId: "component-message-EGbeFVEr",
+    className: "sdn-button-iconic sdn-button-iconic--iklu",
+    views: [
+      {
+        component: "MessageToolsHeader",
+        file: "elements/MessageToolsHeader.tsx",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToolText: {
+    component: "TextDescription",
+    nodeId: "component-message-20e0rrCn",
+    className: "sdn-text-description sdn-text-description--20e0",
+    views: [
+      {
+        component: "MessageToolsUsed",
+        file: "elements/MessageToolsUsed.tsx",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariTurns: {
+    component: "Frame",
+    nodeId: "component-panel-VoRnpuW2",
+    className: "sdn-frame sdn-frame--vorn",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.tsx",
+        slot: "frame2",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -2205,34 +2293,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "buttonToggle2",
         type: "ButtonToggleProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  tool: {
-    component: "Frame",
-    nodeId: "component-frame-RStcYvkF",
-    className: "sdn-frame sdn-frame--rstc",
-    views: [
-      {
-        component: "MessageTools",
-        file: "elements/MessageTools.tsx",
-        slot: "frame2",
-        type: "FrameProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  turns: {
-    component: "Frame",
-    nodeId: "component-panel-VoRnpuW2",
-    className: "sdn-frame sdn-frame--vorn",
-    views: [
-      {
-        component: "PanelHari",
-        file: "modules/PanelHari.tsx",
-        slot: "frame2",
-        type: "FrameProps",
-        rendersWhen: "unless-null",
       },
     ],
   },
