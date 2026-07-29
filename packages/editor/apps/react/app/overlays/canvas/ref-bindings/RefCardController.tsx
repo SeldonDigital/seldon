@@ -10,39 +10,39 @@ import {
 } from "@seldon/editor/lib/refs/describe-binding"
 import { useCallback, useMemo } from "react"
 
-import { getRefCardResizeSides, setRefCardSize } from "./ref-card-size"
-import { refCardMultilineStyle, refCardPanelStyle } from "./ref-card-style"
+import { setRefCardSize } from "./hooks/use-ref-card"
 
-import type { Rect } from "@seldon/components/utils/resize"
+import type { Rect, ResizeSide } from "@seldon/components/utils/resize"
 import type { RefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type {
   BindingControllerDescription,
   BindingViewDescription,
 } from "@seldon/editor/lib/refs/describe-binding"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
-import type { ReactNode, Ref } from "react"
+import type { CSSProperties, ReactNode, Ref } from "react"
+
+/**
+ * A card opening below its chip grows down and left, and one opening above grows up
+ * and left. Offering the anchored edges would let a drag pull the card over its chip.
+ */
+const RESIZE_SIDES: Record<RefCardPosition["opens"], ResizeSide[]> = {
+  below: ["left", "bottom", "bottom-left"],
+  above: ["left", "top", "top-left"],
+}
 
 interface RefCardControllerProps {
   binding: RefBinding
   position: RefCardPosition
   onClose: () => void
-  /** Lets the chip tell a press inside the card, handles included, from a press away. */
   cardRef: Ref<HTMLDivElement>
 }
 
 /**
  * Binds one ref binding to the card half of `PanelRefs`.
  *
- * The wording comes from `@seldon/editor/lib/refs`, so the properties sidebar reports a
- * binding the same way. The card leaves the chip slot out, since the chip that opened
- * it is still on screen beside it and already names the ref.
- *
  * It floats on `WindowSurface`, the same shell the dialogs and palettes use, which
  * portals it clear of the canvas and its overflow, re-applies the editor theme outside
- * the chrome root, and draws the resize handles. `useDraggableWindow` owns the rect, so
- * a drag moves the edge under the pointer and holds the other three. It stays non-modal
- * and grows no drag handle: a card follows its chip and the canvas stays usable behind
- * it.
+ * the chrome root, and draws the resize handles.
  */
 export function RefCardController({ binding, position, onClose, cardRef }: RefCardControllerProps) {
   const { note, views, controllers } = useMemo(() => describeBinding(binding), [binding])
@@ -56,10 +56,9 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
       minHeight: REF_CARD_MIN_SIZE.height,
     })
 
-  const resizeSides = useMemo(() => getRefCardResizeSides(position.opens), [position.opens])
+  const resizeSides = RESIZE_SIDES[position.opens]
 
-  // The drag drives this card, and the size it lands on is what the next card opens
-  // at. Recorded outside React state, so a live drag re-renders nothing.
+  // The drag drives this card, and the size it lands on is what the next card opens at.
   const handleResize = useCallback(
     (rect: Rect) => {
       onResize(rect)
@@ -72,17 +71,16 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
 
   // The view section has one Text per field rather than one per component, so several
   // components that expose the same ref stack as lines inside each Text and stay lined
-  // up across the three. One enabler covers the section, since the component, its
-  // folder, and when its slot renders only make sense together.
+  // up across the three.
   const viewLines = views.map(toViewLine).join("\n")
   const folderLines = views.map(toFolderLine).join("\n")
   const conditionLines = views.map(toConditionLine).join("\n")
   const viewSlot = views.length === 0 ? null : {}
 
   const cardRefs = {
-    refCardView: { children: viewLines, style: refCardMultilineStyle },
-    refCardPath: { children: folderLines, style: refCardMultilineStyle },
-    refCardCondition: { children: conditionLines, style: refCardMultilineStyle },
+    refCardView: { children: viewLines, style: styles.multiline },
+    refCardPath: { children: folderLines, style: styles.multiline },
+    refCardCondition: { children: conditionLines, style: styles.multiline },
     refCardControllers: { children: rows },
   }
 
@@ -105,7 +103,7 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
     >
       <PanelRefs
         role="presentation"
-        style={refCardPanelStyle}
+        style={styles.panel}
         seldonRefs={cardRefs}
         textLabel2={{}}
         text={viewSlot}
@@ -131,10 +129,7 @@ function toConditionLine(view: BindingViewDescription): string {
 }
 
 /**
- * A row per place code drives the ref, or one row carrying the note when nothing does.
- *
- * The note rides in the name slot rather than a slot of its own, because an empty card
- * has one thing to say and the row already has somewhere to say it.
+ * A row per code snippet drives the ref, or one row carrying a note when nothing does.
  */
 function buildControllerRows(
   note: string | null,
@@ -149,11 +144,11 @@ function buildControllerRows(
   }
 
   return controllers.map((controller, index) =>
-    toControllerRow(controller, index, controllers.length),
+    joinControllerRow(controller, index, controllers.length),
   )
 }
 
-function toControllerRow(
+function joinControllerRow(
   controller: BindingControllerDescription,
   index: number,
   count: number,
@@ -168,7 +163,7 @@ function toControllerRow(
     refCardControllerPass: { children: controller.pass },
     refCardControllerFrom: {
       children: controller.from.join("\n"),
-      style: refCardMultilineStyle,
+      style: styles.multiline,
     },
   }
 
@@ -187,4 +182,18 @@ function toControllerRow(
       hr={separator}
     />
   )
+}
+
+const styles: Record<string, CSSProperties> = {
+  // The surface owns the box the reader drags, so the board's own size and padding go
+  // and the panel fills what it is given.
+  panel: {
+    width: "100%",
+    height: "100%",
+    padding: 0,
+  },
+  // Holds the line breaks in a slot that carries several lines in one Text.
+  multiline: {
+    whiteSpace: "pre-line",
+  },
 }

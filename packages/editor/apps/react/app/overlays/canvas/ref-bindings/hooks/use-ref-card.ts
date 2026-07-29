@@ -1,10 +1,11 @@
 "use client"
 
-import { getRefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import {
+  REF_CARD_DEFAULT_SIZE,
+  getRefCardPosition,
+} from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
 import { useCallback, useEffect, useRef, useState } from "react"
-
-import { getRefCardSize } from "../ref-card-size"
 
 import type { RefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { RefObject } from "react"
@@ -16,6 +17,25 @@ interface RefCardState {
   position: RefCardPosition | null
   toggle: () => void
   close: () => void
+}
+
+interface RefCardSize {
+  width: number
+  height: number
+}
+
+/**
+ * The size the next card opens at.
+ *
+ * Shared across chips rather than kept per card, because resizing one card says how
+ * much room these cards need, not how much that one ref needs. Read only when a card
+ * opens, so it stays a module value rather than a store and a live drag re-renders
+ * nothing. Not persisted, since the bindings behind the cards load per session.
+ */
+let refCardSize: RefCardSize = REF_CARD_DEFAULT_SIZE
+
+export function setRefCardSize(size: RefCardSize): void {
+  refCardSize = size
 }
 
 /**
@@ -45,7 +65,7 @@ export function useRefCard(): RefCardState {
 
       const rect = chipEl.getBoundingClientRect()
 
-      return getRefCardPosition(rect, getWindowInnerSize(), getRefCardSize())
+      return getRefCardPosition(rect, getWindowInnerSize(), refCardSize)
     })
   }, [])
 

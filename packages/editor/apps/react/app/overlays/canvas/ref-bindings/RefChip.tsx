@@ -6,6 +6,7 @@ import { RefCardController } from "./RefCardController"
 import { useRefCard } from "./hooks/use-ref-card"
 import {
   refChipHiddenCardStyle,
+  refChipMutedStyle,
   refChipPanelStyle,
   refChipStyle,
   refOmittedStyle,
@@ -39,10 +40,11 @@ interface RefOmittedProps {
 export function RefChip({ placement, binding }: RefChipProps) {
   const { chipRef, cardRef, position, toggle, close } = useRefCard()
 
-  const wrapperStyle = useMemo(
-    () => refChipStyle(placement.chip, placement.muted),
-    [placement.chip, placement.muted],
-  )
+  const wrapperStyle = useMemo(() => {
+    if (placement.muted) return refChipMutedStyle(placement.chip)
+
+    return refChipStyle(placement.chip)
+  }, [placement.chip, placement.muted])
 
   const chipRefs = {
     refChipName: { children: placement.label },

@@ -6,7 +6,13 @@ import {
 import { useMemo } from "react"
 
 import { RefChip, RefOmitted } from "./RefChip"
-import { connectorAnchorStyle, connectorStrokeStyle, connectorSvgStyle } from "./connector-style"
+import {
+  connectorAnchorStyle,
+  connectorMutedAnchorStyle,
+  connectorMutedStrokeStyle,
+  connectorStrokeStyle,
+  connectorSvgStyle,
+} from "./connector-style"
 import { useRefConnector } from "./hooks/use-ref-connector"
 
 import type { ConnectorShape } from "@app/overlays/primitives/ConnectorPaths.bespoke"
@@ -51,13 +57,16 @@ export function RefConnector() {
 }
 
 function toShape({ placement }: { placement: ConnectorPlacement }): ConnectorShape {
+  const strokeStyle = placement.muted ? connectorMutedStrokeStyle : connectorStrokeStyle
+  const anchorStyle = placement.muted ? connectorMutedAnchorStyle : connectorAnchorStyle
+
   return {
     key: placement.key,
     d: toElbowPath(placement.points),
     anchorX: placement.anchor.x,
     anchorY: placement.anchor.y,
     anchorRadius: CONNECTOR_ANCHOR_RADIUS,
-    strokeStyle: connectorStrokeStyle(placement.muted),
-    anchorStyle: connectorAnchorStyle(placement.muted),
+    strokeStyle,
+    anchorStyle,
   }
 }

@@ -13,11 +13,19 @@ export interface ConnectorPoint {
   y: number
 }
 
+/**
+ * The label box in the gutter.
+ *
+ * `centerY` is where the connector meets it, and where the chip is anchored when it
+ * draws, so both the elbow and the chip's own placement read one number rather than
+ * deriving it twice.
+ */
 export interface ChipBox {
   top: number
   left: number
   width: number
   height: number
+  centerY: number
 }
 
 /**
@@ -152,6 +160,7 @@ export function layoutConnectors(
       left: gutterLeft,
       width: chipWidth,
       height: chipHeight,
+      centerY: top + chipHeight / 2,
     }
 
     return {
@@ -162,7 +171,7 @@ export function layoutConnectors(
       chip,
       points: getElbowPoints({
         anchor,
-        chipCenterY: top + chipHeight / 2,
+        chipCenterY: chip.centerY,
         gutterLeft,
         stub,
       }),
@@ -202,6 +211,7 @@ function getOmittedChip(input: {
     left: input.gutterLeft,
     width: input.chipWidth,
     height: input.chipHeight,
+    centerY: input.top + input.chipHeight / 2,
   }
 }
 

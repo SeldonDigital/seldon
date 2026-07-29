@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 272,
+  "scannedFiles": 270,
   "refs": {
     "createComponentContainer": [
       {
@@ -2835,7 +2835,7 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
         "component": "RefChip",
-        "line": 49,
+        "line": 51,
         "conditional": false,
         "expression": "{ style: refChipHiddenCardStyle }",
         "inputs": [
@@ -2868,7 +2868,7 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
         "component": "RefOmitted",
-        "line": 86,
+        "line": 90,
         "conditional": false,
         "expression": "{ style: refChipHiddenCardStyle }",
         "inputs": [
@@ -2903,24 +2903,23 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 65,
+        "line": 83,
         "conditional": false,
-        "expression": "{ children: conditionLines, style: refCardMultilineStyle }",
+        "expression": "{ children: conditionLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "conditionLines",
             "declaredAt": {
-              "line": 59,
+              "line": 77,
               "kind": "const",
               "via": "views.map(toConditionLine).join"
             }
           },
           {
-            "name": "refCardMultilineStyle",
+            "name": "styles",
             "declaredAt": {
-              "line": 13,
-              "kind": "import",
-              "module": "./ref-card-style"
+              "line": 187,
+              "kind": "const"
             }
           }
         ],
@@ -2932,7 +2931,7 @@
               {
                 "name": "conditionLines",
                 "declaredAt": {
-                  "line": 59,
+                  "line": 77,
                   "kind": "const",
                   "via": "views.map(toConditionLine).join"
                 }
@@ -2941,14 +2940,13 @@
           },
           {
             "key": "style",
-            "expression": "refCardMultilineStyle",
+            "expression": "styles.multiline",
             "inputs": [
               {
-                "name": "refCardMultilineStyle",
+                "name": "styles",
                 "declaredAt": {
-                  "line": 13,
-                  "kind": "import",
-                  "module": "./ref-card-style"
+                  "line": 187,
+                  "kind": "const"
                 }
               }
             ]
@@ -2959,24 +2957,23 @@
     "refCardControllerFrom": [
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-        "component": "toControllerRow",
-        "line": 137,
+        "component": "joinControllerRow",
+        "line": 164,
         "conditional": false,
-        "expression": "{ children: controller.from.join(\"\\n\"), style: refCardMultilineStyle, }",
+        "expression": "{ children: controller.from.join(\"\\n\"), style: styles.multiline, }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 119,
+              "line": 146,
               "kind": "parameter"
             }
           },
           {
-            "name": "refCardMultilineStyle",
+            "name": "styles",
             "declaredAt": {
-              "line": 13,
-              "kind": "import",
-              "module": "./ref-card-style"
+              "line": 187,
+              "kind": "const"
             }
           }
         ],
@@ -2988,7 +2985,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 119,
+                  "line": 146,
                   "kind": "parameter"
                 }
               }
@@ -2996,14 +2993,13 @@
           },
           {
             "key": "style",
-            "expression": "refCardMultilineStyle",
+            "expression": "styles.multiline",
             "inputs": [
               {
-                "name": "refCardMultilineStyle",
+                "name": "styles",
                 "declaredAt": {
-                  "line": 13,
-                  "kind": "import",
-                  "module": "./ref-card-style"
+                  "line": 187,
+                  "kind": "const"
                 }
               }
             ]
@@ -3015,14 +3011,14 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
         "component": "buildControllerRows",
-        "line": 114,
+        "line": 141,
         "conditional": false,
         "expression": "{ children: note }",
         "inputs": [
           {
             "name": "note",
             "declaredAt": {
-              "line": 44,
+              "line": 48,
               "kind": "const",
               "via": "useMemo"
             }
@@ -3036,7 +3032,7 @@
               {
                 "name": "note",
                 "declaredAt": {
-                  "line": 44,
+                  "line": 48,
                   "kind": "const",
                   "via": "useMemo"
                 }
@@ -3047,15 +3043,15 @@
       },
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-        "component": "toControllerRow",
-        "line": 134,
+        "component": "joinControllerRow",
+        "line": 161,
         "conditional": false,
         "expression": "{ children: controller.name }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 119,
+              "line": 146,
               "kind": "parameter"
             }
           }
@@ -3068,7 +3064,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 119,
+                  "line": 146,
                   "kind": "parameter"
                 }
               }
@@ -3080,15 +3076,15 @@
     "refCardControllerPass": [
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-        "component": "toControllerRow",
-        "line": 136,
+        "component": "joinControllerRow",
+        "line": 163,
         "conditional": false,
         "expression": "{ children: controller.pass }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 119,
+              "line": 146,
               "kind": "parameter"
             }
           }
@@ -3101,7 +3097,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 119,
+                  "line": 146,
                   "kind": "parameter"
                 }
               }
@@ -3113,15 +3109,15 @@
     "refCardControllerPath": [
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-        "component": "toControllerRow",
-        "line": 135,
+        "component": "joinControllerRow",
+        "line": 162,
         "conditional": false,
         "expression": "{ children: location }",
         "inputs": [
           {
             "name": "location",
             "declaredAt": {
-              "line": 129,
+              "line": 156,
               "kind": "const"
             }
           }
@@ -3134,7 +3130,7 @@
               {
                 "name": "location",
                 "declaredAt": {
-                  "line": 129,
+                  "line": 156,
                   "kind": "const"
                 }
               }
@@ -3147,14 +3143,14 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 66,
+        "line": 84,
         "conditional": false,
         "expression": "{ children: rows }",
         "inputs": [
           {
             "name": "rows",
             "declaredAt": {
-              "line": 51,
+              "line": 70,
               "kind": "const",
               "via": "useMemo"
             }
@@ -3168,7 +3164,7 @@
               {
                 "name": "rows",
                 "declaredAt": {
-                  "line": 51,
+                  "line": 70,
                   "kind": "const",
                   "via": "useMemo"
                 }
@@ -3182,24 +3178,23 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 64,
+        "line": 82,
         "conditional": false,
-        "expression": "{ children: folderLines, style: refCardMultilineStyle }",
+        "expression": "{ children: folderLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "folderLines",
             "declaredAt": {
-              "line": 58,
+              "line": 76,
               "kind": "const",
               "via": "views.map(toFolderLine).join"
             }
           },
           {
-            "name": "refCardMultilineStyle",
+            "name": "styles",
             "declaredAt": {
-              "line": 13,
-              "kind": "import",
-              "module": "./ref-card-style"
+              "line": 187,
+              "kind": "const"
             }
           }
         ],
@@ -3211,7 +3206,7 @@
               {
                 "name": "folderLines",
                 "declaredAt": {
-                  "line": 58,
+                  "line": 76,
                   "kind": "const",
                   "via": "views.map(toFolderLine).join"
                 }
@@ -3220,14 +3215,13 @@
           },
           {
             "key": "style",
-            "expression": "refCardMultilineStyle",
+            "expression": "styles.multiline",
             "inputs": [
               {
-                "name": "refCardMultilineStyle",
+                "name": "styles",
                 "declaredAt": {
-                  "line": 13,
-                  "kind": "import",
-                  "module": "./ref-card-style"
+                  "line": 187,
+                  "kind": "const"
                 }
               }
             ]
@@ -3239,24 +3233,23 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 63,
+        "line": 81,
         "conditional": false,
-        "expression": "{ children: viewLines, style: refCardMultilineStyle }",
+        "expression": "{ children: viewLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "viewLines",
             "declaredAt": {
-              "line": 57,
+              "line": 75,
               "kind": "const",
               "via": "views.map(toViewLine).join"
             }
           },
           {
-            "name": "refCardMultilineStyle",
+            "name": "styles",
             "declaredAt": {
-              "line": 13,
-              "kind": "import",
-              "module": "./ref-card-style"
+              "line": 187,
+              "kind": "const"
             }
           }
         ],
@@ -3268,7 +3261,7 @@
               {
                 "name": "viewLines",
                 "declaredAt": {
-                  "line": 57,
+                  "line": 75,
                   "kind": "const",
                   "via": "views.map(toViewLine).join"
                 }
@@ -3277,14 +3270,13 @@
           },
           {
             "key": "style",
-            "expression": "refCardMultilineStyle",
+            "expression": "styles.multiline",
             "inputs": [
               {
-                "name": "refCardMultilineStyle",
+                "name": "styles",
                 "declaredAt": {
-                  "line": 13,
-                  "kind": "import",
-                  "module": "./ref-card-style"
+                  "line": 187,
+                  "kind": "const"
                 }
               }
             ]
@@ -3296,14 +3288,14 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
         "component": "RefChip",
-        "line": 48,
+        "line": 50,
         "conditional": false,
         "expression": "{ children: placement.label }",
         "inputs": [
           {
             "name": "placement",
             "declaredAt": {
-              "line": 39,
+              "line": 40,
               "kind": "parameter"
             }
           }
@@ -3316,7 +3308,7 @@
               {
                 "name": "placement",
                 "declaredAt": {
-                  "line": 39,
+                  "line": 40,
                   "kind": "parameter"
                 }
               }
@@ -3327,14 +3319,14 @@
       {
         "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
         "component": "RefOmitted",
-        "line": 85,
+        "line": 89,
         "conditional": false,
         "expression": "{ children: `+${count} more` }",
         "inputs": [
           {
             "name": "count",
             "declaredAt": {
-              "line": 81,
+              "line": 85,
               "kind": "parameter"
             }
           }
@@ -3347,7 +3339,7 @@
               {
                 "name": "count",
                 "declaredAt": {
-                  "line": 81,
+                  "line": 85,
                   "kind": "parameter"
                 }
               }
@@ -5224,13 +5216,13 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefChip",
-          "line": 60,
+          "line": 64,
           "expression": "toggle",
           "inputs": [
             {
               "name": "toggle",
               "declaredAt": {
-                "line": 40,
+                "line": 41,
                 "kind": "const",
                 "via": "useRefCard"
               }
@@ -5463,24 +5455,6 @@
                 "line": 29,
                 "kind": "const",
                 "via": "useCanvas"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "onPointerDown": [
-        {
-          "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-          "component": "toHandle",
-          "line": 161,
-          "expression": "onPointerDown",
-          "inputs": [
-            {
-              "name": "onPointerDown",
-              "declaredAt": {
-                "line": 160,
-                "kind": "parameter"
               }
             }
           ],
@@ -7912,14 +7886,14 @@
       "hr": [
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-          "component": "toControllerRow",
-          "line": 155,
+          "component": "joinControllerRow",
+          "line": 182,
           "expression": "separator",
           "inputs": [
             {
               "name": "separator",
               "declaredAt": {
-                "line": 145,
+                "line": 172,
                 "kind": "const"
               }
             }
@@ -7931,15 +7905,15 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
           "component": "buildControllerRows",
-          "line": 116,
+          "line": 143,
           "expression": "{}",
           "inputs": [],
           "spread": false
         },
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-          "component": "toControllerRow",
-          "line": 151,
+          "component": "joinControllerRow",
+          "line": 178,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -7948,8 +7922,8 @@
       "text2": [
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-          "component": "toControllerRow",
-          "line": 152,
+          "component": "joinControllerRow",
+          "line": 179,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -7958,14 +7932,14 @@
       "text3": [
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-          "component": "toControllerRow",
-          "line": 153,
+          "component": "joinControllerRow",
+          "line": 180,
           "expression": "pass",
           "inputs": [
             {
               "name": "pass",
               "declaredAt": {
-                "line": 143,
+                "line": 170,
                 "kind": "const"
               }
             }
@@ -7976,14 +7950,14 @@
       "text4": [
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
-          "component": "toControllerRow",
-          "line": 154,
+          "component": "joinControllerRow",
+          "line": 181,
           "expression": "from",
           "inputs": [
             {
               "name": "from",
               "declaredAt": {
-                "line": 144,
+                "line": 171,
                 "kind": "const"
               }
             }
@@ -8817,7 +8791,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefChip",
-          "line": 65,
+          "line": 69,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8825,7 +8799,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefOmitted",
-          "line": 95,
+          "line": 99,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8835,7 +8809,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 72,
+          "line": 105,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -8843,7 +8817,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefChip",
-          "line": 62,
+          "line": 66,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -8851,7 +8825,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefOmitted",
-          "line": 92,
+          "line": 96,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -8861,13 +8835,13 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 76,
+          "line": 109,
           "expression": "viewSlot",
           "inputs": [
             {
               "name": "viewSlot",
               "declaredAt": {
-                "line": 60,
+                "line": 78,
                 "kind": "const"
               }
             }
@@ -8879,13 +8853,13 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 77,
+          "line": 110,
           "expression": "viewSlot",
           "inputs": [
             {
               "name": "viewSlot",
               "declaredAt": {
-                "line": 60,
+                "line": 78,
                 "kind": "const"
               }
             }
@@ -8897,13 +8871,13 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 78,
+          "line": 111,
           "expression": "viewSlot",
           "inputs": [
             {
               "name": "viewSlot",
               "declaredAt": {
-                "line": 60,
+                "line": 78,
                 "kind": "const"
               }
             }
@@ -8915,7 +8889,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefChip",
-          "line": 66,
+          "line": 70,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8923,7 +8897,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefChip.tsx",
           "component": "RefOmitted",
-          "line": 96,
+          "line": 100,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8933,7 +8907,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 75,
+          "line": 108,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8943,7 +8917,7 @@
         {
           "file": "app/overlays/canvas/ref-bindings/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 79,
+          "line": 112,
           "expression": "{}",
           "inputs": [],
           "spread": false
