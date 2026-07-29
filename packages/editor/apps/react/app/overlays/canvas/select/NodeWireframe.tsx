@@ -1,6 +1,8 @@
 "use client"
 
+import { useSharedStore } from "@app/canvas/hooks/use-shared-store"
 import { OutlineBox } from "@app/overlays/primitives"
+import { anchoredNodesStore } from "@seldon/editor/lib/canvas/connectors/anchored-nodes-store"
 import { getHtmlElementByNodeId } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { getWireframeMode } from "@seldon/editor/lib/canvas/overlay/geometry"
 import {
@@ -10,8 +12,7 @@ import {
 import { useEffect, useState } from "react"
 
 import { useNodeRect } from "../../hooks/use-node-rects"
-
-import type { CSSProperties } from "react"
+import { nodeWireframeAnchoredStyle, nodeWireframeStyle } from "./node-wireframe-style"
 
 export type NodeWireframeProps = {
   nodeId: string
@@ -25,6 +26,9 @@ export type NodeWireframeProps = {
  */
 export function NodeWireframe({ nodeId, isSelected = false }: NodeWireframeProps) {
   const trackedRect = useNodeRect(nodeId)
+  // Read as one boolean, so a box only draws again when a connector starts or stops
+  // meeting its own node rather than whenever any of them move.
+  const isAnchored = useSharedStore(anchoredNodesStore, (state) => state.nodeIds.has(nodeId))
   const [directRect, setDirectRect] = useState<{
     top: number
     left: number
@@ -90,20 +94,7 @@ export function NodeWireframe({ nodeId, isSelected = false }: NodeWireframeProps
 
   if (!clippedRect) return null
   const box = getWireframeMode(clippedRect)
-
-  const style: CSSProperties = {
-    top: `${box.top}px`,
-    left: `${box.left}px`,
-    width: `${box.width}px`,
-    height: `${box.height}px`,
-    position: "absolute",
-    pointerEvents: "none",
-    boxSizing: box.boxSizing,
-    borderStyle: "dashed",
-    borderColor: "var(--sdn-swatch-primary)",
-    borderWidth: box.borderWidth,
-    zIndex: 1,
-  }
+  const style = isAnchored ? nodeWireframeAnchoredStyle(box) : nodeWireframeStyle(box)
 
   return <OutlineBox style={style} />
 }

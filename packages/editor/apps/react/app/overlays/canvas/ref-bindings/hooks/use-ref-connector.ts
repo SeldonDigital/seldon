@@ -5,6 +5,7 @@ import { useRefBindings } from "@app/refs/use-ref-bindings"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { setAnchoredNodes } from "@seldon/editor/lib/canvas/connectors/anchored-nodes-store"
 import {
   getGutterSide,
   layoutConnectors,
@@ -15,7 +16,7 @@ import {
   getParentNodeIds,
   walkComponentTree,
 } from "@seldon/editor/lib/workspace/component-tree"
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { getEffectiveNodeLevel } from "@seldon/core/workspace/helpers/nodes/get-effective-node-level"
@@ -143,6 +144,20 @@ export function useRefConnector(): RefConnectorState {
     () => buildEntries(layout.placements, refBindings),
     [layout.placements, refBindings],
   )
+
+  // Published for the wireframe overlay, which draws a box per node and colors the ones a
+  // connector meets. It reads a set of ids and stays clear of anything about refs.
+  const anchoredNodeIds = useMemo(() => collectAnchoredNodeIds(entries), [entries])
+
+  useEffect(() => {
+    setAnchoredNodes(anchoredNodeIds)
+  }, [anchoredNodeIds])
+
+  // Cleared on the way out rather than alongside each write, which happens every frame of
+  // a pan and would flicker every colored box back and forth.
+  useEffect(() => {
+    return () => setAnchoredNodes([])
+  }, [])
 
   return {
     entries,
@@ -331,6 +346,31 @@ function getSummaryLabel(count: number): string {
   if (count === 1) return "1 Reference"
 
   return `${count} References`
+}
+
+/**
+ * The nodes the drawn connectors meet.
+ *
+ * A summary chip counts as its own node, since that is where its connector lands. Refs
+ * pushed out of the column are absent, because nothing is pointing at them.
+ */
+function collectAnchoredNodeIds(entries: PlacedConnector[]): string[] {
+  const nodeIds: string[] = []
+
+  for (const entry of entries) {
+    if (entry.kind === "summary") {
+      nodeIds.push(entry.nodeId)
+      continue
+    }
+
+    const nodeId = entry.binding.node?.nodeId
+
+    if (nodeId) {
+      nodeIds.push(nodeId)
+    }
+  }
+
+  return nodeIds
 }
 
 /** Pairs each placement back to the ref or the node it was built from. */
