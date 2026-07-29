@@ -87,7 +87,6 @@ useEditorShortcuts()
 useWorkspaceAutosave()
 
 const status = ref<"loading" | "ready" | "missing">("loading")
-const title = ref("Workspace")
 
 const workspaceId = computed(() => String(route.params.id))
 
@@ -98,7 +97,6 @@ async function load(id: string): Promise<void> {
     status.value = "missing"
     return
   }
-  title.value = record.name
   save.setRecord(record)
   history.reset(record.workspace)
   status.value = "ready"

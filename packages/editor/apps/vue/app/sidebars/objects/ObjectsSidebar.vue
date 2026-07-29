@@ -7,6 +7,7 @@ import { useRenameInput } from "@app/sidebars/use-rename-input"
 import { useToastStore } from "@app/toaster/toast-store"
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 import ItemNode from "@seldon/components/elements/ItemNode.vue"
 import Frame from "@seldon/components/frames/Frame.vue"
 import SidebarObjects from "@seldon/components/modules/SidebarObjects.vue"
@@ -25,10 +26,10 @@ const selection = useSelectionStore()
 const config = useEditorConfigStore()
 const save = useWorkspaceSaveStore()
 const toast = useToastStore()
+const dispatch = useDispatch()
 
 const { workspaceSelected } = storeToRefs(selection)
 const { objectsView, isolatedView } = storeToRefs(config)
-const { record } = storeToRefs(save)
 
 function emptySectionLabel(label: string): string {
   return isolatedView.value ? "Currently in Isolation Mode" : `No ${label.toLowerCase()}`
@@ -36,12 +37,13 @@ function emptySectionLabel(label: string): string {
 
 const sections = useObjectsSections(toRef(props, "workspace"))
 
-const workspaceName = computed(() => record.value?.name ?? "Workspace")
+const workspaceName = computed(() => props.workspace.metadata.label || "Workspace")
 
 const componentsActive = computed(() => objectsView.value === "components")
 const resourcesActive = computed(() => objectsView.value === "resources")
 
-// Inline project rename, reusing the shared rename machinery.
+// Inline project rename, reusing the shared rename machinery. The name is the
+// workspace label, so autosave persists it like any other edit.
 const isEditingName = ref(false)
 function setEditingName(value: boolean): void {
   isEditingName.value = value
@@ -49,7 +51,7 @@ function setEditingName(value: boolean): void {
 function submitRename(next: string): void {
   const trimmed = next.trim()
   if (trimmed && trimmed !== workspaceName.value) {
-    void save.saveNow(getCurrentWorkspace(), { name: trimmed })
+    dispatch({ type: "set_workspace_label", payload: { value: trimmed } })
   }
   setEditingName(false)
 }

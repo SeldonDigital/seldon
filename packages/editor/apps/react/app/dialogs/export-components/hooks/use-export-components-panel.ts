@@ -1,7 +1,6 @@
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useExportCancel, useExportStatus } from "@app/io/export-status-store"
 import { useImportExport } from "@app/io/use-import-export"
-import { useSaveWorkspace, useWorkspaceName } from "@app/persistence/workspace-save-store"
 import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { pickExportDirectory } from "@seldon/editor/lib/export/write-export-to-directory"
@@ -26,11 +25,8 @@ export const EXPORT_PLATFORM_OPTIONS = PLATFORM_LIST.map((platform) => ({
  * scope toggles, and the chosen output folder, then runs the factory export
  * with those options on confirm.
  *
- * The workspace name is not dialog state. Typing writes `metadata.label` so the
- * name travels with the exported workspace copy, and committing renames the
- * stored record so the Home list agrees. The field falls back to the record name
- * while the label is unset, which is the case for every workspace saved before
- * the label existed.
+ * The workspace name is not dialog state. Typing writes `metadata.label`, so the
+ * name travels with the exported workspace copy and autosave persists it.
  *
  * The output folder is not dialog state either. It is remembered per workspace,
  * so `reset` clears the field and the next open fills it from storage.
@@ -40,8 +36,6 @@ export function useExportComponentsPanel() {
   const { exportToFolder } = useImportExport()
   const { workspace, dispatch } = useWorkspace()
   const workspaceId = useWorkspaceId()
-  const storedName = useWorkspaceName()
-  const saveNow = useSaveWorkspace()
   const exporting = useExportStatus()
   const cancelExport = useExportCancel()
 
@@ -58,11 +52,10 @@ export function useExportComponentsPanel() {
   const [directory, setDirectory] = useState<FileSystemDirectoryHandle | null>(null)
 
   // Holds what the user typed, including an empty string, so clearing the field
-  // does not snap back to the fallback name mid-edit.
+  // does not snap back to the stored name mid-edit.
   const [nameDraft, setNameDraft] = useState<string | null>(null)
 
-  // An empty label counts as unset, so it falls through to the record name.
-  const workspaceName = nameDraft ?? (workspace.metadata.label || storedName)
+  const workspaceName = nameDraft ?? workspace.metadata.label ?? ""
 
   const setWorkspaceName = useCallback(
     (value: string) => {
@@ -72,14 +65,7 @@ export function useExportComponentsPanel() {
     [dispatch],
   )
 
-  /**
-   * Settles the name the field shows into both stores. This also covers the case
-   * where the field only ever displayed the fallback record name, so an export
-   * that never touched the field still carries a label.
-   *
-   * The rename goes through the shared writer, the same way the inline title
-   * rename does, so it saves the live workspace rather than a snapshot.
-   */
+  /** Settles the trimmed name the field shows into the workspace label. */
   const commitWorkspaceName = useCallback(() => {
     const name = workspaceName.trim()
 
@@ -88,11 +74,7 @@ export function useExportComponentsPanel() {
     if (name !== workspace.metadata.label) {
       dispatch({ type: "set_workspace_label", payload: { value: name } })
     }
-
-    if (name !== storedName) {
-      void saveNow(workspace, { name })
-    }
-  }, [workspaceName, workspace, storedName, saveNow, dispatch])
+  }, [workspaceName, workspace, dispatch])
 
   const reset = useCallback(() => {
     setPlatform("react")

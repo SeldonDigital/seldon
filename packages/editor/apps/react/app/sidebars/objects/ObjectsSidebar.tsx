@@ -2,7 +2,7 @@
 
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { useSaveWorkspace, useWorkspaceName } from "@app/persistence/workspace-save-store"
+import { useSaveWorkspace } from "@app/persistence/workspace-save-store"
 import { FramerExpandable } from "@app/sidebars/FramerExpandable.bespoke"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildFieldStateProps } from "@app/views/state-props"
@@ -45,8 +45,8 @@ export function ObjectsSidebar() {
   const { sections } = useObjectsSidebar()
   const scrollerRef = useScrollSelection()
   const setHoveredId = useSetHoveredId()
-  const { workspace } = useWorkspace({ usePreview: false })
-  const name = useWorkspaceName()
+  const { workspace, dispatch } = useWorkspace({ usePreview: false })
+  const name = workspace.metadata.label ?? ""
   const saveNow = useSaveWorkspace()
   const addToast = useAddToast()
   const [isEditingName, setEditingName] = useState(false)
@@ -72,17 +72,18 @@ export function ObjectsSidebar() {
 
   // The project name reuses the node-row rename machinery: a read-only display
   // input until edit mode, then an editable input that commits on Enter/blur.
+  // The name is the workspace label, so autosave persists it like any other edit.
   const submitRename = useCallback(
     (next: string) => {
       const trimmed = next.trim()
 
       if (trimmed && trimmed !== name) {
-        void saveNow(workspace, { name: trimmed })
+        dispatch({ type: "set_workspace_label", payload: { value: trimmed } })
       }
 
       setEditingName(false)
     },
-    [name, saveNow, workspace],
+    [name, dispatch],
   )
 
   const nameInput = useRenameInput({

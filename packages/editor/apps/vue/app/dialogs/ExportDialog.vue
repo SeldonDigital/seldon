@@ -3,12 +3,10 @@ import { usePanelStore } from "@app/editor/panel-store"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { useImportExport } from "@app/io/use-import-export"
 import MenuController from "@app/menus/MenuController.vue"
-import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
 import { useWorkspaceId } from "@app/project/use-workspace-id"
 import { useToastStore } from "@app/toaster/toast-store"
 import WindowSurface from "@app/windows/WindowSurface.vue"
 import { useDraggableWindow } from "@app/windows/use-draggable-window"
-import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import DialogExportComponent from "@seldon/components/modules/DialogExportComponent.vue"
@@ -38,8 +36,6 @@ const panel = usePanelStore()
 const { activePanel } = storeToRefs(panel)
 const { workspace } = useWorkspace()
 const dispatch = useDispatch()
-const save = useWorkspaceSaveStore()
-const { record } = storeToRefs(save)
 const exportStatus = useExportStatusStore()
 const toast = useToastStore()
 const { isExporting, cancelExport } = storeToRefs(exportStatus)
@@ -59,13 +55,10 @@ const includeScripts = ref(true)
 const directory = ref<FileSystemDirectoryHandle | null>(null)
 
 // Holds what the user typed, including an empty string, so clearing the field
-// does not snap back to the fallback name mid-edit.
+// does not snap back to the stored name mid-edit.
 const nameDraft = ref<string | null>(null)
 
-// An empty label counts as unset, so it falls through to the record name.
-const workspaceName = computed(
-  () => nameDraft.value ?? (workspace.value.metadata.label || record.value?.name || ""),
-)
+const workspaceName = computed(() => nameDraft.value ?? workspace.value.metadata.label ?? "")
 
 const directoryLabel = computed(() => directory.value?.name ?? "")
 const platformLabel = computed(
@@ -113,21 +106,12 @@ function onNameInput(event: Event): void {
   dispatch({ type: "set_workspace_label", payload: { value } })
 }
 
-/**
- * Settles the name the field shows into both stores. This also covers the case
- * where the field only ever displayed the fallback record name, so an export
- * that never touched the field still carries a label. Renaming the record is a
- * write to storage, so it waits for the user to finish rather than firing on
- * every keystroke.
- */
+/** Settles the trimmed name the field shows into the workspace label. */
 function commitName(): void {
   const name = workspaceName.value.trim()
   if (!name || name.length > MAX_WORKSPACE_NAME_LENGTH) return
   if (name !== workspace.value.metadata.label) {
     dispatch({ type: "set_workspace_label", payload: { value: name } })
-  }
-  if (name !== record.value?.name) {
-    void save.saveNow(getCurrentWorkspace(), { name })
   }
 }
 
