@@ -40,7 +40,7 @@ interface RefOmittedProps {
 
 interface RefChipMeasureProps {
   labels: string[]
-  measureRef: Ref<HTMLDivElement>
+  measureRef: Ref<HTMLElement>
 }
 
 /**
@@ -196,8 +196,8 @@ export function RefChipMeasure({ labels, measureRef }: RefChipMeasureProps) {
   })
 
   return (
-    <div ref={measureRef} style={refChipMeasureStyle}>
+    <Frame ref={measureRef} style={refChipMeasureStyle}>
       {chips}
-    </div>
+    </Frame>
   )
 }

@@ -2,11 +2,7 @@ import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { MessageRefController } from "@seldon/components/elements/MessageRefController"
 import { PanelRefs } from "@seldon/components/modules/PanelRefs"
-import {
-  describeBinding,
-  getBindingDirectory,
-  getBindingFileName,
-} from "@seldon/editor/lib/refs/describe-binding"
+import { describeBinding } from "@seldon/editor/lib/refs/describe-binding"
 import { useCallback, useEffect, useMemo } from "react"
 
 import { setRefCardSize } from "./hooks/use-ref-card"
@@ -78,14 +74,14 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
   // The view section has one Text per field rather than one per component, so several
   // components that expose the same ref stack as lines inside each Text and stay lined
   // up across the three.
-  const viewLines = views.map(toViewLine).join("\n")
-  const folderLines = views.map(toFolderLine).join("\n")
-  const conditionLines = views.map(toConditionLine).join("\n")
+  const viewLines = views.map((view) => toViewLine(binding.ref, view)).join("\n")
+  const pathLines = views.map((view) => view.file).join("\n")
+  const conditionLines = views.map((view) => view.condition).join("\n")
   const viewSlot = views.length === 0 ? null : {}
 
   const cardRefs = {
     refCardView: { children: viewLines, style: styles.multiline },
-    refCardPath: { children: folderLines, style: styles.multiline },
+    refCardPath: { children: pathLines, style: styles.multiline },
     refCardCondition: { children: conditionLines, style: styles.multiline },
     refCardControllers: { children: rows },
   }
@@ -121,17 +117,14 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
   )
 }
 
-/** `ItemNode.tsx: { textLabel }`, the file that exposes the ref and the slot it is. */
-function toViewLine(view: BindingViewDescription): string {
-  return `${getBindingFileName(view.file)}: { ${view.slot} }`
-}
-
-function toFolderLine(view: BindingViewDescription): string {
-  return getBindingDirectory(view.file)
-}
-
-function toConditionLine(view: BindingViewDescription): string {
-  return view.condition
+/**
+ * `nodeLabel: { textLabel }`, the ref and the prop the view takes it as.
+ *
+ * Named by the ref rather than the file, so the line answers to the chip that opened
+ * the card. The file it is exposed from is the line under it.
+ */
+function toViewLine(ref: string, view: BindingViewDescription): string {
+  return `${ref}: { ${view.slot} }`
 }
 
 /**

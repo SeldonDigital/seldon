@@ -19,7 +19,7 @@ export interface ConnectorMetrics {
 
 interface ConnectorMetricsState {
   metrics: ConnectorMetrics | null
-  measureRef: RefObject<HTMLDivElement | null>
+  measureRef: RefObject<HTMLElement | null>
 }
 
 /**
@@ -37,7 +37,7 @@ interface ConnectorMetricsState {
  * which is when the overlay has nothing to place chips by.
  */
 export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
-  const measureRef = useRef<HTMLDivElement>(null)
+  const measureRef = useRef<HTMLElement>(null)
   const [metrics, setMetrics] = useState<ConnectorMetrics | null>(null)
   const signature = labels.join("\n")
 

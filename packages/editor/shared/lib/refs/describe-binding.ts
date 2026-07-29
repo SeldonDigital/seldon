@@ -67,20 +67,6 @@ export function describeBinding(binding: RefBinding | null): BindingDescription 
   }
 }
 
-/** The file's own name, for a consumer that reports no enclosing component. */
-export function getBindingFileName(file: string): string {
-  const parts = file.split("/")
-
-  return parts[parts.length - 1] || file
-}
-
-/** The folder a file sits in, with its trailing slash, or an empty string at the root. */
-export function getBindingDirectory(file: string): string {
-  const cut = file.lastIndexOf("/")
-
-  return cut === -1 ? "" : file.slice(0, cut + 1)
-}
-
 /**
  * Names the slot a view exposes and when it renders.
  *
@@ -94,6 +80,13 @@ function describeView(view: SeldonRefView): BindingViewDescription {
     slot: view.slot ?? "root",
     condition: SLOT_CONDITIONS[view.rendersWhen],
   }
+}
+
+/** The file's own name, for a consumer that reports no enclosing component. */
+function getBindingFileName(file: string): string {
+  const parts = file.split("/")
+
+  return parts[parts.length - 1] || file
 }
 
 function describeConsumer(consumer: RefConsumer): BindingControllerDescription {

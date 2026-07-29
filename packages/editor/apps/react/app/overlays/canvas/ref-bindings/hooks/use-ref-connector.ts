@@ -50,7 +50,7 @@ interface RefConnectorState {
   anchorRadius: number
   /** Every chip's label, and the element the metrics are read from. */
   labels: string[]
-  measureRef: RefObject<HTMLDivElement | null>
+  measureRef: RefObject<HTMLElement | null>
 }
 
 /** Marks a source as standing for a frame's contents rather than for one ref. */
