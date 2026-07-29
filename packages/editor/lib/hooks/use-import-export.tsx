@@ -31,8 +31,6 @@ import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
-const EXPORT_STATUS_DURATION_MS = 120_000
-
 function summarizeExportPath(path: string): string {
   if (path.length <= 64) return path
   return `…${path.slice(-63)}`
@@ -125,7 +123,7 @@ export function useImportExport() {
   )
 
   const exportToFolder = useCallback(async () => {
-    const { setCompletion, setExporting } = useExportStatusStore.getState()
+    const { setExporting } = useExportStatusStore.getState()
     const startedAt = performance.now()
     let completionMessage: string | null = null
     let completionIntent: "success" | "error" = "success"
@@ -144,11 +142,7 @@ export function useImportExport() {
       }
       logExport("Folder selected", { name: directory.name })
       setExporting(true)
-      setCompletion(
-        "Generating export files…",
-        "status",
-        EXPORT_STATUS_DURATION_MS,
-      )
+      addToast("Exporting components…")
       const { runLocalExport } = await import("@lib/export/run-local-export")
       const files = await runLocalExport(workspace)
       logExport(`Generated ${files.length} file(s)`)
@@ -163,17 +157,10 @@ export function useImportExport() {
           })),
         )
       }
-      setCompletion(
-        `Writing 0/${files.length} export files…`,
-        "status",
-        EXPORT_STATUS_DURATION_MS,
-      )
       const count = await writeExportToDirectory(directory, files, {
         onProgress: ({ currentPath, total, written }) => {
-          setCompletion(
+          logExport(
             `Writing ${written}/${total}: ${summarizeExportPath(currentPath)}`,
-            "status",
-            EXPORT_STATUS_DURATION_MS,
           )
         },
       })
@@ -192,12 +179,12 @@ export function useImportExport() {
           intent: completionIntent,
           message: completionMessage,
         })
-        setCompletion(completionMessage, completionIntent)
+        addToast(completionMessage, { intent: completionIntent })
       }
       logExport(`Finished in ${Math.round(performance.now() - startedAt)}ms`)
       logExportGroupEnd()
     }
-  }, [workspace])
+  }, [addToast, workspace])
 
   return {
     importWorkspaceFromFile,

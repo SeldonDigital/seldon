@@ -5,7 +5,6 @@ import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { LayoutFrame } from "./LayoutFrame.bespoke"
-import { ExportCompletionNotice } from "./toaster/ExportCompletionNotice"
 import { VMTopbar } from "./topbar/VMTopbar"
 
 export function Layout({
@@ -30,7 +29,6 @@ export function Layout({
     >
       {header}
       {children}
-      <ExportCompletionNotice />
     </LayoutFrame>
   )
 }
