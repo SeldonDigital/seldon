@@ -79,7 +79,8 @@ export function useRefConnector(): RefConnectorState {
   const selectedNodeId = useSelectedNodeId()
   const { activeBoard } = useActiveBoard()
   const { workspace } = useWorkspace()
-  const rects = useSharedStore(nodeRectsStore, (state) => state.rects)
+  // The rect map is written in place, so its version is what says a node has moved.
+  const rectsVersion = useSharedStore(nodeRectsStore, (state) => state.version)
   const canvasSize = useCanvasSize()
 
   const scopedNodeIds = useMemo(
@@ -95,8 +96,8 @@ export function useRefConnector(): RefConnectorState {
   useFollowCanvasTransform(scopedNodeIds)
 
   const sources = useMemo(
-    () => buildSources(refBindings, rects, scopedNodeIds, frameAncestors),
-    [refBindings, rects, scopedNodeIds, frameAncestors],
+    () => buildSources(refBindings, nodeRectsStore.getState().rects, scopedNodeIds, frameAncestors),
+    [refBindings, rectsVersion, scopedNodeIds, frameAncestors],
   )
 
   const labels = useMemo(() => sources.map((source) => source.label), [sources])
@@ -216,7 +217,7 @@ function collectFrameAncestors(
  */
 function buildSources(
   bindings: RefBinding[],
-  rects: Record<string, NodeRect | null>,
+  rects: Map<string, NodeRect | null>,
   scopedNodeIds: Set<string>,
   frameAncestors: Map<string, string>,
 ): ConnectorSource[] {
@@ -230,7 +231,7 @@ function buildSources(
     if (!scopedNodeIds.has(nodeId)) continue
 
     const frameId = frameAncestors.get(nodeId)
-    const frameRect = frameId ? rects[frameId] : null
+    const frameRect = frameId ? rects.get(frameId) : null
 
     if (frameId && frameRect) {
       const group = summarized.get(frameId) ?? []
@@ -240,7 +241,7 @@ function buildSources(
       continue
     }
 
-    const rect = rects[nodeId]
+    const rect = rects.get(nodeId)
 
     if (!rect) continue
 
@@ -254,7 +255,7 @@ function buildSources(
   }
 
   for (const [frameId, group] of summarized) {
-    const rect = rects[frameId]
+    const rect = rects.get(frameId)
 
     if (!rect) continue
 

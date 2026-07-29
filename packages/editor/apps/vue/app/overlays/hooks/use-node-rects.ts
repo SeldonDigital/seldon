@@ -11,7 +11,7 @@ import type { Ref } from "vue"
 
 /** The tracked rect of a single node, relative to the canvas, or null. */
 export function useNodeRect(nodeId: string): Ref<NodeRect | null> {
-  return useSharedStore(nodeRectsStore, (state) => state.rects[nodeId] ?? null)
+  return useSharedStore(nodeRectsStore, (state) => state.rects.get(nodeId) ?? null)
 }
 
 /**

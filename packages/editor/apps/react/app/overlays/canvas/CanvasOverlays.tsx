@@ -11,6 +11,7 @@ import {
   getIsSiblingGap,
   getShowWireframes,
 } from "@seldon/editor/lib/canvas/tracking/overlay-visibility"
+import { useMemo } from "react"
 
 import { useCanvasRemeasureStore } from "../../canvas/hooks/use-canvas-remeasure-store"
 import { useNodeBelongsToActiveBoard } from "../hooks/use-belongs-to-active-board"
@@ -28,7 +29,10 @@ export function CanvasOverlays() {
   const { visibleNodes } = useVisibleNodes()
   const hasHoverState = useHasHoverState()
   const { hoverState } = useCanvasHoverState()
-  const nodeIds = visibleNodes.map((node) => node.id)
+  // Held stable, because the tracker re-tracks whenever this list is a new one: a fresh
+  // array on every render would mean tearing down and rebuilding an observer per node
+  // each time anything here changes, several times over during a single pan.
+  const nodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
   const { showSelection, wireframeMode, showRefConnectors } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()

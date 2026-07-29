@@ -11,5 +11,5 @@ export type { NodeRect }
  * canvas, or null when the node is not currently tracked.
  */
 export function useNodeRect(nodeId: string): NodeRect | null {
-  return useSharedStore(nodeRectsStore, (state) => state.rects[nodeId] ?? null)
+  return useSharedStore(nodeRectsStore, (state) => state.rects.get(nodeId) ?? null)
 }

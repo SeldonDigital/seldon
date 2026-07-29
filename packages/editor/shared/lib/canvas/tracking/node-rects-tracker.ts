@@ -1,6 +1,6 @@
 import { getHtmlElementByNodeId } from "../dom/canvas-elements"
 import { calculateSelectionOutline } from "../overlay/measure"
-import { updateNodeRect } from "./node-rects-store"
+import { removeNodeRectsExcept, updateNodeRect } from "./node-rects-store"
 
 /**
  * Measures one node against the canvas and writes the result to the shared
@@ -32,10 +32,15 @@ export function measureNodeRect(nodeId: string): void {
  *
  * Returns a cleanup function that disconnects observers and removes listeners.
  * Call again with a fresh `nodeIds` array whenever the visible node set changes.
+ *
+ * Nodes outside the new set are forgotten as it starts, so the board that was left
+ * stops being measured and stops being paid for.
  */
 export function createNodeRectsTracker(nodeIds: string[]): () => void {
   const observers = new Map<string, ResizeObserver>()
   const cleanups: (() => void)[] = []
+
+  removeNodeRectsExcept(nodeIds)
 
   const handleScrollOrResize = (): void => {
     nodeIds.forEach(measureNodeRect)
