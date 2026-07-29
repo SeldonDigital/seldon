@@ -5,7 +5,7 @@ import {
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { useMemo } from "react"
 
-import { RefChip, RefOmitted } from "./RefChip"
+import { RefChip, RefOmitted, RefSummaryChip } from "./RefChip"
 import {
   connectorAnchorStyle,
   connectorMutedAnchorStyle,
@@ -15,8 +15,10 @@ import {
 } from "./connector-style"
 import { useRefConnector } from "./hooks/use-ref-connector"
 
+import type { PlacedConnector } from "./hooks/use-ref-connector"
 import type { ConnectorShape } from "@app/overlays/primitives/ConnectorPaths.bespoke"
 import type { ConnectorPlacement } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import type { ReactNode } from "react"
 
 /**
  * Draws the refs inside the selected component out to named chips.
@@ -29,13 +31,7 @@ export function RefConnector() {
 
   const shapes = useMemo(() => entries.map(toShape), [entries])
 
-  const chipElements = useMemo(
-    () =>
-      entries.map((entry) => (
-        <RefChip key={entry.placement.key} placement={entry.placement} binding={entry.binding} />
-      )),
-    [entries],
-  )
+  const chipElements = useMemo(() => entries.map(toChip), [entries])
 
   const omittedElement = useMemo(() => {
     if (!omittedChip) return null
@@ -54,6 +50,16 @@ export function RefConnector() {
       {omittedElement}
     </>
   )
+}
+
+function toChip(entry: PlacedConnector): ReactNode {
+  if (entry.kind === "frame") {
+    return (
+      <RefSummaryChip key={entry.placement.key} placement={entry.placement} nodeId={entry.nodeId} />
+    )
+  }
+
+  return <RefChip key={entry.placement.key} placement={entry.placement} binding={entry.binding} />
 }
 
 function toShape({ placement }: { placement: ConnectorPlacement }): ConnectorShape {

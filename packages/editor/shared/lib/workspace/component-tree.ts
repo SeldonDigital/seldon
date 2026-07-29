@@ -26,6 +26,24 @@ export function walkComponentTree(
   walkBoardTreeRefs(board.variants, visit)
 }
 
+/**
+ * Each node in the board mapped to the node above it.
+ *
+ * Variant roots are absent, since nothing is above them. Use it to walk upward, which
+ * the tree itself cannot do because a `ComponentTreeRef` only points at its children.
+ */
+export function getParentNodeIds(board: Board): Map<EntryNodeId, EntryNodeId> {
+  const parents = new Map<EntryNodeId, EntryNodeId>()
+
+  walkComponentTree(board, (ref, parent) => {
+    if (parent) {
+      parents.set(ref.id, parent.id)
+    }
+  })
+
+  return parents
+}
+
 export function collectDescendantNodeIds(board: Board, rootId: EntryNodeId): EntryNodeId[] {
   const ids: EntryNodeId[] = []
 

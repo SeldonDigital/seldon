@@ -1,6 +1,7 @@
+import { useSelection } from "@app/workspace/hooks/use-selection"
 import { Frame } from "@seldon/components/frames/Frame"
 import { PanelRefs } from "@seldon/components/modules/PanelRefs"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 
 import { RefCardController } from "./RefCardController"
 import { useRefCard } from "./hooks/use-ref-card"
@@ -12,6 +13,7 @@ import {
   refOmittedStyle,
 } from "./ref-chip-style"
 
+import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
 import type {
   ChipBox,
   ConnectorPlacement,
@@ -21,6 +23,11 @@ import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 interface RefChipProps {
   placement: ConnectorPlacement
   binding: RefBinding
+}
+
+interface RefSummaryChipProps {
+  placement: ConnectorPlacement
+  nodeId: string
 }
 
 interface RefOmittedProps {
@@ -72,6 +79,45 @@ export function RefChip({ placement, binding }: RefChipProps) {
       </Frame>
       {card}
     </>
+  )
+}
+
+/**
+ * Stands in for the refs inside a frame, counting them rather than naming them.
+ *
+ * Clicking it selects the frame, which is all it does. The overlay draws the selected
+ * node and its descendants, so selecting the frame redraws these refs one level in,
+ * and the count is a way into them rather than a thing to read.
+ */
+export function RefSummaryChip({ placement, nodeId }: RefSummaryChipProps) {
+  const { selectNode } = useSelection()
+
+  const wrapperStyle = useMemo(() => {
+    if (placement.muted) return refChipMutedStyle(placement.chip)
+
+    return refChipStyle(placement.chip)
+  }, [placement.chip, placement.muted])
+
+  const select = useCallback(
+    () => selectNode(nodeId as VariantId | InstanceId),
+    [nodeId, selectNode],
+  )
+
+  const summaryRefs = {
+    refChipName: { children: placement.label },
+    refCard: { style: refChipHiddenCardStyle },
+  }
+
+  return (
+    <Frame style={wrapperStyle} onClick={select}>
+      <PanelRefs
+        role="presentation"
+        style={refChipPanelStyle}
+        seldonRefs={summaryRefs}
+        chipAssist={{}}
+        textLabel={{}}
+      />
+    </Frame>
   )
 }
 

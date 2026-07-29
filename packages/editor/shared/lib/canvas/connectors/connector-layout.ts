@@ -1,11 +1,17 @@
 import type { NodeRect } from "../overlay/geometry"
 
-/** One referenced node that needs a connector, in canvas-relative pixels. */
+/**
+ * One referenced node that needs a connector, in canvas-relative pixels.
+ *
+ * `order` breaks a tie between two chips that want the same height, ahead of the key,
+ * so a caller can keep chips for one node in the order it means them to read.
+ */
 export interface ConnectorSource {
   key: string
   label: string
   rect: NodeRect
   muted: boolean
+  order?: number
 }
 
 export interface ConnectorPoint {
@@ -83,7 +89,6 @@ export interface ConnectorLayoutOptions {
   chipWidth: number
   chipHeight: number
   chipGap: number
-  stub: number
   margin: number
 }
 
@@ -92,7 +97,6 @@ export const CONNECTOR_LAYOUT_DEFAULTS = {
   chipWidth: 200,
   chipHeight: 28,
   chipGap: 4,
-  stub: 16,
   margin: 12,
 } as const
 
@@ -122,26 +126,31 @@ export function layoutConnectors(
 
   if (sources.length === 0) return empty
 
-  const { canvasWidth, canvasHeight, chipWidth, chipHeight, chipGap, stub, margin } = options
+  const { canvasWidth, canvasHeight, chipWidth, chipHeight, chipGap, margin } = options
   const gutterLeft = canvasWidth - margin - chipWidth
   const floor = canvasHeight - margin
 
   const anchored = sources
-    .map((source) => ({ source, anchor: getAnchor(source.rect, gutterLeft, canvasHeight, margin) }))
-    .sort((a, b) => a.anchor.y - b.anchor.y || a.source.key.localeCompare(b.source.key))
+    .map((source) => ({ source, preferredY: getPreferredChipY(source.rect, canvasHeight, margin) }))
+    .sort(
+      (a, b) =>
+        a.preferredY - b.preferredY ||
+        (a.source.order ?? 0) - (b.source.order ?? 0) ||
+        a.source.key.localeCompare(b.source.key),
+    )
 
   // Walk top to bottom, letting each chip take its node's center unless the one
   // above already claimed that space. A chip that would cross the floor stops the
   // column, and everything below it is reported as a count instead.
-  const stacked: Array<{ source: ConnectorSource; anchor: ConnectorPoint; top: number }> = []
+  const stacked: Array<{ source: ConnectorSource; top: number }> = []
   let cursor = margin
 
-  for (const { source, anchor } of anchored) {
-    const top = Math.max(anchor.y - chipHeight / 2, cursor)
+  for (const { source, preferredY } of anchored) {
+    const top = Math.max(preferredY - chipHeight / 2, cursor)
 
     if (top + chipHeight > floor) break
 
-    stacked.push({ source, anchor, top })
+    stacked.push({ source, top })
     cursor = top + chipHeight + chipGap
   }
 
@@ -154,7 +163,7 @@ export function layoutConnectors(
 
   const omitted = anchored.length - stacked.length
 
-  const placements = stacked.map(({ source, anchor, top }) => {
+  const placements = stacked.map(({ source, top }) => {
     const chip = {
       top,
       left: gutterLeft,
@@ -163,18 +172,21 @@ export function layoutConnectors(
       centerY: top + chipHeight / 2,
     }
 
+    const route = getConnectorRoute({
+      rect: source.rect,
+      chipCenterY: chip.centerY,
+      gutterLeft,
+      canvasHeight,
+      margin,
+    })
+
     return {
       key: source.key,
       label: source.label,
       muted: source.muted,
-      anchor,
+      anchor: route.anchor,
       chip,
-      points: getElbowPoints({
-        anchor,
-        chipCenterY: chip.centerY,
-        gutterLeft,
-        stub,
-      }),
+      points: route.points,
     }
   })
 
@@ -279,43 +291,60 @@ export function toElbowPath(points: ConnectorPoint[]): string {
 }
 
 /**
- * The node edge the connector leaves from, at the right side's vertical center.
+ * The height a chip asks for, which is its node's vertical center.
  *
- * A node scrolled past the canvas edge still reports a rect, so the anchor is
- * held inside the drawable area. Otherwise a line would run off to a point no
- * one can see and read as noise.
+ * A node scrolled past the canvas edge still reports a rect, so this is held inside
+ * the drawable area. Otherwise a chip would be placed against a point no one can see.
+ * It seeds the sort and the stack, before a chip knows where it landed.
  */
-function getAnchor(
-  rect: NodeRect,
-  gutterLeft: number,
-  canvasHeight: number,
-  margin: number,
-): ConnectorPoint {
-  return {
-    x: clamp(rect.left + rect.width, margin, gutterLeft),
-    y: clamp(rect.top + rect.height / 2, margin, canvasHeight - margin),
-  }
+function getPreferredChipY(rect: NodeRect, canvasHeight: number, margin: number): number {
+  return clamp(rect.top + rect.height / 2, margin, canvasHeight - margin)
 }
 
 /**
- * Three axis-aligned segments from the node out to the chip. The turn happens a
- * stub's length off the node, so the line clears the node's own edge before it
- * runs vertically.
+ * The point on the node the connector leaves from, and the line from there to the chip.
+ *
+ * One turn at most. A chip that ended up above or below its node is met by running in
+ * at the chip's own height to the node's horizontal center, then turning into the top
+ * or bottom center point. Both legs stay clear of the node's box that way.
+ *
+ * A chip level with its node is met by a straight run into the right edge, with no turn
+ * and no side center to aim for, so the point sits at the chip's height rather than the
+ * node's center.
+ *
+ * The left center is never used, because chips sit in a gutter down the right edge and
+ * a line to the far side would cross the node.
  */
-function getElbowPoints(input: {
-  anchor: ConnectorPoint
+function getConnectorRoute(input: {
+  rect: NodeRect
   chipCenterY: number
   gutterLeft: number
-  stub: number
-}): ConnectorPoint[] {
-  const turnX = Math.min(input.anchor.x + input.stub, input.gutterLeft - input.stub)
+  canvasHeight: number
+  margin: number
+}): { anchor: ConnectorPoint; points: ConnectorPoint[] } {
+  const { rect, chipCenterY, gutterLeft, canvasHeight, margin } = input
 
-  return simplify([
-    input.anchor,
-    { x: turnX, y: input.anchor.y },
-    { x: turnX, y: input.chipCenterY },
-    { x: input.gutterLeft, y: input.chipCenterY },
-  ])
+  const top = clamp(rect.top, margin, canvasHeight - margin)
+  const bottom = clamp(rect.top + rect.height, margin, canvasHeight - margin)
+  const right = clamp(rect.left + rect.width, margin, gutterLeft)
+  const centerX = clamp(rect.left + rect.width / 2, margin, gutterLeft)
+  const gutterEnd = { x: gutterLeft, y: chipCenterY }
+
+  if (chipCenterY < top) {
+    const anchor = { x: centerX, y: top }
+
+    return { anchor, points: simplify([anchor, { x: centerX, y: chipCenterY }, gutterEnd]) }
+  }
+
+  if (chipCenterY > bottom) {
+    const anchor = { x: centerX, y: bottom }
+
+    return { anchor, points: simplify([anchor, { x: centerX, y: chipCenterY }, gutterEnd]) }
+  }
+
+  const anchor = { x: right, y: chipCenterY }
+
+  return { anchor, points: simplify([anchor, gutterEnd]) }
 }
 
 /**
