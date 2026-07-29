@@ -76,16 +76,20 @@ export interface RefCardRect {
  * leaves the other three where they are. Anchoring one edge and capping the size
  * instead would swallow a drag once the cap was reached.
  *
- * `opens` says which way the card grew off its chip, which is also what decides
- * the edges it offers to drag.
+ * `opens` and `grows` say which way the card cleared its chip, which is also what
+ * decides the edges it offers to drag.
  */
 export interface RefCardPosition extends RefCardRect {
   opens: "below" | "above"
+  grows: "left" | "right"
 }
+
+/** The canvas edge the chip column hangs off. */
+export type GutterSide = "left" | "right"
 
 /**
  * What the column needs to place chips: the canvas it draws in, the chip sizes measured
- * from a drawn chip, and the gap off the canvas edge.
+ * from a drawn chip, the edge it hangs off, and the gap it keeps from that edge.
  *
  * `margin` is the band the column keeps off the canvas top and bottom. It is separate
  * from `chipGap` so a caller can space the column differently from the chips inside it,
@@ -98,7 +102,8 @@ export interface ConnectorLayoutOptions {
   chipHeight: number
   chipGap: number
   margin: number
-  gutterRight: number
+  gutter: number
+  side: GutterSide
 }
 
 /**
@@ -109,26 +114,64 @@ export interface ConnectorLayoutOptions {
  * are chrome pixels once resolved, not scaled, since overlays draw outside the canvas
  * transform.
  *
- * `gutterRight` is the gap the column keeps off the canvas edge, which is the sidebar
- * edge. `anchorRadius` is the dot where a connector meets its node. Every other metric
- * comes from a drawn chip, since the chip schema decides its own size.
+ * `gutter` is the gap the column keeps off the canvas edge it hangs off, which on the
+ * right is the sidebar edge. `anchorRadius` is the dot where a connector meets its node.
+ * Every other metric comes from a drawn chip, since the chip schema decides its own size.
  */
 export const CONNECTOR_TOKENS = {
-  gutterRight: "--sdn-margins-cozy",
+  gutter: "--sdn-margins-cozy",
   anchorRadius: "--sdn-sizes-tiny",
 } as const
 
 /**
+ * The canvas edge the column should hang off for these nodes.
+ *
+ * The edge with more free canvas between it and the nodes wins. That is the edge the
+ * nodes are furthest from, so the column is drawn where there is least design to cover,
+ * and a connector reaches across empty canvas rather than over the board.
+ *
+ * Room is what a pan changes evenly: one edge gains what the other gives up, so there is
+ * a single point where the edges trade places and a pan flips the column once. Deciding
+ * by the nearer edge instead would read well while the nodes are inboard and then fight
+ * this, since the nearer edge is the one about to be covered, and the column would swap
+ * back and forth on the way across.
+ *
+ * `current` is what the column does now, and the other edge has to win by the gutter to
+ * take it, so a hairline crossing cannot make the column chatter.
+ */
+export function getGutterSide(
+  sources: ConnectorSource[],
+  options: { canvasWidth: number; gutter: number },
+  current: GutterSide,
+): GutterSide {
+  if (sources.length === 0) return current
+
+  const { canvasWidth, gutter } = options
+  const room = { left: Infinity, right: Infinity }
+
+  for (const source of sources) {
+    room.left = Math.min(room.left, source.rect.left)
+    room.right = Math.min(room.right, canvasWidth - (source.rect.left + source.rect.width))
+  }
+
+  const other: GutterSide = current === "right" ? "left" : "right"
+
+  if (room[other] > room[current] + gutter) return other
+
+  return current
+}
+
+/**
  * Places a label chip for every referenced node and routes an elbow to it.
  *
- * Chips stack in a gutter down the right edge rather than floating beside their
+ * Chips stack in a gutter down one canvas edge rather than floating beside their
  * nodes, so a dense selection reads as one column of labels instead of a scatter
  * that overlaps the design. Each chip wants to sit at its node's vertical center,
  * then gives way to the one above it. Every chip takes the caller's `chipWidth`, so
  * the column reads as a block with its labels and its icons in line.
  *
- * Chips for nodes at the same height read right to left, which is what keeps their
- * connectors from crossing each other. See `orderColumn`.
+ * Chips for nodes at the same height read from the gutter's edge inward, which is what
+ * keeps their connectors from crossing each other. See `orderColumn`.
  *
  * The column never draws past the canvas floor. A chip that would cross it is left
  * out and counted, because a chip outside the canvas would paint over other chrome.
@@ -145,12 +188,17 @@ export function layoutConnectors(
 
   if (sources.length === 0) return empty
 
-  const { canvasWidth, canvasHeight, chipWidth, chipHeight, chipGap, margin, gutterRight } = options
+  const { canvasWidth, canvasHeight, chipWidth, chipHeight, chipGap, margin, gutter, side } =
+    options
 
-  // Placed by its right edge, so every chip ends the same distance off the sidebar
-  // whatever the labels are. A label too wide for the gutter stops at the canvas edge
-  // rather than sliding over the design.
-  const gutterLeft = Math.max(margin, canvasWidth - gutterRight - chipWidth)
+  // Placed by the edge it hangs off, so every chip ends the same distance from that edge
+  // whatever the labels are. A label too wide for the canvas stops at the far margin
+  // rather than sliding off it.
+  const wanted = side === "right" ? canvasWidth - gutter - chipWidth : gutter
+  const chipLeft = clamp(wanted, margin, Math.max(margin, canvasWidth - margin - chipWidth))
+
+  // The chip edge facing the design, which is where a connector meets the column.
+  const gutterEdge = side === "right" ? chipLeft : chipLeft + chipWidth
   const floor = canvasHeight - margin
 
   const anchored = orderColumn(
@@ -160,6 +208,7 @@ export function layoutConnectors(
       centerX: source.rect.left + source.rect.width / 2,
     })),
     chipGap,
+    side,
   )
 
   const pitch = chipHeight + chipGap
@@ -194,7 +243,7 @@ export function layoutConnectors(
   const placements = stacked.map(({ source, top }) => {
     const chip = {
       top,
-      left: gutterLeft,
+      left: chipLeft,
       width: chipWidth,
       height: chipHeight,
       centerY: top + chipHeight / 2,
@@ -203,7 +252,9 @@ export function layoutConnectors(
     const route = getConnectorRoute({
       rect: source.rect,
       chipCenterY: chip.centerY,
-      gutterLeft,
+      gutterEdge,
+      side,
+      canvasWidth,
       canvasHeight,
       margin,
     })
@@ -227,7 +278,7 @@ export function layoutConnectors(
       omitted,
       top: lastChip ? lastChip.top + lastChip.height + chipGap : margin,
       floor,
-      gutterLeft,
+      chipLeft,
       chipWidth,
       chipHeight,
     }),
@@ -246,27 +297,30 @@ interface AnchoredChip {
  *
  * A connector runs vertically at its node's horizontal center and then horizontally at
  * its chip's height, so two of them only ever meet where one's horizontal run passes
- * through the other's vertical run. That needs the other node to be further right, which
- * cannot happen while nodes at the same height are read right to left.
+ * through the other's vertical run. That needs the other node to sit further from the
+ * gutter, which cannot happen while nodes at the same height are read inward from it.
  *
  * Nodes in one row rarely report the same center once the canvas is zoomed, so heights
  * within `band` are read as one row, and centers that close as one place in that row.
  * The column's own gap covers both, since two chips that close take neighboring slots
  * whichever way they are read.
  *
- * Height leads, so a chip still sits beside its node. Reading the whole column right to
- * left would drop the last crossings, but it would also drag chips far from the nodes
- * they name, which is the point of the column.
+ * Height leads, so a chip still sits beside its node. Reading the whole column inward
+ * would drop the last crossings, but it would also drag chips far from the nodes they
+ * name, which is the point of the column.
  */
-function orderColumn(anchored: AnchoredChip[], band: number): AnchoredChip[] {
+function orderColumn(anchored: AnchoredChip[], band: number, side: GutterSide): AnchoredChip[] {
+  // Distance from the gutter's own edge, so one order covers both edges: the node nearest
+  // the column is read first, and a run from a node behind it cannot cross back over.
+  const fromGutter =
+    side === "right" ? (chip: AnchoredChip) => -chip.centerX : (chip: AnchoredChip) => chip.centerX
+
   const byHeight = [...anchored].sort((a, b) => a.preferredY - b.preferredY || compareStable(a, b))
 
   return groupWithin(byHeight, (chip) => chip.preferredY, band).flatMap((row) => {
-    const byCenter = [...row].sort((a, b) => b.centerX - a.centerX || compareStable(a, b))
+    const byCenter = [...row].sort((a, b) => fromGutter(a) - fromGutter(b) || compareStable(a, b))
 
-    return groupWithin(byCenter, (chip) => -chip.centerX, band).flatMap((column) =>
-      column.sort(compareStable),
-    )
+    return groupWithin(byCenter, fromGutter, band).flatMap((column) => column.sort(compareStable))
   })
 }
 
@@ -310,7 +364,7 @@ function getOmittedChip(input: {
   omitted: number
   top: number
   floor: number
-  gutterLeft: number
+  chipLeft: number
   chipWidth: number
   chipHeight: number
 }): ChipBox | null {
@@ -319,7 +373,7 @@ function getOmittedChip(input: {
 
   return {
     top: input.top,
-    left: input.gutterLeft,
+    left: input.chipLeft,
     width: input.chipWidth,
     height: input.chipHeight,
     centerY: input.top + input.chipHeight / 2,
@@ -350,17 +404,17 @@ export interface RefCardMetrics {
 /**
  * Places the ref card clear of its chip, in viewport pixels for a fixed element.
  *
- * The card opens leftward, because chips sit against the right edge, and away from
- * the chip's nearer horizontal edge, so the chip it belongs to stays readable. It
- * takes whichever side has more room, since a chip low in the gutter has none
- * below it.
+ * The card clears its chip vertically and lines up with it horizontally, so the chip
+ * that opened it stays readable beside it. Both directions go to whichever side has
+ * more room, since a chip low in the gutter has none below it and a chip in a gutter
+ * down the left edge has none to its left.
  *
  * The height it opens at is trimmed to the room on that side, so a card never
  * covers the chip that opened it. A drag is free to grow past that, since by then
  * the reader has asked for a bigger card and can see what it covers.
  */
 export function getRefCardPosition(
-  chipRect: { top: number; bottom: number; right: number },
+  chipRect: { top: number; bottom: number; left: number; right: number },
   viewport: { width: number; height: number },
   size: { width: number; height: number },
   metrics: RefCardMetrics,
@@ -371,12 +425,16 @@ export function getRefCardPosition(
   const opens = below >= above ? "below" : "above"
   const room = Math.max(opens === "below" ? below : above, metrics.minHeight)
 
+  const leftward = chipRect.right - margin
+  const rightward = viewport.width - chipRect.left - margin
+  const grows = leftward >= rightward ? "left" : "right"
+
   const width = size.width
   const height = Math.min(size.height, room)
-  const x = chipRect.right - width
+  const x = grows === "left" ? chipRect.right - width : chipRect.left
   const y = opens === "below" ? chipRect.bottom + gap : chipRect.top - gap - height
 
-  return { opens, ...clampRefCardRect({ x, y, width, height }, viewport, metrics) }
+  return { opens, grows, ...clampRefCardRect({ x, y, width, height }, viewport, metrics) }
 }
 
 /** Holds an opening card inside the viewport, sizing it down before moving it. */
@@ -422,27 +480,35 @@ function getPreferredChipY(rect: NodeRect, canvasHeight: number, margin: number)
  * at the chip's own height to the node's horizontal center, then turning into the top
  * or bottom center point. Both legs stay clear of the node's box that way.
  *
- * A chip level with its node is met by a straight run into the right edge, with no turn
- * and no side center to aim for, so the point sits at the chip's height rather than the
- * node's center.
+ * A chip level with its node is met by a straight run into the side facing the gutter,
+ * with no turn and no side center to aim for, so the point sits at the chip's height
+ * rather than the node's center.
  *
- * The left center is never used, because chips sit in a gutter down the right edge and
- * a line to the far side would cross the node.
+ * Only the side facing the gutter is used, because a line to the far side would cross
+ * the node to reach the column.
  */
 function getConnectorRoute(input: {
   rect: NodeRect
   chipCenterY: number
-  gutterLeft: number
+  gutterEdge: number
+  side: GutterSide
+  canvasWidth: number
   canvasHeight: number
   margin: number
 }): { anchor: ConnectorPoint; points: ConnectorPoint[] } {
-  const { rect, chipCenterY, gutterLeft, canvasHeight, margin } = input
+  const { rect, chipCenterY, gutterEdge, side, canvasWidth, canvasHeight, margin } = input
+
+  // Held between the column and the far margin, so a node panned past either edge is
+  // still pointed at from inside the canvas.
+  const nearestX = side === "right" ? margin : gutterEdge
+  const furthestX = side === "right" ? gutterEdge : canvasWidth - margin
 
   const top = clamp(rect.top, margin, canvasHeight - margin)
   const bottom = clamp(rect.top + rect.height, margin, canvasHeight - margin)
-  const right = clamp(rect.left + rect.width, margin, gutterLeft)
-  const centerX = clamp(rect.left + rect.width / 2, margin, gutterLeft)
-  const gutterEnd = { x: gutterLeft, y: chipCenterY }
+  const facing = side === "right" ? rect.left + rect.width : rect.left
+  const nodeSide = clamp(facing, nearestX, furthestX)
+  const centerX = clamp(rect.left + rect.width / 2, nearestX, furthestX)
+  const gutterEnd = { x: gutterEdge, y: chipCenterY }
 
   if (chipCenterY < top) {
     const anchor = { x: centerX, y: top }
@@ -456,7 +522,7 @@ function getConnectorRoute(input: {
     return { anchor, points: simplify([anchor, { x: centerX, y: chipCenterY }, gutterEnd]) }
   }
 
-  const anchor = { x: right, y: chipCenterY }
+  const anchor = { x: nodeSide, y: chipCenterY }
 
   return { anchor, points: simplify([anchor, gutterEnd]) }
 }

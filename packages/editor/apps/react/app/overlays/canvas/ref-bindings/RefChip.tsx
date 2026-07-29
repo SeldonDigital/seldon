@@ -96,7 +96,7 @@ export function RefChip({ placement, binding }: RefChipProps) {
 }
 
 /**
- * Stands in for the refs inside one node, counting them rather than naming them.
+ * Stands in for the refs one node holds, counting them rather than naming them.
  *
  * Clicking it selects that node, which is all it does. The overlay draws the selected
  * node and its descendants, so selecting it redraws these refs one level in, and the

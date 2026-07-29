@@ -13,7 +13,8 @@ export interface ConnectorMetrics {
   chipHeight: number
   /** The chip's own gap, which spaces the column and holds it off the canvas edge. */
   chipGap: number
-  gutterRight: number
+  /** The gap the column keeps from whichever canvas edge it hangs off. */
+  gutter: number
   anchorRadius: number
 }
 
@@ -55,13 +56,13 @@ export function useConnectorMetrics(labels: string[]): ConnectorMetricsState {
 
     const first = chips[0]
     const chipGap = Number.parseFloat(window.getComputedStyle(first).rowGap)
-    const { gutterRight, anchorRadius } = getTokenPixels(CONNECTOR_TOKENS, scope)
+    const { gutter, anchorRadius } = getTokenPixels(CONNECTOR_TOKENS, scope)
 
     setMetrics({
       chipWidth,
       chipHeight: first.offsetHeight,
       chipGap: Number.isNaN(chipGap) ? 0 : chipGap,
-      gutterRight,
+      gutter,
       anchorRadius,
     })
   }, [signature])

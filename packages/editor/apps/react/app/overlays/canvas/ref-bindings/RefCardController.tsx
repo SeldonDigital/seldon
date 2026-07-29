@@ -17,12 +17,21 @@ import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import type { CSSProperties, ReactNode, Ref } from "react"
 
 /**
- * A card opening below its chip grows down and left, and one opening above grows up
- * and left. Offering the anchored edges would let a drag pull the card over its chip.
+ * The edges a card offers to drag: the two it grew toward, and the corner between them.
+ * Offering the anchored edges would let a drag pull the card over its chip.
  */
-const RESIZE_SIDES: Record<RefCardPosition["opens"], ResizeSide[]> = {
-  below: ["left", "bottom", "bottom-left"],
-  above: ["left", "top", "top-left"],
+const RESIZE_SIDES: Record<
+  RefCardPosition["grows"],
+  Record<RefCardPosition["opens"], ResizeSide[]>
+> = {
+  left: {
+    below: ["left", "bottom", "bottom-left"],
+    above: ["left", "top", "top-left"],
+  },
+  right: {
+    below: ["right", "bottom", "bottom-right"],
+    above: ["right", "top", "top-right"],
+  },
 }
 
 interface RefCardControllerProps {
@@ -51,7 +60,7 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
       minHeight: MIN_WINDOW_SIZE.height,
     })
 
-  const resizeSides = RESIZE_SIDES[position.opens]
+  const resizeSides = RESIZE_SIDES[position.grows][position.opens]
 
   // The chip moves as the canvas scrolls, and the card travels with it. Only the corner
   // moves, so the size the reader dragged this card to survives the trip.

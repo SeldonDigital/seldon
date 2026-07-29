@@ -5,14 +5,17 @@ import { useRefBindings } from "@app/refs/use-ref-bindings"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import { layoutConnectors } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import {
+  getGutterSide,
+  layoutConnectors,
+} from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 import {
   collectDescendantNodeIds,
   getParentNodeIds,
   walkComponentTree,
 } from "@seldon/editor/lib/workspace/component-tree"
-import { useMemo } from "react"
+import { useMemo, useRef } from "react"
 
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { getEffectiveNodeLevel } from "@seldon/core/workspace/helpers/nodes/get-effective-node-level"
@@ -26,6 +29,7 @@ import type {
   ConnectorLayoutResult,
   ConnectorPlacement,
   ConnectorSource,
+  GutterSide,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
@@ -35,7 +39,7 @@ import type { RefObject } from "react"
  * One placed connector and what its chip reports.
  *
  * A `ref` entry names one ref and opens its card. A `summary` entry stands for the refs
- * inside one node, which are not drawn one by one, and selects that node instead.
+ * one node holds, which are not drawn one by one, and selects that node instead.
  */
 export type PlacedConnector =
   | { kind: "ref"; placement: ConnectorPlacement; binding: RefBinding }
@@ -82,6 +86,7 @@ export function useRefConnector(): RefConnectorState {
   // The rect map is written in place, so its version is what says a node has moved.
   const rectsVersion = useSharedStore(nodeRectsStore, (state) => state.version)
   const canvasSize = useCanvasSize()
+  const gutterSide = useRef<GutterSide>("right")
 
   const scopedNodeIds = useMemo(
     () => collectScopedNodeIds(activeBoard, selectedNodeId),
@@ -108,8 +113,19 @@ export function useRefConnector(): RefConnectorState {
 
   // The chip's own gap spaces the column as well, both between chips and off the canvas
   // top and bottom, so the spacing follows the chip rather than a number kept here.
+  //
+  // The edge the column hangs off is carried between frames, because moving it takes a
+  // clear win over where it already is. See `getGutterSide`.
   const layout = useMemo(() => {
     if (!metrics) return NOTHING_PLACED
+
+    const side = getGutterSide(
+      sources,
+      { canvasWidth: canvasSize.width, gutter: metrics.gutter },
+      gutterSide.current,
+    )
+
+    gutterSide.current = side
 
     return layoutConnectors(sources, {
       canvasWidth: canvasSize.width,
@@ -118,7 +134,8 @@ export function useRefConnector(): RefConnectorState {
       chipHeight: metrics.chipHeight,
       chipGap: metrics.chipGap,
       margin: metrics.chipGap,
-      gutterRight: metrics.gutterRight,
+      gutter: metrics.gutter,
+      side,
     })
   }, [sources, canvasSize.width, canvasSize.height, metrics])
 
@@ -240,7 +257,7 @@ function collectSummaryNodes(
 }
 
 /**
- * The chips worth drawing: one per ref, and one per node standing in for the refs inside it.
+ * The chips worth drawing: one per ref, and one per node standing in for the refs it holds.
  *
  * Only nodes the canvas is tracking get a connector, so a node that is not on screen
  * is not pointed at. A stale binding has no workspace node, so there is nothing to
@@ -254,6 +271,7 @@ function buildSources(
 ): ConnectorSource[] {
   const sources: ConnectorSource[] = []
   const summarized = new Map<string, RefBinding[]>()
+  const drawn = new Map<string, RefBinding[]>()
 
   for (const binding of bindings) {
     const nodeId = binding.node?.nodeId
@@ -276,6 +294,8 @@ function buildSources(
 
     if (!rect) continue
 
+    drawn.set(nodeId, [...(drawn.get(nodeId) ?? []), binding])
+
     sources.push({
       key: binding.ref,
       label: binding.ref,
@@ -285,16 +305,21 @@ function buildSources(
     })
   }
 
+  // A summarizing node's own ref counts toward its summary, so the count says how many
+  // chips selecting it draws rather than how many it is hiding. A frame carrying no ref
+  // has nothing to add, which is why a frame's count already read that way.
   for (const [summaryId, group] of summarized) {
     const rect = rects.get(summaryId)
 
     if (!rect) continue
 
+    const counted = [...(drawn.get(summaryId) ?? []), ...group]
+
     sources.push({
       key: `${SUMMARY_KEY_PREFIX}${summaryId}`,
-      label: getSummaryLabel(group.length),
+      label: getSummaryLabel(counted.length),
       rect,
-      muted: group.every((binding) => binding.state !== "bound"),
+      muted: counted.every((binding) => binding.state !== "bound"),
       order: SUMMARY_ORDER,
     })
   }
