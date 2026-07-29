@@ -9,10 +9,10 @@ import type { CSSProperties } from "react"
  */
 
 /**
- * Neutralizes the panel's own board box, so the chip and the card are laid out by
- * the wrapper they sit in rather than by the 300 by 300 frame the panel is drawn on.
+ * Drops the panel's own board box, so the chip is laid out by the wrapper that places
+ * it in the gutter rather than by the frame the panel is drawn on.
  */
-export const refsPanelStyle: CSSProperties = { display: "contents" }
+export const refChipPanelStyle: CSSProperties = { display: "contents" }
 
 /** Suppresses the card half of a chip's panel instance. */
 export const refChipHiddenCardStyle: CSSProperties = { display: "none" }

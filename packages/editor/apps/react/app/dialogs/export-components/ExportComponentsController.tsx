@@ -1,8 +1,8 @@
 "use client"
 
 import { MenuController } from "@app/menus/MenuController"
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { DialogExportComponent } from "@seldon/components/modules/DialogExportComponent"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"

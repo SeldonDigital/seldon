@@ -1,8 +1,8 @@
 "use client"
 
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { ItemCatalog } from "@seldon/components/elements/ItemCatalog"
 import { Container } from "@seldon/components/frames/Container"
 import { PanelDialog } from "@seldon/components/modules/PanelDialog"

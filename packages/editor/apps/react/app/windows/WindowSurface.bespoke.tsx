@@ -16,7 +16,7 @@ import { createPortal } from "react-dom"
 
 import type { Rect, ResizeSide } from "@seldon/components/utils/resize"
 import type { BoundingBox, DragControls, MotionValue } from "framer-motion"
-import type { CSSProperties, MouseEvent, ReactNode } from "react"
+import type { CSSProperties, MouseEvent, ReactNode, Ref } from "react"
 
 interface WindowSurfaceProps {
   x: MotionValue<number>
@@ -43,6 +43,12 @@ interface WindowSurfaceProps {
   // drag offset from center, the viewport bounds the drag, and no resize handles
   // are rendered.
   contentSized?: boolean
+  /**
+   * The surface itself, including its resize handles. A non-modal caller that
+   * dismisses on an outside press needs it to tell its own surface from elsewhere,
+   * since it renders no backdrop to catch the press for it.
+   */
+  surfaceRef?: Ref<HTMLDivElement>
 }
 
 /**
@@ -78,6 +84,7 @@ export function WindowSurface({
   minWidth,
   minHeight,
   contentSized = false,
+  surfaceRef,
 }: WindowSurfaceProps) {
   // The portal mounts on document.body, outside the chrome root that scopes the
   // editor theme and mode, so re-apply both here to match the editor interface.
@@ -141,6 +148,7 @@ export function WindowSurface({
     <div data-theme={chromeTheme} data-mode={resolvedMode} style={styles.scope}>
       {backdrop}
       <motion.div
+        ref={surfaceRef}
         drag
         dragControls={moveControls}
         dragListener={false}

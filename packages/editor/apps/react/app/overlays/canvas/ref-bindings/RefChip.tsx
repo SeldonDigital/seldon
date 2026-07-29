@@ -6,9 +6,9 @@ import { RefCardController } from "./RefCardController"
 import { useRefCard } from "./hooks/use-ref-card"
 import {
   refChipHiddenCardStyle,
+  refChipPanelStyle,
   refChipStyle,
   refOmittedStyle,
-  refsPanelStyle,
 } from "./ref-chip-style"
 
 import type {
@@ -37,7 +37,7 @@ interface RefOmittedProps {
  * The wrapper carries the placement and the click, because a module takes no `ref`.
  */
 export function RefChip({ placement, binding }: RefChipProps) {
-  const { chipRef, cardRef, position, toggle } = useRefCard()
+  const { chipRef, cardRef, position, toggle, close } = useRefCard()
 
   const wrapperStyle = useMemo(
     () => refChipStyle(placement.chip, placement.muted),
@@ -52,15 +52,17 @@ export function RefChip({ placement, binding }: RefChipProps) {
   const card = useMemo(() => {
     if (!position) return null
 
-    return <RefCardController binding={binding} position={position} cardRef={cardRef} />
-  }, [binding, cardRef, position])
+    return (
+      <RefCardController binding={binding} position={position} onClose={close} cardRef={cardRef} />
+    )
+  }, [binding, cardRef, close, position])
 
   return (
     <>
       <Frame ref={chipRef} style={wrapperStyle} onClick={toggle}>
         <PanelRefs
           role="presentation"
-          style={refsPanelStyle}
+          style={refChipPanelStyle}
           seldonRefs={chipRefs}
           chipAssist={{}}
           textLabel={{}}
@@ -90,7 +92,7 @@ export function RefOmitted({ chip, count }: RefOmittedProps) {
     <Frame style={wrapperStyle}>
       <PanelRefs
         role="presentation"
-        style={refsPanelStyle}
+        style={refChipPanelStyle}
         seldonRefs={omittedRefs}
         chipAssist={{}}
         textLabel={{}}

@@ -10,7 +10,7 @@ import DialogExportComponent from "@seldon/components/modules/DialogExportCompon
 import WindowSurface from "@app/windows/WindowSurface.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import type { MenuEntry } from "@app/menus/types"
-import { useDraggableWindow } from "@app/menus/use-draggable-window"
+import { useDraggableWindow } from "@app/windows/use-draggable-window"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useExportStatusStore } from "@app/io/export-status-store"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"

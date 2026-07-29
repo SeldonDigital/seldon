@@ -47,22 +47,26 @@ export interface ConnectorLayoutResult {
   omittedChip: ChipBox | null
 }
 
+/** A box in viewport pixels, matching the rect a resize drag reports. */
+export interface RefCardRect {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 /**
- * Viewport-fixed position of the ref card.
+ * Where the ref card opens, in viewport pixels for a fixed element.
  *
- * The card is anchored by its right edge, next to the gutter its chip sits in, so
- * it keeps the width it was given while its left edge is dragged.
+ * All four edges are given, so a resize drag moves the edge under the pointer and
+ * leaves the other three where they are. Anchoring one edge and capping the size
+ * instead would swallow a drag once the cap was reached.
  *
- * `opens` says which way the card grows off its chip. The edge it grows toward is
- * left unset, which is what lets it grow without its height being known first.
+ * `opens` says which way the card grew off its chip, which is also what decides
+ * the edges it offers to drag.
  */
-export interface RefCardPosition {
+export interface RefCardPosition extends RefCardRect {
   opens: "below" | "above"
-  right: number
-  maxWidth: number
-  maxHeight: number
-  top?: number
-  bottom?: number
 }
 
 export interface ConnectorLayoutOptions {
@@ -201,12 +205,11 @@ function getOmittedChip(input: {
   }
 }
 
-/** Widest the ref card is allowed to draw, and the gap it keeps off its chip. */
-export const REF_CARD_MAX_WIDTH = 420
+/** The gap the card keeps off its chip. */
 export const REF_CARD_GAP = 4
 
 /** The size a card opens at until one is resized, and the smallest it can be dragged to. */
-export const REF_CARD_DEFAULT_SIZE = { width: 320, height: 260 }
+export const REF_CARD_DEFAULT_SIZE = { width: 300, height: 300 }
 export const REF_CARD_MIN_SIZE = { width: 200, height: 120 }
 
 /**
@@ -215,35 +218,46 @@ export const REF_CARD_MIN_SIZE = { width: 200, height: 120 }
  * The card opens leftward, because chips sit against the right edge, and away from
  * the chip's nearer horizontal edge, so the chip it belongs to stays readable. It
  * takes whichever side has more room, since a chip low in the gutter has none
- * below it. Neither dimension is known before the card renders, so both are capped
- * to the room on the chosen side and the card scrolls past that.
+ * below it.
+ *
+ * The height it opens at is trimmed to the room on that side, so a card never
+ * covers the chip that opened it. A drag is free to grow past that, since by then
+ * the reader has asked for a bigger card and can see what it covers.
  */
 export function getRefCardPosition(
   chipRect: { top: number; bottom: number; right: number },
   viewport: { width: number; height: number },
+  size: { width: number; height: number },
   margin = CONNECTOR_LAYOUT_DEFAULTS.margin,
 ): RefCardPosition {
-  const right = clamp(viewport.width - chipRect.right, margin, viewport.width - margin)
-  const maxWidth = Math.min(REF_CARD_MAX_WIDTH, Math.max(viewport.width - right - margin, 0))
   const below = viewport.height - chipRect.bottom - REF_CARD_GAP - margin
   const above = chipRect.top - REF_CARD_GAP - margin
+  const opens = below >= above ? "below" : "above"
+  const room = Math.max(opens === "below" ? below : above, REF_CARD_MIN_SIZE.height)
 
-  if (below >= above) {
-    return {
-      opens: "below",
-      right,
-      maxWidth,
-      maxHeight: Math.max(below, 0),
-      top: chipRect.bottom + REF_CARD_GAP,
-    }
-  }
+  const width = size.width
+  const height = Math.min(size.height, room)
+  const x = chipRect.right - width
+  const y =
+    opens === "below" ? chipRect.bottom + REF_CARD_GAP : chipRect.top - REF_CARD_GAP - height
+
+  return { opens, ...clampRefCardRect({ x, y, width, height }, viewport, margin) }
+}
+
+/** Holds an opening card inside the viewport, sizing it down before moving it. */
+function clampRefCardRect(
+  rect: RefCardRect,
+  viewport: { width: number; height: number },
+  margin: number,
+): RefCardRect {
+  const width = clamp(rect.width, REF_CARD_MIN_SIZE.width, viewport.width - margin * 2)
+  const height = clamp(rect.height, REF_CARD_MIN_SIZE.height, viewport.height - margin * 2)
 
   return {
-    opens: "above",
-    right,
-    maxWidth,
-    maxHeight: Math.max(above, 0),
-    bottom: viewport.height - chipRect.top + REF_CARD_GAP,
+    x: clamp(rect.x, margin, viewport.width - width - margin),
+    y: clamp(rect.y, margin, viewport.height - height - margin),
+    width,
+    height,
   }
 }
 

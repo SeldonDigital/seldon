@@ -10,8 +10,9 @@ const DEFAULT_MIN_WINDOW_HEIGHT = 300
 
 /**
  * Drag, resize, and position mechanics for a floating editor window. Shared by
- * the dialog and palette view-models: it owns the motion values, drag controls,
- * resize handlers, and drag constraints that `WindowSurface` renders.
+ * every view-model that opens one, whether a dialog, a palette, or a card on the
+ * canvas: it owns the motion values, drag controls, resize handlers, and drag
+ * constraints that `WindowSurface` renders.
  */
 export function useDraggableWindow({
   initialPosition,

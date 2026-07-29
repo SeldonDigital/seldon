@@ -10,7 +10,7 @@ import DialogCreateComponent from "@seldon/components/modules/DialogCreateCompon
 import WindowSurface from "@app/windows/WindowSurface.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import type { MenuEntry } from "@app/menus/types"
-import { useDraggableWindow } from "@app/menus/use-draggable-window"
+import { useDraggableWindow } from "@app/windows/use-draggable-window"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useWorkspace } from "@app/workspace/use-workspace"

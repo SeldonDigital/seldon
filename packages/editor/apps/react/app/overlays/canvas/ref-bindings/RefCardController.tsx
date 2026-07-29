@@ -1,19 +1,19 @@
+import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { MessageRefController } from "@seldon/components/elements/MessageRefController"
-import { Frame } from "@seldon/components/frames/Frame"
 import { PanelRefs } from "@seldon/components/modules/PanelRefs"
+import { REF_CARD_MIN_SIZE } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import {
   describeBinding,
   getBindingDirectory,
   getBindingFileName,
 } from "@seldon/editor/lib/refs/describe-binding"
-import { useMemo } from "react"
-import { createPortal } from "react-dom"
+import { useCallback, useMemo } from "react"
 
-import { getRefCardResizeSides, useRefCardHandles, useRefCardSize } from "./hooks/use-ref-card-size"
-import { refCardMultilineStyle, refCardWrapperStyle } from "./ref-card-style"
-import { refsPanelStyle } from "./ref-chip-style"
+import { getRefCardResizeSides, setRefCardSize } from "./ref-card-size"
+import { refCardMultilineStyle, refCardPanelStyle } from "./ref-card-style"
 
-import type { RefCardHandle } from "./hooks/use-ref-card-size"
+import type { Rect } from "@seldon/components/utils/resize"
 import type { RefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type {
   BindingControllerDescription,
@@ -25,8 +25,9 @@ import type { ReactNode, Ref } from "react"
 interface RefCardControllerProps {
   binding: RefBinding
   position: RefCardPosition
-  /** Lets the chip tell a click inside the card from a click away. */
-  cardRef: Ref<HTMLElement>
+  onClose: () => void
+  /** Lets the chip tell a press inside the card, handles included, from a press away. */
+  cardRef: Ref<HTMLDivElement>
 }
 
 /**
@@ -36,18 +37,37 @@ interface RefCardControllerProps {
  * binding the same way. The card leaves the chip slot out, since the chip that opened
  * it is still on screen beside it and already names the ref.
  *
- * The card is portaled to the body rather than drawn in place, because the canvas is
- * its own stacking context and a board with hidden overflow would clip it. Its wrapper
- * carries the placement and hosts the resize handles, which a module cannot do itself.
+ * It floats on `WindowSurface`, the same shell the dialogs and palettes use, which
+ * portals it clear of the canvas and its overflow, re-applies the editor theme outside
+ * the chrome root, and draws the resize handles. `useDraggableWindow` owns the rect, so
+ * a drag moves the edge under the pointer and holds the other three. It stays non-modal
+ * and grows no drag handle: a card follows its chip and the canvas stays usable behind
+ * it.
  */
-export function RefCardController({ binding, position, cardRef }: RefCardControllerProps) {
+export function RefCardController({ binding, position, onClose, cardRef }: RefCardControllerProps) {
   const { note, views, controllers } = useMemo(() => describeBinding(binding), [binding])
-  const size = useRefCardSize()
-  const sides = useMemo(() => getRefCardResizeSides(position.opens), [position.opens])
-  const handles = useRefCardHandles(sides)
 
-  const wrapperStyle = useMemo(() => refCardWrapperStyle(position, size), [position, size])
-  const handleElements = useMemo(() => handles.map(toHandle), [handles])
+  const { x, y, width, height, onResizeStart, onResize, getRect, moveControls, dragConstraints } =
+    useDraggableWindow({
+      initialPosition: { x: position.x, y: position.y },
+      initialSize: { width: position.width, height: position.height },
+      handleClose: onClose,
+      minWidth: REF_CARD_MIN_SIZE.width,
+      minHeight: REF_CARD_MIN_SIZE.height,
+    })
+
+  const resizeSides = useMemo(() => getRefCardResizeSides(position.opens), [position.opens])
+
+  // The drag drives this card, and the size it lands on is what the next card opens
+  // at. Recorded outside React state, so a live drag re-renders nothing.
+  const handleResize = useCallback(
+    (rect: Rect) => {
+      onResize(rect)
+      setRefCardSize({ width: rect.width, height: rect.height })
+    },
+    [onResize],
+  )
+
   const rows = useMemo(() => buildControllerRows(note, controllers), [note, controllers])
 
   // The view section has one Text per field rather than one per component, so several
@@ -66,11 +86,26 @@ export function RefCardController({ binding, position, cardRef }: RefCardControl
     refCardControllers: { children: rows },
   }
 
-  const card = (
-    <Frame ref={cardRef} style={wrapperStyle}>
+  return (
+    <WindowSurface
+      onClose={onClose}
+      surfaceRef={cardRef}
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      moveControls={moveControls}
+      dragConstraints={dragConstraints}
+      onResizeStart={onResizeStart}
+      onResize={handleResize}
+      getRect={getRect}
+      resizeSides={resizeSides}
+      minWidth={REF_CARD_MIN_SIZE.width}
+      minHeight={REF_CARD_MIN_SIZE.height}
+    >
       <PanelRefs
         role="presentation"
-        style={refsPanelStyle}
+        style={refCardPanelStyle}
         seldonRefs={cardRefs}
         textLabel2={{}}
         text={viewSlot}
@@ -78,11 +113,8 @@ export function RefCardController({ binding, position, cardRef }: RefCardControl
         text3={viewSlot}
         textLabel3={{}}
       />
-      {handleElements}
-    </Frame>
+    </WindowSurface>
   )
-
-  return createPortal(card, document.body)
 }
 
 /** `ItemNode.tsx: { textLabel }`, the file that exposes the ref and the slot it is. */
@@ -155,8 +187,4 @@ function toControllerRow(
       hr={separator}
     />
   )
-}
-
-function toHandle({ side, style, onPointerDown }: RefCardHandle): ReactNode {
-  return <Frame key={side} style={style} onPointerDown={onPointerDown} />
 }

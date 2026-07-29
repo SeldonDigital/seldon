@@ -34,11 +34,11 @@ interface DraggableWindowOptions {
 }
 
 /**
- * Drag, resize, and position mechanics for a floating editor window. Owns the
- * motion values, drag controls, resize handlers, and drag constraints that a
- * window surface renders. Vue port of the React `useDraggableWindow`, built on
- * motion-v. Scaffolded ahead of the Vue dialog and palette surfaces so those
- * reach parity without re-deriving the mechanics.
+ * Drag, resize, and position mechanics for a floating editor window. Shared by
+ * every view-model that opens one: it owns the motion values, drag controls,
+ * resize handlers, and drag constraints that `WindowSurface` renders.
+ *
+ * Vue port of the React `useDraggableWindow`, built on motion-v.
  */
 export function useDraggableWindow(options: DraggableWindowOptions) {
   const {
