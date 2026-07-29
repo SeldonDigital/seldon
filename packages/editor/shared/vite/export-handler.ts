@@ -2,9 +2,15 @@ import fs from "node:fs"
 import path from "node:path"
 import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
 import { exportWorkspace } from "@seldon/factory/export/export-workspace"
+import { loadWorkspace } from "@seldon/core/workspace/reducers/load-workspace"
+import { DEFAULT_COMPONENTS_FOLDER } from "../lib/export/constants"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
+
+// Re-exported so the `export-seldon` scripts, which bundle this module to reach
+// `runExport`, can read a workspace file through Core instead of `JSON.parse`.
+export { loadWorkspace }
 
 export type WireFile = {
   path: string
@@ -68,9 +74,9 @@ export async function runExport(body: ExportRequestBody): Promise<{ files: WireF
     rootDirectory,
     target: { framework: "react", styles: "css-properties" },
     output: {
-      componentsFolder: "seldon",
-      assetsFolder: "seldon/assets",
-      assetPublicPath: "/seldon/assets",
+      componentsFolder: DEFAULT_COMPONENTS_FOLDER,
+      assetsFolder: `${DEFAULT_COMPONENTS_FOLDER}/assets`,
+      assetPublicPath: `/${DEFAULT_COMPONENTS_FOLDER}/assets`,
     },
     assetReader: createNodeExportAssetReader(rootDirectory),
     // Default off so exports stay request-free. Flip to true (or override via

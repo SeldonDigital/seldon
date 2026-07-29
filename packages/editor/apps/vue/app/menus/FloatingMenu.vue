@@ -80,6 +80,11 @@ const style = computed(() => ({
   color: #e4e4e7;
   font-size: 0.8rem;
   font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 </style>

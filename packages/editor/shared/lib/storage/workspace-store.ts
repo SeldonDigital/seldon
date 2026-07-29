@@ -1,3 +1,6 @@
+import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
+import { restoreWorkspaceNodeIds } from "@seldon/core/workspace/helpers/nodes/restore-entry-node-ids"
+
 import type { Workspace } from "@seldon/core/workspace/types"
 
 /**
@@ -12,6 +15,10 @@ import type { Workspace } from "@seldon/core/workspace/types"
  *
  * This is a dev-server capability. A static production build has no Node backend
  * and would need a real server; acceptable because these editors are local-only.
+ *
+ * Records leaving this module always carry node `id` fields, and records written
+ * through it always omit them. Stored JSON drops `id` because it repeats the key
+ * each node sits under in `nodes`.
  */
 
 export type EditorId = "react" | "vue"
@@ -41,20 +48,29 @@ export async function listStoredWorkspaces(): Promise<StoredWorkspace[]> {
   const response = await fetch(BASE)
 
   if (!response.ok) return []
+  const records = (await response.json()) as StoredWorkspace[]
 
-  return (await response.json()) as StoredWorkspace[]
+  return records.map((record) => ({
+    ...record,
+    workspace: restoreWorkspaceNodeIds(record.workspace),
+  }))
 }
 
 export async function getStoredWorkspace(id: string): Promise<StoredWorkspace | undefined> {
   const response = await fetch(`${BASE}/${encodeURIComponent(id)}`)
 
   if (!response.ok) return undefined
+  const record = (await response.json()) as StoredWorkspace
 
-  return (await response.json()) as StoredWorkspace
+  return { ...record, workspace: restoreWorkspaceNodeIds(record.workspace) }
 }
 
 export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void> {
-  const stamped: StoredWorkspace = { ...record, lastEditor: currentEditor }
+  const stamped: StoredWorkspace = {
+    ...record,
+    workspace: orderWorkspaceNodeKeys(record.workspace),
+    lastEditor: currentEditor,
+  }
 
   await fetch(`${BASE}/${encodeURIComponent(record.id)}`, {
     method: "PUT",

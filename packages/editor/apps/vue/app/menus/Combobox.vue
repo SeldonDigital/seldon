@@ -26,16 +26,12 @@ const selectedOption = computed(() =>
   props.options.find((option) => sameValue(option.value, props.modelValue)),
 )
 
-const displayLabel = computed(
-  () => selectedOption.value?.label ?? props.placeholder,
-)
+const displayLabel = computed(() => selectedOption.value?.label ?? props.placeholder)
 
 const filteredOptions = computed(() => {
   const term = query.value.trim().toLowerCase()
   if (!term) return props.options
-  return props.options.filter((option) =>
-    option.label.toLowerCase().includes(term),
-  )
+  return props.options.filter((option) => option.label.toLowerCase().includes(term))
 })
 
 function sameValue(a: unknown, b: unknown): boolean {
@@ -88,21 +84,12 @@ function onSearchKeydown(event: KeyboardEvent): void {
 </script>
 
 <template>
-  <button
-    ref="trigger"
-    type="button"
-    class="combobox__trigger"
-    @click="toggle"
-  >
+  <button ref="trigger" type="button" class="combobox__trigger" @click="toggle">
     <span class="combobox__value">{{ displayLabel }}</span>
     <span class="combobox__chevron">▾</span>
   </button>
 
-  <FloatingMenu
-    :open="menu.open.value"
-    :anchor="menu.anchor.value"
-    @close="menu.hide()"
-  >
+  <FloatingMenu :open="menu.open.value" :anchor="menu.anchor.value" @close="menu.hide()">
     <input
       ref="searchInput"
       v-model="query"
@@ -112,9 +99,7 @@ function onSearchKeydown(event: KeyboardEvent): void {
       @keydown="onSearchKeydown"
     />
     <div class="combobox__list">
-      <p v-if="filteredOptions.length === 0" class="combobox__empty">
-        No matches
-      </p>
+      <p v-if="filteredOptions.length === 0" class="combobox__empty">No matches</p>
       <button
         v-for="(option, index) in filteredOptions"
         :key="index"

@@ -3,6 +3,7 @@ import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useHistory } from "@app/workspace/hooks/use-history"
 import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
@@ -52,6 +53,7 @@ export function useEditorShortcuts() {
     toggleShowUnusedIcons,
     toggleDirectSelect,
   } = useEditorConfig()
+  const { toggleRefBadges } = useRefBadges()
   const { toggleIsolation } = useToggleIsolation()
   const { activePanel, openPanel, closePanel } = usePanel()
   const navigate = useNavigate()
@@ -88,18 +90,18 @@ export function useEditorShortcuts() {
 
   // Add component (opens the add-board dialog) / add variant
   useHotkeys(
-    "shift+a",
+    "alt+c",
     () => {
       openPanel("add-board")
       setActiveTool("select")
     },
     { preventDefault: true },
   )
-  useHotkeys("alt+a", addVariant, { preventDefault: true })
+  useHotkeys("shift+alt+c", addVariant, { preventDefault: true })
 
   // Create authored component (opens the create-component dialog)
   useHotkeys(
-    "t",
+    "c",
     () => {
       openPanel("create-component")
       setActiveTool("select")
@@ -173,7 +175,7 @@ export function useEditorShortcuts() {
   })
 
   // Header tools
-  useHotkeys("shift+i", () => setActiveTool("component"), {
+  useHotkeys("shift+c", () => setActiveTool("component"), {
     preventDefault: true,
   }) // prevent the character from being typed after the trigger
   useHotkeys("v", () => setActiveTool("select"))
@@ -190,8 +192,12 @@ export function useEditorShortcuts() {
   // Wireframe mode
   useHotkeys("w", () => toggleWireframeMode(), { preventDefault: true })
 
+  // Ref connector overlay. Turning it on reads the linked folder, which needs this
+  // keypress to count as the gesture.
+  useHotkeys("r", () => toggleRefBadges(), { preventDefault: true })
+
   // Show unused properties / fonts / icons in the properties sidebar.
-  useHotkeys("r", () => toggleShowUnusedProperties(), { preventDefault: true })
+  useHotkeys("p", () => toggleShowUnusedProperties(), { preventDefault: true })
   useHotkeys("f", () => toggleShowUnusedFonts(), { preventDefault: true })
   useHotkeys("n", () => toggleShowUnusedIcons(), { preventDefault: true })
 

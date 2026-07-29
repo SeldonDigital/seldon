@@ -16,7 +16,7 @@ import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/componen
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
-import { useSharedNodeHighlight } from "../../../tracking/hooks/use-shared-node-highlight"
+import { useSharedNodeHighlight } from "../../../overlays/hooks/use-shared-node-highlight"
 import { getComponentTypeIcon, getNodeLabel, getNodeTypeColor } from "./row-node-label"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"

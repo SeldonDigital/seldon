@@ -1,6 +1,29 @@
 import { getHtmlElementByNodeId } from "../dom/canvas-elements"
 import { calculateSelectionOutline } from "../overlay/measure"
-import { updateNodeRect } from "./node-rects-store"
+import { removeNodeRectsExcept, updateNodeRect } from "./node-rects-store"
+
+/**
+ * Measures one node against the canvas and writes the result to the shared
+ * node-rects store, storing null when the node is gone or cannot be measured.
+ *
+ * Exposed for overlays that need a rect fresher than the tracker's own passes,
+ * such as connectors following a pan frame by frame.
+ */
+export function measureNodeRect(nodeId: string): void {
+  const nodeEl = getHtmlElementByNodeId(nodeId)
+
+  if (!nodeEl) {
+    updateNodeRect(nodeId, null)
+
+    return
+  }
+
+  try {
+    updateNodeRect(nodeId, calculateSelectionOutline({ nodeEl }))
+  } catch {
+    updateNodeRect(nodeId, null)
+  }
+}
 
 /**
  * Tracks the position and size of nodes on the canvas. Uses a ResizeObserver per
@@ -9,29 +32,18 @@ import { updateNodeRect } from "./node-rects-store"
  *
  * Returns a cleanup function that disconnects observers and removes listeners.
  * Call again with a fresh `nodeIds` array whenever the visible node set changes.
+ *
+ * Nodes outside the new set are forgotten as it starts, so the board that was left
+ * stops being measured and stops being paid for.
  */
 export function createNodeRectsTracker(nodeIds: string[]): () => void {
   const observers = new Map<string, ResizeObserver>()
   const cleanups: (() => void)[] = []
 
-  const updateRect = (nodeId: string): void => {
-    const nodeEl = getHtmlElementByNodeId(nodeId)
-
-    if (!nodeEl) {
-      updateNodeRect(nodeId, null)
-
-      return
-    }
-
-    try {
-      updateNodeRect(nodeId, calculateSelectionOutline({ nodeEl }))
-    } catch {
-      updateNodeRect(nodeId, null)
-    }
-  }
+  removeNodeRectsExcept(nodeIds)
 
   const handleScrollOrResize = (): void => {
-    nodeIds.forEach(updateRect)
+    nodeIds.forEach(measureNodeRect)
   }
 
   window.addEventListener("scroll", handleScrollOrResize, true)
@@ -50,8 +62,8 @@ export function createNodeRectsTracker(nodeIds: string[]): () => void {
       return
     }
 
-    updateRect(nodeId)
-    const observer = new ResizeObserver(() => updateRect(nodeId))
+    measureNodeRect(nodeId)
+    const observer = new ResizeObserver(() => measureNodeRect(nodeId))
 
     observer.observe(nodeEl)
     observers.set(nodeId, observer)

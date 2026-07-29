@@ -289,6 +289,35 @@ const validators = {
   },
 
   /**
+   * Validates that no two nodes carry the same `ref`.
+   *
+   * A ref must stay unique across the workspace, because generated code and app
+   * logic target a node by that name alone. When two nodes share one, the emitted
+   * registry keeps only the first and silently attributes the second node's slots
+   * to it, so the collision has to fail here rather than reach an export.
+   *
+   * `set_node_ref` already rejects a duplicate. This covers everything that writes
+   * nodes without going through it, such as a migration or a hand-edited file.
+   */
+  nodeRefsAreUnique: (workspace: Workspace) => {
+    const owners = new Map<string, string>()
+
+    for (const node of Object.values(getWorkspaceNodes(workspace))) {
+      const ref = node.ref?.trim()
+
+      if (!ref) continue
+
+      const owner = owners.get(ref)
+
+      check(
+        !owner,
+        `${ErrorMessages.refNotUnique(ref)} Nodes ${owner} and ${node.id} both carry it.`,
+      )
+      owners.set(ref, node.id)
+    }
+  },
+
+  /**
    * Validates each playground's Sandbox roots: width/height overrides must be
    * explicit lengths, position and size stay within the safety cap, and no two
    * sandboxes in the same playground overlap.
@@ -401,6 +430,7 @@ const VERIFICATION_CHECKS: Array<[string, (workspace: Workspace) => void]> = [
   ["One default variant per board", (w) => validators.oneDefaultVariantPerBoard(w)],
   ["Authored board roots are valid", (w) => validators.authoredRootsAreValid(w)],
   ["All node map IDs are unique", (w) => validators.uniqueIds(w)],
+  ["All node refs are unique", (w) => validators.nodeRefsAreUnique(w)],
   ["No dangling variants", (w) => validators.noDanglingVariants(w)],
   ["No dangling child nodes", (w) => validators.noDanglingChildNodes(w)],
   ["All instances have an origin classification", (w) => validators.instancesHaveOrigin(w)],

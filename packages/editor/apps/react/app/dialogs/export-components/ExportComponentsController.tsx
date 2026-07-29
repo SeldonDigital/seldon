@@ -1,8 +1,8 @@
 "use client"
 
 import { MenuController } from "@app/menus/MenuController"
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { DialogExportComponent } from "@seldon/components/modules/DialogExportComponent"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -13,8 +13,11 @@ import {
 } from "./hooks/use-export-components-panel"
 
 import type { MenuEntry } from "@app/menus/types"
+import type { FormControlRadioProps } from "@seldon/components/elements/FormControlRadio"
+import type { DialogExportComponentProps } from "@seldon/components/modules/DialogExportComponent"
 import type { IconProps } from "@seldon/components/primitives/Icon"
-import type { CSSProperties, MouseEvent, PointerEvent } from "react"
+import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
+import type { CSSProperties, ChangeEvent, KeyboardEvent, MouseEvent, PointerEvent } from "react"
 
 /**
  * Gate for the Export Components dialog. Mounts the dialog only while the
@@ -34,12 +37,12 @@ type ExportComponentsDialogProps = ReturnType<typeof useExportComponentsPanel>
 /**
  * View-model for the Export Components dialog. Renders the authored
  * `DialogExportComponent`, which supplies all copy, icons, and placeholders as
- * baked defaults. This controller only wires behavior: the platform field opens
- * a menu of the registered platforms, each scope control acts as a Yes/No radio
- * pair, the location field opens the folder picker, and the footer buttons
- * cancel and export.
+ * baked defaults. This controller only wires behavior.
  */
 function ExportComponentsDialog({
+  workspaceName,
+  setWorkspaceName,
+  commitWorkspaceName,
   platform,
   setPlatform,
   includeHidden,
@@ -52,15 +55,29 @@ function ExportComponentsDialog({
   setFontLinks,
   allIcons,
   setAllIcons,
+  savedWorkspace,
+  setSavedWorkspace,
+  includeScripts,
+  setIncludeScripts,
   directory,
   chooseDirectory,
+  exporting,
   save,
+  cancel,
   close,
 }: ExportComponentsDialogProps) {
-  useHotkeys("esc", close)
+  // Dismissing by clicking away or by the surface's own control must not stop an
+  // export, because neither reads as "cancel". Only Cancel and Esc do that.
+  const closeUnlessExporting = useCallback(() => {
+    if (exporting) return
+
+    close()
+  }, [exporting, close])
+
+  useHotkeys("esc", cancel)
 
   const { x, y, moveControls } = useDraggableWindow({
-    handleClose: close,
+    handleClose: closeUnlessExporting,
     contentSized: true,
     closeOnEscape: false,
   })
@@ -93,172 +110,211 @@ function ExportComponentsDialog({
     [platform, setPlatform],
   )
 
-  const includeHiddenYes = useCallback(() => setIncludeHidden(true), [setIncludeHidden])
-  const includeHiddenNo = useCallback(() => setIncludeHidden(false), [setIncludeHidden])
-  const allThemesYes = useCallback(() => setAllThemes(true), [setAllThemes])
-  const allThemesNo = useCallback(() => setAllThemes(false), [setAllThemes])
-  const allFontsYes = useCallback(() => setAllFonts(true), [setAllFonts])
-  const allFontsNo = useCallback(() => setAllFonts(false), [setAllFonts])
-  const fontLinksYes = useCallback(() => setFontLinks(true), [setFontLinks])
-  const fontLinksNo = useCallback(() => setFontLinks(false), [setFontLinks])
-  const allIconsYes = useCallback(() => setAllIcons(true), [setAllIcons])
-  const allIconsNo = useCallback(() => setAllIcons(false), [setAllIcons])
+  const changeWorkspaceName = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => setWorkspaceName(event.target.value),
+    [setWorkspaceName],
+  )
+
+  // Renaming the stored record is a write to the dev server, so it waits for the
+  // user to finish rather than firing on every keystroke.
+  const commitNameOnEnter = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key !== "Enter") return
+      event.preventDefault()
+      commitWorkspaceName()
+      event.currentTarget.blur()
+    },
+    [commitWorkspaceName],
+  )
 
   const directoryLabel = directory?.name ?? ""
 
-  // The authored radio items all bake a filled dot, so selection state is drawn
-  // by swapping each item's icon: filled for the chosen side, hollow for the
-  // other. Yes sits in the first icon slot of each pair, No in the second.
-  const hiddenYesIcon = includeHidden ? iconChecked : iconUnchecked
-  const hiddenNoIcon = includeHidden ? iconUnchecked : iconChecked
-  const themesYesIcon = allThemes ? iconChecked : iconUnchecked
-  const themesNoIcon = allThemes ? iconUnchecked : iconChecked
-  const fontsYesIcon = allFonts ? iconChecked : iconUnchecked
-  const fontsNoIcon = allFonts ? iconUnchecked : iconChecked
-  const fontLinksYesIcon = fontLinks ? iconChecked : iconUnchecked
-  const fontLinksNoIcon = fontLinks ? iconUnchecked : iconChecked
-  const iconsYesIcon = allIcons ? iconChecked : iconUnchecked
-  const iconsNoIcon = allIcons ? iconUnchecked : iconChecked
+  // Only Export dims, so Cancel and the title bar stay usable during a run. Its
+  // pointer events go with it, which is what stops a second export from landing.
+  const confirmStyle = exporting ? styles.busy : undefined
 
   const barHandle = useMemo(
     () => ({ onPointerDown: startDrag, style: styles.dragHandle }),
     [startDrag],
   )
-  const showSlot = useMemo(() => ({}), [])
 
-  const seldonRefs = useMemo(
+  const seldonRefs = useMemo<SeldonRefs>(
     () => ({
+      exportWorkspaceName: {
+        value: workspaceName,
+        placeholder: "Untitled workspace",
+        onChange: changeWorkspaceName,
+        onBlur: commitWorkspaceName,
+        onKeyDown: commitNameOnEnter,
+        style: styles.opaque,
+      },
       exportRootPath: {
         value: directoryLabel,
         placeholder: "Choose a folder…",
         readOnly: true,
         onClick: chooseDirectory,
-        style: styles.pointer,
+        style: styles.opaquePointer,
       },
       exportPlatform: {
         value: platformLabel,
         readOnly: true,
         onClick: openPlatform,
         "aria-expanded": platformOpen,
-        style: styles.pointer,
+        style: styles.opaquePointer,
       },
-      exportHiddenYes: radioProps(includeHidden === true, includeHiddenYes),
-      exportHiddenNo: radioProps(includeHidden === false, includeHiddenNo),
-      exportAllThemesYes: radioProps(allThemes === true, allThemesYes),
-      exportAllThemesNo: radioProps(allThemes === false, allThemesNo),
-      exportAllFontsYes: radioProps(allFonts === true, allFontsYes),
-      exportAllFontsNo: radioProps(allFonts === false, allFontsNo),
-      exportFontLinksYes: radioProps(fontLinks === true, fontLinksYes),
-      exportFontLinksNo: radioProps(fontLinks === false, fontLinksNo),
-      exportAllIconsYes: radioProps(allIcons === true, allIconsYes),
-      exportAllIconsNo: radioProps(allIcons === false, allIconsNo),
-      exportCancel: { onClick: close },
-      exportConfirm: { onClick: save },
+
+      exportFontLinksYes: radioItem(fontLinks, () => setFontLinks(true)),
+      exportFontLinksYesIcon: radioDot(fontLinks),
+      exportFontLinksNo: radioItem(!fontLinks, () => setFontLinks(false)),
+      exportFontLinksNoIcon: radioDot(!fontLinks),
+
+      exportHiddenYes: radioItem(includeHidden, () => setIncludeHidden(true)),
+      exportHiddenYesIcon: radioDot(includeHidden),
+      exportHiddenNo: radioItem(!includeHidden, () => setIncludeHidden(false)),
+      exportHiddenNoIcon: radioDot(!includeHidden),
+
+      exportAllThemesYes: radioItem(allThemes, () => setAllThemes(true)),
+      exportAllThemesYesIcon: radioDot(allThemes),
+      exportAllThemesNo: radioItem(!allThemes, () => setAllThemes(false)),
+      exportAllThemesNoIcon: radioDot(!allThemes),
+
+      exportAllFontsYes: radioItem(allFonts, () => setAllFonts(true)),
+      exportAllFontsYesIcon: radioDot(allFonts),
+      exportAllFontsNo: radioItem(!allFonts, () => setAllFonts(false)),
+      exportAllFontsNoIcon: radioDot(!allFonts),
+
+      exportAllIconsYes: radioItem(allIcons, () => setAllIcons(true)),
+      exportAllIconsYesIcon: radioDot(allIcons),
+      exportAllIconsNo: radioItem(!allIcons, () => setAllIcons(false)),
+      exportAllIconsNoIcon: radioDot(!allIcons),
+
+      exportSavedWorkspaceYes: radioItem(savedWorkspace, () => setSavedWorkspace(true)),
+      exportSavedWorkspaceYesIcon: radioDot(savedWorkspace),
+      exportSavedWorkspaceNo: radioItem(!savedWorkspace, () => setSavedWorkspace(false)),
+      exportSavedWorkspaceNoIcon: radioDot(!savedWorkspace),
+
+      exportScriptsYes: radioItem(includeScripts, () => setIncludeScripts(true)),
+      exportScriptsYesIcon: radioDot(includeScripts),
+      exportScriptsNo: radioItem(!includeScripts, () => setIncludeScripts(false)),
+      exportScriptsNoIcon: radioDot(!includeScripts),
+
+      exportCancel: { onClick: cancel },
+      exportConfirm: { onClick: save, "aria-disabled": exporting, style: confirmStyle },
     }),
     [
+      workspaceName,
+      changeWorkspaceName,
+      commitWorkspaceName,
+      commitNameOnEnter,
       directoryLabel,
       chooseDirectory,
       platformLabel,
       openPlatform,
       platformOpen,
-      includeHidden,
-      includeHiddenYes,
-      includeHiddenNo,
-      allThemes,
-      allThemesYes,
-      allThemesNo,
-      allFonts,
-      allFontsYes,
-      allFontsNo,
       fontLinks,
-      fontLinksYes,
-      fontLinksNo,
+      setFontLinks,
+      includeHidden,
+      setIncludeHidden,
+      allThemes,
+      setAllThemes,
+      allFonts,
+      setAllFonts,
       allIcons,
-      allIconsYes,
-      allIconsNo,
-      close,
+      setAllIcons,
+      savedWorkspace,
+      setSavedWorkspace,
+      includeScripts,
+      setIncludeScripts,
+      exporting,
+      confirmStyle,
+      cancel,
       save,
     ],
   )
 
+  const slots = useMemo<Partial<DialogExportComponentProps>>(
+    () => ({
+      textTitle: {},
+
+      formControl: {},
+      textLabel: {},
+      formControl2: {},
+      textLabel2: {},
+      formControl3: {},
+      textLabel3: {},
+      comboboxField: {},
+
+      formControlRadio: radioGroup("Generate Google Font API Links"),
+      textLabel4: {},
+      menuItemRadio: {},
+      textLabel5: radioLabel,
+      menuItemRadio2: {},
+      textLabel6: radioLabel,
+
+      fieldset: {},
+
+      formControlRadio2: radioGroup("Hidden Components"),
+      textLabel7: {},
+      menuItemRadio3: {},
+      textLabel8: radioLabel,
+      menuItemRadio4: {},
+      textLabel9: radioLabel,
+
+      formControlRadio3: radioGroup("All Themes"),
+      textLabel10: {},
+      menuItemRadio5: {},
+      textLabel11: radioLabel,
+      menuItemRadio6: {},
+      textLabel12: radioLabel,
+
+      formControlRadio4: radioGroup("All Enabled Fonts"),
+      textLabel13: {},
+      menuItemRadio7: {},
+      textLabel14: radioLabel,
+      menuItemRadio8: {},
+      textLabel15: radioLabel,
+
+      formControlRadio5: radioGroup("All Enabled Icons"),
+      textLabel16: {},
+      menuItemRadio9: {},
+      textLabel17: radioLabel,
+      menuItemRadio10: {},
+      textLabel18: radioLabel,
+
+      formControlRadio6: radioGroup("Saved Workspace"),
+      textLabel19: {},
+      menuItemRadio11: {},
+      textLabel20: radioLabel,
+      menuItemRadio12: {},
+      textLabel21: radioLabel,
+
+      formControlRadio7: radioGroup("CLI Utility Scripts"),
+      textLabel22: {},
+      menuItemRadio13: {},
+      textLabel23: radioLabel,
+      menuItemRadio14: {},
+      textLabel24: radioLabel,
+
+      textLabel25: {},
+      textLabel26: {},
+    }),
+    [],
+  )
+
   return (
-    <WindowSurface modal contentSized onClose={close} x={x} y={y} moveControls={moveControls}>
+    <WindowSurface
+      modal
+      contentSized
+      onClose={closeUnlessExporting}
+      x={x}
+      y={y}
+      moveControls={moveControls}
+    >
       <DialogExportComponent
         data-testid="export-components-dialog"
+        aria-busy={exporting}
         bar={barHandle}
-        textTitle={showSlot}
-        frame={showSlot}
-        formControl={showSlot}
-        textLabel={showSlot}
-        input={showSlot}
-        formControl2={showSlot}
-        textLabel2={showSlot}
-        comboboxField={showSlot}
-        input2={showSlot}
-        buttonIconic={showSlot}
-        icon={showSlot}
-        formControlRadio={showSlot}
-        frame2={showSlot}
-        textLabel3={showSlot}
-        textDescription={showSlot}
-        frame3={showSlot}
-        menuItemRadio={showSlot}
-        icon2={hiddenYesIcon}
-        textLabel4={showSlot}
-        menuItemRadio2={showSlot}
-        icon3={hiddenNoIcon}
-        textLabel5={showSlot}
-        formControlRadio2={showSlot}
-        frame4={showSlot}
-        textLabel6={showSlot}
-        textDescription2={showSlot}
-        frame5={showSlot}
-        menuItemRadio3={showSlot}
-        icon4={themesYesIcon}
-        textLabel7={showSlot}
-        menuItemRadio4={showSlot}
-        icon5={themesNoIcon}
-        textLabel8={showSlot}
-        formControlRadio3={showSlot}
-        frame6={showSlot}
-        textLabel9={showSlot}
-        textDescription3={showSlot}
-        frame7={showSlot}
-        menuItemRadio5={showSlot}
-        icon6={fontsYesIcon}
-        textLabel10={showSlot}
-        menuItemRadio6={showSlot}
-        icon7={fontsNoIcon}
-        textLabel11={showSlot}
-        formControlRadio4={showSlot}
-        frame8={showSlot}
-        textLabel12={showSlot}
-        textDescription4={showSlot}
-        frame9={showSlot}
-        menuItemRadio7={showSlot}
-        icon8={fontLinksYesIcon}
-        textLabel13={showSlot}
-        menuItemRadio8={showSlot}
-        icon9={fontLinksNoIcon}
-        textLabel14={showSlot}
-        formControlRadio5={showSlot}
-        frame10={showSlot}
-        textLabel15={showSlot}
-        textDescription5={showSlot}
-        frame11={showSlot}
-        menuItemRadio9={showSlot}
-        icon10={iconsYesIcon}
-        textLabel16={showSlot}
-        menuItemRadio10={showSlot}
-        icon11={iconsNoIcon}
-        textLabel17={showSlot}
-        barButtons={showSlot}
-        button={showSlot}
-        icon12={showSlot}
-        textLabel18={showSlot}
-        button2={showSlot}
-        icon13={showSlot}
-        textLabel19={showSlot}
+        {...slots}
         seldonRefs={seldonRefs}
       />
       <MenuController
@@ -271,18 +327,30 @@ function ExportComponentsDialog({
   )
 }
 
-const iconChecked: IconProps = { icon: "material-radioButtonChecked" }
-const iconUnchecked: IconProps = { icon: "material-radioButtonUnchecked" }
+const iconChecked: IconProps["icon"] = "material-radioButtonChecked"
+const iconUnchecked: IconProps["icon"] = "material-radioButtonUnchecked"
 
 /** Wires a Yes/No radio item: checked state, role, and its select handler. */
-function radioProps(checked: boolean, onSelect: () => void) {
+function radioItem(checked: boolean, onSelect: () => void) {
   return {
     onClick: onSelect,
     role: "radio",
     "aria-checked": checked ? "true" : "false",
     "aria-selected": checked || undefined,
-    style: styles.pointer,
+    style: styles.radioItem,
   }
+}
+
+/**
+ * The dot glyph for a Yes/No pair.
+ */
+function radioDot(checked: boolean) {
+  return { icon: checked ? iconChecked : iconUnchecked, style: styles.opaque }
+}
+
+/** Names a Yes/No pair as one group. */
+function radioGroup(label: string): FormControlRadioProps {
+  return { role: "radiogroup", "aria-label": label }
 }
 
 const styles: Record<string, CSSProperties> = {
@@ -291,7 +359,22 @@ const styles: Record<string, CSSProperties> = {
     userSelect: "none",
     touchAction: "none",
   },
-  pointer: {
+  opaque: {
+    opacity: 1,
+  },
+  opaquePointer: {
     cursor: "pointer",
+    opacity: 1,
+  },
+  radioItem: {
+    cursor: "pointer",
+    backgroundColor: "transparent",
+  },
+  busy: {
+    opacity: 0.5,
+    pointerEvents: "none",
   },
 }
+
+/** Radio copy, held opaque so the row states cannot dim it. */
+const radioLabel = { style: styles.opaque }

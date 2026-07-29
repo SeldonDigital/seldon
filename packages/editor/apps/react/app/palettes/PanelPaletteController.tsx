@@ -1,7 +1,7 @@
 "use client"
 
-import { useDraggableWindow } from "@app/menus/hooks/use-draggable-window"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
+import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { PanelPalette } from "@seldon/components/modules/PanelPalette"
 import { useCallback } from "react"
 

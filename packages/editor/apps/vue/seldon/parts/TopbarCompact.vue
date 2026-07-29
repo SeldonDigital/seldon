@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -48,13 +55,14 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
-import Frame from "../frames/Frame.vue"
+
 import Button from "../elements/Button.vue"
+import Frame from "../frames/Frame.vue"
 import Image from "../primitives/Image.vue"
 import LinkPlain from "../primitives/LinkPlain.vue"
 import Text from "../primitives/Text.vue"
 import TextLabel from "../primitives/TextLabel.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -79,97 +87,119 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  "role": "banner",
+  role: "banner",
   "aria-hidden": "false",
-  "frame": {
-    "wrapperElement": "div",
+  frame: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--3jq4"
+    className: "sdn-frame sdn-frame--3jq4",
   },
-  "image": {
-    "className": "sdn-image sdn-image--guh3"
+  image: {
+    className: "sdn-image sdn-image--guh3",
   },
-  "image2": {
-    "className": "sdn-image sdn-image--guh3"
+  image2: {
+    className: "sdn-image sdn-image--guh3",
   },
-  "frame2": {
-    "wrapperElement": "div",
+  frame2: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--cbw3"
+    className: "sdn-frame sdn-frame--cbw3",
   },
-  "linkPlain": {
-    "className": "sdn-link-plain sdn-link-plain--hnhh"
+  linkPlain: {
+    children: "Expertise",
+    className: "sdn-link-plain sdn-link-plain--hnhh",
   },
-  "linkPlain2": {
-    "className": "sdn-link-plain sdn-link-plain--hnhh"
+  linkPlain2: {
+    children: "Services",
+    className: "sdn-link-plain sdn-link-plain--hnhh",
   },
-  "linkPlain3": {
-    "className": "sdn-link-plain sdn-link-plain--yexk"
+  linkPlain3: {
+    children: "Study Case",
+    className: "sdn-link-plain sdn-link-plain--yexk",
   },
-  "linkPlain4": {
-    "className": "sdn-link-plain sdn-link-plain--hnhh"
+  linkPlain4: {
+    children: "Contact Us",
+    className: "sdn-link-plain sdn-link-plain--hnhh",
   },
-  "frame3": {
-    "wrapperElement": "div",
+  frame3: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--adqt"
+    className: "sdn-frame sdn-frame--adqt",
   },
-  "linkPlain5": {
-    "className": "sdn-link-plain sdn-link-plain--67at"
+  linkPlain5: {
+    children: "EN",
+    className: "sdn-link-plain sdn-link-plain--67at",
   },
-  "text": {
-    "className": "sdn-text sdn-text--s4kj"
+  text: {
+    children: " | ",
+    className: "sdn-text sdn-text--s4kj",
   },
-  "linkPlain6": {
-    "className": "sdn-link-plain sdn-link-plain--yc40"
+  linkPlain6: {
+    children: "JP",
+    className: "sdn-link-plain sdn-link-plain--yc40",
   },
-  "button": {
-    "className": "sdn-button sdn-button--aket"
+  button: {
+    className: "sdn-button sdn-button--aket",
   },
-  "textLabel": {
-    "className": "sdn-text-label sdn-text-label--wxqf"
-  }
+  textLabel: {
+    children: "Start Project",
+    className: "sdn-text-label sdn-text-label--wxqf",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-topbar", props.className))
-const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
+const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
 const imageProps = computed(() => mergeOptionalSlot(sdn.image, props.image, props.seldonRefs))
 const image2Props = computed(() => mergeOptionalSlot(sdn.image2, props.image2, props.seldonRefs))
 const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
-const linkPlainProps = computed(() => mergeOptionalSlot(sdn.linkPlain, props.linkPlain, props.seldonRefs))
-const linkPlain2Props = computed(() => mergeOptionalSlot(sdn.linkPlain2, props.linkPlain2, props.seldonRefs))
-const linkPlain3Props = computed(() => mergeOptionalSlot(sdn.linkPlain3, props.linkPlain3, props.seldonRefs))
-const linkPlain4Props = computed(() => mergeOptionalSlot(sdn.linkPlain4, props.linkPlain4, props.seldonRefs))
+const linkPlainProps = computed(() =>
+  mergeOptionalSlot(sdn.linkPlain, props.linkPlain, props.seldonRefs),
+)
+const linkPlain2Props = computed(() =>
+  mergeOptionalSlot(sdn.linkPlain2, props.linkPlain2, props.seldonRefs),
+)
+const linkPlain3Props = computed(() =>
+  mergeOptionalSlot(sdn.linkPlain3, props.linkPlain3, props.seldonRefs),
+)
+const linkPlain4Props = computed(() =>
+  mergeOptionalSlot(sdn.linkPlain4, props.linkPlain4, props.seldonRefs),
+)
 const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
-const linkPlain5Props = computed(() => mergeOptionalSlot(sdn.linkPlain5, props.linkPlain5, props.seldonRefs))
+const linkPlain5Props = computed(() =>
+  mergeOptionalSlot(sdn.linkPlain5, props.linkPlain5, props.seldonRefs),
+)
 const textProps = computed(() => mergeOptionalSlot(sdn.text, props.text, props.seldonRefs))
-const linkPlain6Props = computed(() => mergeOptionalSlot(sdn.linkPlain6, props.linkPlain6, props.seldonRefs))
+const linkPlain6Props = computed(() =>
+  mergeOptionalSlot(sdn.linkPlain6, props.linkPlain6, props.seldonRefs),
+)
 const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
-const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <Frame v-bind="frameProps">
-          <Image v-if="imageProps !== null" v-bind="imageProps" />
-          <Image v-if="image2Props !== null" v-bind="image2Props" />
-        </Frame>
-        <Frame v-bind="frame2Props">
-          <LinkPlain v-if="linkPlainProps !== null" v-bind="linkPlainProps" />
-          <LinkPlain v-if="linkPlain2Props !== null" v-bind="linkPlain2Props" />
-          <LinkPlain v-if="linkPlain3Props !== null" v-bind="linkPlain3Props" />
-          <LinkPlain v-if="linkPlain4Props !== null" v-bind="linkPlain4Props" />
-        </Frame>
-        <Frame v-bind="frame3Props">
-          <LinkPlain v-if="linkPlain5Props !== null" v-bind="linkPlain5Props" />
-          <Text v-if="textProps !== null" v-bind="textProps" />
-          <LinkPlain v-if="linkPlain6Props !== null" v-bind="linkPlain6Props" />
-        </Frame>
-        <Button v-if="buttonProps !== null" v-bind="buttonProps">
-          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-        </Button>
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <Frame v-bind="frameProps">
+        <Image v-if="imageProps !== null" v-bind="imageProps" />
+        <Image v-if="image2Props !== null" v-bind="image2Props" />
+      </Frame>
+      <Frame v-bind="frame2Props">
+        <LinkPlain v-if="linkPlainProps !== null" v-bind="linkPlainProps" />
+        <LinkPlain v-if="linkPlain2Props !== null" v-bind="linkPlain2Props" />
+        <LinkPlain v-if="linkPlain3Props !== null" v-bind="linkPlain3Props" />
+        <LinkPlain v-if="linkPlain4Props !== null" v-bind="linkPlain4Props" />
+      </Frame>
+      <Frame v-bind="frame3Props">
+        <LinkPlain v-if="linkPlain5Props !== null" v-bind="linkPlain5Props" />
+        <Text v-if="textProps !== null" v-bind="textProps" />
+        <LinkPlain v-if="linkPlain6Props !== null" v-bind="linkPlain6Props" />
+      </Frame>
+      <Button v-if="buttonProps !== null" v-bind="buttonProps">
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+      </Button>
+    </slot>
+  </div>
 </template>

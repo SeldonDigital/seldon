@@ -13,7 +13,8 @@ defineProps<{ cssProperties: string[] }>()
       v-for="(declaration, index) in cssProperties"
       :key="index"
       class="properties-css-block__line"
-    >{{ declaration }}</code>
+      >{{ declaration }}</code
+    >
   </Frame>
 </template>
 

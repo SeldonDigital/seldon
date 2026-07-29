@@ -7,21 +7,22 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 import { build } from "esbuild"
 
 /**
- * Runs the factory Vue export on `seldon-editor.json` and writes the generated
- * `.vue` chrome into `packages/editor-vue/seldon/`.
+ * Runs the factory Vue export on this editor's own workspace copy and writes the
+ * generated `.vue` chrome into `packages/editor/apps/vue/seldon/`.
  *
- * Mirrors the React editor's export-seldon script but targets the Vue platform,
- * so each editor regenerates its own chrome from the same canonical file.
+ * Mirrors the React editor's export-seldon script but targets the Vue platform.
+ * Each editor reads the copy beside its own components, so exporting one editor
+ * never regenerates the other from a workspace it did not load. Both copies come
+ * from the same workspace, so export both after changing it.
  */
 const scriptDir = path.dirname(fileURLToPath(import.meta.url))
 const editorRoot = path.dirname(scriptDir)
-const repoRoot = path.join(editorRoot, "../../../..")
 const coreRoot = path.join(editorRoot, "../../../core")
 const factoryRoot = path.join(editorRoot, "../../../factory")
 const handlerEntry = path.join(editorRoot, "../../shared/vite/export-handler.ts")
-const workspaceFile = path.join(repoRoot, "seldon-editor.json")
+const workspaceFile = path.join(editorRoot, "seldon/seldon-editor.json")
 
-async function loadRunExport() {
+async function loadHandler() {
   const result = await build({
     entryPoints: [handlerEntry],
     bundle: true,
@@ -39,16 +40,16 @@ async function loadRunExport() {
   const outputFile = path.join(os.tmpdir(), `seldon-vue-export-${process.pid}.mjs`)
   await fsp.writeFile(outputFile, result.outputFiles[0].text)
   try {
-    const mod = await import(pathToFileURL(outputFile).href)
-    return mod.runExport
+    return await import(pathToFileURL(outputFile).href)
   } finally {
     await fsp.rm(outputFile, { force: true })
   }
 }
 
 async function main() {
-  const runExport = await loadRunExport()
-  const workspace = JSON.parse(fs.readFileSync(workspaceFile, "utf8"))
+  const { runExport, loadWorkspace } = await loadHandler()
+  // Read through Core so the file is migrated and verified before it is exported.
+  const workspace = loadWorkspace(fs.readFileSync(workspaceFile, "utf8"))
 
   const { files } = await runExport({
     workspace,
@@ -61,6 +62,11 @@ async function main() {
         // keeping the generated library self-contained.
         componentsFolder: "seldon",
       },
+
+      // This editor is its own consumer, so it keeps the bindings scanner it
+      // hands to any other project. `npm run bindings` runs it to write
+      // `seldon/refs/bindings.json`, which the connections overlay reads.
+      includeScripts: true,
     },
   })
 

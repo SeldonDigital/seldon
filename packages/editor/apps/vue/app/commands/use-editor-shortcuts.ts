@@ -2,6 +2,7 @@ import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
 import { useToggleIsolation } from "@app/editor/use-toggle-isolation"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useHistoryStore } from "@app/workspace/history-store"
 import { onMounted, onUnmounted } from "vue"
 import { useRouter } from "vue-router"
@@ -44,6 +45,7 @@ export function useEditorShortcuts(): void {
   const tool = useToolStore()
   const config = useEditorConfigStore()
   const { toggleIsolation } = useToggleIsolation()
+  const { toggleRefBadges } = useRefBadges()
   const panel = usePanelStore()
   const router = useRouter()
 
@@ -87,23 +89,29 @@ export function useEditorShortcuts(): void {
 
     switch (key) {
       case "a":
-        if (alt) {
-          event.preventDefault()
-          addVariant()
-        } else if (shift) {
-          event.preventDefault()
-          panel.openPanel("add-board")
-          tool.setActiveTool("select")
-        } else if (!mod) {
+        if (!mod && !shift && !alt) {
           event.preventDefault()
           config.toggleDirectSelect()
         }
 
         return
-      case "t":
+      case "c":
+        // Copy is left to the browser, which is what holds the modifier.
+        if (mod) return
+
         event.preventDefault()
-        panel.openPanel("create-component")
-        tool.setActiveTool("select")
+
+        if (shift && alt) {
+          addVariant()
+        } else if (alt) {
+          panel.openPanel("add-board")
+          tool.setActiveTool("select")
+        } else if (shift) {
+          tool.setActiveTool("component")
+        } else {
+          panel.openPanel("create-component")
+          tool.setActiveTool("select")
+        }
 
         return
       case "`":
@@ -154,9 +162,10 @@ export function useEditorShortcuts(): void {
 
         return
       case "i":
+        if (shift) return
+
         event.preventDefault()
-        if (shift) tool.setActiveTool("component")
-        else toggleIsolation()
+        toggleIsolation()
 
         return
       case "v":
@@ -174,6 +183,11 @@ export function useEditorShortcuts(): void {
 
         return
       case "r":
+        event.preventDefault()
+        toggleRefBadges()
+
+        return
+      case "p":
         event.preventDefault()
         config.showUnusedProperties = !config.showUnusedProperties
 

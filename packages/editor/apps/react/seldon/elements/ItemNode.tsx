@@ -46,13 +46,13 @@ const sdn: ItemNodeProps = {
   "aria-hidden": "false",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "nodeToggle",
+    "data-seldon-ref": "nodeDisclosure",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
-    "data-seldon-ref": "nodeToggleIcon",
+    "data-seldon-ref": "nodeDisclosureIcon",
   },
 
   comboboxField: {
@@ -80,6 +80,7 @@ const sdn: ItemNodeProps = {
     icon: "seldon-display",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "nodeDisplayIcon",
   },
 
   buttonIconic3: {
@@ -101,13 +102,13 @@ const sdn: ItemNodeProps = {
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic    buttonIconic   -> nodeToggle
- *     Icon          icon           -> nodeToggleIcon
+ *   ButtonIconic    buttonIconic   -> nodeDisclosure
+ *     Icon          icon           -> nodeDisclosureIcon
  *   ComboboxField   comboboxField
  *     Icon          icon2          -> nodeIcon
  *     Input         input          -> nodeLabel
  *     ButtonIconic  buttonIconic2  -> nodeDisplay
- *       Icon        icon3
+ *       Icon        icon3          -> nodeDisplayIcon
  *   ButtonIconic    buttonIconic3  -> nodeActions
  *     Icon          icon4
  *

@@ -85,7 +85,7 @@ export function ResourceEntry({
   // `seldon-more` default, hidden by the actions button placeholder. Per-row
   // data flows through stable refs.
   const seldonRefs = {
-    nodeToggleIcon: { style: { opacity: 0 } },
+    nodeDisclosureIcon: { style: { opacity: 0 } },
     nodeIcon: { ...icon2 },
     nodeLabel: { ...nameInput },
     nodeActions: { ...actionsMenu.buttonIconic },

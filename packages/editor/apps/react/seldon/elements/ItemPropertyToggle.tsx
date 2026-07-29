@@ -47,21 +47,22 @@ const sdn: ItemPropertyToggleProps = {
   "aria-hidden": "false",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "propertyToggle",
+    "data-seldon-ref": "propertyToggleDisclosure",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
-    "data-seldon-ref": "propertyToggleIcon",
+    "data-seldon-ref": "propertyToggleDisclosureIcon",
   },
 
   formControlCombobox: {
     className: "sdn-form-control sdn-form-control-combobox--qmop",
   },
   input: {
+    placeholder: "Property Name",
     className: "sdn-input sdn-input--jvsw",
-    "data-seldon-ref": "propertyLabel",
+    "data-seldon-ref": "propertyToggleLabel",
   },
   frame: {
     wrapperElement: "div",
@@ -69,17 +70,18 @@ const sdn: ItemPropertyToggleProps = {
     className: "sdn-frame sdn-frame--inf3",
   },
   icon2: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "toggleIcon",
+    "data-seldon-ref": "propertyToggleIcon",
   },
   toggleSwitch: {
     className: "sdn-toggle-switch sdn-toggle-switch--pelh",
-    "data-seldon-ref": "toggleValue",
+    "data-seldon-ref": "propertyToggleSwitch",
   },
 
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "propertyActions",
+    "data-seldon-ref": "propertyToggleActions",
   },
   icon3: {
     icon: "seldon-more",
@@ -96,14 +98,14 @@ const sdn: ItemPropertyToggleProps = {
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic         buttonIconic         -> propertyToggle
- *     Icon               icon                 -> propertyToggleIcon
+ *   ButtonIconic         buttonIconic         -> propertyToggleDisclosure
+ *     Icon               icon                 -> propertyToggleDisclosureIcon
  *   FormControlCombobox  formControlCombobox
- *     Input              input                -> propertyLabel
+ *     Input              input                -> propertyToggleLabel
  *     Frame              frame
- *       Icon             icon2                -> toggleIcon
- *       ToggleSwitch     toggleSwitch         -> toggleValue
- *   ButtonIconic         buttonIconic2        -> propertyActions
+ *       Icon             icon2                -> propertyToggleIcon
+ *       ToggleSwitch     toggleSwitch         -> propertyToggleSwitch
+ *   ButtonIconic         buttonIconic2        -> propertyToggleActions
  *     Icon               icon3
  *
  * @example

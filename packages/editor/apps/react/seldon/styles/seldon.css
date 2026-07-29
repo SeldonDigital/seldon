@@ -73,6 +73,7 @@
   --sdn-swatch-punch-b50: hsl(20 84% 78%);
   --sdn-swatch-negative-b50: hsl(359 89% 80.5%);
   --sdn-swatch-swatch4-bn20: hsl(202 89% 63.2%);
+  --sdn-swatch-accent-bn30: hsl(300 97% 28.7%);
   --sdn-swatch-gray-b50: hsl(202 0% 75%);
   /* Sizes */
   --sdn-sizes-tiny: 0.125rem;
@@ -179,6 +180,7 @@
   --sdn-hc-on-punch-b50: hsl(202 0% 8%);
   --sdn-hc-on-negative-b50: hsl(202 0% 8%);
   --sdn-hc-on-swatch4-bn20: hsl(202 0% 8%);
+  --sdn-hc-on-accent-bn30: hsl(202 0% 98%);
   --sdn-hc-on-gray-b50: hsl(202 0% 8%);
   /* Auto Fit */
   --sdn-cmp-auto-fit-font-size-tiny: 0.4rem;
@@ -269,6 +271,7 @@
   --sdn-swatch-punch-b50: hsl(20 100% 80.5%);
   --sdn-swatch-negative-b50: hsl(1 100% 83.5%);
   --sdn-swatch-swatch4-bn20: hsl(203 99% 68%);
+  --sdn-swatch-accent-bn30: hsl(300 100% 31.5%);
   --sdn-swatch-gray-b50: hsl(160 0% 71.5%);
   /* High Contrast */
   --sdn-hc-on-white: hsl(202 0% 98%);
@@ -307,5 +310,6 @@
   --sdn-hc-on-punch-b50: hsl(202 0% 8%);
   --sdn-hc-on-negative-b50: hsl(202 0% 8%);
   --sdn-hc-on-swatch4-bn20: hsl(202 0% 8%);
+  --sdn-hc-on-accent-bn30: hsl(202 0% 98%);
   --sdn-hc-on-gray-b50: hsl(202 0% 8%);
 }

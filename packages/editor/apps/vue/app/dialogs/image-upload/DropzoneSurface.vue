@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { ref, type CSSProperties } from "vue"
 import Frame from "@seldon/components/frames/Frame.vue"
+import { ref } from "vue"
+
+import type { CSSProperties } from "vue"
 
 // A generated Input does not forward a DOM ref, so the hidden file input is a
 // native element here. Selection and drag events surface through emits; the
 // surface style is supplied by the caller.
-const props = withDefaults(
-  defineProps<{ accept?: string; surfaceStyle?: CSSProperties }>(),
-  { accept: "image/*" },
-)
+const props = withDefaults(defineProps<{ accept?: string; surfaceStyle?: CSSProperties }>(), {
+  accept: "image/*",
+})
 
 const emit = defineEmits<{
   (event: "fileChange", file: File | null): void

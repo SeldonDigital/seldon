@@ -741,7 +741,7 @@ Create test files following existing patterns:
 
 ```typescript
 // /packages/core/properties/values/appearance/new-property.test.ts
-import { describe, expect, it } from "bun:test"
+import { describe, expect, it } from "vitest"
 
 import { ValueType } from "../../constants"
 import { NewPropertyValue } from "./new-property"

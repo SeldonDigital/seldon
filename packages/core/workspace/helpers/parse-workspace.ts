@@ -1,3 +1,5 @@
+import { restoreWorkspaceNodeIds } from "./nodes/restore-entry-node-ids"
+
 import type { Workspace } from "../model/workspace"
 
 /** Top-level maps every serialized workspace must carry. */
@@ -25,6 +27,10 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * result enters the reducer pipeline. Throws with a readable message when the
  * text is not valid JSON or a required map is missing or malformed. Deeper
  * integrity is enforced by the validation and verification middleware.
+ *
+ * Restores each node's `id` from its key in `nodes`, because files omit the
+ * field. Migrations do not run here; use `loadWorkspace` to read a file through
+ * the full load path.
  */
 export function parseWorkspace(json: string): Workspace {
   const parsed: unknown = JSON.parse(json)
@@ -45,5 +51,5 @@ export function parseWorkspace(json: string): Workspace {
     }
   }
 
-  return parsed as unknown as Workspace
+  return restoreWorkspaceNodeIds(parsed as unknown as Workspace)
 }

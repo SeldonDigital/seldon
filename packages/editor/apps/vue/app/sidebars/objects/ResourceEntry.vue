@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue"
-import { storeToRefs } from "pinia"
-import type { Workspace } from "@seldon/core/workspace/types"
-import ItemNode from "@seldon/components/elements/ItemNode.vue"
 import MenuController from "@app/menus/MenuController.vue"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { useRenameInput } from "@app/sidebars/use-rename-input"
 import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import { useRenameInput } from "@app/sidebars/use-rename-input"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import ItemNode from "@seldon/components/elements/ItemNode.vue"
+import { storeToRefs } from "pinia"
+import { computed, nextTick, ref, watch } from "vue"
+
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
+
 import type { ResourceRowConfig } from "./helpers/resource-row-config"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 const props = withDefaults(
   defineProps<{
@@ -33,17 +35,14 @@ const isSelected = computed(
 )
 const isActive = computed(() => props.parentIsSelected || isSelected.value)
 
-const { isEditingName, setEditingName, submitLabel, actions } =
-  useResourceEntryRow({
-    config: props.config,
-    entryId: props.entryId,
-    entry: () => entry.value,
-    isSelected: () => isSelected.value,
-  })
+const { isEditingName, setEditingName, submitLabel, actions } = useResourceEntryRow({
+  config: props.config,
+  entryId: props.entryId,
+  entry: () => entry.value,
+  isSelected: () => isSelected.value,
+})
 
-const canRename = computed(
-  () => Boolean(props.config.buildLabelAction) && !entry.value?.isDefault,
-)
+const canRename = computed(() => Boolean(props.config.buildLabelAction) && !entry.value?.isDefault)
 
 function select(): void {
   selection.selectResourceEntry(props.config.kind, props.entryId)
@@ -74,9 +73,7 @@ const itemRef = ref<{ $el?: HTMLElement } | null>(null)
 watch(isEditingName, async (editing) => {
   if (!editing) return
   await nextTick()
-  const input = itemRef.value?.$el?.querySelector<HTMLInputElement>(
-    "input.sdn-input",
-  )
+  const input = itemRef.value?.$el?.querySelector<HTMLInputElement>("input.sdn-input")
   if (input) {
     input.focus()
     input.select()

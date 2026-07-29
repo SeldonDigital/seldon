@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import type { ComponentSchema } from "@seldon/core/components/types"
-import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers/helpers/validation"
-import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
-import {
-  useCatalogDialog,
-  type CatalogItem,
-} from "@app/dialogs/use-catalog-dialog"
 import PanelDialogController from "@app/dialogs/PanelDialogController.vue"
+import { useCatalogDialog } from "@app/dialogs/use-catalog-dialog"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
 import { useAutoSelectNode } from "@app/workspace/use-auto-select-node"
@@ -14,6 +8,12 @@ import { useWorkspace } from "@app/workspace/use-workspace"
 import { confirmMissingSchemaVariants } from "@seldon/editor/lib/workspace/confirm-missing-schema-variants"
 import { storeToRefs } from "pinia"
 import { computed, watch } from "vue"
+
+import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers/helpers/validation"
+
+import type { CatalogItem } from "@app/dialogs/use-catalog-dialog"
+import type { ComponentSchema } from "@seldon/core/components/types"
+import type { InstanceId, VariantId } from "@seldon/core/workspace/types"
 
 const panel = usePanelStore()
 const { activePanel, target } = storeToRefs(panel)

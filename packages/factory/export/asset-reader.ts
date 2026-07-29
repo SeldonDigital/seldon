@@ -14,6 +14,13 @@ export type ExportAssetReader = {
   listNativeComponentFileStems(): string[]
   readCustomComponent?(fileStem: string): string | undefined
   getIconExportSource?(iconId: IconId): IconExportSource | undefined
+  /**
+   * Every bindings library source, as a path relative to the bindings folder
+   * using `/`. A host that cannot reach the factory sources omits this, and the
+   * export emits no scripts.
+   */
+  listBindingsSources?(): string[]
+  readBindingsSource?(relativePath: string): string | undefined
 }
 
 /**
@@ -35,6 +42,7 @@ function isInside(root: string, candidate: string): boolean {
 export function createNodeExportAssetReader(rootDirectory: string): ExportAssetReader {
   const nativeReactPath = path.join(rootDirectory, "packages/core/components/native-react")
   const customReactPath = path.join(rootDirectory, "packages/core/components/catalog/custom")
+  const bindingsPath = path.join(rootDirectory, "packages/factory/bindings")
 
   return {
     readNativeComponent(fileStem: string): string | undefined {
@@ -82,6 +90,42 @@ export function createNodeExportAssetReader(rootDirectory: string): ExportAssetR
         .readdirSync(nativeReactPath)
         .filter((name) => name.endsWith(".tsx"))
         .map((name) => name.replace(/\.tsx$/, ""))
+    },
+    listBindingsSources(): string[] {
+      if (!fs.existsSync(bindingsPath)) {
+        return []
+      }
+
+      const sources: string[] = []
+
+      function walk(relative: string): void {
+        const entries = fs.readdirSync(path.join(bindingsPath, relative), { withFileTypes: true })
+
+        for (const entry of entries) {
+          const next = relative ? `${relative}/${entry.name}` : entry.name
+
+          if (entry.isDirectory()) {
+            walk(next)
+          } else if (entry.name.endsWith(".ts") && !entry.name.endsWith(".test.ts")) {
+            sources.push(next)
+          }
+        }
+      }
+
+      walk("")
+
+      return sources.sort()
+    },
+    readBindingsSource(relativePath: string): string | undefined {
+      const filePath = path.join(bindingsPath, relativePath)
+
+      // The path comes from `listBindingsSources`, but containment is checked
+      // anyway so a caller-supplied path cannot read outside the folder.
+      if (!isInside(bindingsPath, filePath) || !fs.existsSync(filePath)) {
+        return undefined
+      }
+
+      return fs.readFileSync(filePath, "utf8")
     },
   }
 }

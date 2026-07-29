@@ -1,10 +1,17 @@
 "use client"
 
-import { getStoredWorkspace, saveStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
-import { useCallback, useEffect, useState } from "react"
+import { getStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
+import { useEffect, useState } from "react"
 
 import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
+/**
+ * Loads a stored workspace record once, for reading.
+ *
+ * The record is a snapshot taken at mount and never refreshed, so it goes stale
+ * as soon as autosave writes again. Writes belong to `workspace-save-store`,
+ * which owns the live record and is the only writer.
+ */
 export function useWorkspaceRecord(workspaceId: string | null) {
   const [record, setRecord] = useState<StoredWorkspace | null>(null)
   const [loading, setLoading] = useState(Boolean(workspaceId))
@@ -47,20 +54,5 @@ export function useWorkspaceRecord(workspaceId: string | null) {
     }
   }, [workspaceId])
 
-  const updateRecord = useCallback(
-    async (patch: Partial<Pick<StoredWorkspace, "name" | "workspace">>) => {
-      if (!record) return
-      const next: StoredWorkspace = {
-        ...record,
-        ...patch,
-        updatedAt: new Date().toISOString(),
-      }
-
-      await saveStoredWorkspace(next)
-      setRecord(next)
-    },
-    [record],
-  )
-
-  return { record, loading, error, updateRecord }
+  return { record, loading, error }
 }

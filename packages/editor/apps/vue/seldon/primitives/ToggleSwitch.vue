@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -32,6 +39,7 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
+
 import { combineClassNames } from "../utils/class-names"
 
 const props = defineProps<{
@@ -42,14 +50,14 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  "role": "switch",
-  "aria-checked": "false"
+  role: "switch",
+  "aria-checked": "false",
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-toggle-switch", props.className))
-const rootAttrs = { "role": sdn["role"], "aria-checked": sdn["aria-checked"] }
+const rootAttrs = { role: sdn["role"], "aria-checked": sdn["aria-checked"] }
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs"><slot /></div>
+  <div :class="rootClassName" v-bind="rootAttrs"><slot /></div>
 </template>

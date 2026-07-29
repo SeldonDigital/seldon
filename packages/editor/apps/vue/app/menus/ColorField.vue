@@ -35,9 +35,7 @@ const hasHex = computed(() => cssColorToHex(props.value) !== null)
  * theme token refs (`@swatch.primary`). Uses the resolved swatch color when the
  * caller supplies one, so a token still shows its color chip.
  */
-const tokenSwatch = computed(() =>
-  !hasHex.value && props.swatch ? props.swatch : null,
-)
+const tokenSwatch = computed(() => (!hasHex.value && props.swatch ? props.swatch : null))
 
 function onSwatch(event: Event): void {
   emit("commit", (event.target as HTMLInputElement).value)
@@ -64,12 +62,7 @@ function onText(event: Event): void {
       :value="hex"
       @input="onSwatch"
     />
-    <input
-      type="text"
-      class="color-field__text"
-      :value="value"
-      @change="onText"
-    />
+    <input type="text" class="color-field__text" :value="value" @change="onText" />
   </div>
 </template>
 

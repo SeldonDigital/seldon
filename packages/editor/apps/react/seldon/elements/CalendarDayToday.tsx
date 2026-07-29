@@ -55,6 +55,7 @@ const sdn: CalendarDayTodayProps = {
   "aria-hidden": "false",
   "aria-current": "date",
   textLabel: {
+    children: "00",
     className: "sdn-text-label sdn-text-label--g3ro",
   },
 }

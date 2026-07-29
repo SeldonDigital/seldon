@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { computed, ref, toRef, watch, type CSSProperties } from "vue"
+import { useToastStore } from "@app/toaster/toast-store"
 import Frame from "@seldon/components/frames/Frame.vue"
 import Icon from "@seldon/components/primitives/Icon.vue"
 import Text from "@seldon/components/primitives/Text.vue"
-import { useToastStore } from "@app/toaster/toast-store"
-import { useObjectURL } from "./use-object-url"
+import { computed, ref, toRef, watch } from "vue"
+
 import DropzoneSurface from "./DropzoneSurface.vue"
 import ImagePreview from "./ImagePreview.vue"
+import { useObjectURL } from "./use-object-url"
+
+import type { CSSProperties } from "vue"
 
 const props = defineProps<{ currentFile: File | null }>()
 const emit = defineEmits<{ (event: "fileChange", file: File | null): void }>()
@@ -46,9 +49,7 @@ watch(
   },
 )
 
-const dropText = computed(() =>
-  isDragging.value ? "Drop image here..." : "Select or drop image…",
-)
+const dropText = computed(() => (isDragging.value ? "Drop image here..." : "Select or drop image…"))
 
 const styles: Record<string, CSSProperties> = {
   dropzone: {

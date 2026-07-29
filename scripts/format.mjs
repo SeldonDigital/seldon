@@ -9,7 +9,7 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..")
-const GLOB = "**/*.{ts,tsx,json,css,js,mjs}"
+const GLOB = "**/*.{ts,tsx,vue,json,css,js,mjs}"
 
 // Packages that own an eslint.config.mjs, linted in place with their own config.
 const ESLINT_PACKAGES = [

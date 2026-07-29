@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { Workspace } from "@seldon/core/workspace/types"
-import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
 import { buildFontFaceCss } from "@seldon/editor/lib/font-collections/build-font-face-css"
 import { computed } from "vue"
+
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 const props = defineProps<{ workspace: Workspace }>()
 
@@ -11,9 +13,7 @@ const props = defineProps<{ workspace: Workspace }>()
 // single `@font-face` stylesheet with no request to a font host. Mirrors the
 // React `LoadEditorFonts`.
 const fontFaceCss = computed(() => {
-  const families = workspaceFontCollectionService.getEnabledRemoteFamilies(
-    props.workspace,
-  )
+  const families = workspaceFontCollectionService.getEnabledRemoteFamilies(props.workspace)
   return buildFontFaceCss(families)
 })
 </script>

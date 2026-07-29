@@ -45,6 +45,7 @@ const sdn: PanelPaletteProps = {
     className: "sdn-bar sdn-bar--9xs7",
   },
   textTitle: {
+    children: "Palette",
     className: "sdn-text-title sdn-text-title--ulid",
   },
   buttonIconic: {

@@ -3,31 +3,27 @@ import { useBoardStateStore } from "@app/canvas/board-state-store"
 import { useActiveBoard } from "@app/canvas/use-active-board"
 import { useCanvasTracking } from "@app/canvas/use-canvas-tracking"
 import { usePanZoom } from "@app/canvas/use-pan-zoom"
-import {
-  ValueType,
-  Workspace,
-  getCssFromProperties,
-  getNodeProperties,
-} from "@app/core"
+import { ValueType, Workspace, getCssFromProperties, getNodeProperties } from "@app/core"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import CanvasOverlays from "@app/overlays/canvas/CanvasOverlays.vue"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { getIsolationCanvasGroups } from "@seldon/editor/lib/canvas/get-isolation-canvas-groups"
 import { getVisibleVariantRootIds } from "@seldon/editor/lib/canvas/get-visible-variant-root-ids"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
-import type { CSSProperties } from "vue"
 import { computed, ref, watch } from "vue"
 
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
-import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
 import { boardOrderService } from "@seldon/core/workspace/services"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import type { Board } from "@seldon/core/workspace/types"
 
 import CanvasNode from "./CanvasNode.vue"
-import CanvasTracking from "./CanvasTracking.vue"
 import IsolationBoard from "./IsolationBoard.vue"
 import ZoomControls from "./ZoomControls.vue"
+
+import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
+import type { Board } from "@seldon/core/workspace/types"
+import type { CSSProperties } from "vue"
 
 const props = defineProps<{ workspace: Workspace }>()
 
@@ -43,8 +39,7 @@ const {
   onCanvasPointerLeave,
 } = useCanvasTracking()
 
-const { isolatedView, isolatedBoardKey, isolatedVariantRootId } =
-  storeToRefs(config)
+const { isolatedView, isolatedBoardKey, isolatedVariantRootId } = storeToRefs(config)
 const {
   selectedBoardId,
   selectedNodeId,
@@ -63,12 +58,27 @@ const {
   onPointerDown,
   onPointerMove,
   onPointerUp,
+  resetView,
 } = usePanZoom(scrollEl)
 
 const contentStyle = computed(() => ({
   transform: `translate(${translateX.value}px, ${translateY.value}px) scale(${scale.value})`,
   transformOrigin: "0 0",
 }))
+
+// What the canvas is showing. Isolation names itself here, so entering, leaving,
+// and isolating another variant of the same board each count as a change while
+// selecting a dependency board inside the gallery does not. Mirrors React.
+const canvasViewKey = computed(() =>
+  isolatedView.value
+    ? `isolated:${isolatedBoardKey.value}:${isolatedVariantRootId.value ?? ""}`
+    : activeBoardKey.value,
+)
+
+// The viewport returns home whenever the canvas shows something else. A gallery
+// lays out nothing like the board it replaces, so carrying the old pan and zoom
+// across would leave the canvas parked away from what just appeared.
+watch(canvasViewKey, () => resetView())
 
 // Bridges pan/zoom transform changes to the shared overlay tracker so the
 // selection, hover, and wireframe outlines stay glued while the canvas moves.
@@ -91,14 +101,10 @@ const PRIMARY_FONT_FAMILY = {
   value: "@fontFamily.primary",
 } as unknown as FontFamilyValue
 
-const boardClassName = computed(() =>
-  activeBoardKey.value ? `board-${activeBoardKey.value}` : "",
-)
+const boardClassName = computed(() => (activeBoardKey.value ? `board-${activeBoardKey.value}` : ""))
 
 const boardProperties = computed(() =>
-  activeBoard.value
-    ? getNodeProperties(activeBoard.value, props.workspace)
-    : undefined,
+  activeBoard.value ? getNodeProperties(activeBoard.value, props.workspace) : undefined,
 )
 
 const boardTheme = computed(() =>
@@ -152,9 +158,7 @@ const boardRootStyle = computed<CSSProperties>(() => {
 })
 
 const boardActiveState = computed(() =>
-  activeBoardKey.value
-    ? boardState.getActiveState(activeBoardKey.value)
-    : undefined,
+  activeBoardKey.value ? boardState.getActiveState(activeBoardKey.value) : undefined,
 )
 
 // Isolation gallery: the anchored board plus its used dependency boards,
@@ -165,9 +169,7 @@ const isolatedBoard = computed<Board | null>(() => {
   return key ? (props.workspace.boards[key] ?? null) : null
 })
 
-const showIsolationGallery = computed(
-  () => isolatedView.value && isolatedBoard.value !== null,
-)
+const showIsolationGallery = computed(() => isolatedView.value && isolatedBoard.value !== null)
 
 const isolationRows = computed(() => {
   const board = isolatedBoard.value
@@ -247,11 +249,7 @@ watch(
       @pointermove="onCanvasPointerMove"
     >
       <div v-if="showIsolationGallery" class="isolation-gallery">
-        <div
-          v-for="row in isolationRows"
-          :key="row.level"
-          class="isolation-row"
-        >
+        <div v-for="row in isolationRows" :key="row.level" class="isolation-row">
           <IsolationBoard
             v-for="item in row.boards"
             :key="item.key"
@@ -285,7 +283,7 @@ watch(
         </div>
       </section>
     </div>
-    <CanvasTracking :subscribe-transform="subscribeTransform" />
+    <CanvasOverlays :subscribe-transform="subscribeTransform" />
     <ZoomControls />
   </div>
 </template>

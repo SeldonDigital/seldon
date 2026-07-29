@@ -9,7 +9,7 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { memo, useCallback, useEffect, useRef } from "react"
 
-import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
+import { useSidebarCanvasTrackingBoard } from "../../overlays/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { NodeController } from "./NodeController"
@@ -181,8 +181,8 @@ function BoardRow({ board, show = true }: { board: BoardType; show?: boolean }) 
   // has no ref; it keeps the generated `seldon-more` default and is hidden by the
   // actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
-    nodeToggle: { ...buttonIconic },
-    nodeToggleIcon: { ...toggleIcon },
+    nodeDisclosure: { ...buttonIconic },
+    nodeDisclosureIcon: { ...toggleIcon },
     nodeIcon: mergeStateProps(icon2, activatedRef),
     nodeLabel: mergeStateProps(nameInput, activatedRef),
     nodeActions: { ...actionsMenu.buttonIconic },

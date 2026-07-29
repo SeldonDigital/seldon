@@ -192,7 +192,6 @@ export function buildDuplicateEntryVariantSubtreePlan(
         template,
         overrides: {},
         origin: "schema",
-        __editor: { initialOverrides: {} },
       })
     }
   } else {

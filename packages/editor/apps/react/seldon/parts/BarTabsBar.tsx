@@ -43,6 +43,7 @@ const sdn: BarTabsBarProps = {
     className: "sdn-button-simple sdn-button-simple--znxu",
   },
   textLabel: {
+    children: "Tab 1",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -50,6 +51,7 @@ const sdn: BarTabsBarProps = {
     className: "sdn-button-simple sdn-button-simple--znxu",
   },
   textLabel2: {
+    children: "Tab 2",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -57,6 +59,7 @@ const sdn: BarTabsBarProps = {
     className: "sdn-button-simple sdn-button-simple--znxu",
   },
   textLabel3: {
+    children: "Tab 3",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

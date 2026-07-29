@@ -18,8 +18,12 @@ import type { ChangeEvent } from "react"
 /**
  * View-model for a property row. Value rows bind the generated `ItemProperty`.
  * Boolean rows (`wrapChildren`, `clip`) bind the generated `ItemPropertyToggle`,
- * whose toggle owns the value. Both Views share the same row slots (name,
- * disclosure, actions) through one `seldonRefs` channel.
+ * whose toggle owns the value.
+ *
+ * Each View has its own ref names, prefixed by its variant, because a ref names
+ * one workspace node and the two Views are separate variants built from separate
+ * nodes. The shared row slots pair up by role instead: `propertyLabel` against
+ * `propertyToggleLabel`, `propertyDisclosure` against `propertyToggleDisclosure`.
  */
 function PropertyInner(props: RowPropertyProps) {
   const view = useRowProperty(props)
@@ -69,10 +73,11 @@ function PropertyInner(props: RowPropertyProps) {
     </FramerExpandable>
   ) : null
 
-  // Boolean rows render the dedicated `ItemPropertyToggle` View. The toggle
-  // slot carries the value through `toggleValue`; the shared row slots bind the
-  // same hook props as `ItemProperty`. The `toggleIcon` slot shows the row's
-  // property glyph, the same `icon2` source the value cell uses on other rows.
+  // Boolean rows render the dedicated `ItemPropertyToggle` View. The toggle slot
+  // carries the value through `propertyToggleSwitch`; the shared row slots bind
+  // the same hook props as `ItemProperty`. The `propertyToggleIcon` slot shows
+  // the row's property glyph, the same `icon2` source the value cell uses on
+  // other rows.
   if (switchControl) {
     // The toggle shows its value through its own on/off color, so the override
     // "activated" tint must not also land on it, or an overridden "off" toggle
@@ -80,11 +85,11 @@ function PropertyInner(props: RowPropertyProps) {
     // disabled; the label and icon still carry the override tint.
     const toggleStateRef = props.property.status === "override" ? undefined : stateRef
     const toggleRefs: Record<string, Record<string, unknown>> = {
-      propertyToggle: { ...listItemProps.buttonIconic },
-      propertyToggleIcon: { ...listItemProps.icon },
-      propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
-      propertyActions: { ...optionsMenu.buttonIconic },
-      toggleValue: mergeStateProps(
+      propertyToggleDisclosure: { ...listItemProps.buttonIconic },
+      propertyToggleDisclosureIcon: { ...listItemProps.icon },
+      propertyToggleLabel: mergeStateProps(view.nameLabelProps, stateRef),
+      propertyToggleActions: { ...optionsMenu.buttonIconic },
+      propertyToggleSwitch: mergeStateProps(
         {
           checked: switchControl.checked,
           "aria-checked": toggleAriaChecked,
@@ -96,7 +101,7 @@ function PropertyInner(props: RowPropertyProps) {
     }
 
     if (listItemProps.icon2) {
-      toggleRefs.toggleIcon = mergeStateProps(listItemProps.icon2, stateRef)
+      toggleRefs.propertyToggleIcon = mergeStateProps(listItemProps.icon2, stateRef)
     }
 
     return (
@@ -124,23 +129,23 @@ function PropertyInner(props: RowPropertyProps) {
   // trailing actions icon keeps the generated `seldon-more` default, hidden by
   // the actions button placeholder.
   const seldonRefs: Record<string, Record<string, unknown>> = {
-    propertyToggle: { ...listItemProps.buttonIconic },
-    propertyToggleIcon: { ...listItemProps.icon },
+    propertyDisclosure: { ...listItemProps.buttonIconic },
+    propertyDisclosureIcon: { ...listItemProps.icon },
     propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
     // Look-parent group rows own no value. The generated value input still
     // renders (kept for row-height alignment), so clear its "Value" placeholder
     // so the group row reads blank instead of showing placeholder text.
-    valueLabel: mergeStateProps(
+    propertyValueLabel: mergeStateProps(
       view.valueLabelProps,
       props.property.isLookParent ? { placeholder: "" } : undefined,
       stateRef,
     ),
-    valueOptionsMenu: { ...listItemProps.buttonIconic2 },
+    propertyValueMenu: { ...listItemProps.buttonIconic2 },
     propertyActions: { ...optionsMenu.buttonIconic },
   }
 
   if (listItemProps.icon2) {
-    seldonRefs.valueIcon = mergeStateProps(listItemProps.icon2, stateRef)
+    seldonRefs.propertyValueIcon = mergeStateProps(listItemProps.icon2, stateRef)
   }
 
   // Anchor the floating option list to the value field and enter edit on a single
@@ -164,8 +169,8 @@ function PropertyInner(props: RowPropertyProps) {
       } as ComboboxFieldProps)
 
   // Positional enabler: suppress `icon2` with `null` when the value icon is
-  // hidden; otherwise leave it on its slot default so the bound `valueIcon` ref
-  // paints the glyph. Dynamic color chips (`icon-custom-color-value`) resolve
+  // hidden; otherwise leave it on its slot default so the bound `propertyValueIcon`
+  // ref paints the glyph. Dynamic color chips (`icon-custom-color-value`) resolve
   // through the same slot via the generated `Icon`'s runtime registry.
   const valueIconSlot = listItemProps.icon2 ? undefined : null
 
@@ -173,7 +178,7 @@ function PropertyInner(props: RowPropertyProps) {
   // multi-layer paint parent as a drag source and passes other rows through
   // unwrapped. `input` (the property-name slot) is conditional, so it keeps a
   // positional enabler. `icon3` (the options-menu icon) has no workspace ref
-  // yet, so it stays positional; add a `valueOptionsMenuIcon` ref to move it
+  // yet, so it stays positional; add a `propertyValueMenuIcon` ref to move it
   // onto `seldonRefs`.
   return (
     <>

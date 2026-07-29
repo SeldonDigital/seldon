@@ -8,6 +8,9 @@ import type { Board, Instance, Variant } from "@seldon/core"
 /**
  * Synthetic Reference row for the properties sidebar. Reads the node's `ref`
  * field as a free-text value. Boards do not carry a ref.
+ *
+ * What a ref is wired to is reported by the ref card on the canvas, so this row
+ * carries no child rows.
  */
 export function buildReferenceProperty(node: Variant | Instance | Board): FlatProperty {
   const ref = isBoard(node) ? undefined : node.ref

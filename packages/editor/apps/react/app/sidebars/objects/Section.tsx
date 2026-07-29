@@ -33,8 +33,8 @@ export function Section({ section }: SectionProps) {
   // need a positional enabler to render (`{}` to show, `null` to hide); their
   // data flows through `seldonRefs`. The add control is hidden when absent.
   const seldonRefs: Record<string, Record<string, unknown>> = {
-    sectionToggle: { ...buttonIconic },
-    sectionToggleIcon: { icon },
+    sectionDisclosure: { ...buttonIconic },
+    sectionDisclosureIcon: { icon },
     sectionLabel: { children: label },
   }
 

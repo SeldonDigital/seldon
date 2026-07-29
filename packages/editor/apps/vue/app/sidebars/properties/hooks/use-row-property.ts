@@ -510,8 +510,12 @@ export function useRowProperty(input: RowPropertyInput) {
     const el = rowEl.value
 
     if (!el) return
-    const ref = renaming ? "propertyLabel" : "valueLabel"
-    const inputEl = el.querySelector<HTMLInputElement>(`input[data-seldon-ref="${ref}"]`)
+    // Each View names its own label slot, so renaming matches either: a value
+    // row renders `ItemProperty`, a boolean row `ItemPropertyToggle`. Only the
+    // value row owns a value input.
+    const refs = renaming ? ["propertyLabel", "propertyToggleLabel"] : ["propertyValueLabel"]
+    const selector = refs.map((ref) => `input[data-seldon-ref="${ref}"]`).join(", ")
+    const inputEl = el.querySelector<HTMLInputElement>(selector)
 
     if (inputEl) {
       inputEl.focus()

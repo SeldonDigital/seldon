@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from "vue"
-import { storeToRefs } from "pinia"
-import Listbox from "@seldon/components/parts/Listbox.vue"
-import ListboxOption from "@seldon/components/elements/ListboxOption.vue"
-import Hr from "@seldon/components/primitives/Hr.vue"
-import {
-  computeListPosition,
-  type ListPosition,
-} from "@seldon/editor/lib/menus/anchor-position"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
+import ListboxOption from "@seldon/components/elements/ListboxOption.vue"
+import Listbox from "@seldon/components/parts/Listbox.vue"
+import Hr from "@seldon/components/primitives/Hr.vue"
+import { computeListPosition } from "@seldon/editor/lib/menus/anchor-position"
+import { storeToRefs } from "pinia"
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
+
 import type { ComboboxOptionItem } from "./types"
+import type { ListPosition } from "@seldon/editor/lib/menus/anchor-position"
 
 /** Vertical gap between the trigger and the panel, and min room to open below. */
 const PANEL_GAP = 4
@@ -109,9 +101,7 @@ function optionClass(option: ComboboxOptionItem): string | undefined {
 function moveHighlight(direction: 1 | -1): void {
   const options = flatOptions.value
   if (options.length === 0) return
-  const current = options.findIndex(
-    (option) => option.value === highlightedValue.value,
-  )
+  const current = options.findIndex((option) => option.value === highlightedValue.value)
   let next = current + direction
   if (next < 0) next = options.length - 1
   if (next >= options.length) next = 0
@@ -200,10 +190,7 @@ onBeforeUnmount(() => {
       @keydown="onKeydown"
     >
       <Listbox :style="listboxStyle">
-        <template
-          v-for="(group, groupIndex) in optionGroups"
-          :key="`group-${groupIndex}`"
-        >
+        <template v-for="(group, groupIndex) in optionGroups" :key="`group-${groupIndex}`">
           <Hr v-if="groupIndex > 0" />
           <ListboxOption
             v-for="option in group"

@@ -33,7 +33,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 
-import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
+import { checkInsertionPoint } from "../../overlays/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
 

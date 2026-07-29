@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -47,10 +54,11 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
+
 import Button from "../elements/Button.vue"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -71,69 +79,78 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "button": {
-    "className": "sdn-button sdn-button--vd3d"
+  button: {
+    className: "sdn-button sdn-button--vd3d",
   },
-  "icon": {
-    "icon": "seldon-iconSocialTwitter",
+  icon: {
+    icon: "seldon-iconSocialTwitter",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--eyw9"
+    className: "sdn-icon sdn-icon--eyw9",
   },
-  "textLabel": {
-    "className": "sdn-text-label sdn-text-label--zk5o"
+  textLabel: {
+    children: "Twitter",
+    className: "sdn-text-label sdn-text-label--zk5o",
   },
-  "button2": {
-    "className": "sdn-button sdn-button--vd3d"
+  button2: {
+    className: "sdn-button sdn-button--vd3d",
   },
-  "icon2": {
-    "icon": "seldon-iconSocialLinkedin",
+  icon2: {
+    icon: "seldon-iconSocialLinkedin",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--eyw9"
+    className: "sdn-icon sdn-icon--eyw9",
   },
-  "textLabel2": {
-    "className": "sdn-text-label sdn-text-label--zk5o"
+  textLabel2: {
+    children: "LinkedIn",
+    className: "sdn-text-label sdn-text-label--zk5o",
   },
-  "button3": {
-    "className": "sdn-button sdn-button--vd3d"
+  button3: {
+    className: "sdn-button sdn-button--vd3d",
   },
-  "icon3": {
-    "icon": "seldon-iconSocialInstagram",
+  icon3: {
+    icon: "seldon-iconSocialInstagram",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--eyw9"
+    className: "sdn-icon sdn-icon--eyw9",
   },
-  "textLabel3": {
-    "className": "sdn-text-label sdn-text-label--zk5o"
-  }
+  textLabel3: {
+    children: "Instagram",
+    className: "sdn-text-label sdn-text-label--zk5o",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-section", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
-const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
 const button2Props = computed(() => mergeSlot(sdn.button2, props.button2, props.seldonRefs))
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
-const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const textLabel2Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
+)
 const button3Props = computed(() => mergeSlot(sdn.button3, props.button3, props.seldonRefs))
 const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
-const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const textLabel3Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
+)
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <Button v-if="buttonProps !== null" v-bind="buttonProps">
-          <Icon v-if="iconProps !== null" v-bind="iconProps" />
-          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-        </Button>
-        <Button v-if="button2Props !== null" v-bind="button2Props">
-          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-        </Button>
-        <Button v-if="button3Props !== null" v-bind="button3Props">
-          <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-        </Button>
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <Button v-if="buttonProps !== null" v-bind="buttonProps">
+        <Icon v-if="iconProps !== null" v-bind="iconProps" />
+        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+      </Button>
+      <Button v-if="button2Props !== null" v-bind="button2Props">
+        <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+        <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+      </Button>
+      <Button v-if="button3Props !== null" v-bind="button3Props">
+        <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
+        <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+      </Button>
+    </slot>
+  </div>
 </template>

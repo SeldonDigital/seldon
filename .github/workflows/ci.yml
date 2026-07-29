@@ -10,6 +10,10 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Every job runs a root script, and `npm run check` runs the same five in order.
+# A contributor can reproduce a red job with one command, and adding a workspace
+# needs no edit here, because the lint and typecheck scripts fan out over
+# whatever the root package.json lists.
 jobs:
   format:
     name: Format (Prettier)
@@ -33,7 +37,7 @@ jobs:
           node-version: 22.18.0
           cache: npm
       - run: npm ci
-      - run: npm run lint --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/editor --workspace @seldon/editor-react --workspace @seldon/editor-vue
+      - run: npm run lint:all
 
   typecheck:
     name: Type-check (tsc)
@@ -45,10 +49,21 @@ jobs:
           node-version: 22.18.0
           cache: npm
       - run: npm ci
-      - run: npx tsc --build packages/core/tsconfig.json
-      - run: npx tsc -p packages/factory/tsconfig.json
-      - run: npm run quality --workspace @seldon/editor-react
-      - run: npm run quality --workspace @seldon/editor-vue
+      - run: npm run typecheck:all
+
+  bindings:
+    name: Bindings (drift)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.18.0
+          cache: npm
+      - run: npm ci
+      # Runs the emitted scanner, the same file any consuming project runs, so a
+      # committed manifest cannot fall behind the code that drives the refs.
+      - run: npm run bindings:check
 
   test:
     name: Unit tests (core, factory)

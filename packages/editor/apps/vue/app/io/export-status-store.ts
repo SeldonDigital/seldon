@@ -2,15 +2,21 @@ import { defineStore } from "pinia"
 import { ref } from "vue"
 
 /**
- * True while a local export is running. Drives the topbar export animation.
- * Mirrors the React `export-status-store`.
+ * Whether a local export is running, and how to stop it. Drives the topbar export
+ * animation and the dialog's dismissal. Mirrors the React `export-status-store`.
  */
 export const useExportStatusStore = defineStore("export-status", () => {
   const isExporting = ref(false)
+  /** Stops the running export. Null when nothing cancellable is in flight. */
+  const cancelExport = ref<(() => void) | null>(null)
 
   function setExporting(value: boolean): void {
     isExporting.value = value
   }
 
-  return { isExporting, setExporting }
+  function setCancelExport(cancel: (() => void) | null): void {
+    cancelExport.value = cancel
+  }
+
+  return { isExporting, cancelExport, setExporting, setCancelExport }
 })

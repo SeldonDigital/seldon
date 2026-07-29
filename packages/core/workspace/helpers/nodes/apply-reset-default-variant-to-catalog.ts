@@ -63,7 +63,7 @@ export function applyResetDefaultVariantToCatalog(
 
     rootNode.overrides = {}
     rootNode.theme = null
-    rootNode.__editor = { initialOverrides: {} }
+    delete rootNode.__editor
 
     if (!isComplexSchema(schema)) {
       board.variants[0] = { id: defaultVariantRootId }

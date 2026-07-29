@@ -51,12 +51,15 @@ const sdn: TopbarCenteredProps = {
     className: "sdn-frame sdn-frame--rclo",
   },
   linkPlain: {
+    children: "What We Do",
     className: "sdn-link-plain sdn-link-plain--hnhh",
   },
   linkPlain2: {
+    children: "Our Work",
     className: "sdn-link-plain sdn-link-plain--hnhh",
   },
   linkPlain3: {
+    children: "Contact Us",
     className: "sdn-link-plain sdn-link-plain--hnhh",
   },
 
@@ -81,6 +84,7 @@ const sdn: TopbarCenteredProps = {
     className: "sdn-button sdn-button--l9rb",
   },
   textLabel: {
+    children: "Let&#039;s Talk",
     className: "sdn-text-label sdn-text-label--my9r",
   },
 }

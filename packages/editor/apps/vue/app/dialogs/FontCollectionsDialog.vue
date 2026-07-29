@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { STOCK_FONT_COLLECTIONS } from "@seldon/core/font-collections/catalog"
-import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import { useStockCatalog } from "@app/dialogs/use-stock-catalog"
 import PanelDialogController from "@app/dialogs/PanelDialogController.vue"
-import type { CatalogDialogItem } from "@app/dialogs/types"
+import { useStockCatalog } from "@app/dialogs/use-stock-catalog"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed } from "vue"
+
+import { STOCK_FONT_COLLECTIONS } from "@seldon/core/font-collections/catalog"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
+
+import type { CatalogDialogItem } from "@app/dialogs/types"
 
 const FONT_COLLECTION_ICON = "material-fontDownload"
 

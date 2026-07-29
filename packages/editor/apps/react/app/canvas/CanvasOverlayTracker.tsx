@@ -34,7 +34,6 @@ export function CanvasOverlayTracker() {
   const selectedNodeId = useSelectedNodeId()
   const selectedNodeRootId = useSelectedNodeRootId()
   const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
-  const isTransforming = useCanvasRemeasureStore((state) => state.isTransforming)
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
   const { activeTool } = useTool()
@@ -120,7 +119,6 @@ export function CanvasOverlayTracker() {
     selectedNodeId,
     selectedNodeRootId,
     remeasureVersion,
-    isTransforming,
   ])
 
   return null

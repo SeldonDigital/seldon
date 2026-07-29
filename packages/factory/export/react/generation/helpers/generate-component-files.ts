@@ -5,11 +5,18 @@ import { insertIconMap } from "../inserts/insert-icon-map"
 import { insertImports } from "../inserts/insert-imports"
 import { insertInterface } from "../inserts/insert-interface"
 import { generateJSXStructure } from "../preprocess/generate-jsx-structure"
+import { getConditionalPropPaths } from "../shared/get-conditional-prop-paths"
 
 import type { NodeIdToClass } from "../../../css/types"
+import type { RefViewSource } from "../../../shared/generate-refs-registry"
 import type { ComponentToExport, ExportOptions, FileToExport } from "../../../types"
 import type { IconId } from "@seldon/core/icon-sets"
 import type { Workspace } from "@seldon/core/workspace/types"
+
+export interface GeneratedComponentFiles {
+  files: FileToExport[]
+  refSources: RefViewSource[]
+}
 
 /**
  * Generates React component files for all components in the export list.
@@ -19,12 +26,15 @@ import type { Workspace } from "@seldon/core/workspace/types"
  * 2. Build component source: interface → defaults → function → imports → special handling
  * 3. Format and add to files list
  *
+ * Also returns the slot data behind each generated file, so the refs registry
+ * reports the slots this pass emitted instead of re-deriving them.
+ *
  * @param componentsToExport - Array of components to generate files for
  * @param workspace - The workspace containing all nodes
  * @param nodeIdToClass - Mapping of node IDs to CSS class names
  * @param usedIconIds - Set of icon IDs used in the workspace
  * @param options - Export options containing rootDirectory for icon path resolution
- * @returns Array of generated component files
+ * @returns Generated component files and the slot data for each one
  */
 export async function generateComponentFiles(
   componentsToExport: ComponentToExport[],
@@ -32,8 +42,9 @@ export async function generateComponentFiles(
   nodeIdToClass: NodeIdToClass,
   usedIconIds: Set<IconId>,
   options: ExportOptions,
-): Promise<FileToExport[]> {
+): Promise<GeneratedComponentFiles> {
   const filesToExport: FileToExport[] = []
+  const refSources: RefViewSource[] = []
 
   for (const component of componentsToExport) {
     try {
@@ -63,6 +74,12 @@ export async function generateComponentFiles(
         path: component.output.path,
         content: source,
       })
+
+      refSources.push({
+        component,
+        propNames,
+        conditionalPaths: getConditionalPropPaths(component),
+      })
     } catch (error) {
       console.warn(
         `Failed to export component "${component.name}" (${component.output.path}):`,
@@ -71,5 +88,8 @@ export async function generateComponentFiles(
     }
   }
 
-  return filesToExport
+  return {
+    files: filesToExport,
+    refSources,
+  }
 }

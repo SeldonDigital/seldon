@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -39,8 +46,9 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+
 import Link from "../primitives/Link.vue"
+import { combineClassNames, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -55,21 +63,21 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "link": {
-    "children": "About",
+  link: {
+    children: "About",
     "aria-hidden": "false",
-    "className": "sdn-link sdn-link--bvcm"
+    className: "sdn-link sdn-link--bvcm",
   },
-  "link2": {
-    "children": "Contact",
+  link2: {
+    children: "Contact",
     "aria-hidden": "false",
-    "className": "sdn-link sdn-link--bvcm"
+    className: "sdn-link sdn-link--bvcm",
   },
-  "link3": {
-    "children": "Support",
+  link3: {
+    children: "Support",
     "aria-hidden": "false",
-    "className": "sdn-link sdn-link--bvcm"
-  }
+    className: "sdn-link sdn-link--bvcm",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-section", props.className))
@@ -80,11 +88,11 @@ const link3Props = computed(() => mergeSlot(sdn.link3, props.link3, props.seldon
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <Link v-if="linkProps !== null" v-bind="linkProps" />
-        <Link v-if="link2Props !== null" v-bind="link2Props" />
-        <Link v-if="link3Props !== null" v-bind="link3Props" />
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <Link v-if="linkProps !== null" v-bind="linkProps" />
+      <Link v-if="link2Props !== null" v-bind="link2Props" />
+      <Link v-if="link3Props !== null" v-bind="link3Props" />
+    </slot>
+  </div>
 </template>

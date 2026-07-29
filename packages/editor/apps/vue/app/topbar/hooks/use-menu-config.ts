@@ -9,6 +9,7 @@ import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
 import { useToggleIsolation } from "@app/editor/use-toggle-isolation"
 import { useImportExport } from "@app/io/use-import-export"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useHistoryStore } from "@app/workspace/history-store"
 import { useNodeClipboardActions } from "@app/workspace/use-node-clipboard-actions"
@@ -50,6 +51,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const debug = useDebugStore()
   const panel = usePanelStore()
   const { toggleIsolation, canToggleIsolation } = useToggleIsolation()
+  const { toggleRefBadges } = useRefBadges()
   const tool = useToolStore()
   const history = useHistoryStore()
   const aiChat = useAiChatStore()
@@ -67,6 +69,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
+    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -167,6 +170,12 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       },
       visibleIn: ["edit"],
     },
+    {
+      id: "export-compressed-workspace",
+      label: "Export Compressed Workspace…",
+      action: exportCompressedWorkspaceToFile,
+      visibleIn: ["edit"],
+    },
     "separator",
     {
       id: "export-workspace",
@@ -241,14 +250,14 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         panel.openPanel("create-component")
         tool.setActiveTool("select")
       },
-      shortcut: "T",
+      shortcut: "C",
     },
     "separator",
     {
       id: "insert-component",
       label: "Insert Component",
       action: () => tool.setActiveTool("component"),
-      shortcut: "⇧ I",
+      shortcut: "⇧ C",
     },
     {
       id: "add-component",
@@ -257,13 +266,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         panel.openPanel("add-board")
         tool.setActiveTool("select")
       },
-      shortcut: "⇧ A",
+      shortcut: "⌥ C",
     },
     {
       id: "add-variant",
       label: "Add Variant",
       action: addVariant,
-      shortcut: "⌥ A",
+      shortcut: "⇧ ⌥ C",
       enabled: Boolean(selectedBoard.value),
     },
     "separator",
@@ -516,6 +525,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       active: config.wireframeMode === "on",
       shortcut: "W",
     },
+    {
+      id: "show-reference-badges",
+      label: "Show Reference Badges",
+      action: toggleRefBadges,
+      active: config.showRefBadges,
+      shortcut: "R",
+    },
     "separator",
     {
       id: "show-focus",
@@ -564,7 +580,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "Show Unused Properties",
       action: config.toggleShowUnusedProperties,
       active: config.showUnusedProperties,
-      shortcut: "R",
+      shortcut: "P",
     },
     {
       id: "show-unused-fonts",

@@ -14,12 +14,13 @@ import { migrateV13BooleanClipWrapChildren } from "./steps/migrate-00013-boolean
 import { migrateV14EnumBooleanOption } from "./steps/migrate-00014-enum-boolean-option"
 import { migrateV15DisplayPlaceholderToStub } from "./steps/migrate-00015-display-placeholder-to-stub"
 import { migrateV16LayeredOverrideLength } from "./steps/migrate-00016-layered-override-length"
+import { migrateV17DropInitialOverrides } from "./steps/migrate-00017-drop-initial-overrides"
 import { repairBoardOrder } from "./steps/repair-board-order"
 
 import type { Workspace } from "../../model/workspace"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 16
+export const CURRENT_WORKSPACE_VERSION = 17
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -40,6 +41,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   14: migrateV14EnumBooleanOption,
   15: migrateV15DisplayPlaceholderToStub,
   16: migrateV16LayeredOverrideLength,
+  17: migrateV17DropInitialOverrides,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {

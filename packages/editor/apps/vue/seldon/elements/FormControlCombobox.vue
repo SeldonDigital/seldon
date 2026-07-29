@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -44,9 +51,10 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
+
 import ComboboxField from "../elements/ComboboxField.vue"
 import TextLabel from "../primitives/TextLabel.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -64,50 +72,64 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "textLabel": {
-    "className": "sdn-text-label sdn-text-label--fwkw"
+  textLabel: {
+    children: "Label",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
-  "comboboxField": {
+  comboboxField: {
     "aria-hidden": "false",
-    "className": "sdn-combobox-field sdn-combobox-field--j44i"
+    className: "sdn-combobox-field sdn-combobox-field--j44i",
   },
-  "icon": {
-    "icon": "seldon-component",
+  icon: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--xi68"
+    className: "sdn-icon sdn-icon--xi68",
   },
-  "input": {
-    "placeholder": "Placeholder text",
-    "type": "text",
-    "role": "combobox",
+  input: {
+    placeholder: "Placeholder text",
+    type: "text",
+    role: "combobox",
     "aria-haspopup": "listbox",
-    "className": "sdn-input sdn-input--9vqu"
+    className: "sdn-input sdn-input--9vqu",
   },
-  "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr"
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
-  "icon2": {
-    "icon": "material-chevronDown",
+  icon2: {
+    icon: "material-chevronDown",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--vsau"
-  }
+    className: "sdn-icon sdn-icon--vsau",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-form-control", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
+const comboboxFieldProps = computed(() =>
+  mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs),
+)
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const buttonIconicProps = computed(() =>
+  mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-        <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+      <ComboboxField
+        v-if="comboboxFieldProps !== null"
+        v-bind="comboboxFieldProps"
+        :icon="iconProps"
+        :input="inputProps"
+        :buttonIconic="buttonIconicProps"
+        :icon2="icon2Props"
+      />
+    </slot>
+  </div>
 </template>

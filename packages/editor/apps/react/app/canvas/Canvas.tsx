@@ -15,7 +15,7 @@ import { isHotkeyPressed } from "react-hotkeys-hook"
 import { TransformComponent, useControls, useTransformContext } from "react-zoom-pan-pinch"
 import { useThrottledCallback } from "use-debounce"
 
-import { CanvasTracking } from "../tracking/CanvasTracking"
+import { CanvasOverlays } from "../overlays/canvas/CanvasOverlays"
 import {
   TRANSFORM_WRAPPER_INITIAL_POSITION_X,
   TRANSFORM_WRAPPER_INITIAL_POSITION_Y,
@@ -142,7 +142,7 @@ export const Canvas = () => {
       onClick={handleCanvasClick}
       onMouseMove={handleMouseMove}
     >
-      <CanvasTracking />
+      <CanvasOverlays />
       <TransformWrapper>
         <CanvasContainer />
       </TransformWrapper>
@@ -155,7 +155,7 @@ const CanvasContainer = () => {
   const { setTransform } = useControls()
   const { isPanning } = useTransformContext()
   const { activeBoard } = useActiveBoard()
-  const { isolatedView, isolatedBoardKey } = useEditorConfig()
+  const { isolatedView, isolatedBoardKey, isolatedVariantRootId } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
 
   // Key the reset on the board's stable key, not the object reference. The
@@ -163,19 +163,24 @@ const CanvasContainer = () => {
   // on reference changes would snap the zoom back to actual size mid-edit. In
   // isolation the gallery is anchored to one board, so key on that to avoid
   // resetting when selecting dependency boards.
-  const activeBoardKey = isolatedView
-    ? isolatedBoardKey
+  //
+  // Isolation names itself in the key so entering, leaving, and isolating
+  // another variant of the same board each recenter. The gallery lays out
+  // nothing like the board it replaces, so carrying the old viewport across
+  // would leave the canvas parked away from what just appeared.
+  const canvasViewKey = isolatedView
+    ? `isolated:${isolatedBoardKey}:${isolatedVariantRootId ?? ""}`
     : activeBoard
       ? getComponentKey(activeBoard)
       : null
 
-  // Reset the transform when the active board changes (e.g. switching boards
-  // or loading another project).
+  // Reset the transform when the canvas shows something else (e.g. switching
+  // boards, entering or leaving isolation, or loading another project).
   useEffect(() => {
     setTransform(TRANSFORM_WRAPPER_INITIAL_POSITION_X, TRANSFORM_WRAPPER_INITIAL_POSITION_Y, 1, 0)
     // This is intentional beacuse setTransform is not stable
     // so adding it to the deps would the canvas to reset the transform on every render
-  }, [activeBoardKey])
+  }, [canvasViewKey])
 
   // The canvas is pinned to the default theme and never switches modes, so its
   // swatch variables always hold the authored values. The backdrop follows the

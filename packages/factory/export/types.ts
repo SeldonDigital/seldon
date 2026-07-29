@@ -47,6 +47,18 @@ export type ExportOptions = {
    * referenced by a theme. Only has an effect when `enableRemoteFonts` is on.
    */
   exportAllFontCollections?: boolean
+  /**
+   * Emit a copy of the workspace at the root of the components folder, named
+   * from its label. Off by default. The copy holds the authoring workspace, not
+   * the export-rewritten one, so its image values are the originals.
+   */
+  includeWorkspace?: boolean
+  /**
+   * Emit the bindings scanner into `<components>/scripts/` as readable source,
+   * with an `INTEGRITY.json` of per-file hashes. Off by default. The user runs
+   * these scripts in their own project; the export never runs them.
+   */
+  includeScripts?: boolean
 }
 
 /**

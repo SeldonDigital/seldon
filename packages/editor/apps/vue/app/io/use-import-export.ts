@@ -1,8 +1,11 @@
 import { useExportStatusStore } from "@app/io/export-status-store"
+import { useProjectLinkStore } from "@app/project/project-link-store"
+import { useWorkspaceId } from "@app/project/use-workspace-id"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useDispatch } from "@app/workspace/use-dispatch"
 import { useSelection } from "@app/workspace/use-selection"
 import { useWorkspace } from "@app/workspace/use-workspace"
+import { DEFAULT_COMPONENTS_FOLDER } from "@seldon/editor/lib/export/constants"
 import {
   pickExportDirectory,
   writeExportToDirectory,
@@ -14,32 +17,30 @@ import {
   buildVariantSnippet,
 } from "@seldon/editor/lib/schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@seldon/editor/lib/schema/serialize-schema-ts"
+import {
+  ensureExportTargetWritable,
+  saveExportTarget,
+} from "@seldon/editor/lib/storage/export-target-store"
+import { kebabCase } from "change-case"
 
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { parseWorkspace } from "@seldon/core/workspace/helpers/parse-workspace"
 
-/** Lowercase, hyphen-joined slug for a download filename. */
-function slugify(value: string): string {
-  return (
-    value
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "") || "workspace"
-  )
-}
+import type { ExportOptions } from "@seldon/factory/export/types"
 
 /**
- * File and web import/export actions for the Vue editor, mirroring the React
- * `useImportExport`: download the workspace as JSON, load a workspace from a
- * JSON file as one undo step, and run the factory web import against a URL and
- * write its report to a chosen folder.
+ * File, folder, and web import/export actions for the Vue editor, mirroring the
+ * React `useImportExport`: download the workspace as JSON, load a workspace from
+ * a JSON file as one undo step, run the factory export into a chosen folder, and
+ * run the web import against a URL.
  */
 export function useImportExport() {
   const { workspace } = useWorkspace()
   const dispatch = useDispatch()
   const toast = useToastStore()
   const exportStatus = useExportStatusStore()
+  const projectLink = useProjectLinkStore()
+  const workspaceId = useWorkspaceId()
   const { selectedItem, selectedNode } = useSelection()
 
   function exportWorkspaceToFile(): void {
@@ -51,7 +52,19 @@ export function useImportExport() {
       type: "application/json",
     })
 
-    triggerDownload(blob, `${slugify(name)}.json`)
+    triggerDownload(blob, `${kebabCase(name)}.json`)
+  }
+
+  function exportCompressedWorkspaceToFile(): void {
+    const name = window.prompt("Enter a name for the compressed file", "workspace")
+
+    if (name === null) return
+    const ordered = orderWorkspaceNodeKeys(workspace.value)
+    const blob = new Blob([JSON.stringify(ordered)], {
+      type: "application/json",
+    })
+
+    triggerDownload(blob, `${kebabCase(name)}.min.json`)
   }
 
   async function exportSelectionToClipboard(): Promise<void> {
@@ -112,6 +125,60 @@ export function useImportExport() {
     }
   }
 
+  async function exportToFolder(
+    options?: Partial<ExportOptions>,
+    preselectedDirectory?: FileSystemDirectoryHandle,
+  ): Promise<void> {
+    const controller = new AbortController()
+
+    try {
+      const directory = await resolveExportDirectory(preselectedDirectory)
+
+      if (!directory) {
+        toast.addToast("Folder picker is not supported in this browser")
+
+        return
+      }
+
+      exportStatus.setExporting(true)
+      exportStatus.setCancelExport(() => controller.abort())
+
+      const { runLocalExport } = await import("@seldon/editor/lib/export/run-local-export")
+      const files = await runLocalExport(workspace.value, options)
+      const count = await writeExportToDirectory(directory, files, controller.signal)
+
+      // Nothing is rolled back, so the count is the whole story: it says how far
+      // the folder got. Linking is skipped, because a half-written tree may have
+      // no registry to read and would report itself as current.
+      if (controller.signal.aborted) {
+        toast.addToast(
+          `Export cancelled after ${count} files. ${directory.name} is partially updated.`,
+        )
+
+        return
+      }
+
+      toast.addToast(`Exported ${count} file${count === 1 ? "" : "s"}`)
+
+      // Remember where this workspace landed, so the editor can read back what
+      // the project reports about its own use of the generated components, and
+      // so the dialog offers the same folder next time.
+      const id = workspaceId.value
+
+      if (id) {
+        const componentsFolder = options?.output?.componentsFolder ?? DEFAULT_COMPONENTS_FOLDER
+
+        await saveExportTarget(id, directory)
+        await projectLink.linkExportedFolder(id, directory, componentsFolder)
+      }
+    } catch (error) {
+      toast.addToast(error instanceof Error ? error.message : "Export failed")
+    } finally {
+      exportStatus.setExporting(false)
+      exportStatus.setCancelExport(null)
+    }
+  }
+
   async function importWeb(): Promise<void> {
     const url = window.prompt("Enter the website URL to import")?.trim()
 
@@ -146,9 +213,29 @@ export function useImportExport() {
 
   return {
     exportWorkspaceToFile,
+    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
+    exportToFolder,
     importWorkspaceFromFile,
     importWeb,
   }
+}
+
+/**
+ * The folder to write into, preferring one the caller already has.
+ *
+ * A remembered folder comes back from storage with its grant lapsed, so writing
+ * through it would fail. Asking here works because an export starts from a click.
+ * A user who declines gets the picker rather than an error, which also covers a
+ * folder that has since been moved or deleted.
+ */
+async function resolveExportDirectory(
+  preselected?: FileSystemDirectoryHandle,
+): Promise<FileSystemDirectoryHandle | null> {
+  if (!preselected) return pickExportDirectory()
+
+  if (await ensureExportTargetWritable(preselected)) return preselected
+
+  return pickExportDirectory()
 }

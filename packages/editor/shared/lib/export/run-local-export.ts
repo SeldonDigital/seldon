@@ -34,8 +34,9 @@ function fromWireFile(file: WireFile): FileToExport {
  * The route reads icon and native-react source from disk and formats the output,
  * then returns files the browser writes to the chosen folder.
  *
- * `options` overrides the server defaults (folders, remote fonts, hidden
- * components, icon/theme/font scope). Omitting it keeps the current behavior.
+ * `options` overrides the server defaults: folders, remote fonts, hidden
+ * components, icon, theme, and font scope, and whether to emit the workspace
+ * copy and the scripts. Omitting it keeps the server defaults.
  */
 export async function runLocalExport(
   workspace: Workspace,

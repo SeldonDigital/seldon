@@ -40,6 +40,7 @@ const sdn: ChipFilterProps = {
   },
 
   textLabel: {
+    children: "Filter",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 }

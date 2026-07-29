@@ -1,25 +1,28 @@
 <script setup lang="ts">
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
+import {
+  RESIZE_SIDES,
+  createResizeHandle,
+  getResizeHandleStyle,
+} from "@seldon/components/utils/resize"
+import { motion } from "motion-v"
+import { storeToRefs } from "pinia"
+import { computed, ref } from "vue"
+
+import type { Rect, ResizeSide } from "@seldon/components/utils/resize"
+import type { MotionValue } from "motion-v"
+import type { CSSProperties } from "vue"
+
 // BESPOKE-VIEW: hand-authored motion-v floating window built on motion.div.
 // It renders either a draggable, resizable window or a centered, content-sized
 // modal. No generated component covers this chrome. motion-v has no 1:1
 // equivalent on other platforms, so this shell is reimplemented per platform
 // rather than ported like the class-free overlay primitives. Vue port of the
 // React `WindowSurface.bespoke`.
-import { computed, ref, type CSSProperties } from "vue"
-import { storeToRefs } from "pinia"
-import { motion, type MotionValue } from "motion-v"
 
 /** motion-v does not export the drag controls type by name; derive it. */
 type DragControls = ReturnType<(typeof import("motion-v"))["useDragControls"]>
-import {
-  RESIZE_SIDES,
-  createResizeHandle,
-  getResizeHandleStyle,
-  type Rect,
-  type ResizeSide,
-} from "@seldon/components/utils/resize"
-import { useEditorConfigStore } from "@app/editor/editor-config-store"
-import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 
 /** Drag constraint box, in the same coordinate space as the motion values. */
 interface BoundingBox {
@@ -36,6 +39,11 @@ const props = withDefaults(
     moveControls: DragControls
     onClose: () => void
     testId?: string
+    // Reports the surface itself, including its resize handles. A non-modal caller
+    // that dismisses on an outside press needs it to tell its own surface from
+    // elsewhere, since it renders no backdrop to catch the press for it. Mirrors
+    // the React `surfaceRef` prop.
+    surfaceRef?: (el: HTMLElement | null) => void
     modal?: boolean
     closeOnClickOutside?: boolean
     preventInteractionOutside?: boolean
@@ -71,9 +79,14 @@ const resolvedMode = useResolvedInterfaceMode()
 
 const overlayRef = ref<HTMLElement | null>(null)
 
+// A template ref on a component yields its instance, so the element comes off
+// `$el`. Null on unmount, which is what tells a caller the window has gone.
+function setSurface(instance: unknown): void {
+  props.surfaceRef?.((instance as { $el?: HTMLElement } | null)?.$el ?? null)
+}
+
 const showBackdrop = computed(
-  () =>
-    props.modal || props.closeOnClickOutside || props.preventInteractionOutside,
+  () => props.modal || props.closeOnClickOutside || props.preventInteractionOutside,
 )
 const backdropClose = computed(() =>
   props.modal || props.closeOnClickOutside ? props.onClose : undefined,
@@ -135,17 +148,9 @@ const styles: Record<string, CSSProperties> = {
 
 <template>
   <Teleport to="body">
-    <div
-      :data-theme="chromeTheme"
-      :data-mode="resolvedMode"
-      :style="styles.scope"
-    >
+    <div :data-theme="chromeTheme" :data-mode="resolvedMode" :style="styles.scope">
       <template v-if="contentSized">
-        <div
-          ref="overlayRef"
-          :style="styles.centerOverlay"
-          @click="backdropClose?.()"
-        >
+        <div ref="overlayRef" :style="styles.centerOverlay" @click="backdropClose?.()">
           <motion.div
             :drag="true"
             :drag-controls="moveControls"
@@ -163,12 +168,9 @@ const styles: Record<string, CSSProperties> = {
       </template>
 
       <template v-else>
-        <div
-          v-if="showBackdrop"
-          :style="styles.backdrop"
-          @click="backdropClose?.()"
-        />
+        <div v-if="showBackdrop" :style="styles.backdrop" @click="backdropClose?.()" />
         <motion.div
+          :ref="setSurface"
           :drag="true"
           :drag-controls="moveControls"
           :drag-listener="false"

@@ -1,6 +1,5 @@
 import { nodeRetrievalService } from "@seldon/core"
 import { canNodeAcceptChildren } from "../../workspace/can-node-accept-children"
-import { remeasureStore } from "../remeasure/remeasure-store"
 import { measureNode, measureSelection, rectsEqual } from "./measure"
 import {
   DEFAULT_OUTLINE_COLORS,
@@ -92,17 +91,6 @@ export function createOverlayTracker(ctx: OverlayTrackerContext): OverlayTracker
   let frames = 0
 
   const apply = (): void => {
-    // While the canvas pans or zooms, re-measuring the moving target every frame
-    // forces a full reflow of the board subtree, which stutters large boards.
-    // Hide the outlines while transforming and let the settle bump re-measure at
-    // the final position.
-    if (remeasureStore.getState().isTransforming) {
-      if (overlayStore.getState().hoverRect !== null) setHoverRect(null)
-      if (overlayStore.getState().selectionRect !== null) setSelectionRect(null)
-
-      return
-    }
-
     const hovered = ctx.getHovered()
     const selected = ctx.getSelected()
 

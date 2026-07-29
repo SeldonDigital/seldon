@@ -48,13 +48,13 @@ const sdn: ItemPropertyProps = {
   "aria-hidden": "false",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "propertyToggle",
+    "data-seldon-ref": "propertyDisclosure",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
-    "data-seldon-ref": "propertyToggleIcon",
+    "data-seldon-ref": "propertyDisclosureIcon",
   },
 
   formControlCombobox: {
@@ -62,6 +62,7 @@ const sdn: ItemPropertyProps = {
     className: "sdn-form-control sdn-form-control-combobox--qmop",
   },
   input: {
+    placeholder: "Property Name",
     className: "sdn-input sdn-input--jvsw",
     "data-seldon-ref": "propertyLabel",
   },
@@ -73,7 +74,7 @@ const sdn: ItemPropertyProps = {
     icon: "seldon-component",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "valueIcon",
+    "data-seldon-ref": "propertyValueIcon",
   },
   input2: {
     placeholder: "Value",
@@ -81,11 +82,11 @@ const sdn: ItemPropertyProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--iegt",
-    "data-seldon-ref": "valueLabel",
+    "data-seldon-ref": "propertyValueLabel",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "valueOptionsMenu",
+    "data-seldon-ref": "propertyValueMenu",
   },
   icon3: {
     icon: "material-chevronDown",
@@ -112,14 +113,14 @@ const sdn: ItemPropertyProps = {
  * Type: Custom
  *
  * Structure:
- *   ButtonIconic         buttonIconic         -> propertyToggle
- *     Icon               icon                 -> propertyToggleIcon
+ *   ButtonIconic         buttonIconic         -> propertyDisclosure
+ *     Icon               icon                 -> propertyDisclosureIcon
  *   FormControlCombobox  formControlCombobox
  *     Input              input                -> propertyLabel
  *     ComboboxField      comboboxField
- *       Icon             icon2                -> valueIcon
- *       Input            input2               -> valueLabel
- *       ButtonIconic     buttonIconic2        -> valueOptionsMenu
+ *       Icon             icon2                -> propertyValueIcon
+ *       Input            input2               -> propertyValueLabel
+ *       ButtonIconic     buttonIconic2        -> propertyValueMenu
  *         Icon           icon3
  *   ButtonIconic         buttonIconic3        -> propertyActions
  *     Icon               icon4

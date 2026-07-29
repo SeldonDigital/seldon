@@ -31,6 +31,7 @@ export interface MessageUserProps extends HTMLAttributes<HTMLElement> {
 const sdn: MessageUserProps = {
   "aria-hidden": "false",
   textDescription: {
+    children: "User message",
     className: "sdn-text-description sdn-text-description--welb",
   },
 }

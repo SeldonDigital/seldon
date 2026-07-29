@@ -1,37 +1,11 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue"
-import { storeToRefs } from "pinia"
-import {
-  Instance,
-  MAX_REPEAT_COUNT,
-  Properties,
-  Variant,
-  VariantId,
-  resolveNodeRepeat,
-} from "@seldon/core"
-import type { EntryNode, EntryNodeId } from "@seldon/core/workspace/types"
-import type { Workspace } from "@seldon/core/workspace/types"
-import { rules } from "@seldon/core/rules/config/rules.config"
-import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { typeCheckingService } from "@seldon/core/workspace/services"
-import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
-import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
-import type { Placement } from "@seldon/editor/lib/types"
-import ItemNode from "@seldon/components/elements/ItemNode.vue"
-import Frame from "@seldon/components/frames/Frame.vue"
-import MenuController from "@app/menus/MenuController.vue"
-import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
-import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
-import { useSelectionStore } from "@app/workspace/selection-store"
+import { useDragStore } from "@app/canvas/drag-store"
 import { useDebugStore } from "@app/editor/debug-store"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
-import { useDragStore } from "@app/canvas/drag-store"
-import { useObjectHoverStore } from "@app/workspace/object-hover-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useMoveObjects } from "@app/workspace/use-move-objects"
-import { useToastStore } from "@app/toaster/toast-store"
+import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
+import MenuController from "@app/menus/MenuController.vue"
+import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
 import {
   buildDisabledRefProps,
   buildFieldStateProps,
@@ -40,16 +14,40 @@ import {
   mergeStateProps,
 } from "@app/sidebars/state-props"
 import { useRenameInput } from "@app/sidebars/use-rename-input"
-import { useObjectsExpansionStore } from "./objects-expansion-store"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useObjectHoverStore } from "@app/workspace/object-hover-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useMoveObjects } from "@app/workspace/use-move-objects"
+import ItemNode from "@seldon/components/elements/ItemNode.vue"
+import Frame from "@seldon/components/frames/Frame.vue"
+import { isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
+import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
+import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { storeToRefs } from "pinia"
+import { computed, nextTick, ref, watch } from "vue"
+
+import {
+  Instance,
+  MAX_REPEAT_COUNT,
+  Properties,
+  Variant,
+  VariantId,
+  resolveNodeRepeat,
+} from "@seldon/core"
+import { rules } from "@seldon/core/rules/config/rules.config"
+import { isDuplicateVariantLabel } from "@seldon/core/workspace/helpers/components/duplicate-variant-labels"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+import { typeCheckingService } from "@seldon/core/workspace/services"
+
+import { getComponentTypeIcon, getNodeLabel, getNodeTypeColor } from "./hooks/row-node-label"
 import { useEditState } from "./hooks/use-edit-state"
 import { useRowNodeActions } from "./hooks/use-row-node-actions"
 import { useRowNodeDisplay } from "./hooks/use-row-node-display"
-import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
-import {
-  getComponentTypeIcon,
-  getNodeLabel,
-  getNodeTypeColor,
-} from "./hooks/row-node-label"
+import { useObjectsExpansionStore } from "./objects-expansion-store"
+
+import type { EntryNode, EntryNodeId, Workspace } from "@seldon/core/workspace/types"
+import type { Placement } from "@seldon/editor/lib/types"
 
 /** Most echo rows to list before collapsing the remainder into a summary row. */
 const ECHO_ROW_LIMIT = 6
@@ -82,12 +80,7 @@ const hover = useObjectHoverStore()
 const dispatch = useDispatch()
 const toast = useToastStore()
 const expansion = useObjectsExpansionStore()
-const {
-  moveNodeNextTo,
-  moveNodeInside,
-  duplicateNodeInto,
-  duplicateNodeNextTo,
-} = useMoveObjects()
+const { moveNodeNextTo, moveNodeInside, duplicateNodeInto, duplicateNodeNextTo } = useMoveObjects()
 
 const { selectedNodeId, selectedNodeRootId } = storeToRefs(selection)
 const { showNodeIds, showNodeTypes } = storeToRefs(debug)
@@ -105,8 +98,7 @@ const properties = computed<Properties>(() =>
 const isSelected = computed(
   () =>
     selectedNodeId.value === props.nodeId &&
-    (selectedNodeRootId.value == null ||
-      selectedNodeRootId.value === props.rootId),
+    (selectedNodeRootId.value == null || selectedNodeRootId.value === props.rootId),
 )
 
 const isExpanded = computed(() => expansion.isExpanded(props.nodeId))
@@ -118,12 +110,8 @@ const childIds = computed<EntryNodeId[]>(() =>
 )
 const hasChildren = computed(() => childIds.value.length > 0)
 
-const entityType = computed(() =>
-  typeCheckingService.getEntityType(node.value as EntryNode),
-)
-const isInstance = computed(() =>
-  node.value ? typeCheckingService.isInstance(node.value) : false,
-)
+const entityType = computed(() => typeCheckingService.getEntityType(node.value as EntryNode))
+const isInstance = computed(() => (node.value ? typeCheckingService.isInstance(node.value) : false))
 
 const labelText = computed(() =>
   getNodeLabel(node.value as EntryNode, props.workspace, {
@@ -134,9 +122,7 @@ const labelText = computed(() =>
   }),
 )
 const typeIcon = computed(() => getComponentTypeIcon(node.value as EntryNode))
-const nodeTypeColor = computed(() =>
-  getNodeTypeColor(node.value as EntryNode, showNodeTypes.value),
-)
+const nodeTypeColor = computed(() => getNodeTypeColor(node.value as EntryNode, showNodeTypes.value))
 const isDuplicateLabel = computed(
   () => nodeExists.value && isDuplicateVariantLabel(props.workspace, props.nodeId),
 )
@@ -200,9 +186,7 @@ const itemRef = ref<{ $el?: HTMLElement } | null>(null)
 watch(isEditingName, async (editing) => {
   if (!editing) return
   await nextTick()
-  const input = itemRef.value?.$el?.querySelector<HTMLInputElement>(
-    "input.sdn-input",
-  )
+  const input = itemRef.value?.$el?.querySelector<HTMLInputElement>("input.sdn-input")
   if (input) {
     input.focus()
     input.select()
@@ -339,9 +323,7 @@ function onDrop(event: DragEvent): void {
 
 // Slot props for the generated ItemNode.
 const disabledRef = computed(() => buildDisabledRefProps(isDimmed.value))
-const dimRef = computed(() =>
-  dimStyle.value ? { style: dimStyle.value } : undefined,
-)
+const dimRef = computed(() => (dimStyle.value ? { style: dimStyle.value } : undefined))
 const invalidRef = computed(() => buildInvalidRefProps(isDuplicateLabel.value))
 const nodeTypeStyle = computed(() =>
   nodeTypeColor.value ? { style: { color: nodeTypeColor.value } } : undefined,
@@ -408,9 +390,7 @@ const displayButtonSlot = computed(() =>
 
 const rootStyle = computed(() => ({ paddingLeft: `${props.depth * 12}px` }))
 const dataDisplay = computed(() =>
-  properties.value && "display" in properties.value
-    ? properties.value.display?.value
-    : undefined,
+  properties.value && "display" in properties.value ? properties.value.display?.value : undefined,
 )
 
 // Recursive child rows: each child's index-0 row plus repeat echoes and a
@@ -424,9 +404,7 @@ const childRenderList = computed<ChildEntry[]>(() => {
   for (const childId of childIds.value) {
     list.push({ type: "node", key: childId, childId })
     const childNode = props.workspace.nodes[childId]
-    const repeat = childNode
-      ? resolveNodeRepeat(childId, props.workspace)
-      : undefined
+    const repeat = childNode ? resolveNodeRepeat(childId, props.workspace) : undefined
     if (!repeat || repeat.count <= 1) continue
     const total = Math.min(repeat.count, MAX_REPEAT_COUNT)
     const echoCount = total - 1

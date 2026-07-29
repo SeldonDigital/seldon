@@ -1,4 +1,5 @@
 import { PLATFORMS } from "./platforms/registry"
+import { generateWorkspaceCopy } from "./shared/generate-workspace-copy"
 
 import type { ExportOptions, FileToExport } from "./types"
 import type { Workspace } from "@seldon/core"
@@ -60,5 +61,29 @@ export async function exportWorkspace(
     throw new Error(`Platform "${platform.label}" is planned but not available yet.`)
   }
 
-  return await platform.export(workspace, options)
+  const files = await platform.export(workspace, options)
+
+  // Emitted here rather than inside a target so the copy holds the workspace as
+  // authored. Each target rewrites image paths on its own copy, and the React
+  // target adds a license header to every string file it emits, which would make
+  // the JSON unparseable.
+  if (options.includeWorkspace) {
+    files.push(await generateWorkspaceCopy(workspace, options))
+  }
+
+  // Also emitted here, for the same reason and one more: the integrity hashes
+  // must cover the bytes that reach disk, so the scripts carry their own license
+  // and format pass and are hashed only once that is done.
+  if (options.includeScripts) {
+    const { generateScripts } = await import("./shared/generate-scripts")
+    const { generateScriptsIntegrity } = await import("./shared/generate-scripts-integrity")
+
+    const scripts = await generateScripts(options)
+
+    if (scripts.length > 0) {
+      files.push(...scripts, await generateScriptsIntegrity(scripts, options))
+    }
+  }
+
+  return files
 }

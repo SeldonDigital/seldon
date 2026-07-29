@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -60,15 +67,16 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
+
+import Button from "../elements/Button.vue"
+import ButtonIconic from "../elements/ButtonIconic.vue"
 import Frame from "../frames/Frame.vue"
 import Bar from "../parts/Bar.vue"
 import BarButtons from "../parts/BarButtons.vue"
-import Button from "../elements/Button.vue"
-import ButtonIconic from "../elements/ButtonIconic.vue"
 import Icon from "../primitives/Icon.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 import TextTitle from "../primitives/TextTitle.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -105,173 +113,204 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  "role": "dialog",
+  role: "dialog",
   "aria-hidden": "false",
-  "bar": {
+  bar: {
     "aria-hidden": "false",
-    "className": "sdn-bar sdn-bar--yje0"
+    className: "sdn-bar sdn-bar--yje0",
   },
-  "textTitle": {
-    "className": "sdn-text-title sdn-text-title--8ah1"
+  textTitle: {
+    children: "Dialog",
+    className: "sdn-text-title sdn-text-title--8ah1",
   },
-  "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr"
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
-  "icon": {
-    "icon": "seldon-component",
+  icon: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--taul"
+    className: "sdn-icon sdn-icon--taul",
   },
-  "button": {
-    "className": "sdn-button sdn-button-iconic--pgsr"
+  button: {
+    className: "sdn-button sdn-button-iconic--pgsr",
   },
-  "icon2": {
-    "icon": "seldon-component",
+  icon2: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--umgs"
+    className: "sdn-icon sdn-icon--umgs",
   },
-  "textLabel": {
-    "className": "sdn-text-label sdn-text-label--ylte"
+  textLabel: {
+    children: "Button",
+    className: "sdn-text-label sdn-text-label--ylte",
   },
-  "frame": {
-    "wrapperElement": "div",
+  frame: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--88jo"
+    className: "sdn-frame sdn-frame--88jo",
   },
-  "barButtons": {
+  barButtons: {
     "aria-hidden": "false",
-    "className": "sdn-bar-buttons sdn-bar-buttons--dabm"
+    className: "sdn-bar-buttons sdn-bar-buttons--dabm",
   },
-  "frame2": {
-    "wrapperElement": "div",
+  frame2: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--ysu5"
+    className: "sdn-frame sdn-frame--ysu5",
   },
-  "button2": {
-    "className": "sdn-button sdn-button--wjtm"
+  button2: {
+    className: "sdn-button sdn-button--wjtm",
   },
-  "icon3": {
-    "className": "sdn-icon sdn-icon--gh8m"
+  icon3: {
+    icon: "seldon-component",
+    className: "sdn-icon sdn-icon--gh8m",
   },
-  "textLabel2": {
-    "className": "sdn-text-label sdn-text-label--wxqf"
+  textLabel2: {
+    children: "Button",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
-  "button3": {
-    "className": "sdn-button sdn-button--wjtm"
+  button3: {
+    className: "sdn-button sdn-button--wjtm",
   },
-  "icon4": {
-    "className": "sdn-icon sdn-icon--gh8m"
+  icon4: {
+    icon: "seldon-component",
+    className: "sdn-icon sdn-icon--gh8m",
   },
-  "textLabel3": {
-    "className": "sdn-text-label sdn-text-label--wxqf"
+  textLabel3: {
+    children: "Button",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
-  "button4": {
-    "className": "sdn-button sdn-button--wjtm"
+  button4: {
+    className: "sdn-button sdn-button--wjtm",
   },
-  "icon5": {
-    "className": "sdn-icon sdn-icon--gh8m"
+  icon5: {
+    icon: "seldon-component",
+    className: "sdn-icon sdn-icon--gh8m",
   },
-  "textLabel4": {
-    "className": "sdn-text-label sdn-text-label--wxqf"
+  textLabel4: {
+    children: "Button",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
-  "frame3": {
-    "wrapperElement": "div",
+  frame3: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--nzij"
+    className: "sdn-frame sdn-frame--nzij",
   },
-  "button5": {
-    "className": "sdn-button sdn-button--wjtm"
+  button5: {
+    className: "sdn-button sdn-button--wjtm",
   },
-  "icon6": {
-    "icon": "seldon-none",
+  icon6: {
+    icon: "seldon-none",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--gh8m"
+    className: "sdn-icon sdn-icon--gh8m",
   },
-  "textLabel5": {
-    "className": "sdn-text-label sdn-text-label--wxqf"
+  textLabel5: {
+    children: "Cancel",
+    className: "sdn-text-label sdn-text-label--wxqf",
   },
-  "button6": {
-    "className": "sdn-button sdn-button--wjtm"
+  button6: {
+    className: "sdn-button sdn-button--wjtm",
   },
-  "icon7": {
-    "icon": "material-check",
+  icon7: {
+    icon: "material-check",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--gh8m"
+    className: "sdn-icon sdn-icon--gh8m",
   },
-  "textLabel6": {
-    "className": "sdn-text-label sdn-text-label--wxqf"
-  }
+  textLabel6: {
+    children: "OK",
+    className: "sdn-text-label sdn-text-label--wxqf",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-panel", props.className))
-const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
+const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
 const barProps = computed(() => mergeSlot(sdn.bar, props.bar, props.seldonRefs))
-const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const textTitleProps = computed(() =>
+  mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs),
+)
+const buttonIconicProps = computed(() =>
+  mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const buttonProps = computed(() => mergeSlot(sdn.button, props.button, props.seldonRefs))
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
-const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
-const barButtonsProps = computed(() => mergeSlot(sdn.barButtons, props.barButtons, props.seldonRefs))
+const barButtonsProps = computed(() =>
+  mergeSlot(sdn.barButtons, props.barButtons, props.seldonRefs),
+)
 const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
 const button2Props = computed(() => mergeOptionalSlot(sdn.button2, props.button2, props.seldonRefs))
 const icon3Props = computed(() => mergeOptionalSlot(sdn.icon3, props.icon3, props.seldonRefs))
-const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
+const textLabel2Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
+)
 const button3Props = computed(() => mergeOptionalSlot(sdn.button3, props.button3, props.seldonRefs))
 const icon4Props = computed(() => mergeOptionalSlot(sdn.icon4, props.icon4, props.seldonRefs))
-const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const textLabel3Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
+)
 const button4Props = computed(() => mergeOptionalSlot(sdn.button4, props.button4, props.seldonRefs))
 const icon5Props = computed(() => mergeOptionalSlot(sdn.icon5, props.icon5, props.seldonRefs))
-const textLabel4Props = computed(() => mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs))
+const textLabel4Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel4, props.textLabel4, props.seldonRefs),
+)
 const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
 const button5Props = computed(() => mergeOptionalSlot(sdn.button5, props.button5, props.seldonRefs))
 const icon6Props = computed(() => mergeSlot(sdn.icon6, props.icon6, props.seldonRefs))
-const textLabel5Props = computed(() => mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs))
+const textLabel5Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel5, props.textLabel5, props.seldonRefs),
+)
 const button6Props = computed(() => mergeOptionalSlot(sdn.button6, props.button6, props.seldonRefs))
 const icon7Props = computed(() => mergeSlot(sdn.icon7, props.icon7, props.seldonRefs))
-const textLabel6Props = computed(() => mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs))
+const textLabel6Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel6, props.textLabel6, props.seldonRefs),
+)
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <Bar v-if="barProps !== null" v-bind="barProps">
-          <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
-          <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
-          <Button v-if="buttonProps !== null" v-bind="buttonProps">
-            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-            <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <Bar v-if="barProps !== null" v-bind="barProps">
+        <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+        <ButtonIconic
+          v-if="buttonIconicProps !== null"
+          v-bind="buttonIconicProps"
+          :icon="iconProps"
+        />
+        <Button v-if="buttonProps !== null" v-bind="buttonProps">
+          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+          <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+        </Button>
+      </Bar>
+      <Frame v-bind="frameProps"> </Frame>
+      <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps">
+        <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+          <Button v-if="button2Props !== null" v-bind="button2Props">
+            <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
+            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
           </Button>
-        </Bar>
-        <Frame v-bind="frameProps">
+          <Button v-if="button3Props !== null" v-bind="button3Props">
+            <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
+            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+          </Button>
+          <Button v-if="button4Props !== null" v-bind="button4Props">
+            <Icon v-if="icon5Props !== null" v-bind="icon5Props" />
+            <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
+          </Button>
         </Frame>
-        <BarButtons v-if="barButtonsProps !== null" v-bind="barButtonsProps">
-          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-            <Button v-if="button2Props !== null" v-bind="button2Props">
-              <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-              <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-            </Button>
-            <Button v-if="button3Props !== null" v-bind="button3Props">
-              <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
-              <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-            </Button>
-            <Button v-if="button4Props !== null" v-bind="button4Props">
-              <Icon v-if="icon5Props !== null" v-bind="icon5Props" />
-              <TextLabel v-if="textLabel4Props !== null" v-bind="textLabel4Props" />
-            </Button>
-          </Frame>
-          <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-            <Button v-if="button5Props !== null" v-bind="button5Props">
-              <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
-              <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
-            </Button>
-            <Button v-if="button6Props !== null" v-bind="button6Props">
-              <Icon v-if="icon7Props !== null" v-bind="icon7Props" />
-              <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
-            </Button>
-          </Frame>
-        </BarButtons>
-      </slot>
-    </div>
+        <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+          <Button v-if="button5Props !== null" v-bind="button5Props">
+            <Icon v-if="icon6Props !== null" v-bind="icon6Props" />
+            <TextLabel v-if="textLabel5Props !== null" v-bind="textLabel5Props" />
+          </Button>
+          <Button v-if="button6Props !== null" v-bind="button6Props">
+            <Icon v-if="icon7Props !== null" v-bind="icon7Props" />
+            <TextLabel v-if="textLabel6Props !== null" v-bind="textLabel6Props" />
+          </Button>
+        </Frame>
+      </BarButtons>
+    </slot>
+  </div>
 </template>

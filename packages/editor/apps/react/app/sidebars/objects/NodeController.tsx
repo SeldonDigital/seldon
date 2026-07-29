@@ -16,8 +16,8 @@ import { memo } from "react"
 
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 
-import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
+import { useSidebarCanvasTracking } from "../../overlays/hooks/use-sidebar-canvas-tracking"
+import { SidebarOverlays } from "../../overlays/sidebar/SidebarOverlays"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
 import { RowSelectionTarget } from "./RowSelectionTarget"
@@ -240,8 +240,8 @@ const NodeInner = function NodeInner({
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
   // the actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
-    nodeToggle: { ...buttonIconic },
-    nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
+    nodeDisclosure: { ...buttonIconic },
+    nodeDisclosureIcon: mergeStateProps(toggleIcon, disabledRef),
     nodeIcon: mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef),
     nodeLabel: mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef),
     nodeDisplay: { ...displayPicker.buttonProps },
@@ -294,7 +294,7 @@ const NodeInner = function NodeInner({
         selectionKind={NODE_SELECTION_KIND}
         selectionRootId={rootId}
       >
-        <SidebarTracking
+        <SidebarOverlays
           node={node}
           isExpanded={isExpanded}
           onRowClick={onClick}
@@ -321,7 +321,7 @@ const NodeInner = function NodeInner({
             data-dragging={dragging}
             data-active={isNodeActive}
           />
-        </SidebarTracking>
+        </SidebarOverlays>
       </RowSelectionTarget>
       <ComboboxListbox {...displayPicker.listbox} />
       {actionsMenu.menu}

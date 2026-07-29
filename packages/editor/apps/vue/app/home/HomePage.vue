@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { createEmptyWorkspace } from "@seldon/core"
-import type { Workspace } from "@seldon/core/workspace/types"
+import { useToastStore } from "@app/toaster/toast-store"
 import { HOME_CONTENT } from "@seldon/editor/lib/home/home-content"
 import {
   createStoredWorkspace,
   deleteStoredWorkspace,
   listStoredWorkspaces,
-  type StoredWorkspace,
 } from "@seldon/editor/lib/storage/workspace-store"
-import { useToastStore } from "@app/toaster/toast-store"
 import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
+
+import { createEmptyWorkspace } from "@seldon/core"
+
+import type { Workspace } from "@seldon/core/workspace/types"
+import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
 const router = useRouter()
 const toast = useToastStore()
@@ -57,18 +59,13 @@ async function onImportFile(event: Event): Promise<void> {
   input.value = ""
   if (!file) return
   try {
-    const parsed = JSON.parse(await file.text()) as
-      | Partial<StoredWorkspace>
-      | Workspace
-    const workspace = ((parsed as Partial<StoredWorkspace>).workspace ??
-      parsed) as Workspace
+    const parsed = JSON.parse(await file.text()) as Partial<StoredWorkspace> | Workspace
+    const workspace = ((parsed as Partial<StoredWorkspace>).workspace ?? parsed) as Workspace
     if (!workspace || typeof workspace !== "object" || !("nodes" in workspace)) {
       toast.addToast("Invalid workspace file")
       return
     }
-    const name =
-      (parsed as Partial<StoredWorkspace>).name ??
-      file.name.replace(/\.json$/i, "")
+    const name = (parsed as Partial<StoredWorkspace>).name ?? file.name.replace(/\.json$/i, "")
     const record = await createStoredWorkspace(name, workspace)
     router.push(`/${record.id}`)
   } catch {
@@ -112,13 +109,9 @@ onMounted(refresh)
       <li v-for="ws in workspaces" :key="ws.id" class="home-item">
         <button class="home-item__open" @click="open(ws.id)">
           <span class="home-item__name">{{ ws.name }}</span>
-          <span class="home-item__meta">
-            {{ ws.lastEditor ?? "?" }} · {{ ws.updatedAt }}
-          </span>
+          <span class="home-item__meta"> {{ ws.lastEditor ?? "?" }} · {{ ws.updatedAt }} </span>
         </button>
-        <button class="home-item__action" @click="duplicate(ws)">
-          Duplicate
-        </button>
+        <button class="home-item__action" @click="duplicate(ws)">Duplicate</button>
         <button class="home-item__delete" @click="remove(ws.id)">
           {{ HOME_CONTENT.deleteButton }}
         </button>

@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -40,10 +47,11 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+
 import ButtonIconic from "../elements/ButtonIconic.vue"
 import Icon from "../primitives/Icon.vue"
 import Input from "../primitives/Input.vue"
+import { combineClassNames, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -59,45 +67,51 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "icon": {
-    "icon": "material-filterList",
+  icon: {
+    icon: "material-filterList",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "filterIcon"
+    className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "filterIcon",
   },
-  "input": {
-    "placeholder": "Filter...",
-    "type": "text",
-    "role": "combobox",
+  input: {
+    placeholder: "Filter...",
+    type: "text",
+    role: "combobox",
     "aria-haspopup": "listbox",
-    "className": "sdn-input sdn-input--twyx",
-    "data-seldon-ref": "filterLabel"
+    className: "sdn-input sdn-input--twyx",
+    "data-seldon-ref": "filterLabel",
   },
-  "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "filterActions"
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "filterActions",
   },
-  "icon2": {
-    "icon": "material-close",
+  icon2: {
+    icon: "material-close",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--vsau"
-  }
+    className: "sdn-icon sdn-icon--vsau",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-combobox-field", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const buttonIconicProps = computed(() =>
+  mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <Icon v-if="iconProps !== null" v-bind="iconProps" />
-        <Input v-if="inputProps !== null" v-bind="inputProps" />
-        <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="icon2Props" />
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <Icon v-if="iconProps !== null" v-bind="iconProps" />
+      <Input v-if="inputProps !== null" v-bind="inputProps" />
+      <ButtonIconic
+        v-if="buttonIconicProps !== null"
+        v-bind="buttonIconicProps"
+        :icon="icon2Props"
+      />
+    </slot>
+  </div>
 </template>

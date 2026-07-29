@@ -8,13 +8,16 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 ## What The Factory Contains
 
-Factory groups three stages that work together:
+Factory groups four areas that work together:
 
 | Area | Role | Deep reference |
 | --- | --- | --- |
 | **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers) |
 | **Styles** | Convert resolved properties into CSS for one class | [styles/css-properties/](./styles/css-properties) |
 | **Export** | Orchestrate React, CSS, and asset generation into files | [export/](./export) |
+| **Bindings** | Scan a project's own code for the refs and slots it drives | [bindings/](./bindings/README.md) |
+
+Bindings is the only area that reads a project's source rather than a workspace. It runs in the project it scans, never in the editor.
 
 The export stage splits into two subsystems with their own guides:
 
@@ -66,10 +69,20 @@ type ExportOptions = {
   assetReader?: ExportAssetReader
   skipFormat?: boolean
   enableRemoteFonts?: boolean
+  exportAllIconSetIcons?: boolean
+  includeHiddenComponents?: boolean
+  exportAllThemes?: boolean
+  exportAllFontCollections?: boolean
+  includeWorkspace?: boolean
+  includeScripts?: boolean
 }
 ```
 
 `enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx`.
+
+`exportAllIconSetIcons`, `exportAllThemes`, and `exportAllFontCollections` are on by default, so an export ships complete icon sets, themes, and font families. Set one to `false` to emit only what a component or theme references.
+
+`includeHiddenComponents`, `includeWorkspace`, and `includeScripts` are off by default.
 
 ---
 
@@ -140,16 +153,71 @@ icons/{set}/{category}/Icon{Name}.tsx  # tree-shaken icon components, nested by 
 icons/IconDefault.tsx                  # fallback icon for ids that do not resolve
 icons/index.ts                         # icon index, re-exports the emitted icons
 refs/index.ts                          # ref registry, emitted only when nodes carry refs
+refs/registry.json                     # the same registry as data, for tools that do not parse TypeScript
 utils/class-name.ts                    # combineClassNames helper
 Fonts.tsx                              # font loading component
 styles.css                             # component stylesheet
 styles/{slug}.css                      # one stylesheet per workspace theme
+{workspace-label}.json                 # workspace copy, emitted only with includeWorkspace
+scripts/generate-bindings.mjs          # bindings scanner, emitted only with includeScripts
+scripts/lib/*.mjs                      # scanner library, flat, one file per bindings module
+scripts/INTEGRITY.json                 # sha256 per emitted script file
+scripts/README.md                      # how to run the scripts
 README.md                              # generated usage guide
 ```
 
 The `frames/` folder holds both the generated `Frame.tsx` wrapper and any frame-level components, such as `Container.tsx`. Icon files keep their catalog subfolder path, such as `icons/material/user-interface/navigation/IconMaterialChevronUp.tsx`. The `refs/index.ts` file is emitted only when at least one node carries a ref. It exports a `SeldonRef` union and a `SELDON_REFS` map, and each referenced node renders a `data-seldon-ref` attribute so app code can target it by a type-safe ref name.
 
+Every entry also carries a `views` array naming each generated component that exposes the node as a prop. A view holds the owning component, its file, the slot name, the slot type, and `rendersWhen`. A `rendersWhen` of `unless-null` renders by default and disappears when the caller passes `null`. A `when-passed` slot stays absent until the caller passes props for it, so a `seldonRefs` override alone cannot bring it on screen. A `null` slot means the node is that component's own root, so the caller drives it through the component's own props.
+
+`refs/registry.json` holds the same entries as data, next to the TypeScript. It carries a `version`, the `framework` that wrote it, and a `refs` map. Read it when you want the views without running a TypeScript parser. The editor reads it to pair each view with the consumers a binding manifest reports. It gets no license header, because JSON has no comment syntax.
+
+```typescript
+exportRootPath: {
+  component: "Input",
+  nodeId: "component-panel-brFiKeXr",
+  className: "sdn-input sdn-input--j1ro",
+  views: [
+    {
+      component: "DialogExportComponent",
+      file: "modules/DialogExportComponent.tsx",
+      slot: "input2",
+      type: "InputProps",
+      rendersWhen: "unless-null",
+    },
+  ],
+}
+```
+
 Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file goes in the `styles/` folder and is named by its slug, such as `styles/seldon.css` and `styles/seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
+
+### Workspace Copy
+
+Setting `includeWorkspace` emits a copy of the workspace at the root of the components folder. `generateWorkspaceCopy` in [export/shared/generate-workspace-copy.ts](./export/shared/generate-workspace-copy.ts) produces it.
+
+The file is named from the workspace label, kebab-cased, which is how a downloaded workspace names itself too. A label of `Seldon Editor` gives `seldon-editor.json`. A workspace with no label falls back to `workspace.json`. Renaming a workspace changes the file the next export writes, and the export prunes nothing, so the copy under the old name stays until it is deleted.
+
+The copy holds the workspace as authored. It is written by `exportWorkspace` rather than by a target, because each target rewrites image paths on its own copy before generating, so a target-side copy would carry export paths instead of the original image values.
+
+Important: the copy drops each node's `id`, because an id always repeats the key the node is stored under in `nodes`. Read the file back with `loadWorkspace`, which restores them. Parsing it as plain JSON leaves every node without an id.
+
+### Scripts
+
+Setting `includeScripts` emits the bindings scanner into `<components>/scripts/`. A project runs it to write `<components>/refs/bindings.json`, the consumer half of the binding manifest. Nothing in the factory or the editor runs it during a session. `generateScripts` in [export/shared/generate-scripts.ts](./export/shared/generate-scripts.ts) produces it.
+
+Both editors in this repo export with `includeScripts` and keep the result, because each one consumes the components it generates. `npm run bindings` writes their manifests and `npm run bindings:check` fails on a stale one. CI runs the check, so a committed manifest cannot fall behind the code.
+
+The library under `scripts/lib/` is transpiled from [bindings/](./bindings/README.md) rather than written out as templates, so the emitted code tracks the factory and the scanner has one implementation. Transpiling only strips types, so each emitted module stays one-to-one with its source, comments included. That puts one constraint on the bindings folder: it must avoid TypeScript-only runtime features. The [bindings README](./bindings/README.md#emitting-this-library) covers it.
+
+An export emits only the front ends its framework reaches, because generated components for one framework only run in an app for that framework. A React export leaves the Vue front end out. Both keep the TypeScript front end, since the scan routes by file extension and a Vue project holds plain TypeScript consumers alongside its `.vue` files.
+
+The emitted entry owns what the library leaves to a host. It reads the filesystem, parses flags, writes the manifest, and chooses between the full and the shallow scan. The full scan needs `typescript`, plus `@vue/compiler-sfc` for a Vue export, resolved from the user's own `node_modules`. When one is missing the script falls back to the shallow scan and says so. The framework and components folder are baked from the export, so the common case takes no arguments. The framework takes no flag, because the emitted front ends are fixed at export.
+
+`scripts/INTEGRITY.json` lists a sha256 per emitted file. `generateScriptsIntegrity` in [export/shared/generate-scripts-integrity.ts](./export/shared/generate-scripts-integrity.ts) produces it, and it runs last because the hashes must cover the bytes that reach disk, after the license header and the format pass.
+
+Important: a check the script runs on itself proves nothing, because a modified script can report any hash. The check that means something is external. The factory is deterministic, so re-exporting the same workspace emits the same bytes, and any difference under `scripts/` is a factory update or a local edit. The emitted `scripts/README.md` tells the user this.
+
+Both the workspace copy and `scripts/` are written by `exportWorkspace` rather than by a target, because the React target adds a license header to every string file it emits, which would make either JSON file unparseable.
 
 Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
 

@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -57,9 +64,10 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
+
 import ComboboxField from "../elements/ComboboxField.vue"
 import Listbox from "../parts/Listbox.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -86,100 +94,138 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "comboboxField": {
+  comboboxField: {
     "aria-hidden": "false",
-    "className": "sdn-combobox-field sdn-combobox-field--z3a0"
+    className: "sdn-combobox-field sdn-combobox-field--z3a0",
   },
-  "icon": {
-    "icon": "seldon-component",
+  icon: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--xi68"
+    className: "sdn-icon sdn-icon--xi68",
   },
-  "input": {
-    "placeholder": "Placeholder text",
-    "type": "text",
-    "role": "combobox",
+  input: {
+    placeholder: "Placeholder text",
+    type: "text",
+    role: "combobox",
     "aria-haspopup": "listbox",
-    "className": "sdn-input sdn-input--yoqi"
+    className: "sdn-input sdn-input--yoqi",
   },
-  "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr"
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
-  "icon2": {
-    "icon": "seldon-component",
+  icon2: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--vsau"
+    className: "sdn-icon sdn-icon--vsau",
   },
-  "listbox": {
-    "role": "listbox",
+  listbox: {
+    role: "listbox",
     "aria-hidden": "false",
-    "className": "sdn-listbox sdn-listbox--4wpg"
+    className: "sdn-listbox sdn-listbox--4wpg",
   },
-  "listboxOption": {
-    "role": "option",
+  listboxOption: {
+    role: "option",
     "aria-hidden": "false",
-    "className": "sdn-listbox-option sdn-listbox-option--6dxl"
+    className: "sdn-listbox-option sdn-listbox-option--6dxl",
   },
-  "icon3": {
-    "icon": "seldon-component",
+  icon3: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--3qou"
+    className: "sdn-icon sdn-icon--3qou",
   },
-  "textLabel": {
-    "className": "sdn-text-label sdn-text-label--xohb"
+  textLabel: {
+    children: "Option",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
-  "listboxOption2": {
-    "role": "option",
+  listboxOption2: {
+    role: "option",
     "aria-hidden": "false",
-    "className": "sdn-listbox-option sdn-listbox-option--6dxl"
+    className: "sdn-listbox-option sdn-listbox-option--6dxl",
   },
-  "icon4": {
-    "icon": "seldon-component",
+  icon4: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--3qou"
+    className: "sdn-icon sdn-icon--3qou",
   },
-  "textLabel2": {
-    "className": "sdn-text-label sdn-text-label--xohb"
+  textLabel2: {
+    children: "Option",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
-  "listboxOption3": {
-    "role": "option",
+  listboxOption3: {
+    role: "option",
     "aria-hidden": "false",
-    "className": "sdn-listbox-option sdn-listbox-option--6dxl"
+    className: "sdn-listbox-option sdn-listbox-option--6dxl",
   },
-  "icon5": {
-    "icon": "seldon-component",
+  icon5: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--3qou"
+    className: "sdn-icon sdn-icon--3qou",
   },
-  "textLabel3": {
-    "className": "sdn-text-label sdn-text-label--xohb"
-  }
+  textLabel3: {
+    children: "Option",
+    className: "sdn-text-label sdn-text-label--xohb",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-combobox", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const comboboxFieldProps = computed(() => mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs))
+const comboboxFieldProps = computed(() =>
+  mergeSlot(sdn.comboboxField, props.comboboxField, props.seldonRefs),
+)
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const buttonIconicProps = computed(() =>
+  mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 const listboxProps = computed(() => mergeSlot(sdn.listbox, props.listbox, props.seldonRefs))
-const listboxOptionProps = computed(() => mergeSlot(sdn.listboxOption, props.listboxOption, props.seldonRefs))
+const listboxOptionProps = computed(() =>
+  mergeSlot(sdn.listboxOption, props.listboxOption, props.seldonRefs),
+)
 const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
-const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
-const listboxOption2Props = computed(() => mergeSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
+const listboxOption2Props = computed(() =>
+  mergeSlot(sdn.listboxOption2, props.listboxOption2, props.seldonRefs),
+)
 const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
-const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
-const listboxOption3Props = computed(() => mergeSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs))
+const textLabel2Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
+)
+const listboxOption3Props = computed(() =>
+  mergeSlot(sdn.listboxOption3, props.listboxOption3, props.seldonRefs),
+)
 const icon5Props = computed(() => mergeSlot(sdn.icon5, props.icon5, props.seldonRefs))
-const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const textLabel3Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
+)
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <ComboboxField v-if="comboboxFieldProps !== null" v-bind="comboboxFieldProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
-        <Listbox v-if="listboxProps !== null" v-bind="listboxProps" :listboxOption="listboxOptionProps" :icon="icon3Props" :textLabel="textLabelProps" :listboxOption2="listboxOption2Props" :icon2="icon4Props" :textLabel2="textLabel2Props" :listboxOption3="listboxOption3Props" :icon3="icon5Props" :textLabel3="textLabel3Props" />
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <ComboboxField
+        v-if="comboboxFieldProps !== null"
+        v-bind="comboboxFieldProps"
+        :icon="iconProps"
+        :input="inputProps"
+        :buttonIconic="buttonIconicProps"
+        :icon2="icon2Props"
+      />
+      <Listbox
+        v-if="listboxProps !== null"
+        v-bind="listboxProps"
+        :listboxOption="listboxOptionProps"
+        :icon="icon3Props"
+        :textLabel="textLabelProps"
+        :listboxOption2="listboxOption2Props"
+        :icon2="icon4Props"
+        :textLabel2="textLabel2Props"
+        :listboxOption3="listboxOption3Props"
+        :icon3="icon5Props"
+        :textLabel3="textLabel3Props"
+      />
+    </slot>
+  </div>
 </template>

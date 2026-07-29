@@ -6,11 +6,14 @@ interface ToastStackProps {
   children: ReactNode
 }
 
+/** Above the canvas and its overlays, below the window layer that owns dialogs. */
+const STACK_Z_INDEX = 50
+
 const stackStyle: CSSProperties = {
   position: "absolute",
-  bottom: "3rem",
+  bottom: "var(--sdn-sizes-xxlarge)",
   left: "50%",
-  zIndex: 50,
+  zIndex: STACK_Z_INDEX,
   display: "flex",
   flexDirection: "column",
   gap: "var(--sdn-gaps-compact)",

@@ -11,6 +11,7 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useImportExport } from "@app/io/use-import-export"
+import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useHistory } from "@app/workspace/hooks/use-history"
 import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
@@ -74,6 +75,7 @@ export function useMenuConfig(): MenuConfig {
     directSelect,
     toggleDirectSelect,
   } = useEditorConfig()
+  const { showRefBadges, toggleRefBadges } = useRefBadges()
   const { workspace } = useWorkspace()
   const {
     canvasProfiling,
@@ -102,6 +104,7 @@ export function useMenuConfig(): MenuConfig {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
+    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -234,6 +237,12 @@ export function useMenuConfig(): MenuConfig {
         },
         visibleIn: ["edit"],
       },
+      {
+        id: "export-compressed-workspace",
+        label: "Export Compressed Workspace…",
+        action: exportCompressedWorkspaceToFile,
+        visibleIn: ["edit"],
+      },
       "separator",
       {
         id: "export-workspace",
@@ -251,7 +260,14 @@ export function useMenuConfig(): MenuConfig {
     ]
 
     return items
-  }, [openPanel, setActiveTool, exportWorkspaceToFile, goToProjects, importWorkspaceFromFile])
+  }, [
+    openPanel,
+    setActiveTool,
+    exportWorkspaceToFile,
+    exportCompressedWorkspaceToFile,
+    goToProjects,
+    importWorkspaceFromFile,
+  ])
 
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
@@ -472,14 +488,14 @@ export function useMenuConfig(): MenuConfig {
           openPanel("create-component")
           setActiveTool("select")
         },
-        shortcut: "T",
+        shortcut: "C",
       },
       "separator",
       {
         id: "insert-component",
         label: "Insert Component",
         action: () => setActiveTool("component"),
-        shortcut: "⇧ I",
+        shortcut: "⇧ C",
       },
       {
         id: "add-component",
@@ -488,13 +504,13 @@ export function useMenuConfig(): MenuConfig {
           openPanel("add-board")
           setActiveTool("select")
         },
-        shortcut: "⇧ A",
+        shortcut: "⌥ C",
       },
       {
         id: "add-variant",
         label: "Add Variant",
         action: addVariant,
-        shortcut: "⌥ A",
+        shortcut: "⇧ ⌥ C",
         enabled: Boolean(selectedBoard),
       },
       "separator",
@@ -718,6 +734,13 @@ export function useMenuConfig(): MenuConfig {
             active: wireframeMode === "on",
             shortcut: "W",
           },
+          {
+            id: "show-reference-badges",
+            label: "Show Reference Badges",
+            action: toggleRefBadges,
+            active: showRefBadges,
+            shortcut: "R",
+          },
           "separator",
           {
             id: "show-focus",
@@ -766,7 +789,7 @@ export function useMenuConfig(): MenuConfig {
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
             active: showUnusedProperties,
-            shortcut: "R",
+            shortcut: "P",
           },
           {
             id: "show-unused-fonts",
@@ -825,6 +848,8 @@ export function useMenuConfig(): MenuConfig {
       showFocus,
       toggleWireframeMode,
       wireframeMode,
+      showRefBadges,
+      toggleRefBadges,
       autoExpandOnSelection,
       toggleAutoExpandOnSelection,
       autoScrollToSelection,

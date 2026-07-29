@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -46,11 +53,12 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
+
+import MenuItemRadio from "../elements/MenuItemRadio.vue"
 import Frame from "../frames/Frame.vue"
 import Icon from "../primitives/Icon.vue"
-import MenuItemRadio from "../elements/MenuItemRadio.vue"
 import TextLabel from "../primitives/TextLabel.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -70,64 +78,77 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "textLabel": {
-    "className": "sdn-text-label sdn-text-label--fwkw"
+  textLabel: {
+    children: "Label",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
-  "frame": {
-    "wrapperElement": "div",
+  frame: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--pgac"
+    className: "sdn-frame sdn-frame--pgac",
   },
-  "menuItemRadio": {
-    "className": "sdn-menu-item sdn-menu-item-radio--mezf"
+  menuItemRadio: {
+    className: "sdn-menu-item sdn-menu-item-radio--mezf",
   },
-  "icon": {
-    "icon": "material-radioButtonChecked",
+  icon: {
+    icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--3qou"
+    className: "sdn-icon sdn-icon--3qou",
   },
-  "textLabel2": {
-    "className": "sdn-text-label sdn-text-label--xohb"
+  textLabel2: {
+    children: "Yes",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
-  "menuItemRadio2": {
-    "className": "sdn-menu-item sdn-menu-item-radio--mezf"
+  menuItemRadio2: {
+    className: "sdn-menu-item sdn-menu-item-radio--mezf",
   },
-  "icon2": {
-    "icon": "material-radioButtonChecked",
+  icon2: {
+    icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--3qou"
+    className: "sdn-icon sdn-icon--3qou",
   },
-  "textLabel3": {
-    "className": "sdn-text-label sdn-text-label--xohb"
-  }
+  textLabel3: {
+    children: "No",
+    className: "sdn-text-label sdn-text-label--xohb",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-form-control", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
-const menuItemRadioProps = computed(() => mergeOptionalSlot(sdn.menuItemRadio, props.menuItemRadio, props.seldonRefs))
+const menuItemRadioProps = computed(() =>
+  mergeOptionalSlot(sdn.menuItemRadio, props.menuItemRadio, props.seldonRefs),
+)
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
-const textLabel2Props = computed(() => mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs))
-const menuItemRadio2Props = computed(() => mergeOptionalSlot(sdn.menuItemRadio2, props.menuItemRadio2, props.seldonRefs))
+const textLabel2Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel2, props.textLabel2, props.seldonRefs),
+)
+const menuItemRadio2Props = computed(() =>
+  mergeOptionalSlot(sdn.menuItemRadio2, props.menuItemRadio2, props.seldonRefs),
+)
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
-const textLabel3Props = computed(() => mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs))
+const textLabel3Props = computed(() =>
+  mergeOptionalSlot(sdn.textLabel3, props.textLabel3, props.seldonRefs),
+)
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-        <Frame v-bind="frameProps" v-if="frameProps !== null">
-          <MenuItemRadio v-if="menuItemRadioProps !== null" v-bind="menuItemRadioProps">
-            <Icon v-if="iconProps !== null" v-bind="iconProps" />
-            <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
-          </MenuItemRadio>
-          <MenuItemRadio v-if="menuItemRadio2Props !== null" v-bind="menuItemRadio2Props">
-            <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-            <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
-          </MenuItemRadio>
-        </Frame>
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+      <Frame v-bind="frameProps" v-if="frameProps !== null">
+        <MenuItemRadio v-if="menuItemRadioProps !== null" v-bind="menuItemRadioProps">
+          <Icon v-if="iconProps !== null" v-bind="iconProps" />
+          <TextLabel v-if="textLabel2Props !== null" v-bind="textLabel2Props" />
+        </MenuItemRadio>
+        <MenuItemRadio v-if="menuItemRadio2Props !== null" v-bind="menuItemRadio2Props">
+          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+          <TextLabel v-if="textLabel3Props !== null" v-bind="textLabel3Props" />
+        </MenuItemRadio>
+      </Frame>
+    </slot>
+  </div>
 </template>

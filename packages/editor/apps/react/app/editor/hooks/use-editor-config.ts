@@ -43,6 +43,10 @@ interface EditorConfigState {
   wireframeMode: "auto" | "on" | "off"
   toggleWireframeMode: (mode?: "on" | "off") => void
 
+  // Reference badge overlay, drawing referenced nodes out to their consumers
+  showRefBadges: boolean
+  setShowRefBadges: (enabled: boolean) => void
+
   // Panel settings
   showPanels: boolean
   setShowPanels: (showPanels: boolean) => void
@@ -133,6 +137,12 @@ const useStore = create<EditorConfigState>()(
 
           return { ...state, wireframeMode: newMode }
         }),
+
+      // Ref connector overlay. Left out of `partialize` on purpose: the bindings
+      // it draws are read from a linked folder during a gesture and are not
+      // persisted, so restoring this on load would show an empty overlay.
+      showRefBadges: false,
+      setShowRefBadges: (enabled) => set((state) => ({ ...state, showRefBadges: enabled })),
 
       // Panel settings
       showPanels: true,
@@ -248,6 +258,8 @@ export function useEditorConfig() {
     setShowFocus,
     wireframeMode,
     toggleWireframeMode,
+    showRefBadges,
+    setShowRefBadges,
     showPanels,
     setShowPanels,
     autoScrollToSelection,
@@ -289,6 +301,8 @@ export function useEditorConfig() {
       setShowFocus: state.setShowFocus,
       wireframeMode: state.wireframeMode,
       toggleWireframeMode: state.toggleWireframeMode,
+      showRefBadges: state.showRefBadges,
+      setShowRefBadges: state.setShowRefBadges,
       showPanels: state.showPanels,
       setShowPanels: state.setShowPanels,
       autoScrollToSelection: state.autoScrollToSelection,
@@ -388,6 +402,11 @@ export function useEditorConfig() {
     // Wireframe methods
     wireframeMode,
     toggleWireframeMode,
+
+    // Reference badge overlay. Toggled through `useRefBadges`, which reads the
+    // linked folder on the same gesture that turns it on.
+    showRefBadges,
+    setShowRefBadges,
 
     // Panel methods
     showPanels,

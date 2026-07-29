@@ -18,7 +18,7 @@ This app owns the React interface: components, hooks, and runtime state. It impo
 
 - `npm run dev` copies font licenses and font files, ensures a local Ollama server for the AI agent through `scripts/ensure-ollama.mjs`, then starts Vite on port 5173.
 - `npm run build` builds the production bundle. `npm run build:release` generates third-party notices first. `npm start` serves the build with `vite preview`.
-- `npm run quality` type-checks with `tsc`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `seldon/` components.
+- `npm run typecheck` type-checks with `tsc`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `seldon/` components.
 
 ---
 

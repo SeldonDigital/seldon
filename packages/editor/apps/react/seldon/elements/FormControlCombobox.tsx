@@ -41,6 +41,7 @@ export interface FormControlComboboxProps extends HTMLAttributes<HTMLElement> {
 const sdn: FormControlComboboxProps = {
   "aria-hidden": "false",
   textLabel: {
+    children: "Label",
     className: "sdn-text-label sdn-text-label--fwkw",
   },
 

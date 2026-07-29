@@ -45,8 +45,8 @@ export function Category({ section, actions, onAddCustom }: CategoryProps) {
   // hides itself when empty), and its trailing icon stays on the generated
   // `seldon-more` default, hidden by that placeholder, so it needs no ref.
   const seldonRefs: Record<string, Record<string, unknown>> = {
-    sectionToggle: { ...buttonIconic },
-    sectionToggleIcon: { icon },
+    sectionDisclosure: { ...buttonIconic },
+    sectionDisclosureIcon: { icon },
     sectionLabel: { children: label },
   }
 

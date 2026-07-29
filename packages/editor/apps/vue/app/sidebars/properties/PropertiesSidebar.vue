@@ -1,25 +1,20 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
-import type { Workspace } from "@seldon/core"
-import { isThemeCustomTokenSection } from "@seldon/core"
+import MenuController from "@app/menus/MenuController.vue"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
+import { useToastStore } from "@app/toaster/toast-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import Frame from "@seldon/components/frames/Frame.vue"
+import SidebarProperties from "@seldon/components/modules/SidebarProperties.vue"
 import { filterPropertySections } from "@seldon/editor/lib/properties/inspector/filter-property-sections"
 import { getIconRowCategory } from "@seldon/editor/lib/properties/inspector/icon-set-properties-data"
 import { getPropertiesSubjectId } from "@seldon/editor/lib/properties/inspector/properties-data"
-import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import type {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-} from "@seldon/editor/lib/properties/inspector/editing-contexts"
-import SidebarProperties from "@seldon/components/modules/SidebarProperties.vue"
-import Frame from "@seldon/components/frames/Frame.vue"
-import MenuController from "@app/menus/MenuController.vue"
-import type { MenuEntry } from "@app/menus/types"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useToastStore } from "@app/toaster/toast-store"
-import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
+import { computed, ref } from "vue"
+
+import { isThemeCustomTokenSection } from "@seldon/core"
+
 import Category from "./Category.vue"
-import Property from "./Property.vue"
 import CssBlock from "./CssBlock.vue"
+import Property from "./Property.vue"
 import { buildSectionActions } from "./helpers/build-section-actions"
 import { useBoardStateMenu } from "./hooks/use-board-state-menu"
 import { useBorderSideVisibilityStore } from "./hooks/use-border-side-visibility"
@@ -27,7 +22,15 @@ import { useFilterInput } from "./hooks/use-filter-input"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { usePropertyExpansionStore } from "./property-expansion-store"
 import { providePropertyEditNavigation } from "./use-property-edit-navigation"
+
 import type { PropertySection } from "./types"
+import type { MenuEntry } from "@app/menus/types"
+import type { Workspace } from "@seldon/core"
+import type {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+} from "@seldon/editor/lib/properties/inspector/editing-contexts"
+import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
 
 defineProps<{ workspace?: Workspace }>()
 
@@ -41,9 +44,7 @@ const toast = useToastStore()
 const borderSides = useBorderSideVisibilityStore()
 const expansion = usePropertyExpansionStore()
 
-const tree = computed(() =>
-  state.value.kind === "tree" ? state.value.tree : null,
-)
+const tree = computed(() => (state.value.kind === "tree" ? state.value.tree : null))
 const isEmpty = computed(() => state.value.kind === "empty")
 
 const filteredSections = computed<PropertySection[]>(() =>
@@ -76,8 +77,7 @@ function isFamiliesSection(section: PropertySection): boolean {
 }
 function isIconCategorySection(section: PropertySection): boolean {
   return (
-    Boolean(tree.value?.iconProperties) &&
-    getIconRowCategory(`icon.${section.category}`) !== null
+    Boolean(tree.value?.iconProperties) && getIconRowCategory(`icon.${section.category}`) !== null
   )
 }
 
@@ -92,19 +92,11 @@ function rowAllProperties(section: PropertySection): FlatProperty[] {
   }
   return current.allProperties
 }
-function rowFontContext(
-  section: PropertySection,
-): FontCollectionEditingContext | null {
-  return isFamiliesSection(section)
-    ? (tree.value?.fontCollectionEditingContext ?? null)
-    : null
+function rowFontContext(section: PropertySection): FontCollectionEditingContext | null {
+  return isFamiliesSection(section) ? (tree.value?.fontCollectionEditingContext ?? null) : null
 }
-function rowIconContext(
-  section: PropertySection,
-): IconSetEditingContext | null {
-  return isIconCategorySection(section)
-    ? (tree.value?.iconSetEditingContext ?? null)
-    : null
+function rowIconContext(section: PropertySection): IconSetEditingContext | null {
+  return isIconCategorySection(section) ? (tree.value?.iconSetEditingContext ?? null) : null
 }
 
 function sectionActions(section: PropertySection): MenuEntry[] | undefined {
@@ -122,8 +114,7 @@ function sectionActions(section: PropertySection): MenuEntry[] | undefined {
     cssSelector: current.cssSelector,
     inEditingContext,
     shownBorderSides: borderSides.revealed(getPropertiesSubjectId(current.node)),
-    toggleBorderSide: (subjectId, side) =>
-      borderSides.toggle(subjectId, side),
+    toggleBorderSide: (subjectId, side) => borderSides.toggle(subjectId, side),
     dispatch: (action) => dispatch(action as never),
     addToast: toast.addToast,
   })
@@ -158,13 +149,8 @@ function sectionAddCustom(section: PropertySection): (() => void) | undefined {
               :actions="sectionActions(section)"
               :on-add-custom="sectionAddCustom(section)"
             />
-            <FramerExpandable
-              :is-expanded="expansion.isCategoryExpanded(section.category)"
-            >
-              <CssBlock
-                v-if="isCssSection(section)"
-                :css-properties="tree!.cssStrings"
-              />
+            <FramerExpandable :is-expanded="expansion.isCategoryExpanded(section.category)">
+              <CssBlock v-if="isCssSection(section)" :css-properties="tree!.cssStrings" />
               <template v-else>
                 <Property
                   v-for="property in section.properties"

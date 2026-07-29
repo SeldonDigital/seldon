@@ -1,0 +1,17 @@
+{
+  "algorithm": "sha256",
+  "bindingsVersion": 1,
+  "files": {
+    "README.md": "88495025e1ee5050b518ccda519a7713410a4c71a9948d81778042715020d136",
+    "generate-bindings.mjs": "8ba9fb3b01b3b6dd6f842750fa18d2306b43f8bae44e78c103732fd00c4bd0ff",
+    "lib/config.mjs": "7debe8fd9f87011c66e52972ef5eade0b3f96354a11f1f93f9e26d797d7aef9b",
+    "lib/declaration-index.mjs": "3ac408941915b466b755c1f1b2eef061d2bdf7f19e44dbc21f6387a30fe71198",
+    "lib/describe-expression.mjs": "4c9ef38f7188b8781563be786a83f4d730398ac2c185faca2566c3baccd97bb1",
+    "lib/resolve-object-literal.mjs": "ffb1c30090ec70c6dec58a801c184ca5bdfd392ed140ecc7708d38c07a26f0c7",
+    "lib/scan-typescript.mjs": "eef089771f63e8ae96734ec7ddc1e7f5bb75f3ee71e281f073c7f859aba47cd1",
+    "lib/scan.mjs": "edc4296737fd1d70c0028c281f5e278eb9c103412545aa270e289a1f2d92add1",
+    "lib/serialize.mjs": "92b303e7550a1346930f896517efdb87087ddb2ebcc470d79a1d2124151eac28",
+    "lib/shallow.mjs": "9d1321c279a81aa3e22ddbefb20e6892314d426da9cd05120f4997a81f0de52a",
+    "lib/version.mjs": "5ec2f0af2be6e9155c823651d5d243c9cd2384e8b48ebf5776ed9c4ce01d3b73"
+  }
+}

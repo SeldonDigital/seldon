@@ -1,16 +1,18 @@
 <script setup lang="ts" generic="T extends CatalogDialogItem">
-import { computed, ref, type CSSProperties } from "vue"
-import PanelDialog from "@seldon/components/modules/PanelDialog.vue"
-import ListStandardCatalog from "@seldon/components/parts/ListStandardCatalog.vue"
+import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
+import WindowSurface from "@app/windows/WindowSurface.vue"
+import { useDraggableWindow } from "@app/windows/use-draggable-window"
 import ItemCatalog from "@seldon/components/elements/ItemCatalog.vue"
 import Container from "@seldon/components/frames/Container.vue"
+import PanelDialog from "@seldon/components/modules/PanelDialog.vue"
+import ListStandardCatalog from "@seldon/components/parts/ListStandardCatalog.vue"
 import TextSubtitle from "@seldon/components/primitives/TextSubtitle.vue"
-import type { ResizeSide } from "@seldon/components/utils/resize"
-import WindowSurface from "@app/windows/WindowSurface.vue"
-import { useDraggableWindow } from "@app/menus/use-draggable-window"
-import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
+import { computed, ref } from "vue"
+
 import type { CatalogDialogCategory, CatalogDialogItem } from "./types"
+import type { ResizeSide } from "@seldon/components/utils/resize"
+import type { CSSProperties } from "vue"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
 // side and bottom edges plus the two bottom corners.
@@ -56,9 +58,7 @@ const {
 
 const selectedId = ref<string | null>(null)
 
-const visibleCategories = computed(() =>
-  props.categories.filter(({ items }) => items.length > 0),
-)
+const visibleCategories = computed(() => props.categories.filter(({ items }) => items.length > 0))
 
 const selectedItem = computed<T | null>(
   () =>
@@ -115,8 +115,7 @@ const styles: Record<string, CSSProperties> = {
   rowSelected: {
     cursor: "pointer",
     width: "100%",
-    backgroundColor:
-      "color-mix(in srgb, var(--sdn-swatch-white) 10%, transparent)",
+    backgroundColor: "color-mix(in srgb, var(--sdn-swatch-white) 10%, transparent)",
   },
   empty: { width: "100%" },
   hidden: { display: "none" },
@@ -191,20 +190,12 @@ function rowStyle(item: T): CSSProperties {
       :style="dialogStyle"
     >
       <template #dialogContent>
-        <TextSubtitle
-          v-if="visibleCategories.length === 0"
-          :style="styles.empty"
-        >
+        <TextSubtitle v-if="visibleCategories.length === 0" :style="styles.empty">
           No results found
         </TextSubtitle>
         <div v-else :style="styles.content">
-          <ListStandardCatalog
-            v-for="cat in visibleCategories"
-            :key="cat.category"
-          >
-            <TextSubtitle :style="styles.category">{{
-              cat.category
-            }}</TextSubtitle>
+          <ListStandardCatalog v-for="cat in visibleCategories" :key="cat.category">
+            <TextSubtitle :style="styles.category">{{ cat.category }}</TextSubtitle>
             <Container :style="styles.catalogGrid">
               <ItemCatalog
                 v-for="item in cat.items"

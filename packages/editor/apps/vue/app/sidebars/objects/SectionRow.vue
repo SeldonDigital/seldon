@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { computed } from "vue"
-import { ComponentLevel } from "@seldon/core/components/constants"
-import ItemSection from "@seldon/components/elements/ItemSection.vue"
-import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
-import type { BoardSection } from "@seldon/editor/lib/sidebars/get-board-sections"
-import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
-import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import {
-  useSectionExpansionStore,
-  type ExpandableSection,
-} from "@app/sidebars/section-expansion-store"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
+import { useSectionExpansionStore } from "@app/sidebars/section-expansion-store"
+import ItemSection from "@seldon/components/elements/ItemSection.vue"
+import { getVariantRootIds } from "@seldon/editor/lib/workspace/component-tree"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { computed } from "vue"
+
+import { ComponentLevel } from "@seldon/core/components/constants"
+
 import { useObjectsExpansionStore } from "./objects-expansion-store"
+
+import type { ExpandableSection } from "@app/sidebars/section-expansion-store"
+import type { BoardSection } from "@seldon/editor/lib/sidebars/get-board-sections"
 
 const props = defineProps<{ section: BoardSection }>()
 
@@ -24,14 +25,10 @@ const sectionExpansion = useSectionExpansionStore()
 const expansion = useObjectsExpansionStore()
 
 const level = computed(() => props.section.level as ExpandableSection)
-const isExpanded = computed(() =>
-  sectionExpansion.isSectionExpanded(level.value),
-)
+const isExpanded = computed(() => sectionExpansion.isSectionExpanded(level.value))
 
 // Media has no add flow; frames are not user-creatable boards.
-const canAdd = computed(
-  () => level.value !== "MEDIA" && level.value !== ComponentLevel.FRAME,
-)
+const canAdd = computed(() => level.value !== "MEDIA" && level.value !== ComponentLevel.FRAME)
 
 function onToggleWithSection(event: MouseEvent): void {
   event.stopPropagation()
@@ -71,9 +68,7 @@ const toggleIcon = computed(() => ({
   icon: isExpanded.value ? "material-unfoldLess" : "material-unfoldMore",
 }))
 const labelProps = computed(() => ({ children: props.section.label }))
-const addButton = computed(() =>
-  canAdd.value ? { onClick: onAdd, "aria-label": "Add" } : null,
-)
+const addButton = computed(() => (canAdd.value ? { onClick: onAdd, "aria-label": "Add" } : null))
 </script>
 
 <template>

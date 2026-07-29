@@ -1,35 +1,31 @@
 import { useActiveBoard } from "@app/canvas/use-active-board"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useSelection } from "@app/workspace/use-selection"
+import { resolveIsolationRootId } from "@seldon/editor/lib/isolation/resolve-isolation-root-id"
 import { computed } from "vue"
-
-import { isEntryNodeInstance } from "@seldon/core/workspace/model"
 
 import type { ComputedRef } from "vue"
 
 /**
- * Toggles isolation mode. Enabling requires a default or custom variant to be
- * selected and captures its board as the frozen anchor; disabling clears it.
- * `canToggleIsolation` stays true while isolation is on so it can always be
- * turned off. Shared by the Edit menu and the keyboard shortcut. Mirrors the
- * React `useToggleIsolation`.
+ * Toggles isolation mode. Enabling isolates the variant the selection sits in,
+ * from the variant root itself or from anything nested inside it, and captures
+ * its board as the frozen anchor; disabling clears it. `canToggleIsolation`
+ * stays true while isolation is on so it can always be turned off. Shared by
+ * the Edit menu and the keyboard shortcut. Mirrors the React
+ * `useToggleIsolation`.
  */
 export function useToggleIsolation(): {
   toggleIsolation: () => void
   canToggleIsolation: ComputedRef<boolean>
 } {
   const config = useEditorConfigStore()
-  const { activeBoardKey } = useActiveBoard()
-  const { selectedNode } = useSelection()
+  const { activeBoard, activeBoardKey } = useActiveBoard()
+  const { selectedNodeId, selectedNodeRootId } = useSelection()
 
-  const selectedVariantRootId = computed<string | null>(() =>
-    selectedNode.value != null && !isEntryNodeInstance(selectedNode.value)
-      ? selectedNode.value.id
-      : null,
+  const isolationRootId = computed<string | null>(() =>
+    resolveIsolationRootId(selectedNodeId.value, selectedNodeRootId.value, activeBoard.value),
   )
-  const canToggleIsolation = computed(
-    () => config.isolatedView || selectedVariantRootId.value != null,
-  )
+  const canToggleIsolation = computed(() => config.isolatedView || isolationRootId.value != null)
 
   function toggleIsolation(): void {
     if (config.isolatedView) {
@@ -38,7 +34,7 @@ export function useToggleIsolation(): {
       return
     }
 
-    const variantRootId = selectedVariantRootId.value
+    const variantRootId = isolationRootId.value
     const key = activeBoardKey.value
 
     if (!variantRootId || !key) return

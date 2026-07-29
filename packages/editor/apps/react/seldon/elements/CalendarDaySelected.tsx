@@ -55,6 +55,7 @@ const sdn: CalendarDaySelectedProps = {
   "aria-hidden": "false",
   "aria-selected": "true",
   textLabel: {
+    children: "00",
     className: "sdn-text-label sdn-text-label--fye8",
   },
 }

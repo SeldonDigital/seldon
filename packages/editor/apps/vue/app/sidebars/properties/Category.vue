@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed } from "vue"
-import ItemSection from "@seldon/components/elements/ItemSection.vue"
 import MenuController from "@app/menus/MenuController.vue"
 import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
-import type { MenuEntry } from "@app/menus/types"
+import ItemSection from "@seldon/components/elements/ItemSection.vue"
+import { computed } from "vue"
+
 import { useRowCategory } from "./hooks/use-row-category"
+
 import type { PropertySection } from "./types"
+import type { MenuEntry } from "@app/menus/types"
 
 const props = defineProps<{
   section: PropertySection
@@ -16,10 +18,7 @@ const props = defineProps<{
 const section = computed(() => props.section)
 const { isExpanded, onToggle, icon, label } = useRowCategory(section)
 
-const actionsMenu = useRowActionsMenu(
-  () => props.actions ?? [],
-  { ariaLabel: "Section actions" },
-)
+const actionsMenu = useRowActionsMenu(() => props.actions ?? [], { ariaLabel: "Section actions" })
 
 const toggleButton = computed(() => ({
   onClick: onToggle,

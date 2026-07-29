@@ -1,6 +1,6 @@
 # Seldon · Factory · React Export
 
-Seldon's Factory React Export turns a Seldon workspace into a React component library. It generates one `.tsx` file per component variant, the CSS files, native primitives, icons, fonts, utilities, and a package README. Every text file gets a license header.
+Seldon's Factory React Export turns a Seldon workspace into a React component library. It generates one `.tsx` file per component variant, the CSS files, native primitives, icons, fonts, utilities, and a package README. Every text file gets a license header except JSON, which has no comment syntax.
 
 ---
 
@@ -25,8 +25,8 @@ async function exportReact(
 6. Emit one theme file per theme with `generateThemeStylesheetFiles`.
 7. Transform image paths to relative paths with `replaceImagesWithRelativePaths`.
 8. Generate component files, native primitives, the Frame component, icons, the icon index, the Fonts component, the package README, utility files, and image files.
-9. Generate the `refs/index.ts` registry with `generateRefsRegistry`. It is emitted only when at least one node carries a ref.
-10. Add a license header to every string file with `insertLicense`, then run a final Prettier pass over each source file so the output stays formatted.
+9. Generate the refs registry with `generateRefsRegistry` from `export/shared/`, passing the slot data that `generateComponentFiles` collected. It returns `refs/index.ts` and `refs/registry.json`, and only when at least one node carries a ref.
+10. Add a license header with `insertLicense` to every string file that supports a comment, skipping JSON, then run a final Prettier pass over each source file so the output stays formatted.
 
 Each generation step runs inside a `try/catch` so one failure does not stop the others.
 
@@ -77,7 +77,7 @@ The code is grouped by pipeline stage:
 ## Generation
 
 **Component files** (`generation/helpers/generate-component-files.ts`)
-`generateComponentFiles` builds each component file. For each component it builds the JSX structure, then inserts the interface, the function, the default props, and the imports. When the config returns `iconMap`, it inserts the icon map. It formats the result.
+`generateComponentFiles` builds each component file. For each component it builds the JSX structure, then inserts the interface, the function, the default props, and the imports. When the config returns `iconMap`, it inserts the icon map. It formats the result. It returns the files plus a `refSources` list holding each component's prop names and conditional paths, which the refs registry uses to report the slots this pass emitted.
 
 **JSX structure** (`generation/preprocess/generate-jsx-structure.ts`)
 `generateJSXStructure` returns the root JSX node and a map of prop names. It assigns prop names once with `assignPropNames` and carries them on each node. Every non-frame child renders behind a guard. A schema-valid child guards on its merged props variable not being `null`, so it renders by default and disappears when the caller passes `null`. An invalid child guards on its prop being passed, so it renders only when the caller provides it. A frame is conditional only when it is an invalid prop. When a child has only valid children, it passes the grandchildren as props instead of rendering them. `jsx-structure-to-string.ts` turns the structure into JSX text.
@@ -145,7 +145,8 @@ Two predicates classify a component for the `Type` line in the generated JSDoc. 
 | `assets/get-icons.ts` | Reads the icon component file for each used icon id. It resolves each id to a catalog file with `resolveIconExport`, skips ids that do not resolve with a warning, and generates the `IconDefault` component for the default icon |
 | `assets/generate-icon-index.ts` | Writes the icon index file. It writes an export line only for icons that resolve to a catalog file and deduplicates by component name, so the index never references files that were not emitted |
 | `assets/get-fonts-component.ts` | Writes the `Fonts` component. It emits font host links for remote families only when `options.enableRemoteFonts` is set |
-| `assets/generate-refs-registry.ts` | Writes the `refs/index.ts` registry. It exports a `SeldonRef` string-literal union of every node ref and a `SELDON_REFS` map from ref to its component, node id, and class name. Returns `null` when no node carries a ref, so the file is only emitted when it has content |
+
+The refs registry is shared with the Vue target and lives in [export/shared/generate-refs-registry.ts](../shared/generate-refs-registry.ts). It writes `refs/index.ts` and `refs/registry.json` from the slot data each target collects, and returns an empty list when no node carries a ref, so neither file is emitted unless it has content. See the [factory README](../../README.md) for the emitted shape.
 
 ---
 
@@ -182,11 +183,11 @@ After license insertion, `exportReact` runs a final Prettier pass over every emi
 
 ## Generated Output
 
-`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme under `styles/`, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the runtime helpers under `utils/`, image files, and a package README. When any node carries a reference handle, it also emits a `refs/index.ts` registry. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
+`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme under `styles/`, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the runtime helpers under `utils/`, image files, and a package README. When any node carries a reference handle, it also emits `refs/index.ts` and `refs/registry.json`. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
 
 Every child prop in a generated interface is optional and nullable. A schema child renders with its `sdn` defaults when the prop is omitted and does not render when the caller passes `null`. An invalid child renders only when the caller passes the prop.
 
-A node with a reference handle renders a `data-seldon-ref` attribute carrying its ref. The emitted `refs/index.ts` exports a `SeldonRef` union and a `SELDON_REFS` map so app code can target those nodes by a type-safe ref name.
+A node with a reference handle renders a `data-seldon-ref` attribute carrying its ref. The emitted `refs/index.ts` exports a `SeldonRef` union and a `SELDON_REFS` map so app code can target those nodes by a type-safe ref name. Each entry lists the components that expose the node as a prop in its `views` array. The matching `refs/registry.json` holds the same entries for tools that do not parse TypeScript.
 
 ---
 

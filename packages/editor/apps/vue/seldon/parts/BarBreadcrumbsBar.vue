@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -42,10 +49,11 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot } from "../utils/class-names"
+
 import ButtonIconic from "../elements/ButtonIconic.vue"
 import Icon from "../primitives/Icon.vue"
 import Link from "../primitives/Link.vue"
+import { combineClassNames, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -64,52 +72,54 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  "role": "navigation",
+  role: "navigation",
   "aria-hidden": "false",
-  "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr"
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
-  "icon": {
-    "icon": "seldon-component",
+  icon: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--rezm"
+    className: "sdn-icon sdn-icon--rezm",
   },
-  "icon2": {
-    "icon": "material-chevronRight",
+  icon2: {
+    icon: "material-chevronRight",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--ucf5"
+    className: "sdn-icon sdn-icon--ucf5",
   },
-  "link": {
-    "children": "Home",
+  link: {
+    children: "Home",
     "aria-hidden": "false",
-    "className": "sdn-link sdn-link--yqey"
+    className: "sdn-link sdn-link--yqey",
   },
-  "icon3": {
-    "icon": "material-chevronRight",
+  icon3: {
+    icon: "material-chevronRight",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--ucf5"
+    className: "sdn-icon sdn-icon--ucf5",
   },
-  "link2": {
-    "children": "Profile",
+  link2: {
+    children: "Profile",
     "aria-hidden": "false",
-    "className": "sdn-link sdn-link--yqey"
+    className: "sdn-link sdn-link--yqey",
   },
-  "icon4": {
-    "icon": "material-chevronRight",
+  icon4: {
+    icon: "material-chevronRight",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--ucf5"
+    className: "sdn-icon sdn-icon--ucf5",
   },
-  "link3": {
-    "children": "Settings",
+  link3: {
+    children: "Settings",
     "aria-hidden": "false",
     "aria-current": "page",
-    "className": "sdn-link sdn-link--yqey"
-  }
+    className: "sdn-link sdn-link--yqey",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-bar", props.className))
-const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
+const buttonIconicProps = computed(() =>
+  mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 const linkProps = computed(() => mergeSlot(sdn.link, props.link, props.seldonRefs))
@@ -120,15 +130,19 @@ const link3Props = computed(() => mergeSlot(sdn.link3, props.link3, props.seldon
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
-        <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-        <Link v-if="linkProps !== null" v-bind="linkProps" />
-        <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
-        <Link v-if="link2Props !== null" v-bind="link2Props" />
-        <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
-        <Link v-if="link3Props !== null" v-bind="link3Props" />
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <ButtonIconic
+        v-if="buttonIconicProps !== null"
+        v-bind="buttonIconicProps"
+        :icon="iconProps"
+      />
+      <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+      <Link v-if="linkProps !== null" v-bind="linkProps" />
+      <Icon v-if="icon3Props !== null" v-bind="icon3Props" />
+      <Link v-if="link2Props !== null" v-bind="link2Props" />
+      <Icon v-if="icon4Props !== null" v-bind="icon4Props" />
+      <Link v-if="link3Props !== null" v-bind="link3Props" />
+    </slot>
+  </div>
 </template>

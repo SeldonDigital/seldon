@@ -6,7 +6,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "quality": "bun lint && bun tsc",
+    "typecheck": "tsc --build tsconfig.json",
     "format": "node ../../scripts/format.mjs",
     "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"
   },

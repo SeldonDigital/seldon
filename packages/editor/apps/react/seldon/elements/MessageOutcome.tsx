@@ -42,13 +42,16 @@ const sdn: MessageOutcomeProps = {
     className: "sdn-frame sdn-frame--ieew",
   },
   icon: {
+    icon: "material-checkCircle",
     className: "sdn-icon sdn-icon--wxt9",
   },
   textLabel: {
+    children: "Applied",
     className: "sdn-text-label sdn-text-label--lbxv",
   },
 
   textDescription: {
+    children: "Button background: primary -&gt; accent",
     className: "sdn-text-description sdn-text-description--choa",
   },
 }

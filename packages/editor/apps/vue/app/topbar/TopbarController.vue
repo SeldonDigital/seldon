@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
-import { storeToRefs } from "pinia"
-import BarTopbar from "@seldon/components/parts/BarTopbar.vue"
-import MenuController from "@app/menus/MenuController.vue"
-import type { MenuAlign, MenuEntry } from "@app/menus/types"
-import { useAppState, type AppState } from "@app/editor/use-app-state"
-import {
-  useEditorConfigStore,
-  type InterfaceMode,
-} from "@app/editor/editor-config-store"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { useAppState } from "@app/editor/use-app-state"
 import { useExportStatusStore } from "@app/io/export-status-store"
+import MenuController from "@app/menus/MenuController.vue"
+import BarTopbar from "@seldon/components/parts/BarTopbar.vue"
+import { storeToRefs } from "pinia"
+import { computed, ref } from "vue"
+
 import { getChromeThemes } from "./chrome-themes"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
 import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
+
 import type { MenuDropdown } from "./menus/types"
+import type { InterfaceMode } from "@app/editor/editor-config-store"
+import type { AppState } from "@app/editor/use-app-state"
+import type { MenuAlign, MenuEntry } from "@app/menus/types"
 
 /** Menu id for the chrome-theme dropdown, distinct from the config menus. */
 const CHROME_THEME_MENU_ID = "chrome-theme"
@@ -118,8 +119,7 @@ const menuSlots = computed<MenuSlot[]>(() =>
   [0, 1, 2, 3, 4, 5].map((index) => {
     const menu = menuConfig.value[index]
     if (!menu) return EMPTY_SLOT
-    if (menu.visibleIn && !menu.visibleIn.includes(appState.value))
-      return EMPTY_SLOT
+    if (menu.visibleIn && !menu.visibleIn.includes(appState.value)) return EMPTY_SLOT
     return {
       button: {
         "data-testid": `menu-${menu.id}`,
@@ -193,8 +193,7 @@ const openMenuItems = computed<MenuEntry[]>(() => {
 // The theme and mode triggers sit at the right edge, so their menus align to
 // the trigger's right and open leftward. The left-side config menus align left.
 const menuAlign = computed<MenuAlign>(() =>
-  openMenuId.value === CHROME_THEME_MENU_ID ||
-  openMenuId.value === INTERFACE_MODE_MENU_ID
+  openMenuId.value === CHROME_THEME_MENU_ID || openMenuId.value === INTERFACE_MODE_MENU_ID
     ? "end"
     : "start",
 )
