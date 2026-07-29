@@ -2835,7 +2835,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadge",
-        "line": 74,
+        "line": 75,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -2868,7 +2868,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefSummaryBadge",
-        "line": 129,
+        "line": 130,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -2901,7 +2901,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefOmitted",
-        "line": 158,
+        "line": 159,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -2934,7 +2934,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadgeMeasure",
-        "line": 186,
+        "line": 187,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -3354,14 +3354,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadge",
-        "line": 73,
+        "line": 74,
         "conditional": false,
         "expression": "{ children: placement.label }",
         "inputs": [
           {
             "name": "placement",
             "declaredAt": {
-              "line": 58,
+              "line": 59,
               "kind": "parameter"
             }
           }
@@ -3374,7 +3374,7 @@
               {
                 "name": "placement",
                 "declaredAt": {
-                  "line": 58,
+                  "line": 59,
                   "kind": "parameter"
                 }
               }
@@ -3385,14 +3385,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefSummaryBadge",
-        "line": 128,
+        "line": 129,
         "conditional": false,
         "expression": "{ children: placement.label }",
         "inputs": [
           {
             "name": "placement",
             "declaredAt": {
-              "line": 58,
+              "line": 59,
               "kind": "parameter"
             }
           }
@@ -3405,7 +3405,7 @@
               {
                 "name": "placement",
                 "declaredAt": {
-                  "line": 58,
+                  "line": 59,
                   "kind": "parameter"
                 }
               }
@@ -3416,14 +3416,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefOmitted",
-        "line": 157,
+        "line": 158,
         "conditional": false,
         "expression": "{ children: `+${count} more` }",
         "inputs": [
           {
             "name": "count",
             "declaredAt": {
-              "line": 152,
+              "line": 153,
               "kind": "parameter"
             }
           }
@@ -3436,7 +3436,7 @@
               {
                 "name": "count",
                 "declaredAt": {
-                  "line": 152,
+                  "line": 153,
                   "kind": "parameter"
                 }
               }
@@ -3447,15 +3447,23 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadgeMeasure",
-        "line": 185,
+        "line": 186,
         "conditional": false,
-        "expression": "{ children: label }",
+        "expression": "{ children: label, style: refBadgeMeasureLabelStyle }",
         "inputs": [
           {
             "name": "label",
             "declaredAt": {
-              "line": 183,
+              "line": 184,
               "kind": "parameter"
+            }
+          },
+          {
+            "name": "refBadgeMeasureLabelStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
             }
           }
         ],
@@ -3467,8 +3475,22 @@
               {
                 "name": "label",
                 "declaredAt": {
-                  "line": 183,
+                  "line": 184,
                   "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "refBadgeMeasureLabelStyle",
+            "inputs": [
+              {
+                "name": "refBadgeMeasureLabelStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
                 }
               }
             ]
@@ -5344,13 +5366,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 87,
+          "line": 88,
           "expression": "toggle",
           "inputs": [
             {
               "name": "toggle",
               "declaredAt": {
-                "line": 59,
+                "line": 60,
                 "kind": "const",
                 "via": "useRefCard"
               }
@@ -5361,13 +5383,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 133,
+          "line": 134,
           "expression": "select",
           "inputs": [
             {
               "name": "select",
               "declaredAt": {
-                "line": 117,
+                "line": 118,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -8936,13 +8958,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 92,
+          "line": 93,
           "expression": "badgeBox",
           "inputs": [
             {
               "name": "badgeBox",
               "declaredAt": {
-                "line": 67,
+                "line": 68,
                 "kind": "const",
                 "via": "useMemo"
               }
@@ -8953,13 +8975,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 138,
+          "line": 139,
           "expression": "badgeBox",
           "inputs": [
             {
               "name": "badgeBox",
               "declaredAt": {
-                "line": 67,
+                "line": 68,
                 "kind": "const",
                 "via": "useMemo"
               }
@@ -8970,13 +8992,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 167,
+          "line": 168,
           "expression": "badgeBox",
           "inputs": [
             {
               "name": "badgeBox",
               "declaredAt": {
-                "line": 67,
+                "line": 68,
                 "kind": "const",
                 "via": "useMemo"
               }
@@ -8987,7 +9009,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 195,
+          "line": 196,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8997,7 +9019,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 89,
+          "line": 90,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9005,7 +9027,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 135,
+          "line": 136,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9013,7 +9035,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 164,
+          "line": 165,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9021,7 +9043,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 192,
+          "line": 193,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9093,7 +9115,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 93,
+          "line": 94,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9101,7 +9123,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 139,
+          "line": 140,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9109,7 +9131,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 168,
+          "line": 169,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9117,7 +9139,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 196,
+          "line": 197,
           "expression": "{}",
           "inputs": [],
           "spread": false

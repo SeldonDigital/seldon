@@ -6022,13 +6022,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadgeMeasure.vue",
           "component": "RefBadgeMeasure",
-          "line": 44,
+          "line": 45,
           "expression": "showSlot",
           "inputs": [
             {
               "name": "showSlot",
               "declaredAt": {
-                "line": 33,
+                "line": 34,
                 "kind": "const"
               }
             }
@@ -6082,7 +6082,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadgeMeasure.vue",
           "component": "RefBadgeMeasure",
-          "line": 41,
+          "line": 42,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -6189,13 +6189,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadgeMeasure.vue",
           "component": "RefBadgeMeasure",
-          "line": 45,
+          "line": 46,
           "expression": "showSlot",
           "inputs": [
             {
               "name": "showSlot",
               "declaredAt": {
-                "line": 33,
+                "line": 34,
                 "kind": "const"
               }
             }
