@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import Combobox from "@app/menus/Combobox.vue"
-import { useAiChat } from "@app/ai/use-ai-chat"
 import { useAiChatStore } from "@app/ai/ai-chat-store"
+import { useAiChat } from "@app/ai/use-ai-chat"
 import { useDebugStore } from "@app/editor/debug-store"
 import { usePanelStore } from "@app/editor/panel-store"
-import type { ThinkingLevelOption } from "@seldon/ai"
+import Combobox from "@app/menus/Combobox.vue"
 import { storeToRefs } from "pinia"
 import { computed, nextTick, ref, watch } from "vue"
+
+import type { ThinkingLevelOption } from "@seldon/ai"
 
 const panel = usePanelStore()
 const store = useAiChatStore()
@@ -103,15 +104,8 @@ function onThinking(value: unknown): void {
         >
           Outcome
         </button>
-        <button type="button" class="ai-chat__icon" title="Clear" @click="onReset">
-          ⟲
-        </button>
-        <button
-          type="button"
-          class="ai-chat__icon"
-          title="Close"
-          @click="panel.closePanel()"
-        >
+        <button type="button" class="ai-chat__icon" title="Clear" @click="onReset">⟲</button>
+        <button type="button" class="ai-chat__icon" title="Close" @click="panel.closePanel()">
           ×
         </button>
       </div>
@@ -124,14 +118,9 @@ function onThinking(value: unknown): void {
       <article v-for="turn in turns" :key="turn.id" class="ai-chat__turn">
         <div class="ai-chat__prompt">{{ turn.prompt }}</div>
 
-        <pre v-if="turn.thinking" class="ai-chat__thinking">{{
-          turn.thinking
-        }}</pre>
+        <pre v-if="turn.thinking" class="ai-chat__thinking">{{ turn.thinking }}</pre>
 
-        <ul
-          v-if="showTools && turn.toolCalls && turn.toolCalls.length > 0"
-          class="ai-chat__tools"
-        >
+        <ul v-if="showTools && turn.toolCalls && turn.toolCalls.length > 0" class="ai-chat__tools">
           <li
             v-for="(call, index) in turn.toolCalls"
             :key="index"
@@ -151,20 +140,13 @@ function onThinking(value: unknown): void {
           {{ turn.outcome }}
         </div>
 
-        <ul
-          v-if="turn.changes && turn.changes.length > 0"
-          class="ai-chat__changes"
-        >
+        <ul v-if="turn.changes && turn.changes.length > 0" class="ai-chat__changes">
           <li v-for="(change, index) in turn.changes" :key="index">
             {{ change }}
           </li>
         </ul>
 
-        <p
-          v-for="(warning, index) in turn.warnings"
-          :key="`w${index}`"
-          class="ai-chat__warning"
-        >
+        <p v-for="(warning, index) in turn.warnings" :key="`w${index}`" class="ai-chat__warning">
           {{ warning }}
         </p>
 
@@ -198,21 +180,8 @@ function onThinking(value: unknown): void {
         placeholder="Describe what you want to do…"
         @keydown="onKeydown"
       />
-      <button
-        v-if="isPending"
-        type="button"
-        class="ai-chat__send"
-        @click="stop"
-      >
-        Stop
-      </button>
-      <button
-        v-else
-        type="button"
-        class="ai-chat__send"
-        :disabled="!draft.trim()"
-        @click="submit"
-      >
+      <button v-if="isPending" type="button" class="ai-chat__send" @click="stop">Stop</button>
+      <button v-else type="button" class="ai-chat__send" :disabled="!draft.trim()" @click="submit">
         Send
       </button>
     </div>
@@ -235,7 +204,12 @@ function onThinking(value: unknown): void {
   z-index: 1500;
   color: #e4e4e7;
   font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 .ai-chat__bar {
   display: flex;

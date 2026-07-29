@@ -18,8 +18,8 @@ This app owns the Vue interface: components, composables, and Pinia stores. It i
 ### Run steps
 
 - `npm run dev` copies font licenses and font files, then starts Vite on port 5174. The AI agent uses the local Ollama server the React editor's `dev` script ensures.
-- `npm run build` type-checks with `vue-tsc` and builds the production bundle. `npm start` serves the build with `vite preview`.
-- `npm run quality` type-checks with `vue-tsc --noEmit`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `seldon/` components.
+- `npm run build` type-checks with `vue-tsc` and builds the production bundle. `npm run build:release` generates third-party notices first. `npm start` serves the build with `vite preview`.
+- `npm run typecheck` type-checks with `vue-tsc --noEmit`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `seldon/` components.
 
 ---
 

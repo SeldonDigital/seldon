@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
-import type { OutlineColors } from "@seldon/editor/lib/canvas/overlay/outline-colors"
 import { computed } from "vue"
 
 import { outlineBoxStyle } from "./outline-box-style"
+
+import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
+import type { OutlineColors } from "@seldon/editor/lib/canvas/overlay/outline-colors"
 
 const props = withDefaults(
   defineProps<{
@@ -15,9 +16,7 @@ const props = withDefaults(
 )
 
 const style = computed(() =>
-  props.rect
-    ? outlineBoxStyle(props.rect, "hover", props.wireframe, props.colors?.hover)
-    : null,
+  props.rect ? outlineBoxStyle(props.rect, "hover", props.wireframe, props.colors?.hover) : null,
 )
 </script>
 

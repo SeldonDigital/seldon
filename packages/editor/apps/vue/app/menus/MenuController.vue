@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from "vue"
-import { storeToRefs } from "pinia"
-import Menu from "@seldon/components/parts/Menu.vue"
-import MenuItem from "@seldon/components/elements/MenuItem.vue"
-import Hr from "@seldon/components/primitives/Hr.vue"
-import {
-  computeMenuPosition,
-  type MenuPosition,
-} from "@seldon/editor/lib/menus/anchor-position"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
+import MenuItem from "@seldon/components/elements/MenuItem.vue"
+import Menu from "@seldon/components/parts/Menu.vue"
+import Hr from "@seldon/components/primitives/Hr.vue"
+import { computeMenuPosition } from "@seldon/editor/lib/menus/anchor-position"
+import { storeToRefs } from "pinia"
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
+
 import type { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
+import type { MenuPosition } from "@seldon/editor/lib/menus/anchor-position"
 
 /**
  * Controlled floating menu built on the generated `Menu`/`MenuItem` chrome. The
@@ -71,10 +63,7 @@ const showMarkerColumn = computed(() =>
  */
 function markerIcon(item: MenuItemModel): Record<string, unknown> | null {
   if (!showMarkerColumn.value) return null
-  const glyph =
-    item.activeMarker === "bullet"
-      ? "material-radioButtonChecked"
-      : "material-check"
+  const glyph = item.activeMarker === "bullet" ? "material-radioButtonChecked" : "material-check"
   if (isMarked(item)) {
     return {
       icon: glyph,
@@ -103,8 +92,7 @@ function shortcutSlot(item: MenuItemModel): Record<string, unknown> | null {
 }
 
 const containerStyle = computed(() => {
-  const px = (value: number | undefined) =>
-    value === undefined ? undefined : `${value}px`
+  const px = (value: number | undefined) => (value === undefined ? undefined : `${value}px`)
   return {
     position: "fixed" as const,
     zIndex: 50,
@@ -130,9 +118,7 @@ function focusActive(): void {
   const container = menuRef.value
   if (!container) return
   if (activeIndex.value >= 0) {
-    container
-      .querySelector<HTMLElement>(`[data-menu-index="${activeIndex.value}"]`)
-      ?.focus()
+    container.querySelector<HTMLElement>(`[data-menu-index="${activeIndex.value}"]`)?.focus()
   } else {
     container.focus()
   }
@@ -172,8 +158,7 @@ function onKeydown(event: KeyboardEvent): void {
       break
     case "End":
       event.preventDefault()
-      activeIndex.value =
-        enabledIndexes.value[enabledIndexes.value.length - 1] ?? -1
+      activeIndex.value = enabledIndexes.value[enabledIndexes.value.length - 1] ?? -1
       break
     case "Escape":
       event.preventDefault()

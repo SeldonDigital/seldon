@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { computed, type CSSProperties } from "vue"
-import PanelDialog from "@seldon/components/modules/PanelDialog.vue"
-import type { ResizeSide } from "@seldon/components/utils/resize"
+import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
 import WindowSurface from "@app/windows/WindowSurface.vue"
 import { useDraggableWindow } from "@app/windows/use-draggable-window"
-import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "@app/constants"
+import PanelDialog from "@seldon/components/modules/PanelDialog.vue"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
-import { useImageUploadPanel } from "./use-image-upload-panel"
+import { computed } from "vue"
+
 import ImageDropzone from "./ImageDropzone.vue"
+import { useImageUploadPanel } from "./use-image-upload-panel"
+
+import type { ResizeSide } from "@seldon/components/utils/resize"
+import type { CSSProperties } from "vue"
 
 // The title bar owns the top edge for dragging, so the dialog resizes from the
 // side and bottom edges plus the two bottom corners.
@@ -19,8 +22,7 @@ const DIALOG_RESIZE_SIDES: readonly ResizeSide[] = [
   "bottom-right",
 ]
 
-const { isOpen, currentFile, status, onFileChange, save, close } =
-  useImageUploadPanel()
+const { isOpen, currentFile, status, onFileChange, save, close } = useImageUploadPanel()
 
 const viewport = getWindowInnerSize()
 const {
@@ -52,9 +54,7 @@ function clear(): void {
 }
 
 const showDropzone = computed(() => status.value !== "success")
-const confirmText = computed(() =>
-  status.value === "pending" ? "Uploading..." : "Use image",
-)
+const confirmText = computed(() => (status.value === "pending" ? "Uploading..." : "Use image"))
 
 const styles: Record<string, CSSProperties> = {
   dialog: { width: "100%", height: "100%" },

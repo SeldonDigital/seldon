@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    // The Vite helpers run in Node. `jsx` is set because the lib reaches into
+    // core's icon-set catalog, whose entries are .tsx, even though nothing here
+    // is a component.
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "paths": {
+      "@seldon/core": ["../../core/index.ts"],
+      "@seldon/core/*": ["../../core/*"],
+      "@seldon/factory": ["../../factory/index.ts"],
+      "@seldon/factory/*": ["../../factory/*"],
+      "@seldon/ai": ["../../ai/index.ts"],
+      "@seldon/ai/*": ["../../ai/*"],
+      "@seldon/editor/lib/*": ["./lib/*"]
+    },
+    "target": "ES2021"
+  },
+  "include": ["lib/**/*.ts", "vite/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

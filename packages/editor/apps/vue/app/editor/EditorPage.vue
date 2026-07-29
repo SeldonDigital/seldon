@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import { getStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
-import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
-import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
-import { useEditorConfigStore } from "@app/editor/editor-config-store"
-import { useHistoryStore } from "@app/workspace/history-store"
-import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
-import { useWorkspace } from "@app/workspace/use-workspace"
-import { storeToRefs } from "pinia"
-import { computed, ref, watch } from "vue"
-import { useRoute } from "vue-router"
 import Canvas from "@app/canvas/Canvas.vue"
-import LoadEditorFonts from "@app/editor/LoadEditorFonts.vue"
-import AiChatPanel from "@app/palettes/AiChatPanel.vue"
+import { useEditorShortcuts } from "@app/commands/use-editor-shortcuts"
 import BoardsDialog from "@app/dialogs/BoardsDialog.vue"
 import ComponentsDialog from "@app/dialogs/ComponentsDialog.vue"
 import CreateComponentDialog from "@app/dialogs/CreateComponentDialog.vue"
 import ExportDialog from "@app/dialogs/ExportDialog.vue"
-import ThemesDialog from "@app/dialogs/ThemesDialog.vue"
 import FontCollectionsDialog from "@app/dialogs/FontCollectionsDialog.vue"
 import IconSetsDialog from "@app/dialogs/IconSetsDialog.vue"
+import ThemesDialog from "@app/dialogs/ThemesDialog.vue"
 import ImageUploadController from "@app/dialogs/image-upload/ImageUploadController.vue"
+import LoadEditorFonts from "@app/editor/LoadEditorFonts.vue"
+import { useEditorConfigStore } from "@app/editor/editor-config-store"
+import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
+import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
+import AiChatPanel from "@app/palettes/AiChatPanel.vue"
+import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
+import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
 import PropertiesSidebar from "@app/sidebars/properties/PropertiesSidebar.vue"
 import TopbarController from "@app/topbar/TopbarController.vue"
-import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
-import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
+import { useHistoryStore } from "@app/workspace/history-store"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import { getStoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
+import { storeToRefs } from "pinia"
+import { computed, ref, watch } from "vue"
+import { useRoute } from "vue-router"
 
 const route = useRoute()
 const history = useHistoryStore()
@@ -32,8 +32,7 @@ const save = useWorkspaceSaveStore()
 const config = useEditorConfigStore()
 const { workspace } = useWorkspace()
 
-const { showPanels, chromeTheme, objectsWidth, propertiesWidth } =
-  storeToRefs(config)
+const { showPanels, chromeTheme, objectsWidth, propertiesWidth } = storeToRefs(config)
 const resolvedMode = useResolvedInterfaceMode()
 
 // Panels hide when the user collapses chrome (`\`).
@@ -112,9 +111,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
   <div class="editor-shell" :data-theme="chromeTheme" :data-mode="resolvedMode">
     <TopbarController v-if="showPanels" />
     <div class="editor-body">
-      <p v-if="status === 'loading'" class="editor-message">
-        Loading workspace…
-      </p>
+      <p v-if="status === 'loading'" class="editor-message">Loading workspace…</p>
       <p v-else-if="status === 'missing'" class="editor-message">
         Workspace not found.
         <RouterLink to="/">Back to home</RouterLink>
@@ -144,11 +141,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
             aria-orientation="vertical"
             @pointerdown="startPropertiesResize"
           />
-          <div
-            ref="propertiesPane"
-            class="editor-properties"
-            :style="propertiesStyle"
-          >
+          <div ref="propertiesPane" class="editor-properties" :style="propertiesStyle">
             <PropertiesSidebar :workspace="workspace" />
           </div>
         </template>
@@ -224,6 +217,11 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
   padding: 2rem;
   color: #52525b;
   font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 </style>

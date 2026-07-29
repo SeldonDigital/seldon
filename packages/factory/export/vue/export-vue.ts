@@ -18,6 +18,7 @@ import { generateFrameComponent } from "./assets/generate-frame"
 import { getVueIcons } from "./assets/get-vue-icons"
 import { getVueUtilityFiles } from "./assets/get-vue-utility-files"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
+import { formatVue } from "./format-vue"
 import { generateComponentFiles } from "./generation/generate-component-files"
 
 import type { RefViewSource } from "../shared/generate-refs-registry"
@@ -138,12 +139,18 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
     // Failed to export images
   }
 
-  // License and format only source files Prettier understands here. The `.vue`
-  // SFCs are emitted pre-formatted; the export Prettier config has no Vue
-  // parser, so formatting them would throw.
+  // License and format every source file, each through the parser its extension
+  // calls for. Single-file components go through Prettier's `vue` parser, which
+  // reprints the template and the script block together.
   await Promise.all(
     filesToExport.map(async (file) => {
       if (typeof file.content !== "string") return
+
+      if (isSingleFileComponent(file.path)) {
+        file.content = await formatVue(insertLicense(file.content), options)
+
+        return
+      }
 
       if (isFormattableSource(file.path)) {
         file.content = insertLicense(file.content)
@@ -156,6 +163,10 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
 }
 
 const FORMATTABLE_SOURCE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
+
+function isSingleFileComponent(path: string): boolean {
+  return path.endsWith(".vue")
+}
 
 function isFormattableSource(path: string): boolean {
   return FORMATTABLE_SOURCE_EXTENSIONS.some((ext) => path.endsWith(ext))

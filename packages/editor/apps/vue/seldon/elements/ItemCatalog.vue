@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -41,11 +48,12 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
+
 import Frame from "../frames/Frame.vue"
 import Icon from "../primitives/Icon.vue"
 import TextSubtitle from "../primitives/TextSubtitle.vue"
 import TextTitle from "../primitives/TextTitle.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -61,44 +69,48 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "icon": {
-    "icon": "seldon-component",
-    "className": "sdn-icon sdn-icon--mene",
-    "data-seldon-ref": "catalogIcon"
+  icon: {
+    icon: "seldon-component",
+    className: "sdn-icon sdn-icon--mene",
+    "data-seldon-ref": "catalogIcon",
   },
-  "frame": {
-    "wrapperElement": "div",
+  frame: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--nhfs"
+    className: "sdn-frame sdn-frame--nhfs",
   },
-  "textTitle": {
-    "children": "Product Name",
-    "className": "sdn-text-title sdn-text-title--noun",
-    "data-seldon-ref": "catalogLabel"
+  textTitle: {
+    children: "Product Name",
+    className: "sdn-text-title sdn-text-title--noun",
+    "data-seldon-ref": "catalogLabel",
   },
-  "textSubtitle": {
-    "children": "Details",
-    "className": "sdn-text-subtitle sdn-text-subtitle--r4ot",
-    "data-seldon-ref": "catalogVariant"
-  }
+  textSubtitle: {
+    children: "Details",
+    className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
+    "data-seldon-ref": "catalogVariant",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-item-catalog", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const iconProps = computed(() => mergeOptionalSlot(sdn.icon, props.icon, props.seldonRefs))
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
-const textTitleProps = computed(() => mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs))
-const textSubtitleProps = computed(() => mergeOptionalSlot(sdn.textSubtitle, props.textSubtitle, props.seldonRefs))
+const textTitleProps = computed(() =>
+  mergeOptionalSlot(sdn.textTitle, props.textTitle, props.seldonRefs),
+)
+const textSubtitleProps = computed(() =>
+  mergeOptionalSlot(sdn.textSubtitle, props.textSubtitle, props.seldonRefs),
+)
 </script>
 
 <template>
-    <li :class="rootClassName" v-bind="rootAttrs" data-seldon-ref="catalogItem">
-      <slot>
-        <Icon v-if="iconProps !== null" v-bind="iconProps" />
-        <Frame v-bind="frameProps">
-          <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
-          <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
-        </Frame>
-      </slot>
-    </li>
+  <li :class="rootClassName" v-bind="rootAttrs" data-seldon-ref="catalogItem">
+    <slot>
+      <Icon v-if="iconProps !== null" v-bind="iconProps" />
+      <Frame v-bind="frameProps">
+        <TextTitle v-if="textTitleProps !== null" v-bind="textTitleProps" />
+        <TextSubtitle v-if="textSubtitleProps !== null" v-bind="textSubtitleProps" />
+      </Frame>
+    </slot>
+  </li>
 </template>

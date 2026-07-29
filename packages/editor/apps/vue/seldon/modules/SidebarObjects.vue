@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -46,10 +53,11 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
-import Frame from "../frames/Frame.vue"
+
 import ButtonToggle from "../elements/ButtonToggle.vue"
 import ComboboxFieldProject from "../elements/ComboboxFieldProject.vue"
+import Frame from "../frames/Frame.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -72,98 +80,121 @@ const props = defineProps<{
 // Default property values
 //
 const sdn: Record<string, any> = {
-  "role": "complementary",
+  role: "complementary",
   "aria-hidden": "false",
-  "frame": {
-    "wrapperElement": "div",
+  frame: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--p4y0"
+    className: "sdn-frame sdn-frame--p4y0",
   },
-  "comboboxFieldProject": {
-    "className": "sdn-combobox-field sdn-combobox-field-project--rzdy"
+  comboboxFieldProject: {
+    className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
   },
-  "icon": {
-    "icon": "material-dataObject",
+  icon: {
+    icon: "material-dataObject",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--xi68"
+    className: "sdn-icon sdn-icon--xi68",
   },
-  "input": {
-    "placeholder": "Workspace Name",
-    "type": "text",
-    "role": "combobox",
+  input: {
+    placeholder: "Workspace Name",
+    type: "text",
+    role: "combobox",
     "aria-haspopup": "listbox",
-    "className": "sdn-input sdn-input--twyx",
-    "data-seldon-ref": "workspaceName"
+    className: "sdn-input sdn-input--twyx",
+    "data-seldon-ref": "workspaceName",
   },
-  "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "workspaceSave"
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "workspaceSave",
   },
-  "icon2": {
-    "icon": "material-save",
+  icon2: {
+    icon: "material-save",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--vsau"
+    className: "sdn-icon sdn-icon--vsau",
   },
-  "frame2": {
-    "wrapperElement": "div",
+  frame2: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--ma6i"
+    className: "sdn-frame sdn-frame--ma6i",
   },
-  "buttonToggle": {
-    "className": "sdn-button-toggle sdn-button-iconic--pgsr",
-    "data-seldon-ref": "sidebarComponents"
+  buttonToggle: {
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+    "data-seldon-ref": "sidebarComponents",
   },
-  "icon3": {
-    "icon": "seldon-component",
+  icon3: {
+    icon: "seldon-component",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--vsau"
+    className: "sdn-icon sdn-icon--vsau",
   },
-  "buttonToggle2": {
-    "className": "sdn-button-toggle sdn-button-iconic--pgsr",
-    "data-seldon-ref": "sidebarResources"
+  buttonToggle2: {
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+    "data-seldon-ref": "sidebarResources",
   },
-  "icon4": {
-    "icon": "seldon-theme",
+  icon4: {
+    icon: "seldon-theme",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--vsau"
+    className: "sdn-icon sdn-icon--vsau",
   },
-  "frame3": {
-    "wrapperElement": "div",
+  frame3: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--enpy",
-    "data-seldon-ref": "objectsContainer"
-  }
+    className: "sdn-frame sdn-frame--enpy",
+    "data-seldon-ref": "objectsContainer",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-sidebar-objects", props.className))
-const rootAttrs = { "role": sdn["role"], "aria-hidden": sdn["aria-hidden"] }
+const rootAttrs = { role: sdn["role"], "aria-hidden": sdn["aria-hidden"] }
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
-const comboboxFieldProjectProps = computed(() => mergeOptionalSlot(sdn.comboboxFieldProject, props.comboboxFieldProject, props.seldonRefs))
+const comboboxFieldProjectProps = computed(() =>
+  mergeOptionalSlot(sdn.comboboxFieldProject, props.comboboxFieldProject, props.seldonRefs),
+)
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const inputProps = computed(() => mergeSlot(sdn.input, props.input, props.seldonRefs))
-const buttonIconicProps = computed(() => mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const buttonIconicProps = computed(() =>
+  mergeSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
 const icon2Props = computed(() => mergeSlot(sdn.icon2, props.icon2, props.seldonRefs))
 const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
-const buttonToggleProps = computed(() => mergeOptionalSlot(sdn.buttonToggle, props.buttonToggle, props.seldonRefs))
+const buttonToggleProps = computed(() =>
+  mergeOptionalSlot(sdn.buttonToggle, props.buttonToggle, props.seldonRefs),
+)
 const icon3Props = computed(() => mergeSlot(sdn.icon3, props.icon3, props.seldonRefs))
-const buttonToggle2Props = computed(() => mergeOptionalSlot(sdn.buttonToggle2, props.buttonToggle2, props.seldonRefs))
+const buttonToggle2Props = computed(() =>
+  mergeOptionalSlot(sdn.buttonToggle2, props.buttonToggle2, props.seldonRefs),
+)
 const icon4Props = computed(() => mergeSlot(sdn.icon4, props.icon4, props.seldonRefs))
 const frame3Props = computed(() => mergeSlot(sdn.frame3, props.frame3, props.seldonRefs))
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <Frame v-bind="frameProps">
-          <ComboboxFieldProject v-if="comboboxFieldProjectProps !== null" v-bind="comboboxFieldProjectProps" :icon="iconProps" :input="inputProps" :buttonIconic="buttonIconicProps" :icon2="icon2Props" />
-          <Frame v-bind="frame2Props" v-if="frame2Props !== null">
-            <ButtonToggle v-if="buttonToggleProps !== null" v-bind="buttonToggleProps" :icon="icon3Props" />
-            <ButtonToggle v-if="buttonToggle2Props !== null" v-bind="buttonToggle2Props" :icon="icon4Props" />
-          </Frame>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <Frame v-bind="frameProps">
+        <ComboboxFieldProject
+          v-if="comboboxFieldProjectProps !== null"
+          v-bind="comboboxFieldProjectProps"
+          :icon="iconProps"
+          :input="inputProps"
+          :buttonIconic="buttonIconicProps"
+          :icon2="icon2Props"
+        />
+        <Frame v-bind="frame2Props" v-if="frame2Props !== null">
+          <ButtonToggle
+            v-if="buttonToggleProps !== null"
+            v-bind="buttonToggleProps"
+            :icon="icon3Props"
+          />
+          <ButtonToggle
+            v-if="buttonToggle2Props !== null"
+            v-bind="buttonToggle2Props"
+            :icon="icon4Props"
+          />
         </Frame>
-        <Frame v-bind="frame3Props" v-if="frame3Props !== null">
-          <slot name="objectsContainer" />
-        </Frame>
-      </slot>
-    </div>
+      </Frame>
+      <Frame v-bind="frame3Props" v-if="frame3Props !== null">
+        <slot name="objectsContainer" />
+      </Frame>
+    </slot>
+  </div>
 </template>

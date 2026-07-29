@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch, type CSSProperties } from "vue"
-import { storeToRefs } from "pinia"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import FocusRing from "@app/overlays/primitives/FocusRing.vue"
+import { storeToRefs } from "pinia"
+import { computed, onBeforeUnmount, ref, watch } from "vue"
+
+import type { CSSProperties } from "vue"
 
 interface RingRect {
   top: number

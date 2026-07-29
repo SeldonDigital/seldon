@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, toRef, watch } from "vue"
-import { storeToRefs } from "pinia"
-import type { Board as BoardType, Workspace } from "@seldon/core"
-import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
-import SidebarObjects from "@seldon/components/modules/SidebarObjects.vue"
-import Frame from "@seldon/components/frames/Frame.vue"
-import ItemNode from "@seldon/components/elements/ItemNode.vue"
-import { useSelectionStore } from "@app/workspace/selection-store"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
-import { getCurrentWorkspace } from "@app/workspace/history-store"
-import { useToastStore } from "@app/toaster/toast-store"
+import { buildFieldStateProps } from "@app/sidebars/state-props"
 import { useObjectsSections } from "@app/sidebars/use-objects-sections"
 import { useRenameInput } from "@app/sidebars/use-rename-input"
-import { buildFieldStateProps } from "@app/sidebars/state-props"
-import SectionRow from "./SectionRow.vue"
+import { useToastStore } from "@app/toaster/toast-store"
+import { getCurrentWorkspace } from "@app/workspace/history-store"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import ItemNode from "@seldon/components/elements/ItemNode.vue"
+import Frame from "@seldon/components/frames/Frame.vue"
+import SidebarObjects from "@seldon/components/modules/SidebarObjects.vue"
+import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
+import { storeToRefs } from "pinia"
+import { computed, nextTick, ref, toRef, watch } from "vue"
+
 import BoardRow from "./BoardRow.vue"
+import SectionRow from "./SectionRow.vue"
+
+import type { Board as BoardType, Workspace } from "@seldon/core"
 
 const props = defineProps<{ workspace: Workspace }>()
 
@@ -29,9 +31,7 @@ const { objectsView, isolatedView } = storeToRefs(config)
 const { record } = storeToRefs(save)
 
 function emptySectionLabel(label: string): string {
-  return isolatedView.value
-    ? "Currently in Isolation Mode"
-    : `No ${label.toLowerCase()}`
+  return isolatedView.value ? "Currently in Isolation Mode" : `No ${label.toLowerCase()}`
 }
 
 const sections = useObjectsSections(toRef(props, "workspace"))
@@ -64,9 +64,7 @@ const sidebarRef = ref<{ $el?: HTMLElement } | null>(null)
 watch(isEditingName, async (editing) => {
   if (!editing) return
   await nextTick()
-  const input = sidebarRef.value?.$el?.querySelector<HTMLInputElement>(
-    "input.sdn-input",
-  )
+  const input = sidebarRef.value?.$el?.querySelector<HTMLInputElement>("input.sdn-input")
   if (input) {
     input.focus()
     input.select()
@@ -137,11 +135,7 @@ function asBoard(board: unknown): BoardType {
   >
     <template #objectsContainer>
       <Frame class="objects-sidebar__scroll">
-        <SectionRow
-          v-for="section in sections"
-          :key="section.level"
-          :section="section"
-        >
+        <SectionRow v-for="section in sections" :key="section.level" :section="section">
           <BoardRow
             v-for="board in section.boards"
             :key="getComponentKey(board)"

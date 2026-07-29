@@ -1,25 +1,27 @@
 <script setup lang="ts">
-import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
-import type { ExportOptions, PlatformId } from "@seldon/factory/export/types"
+import { usePanelStore } from "@app/editor/panel-store"
+import { useExportStatusStore } from "@app/io/export-status-store"
+import MenuController from "@app/menus/MenuController.vue"
+import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
+import { useToastStore } from "@app/toaster/toast-store"
+import WindowSurface from "@app/windows/WindowSurface.vue"
+import { useDraggableWindow } from "@app/windows/use-draggable-window"
+import { getCurrentWorkspace } from "@app/workspace/history-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import DialogExportComponent from "@seldon/components/modules/DialogExportComponent.vue"
 import { runLocalExport } from "@seldon/editor/lib/export/run-local-export"
 import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@seldon/editor/lib/export/write-export-to-directory"
-import DialogExportComponent from "@seldon/components/modules/DialogExportComponent.vue"
-import WindowSurface from "@app/windows/WindowSurface.vue"
-import MenuController from "@app/menus/MenuController.vue"
-import type { MenuEntry } from "@app/menus/types"
-import { useDraggableWindow } from "@app/windows/use-draggable-window"
-import { usePanelStore } from "@app/editor/panel-store"
-import { useExportStatusStore } from "@app/io/export-status-store"
-import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
-import { useToastStore } from "@app/toaster/toast-store"
-import { getCurrentWorkspace } from "@app/workspace/history-store"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useWorkspace } from "@app/workspace/use-workspace"
+import { PLATFORM_LIST } from "@seldon/factory/export/platforms/registry"
 import { storeToRefs } from "pinia"
-import { computed, ref, watch, type CSSProperties } from "vue"
+import { computed, ref, watch } from "vue"
+
+import type { MenuEntry } from "@app/menus/types"
+import type { ExportOptions, PlatformId } from "@seldon/factory/export/types"
+import type { CSSProperties } from "vue"
 
 const ICON_CHECKED = "material-radioButtonChecked"
 const ICON_UNCHECKED = "material-radioButtonUnchecked"
@@ -61,19 +63,13 @@ const nameDraft = ref<string | null>(null)
 
 // An empty label counts as unset, so it falls through to the record name.
 const workspaceName = computed(
-  () =>
-    nameDraft.value ??
-    (workspace.value.metadata.label || record.value?.name || ""),
+  () => nameDraft.value ?? (workspace.value.metadata.label || record.value?.name || ""),
 )
 
 const directoryLabel = computed(() => directory.value?.name ?? "")
-const canExport = computed(
-  () => directory.value !== null && !isExporting.value,
-)
+const canExport = computed(() => directory.value !== null && !isExporting.value)
 const platformLabel = computed(
-  () =>
-    EXPORT_PLATFORM_OPTIONS.find((option) => option.id === platform.value)
-      ?.label ?? "",
+  () => EXPORT_PLATFORM_OPTIONS.find((option) => option.id === platform.value)?.label ?? "",
 )
 
 const { x, y, moveControls } = useDraggableWindow({
@@ -303,26 +299,14 @@ const seldonRefs = computed(() => ({
   exportAllIconsNo: radioItem(!allIcons.value, () => (allIcons.value = false)),
   exportAllIconsNoIcon: radioDot(!allIcons.value),
 
-  exportSavedWorkspaceYes: radioItem(
-    savedWorkspace.value,
-    () => (savedWorkspace.value = true),
-  ),
+  exportSavedWorkspaceYes: radioItem(savedWorkspace.value, () => (savedWorkspace.value = true)),
   exportSavedWorkspaceYesIcon: radioDot(savedWorkspace.value),
-  exportSavedWorkspaceNo: radioItem(
-    !savedWorkspace.value,
-    () => (savedWorkspace.value = false),
-  ),
+  exportSavedWorkspaceNo: radioItem(!savedWorkspace.value, () => (savedWorkspace.value = false)),
   exportSavedWorkspaceNoIcon: radioDot(!savedWorkspace.value),
 
-  exportScriptsYes: radioItem(
-    includeScripts.value,
-    () => (includeScripts.value = true),
-  ),
+  exportScriptsYes: radioItem(includeScripts.value, () => (includeScripts.value = true)),
   exportScriptsYesIcon: radioDot(includeScripts.value),
-  exportScriptsNo: radioItem(
-    !includeScripts.value,
-    () => (includeScripts.value = false),
-  ),
+  exportScriptsNo: radioItem(!includeScripts.value, () => (includeScripts.value = false)),
   exportScriptsNoIcon: radioDot(!includeScripts.value),
 
   exportCancel: { onClick: close },

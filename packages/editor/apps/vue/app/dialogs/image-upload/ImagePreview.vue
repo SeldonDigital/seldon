@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { CSSProperties } from "vue"
 import Frame from "@seldon/components/frames/Frame.vue"
 import Image from "@seldon/components/primitives/Image.vue"
+
+import type { CSSProperties } from "vue"
 
 withDefaults(defineProps<{ src: string; alt?: string }>(), { alt: "Preview" })
 defineEmits<{ (event: "error"): void }>()
@@ -16,11 +17,6 @@ const imageStyle: CSSProperties = {
 
 <template>
   <Frame wrapperElement="div" :style="wrapperStyle">
-    <Image
-      :src="src"
-      :alt="alt"
-      :style="imageStyle"
-      @error="$emit('error')"
-    />
+    <Image :src="src" :alt="alt" :style="imageStyle" @error="$emit('error')" />
   </Frame>
 </template>

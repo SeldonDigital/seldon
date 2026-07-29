@@ -5,7 +5,9 @@
   "type": "module",
   "description": "Shared, framework-neutral code for the Seldon editors (React and Vue): domain lib helpers, dev-server Vite plugins (including the shared workspace store), and shared assets. Consumed as source via path aliases; not a runnable app.",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json",
+    "notices:thirdparty": "node scripts/generate-third-party-notices.mjs"
   },
   "dependencies": {
     "@seldon/core": "file:../../core",

@@ -1,15 +1,14 @@
 <script setup lang="ts">
+import { useNodeRect } from "@app/overlays/hooks/use-node-rects"
 import { getWireframeMode } from "@seldon/editor/lib/canvas/overlay/geometry"
 import { calculateClippingBox } from "@seldon/editor/lib/canvas/overlay/measure"
-import type { CSSProperties } from "vue"
 import { computed } from "vue"
 
-import { useNodeRect } from "@app/overlays/hooks/use-node-rects"
+import type { CSSProperties } from "vue"
 
-const props = withDefaults(
-  defineProps<{ nodeId: string; isSelected?: boolean }>(),
-  { isSelected: false },
-)
+const props = withDefaults(defineProps<{ nodeId: string; isSelected?: boolean }>(), {
+  isSelected: false,
+})
 
 const trackedRect = useNodeRect(props.nodeId)
 

@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -43,10 +50,11 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
+
 import Select from "../elements/Select.vue"
 import TextLabel from "../primitives/TextLabel.vue"
 import TextOption from "../primitives/TextOption.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -63,46 +71,54 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "textLabel": {
-    "children": "Label",
-    "className": "sdn-text-label sdn-text-label--fwkw"
+  textLabel: {
+    children: "Label",
+    className: "sdn-text-label sdn-text-label--fwkw",
   },
-  "select": {
+  select: {
     "aria-hidden": "false",
-    "className": "sdn-select sdn-select--7bom"
+    className: "sdn-select sdn-select--7bom",
   },
-  "textOption": {
-    "children": "Option 01",
-    "className": "sdn-text-option sdn-text-label--yqnd"
+  textOption: {
+    children: "Option 01",
+    className: "sdn-text-option sdn-text-label--yqnd",
   },
-  "textOption2": {
-    "children": "Option 02",
-    "className": "sdn-text-option sdn-text-label--yqnd"
+  textOption2: {
+    children: "Option 02",
+    className: "sdn-text-option sdn-text-label--yqnd",
   },
-  "textOption3": {
-    "children": "Option 03",
-    "className": "sdn-text-option sdn-text-label--yqnd"
-  }
+  textOption3: {
+    children: "Option 03",
+    className: "sdn-text-option sdn-text-label--yqnd",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-form-control", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
-const textLabelProps = computed(() => mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs))
+const textLabelProps = computed(() =>
+  mergeOptionalSlot(sdn.textLabel, props.textLabel, props.seldonRefs),
+)
 const selectProps = computed(() => mergeSlot(sdn.select, props.select, props.seldonRefs))
-const textOptionProps = computed(() => mergeOptionalSlot(sdn.textOption, props.textOption, props.seldonRefs))
-const textOption2Props = computed(() => mergeOptionalSlot(sdn.textOption2, props.textOption2, props.seldonRefs))
-const textOption3Props = computed(() => mergeOptionalSlot(sdn.textOption3, props.textOption3, props.seldonRefs))
+const textOptionProps = computed(() =>
+  mergeOptionalSlot(sdn.textOption, props.textOption, props.seldonRefs),
+)
+const textOption2Props = computed(() =>
+  mergeOptionalSlot(sdn.textOption2, props.textOption2, props.seldonRefs),
+)
+const textOption3Props = computed(() =>
+  mergeOptionalSlot(sdn.textOption3, props.textOption3, props.seldonRefs),
+)
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
-        <Select v-if="selectProps !== null" v-bind="selectProps">
-          <TextOption v-if="textOptionProps !== null" v-bind="textOptionProps" />
-          <TextOption v-if="textOption2Props !== null" v-bind="textOption2Props" />
-          <TextOption v-if="textOption3Props !== null" v-bind="textOption3Props" />
-        </Select>
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <TextLabel v-if="textLabelProps !== null" v-bind="textLabelProps" />
+      <Select v-if="selectProps !== null" v-bind="selectProps">
+        <TextOption v-if="textOptionProps !== null" v-bind="textOptionProps" />
+        <TextOption v-if="textOption2Props !== null" v-bind="textOption2Props" />
+        <TextOption v-if="textOption3Props !== null" v-bind="textOption3Props" />
+      </Select>
+    </slot>
+  </div>
 </template>

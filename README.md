@@ -123,17 +123,18 @@ Then open `http://localhost:5173` in your browser. You should now have the edito
 
 ## Scripts
 
-CI runs four checks on every pull request to `main`. Run them locally before you submit a PR so your branch passes. First install:
+CI runs five checks on every pull request to `main`. One command runs all five in the same order, so a green run locally means a green run in CI:
 
 ```bash
 npm ci
+npm run check
 ```
 
-Unit tests run on [Bun](https://bun.sh). Be sure to install **Bun** before you run them.
+Unit tests run on [Vitest](https://vitest.dev/) under Node. You do not need another runtime.
 
 ---
 
-Then run each check.
+Run a single check for a faster loop.
 
 Format:
 
@@ -147,23 +148,33 @@ To fix formatting instead of only checking it:
 npm run format
 ```
 
-Lint:
+Lint every package:
 
 ```bash
-npm run lint --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/editor
+npm run lint:all
 ```
 
-Typecheck:
+Typecheck every package:
 
 ```bash
-npx tsc --build packages/core/tsconfig.json && npx tsc -p packages/factory/tsconfig.json && npx tsc -p packages/editor/tsconfig.json
+npm run typecheck:all
 ```
 
 Unit tests:
 
 ```bash
-npm test --workspace @seldon/core
+npm test
 ```
+
+Reference bindings, which fail when a committed manifest falls behind the code that drives it:
+
+```bash
+npm run bindings:check
+```
+
+---
+
+Every package also has its own `lint` and `typecheck`. At the root, a plain name targets the React editor and a `:vue` suffix targets the Vue one, so `npm run lint` and `npm run lint:vue` each lint one app. `npm run lint:shared` covers the framework-neutral `packages/editor/shared`.
 
 ---
 

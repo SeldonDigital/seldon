@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import Icon from "@seldon/components/primitives/Icon.vue"
 import {
   ComponentId,
   Display,
-  Workspace,
   EntryNodeId,
+  Workspace,
   buildContext,
   getCssFromProperties,
   getNodeProperties,
 } from "@app/core"
-import {
-  NORMAL_STATE,
-  type NodeState,
-} from "@seldon/core/workspace/model/node-state"
-import {
-  type ChildRender,
-  buildChildRenders,
-} from "@seldon/editor/lib/canvas/node-render/build-child-renders"
+import { useSelectionStore } from "@app/workspace/selection-store"
+import Icon from "@seldon/components/primitives/Icon.vue"
+import { buildChildRenders } from "@seldon/editor/lib/canvas/node-render/build-child-renders"
 import { resolveRenderAsDiv } from "@seldon/editor/lib/canvas/node-render/resolve-render-as-div"
 import { buildCanvasSelectionAttributes } from "@seldon/editor/lib/canvas/node-render/selection-attributes"
 import { getPropertyHtmlAttributes } from "@seldon/editor/lib/canvas/property-html-attributes"
 import { resolveCanvasTag } from "@seldon/editor/lib/canvas/resolve-canvas-tag"
-import { useSelectionStore } from "@app/workspace/selection-store"
-import { storeToRefs } from "pinia"
 import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@seldon/editor/lib/workspace/render-parent-index"
+import { storeToRefs } from "pinia"
 import { computed } from "vue"
+
+import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
+
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
+import type { ChildRender } from "@seldon/editor/lib/canvas/node-render/build-child-renders"
 
 const props = withDefaults(
   defineProps<{
@@ -57,37 +55,24 @@ const nodeProperties = computed(() =>
   node.value ? getNodeProperties(node.value, props.workspace) : undefined,
 )
 
-const excluded = computed(
-  () => nodeProperties.value?.display?.value === Display.EXCLUDE,
-)
+const excluded = computed(() => nodeProperties.value?.display?.value === Display.EXCLUDE)
 
 const selfPath = computed(() => props.rootPath ?? props.nodeId)
 
-const styleScopeId = computed(() =>
-  selfPath.value.replace(/[^a-zA-Z0-9_-]/g, "-"),
-)
+const styleScopeId = computed(() => selfPath.value.replace(/[^a-zA-Z0-9_-]/g, "-"))
 
 const className = computed(() => `node-${styleScopeId.value}`)
 
 const context = computed(() => {
   if (!node.value) return null
   const parentIndex = buildRenderParentIndex(selfPath.value)
-  return buildContext(
-    node.value,
-    props.workspace,
-    parentIndex,
-    props.activeState,
-  )
+  return buildContext(node.value, props.workspace, parentIndex, props.activeState)
 })
 
 const css = computed(() => {
   if (!context.value) return ""
   try {
-    return getCssFromProperties(
-      context.value.properties,
-      context.value,
-      className.value,
-    )
+    return getCssFromProperties(context.value.properties, context.value, className.value)
   } catch (error) {
     console.error("CSS generation error:", error)
     return ""
@@ -96,11 +81,7 @@ const css = computed(() => {
 
 const tag = computed(() =>
   catalogComponentId.value
-    ? resolveCanvasTag(
-        catalogComponentId.value,
-        context.value!.properties,
-        renderAsDiv.value,
-      )
+    ? resolveCanvasTag(catalogComponentId.value, context.value!.properties, renderAsDiv.value)
     : null,
 )
 
@@ -124,12 +105,7 @@ const iconSymbol = computed(() => {
 // echoes (index > 0) carry per-index text/icon overrides and a dashed outline.
 const childRenders = computed<ChildRender[]>(() =>
   node.value
-    ? buildChildRenders(
-        node.value,
-        props.workspace,
-        selfPath.value,
-        props.repeatOverrides,
-      )
+    ? buildChildRenders(node.value, props.workspace, selfPath.value, props.repeatOverrides)
     : [],
 )
 
@@ -137,12 +113,7 @@ const childRenders = computed<ChildRender[]>(() =>
 // invalid nested interactive markup.
 const renderAsDiv = computed(() =>
   node.value
-    ? resolveRenderAsDiv(
-        node.value,
-        props.workspace,
-        props.nodeId,
-        catalogComponentId.value,
-      )
+    ? resolveRenderAsDiv(node.value, props.workspace, props.nodeId, catalogComponentId.value)
     : false,
 )
 
@@ -174,9 +145,7 @@ const styleOverrides = computed<Record<string, string> | undefined>(() => {
 
 const themeId = computed(() => node.value?.theme || props.initialThemeId)
 
-const visible = computed(
-  () => node.value && catalogComponentId.value && !excluded.value,
-)
+const visible = computed(() => node.value && catalogComponentId.value && !excluded.value)
 </script>
 
 <template>

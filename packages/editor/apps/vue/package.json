@@ -6,14 +6,16 @@
   "scripts": {
     "fonts:licenses": "node scripts/copy-font-licenses.mjs",
     "fonts:files": "node scripts/copy-font-files.mjs",
+    "notices:thirdparty": "node ../../shared/scripts/generate-third-party-notices.mjs",
     "export:seldon": "node scripts/export-seldon.mjs",
     "bindings": "node seldon/scripts/generate-bindings.mjs",
     "bindings:check": "node seldon/scripts/generate-bindings.mjs --check",
     "dev": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite",
     "build": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vue-tsc -b && vite build",
+    "build:release": "npm run notices:thirdparty && npm run build",
     "start": "vite preview",
     "lint": "eslint .",
-    "quality": "vue-tsc --noEmit -p tsconfig.json"
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",

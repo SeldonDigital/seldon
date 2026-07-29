@@ -6,15 +6,9 @@ const zoom = useZoomControlsStore()
 
 <template>
   <div class="zoom-controls">
-    <button type="button" title="Zoom out ( - )" @click="zoom.zoomOut()">
-      &minus;
-    </button>
-    <button type="button" title="Reset zoom" @click="zoom.resetZoom()">
-      100%
-    </button>
-    <button type="button" title="Zoom in ( + )" @click="zoom.zoomIn()">
-      &plus;
-    </button>
+    <button type="button" title="Zoom out ( - )" @click="zoom.zoomOut()">&minus;</button>
+    <button type="button" title="Reset zoom" @click="zoom.resetZoom()">100%</button>
+    <button type="button" title="Zoom in ( + )" @click="zoom.zoomIn()">&plus;</button>
   </div>
 </template>
 
@@ -40,7 +34,12 @@ const zoom = useZoomControlsStore()
   color: #3f3f46;
   cursor: pointer;
   font-family:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 .zoom-controls button:hover {
   background: #f4f4f5;

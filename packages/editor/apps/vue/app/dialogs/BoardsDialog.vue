@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import type { ComponentSchema } from "@seldon/core/components/types"
 import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import {
-  useCatalogDialog,
-  type CatalogItem,
-} from "@app/dialogs/use-catalog-dialog"
 import PanelDialogController from "@app/dialogs/PanelDialogController.vue"
+import { useCatalogDialog } from "@app/dialogs/use-catalog-dialog"
 import { usePanelStore } from "@app/editor/panel-store"
 import { useWorkspace } from "@app/workspace/use-workspace"
 import { storeToRefs } from "pinia"
 import { computed, watch } from "vue"
+
+import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+
+import type { CatalogItem } from "@app/dialogs/use-catalog-dialog"
+import type { ComponentSchema } from "@seldon/core/components/types"
 
 const panel = usePanelStore()
 const { activePanel, dialogLevel } = storeToRefs(panel)

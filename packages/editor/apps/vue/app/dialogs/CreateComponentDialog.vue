@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
+import { usePanelStore } from "@app/editor/panel-store"
+import MenuController from "@app/menus/MenuController.vue"
+import WindowSurface from "@app/windows/WindowSurface.vue"
+import { useDraggableWindow } from "@app/windows/use-draggable-window"
+import { useWorkspace } from "@app/workspace/use-workspace"
+import DialogCreateComponent from "@seldon/components/modules/DialogCreateComponent.vue"
+import { storeToRefs } from "pinia"
+import { computed, ref, watch } from "vue"
+
 import { catalog } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import {
   authoredBoardKeyFromName,
   authoredExportNameFromName,
 } from "@seldon/core/workspace/helpers/components/authored-board-key"
-import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
-import DialogCreateComponent from "@seldon/components/modules/DialogCreateComponent.vue"
-import WindowSurface from "@app/windows/WindowSurface.vue"
-import MenuController from "@app/menus/MenuController.vue"
+
 import type { MenuEntry } from "@app/menus/types"
-import { useDraggableWindow } from "@app/windows/use-draggable-window"
-import { useAddRemoveCommands } from "@app/commands/use-add-remove-commands"
-import { usePanelStore } from "@app/editor/panel-store"
-import { useWorkspace } from "@app/workspace/use-workspace"
-import { storeToRefs } from "pinia"
-import { computed, ref, watch, type CSSProperties } from "vue"
+import type { EntryNodeLevel } from "@seldon/core/workspace/model/entry-node"
+import type { CSSProperties } from "vue"
 
 type AuthoredRootKind = "container" | "frame"
 
@@ -72,10 +75,7 @@ const nameError = computed<string | null>(() => {
 })
 
 const canSubmit = computed(
-  () =>
-    trimmedName.value.length > 0 &&
-    boardKey.value.length > 0 &&
-    !nameError.value,
+  () => trimmedName.value.length > 0 && boardKey.value.length > 0 && !nameError.value,
 )
 
 // A centered, content-sized modal: it hugs the authored dialog size, drags from
@@ -89,9 +89,7 @@ const levelOpen = ref(false)
 const levelAnchor = ref<HTMLElement | null>(null)
 
 const levelLabel = computed(
-  () =>
-    AUTHORED_LEVEL_OPTIONS.find((option) => option.value === level.value)
-      ?.label ?? "",
+  () => AUTHORED_LEVEL_OPTIONS.find((option) => option.value === level.value)?.label ?? "",
 )
 
 const levelItems = computed<MenuEntry[]>(() =>

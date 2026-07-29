@@ -1,3 +1,10 @@
+/***** * * This code was generated using Seldon (https://github.com/SeldonDigital/seldon) * *
+License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md * Do not redistribute or
+sublicense without permission. * * You may not use this software, or any derivative works of it, in
+whole or in part, * for the purposes of training, fine-tuning, or otherwise improving (directly or
+indirectly) * any machine learning or artificial intelligence system without written permission. *
+*****/
+
 <script lang="ts">
 /*****
  *
@@ -45,11 +52,12 @@ export default {}
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { combineClassNames, mergeSlot, mergeOptionalSlot } from "../utils/class-names"
-import Frame from "../frames/Frame.vue"
+
 import ButtonIconic from "../elements/ButtonIconic.vue"
+import Frame from "../frames/Frame.vue"
 import Icon from "../primitives/Icon.vue"
 import TextDescription from "../primitives/TextDescription.vue"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
@@ -68,61 +76,71 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
-  "frame": {
-    "wrapperElement": "div",
+  frame: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--ieew"
+    className: "sdn-frame sdn-frame--ieew",
   },
-  "buttonIconic": {
-    "className": "sdn-button-iconic sdn-button-iconic--iklu"
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--iklu",
   },
-  "icon": {
-    "icon": "material-chevronDown",
+  icon: {
+    icon: "material-chevronDown",
     "aria-hidden": "true",
-    "className": "sdn-icon sdn-icon--bmas"
+    className: "sdn-icon sdn-icon--bmas",
   },
-  "textDescription": {
-    "children": "Tools Applied",
-    "className": "sdn-text-description sdn-text-description--71gg"
+  textDescription: {
+    children: "Tools Applied",
+    className: "sdn-text-description sdn-text-description--71gg",
   },
-  "frame2": {
-    "wrapperElement": "div",
+  frame2: {
+    wrapperElement: "div",
     "aria-hidden": "false",
-    "className": "sdn-frame sdn-frame--rstc",
-    "data-seldon-ref": "tool"
+    className: "sdn-frame sdn-frame--rstc",
+    "data-seldon-ref": "tool",
   },
-  "icon2": {
-    "icon": "material-build",
-    "className": "sdn-icon sdn-icon--9ouj"
+  icon2: {
+    icon: "material-build",
+    className: "sdn-icon sdn-icon--9ouj",
   },
-  "textDescription2": {
-    "children": "Tool",
-    "className": "sdn-text-description sdn-text-description--hqun"
-  }
+  textDescription2: {
+    children: "Tool",
+    className: "sdn-text-description sdn-text-description--hqun",
+  },
 }
 
 const rootClassName = computed(() => combineClassNames("sdn-message-tools", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
 const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
-const buttonIconicProps = computed(() => mergeOptionalSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs))
+const buttonIconicProps = computed(() =>
+  mergeOptionalSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
 const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
-const textDescriptionProps = computed(() => mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs))
+const textDescriptionProps = computed(() =>
+  mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs),
+)
 const frame2Props = computed(() => mergeSlot(sdn.frame2, props.frame2, props.seldonRefs))
 const icon2Props = computed(() => mergeOptionalSlot(sdn.icon2, props.icon2, props.seldonRefs))
-const textDescription2Props = computed(() => mergeOptionalSlot(sdn.textDescription2, props.textDescription2, props.seldonRefs))
+const textDescription2Props = computed(() =>
+  mergeOptionalSlot(sdn.textDescription2, props.textDescription2, props.seldonRefs),
+)
 </script>
 
 <template>
-    <div :class="rootClassName" v-bind="rootAttrs">
-      <slot>
-        <Frame v-bind="frameProps">
-          <ButtonIconic v-if="buttonIconicProps !== null" v-bind="buttonIconicProps" :icon="iconProps" />
-          <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
-        </Frame>
-        <Frame v-bind="frame2Props">
-          <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
-          <TextDescription v-if="textDescription2Props !== null" v-bind="textDescription2Props" />
-        </Frame>
-      </slot>
-    </div>
+  <div :class="rootClassName" v-bind="rootAttrs">
+    <slot>
+      <Frame v-bind="frameProps">
+        <ButtonIconic
+          v-if="buttonIconicProps !== null"
+          v-bind="buttonIconicProps"
+          :icon="iconProps"
+        />
+        <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
+      </Frame>
+      <Frame v-bind="frame2Props">
+        <Icon v-if="icon2Props !== null" v-bind="icon2Props" />
+        <TextDescription v-if="textDescription2Props !== null" v-bind="textDescription2Props" />
+      </Frame>
+    </slot>
+  </div>
 </template>

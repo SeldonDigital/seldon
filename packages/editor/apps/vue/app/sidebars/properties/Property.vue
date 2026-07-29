@@ -1,29 +1,25 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from "vue"
-import type {
-  Board,
-  Instance,
-  Theme,
-  Variant,
-  Workspace,
-} from "@seldon/core"
+import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
+import MenuController from "@app/menus/MenuController.vue"
+import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
+import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
+import { mergeStateProps } from "@app/sidebars/state-props"
+import { useDispatch } from "@app/workspace/use-dispatch"
+import ItemProperty from "@seldon/components/elements/ItemProperty.vue"
+import ItemPropertyToggle from "@seldon/components/elements/ItemPropertyToggle.vue"
+import { computed, nextTick, ref, watch } from "vue"
+
+import { useRowProperty } from "./hooks/use-row-property"
+import { useLayerDragStore } from "./layer-drag-store"
+
+import type { ComboboxOptionItem } from "@app/menus/types"
+import type { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 import type {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
 } from "@seldon/editor/lib/properties/inspector/editing-contexts"
 import type { FlatProperty } from "@seldon/editor/lib/properties/inspector/properties-data"
-import ItemProperty from "@seldon/components/elements/ItemProperty.vue"
-import ItemPropertyToggle from "@seldon/components/elements/ItemPropertyToggle.vue"
-import MenuController from "@app/menus/MenuController.vue"
-import ComboboxListbox from "@app/menus/ComboboxListbox.vue"
-import FramerExpandable from "@app/sidebars/FramerExpandable.vue"
-import type { ComboboxOptionItem } from "@app/menus/types"
-import { mergeStateProps } from "@app/sidebars/state-props"
-import { useRowActionsMenu } from "@app/menus/use-row-actions-menu"
-import { useDispatch } from "@app/workspace/use-dispatch"
-import { useRowProperty } from "./hooks/use-row-property"
-import { useLayerDragStore } from "./layer-drag-store"
 
 const props = withDefaults(
   defineProps<{
@@ -67,9 +63,7 @@ const actionsMenu = useRowActionsMenu(() => view.resetActions.value, {
 })
 
 // ---- Shared slot props ----
-const nameProps = computed(() =>
-  mergeStateProps(view.nameLabelProps.value, view.stateRef.value),
-)
+const nameProps = computed(() => mergeStateProps(view.nameLabelProps.value, view.stateRef.value))
 const actionsButton = computed(() => actionsMenu.buttonIconic.value)
 const actionsIcon = computed(() => actionsMenu.icon.value)
 
@@ -123,9 +117,7 @@ const comboboxOpen = computed(
     control.combobox.open.value &&
     control.combobox.hasFilteredOptions.value,
 )
-const filteredGroups = computed<ComboboxOptionItem[][]>(
-  () => control.combobox.filteredGroups.value,
-)
+const filteredGroups = computed<ComboboxOptionItem[][]>(() => control.combobox.filteredGroups.value)
 const resolveIcon = computed(() => control.resolveOptionIcon.value)
 
 watch(
@@ -134,8 +126,7 @@ watch(
     if (!open) return
     void nextTick(() => {
       const el = view.rowRef.value?.$el as HTMLElement | undefined
-      anchorEl.value =
-        el?.querySelector<HTMLElement>(".sdn-combobox-field") ?? el ?? null
+      anchorEl.value = el?.querySelector<HTMLElement>(".sdn-combobox-field") ?? el ?? null
     })
   },
 )
@@ -174,8 +165,7 @@ function onDragOver(event: DragEvent): void {
   if (layerDrag.fromIndex === context.layerIndex) return
   const target = event.currentTarget as HTMLElement
   const rect = target.getBoundingClientRect()
-  dropZone.value =
-    event.clientY - rect.top < rect.height / 2 ? "before" : "after"
+  dropZone.value = event.clientY - rect.top < rect.height / 2 ? "before" : "after"
   event.preventDefault()
   if (event.dataTransfer) event.dataTransfer.dropEffect = "move"
 }
@@ -280,10 +270,7 @@ function onDrop(event: DragEvent): void {
     @close="onCloseOptions"
   />
 
-  <FramerExpandable
-    v-if="view.hasChildren.value"
-    :is-expanded="view.isExpanded.value"
-  >
+  <FramerExpandable v-if="view.hasChildren.value" :is-expanded="view.isExpanded.value">
     <Property
       v-for="child in view.children.value"
       :key="child.key"

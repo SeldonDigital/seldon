@@ -1,26 +1,22 @@
 <script setup lang="ts">
 import { useBoardStateStore } from "@app/canvas/board-state-store"
-import {
-  ValueType,
-  Workspace,
-  getCssFromProperties,
-  getNodeProperties,
-} from "@app/core"
+import { ValueType, Workspace, getCssFromProperties, getNodeProperties } from "@app/core"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { getVisibleVariantRootIds } from "@seldon/editor/lib/canvas/get-visible-variant-root-ids"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { storeToRefs } from "pinia"
-import type { CSSProperties } from "vue"
 import { computed } from "vue"
 
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
-import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import type { Board } from "@seldon/core/workspace/types"
 
 import CanvasNode from "./CanvasNode.vue"
+
+import type { FontFamilyValue } from "@seldon/core/properties/values/typography/font/font-family"
+import type { Board } from "@seldon/core/workspace/types"
+import type { CSSProperties } from "vue"
 
 // `variantRootIds` overrides the rendered variants (isolation dependency
 // boards). Omit it for the anchored board, which shows its selected variant.
@@ -53,14 +49,10 @@ const boardClassName = computed(() => `board-${boardKey.value}`)
 // follows the editor mode: dark text in light mode, light text in dark mode.
 const labelStyle = computed<CSSProperties>(() => ({
   color:
-    resolvedMode.value === "dark"
-      ? "var(--sdn-swatch-offWhite)"
-      : "var(--sdn-swatch-offBlack)",
+    resolvedMode.value === "dark" ? "var(--sdn-swatch-offWhite)" : "var(--sdn-swatch-offBlack)",
 }))
 
-const boardProperties = computed(() =>
-  getNodeProperties(props.board, props.workspace),
-)
+const boardProperties = computed(() => getNodeProperties(props.board, props.workspace))
 
 const boardTheme = computed(() =>
   workspaceThemeService.getObjectTheme(props.board, props.workspace),
@@ -108,9 +100,7 @@ const boardRootStyle = computed<CSSProperties>(() => {
   return family ? { ...base, fontFamily: family } : base
 })
 
-const boardActiveState = computed(() =>
-  boardState.getActiveState(boardKey.value),
-)
+const boardActiveState = computed(() => boardState.getActiveState(boardKey.value))
 </script>
 
 <template>

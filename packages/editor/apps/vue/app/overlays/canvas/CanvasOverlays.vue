@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useActiveBoard } from "@app/canvas/use-active-board"
+import { useCanvasOverlays } from "@app/canvas/use-canvas-overlays"
+import { useSharedStore } from "@app/canvas/use-shared-store"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useToolStore } from "@app/editor/tool-store"
-import { useActiveBoard } from "@app/canvas/use-active-board"
+import { useTrackedVisibleNodes } from "@app/overlays/hooks/use-node-rects"
 import { useObjectHoverStore } from "@app/workspace/object-hover-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
 import { remeasureStore } from "@seldon/editor/lib/canvas/remeasure/remeasure-store"
@@ -16,9 +19,6 @@ import { computed } from "vue"
 import HoverOverlay from "./select/HoverOverlay.vue"
 import NodeWireframe from "./select/NodeWireframe.vue"
 import SelectionOverlay from "./select/SelectionOverlay.vue"
-import { useCanvasOverlays } from "@app/canvas/use-canvas-overlays"
-import { useTrackedVisibleNodes } from "@app/overlays/hooks/use-node-rects"
-import { useSharedStore } from "@app/canvas/use-shared-store"
 
 const props = defineProps<{
   subscribeTransform: (listener: () => void) => () => void
@@ -35,15 +35,14 @@ const { activeTool } = storeToRefs(tool)
 const { selectedNodeId, selectedNodeRootId } = storeToRefs(selection)
 const { hoveredId, hoveredRootId } = storeToRefs(hover)
 
-const { selectionRect, hoverRect, selectionColors, hoverColors } =
-  useCanvasOverlays(props.subscribeTransform)
+const { selectionRect, hoverRect, selectionColors, hoverColors } = useCanvasOverlays(
+  props.subscribeTransform,
+)
 const { visibleNodeIds } = useTrackedVisibleNodes()
 const isTransforming = useSharedStore(remeasureStore, (s) => s.isTransforming)
 
 const showWireframes = computed(() => getShowWireframes(wireframeMode.value))
-const activeBoardIsTheme = computed(() =>
-  getActiveBoardIsTheme(activeBoard.value),
-)
+const activeBoardIsTheme = computed(() => getActiveBoardIsTheme(activeBoard.value))
 
 const hoverCoincidesWithSelection = computed(() =>
   getHoverCoincidesWithSelection({
@@ -55,16 +54,10 @@ const hoverCoincidesWithSelection = computed(() =>
 )
 
 const showWireframeNodes = computed(
-  () =>
-    activeTool.value === "select" &&
-    showWireframes.value &&
-    !isTransforming.value,
+  () => activeTool.value === "select" && showWireframes.value && !isTransforming.value,
 )
 const showSelectionOverlay = computed(
-  () =>
-    showSelection.value &&
-    activeTool.value === "select" &&
-    !activeBoardIsTheme.value,
+  () => showSelection.value && activeTool.value === "select" && !activeBoardIsTheme.value,
 )
 const showSelectHover = computed(
   () =>
@@ -97,9 +90,5 @@ const showInsertHover = computed(() => activeTool.value === "component")
     :colors="hoverColors"
     :wireframe="showWireframes"
   />
-  <HoverOverlay
-    v-else-if="showInsertHover"
-    :rect="hoverRect"
-    :colors="hoverColors"
-  />
+  <HoverOverlay v-else-if="showInsertHover" :rect="hoverRect" :colors="hoverColors" />
 </template>

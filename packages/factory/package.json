@@ -4,7 +4,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "quality": "bun lint && bun tsc",
+    "typecheck": "tsc -p tsconfig.json",
     "format": "node ../../scripts/format.mjs"
   },
   "devDependencies": {

@@ -1,18 +1,21 @@
 /*
  * Generates an aggregated third-party license notice file for every production
- * dependency that ships with the editor build. This satisfies the attribution
+ * dependency that ships with an editor build. This satisfies the attribution
  * terms of permissive licenses (MIT, ISC, BSD) and the NOTICE propagation term
  * of Apache-2.0.
  *
- * Source of truth: `npm query ".prod"` scoped to this workspace, which returns
- * the resolved production dependency tree with on-disk paths.
- * Destination: `packages/editor/public/THIRD-PARTY-NOTICES.txt`, which Vite
- * copies into the build output and serves at `/THIRD-PARTY-NOTICES.txt`.
+ * Source of truth: `npm query ".prod"`, which returns the resolved production
+ * dependency tree with on-disk paths. The install is hoisted to the repo root
+ * and npm reports the same tree for every workspace, so the query runs once and
+ * the file covers both apps. Both serve this package's `public` folder, so one
+ * file is what they would each ship anyway.
+ * Destination: `packages/editor/shared/public/THIRD-PARTY-NOTICES.txt`, which
+ * Vite copies into the build output and serves at `/THIRD-PARTY-NOTICES.txt`.
  *
  * First-party `@seldon/*` packages are excluded since they are covered by the
- * repository license. The production tree may include build-time packages that
- * are not bundled into the browser output; including them is safe over
- * attribution and keeps the script simple.
+ * repository license. The tree includes packages that are not bundled into
+ * either browser output, such as another app's framework and build-time tools.
+ * Listing them is safe over attribution and keeps the script simple.
  *
  * Idempotent: re-running overwrites the output file.
  */
@@ -21,17 +24,18 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
-const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
-const destDir = join(editorRoot, "../../shared/public")
+const sharedRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
+const repoRoot = join(sharedRoot, "../../..")
+const destDir = join(sharedRoot, "public")
 const destFile = join(destDir, "THIRD-PARTY-NOTICES.txt")
 
 const LICENSE_FILENAME = /^(license|licence|copying|unlicense)([.-].*)?$/i
 const NOTICE_FILENAME = /^notice([.-].*)?$/i
 
-/** Reads the resolved production dependency tree for this workspace. */
+/** Reads the resolved production dependency tree for the repo. */
 function queryProductionDependencies() {
   const raw = execFileSync("npm", ["query", ".prod"], {
-    cwd: editorRoot,
+    cwd: repoRoot,
     encoding: "utf8",
     maxBuffer: 64 * 1024 * 1024,
   })
@@ -75,10 +79,8 @@ function readLicenseTexts(packagePath) {
   return { licenseText: read(LICENSE_FILENAME), notice: read(NOTICE_FILENAME) }
 }
 
-const nodes = queryProductionDependencies()
-
 const packages = new Map()
-for (const node of nodes) {
+for (const node of queryProductionDependencies()) {
   if (!node?.name || node.dev) continue
   if (node.name.startsWith("@seldon/")) continue
   if (!node.path) continue
@@ -110,7 +112,7 @@ const sections = sorted.map((pkg) => {
 const preamble = [
   "THIRD-PARTY SOFTWARE NOTICES",
   "",
-  "The editor build includes the following third-party packages. Their",
+  "The editor builds include the following third-party packages. Their",
   "licenses and required notices are reproduced below. First-party Seldon",
   "packages are covered by the repository license and are not listed here.",
   "",
