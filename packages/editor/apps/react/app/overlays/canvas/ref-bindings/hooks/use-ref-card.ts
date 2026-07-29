@@ -1,14 +1,17 @@
 "use client"
 
+import { MIN_WINDOW_SIZE } from "@app/windows/hooks/use-draggable-window"
 import {
-  REF_CARD_DEFAULT_SIZE,
+  REF_CARD_TOKENS,
   getRefCardPosition,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { getWindowInnerSize } from "@seldon/editor/lib/helpers/get-window-inner-size"
+import { getTokenPixels } from "@seldon/editor/lib/themes/token-pixels"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import type {
   ChipBox,
+  RefCardMetrics,
   RefCardPosition,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { RefObject } from "react"
@@ -34,11 +37,32 @@ interface RefCardSize {
  * much room these cards need, not how much that one ref needs. Read only when a card
  * opens, so it stays a module value rather than a store and a live drag re-renders
  * nothing. Not persisted, since the bindings behind the cards load per session.
+ *
+ * It starts at the size every floating window opens at, because a card is one of those
+ * and there is nothing about a ref that asks for a different size.
  */
-let refCardSize: RefCardSize = REF_CARD_DEFAULT_SIZE
+let refCardSize: RefCardSize = MIN_WINDOW_SIZE
 
 export function setRefCardSize(size: RefCardSize): void {
   refCardSize = size
+}
+
+/**
+ * What the card keeps clear and how small it may be drawn, in pixels.
+ *
+ * Read off the chip, which is themed and already drawn, so the spacing is the theme's
+ * current value rather than one captured earlier. The smallest it may be drawn is the
+ * window minimum, since a card is a floating window like any other.
+ */
+function getRefCardMetrics(chipEl: HTMLElement): RefCardMetrics {
+  const { gap, margin } = getTokenPixels(REF_CARD_TOKENS, chipEl)
+
+  return {
+    gap,
+    margin,
+    minWidth: MIN_WINDOW_SIZE.width,
+    minHeight: MIN_WINDOW_SIZE.height,
+  }
 }
 
 /**
@@ -70,7 +94,7 @@ export function useRefCard(chip: ChipBox): RefCardState {
 
       const rect = chipEl.getBoundingClientRect()
 
-      return getRefCardPosition(rect, getWindowInnerSize(), refCardSize)
+      return getRefCardPosition(rect, getWindowInnerSize(), refCardSize, getRefCardMetrics(chipEl))
     })
   }, [])
 
@@ -85,7 +109,12 @@ export function useRefCard(chip: ChipBox): RefCardState {
     setPosition((current) => {
       if (!current) return current
 
-      return getRefCardPosition(chipEl.getBoundingClientRect(), getWindowInnerSize(), refCardSize)
+      return getRefCardPosition(
+        chipEl.getBoundingClientRect(),
+        getWindowInnerSize(),
+        refCardSize,
+        getRefCardMetrics(chipEl),
+      )
     })
   }, [chip.top, chip.left])
 

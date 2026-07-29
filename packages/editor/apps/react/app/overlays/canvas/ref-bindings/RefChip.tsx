@@ -6,7 +6,9 @@ import { useCallback, useMemo } from "react"
 import { RefCardController } from "./RefCardController"
 import { useRefCard } from "./hooks/use-ref-card"
 import {
+  refChipBoxStyle,
   refChipHiddenCardStyle,
+  refChipMeasureStyle,
   refChipMutedStyle,
   refChipPanelStyle,
   refChipStyle,
@@ -19,6 +21,7 @@ import type {
   ConnectorPlacement,
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
+import type { Ref } from "react"
 
 interface RefChipProps {
   placement: ConnectorPlacement
@@ -33,6 +36,11 @@ interface RefSummaryChipProps {
 interface RefOmittedProps {
   chip: ChipBox
   count: number
+}
+
+interface RefChipMeasureProps {
+  labels: string[]
+  measureRef: Ref<HTMLDivElement>
 }
 
 /**
@@ -52,6 +60,11 @@ export function RefChip({ placement, binding }: RefChipProps) {
 
     return refChipStyle(placement.chip)
   }, [placement.chip, placement.muted])
+
+  const chipBox = useMemo(
+    () => ({ style: refChipBoxStyle(placement.chip.width) }),
+    [placement.chip.width],
+  )
 
   const chipRefs = {
     refChipName: { children: placement.label },
@@ -73,7 +86,7 @@ export function RefChip({ placement, binding }: RefChipProps) {
           role="presentation"
           style={refChipPanelStyle}
           seldonRefs={chipRefs}
-          chipAssist={{}}
+          chipAssist={chipBox}
           textLabel={{}}
         />
       </Frame>
@@ -103,6 +116,11 @@ export function RefSummaryChip({ placement, nodeId }: RefSummaryChipProps) {
     [nodeId, selectNode],
   )
 
+  const chipBox = useMemo(
+    () => ({ style: refChipBoxStyle(placement.chip.width) }),
+    [placement.chip.width],
+  )
+
   const summaryRefs = {
     refChipName: { children: placement.label },
     refCard: { style: refChipHiddenCardStyle },
@@ -114,7 +132,7 @@ export function RefSummaryChip({ placement, nodeId }: RefSummaryChipProps) {
         role="presentation"
         style={refChipPanelStyle}
         seldonRefs={summaryRefs}
-        chipAssist={{}}
+        chipAssist={chipBox}
         textLabel={{}}
       />
     </Frame>
@@ -130,6 +148,7 @@ export function RefSummaryChip({ placement, nodeId }: RefSummaryChipProps) {
  */
 export function RefOmitted({ chip, count }: RefOmittedProps) {
   const wrapperStyle = useMemo(() => refOmittedStyle(chip), [chip])
+  const chipBox = useMemo(() => ({ style: refChipBoxStyle(chip.width) }), [chip.width])
 
   const omittedRefs = {
     refChipName: { children: `+${count} more` },
@@ -142,9 +161,43 @@ export function RefOmitted({ chip, count }: RefOmittedProps) {
         role="presentation"
         style={refChipPanelStyle}
         seldonRefs={omittedRefs}
-        chipAssist={{}}
+        chipAssist={chipBox}
         textLabel={{}}
       />
     </Frame>
+  )
+}
+
+/**
+ * Every chip drawn once more, hidden, and measured to place the drawn ones.
+ *
+ * A chip in the gutter is placed absolutely, so it can neither size itself to its
+ * neighbors nor report a height and spacing the column could read before it is placed.
+ * These are the same chips at their natural size, which is what the widest width, the
+ * height, and the chip's own gap are taken from.
+ */
+export function RefChipMeasure({ labels, measureRef }: RefChipMeasureProps) {
+  const chips = labels.map((label, index) => {
+    const measureRefs = {
+      refChipName: { children: label },
+      refCard: { style: refChipHiddenCardStyle },
+    }
+
+    return (
+      <PanelRefs
+        key={`${label}#${index}`}
+        role="presentation"
+        style={refChipPanelStyle}
+        seldonRefs={measureRefs}
+        chipAssist={{}}
+        textLabel={{}}
+      />
+    )
+  })
+
+  return (
+    <div ref={measureRef} style={refChipMeasureStyle}>
+      {chips}
+    </div>
   )
 }

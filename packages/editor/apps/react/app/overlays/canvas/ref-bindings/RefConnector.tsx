@@ -1,11 +1,8 @@
 import { ConnectorPaths } from "@app/overlays/primitives"
-import {
-  CONNECTOR_ANCHOR_RADIUS,
-  toElbowPath,
-} from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import { toElbowPath } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { useMemo } from "react"
 
-import { RefChip, RefOmitted, RefSummaryChip } from "./RefChip"
+import { RefChip, RefChipMeasure, RefOmitted, RefSummaryChip } from "./RefChip"
 import {
   connectorAnchorStyle,
   connectorMutedAnchorStyle,
@@ -25,11 +22,19 @@ import type { ReactNode } from "react"
  *
  * A ref with no consumers still draws, faint and dashed. That a ref reached generated
  * code but nothing drives it is the useful thing to see.
+ *
+ * The hidden measured set stays mounted whether or not a column drew. Chips are placed
+ * from what that set reports, so unmounting it with the column would leave the next
+ * selection with nothing to measure.
  */
 export function RefConnector() {
-  const { entries, canvasSize, omitted, omittedChip } = useRefConnector()
+  const { entries, canvasSize, omitted, omittedChip, anchorRadius, labels, measureRef } =
+    useRefConnector()
 
-  const shapes = useMemo(() => entries.map(toShape), [entries])
+  const shapes = useMemo(
+    () => entries.map((entry) => toShape(entry, anchorRadius)),
+    [entries, anchorRadius],
+  )
 
   const chipElements = useMemo(() => entries.map(toChip), [entries])
 
@@ -39,15 +44,27 @@ export function RefConnector() {
     return <RefOmitted chip={omittedChip} count={omitted} />
   }, [omitted, omittedChip])
 
-  if (entries.length === 0) return null
+  const column = useMemo(() => {
+    if (entries.length === 0) return null
 
-  const { width, height } = canvasSize
+    return (
+      <>
+        <ConnectorPaths
+          shapes={shapes}
+          width={canvasSize.width}
+          height={canvasSize.height}
+          style={connectorSvgStyle}
+        />
+        {chipElements}
+        {omittedElement}
+      </>
+    )
+  }, [entries.length, shapes, chipElements, omittedElement, canvasSize.width, canvasSize.height])
 
   return (
     <>
-      <ConnectorPaths shapes={shapes} width={width} height={height} style={connectorSvgStyle} />
-      {chipElements}
-      {omittedElement}
+      {column}
+      <RefChipMeasure labels={labels} measureRef={measureRef} />
     </>
   )
 }
@@ -62,7 +79,10 @@ function toChip(entry: PlacedConnector): ReactNode {
   return <RefChip key={entry.placement.key} placement={entry.placement} binding={entry.binding} />
 }
 
-function toShape({ placement }: { placement: ConnectorPlacement }): ConnectorShape {
+function toShape(
+  { placement }: { placement: ConnectorPlacement },
+  anchorRadius: number,
+): ConnectorShape {
   const strokeStyle = placement.muted ? connectorMutedStrokeStyle : connectorStrokeStyle
   const anchorStyle = placement.muted ? connectorMutedAnchorStyle : connectorAnchorStyle
 
@@ -71,7 +91,7 @@ function toShape({ placement }: { placement: ConnectorPlacement }): ConnectorSha
     d: toElbowPath(placement.points),
     anchorX: placement.anchor.x,
     anchorY: placement.anchor.y,
-    anchorRadius: CONNECTOR_ANCHOR_RADIUS,
+    anchorRadius,
     strokeStyle,
     anchorStyle,
   }

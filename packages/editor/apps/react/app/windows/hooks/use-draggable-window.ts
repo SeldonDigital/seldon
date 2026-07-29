@@ -5,8 +5,8 @@ import { useCallback, useEffect, useState } from "react"
 import type { Rect } from "@seldon/components/utils/resize"
 import type { BoundingBox } from "framer-motion"
 
-const DEFAULT_MIN_WINDOW_WIDTH = 300
-const DEFAULT_MIN_WINDOW_HEIGHT = 300
+/** The smallest a floating window is drawn at, and the size one opens at by default. */
+export const MIN_WINDOW_SIZE = { width: 300, height: 300 }
 
 /**
  * Drag, resize, and position mechanics for a floating editor window. Shared by
@@ -19,8 +19,8 @@ export function useDraggableWindow({
   initialSize,
   handleClose,
   closeOnEscape = true,
-  minWidth = DEFAULT_MIN_WINDOW_WIDTH,
-  minHeight = DEFAULT_MIN_WINDOW_HEIGHT,
+  minWidth = MIN_WINDOW_SIZE.width,
+  minHeight = MIN_WINDOW_SIZE.height,
   contentSized = false,
 }: {
   handleClose: () => void

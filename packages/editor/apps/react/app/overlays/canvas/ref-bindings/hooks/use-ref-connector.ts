@@ -5,10 +5,7 @@ import { useRefBindings } from "@app/refs/use-ref-bindings"
 import { useActiveBoard } from "@app/workspace/hooks/use-active-board"
 import { useSelectedNodeId } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
-import {
-  CONNECTOR_LAYOUT_DEFAULTS,
-  layoutConnectors,
-} from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import { layoutConnectors } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import { nodeRectsStore } from "@seldon/editor/lib/canvas/tracking/node-rects-store"
 import {
   collectDescendantNodeIds,
@@ -21,6 +18,7 @@ import { ComponentLevel } from "@seldon/core/components/constants"
 import { getEffectiveNodeLevel } from "@seldon/core/workspace/helpers/nodes/get-effective-node-level"
 
 import { useCanvasSize } from "../../../hooks/use-canvas-size"
+import { useConnectorMetrics } from "./use-connector-metrics"
 import { useFollowCanvasTransform } from "./use-follow-canvas-transform"
 
 import type { Board, EntryNodeId, Workspace } from "@seldon/core/workspace/types"
@@ -31,6 +29,7 @@ import type {
 } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { NodeRect } from "@seldon/editor/lib/canvas/overlay/geometry"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
+import type { RefObject } from "react"
 
 /**
  * One placed connector and what its chip reports.
@@ -47,6 +46,11 @@ interface RefConnectorState {
   canvasSize: { width: number; height: number }
   omitted: number
   omittedChip: ConnectorLayoutResult["omittedChip"]
+  /** The dot where a connector meets its node, `0` until the metrics are read. */
+  anchorRadius: number
+  /** Every chip's label, and the element the metrics are read from. */
+  labels: string[]
+  measureRef: RefObject<HTMLDivElement | null>
 }
 
 /** Marks a source as standing for a frame's contents rather than for one ref. */
@@ -55,6 +59,13 @@ const FRAME_KEY_PREFIX = "frame:"
 /** Chips for one node read in this order, the frame's own ref before its summary. */
 const REF_ORDER = 0
 const SUMMARY_ORDER = 1
+
+/** Stands in until the chips have been measured, which is what the column places by. */
+const NOTHING_PLACED: ConnectorLayoutResult = {
+  placements: [],
+  omitted: 0,
+  omittedChip: null,
+}
 
 /**
  * The connectors to draw for the current selection, already laid out.
@@ -88,22 +99,39 @@ export function useRefConnector(): RefConnectorState {
     [refBindings, rects, scopedNodeIds, frameAncestors],
   )
 
-  const layout = useMemo(
-    () =>
-      layoutConnectors(sources, {
-        canvasWidth: canvasSize.width,
-        canvasHeight: canvasSize.height,
-        ...CONNECTOR_LAYOUT_DEFAULTS,
-      }),
-    [sources, canvasSize.width, canvasSize.height],
-  )
+  const labels = useMemo(() => sources.map((source) => source.label), [sources])
+  const { metrics, measureRef } = useConnectorMetrics(labels)
+
+  // The chip's own gap spaces the column as well, both between chips and off the canvas
+  // top and bottom, so the spacing follows the chip rather than a number kept here.
+  const layout = useMemo(() => {
+    if (!metrics) return NOTHING_PLACED
+
+    return layoutConnectors(sources, {
+      canvasWidth: canvasSize.width,
+      canvasHeight: canvasSize.height,
+      chipWidth: metrics.chipWidth,
+      chipHeight: metrics.chipHeight,
+      chipGap: metrics.chipGap,
+      margin: metrics.chipGap,
+      gutterRight: metrics.gutterRight,
+    })
+  }, [sources, canvasSize.width, canvasSize.height, metrics])
 
   const entries = useMemo(
     () => buildEntries(layout.placements, refBindings),
     [layout.placements, refBindings],
   )
 
-  return { entries, canvasSize, omitted: layout.omitted, omittedChip: layout.omittedChip }
+  return {
+    entries,
+    canvasSize,
+    omitted: layout.omitted,
+    omittedChip: layout.omittedChip,
+    anchorRadius: metrics?.anchorRadius ?? 0,
+    labels,
+    measureRef,
+  }
 }
 
 /**

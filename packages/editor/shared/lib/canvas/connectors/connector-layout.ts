@@ -83,6 +83,14 @@ export interface RefCardPosition extends RefCardRect {
   opens: "below" | "above"
 }
 
+/**
+ * What the column needs to place chips: the canvas it draws in, the chip sizes measured
+ * from a drawn chip, and the gap off the canvas edge.
+ *
+ * `margin` is the band the column keeps off the canvas top and bottom. It is separate
+ * from `chipGap` so a caller can space the column differently from the chips inside it,
+ * though the overlay passes the chip's own gap to both.
+ */
 export interface ConnectorLayoutOptions {
   canvasWidth: number
   canvasHeight: number
@@ -90,18 +98,25 @@ export interface ConnectorLayoutOptions {
   chipHeight: number
   chipGap: number
   margin: number
+  gutterRight: number
 }
 
-/** Chip metrics the overlay draws with. Sizes are chrome pixels, not scaled. */
-export const CONNECTOR_LAYOUT_DEFAULTS = {
-  chipWidth: 200,
-  chipHeight: 28,
-  chipGap: 4,
-  margin: 12,
+/**
+ * The theme variables the column draws by, which a caller resolves to pixels.
+ *
+ * Declared as variables because this spacing belongs to the theme like any other, and
+ * measuring rather than styling is the only reason numbers come into it at all. Sizes
+ * are chrome pixels once resolved, not scaled, since overlays draw outside the canvas
+ * transform.
+ *
+ * `gutterRight` is the gap the column keeps off the canvas edge, which is the sidebar
+ * edge. `anchorRadius` is the dot where a connector meets its node. Every other metric
+ * comes from a drawn chip, since the chip schema decides its own size.
+ */
+export const CONNECTOR_TOKENS = {
+  gutterRight: "--sdn-margins-cozy",
+  anchorRadius: "--sdn-sizes-tiny",
 } as const
-
-/** Radius of the dot on a node's edge, in the same canvas pixels as the elbow. */
-export const CONNECTOR_ANCHOR_RADIUS = 2
 
 /**
  * Places a label chip for every referenced node and routes an elbow to it.
@@ -109,7 +124,8 @@ export const CONNECTOR_ANCHOR_RADIUS = 2
  * Chips stack in a gutter down the right edge rather than floating beside their
  * nodes, so a dense selection reads as one column of labels instead of a scatter
  * that overlaps the design. Each chip wants to sit at its node's vertical center,
- * then gives way to the one above it.
+ * then gives way to the one above it. Every chip takes the caller's `chipWidth`, so
+ * the column reads as a block with its labels and its icons in line.
  *
  * The column never draws past the canvas floor. A chip that would cross it is left
  * out and counted, because a chip outside the canvas would paint over other chrome.
@@ -126,8 +142,12 @@ export function layoutConnectors(
 
   if (sources.length === 0) return empty
 
-  const { canvasWidth, canvasHeight, chipWidth, chipHeight, chipGap, margin } = options
-  const gutterLeft = canvasWidth - margin - chipWidth
+  const { canvasWidth, canvasHeight, chipWidth, chipHeight, chipGap, margin, gutterRight } = options
+
+  // Placed by its right edge, so every chip ends the same distance off the sidebar
+  // whatever the labels are. A label too wide for the gutter stops at the canvas edge
+  // rather than sliding over the design.
+  const gutterLeft = Math.max(margin, canvasWidth - gutterRight - chipWidth)
   const floor = canvasHeight - margin
 
   const anchored = sources
@@ -232,12 +252,26 @@ function getOmittedChip(input: {
   }
 }
 
-/** The gap the card keeps off its chip. */
-export const REF_CARD_GAP = 4
+/**
+ * The theme variables the card opens by, which a caller resolves to pixels.
+ *
+ * `gap` is what the card keeps off its chip. `margin` is the band it keeps off the
+ * viewport edge. The card is drawn from the `PanelRefs` schema, so its surface, its
+ * type, and the spacing inside it are already the theme's, and these two say the same
+ * about the space around it.
+ */
+export const REF_CARD_TOKENS = {
+  gap: "--sdn-gaps-tight",
+  margin: "--sdn-margins-cozy",
+} as const
 
-/** The size a card opens at until one is resized, and the smallest it can be dragged to. */
-export const REF_CARD_DEFAULT_SIZE = { width: 300, height: 300 }
-export const REF_CARD_MIN_SIZE = { width: 200, height: 120 }
+/** The pixels a card opens by: what it keeps clear, and how small it may be drawn. */
+export interface RefCardMetrics {
+  gap: number
+  margin: number
+  minWidth: number
+  minHeight: number
+}
 
 /**
  * Places the ref card clear of its chip, in viewport pixels for a fixed element.
@@ -255,30 +289,31 @@ export function getRefCardPosition(
   chipRect: { top: number; bottom: number; right: number },
   viewport: { width: number; height: number },
   size: { width: number; height: number },
-  margin = CONNECTOR_LAYOUT_DEFAULTS.margin,
+  metrics: RefCardMetrics,
 ): RefCardPosition {
-  const below = viewport.height - chipRect.bottom - REF_CARD_GAP - margin
-  const above = chipRect.top - REF_CARD_GAP - margin
+  const { gap, margin } = metrics
+  const below = viewport.height - chipRect.bottom - gap - margin
+  const above = chipRect.top - gap - margin
   const opens = below >= above ? "below" : "above"
-  const room = Math.max(opens === "below" ? below : above, REF_CARD_MIN_SIZE.height)
+  const room = Math.max(opens === "below" ? below : above, metrics.minHeight)
 
   const width = size.width
   const height = Math.min(size.height, room)
   const x = chipRect.right - width
-  const y =
-    opens === "below" ? chipRect.bottom + REF_CARD_GAP : chipRect.top - REF_CARD_GAP - height
+  const y = opens === "below" ? chipRect.bottom + gap : chipRect.top - gap - height
 
-  return { opens, ...clampRefCardRect({ x, y, width, height }, viewport, margin) }
+  return { opens, ...clampRefCardRect({ x, y, width, height }, viewport, metrics) }
 }
 
 /** Holds an opening card inside the viewport, sizing it down before moving it. */
 function clampRefCardRect(
   rect: RefCardRect,
   viewport: { width: number; height: number },
-  margin: number,
+  metrics: RefCardMetrics,
 ): RefCardRect {
-  const width = clamp(rect.width, REF_CARD_MIN_SIZE.width, viewport.width - margin * 2)
-  const height = clamp(rect.height, REF_CARD_MIN_SIZE.height, viewport.height - margin * 2)
+  const { margin } = metrics
+  const width = clamp(rect.width, metrics.minWidth, viewport.width - margin * 2)
+  const height = clamp(rect.height, metrics.minHeight, viewport.height - margin * 2)
 
   return {
     x: clamp(rect.x, margin, viewport.width - width - margin),

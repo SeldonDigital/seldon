@@ -1,8 +1,7 @@
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
-import { useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
+import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { MessageRefController } from "@seldon/components/elements/MessageRefController"
 import { PanelRefs } from "@seldon/components/modules/PanelRefs"
-import { REF_CARD_MIN_SIZE } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import {
   describeBinding,
   getBindingDirectory,
@@ -52,8 +51,8 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
       initialPosition: { x: position.x, y: position.y },
       initialSize: { width: position.width, height: position.height },
       handleClose: onClose,
-      minWidth: REF_CARD_MIN_SIZE.width,
-      minHeight: REF_CARD_MIN_SIZE.height,
+      minWidth: MIN_WINDOW_SIZE.width,
+      minHeight: MIN_WINDOW_SIZE.height,
     })
 
   const resizeSides = RESIZE_SIDES[position.opens]
@@ -105,8 +104,8 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
       onResize={handleResize}
       getRect={getRect}
       resizeSides={resizeSides}
-      minWidth={REF_CARD_MIN_SIZE.width}
-      minHeight={REF_CARD_MIN_SIZE.height}
+      minWidth={MIN_WINDOW_SIZE.width}
+      minHeight={MIN_WINDOW_SIZE.height}
     >
       <PanelRefs
         role="presentation"
