@@ -250,44 +250,59 @@ interface AnchoredChip {
  * cannot happen while nodes at the same height are read right to left.
  *
  * Nodes in one row rarely report the same center once the canvas is zoomed, so heights
- * within `band` are read as one row. The column's own gap covers that, since two chips
- * that close take neighboring slots whichever way they are read.
+ * within `band` are read as one row, and centers that close as one place in that row.
+ * The column's own gap covers both, since two chips that close take neighboring slots
+ * whichever way they are read.
  *
  * Height leads, so a chip still sits beside its node. Reading the whole column right to
  * left would drop the last crossings, but it would also drag chips far from the nodes
  * they name, which is the point of the column.
  */
 function orderColumn(anchored: AnchoredChip[], band: number): AnchoredChip[] {
-  const byHeight = [...anchored].sort(
-    (a, b) => a.preferredY - b.preferredY || compareRightToLeft(a, b),
-  )
+  const byHeight = [...anchored].sort((a, b) => a.preferredY - b.preferredY || compareStable(a, b))
 
-  const rows: AnchoredChip[][] = []
+  return groupWithin(byHeight, (chip) => chip.preferredY, band).flatMap((row) => {
+    const byCenter = [...row].sort((a, b) => b.centerX - a.centerX || compareStable(a, b))
 
-  for (const chip of byHeight) {
-    const row = rows[rows.length - 1]
-
-    if (row && chip.preferredY - row[0].preferredY <= band) {
-      row.push(chip)
-      continue
-    }
-
-    rows.push([chip])
-  }
-
-  return rows.flatMap((row) => row.sort(compareRightToLeft))
+    return groupWithin(byCenter, (chip) => -chip.centerX, band).flatMap((column) =>
+      column.sort(compareStable),
+    )
+  })
 }
 
 /**
- * Rightmost node first. Chips on one node tie there, so the caller's `order` settles
- * them, and the key holds the rest steady between measurements.
+ * Runs of neighboring items whose values sit within `band` of the one that opened the run.
+ *
+ * Both keys the column reads are measured, and a measurement moves by fractions of a
+ * pixel while the canvas is panned. Comparing measurements directly lets that movement
+ * decide the order, and the chips trade places every frame. Grouping first means a
+ * difference that small settles on something that does not move at all.
+ *
+ * Takes the items already sorted by `value`, ascending.
  */
-function compareRightToLeft(a: AnchoredChip, b: AnchoredChip): number {
-  return (
-    b.centerX - a.centerX ||
-    (a.source.order ?? 0) - (b.source.order ?? 0) ||
-    a.source.key.localeCompare(b.source.key)
-  )
+function groupWithin<TItem>(sorted: TItem[], value: (item: TItem) => number, band: number) {
+  const groups: TItem[][] = []
+
+  for (const item of sorted) {
+    const group = groups[groups.length - 1]
+
+    if (group && value(item) - value(group[0]) <= band) {
+      group.push(item)
+      continue
+    }
+
+    groups.push([item])
+  }
+
+  return groups
+}
+
+/**
+ * The order for chips a measurement cannot separate: the caller's `order`, then the key.
+ * Neither moves with the canvas, so a pan cannot reshuffle them.
+ */
+function compareStable(a: AnchoredChip, b: AnchoredChip): number {
+  return (a.source.order ?? 0) - (b.source.order ?? 0) || a.source.key.localeCompare(b.source.key)
 }
 
 /** The slot for the count, under the last drawn chip, or nothing if it cannot fit. */
