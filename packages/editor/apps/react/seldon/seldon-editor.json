@@ -47152,10 +47152,6 @@
           "left": {
             "type": "theme.ordinal",
             "value": "@margin.cozy"
-          },
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
           }
         },
         "color": {
