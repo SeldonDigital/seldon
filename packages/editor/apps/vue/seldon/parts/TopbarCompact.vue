@@ -98,15 +98,19 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--cbw3"
   },
   "linkPlain": {
+    "children": "Expertise",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "linkPlain2": {
+    "children": "Services",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "linkPlain3": {
+    "children": "Study Case",
     "className": "sdn-link-plain sdn-link-plain--yexk"
   },
   "linkPlain4": {
+    "children": "Contact Us",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "frame3": {
@@ -115,18 +119,22 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--adqt"
   },
   "linkPlain5": {
+    "children": "EN",
     "className": "sdn-link-plain sdn-link-plain--67at"
   },
   "text": {
+    "children": " | ",
     "className": "sdn-text sdn-text--s4kj"
   },
   "linkPlain6": {
+    "children": "JP",
     "className": "sdn-link-plain sdn-link-plain--yc40"
   },
   "button": {
     "className": "sdn-button sdn-button--aket"
   },
   "textLabel": {
+    "children": "Start Project",
     "className": "sdn-text-label sdn-text-label--wxqf"
   }
 }

@@ -1,93 +1,53 @@
-import { REF_CARD_MAX_WIDTH } from "@seldon/editor/lib/canvas/connectors/connector-layout"
+import { getResizeHandleStyle } from "@seldon/components/utils/resize"
 
+import type { ResizeSide } from "@seldon/components/utils/resize"
 import type { RefCardPosition } from "@seldon/editor/lib/canvas/connectors/connector-layout"
-import type { BindingDescriptionKind } from "@seldon/editor/lib/refs/describe-binding"
 import type { CSSProperties } from "react"
 
 /**
- * Transitional styling for the ref card, paired with `RefCard.bespoke`.
- * A workspace card carries its own theme values, so this file is deleted with the
- * bespoke View it dresses.
+ * Where the ref card draws and where its resize handles sit. How the card looks comes
+ * from the `PanelRefs` schema.
  */
 
 /** Above every board and overlay, since the card is portaled out of the canvas. */
 const CARD_Z_INDEX = 2147483000
 
-/** Supporting text under a row, dimmed so the row above it leads. */
-const SUPPORTING_OPACITY = 0.7
+/** Size of the card, in viewport pixels. */
+export interface RefCardSize {
+  width: number
+  height: number
+}
 
 /**
- * Where the card draws, kept apart from how it looks.
+ * The box the card fills, kept apart from how it looks.
  *
- * The Controller passes this to the View as `style`, which is the seam a generated
- * card needs: placement comes from canvas geometry, appearance comes from the theme.
+ * The card is anchored by its right edge, so dragging its left edge widens it in
+ * place. One of `top` and `bottom` is set, whichever side of the chip it opens on.
  *
- * One of `top` and `bottom` is set, whichever side of the chip the card opens on.
+ * The size is clamped to the room on that side, which is what makes the card scroll
+ * rather than run off screen when a resize outgrows the space it opened in.
  */
-export function refCardPositionStyle(position: RefCardPosition): CSSProperties {
+export function refCardWrapperStyle(position: RefCardPosition, size: RefCardSize): CSSProperties {
   return {
     position: "fixed",
     top: position.top === undefined ? undefined : `${position.top}px`,
     bottom: position.bottom === undefined ? undefined : `${position.bottom}px`,
-    left: `${position.left}px`,
+    right: `${position.right}px`,
+    width: `${Math.min(size.width, position.maxWidth)}px`,
+    height: `${Math.min(size.height, position.maxHeight)}px`,
     zIndex: CARD_Z_INDEX,
-    maxWidth: `${REF_CARD_MAX_WIDTH}px`,
-    maxHeight: `${position.maxHeight}px`,
+    pointerEvents: "auto",
   }
 }
 
-/**
- * The card surface. It takes pointer events, unlike the rest of the overlay, so it
- * can be scrolled and so a click inside it is not mistaken for a click away.
- */
-export const refCardSurfaceStyle: CSSProperties = {
-  overflowY: "auto",
-  padding: "var(--sdn-paddings-compact)",
-  borderRadius: "var(--sdn-corners-tight)",
-  border: "var(--sdn-border-width-small) solid var(--sdn-swatch-primary)",
-  backgroundColor: "var(--sdn-swatch-offBlack)",
-  color: "var(--sdn-swatch-offWhite)",
-  fontFamily: "var(--sdn-font-family-primary), system-ui, sans-serif",
-  fontSize: "var(--sdn-font-size-xsmall)",
-  lineHeight: "var(--sdn-line-height-compact)",
-  pointerEvents: "auto",
-  boxShadow:
-    "0 var(--sdn-sizes-xxsmall) var(--sdn-sizes-small) color-mix(in srgb, var(--sdn-swatch-black) 35%, transparent)",
+/** One resize handle, over the card's own content so a drag near the edge reaches it. */
+export function refCardHandleStyle(side: ResizeSide): CSSProperties {
+  return {
+    ...getResizeHandleStyle(side),
+    zIndex: 1,
+    pointerEvents: "auto",
+  }
 }
 
-/** The ref name the card opens with. */
-export const refCardTitleStyle: CSSProperties = {
-  fontWeight: "var(--sdn-font-weight-bold)",
-  marginBottom: "var(--sdn-margins-tight)",
-}
-
-const CODE_STYLE: CSSProperties = {
-  fontFamily: "ui-monospace, monospace",
-  whiteSpace: "pre-wrap",
-  wordBreak: "break-word",
-}
-
-const SUPPORTING_STYLE: CSSProperties = {
-  marginTop: "var(--sdn-margins-tight)",
-  opacity: SUPPORTING_OPACITY,
-}
-
-const DESCRIPTION_STYLES: Record<BindingDescriptionKind, CSSProperties> = {
-  note: SUPPORTING_STYLE,
-  heading: SUPPORTING_STYLE,
-  view: CODE_STYLE,
-  consumer: CODE_STYLE,
-  detail: {
-    ...CODE_STYLE,
-    paddingLeft: "var(--sdn-paddings-compact)",
-    opacity: SUPPORTING_OPACITY,
-  },
-}
-
-/**
- * Styling for one description, by what it is about. File paths and code read as
- * monospace.
- */
-export function refCardDescriptionStyle(kind: BindingDescriptionKind): CSSProperties {
-  return DESCRIPTION_STYLES[kind]
-}
+/** Holds the line breaks in a slot that carries several lines in one Text. */
+export const refCardMultilineStyle: CSSProperties = { whiteSpace: "pre-line" }

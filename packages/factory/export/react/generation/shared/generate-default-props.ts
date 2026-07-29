@@ -8,13 +8,22 @@ type DefaultPropsValue = Record<
   string | CSSProperties | boolean | number | object | string[] | number[]
 >
 
+/** The authored copy every slot keeps: its text, its icon, and its placeholder. */
+const COPY_PROPS = ["children", "icon", "placeholder"]
+
 /**
  * Generates the component's default property values (the `sdn` object).
  *
- * Non-conditional nodes contribute their full flattened props. Conditional
- * nodes on a catalog component contribute only a className and a ref, so their
- * inline extras stay consumer-supplied while the merge helpers still find the
- * class and the ref name.
+ * A non-conditional node contributes its full flattened props, and so does a
+ * conditional node on an authored component, which renders its authored tree
+ * without a controller.
+ *
+ * A conditional node elsewhere contributes its copy, its class, and its ref. The
+ * copy comes from the design, while the markup and state a conditional slot
+ * renders with stay consumer-supplied.
+ *
+ * Every entry is overridable: the merge helpers layer caller props and
+ * `seldonRefs` over these defaults.
  *
  * The root entry drops its `className`: the root class is inlined at the render
  * site from the variant class names, so nothing reads it here.
@@ -51,57 +60,18 @@ export function generateDefaultProps(
       )
     }
 
-    if (conditionalPaths.has(node.dataBinding.path)) {
-      // Authored components bake their conditional leaves' content (text, icon,
-      // placeholder) as default props so the generated component renders its
-      // authored copy without a controller. The props stay overridable through
-      // the `{...sdn.x, ...x}` merge. Catalog components keep className-only
-      // conditional defaults so their inline extras remain consumer-supplied.
-      if (component.authored) {
-        const entry = flattenProps(
-          node.dataBinding.props,
-          node.nodeId,
-          nodeIdToClass,
-          node.classNames,
-        )
+    const keepEveryProp = component.authored || !conditionalPaths.has(node.dataBinding.path)
+    const entry = keepEveryProp
+      ? flattenProps(node.dataBinding.props, node.nodeId, nodeIdToClass, node.classNames)
+      : flattenProps(pickCopy(node.dataBinding.props), node.nodeId, nodeIdToClass, node.classNames)
 
-        if (node.ref) {
-          entry["data-seldon-ref"] = node.ref
-        }
-
-        defaultProps[propName] = entry
-      } else {
-        const className = getClassName(node, nodeIdToClass)
-        const entry: DefaultPropsValue = {}
-
-        if (className) {
-          entry.className = className
-        }
-
-        // A child instance has no literal JSX attribute site; its ref rides the
-        // sdn default props through the `{...props}` spread onto the child root.
-        if (node.ref) {
-          entry["data-seldon-ref"] = node.ref
-        }
-
-        if (Object.keys(entry).length > 0) {
-          defaultProps[propName] = entry
-        }
-      }
-    } else {
-      const entry = flattenProps(
-        node.dataBinding.props,
-        node.nodeId,
-        nodeIdToClass,
-        node.classNames,
-      )
-
-      if (node.ref) {
-        entry["data-seldon-ref"] = node.ref
-      }
-
-      defaultProps[propName] = entry
+    // A child instance has no literal JSX attribute site; its ref rides the
+    // sdn default props through the `{...props}` spread onto the child root.
+    if (node.ref) {
+      entry["data-seldon-ref"] = node.ref
     }
+
+    defaultProps[propName] = entry
 
     if (Array.isArray(node.children)) {
       node.children.forEach(traverse)
@@ -115,19 +85,16 @@ export function generateDefaultProps(
   return defaultProps
 }
 
-function getClassName(
-  node: JSONTreeNode,
-  nodeIdToClass: Record<string, string> | undefined,
-): string | undefined {
-  if (node.classNames && node.classNames.length > 0) {
-    return node.classNames.filter(Boolean).join(" ")
+function pickCopy(props: DataBinding["props"]): DataBinding["props"] {
+  const copy: DataBinding["props"] = {}
+
+  for (const key of COPY_PROPS) {
+    if (props[key]) {
+      copy[key] = props[key]
+    }
   }
 
-  if (node.nodeId && nodeIdToClass && nodeIdToClass[node.nodeId]) {
-    return nodeIdToClass[node.nodeId]
-  }
-
-  return undefined
+  return copy
 }
 
 function flattenProps(

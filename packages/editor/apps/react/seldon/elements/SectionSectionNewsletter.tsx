@@ -44,10 +44,12 @@ export interface SectionSectionNewsletterProps extends HTMLAttributes<HTMLElemen
 const sdn: SectionSectionNewsletterProps = {
   "aria-hidden": "false",
   textTitle: {
+    children: "Stay Updated",
     className: "sdn-text-title sdn-text-title--a5sd",
   },
 
   textDescription: {
+    children: "Subscribe to our newsletter for the latest updates.",
     className: "sdn-text-description sdn-text-description--tjnl",
   },
 
@@ -66,6 +68,7 @@ const sdn: SectionSectionNewsletterProps = {
     className: "sdn-icon sdn-icon--eyw9",
   },
   textLabel: {
+    children: "Subscribe",
     className: "sdn-text-label sdn-text-label--zk5o",
   },
 }

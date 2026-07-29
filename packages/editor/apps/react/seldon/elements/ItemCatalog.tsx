@@ -38,6 +38,7 @@ export interface ItemCatalogProps extends LiHTMLAttributes<HTMLLIElement> {
 const sdn: ItemCatalogProps = {
   "aria-hidden": "false",
   icon: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--mene",
     "data-seldon-ref": "catalogIcon",
   },
@@ -48,10 +49,12 @@ const sdn: ItemCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--noun",
     "data-seldon-ref": "catalogLabel",
   },
   textSubtitle: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
     "data-seldon-ref": "catalogVariant",
   },

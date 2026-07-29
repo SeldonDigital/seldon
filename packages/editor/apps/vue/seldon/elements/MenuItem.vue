@@ -61,9 +61,11 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel": {
+    "children": "Menu Item",
     "className": "sdn-text-label sdn-text-label--xohb"
   },
   "textLabel2": {
+    "children": "⌘K",
     "className": "sdn-text-label sdn-text-label--fdei"
   }
 }

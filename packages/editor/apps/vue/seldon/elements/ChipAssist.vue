@@ -59,6 +59,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--eyw9"
   },
   "textLabel": {
+    "children": "Assist",
     "className": "sdn-text-label sdn-text-label--lug5"
   }
 }

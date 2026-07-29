@@ -118,6 +118,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-bar sdn-bar--9xs7"
   },
   "textTitle": {
+    "children": "Hari",
     "className": "sdn-text-title sdn-text-title--ulid"
   },
   "frame": {
@@ -181,6 +182,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--jhsq"
   },
   "textarea": {
+    "placeholder": "Placeholder text",
     "className": "sdn-textarea sdn-textarea--2upw",
     "data-seldon-ref": "hariInput"
   },
@@ -199,6 +201,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "hariModel"
   },
   "textLabel": {
+    "children": "Model",
     "className": "sdn-text-label sdn-text-label--sa6t"
   },
   "icon6": {
@@ -211,6 +214,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "hariThinking"
   },
   "textLabel2": {
+    "children": "Thinking Level",
     "className": "sdn-text-label sdn-text-label--sa6t"
   },
   "icon7": {
@@ -223,6 +227,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "hariSelection"
   },
   "textLabel3": {
+    "children": "Scope",
     "className": "sdn-text-label sdn-text-label--lug5"
   },
   "buttonIconic3": {

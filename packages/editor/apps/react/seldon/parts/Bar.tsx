@@ -42,6 +42,7 @@ export interface BarProps extends HTMLAttributes<HTMLElement> {
 const sdn: BarProps = {
   "aria-hidden": "false",
   textTitle: {
+    children: "Title",
     className: "sdn-text-title sdn-text-title--qbtu",
   },
 
@@ -63,6 +64,7 @@ const sdn: BarProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

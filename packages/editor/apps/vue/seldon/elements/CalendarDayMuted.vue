@@ -54,6 +54,7 @@ const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "aria-disabled": "true",
   "textLabel": {
+    "children": "00",
     "className": "sdn-text-label sdn-text-label--k3ye"
   }
 }

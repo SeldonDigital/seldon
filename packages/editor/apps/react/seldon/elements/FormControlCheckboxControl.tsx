@@ -34,10 +34,12 @@ export interface FormControlCheckboxControlProps extends HTMLAttributes<HTMLElem
 const sdn: FormControlCheckboxControlProps = {
   "aria-hidden": "false",
   inputCheckbox: {
+    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
 
   textLabel: {
+    children: "Label",
     className: "sdn-text-label sdn-text-label--o9nd",
   },
 }

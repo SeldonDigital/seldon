@@ -59,6 +59,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel": {
+    "children": "Checkbox",
     "className": "sdn-text-label sdn-text-label--xohb"
   }
 }

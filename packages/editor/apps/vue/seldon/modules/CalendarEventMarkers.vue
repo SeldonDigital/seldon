@@ -252,6 +252,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--8xlb"
   },
   "textLabel": {
+    "children": "SEPTEMBER 2024",
     "className": "sdn-text-label sdn-text-label--ulqg"
   },
   "buttonIconic": {
@@ -276,24 +277,31 @@ const sdn: Record<string, any> = {
     "className": "sdn-container sdn-container--npgy"
   },
   "textLabel2": {
+    "children": "Sun",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel3": {
+    "children": "Mon",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel4": {
+    "children": "Tue",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel5": {
+    "children": "Wed",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel6": {
+    "children": "Thu",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel7": {
+    "children": "Fri",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel8": {
+    "children": "Sat",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "frame2": {
@@ -310,45 +318,53 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel9": {
+    "children": "1",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDaySelected": {
     "className": "sdn-calendar-day-selected sdn-calendar-day-muted--tzv7"
   },
   "textLabel10": {
+    "children": "2",
     "className": "sdn-text-label sdn-text-label--fye8"
   },
   "textLabel11": {
+    "children": "5",
     "className": "sdn-text-label sdn-text-label--yw9b"
   },
   "calendarDay": {
     "className": "sdn-calendar-day sdn-calendar-day-muted--tzv7"
   },
   "textLabel12": {
+    "children": "3",
     "className": "sdn-text-label sdn-text-label--bwn4"
   },
   "calendarDay2": {
     "className": "sdn-calendar-day sdn-calendar-day-muted--tzv7"
   },
   "textLabel13": {
+    "children": "4",
     "className": "sdn-text-label sdn-text-label--bwn4"
   },
   "calendarDay3": {
     "className": "sdn-calendar-day sdn-calendar-day-muted--tzv7"
   },
   "textLabel14": {
+    "children": "5",
     "className": "sdn-text-label sdn-text-label--bwn4"
   },
   "calendarDay4": {
     "className": "sdn-calendar-day sdn-calendar-day-muted--tzv7"
   },
   "textLabel15": {
+    "children": "6",
     "className": "sdn-text-label sdn-text-label--bwn4"
   },
   "calendarDayMuted2": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel16": {
+    "children": "7",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container3": {
@@ -360,42 +376,49 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel17": {
+    "children": "8",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted4": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel18": {
+    "children": "9",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted5": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel19": {
+    "children": "10",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted6": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel20": {
+    "children": "11",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted7": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel21": {
+    "children": "12",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted8": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel22": {
+    "children": "13",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted9": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel23": {
+    "children": "14",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container4": {
@@ -407,42 +430,49 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel24": {
+    "children": "15",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted11": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel25": {
+    "children": "16",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted12": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel26": {
+    "children": "17",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted13": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel27": {
+    "children": "18",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted14": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel28": {
+    "children": "19",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted15": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel29": {
+    "children": "20",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted16": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel30": {
+    "children": "21",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container5": {
@@ -454,42 +484,49 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel31": {
+    "children": "22",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted18": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel32": {
+    "children": "23",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted19": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel33": {
+    "children": "24",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted20": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel34": {
+    "children": "25",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted21": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel35": {
+    "children": "26",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted22": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel36": {
+    "children": "27",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted23": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel37": {
+    "children": "28",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container6": {
@@ -501,12 +538,14 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel38": {
+    "children": "29",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayMuted25": {
     "className": "sdn-calendar-day-muted sdn-calendar-day-muted--tzv7"
   },
   "textLabel39": {
+    "children": "30",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDay5": {

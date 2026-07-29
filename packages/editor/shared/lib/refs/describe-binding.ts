@@ -2,32 +2,26 @@ import type { RefBinding } from "./join-refs-and-bindings"
 import type { ExpressionInput, RefConsumer } from "@seldon/factory/bindings/types"
 import type { SeldonRefView } from "@seldon/factory/export/shared/generate-refs-registry"
 
-/**
- * What a description is about. `note` explains why a binding has nothing to show,
- * `heading` labels a group, `view` names a generated component that exposes the ref,
- * `consumer` names app code that drives it, and `detail` supports the one above it.
- */
-export type BindingDescriptionKind = "note" | "heading" | "view" | "consumer" | "detail"
-
-/**
- * One thing said about a binding, split so each surface presents it its own way.
- *
- * `label` leads and `detail` supports, which the properties sidebar renders as a name
- * and a value and the canvas card renders as one line. A description with no `detail`
- * carries all its text in `label`.
- */
-export interface BindingDescription {
-  key: string
-  kind: BindingDescriptionKind
-  label: string
-  detail?: string
-  /** Set on a `consumer` description that only drives the ref on some branches. */
-  conditional?: boolean
+/** One generated component that exposes the ref, and the slot it exposes it as. */
+export interface BindingViewDescription {
+  component: string
+  file: string
+  slot: string
+  condition: string
 }
 
-const STATE_NOTES: Record<string, string> = {
-  unbound: "No code drives this ref yet.",
-  stale: "The manifest names this ref, but the workspace no longer has it.",
+/**
+ * One place app code drives the ref.
+ *
+ * `pass` is the expression the code hands the slot, and `from` names what produced
+ * the values inside it, one line per input.
+ */
+export interface BindingControllerDescription {
+  name: string
+  location: string
+  from: string[]
+  conditional: boolean
+  pass: string | null
 }
 
 /**
@@ -35,55 +29,42 @@ const STATE_NOTES: Record<string, string> = {
  * the ref, then every place app code drives it, down to the expression and the hook
  * behind it.
  *
- * Flat rather than nested, so a surface renders it in one pass and each description
- * carries its own kind. Every surface that reports a binding reads from here, so the
- * properties sidebar and the canvas card word the same thing the same way. A surface
- * with room for a summary keeps the `view` and `consumer` descriptions and drops the
- * rest.
- *
- * Keys are unprefixed, such as `view#0` and `consumer#0`, so a caller that needs its
- * own namespace can prefix them.
+ * `note` carries why there is nothing else to show, and is null when there is.
  */
-export function describeBinding(binding: RefBinding | null): BindingDescription[] {
-  if (!binding) return []
-
-  const descriptions: BindingDescription[] = []
-  const note = STATE_NOTES[binding.state]
-
-  if (note) {
-    descriptions.push({ key: "note", kind: "note", label: note })
-  }
-
-  if (binding.views.length > 0) {
-    descriptions.push({ key: "views", kind: "heading", label: "Exposed by" })
-
-    binding.views.forEach((view, index) => {
-      descriptions.push({
-        key: `view#${index}`,
-        kind: "view",
-        label: view.component,
-        detail: describeSlot(view),
-      })
-    })
-  }
-
-  if (binding.consumers.length > 0) {
-    descriptions.push({ key: "consumers", kind: "heading", label: "Driven by" })
-    binding.consumers.forEach((consumer, index) => {
-      addConsumer(descriptions, consumer, index)
-    })
-  }
-
-  return descriptions
+export interface BindingDescription {
+  note: string | null
+  views: BindingViewDescription[]
+  controllers: BindingControllerDescription[]
 }
 
-/** One description as a single line, for a surface with one column to put it in. */
-export function formatBindingDescription(description: BindingDescription): string {
-  const conditional = description.conditional ? " (conditional)" : ""
+const STATE_NOTES: Record<string, string> = {
+  unbound: "No code drives this ref yet.",
+  stale: "The manifest names this ref, but the workspace no longer has it.",
+}
 
-  if (!description.detail) return `${description.label}${conditional}`
+const SLOT_CONDITIONS: Record<SeldonRefView["rendersWhen"], string> = {
+  "unless-null": "renders unless null",
+  "when-passed": "renders when passed",
+}
 
-  return `${description.label} · ${description.detail}${conditional}`
+/**
+ * Describes one binding in the words every surface reports it with, so the properties
+ * sidebar and the canvas card say the same thing the same way.
+ *
+ * Fields stay separate rather than pre-joined, because each surface has its own number
+ * of places to put them. A surface with two columns keeps a name and a location, and
+ * drops the expression and the inputs behind it.
+ */
+export function describeBinding(binding: RefBinding | null): BindingDescription {
+  if (!binding) {
+    return { note: null, views: [], controllers: [] }
+  }
+
+  return {
+    note: STATE_NOTES[binding.state] ?? null,
+    views: binding.views.map(describeView),
+    controllers: binding.consumers.map(describeConsumer),
+  }
 }
 
 /** The file's own name, for a consumer that reports no enclosing component. */
@@ -93,44 +74,36 @@ export function getBindingFileName(file: string): string {
   return parts[parts.length - 1] || file
 }
 
-function addConsumer(
-  descriptions: BindingDescription[],
-  consumer: RefConsumer,
-  index: number,
-): void {
-  descriptions.push({
-    key: `consumer#${index}`,
-    kind: "consumer",
-    label: consumer.component || getBindingFileName(consumer.file),
-    detail: `${consumer.file}:${consumer.line}`,
-    conditional: consumer.conditional,
-  })
+/** The folder a file sits in, with its trailing slash, or an empty string at the root. */
+export function getBindingDirectory(file: string): string {
+  const cut = file.lastIndexOf("/")
 
-  if (consumer.expression) {
-    descriptions.push({
-      key: `consumer#${index}-expression`,
-      kind: "detail",
-      label: consumer.expression,
-    })
-  }
-
-  consumer.inputs.forEach((input, inputIndex) => {
-    descriptions.push({
-      key: `consumer#${index}-input#${inputIndex}`,
-      kind: "detail",
-      label: describeInput(input),
-    })
-  })
+  return cut === -1 ? "" : file.slice(0, cut + 1)
 }
 
 /**
- * Names the slot a view exposes. A `when-passed` slot is called out, because a ref
- * override alone cannot bring it on screen and that surprises a caller who set one.
+ * Names the slot a view exposes and when it renders.
+ *
+ * A `when-passed` slot is called out, because a ref override alone cannot bring it on
+ * screen and that surprises a caller who set one.
  */
-function describeSlot(view: SeldonRefView): string {
-  const name = view.slot ?? "root"
+function describeView(view: SeldonRefView): BindingViewDescription {
+  return {
+    component: view.component,
+    file: view.file,
+    slot: view.slot ?? "root",
+    condition: SLOT_CONDITIONS[view.rendersWhen],
+  }
+}
 
-  return view.rendersWhen === "when-passed" ? `${name} (when passed)` : name
+function describeConsumer(consumer: RefConsumer): BindingControllerDescription {
+  return {
+    name: consumer.component || getBindingFileName(consumer.file),
+    location: `${consumer.file}:${consumer.line}`,
+    from: consumer.inputs.map(describeInput),
+    conditional: consumer.conditional,
+    pass: consumer.expression || null,
+  }
 }
 
 /**

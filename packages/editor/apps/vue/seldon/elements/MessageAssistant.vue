@@ -50,6 +50,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "textDescription": {
+    "children": "Assistant message",
     "className": "sdn-text-description sdn-text-description--welb"
   }
 }

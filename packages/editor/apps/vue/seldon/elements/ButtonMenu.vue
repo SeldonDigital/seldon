@@ -52,6 +52,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "textLabel": {
+    "children": "Button Menu",
     "className": "sdn-text-label sdn-text-label--sa6t"
   },
   "icon": {

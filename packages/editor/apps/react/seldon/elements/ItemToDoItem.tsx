@@ -47,10 +47,12 @@ export interface ItemToDoItemProps extends LiHTMLAttributes<HTMLLIElement> {
 const sdn: ItemToDoItemProps = {
   "aria-hidden": "false",
   inputCheckbox: {
+    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
 
   textLabel: {
+    children: "Label",
     className: "sdn-text-label sdn-text--s4kj",
   },
 
@@ -59,9 +61,11 @@ const sdn: ItemToDoItemProps = {
     className: "sdn-chip sdn-chip--o0xb",
   },
   icon: {
+    icon: "seldon-plus",
     className: "sdn-icon sdn-icon--eyw9",
   },
   textLabel2: {
+    children: "Add",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 
@@ -70,9 +74,11 @@ const sdn: ItemToDoItemProps = {
     className: "sdn-chip sdn-chip--o0xb",
   },
   icon2: {
+    icon: "seldon-minus",
     className: "sdn-icon sdn-icon--eyw9",
   },
   textLabel3: {
+    children: "Remove",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 
@@ -81,6 +87,7 @@ const sdn: ItemToDoItemProps = {
     className: "sdn-chip sdn-chip--o0xb",
   },
   textLabel4: {
+    children: "999",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 }

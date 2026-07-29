@@ -71,6 +71,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "textLabel": {
+    "children": "Label",
     "className": "sdn-text-label sdn-text-label--fwkw"
   },
   "frame": {
@@ -87,6 +88,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel2": {
+    "children": "Yes",
     "className": "sdn-text-label sdn-text-label--xohb"
   },
   "menuItemRadio2": {
@@ -98,6 +100,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel3": {
+    "children": "No",
     "className": "sdn-text-label sdn-text-label--xohb"
   }
 }

@@ -97,6 +97,7 @@ const sdn: ComboboxGroupedProps = {
     className: "sdn-frame sdn-frame--6o7x",
   },
   textLabel: {
+    children: "Group A",
     className: "sdn-text-label sdn-text-label--oqkb",
   },
   listboxOption: {
@@ -108,6 +109,7 @@ const sdn: ComboboxGroupedProps = {
     className: "sdn-icon sdn-icon--3qou",
   },
   textLabel2: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption2: {
@@ -119,6 +121,7 @@ const sdn: ComboboxGroupedProps = {
     className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
   },
   hr: {
@@ -132,6 +135,7 @@ const sdn: ComboboxGroupedProps = {
     className: "sdn-frame sdn-frame--6o7x",
   },
   textLabel4: {
+    children: "Group B",
     className: "sdn-text-label sdn-text-label--ptvk",
   },
   listboxOption3: {
@@ -143,6 +147,7 @@ const sdn: ComboboxGroupedProps = {
     className: "sdn-icon sdn-icon--3qou",
   },
   textLabel5: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption4: {
@@ -154,6 +159,7 @@ const sdn: ComboboxGroupedProps = {
     className: "sdn-icon sdn-icon--3qou",
   },
   textLabel6: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
   },
 }

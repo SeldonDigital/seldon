@@ -157,7 +157,7 @@ export async function exportReact(
   }
 
   try {
-    filesToExport.push(...generateRefsRegistry(refSources, nodeIdToClass, options))
+    filesToExport.push(...(await generateRefsRegistry(refSources, nodeIdToClass, options)))
   } catch {
     // Failed to generate refs registry
   }

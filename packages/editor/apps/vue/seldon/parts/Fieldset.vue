@@ -98,6 +98,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-form-control sdn-form-control--vmxp"
   },
   "textLabel": {
+    "children": "Label",
     "className": "sdn-text-label sdn-text-label--u1gw"
   },
   "input": {
@@ -110,6 +111,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-form-control sdn-form-control--vmxp"
   },
   "textLabel2": {
+    "children": "Label",
     "className": "sdn-text-label sdn-text-label--u1gw"
   },
   "input2": {
@@ -122,6 +124,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-form-control sdn-form-control--vmxp"
   },
   "textLabel3": {
+    "children": "Label",
     "className": "sdn-text-label sdn-text-label--u1gw"
   },
   "select": {
@@ -129,12 +132,15 @@ const sdn: Record<string, any> = {
     "className": "sdn-select sdn-select--7bom"
   },
   "textOption": {
+    "children": "Option 01",
     "className": "sdn-text-option sdn-text-label--yqnd"
   },
   "textOption2": {
+    "children": "Option 02",
     "className": "sdn-text-option sdn-text-label--yqnd"
   },
   "textOption3": {
+    "children": "Option 03",
     "className": "sdn-text-option sdn-text-label--yqnd"
   }
 }

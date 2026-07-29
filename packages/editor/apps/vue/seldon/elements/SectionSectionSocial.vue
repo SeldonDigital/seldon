@@ -80,6 +80,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--eyw9"
   },
   "textLabel": {
+    "children": "Twitter",
     "className": "sdn-text-label sdn-text-label--zk5o"
   },
   "button2": {
@@ -91,6 +92,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--eyw9"
   },
   "textLabel2": {
+    "children": "LinkedIn",
     "className": "sdn-text-label sdn-text-label--zk5o"
   },
   "button3": {
@@ -102,6 +104,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--eyw9"
   },
   "textLabel3": {
+    "children": "Instagram",
     "className": "sdn-text-label sdn-text-label--zk5o"
   }
 }

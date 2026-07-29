@@ -54,6 +54,7 @@ const sdn: CalendarDayProps = {
   wrapperElement: "div",
   "aria-hidden": "false",
   textLabel: {
+    children: "00",
     className: "sdn-text-label sdn-text-label--k3ye",
   },
 }

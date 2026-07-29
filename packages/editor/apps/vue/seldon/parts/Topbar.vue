@@ -99,6 +99,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-button sdn-button--l9rb"
   },
   "textLabel": {
+    "children": "Expertise",
     "className": "sdn-text-label sdn-text-label--lbxv"
   },
   "icon": {
@@ -107,12 +108,15 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--xi68"
   },
   "linkPlain": {
+    "children": "Services",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "linkPlain2": {
+    "children": "Study Case",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "linkPlain3": {
+    "children": "About",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "button2": {
@@ -124,6 +128,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--tdud"
   },
   "textLabel2": {
+    "children": "Contact",
     "className": "sdn-text-label sdn-text-label--d65z"
   }
 }

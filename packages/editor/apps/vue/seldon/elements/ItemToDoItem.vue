@@ -76,9 +76,11 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "inputCheckbox": {
+    "placeholder": "Placeholder text",
     "className": "sdn-input-checkbox sdn-input-checkbox--vajr"
   },
   "textLabel": {
+    "children": "Label",
     "className": "sdn-text-label sdn-text--s4kj"
   },
   "chip": {
@@ -86,9 +88,11 @@ const sdn: Record<string, any> = {
     "className": "sdn-chip sdn-chip--o0xb"
   },
   "icon": {
+    "icon": "seldon-plus",
     "className": "sdn-icon sdn-icon--eyw9"
   },
   "textLabel2": {
+    "children": "Add",
     "className": "sdn-text-label sdn-text-label--lug5"
   },
   "chip2": {
@@ -96,9 +100,11 @@ const sdn: Record<string, any> = {
     "className": "sdn-chip sdn-chip--o0xb"
   },
   "icon2": {
+    "icon": "seldon-minus",
     "className": "sdn-icon sdn-icon--eyw9"
   },
   "textLabel3": {
+    "children": "Remove",
     "className": "sdn-text-label sdn-text-label--lug5"
   },
   "chip3": {
@@ -106,6 +112,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-chip sdn-chip--o0xb"
   },
   "textLabel4": {
+    "children": "999",
     "className": "sdn-text-label sdn-text-label--lug5"
   }
 }

@@ -54,9 +54,11 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "inputRadioButton": {
+    "placeholder": "Placeholder text",
     "className": "sdn-input-checkbox sdn-input-checkbox--vajr"
   },
   "textLabel": {
+    "children": "Label",
     "className": "sdn-text-label sdn-text-label--o9nd"
   }
 }

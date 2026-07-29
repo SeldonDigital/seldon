@@ -48,6 +48,7 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "textLabel": {
+    "children": "Button",
     "className": "sdn-text-label sdn-text-label--ylte"
   }
 }

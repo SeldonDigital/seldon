@@ -90,12 +90,15 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--tv9y"
   },
   "linkPlain": {
+    "children": "What We Do",
     "className": "sdn-link-plain sdn-link-plain--q3fs"
   },
   "linkPlain2": {
+    "children": "Project",
     "className": "sdn-link-plain sdn-link-plain--q3fs"
   },
   "linkPlain3": {
+    "children": "Contact",
     "className": "sdn-link-plain sdn-link-plain--q3fs"
   },
   "frame3": {
@@ -104,12 +107,15 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--eicl"
   },
   "linkPlain4": {
+    "children": "EN",
     "className": "sdn-link-plain sdn-link-plain--1tic"
   },
   "text": {
+    "children": " | ",
     "className": "sdn-text sdn-text--s4kj"
   },
   "linkPlain5": {
+    "children": "JP",
     "className": "sdn-link-plain sdn-link-plain--q3fs"
   }
 }

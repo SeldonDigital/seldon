@@ -92,6 +92,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-form-control sdn-form-control-combobox--qmop"
   },
   "input": {
+    "placeholder": "Property Name",
     "className": "sdn-input sdn-input--jvsw",
     "data-seldon-ref": "propertyLabel"
   },

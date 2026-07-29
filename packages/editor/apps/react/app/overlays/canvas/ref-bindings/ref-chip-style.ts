@@ -1,40 +1,54 @@
-import { CONNECTOR_COLOR, CONNECTOR_Z_INDEX, MUTED_OPACITY } from "./connector-style"
+import { CONNECTOR_Z_INDEX, MUTED_OPACITY } from "./connector-style"
 
 import type { ChipBox } from "@seldon/editor/lib/canvas/connectors/connector-layout"
 import type { CSSProperties } from "react"
 
 /**
- * Styling for the chips a connector runs to. They take the connector's color and
- * stacking so the line and its label read as one mark.
+ * Where a chip sits in the gutter. Its surface, type, and spacing come from the
+ * `PanelRefs` schema, so only placement and state are set here.
  */
 
 /**
- * The chip label box. Interactive on purpose, unlike every other canvas overlay,
- * because clicking it opens the ref card.
+ * Neutralizes the panel's own board box, so the chip and the card are laid out by
+ * the wrapper they sit in rather than by the 300 by 300 frame the panel is drawn on.
+ */
+export const refsPanelStyle: CSSProperties = { display: "contents" }
+
+/** Suppresses the card half of a chip's panel instance. */
+export const refChipHiddenCardStyle: CSSProperties = { display: "none" }
+
+/**
+ * The chip box. Interactive on purpose, unlike every other canvas overlay, because
+ * clicking it opens the ref card.
+ *
+ * Placed by its vertical center rather than its top edge, so the connector meets the
+ * middle of the chip whatever height the schema gives it.
  */
 export function refChipStyle(chip: ChipBox, muted: boolean): CSSProperties {
   return {
-    position: "absolute",
-    top: `${chip.top}px`,
-    left: `${chip.left}px`,
-    width: `${chip.width}px`,
-    height: `${chip.height}px`,
-    boxSizing: "border-box",
-    display: "flex",
-    alignItems: "center",
-    padding: "0 var(--sdn-paddings-tight)",
-    borderRadius: "var(--sdn-corners-tight)",
-    backgroundColor: CONNECTOR_COLOR,
-    color: "var(--sdn-swatch-offWhite)",
-    fontFamily: "var(--sdn-font-family-primary), system-ui, sans-serif",
-    fontSize: "var(--sdn-font-size-xsmall)",
-    lineHeight: "var(--sdn-line-height-tight)",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    ...chipBox(chip),
     opacity: muted ? MUTED_OPACITY : 1,
     pointerEvents: "auto",
     cursor: "pointer",
+  }
+}
+
+/** The count of refs that did not fit. It carries no connector and opens no card. */
+export function refOmittedStyle(chip: ChipBox): CSSProperties {
+  return {
+    ...chipBox(chip),
+    opacity: MUTED_OPACITY,
+    pointerEvents: "none",
+  }
+}
+
+function chipBox(chip: ChipBox): CSSProperties {
+  return {
+    position: "absolute",
+    top: `${chip.top + chip.height / 2}px`,
+    left: `${chip.left}px`,
+    transform: "translateY(-50%)",
+    maxWidth: `${chip.width}px`,
     zIndex: CONNECTOR_Z_INDEX,
   }
 }

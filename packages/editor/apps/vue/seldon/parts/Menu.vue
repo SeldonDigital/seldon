@@ -94,9 +94,11 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel": {
+    "children": "Menu Item",
     "className": "sdn-text-label sdn-text-label--xohb"
   },
   "textLabel2": {
+    "children": "⌘K",
     "className": "sdn-text-label sdn-text-label--fdei"
   },
   "menuItem2": {
@@ -110,9 +112,11 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel3": {
+    "children": "Menu Item",
     "className": "sdn-text-label sdn-text-label--xohb"
   },
   "textLabel4": {
+    "children": "⌘K",
     "className": "sdn-text-label sdn-text-label--fdei"
   },
   "hr": {
@@ -130,6 +134,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel5": {
+    "children": "Checkbox",
     "className": "sdn-text-label sdn-text-label--xohb"
   },
   "menuItemRadio": {
@@ -143,6 +148,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--3qou"
   },
   "textLabel6": {
+    "children": "Radio",
     "className": "sdn-text-label sdn-text-label--xohb"
   }
 }

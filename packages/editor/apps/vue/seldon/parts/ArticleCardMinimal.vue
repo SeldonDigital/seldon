@@ -79,9 +79,11 @@ const sdn: Record<string, any> = {
     "className": "sdn-chip sdn-chip--o0xb"
   },
   "textLabel": {
+    "children": "Design",
     "className": "sdn-text-label sdn-text-label--lug5"
   },
   "textHeading": {
+    "children": "How to design better cards",
     "className": "sdn-text-heading sdn-text-label--yqnd"
   }
 }

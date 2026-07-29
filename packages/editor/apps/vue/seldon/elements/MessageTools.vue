@@ -82,6 +82,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--bmas"
   },
   "textDescription": {
+    "children": "Tools Applied",
     "className": "sdn-text-description sdn-text-description--71gg"
   },
   "frame2": {
@@ -91,9 +92,11 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "tool"
   },
   "icon2": {
+    "icon": "material-build",
     "className": "sdn-icon sdn-icon--9ouj"
   },
   "textDescription2": {
+    "children": "Tool",
     "className": "sdn-text-description sdn-text-description--hqun"
   }
 }

@@ -74,9 +74,11 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--rclo"
   },
   "linkPlain": {
+    "children": "Services",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "linkPlain2": {
+    "children": "Our Work",
     "className": "sdn-link-plain sdn-link-plain--hnhh"
   },
   "frame2": {
@@ -85,12 +87,14 @@ const sdn: Record<string, any> = {
     "className": "sdn-frame sdn-frame--az2m"
   },
   "linkPlain3": {
+    "children": "Contact",
     "className": "sdn-link-plain sdn-link-plain--yc40"
   },
   "button": {
     "className": "sdn-button sdn-button--aket"
   },
   "textLabel": {
+    "children": "Let&#039;s Connect",
     "className": "sdn-text-label sdn-text-label--fcuq"
   },
   "image": {

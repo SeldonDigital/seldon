@@ -1,3 +1,5 @@
+import { formatJson } from "./format-json"
+
 import type { ComponentToExport, ExportOptions, FileToExport, JSONTreeNode } from "../types"
 
 /**
@@ -83,11 +85,11 @@ export interface SeldonRefsRegistry {
  * Returns an empty list when no node carries a ref, so neither file is emitted
  * unless it has content.
  */
-export function generateRefsRegistry(
+export async function generateRefsRegistry(
   sources: RefViewSource[],
   nodeIdToClass: Record<string, string>,
   options: ExportOptions,
-): FileToExport[] {
+): Promise<FileToExport[]> {
   const refs = new Map<string, SeldonRefEntry>()
 
   for (const { component, propNames, conditionalPaths } of sources) {
@@ -167,7 +169,7 @@ ${mapEntries}
       // Pretty-printed and sorted, so it reads and diffs like source in the
       // project it lands in.
       path: `${folder}/registry.json`,
-      content: `${JSON.stringify(registry, null, 2)}\n`,
+      content: await formatJson(JSON.stringify(registry, null, 2)),
     },
   ]
 }

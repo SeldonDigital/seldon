@@ -53,6 +53,7 @@ const sdn: MessageToolsProps = {
     className: "sdn-icon sdn-icon--bmas",
   },
   textDescription: {
+    children: "Tools Applied",
     className: "sdn-text-description sdn-text-description--71gg",
   },
 
@@ -63,9 +64,11 @@ const sdn: MessageToolsProps = {
     "data-seldon-ref": "tool",
   },
   icon2: {
+    icon: "material-build",
     className: "sdn-icon sdn-icon--9ouj",
   },
   textDescription2: {
+    children: "Tool",
     className: "sdn-text-description sdn-text-description--hqun",
   },
 }

@@ -42,6 +42,7 @@ const sdn: ListboxOptionProps = {
   },
 
   textLabel: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "optionLabel",
   },

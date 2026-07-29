@@ -289,6 +289,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--nlt7"
   },
   "textTitle": {
+    "children": "August 2025",
     "className": "sdn-text-title sdn-text-title--blaq"
   },
   "buttonIconic3": {
@@ -313,24 +314,31 @@ const sdn: Record<string, any> = {
     "className": "sdn-container sdn-container--npgy"
   },
   "textLabel": {
+    "children": "Su",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel2": {
+    "children": "Mo",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel3": {
+    "children": "Tu",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel4": {
+    "children": "We",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel5": {
+    "children": "Th",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel6": {
+    "children": "Fr",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "textLabel7": {
+    "children": "Sa",
     "className": "sdn-text-label sdn-text-label--sxr5"
   },
   "frame2": {
@@ -353,12 +361,14 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel9": {
+    "children": "1",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell2": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel10": {
+    "children": "2",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container3": {
@@ -370,42 +380,49 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel11": {
+    "children": "3",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell4": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel12": {
+    "children": "4",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell5": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel13": {
+    "children": "5",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell6": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel14": {
+    "children": "6",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell7": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel15": {
+    "children": "7",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell8": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel16": {
+    "children": "8",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell9": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel17": {
+    "children": "9",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container4": {
@@ -417,42 +434,49 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel18": {
+    "children": "10",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell11": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel19": {
+    "children": "11",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell12": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel20": {
+    "children": "12",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell13": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel21": {
+    "children": "13",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell14": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel22": {
+    "children": "14",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell15": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel23": {
+    "children": "15",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell16": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel24": {
+    "children": "16",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container5": {
@@ -464,42 +488,49 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel25": {
+    "children": "17",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayToday": {
     "className": "sdn-calendar-day-today sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel26": {
+    "children": "18",
     "className": "sdn-text-label sdn-text-label--bwn4"
   },
   "calendarDayGridCell18": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel27": {
+    "children": "19",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDaySelected": {
     "className": "sdn-calendar-day-selected sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel28": {
+    "children": "20",
     "className": "sdn-text-label sdn-text-label--fye8"
   },
   "calendarDayGridCell19": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel29": {
+    "children": "21",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell20": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel30": {
+    "children": "22",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell21": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel31": {
+    "children": "23",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container6": {
@@ -511,42 +542,49 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel32": {
+    "children": "24",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell23": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel33": {
+    "children": "25",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell24": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel34": {
+    "children": "26",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell25": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel35": {
+    "children": "27",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell26": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel36": {
+    "children": "28",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell27": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel37": {
+    "children": "29",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDayGridCell28": {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel38": {
+    "children": "30",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "container7": {
@@ -558,6 +596,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx"
   },
   "textLabel39": {
+    "children": "31",
     "className": "sdn-text-label sdn-text-label--g3ro"
   },
   "calendarDay2": {

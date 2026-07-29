@@ -68,6 +68,7 @@ const props = defineProps<{
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
   "textTitle": {
+    "children": "Title",
     "className": "sdn-text-title sdn-text-title--qbtu"
   },
   "buttonIconic": {
@@ -87,6 +88,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--umgs"
   },
   "textLabel": {
+    "children": "Button",
     "className": "sdn-text-label sdn-text-label--ylte"
   }
 }

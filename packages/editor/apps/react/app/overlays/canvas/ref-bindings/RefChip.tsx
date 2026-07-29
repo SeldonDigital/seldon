@@ -1,9 +1,15 @@
 import { Frame } from "@seldon/components/frames/Frame"
+import { PanelRefs } from "@seldon/components/modules/PanelRefs"
 import { useMemo } from "react"
 
 import { RefCardController } from "./RefCardController"
 import { useRefCard } from "./hooks/use-ref-card"
-import { refChipStyle } from "./ref-chip-style"
+import {
+  refChipHiddenCardStyle,
+  refChipStyle,
+  refOmittedStyle,
+  refsPanelStyle,
+} from "./ref-chip-style"
 
 import type {
   ChipBox,
@@ -21,14 +27,27 @@ interface RefOmittedProps {
   count: number
 }
 
-/** The ref name at the end of a connector, opening its card when clicked. */
+/**
+ * The ref name at the end of a connector, opening its card when clicked.
+ *
+ * The chip and the card are the same `PanelRefs` component, drawn twice. This instance
+ * hides the card half and the card's instance leaves the chip out, so both surfaces
+ * take their look from one schema.
+ *
+ * The wrapper carries the placement and the click, because a module takes no `ref`.
+ */
 export function RefChip({ placement, binding }: RefChipProps) {
   const { chipRef, cardRef, position, toggle } = useRefCard()
 
-  const chipStyle = useMemo(
+  const wrapperStyle = useMemo(
     () => refChipStyle(placement.chip, placement.muted),
     [placement.chip, placement.muted],
   )
+
+  const chipRefs = {
+    refChipName: { children: placement.label },
+    refCard: { style: refChipHiddenCardStyle },
+  }
 
   const card = useMemo(() => {
     if (!position) return null
@@ -38,8 +57,14 @@ export function RefChip({ placement, binding }: RefChipProps) {
 
   return (
     <>
-      <Frame ref={chipRef} style={chipStyle} onClick={toggle}>
-        {placement.label}
+      <Frame ref={chipRef} style={wrapperStyle} onClick={toggle}>
+        <PanelRefs
+          role="presentation"
+          style={refsPanelStyle}
+          seldonRefs={chipRefs}
+          chipAssist={{}}
+          textLabel={{}}
+        />
       </Frame>
       {card}
     </>
@@ -54,8 +79,22 @@ export function RefChip({ placement, binding }: RefChipProps) {
  * no card, so it is drawn muted.
  */
 export function RefOmitted({ chip, count }: RefOmittedProps) {
-  const chipStyle = useMemo(() => refChipStyle(chip, true), [chip])
-  const label = `+${count} more`
+  const wrapperStyle = useMemo(() => refOmittedStyle(chip), [chip])
 
-  return <Frame style={chipStyle}>{label}</Frame>
+  const omittedRefs = {
+    refChipName: { children: `+${count} more` },
+    refCard: { style: refChipHiddenCardStyle },
+  }
+
+  return (
+    <Frame style={wrapperStyle}>
+      <PanelRefs
+        role="presentation"
+        style={refsPanelStyle}
+        seldonRefs={omittedRefs}
+        chipAssist={{}}
+        textLabel={{}}
+      />
+    </Frame>
+  )
 }

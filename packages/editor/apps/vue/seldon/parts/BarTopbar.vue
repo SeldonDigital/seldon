@@ -129,6 +129,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "menuFile"
   },
   "textLabel": {
+    "children": "File",
     "className": "sdn-text-label sdn-text-label--lbxv"
   },
   "buttonSimple2": {
@@ -136,6 +137,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "menuEdit"
   },
   "textLabel2": {
+    "children": "Edit",
     "className": "sdn-text-label sdn-text-label--lbxv"
   },
   "buttonSimple3": {
@@ -143,6 +145,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "menuComponent"
   },
   "textLabel3": {
+    "children": "Component",
     "className": "sdn-text-label sdn-text-label--lbxv"
   },
   "buttonSimple4": {
@@ -150,12 +153,14 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "menuView"
   },
   "textLabel4": {
+    "children": "Hari",
     "className": "sdn-text-label sdn-text-label--lbxv"
   },
   "buttonSimple5": {
     "className": "sdn-button-simple sdn-button-simple--dbgs"
   },
   "textLabel5": {
+    "children": "View",
     "className": "sdn-text-label sdn-text-label--lbxv"
   },
   "buttonSimple6": {
@@ -163,6 +168,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "menuDev"
   },
   "textLabel6": {
+    "children": "Dev",
     "className": "sdn-text-label sdn-text-label--lbxv"
   },
   "frame4": {
@@ -175,6 +181,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "menuTheme"
   },
   "textLabel7": {
+    "children": "Theme",
     "className": "sdn-text-label sdn-text-label--sa6t"
   },
   "icon": {
@@ -187,6 +194,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "menuMode"
   },
   "textLabel8": {
+    "children": "Mode",
     "className": "sdn-text-label sdn-text-label--sa6t"
   },
   "icon2": {

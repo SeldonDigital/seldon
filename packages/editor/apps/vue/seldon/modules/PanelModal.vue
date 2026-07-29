@@ -94,6 +94,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-bar sdn-bar--zhvk"
   },
   "textTitle": {
+    "children": "Modal",
     "className": "sdn-text-title sdn-text-title--eodu"
   },
   "comboboxFieldSearch": {
@@ -147,6 +148,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--gh8m"
   },
   "textLabel": {
+    "children": "Cancel",
     "className": "sdn-text-label sdn-text-label--wxqf"
   },
   "button2": {
@@ -158,6 +160,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--gh8m"
   },
   "textLabel2": {
+    "children": "OK",
     "className": "sdn-text-label sdn-text-label--wxqf"
   }
 }

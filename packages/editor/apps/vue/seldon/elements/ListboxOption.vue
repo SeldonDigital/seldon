@@ -60,6 +60,7 @@ const sdn: Record<string, any> = {
     "data-seldon-ref": "optionIcon"
   },
   "textLabel": {
+    "children": "Option",
     "className": "sdn-text-label sdn-text-label--xohb",
     "data-seldon-ref": "optionLabel"
   }

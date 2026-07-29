@@ -92,6 +92,7 @@ const sdn: ComboboxProps = {
     className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption2: {
@@ -105,6 +106,7 @@ const sdn: ComboboxProps = {
     className: "sdn-icon sdn-icon--3qou",
   },
   textLabel2: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption3: {
@@ -118,6 +120,7 @@ const sdn: ComboboxProps = {
     className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
+    children: "Option",
     className: "sdn-text-label sdn-text-label--xohb",
   },
 }

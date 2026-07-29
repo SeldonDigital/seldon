@@ -50,12 +50,16 @@ export interface ConnectorLayoutResult {
 /**
  * Viewport-fixed position of the ref card.
  *
- * Exactly one of `top` and `bottom` is set. `top` opens the card below its chip,
- * `bottom` opens it above, and the unset edge is what lets the card grow away
- * from the chip without its height being known first.
+ * The card is anchored by its right edge, next to the gutter its chip sits in, so
+ * it keeps the width it was given while its left edge is dragged.
+ *
+ * `opens` says which way the card grows off its chip. The edge it grows toward is
+ * left unset, which is what lets it grow without its height being known first.
  */
 export interface RefCardPosition {
-  left: number
+  opens: "below" | "above"
+  right: number
+  maxWidth: number
   maxHeight: number
   top?: number
   bottom?: number
@@ -73,8 +77,8 @@ export interface ConnectorLayoutOptions {
 
 /** Chip metrics the overlay draws with. Sizes are chrome pixels, not scaled. */
 export const CONNECTOR_LAYOUT_DEFAULTS = {
-  chipWidth: 168,
-  chipHeight: 20,
+  chipWidth: 200,
+  chipHeight: 28,
   chipGap: 4,
   stub: 16,
   margin: 12,
@@ -201,35 +205,43 @@ function getOmittedChip(input: {
 export const REF_CARD_MAX_WIDTH = 420
 export const REF_CARD_GAP = 4
 
+/** The size a card opens at until one is resized, and the smallest it can be dragged to. */
+export const REF_CARD_DEFAULT_SIZE = { width: 320, height: 260 }
+export const REF_CARD_MIN_SIZE = { width: 200, height: 120 }
+
 /**
  * Places the ref card clear of its chip, in viewport pixels for a fixed element.
  *
  * The card opens leftward, because chips sit against the right edge, and away from
  * the chip's nearer horizontal edge, so the chip it belongs to stays readable. It
  * takes whichever side has more room, since a chip low in the gutter has none
- * below it. The card's height is unknown before it renders, so rather than reserve
- * space for a full-height one, it is capped to the room on the chosen side and
- * scrolls past that.
+ * below it. Neither dimension is known before the card renders, so both are capped
+ * to the room on the chosen side and the card scrolls past that.
  */
 export function getRefCardPosition(
   chipRect: { top: number; bottom: number; right: number },
   viewport: { width: number; height: number },
   margin = CONNECTOR_LAYOUT_DEFAULTS.margin,
 ): RefCardPosition {
-  const left = clamp(
-    chipRect.right - REF_CARD_MAX_WIDTH,
-    margin,
-    viewport.width - REF_CARD_MAX_WIDTH - margin,
-  )
+  const right = clamp(viewport.width - chipRect.right, margin, viewport.width - margin)
+  const maxWidth = Math.min(REF_CARD_MAX_WIDTH, Math.max(viewport.width - right - margin, 0))
   const below = viewport.height - chipRect.bottom - REF_CARD_GAP - margin
   const above = chipRect.top - REF_CARD_GAP - margin
 
   if (below >= above) {
-    return { left, maxHeight: Math.max(below, 0), top: chipRect.bottom + REF_CARD_GAP }
+    return {
+      opens: "below",
+      right,
+      maxWidth,
+      maxHeight: Math.max(below, 0),
+      top: chipRect.bottom + REF_CARD_GAP,
+    }
   }
 
   return {
-    left,
+    opens: "above",
+    right,
+    maxWidth,
     maxHeight: Math.max(above, 0),
     bottom: viewport.height - chipRect.top + REF_CARD_GAP,
   }

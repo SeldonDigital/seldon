@@ -112,6 +112,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-bar sdn-bar--yje0"
   },
   "textTitle": {
+    "children": "Dialog",
     "className": "sdn-text-title sdn-text-title--8ah1"
   },
   "buttonIconic": {
@@ -131,6 +132,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--umgs"
   },
   "textLabel": {
+    "children": "Button",
     "className": "sdn-text-label sdn-text-label--ylte"
   },
   "frame": {
@@ -151,27 +153,33 @@ const sdn: Record<string, any> = {
     "className": "sdn-button sdn-button--wjtm"
   },
   "icon3": {
+    "icon": "seldon-component",
     "className": "sdn-icon sdn-icon--gh8m"
   },
   "textLabel2": {
+    "children": "Button",
     "className": "sdn-text-label sdn-text-label--wxqf"
   },
   "button3": {
     "className": "sdn-button sdn-button--wjtm"
   },
   "icon4": {
+    "icon": "seldon-component",
     "className": "sdn-icon sdn-icon--gh8m"
   },
   "textLabel3": {
+    "children": "Button",
     "className": "sdn-text-label sdn-text-label--wxqf"
   },
   "button4": {
     "className": "sdn-button sdn-button--wjtm"
   },
   "icon5": {
+    "icon": "seldon-component",
     "className": "sdn-icon sdn-icon--gh8m"
   },
   "textLabel4": {
+    "children": "Button",
     "className": "sdn-text-label sdn-text-label--wxqf"
   },
   "frame3": {
@@ -188,6 +196,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--gh8m"
   },
   "textLabel5": {
+    "children": "Cancel",
     "className": "sdn-text-label sdn-text-label--wxqf"
   },
   "button6": {
@@ -199,6 +208,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-icon sdn-icon--gh8m"
   },
   "textLabel6": {
+    "children": "OK",
     "className": "sdn-text-label sdn-text-label--wxqf"
   }
 }

@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto"
 
 import { BINDINGS_VERSION } from "../../bindings/version"
+import { formatJson } from "./format-json"
 
 import type { ExportOptions, FileToExport } from "../types"
 
@@ -19,10 +20,10 @@ const INTEGRITY_FILE = "INTEGRITY.json"
  * bytes, and any difference is a factory update or a local edit. The emitted
  * README says so.
  */
-export function generateScriptsIntegrity(
+export async function generateScriptsIntegrity(
   scriptFiles: FileToExport[],
   options: ExportOptions,
-): FileToExport {
+): Promise<FileToExport> {
   const scriptsFolder = `${options.output.componentsFolder}/scripts`
   const files: Record<string, string> = {}
 
@@ -50,6 +51,6 @@ export function generateScriptsIntegrity(
 
   return {
     path: `${scriptsFolder}/${INTEGRITY_FILE}`,
-    content: `${JSON.stringify(integrity, null, 2)}\n`,
+    content: await formatJson(JSON.stringify(integrity, null, 2)),
   }
 }

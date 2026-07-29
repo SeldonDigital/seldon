@@ -84,6 +84,7 @@ const sdn: Record<string, any> = {
     "className": "sdn-form-control sdn-form-control-combobox--gqrl"
   },
   "textLabel": {
+    "children": "Section Name",
     "className": "sdn-text-label sdn-text-label--z34z",
     "data-seldon-ref": "sectionLabel"
   },

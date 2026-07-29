@@ -68,7 +68,7 @@ export async function exportWorkspace(
   // target adds a license header to every string file it emits, which would make
   // the JSON unparseable.
   if (options.includeWorkspace) {
-    files.push(generateWorkspaceCopy(workspace, options))
+    files.push(await generateWorkspaceCopy(workspace, options))
   }
 
   // Also emitted here, for the same reason and one more: the integrity hashes
@@ -81,7 +81,7 @@ export async function exportWorkspace(
     const scripts = await generateScripts(options)
 
     if (scripts.length > 0) {
-      files.push(...scripts, generateScriptsIntegrity(scripts, options))
+      files.push(...scripts, await generateScriptsIntegrity(scripts, options))
     }
   }
 

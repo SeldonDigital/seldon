@@ -125,7 +125,7 @@ export async function exportVue(input: Workspace, options: ExportOptions): Promi
   }
 
   try {
-    filesToExport.push(...generateRefsRegistry(refSources, nodeIdToClass, options))
+    filesToExport.push(...(await generateRefsRegistry(refSources, nodeIdToClass, options)))
   } catch {
     // Failed to generate refs registry
   }
