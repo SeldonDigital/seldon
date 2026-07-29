@@ -35,17 +35,14 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 const sdn: SelectProps = {
   "aria-hidden": "false",
   textOption: {
-    children: "Option 01",
     className: "sdn-text-option sdn-text-label--yqnd",
   },
 
   textOption2: {
-    children: "Option 02",
     className: "sdn-text-option sdn-text-label--yqnd",
   },
 
   textOption3: {
-    children: "Option 03",
     className: "sdn-text-option sdn-text-label--yqnd",
   },
 }

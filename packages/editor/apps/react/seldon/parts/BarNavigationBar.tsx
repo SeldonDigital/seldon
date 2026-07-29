@@ -60,7 +60,6 @@ const sdn: BarNavigationBarProps = {
     className: "sdn-icon sdn-icon--ivvi",
   },
   textLabel: {
-    children: "Home",
     className: "sdn-text-label sdn-text-label--p4vx",
   },
 
@@ -73,7 +72,6 @@ const sdn: BarNavigationBarProps = {
     className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel2: {
-    children: "Search",
     className: "sdn-text-label sdn-text-label--4mii",
   },
 
@@ -86,7 +84,6 @@ const sdn: BarNavigationBarProps = {
     className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel3: {
-    children: "Favorites",
     className: "sdn-text-label sdn-text-label--4mii",
   },
 
@@ -99,7 +96,6 @@ const sdn: BarNavigationBarProps = {
     className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel4: {
-    children: "Profile",
     className: "sdn-text-label sdn-text-label--4mii",
   },
 
@@ -112,7 +108,6 @@ const sdn: BarNavigationBarProps = {
     className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel5: {
-    children: "Settings",
     className: "sdn-text-label sdn-text-label--4mii",
   },
 }

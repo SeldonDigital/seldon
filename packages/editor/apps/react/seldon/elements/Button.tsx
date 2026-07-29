@@ -39,7 +39,6 @@ const sdn: ButtonProps = {
   },
 
   textLabel: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

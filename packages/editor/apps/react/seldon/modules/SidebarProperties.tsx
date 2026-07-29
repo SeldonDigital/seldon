@@ -82,7 +82,6 @@ const sdn: SidebarPropertiesProps = {
     "data-seldon-ref": "menuState",
   },
   textLabel: {
-    children: "State",
     className: "sdn-text-label sdn-text-label--sa6t",
   },
   icon3: {

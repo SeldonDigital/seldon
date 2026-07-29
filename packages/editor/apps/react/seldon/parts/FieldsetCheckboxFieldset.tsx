@@ -59,11 +59,9 @@ const sdn: FieldsetCheckboxFieldsetProps = {
     className: "sdn-form-control sdn-form-control--vmxp",
   },
   inputCheckbox: {
-    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel: {
-    children: "Label",
     className: "sdn-text-label sdn-text-label--a3jd",
   },
 
@@ -72,11 +70,9 @@ const sdn: FieldsetCheckboxFieldsetProps = {
     className: "sdn-form-control sdn-form-control--vmxp",
   },
   inputCheckbox2: {
-    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel2: {
-    children: "Label",
     className: "sdn-text-label sdn-text-label--a3jd",
   },
 
@@ -85,11 +81,9 @@ const sdn: FieldsetCheckboxFieldsetProps = {
     className: "sdn-form-control sdn-form-control--vmxp",
   },
   inputCheckbox3: {
-    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   textLabel3: {
-    children: "Label",
     className: "sdn-text-label sdn-text-label--a3jd",
   },
 }

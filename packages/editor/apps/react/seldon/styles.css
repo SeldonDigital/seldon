@@ -2893,7 +2893,7 @@ body {
 .sdn-frame--lv6n {
   overflow-x: hidden;
   overflow-y: auto;
-  gap: var(--sdn-gaps-tight);
+  gap: 0;
   min-height: 0;
 }
 
@@ -3713,6 +3713,7 @@ body {
 
 .sdn-text--55ws {
   color: var(--sdn-hc-on-white);
+  margin-bottom: var(--sdn-margins-tight);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -3733,9 +3734,15 @@ body {
   overflow: hidden;
 }
 
+.sdn-text--ir92 {
+  color: var(--sdn-swatch-offBlack);
+  margin-inline-start: var(--sdn-margins-cozy);
+  opacity: 0.6;
+}
+
 .sdn-text--mc6h {
   color: var(--sdn-swatch-offBlack);
-  margin-inline-start: var(--sdn-margins-compact);
+  margin-inline-start: var(--sdn-margins-cozy);
   opacity: 0.6;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -3747,6 +3754,31 @@ body {
   flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
+}
+
+.sdn-text--wvhe {
+  color: var(--sdn-hc-on-white);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.sdn-text--y6np {
+  color: var(--sdn-swatch-offBlack);
+  margin-bottom: var(--sdn-margins-tight);
+  opacity: 0.6;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.sdn-text--ydup {
+  color: var(--sdn-hc-on-white);
+  margin-bottom: var(--sdn-margins-tight);
+  font-weight: var(--sdn-font-weight-medium);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .sdn-text-description--0r1j {
@@ -5056,7 +5088,6 @@ body {
 }
 
 .sdn-chip-assist[aria-selected="true"] {
-  background-color: transparent;
   border: var(--hairline) solid var(--sdn-swatch-active);
 }
 

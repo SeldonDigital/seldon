@@ -58,7 +58,6 @@ const sdn: HeaderProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

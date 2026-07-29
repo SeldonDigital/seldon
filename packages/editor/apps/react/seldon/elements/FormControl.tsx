@@ -34,7 +34,6 @@ export interface FormControlProps extends HTMLAttributes<HTMLElement> {
 const sdn: FormControlProps = {
   "aria-hidden": "false",
   textLabel: {
-    children: "Label",
     className: "sdn-text-label sdn-text-label--fwkw",
   },
 

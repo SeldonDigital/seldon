@@ -73,21 +73,18 @@ const sdn: SidebarProps = {
     className: "sdn-button-simple sdn-button-simple--znxu",
   },
   textLabel: {
-    children: "Tab 1",
     className: "sdn-text-label sdn-text-label--ylte",
   },
   buttonSimple2: {
     className: "sdn-button-simple sdn-button-simple--znxu",
   },
   textLabel2: {
-    children: "Tab 2",
     className: "sdn-text-label sdn-text-label--ylte",
   },
   buttonSimple3: {
     className: "sdn-button-simple sdn-button-simple--znxu",
   },
   textLabel3: {
-    children: "Tab 3",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -110,33 +107,27 @@ const sdn: SidebarProps = {
     className: "sdn-button sdn-button--wjtm",
   },
   icon: {
-    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel4: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
     className: "sdn-button sdn-button--wjtm",
   },
   icon2: {
-    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel5: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button3: {
     className: "sdn-button sdn-button--wjtm",
   },
   icon3: {
-    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel6: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   frame3: {
@@ -153,7 +144,6 @@ const sdn: SidebarProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel7: {
-    children: "Cancel",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button5: {
@@ -165,7 +155,6 @@ const sdn: SidebarProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel8: {
-    children: "OK",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
 }

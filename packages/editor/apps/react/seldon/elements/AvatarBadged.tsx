@@ -46,7 +46,6 @@ const sdn: AvatarBadgedProps = {
     className: "sdn-chip sdn-chip--3r55",
   },
   text: {
-    children: "99",
     className: "sdn-text sdn-text--0zmi",
   },
 }

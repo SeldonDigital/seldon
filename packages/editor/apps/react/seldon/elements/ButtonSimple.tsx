@@ -30,7 +30,6 @@ export interface ButtonSimpleProps extends ButtonHTMLAttributes<HTMLButtonElemen
 //
 const sdn: ButtonSimpleProps = {
   textLabel: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

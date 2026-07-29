@@ -1587,7 +1587,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   refCardControllerFrom: {
     component: "Text",
     nodeId: "component-message-Ir92uzNa",
-    className: "sdn-text sdn-text--mc6h",
+    className: "sdn-text sdn-text--ir92",
     views: [
       {
         component: "MessageRefController",
@@ -1615,7 +1615,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   refCardControllerName: {
     component: "Text",
     nodeId: "component-text-YDUPxtFS",
-    className: "sdn-text sdn-text--9wfd",
+    className: "sdn-text sdn-text--ydup",
     views: [
       {
         component: "MessageRefController",
@@ -1629,7 +1629,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   refCardControllerPass: {
     component: "Text",
     nodeId: "component-message-Y6NPSfwz",
-    className: "sdn-text sdn-text--mc6h",
+    className: "sdn-text sdn-text--y6np",
     views: [
       {
         component: "MessageRefController",
@@ -1671,7 +1671,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   refCardPath: {
     component: "Text",
     nodeId: "component-panel-WVHEGm8i",
-    className: "sdn-text sdn-text--55ws",
+    className: "sdn-text sdn-text--wvhe",
     views: [
       {
         component: "PanelRefs",

@@ -40,7 +40,6 @@ const sdn: MessageStatusProps = {
   },
 
   textLabel: {
-    children: "Working...",
     className: "sdn-text-label sdn-text-label--ue8m",
   },
 }

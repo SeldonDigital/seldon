@@ -43,12 +43,10 @@ const sdn: SectionSectionBrandProps = {
   },
 
   textTitle: {
-    children: "Company Name",
     className: "sdn-text-title sdn-text-title--unrf",
   },
 
   textDescription: {
-    children: "Building amazing products for the future.",
     className: "sdn-text-description sdn-text-title--unrf",
   },
 }

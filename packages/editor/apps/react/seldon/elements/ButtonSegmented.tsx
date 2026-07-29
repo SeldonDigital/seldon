@@ -50,7 +50,6 @@ const sdn: ButtonSegmentedProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -63,7 +62,6 @@ const sdn: ButtonSegmentedProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel2: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -76,7 +74,6 @@ const sdn: ButtonSegmentedProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel3: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

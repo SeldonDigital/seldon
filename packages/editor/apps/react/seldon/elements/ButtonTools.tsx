@@ -50,7 +50,6 @@ const sdn: ButtonToolsProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--7mza",
   },
 
@@ -63,7 +62,6 @@ const sdn: ButtonToolsProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel2: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--7mza",
   },
 
@@ -76,7 +74,6 @@ const sdn: ButtonToolsProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel3: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--7mza",
   },
 }

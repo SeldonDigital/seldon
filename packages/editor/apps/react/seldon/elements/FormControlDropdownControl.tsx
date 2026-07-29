@@ -38,7 +38,6 @@ export interface FormControlDropdownControlProps extends HTMLAttributes<HTMLElem
 const sdn: FormControlDropdownControlProps = {
   "aria-hidden": "false",
   textLabel: {
-    children: "Label",
     className: "sdn-text-label sdn-text-label--fwkw",
   },
 
@@ -47,15 +46,12 @@ const sdn: FormControlDropdownControlProps = {
     className: "sdn-select sdn-select--7bom",
   },
   textOption: {
-    children: "Option 01",
     className: "sdn-text-option sdn-text-label--yqnd",
   },
   textOption2: {
-    children: "Option 02",
     className: "sdn-text-option sdn-text-label--yqnd",
   },
   textOption3: {
-    children: "Option 03",
     className: "sdn-text-option sdn-text-label--yqnd",
   },
 }

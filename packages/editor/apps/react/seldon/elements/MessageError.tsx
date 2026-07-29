@@ -44,11 +44,9 @@ const sdn: MessageErrorProps = {
     className: "sdn-frame sdn-frame--ieew",
   },
   icon: {
-    icon: "material-error",
     className: "sdn-icon sdn-icon--gm8j",
   },
   textDescription: {
-    children: "Something went wrong",
     className: "sdn-text-description sdn-text-label--lbxv",
   },
 
@@ -56,7 +54,6 @@ const sdn: MessageErrorProps = {
     className: "sdn-button-simple sdn-button-iconic--iklu",
   },
   textLabel: {
-    children: "Retry",
     className: "sdn-text-label sdn-text-label--aftu",
   },
 }

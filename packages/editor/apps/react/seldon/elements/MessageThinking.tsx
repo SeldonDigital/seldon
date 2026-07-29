@@ -52,16 +52,13 @@ const sdn: MessageThinkingProps = {
     className: "sdn-icon sdn-icon--kzy9",
   },
   textDescription: {
-    children: "Thinking...",
     className: "sdn-text-description sdn-text-description--0r1j",
   },
   textDescription2: {
-    children: "Clamped",
     className: "sdn-text-description sdn-text-description--aeeo",
   },
 
   textDescription3: {
-    children: "Reasoning...",
     className: "sdn-text-description sdn-text-description--choa",
   },
 }

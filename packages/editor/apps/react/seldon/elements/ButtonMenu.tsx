@@ -33,7 +33,6 @@ export interface ButtonMenuProps extends ButtonHTMLAttributes<HTMLButtonElement>
 //
 const sdn: ButtonMenuProps = {
   textLabel: {
-    children: "Button Menu",
     className: "sdn-text-label sdn-text-label--sa6t",
   },
 

@@ -58,33 +58,27 @@ const sdn: BarButtonsProps = {
     className: "sdn-button sdn-button--wjtm",
   },
   icon: {
-    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
     className: "sdn-button sdn-button--wjtm",
   },
   icon2: {
-    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel2: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button3: {
     className: "sdn-button sdn-button--wjtm",
   },
   icon3: {
-    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel3: {
-    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
 
@@ -102,7 +96,6 @@ const sdn: BarButtonsProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel4: {
-    children: "Cancel",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button5: {
@@ -114,7 +107,6 @@ const sdn: BarButtonsProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel5: {
-    children: "OK",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
 }
