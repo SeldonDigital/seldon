@@ -91,12 +91,11 @@ export function useCanvasOverlays(
 
   // Re-measure once a reorder glide settles or a pan/zoom settle bumps.
   const remeasureVersion = useSharedStore(remeasureStore, (s) => s.version)
-  const isTransforming = useSharedStore(remeasureStore, (s) => s.isTransforming)
 
-  watch([remeasureVersion, isTransforming], () => tracker.refresh())
+  watch(remeasureVersion, () => tracker.refresh())
 
-  // Hide the outlines while the canvas pans or zooms, then bump a re-measure at
-  // the settled position, mirroring React `CanvasTransformRemeasure`.
+  // Report the pan or zoom so the wireframe boxes hide until it settles, then bump a
+  // re-measure at the settled position, mirroring React `CanvasTransformRemeasure`.
   let timer: ReturnType<typeof setTimeout> | null = null
   let raf = 0
   const unsubscribeSettle = subscribeTransform(() => {
