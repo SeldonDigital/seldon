@@ -31,6 +31,7 @@ export interface ChipProps extends HTMLAttributes<HTMLElement> {
 const sdn: ChipProps = {
   "aria-hidden": "false",
   textLabel: {
+    children: "999",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 }

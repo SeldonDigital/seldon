@@ -31,6 +31,7 @@ export interface ChipSuggestionProps extends HTMLAttributes<HTMLElement> {
 const sdn: ChipSuggestionProps = {
   "aria-hidden": "false",
   textLabel: {
+    children: "Suggestion",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 }

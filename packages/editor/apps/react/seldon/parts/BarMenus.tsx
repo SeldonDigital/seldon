@@ -47,6 +47,7 @@ const sdn: BarMenusProps = {
     className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel: {
+    children: "File",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -55,6 +56,7 @@ const sdn: BarMenusProps = {
     className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel2: {
+    children: "Edit",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -63,6 +65,7 @@ const sdn: BarMenusProps = {
     className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel3: {
+    children: "View",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -71,6 +74,7 @@ const sdn: BarMenusProps = {
     className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel4: {
+    children: "Help",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

@@ -40,21 +40,25 @@ export interface MessageRefControllerProps extends HTMLAttributes<HTMLElement> {
 const sdn: MessageRefControllerProps = {
   "aria-hidden": "false",
   text: {
+    children: "ImageUploadDialog",
     className: "sdn-text sdn-text--ydup",
     "data-seldon-ref": "refCardControllerName",
   },
 
   text2: {
+    children: "app/dialogs/image-upload/ImageUploadController.tsx:129",
     className: "sdn-text sdn-text--55ws",
     "data-seldon-ref": "refCardControllerPath",
   },
 
   text3: {
+    children: "{ onClick: onSave }",
     className: "sdn-text sdn-text--y6np",
     "data-seldon-ref": "refCardControllerPass",
   },
 
   text4: {
+    children: "onSave (parameter, line 169)",
     className: "sdn-text sdn-text--ir92",
     "data-seldon-ref": "refCardControllerFrom",
   },

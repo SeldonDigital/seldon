@@ -58,6 +58,7 @@ export interface ListStandardCatalogProps extends HTMLAttributes<HTMLUListElemen
 const sdn: ListStandardCatalogProps = {
   "aria-hidden": "false",
   textSubtitle: {
+    children: "Component Level",
     className: "sdn-text-subtitle sdn-text-label--yqnd",
   },
 
@@ -71,6 +72,7 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-item-catalog sdn-item-catalog--ieif",
   },
   icon: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--km45",
   },
   frame: {
@@ -79,15 +81,18 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--dr0a",
   },
   textSubtitle2: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
   itemCatalog2: {
     className: "sdn-item-catalog sdn-item-catalog--ieif",
   },
   icon2: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--km45",
   },
   frame2: {
@@ -96,15 +101,18 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle2: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--matt",
   },
   textSubtitle3: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--b0xy",
   },
   itemCatalog3: {
     className: "sdn-item-catalog sdn-item-catalog--ieif",
   },
   icon3: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--km45",
   },
   frame3: {
@@ -113,15 +121,18 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle3: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--matt",
   },
   textSubtitle4: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--b0xy",
   },
   itemCatalog4: {
     className: "sdn-item-catalog sdn-item-catalog--ieif",
   },
   icon4: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--km45",
   },
   frame4: {
@@ -130,9 +141,11 @@ const sdn: ListStandardCatalogProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle4: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--matt",
   },
   textSubtitle5: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--b0xy",
   },
 }

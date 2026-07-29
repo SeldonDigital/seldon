@@ -45,6 +45,7 @@ export interface ItemProps extends LiHTMLAttributes<HTMLLIElement> {
 const sdn: ItemProps = {
   "aria-hidden": "false",
   inputCheckbox: {
+    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
 
@@ -54,9 +55,11 @@ const sdn: ItemProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
+    children: "Title",
     className: "sdn-text-title sdn-text-title--ulqm",
   },
   textSubtitle: {
+    children: "Subtitle",
     className: "sdn-text-subtitle sdn-text-subtitle--nxwj",
   },
 
@@ -69,6 +72,7 @@ const sdn: ItemProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

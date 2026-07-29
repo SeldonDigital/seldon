@@ -64,12 +64,15 @@ const sdn: CardStackedProductProps = {
     className: "sdn-frame sdn-frame--irc0",
   },
   textTagline: {
+    children: "Tagline",
     className: "sdn-text-tagline sdn-text-label--yqnd",
   },
   textTitle: {
+    children: "Product Card Title",
     className: "sdn-text-title sdn-text-title--zgck",
   },
   textDescription: {
+    children: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus.",
     className: "sdn-text-description sdn-text-label--yqnd",
   },
 
@@ -86,27 +89,33 @@ const sdn: CardStackedProductProps = {
     className: "sdn-button sdn-button--wjtm",
   },
   icon: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button2: {
     className: "sdn-button sdn-button--wjtm",
   },
   icon2: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel2: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button3: {
     className: "sdn-button sdn-button--wjtm",
   },
   icon3: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel3: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   frame3: {
@@ -123,6 +132,7 @@ const sdn: CardStackedProductProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel4: {
+    children: "Cancel",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
   button5: {
@@ -134,6 +144,7 @@ const sdn: CardStackedProductProps = {
     className: "sdn-icon sdn-icon--gh8m",
   },
   textLabel5: {
+    children: "OK",
     className: "sdn-text-label sdn-text-label--wxqf",
   },
 }

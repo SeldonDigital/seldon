@@ -51,6 +51,7 @@ const sdn: PanelRefsProps = {
     "data-seldon-ref": "refChip",
   },
   textLabel: {
+    children: "ReferenceName",
     className: "sdn-text-label sdn-text-label--litz",
     "data-seldon-ref": "refChipName",
   },
@@ -74,21 +75,26 @@ const sdn: PanelRefsProps = {
     className: "sdn-frame sdn-frame--xmfu",
   },
   textLabel2: {
+    children: "View",
     className: "sdn-text-label sdn-text-label--b5oa",
   },
   text: {
+    children: "ItemNode.tsx: { input2 }",
     className: "sdn-text sdn-text--9wfd",
     "data-seldon-ref": "refCardView",
   },
   text2: {
+    children: "seldon/elements/",
     className: "sdn-text sdn-text--wvhe",
     "data-seldon-ref": "refCardPath",
   },
   text3: {
+    children: "render unless null",
     className: "sdn-text sdn-text--mc6h",
     "data-seldon-ref": "refCardCondition",
   },
   textLabel3: {
+    children: "Controllers",
     className: "sdn-text-label sdn-text-label--b5oa",
   },
   frame3: {

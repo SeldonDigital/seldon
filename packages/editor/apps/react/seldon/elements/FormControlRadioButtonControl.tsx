@@ -34,10 +34,12 @@ export interface FormControlRadioButtonControlProps extends HTMLAttributes<HTMLE
 const sdn: FormControlRadioButtonControlProps = {
   "aria-hidden": "false",
   inputRadioButton: {
+    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
 
   textLabel: {
+    children: "Label",
     className: "sdn-text-label sdn-text-label--o9nd",
   },
 }

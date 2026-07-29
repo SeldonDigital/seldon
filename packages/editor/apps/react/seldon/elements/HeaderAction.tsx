@@ -39,9 +39,11 @@ const sdn: HeaderActionProps = {
     className: "sdn-frame sdn-frame--khlc",
   },
   textTitle: {
+    children: "Header Title",
     className: "sdn-text-title sdn-text-label--yqnd",
   },
   text: {
+    children: "Provide additional context or information.",
     className: "sdn-text sdn-text--5rcy",
   },
 }

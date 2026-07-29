@@ -60,6 +60,7 @@ const sdn: ItemPropertyToggleProps = {
     className: "sdn-form-control sdn-form-control-combobox--qmop",
   },
   input: {
+    placeholder: "Property Name",
     className: "sdn-input sdn-input--jvsw",
     "data-seldon-ref": "propertyToggleLabel",
   },
@@ -69,6 +70,7 @@ const sdn: ItemPropertyToggleProps = {
     className: "sdn-frame sdn-frame--inf3",
   },
   icon2: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--xi68",
     "data-seldon-ref": "propertyToggleIcon",
   },

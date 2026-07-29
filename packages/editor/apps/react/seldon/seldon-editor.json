@@ -37013,14 +37013,10 @@
       "states": {
         "active": {
           "border": {},
-          "background": [
-            {}
-          ]
+          "background": [{}]
         },
         "hover": {
-          "background": [
-            {}
-          ]
+          "background": [{}]
         },
         "disabled": {
           "border": {},
@@ -46645,8 +46641,8 @@
           "value": "left"
         },
         "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
+          "type": "option",
+          "value": "none"
         },
         "padding": {
           "top": {

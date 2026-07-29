@@ -40,6 +40,7 @@ const sdn: ChipAssistProps = {
   },
 
   textLabel: {
+    children: "Assist",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 }

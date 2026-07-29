@@ -67,6 +67,7 @@ const sdn: ListStandardProps = {
     className: "sdn-item sdn-item--vvmc",
   },
   inputCheckbox: {
+    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   frame: {
@@ -75,9 +76,11 @@ const sdn: ListStandardProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
+    children: "Title",
     className: "sdn-text-title sdn-text-label--yqnd",
   },
   textSubtitle: {
+    children: "Subtitle",
     className: "sdn-text-subtitle sdn-text-subtitle--pyri",
   },
   button: {
@@ -89,6 +92,7 @@ const sdn: ListStandardProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -97,6 +101,7 @@ const sdn: ListStandardProps = {
     className: "sdn-item sdn-item--vvmc",
   },
   inputCheckbox2: {
+    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   frame2: {
@@ -105,9 +110,11 @@ const sdn: ListStandardProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle2: {
+    children: "Title",
     className: "sdn-text-title sdn-text-label--yqnd",
   },
   textSubtitle2: {
+    children: "Subtitle",
     className: "sdn-text-subtitle sdn-text-subtitle--pyri",
   },
   button2: {
@@ -119,6 +126,7 @@ const sdn: ListStandardProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel2: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 
@@ -127,6 +135,7 @@ const sdn: ListStandardProps = {
     className: "sdn-item sdn-item--7egk",
   },
   inputCheckbox3: {
+    placeholder: "Placeholder text",
     className: "sdn-input-checkbox sdn-input-checkbox--vajr",
   },
   frame3: {
@@ -135,9 +144,11 @@ const sdn: ListStandardProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle3: {
+    children: "Title",
     className: "sdn-text-title sdn-text-label--yqnd",
   },
   textSubtitle3: {
+    children: "Subtitle",
     className: "sdn-text-subtitle sdn-text-subtitle--pyri",
   },
   button3: {
@@ -149,6 +160,7 @@ const sdn: ListStandardProps = {
     className: "sdn-icon sdn-icon--umgs",
   },
   textLabel3: {
+    children: "Button",
     className: "sdn-text-label sdn-text-label--ylte",
   },
 }

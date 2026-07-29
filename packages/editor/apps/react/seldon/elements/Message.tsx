@@ -31,6 +31,7 @@ export interface MessageProps extends HTMLAttributes<HTMLElement> {
 const sdn: MessageProps = {
   "aria-hidden": "false",
   textDescription: {
+    children: "Empty message",
     className: "sdn-text-description sdn-text-description--welb",
   },
 }

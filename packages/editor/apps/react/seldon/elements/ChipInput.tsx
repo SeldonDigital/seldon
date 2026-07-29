@@ -34,6 +34,7 @@ export interface ChipInputProps extends HTMLAttributes<HTMLElement> {
 const sdn: ChipInputProps = {
   "aria-hidden": "false",
   textLabel: {
+    children: "Input",
     className: "sdn-text-label sdn-text-label--lug5",
   },
 

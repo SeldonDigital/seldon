@@ -34,6 +34,7 @@ const sdn: ListProps = {
   htmlElement: "ul",
   "aria-hidden": "false",
   listItem: {
+    children: "List item",
     className: "sdn-list-item sdn-list-item--uvyv",
   },
 }

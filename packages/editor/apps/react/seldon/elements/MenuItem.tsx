@@ -43,10 +43,12 @@ const sdn: MenuItemProps = {
   },
 
   textLabel: {
+    children: "Menu Item",
     className: "sdn-text-label sdn-text-label--xohb",
   },
 
   textLabel2: {
+    children: "⌘K",
     className: "sdn-text-label sdn-text-label--fdei",
   },
 }

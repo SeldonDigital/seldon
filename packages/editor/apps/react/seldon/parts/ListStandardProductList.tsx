@@ -55,6 +55,7 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-item-catalog sdn-item-catalog--bg0n",
   },
   icon: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--km45",
   },
   frame: {
@@ -63,9 +64,11 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--dr0a",
   },
   textSubtitle: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
 
@@ -73,6 +76,7 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-item-catalog sdn-item-catalog--bg0n",
   },
   icon2: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--km45",
   },
   frame2: {
@@ -81,9 +85,11 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle2: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--dr0a",
   },
   textSubtitle2: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
 
@@ -92,6 +98,7 @@ const sdn: ListStandardProductListProps = {
     "data-seldon-ref": "Default",
   },
   icon3: {
+    icon: "seldon-component",
     className: "sdn-icon sdn-icon--km45",
   },
   frame3: {
@@ -100,9 +107,11 @@ const sdn: ListStandardProductListProps = {
     className: "sdn-frame sdn-frame--nhfs",
   },
   textTitle3: {
+    children: "Product Name",
     className: "sdn-text-title sdn-text-title--dr0a",
   },
   textSubtitle3: {
+    children: "Details",
     className: "sdn-text-subtitle sdn-text-subtitle--uv0m",
   },
 }
