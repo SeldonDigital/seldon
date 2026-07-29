@@ -89,8 +89,8 @@ export function useRefConnector(): RefConnectorState {
   )
 
   const frameAncestors = useMemo(
-    () => collectFrameAncestors(activeBoard, workspace, selectedNodeId),
-    [activeBoard, workspace, selectedNodeId],
+    () => collectFrameAncestors(activeBoard, workspace, selectedNodeId, scopedNodeIds),
+    [activeBoard, workspace, selectedNodeId, scopedNodeIds],
   )
 
   useFollowCanvasTransform(scopedNodeIds)
@@ -159,6 +159,11 @@ function collectScopedNodeIds(board: Board | null, selectedNodeId: string | null
  * redraws one level in. Nodes with no frame above them are absent and draw their own
  * chips.
  *
+ * Only frames inside the selection stand in for anything. The climb stops where the
+ * selection does, because a frame above it is not on screen as part of what was asked
+ * about, and summarizing onto one would point the chip away from the selection and up
+ * the tree. A selected node carrying its own ref therefore draws its own chip.
+ *
  * A frame's own ref is not part of its contents, so it keeps its own chip.
  *
  * The level comes from `getEffectiveNodeLevel` rather than the resolved catalog id,
@@ -170,6 +175,7 @@ function collectFrameAncestors(
   board: Board | null,
   workspace: Workspace,
   selectedNodeId: string | null,
+  scopedNodeIds: Set<string>,
 ): Map<string, string> {
   if (!board || !selectedNodeId) return new Map()
 
@@ -188,11 +194,11 @@ function collectFrameAncestors(
   const parents = getParentNodeIds(board)
   const summarizedBy = new Map<string, string>()
 
-  for (const nodeId of parents.keys()) {
+  for (const nodeId of scopedNodeIds) {
     let current = parents.get(nodeId)
     let topmost: string | null = null
 
-    while (current && current !== selectedNodeId) {
+    while (current && current !== selectedNodeId && scopedNodeIds.has(current)) {
       if (frames.has(current)) {
         topmost = current
       }

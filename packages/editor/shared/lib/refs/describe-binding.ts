@@ -38,8 +38,8 @@ export interface BindingDescription {
 }
 
 const STATE_NOTES: Record<string, string> = {
-  unbound: "No code drives this ref yet.",
-  stale: "The manifest names this ref, but the workspace no longer has it.",
+  unbound: "No code drives this reference yet.",
+  stale: "The manifest names this reference, but the workspace no longer has it.",
 }
 
 const SLOT_CONDITIONS: Record<SeldonRefView["rendersWhen"], string> = {
