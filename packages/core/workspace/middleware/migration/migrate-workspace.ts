@@ -15,12 +15,13 @@ import { migrateV14EnumBooleanOption } from "./steps/migrate-00014-enum-boolean-
 import { migrateV15DisplayPlaceholderToStub } from "./steps/migrate-00015-display-placeholder-to-stub"
 import { migrateV16LayeredOverrideLength } from "./steps/migrate-00016-layered-override-length"
 import { migrateV17DropInitialOverrides } from "./steps/migrate-00017-drop-initial-overrides"
+import { migrateV18UniqueNodeRefs } from "./steps/migrate-00018-unique-node-refs"
 import { repairBoardOrder } from "./steps/repair-board-order"
 
 import type { Workspace } from "../../model/workspace"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 17
+export const CURRENT_WORKSPACE_VERSION = 18
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -42,6 +43,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   15: migrateV15DisplayPlaceholderToStub,
   16: migrateV16LayeredOverrideLength,
   17: migrateV17DropInitialOverrides,
+  18: migrateV18UniqueNodeRefs,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
@@ -64,11 +66,17 @@ if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
  * Board order is derived rather than authored, so `repairBoardOrder` also runs
  * here to re-sort a loaded file with the current ordering logic instead of the
  * order stored when it was saved.
+ *
+ * A duplicate node ref can enter a file at any version, through an import, a
+ * hand edit, or a copy written by an older build, and verification refuses to
+ * open the file. `migrateV18UniqueNodeRefs` runs here as well so such a file
+ * still opens.
  */
 const REPAIR_STEPS: MigrationStep[] = [
   migrateV3ThemeRenames,
   migrateV6IconSetRenames,
   migrateV12DialogToPanels,
+  migrateV18UniqueNodeRefs,
   repairBoardOrder,
 ]
 

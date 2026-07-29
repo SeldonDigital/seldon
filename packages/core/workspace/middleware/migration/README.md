@@ -26,7 +26,7 @@ Versioned steps live under `steps/`, one file per target version. Version 1 is t
 
 ## Repair Steps
 
-Repair steps run on every load, regardless of stored version. They cover stock theme and icon set renames that must also reach files already stamped at the current version. Each repair guards itself and only rewrites the references it matches, so it is safe to re-run.
+Repair steps run on every load, regardless of stored version. They cover stock theme and icon set renames that must also reach files already stamped at the current version, board order, and duplicate node refs. Each repair guards itself and only rewrites the references it matches, so it is safe to re-run.
 
 ## Version Guards
 
