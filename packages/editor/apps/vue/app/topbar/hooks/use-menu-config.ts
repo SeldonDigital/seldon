@@ -248,14 +248,14 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         panel.openPanel("create-component")
         tool.setActiveTool("select")
       },
-      shortcut: "T",
+      shortcut: "C",
     },
     "separator",
     {
       id: "insert-component",
       label: "Insert Component",
       action: () => tool.setActiveTool("component"),
-      shortcut: "⇧ I",
+      shortcut: "⇧ C",
     },
     {
       id: "add-component",
@@ -264,13 +264,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
         panel.openPanel("add-board")
         tool.setActiveTool("select")
       },
-      shortcut: "⇧ A",
+      shortcut: "⌥ C",
     },
     {
       id: "add-variant",
       label: "Add Variant",
       action: addVariant,
-      shortcut: "⌥ A",
+      shortcut: "⇧ ⌥ C",
       enabled: Boolean(selectedBoard.value),
     },
     "separator",

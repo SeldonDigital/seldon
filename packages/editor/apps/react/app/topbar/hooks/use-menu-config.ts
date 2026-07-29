@@ -488,14 +488,14 @@ export function useMenuConfig(): MenuConfig {
           openPanel("create-component")
           setActiveTool("select")
         },
-        shortcut: "T",
+        shortcut: "C",
       },
       "separator",
       {
         id: "insert-component",
         label: "Insert Component",
         action: () => setActiveTool("component"),
-        shortcut: "⇧ I",
+        shortcut: "⇧ C",
       },
       {
         id: "add-component",
@@ -504,13 +504,13 @@ export function useMenuConfig(): MenuConfig {
           openPanel("add-board")
           setActiveTool("select")
         },
-        shortcut: "⇧ A",
+        shortcut: "⌥ C",
       },
       {
         id: "add-variant",
         label: "Add Variant",
         action: addVariant,
-        shortcut: "⌥ A",
+        shortcut: "⇧ ⌥ C",
         enabled: Boolean(selectedBoard),
       },
       "separator",
@@ -736,7 +736,7 @@ export function useMenuConfig(): MenuConfig {
           },
           {
             id: "show-reference-bindings",
-            label: "Show Reference Bindings",
+            label: "Show Reference Badges",
             action: toggleRefConnectors,
             active: showRefConnectors,
             shortcut: "R",

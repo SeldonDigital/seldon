@@ -87,23 +87,29 @@ export function useEditorShortcuts(): void {
 
     switch (key) {
       case "a":
-        if (alt) {
-          event.preventDefault()
-          addVariant()
-        } else if (shift) {
-          event.preventDefault()
-          panel.openPanel("add-board")
-          tool.setActiveTool("select")
-        } else if (!mod) {
+        if (!mod && !shift && !alt) {
           event.preventDefault()
           config.toggleDirectSelect()
         }
 
         return
-      case "t":
+      case "c":
+        // Copy is left to the browser, which is what holds the modifier.
+        if (mod) return
+
         event.preventDefault()
-        panel.openPanel("create-component")
-        tool.setActiveTool("select")
+
+        if (shift && alt) {
+          addVariant()
+        } else if (alt) {
+          panel.openPanel("add-board")
+          tool.setActiveTool("select")
+        } else if (shift) {
+          tool.setActiveTool("component")
+        } else {
+          panel.openPanel("create-component")
+          tool.setActiveTool("select")
+        }
 
         return
       case "`":
@@ -154,9 +160,10 @@ export function useEditorShortcuts(): void {
 
         return
       case "i":
+        if (shift) return
+
         event.preventDefault()
-        if (shift) tool.setActiveTool("component")
-        else toggleIsolation()
+        toggleIsolation()
 
         return
       case "v":

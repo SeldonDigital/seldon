@@ -90,18 +90,18 @@ export function useEditorShortcuts() {
 
   // Add component (opens the add-board dialog) / add variant
   useHotkeys(
-    "shift+a",
+    "alt+c",
     () => {
       openPanel("add-board")
       setActiveTool("select")
     },
     { preventDefault: true },
   )
-  useHotkeys("alt+a", addVariant, { preventDefault: true })
+  useHotkeys("shift+alt+c", addVariant, { preventDefault: true })
 
   // Create authored component (opens the create-component dialog)
   useHotkeys(
-    "t",
+    "c",
     () => {
       openPanel("create-component")
       setActiveTool("select")
@@ -175,7 +175,7 @@ export function useEditorShortcuts() {
   })
 
   // Header tools
-  useHotkeys("shift+i", () => setActiveTool("component"), {
+  useHotkeys("shift+c", () => setActiveTool("component"), {
     preventDefault: true,
   }) // prevent the character from being typed after the trigger
   useHotkeys("v", () => setActiveTool("select"))
