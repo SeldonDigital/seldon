@@ -69,16 +69,29 @@ const toggleIcon = computed(() => ({
 }))
 const labelProps = computed(() => ({ children: props.section.label }))
 const addButton = computed(() => (canAdd.value ? { onClick: onAdd, "aria-label": "Add" } : null))
+
+// Drive each slot through its stable workspace ref. Conditional slots still need
+// a positional enabler to render (`{}` to show, `null` to hide); their data flows
+// through `seldonRefs`. The add control is hidden when the section exposes none.
+const seldonRefs = computed(() => ({
+  sectionDisclosure: toggleButton.value,
+  sectionDisclosureIcon: toggleIcon.value,
+  sectionLabel: labelProps.value,
+  sectionAdd: addButton.value ?? {},
+}))
+
+// Positional enabler: render the add slot only when the section exposes one.
+const addSlot = computed(() => (addButton.value ? {} : null))
 </script>
 
 <template>
   <ItemSection
     class="objects-section"
-    :button-iconic="toggleButton"
-    :icon="toggleIcon"
+    :seldon-refs="seldonRefs"
+    :button-iconic="{}"
     :form-control-combobox="{}"
-    :text-label="labelProps"
-    :button-iconic2="addButton"
+    :text-label="{}"
+    :button-iconic2="addSlot"
     :button-iconic3="null"
     @click="onToggleWithSection"
   />

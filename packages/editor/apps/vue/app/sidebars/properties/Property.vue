@@ -64,8 +64,6 @@ const actionsMenu = useRowActionsMenu(() => view.resetActions.value, {
 
 // ---- Shared slot props ----
 const nameProps = computed(() => mergeStateProps(view.nameLabelProps.value, view.stateRef.value))
-const actionsButton = computed(() => actionsMenu.buttonIconic.value)
-const actionsIcon = computed(() => actionsMenu.icon.value)
 
 // ---- ItemProperty (value rows) ----
 const valueIconProps = computed(() =>
@@ -85,6 +83,27 @@ const comboboxFieldProps = computed(() =>
     ? { "aria-disabled": true, style: { pointerEvents: "none" } }
     : { onClick: view.onValueFieldClick, "data-frame-ref": "true" },
 )
+
+// Positional enabler: suppress `icon2` with `null` when the value icon is hidden;
+// otherwise leave it on its slot default so the bound `propertyValueIcon` ref
+// paints the glyph. Dynamic color chips resolve through the same slot.
+const valueIconSlot = computed(() => (view.listItemProps.value.icon2 ? undefined : null))
+
+// Drive each slot through its stable workspace ref. The row name and the row value
+// are separate input slots, so they bind through `propertyLabel` and
+// `propertyValueLabel`. The trailing actions icon keeps the generated `seldon-more`
+// default, hidden by the actions button placeholder.
+const seldonRefs = computed(() => ({
+  propertyDisclosure: view.listItemProps.value.buttonIconic,
+  propertyDisclosureIcon: view.listItemProps.value.icon,
+  propertyLabel: nameProps.value,
+  propertyValueField: comboboxFieldProps.value,
+  propertyValueIcon: valueIconProps.value ?? {},
+  propertyValueLabel: valueLabelProps.value,
+  propertyValueMenu: view.listItemProps.value.buttonIconic2,
+  propertyValueMenuIcon: view.listItemProps.value.icon3,
+  propertyActions: actionsMenu.buttonIconic.value,
+}))
 
 // ---- ItemPropertyToggle (switch rows) ----
 const toggleIconProps = computed(() =>
@@ -108,6 +127,18 @@ const toggleSwitchProps = computed(() => {
     props.property.status === "override" ? undefined : view.stateRef.value,
   )
 })
+
+// A boolean row renders its own View, so its slots carry their own ref names. The
+// shared row slots pair up by role: `propertyToggleLabel` against `propertyLabel`,
+// `propertyToggleDisclosure` against `propertyDisclosure`.
+const toggleRefs = computed(() => ({
+  propertyToggleDisclosure: view.listItemProps.value.buttonIconic,
+  propertyToggleDisclosureIcon: view.listItemProps.value.icon,
+  propertyToggleLabel: nameProps.value,
+  propertyToggleIcon: toggleIconProps.value ?? {},
+  propertyToggleSwitch: toggleSwitchProps.value,
+  propertyToggleActions: actionsMenu.buttonIconic.value,
+}))
 
 // ---- Combobox floating options ----
 const anchorEl = ref<HTMLElement | null>(null)
@@ -207,15 +238,13 @@ function onDrop(event: DragEvent): void {
     :ref="(el: any) => (view.rowRef.value = el)"
     class="properties-row"
     :style="rowStyle"
-    :button-iconic="view.listItemProps.value.buttonIconic"
-    :icon="view.listItemProps.value.icon"
+    :seldon-refs="toggleRefs"
+    :button-iconic="{}"
     :form-control-combobox="{}"
-    :input="nameProps"
-    :frame="{}"
-    :icon2="toggleIconProps"
-    :toggle-switch="toggleSwitchProps"
-    :button-iconic2="actionsButton"
-    :icon3="actionsIcon"
+    :input="{}"
+    :icon2="{}"
+    :toggle-switch="{}"
+    :button-iconic2="{}"
     @click="view.onRowClick"
     @dblclick="view.onRowDoubleClick"
   />
@@ -230,17 +259,9 @@ function onDrop(event: DragEvent): void {
     }"
     :style="rowStyle"
     :draggable="isDraggable"
-    :button-iconic="view.listItemProps.value.buttonIconic"
-    :icon="view.listItemProps.value.icon"
-    :form-control-combobox="{}"
-    :input="nameProps"
-    :combobox-field="comboboxFieldProps"
-    :icon2="valueIconProps"
-    :input2="valueLabelProps"
-    :button-iconic2="view.listItemProps.value.buttonIconic2"
-    :icon3="view.listItemProps.value.icon3"
-    :button-iconic3="actionsButton"
-    :icon4="actionsIcon"
+    :seldon-refs="seldonRefs"
+    :input="{}"
+    :icon2="valueIconSlot"
     @click="view.onRowClick"
     @dblclick="view.onRowDoubleClick"
     @dragstart="onDragStart"

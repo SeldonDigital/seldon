@@ -84,12 +84,11 @@ function forceSave(): void {
   toast.addToast("Project saved")
 }
 
-const projectField = computed(() => ({
+const workspaceField = computed(() => ({
   ...buildFieldStateProps({ selected: workspaceSelected.value }),
   onClick: selectWorkspace,
   onDblclick: enterRename,
 }))
-const projectActions = { onClick: forceSave }
 
 const componentsToggle = computed(() => ({
   class: componentsActive.value ? "sdn-state-activated" : undefined,
@@ -104,10 +103,18 @@ const resourcesToggle = computed(() => ({
   onClick: () => config.setObjectsView("resources"),
 }))
 
-// Grow the generated objects container so the tree fills and scrolls, addressed
-// by the frame's baked `objectsContainer` ref.
-const seldonRefs = {
-  objectsContainer: {
+// Drive every slot through its stable workspace ref. The workspace field and the
+// two view toggles are conditional slots, so they keep a positional `{}` enabler
+// to render; their data flows through `seldonRefs`. The tree frame is grown for
+// layout only, so the tree fills and scrolls; its rows ride the generated
+// `objectsTree` slot.
+const seldonRefs = computed(() => ({
+  workspaceField: workspaceField.value,
+  workspaceName: inputProps.value,
+  workspaceSave: { onClick: forceSave },
+  objectsViewComponents: componentsToggle.value,
+  objectsViewResources: resourcesToggle.value,
+  objectsTree: {
     style: {
       flex: 1,
       minHeight: 0,
@@ -115,7 +122,7 @@ const seldonRefs = {
       flexDirection: "column",
     },
   },
-}
+}))
 
 function asBoard(board: unknown): BoardType {
   return board as BoardType
@@ -128,14 +135,11 @@ function asBoard(board: unknown): BoardType {
     class="objects-sidebar"
     data-testid="objects-sidebar"
     :seldon-refs="seldonRefs"
-    :combobox-field-project="projectField"
-    :input="inputProps"
-    :button-iconic="projectActions"
-    :frame2="{}"
-    :button-toggle="componentsToggle"
-    :button-toggle2="resourcesToggle"
+    :combobox-field-project="{}"
+    :button-toggle="{}"
+    :button-toggle2="{}"
   >
-    <template #objectsContainer>
+    <template #objectsTree>
       <Frame class="objects-sidebar__scroll">
         <SectionRow v-for="section in sections" :key="section.level" :section="section">
           <BoardRow

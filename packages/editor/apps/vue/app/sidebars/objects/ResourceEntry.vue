@@ -57,7 +57,6 @@ const {
   anchor: actionsAnchor,
   close: closeActions,
   buttonIconic: actionsButton,
-  icon: actionsIcon,
   menuItems: actionsItems,
   hasActions,
 } = useRowActionsMenu(actions)
@@ -85,6 +84,17 @@ const iconSlot = computed(() => ({ icon: props.config.icon }))
 const fieldSlot = computed(() => ({
   "aria-selected": isSelected.value || undefined,
 }))
+
+// Drive every slot through its stable workspace ref. A resource entry is a leaf
+// with no children to disclose and no display picker, so the disclosure icon is
+// faded and the display slot is suppressed positionally with `null`.
+const seldonRefs = computed(() => ({
+  nodeDisclosureIcon: toggleIconSlot,
+  nodeField: fieldSlot.value,
+  nodeIcon: iconSlot.value,
+  nodeLabel: inputProps.value,
+  nodeActions: actionsButton.value,
+}))
 </script>
 
 <template>
@@ -97,14 +107,11 @@ const fieldSlot = computed(() => ({
       :data-resource-entry-id="entryId"
       :data-resource-kind="config.kind"
       :data-active="isActive || undefined"
+      :seldon-refs="seldonRefs"
       :button-iconic="{}"
-      :icon="toggleIconSlot"
-      :combobox-field="fieldSlot"
-      :icon2="iconSlot"
-      :input="inputProps"
+      :combobox-field="{}"
       :button-iconic2="null"
-      :button-iconic3="actionsButton"
-      :icon4="actionsIcon"
+      :button-iconic3="{}"
       @click="select"
       @dblclick="handleDoubleClick"
     />

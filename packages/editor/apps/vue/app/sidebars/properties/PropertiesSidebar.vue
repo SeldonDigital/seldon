@@ -61,12 +61,35 @@ function openStateMenu(event: MouseEvent): void {
 function closeStateMenu(): void {
   stateMenuOpen.value = false
 }
-const menuStateSlot = computed(() => ({
+const boardStateSlot = computed(() => ({
   onClick: openStateMenu,
   disabled: stateMenu.value.disabled,
   "data-testid": "board-state-trigger",
 }))
-const stateLabelSlot = computed(() => ({ children: stateMenu.value.label }))
+const boardStateLabelSlot = computed(() => ({ children: stateMenu.value.label }))
+
+// Drive every header slot through its stable workspace ref. The filter field, the
+// State trigger, and its label are conditional slots, so they keep a positional
+// `{}` enabler to render; their data flows through `seldonRefs`. The tree frame is
+// grown only when it holds a tree, so the no-selection shell keeps its own height;
+// its sections ride the generated `propertiesTree` slot.
+const seldonRefs = computed(() => ({
+  propertyFilterField: filter.comboboxField.value,
+  propertyFilter: filter.input.value,
+  propertyFilterClear: filter.buttonIconic.value ?? {},
+  boardState: boardStateSlot.value,
+  boardStateLabel: boardStateLabelSlot.value,
+  propertiesTree: isEmpty.value
+    ? {}
+    : {
+        style: {
+          flex: 1,
+          minHeight: 0,
+          display: "flex",
+          flexDirection: "column",
+        },
+      },
+}))
 
 // ---- Per-section helpers ----
 function isCssSection(section: PropertySection): boolean {
@@ -133,14 +156,12 @@ function sectionAddCustom(section: PropertySection): (() => void) | undefined {
   <SidebarProperties
     class="properties-sidebar"
     data-testid="properties-sidebar"
-    :combobox-field-filter="filter.comboboxField.value"
-    :input="filter.input.value"
-    :button-iconic="filter.buttonIconic.value"
-    :button-menu="menuStateSlot"
-    :text-label="stateLabelSlot"
-    :frame2="{}"
+    :seldon-refs="seldonRefs"
+    :combobox-field-filter="{}"
+    :button-menu="{}"
+    :text-label="{}"
   >
-    <template v-if="!isEmpty" #propertiesContainer>
+    <template v-if="!isEmpty" #propertiesTree>
       <Frame class="properties-sidebar__scroll">
         <Frame class="properties-sidebar__tree">
           <template v-for="section in filteredSections" :key="section.category">

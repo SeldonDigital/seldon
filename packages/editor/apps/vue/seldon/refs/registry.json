@@ -2,6 +2,48 @@
   "version": 1,
   "framework": "vue",
   "refs": {
+    "boardState": {
+      "component": "ButtonMenu",
+      "nodeId": "component-button-t1A2Kxjz",
+      "className": "sdn-button-menu sdn-button-menu--t1a2",
+      "views": [
+        {
+          "component": "SidebarProperties",
+          "file": "modules/SidebarProperties.vue",
+          "slot": "buttonMenu",
+          "type": "ButtonMenuProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "boardStateLabel": {
+      "component": "TextLabel",
+      "nodeId": "component-button-ky1rrrZT",
+      "className": "sdn-text-label sdn-text-label--sa6t",
+      "views": [
+        {
+          "component": "SidebarProperties",
+          "file": "modules/SidebarProperties.vue",
+          "slot": "textLabel",
+          "type": "TextLabelProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "boardStateMenuIcon": {
+      "component": "Icon",
+      "nodeId": "component-button-dYCRThCF",
+      "className": "sdn-icon sdn-icon--y2ct",
+      "views": [
+        {
+          "component": "SidebarProperties",
+          "file": "modules/SidebarProperties.vue",
+          "slot": "icon3",
+          "type": "IconProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
     "catalogIcon": {
       "component": "Icon",
       "nodeId": "component-icon-meNEMxeY",
@@ -156,20 +198,6 @@
         }
       ]
     },
-    "Default": {
-      "component": "ItemCatalog",
-      "nodeId": "component-item-hSnQ9Zqv",
-      "className": "sdn-item-catalog sdn-item-catalog--bg0n",
-      "views": [
-        {
-          "component": "ListStandardProductList",
-          "file": "parts/ListStandardProductList.vue",
-          "slot": "itemCatalog3",
-          "type": "ItemCatalogProps",
-          "rendersWhen": "when-passed"
-        }
-      ]
-    },
     "dialogCancel": {
       "component": "Button",
       "nodeId": "component-bar-oHXIPFr4",
@@ -208,6 +236,76 @@
           "file": "modules/PanelDialog.vue",
           "slot": "frame",
           "type": "FrameProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "dialogSearch": {
+      "component": "Input",
+      "nodeId": "component-panel-pWiFt1bl",
+      "className": "sdn-input sdn-input--twyx",
+      "views": [
+        {
+          "component": "PanelDialog",
+          "file": "modules/PanelDialog.vue",
+          "slot": "input",
+          "type": "InputProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "dialogSearchClear": {
+      "component": "ButtonIconic",
+      "nodeId": "component-panel-uOfPAdNZ",
+      "className": "sdn-button-iconic sdn-button-iconic--pgsr",
+      "views": [
+        {
+          "component": "PanelDialog",
+          "file": "modules/PanelDialog.vue",
+          "slot": "buttonIconic",
+          "type": "ButtonIconicProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "dialogSearchClearIcon": {
+      "component": "Icon",
+      "nodeId": "component-panel-z69NyGq1",
+      "className": "sdn-icon sdn-icon--vsau",
+      "views": [
+        {
+          "component": "PanelDialog",
+          "file": "modules/PanelDialog.vue",
+          "slot": "icon2",
+          "type": "IconProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "dialogSearchField": {
+      "component": "ComboboxFieldSearch",
+      "nodeId": "component-panel-9Jd5LBHg",
+      "className": "sdn-combobox-field-search sdn-combobox-field-search--9jd5",
+      "views": [
+        {
+          "component": "PanelDialog",
+          "file": "modules/PanelDialog.vue",
+          "slot": "comboboxFieldSearch",
+          "type": "ComboboxFieldSearchProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "dialogSearchIcon": {
+      "component": "Icon",
+      "nodeId": "component-panel-yZjcHxvG",
+      "className": "sdn-icon sdn-icon--xi68",
+      "views": [
+        {
+          "component": "PanelDialog",
+          "file": "modules/PanelDialog.vue",
+          "slot": "icon",
+          "type": "IconProps",
           "rendersWhen": "unless-null"
         }
       ]
@@ -682,48 +780,6 @@
         {
           "component": "DialogExportComponent",
           "file": "modules/DialogExportComponent.vue",
-          "slot": "input",
-          "type": "InputProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "filterActions": {
-      "component": "ButtonIconic",
-      "nodeId": "component-comboboxField-egV44OiP",
-      "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-      "views": [
-        {
-          "component": "ComboboxFieldFilter",
-          "file": "elements/ComboboxFieldFilter.vue",
-          "slot": "buttonIconic",
-          "type": "ButtonIconicProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "filterIcon": {
-      "component": "Icon",
-      "nodeId": "component-comboboxField-ta9b5fTa",
-      "className": "sdn-icon sdn-icon--xi68",
-      "views": [
-        {
-          "component": "ComboboxFieldFilter",
-          "file": "elements/ComboboxFieldFilter.vue",
-          "slot": "icon",
-          "type": "IconProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "filterLabel": {
-      "component": "Input",
-      "nodeId": "component-comboboxField-TWyxOQad",
-      "className": "sdn-input sdn-input--twyx",
-      "views": [
-        {
-          "component": "ComboboxFieldFilter",
-          "file": "elements/ComboboxFieldFilter.vue",
           "slot": "input",
           "type": "InputProps",
           "rendersWhen": "unless-null"
@@ -1346,20 +1402,6 @@
         }
       ]
     },
-    "menuState": {
-      "component": "ButtonMenu",
-      "nodeId": "component-button-t1A2Kxjz",
-      "className": "sdn-button-menu sdn-button-menu--t1a2",
-      "views": [
-        {
-          "component": "SidebarProperties",
-          "file": "modules/SidebarProperties.vue",
-          "slot": "buttonMenu",
-          "type": "ButtonMenuProps",
-          "rendersWhen": "when-passed"
-        }
-      ]
-    },
     "menuTheme": {
       "component": "ButtonMenu",
       "nodeId": "component-button-trucC1Xo",
@@ -1458,6 +1500,20 @@
         }
       ]
     },
+    "nodeField": {
+      "component": "ComboboxField",
+      "nodeId": "component-item-LMjE9ivP",
+      "className": "sdn-combobox-field sdn-combobox-field--lmje",
+      "views": [
+        {
+          "component": "ItemNode",
+          "file": "elements/ItemNode.vue",
+          "slot": "comboboxField",
+          "type": "ComboboxFieldProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
     "nodeIcon": {
       "component": "Icon",
       "nodeId": "component-item-zdDEhaL4",
@@ -1486,7 +1542,7 @@
         }
       ]
     },
-    "objectsContainer": {
+    "objectsTree": {
       "component": "Frame",
       "nodeId": "component-sidebar-ENPyLuzb",
       "className": "sdn-frame sdn-frame--enpy",
@@ -1497,6 +1553,34 @@
           "slot": "frame3",
           "type": "FrameProps",
           "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "objectsViewComponents": {
+      "component": "ButtonToggle",
+      "nodeId": "component-button-f2yi4eeO",
+      "className": "sdn-button-toggle sdn-button-iconic--pgsr",
+      "views": [
+        {
+          "component": "SidebarObjects",
+          "file": "modules/SidebarObjects.vue",
+          "slot": "buttonToggle",
+          "type": "ButtonToggleProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "objectsViewResources": {
+      "component": "ButtonToggle",
+      "nodeId": "component-sidebar-9VESc1Om",
+      "className": "sdn-button-toggle sdn-button-iconic--pgsr",
+      "views": [
+        {
+          "component": "SidebarObjects",
+          "file": "modules/SidebarObjects.vue",
+          "slot": "buttonToggle2",
+          "type": "ButtonToggleProps",
+          "rendersWhen": "when-passed"
         }
       ]
     },
@@ -1528,49 +1612,7 @@
         }
       ]
     },
-    "projectActions": {
-      "component": "ButtonIconic",
-      "nodeId": "component-comboboxField-Td9lePEX",
-      "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-      "views": [
-        {
-          "component": "ComboboxFieldProject",
-          "file": "elements/ComboboxFieldProject.vue",
-          "slot": "buttonIconic",
-          "type": "ButtonIconicProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "projectIcon": {
-      "component": "Icon",
-      "nodeId": "component-comboboxField-h6DYE6Jl",
-      "className": "sdn-icon sdn-icon--xi68",
-      "views": [
-        {
-          "component": "ComboboxFieldProject",
-          "file": "elements/ComboboxFieldProject.vue",
-          "slot": "icon",
-          "type": "IconProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "projectLabel": {
-      "component": "Input",
-      "nodeId": "component-comboboxField-Umc9UbAs",
-      "className": "sdn-input sdn-input--twyx",
-      "views": [
-        {
-          "component": "ComboboxFieldProject",
-          "file": "elements/ComboboxFieldProject.vue",
-          "slot": "input",
-          "type": "InputProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "propertiesContainer": {
+    "propertiesTree": {
       "component": "Frame",
       "nodeId": "component-sidebar-evMwxVOP",
       "className": "sdn-frame sdn-frame--evmw",
@@ -1654,6 +1696,48 @@
         }
       ]
     },
+    "propertyFilterClearIcon": {
+      "component": "Icon",
+      "nodeId": "component-comboboxField-yANWz3qm",
+      "className": "sdn-icon sdn-icon--vsau",
+      "views": [
+        {
+          "component": "SidebarProperties",
+          "file": "modules/SidebarProperties.vue",
+          "slot": "icon2",
+          "type": "IconProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "propertyFilterField": {
+      "component": "ComboboxFieldFilter",
+      "nodeId": "component-comboboxField-LSIWPWiC",
+      "className": "sdn-combobox-field sdn-combobox-field-project--rzdy",
+      "views": [
+        {
+          "component": "SidebarProperties",
+          "file": "modules/SidebarProperties.vue",
+          "slot": "comboboxFieldFilter",
+          "type": "ComboboxFieldFilterProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "propertyFilterIcon": {
+      "component": "Icon",
+      "nodeId": "component-comboboxField-0NyAQIRn",
+      "className": "sdn-icon sdn-icon--xi68",
+      "views": [
+        {
+          "component": "SidebarProperties",
+          "file": "modules/SidebarProperties.vue",
+          "slot": "icon",
+          "type": "IconProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
     "propertyLabel": {
       "component": "Input",
       "nodeId": "component-item-JvSW6JpE",
@@ -1668,6 +1752,20 @@
         }
       ]
     },
+    "propertyRow": {
+      "component": "FormControlCombobox",
+      "nodeId": "component-formControl-qMoPhhJ6",
+      "className": "sdn-form-control sdn-form-control-combobox--qmop",
+      "views": [
+        {
+          "component": "ItemProperty",
+          "file": "elements/ItemProperty.vue",
+          "slot": "formControlCombobox",
+          "type": "FormControlComboboxProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
     "propertyToggleActions": {
       "component": "ButtonIconic",
       "nodeId": "component-item-qeIxCmeu",
@@ -1679,6 +1777,20 @@
           "slot": "buttonIconic2",
           "type": "ButtonIconicProps",
           "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "propertyToggleControl": {
+      "component": "Frame",
+      "nodeId": "component-frame-INf3bFY0",
+      "className": "sdn-frame sdn-frame--inf3",
+      "views": [
+        {
+          "component": "ItemPropertyToggle",
+          "file": "elements/ItemPropertyToggle.vue",
+          "slot": "frame",
+          "type": "FrameProps",
+          "rendersWhen": "unless-null"
         }
       ]
     },
@@ -1738,6 +1850,20 @@
         }
       ]
     },
+    "propertyToggleRow": {
+      "component": "FormControlCombobox",
+      "nodeId": "component-item-fQ6EF5qC",
+      "className": "sdn-form-control sdn-form-control-combobox--qmop",
+      "views": [
+        {
+          "component": "ItemPropertyToggle",
+          "file": "elements/ItemPropertyToggle.vue",
+          "slot": "formControlCombobox",
+          "type": "FormControlComboboxProps",
+          "rendersWhen": "when-passed"
+        }
+      ]
+    },
     "propertyToggleSwitch": {
       "component": "ToggleSwitch",
       "nodeId": "component-toggleSwitch-pelhFQXa",
@@ -1749,6 +1875,20 @@
           "slot": "toggleSwitch",
           "type": "ToggleSwitchProps",
           "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "propertyValueField": {
+      "component": "ComboboxField",
+      "nodeId": "component-comboboxField-cMKwpdAk",
+      "className": "sdn-combobox-field sdn-combobox-field--j44i",
+      "views": [
+        {
+          "component": "ItemProperty",
+          "file": "elements/ItemProperty.vue",
+          "slot": "comboboxField",
+          "type": "ComboboxFieldProps",
+          "rendersWhen": "unless-null"
         }
       ]
     },
@@ -1790,6 +1930,20 @@
           "file": "elements/ItemProperty.vue",
           "slot": "buttonIconic2",
           "type": "ButtonIconicProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "propertyValueMenuIcon": {
+      "component": "Icon",
+      "nodeId": "component-icon-vzp64Ki8",
+      "className": "sdn-icon sdn-icon--xi68",
+      "views": [
+        {
+          "component": "ItemProperty",
+          "file": "elements/ItemProperty.vue",
+          "slot": "icon3",
+          "type": "IconProps",
           "rendersWhen": "unless-null"
         }
       ]
@@ -1976,48 +2130,6 @@
         }
       ]
     },
-    "searchActions": {
-      "component": "ButtonIconic",
-      "nodeId": "component-button-q7tCLRdW",
-      "className": "sdn-button-iconic sdn-button-iconic--pgsr",
-      "views": [
-        {
-          "component": "ComboboxFieldSearch",
-          "file": "elements/ComboboxFieldSearch.vue",
-          "slot": "buttonIconic",
-          "type": "ButtonIconicProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "searchIcon": {
-      "component": "Icon",
-      "nodeId": "component-icon-CHSbwIMc",
-      "className": "sdn-icon sdn-icon--xi68",
-      "views": [
-        {
-          "component": "ComboboxFieldSearch",
-          "file": "elements/ComboboxFieldSearch.vue",
-          "slot": "icon",
-          "type": "IconProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
-    "searchLabel": {
-      "component": "Input",
-      "nodeId": "component-input-w7F4idVF",
-      "className": "sdn-input sdn-input--yoqi",
-      "views": [
-        {
-          "component": "ComboboxFieldSearch",
-          "file": "elements/ComboboxFieldSearch.vue",
-          "slot": "input",
-          "type": "InputProps",
-          "rendersWhen": "unless-null"
-        }
-      ]
-    },
     "sectionActions": {
       "component": "ButtonIconic",
       "nodeId": "component-item-m1G2OAIO",
@@ -2032,6 +2144,20 @@
         }
       ]
     },
+    "sectionActionsIcon": {
+      "component": "Icon",
+      "nodeId": "component-item-X0ybtMzs",
+      "className": "sdn-icon sdn-icon--0qvc",
+      "views": [
+        {
+          "component": "ItemSection",
+          "file": "elements/ItemSection.vue",
+          "slot": "icon3",
+          "type": "IconProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
     "sectionAdd": {
       "component": "ButtonIconic",
       "nodeId": "component-item-sDjvfAPl",
@@ -2043,6 +2169,20 @@
           "slot": "buttonIconic2",
           "type": "ButtonIconicProps",
           "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "sectionAddIcon": {
+      "component": "Icon",
+      "nodeId": "component-item-CMEf5HDL",
+      "className": "sdn-icon sdn-icon--0qvc",
+      "views": [
+        {
+          "component": "ItemSection",
+          "file": "elements/ItemSection.vue",
+          "slot": "icon2",
+          "type": "IconProps",
+          "rendersWhen": "unless-null"
         }
       ]
     },
@@ -2088,31 +2228,45 @@
         }
       ]
     },
-    "sidebarComponents": {
-      "component": "ButtonToggle",
-      "nodeId": "component-button-f2yi4eeO",
-      "className": "sdn-button-toggle sdn-button-iconic--pgsr",
+    "sectionRow": {
+      "component": "FormControlCombobox",
+      "nodeId": "component-item-GqRllIqj",
+      "className": "sdn-form-control sdn-form-control-combobox--gqrl",
       "views": [
         {
-          "component": "SidebarObjects",
-          "file": "modules/SidebarObjects.vue",
-          "slot": "buttonToggle",
-          "type": "ButtonToggleProps",
+          "component": "ItemSection",
+          "file": "elements/ItemSection.vue",
+          "slot": "formControlCombobox",
+          "type": "FormControlComboboxProps",
           "rendersWhen": "when-passed"
         }
       ]
     },
-    "sidebarResources": {
-      "component": "ButtonToggle",
-      "nodeId": "component-sidebar-9VESc1Om",
-      "className": "sdn-button-toggle sdn-button-iconic--pgsr",
+    "workspaceField": {
+      "component": "ComboboxFieldProject",
+      "nodeId": "component-comboboxField-rZdYB5xB",
+      "className": "sdn-combobox-field sdn-combobox-field-project--rzdy",
       "views": [
         {
           "component": "SidebarObjects",
           "file": "modules/SidebarObjects.vue",
-          "slot": "buttonToggle2",
-          "type": "ButtonToggleProps",
+          "slot": "comboboxFieldProject",
+          "type": "ComboboxFieldProjectProps",
           "rendersWhen": "when-passed"
+        }
+      ]
+    },
+    "workspaceIcon": {
+      "component": "Icon",
+      "nodeId": "component-comboboxField-McgE030b",
+      "className": "sdn-icon sdn-icon--xi68",
+      "views": [
+        {
+          "component": "SidebarObjects",
+          "file": "modules/SidebarObjects.vue",
+          "slot": "icon",
+          "type": "IconProps",
+          "rendersWhen": "unless-null"
         }
       ]
     },
@@ -2140,6 +2294,20 @@
           "file": "modules/SidebarObjects.vue",
           "slot": "buttonIconic",
           "type": "ButtonIconicProps",
+          "rendersWhen": "unless-null"
+        }
+      ]
+    },
+    "workspaceSaveIcon": {
+      "component": "Icon",
+      "nodeId": "component-comboboxField-iquyeQxk",
+      "className": "sdn-icon sdn-icon--vsau",
+      "views": [
+        {
+          "component": "SidebarObjects",
+          "file": "modules/SidebarObjects.vue",
+          "slot": "icon2",
+          "type": "IconProps",
           "rendersWhen": "unless-null"
         }
       ]

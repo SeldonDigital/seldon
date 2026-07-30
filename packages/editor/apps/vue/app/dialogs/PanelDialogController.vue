@@ -125,23 +125,36 @@ const barHandle = computed(() => ({
   onPointerdown: startDrag,
   style: styles.dragHandle,
 }))
-const dialogTitle = computed(() => ({ children: props.title }))
-const searchField = { onPointerdown: stopDrag }
-const searchInput = computed(() => ({
-  value: props.query,
-  onInput: onSearchInput,
-  placeholder: "Search...",
-  autofocus: true,
-}))
-const searchClear = computed(() => ({
-  onClick: clearQuery,
-  style: props.query ? undefined : styles.hidden,
-}))
-const cancelButton = { onClick: props.onClose }
+
+// Cancel and confirm live in the footer's right frame (button4/button5). The shell
+// leaves both slots as placeholders, so enable them and set their labels; their
+// icons ride the shell defaults and the click flows through `seldonRefs`.
 const cancelLabel = { children: "Cancel" }
-const confirmButton = { onClick: handleConfirm }
 const confirmLabel = computed(() => ({ children: props.confirmButtonText }))
 const dialogStyle = styles.dialog
+
+// Drive every slot through its stable workspace ref. The title and the search
+// field are conditional slots, so they keep a positional `{}` enabler to render;
+// their data flows through `seldonRefs`. The search field itself only stops the
+// drag so a click in the input does not move the window. The content frame is
+// bound for layout only; its rows ride the generated `dialogContent` slot.
+const seldonRefs = computed(() => ({
+  dialogTitle: { children: props.title },
+  dialogSearchField: { onPointerdown: stopDrag },
+  dialogSearch: {
+    value: props.query,
+    onInput: onSearchInput,
+    placeholder: "Search...",
+    autofocus: true,
+  },
+  dialogSearchClear: {
+    onClick: clearQuery,
+    style: props.query ? undefined : styles.hidden,
+  },
+  dialogContent: { style: styles.content },
+  dialogCancel: { onClick: props.onClose },
+  dialogConfirm: { onClick: handleConfirm },
+}))
 
 function iconSlot(item: T): Record<string, unknown> {
   return { icon: item.icon }
@@ -176,16 +189,13 @@ function rowStyle(item: T): CSSProperties {
   >
     <PanelDialog
       data-testid="catalog-dialog"
+      :seldon-refs="seldonRefs"
       :bar="barHandle"
-      :text-title="dialogTitle"
-      :combobox-field-search="searchField"
-      :input="searchInput"
-      :button-iconic="searchClear"
-      :frame2="{}"
-      :frame3="{}"
-      :button4="cancelButton"
+      :text-title="{}"
+      :combobox-field-search="{}"
+      :button4="{}"
       :text-label4="cancelLabel"
-      :button5="confirmButton"
+      :button5="{}"
       :text-label5="confirmLabel"
       :style="dialogStyle"
     >
@@ -193,7 +203,7 @@ function rowStyle(item: T): CSSProperties {
         <TextSubtitle v-if="visibleCategories.length === 0" :style="styles.empty">
           No results found
         </TextSubtitle>
-        <div v-else :style="styles.content">
+        <template v-else>
           <ListStandardCatalog v-for="cat in visibleCategories" :key="cat.category">
             <TextSubtitle :style="styles.category">{{ cat.category }}</TextSubtitle>
             <Container :style="styles.catalogGrid">
@@ -211,7 +221,7 @@ function rowStyle(item: T): CSSProperties {
               />
             </Container>
           </ListStandardCatalog>
-        </div>
+        </template>
       </template>
     </PanelDialog>
   </WindowSurface>

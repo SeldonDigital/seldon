@@ -3949,7 +3949,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 91,
+        "line": 96,
         "conditional": false,
         "expression": "{ ...actionsMenu.buttonIconic }",
         "inputs": [
@@ -4022,7 +4022,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 88,
+        "line": 92,
         "conditional": false,
         "expression": "{ style: { opacity: 0 } }",
         "inputs": [],
@@ -4088,6 +4088,24 @@
             "declaredAt": {
               "line": 259,
               "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/objects/ResourceEntry.tsx",
+        "component": "ResourceEntry",
+        "line": 93,
+        "conditional": false,
+        "expression": "{ ...comboboxField }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 84,
+              "kind": "const",
+              "via": "buildFieldStateProps"
             }
           }
         ],
@@ -4185,7 +4203,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 89,
+        "line": 94,
         "conditional": false,
         "expression": "{ ...icon2 }",
         "inputs": [
@@ -4367,7 +4385,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 90,
+        "line": 95,
         "conditional": false,
         "expression": "{ ...nameInput }",
         "inputs": [
@@ -8863,7 +8881,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 197,
+          "line": 198,
           "expression": "isBoardSelected || undefined",
           "inputs": [
             {
@@ -8897,7 +8915,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 100,
+          "line": 101,
           "expression": "isActive || undefined",
           "inputs": [
             {
@@ -8931,7 +8949,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 208,
+          "line": 209,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8947,7 +8965,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 110,
+          "line": 111,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8973,7 +8991,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 210,
+          "line": 211,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -8997,7 +9015,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 112,
+          "line": 113,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -9007,7 +9025,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 211,
+          "line": 212,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9023,7 +9041,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 113,
+          "line": 114,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9049,18 +9067,9 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 209,
-          "expression": "comboboxField",
-          "inputs": [
-            {
-              "name": "comboboxField",
-              "declaredAt": {
-                "line": 193,
-                "kind": "const",
-                "via": "buildFieldStateProps"
-              }
-            }
-          ],
+          "line": 210,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
@@ -9074,18 +9083,9 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 111,
-          "expression": "comboboxField",
-          "inputs": [
-            {
-              "name": "comboboxField",
-              "declaredAt": {
-                "line": 96,
-                "kind": "const",
-                "via": "buildFieldStateProps"
-              }
-            }
-          ],
+          "line": 112,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -9093,7 +9093,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 198,
+          "line": 199,
           "expression": "isActivated || undefined",
           "inputs": [
             {
@@ -9121,7 +9121,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 213,
+          "line": 214,
           "expression": "onClick",
           "inputs": [
             {
@@ -9155,7 +9155,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 115,
+          "line": 116,
           "expression": "onClick",
           "inputs": [
             {
@@ -9174,7 +9174,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 214,
+          "line": 215,
           "expression": "onDoubleClick",
           "inputs": [
             {
@@ -9208,7 +9208,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 116,
+          "line": 117,
           "expression": "onDoubleClick",
           "inputs": [
             {
@@ -9227,7 +9227,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 215,
+          "line": 216,
           "expression": "handleRowMouseEnter",
           "inputs": [
             {
@@ -9263,7 +9263,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 216,
+          "line": 217,
           "expression": "handleRowMouseLeave",
           "inputs": [
             {

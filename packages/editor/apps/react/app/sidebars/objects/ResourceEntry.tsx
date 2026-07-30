@@ -79,6 +79,10 @@ export function ResourceEntry({
 
   const icon2: IconProps = { icon: config.icon }
 
+  // The row's selection is styled on its combobox-field child, matching `NodeController`
+  // and `BoardController`.
+  const comboboxField = buildFieldStateProps({ selected: isSelected })
+
   // Resource rows are always leaves, so the toggle slot stays a spacer with its
   // chevron hidden (mirrors the childless `NodeController` treatment) to keep label
   // indentation aligned. The trailing actions icon keeps the generated
@@ -86,14 +90,11 @@ export function ResourceEntry({
   // data flows through stable refs.
   const seldonRefs = {
     nodeDisclosureIcon: { style: { opacity: 0 } },
+    nodeField: { ...comboboxField },
     nodeIcon: { ...icon2 },
     nodeLabel: { ...nameInput },
     nodeActions: { ...actionsMenu.buttonIconic },
   }
-
-  // The row's selection is styled on its combobox-field child, matching `NodeController`
-  // and `BoardController`.
-  const comboboxField = buildFieldStateProps({ selected: isSelected })
 
   // Root-level row state mirrors selection for selectors and tests.
   const itemNodeState = {
@@ -108,7 +109,7 @@ export function ResourceEntry({
         (`buttonIconic3`) renders. */}
         <ItemNode
           buttonIconic={{}}
-          comboboxField={comboboxField}
+          comboboxField={{}}
           buttonIconic2={null}
           buttonIconic3={{}}
           seldonRefs={seldonRefs}

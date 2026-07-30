@@ -39,18 +39,35 @@ const addButton = computed(() =>
       }
     : null,
 )
+
+// Drive each slot through its stable workspace ref. Conditional slots keep a
+// positional enabler to render (`{}` to show, `null` to hide); their data flows
+// through `seldonRefs`. The trailing actions icon stays on the generated
+// `seldon-more` default, so it needs no ref.
+const seldonRefs = computed(() => ({
+  sectionDisclosure: toggleButton.value,
+  sectionDisclosureIcon: toggleIcon.value,
+  sectionLabel: labelProps.value,
+  sectionAdd: addButton.value ?? {},
+  sectionActions: actionsMenu.buttonIconic.value,
+}))
+
+// Positional enablers: render each trailing slot only when it has content, so the
+// add "+" sits flush right when a category has no actions. An empty actions
+// placeholder would otherwise reserve width and push the "+" off the edge.
+const addSlot = computed(() => (addButton.value ? {} : null))
+const actionsSlot = computed(() => (actionsMenu.hasActions.value ? {} : null))
 </script>
 
 <template>
   <ItemSection
     class="properties-category"
-    :button-iconic="toggleButton"
-    :icon="toggleIcon"
+    :seldon-refs="seldonRefs"
+    :button-iconic="{}"
     :form-control-combobox="{}"
-    :text-label="labelProps"
-    :button-iconic2="addButton"
-    :button-iconic3="actionsMenu.hasActions.value ? actionsMenu.buttonIconic.value : null"
-    :icon3="actionsMenu.hasActions.value ? actionsMenu.icon.value : undefined"
+    :text-label="{}"
+    :button-iconic2="addSlot"
+    :button-iconic3="actionsSlot"
     @click="onToggle"
   />
   <MenuController

@@ -189,43 +189,50 @@ const barHandle = computed(() => ({
   onPointerdown: startDrag,
   style: styles.dragHandle,
 }))
-const frameItem = computed(() => ({
-  onClick: selectFrame,
-  role: "radio",
-  "aria-checked": frameSelected.value ? "true" : "false",
-  "aria-selected": frameSelected.value || undefined,
-  style: styles.option,
-}))
-const containerItem = computed(() => ({
-  onClick: selectContainer,
-  role: "radio",
-  "aria-checked": containerSelected.value ? "true" : "false",
-  "aria-selected": containerSelected.value || undefined,
-  style: styles.option,
-}))
-const nameInput = computed(() => ({
-  value: name.value,
-  onInput: onNameInput,
-  autofocus: true,
-  "aria-invalid": nameError.value ? "true" : undefined,
-}))
-const levelField = computed(() => ({
-  onClick: openLevel,
-  "aria-expanded": levelOpen.value,
-  style: styles.levelField,
-}))
+
+// The level field is read-only display; the value comes from the menu.
 const levelInput = computed(() => ({
   value: levelLabel.value,
   readonly: true,
   style: styles.levelInput,
 }))
-const intentInput = computed(() => ({ value: intent.value, onInput: onIntentInput }))
-const tagsInput = computed(() => ({ value: tags.value, onInput: onTagsInput }))
 const cancelButton = { onClick: close }
 const confirmButton = computed(() => ({
   onClick: save,
   "aria-disabled": !canSubmit.value,
   style: canSubmit.value ? undefined : styles.disabled,
+}))
+
+// Drive every interactive slot through its stable workspace ref, so the two root
+// choices and the four fields are addressed by name instead of position.
+const seldonRefs = computed(() => ({
+  createComponentFrame: {
+    onClick: selectFrame,
+    role: "radio",
+    "aria-checked": frameSelected.value ? "true" : "false",
+    "aria-selected": frameSelected.value || undefined,
+    style: styles.option,
+  },
+  createComponentContainer: {
+    onClick: selectContainer,
+    role: "radio",
+    "aria-checked": containerSelected.value ? "true" : "false",
+    "aria-selected": containerSelected.value || undefined,
+    style: styles.option,
+  },
+  createComponentName: {
+    value: name.value,
+    onInput: onNameInput,
+    autofocus: true,
+    "aria-invalid": nameError.value ? "true" : undefined,
+  },
+  createComponentLevel: {
+    onClick: openLevel,
+    "aria-expanded": levelOpen.value,
+    style: styles.levelField,
+  },
+  createComponentIntent: { value: intent.value, onInput: onIntentInput },
+  createComponentTags: { value: tags.value, onInput: onTagsInput },
 }))
 </script>
 
@@ -241,31 +248,26 @@ const confirmButton = computed(() => ({
   >
     <DialogCreateComponent
       data-testid="create-component-dialog"
+      :seldon-refs="seldonRefs"
       :bar="barHandle"
       :text-title="showSlot"
-      :item-catalog="frameItem"
+      :item-catalog="showSlot"
       :icon="showSlot"
-      :frame2="showSlot"
       :text-title2="showSlot"
       :text-subtitle="showSlot"
-      :item-catalog2="containerItem"
+      :item-catalog2="showSlot"
       :icon2="showSlot"
-      :frame3="showSlot"
       :text-title3="showSlot"
       :text-subtitle2="showSlot"
       :form-control="showSlot"
       :text-label="showSlot"
-      :input="nameInput"
       :form-control-combobox="showSlot"
       :text-label2="showSlot"
-      :combobox-field="levelField"
       :input2="levelInput"
       :form-control2="showSlot"
       :text-label3="showSlot"
-      :input3="intentInput"
       :form-control3="showSlot"
       :text-label4="showSlot"
-      :input4="tagsInput"
       :button="cancelButton"
       :text-label5="showSlot"
       :button2="confirmButton"
