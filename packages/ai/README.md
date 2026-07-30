@@ -80,6 +80,21 @@ ollama pull qwen3:8b
 
 ---
 
+### Server lifecycle
+
+You do not have to start the server by hand for the editors. [scripts/ensure-ollama.mjs](./scripts/ensure-ollama.mjs) does it, and the `dev` script of both the React and Vue editor runs it. It probes the host first and starts a server only when nothing answers, so starting either editor never stacks up duplicate servers.
+
+The server it starts gets performance env the plain `ollama serve` command does not: flash attention, and a keep-alive that holds the model in memory between turns. Those are read at startup, so they apply only to a server this script started. Run the two commands separately when you need to:
+
+```bash
+npm run ollama:ensure
+npm run ollama:kill
+```
+
+Restart the server through `ollama:kill` then `ollama:ensure` to pick up the performance env on a server you started by hand.
+
+---
+
 ### Environment variables
 
 Pi reads these from `process.env` in [pi/model.ts](./pi/model.ts). An explicit call argument wins first, then the environment variable, then the default.
@@ -295,7 +310,7 @@ Clamp forces the least reasoning a model supports for a turn. qwen3 reads the ch
 | --- | --- |
 | Core | [../core/README.md](../core/README.md) |
 | Factory | [../factory/README.md](../factory/README.md) |
-| Editor | [../editor/README.md](../editor/README.md) |
+| Editor | [../editor/shared/README.md](../editor/shared/README.md) |
 | Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 
 ---
@@ -345,7 +360,7 @@ Contact:
 
 - [Core](../core/README.md)
 - [Factory](../factory/README.md)
-- [Editor](../editor/README.md)
+- [Editor](../editor/shared/README.md)
 - [Official Website](https://seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 

@@ -1,10 +1,13 @@
 /*
- * Ensures a local Ollama server is running before the dev server starts, since
- * the AI agent (Pi) talks to Ollama's OpenAI-compatible endpoint.
+ * Ensures a local Ollama server is running before an editor dev server starts,
+ * since the AI agent (Pi) talks to Ollama's OpenAI-compatible endpoint. Both the
+ * React and Vue editors serve the agent from the same shared Vite plugin, so both
+ * `dev` scripts run this.
  *
  * Probe first: if the server already answers, do nothing. This is what keeps a
- * second `ollama serve` from ever launching, so `npm run dev` never stacks up
- * duplicate servers. Only when the probe fails does it spawn one detached.
+ * second `ollama serve` from ever launching, so starting either editor never
+ * stacks up duplicate servers. Only when the probe fails does it spawn one
+ * detached.
  *
  * The server we spawn gets performance env applied (see PERF_ENV): flash
  * attention, a quantized KV cache, and a long keep-alive so the model stays
@@ -93,7 +96,7 @@ function perfSummary() {
 async function main() {
   if (await isRunning()) {
     console.log(
-      `Ollama already running at ${HOST}. Performance settings apply only to a server this script starts; run "npm run ollama:kill" then "npm run dev" to apply them.`,
+      `Ollama already running at ${HOST}. Performance settings apply only to a server this script starts; run "npm run ollama:kill" then start the editor again to apply them.`,
     )
     return
   }

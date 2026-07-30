@@ -281,13 +281,11 @@ The generated `IconProps["icon"]` union covers every icon turned on in the works
 | Topic | Document |
 | --- | --- |
 | Core | [../core/README.md](../core/README.md) |
-| Editor | [../editor/README.md](../editor/README.md) |
+| Editor | [../editor/shared/README.md](../editor/shared/README.md) |
 | React export | [export/react/README.md](./export/react/README.md) |
 | CSS export | [export/css/README.md](./export/css/README.md) |
-| Code examples | [TECHNICAL.md](./TECHNICAL.md) |
+| Bindings | [bindings/README.md](./bindings/README.md) |
 | Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
-
-Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
 
 ---
 
@@ -336,7 +334,7 @@ Contact:
 
 - [Core](../core/README.md)
 - [Factory](./README.md)
-- [Editor](../editor/README.md)
+- [Editor](../editor/shared/README.md)
 - [Official Website](https://seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
