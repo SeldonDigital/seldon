@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": 17,
+    "version": 18,
     "label": "seldon-editor"
   },
   "boards": {
@@ -6605,15 +6605,20 @@
                           "id": "component-message-ILrkqrJI"
                         }
                       ]
-                    },
+                    }
+                  ]
+                },
+                {
+                  "id": "component-message-9cMScf0u",
+                  "children": [
                     {
-                      "id": "component-message-CVLtMH5d",
+                      "id": "component-message-TVny0Z73",
                       "children": [
                         {
-                          "id": "component-message-EEsYNUhC"
+                          "id": "component-message-FYp3Nc8k"
                         },
                         {
-                          "id": "component-message-3TDXtv3t"
+                          "id": "component-message-c3MioOB9"
                         }
                       ]
                     }
@@ -7020,15 +7025,20 @@
                   "id": "component-message-71GGHVwV"
                 }
               ]
-            },
+            }
+          ]
+        },
+        {
+          "id": "component-message-QVTqSkfU",
+          "children": [
             {
-              "id": "component-frame-RStcYvkF",
+              "id": "component-message-nTC3LDea",
               "children": [
                 {
-                  "id": "component-icon-9oUjKo1a"
+                  "id": "component-message-GL7BdSOW"
                 },
                 {
-                  "id": "component-text-HqunMGGR"
+                  "id": "component-message-20e0rrCn"
                 }
               ]
             }
@@ -34923,6 +34933,7 @@
       }
     },
     "component-panel-DxDVepgS": {
+      "ref": "hariBar",
       "type": "instance",
       "level": "part",
       "label": "Bar",
@@ -35296,7 +35307,7 @@
       "origin": "user"
     },
     "component-panel-VoRnpuW2": {
-      "ref": "turns",
+      "ref": "hariTurns",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -35572,6 +35583,7 @@
       "origin": "user"
     },
     "component-panel-5LdFLd1M": {
+      "ref": "hariThinkingLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -35775,6 +35787,7 @@
       "origin": "user"
     },
     "component-panel-wKKOvQwf": {
+      "ref": "hariModelLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -35916,6 +35929,7 @@
       "origin": "user"
     },
     "component-button-KQWpbKqF": {
+      "ref": "hariSendIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -35973,6 +35987,7 @@
       "origin": "user"
     },
     "component-chip-zawrF4dY": {
+      "ref": "hariSelectionLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36207,13 +36222,19 @@
     "component-message-tools": {
       "type": "variant",
       "level": "element",
-      "label": "Tools",
+      "label": "ToolsHeader",
       "theme": null,
       "template": "node:component-message-default",
       "overrides": {
         "gap": {
           "type": "theme.ordinal",
           "value": "@gap.tight"
+        },
+        "padding": {
+          "bottom": {
+            "type": "option",
+            "value": "none"
+          }
         }
       }
     },
@@ -36370,6 +36391,7 @@
       }
     },
     "component-text-5X8uWVHu": {
+      "ref": "hariUserText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36402,6 +36424,7 @@
       "origin": "schema"
     },
     "component-text-rdPTp0zG": {
+      "ref": "hariReplyText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36460,6 +36483,7 @@
       "origin": "schema"
     },
     "component-text-0r1JFBYH": {
+      "ref": "hariReasoningLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36492,6 +36516,7 @@
       "origin": "schema"
     },
     "component-button-iKLUV4uP": {
+      "ref": "hariReasoningToggle",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -36536,6 +36561,7 @@
       "origin": "schema"
     },
     "component-icon-KzY9lbAe": {
+      "ref": "hariReasoningChevron",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36558,6 +36584,7 @@
       "origin": "schema"
     },
     "component-text-cHoacyQ2": {
+      "ref": "hariReasoningBody",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36567,60 +36594,6 @@
         "content": {
           "type": "exact",
           "value": "Reasoning..."
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "schema"
-    },
-    "component-icon-9oUjKo1a": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-default",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-build"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        }
-      },
-      "origin": "schema"
-    },
-    "component-text-HqunMGGR": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-description",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Tool"
         },
         "width": {
           "type": "option",
@@ -36670,6 +36643,7 @@
       "origin": "schema"
     },
     "component-icon-wxT91IpG": {
+      "ref": "hariOutcomeIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36688,6 +36662,7 @@
       "origin": "schema"
     },
     "component-text-PIf8vzL0": {
+      "ref": "hariOutcomeLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36720,6 +36695,7 @@
       "origin": "schema"
     },
     "component-text-UAGUHvkF": {
+      "ref": "hariOutcomeText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36778,6 +36754,7 @@
       "origin": "schema"
     },
     "component-icon-GM8jpOSl": {
+      "ref": "hariErrorIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36796,6 +36773,7 @@
       "origin": "schema"
     },
     "component-text-gaFQYpvP": {
+      "ref": "hariErrorText",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -36828,6 +36806,7 @@
       "origin": "schema"
     },
     "component-button-AKDnMgFM": {
+      "ref": "hariErrorRetry",
       "type": "instance",
       "level": "element",
       "label": "Simple",
@@ -36842,6 +36821,7 @@
       "origin": "schema"
     },
     "component-text-AfTUkMQr": {
+      "ref": "hariErrorRetryLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36874,6 +36854,7 @@
       "origin": "schema"
     },
     "component-icon-8Ds95Uq5": {
+      "ref": "hariStatusIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -36892,6 +36873,7 @@
       "origin": "schema"
     },
     "component-text-UE8Mt3mk": {
+      "ref": "hariStatusLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -36948,6 +36930,7 @@
       "origin": "schema"
     },
     "component-panel-ATTVDoTF": {
+      "ref": "hariReset",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -37242,6 +37225,7 @@
       "origin": "user"
     },
     "component-message-aeeOGbms": {
+      "ref": "hariReasoningClamped",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -37587,6 +37571,7 @@
       "origin": "user"
     },
     "component-message-EGbeFVEr": {
+      "ref": "hariToolsToggle",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -37631,6 +37616,7 @@
       "origin": "user"
     },
     "component-message-BMASpmJY": {
+      "ref": "hariToolsChevron",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -37653,6 +37639,7 @@
       "origin": "user"
     },
     "component-message-71GGHVwV": {
+      "ref": "hariToolsLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Description",
@@ -37680,57 +37667,6 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
-        }
-      },
-      "origin": "user"
-    },
-    "component-frame-RStcYvkF": {
-      "ref": "tool",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "margin": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        },
-        "align": {
-          "type": "option",
-          "value": "left"
         }
       },
       "origin": "user"
@@ -37815,7 +37751,7 @@
     "component-message-7jaeqFh9": {
       "type": "instance",
       "level": "element",
-      "label": "Tools",
+      "label": "ToolsHeader",
       "theme": null,
       "template": "node:component-message-tools",
       "overrides": {
@@ -37945,110 +37881,6 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.label"
-          },
-          "size": {
-            "type": "theme.ordinal",
-            "value": "@fontSize.xsmall"
-          }
-        }
-      },
-      "origin": "user"
-    },
-    "component-message-CVLtMH5d": {
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-RStcYvkF",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "padding": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "margin": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@margin.tight"
-          }
-        },
-        "align": {
-          "type": "option",
-          "value": "left"
-        }
-      },
-      "origin": "user"
-    },
-    "component-message-EEsYNUhC": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-9oUjKo1a",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-build"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "size": {
-          "type": "theme.ordinal",
-          "value": "@size.small"
-        }
-      },
-      "origin": "user"
-    },
-    "component-message-3TDXtv3t": {
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-HqunMGGR",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Tool"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.body"
           },
           "size": {
             "type": "theme.ordinal",
@@ -47361,6 +47193,154 @@
           }
         ]
       },
+      "origin": "user"
+    },
+    "component-message-QVTqSkfU": {
+      "type": "variant",
+      "level": "element",
+      "label": "ToolsUsed",
+      "theme": null,
+      "template": "node:component-message-default",
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        }
+      }
+    },
+    "component-message-nTC3LDea": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "margin": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        }
+      },
+      "origin": "user"
+    },
+    "component-message-GL7BdSOW": {
+      "ref": "hariToolIcon",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-build"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "size": {
+          "type": "theme.ordinal",
+          "value": "@size.small"
+        }
+      },
+      "origin": "schema"
+    },
+    "component-message-20e0rrCn": {
+      "ref": "hariToolText",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Tool"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "schema"
+    },
+    "component-message-9cMScf0u": {
+      "type": "instance",
+      "level": "element",
+      "label": "ToolsUsed",
+      "theme": null,
+      "template": "node:component-message-QVTqSkfU",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "mock"
+        }
+      },
+      "origin": "user"
+    },
+    "component-message-TVny0Z73": {
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-message-nTC3LDea",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-message-FYp3Nc8k": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-message-GL7BdSOW",
+      "overrides": {},
+      "origin": "user"
+    },
+    "component-message-c3MioOB9": {
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-message-20e0rrCn",
+      "overrides": {},
       "origin": "user"
     }
   },

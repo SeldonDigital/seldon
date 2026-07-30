@@ -64,15 +64,43 @@ export type SeldonRef =
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
+  | "hariBar"
   | "hariClamp"
   | "hariClose"
+  | "hariErrorIcon"
+  | "hariErrorRetry"
+  | "hariErrorRetryLabel"
+  | "hariErrorText"
   | "hariInput"
   | "hariModel"
+  | "hariModelLabel"
   | "hariOutcome"
+  | "hariOutcomeIcon"
+  | "hariOutcomeLabel"
+  | "hariOutcomeText"
+  | "hariReasoningBody"
+  | "hariReasoningChevron"
+  | "hariReasoningClamped"
+  | "hariReasoningLabel"
+  | "hariReasoningToggle"
+  | "hariReplyText"
+  | "hariReset"
   | "hariSelection"
+  | "hariSelectionLabel"
   | "hariSend"
+  | "hariSendIcon"
+  | "hariStatusIcon"
+  | "hariStatusLabel"
   | "hariThinking"
+  | "hariThinkingLabel"
+  | "hariToolIcon"
   | "hariTools"
+  | "hariToolsChevron"
+  | "hariToolsLabel"
+  | "hariToolsToggle"
+  | "hariToolText"
+  | "hariTurns"
+  | "hariUserText"
   | "logo"
   | "menuComponent"
   | "menuDev"
@@ -135,8 +163,6 @@ export type SeldonRef =
   | "sectionLabel"
   | "sidebarComponents"
   | "sidebarResources"
-  | "tool"
-  | "turns"
   | "workspaceName"
   | "workspaceSave"
 
@@ -884,6 +910,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  hariBar: {
+    component: "Bar",
+    nodeId: "component-panel-DxDVepgS",
+    className: "sdn-bar sdn-bar--9xs7",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.vue",
+        slot: "bar",
+        type: "BarProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   hariClamp: {
     component: "ButtonToggle",
     nodeId: "component-button-N1pT65yh",
@@ -908,6 +948,62 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/PanelHari.vue",
         slot: "buttonIconic2",
         type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariErrorIcon: {
+    component: "Icon",
+    nodeId: "component-icon-GM8jpOSl",
+    className: "sdn-icon sdn-icon--gm8j",
+    views: [
+      {
+        component: "MessageError",
+        file: "elements/MessageError.vue",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariErrorRetry: {
+    component: "ButtonSimple",
+    nodeId: "component-button-AKDnMgFM",
+    className: "sdn-button-simple sdn-button-iconic--iklu",
+    views: [
+      {
+        component: "MessageError",
+        file: "elements/MessageError.vue",
+        slot: "buttonSimple",
+        type: "ButtonSimpleProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariErrorRetryLabel: {
+    component: "TextLabel",
+    nodeId: "component-text-AfTUkMQr",
+    className: "sdn-text-label sdn-text-label--aftu",
+    views: [
+      {
+        component: "MessageError",
+        file: "elements/MessageError.vue",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariErrorText: {
+    component: "TextDescription",
+    nodeId: "component-text-gaFQYpvP",
+    className: "sdn-text-description sdn-text-label--lbxv",
+    views: [
+      {
+        component: "MessageError",
+        file: "elements/MessageError.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -940,6 +1036,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  hariModelLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-wKKOvQwf",
+    className: "sdn-text-label sdn-text-label--sa6t",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.vue",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   hariOutcome: {
     component: "ButtonToggle",
     nodeId: "component-panel-PMmBQIRj",
@@ -954,6 +1064,146 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  hariOutcomeIcon: {
+    component: "Icon",
+    nodeId: "component-icon-wxT91IpG",
+    className: "sdn-icon sdn-icon--wxt9",
+    views: [
+      {
+        component: "MessageOutcome",
+        file: "elements/MessageOutcome.vue",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariOutcomeLabel: {
+    component: "TextLabel",
+    nodeId: "component-text-PIf8vzL0",
+    className: "sdn-text-label sdn-text-label--lbxv",
+    views: [
+      {
+        component: "MessageOutcome",
+        file: "elements/MessageOutcome.vue",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariOutcomeText: {
+    component: "TextDescription",
+    nodeId: "component-text-UAGUHvkF",
+    className: "sdn-text-description sdn-text-description--choa",
+    views: [
+      {
+        component: "MessageOutcome",
+        file: "elements/MessageOutcome.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariReasoningBody: {
+    component: "TextDescription",
+    nodeId: "component-text-cHoacyQ2",
+    className: "sdn-text-description sdn-text-description--choa",
+    views: [
+      {
+        component: "MessageThinking",
+        file: "elements/MessageThinking.vue",
+        slot: "textDescription3",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariReasoningChevron: {
+    component: "Icon",
+    nodeId: "component-icon-KzY9lbAe",
+    className: "sdn-icon sdn-icon--kzy9",
+    views: [
+      {
+        component: "MessageThinking",
+        file: "elements/MessageThinking.vue",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariReasoningClamped: {
+    component: "TextDescription",
+    nodeId: "component-message-aeeOGbms",
+    className: "sdn-text-description sdn-text-description--aeeo",
+    views: [
+      {
+        component: "MessageThinking",
+        file: "elements/MessageThinking.vue",
+        slot: "textDescription2",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariReasoningLabel: {
+    component: "TextDescription",
+    nodeId: "component-text-0r1JFBYH",
+    className: "sdn-text-description sdn-text-description--0r1j",
+    views: [
+      {
+        component: "MessageThinking",
+        file: "elements/MessageThinking.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariReasoningToggle: {
+    component: "ButtonIconic",
+    nodeId: "component-button-iKLUV4uP",
+    className: "sdn-button-iconic sdn-button-iconic--iklu",
+    views: [
+      {
+        component: "MessageThinking",
+        file: "elements/MessageThinking.vue",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariReplyText: {
+    component: "TextDescription",
+    nodeId: "component-text-rdPTp0zG",
+    className: "sdn-text-description sdn-text-description--welb",
+    views: [
+      {
+        component: "MessageAssistant",
+        file: "elements/MessageAssistant.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariReset: {
+    component: "ButtonIconic",
+    nodeId: "component-panel-ATTVDoTF",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.vue",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   hariSelection: {
     component: "Chip",
     nodeId: "component-chip-LO6kjXwm",
@@ -964,6 +1214,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/PanelHari.vue",
         slot: "chip",
         type: "ChipProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariSelectionLabel: {
+    component: "TextLabel",
+    nodeId: "component-chip-zawrF4dY",
+    className: "sdn-text-label sdn-text-label--lug5",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.vue",
+        slot: "textLabel3",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -982,6 +1246,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  hariSendIcon: {
+    component: "Icon",
+    nodeId: "component-button-KQWpbKqF",
+    className: "sdn-icon sdn-icon--umgs",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.vue",
+        slot: "icon8",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariStatusIcon: {
+    component: "Icon",
+    nodeId: "component-icon-8Ds95Uq5",
+    className: "sdn-icon sdn-icon--8ds9",
+    views: [
+      {
+        component: "MessageStatus",
+        file: "elements/MessageStatus.vue",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariStatusLabel: {
+    component: "TextLabel",
+    nodeId: "component-text-UE8Mt3mk",
+    className: "sdn-text-label sdn-text-label--ue8m",
+    views: [
+      {
+        component: "MessageStatus",
+        file: "elements/MessageStatus.vue",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   hariThinking: {
     component: "ButtonMenu",
     nodeId: "component-panel-IpE0XEo6",
@@ -996,6 +1302,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  hariThinkingLabel: {
+    component: "TextLabel",
+    nodeId: "component-panel-5LdFLd1M",
+    className: "sdn-text-label sdn-text-label--sa6t",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.vue",
+        slot: "textLabel2",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToolIcon: {
+    component: "Icon",
+    nodeId: "component-message-GL7BdSOW",
+    className: "sdn-icon sdn-icon--gl7b",
+    views: [
+      {
+        component: "MessageToolsUsed",
+        file: "elements/MessageToolsUsed.vue",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   hariTools: {
     component: "ButtonToggle",
     nodeId: "component-panel-ablPq3kW",
@@ -1006,6 +1340,90 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/PanelHari.vue",
         slot: "buttonToggle2",
         type: "ButtonToggleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToolsChevron: {
+    component: "Icon",
+    nodeId: "component-message-BMASpmJY",
+    className: "sdn-icon sdn-icon--bmas",
+    views: [
+      {
+        component: "MessageToolsHeader",
+        file: "elements/MessageToolsHeader.vue",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariToolsLabel: {
+    component: "TextDescription",
+    nodeId: "component-message-71GGHVwV",
+    className: "sdn-text-description sdn-text-description--71gg",
+    views: [
+      {
+        component: "MessageToolsHeader",
+        file: "elements/MessageToolsHeader.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToolsToggle: {
+    component: "ButtonIconic",
+    nodeId: "component-message-EGbeFVEr",
+    className: "sdn-button-iconic sdn-button-iconic--iklu",
+    views: [
+      {
+        component: "MessageToolsHeader",
+        file: "elements/MessageToolsHeader.vue",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariToolText: {
+    component: "TextDescription",
+    nodeId: "component-message-20e0rrCn",
+    className: "sdn-text-description sdn-text-description--20e0",
+    views: [
+      {
+        component: "MessageToolsUsed",
+        file: "elements/MessageToolsUsed.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  hariTurns: {
+    component: "Frame",
+    nodeId: "component-panel-VoRnpuW2",
+    className: "sdn-frame sdn-frame--vorn",
+    views: [
+      {
+        component: "PanelHari",
+        file: "modules/PanelHari.vue",
+        slot: "frame2",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  hariUserText: {
+    component: "TextDescription",
+    nodeId: "component-text-5X8uWVHu",
+    className: "sdn-text-description sdn-text-description--welb",
+    views: [
+      {
+        component: "MessageUser",
+        file: "elements/MessageUser.vue",
+        slot: "textDescription",
+        type: "TextDescriptionProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -1875,34 +2293,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "buttonToggle2",
         type: "ButtonToggleProps",
         rendersWhen: "when-passed",
-      },
-    ],
-  },
-  tool: {
-    component: "Frame",
-    nodeId: "component-frame-RStcYvkF",
-    className: "sdn-frame sdn-frame--rstc",
-    views: [
-      {
-        component: "MessageTools",
-        file: "elements/MessageTools.vue",
-        slot: "frame2",
-        type: "FrameProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  turns: {
-    component: "Frame",
-    nodeId: "component-panel-VoRnpuW2",
-    className: "sdn-frame sdn-frame--vorn",
-    views: [
-      {
-        component: "PanelHari",
-        file: "modules/PanelHari.vue",
-        slot: "frame2",
-        type: "FrameProps",
-        rendersWhen: "unless-null",
       },
     ],
   },

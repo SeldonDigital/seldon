@@ -13,7 +13,7 @@ import LoadEditorFonts from "@app/editor/LoadEditorFonts.vue"
 import { useEditorConfigStore } from "@app/editor/editor-config-store"
 import { useResolvedInterfaceMode } from "@app/editor/use-resolved-interface-mode"
 import FocusRingOverlay from "@app/overlays/FocusRingOverlay.vue"
-import AiChatPanel from "@app/palettes/AiChatPanel.vue"
+import HariController from "@app/palettes/hari/HariController.vue"
 import { useWorkspaceAutosave } from "@app/persistence/use-workspace-autosave"
 import { useWorkspaceSaveStore } from "@app/persistence/workspace-save-store"
 import ObjectsSidebar from "@app/sidebars/objects/ObjectsSidebar.vue"
@@ -153,7 +153,7 @@ watch(workspaceId, (id) => void load(id), { immediate: true })
     <IconSetsDialog />
     <ExportDialog />
     <ImageUploadController />
-    <AiChatPanel />
+    <HariController />
     <FocusRingOverlay />
   </div>
 </template>

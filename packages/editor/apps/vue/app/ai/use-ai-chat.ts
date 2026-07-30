@@ -11,7 +11,6 @@ import { getAgentConfig, runAgentChat, warmAgent } from "@seldon/editor/lib/ai/r
 import { collectVocabularyWarnings } from "@seldon/editor/lib/ai/vocabulary-warnings"
 import { resolveSelectionScope } from "@seldon/editor/lib/workspace/selection-scope"
 import { getComponent } from "@seldon/editor/lib/workspace/workspace-accessors"
-import { computed } from "vue"
 
 import {
   isFontCollectionBoard,
@@ -299,28 +298,10 @@ export function useAiChat() {
     return warmInFlight
   }
 
-  const modelOptions = computed(() =>
-    (store.config?.models ?? []).map((value) => ({ label: value, value })),
-  )
-
-  const thinkingOptions = computed(() => {
-    const model = store.model
-
-    if (!model) return []
-    const options = store.config?.thinkingByModel?.[model]?.options ?? []
-
-    return options.map((option) => ({
-      label: option.label,
-      value: option.value,
-    }))
-  })
-
   return {
     send,
     stop,
     warm,
     reset: store.reset,
-    modelOptions,
-    thinkingOptions,
   }
 }

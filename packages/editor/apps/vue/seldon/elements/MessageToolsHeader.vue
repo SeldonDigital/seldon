@@ -20,19 +20,25 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *****/
 
 /**
- * Message: MessageAssistant
+ * Message: MessageToolsHeader
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
- * Type: Custom
+ * Type: Inline
  *
  * Structure:
- *   TextDescription  textDescription  -> hariReplyText
+ *   Frame              frame
+ *     ButtonIconic     buttonIconic     -> hariToolsToggle
+ *       Icon           icon             -> hariToolsChevron
+ *     TextDescription  textDescription  -> hariToolsLabel
  *
  * @example
  * ```vue
- * <MessageAssistant
+ * <MessageToolsHeader
  *   aria-hidden="false"
+ *   frame="{}"
+ *   buttonIconic={() => {}}
+ *   icon="material-star"
  *   textDescription="{}"
  * />
  * ```
@@ -43,11 +49,16 @@ export default {}
 <script setup lang="ts">
 import { computed } from "vue"
 
+import ButtonIconic from "../elements/ButtonIconic.vue"
+import Frame from "../frames/Frame.vue"
 import TextDescription from "../primitives/TextDescription.vue"
-import { combineClassNames, mergeOptionalSlot } from "../utils/class-names"
+import { combineClassNames, mergeOptionalSlot, mergeSlot } from "../utils/class-names"
 
 const props = defineProps<{
   className?: string
+  frame?: Record<string, unknown> | null
+  buttonIconic?: Record<string, unknown> | null
+  icon?: Record<string, unknown> | null
   textDescription?: Record<string, unknown> | null
   seldonRefs?: Record<string, Record<string, unknown>>
 }>()
@@ -57,15 +68,35 @@ const props = defineProps<{
 //
 const sdn: Record<string, any> = {
   "aria-hidden": "false",
+  frame: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ieew",
+  },
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--iklu",
+    "data-seldon-ref": "hariToolsToggle",
+  },
+  icon: {
+    icon: "material-chevronDown",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--bmas",
+    "data-seldon-ref": "hariToolsChevron",
+  },
   textDescription: {
-    children: "Assistant message",
-    className: "sdn-text-description sdn-text-description--welb",
-    "data-seldon-ref": "hariReplyText",
+    children: "Tools Applied",
+    className: "sdn-text-description sdn-text-description--71gg",
+    "data-seldon-ref": "hariToolsLabel",
   },
 }
 
-const rootClassName = computed(() => combineClassNames("sdn-message-assistant", props.className))
+const rootClassName = computed(() => combineClassNames("sdn-message-tools-header", props.className))
 const rootAttrs = { "aria-hidden": sdn["aria-hidden"] }
+const frameProps = computed(() => mergeSlot(sdn.frame, props.frame, props.seldonRefs))
+const buttonIconicProps = computed(() =>
+  mergeOptionalSlot(sdn.buttonIconic, props.buttonIconic, props.seldonRefs),
+)
+const iconProps = computed(() => mergeSlot(sdn.icon, props.icon, props.seldonRefs))
 const textDescriptionProps = computed(() =>
   mergeOptionalSlot(sdn.textDescription, props.textDescription, props.seldonRefs),
 )
@@ -74,7 +105,14 @@ const textDescriptionProps = computed(() =>
 <template>
   <div :class="rootClassName" v-bind="rootAttrs">
     <slot>
-      <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
+      <Frame v-bind="frameProps">
+        <ButtonIconic
+          v-if="buttonIconicProps !== null"
+          v-bind="buttonIconicProps"
+          :icon="iconProps"
+        />
+        <TextDescription v-if="textDescriptionProps !== null" v-bind="textDescriptionProps" />
+      </Frame>
     </slot>
   </div>
 </template>

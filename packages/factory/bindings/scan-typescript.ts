@@ -3,7 +3,12 @@ import ts from "typescript"
 import { isComponentImport } from "./config"
 import { buildDeclarationIndex } from "./declaration-index"
 import { describeExpression } from "./describe-expression"
-import { readLiteralEntries, resolveObjectEntries } from "./resolve-object-literal"
+import {
+  readLiteralEntries,
+  resolveObjectEntries,
+  resolvePropertyEntries,
+  resolveReturnedEntries,
+} from "./resolve-object-literal"
 
 import type { DeclarationIndex } from "./declaration-index"
 import type { ObjectEntry } from "./resolve-object-literal"
@@ -146,13 +151,24 @@ function collectElement(
 
 /**
  * Reads the entries of an object an attribute passes, whether it is written in
- * place or hoisted into an identifier. Consumers always hoist, so the identifier
- * path is the one that matters, but an inline literal is read too so a future
- * inline map is not silently missed.
+ * place or hoisted into an identifier. Consumers hoist, so the identifier path is
+ * the one that matters, but an inline literal is read too so a future inline map
+ * is not silently missed.
+ *
+ * A map built per row resolves as well, through the helper a call names or
+ * through the property a row is read under, matching the Vue front end.
  */
 function resolveEntriesOf(expression: ts.Expression, sourceFile: ts.SourceFile): ObjectEntry[] {
   if (ts.isIdentifier(expression)) return resolveObjectEntries(expression.text, sourceFile)
   if (ts.isObjectLiteralExpression(expression)) return readLiteralEntries(expression, sourceFile)
+
+  if (ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)) {
+    return resolveReturnedEntries(expression.expression.text, sourceFile)
+  }
+
+  if (ts.isPropertyAccessExpression(expression)) {
+    return resolvePropertyEntries(expression.name.text, sourceFile)
+  }
 
   return []
 }

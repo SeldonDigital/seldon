@@ -36,6 +36,44 @@ export function resolveObjectEntries(name, sourceFile) {
   entries.push(...findAssignedEntries(name, sourceFile))
   return entries
 }
+/**
+ * Resolves the entries of the object a named function returns.
+ *
+ * A template cannot declare a local for a repeated row, so it calls a helper per
+ * row and the helper's returned literal is the map. Covers a function declaration
+ * and a `const` holding an arrow or function expression, with either an
+ * expression body or a block. A block with several returns contributes all of
+ * them, which is how a helper covers more than one kind of row.
+ *
+ * Returns an empty list when the name is not a function declared in this file or
+ * it returns nothing that resolves to an object literal.
+ */
+export function resolveReturnedEntries(name, sourceFile) {
+  const body = findFunctionBody(name, sourceFile)
+  if (!body) return []
+  return findReturnedLiterals(body).flatMap((literal) => readLiteralEntries(literal, sourceFile))
+}
+/**
+ * Resolves the entries of every object literal assigned to a property of this
+ * name.
+ *
+ * A template that renders a precomputed row list reads the map off the row, as
+ * `row.seldonRefs`, so the property name is what identifies it rather than a
+ * variable name. Every literal under that property in the file contributes,
+ * because a row list is often built in more than one branch.
+ */
+export function resolvePropertyEntries(propertyName, sourceFile) {
+  const entries = []
+  function visit(node) {
+    if (ts.isPropertyAssignment(node) && getPropertyName(node.name) === propertyName) {
+      const literal = unwrapObjectLiteral(node.initializer)
+      if (literal) entries.push(...readLiteralEntries(literal, sourceFile))
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return entries
+}
 /** Resolves the entries of an object literal expression written in place. */
 export function readLiteralEntries(literal, sourceFile) {
   const entries = []
@@ -112,6 +150,51 @@ function findAssignedEntries(name, sourceFile) {
   }
   visit(sourceFile)
   return entries
+}
+/** The body of a function declared in this file, under either declaration form. */
+function findFunctionBody(name, sourceFile) {
+  let found = null
+  function visit(node) {
+    if (found) return
+    if (ts.isFunctionDeclaration(node) && node.name?.text === name && node.body) {
+      found = node.body
+      return
+    }
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === name) {
+      const { initializer } = node
+      if (
+        initializer &&
+        (ts.isArrowFunction(initializer) || ts.isFunctionExpression(initializer))
+      ) {
+        found = initializer.body
+        return
+      }
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return found
+}
+/**
+ * The object literals a function body returns. A nested function's returns belong
+ * to that function, so the walk stops at one.
+ */
+function findReturnedLiterals(body) {
+  if (!ts.isBlock(body)) {
+    const literal = unwrapObjectLiteral(body)
+    return literal ? [literal] : []
+  }
+  const literals = []
+  function visit(node) {
+    if (ts.isFunctionLike(node)) return
+    if (ts.isReturnStatement(node) && node.expression) {
+      const literal = unwrapObjectLiteral(node.expression)
+      if (literal) literals.push(literal)
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(body)
+  return literals
 }
 function isInsideBranch(node) {
   let current = node.parent

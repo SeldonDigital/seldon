@@ -16,7 +16,12 @@ import ts from "typescript"
 import { isComponentImport } from "./config.mjs"
 import { buildDeclarationIndex } from "./declaration-index.mjs"
 import { describeExpression } from "./describe-expression.mjs"
-import { readLiteralEntries, resolveObjectEntries } from "./resolve-object-literal.mjs"
+import {
+  readLiteralEntries,
+  resolveObjectEntries,
+  resolvePropertyEntries,
+  resolveReturnedEntries,
+} from "./resolve-object-literal.mjs"
 
 /** The attribute that carries a refs map, whatever the identifier behind it is named. */
 const REFS_ATTRIBUTE = "seldonRefs"
@@ -122,13 +127,22 @@ function collectElement(opening, tag, path, sourceFile, index, result) {
 }
 /**
  * Reads the entries of an object an attribute passes, whether it is written in
- * place or hoisted into an identifier. Consumers always hoist, so the identifier
- * path is the one that matters, but an inline literal is read too so a future
- * inline map is not silently missed.
+ * place or hoisted into an identifier. Consumers hoist, so the identifier path is
+ * the one that matters, but an inline literal is read too so a future inline map
+ * is not silently missed.
+ *
+ * A map built per row resolves as well, through the helper a call names or
+ * through the property a row is read under, matching the Vue front end.
  */
 function resolveEntriesOf(expression, sourceFile) {
   if (ts.isIdentifier(expression)) return resolveObjectEntries(expression.text, sourceFile)
   if (ts.isObjectLiteralExpression(expression)) return readLiteralEntries(expression, sourceFile)
+  if (ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)) {
+    return resolveReturnedEntries(expression.expression.text, sourceFile)
+  }
+  if (ts.isPropertyAccessExpression(expression)) {
+    return resolvePropertyEntries(expression.name.text, sourceFile)
+  }
   return []
 }
 /** The prop keys a ref entry sets, which exist only when its value is a literal. */

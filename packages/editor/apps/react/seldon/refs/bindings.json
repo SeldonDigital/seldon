@@ -2,7 +2,7 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 273,
+  "scannedFiles": 272,
   "refs": {
     "createComponentContainer": [
       {
@@ -3889,21 +3889,21 @@
       {
         "file": "app/sidebars/objects/ObjectsSidebar.tsx",
         "component": "ObjectsSidebar",
-        "line": 166,
+        "line": 167,
         "conditional": false,
         "expression": "{ style: styles.frame, children: treeChildren, }",
         "inputs": [
           {
             "name": "styles",
             "declaredAt": {
-              "line": 207,
+              "line": 208,
               "kind": "const"
             }
           },
           {
             "name": "treeChildren",
             "declaredAt": {
-              "line": 150,
+              "line": 151,
               "kind": "const"
             }
           }
@@ -3916,7 +3916,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 207,
+                  "line": 208,
                   "kind": "const"
                 }
               }
@@ -3929,7 +3929,7 @@
               {
                 "name": "treeChildren",
                 "declaredAt": {
-                  "line": 150,
+                  "line": 151,
                   "kind": "const"
                 }
               }
@@ -7158,7 +7158,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 155,
+          "line": 156,
           "expression": "handlePointerLeave",
           "inputs": [
             {
@@ -7177,7 +7177,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 154,
+          "line": 155,
           "expression": "handlePointerMove",
           "inputs": [
             {
@@ -10465,13 +10465,13 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 177,
+          "line": 178,
           "expression": "projectActions",
           "inputs": [
             {
               "name": "projectActions",
               "declaredAt": {
-                "line": 125,
+                "line": 126,
                 "kind": "const"
               }
             }
@@ -10483,13 +10483,13 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 178,
+          "line": 179,
           "expression": "componentsToggle",
           "inputs": [
             {
               "name": "componentsToggle",
               "declaredAt": {
-                "line": 133,
+                "line": 134,
                 "kind": "const"
               }
             }
@@ -10501,13 +10501,13 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 179,
+          "line": 180,
           "expression": "resourcesToggle",
           "inputs": [
             {
               "name": "resourcesToggle",
               "declaredAt": {
-                "line": 139,
+                "line": 140,
                 "kind": "const"
               }
             }
@@ -10519,13 +10519,13 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 175,
+          "line": 176,
           "expression": "projectField",
           "inputs": [
             {
               "name": "projectField",
               "declaredAt": {
-                "line": 120,
+                "line": 121,
                 "kind": "const"
               }
             }
@@ -10537,13 +10537,13 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 176,
+          "line": 177,
           "expression": "nameInput",
           "inputs": [
             {
               "name": "nameInput",
               "declaredAt": {
-                "line": 88,
+                "line": 89,
                 "kind": "const",
                 "via": "useRenameInput"
               }

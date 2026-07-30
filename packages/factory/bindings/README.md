@@ -76,6 +76,15 @@ So the scan resolves the identifier to its declaration and unwraps whatever hold
 - Keys added after the literal are included, such as `seldonRefs.valueIcon = ...`, and are marked `conditional` when they sit behind a branch.
 - A value built by a helper call has no visible prop keys, so the entry reports the whole `expression` and leaves `props` empty.
 
+A repeated row cannot hoist a local. JSX can open a function body per row and declare one there, but a Vue template has nowhere to put it, so a row either calls a helper or reads the map off the row it renders. Both resolve:
+
+```vue
+<MessageUser :seldon-refs="userRefs(turn)" />
+<MessageRefController v-for="row in rows" :seldon-refs="row.seldonRefs" />
+```
+
+A call resolves through the function it names, taking every object literal that function returns. A property access resolves through the property name, taking every literal assigned under it in the file. Both cover more than one literal because a row list is often built in more than one branch.
+
 Parsing is single-file and syntax-only, with no program and no type checker. An identifier imported from another module reports that import rather than being followed into it. Following it needs full module resolution, which would tie the scan to a filesystem and break the browser host.
 
 Vue reads both blocks. The template says which component receives what, and the script holds the declarations behind each expression. Script line numbers stay absolute because the block content is padded to its position in the file.

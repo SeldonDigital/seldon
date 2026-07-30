@@ -17,7 +17,12 @@ import ts from "typescript"
 import { isComponentImport } from "./config.mjs"
 import { buildDeclarationIndex } from "./declaration-index.mjs"
 import { describeExpression } from "./describe-expression.mjs"
-import { readLiteralEntries, resolveObjectEntries } from "./resolve-object-literal.mjs"
+import {
+  readLiteralEntries,
+  resolveObjectEntries,
+  resolvePropertyEntries,
+  resolveReturnedEntries,
+} from "./resolve-object-literal.mjs"
 
 /** The bound attribute that carries a refs map, written kebab-case in a template. */
 const REFS_ATTRIBUTE = "seldonRefs"
@@ -125,17 +130,29 @@ function collectElement(node, tag, path, script, index, result) {
 }
 /**
  * Reads the entries of the object a bound expression names. An identifier is
- * resolved through the script, which is how every refs map in a template is
+ * resolved through the script, which is how a map for a single component is
  * written, and an inline literal is read in place.
+ *
+ * A repeated row cannot hoist a local, because a template has nowhere to declare
+ * one per row. It either calls a helper for the row or reads the map off the row
+ * it renders, so a call resolves through the function it names and a property
+ * access resolves through the property name.
  */
 function resolveEntriesOf(code, script) {
   const parsed = parseExpression(code)
   if (!parsed) return []
-  if (ts.isIdentifier(parsed.expression)) {
-    return resolveObjectEntries(parsed.expression.text, script)
+  const { expression } = parsed
+  if (ts.isIdentifier(expression)) {
+    return resolveObjectEntries(expression.text, script)
   }
-  if (ts.isObjectLiteralExpression(parsed.expression)) {
-    return readLiteralEntries(parsed.expression, parsed.sourceFile)
+  if (ts.isObjectLiteralExpression(expression)) {
+    return readLiteralEntries(expression, parsed.sourceFile)
+  }
+  if (ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)) {
+    return resolveReturnedEntries(expression.expression.text, script)
+  }
+  if (ts.isPropertyAccessExpression(expression)) {
+    return resolvePropertyEntries(expression.name.text, script)
   }
   return []
 }
