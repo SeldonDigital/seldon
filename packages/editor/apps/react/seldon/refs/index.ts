@@ -12,6 +12,9 @@
  *****/
 
 export type SeldonRef =
+  | "boardState"
+  | "boardStateLabel"
+  | "boardStateMenuIcon"
   | "catalogIcon"
   | "catalogItem"
   | "catalogItems"
@@ -23,10 +26,14 @@ export type SeldonRef =
   | "createComponentLevel"
   | "createComponentName"
   | "createComponentTags"
-  | "Default"
   | "dialogCancel"
   | "dialogConfirm"
   | "dialogContent"
+  | "dialogSearch"
+  | "dialogSearchClear"
+  | "dialogSearchClearIcon"
+  | "dialogSearchField"
+  | "dialogSearchIcon"
   | "dialogTitle"
   | "exportAllFontsNo"
   | "exportAllFontsNoIcon"
@@ -61,9 +68,6 @@ export type SeldonRef =
   | "exportScriptsYes"
   | "exportScriptsYesIcon"
   | "exportWorkspaceName"
-  | "filterActions"
-  | "filterIcon"
-  | "filterLabel"
   | "hariBar"
   | "hariClamp"
   | "hariClose"
@@ -108,7 +112,6 @@ export type SeldonRef =
   | "menuFile"
   | "menuMode"
   | "menus"
-  | "menuState"
   | "menuTheme"
   | "menuView"
   | "nodeActions"
@@ -116,30 +119,38 @@ export type SeldonRef =
   | "nodeDisclosureIcon"
   | "nodeDisplay"
   | "nodeDisplayIcon"
+  | "nodeField"
   | "nodeIcon"
   | "nodeLabel"
-  | "objectsContainer"
+  | "objectsTree"
+  | "objectsViewComponents"
+  | "objectsViewResources"
   | "optionIcon"
   | "optionLabel"
-  | "projectActions"
-  | "projectIcon"
-  | "projectLabel"
-  | "propertiesContainer"
+  | "propertiesTree"
   | "propertyActions"
   | "propertyDisclosure"
   | "propertyDisclosureIcon"
   | "propertyFilter"
   | "propertyFilterClear"
+  | "propertyFilterClearIcon"
+  | "propertyFilterField"
+  | "propertyFilterIcon"
   | "propertyLabel"
+  | "propertyRow"
   | "propertyToggleActions"
+  | "propertyToggleControl"
   | "propertyToggleDisclosure"
   | "propertyToggleDisclosureIcon"
   | "propertyToggleIcon"
   | "propertyToggleLabel"
+  | "propertyToggleRow"
   | "propertyToggleSwitch"
+  | "propertyValueField"
   | "propertyValueIcon"
   | "propertyValueLabel"
   | "propertyValueMenu"
+  | "propertyValueMenuIcon"
   | "refCard"
   | "refCardCondition"
   | "refCardControllerFrom"
@@ -153,18 +164,19 @@ export type SeldonRef =
   | "refChip"
   | "refChipIcon"
   | "refChipName"
-  | "searchActions"
-  | "searchIcon"
-  | "searchLabel"
   | "sectionActions"
+  | "sectionActionsIcon"
   | "sectionAdd"
+  | "sectionAddIcon"
   | "sectionDisclosure"
   | "sectionDisclosureIcon"
   | "sectionLabel"
-  | "sidebarComponents"
-  | "sidebarResources"
+  | "sectionRow"
+  | "workspaceField"
+  | "workspaceIcon"
   | "workspaceName"
   | "workspaceSave"
+  | "workspaceSaveIcon"
 
 export interface SeldonRefView {
   component: string
@@ -182,6 +194,48 @@ export interface SeldonRefEntry {
 }
 
 export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
+  boardState: {
+    component: "ButtonMenu",
+    nodeId: "component-button-t1A2Kxjz",
+    className: "sdn-button-menu sdn-button-menu--t1a2",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "buttonMenu",
+        type: "ButtonMenuProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  boardStateLabel: {
+    component: "TextLabel",
+    nodeId: "component-button-ky1rrrZT",
+    className: "sdn-text-label sdn-text-label--sa6t",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  boardStateMenuIcon: {
+    component: "Icon",
+    nodeId: "component-button-dYCRThCF",
+    className: "sdn-icon sdn-icon--y2ct",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "icon3",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   catalogIcon: {
     component: "Icon",
     nodeId: "component-icon-meNEMxeY",
@@ -336,20 +390,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  Default: {
-    component: "ItemCatalog",
-    nodeId: "component-item-hSnQ9Zqv",
-    className: "sdn-item-catalog sdn-item-catalog--bg0n",
-    views: [
-      {
-        component: "ListStandardProductList",
-        file: "parts/ListStandardProductList.tsx",
-        slot: "itemCatalog3",
-        type: "ItemCatalogProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
   dialogCancel: {
     component: "Button",
     nodeId: "component-bar-oHXIPFr4",
@@ -388,6 +428,76 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/PanelDialog.tsx",
         slot: "frame",
         type: "FrameProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  dialogSearch: {
+    component: "Input",
+    nodeId: "component-panel-pWiFt1bl",
+    className: "sdn-input sdn-input--twyx",
+    views: [
+      {
+        component: "PanelDialog",
+        file: "modules/PanelDialog.tsx",
+        slot: "input",
+        type: "InputProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  dialogSearchClear: {
+    component: "ButtonIconic",
+    nodeId: "component-panel-uOfPAdNZ",
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "PanelDialog",
+        file: "modules/PanelDialog.tsx",
+        slot: "buttonIconic",
+        type: "ButtonIconicProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  dialogSearchClearIcon: {
+    component: "Icon",
+    nodeId: "component-panel-z69NyGq1",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "PanelDialog",
+        file: "modules/PanelDialog.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  dialogSearchField: {
+    component: "ComboboxFieldSearch",
+    nodeId: "component-panel-9Jd5LBHg",
+    className: "sdn-combobox-field-search sdn-combobox-field-search--9jd5",
+    views: [
+      {
+        component: "PanelDialog",
+        file: "modules/PanelDialog.tsx",
+        slot: "comboboxFieldSearch",
+        type: "ComboboxFieldSearchProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  dialogSearchIcon: {
+    component: "Icon",
+    nodeId: "component-panel-yZjcHxvG",
+    className: "sdn-icon sdn-icon--xi68",
+    views: [
+      {
+        component: "PanelDialog",
+        file: "modules/PanelDialog.tsx",
+        slot: "icon",
+        type: "IconProps",
         rendersWhen: "unless-null",
       },
     ],
@@ -862,48 +972,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       {
         component: "DialogExportComponent",
         file: "modules/DialogExportComponent.tsx",
-        slot: "input",
-        type: "InputProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  filterActions: {
-    component: "ButtonIconic",
-    nodeId: "component-comboboxField-egV44OiP",
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "ComboboxFieldFilter",
-        file: "elements/ComboboxFieldFilter.tsx",
-        slot: "buttonIconic",
-        type: "ButtonIconicProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  filterIcon: {
-    component: "Icon",
-    nodeId: "component-comboboxField-ta9b5fTa",
-    className: "sdn-icon sdn-icon--xi68",
-    views: [
-      {
-        component: "ComboboxFieldFilter",
-        file: "elements/ComboboxFieldFilter.tsx",
-        slot: "icon",
-        type: "IconProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  filterLabel: {
-    component: "Input",
-    nodeId: "component-comboboxField-TWyxOQad",
-    className: "sdn-input sdn-input--twyx",
-    views: [
-      {
-        component: "ComboboxFieldFilter",
-        file: "elements/ComboboxFieldFilter.tsx",
         slot: "input",
         type: "InputProps",
         rendersWhen: "unless-null",
@@ -1526,20 +1594,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  menuState: {
-    component: "ButtonMenu",
-    nodeId: "component-button-t1A2Kxjz",
-    className: "sdn-button-menu sdn-button-menu--t1a2",
-    views: [
-      {
-        component: "SidebarProperties",
-        file: "modules/SidebarProperties.tsx",
-        slot: "buttonMenu",
-        type: "ButtonMenuProps",
-        rendersWhen: "when-passed",
-      },
-    ],
-  },
   menuTheme: {
     component: "ButtonMenu",
     nodeId: "component-button-trucC1Xo",
@@ -1638,6 +1692,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  nodeField: {
+    component: "ComboboxField",
+    nodeId: "component-item-LMjE9ivP",
+    className: "sdn-combobox-field sdn-combobox-field--lmje",
+    views: [
+      {
+        component: "ItemNode",
+        file: "elements/ItemNode.tsx",
+        slot: "comboboxField",
+        type: "ComboboxFieldProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   nodeIcon: {
     component: "Icon",
     nodeId: "component-item-zdDEhaL4",
@@ -1666,7 +1734,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  objectsContainer: {
+  objectsTree: {
     component: "Frame",
     nodeId: "component-sidebar-ENPyLuzb",
     className: "sdn-frame sdn-frame--enpy",
@@ -1677,6 +1745,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "frame3",
         type: "FrameProps",
         rendersWhen: "unless-null",
+      },
+    ],
+  },
+  objectsViewComponents: {
+    component: "ButtonToggle",
+    nodeId: "component-button-f2yi4eeO",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "SidebarObjects",
+        file: "modules/SidebarObjects.tsx",
+        slot: "buttonToggle",
+        type: "ButtonToggleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  objectsViewResources: {
+    component: "ButtonToggle",
+    nodeId: "component-sidebar-9VESc1Om",
+    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+    views: [
+      {
+        component: "SidebarObjects",
+        file: "modules/SidebarObjects.tsx",
+        slot: "buttonToggle2",
+        type: "ButtonToggleProps",
+        rendersWhen: "when-passed",
       },
     ],
   },
@@ -1708,49 +1804,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  projectActions: {
-    component: "ButtonIconic",
-    nodeId: "component-comboboxField-Td9lePEX",
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "ComboboxFieldProject",
-        file: "elements/ComboboxFieldProject.tsx",
-        slot: "buttonIconic",
-        type: "ButtonIconicProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  projectIcon: {
-    component: "Icon",
-    nodeId: "component-comboboxField-h6DYE6Jl",
-    className: "sdn-icon sdn-icon--xi68",
-    views: [
-      {
-        component: "ComboboxFieldProject",
-        file: "elements/ComboboxFieldProject.tsx",
-        slot: "icon",
-        type: "IconProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  projectLabel: {
-    component: "Input",
-    nodeId: "component-comboboxField-Umc9UbAs",
-    className: "sdn-input sdn-input--twyx",
-    views: [
-      {
-        component: "ComboboxFieldProject",
-        file: "elements/ComboboxFieldProject.tsx",
-        slot: "input",
-        type: "InputProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  propertiesContainer: {
+  propertiesTree: {
     component: "Frame",
     nodeId: "component-sidebar-evMwxVOP",
     className: "sdn-frame sdn-frame--evmw",
@@ -1834,6 +1888,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  propertyFilterClearIcon: {
+    component: "Icon",
+    nodeId: "component-comboboxField-yANWz3qm",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyFilterField: {
+    component: "ComboboxFieldFilter",
+    nodeId: "component-comboboxField-LSIWPWiC",
+    className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "comboboxFieldFilter",
+        type: "ComboboxFieldFilterProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyFilterIcon: {
+    component: "Icon",
+    nodeId: "component-comboboxField-0NyAQIRn",
+    className: "sdn-icon sdn-icon--xi68",
+    views: [
+      {
+        component: "SidebarProperties",
+        file: "modules/SidebarProperties.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   propertyLabel: {
     component: "Input",
     nodeId: "component-item-JvSW6JpE",
@@ -1848,6 +1944,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  propertyRow: {
+    component: "FormControlCombobox",
+    nodeId: "component-formControl-qMoPhhJ6",
+    className: "sdn-form-control sdn-form-control-combobox--qmop",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "formControlCombobox",
+        type: "FormControlComboboxProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   propertyToggleActions: {
     component: "ButtonIconic",
     nodeId: "component-item-qeIxCmeu",
@@ -1859,6 +1969,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "buttonIconic2",
         type: "ButtonIconicProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyToggleControl: {
+    component: "Frame",
+    nodeId: "component-frame-INf3bFY0",
+    className: "sdn-frame sdn-frame--inf3",
+    views: [
+      {
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
+        slot: "frame",
+        type: "FrameProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -1918,6 +2042,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  propertyToggleRow: {
+    component: "FormControlCombobox",
+    nodeId: "component-item-fQ6EF5qC",
+    className: "sdn-form-control sdn-form-control-combobox--qmop",
+    views: [
+      {
+        component: "ItemPropertyToggle",
+        file: "elements/ItemPropertyToggle.tsx",
+        slot: "formControlCombobox",
+        type: "FormControlComboboxProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   propertyToggleSwitch: {
     component: "ToggleSwitch",
     nodeId: "component-toggleSwitch-pelhFQXa",
@@ -1929,6 +2067,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "toggleSwitch",
         type: "ToggleSwitchProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  propertyValueField: {
+    component: "ComboboxField",
+    nodeId: "component-comboboxField-cMKwpdAk",
+    className: "sdn-combobox-field sdn-combobox-field--j44i",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "comboboxField",
+        type: "ComboboxFieldProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -1970,6 +2122,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "elements/ItemProperty.tsx",
         slot: "buttonIconic2",
         type: "ButtonIconicProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  propertyValueMenuIcon: {
+    component: "Icon",
+    nodeId: "component-icon-vzp64Ki8",
+    className: "sdn-icon sdn-icon--xi68",
+    views: [
+      {
+        component: "ItemProperty",
+        file: "elements/ItemProperty.tsx",
+        slot: "icon3",
+        type: "IconProps",
         rendersWhen: "unless-null",
       },
     ],
@@ -2156,48 +2322,6 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  searchActions: {
-    component: "ButtonIconic",
-    nodeId: "component-button-q7tCLRdW",
-    className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    views: [
-      {
-        component: "ComboboxFieldSearch",
-        file: "elements/ComboboxFieldSearch.tsx",
-        slot: "buttonIconic",
-        type: "ButtonIconicProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  searchIcon: {
-    component: "Icon",
-    nodeId: "component-icon-CHSbwIMc",
-    className: "sdn-icon sdn-icon--xi68",
-    views: [
-      {
-        component: "ComboboxFieldSearch",
-        file: "elements/ComboboxFieldSearch.tsx",
-        slot: "icon",
-        type: "IconProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
-  searchLabel: {
-    component: "Input",
-    nodeId: "component-input-w7F4idVF",
-    className: "sdn-input sdn-input--yoqi",
-    views: [
-      {
-        component: "ComboboxFieldSearch",
-        file: "elements/ComboboxFieldSearch.tsx",
-        slot: "input",
-        type: "InputProps",
-        rendersWhen: "unless-null",
-      },
-    ],
-  },
   sectionActions: {
     component: "ButtonIconic",
     nodeId: "component-item-m1G2OAIO",
@@ -2212,6 +2336,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  sectionActionsIcon: {
+    component: "Icon",
+    nodeId: "component-item-X0ybtMzs",
+    className: "sdn-icon sdn-icon--0qvc",
+    views: [
+      {
+        component: "ItemSection",
+        file: "elements/ItemSection.tsx",
+        slot: "icon3",
+        type: "IconProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
   sectionAdd: {
     component: "ButtonIconic",
     nodeId: "component-item-sDjvfAPl",
@@ -2223,6 +2361,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         slot: "buttonIconic2",
         type: "ButtonIconicProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  sectionAddIcon: {
+    component: "Icon",
+    nodeId: "component-item-CMEf5HDL",
+    className: "sdn-icon sdn-icon--0qvc",
+    views: [
+      {
+        component: "ItemSection",
+        file: "elements/ItemSection.tsx",
+        slot: "icon2",
+        type: "IconProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -2268,31 +2420,45 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
-  sidebarComponents: {
-    component: "ButtonToggle",
-    nodeId: "component-button-f2yi4eeO",
-    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  sectionRow: {
+    component: "FormControlCombobox",
+    nodeId: "component-item-GqRllIqj",
+    className: "sdn-form-control sdn-form-control-combobox--gqrl",
     views: [
       {
-        component: "SidebarObjects",
-        file: "modules/SidebarObjects.tsx",
-        slot: "buttonToggle",
-        type: "ButtonToggleProps",
+        component: "ItemSection",
+        file: "elements/ItemSection.tsx",
+        slot: "formControlCombobox",
+        type: "FormControlComboboxProps",
         rendersWhen: "when-passed",
       },
     ],
   },
-  sidebarResources: {
-    component: "ButtonToggle",
-    nodeId: "component-sidebar-9VESc1Om",
-    className: "sdn-button-toggle sdn-button-iconic--pgsr",
+  workspaceField: {
+    component: "ComboboxFieldProject",
+    nodeId: "component-comboboxField-rZdYB5xB",
+    className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
     views: [
       {
         component: "SidebarObjects",
         file: "modules/SidebarObjects.tsx",
-        slot: "buttonToggle2",
-        type: "ButtonToggleProps",
+        slot: "comboboxFieldProject",
+        type: "ComboboxFieldProjectProps",
         rendersWhen: "when-passed",
+      },
+    ],
+  },
+  workspaceIcon: {
+    component: "Icon",
+    nodeId: "component-comboboxField-McgE030b",
+    className: "sdn-icon sdn-icon--xi68",
+    views: [
+      {
+        component: "SidebarObjects",
+        file: "modules/SidebarObjects.tsx",
+        slot: "icon",
+        type: "IconProps",
+        rendersWhen: "unless-null",
       },
     ],
   },
@@ -2320,6 +2486,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "modules/SidebarObjects.tsx",
         slot: "buttonIconic",
         type: "ButtonIconicProps",
+        rendersWhen: "unless-null",
+      },
+    ],
+  },
+  workspaceSaveIcon: {
+    component: "Icon",
+    nodeId: "component-comboboxField-iquyeQxk",
+    className: "sdn-icon sdn-icon--vsau",
+    views: [
+      {
+        component: "SidebarObjects",
+        file: "modules/SidebarObjects.tsx",
+        slot: "icon2",
+        type: "IconProps",
         rendersWhen: "unless-null",
       },
     ],

@@ -147,24 +147,29 @@ export function PanelDialogController<T extends CatalogDialogItem>({
   }, [visibleCategories, selectedId, pickItem])
 
   const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
-  const dialogTitle = { children: title }
-  const searchField = { onPointerDown: stopDrag }
-  const searchInput = {
-    value: query,
-    onChange: handleQueryChange,
-    placeholder: "Search...",
-    autoFocus: true,
-  }
-  const searchClear = {
-    onClick: handleClearQuery,
-    style: query ? undefined : styles.hidden,
-  }
   // Cancel and confirm live in the footer's right frame (button4/button5). The
   // shell leaves both slots as placeholders, so enable them and set their labels;
   // their icons ride the shell defaults and onClick flows through seldonRefs.
   const cancelLabel = { children: "Cancel" }
   const confirmLabel = { children: confirmButtonText }
+
+  // Drive every slot through its stable workspace ref. The title and the search
+  // field are conditional slots, so they keep a positional `{}` enabler to
+  // render; their data flows through `seldonRefs`. The search field itself only
+  // stops the drag so a click in the input does not move the window.
   const seldonRefs = {
+    dialogTitle: { children: title },
+    dialogSearchField: { onPointerDown: stopDrag },
+    dialogSearch: {
+      value: query,
+      onChange: handleQueryChange,
+      placeholder: "Search...",
+      autoFocus: true,
+    },
+    dialogSearchClear: {
+      onClick: handleClearQuery,
+      style: query ? undefined : styles.hidden,
+    },
     dialogContent: { style: styles.content, children: content },
     dialogCancel: { onClick: onClose },
     dialogConfirm: { onClick: handleConfirm },
@@ -190,10 +195,8 @@ export function PanelDialogController<T extends CatalogDialogItem>({
       <PanelDialog
         data-testid="catalog-dialog"
         bar={barHandle}
-        textTitle={dialogTitle}
-        comboboxFieldSearch={searchField}
-        input={searchInput}
-        buttonIconic={searchClear}
+        textTitle={{}}
+        comboboxFieldSearch={{}}
         button4={{}}
         textLabel4={cancelLabel}
         button5={{}}

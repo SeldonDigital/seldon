@@ -111,19 +111,19 @@ export function ObjectsSidebar() {
     onSelect: selectWorkspaceRow,
   })
 
-  // The projectActions button force-saves the live workspace immediately,
+  // The workspaceSave button force-saves the live workspace immediately,
   // bypassing the autosave debounce.
   const handleForceSave = useCallback(() => {
     if (workspace) void saveNow(workspace)
     addToast("Project saved")
   }, [workspace, saveNow, addToast])
 
-  const projectField = {
+  const workspaceField = {
     onClick: onProjectClick,
     onDoubleClick: enterRename,
     ...buildFieldStateProps({ selected: workspaceSelected }),
   }
-  const projectActions = { onClick: handleForceSave }
+  const workspaceSave = { onClick: handleForceSave }
 
   // Header view toggles behave as a radio pair: one is always active. The
   // activated state renders through the generated button-toggle `on` styling.
@@ -163,8 +163,16 @@ export function ObjectsSidebar() {
     </Frame>
   )
 
+  // Drive every slot through its stable workspace ref. The two view toggles and
+  // the workspace field are conditional slots, so they keep a positional `{}`
+  // enabler to render; their data flows through `seldonRefs`.
   const seldonRefs = {
-    objectsContainer: {
+    workspaceField: { ...workspaceField },
+    workspaceName: { ...nameInput },
+    workspaceSave: { ...workspaceSave },
+    objectsViewComponents: { ...componentsToggle },
+    objectsViewResources: { ...resourcesToggle },
+    objectsTree: {
       style: styles.frame,
       children: treeChildren,
     },
@@ -173,11 +181,9 @@ export function ObjectsSidebar() {
   return (
     <SidebarObjects
       data-testid="objects-sidebar"
-      comboboxFieldProject={projectField}
-      input={nameInput}
-      buttonIconic={projectActions}
-      buttonToggle={componentsToggle}
-      buttonToggle2={resourcesToggle}
+      comboboxFieldProject={{}}
+      buttonToggle={{}}
+      buttonToggle2={{}}
       seldonRefs={seldonRefs}
       style={styles.sidebar}
     />

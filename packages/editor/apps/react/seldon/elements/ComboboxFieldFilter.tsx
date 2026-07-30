@@ -41,7 +41,6 @@ const sdn: ComboboxFieldFilterProps = {
     icon: "material-filterList",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "filterIcon",
   },
 
   input: {
@@ -50,12 +49,10 @@ const sdn: ComboboxFieldFilterProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--twyx",
-    "data-seldon-ref": "filterLabel",
   },
 
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "filterActions",
   },
   icon2: {
     icon: "material-close",
@@ -72,9 +69,9 @@ const sdn: ComboboxFieldFilterProps = {
  * Type: Custom
  *
  * Structure:
- *   Icon          icon          -> filterIcon
- *   Input         input         -> filterLabel
- *   ButtonIconic  buttonIconic  -> filterActions
+ *   Icon          icon
+ *   Input         input
+ *   ButtonIconic  buttonIconic
  *     Icon        icon2
  *
  * @example

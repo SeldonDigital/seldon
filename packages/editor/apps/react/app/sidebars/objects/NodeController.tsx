@@ -236,18 +236,6 @@ const NodeInner = function NodeInner({
   // the disclosure arrow, buttons, border, and background untinted.
   const nodeTypeStyle = nodeTypeColor ? { style: { color: nodeTypeColor } } : undefined
 
-  // Drive every slot through its stable workspace ref. The trailing actions icon
-  // has no ref; it stays on the generated `seldon-more` default and is hidden by
-  // the actions button placeholder (visibility cascades), so it needs none.
-  const seldonRefs = {
-    nodeDisclosure: { ...buttonIconic },
-    nodeDisclosureIcon: mergeStateProps(toggleIcon, disabledRef),
-    nodeIcon: mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef),
-    nodeLabel: mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef),
-    nodeDisplay: { ...displayPicker.buttonProps },
-    nodeActions: { ...actionsMenu.buttonIconic },
-  }
-
   // Show Leaves / Branch / Tree lineage fill from the View menu. Primary rows
   // read as a strong accent fill (they change when the selection is edited);
   // secondary rows read faintly (related lineage that does not change). The fill
@@ -278,6 +266,20 @@ const NodeInner = function NodeInner({
   // default and drive it through the `nodeDisplay` ref.
   const displayButtonSlot = isEcho ? null : undefined
 
+  // Drive every slot through its stable workspace ref. The trailing actions icon
+  // has no ref; it stays on the generated `seldon-more` default and is hidden by
+  // the actions button placeholder (visibility cascades), so it needs none.
+  const seldonRefs = {
+    nodeDisclosure: { ...buttonIconic },
+    nodeDisclosureIcon: mergeStateProps(toggleIcon, disabledRef),
+    nodeField: { ...comboboxField },
+    nodeIcon: mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef),
+    nodeLabel: mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef),
+    nodeDisplay: { ...displayPicker.buttonProps },
+    nodeDisplayIcon: { ...displayIcon },
+    nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
   // Root-level row state. Selection lives on the combobox-field and disabled on
   // the leaves; these mirror the row's logical state for selectors and tests.
   const itemNodeState = {
@@ -304,9 +306,8 @@ const NodeInner = function NodeInner({
         >
           <ItemNode
             buttonIconic={{}}
-            comboboxField={comboboxField}
+            comboboxField={{}}
             buttonIconic2={displayButtonSlot}
-            icon3={displayIcon}
             buttonIconic3={{}}
             seldonRefs={seldonRefs}
             onClick={onClick}

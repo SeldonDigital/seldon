@@ -8005,7 +8005,17 @@
       "label": "Selects",
       "author": "Seldon Digital",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        }
+      },
       "variants": [
         {
           "id": "component-select-default",
@@ -9986,7 +9996,6 @@
       }
     },
     "component-icon-CHSbwIMc": {
-      "ref": "searchIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -10001,7 +10010,6 @@
       "origin": "schema"
     },
     "component-input-w7F4idVF": {
-      "ref": "searchLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -10034,7 +10042,6 @@
       "origin": "schema"
     },
     "component-button-q7tCLRdW": {
-      "ref": "searchActions",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -14580,6 +14587,7 @@
       "origin": "schema"
     },
     "component-formControl-qMoPhhJ6": {
+      "ref": "propertyRow",
       "type": "instance",
       "level": "element",
       "label": "Combobox",
@@ -14600,6 +14608,7 @@
       "origin": "schema"
     },
     "component-comboboxField-cMKwpdAk": {
+      "ref": "propertyValueField",
       "type": "instance",
       "level": "element",
       "label": "Combobox Field",
@@ -14695,6 +14704,7 @@
       "origin": "schema"
     },
     "component-icon-vzp64Ki8": {
+      "ref": "propertyValueMenuIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -14865,6 +14875,7 @@
       "origin": "schema"
     },
     "component-item-LMjE9ivP": {
+      "ref": "nodeField",
       "type": "instance",
       "level": "element",
       "label": "Combobox Field",
@@ -15459,6 +15470,7 @@
       "origin": "schema"
     },
     "component-item-GqRllIqj": {
+      "ref": "sectionRow",
       "type": "instance",
       "level": "element",
       "label": "Combobox",
@@ -15689,6 +15701,7 @@
       "origin": "schema"
     },
     "component-item-CMEf5HDL": {
+      "ref": "sectionAddIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -15717,6 +15730,7 @@
       "origin": "schema"
     },
     "component-item-X0ybtMzs": {
+      "ref": "sectionActionsIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -15833,7 +15847,6 @@
       }
     },
     "component-comboboxField-ta9b5fTa": {
-      "ref": "filterIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -15848,7 +15861,6 @@
       "origin": "schema"
     },
     "component-comboboxField-TWyxOQad": {
-      "ref": "filterLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -15887,7 +15899,6 @@
       "origin": "schema"
     },
     "component-comboboxField-egV44OiP": {
-      "ref": "filterActions",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -16001,7 +16012,6 @@
       }
     },
     "component-comboboxField-h6DYE6Jl": {
-      "ref": "projectIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -16016,7 +16026,6 @@
       "origin": "schema"
     },
     "component-comboboxField-Umc9UbAs": {
-      "ref": "projectLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -16055,7 +16064,6 @@
       "origin": "schema"
     },
     "component-comboboxField-Td9lePEX": {
-      "ref": "projectActions",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -19493,7 +19501,7 @@
       }
     },
     "component-sidebar-ENPyLuzb": {
-      "ref": "objectsContainer",
+      "ref": "objectsTree",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -19556,6 +19564,7 @@
       "origin": "schema"
     },
     "component-comboboxField-rZdYB5xB": {
+      "ref": "workspaceField",
       "type": "instance",
       "level": "element",
       "label": "Project",
@@ -19620,6 +19629,7 @@
       "origin": "user"
     },
     "component-comboboxField-McgE030b": {
+      "ref": "workspaceIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -19683,6 +19693,7 @@
       "origin": "user"
     },
     "component-comboboxField-iquyeQxk": {
+      "ref": "workspaceSaveIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -19773,7 +19784,7 @@
       }
     },
     "component-sidebar-evMwxVOP": {
-      "ref": "propertiesContainer",
+      "ref": "propertiesTree",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -19828,6 +19839,7 @@
       "origin": "schema"
     },
     "component-comboboxField-LSIWPWiC": {
+      "ref": "propertyFilterField",
       "type": "instance",
       "level": "element",
       "label": "Filter",
@@ -19888,6 +19900,7 @@
       "origin": "user"
     },
     "component-comboboxField-0NyAQIRn": {
+      "ref": "propertyFilterIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -19951,6 +19964,7 @@
       "origin": "user"
     },
     "component-comboboxField-yANWz3qm": {
+      "ref": "propertyFilterClearIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -27359,7 +27373,6 @@
       "origin": "schema"
     },
     "component-item-hSnQ9Zqv": {
-      "ref": "Default",
       "type": "instance",
       "level": "element",
       "label": "Catalog",
@@ -28115,6 +28128,7 @@
       "origin": "schema"
     },
     "component-panel-9Jd5LBHg": {
+      "ref": "dialogSearchField",
       "type": "instance",
       "level": "element",
       "label": "Search",
@@ -28195,6 +28209,7 @@
       "origin": "user"
     },
     "component-panel-yZjcHxvG": {
+      "ref": "dialogSearchIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -28209,6 +28224,7 @@
       "origin": "user"
     },
     "component-panel-pWiFt1bl": {
+      "ref": "dialogSearch",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -28247,6 +28263,7 @@
       "origin": "user"
     },
     "component-panel-uOfPAdNZ": {
+      "ref": "dialogSearchClear",
       "type": "instance",
       "level": "element",
       "label": "Iconic",
@@ -28256,6 +28273,7 @@
       "origin": "user"
     },
     "component-panel-z69NyGq1": {
+      "ref": "dialogSearchClearIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -34590,6 +34608,7 @@
       "origin": "schema"
     },
     "component-item-fQ6EF5qC": {
+      "ref": "propertyToggleRow",
       "type": "instance",
       "level": "element",
       "label": "Combobox",
@@ -34814,6 +34833,7 @@
       "origin": "user"
     },
     "component-frame-INf3bFY0": {
+      "ref": "propertyToggleControl",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -40583,7 +40603,7 @@
       "origin": "user"
     },
     "component-button-f2yi4eeO": {
-      "ref": "sidebarComponents",
+      "ref": "objectsViewComponents",
       "type": "instance",
       "level": "element",
       "label": "Toggle",
@@ -40602,7 +40622,7 @@
       "origin": "user"
     },
     "component-sidebar-9VESc1Om": {
-      "ref": "sidebarResources",
+      "ref": "objectsViewResources",
       "type": "instance",
       "level": "element",
       "label": "Toggle",
@@ -41127,7 +41147,7 @@
       "origin": "user"
     },
     "component-button-t1A2Kxjz": {
-      "ref": "menuState",
+      "ref": "boardState",
       "type": "instance",
       "level": "element",
       "label": "Menu",
@@ -41145,6 +41165,7 @@
       "origin": "user"
     },
     "component-button-ky1rrrZT": {
+      "ref": "boardStateLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -41159,6 +41180,7 @@
       "origin": "user"
     },
     "component-button-dYCRThCF": {
+      "ref": "boardStateMenuIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
