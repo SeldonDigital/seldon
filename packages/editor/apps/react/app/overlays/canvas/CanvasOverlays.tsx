@@ -19,6 +19,7 @@ import { useTrackNodeRects } from "../hooks/use-track-node-rects"
 import { useVisibleNodes } from "../hooks/use-visible-nodes"
 import { InsertOverlay } from "./insert/InsertOverlay"
 import { RefConnector } from "./ref-badges/RefConnector"
+import { CanvasDragLayer } from "./select/CanvasDragLayer"
 import { HoverOverlay } from "./select/HoverOverlay"
 import { NodeWireframe } from "./select/NodeWireframe"
 import { SelectionOverlay } from "./select/SelectionOverlay"
@@ -64,6 +65,10 @@ export function CanvasOverlays() {
   const drawRefBadges = showRefBadges && !activeBoardIsTheme
   const refBadges = drawRefBadges ? <RefConnector /> : null
 
+  // Nodes reorder by dragging under the select tool. Theme boards are previews
+  // with no node tree to reorder.
+  const dragLayer = activeTool === "select" && !activeBoardIsTheme ? <CanvasDragLayer /> : null
+
   return (
     <>
       {activeTool === "select" &&
@@ -85,6 +90,7 @@ export function CanvasOverlays() {
       {activeTool === "component" && !isSiblingGap && <HoverOverlay />}
       {activeTool === "component" && hasHoverState && <InsertOverlay />}
       {refBadges}
+      {dragLayer}
     </>
   )
 }

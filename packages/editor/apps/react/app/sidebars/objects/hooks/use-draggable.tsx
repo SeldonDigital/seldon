@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react"
 
 import type { Instance, Variant } from "@seldon/core"
 
+export const MOVE_NODE_ACTION = "object-panel-move-node"
+
 /**
  * Makes an element draggable for drag-and-drop operations in the objects sidebar.
  * Handles node movement with a custom drag preview.
@@ -29,7 +31,7 @@ export function useDraggable({
       element: el,
       getInitialData: () => ({
         subjectNode: target,
-        action: "object-panel-move-node",
+        action: MOVE_NODE_ACTION,
       }),
       onDragStart: () => {
         onDragStart?.()
