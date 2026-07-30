@@ -4,6 +4,7 @@ import { isComponentImport } from "./config"
 import { buildDeclarationIndex } from "./declaration-index"
 import { describeExpression } from "./describe-expression"
 import {
+  countDeclarations,
   readLiteralEntries,
   resolveObjectEntries,
   resolvePropertyEntries,
@@ -54,7 +55,7 @@ export function scanTypeScriptFile(
   )
 
   const generated = getGeneratedComponentNames(sourceFile, config)
-  const result: FileBindings = { refs: [], slots: [] }
+  const result: FileBindings = { refs: [], slots: [], warnings: [] }
 
   if (generated.size === 0) return result
 
@@ -116,6 +117,17 @@ function collectElement(
     if (!value) continue
 
     if (name === REFS_ATTRIBUTE) {
+      const ambiguous = getAmbiguousName(value, sourceFile)
+
+      if (ambiguous) {
+        result.warnings.push({
+          file: path,
+          line: lineOf(attribute, sourceFile),
+          name: ambiguous.name,
+          declarations: ambiguous.declarations,
+        })
+      }
+
       for (const entry of resolveEntriesOf(value, sourceFile)) {
         result.refs.push({
           ref: entry.name,
@@ -171,6 +183,31 @@ function resolveEntriesOf(expression: ts.Expression, sourceFile: ts.SourceFile):
   }
 
   return []
+}
+
+/**
+ * The name a refs map resolves through when its file declares that name more than
+ * once, which is what makes the entries reported for it unreliable.
+ *
+ * Covers the identifier and the helper call, where resolution keeps the first
+ * declaration and drops the rest. A property path is left out, because a row map
+ * read under a property gathers every literal on purpose.
+ */
+function getAmbiguousName(
+  expression: ts.Expression,
+  sourceFile: ts.SourceFile,
+): { name: string; declarations: number } | null {
+  const name = ts.isIdentifier(expression)
+    ? expression.text
+    : ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)
+      ? expression.expression.text
+      : null
+
+  if (!name) return null
+
+  const declarations = countDeclarations(name, sourceFile)
+
+  return declarations > 1 ? { name, declarations } : null
 }
 
 /** The prop keys a ref entry sets, which exist only when its value is a literal. */

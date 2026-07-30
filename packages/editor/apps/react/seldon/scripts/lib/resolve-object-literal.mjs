@@ -204,6 +204,26 @@ function isInsideBranch(node) {
   }
   return false
 }
+/**
+ * How many declarations in a file bind a name.
+ *
+ * Resolution takes the first declaration it finds, so a count above one means the
+ * rest are ignored and the entries reported may belong to the wrong one. Counts a
+ * variable and a function declaration alike, because a refs map reaches the scan
+ * either as a value or through a helper that returns it.
+ */
+export function countDeclarations(name, sourceFile) {
+  let count = 0
+  function visit(node) {
+    const declaresName = ts.isVariableDeclaration(node)
+      ? ts.isIdentifier(node.name) && node.name.text === name
+      : ts.isFunctionDeclaration(node) && node.name?.text === name
+    if (declaresName) count += 1
+    ts.forEachChild(node, visit)
+  }
+  visit(sourceFile)
+  return count
+}
 function findVariableDeclaration(name, sourceFile) {
   let found = null
   function visit(node) {

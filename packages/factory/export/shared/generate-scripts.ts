@@ -401,6 +401,31 @@ function report() {
   console.log("Refs bound:     " + refCount)
   console.log("Slots bound:    " + slotCount)
   console.log("Wrote " + (relative.startsWith("..") ? outPath : relative))
+
+  reportWarnings(manifest.warnings ?? [])
+}
+
+/**
+ * Reports every refs map whose name its file declares more than once. The manifest
+ * is still written, because the rest of it is sound and the fix is a rename.
+ */
+function reportWarnings(warnings) {
+  if (warnings.length === 0) return
+
+  console.warn(
+    "\\n" +
+      warnings.length +
+      " refs map" +
+      (warnings.length === 1 ? "" : "s") +
+      " resolved by an ambiguous name. The first declaration wins, so the entries " +
+      "reported may belong to another one. Rename each map after what it drives.",
+  )
+
+  for (const warning of warnings) {
+    console.warn(
+      "  " + warning.file + ":" + warning.line + ' "' + warning.name + '" x' + warning.declarations,
+    )
+  }
 }
 `
 }

@@ -5,6 +5,7 @@ import { isComponentImport } from "./config"
 import { buildDeclarationIndex } from "./declaration-index"
 import { describeExpression } from "./describe-expression"
 import {
+  countDeclarations,
   readLiteralEntries,
   resolveObjectEntries,
   resolvePropertyEntries,
@@ -50,7 +51,7 @@ interface TemplateProp {
  * absolute because the block content is padded to its position in the file.
  */
 export function scanVueFile(path: string, text: string, config: BindingsConfig): FileBindings {
-  const result: FileBindings = { refs: [], slots: [] }
+  const result: FileBindings = { refs: [], slots: [], warnings: [] }
   const { descriptor } = parse(text, { filename: path })
   const templateAst = descriptor.template?.ast as TemplateNode | undefined
 
@@ -137,6 +138,17 @@ function collectElement(
     if (name === REFS_ATTRIBUTE) {
       if (!code) continue
 
+      const ambiguous = getAmbiguousName(code, script)
+
+      if (ambiguous) {
+        result.warnings.push({
+          file: path,
+          line,
+          name: ambiguous.name,
+          declarations: ambiguous.declarations,
+        })
+      }
+
       for (const entry of resolveEntriesOf(code, script)) {
         result.refs.push({
           ref: entry.name,
@@ -208,6 +220,37 @@ function resolveEntriesOf(code: string, script: ts.SourceFile): ObjectEntry[] {
   }
 
   return []
+}
+
+/**
+ * The name a refs map resolves through when the script declares that name more than
+ * once, which is what makes the entries reported for it unreliable.
+ *
+ * Covers the identifier and the helper call, where resolution keeps the first
+ * declaration and drops the rest. A property path is left out, because a row map
+ * read under a property gathers every literal on purpose.
+ */
+function getAmbiguousName(
+  code: string,
+  script: ts.SourceFile,
+): { name: string; declarations: number } | null {
+  const parsed = parseExpression(code)
+
+  if (!parsed) return null
+
+  const { expression } = parsed
+
+  const name = ts.isIdentifier(expression)
+    ? expression.text
+    : ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)
+      ? expression.expression.text
+      : null
+
+  if (!name) return null
+
+  const declarations = countDeclarations(name, script)
+
+  return declarations > 1 ? { name, declarations } : null
 }
 
 function getPropBindings(

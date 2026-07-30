@@ -17,6 +17,7 @@ import { isComponentImport } from "./config.mjs"
 import { buildDeclarationIndex } from "./declaration-index.mjs"
 import { describeExpression } from "./describe-expression.mjs"
 import {
+  countDeclarations,
   readLiteralEntries,
   resolveObjectEntries,
   resolvePropertyEntries,
@@ -56,7 +57,7 @@ export function scanTypeScriptFile(path, text, config) {
     ts.ScriptKind.TSX,
   )
   const generated = getGeneratedComponentNames(sourceFile, config)
-  const result = { refs: [], slots: [] }
+  const result = { refs: [], slots: [], warnings: [] }
   if (generated.size === 0) return result
   const index = buildDeclarationIndex(sourceFile)
   function visit(node) {
@@ -96,6 +97,15 @@ function collectElement(opening, tag, path, sourceFile, index, result) {
     const value = getAttributeExpression(attribute)
     if (!value) continue
     if (name === REFS_ATTRIBUTE) {
+      const ambiguous = getAmbiguousName(value, sourceFile)
+      if (ambiguous) {
+        result.warnings.push({
+          file: path,
+          line: lineOf(attribute, sourceFile),
+          name: ambiguous.name,
+          declarations: ambiguous.declarations,
+        })
+      }
       for (const entry of resolveEntriesOf(value, sourceFile)) {
         result.refs.push({
           ref: entry.name,
@@ -144,6 +154,24 @@ function resolveEntriesOf(expression, sourceFile) {
     return resolvePropertyEntries(expression.name.text, sourceFile)
   }
   return []
+}
+/**
+ * The name a refs map resolves through when its file declares that name more than
+ * once, which is what makes the entries reported for it unreliable.
+ *
+ * Covers the identifier and the helper call, where resolution keeps the first
+ * declaration and drops the rest. A property path is left out, because a row map
+ * read under a property gathers every literal on purpose.
+ */
+function getAmbiguousName(expression, sourceFile) {
+  const name = ts.isIdentifier(expression)
+    ? expression.text
+    : ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)
+      ? expression.expression.text
+      : null
+  if (!name) return null
+  const declarations = countDeclarations(name, sourceFile)
+  return declarations > 1 ? { name, declarations } : null
 }
 /** The prop keys a ref entry sets, which exist only when its value is a literal. */
 function getPropBindings(value, sourceFile, index) {
