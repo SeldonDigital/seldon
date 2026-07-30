@@ -45,9 +45,12 @@ describe("conversationalRepliesEnabled", () => {
     else process.env.SELDON_AI_REPLY_MODE = original
   })
 
-  it("defaults off and opts in via env", () => {
+  it("defaults on, and opts out only for the explicit template mode", () => {
     delete process.env.SELDON_AI_REPLY_MODE
+    expect(conversationalRepliesEnabled()).toBe(true)
+    process.env.SELDON_AI_REPLY_MODE = "template"
     expect(conversationalRepliesEnabled()).toBe(false)
+    // Anything else is not a recognized opt-out and stays on.
     process.env.SELDON_AI_REPLY_MODE = "conversational"
     expect(conversationalRepliesEnabled()).toBe(true)
   })

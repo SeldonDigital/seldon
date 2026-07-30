@@ -8,12 +8,15 @@ import {
 
 /**
  * The user-facing reply for a completed turn, ported from terminus's
- * confirmation/error conversational calls but held behind a switch: templates
- * are the default until an eval reply-quality pass shows small local models
- * phrase these well (SELDON_AI_REPLY_MODE=conversational opts in). The
- * conversational call only ever sees the structured outcomes -- what
- * committed and what stopped the plan -- so it cannot claim work that never
- * happened, and any failure of the call itself falls back to the template.
+ * confirmation/error conversational calls. Conversational phrasing is the
+ * default (SELDON_AI_REPLY_MODE=template forces the deterministic form),
+ * because the template exposes raw node ids -- "Set content to "Go" on
+ * component-text-ac6JiaK3." -- which reads as debug output, not an answer.
+ *
+ * Two safety properties make generating this text safe: the call only ever
+ * sees the structured outcomes of what actually committed, so it cannot claim
+ * work that never happened, and any failure of the call itself falls back to
+ * the template, so reply phrasing can never fail a turn that did its work.
  */
 
 /** One executed step of the plan, with what came of it. */
@@ -81,9 +84,13 @@ export async function buildConversationalReply(
   }
 }
 
-/** True when the conversational reply mode is opted into via env. */
+/**
+ * True unless the deterministic template mode is forced via env. Defaults on:
+ * the template's raw node ids read as debug output next to the rest of the
+ * chat, and the phrasing call is grounded in committed outcomes only.
+ */
 export function conversationalRepliesEnabled(): boolean {
-  return process.env.SELDON_AI_REPLY_MODE === "conversational"
+  return process.env.SELDON_AI_REPLY_MODE !== "template"
 }
 
 /** The turn's reply, honoring the mode switch. */

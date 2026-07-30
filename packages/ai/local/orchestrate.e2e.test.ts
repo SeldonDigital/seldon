@@ -57,7 +57,13 @@ describeIfOllama("chatToActions (live)", () => {
 
       expect(result.actions).toHaveLength(1)
       expect(result.actions[0]?.type).toBe("set_node_properties")
-      expect(result.reply).toContain("Checkout")
+      // Assert the committed VALUE, not the reply text: replies are
+      // model-phrased now, so asserting their wording would be flaky.
+      const payload = (
+        result.actions[0] as { payload: { properties: Record<string, unknown> } }
+      ).payload
+      expect(JSON.stringify(payload.properties)).toContain("Checkout")
+      expect(result.reply.length).toBeGreaterThan(0)
       expect(result.workspace).not.toBe(workspace)
       expect(result.debug.metrics?.calls).toBeGreaterThanOrEqual(4)
       // The stream carried the staged pipeline and one final text event.

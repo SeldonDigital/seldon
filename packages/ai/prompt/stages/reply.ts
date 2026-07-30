@@ -26,6 +26,10 @@ export function buildConversationalReplyStage(inputs: {
   const prompt = [
     "You are the chat assistant in a design editor. Summarize this turn's outcome for the user in one or two friendly sentences.",
     "State ONLY what the outcomes below say. Do not add suggestions, do not claim anything else was done.",
+    // The outcome bodies name nodes by internal id (component-text-h8EzKcld).
+    // Repeating those reads as debug output, and the id means nothing to the
+    // user -- they see the element, not its key. Describe it in words instead.
+    'Never repeat internal node ids such as "component-text-h8EzKcld". Refer to the element in plain words ("the text", "the icon"), or leave it out.',
     "",
     "Outcomes:",
     ...inputs.outcomes.map(
