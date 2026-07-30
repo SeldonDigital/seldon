@@ -11,6 +11,7 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
+import { buildSetLabelStage } from "../../prompt/stages/properties"
 import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolvePropertyNames } from "../resolvers/resolve-property-name"
@@ -194,20 +195,12 @@ export async function executeSetLabel(
   const target = await resolveTargetWithHint(context)
   if (target.kind === "message") return { kind: "message", text: target.text }
 
-  const prompt = [
-    "Extract the new name the user wants from this message.",
-    `Message: ${JSON.stringify(context.message)}`,
-    'Answer with {"label": "<the new name, verbatim>"}.',
-  ].join("\n")
+  const { prompt, schema } = buildSetLabelStage({ message: context.message })
   const { value, metrics } = await callOllamaFormat<{ label: string }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: { label: { type: "string", minLength: 1 } },
-      required: ["label"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "extract_label", true, {

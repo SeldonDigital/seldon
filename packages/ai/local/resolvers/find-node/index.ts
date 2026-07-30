@@ -7,6 +7,11 @@ import {
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import { nodeStringsSummary } from "../../../prompt/context-sections/node-strings"
+import {
+  type FindNodeCandidate,
+  buildFindNodeEscalateStage,
+  findNodeMissMessage,
+} from "../../../prompt/stages/find-node"
 import { callOllamaFormat } from "../../ollama-client"
 import { type TurnContext, recordStep } from "../../turn-context"
 import { rankBySimilarity } from "./embed-rank"
@@ -26,10 +31,7 @@ export type FindNodeResult =
   | { kind: "resolved"; nodeId: string }
   | { kind: "message"; text: string }
 
-interface Candidate {
-  id: string
-  text: string
-}
+type Candidate = FindNodeCandidate
 
 /** Top-two score gap below which the ranking counts as ambiguous. */
 const ESCALATION_MARGIN = 0.04
@@ -73,29 +75,13 @@ async function escalate(
   query: string,
   pool: Candidate[],
 ): Promise<FindNodeResult> {
-  const prompt = [
-    `Which element does "${query}" refer to?`,
-    "",
-    "Candidates:",
-    pool.map((candidate) => `- ${candidate.id}: ${candidate.text}`).join("\n"),
-    "",
-    'Pick the matching id, or "none" when none of them fits.',
-  ].join("\n")
+  const { prompt, schema } = buildFindNodeEscalateStage({ query, pool })
 
   const { value, metrics } = await callOllamaFormat<{ id: string }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        id: {
-          type: "string",
-          enum: [...pool.map((candidate) => candidate.id), "none"],
-        },
-      },
-      required: ["id"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "find_node_escalate", value.id !== "none", {
@@ -104,13 +90,7 @@ async function escalate(
   })
 
   if (value.id === "none") {
-    return {
-      kind: "message",
-      text: `I couldn't confidently match "${query}" to an element on this board. The closest candidates were:\n${pool
-        .slice(0, 5)
-        .map((candidate) => `- ${candidate.id}: ${candidate.text}`)
-        .join("\n")}\nTell me which one you mean, or select it on the canvas.`,
-    }
+    return { kind: "message", text: findNodeMissMessage(query, pool) }
   }
   return { kind: "resolved", nodeId: value.id }
 }

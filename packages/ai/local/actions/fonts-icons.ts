@@ -1,5 +1,11 @@
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
+import {
+  buildFontFamilyPresetStage,
+  buildFontFamilyVariantStage,
+  buildIconOverrideStage,
+  buildIconSubcategoryPresetStage,
+} from "../../prompt/stages/fonts-icons"
 import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import {
@@ -35,11 +41,9 @@ export async function executeFontFamilyPreset(
   const target = requireResourceTarget(context, "font collection")
   if (target.kind === "message") return { kind: "message", text: target.text }
 
-  const prompt = [
-    "A user wants to turn a whole font family (slot) on or off in a font collection.",
-    `Message: ${JSON.stringify(context.message)}`,
-    'Extract the family slot name (like "primary" or "secondary") and whether to enable ("all") or disable ("none") it.',
-  ].join("\n")
+  const { prompt, schema } = buildFontFamilyPresetStage({
+    message: context.message,
+  })
   const { value, metrics } = await callOllamaFormat<{
     slot: string
     preset: "all" | "none"
@@ -47,14 +51,7 @@ export async function executeFontFamilyPreset(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        slot: { type: "string", minLength: 1 },
-        preset: { type: "string", enum: ["all", "none"] },
-      },
-      required: ["slot", "preset"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_font_slot", true, {
@@ -91,11 +88,9 @@ export async function executeFontFamilyVariant(
   const target = requireResourceTarget(context, "font collection")
   if (target.kind === "message") return { kind: "message", text: target.text }
 
-  const prompt = [
-    "A user wants to toggle one weight of a font family in a font collection.",
-    `Message: ${JSON.stringify(context.message)}`,
-    'Extract the family slot (like "primary"), the weight/variant (like "700" or "italic"), and whether to enable it.',
-  ].join("\n")
+  const { prompt, schema } = buildFontFamilyVariantStage({
+    message: context.message,
+  })
   const { value, metrics } = await callOllamaFormat<{
     slot: string
     variant: string
@@ -104,15 +99,7 @@ export async function executeFontFamilyVariant(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        slot: { type: "string", minLength: 1 },
-        variant: { type: "string", minLength: 1 },
-        enabled: { type: "boolean" },
-      },
-      required: ["slot", "variant", "enabled"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_font_variant", true, {
@@ -150,11 +137,9 @@ export async function executeIconSubcategoryPreset(
   const target = requireResourceTarget(context, "icon set")
   if (target.kind === "message") return { kind: "message", text: target.text }
 
-  const prompt = [
-    "A user wants to turn a whole icon subcategory on or off in an icon set.",
-    `Message: ${JSON.stringify(context.message)}`,
-    'Extract the subcategory (like "communication" or "arrows") and whether to include ("all") or exclude ("none") it.',
-  ].join("\n")
+  const { prompt, schema } = buildIconSubcategoryPresetStage({
+    message: context.message,
+  })
   const { value, metrics } = await callOllamaFormat<{
     subcategory: string
     preset: "all" | "none"
@@ -162,14 +147,7 @@ export async function executeIconSubcategoryPreset(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        subcategory: { type: "string", minLength: 1 },
-        preset: { type: "string", enum: ["all", "none"] },
-      },
-      required: ["subcategory", "preset"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_icon_subcategory", true, {
@@ -206,11 +184,9 @@ export async function executeIconOverride(
   const target = requireResourceTarget(context, "icon set")
   if (target.kind === "message") return { kind: "message", text: target.text }
 
-  const prompt = [
-    "A user wants to toggle a single icon in an icon set.",
-    `Message: ${JSON.stringify(context.message)}`,
-    'Extract the icon id or name (like "seldon-plus" or "email") and whether to include it.',
-  ].join("\n")
+  const { prompt, schema } = buildIconOverrideStage({
+    message: context.message,
+  })
   const { value, metrics } = await callOllamaFormat<{
     iconId: string
     enabled: boolean
@@ -218,14 +194,7 @@ export async function executeIconOverride(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        iconId: { type: "string", minLength: 1 },
-        enabled: { type: "boolean" },
-      },
-      required: ["iconId", "enabled"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_icon", true, {

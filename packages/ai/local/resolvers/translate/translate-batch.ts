@@ -1,3 +1,4 @@
+import { buildTranslateBatchStage } from "../../../prompt/stages/translate"
 import { callOllamaFormat } from "../../ollama-client"
 import { type TurnContext, recordStep } from "../../turn-context"
 
@@ -15,12 +16,7 @@ export async function translateBatch(
   texts: readonly string[],
   language: string,
 ): Promise<string[] | null> {
-  const prompt = [
-    `Translate each of these texts into ${language}.`,
-    "Answer with the translations in the SAME order, one per input, nothing added or dropped.",
-    "",
-    ...texts.map((text, index) => `${index + 1}. ${JSON.stringify(text)}`),
-  ].join("\n")
+  const { prompt, schema } = buildTranslateBatchStage({ texts, language })
 
   const { value, metrics } = await callOllamaFormat<{
     translations: string[]
@@ -28,18 +24,7 @@ export async function translateBatch(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        translations: {
-          type: "array",
-          items: { type: "string" },
-          minItems: texts.length,
-          maxItems: texts.length,
-        },
-      },
-      required: ["translations"],
-    },
+    schema,
   })
   context.calls.push(metrics)
 

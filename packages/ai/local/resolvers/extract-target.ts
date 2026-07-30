@@ -1,3 +1,4 @@
+import { buildExtractTargetStage } from "../../prompt/stages/extract-target"
 import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
 
@@ -21,39 +22,16 @@ export type TargetHint =
 export async function extractTargetHint(
   context: TurnContext,
 ): Promise<TargetHint> {
-  const hasSelection = context.resolved.selectedNodeId !== undefined
-  const prompt = [
-    "A design-editor chat message either refers to the currently selected element or names an element to find.",
-    hasSelection
-      ? "The user HAS an element selected."
-      : "The user has NOTHING selected, so a bare pronoun still needs a search phrase when the message names anything at all.",
-    "",
-    `Message: ${JSON.stringify(context.message)}`,
-    "",
-    'If the message uses a pronoun ("it", "this") or names no element, answer {"kind":"selection"}.',
-    'If it names an element, answer {"kind":"search","match":"<the shortest phrase naming it, e.g. \'title\' or \'hero heading\'>"}.',
-  ].join("\n")
+  const { prompt, schema } = buildExtractTargetStage({
+    message: context.message,
+    hasSelection: context.resolved.selectedNodeId !== undefined,
+  })
 
   const { value, metrics } = await callOllamaFormat<TargetHint>({
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      oneOf: [
-        {
-          properties: { kind: { const: "selection" } },
-          required: ["kind"],
-        },
-        {
-          properties: {
-            kind: { const: "search" },
-            match: { type: "string" },
-          },
-          required: ["kind", "match"],
-        },
-      ],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "extract_target", true, {

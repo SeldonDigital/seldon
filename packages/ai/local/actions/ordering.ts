@@ -9,6 +9,10 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
+import {
+  buildMoveStage,
+  buildReorderStage,
+} from "../../prompt/stages/ordering"
 import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolveNodeTarget } from "../resolvers/resolve-target"
@@ -70,25 +74,18 @@ export async function executeReorder(
     }
   }
 
-  const prompt = [
-    "Where does the user want to move this element among its siblings?",
-    `It is currently at position ${position.index + 1} of ${position.count}.`,
-    `Message: ${JSON.stringify(context.message)}`,
-    '"first" = to the start, "last" = to the end, "up" = one position earlier, "down" = one position later.',
-  ].join("\n")
+  const { prompt, schema } = buildReorderStage({
+    message: context.message,
+    index: position.index + 1,
+    count: position.count,
+  })
   const { value, metrics } = await callOllamaFormat<{
     position: "first" | "last" | "up" | "down"
   }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        position: { type: "string", enum: ["first", "last", "up", "down"] },
-      },
-      required: ["position"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_position", true, {
@@ -140,11 +137,7 @@ export async function executeReorder(
 export async function executeMove(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const prompt = [
-    "A user wants to move one element into another container.",
-    `Message: ${JSON.stringify(context.message)}`,
-    'Extract the shortest phrase naming what to move ("item" -- empty string when the message means the current selection) and the shortest phrase naming where it goes ("destination").',
-  ].join("\n")
+  const { prompt, schema } = buildMoveStage({ message: context.message })
   const { value, metrics } = await callOllamaFormat<{
     item: string
     destination: string
@@ -152,14 +145,7 @@ export async function executeMove(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        item: { type: "string" },
-        destination: { type: "string", minLength: 1 },
-      },
-      required: ["item", "destination"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "extract_move", true, {

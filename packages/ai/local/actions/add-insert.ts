@@ -5,6 +5,10 @@ import {
 } from "@seldon/core/workspace/model/components"
 import type { BoardKey, WorkspaceAction } from "@seldon/core/workspace/types"
 
+import {
+  buildExtractAddRequestStage,
+  buildPickVariantStage,
+} from "../../prompt/stages/add-insert"
 import { resolveCatalogId } from "../../shared/catalog-ids"
 import { withCreatedIdentity } from "../../shared/created-nodes"
 import { commit, commitFailureReason } from "../commit"
@@ -35,16 +39,10 @@ function allCatalogIds(): string[] {
 async function extractAddRequest(
   context: TurnContext,
 ): Promise<{ catalogId: string; destination: string | null }> {
-  const ids = allCatalogIds()
-  const prompt = [
-    "A user wants to add a component in a design editor.",
-    `Message: ${JSON.stringify(context.message)}`,
-    "",
-    "Available component ids:",
-    ids.join(", "),
-    "",
-    'Pick the component id that best matches what the user asked to add. For "destination", extract the shortest phrase naming where it should go, or an empty string when the message names no destination.',
-  ].join("\n")
+  const { prompt, schema } = buildExtractAddRequestStage({
+    message: context.message,
+    catalogIds: allCatalogIds(),
+  })
   const { value, metrics } = await callOllamaFormat<{
     component: string
     destination: string
@@ -52,14 +50,7 @@ async function extractAddRequest(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        component: { type: "string", enum: ids },
-        destination: { type: "string" },
-      },
-      required: ["component", "destination"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_component", true, {
@@ -230,14 +221,10 @@ export async function executeInsertVariantInstance(
     return { id: ref.id, label: node?.label ?? ref.id }
   })
 
-  const prompt = [
-    "A user wants to insert an instance of one of these variants:",
-    variants.map((entry) => `- ${entry.id}: "${entry.label}"`).join("\n"),
-    "",
-    `Message: ${JSON.stringify(context.message)}`,
-    "",
-    'Pick the variant and extract the shortest phrase naming where it goes ("destination" -- empty string when the message means the current selection).',
-  ].join("\n")
+  const { prompt, schema } = buildPickVariantStage({
+    message: context.message,
+    variants,
+  })
   const { value, metrics } = await callOllamaFormat<{
     variantId: string
     destination: string
@@ -245,17 +232,7 @@ export async function executeInsertVariantInstance(
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: {
-        variantId: {
-          type: "string",
-          enum: variants.map((entry) => entry.id),
-        },
-        destination: { type: "string" },
-      },
-      required: ["variantId", "destination"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_variant", true, {

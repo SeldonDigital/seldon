@@ -1,6 +1,7 @@
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
+import { buildTranslateLanguagePickStage } from "../../prompt/stages/content"
 import { commit } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { settablePropertyKeys } from "../resolvers/resolve-property-name"
@@ -28,22 +29,16 @@ export async function executeTranslate(
   const target = await resolveTargetWithHint(context)
   if (target.kind === "message") return { kind: "message", text: target.text }
 
-  const prompt = [
-    "Which language does the user want the text translated into?",
-    `Message: ${JSON.stringify(context.message)}`,
-    'Answer with the language name, like "Spanish" or "Japanese".',
-  ].join("\n")
+  const { prompt, schema } = buildTranslateLanguagePickStage({
+    message: context.message,
+  })
   const { value: languageAnswer, metrics } = await callOllamaFormat<{
     language: string
   }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema: {
-      type: "object",
-      properties: { language: { type: "string", minLength: 2 } },
-      required: ["language"],
-    },
+    schema,
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_language", true, {
