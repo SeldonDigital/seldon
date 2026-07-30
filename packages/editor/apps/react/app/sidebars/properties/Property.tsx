@@ -123,31 +123,6 @@ function PropertyInner(props: RowPropertyProps) {
     )
   }
 
-  // Drive each slot through its stable workspace ref. The value `input` slot is
-  // both the read-only display and, in edit mode, the live combobox/text control
-  // (see `buildPropertyValueInput`), mirroring the objects-sidebar name slot. The
-  // trailing actions icon keeps the generated `seldon-more` default, hidden by
-  // the actions button placeholder.
-  const seldonRefs: Record<string, Record<string, unknown>> = {
-    propertyDisclosure: { ...listItemProps.buttonIconic },
-    propertyDisclosureIcon: { ...listItemProps.icon },
-    propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
-    // Look-parent group rows own no value. The generated value input still
-    // renders (kept for row-height alignment), so clear its "Value" placeholder
-    // so the group row reads blank instead of showing placeholder text.
-    propertyValueLabel: mergeStateProps(
-      view.valueLabelProps,
-      props.property.isLookParent ? { placeholder: "" } : undefined,
-      stateRef,
-    ),
-    propertyValueMenu: { ...listItemProps.buttonIconic2 },
-    propertyActions: { ...optionsMenu.buttonIconic },
-  }
-
-  if (listItemProps.icon2) {
-    seldonRefs.propertyValueIcon = mergeStateProps(listItemProps.icon2, stateRef)
-  }
-
   // Anchor the floating option list to the value field and enter edit on a single
   // click of the field. `ComboboxField` forwards the ref (React 19 ref-as-prop)
   // to its `Frame` div, which the position hook measures, and forwards `onClick`
@@ -168,6 +143,33 @@ function PropertyInner(props: RowPropertyProps) {
         onClick: view.onValueFieldClick,
       } as ComboboxFieldProps)
 
+  // Drive each slot through its stable workspace ref. The value `input` slot is
+  // both the read-only display and, in edit mode, the live combobox/text control
+  // (see `buildPropertyValueInput`), mirroring the objects-sidebar name slot. The
+  // trailing actions icon keeps the generated `seldon-more` default, hidden by
+  // the actions button placeholder.
+  const seldonRefs: Record<string, Record<string, unknown>> = {
+    propertyDisclosure: { ...listItemProps.buttonIconic },
+    propertyDisclosureIcon: { ...listItemProps.icon },
+    propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
+    propertyValueField: { ...comboboxField },
+    // Look-parent group rows own no value. The generated value input still
+    // renders (kept for row-height alignment), so clear its "Value" placeholder
+    // so the group row reads blank instead of showing placeholder text.
+    propertyValueLabel: mergeStateProps(
+      view.valueLabelProps,
+      props.property.isLookParent ? { placeholder: "" } : undefined,
+      stateRef,
+    ),
+    propertyValueMenu: { ...listItemProps.buttonIconic2 },
+    propertyValueMenuIcon: { ...listItemProps.icon3 },
+    propertyActions: { ...optionsMenu.buttonIconic },
+  }
+
+  if (listItemProps.icon2) {
+    seldonRefs.propertyValueIcon = mergeStateProps(listItemProps.icon2, stateRef)
+  }
+
   // Positional enabler: suppress `icon2` with `null` when the value icon is
   // hidden; otherwise leave it on its slot default so the bound `propertyValueIcon`
   // ref paints the glyph. Dynamic color chips (`icon-custom-color-value`) resolve
@@ -177,9 +179,7 @@ function PropertyInner(props: RowPropertyProps) {
   // Render the exported `ItemProperty` through its slots. `LayerDragRow` wraps a
   // multi-layer paint parent as a drag source and passes other rows through
   // unwrapped. `input` (the property-name slot) is conditional, so it keeps a
-  // positional enabler. `icon3` (the options-menu icon) has no workspace ref
-  // yet, so it stays positional; add a `propertyValueMenuIcon` ref to move it
-  // onto `seldonRefs`.
+  // positional enabler.
   return (
     <>
       <LayerDragRow
@@ -189,9 +189,7 @@ function PropertyInner(props: RowPropertyProps) {
       >
         <ItemProperty
           input={{}}
-          comboboxField={comboboxField}
           icon2={valueIconSlot}
-          icon3={listItemProps.icon3}
           seldonRefs={seldonRefs}
           onClick={view.onRowClick}
           onDoubleClick={view.onRowDoubleClick}

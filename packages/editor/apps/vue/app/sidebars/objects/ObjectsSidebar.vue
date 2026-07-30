@@ -7,6 +7,7 @@ import { useRenameInput } from "@app/sidebars/use-rename-input"
 import { useToastStore } from "@app/toaster/toast-store"
 import { getCurrentWorkspace } from "@app/workspace/history-store"
 import { useSelectionStore } from "@app/workspace/selection-store"
+import { useDispatch } from "@app/workspace/use-dispatch"
 import ItemNode from "@seldon/components/elements/ItemNode.vue"
 import Frame from "@seldon/components/frames/Frame.vue"
 import SidebarObjects from "@seldon/components/modules/SidebarObjects.vue"
@@ -25,23 +26,31 @@ const selection = useSelectionStore()
 const config = useEditorConfigStore()
 const save = useWorkspaceSaveStore()
 const toast = useToastStore()
+const dispatch = useDispatch()
 
 const { workspaceSelected } = storeToRefs(selection)
 const { objectsView, isolatedView } = storeToRefs(config)
-const { record } = storeToRefs(save)
 
 function emptySectionLabel(label: string): string {
   return isolatedView.value ? "Currently in Isolation Mode" : `No ${label.toLowerCase()}`
 }
 
+/** Placeholder row shown for a section with no boards, driven through its ref. */
+function emptySectionRefs(label: string): Record<string, Record<string, unknown>> {
+  return {
+    nodeLabel: { value: emptySectionLabel(label), readonly: true },
+  }
+}
+
 const sections = useObjectsSections(toRef(props, "workspace"))
 
-const workspaceName = computed(() => record.value?.name ?? "Workspace")
+const workspaceName = computed(() => props.workspace.metadata.label || "Workspace")
 
 const componentsActive = computed(() => objectsView.value === "components")
 const resourcesActive = computed(() => objectsView.value === "resources")
 
-// Inline project rename, reusing the shared rename machinery.
+// Inline project rename, reusing the shared rename machinery. The name is the
+// workspace label, so autosave persists it like any other edit.
 const isEditingName = ref(false)
 function setEditingName(value: boolean): void {
   isEditingName.value = value
@@ -49,7 +58,7 @@ function setEditingName(value: boolean): void {
 function submitRename(next: string): void {
   const trimmed = next.trim()
   if (trimmed && trimmed !== workspaceName.value) {
-    void save.saveNow(getCurrentWorkspace(), { name: trimmed })
+    dispatch({ type: "set_workspace_label", payload: { value: trimmed } })
   }
   setEditingName(false)
 }
@@ -82,12 +91,11 @@ function forceSave(): void {
   toast.addToast("Project saved")
 }
 
-const projectField = computed(() => ({
+const workspaceField = computed(() => ({
   ...buildFieldStateProps({ selected: workspaceSelected.value }),
   onClick: selectWorkspace,
   onDblclick: enterRename,
 }))
-const projectActions = { onClick: forceSave }
 
 const componentsToggle = computed(() => ({
   class: componentsActive.value ? "sdn-state-activated" : undefined,
@@ -102,10 +110,18 @@ const resourcesToggle = computed(() => ({
   onClick: () => config.setObjectsView("resources"),
 }))
 
-// Grow the generated objects container so the tree fills and scrolls, addressed
-// by the frame's baked `objectsContainer` ref.
-const seldonRefs = {
-  objectsContainer: {
+// Drive every slot through its stable workspace ref. The workspace field and the
+// two view toggles are conditional slots, so they keep a positional `{}` enabler
+// to render; their data flows through `seldonRefs`. The tree frame is grown for
+// layout only, so the tree fills and scrolls; its rows ride the generated
+// `objectsTree` slot.
+const seldonRefs = computed(() => ({
+  workspaceField: workspaceField.value,
+  workspaceName: inputProps.value,
+  workspaceSave: { onClick: forceSave },
+  objectsViewComponents: componentsToggle.value,
+  objectsViewResources: resourcesToggle.value,
+  objectsTree: {
     style: {
       flex: 1,
       minHeight: 0,
@@ -113,7 +129,7 @@ const seldonRefs = {
       flexDirection: "column",
     },
   },
-}
+}))
 
 function asBoard(board: unknown): BoardType {
   return board as BoardType
@@ -126,14 +142,11 @@ function asBoard(board: unknown): BoardType {
     class="objects-sidebar"
     data-testid="objects-sidebar"
     :seldon-refs="seldonRefs"
-    :combobox-field-project="projectField"
-    :input="inputProps"
-    :button-iconic="projectActions"
-    :frame2="{}"
-    :button-toggle="componentsToggle"
-    :button-toggle2="resourcesToggle"
+    :combobox-field-project="{}"
+    :button-toggle="{}"
+    :button-toggle2="{}"
   >
-    <template #objectsContainer>
+    <template #objectsTree>
       <Frame class="objects-sidebar__scroll">
         <SectionRow v-for="section in sections" :key="section.level" :section="section">
           <BoardRow
@@ -147,10 +160,10 @@ function asBoard(board: unknown): BoardType {
             class="objects-sidebar__empty"
             aria-disabled="true"
             data-testid="objects-sidebar-empty-section"
+            :seldon-refs="emptySectionRefs(section.label)"
             :button-iconic="null"
             :combobox-field="{}"
             :icon2="null"
-            :input="{ value: emptySectionLabel(section.label), readonly: true }"
             :button-iconic2="null"
             :button-iconic3="null"
           />

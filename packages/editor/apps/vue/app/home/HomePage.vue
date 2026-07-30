@@ -10,6 +10,7 @@ import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 
 import { createEmptyWorkspace } from "@seldon/core"
+import { setWorkspaceLabel } from "@seldon/core/workspace/reducers/handlers/set/set-workspace-label"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
@@ -26,12 +27,19 @@ async function refresh(): Promise<void> {
   loading.value = false
 }
 
+/** The name is the workspace label, so it is written before the record exists. */
 async function create(): Promise<void> {
-  const record = await createStoredWorkspace(
-    HOME_CONTENT.defaultWorkspaceName,
+  const named = setWorkspaceLabel(
+    { value: HOME_CONTENT.defaultWorkspaceName },
     createEmptyWorkspace(),
   )
+  const record = await createStoredWorkspace(named)
   router.push(`/${record.id}`)
+}
+
+/** The name to show for a stored workspace, falling back for an unnamed one. */
+function workspaceName(record: StoredWorkspace): string {
+  return record.workspace.metadata.label || HOME_CONTENT.defaultWorkspaceName
 }
 
 function open(id: string): void {
@@ -45,7 +53,9 @@ async function remove(id: string): Promise<void> {
 }
 
 async function duplicate(record: StoredWorkspace): Promise<void> {
-  await createStoredWorkspace(`${record.name} copy`, record.workspace)
+  const copy = setWorkspaceLabel({ value: `${workspaceName(record)} copy` }, record.workspace)
+
+  await createStoredWorkspace(copy)
   await refresh()
 }
 
@@ -65,8 +75,15 @@ async function onImportFile(event: Event): Promise<void> {
       toast.addToast("Invalid workspace file")
       return
     }
-    const name = (parsed as Partial<StoredWorkspace>).name ?? file.name.replace(/\.json$/i, "")
-    const record = await createStoredWorkspace(name, workspace)
+    // An imported workspace carries its own name. A record file written before
+    // the name moved into the label still has one, and the file name fills in.
+    const legacyName = (parsed as { name?: string }).name
+    const name = legacyName ?? file.name.replace(/\.json$/i, "")
+    const named = workspace.metadata.label
+      ? workspace
+      : setWorkspaceLabel({ value: name }, workspace)
+    const record = await createStoredWorkspace(named)
+
     router.push(`/${record.id}`)
   } catch {
     toast.addToast("Could not read workspace file")
@@ -108,7 +125,7 @@ onMounted(refresh)
     <ul v-else class="home-list">
       <li v-for="ws in workspaces" :key="ws.id" class="home-item">
         <button class="home-item__open" @click="open(ws.id)">
-          <span class="home-item__name">{{ ws.name }}</span>
+          <span class="home-item__name">{{ workspaceName(ws) }}</span>
           <span class="home-item__meta"> {{ ws.lastEditor ?? "?" }} · {{ ws.updatedAt }} </span>
         </button>
         <button class="home-item__action" @click="duplicate(ws)">Duplicate</button>

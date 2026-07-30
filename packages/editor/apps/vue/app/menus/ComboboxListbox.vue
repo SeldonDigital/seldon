@@ -83,12 +83,13 @@ const listboxStyle = {
   overflowY: "auto" as const,
 }
 
-function iconSlot(option: ComboboxOptionItem): Record<string, unknown> {
-  return { icon: props.resolveIcon?.(option.value) ?? "seldon-component" }
-}
-
-function labelSlot(option: ComboboxOptionItem): Record<string, unknown> {
-  return { children: option.name }
+// The content reaches both slots by ref name. `textLabel` is opt-in, so it keeps a
+// positional `{}` enabler; without it the label would not render.
+function optionRefs(option: ComboboxOptionItem): Record<string, Record<string, unknown>> {
+  return {
+    optionIcon: { icon: props.resolveIcon?.(option.value) ?? "seldon-component" },
+    optionLabel: { children: option.name },
+  }
 }
 
 function optionClass(option: ComboboxOptionItem): string | undefined {
@@ -197,8 +198,8 @@ onBeforeUnmount(() => {
             :key="option.value"
             :class="optionClass(option)"
             :aria-selected="option.value === value || undefined"
-            :icon="iconSlot(option)"
-            :text-label="labelSlot(option)"
+            :seldon-refs="optionRefs(option)"
+            :text-label="{}"
             @click="select(option.value)"
             @pointerenter="highlightedValue = option.value"
           />

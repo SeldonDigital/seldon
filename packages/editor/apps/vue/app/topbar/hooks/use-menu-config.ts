@@ -9,6 +9,9 @@ import { usePanelStore } from "@app/editor/panel-store"
 import { useToolStore } from "@app/editor/tool-store"
 import { useToggleIsolation } from "@app/editor/use-toggle-isolation"
 import { useImportExport } from "@app/io/use-import-export"
+import { useProjectLinkStore } from "@app/project/project-link-store"
+import { useWorkspaceId } from "@app/project/use-workspace-id"
+import { useRefBindingsStore } from "@app/refs/ref-bindings-store"
 import { useRefBadges } from "@app/refs/use-ref-badges"
 import { useToastStore } from "@app/toaster/toast-store"
 import { useHistoryStore } from "@app/workspace/history-store"
@@ -56,6 +59,9 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const history = useHistoryStore()
   const aiChat = useAiChatStore()
   const toast = useToastStore()
+  const projectLink = useProjectLinkStore()
+  const refBindings = useRefBindingsStore()
+  const workspaceId = useWorkspaceId()
   const { workspace } = useWorkspace()
 
   const {
@@ -69,7 +75,6 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
-    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -148,6 +153,24 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     return false
   })
 
+  // Points the workspace at the components folder in the user's own project, so the
+  // ref overlays can read what that project reports back. An export from the editor
+  // links its own folder, so this is for the projects it never touched.
+  //
+  // The read is asked for here, because the reader watches the workspace rather than
+  // the link. Nothing about the open workspace changed, so a card would otherwise
+  // keep reporting the link it had before this one.
+  async function linkWorkspace(): Promise<void> {
+    const id = workspaceId.value
+
+    if (!id) return
+
+    const { ok, message } = await projectLink.linkWorkspaceFolder(id)
+
+    if (message) toast.addToast(message)
+    if (ok) void refBindings.load(id)
+  }
+
   const fileMenuItems = computed<(MenuItem | "separator")[]>(() => [
     {
       id: "import-file",
@@ -171,9 +194,9 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       visibleIn: ["edit"],
     },
     {
-      id: "export-compressed-workspace",
-      label: "Export Compressed Workspace…",
-      action: exportCompressedWorkspaceToFile,
+      id: "link-workspace",
+      label: "Link Workspace…",
+      action: linkWorkspace,
       visibleIn: ["edit"],
     },
     "separator",

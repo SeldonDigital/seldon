@@ -44,7 +44,7 @@ export const BoardController = memo(function BoardController(props: BoardControl
  * shell with all slots empty, so it reads as a disabled "No <section>" line.
  */
 function BoardEmpty({ label }: { label: string }) {
-  const seldonRefs = { nodeLabel: { value: label, readOnly: true } }
+  const emptyRefs = { nodeLabel: { value: label, readOnly: true } }
 
   return (
     <ItemNode
@@ -52,7 +52,7 @@ function BoardEmpty({ label }: { label: string }) {
       comboboxField={{}}
       icon2={null}
       buttonIconic2={null}
-      seldonRefs={seldonRefs}
+      seldonRefs={emptyRefs}
       aria-disabled
       data-testid="objects-sidebar-empty-section"
     />
@@ -177,20 +177,21 @@ function BoardRow({ board, show = true }: { board: BoardType; show?: boolean }) 
   // border, so a board with the selection inside it reads as activated.
   const activatedRef = buildActivatedRefProps(isActivated)
 
+  // Selected (direct board click) is styled on the combobox-field child via the
+  // field cascade. Containing the selection uses activated instead.
+  const comboboxField = buildFieldStateProps({ selected: isBoardSelected })
+
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it keeps the generated `seldon-more` default and is hidden by the
   // actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
     nodeDisclosure: { ...buttonIconic },
     nodeDisclosureIcon: { ...toggleIcon },
+    nodeField: { ...comboboxField },
     nodeIcon: mergeStateProps(icon2, activatedRef),
     nodeLabel: mergeStateProps(nameInput, activatedRef),
     nodeActions: { ...actionsMenu.buttonIconic },
   }
-
-  // Selected (direct board click) is styled on the combobox-field child via the
-  // field cascade. Containing the selection uses activated instead.
-  const comboboxField = buildFieldStateProps({ selected: isBoardSelected })
 
   // Root-level row state mirrors selection for selectors and tests.
   const itemNodeState = {
@@ -206,7 +207,7 @@ function BoardRow({ board, show = true }: { board: BoardType; show?: boolean }) 
         renders. */}
         <ItemNode
           buttonIconic={{}}
-          comboboxField={comboboxField}
+          comboboxField={{}}
           buttonIconic2={null}
           buttonIconic3={{}}
           seldonRefs={seldonRefs}

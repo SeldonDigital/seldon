@@ -26,6 +26,7 @@ export async function scanBindings(source, config) {
   const paths = (await source.list()).filter((path) => isScannablePath(path, config)).sort()
   const refs = {}
   const slots = {}
+  const warnings = []
   let scannedFiles = 0
   for (const path of paths) {
     const scan = await getFrontEnd(path)
@@ -35,6 +36,7 @@ export async function scanBindings(source, config) {
       const bindings = scan(path, text, config)
       scannedFiles += 1
       collect(bindings, refs, slots)
+      warnings.push(...bindings.warnings)
     } catch (error) {
       console.warn(`Failed to scan "${path}":`, error)
     }
@@ -46,6 +48,7 @@ export async function scanBindings(source, config) {
     scannedFiles,
     refs,
     slots,
+    warnings,
   }
 }
 /**

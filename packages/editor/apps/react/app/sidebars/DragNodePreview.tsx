@@ -20,16 +20,17 @@ interface DragNodePreviewProps {
 }
 
 export function DragNodePreview({ label, icon }: DragNodePreviewProps) {
-  const iconSlot = { icon }
-  const inputSlot = { value: label, readOnly: true }
+  const seldonRefs = {
+    nodeIcon: { icon },
+    nodeLabel: { value: label, readOnly: true },
+  }
 
   return (
     <ItemNode
       buttonIconic={null}
       comboboxField={{}}
-      icon2={iconSlot}
-      input={inputSlot}
       buttonIconic2={null}
+      seldonRefs={seldonRefs}
       style={previewStyle}
     />
   )

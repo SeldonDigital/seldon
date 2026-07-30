@@ -55,18 +55,6 @@ export function useImportExport() {
     triggerDownload(blob, `${kebabCase(name)}.json`)
   }
 
-  function exportCompressedWorkspaceToFile(): void {
-    const name = window.prompt("Enter a name for the compressed file", "workspace")
-
-    if (name === null) return
-    const ordered = orderWorkspaceNodeKeys(workspace.value)
-    const blob = new Blob([JSON.stringify(ordered)], {
-      type: "application/json",
-    })
-
-    triggerDownload(blob, `${kebabCase(name)}.min.json`)
-  }
-
   async function exportSelectionToClipboard(): Promise<void> {
     const selection = selectedItem.value
 
@@ -213,7 +201,6 @@ export function useImportExport() {
 
   return {
     exportWorkspaceToFile,
-    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     exportToFolder,

@@ -51,7 +51,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-plus"
     | "seldon-minus"
     | "material-arrowUpward"
-    | "material-build"
     | "material-checkCircle"
     | "material-error"
     | "material-robot"
@@ -67,6 +66,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-gridOn"
     | "seldon-theme"
     | "seldon-display"
+    | "material-build"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -572,7 +572,6 @@ const iconMap = {
   "seldon-plus": Icons.IconSeldonPlus,
   "seldon-minus": Icons.IconSeldonMinus,
   "material-arrowUpward": Icons.IconMaterialArrowUpward,
-  "material-build": Icons.IconMaterialBuild,
   "material-checkCircle": Icons.IconMaterialCheckCircle,
   "material-error": Icons.IconMaterialError,
   "material-robot": Icons.IconMaterialRobot,
@@ -588,6 +587,7 @@ const iconMap = {
   "material-gridOn": Icons.IconMaterialGridOn,
   "seldon-theme": Icons.IconSeldonTheme,
   "seldon-display": Icons.IconSeldonDisplay,
+  "material-build": Icons.IconMaterialBuild,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,

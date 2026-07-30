@@ -54,11 +54,13 @@ const sdn: SidebarPropertiesProps = {
   },
   comboboxFieldFilter: {
     className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
+    "data-seldon-ref": "propertyFilterField",
   },
   icon: {
     icon: "material-filterList",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "propertyFilterIcon",
   },
   input: {
     placeholder: "Filter...",
@@ -76,26 +78,29 @@ const sdn: SidebarPropertiesProps = {
     icon: "material-close",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "propertyFilterClearIcon",
   },
   buttonMenu: {
     className: "sdn-button-menu sdn-button-menu--t1a2",
-    "data-seldon-ref": "menuState",
+    "data-seldon-ref": "boardState",
   },
   textLabel: {
     children: "State",
     className: "sdn-text-label sdn-text-label--sa6t",
+    "data-seldon-ref": "boardStateLabel",
   },
   icon3: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--y2ct",
+    "data-seldon-ref": "boardStateMenuIcon",
   },
 
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--evmw",
-    "data-seldon-ref": "propertiesContainer",
+    "data-seldon-ref": "propertiesTree",
   },
 }
 
@@ -108,15 +113,15 @@ const sdn: SidebarPropertiesProps = {
  *
  * Structure:
  *   Frame                  frame
- *     ComboboxFieldFilter  comboboxFieldFilter
- *       Icon               icon
+ *     ComboboxFieldFilter  comboboxFieldFilter  -> propertyFilterField
+ *       Icon               icon                 -> propertyFilterIcon
  *       Input              input                -> propertyFilter
  *       ButtonIconic       buttonIconic         -> propertyFilterClear
- *         Icon             icon2
- *     ButtonMenu           buttonMenu           -> menuState
- *       TextLabel          textLabel
- *       Icon               icon3
- *   Frame                  frame2               -> propertiesContainer
+ *         Icon             icon2                -> propertyFilterClearIcon
+ *     ButtonMenu           buttonMenu           -> boardState
+ *       TextLabel          textLabel            -> boardStateLabel
+ *       Icon               icon3                -> boardStateMenuIcon
+ *   Frame                  frame2               -> propertiesTree
  *
  * @example
  * ```tsx

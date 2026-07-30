@@ -9,6 +9,7 @@ import { computed, watch } from "vue"
 import { useRefBindingsStore } from "./ref-bindings-store"
 
 import type { ProjectLinkStatus } from "@app/project/project-link-store"
+import type { RefBindingsStatus } from "@seldon/editor/lib/refs/describe-binding"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import type { ComputedRef } from "vue"
 
@@ -39,13 +40,24 @@ export function useRefBindings(): RefBindingsState {
   const store = useRefBindingsStore()
   const { registry, bindings, problem, loading, workspaceId: loadedFor } = storeToRefs(store)
 
+  // What was read against one project says nothing about the next one, so the old read
+  // goes and a fresh one takes its place. Reading again is the editor's job rather than
+  // the reader's, because a card that reports nothing was read is not worth showing when
+  // the read can simply happen. This hook mounts with the overlay, so a read here only
+  // ever runs while refs are on screen.
+  //
+  // A standing folder grant needs no gesture, so this reads without one. A lapsed grant
+  // cannot be re-requested outside a gesture and lands on the permission problem, which
+  // is the actionable thing to report.
   watch(
     workspaceId,
     (id) => {
       if (id && id !== projectLink.workspaceId) void projectLink.load(id)
+      if (!id || loadedFor.value === id) return
 
-      // What was read against one project says nothing about the next one.
-      if (loadedFor.value && loadedFor.value !== id) store.clear()
+      if (loadedFor.value) store.clear()
+
+      void store.load(id)
     },
     { immediate: true },
   )
@@ -70,4 +82,22 @@ export function useRefBindings(): RefBindingsState {
     loading: computed(() => loading.value),
     problem: computed(() => problem.value),
   }
+}
+
+/**
+ * What the read produced, for a surface that reports one ref rather than the list.
+ *
+ * Reads the store directly rather than taking a slice of `useRefBindings`, because a
+ * card reporting one binding would otherwise re-collect every ref and re-run the join
+ * to reach two fields none of that work produces.
+ *
+ * Mirrors the React `useRefBindingsStatus`.
+ */
+export function useRefBindingsStatus(): ComputedRef<RefBindingsStatus> {
+  const { registry, problem } = storeToRefs(useRefBindingsStore())
+
+  return computed(() => ({
+    problem: problem.value,
+    hasRegistry: registry.value !== null,
+  }))
 }

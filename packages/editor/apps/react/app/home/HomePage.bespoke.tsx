@@ -13,6 +13,11 @@ interface HomeViewProps {
   onDelete: (id: string) => void
 }
 
+/** The name to show for a stored workspace, falling back for an unnamed one. */
+function workspaceName(record: StoredWorkspace): string {
+  return record.workspace.metadata.label || HOME_CONTENT.defaultWorkspaceName
+}
+
 /** Home screen: create, import, and open recently stored workspaces. */
 export function HomeView({ workspaces, loading, onNew, onImport, onDelete }: HomeViewProps) {
   return (
@@ -42,7 +47,7 @@ export function HomeView({ workspaces, loading, onNew, onImport, onDelete }: Hom
             {workspaces.map((ws) => (
               <li key={ws.id}>
                 <Link to={`/${ws.id}`} className="home-list-link">
-                  <span className="home-list-name">{ws.name}</span>
+                  <span className="home-list-name">{workspaceName(ws)}</span>
                   <span className="home-list-meta">
                     Updated {new Date(ws.updatedAt).toLocaleString()}
                   </span>

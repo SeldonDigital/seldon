@@ -25,8 +25,8 @@ const props = defineProps<{
 }>()
 
 const wrapperStyle = computed(() => refOmittedStyle(props.badge))
-const badgeBox = computed(() => ({ style: refBadgeBoxStyle(props.badge.width) }))
 const omittedRefs = computed(() => ({
+  refChip: { style: refBadgeBoxStyle(props.badge.width) },
   refChipName: { children: `+${props.count} more` },
   refCard: { style: refBadgeHiddenCardStyle },
 }))
@@ -39,7 +39,7 @@ const showSlot = {}
       role="presentation"
       :style="refBadgePanelStyle"
       :seldon-refs="omittedRefs"
-      :chip-assist="badgeBox"
+      :chip-assist="showSlot"
       :text-label="showSlot"
     />
   </Frame>

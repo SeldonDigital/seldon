@@ -16,7 +16,12 @@ interface HariThinkingProps {
   clamped?: boolean
 }
 
-/** Renders the reasoning block with a header toggle that shows or hides it. */
+/**
+ * Renders the reasoning block with a header toggle that shows or hides it. The
+ * clamped tag and the body only exist for some turns, and a ref override cannot
+ * turn a slot on, so their presence stays a positional decision while their
+ * values come through refs.
+ */
 export function HariThinking({ text, durationMs, clamped }: HariThinkingProps) {
   const [open, setOpen] = useState(true)
 
@@ -26,25 +31,27 @@ export function HariThinking({ text, durationMs, clamped }: HariThinkingProps) {
       : clamped
         ? "Reasoning off"
         : "Thinking..."
-  const headerSlot = { children: label }
-  const clampedSlot = clamped ? { children: "Clamped" } : null
-  const iconSlot: IconProps = {
-    icon: open ? "material-chevronDown" : "material-chevronRight",
+  const chevron: IconProps["icon"] = open ? "material-chevronDown" : "material-chevronRight"
+  const seldonRefs = {
+    hariReasoningToggle: {
+      onClick: () => setOpen(!open),
+      "aria-expanded": open,
+      "aria-label": open ? "Hide reasoning" : "Show reasoning",
+    },
+    hariReasoningChevron: { icon: chevron },
+    hariReasoningLabel: { children: label },
+    hariReasoningBody: { children: text, style: open ? expandedStyle : collapsedStyle },
   }
-  const buttonIconic = {
-    onClick: () => setOpen(!open),
-    "aria-expanded": open,
-    "aria-label": open ? "Hide reasoning" : "Show reasoning",
-  }
-  const bodySlot = text ? { children: text, style: open ? expandedStyle : collapsedStyle } : null
+  const clampedSlot = clamped ? {} : null
+  const bodySlot = text ? {} : null
 
   return (
     <MessageThinking
-      textDescription={headerSlot}
+      buttonIconic={{}}
+      textDescription={{}}
       textDescription2={clampedSlot}
-      buttonIconic={buttonIconic}
-      icon={iconSlot}
       textDescription3={bodySlot}
+      seldonRefs={seldonRefs}
     />
   )
 }

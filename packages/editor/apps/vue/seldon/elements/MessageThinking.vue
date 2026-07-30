@@ -28,11 +28,11 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *
  * Structure:
  *   Frame              frame
- *     ButtonIconic     buttonIconic
- *       Icon           icon
- *     TextDescription  textDescription
- *     TextDescription  textDescription2
- *   TextDescription    textDescription3
+ *     ButtonIconic     buttonIconic      -> hariReasoningToggle
+ *       Icon           icon              -> hariReasoningChevron
+ *     TextDescription  textDescription   -> hariReasoningLabel
+ *     TextDescription  textDescription2  -> hariReasoningClamped
+ *   TextDescription    textDescription3  -> hariReasoningBody
  *
  * @example
  * ```vue
@@ -80,23 +80,28 @@ const sdn: Record<string, any> = {
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--iklu",
+    "data-seldon-ref": "hariReasoningToggle",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--kzy9",
+    "data-seldon-ref": "hariReasoningChevron",
   },
   textDescription: {
     children: "Thinking...",
     className: "sdn-text-description sdn-text-description--0r1j",
+    "data-seldon-ref": "hariReasoningLabel",
   },
   textDescription2: {
     children: "Clamped",
     className: "sdn-text-description sdn-text-description--aeeo",
+    "data-seldon-ref": "hariReasoningClamped",
   },
   textDescription3: {
     children: "Reasoning...",
     className: "sdn-text-description sdn-text-description--choa",
+    "data-seldon-ref": "hariReasoningBody",
   },
 }
 

@@ -37,7 +37,7 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *     Frame           frame2
  *       TextTitle     textTitle2
  *       TextSubtitle  textSubtitle2
- *   ItemCatalog       itemCatalog3   -> Default
+ *   ItemCatalog       itemCatalog3
  *     Icon            icon3
  *     Frame           frame3
  *       TextTitle     textTitle3
@@ -138,7 +138,6 @@ const sdn: Record<string, any> = {
   },
   itemCatalog3: {
     className: "sdn-item-catalog sdn-item-catalog--bg0n",
-    "data-seldon-ref": "Default",
   },
   icon3: {
     icon: "seldon-component",

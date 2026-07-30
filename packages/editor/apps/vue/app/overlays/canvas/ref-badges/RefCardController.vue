@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRefBindingsStatus } from "@app/refs/use-ref-bindings"
 import WindowSurface from "@app/windows/WindowSurface.vue"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/use-draggable-window"
 import MessageRefController from "@seldon/components/elements/MessageRefController.vue"
@@ -48,7 +49,8 @@ const props = defineProps<{
   onClose: () => void
 }>()
 
-const description = computed(() => describeBinding(props.binding))
+const status = useRefBindingsStatus()
+const description = computed(() => describeBinding(props.binding, status.value))
 
 const { x, y, width, height, onResizeStart, onResize, getRect, moveControls, dragConstraints } =
   useDraggableWindow({
@@ -90,32 +92,30 @@ function toViewLine(view: BindingViewDescription): string {
 // The view section has one Text per field rather than one per component, so several
 // components that expose the same ref stack as lines inside each Text and stay lined
 // up across the three.
+//
+// With no views the first Text carries the note instead, and the other two stay off. A
+// path and a condition have nothing to report about a view that is not there, and
+// leaving all three off would collapse the section to a bare heading.
 const views = computed(() => description.value.views)
-const viewLines = computed(() => views.value.map(toViewLine).join("\n"))
+const viewLines = computed(() =>
+  views.value.length === 0 ? description.value.viewNote : views.value.map(toViewLine).join("\n"),
+)
 const pathLines = computed(() => views.value.map((view) => view.file).join("\n"))
 const conditionLines = computed(() => views.value.map((view) => view.condition).join("\n"))
-const viewSlot = computed(() => (views.value.length === 0 ? null : {}))
+const viewSlot = computed(() => (viewLines.value === null ? null : {}))
+const viewFieldSlot = computed(() => (views.value.length === 0 ? null : {}))
 
-/** A row per code snippet that drives the ref, or a note when nothing does. */
+/**
+ * A row per code snippet that drives the ref, under a note when there is one to make.
+ *
+ * The note leads rather than replaces, because a note and controllers can both apply.
+ * Files that disagree on their target still report consumers, and the reader needs the
+ * warning before reading the rows it casts doubt on.
+ */
 const rows = computed(() => {
   const { note, controllers } = description.value
 
-  if (controllers.length === 0) {
-    if (!note) return []
-
-    return [
-      {
-        key: "note",
-        seldonRefs: { refCardControllerName: { children: note } },
-        path: null,
-        pass: null,
-        from: null,
-        separator: null,
-      },
-    ]
-  }
-
-  return controllers.map((controller, index) => ({
+  const controllerRows = controllers.map((controller, index) => ({
     key: `${controller.location}#${index}`,
     path: {},
     seldonRefs: {
@@ -135,6 +135,19 @@ const rows = computed(() => {
     from: controller.from.length === 0 ? null : {},
     separator: index === controllers.length - 1 ? null : {},
   }))
+
+  if (note === null) return controllerRows
+
+  const noteRow = {
+    key: "note",
+    seldonRefs: { refCardControllerName: { children: note } },
+    path: null,
+    pass: null,
+    from: null,
+    separator: controllers.length > 0 ? {} : null,
+  }
+
+  return [noteRow, ...controllerRows]
 })
 
 const cardRefs = computed(() => ({
@@ -182,8 +195,8 @@ const styles: Record<string, CSSProperties> = {
       :seldon-refs="cardRefs"
       :text-label2="showSlot"
       :text="viewSlot"
-      :text2="viewSlot"
-      :text3="viewSlot"
+      :text2="viewFieldSlot"
+      :text3="viewFieldSlot"
       :text-label3="showSlot"
     >
       <template #refCardControllers>

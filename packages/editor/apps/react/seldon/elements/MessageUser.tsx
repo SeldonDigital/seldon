@@ -33,6 +33,7 @@ const sdn: MessageUserProps = {
   textDescription: {
     children: "User message",
     className: "sdn-text-description sdn-text-description--welb",
+    "data-seldon-ref": "hariUserText",
   },
 }
 
@@ -44,7 +45,7 @@ const sdn: MessageUserProps = {
  * Type: Custom
  *
  * Structure:
- *   TextDescription  textDescription
+ *   TextDescription  textDescription  -> hariUserText
  *
  * @example
  * ```tsx

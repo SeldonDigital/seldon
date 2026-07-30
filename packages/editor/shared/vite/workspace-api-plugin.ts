@@ -20,7 +20,6 @@ const workspacesDir = path.join(repoRoot, ".seldon", "workspaces")
 
 type StoredWorkspace = {
   id: string
-  name: string
   workspace: unknown
   updatedAt: string
   lastEditor?: string

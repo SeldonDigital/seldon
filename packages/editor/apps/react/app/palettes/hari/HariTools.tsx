@@ -1,77 +1,58 @@
-// View-model for the tool-activity block in the Hari transcript. The generated
-// MessageTools body exposes only a single icon+text row, so this adapter takes
-// over its children to render the real header plus one icon+text row per tool
-// entry. It owns the runtime pieces a static schema cannot: the expand/collapse
-// state and the per-row list built from the turn's tool activity.
-//
-// The class names below mirror the generated MessageTools defaults so the
-// rebuilt header and rows keep the design's styling. They track re-exports of
-// MessageTools.tsx: if that file's slot classes change, update them here.
-import { ButtonIconic } from "@seldon/components/elements/ButtonIconic"
-import { MessageTools } from "@seldon/components/elements/MessageTools"
-import { Frame } from "@seldon/components/frames/Frame"
-import { Icon } from "@seldon/components/primitives/Icon"
-import { TextDescription } from "@seldon/components/primitives/TextDescription"
+// View-model for the tool-activity block in the Hari transcript. The design
+// splits the block in two: MessageToolsHeader renders the collapsible header once
+// and MessageToolsUsed renders one line per entry, so every part comes from a
+// generated component. This adapter owns the runtime pieces a static schema
+// cannot: the expand/collapse state and the list built from the turn's activity.
+import { MessageToolsHeader } from "@seldon/components/elements/MessageToolsHeader"
+import { MessageToolsUsed } from "@seldon/components/elements/MessageToolsUsed"
 import { useState } from "react"
 
 import type { IconProps } from "@seldon/components/primitives/Icon"
 
 /** One tool-activity line: a status icon and its label. */
-export interface ToolRow {
+export interface ToolUsed {
   key: string
   icon: IconProps["icon"]
   text: string
 }
 
 interface HariToolsProps {
-  rows: ToolRow[]
+  tools: ToolUsed[]
   /** Initial expanded state, seeded from the Show Tools flag. */
   defaultOpen: boolean
 }
 
-const HEADER_FRAME_CLASS = "sdn-frame sdn-frame--ieew"
-const HEADER_BUTTON_CLASS = "sdn-button-iconic sdn-button-iconic--iklu"
-const HEADER_ICON_CLASS = "sdn-icon sdn-icon--bmas"
-const HEADER_TEXT_CLASS = "sdn-text-description sdn-text-description--71gg"
-const ROW_FRAME_CLASS = "sdn-frame sdn-frame--rstc"
-const ROW_ICON_CLASS = "sdn-icon sdn-icon--9ouj"
-const ROW_TEXT_CLASS = "sdn-text-description sdn-text-description--hqun"
-
 /** Renders the turn's tool activity as one collapsible "Tools Applied" block. */
-export function HariTools({ rows, defaultOpen }: HariToolsProps) {
+export function HariTools({ tools, defaultOpen }: HariToolsProps) {
   const [open, setOpen] = useState(defaultOpen)
 
-  const toggle = () => setOpen(!open)
-  const toggleLabel = open ? "Hide tools" : "Show tools"
-  const chevronIcon: IconProps = {
-    icon: open ? "material-chevronDown" : "material-chevronRight",
-    className: HEADER_ICON_CLASS,
+  const chevron: IconProps["icon"] = open ? "material-chevronDown" : "material-chevronRight"
+  const headerRefs = {
+    hariToolsToggle: {
+      onClick: () => setOpen(!open),
+      "aria-expanded": open,
+      "aria-label": open ? "Hide tools" : "Show tools",
+    },
+    hariToolsChevron: { icon: chevron },
   }
-  const header = (
-    <Frame className={HEADER_FRAME_CLASS}>
-      <ButtonIconic
-        className={HEADER_BUTTON_CLASS}
-        icon={chevronIcon}
-        onClick={toggle}
-        aria-expanded={open}
-        aria-label={toggleLabel}
-      />
-      <TextDescription className={HEADER_TEXT_CLASS}>Tools Applied</TextDescription>
-    </Frame>
-  )
-  const rowFrames = open
-    ? rows.map((row) => (
-        <Frame key={row.key} className={ROW_FRAME_CLASS}>
-          <Icon className={ROW_ICON_CLASS} icon={row.icon} />
-          <TextDescription className={ROW_TEXT_CLASS}>{row.text}</TextDescription>
-        </Frame>
-      ))
+
+  const lines = open
+    ? tools.map((tool) => {
+        const toolRefs = {
+          hariToolIcon: { icon: tool.icon },
+          hariToolText: { children: tool.text },
+        }
+
+        return (
+          <MessageToolsUsed key={tool.key} icon={{}} textDescription={{}} seldonRefs={toolRefs} />
+        )
+      })
     : null
 
   return (
-    <MessageTools>
-      {header}
-      {rowFrames}
-    </MessageTools>
+    <>
+      <MessageToolsHeader buttonIconic={{}} textDescription={{}} seldonRefs={headerRefs} />
+      {lines}
+    </>
   )
 }

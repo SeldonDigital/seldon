@@ -1,5 +1,6 @@
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { restoreWorkspaceNodeIds } from "@seldon/core/workspace/helpers/nodes/restore-entry-node-ids"
+import { setWorkspaceLabel } from "@seldon/core/workspace/reducers/handlers/set/set-workspace-label"
 
 import type { Workspace } from "@seldon/core/workspace/types"
 
@@ -19,17 +20,22 @@ import type { Workspace } from "@seldon/core/workspace/types"
  * Records leaving this module always carry node `id` fields, and records written
  * through it always omit them. Stored JSON drops `id` because it repeats the key
  * each node sits under in `nodes`.
+ *
+ * A record holds no name of its own. The workspace name is `metadata.label` on
+ * the workspace it wraps, so renaming is an ordinary workspace edit.
  */
 
 export type EditorId = "react" | "vue"
 
 export type StoredWorkspace = {
   id: string
-  name: string
   workspace: Workspace
   updatedAt: string
   lastEditor?: EditorId
 }
+
+/** A record as it may still sit on disk, before the name moved into the label. */
+type StoredWorkspaceOnDisk = StoredWorkspace & { name?: string }
 
 const BASE = "/api/workspaces"
 
@@ -44,25 +50,37 @@ export function configureWorkspaceStore(editor: EditorId): void {
   currentEditor = editor
 }
 
+/**
+ * Brings a record read from disk to the current shape. Node ids are restored,
+ * and a record still carrying a top-level `name` seeds `metadata.label` when the
+ * label is unset. The legacy field is dropped here, so the next save clears it
+ * from disk.
+ */
+function readRecord(record: StoredWorkspaceOnDisk): StoredWorkspace {
+  const { name, ...rest } = record
+  const workspace = restoreWorkspaceNodeIds(rest.workspace)
+
+  if (workspace.metadata.label || !name) return { ...rest, workspace }
+
+  return { ...rest, workspace: setWorkspaceLabel({ value: name }, workspace) }
+}
+
 export async function listStoredWorkspaces(): Promise<StoredWorkspace[]> {
   const response = await fetch(BASE)
 
   if (!response.ok) return []
-  const records = (await response.json()) as StoredWorkspace[]
+  const records = (await response.json()) as StoredWorkspaceOnDisk[]
 
-  return records.map((record) => ({
-    ...record,
-    workspace: restoreWorkspaceNodeIds(record.workspace),
-  }))
+  return records.map(readRecord)
 }
 
 export async function getStoredWorkspace(id: string): Promise<StoredWorkspace | undefined> {
   const response = await fetch(`${BASE}/${encodeURIComponent(id)}`)
 
   if (!response.ok) return undefined
-  const record = (await response.json()) as StoredWorkspace
+  const record = (await response.json()) as StoredWorkspaceOnDisk
 
-  return { ...record, workspace: restoreWorkspaceNodeIds(record.workspace) }
+  return readRecord(record)
 }
 
 export async function saveStoredWorkspace(record: StoredWorkspace): Promise<void> {
@@ -83,13 +101,10 @@ export async function deleteStoredWorkspace(id: string): Promise<void> {
   await fetch(`${BASE}/${encodeURIComponent(id)}`, { method: "DELETE" })
 }
 
-export async function createStoredWorkspace(
-  name: string,
-  workspace: Workspace,
-): Promise<StoredWorkspace> {
+/** Creates a record for a workspace. The name travels in `metadata.label`. */
+export async function createStoredWorkspace(workspace: Workspace): Promise<StoredWorkspace> {
   const record: StoredWorkspace = {
     id: crypto.randomUUID(),
-    name,
     workspace,
     updatedAt: new Date().toISOString(),
     lastEditor: currentEditor,

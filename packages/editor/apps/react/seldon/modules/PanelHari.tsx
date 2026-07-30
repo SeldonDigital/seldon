@@ -73,6 +73,7 @@ const sdn: PanelHariProps = {
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--9xs7",
+    "data-seldon-ref": "hariBar",
   },
   textTitle: {
     children: "Hari",
@@ -112,6 +113,7 @@ const sdn: PanelHariProps = {
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "hariReset",
   },
   icon4: {
     icon: "seldon-reset",
@@ -132,7 +134,7 @@ const sdn: PanelHariProps = {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--vorn",
-    "data-seldon-ref": "turns",
+    "data-seldon-ref": "hariTurns",
   },
 
   frame3: {
@@ -163,6 +165,7 @@ const sdn: PanelHariProps = {
   textLabel: {
     children: "Model",
     className: "sdn-text-label sdn-text-label--sa6t",
+    "data-seldon-ref": "hariModelLabel",
   },
   icon6: {
     icon: "material-chevronDown",
@@ -176,6 +179,7 @@ const sdn: PanelHariProps = {
   textLabel2: {
     children: "Thinking Level",
     className: "sdn-text-label sdn-text-label--sa6t",
+    "data-seldon-ref": "hariThinkingLabel",
   },
   icon7: {
     icon: "material-chevronDown",
@@ -189,6 +193,7 @@ const sdn: PanelHariProps = {
   textLabel3: {
     children: "Scope",
     className: "sdn-text-label sdn-text-label--lug5",
+    "data-seldon-ref": "hariSelectionLabel",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--wh0i",
@@ -198,6 +203,7 @@ const sdn: PanelHariProps = {
     icon: "material-arrowUpward",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--umgs",
+    "data-seldon-ref": "hariSendIcon",
   },
 }
 
@@ -209,7 +215,7 @@ const sdn: PanelHariProps = {
  * Type: Inline
  *
  * Structure:
- *   Bar               bar
+ *   Bar               bar            -> hariBar
  *     TextTitle       textTitle
  *     Frame           frame
  *       ButtonToggle  buttonToggle   -> hariOutcome
@@ -218,25 +224,25 @@ const sdn: PanelHariProps = {
  *         Icon        icon2
  *       ButtonToggle  buttonToggle3  -> hariClamp
  *         Icon        icon3
- *     ButtonIconic    buttonIconic
+ *     ButtonIconic    buttonIconic   -> hariReset
  *       Icon          icon4
  *     ButtonIconic    buttonIconic2  -> hariClose
  *       Icon          icon5
- *   Frame             frame2         -> turns
+ *   Frame             frame2         -> hariTurns
  *   Frame             frame3
  *     Textarea        textarea       -> hariInput
  *   Frame             frame4
  *     Frame           frame5
  *       ButtonMenu    buttonMenu     -> hariModel
- *         TextLabel   textLabel
+ *         TextLabel   textLabel      -> hariModelLabel
  *         Icon        icon6
  *       ButtonMenu    buttonMenu2    -> hariThinking
- *         TextLabel   textLabel2
+ *         TextLabel   textLabel2     -> hariThinkingLabel
  *         Icon        icon7
  *       Chip          chip           -> hariSelection
- *         TextLabel   textLabel3
+ *         TextLabel   textLabel3     -> hariSelectionLabel
  *       ButtonIconic  buttonIconic3  -> hariSend
- *         Icon        icon8
+ *         Icon        icon8          -> hariSendIcon
  *
  * @example
  * ```tsx

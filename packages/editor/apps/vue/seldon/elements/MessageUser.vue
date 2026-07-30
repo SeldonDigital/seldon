@@ -27,7 +27,7 @@ indirectly) * any machine learning or artificial intelligence system without wri
  * Type: Custom
  *
  * Structure:
- *   TextDescription  textDescription
+ *   TextDescription  textDescription  -> hariUserText
  *
  * @example
  * ```vue
@@ -60,6 +60,7 @@ const sdn: Record<string, any> = {
   textDescription: {
     children: "User message",
     className: "sdn-text-description sdn-text-description--welb",
+    "data-seldon-ref": "hariUserText",
   },
 }
 

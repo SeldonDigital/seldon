@@ -60,6 +60,7 @@ const sdn: ItemPropertyProps = {
   formControlCombobox: {
     "aria-hidden": "false",
     className: "sdn-form-control sdn-form-control-combobox--qmop",
+    "data-seldon-ref": "propertyRow",
   },
   input: {
     placeholder: "Property Name",
@@ -69,6 +70,7 @@ const sdn: ItemPropertyProps = {
   comboboxField: {
     "aria-hidden": "false",
     className: "sdn-combobox-field sdn-combobox-field--j44i",
+    "data-seldon-ref": "propertyValueField",
   },
   icon2: {
     icon: "seldon-component",
@@ -92,6 +94,7 @@ const sdn: ItemPropertyProps = {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "propertyValueMenuIcon",
   },
 
   buttonIconic3: {
@@ -115,13 +118,13 @@ const sdn: ItemPropertyProps = {
  * Structure:
  *   ButtonIconic         buttonIconic         -> propertyDisclosure
  *     Icon               icon                 -> propertyDisclosureIcon
- *   FormControlCombobox  formControlCombobox
+ *   FormControlCombobox  formControlCombobox  -> propertyRow
  *     Input              input                -> propertyLabel
- *     ComboboxField      comboboxField
+ *     ComboboxField      comboboxField        -> propertyValueField
  *       Icon             icon2                -> propertyValueIcon
  *       Input            input2               -> propertyValueLabel
  *       ButtonIconic     buttonIconic2        -> propertyValueMenu
- *         Icon           icon3
+ *         Icon           icon3                -> propertyValueMenuIcon
  *   ButtonIconic         buttonIconic3        -> propertyActions
  *     Icon               icon4
  *

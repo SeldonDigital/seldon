@@ -31,7 +31,8 @@
     "bindings": "npm run bindings --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "bindings:check": "npm run bindings:check --workspace @seldon/editor-react --workspace @seldon/editor-vue",
     "notices:thirdparty": "node packages/editor/shared/scripts/generate-third-party-notices.mjs",
-    "ollama:kill": "pkill -f 'ollama serve' || true"
+    "ollama:ensure": "npm run ollama:ensure --workspace @seldon/ai",
+    "ollama:kill": "npm run ollama:kill --workspace @seldon/ai"
   },
   "repository": {
     "type": "git",

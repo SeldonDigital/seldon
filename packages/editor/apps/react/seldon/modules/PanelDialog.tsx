@@ -78,11 +78,13 @@ const sdn: PanelDialogProps = {
   },
   comboboxFieldSearch: {
     className: "sdn-combobox-field-search sdn-combobox-field-search--9jd5",
+    "data-seldon-ref": "dialogSearchField",
   },
   icon: {
     icon: "material-search",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "dialogSearchIcon",
   },
   input: {
     placeholder: "Search for...",
@@ -90,14 +92,17 @@ const sdn: PanelDialogProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--twyx",
+    "data-seldon-ref": "dialogSearch",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "dialogSearchClear",
   },
   icon2: {
     icon: "material-close",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "dialogSearchClearIcon",
   },
 
   frame: {
@@ -194,11 +199,11 @@ const sdn: PanelDialogProps = {
  * Structure:
  *   Bar                    bar
  *     TextTitle            textTitle            -> dialogTitle
- *     ComboboxFieldSearch  comboboxFieldSearch
- *       Icon               icon
- *       Input              input
- *       ButtonIconic       buttonIconic
- *         Icon             icon2
+ *     ComboboxFieldSearch  comboboxFieldSearch  -> dialogSearchField
+ *       Icon               icon                 -> dialogSearchIcon
+ *       Input              input                -> dialogSearch
+ *       ButtonIconic       buttonIconic         -> dialogSearchClear
+ *         Icon             icon2                -> dialogSearchClearIcon
  *   Frame                  frame                -> dialogContent
  *   BarButtons             barButtons
  *     Frame                frame2

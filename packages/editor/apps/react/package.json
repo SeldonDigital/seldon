@@ -9,7 +9,7 @@
     "export:seldon": "node scripts/export-seldon.mjs",
     "bindings": "node seldon/scripts/generate-bindings.mjs",
     "bindings:check": "node seldon/scripts/generate-bindings.mjs --check",
-    "dev": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && node scripts/ensure-ollama.mjs && vite",
+    "dev": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && node ../../../ai/scripts/ensure-ollama.mjs && vite",
     "build": "node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite build",
     "build:release": "npm run notices:thirdparty && npm run build",
     "start": "vite preview",

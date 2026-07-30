@@ -1,3 +1,11 @@
+import {
+  MANIFEST_PATH,
+  NEEDS_PERMISSION_PROBLEM,
+  NOT_LINKED_PROBLEM,
+  NO_MANIFEST_PROBLEM,
+  NO_REGISTRY_PROBLEM,
+  REGISTRY_PATH,
+} from "@seldon/editor/lib/refs/linked-refs"
 import { readBindingsManifest } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import { readRefsRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import {
@@ -12,10 +20,6 @@ import { ref } from "vue"
 import type { ValidatedBindings } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import type { ValidatedRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
-
-/** Both files sit under the linked components folder. */
-const REGISTRY_PATH = "refs/registry.json"
-const MANIFEST_PATH = "refs/bindings.json"
 
 /**
  * What was read from the linked project, held once for the whole editor.
@@ -36,29 +40,33 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
   /**
    * Reads the refs registry and the binding manifest from the linked folder.
    *
-   * Call this from a user gesture. A browser only re-grants a directory permission
-   * during one, and the permission is requested here when it has lapsed.
+   * Prefer calling this from a user gesture. A standing folder grant needs none, so a
+   * workspace change reads on its own, but a lapsed grant can only be re-requested
+   * during a gesture and otherwise reports the permission problem instead.
    *
    * Returns whether both arrived. A partial read still keeps what it got: the
    * registry alone describes every view, which is worth showing even when no
    * manifest has been written yet.
    */
   async function load(id: string): Promise<boolean> {
+    // Claimed before the first await, so a second caller sees the workspace already
+    // taken and stands down. The overlay reads on the gesture that turns it on and again
+    // when the workspace changes, and those two can land together.
+    workspaceId.value = id
+    loading.value = true
+
     const link = await getProjectLink(id)
 
-    workspaceId.value = id
-
     if (!link) {
-      problem.value = "No exported folder is linked to this workspace yet."
+      loading.value = false
+      problem.value = NOT_LINKED_PROBLEM
 
       return false
     }
 
-    loading.value = true
-
     try {
       if (!(await hasReadPermission(link))) {
-        problem.value = "Reading the linked folder needs permission."
+        problem.value = NEEDS_PERMISSION_PROBLEM
 
         return false
       }
@@ -66,7 +74,7 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
       const registryText = await readLinkedTextFile(link, REGISTRY_PATH)
 
       if (registryText === null) {
-        problem.value = "No refs registry found in the linked folder. Export again to write one."
+        problem.value = NO_REGISTRY_PROBLEM
 
         return false
       }
@@ -87,8 +95,7 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
 
       if (manifestText === null) {
         bindings.value = null
-        problem.value =
-          "No binding manifest found. Run the bindings script in your project to write one."
+        problem.value = NO_MANIFEST_PROBLEM
 
         return false
       }

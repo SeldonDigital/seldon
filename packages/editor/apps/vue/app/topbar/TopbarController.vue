@@ -31,11 +31,17 @@ const INTERFACE_MODES: { id: InterfaceMode; label: string }[] = [
 ]
 
 type SlotObject = Record<string, unknown> | null
-interface MenuSlot {
-  button: SlotObject
-  label: SlotObject
+
+/** The trigger and label props for one visible config menu. */
+interface MenuTrigger {
+  button: Record<string, unknown>
+  label: Record<string, unknown>
 }
-const EMPTY_SLOT: MenuSlot = { button: null, label: null }
+
+/** Turns a config menu's slots on when the menu is visible, off when it is not. */
+function slotFor(trigger: MenuTrigger | null): SlotObject {
+  return trigger === null ? null : {}
+}
 
 const menuConfig = useMenuConfig()
 const { appState } = useAppState()
@@ -115,25 +121,36 @@ function buildDropdownItems<T extends string>(
   }))
 }
 
-const menuSlots = computed<MenuSlot[]>(() =>
-  [0, 1, 2, 3, 4, 5].map((index) => {
-    const menu = menuConfig.value[index]
-    if (!menu) return EMPTY_SLOT
-    if (menu.visibleIn && !menu.visibleIn.includes(appState.value)) return EMPTY_SLOT
-    return {
-      button: {
-        "data-testid": `menu-${menu.id}`,
-        "aria-haspopup": "menu",
-        "aria-expanded": openMenuId.value === menu.id,
-        onClick: (event: MouseEvent) =>
-          handleTriggerClick(menu.id, event.currentTarget as HTMLElement),
-        onPointerenter: (event: PointerEvent) =>
-          handleTriggerEnter(menu.id, event.currentTarget as HTMLElement),
-      },
-      label: { children: menu.label },
-    }
-  }),
-)
+function buildTrigger(menuId: string): MenuTrigger | null {
+  const menu = menuConfig.value.find((entry) => entry.id === menuId)
+  if (!menu) return null
+  if (menu.visibleIn && !menu.visibleIn.includes(appState.value)) return null
+
+  return {
+    button: {
+      "data-testid": `menu-${menu.id}`,
+      "aria-haspopup": "menu",
+      "aria-expanded": openMenuId.value === menu.id,
+      onClick: (event: MouseEvent) =>
+        handleTriggerClick(menu.id, event.currentTarget as HTMLElement),
+      onPointerenter: (event: PointerEvent) =>
+        handleTriggerEnter(menu.id, event.currentTarget as HTMLElement),
+    },
+    label: { children: menu.label },
+  }
+}
+
+// Each config menu is looked up by its id, so reordering the menus cannot land
+// one menu's handlers on another menu's button. A menu hidden in the current
+// app state resolves to null.
+const triggers = computed(() => ({
+  file: buildTrigger("file"),
+  edit: buildTrigger("edit"),
+  component: buildTrigger("component"),
+  hari: buildTrigger("hari"),
+  view: buildTrigger("view"),
+  dev: buildTrigger("dev"),
+}))
 
 const themeMenuItems = computed<MenuEntry[]>(() =>
   buildDropdownItems(
@@ -204,40 +221,62 @@ const logoProps = { src: "/logo.svg", alt: "Seldon" }
 const wordmarkProps = { src: "/wordmark-light.svg", alt: "Seldon" }
 const emptySlot = {}
 
-// Inject the gesture onto the generated `logo` frame that wraps both images.
-const seldonRefs = { logo: { onClick: handleLogoClick } }
+// Every value and handler reaches its slot by the slot's baked `data-seldon-ref`
+// name, so moving or reordering a node in the design keeps this wiring intact.
+const seldonRefs = computed<Record<string, Record<string, unknown>>>(() => ({
+  logo: { onClick: handleLogoClick },
+  logoMark: { ...logoProps },
+  logoWordmark: { ...wordmarkProps },
+
+  menuFile: { ...triggers.value.file?.button },
+  menuFileLabel: { ...triggers.value.file?.label },
+  menuEdit: { ...triggers.value.edit?.button },
+  menuEditLabel: { ...triggers.value.edit?.label },
+  menuComponent: { ...triggers.value.component?.button },
+  menuComponentLabel: { ...triggers.value.component?.label },
+  menuHari: { ...triggers.value.hari?.button },
+  menuHariLabel: { ...triggers.value.hari?.label },
+  menuView: { ...triggers.value.view?.button },
+  menuViewLabel: { ...triggers.value.view?.label },
+  menuDev: { ...triggers.value.dev?.button },
+  menuDevLabel: { ...triggers.value.dev?.label },
+
+  menuTheme: { ...themeButton.value },
+  menuThemeLabel: { ...themeLabel.value },
+  menuMode: { ...modeButton.value },
+  menuModeLabel: { ...modeLabel.value },
+}))
+
+// BarTopbar gates its opt-in slots on a prop being present, so every slot the
+// refs above drive is turned on here. A hidden menu passes `null` instead, which
+// collapses its trigger and label.
+const slots = computed<Record<string, SlotObject>>(() => ({
+  image: {},
+  image2: {},
+
+  buttonSimple: slotFor(triggers.value.file),
+  textLabel: slotFor(triggers.value.file),
+  buttonSimple2: slotFor(triggers.value.edit),
+  textLabel2: slotFor(triggers.value.edit),
+  buttonSimple3: slotFor(triggers.value.component),
+  textLabel3: slotFor(triggers.value.component),
+  buttonSimple4: slotFor(triggers.value.hari),
+  textLabel4: slotFor(triggers.value.hari),
+  buttonSimple5: slotFor(triggers.value.view),
+  textLabel5: slotFor(triggers.value.view),
+  buttonSimple6: slotFor(triggers.value.dev),
+  textLabel6: slotFor(triggers.value.dev),
+
+  buttonMenu: {},
+  textLabel7: {},
+  buttonMenu2: {},
+  textLabel8: {},
+}))
 </script>
 
 <template>
   <header ref="header" class="topbar-header">
-    <BarTopbar
-      data-testid="topbar"
-      :seldon-refs="seldonRefs"
-      :frame="emptySlot"
-      :frame2="emptySlot"
-      :image="logoProps"
-      :image2="wordmarkProps"
-      :frame3="emptySlot"
-      :button-simple="menuSlots[0].button"
-      :text-label="menuSlots[0].label"
-      :button-simple2="menuSlots[1].button"
-      :text-label2="menuSlots[1].label"
-      :button-simple3="menuSlots[2].button"
-      :text-label3="menuSlots[2].label"
-      :button-simple4="menuSlots[3].button"
-      :text-label4="menuSlots[3].label"
-      :button-simple5="menuSlots[4].button"
-      :text-label5="menuSlots[4].label"
-      :button-simple6="menuSlots[5].button"
-      :text-label6="menuSlots[5].label"
-      :frame4="emptySlot"
-      :button-menu="themeButton"
-      :text-label7="themeLabel"
-      :icon="emptySlot"
-      :button-menu2="modeButton"
-      :text-label8="modeLabel"
-      :icon2="emptySlot"
-    />
+    <BarTopbar data-testid="topbar" v-bind="slots" :seldon-refs="seldonRefs" />
     <MenuController
       :open="menuOpen"
       :anchor="anchor"

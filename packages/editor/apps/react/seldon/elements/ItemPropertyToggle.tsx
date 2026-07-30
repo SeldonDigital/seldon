@@ -58,6 +58,7 @@ const sdn: ItemPropertyToggleProps = {
 
   formControlCombobox: {
     className: "sdn-form-control sdn-form-control-combobox--qmop",
+    "data-seldon-ref": "propertyToggleRow",
   },
   input: {
     placeholder: "Property Name",
@@ -68,6 +69,7 @@ const sdn: ItemPropertyToggleProps = {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--inf3",
+    "data-seldon-ref": "propertyToggleControl",
   },
   icon2: {
     icon: "seldon-component",
@@ -100,9 +102,9 @@ const sdn: ItemPropertyToggleProps = {
  * Structure:
  *   ButtonIconic         buttonIconic         -> propertyToggleDisclosure
  *     Icon               icon                 -> propertyToggleDisclosureIcon
- *   FormControlCombobox  formControlCombobox
+ *   FormControlCombobox  formControlCombobox  -> propertyToggleRow
  *     Input              input                -> propertyToggleLabel
- *     Frame              frame
+ *     Frame              frame                -> propertyToggleControl
  *       Icon             icon2                -> propertyToggleIcon
  *       ToggleSwitch     toggleSwitch         -> propertyToggleSwitch
  *   ButtonIconic         buttonIconic2        -> propertyToggleActions

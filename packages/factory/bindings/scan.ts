@@ -2,6 +2,7 @@ import { isScannablePath } from "./config"
 import { BINDINGS_VERSION } from "./version"
 
 import type {
+  BindingWarning,
   BindingsConfig,
   BindingsManifest,
   FileBindings,
@@ -26,6 +27,7 @@ export async function scanBindings(
 
   const refs: Record<string, RefConsumer[]> = {}
   const slots: Record<string, Record<string, SlotConsumer[]>> = {}
+  const warnings: BindingWarning[] = []
 
   let scannedFiles = 0
 
@@ -40,6 +42,7 @@ export async function scanBindings(
 
       scannedFiles += 1
       collect(bindings, refs, slots)
+      warnings.push(...bindings.warnings)
     } catch (error) {
       console.warn(`Failed to scan "${path}":`, error)
     }
@@ -52,6 +55,7 @@ export async function scanBindings(
     scannedFiles,
     refs,
     slots,
+    warnings,
   }
 }
 

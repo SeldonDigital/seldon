@@ -36,8 +36,8 @@ const wrapperStyle = computed(() =>
     ? refBadgeMutedStyle(props.placement.badge)
     : refBadgeStyle(props.placement.badge),
 )
-const badgeBox = computed(() => ({ style: refBadgeBoxStyle(props.placement.badge.width) }))
 const summaryRefs = computed(() => ({
+  refChip: { style: refBadgeBoxStyle(props.placement.badge.width) },
   refChipName: { children: props.placement.label },
   refCard: { style: refBadgeHiddenCardStyle },
 }))
@@ -54,7 +54,7 @@ function select(): void {
       role="presentation"
       :style="refBadgePanelStyle"
       :seldon-refs="summaryRefs"
-      :chip-assist="badgeBox"
+      :chip-assist="showSlot"
       :text-label="showSlot"
     />
   </Frame>

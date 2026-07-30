@@ -27,9 +27,9 @@ indirectly) * any machine learning or artificial intelligence system without wri
  * Type: Custom
  *
  * Structure:
- *   Icon          icon          -> filterIcon
- *   Input         input         -> filterLabel
- *   ButtonIconic  buttonIconic  -> filterActions
+ *   Icon          icon
+ *   Input         input
+ *   ButtonIconic  buttonIconic
  *     Icon        icon2
  *
  * @example
@@ -71,7 +71,6 @@ const sdn: Record<string, any> = {
     icon: "material-filterList",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "filterIcon",
   },
   input: {
     placeholder: "Filter...",
@@ -79,11 +78,9 @@ const sdn: Record<string, any> = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--twyx",
-    "data-seldon-ref": "filterLabel",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "filterActions",
   },
   icon2: {
     icon: "material-close",

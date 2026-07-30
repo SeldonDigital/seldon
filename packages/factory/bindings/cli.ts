@@ -5,7 +5,7 @@ import { resolveBindingsConfig } from "./config"
 import { scanBindings } from "./scan"
 import { serializeBindings } from "./serialize"
 
-import type { BindingsFramework, FileSource } from "./types"
+import type { BindingWarning, BindingsFramework, FileSource } from "./types"
 
 const USAGE =
   "Usage: bun packages/factory/bindings/cli.ts <projectRoot> [--framework react|vue] [--components seldon] [--out bindings.json]"
@@ -97,6 +97,26 @@ async function main(): Promise<void> {
   console.log(`Refs bound:     ${refCount}`)
   console.log(`Slots bound:    ${slotCount}`)
   console.log(`Wrote ${outPath}`)
+
+  reportWarnings(manifest.warnings)
+}
+
+/**
+ * Reports every refs map whose name its file declares more than once. The manifest
+ * is still written, because the rest of it is sound and the fix is a rename.
+ */
+function reportWarnings(warnings: BindingWarning[]): void {
+  if (warnings.length === 0) return
+
+  console.warn(
+    `\n${warnings.length} refs map${warnings.length === 1 ? "" : "s"} resolved by an ambiguous name. ` +
+      "The first declaration wins, so the entries reported may belong to another one. " +
+      "Rename each map after what it drives.",
+  )
+
+  for (const warning of warnings) {
+    console.warn(`  ${warning.file}:${warning.line} "${warning.name}" x${warning.declarations}`)
+  }
 }
 
 /** Reports whether a bare argument is the value of a preceding flag. */

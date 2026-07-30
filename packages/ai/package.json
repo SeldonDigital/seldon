@@ -14,6 +14,8 @@
     }
   },
   "scripts": {
+    "ollama:ensure": "node scripts/ensure-ollama.mjs",
+    "ollama:kill": "pkill -f 'ollama serve' || true",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json"
   },

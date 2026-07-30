@@ -29,12 +29,12 @@ indirectly) * any machine learning or artificial intelligence system without wri
  * Structure:
  *   ButtonIconic         buttonIconic         -> sectionDisclosure
  *     Icon               icon                 -> sectionDisclosureIcon
- *   FormControlCombobox  formControlCombobox
+ *   FormControlCombobox  formControlCombobox  -> sectionRow
  *     TextLabel          textLabel            -> sectionLabel
  *   ButtonIconic         buttonIconic2        -> sectionAdd
- *     Icon               icon2
+ *     Icon               icon2                -> sectionAddIcon
  *   ButtonIconic         buttonIconic3        -> sectionActions
- *     Icon               icon3
+ *     Icon               icon3                -> sectionActionsIcon
  *
  * @example
  * ```vue
@@ -90,6 +90,7 @@ const sdn: Record<string, any> = {
   },
   formControlCombobox: {
     className: "sdn-form-control sdn-form-control-combobox--gqrl",
+    "data-seldon-ref": "sectionRow",
   },
   textLabel: {
     children: "Section Name",
@@ -104,6 +105,7 @@ const sdn: Record<string, any> = {
     icon: "material-add",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--0qvc",
+    "data-seldon-ref": "sectionAddIcon",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -113,6 +115,7 @@ const sdn: Record<string, any> = {
     icon: "seldon-more",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--0qvc",
+    "data-seldon-ref": "sectionActionsIcon",
   },
 }
 

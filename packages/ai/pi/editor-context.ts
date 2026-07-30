@@ -171,7 +171,7 @@ function resolveActiveVariantId(
  * stays warm.
  */
 export function buildTurnContext(resolved: ResolvedContext): string {
-  const header = `Workspace: "${resolved.workspace.metadata.label ?? "Untitled"}"`
+  const header = `Workspace: "${resolved.workspace.metadata.label || "Untitled"}"`
 
   // Isolation Mode overrides every other scope: the boundary directive and the
   // closure-only listing replace the whole-workspace view, and the anchor is
