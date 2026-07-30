@@ -60,9 +60,12 @@ describeIfOllama("chatToActions (live)", () => {
       expect(result.reply).toContain("Checkout")
       expect(result.workspace).not.toBe(workspace)
       expect(result.debug.metrics?.calls).toBeGreaterThanOrEqual(4)
-      // The stream carried classify + resolver steps and one final text event.
-      const toolEvents = events.filter((event) => event.type === "tool")
-      expect(toolEvents.map((event) => event.name)).toContain("classify_action")
+      // The stream carried the staged pipeline and one final text event.
+      const toolNames = events
+        .filter((event) => event.type === "tool")
+        .map((event) => event.name)
+      expect(toolNames).toContain("route")
+      expect(toolNames).toContain("decompose")
       expect(events.filter((event) => event.type === "text")).toHaveLength(1)
     },
     LIVE_TIMEOUT_MS,
@@ -84,6 +87,38 @@ describeIfOllama("chatToActions (live)", () => {
       expect(result.actions).toHaveLength(0)
       expect(result.workspace).toBe(workspace)
       expect(result.reply.length).toBeGreaterThan(0)
+    },
+    LIVE_TIMEOUT_MS,
+  )
+
+  it(
+    "executes a compound message as sequential steps on the working copy",
+    async () => {
+      const workspace = addComponent(
+        { boardKey: ComponentId.BUTTON } as never,
+        createEmptyWorkspace(),
+      )
+      const textNodeId = findDefaultVariantChild(workspace, "text")
+
+      const result = await chatToActions({
+        workspace,
+        message: 'rename this to "CTA" and set its text to "Go"',
+        activeBoardKey: ComponentId.BUTTON,
+        selectedNodeId: textNodeId,
+        scope: "instance",
+        model: MODEL,
+      })
+
+      // Tolerant of model variance: the plan may fully apply (2 actions) or
+      // stop at a clarification -- but it must never crash, must report
+      // something, and anything committed must be one of the two edits.
+      expect(result.reply.length).toBeGreaterThan(0)
+      for (const action of result.actions) {
+        expect(["set_node_label", "set_node_properties"]).toContain(action.type)
+      }
+      if (result.actions.length >= 2) {
+        expect(result.workspace).not.toBe(workspace)
+      }
     },
     LIVE_TIMEOUT_MS,
   )

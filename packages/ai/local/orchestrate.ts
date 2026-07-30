@@ -38,6 +38,9 @@ import {
 } from "./actions/theme"
 import { buildTurnContext, resolveContext } from "./editor-context"
 import { classifyAction } from "./resolvers/classify-action"
+import { decompose } from "./resolvers/decompose"
+import { generateReply, type StepOutcome } from "./resolvers/reply"
+import { route } from "./resolvers/route"
 import type { FamilyOutcome, TurnContext } from "./turn-context"
 import { createTurnState } from "./turn-state"
 
@@ -75,15 +78,19 @@ const NOT_YET =
   "I can't do that edit yet in this version. I can change or reset properties, rename, remove or duplicate elements and components."
 
 /**
- * Translates one chat message into workspace actions: one enum-constrained
- * call classifies the message into a v1 intent, code dispatches to that
- * intent's handler, and the handler resolves the action's fields through
- * further narrow calls before committing through the reducer. The caller
- * applies the returned actions; this function never mutates real state.
+ * Translates one chat message into workspace actions through the hari-style
+ * flow, unbundled into narrow stages: route decides reply-vs-process,
+ * decompose rewrites the message into self-contained steps, each step is
+ * classified with the existing intent classifier and executed by its family
+ * handler against the working copy -- sequentially, so a later step sees the
+ * nodes an earlier one created -- and the reply is assembled from the
+ * structured outcomes (templates by default; SELDON_AI_REPLY_MODE=
+ * conversational opts into the terminus-style phrasing call).
  *
- * The reply is deterministic: a handler's templated confirmation on success,
- * or the terminating resolver's clarification message -- never a free-text
- * model generation, so the reply can't claim a change the reducer didn't make.
+ * A step that terminates with a clarification stops the plan there: what
+ * committed stays committed, and the reply reports both the done and the
+ * stopped steps. No retries anywhere. The caller applies the returned
+ * working copy; this function never mutates real state.
  */
 export async function chatToActions(
   input: ChatToActionsInput,
@@ -150,21 +157,62 @@ export async function chatToActions(
   // follow-up.
   if (input.signal?.aborted) return finish("Stopped.")
 
-  const classification = await classifyAction({
-    message: input.message,
-    scope: input.scope,
-    hasSelectedNode: input.selectedNodeId !== undefined,
-    model,
-  })
-  context.calls.push(classification.metrics)
-  context.onStep?.("classify_action", classification.kind === "classified")
-
-  if (classification.kind === "message") return finish(classification.text)
+  // Stage 1: route. Conversation gets its answer from this same call and the
+  // turn ends with zero actions.
+  const decision = await route(context, input.history)
+  if (decision.kind === "reply") return finish(decision.message)
   if (input.signal?.aborted) return finish("Stopped.")
 
-  const handler = HANDLERS[classification.intent.intent]
-  if (!handler) return finish(NOT_YET)
+  // Stage 2: decompose into self-contained steps (a single instruction comes
+  // back as one step, making this path a superset of single-action behavior).
+  const steps = await decompose(context, input.history)
+  if (input.signal?.aborted) return finish("Stopped.")
 
-  const outcome = await handler(context)
-  return finish(outcome.kind === "applied" ? outcome.reply : outcome.text)
+  // Stage 3: classify and execute each step in order against the working
+  // copy. A clarification or rejection stops the plan; committed steps stay.
+  const outcomes: StepOutcome[] = []
+  for (const [index, step] of steps.entries()) {
+    if (input.signal?.aborted) break
+    const stepLabel =
+      steps.length > 1 ? `step ${index + 1}/${steps.length}` : "step"
+    context.message = step
+
+    const classification = await classifyAction({
+      message: step,
+      scope: input.scope,
+      hasSelectedNode: input.selectedNodeId !== undefined,
+      model,
+    })
+    context.calls.push(classification.metrics)
+
+    if (classification.kind === "message") {
+      // A none-label on a decomposed step is noise, not an edit: note it and
+      // move on rather than stopping a plan over it.
+      context.onStep?.(`${stepLabel}: skipped`, false)
+      outcomes.push({
+        step,
+        intent: "skipped",
+        outcome: {
+          kind: "message",
+          text: `Skipped "${step}" -- it doesn't look like a design edit.`,
+        },
+      })
+      continue
+    }
+
+    const intent = classification.intent.intent
+    context.onStep?.(`${stepLabel}: ${intent}`, true)
+
+    const handler = HANDLERS[intent]
+    const outcome: FamilyOutcome = handler
+      ? await handler(context)
+      : { kind: "message", text: NOT_YET }
+    outcomes.push({ step, intent, outcome })
+
+    // A stop is terminal for the REST of the plan: later steps may depend on
+    // this one having happened, so continuing would compound the miss.
+    if (outcome.kind === "message") break
+  }
+
+  return finish(await generateReply(context, outcomes))
 }
