@@ -5322,14 +5322,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 94,
+        "line": 106,
         "conditional": false,
         "expression": "{ children: conditionLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "conditionLines",
             "declaredAt": {
-              "line": 88,
+              "line": 99,
               "kind": "const",
               "via": "views.map((view) => view.condition).join"
             }
@@ -5337,7 +5337,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -5350,7 +5350,7 @@
               {
                 "name": "conditionLines",
                 "declaredAt": {
-                  "line": 88,
+                  "line": 99,
                   "kind": "const",
                   "via": "views.map((view) => view.condition).join"
                 }
@@ -5364,7 +5364,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
                 }
               }
@@ -5377,21 +5377,21 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 172,
+        "line": 192,
         "conditional": false,
         "expression": "{ children: controller.from.join(\"\\n\"), style: styles.multiline, }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 154,
+              "line": 162,
               "kind": "parameter"
             }
           },
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -5404,7 +5404,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 154,
+                  "line": 162,
                   "kind": "parameter"
                 }
               }
@@ -5417,7 +5417,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
                 }
               }
@@ -5429,15 +5429,15 @@
     "refCardControllerName": [
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
-        "component": "buildControllerRows",
-        "line": 149,
+        "component": "buildNoteRow",
+        "line": 173,
         "conditional": false,
         "expression": "{ children: note }",
         "inputs": [
           {
             "name": "note",
             "declaredAt": {
-              "line": 52,
+              "line": 55,
               "kind": "const",
               "via": "useMemo"
             }
@@ -5451,7 +5451,7 @@
               {
                 "name": "note",
                 "declaredAt": {
-                  "line": 52,
+                  "line": 55,
                   "kind": "const",
                   "via": "useMemo"
                 }
@@ -5463,14 +5463,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 169,
+        "line": 189,
         "conditional": false,
         "expression": "{ children: controller.name }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 154,
+              "line": 162,
               "kind": "parameter"
             }
           }
@@ -5483,7 +5483,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 154,
+                  "line": 162,
                   "kind": "parameter"
                 }
               }
@@ -5496,14 +5496,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 171,
+        "line": 191,
         "conditional": false,
         "expression": "{ children: controller.pass }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 154,
+              "line": 162,
               "kind": "parameter"
             }
           }
@@ -5516,7 +5516,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 154,
+                  "line": 162,
                   "kind": "parameter"
                 }
               }
@@ -5529,14 +5529,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 170,
+        "line": 190,
         "conditional": false,
         "expression": "{ children: location }",
         "inputs": [
           {
             "name": "location",
             "declaredAt": {
-              "line": 164,
+              "line": 184,
               "kind": "const"
             }
           }
@@ -5549,7 +5549,7 @@
               {
                 "name": "location",
                 "declaredAt": {
-                  "line": 164,
+                  "line": 184,
                   "kind": "const"
                 }
               }
@@ -5562,14 +5562,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 95,
+        "line": 107,
         "conditional": false,
         "expression": "{ children: rows }",
         "inputs": [
           {
             "name": "rows",
             "declaredAt": {
-              "line": 81,
+              "line": 87,
               "kind": "const",
               "via": "useMemo"
             }
@@ -5583,7 +5583,7 @@
               {
                 "name": "rows",
                 "declaredAt": {
-                  "line": 81,
+                  "line": 87,
                   "kind": "const",
                   "via": "useMemo"
                 }
@@ -5597,14 +5597,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 93,
+        "line": 105,
         "conditional": false,
         "expression": "{ children: pathLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "pathLines",
             "declaredAt": {
-              "line": 87,
+              "line": 98,
               "kind": "const",
               "via": "views.map((view) => view.file).join"
             }
@@ -5612,7 +5612,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -5625,7 +5625,7 @@
               {
                 "name": "pathLines",
                 "declaredAt": {
-                  "line": 87,
+                  "line": 98,
                   "kind": "const",
                   "via": "views.map((view) => view.file).join"
                 }
@@ -5639,7 +5639,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
                 }
               }
@@ -5652,22 +5652,21 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 92,
+        "line": 104,
         "conditional": false,
         "expression": "{ children: viewLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "viewLines",
             "declaredAt": {
-              "line": 86,
-              "kind": "const",
-              "via": "views.map((view) => toViewLine(binding.ref, view)).join"
+              "line": 96,
+              "kind": "const"
             }
           },
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -5680,9 +5679,8 @@
               {
                 "name": "viewLines",
                 "declaredAt": {
-                  "line": 86,
-                  "kind": "const",
-                  "via": "views.map((view) => toViewLine(binding.ref, view)).join"
+                  "line": 96,
+                  "kind": "const"
                 }
               }
             ]
@@ -5694,7 +5692,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
                 }
               }
@@ -10269,14 +10267,30 @@
       "hr": [
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
-          "component": "joinControllerRow",
-          "line": 190,
+          "component": "buildNoteRow",
+          "line": 176,
           "expression": "separator",
           "inputs": [
             {
               "name": "separator",
               "declaredAt": {
-                "line": 180,
+                "line": 174,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
+          "component": "joinControllerRow",
+          "line": 210,
+          "expression": "separator",
+          "inputs": [
+            {
+              "name": "separator",
+              "declaredAt": {
+                "line": 174,
                 "kind": "const"
               }
             }
@@ -10287,8 +10301,8 @@
       "text": [
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
-          "component": "buildControllerRows",
-          "line": 151,
+          "component": "buildNoteRow",
+          "line": 176,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -10296,7 +10310,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 186,
+          "line": 206,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -10306,7 +10320,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 187,
+          "line": 207,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -10316,13 +10330,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 188,
+          "line": 208,
           "expression": "pass",
           "inputs": [
             {
               "name": "pass",
               "declaredAt": {
-                "line": 178,
+                "line": 198,
                 "kind": "const"
               }
             }
@@ -10334,13 +10348,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 189,
+          "line": 209,
           "expression": "from",
           "inputs": [
             {
               "name": "from",
               "declaredAt": {
-                "line": 179,
+                "line": 199,
                 "kind": "const"
               }
             }
@@ -11025,7 +11039,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 116,
+          "line": 128,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -11035,13 +11049,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 120,
+          "line": 132,
           "expression": "viewSlot",
           "inputs": [
             {
               "name": "viewSlot",
               "declaredAt": {
-                "line": 89,
+                "line": 100,
                 "kind": "const"
               }
             }
@@ -11053,13 +11067,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 121,
-          "expression": "viewSlot",
+          "line": 133,
+          "expression": "viewFieldSlot",
           "inputs": [
             {
-              "name": "viewSlot",
+              "name": "viewFieldSlot",
               "declaredAt": {
-                "line": 89,
+                "line": 101,
                 "kind": "const"
               }
             }
@@ -11071,13 +11085,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 122,
-          "expression": "viewSlot",
+          "line": 134,
+          "expression": "viewFieldSlot",
           "inputs": [
             {
-              "name": "viewSlot",
+              "name": "viewFieldSlot",
               "declaredAt": {
-                "line": 89,
+                "line": 101,
                 "kind": "const"
               }
             }
@@ -11123,7 +11137,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 119,
+          "line": 131,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11133,7 +11147,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 123,
+          "line": 135,
           "expression": "{}",
           "inputs": [],
           "spread": false

@@ -4407,14 +4407,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
         "component": "RefCardController",
-        "line": 143,
+        "line": 156,
         "conditional": false,
         "expression": "{ children: conditionLines.value, style: styles.multiline }",
         "inputs": [
           {
             "name": "conditionLines",
             "declaredAt": {
-              "line": 96,
+              "line": 104,
               "kind": "const",
               "via": "computed"
             }
@@ -4422,7 +4422,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 147,
+              "line": 160,
               "kind": "const"
             }
           }
@@ -4435,7 +4435,7 @@
               {
                 "name": "conditionLines",
                 "declaredAt": {
-                  "line": 96,
+                  "line": 104,
                   "kind": "const",
                   "via": "computed"
                 }
@@ -4449,7 +4449,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 147,
+                  "line": 160,
                   "kind": "const"
                 }
               }
@@ -4476,7 +4476,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 147,
+              "line": 160,
               "kind": "const"
             }
           }
@@ -4502,7 +4502,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 147,
+                  "line": 160,
                   "kind": "const"
                 }
               }
@@ -4512,37 +4512,6 @@
       }
     ],
     "refCardControllerName": [
-      {
-        "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
-        "component": "RefCardController",
-        "line": 109,
-        "conditional": false,
-        "expression": "{ children: note }",
-        "inputs": [
-          {
-            "name": "note",
-            "declaredAt": {
-              "line": 101,
-              "kind": "const"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "children",
-            "expression": "note",
-            "inputs": [
-              {
-                "name": "note",
-                "declaredAt": {
-                  "line": 101,
-                  "kind": "const"
-                }
-              }
-            ]
-          }
-        ]
-      },
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
         "component": "RefCardController",
@@ -4568,6 +4537,37 @@
                 "declaredAt": {
                   "line": 118,
                   "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
+        "component": "RefCardController",
+        "line": 143,
+        "conditional": false,
+        "expression": "{ children: note }",
+        "inputs": [
+          {
+            "name": "note",
+            "declaredAt": {
+              "line": 116,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "note",
+            "inputs": [
+              {
+                "name": "note",
+                "declaredAt": {
+                  "line": 116,
+                  "kind": "const"
                 }
               }
             ]
@@ -4645,14 +4645,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
         "component": "RefCardController",
-        "line": 142,
+        "line": 155,
         "conditional": false,
         "expression": "{ children: pathLines.value, style: styles.multiline }",
         "inputs": [
           {
             "name": "pathLines",
             "declaredAt": {
-              "line": 95,
+              "line": 103,
               "kind": "const",
               "via": "computed"
             }
@@ -4660,7 +4660,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 147,
+              "line": 160,
               "kind": "const"
             }
           }
@@ -4673,7 +4673,7 @@
               {
                 "name": "pathLines",
                 "declaredAt": {
-                  "line": 95,
+                  "line": 103,
                   "kind": "const",
                   "via": "computed"
                 }
@@ -4687,7 +4687,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 147,
+                  "line": 160,
                   "kind": "const"
                 }
               }
@@ -4700,14 +4700,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
         "component": "RefCardController",
-        "line": 141,
+        "line": 154,
         "conditional": false,
         "expression": "{ children: viewLines.value, style: styles.multiline }",
         "inputs": [
           {
             "name": "viewLines",
             "declaredAt": {
-              "line": 94,
+              "line": 100,
               "kind": "const",
               "via": "computed"
             }
@@ -4715,7 +4715,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 147,
+              "line": 160,
               "kind": "const"
             }
           }
@@ -4728,7 +4728,7 @@
               {
                 "name": "viewLines",
                 "declaredAt": {
-                  "line": 94,
+                  "line": 100,
                   "kind": "const",
                   "via": "computed"
                 }
@@ -4742,7 +4742,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 147,
+                  "line": 160,
                   "kind": "const"
                 }
               }
@@ -8459,7 +8459,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 198,
+          "line": 211,
           "expression": "row.separator",
           "inputs": [
             {
@@ -8474,13 +8474,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 194,
+          "line": 207,
           "expression": "showSlot",
           "inputs": [
             {
               "name": "showSlot",
               "declaredAt": {
-                "line": 145,
+                "line": 158,
                 "kind": "const"
               }
             }
@@ -8492,7 +8492,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 195,
+          "line": 208,
           "expression": "row.path",
           "inputs": [
             {
@@ -8507,7 +8507,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 196,
+          "line": 209,
           "expression": "row.pass",
           "inputs": [
             {
@@ -8522,7 +8522,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 197,
+          "line": 210,
           "expression": "row.from",
           "inputs": [
             {
@@ -9188,7 +9188,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 180,
+          "line": 193,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9214,13 +9214,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 184,
+          "line": 197,
           "expression": "viewSlot",
           "inputs": [
             {
               "name": "viewSlot",
               "declaredAt": {
-                "line": 97,
+                "line": 105,
                 "kind": "const",
                 "via": "computed"
               }
@@ -9233,13 +9233,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 185,
-          "expression": "viewSlot",
+          "line": 198,
+          "expression": "viewFieldSlot",
           "inputs": [
             {
-              "name": "viewSlot",
+              "name": "viewFieldSlot",
               "declaredAt": {
-                "line": 97,
+                "line": 106,
                 "kind": "const",
                 "via": "computed"
               }
@@ -9252,13 +9252,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 186,
-          "expression": "viewSlot",
+          "line": 199,
+          "expression": "viewFieldSlot",
           "inputs": [
             {
-              "name": "viewSlot",
+              "name": "viewFieldSlot",
               "declaredAt": {
-                "line": 97,
+                "line": 106,
                 "kind": "const",
                 "via": "computed"
               }
@@ -9337,13 +9337,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 183,
+          "line": 196,
           "expression": "showSlot",
           "inputs": [
             {
               "name": "showSlot",
               "declaredAt": {
-                "line": 145,
+                "line": 158,
                 "kind": "const"
               }
             }
@@ -9355,13 +9355,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.vue",
           "component": "RefCardController",
-          "line": 187,
+          "line": 200,
           "expression": "showSlot",
           "inputs": [
             {
               "name": "showSlot",
               "declaredAt": {
-                "line": 145,
+                "line": 158,
                 "kind": "const"
               }
             }

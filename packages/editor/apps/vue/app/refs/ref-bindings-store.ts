@@ -36,25 +36,29 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
   /**
    * Reads the refs registry and the binding manifest from the linked folder.
    *
-   * Call this from a user gesture. A browser only re-grants a directory permission
-   * during one, and the permission is requested here when it has lapsed.
+   * Prefer calling this from a user gesture. A standing folder grant needs none, so a
+   * workspace change reads on its own, but a lapsed grant can only be re-requested
+   * during a gesture and otherwise reports the permission problem instead.
    *
    * Returns whether both arrived. A partial read still keeps what it got: the
    * registry alone describes every view, which is worth showing even when no
    * manifest has been written yet.
    */
   async function load(id: string): Promise<boolean> {
+    // Claimed before the first await, so a second caller sees the workspace already
+    // taken and stands down. The overlay reads on the gesture that turns it on and again
+    // when the workspace changes, and those two can land together.
+    workspaceId.value = id
+    loading.value = true
+
     const link = await getProjectLink(id)
 
-    workspaceId.value = id
-
     if (!link) {
+      loading.value = false
       problem.value = "No exported folder is linked to this workspace yet."
 
       return false
     }
-
-    loading.value = true
 
     try {
       if (!(await hasReadPermission(link))) {
@@ -87,8 +91,7 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
 
       if (manifestText === null) {
         bindings.value = null
-        problem.value =
-          "No binding manifest found. Run the bindings script in your project to write one."
+        problem.value = "Missing bindings manifest. Run `npm run bindings` to generate."
 
         return false
       }
