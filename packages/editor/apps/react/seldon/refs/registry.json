@@ -1489,7 +1489,7 @@
     "menuMode": {
       "component": "ButtonMenu",
       "nodeId": "component-bar-nWDgCHuH",
-      "className": "sdn-button-menu sdn-button-iconic--pgsr",
+      "className": "sdn-button-menu sdn-button-menu--truc",
       "views": [
         {
           "component": "BarTopbar",
@@ -1531,7 +1531,7 @@
     "menuTheme": {
       "component": "ButtonMenu",
       "nodeId": "component-button-trucC1Xo",
-      "className": "sdn-button-menu sdn-button-iconic--pgsr",
+      "className": "sdn-button-menu sdn-button-menu--truc",
       "views": [
         {
           "component": "BarTopbar",
@@ -2301,7 +2301,7 @@
     "sectionActionsIcon": {
       "component": "Icon",
       "nodeId": "component-item-X0ybtMzs",
-      "className": "sdn-icon sdn-icon--0qvc",
+      "className": "sdn-icon sdn-icon--ucf5",
       "views": [
         {
           "component": "ItemSection",
@@ -2329,7 +2329,7 @@
     "sectionAddIcon": {
       "component": "Icon",
       "nodeId": "component-item-CMEf5HDL",
-      "className": "sdn-icon sdn-icon--0qvc",
+      "className": "sdn-icon sdn-icon--ucf5",
       "views": [
         {
           "component": "ItemSection",
@@ -2357,7 +2357,7 @@
     "sectionDisclosureIcon": {
       "component": "Icon",
       "nodeId": "component-item-7MKLAjub",
-      "className": "sdn-icon sdn-icon--umgs",
+      "className": "sdn-icon sdn-icon--rezm",
       "views": [
         {
           "component": "ItemSection",

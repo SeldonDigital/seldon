@@ -1692,7 +1692,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuMode: {
     component: "ButtonMenu",
     nodeId: "component-bar-nWDgCHuH",
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     views: [
       {
         component: "BarTopbar",
@@ -1734,7 +1734,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   menuTheme: {
     component: "ButtonMenu",
     nodeId: "component-button-trucC1Xo",
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     views: [
       {
         component: "BarTopbar",
@@ -2504,7 +2504,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionActionsIcon: {
     component: "Icon",
     nodeId: "component-item-X0ybtMzs",
-    className: "sdn-icon sdn-icon--0qvc",
+    className: "sdn-icon sdn-icon--ucf5",
     views: [
       {
         component: "ItemSection",
@@ -2532,7 +2532,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionAddIcon: {
     component: "Icon",
     nodeId: "component-item-CMEf5HDL",
-    className: "sdn-icon sdn-icon--0qvc",
+    className: "sdn-icon sdn-icon--ucf5",
     views: [
       {
         component: "ItemSection",
@@ -2560,7 +2560,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   sectionDisclosureIcon: {
     component: "Icon",
     nodeId: "component-item-7MKLAjub",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--rezm",
     views: [
       {
         component: "ItemSection",

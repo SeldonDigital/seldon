@@ -52,13 +52,13 @@ const sdn: BarBreadcrumbsBarProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--rezm",
+    className: "sdn-icon sdn-icon--xl1d",
   },
 
   icon2: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--qjxq",
   },
 
   link: {
@@ -70,7 +70,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon3: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--qjxq",
   },
 
   link2: {
@@ -82,7 +82,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon4: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--qjxq",
   },
 
   link3: {
@@ -139,7 +139,7 @@ export function BarBreadcrumbsBar({
   seldonRefs,
   ...props
 }: BarBreadcrumbsBarProps) {
-  const barBreadcrumbsBarClassName = combineClassNames("sdn-bar", className)
+  const barBreadcrumbsBarClassName = combineClassNames("sdn-bar-breadcrumbs-bar", className)
 
   const buttonIconicProps = mergeSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
   const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)

@@ -77,7 +77,7 @@ const sdn: ListStandardProps = {
   },
   textTitle: {
     children: "Title",
-    className: "sdn-text-title sdn-text-label--yqnd",
+    className: "sdn-text-title sdn-text-title--drqy",
   },
   textSubtitle: {
     children: "Subtitle",
@@ -111,7 +111,7 @@ const sdn: ListStandardProps = {
   },
   textTitle2: {
     children: "Title",
-    className: "sdn-text-title sdn-text-label--yqnd",
+    className: "sdn-text-title sdn-text-title--drqy",
   },
   textSubtitle2: {
     children: "Subtitle",
@@ -145,7 +145,7 @@ const sdn: ListStandardProps = {
   },
   textTitle3: {
     children: "Title",
-    className: "sdn-text-title sdn-text-label--yqnd",
+    className: "sdn-text-title sdn-text-title--drqy",
   },
   textSubtitle3: {
     children: "Subtitle",

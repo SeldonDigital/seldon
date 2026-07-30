@@ -145,7 +145,7 @@ const sdn: BarTopbarProps = {
     className: "sdn-frame sdn-frame--nzij",
   },
   buttonMenu: {
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     "data-seldon-ref": "menuTheme",
   },
   textLabel7: {
@@ -159,7 +159,7 @@ const sdn: BarTopbarProps = {
     className: "sdn-icon sdn-icon--y2ct",
   },
   buttonMenu2: {
-    className: "sdn-button-menu sdn-button-iconic--pgsr",
+    className: "sdn-button-menu sdn-button-menu--truc",
     "data-seldon-ref": "menuMode",
   },
   textLabel8: {

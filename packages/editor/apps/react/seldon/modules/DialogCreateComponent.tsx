@@ -83,7 +83,7 @@ const sdn: DialogCreateComponentProps = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--zhvk",
+    className: "sdn-bar sdn-bar--yje0",
   },
   textTitle: {
     children: "Create Component",

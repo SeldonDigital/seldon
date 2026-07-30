@@ -134,7 +134,7 @@ const sdn: DialogExportComponentProps = {
   "aria-hidden": "false",
   bar: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar--zhvk",
+    className: "sdn-bar sdn-bar--yje0",
   },
   textTitle: {
     children: "Export Components",
