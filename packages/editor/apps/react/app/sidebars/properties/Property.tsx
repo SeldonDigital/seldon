@@ -182,11 +182,7 @@ function PropertyInner(props: RowPropertyProps) {
   // positional enabler.
   return (
     <>
-      <LayerDragRow
-        layerDrag={view.layerDrag}
-        label={props.property.label}
-        icon={props.property.icon}
-      >
+      <LayerDragRow layerDrag={view.layerDrag}>
         <ItemProperty
           input={{}}
           icon2={valueIconSlot}

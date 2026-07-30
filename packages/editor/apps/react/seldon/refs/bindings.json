@@ -4673,37 +4673,6 @@
     ],
     "nodeIcon": [
       {
-        "file": "app/sidebars/DragNodePreview.tsx",
-        "component": "DragNodePreview",
-        "line": 24,
-        "conditional": false,
-        "expression": "{ icon }",
-        "inputs": [
-          {
-            "name": "icon",
-            "declaredAt": {
-              "line": 22,
-              "kind": "parameter"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "icon",
-            "expression": "icon",
-            "inputs": [
-              {
-                "name": "icon",
-                "declaredAt": {
-                  "line": 22,
-                  "kind": "parameter"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
         "line": 191,
@@ -4812,42 +4781,6 @@
       }
     ],
     "nodeLabel": [
-      {
-        "file": "app/sidebars/DragNodePreview.tsx",
-        "component": "DragNodePreview",
-        "line": 25,
-        "conditional": false,
-        "expression": "{ value: label, readOnly: true }",
-        "inputs": [
-          {
-            "name": "label",
-            "declaredAt": {
-              "line": 22,
-              "kind": "parameter"
-            }
-          }
-        ],
-        "props": [
-          {
-            "key": "value",
-            "expression": "label",
-            "inputs": [
-              {
-                "name": "label",
-                "declaredAt": {
-                  "line": 22,
-                  "kind": "parameter"
-                }
-              }
-            ]
-          },
-          {
-            "key": "readOnly",
-            "expression": "true",
-            "inputs": []
-          }
-        ]
-      },
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardEmpty",
@@ -9055,7 +8988,7 @@
         {
           "file": "app/sidebars/properties/LayerDragRow.tsx",
           "component": "LayerDragSource",
-          "line": 81,
+          "line": 62,
           "expression": "\"div\"",
           "inputs": [],
           "spread": false
@@ -9755,14 +9688,6 @@
       ],
       "buttonIconic": [
         {
-          "file": "app/sidebars/DragNodePreview.tsx",
-          "component": "DragNodePreview",
-          "line": 30,
-          "expression": "null",
-          "inputs": [],
-          "spread": false
-        },
-        {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
           "line": 51,
@@ -9796,14 +9721,6 @@
         }
       ],
       "buttonIconic2": [
-        {
-          "file": "app/sidebars/DragNodePreview.tsx",
-          "component": "DragNodePreview",
-          "line": 32,
-          "expression": "null",
-          "inputs": [],
-          "spread": false
-        },
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
@@ -9872,14 +9789,6 @@
         }
       ],
       "comboboxField": [
-        {
-          "file": "app/sidebars/DragNodePreview.tsx",
-          "component": "DragNodePreview",
-          "line": 31,
-          "expression": "{}",
-          "inputs": [],
-          "spread": false
-        },
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
@@ -10125,7 +10034,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 192,
+          "line": 188,
           "expression": "valueIconSlot",
           "inputs": [
             {
@@ -10143,7 +10052,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 191,
+          "line": 187,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -10153,7 +10062,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 194,
+          "line": 190,
           "expression": "view.onRowClick",
           "inputs": [
             {
@@ -10172,7 +10081,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 195,
+          "line": 191,
           "expression": "view.onRowDoubleClick",
           "inputs": [
             {

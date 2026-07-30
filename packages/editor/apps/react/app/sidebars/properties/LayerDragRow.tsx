@@ -1,4 +1,5 @@
 import { DropIndicator, OverlayLayer, PlacementZoneSurface } from "@app/overlays/primitives"
+import { calculateIndicatorPosition } from "@app/overlays/sidebar/helpers/calculate-indicator-position"
 import { Frame } from "@seldon/components/frames/Frame"
 
 import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
@@ -18,8 +19,6 @@ export interface LayerDragContext {
 
 interface LayerDragRowProps {
   layerDrag: LayerDragContext | null
-  label: string
-  icon: string
   children: ReactNode
 }
 
@@ -31,7 +30,7 @@ const nonInteractiveOverlayStyle: CSSProperties = { pointerEvents: "none" }
  * multi-layer paint parent. Rows without a layer context render their children
  * unwrapped, so the caller can always mount this without branching.
  */
-export function LayerDragRow({ layerDrag, label, icon, children }: LayerDragRowProps) {
+export function LayerDragRow({ layerDrag, children }: LayerDragRowProps) {
   if (!layerDrag) return <>{children}</>
 
   return (
@@ -39,8 +38,6 @@ export function LayerDragRow({ layerDrag, label, icon, children }: LayerDragRowP
       property={layerDrag.property}
       layerIndex={layerDrag.layerIndex}
       layerCount={layerDrag.layerCount}
-      label={label}
-      icon={icon}
     >
       {children}
     </LayerDragSource>
@@ -48,8 +45,6 @@ export function LayerDragRow({ layerDrag, label, icon, children }: LayerDragRowP
 }
 
 interface LayerDragSourceProps extends LayerDragContext {
-  label: string
-  icon: string
   children: ReactNode
 }
 
@@ -57,28 +52,14 @@ interface LayerDragSourceProps extends LayerDragContext {
  * Drag-source wrapper for a layered paint parent row. Hosts before/after drop
  * bands with the shared insert indicator.
  */
-function LayerDragSource({
-  property,
-  layerIndex,
-  layerCount,
-  label,
-  icon,
-  children,
-}: LayerDragSourceProps) {
-  const { ref, dragging } = useLayerDraggable({
+function LayerDragSource({ property, layerIndex, layerCount, children }: LayerDragSourceProps) {
+  const { ref } = useLayerDraggable({
     property,
     layerIndex,
-    label,
-    icon,
   })
 
-  const boxStyle: CSSProperties = {
-    ...wrapperStyle,
-    opacity: dragging ? 0.5 : 1,
-  }
-
   return (
-    <Frame wrapperElement="div" ref={ref} style={boxStyle}>
+    <Frame wrapperElement="div" ref={ref} style={wrapperStyle}>
       {children}
       <LayerDropBand
         property={property}
@@ -147,12 +128,7 @@ function getBandStyle(placement: LayerPlacement, isLayerDragging: boolean): CSSP
 }
 
 function LayerInsertIndicator({ placement }: { placement: LayerPlacement }) {
-  const position: CSSProperties = {
-    left: 12,
-    right: 0,
-    height: 1,
-    ...(placement === "before" ? { top: -0.5 } : { bottom: -0.5 }),
-  }
+  const position = calculateIndicatorPosition(placement)
 
-  return <DropIndicator color="var(--sdn-swatch-primary)" position={position} />
+  return <DropIndicator color="var(--sdn-swatch-primary)" position={position} dotOffset={0} />
 }
