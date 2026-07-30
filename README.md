@@ -20,7 +20,7 @@ Factory owns export and production code generation. It can be extended beyond on
 
 ---
 
-The [Seldon Editor](packages/editor/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and stores workspaces, and needs no API, database, auth, or cloud service. It ships as two mirrored apps that share the same underlying logic and workspace files: a [React build](packages/editor-react/README.md) on `localhost:5173` and a [Vue build](packages/editor-vue/README.md) on `localhost:5174`.
+The [Seldon Editor](packages/editor/shared/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and stores workspaces, and needs no API, database, auth, or cloud service. It ships as two mirrored apps that share the same underlying logic and workspace files: a [React build](packages/editor/apps/react/README.md) on `localhost:5173` and a [Vue build](packages/editor/apps/vue/README.md) on `localhost:5174`.
 
 A user opens a workspace with the Editor, edits components, and each action flows through the same Core reducer engine that an AI agent would use.
 
@@ -191,7 +191,7 @@ There's a lot to do. We need feedback on what is working, what is not, and what 
 If you want the lowdown, these three documents are a great way to get into what this codebase offers, and where it is going.
 
 - `packages/core` [packages/core/README.md](packages/core/README.md): This is the workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
-- `packages/editor` [packages/editor/README.md](packages/editor/README.md): Visual editor that runs on localhost
+- `packages/editor` [packages/editor/shared/README.md](packages/editor/shared/README.md): Visual editor that runs on localhost
 - `packages/factory` [packages/factory/README.md](packages/factory/README.md): Component Export, CSS, and code generation from a valid workspace.json file
 
 ---

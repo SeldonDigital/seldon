@@ -2,7 +2,7 @@
 
 `@seldon/editor-vue` is the Vue build of the Seldon design client. It runs in the browser, edits a Seldon workspace, and turns each gesture into a typed **action** that flows through the same Core reducer an AI agent would use.
 
-This app owns the Vue interface: components, composables, and Pinia stores. It imports the platform-neutral logic, dev-server plugins, and static assets from `@seldon/editor`. It mirrors the React build in `@seldon/editor-react` one to one, so a workspace edited in one editor opens in the other. Read the shared contract in [../editor/README.md](../editor/README.md) first.
+This app owns the Vue interface: components, composables, and Pinia stores. It imports the platform-neutral logic, dev-server plugins, and static assets from `@seldon/editor`. It mirrors the React build in `@seldon/editor-react` one to one, so a workspace edited in one editor opens in the other. Read the shared contract in [../../shared/README.md](../../shared/README.md) first.
 
 ---
 
@@ -12,12 +12,12 @@ This app owns the Vue interface: components, composables, and Pinia stores. It i
 - **Pinia** holds runtime state. Stores replace the React app's zustand stores.
 - **motion-v** drives window and panel animation, matching framer-motion in the React app. **splitpanes** handles resizable panes. **panzoom** drives canvas zoom and pan. **@atlaskit/pragmatic-drag-and-drop** drives tree and canvas drag.
 - **markdown-it** and **shiki** render the AI chat. **@vueuse/core** and **hotkeys-js** cover reactive utilities and shortcuts.
-- The workspace store is the shared filesystem store served at `/api/workspaces`, so a workspace saved here opens in the React editor. See [../editor/README.md](../editor/README.md).
+- The workspace store is the shared filesystem store served at `/api/workspaces`, so a workspace saved here opens in the React editor. See [../../shared/README.md](../../shared/README.md).
 - Imports use path aliases: `@app` for `app/`, `@seldon/components` for `seldon/`, and `@seldon/editor` for the shared package, alongside `@seldon/core`, `@seldon/factory`, and `@seldon/ai`.
 
 ### Run steps
 
-- `npm run dev` copies font licenses and font files, then starts Vite on port 5174. The AI agent uses the local Ollama server the React editor's `dev` script ensures.
+- `npm run dev` copies font licenses and font files, ensures a local Ollama server for the AI agent through [`@seldon/ai`](../../../ai/scripts/ensure-ollama.mjs), then starts Vite on port 5174.
 - `npm run build` type-checks with `vue-tsc` and builds the production bundle. `npm run build:release` generates third-party notices first. `npm start` serves the build with `vite preview`.
 - `npm run typecheck` type-checks with `vue-tsc --noEmit`. `npm run lint` runs ESLint. `npm run export:seldon` regenerates the `seldon/` components.
 
@@ -60,7 +60,7 @@ Font copy and `seldon/` export.
 
 ## MVVM In Vue
 
-The app follows the editor MVVM layering from [../editor/README.md](../editor/README.md). In Vue:
+The app follows the editor MVVM layering from [../../shared/README.md](../../shared/README.md). In Vue:
 
 - **View**: generated `.vue` components in `seldon/`, plus editor chrome views. A View binds named values and renders element tags. It computes nothing.
 - **ViewModel**: `use-*.ts` composables and Pinia stores. Some controller components act as view-models. A view-model owns UI state, derives display values, wires commands, and assembles the props the View binds to.
@@ -107,11 +107,11 @@ The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
 - You may use, copy, and modify this software for **noncommercial purposes** such as research, education, and personal projects.
 - Commercial use is **not permitted** under this license.
-- See [license/noncommercial/LICENSE.md](../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
+- See [license/noncommercial/LICENSE.md](../../../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
 
 ### 2. Commercial license
 
-Commercial use covers proprietary software, SaaS platforms, internal business tools, and use as training data for AI or LLMs. You need a **commercial license** for these. See [COMMERCIAL-LICENSE.md](../../license/commercial/COMMERCIAL-LICENSE.md).
+Commercial use covers proprietary software, SaaS platforms, internal business tools, and use as training data for AI or LLMs. You need a **commercial license** for these. See [COMMERCIAL-LICENSE.md](../../../../license/commercial/COMMERCIAL-LICENSE.md).
 
 ### 3. Obtaining a commercial license
 
@@ -131,10 +131,10 @@ Contact:
 
 ## Links
 
-- [Shared editor](../editor/README.md)
-- [React editor](../editor-react/README.md)
-- [Core](../core/README.md)
-- [Factory](../factory/README.md)
+- [Shared editor](../../shared/README.md)
+- [React editor](../react/README.md)
+- [Core](../../../core/README.md)
+- [Factory](../../../factory/README.md)
 - [Official Website](https://seldon.digital)
 
 ---

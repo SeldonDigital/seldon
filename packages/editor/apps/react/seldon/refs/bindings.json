@@ -2,8 +2,313 @@
   "version": 1,
   "mode": "full",
   "framework": "react",
-  "scannedFiles": 273,
+  "scannedFiles": 272,
   "refs": {
+    "boardState": [
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 128,
+        "conditional": false,
+        "expression": "{ onClick: openStateMenu, disabled: stateMenu.disabled, \"data-testid\": \"board-state-trigger\", }",
+        "inputs": [
+          {
+            "name": "openStateMenu",
+            "declaredAt": {
+              "line": 103,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "stateMenu",
+            "declaredAt": {
+              "line": 100,
+              "kind": "const",
+              "via": "useBoardStateMenu"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openStateMenu",
+            "inputs": [
+              {
+                "name": "openStateMenu",
+                "declaredAt": {
+                  "line": 103,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "stateMenu.disabled",
+            "inputs": [
+              {
+                "name": "stateMenu",
+                "declaredAt": {
+                  "line": 100,
+                  "kind": "const",
+                  "via": "useBoardStateMenu"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"board-state-trigger\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 128,
+        "conditional": false,
+        "expression": "{ onClick: openStateMenu, disabled: stateMenu.disabled, \"data-testid\": \"board-state-trigger\", }",
+        "inputs": [
+          {
+            "name": "openStateMenu",
+            "declaredAt": {
+              "line": 103,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "stateMenu",
+            "declaredAt": {
+              "line": 100,
+              "kind": "const",
+              "via": "useBoardStateMenu"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openStateMenu",
+            "inputs": [
+              {
+                "name": "openStateMenu",
+                "declaredAt": {
+                  "line": 103,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "stateMenu.disabled",
+            "inputs": [
+              {
+                "name": "stateMenu",
+                "declaredAt": {
+                  "line": 100,
+                  "kind": "const",
+                  "via": "useBoardStateMenu"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"board-state-trigger\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "boardStateLabel": [
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 133,
+        "conditional": false,
+        "expression": "{ children: stateMenu.label }",
+        "inputs": [
+          {
+            "name": "stateMenu",
+            "declaredAt": {
+              "line": 100,
+              "kind": "const",
+              "via": "useBoardStateMenu"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "stateMenu.label",
+            "inputs": [
+              {
+                "name": "stateMenu",
+                "declaredAt": {
+                  "line": 100,
+                  "kind": "const",
+                  "via": "useBoardStateMenu"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 133,
+        "conditional": false,
+        "expression": "{ children: stateMenu.label }",
+        "inputs": [
+          {
+            "name": "stateMenu",
+            "declaredAt": {
+              "line": 100,
+              "kind": "const",
+              "via": "useBoardStateMenu"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "stateMenu.label",
+            "inputs": [
+              {
+                "name": "stateMenu",
+                "declaredAt": {
+                  "line": 100,
+                  "kind": "const",
+                  "via": "useBoardStateMenu"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "catalogIcon": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "CatalogRow",
+        "line": 232,
+        "conditional": false,
+        "expression": "{ icon: item.icon as IconProps[\"icon\"] }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 35,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "IconProps",
+            "declaredAt": {
+              "line": 15,
+              "kind": "import",
+              "module": "@seldon/components/primitives/Icon"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "item.icon as IconProps[\"icon\"]",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 35,
+                  "kind": "parameter"
+                }
+              },
+              {
+                "name": "IconProps",
+                "declaredAt": {
+                  "line": 15,
+                  "kind": "import",
+                  "module": "@seldon/components/primitives/Icon"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "catalogLabel": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "CatalogRow",
+        "line": 233,
+        "conditional": false,
+        "expression": "{ children: item.name }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 35,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.name",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 35,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "catalogVariant": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "CatalogRow",
+        "line": 234,
+        "conditional": false,
+        "expression": "{ children: item.description }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 35,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.description",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 35,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "createComponentContainer": [
       {
         "file": "app/dialogs/create-component/CreateComponentController.tsx",
@@ -492,7 +797,7 @@
       {
         "file": "app/dialogs/PanelDialogController.tsx",
         "component": "PanelDialogController",
-        "line": 169,
+        "line": 174,
         "conditional": false,
         "expression": "{ onClick: onClose }",
         "inputs": [
@@ -556,7 +861,7 @@
       {
         "file": "app/dialogs/PanelDialogController.tsx",
         "component": "PanelDialogController",
-        "line": 170,
+        "line": 175,
         "conditional": false,
         "expression": "{ onClick: handleConfirm }",
         "inputs": [
@@ -644,14 +949,14 @@
       {
         "file": "app/dialogs/PanelDialogController.tsx",
         "component": "PanelDialogController",
-        "line": 168,
+        "line": 173,
         "conditional": false,
         "expression": "{ style: styles.content, children: content }",
         "inputs": [
           {
             "name": "styles",
             "declaredAt": {
-              "line": 243,
+              "line": 252,
               "kind": "const"
             }
           },
@@ -672,7 +977,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 243,
+                  "line": 252,
                   "kind": "const"
                 }
               }
@@ -688,6 +993,223 @@
                   "line": 122,
                   "kind": "const",
                   "via": "useMemo"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "dialogSearch": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "PanelDialogController",
+        "line": 163,
+        "conditional": false,
+        "expression": "{ value: query, onChange: handleQueryChange, placeholder: \"Search...\", autoFocus: true, }",
+        "inputs": [
+          {
+            "name": "query",
+            "declaredAt": {
+              "line": 34,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "handleQueryChange",
+            "declaredAt": {
+              "line": 115,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "query",
+            "inputs": [
+              {
+                "name": "query",
+                "declaredAt": {
+                  "line": 34,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onChange",
+            "expression": "handleQueryChange",
+            "inputs": [
+              {
+                "name": "handleQueryChange",
+                "declaredAt": {
+                  "line": 115,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "placeholder",
+            "expression": "\"Search...\"",
+            "inputs": []
+          },
+          {
+            "key": "autoFocus",
+            "expression": "true",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "dialogSearchClear": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "PanelDialogController",
+        "line": 169,
+        "conditional": false,
+        "expression": "{ onClick: handleClearQuery, style: query ? undefined : styles.hidden, }",
+        "inputs": [
+          {
+            "name": "handleClearQuery",
+            "declaredAt": {
+              "line": 120,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "query",
+            "declaredAt": {
+              "line": 34,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 252,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "handleClearQuery",
+            "inputs": [
+              {
+                "name": "handleClearQuery",
+                "declaredAt": {
+                  "line": 120,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "query ? undefined : styles.hidden",
+            "inputs": [
+              {
+                "name": "query",
+                "declaredAt": {
+                  "line": 34,
+                  "kind": "parameter"
+                }
+              },
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 252,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "dialogSearchField": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "PanelDialogController",
+        "line": 162,
+        "conditional": false,
+        "expression": "{ onPointerDown: stopDrag }",
+        "inputs": [
+          {
+            "name": "stopDrag",
+            "declaredAt": {
+              "line": 84,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "stopDrag",
+            "inputs": [
+              {
+                "name": "stopDrag",
+                "declaredAt": {
+                  "line": 84,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "dialogTitle": [
+      {
+        "file": "app/dialogs/image-upload/ImageUploadController.tsx",
+        "component": "ImageUploadDialog",
+        "line": 126,
+        "conditional": false,
+        "expression": "{ children: \"Choose image\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "children",
+            "expression": "\"Choose image\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "PanelDialogController",
+        "line": 161,
+        "conditional": false,
+        "expression": "{ children: title }",
+        "inputs": [
+          {
+            "name": "title",
+            "declaredAt": {
+              "line": 47,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "title",
+            "inputs": [
+              {
+                "name": "title",
+                "declaredAt": {
+                  "line": 47,
+                  "kind": "parameter"
                 }
               }
             ]
@@ -1936,18 +2458,1582 @@
         ]
       }
     ],
+    "hariBar": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 315,
+        "conditional": false,
+        "expression": "{ onPointerDown: startDrag, style: styles.dragHandle }",
+        "inputs": [
+          {
+            "name": "startDrag",
+            "declaredAt": {
+              "line": 242,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 460,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onPointerDown",
+            "expression": "startDrag",
+            "inputs": [
+              {
+                "name": "startDrag",
+                "declaredAt": {
+                  "line": 242,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "styles.dragHandle",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 460,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariClamp": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 330,
+        "conditional": false,
+        "expression": "{ onClick: toggleNoThink, className: noThink ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": noThink, title: \"Clamp Thinking\", \"data-testid\": \"ai-chat-clamp\"...",
+        "inputs": [
+          {
+            "name": "toggleNoThink",
+            "declaredAt": {
+              "line": 149,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "noThink",
+            "declaredAt": {
+              "line": 149,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleNoThink",
+            "inputs": [
+              {
+                "name": "toggleNoThink",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "noThink ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "noThink",
+            "inputs": [
+              {
+                "name": "noThink",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clamp Thinking\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-clamp\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariClose": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 342,
+        "conditional": false,
+        "expression": "{ onClick: close }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 71,
+              "kind": "const",
+              "via": "useHari"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 71,
+                  "kind": "const",
+                  "via": "useHari"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariErrorRetry": [
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "errorBlock",
+        "line": 244,
+        "conditional": false,
+        "expression": "retry",
+        "inputs": [
+          {
+            "name": "retry",
+            "declaredAt": {
+              "line": 241,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "hariErrorText": [
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "errorBlock",
+        "line": 243,
+        "conditional": false,
+        "expression": "{ children: text }",
+        "inputs": [
+          {
+            "name": "text",
+            "declaredAt": {
+              "line": 100,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "text",
+            "inputs": [
+              {
+                "name": "text",
+                "declaredAt": {
+                  "line": 100,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariInput": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 350,
+        "conditional": false,
+        "expression": "{ value: draft, onChange: onDraftChange, onKeyDown: handleKeyDown, placeholder: COMPOSER_PLACEHOLDER, autoFocus: true, }",
+        "inputs": [
+          {
+            "name": "draft",
+            "declaredAt": {
+              "line": 173,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "onDraftChange",
+            "declaredAt": {
+              "line": 228,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "handleKeyDown",
+            "declaredAt": {
+              "line": 233,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "COMPOSER_PLACEHOLDER",
+            "declaredAt": {
+              "line": 38,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "draft",
+            "inputs": [
+              {
+                "name": "draft",
+                "declaredAt": {
+                  "line": 173,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onChange",
+            "expression": "onDraftChange",
+            "inputs": [
+              {
+                "name": "onDraftChange",
+                "declaredAt": {
+                  "line": 228,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onKeyDown",
+            "expression": "handleKeyDown",
+            "inputs": [
+              {
+                "name": "handleKeyDown",
+                "declaredAt": {
+                  "line": 233,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "placeholder",
+            "expression": "COMPOSER_PLACEHOLDER",
+            "inputs": [
+              {
+                "name": "COMPOSER_PLACEHOLDER",
+                "declaredAt": {
+                  "line": 38,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "autoFocus",
+            "expression": "true",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariModel": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 358,
+        "conditional": false,
+        "expression": "{ onClick: openModelMenu, disabled: controlsDisabled, \"data-testid\": \"ai-chat-model\", }",
+        "inputs": [
+          {
+            "name": "openModelMenu",
+            "declaredAt": {
+              "line": 244,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "controlsDisabled",
+            "declaredAt": {
+              "line": 182,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openModelMenu",
+            "inputs": [
+              {
+                "name": "openModelMenu",
+                "declaredAt": {
+                  "line": 244,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "controlsDisabled",
+            "inputs": [
+              {
+                "name": "controlsDisabled",
+                "declaredAt": {
+                  "line": 182,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-model\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariModelLabel": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 363,
+        "conditional": false,
+        "expression": "{ children: modelButtonLabel }",
+        "inputs": [
+          {
+            "name": "modelButtonLabel",
+            "declaredAt": {
+              "line": 185,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "modelButtonLabel",
+            "inputs": [
+              {
+                "name": "modelButtonLabel",
+                "declaredAt": {
+                  "line": 185,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariOutcome": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 316,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowOutcome, className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showOutcome, title: \"Show Outcome\", \"data-testid\": \"ai-c...",
+        "inputs": [
+          {
+            "name": "toggleShowOutcome",
+            "declaredAt": {
+              "line": 149,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showOutcome",
+            "declaredAt": {
+              "line": 149,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowOutcome",
+            "inputs": [
+              {
+                "name": "toggleShowOutcome",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showOutcome ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showOutcome",
+            "inputs": [
+              {
+                "name": "showOutcome",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Outcome\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-outcome\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariOutcomeIcon": [
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "outcomeBlock",
+        "line": 203,
+        "conditional": false,
+        "expression": "{ icon: meta.icon }",
+        "inputs": [
+          {
+            "name": "meta",
+            "declaredAt": {
+              "line": 197,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "meta.icon",
+            "inputs": [
+              {
+                "name": "meta",
+                "declaredAt": {
+                  "line": 197,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariOutcomeLabel": [
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "outcomeBlock",
+        "line": 204,
+        "conditional": false,
+        "expression": "{ children: meta.label }",
+        "inputs": [
+          {
+            "name": "meta",
+            "declaredAt": {
+              "line": 197,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "meta.label",
+            "inputs": [
+              {
+                "name": "meta",
+                "declaredAt": {
+                  "line": 197,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariOutcomeText": [
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "outcomeBlock",
+        "line": 205,
+        "conditional": false,
+        "expression": "{ children: detail, style: preWrapStyle }",
+        "inputs": [
+          {
+            "name": "detail",
+            "declaredAt": {
+              "line": 198,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "preWrapStyle",
+            "declaredAt": {
+              "line": 219,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "detail",
+            "inputs": [
+              {
+                "name": "detail",
+                "declaredAt": {
+                  "line": 198,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "preWrapStyle",
+            "inputs": [
+              {
+                "name": "preWrapStyle",
+                "declaredAt": {
+                  "line": 219,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariReasoningBody": [
+      {
+        "file": "app/palettes/hari/HariThinking.tsx",
+        "component": "HariThinking",
+        "line": 43,
+        "conditional": false,
+        "expression": "{ children: text, style: open ? expandedStyle : collapsedStyle }",
+        "inputs": [
+          {
+            "name": "text",
+            "declaredAt": {
+              "line": 25,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "open",
+            "declaredAt": {
+              "line": 26,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "expandedStyle",
+            "declaredAt": {
+              "line": 65,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "collapsedStyle",
+            "declaredAt": {
+              "line": 59,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "text",
+            "inputs": [
+              {
+                "name": "text",
+                "declaredAt": {
+                  "line": 25,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "style",
+            "expression": "open ? expandedStyle : collapsedStyle",
+            "inputs": [
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 26,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              },
+              {
+                "name": "expandedStyle",
+                "declaredAt": {
+                  "line": 65,
+                  "kind": "const"
+                }
+              },
+              {
+                "name": "collapsedStyle",
+                "declaredAt": {
+                  "line": 59,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariReasoningChevron": [
+      {
+        "file": "app/palettes/hari/HariThinking.tsx",
+        "component": "HariThinking",
+        "line": 41,
+        "conditional": false,
+        "expression": "{ icon: chevron }",
+        "inputs": [
+          {
+            "name": "chevron",
+            "declaredAt": {
+              "line": 34,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "chevron",
+            "inputs": [
+              {
+                "name": "chevron",
+                "declaredAt": {
+                  "line": 34,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariReasoningLabel": [
+      {
+        "file": "app/palettes/hari/HariThinking.tsx",
+        "component": "HariThinking",
+        "line": 42,
+        "conditional": false,
+        "expression": "{ children: label }",
+        "inputs": [
+          {
+            "name": "label",
+            "declaredAt": {
+              "line": 28,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "label",
+            "inputs": [
+              {
+                "name": "label",
+                "declaredAt": {
+                  "line": 28,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariReasoningToggle": [
+      {
+        "file": "app/palettes/hari/HariThinking.tsx",
+        "component": "HariThinking",
+        "line": 36,
+        "conditional": false,
+        "expression": "{ onClick: () => setOpen(!open), \"aria-expanded\": open, \"aria-label\": open ? \"Hide reasoning\" : \"Show reasoning\", }",
+        "inputs": [
+          {
+            "name": "setOpen",
+            "declaredAt": {
+              "line": 26,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "open",
+            "declaredAt": {
+              "line": 26,
+              "kind": "const",
+              "via": "useState"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "() => setOpen(!open)",
+            "inputs": [
+              {
+                "name": "setOpen",
+                "declaredAt": {
+                  "line": 26,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              },
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 26,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-expanded",
+            "expression": "open",
+            "inputs": [
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 26,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-label",
+            "expression": "open ? \"Hide reasoning\" : \"Show reasoning\"",
+            "inputs": [
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 26,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariReset": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 337,
+        "conditional": false,
+        "expression": "{ onClick: onReset, title: \"Clear\", \"data-testid\": \"ai-chat-reset\", }",
+        "inputs": [
+          {
+            "name": "onReset",
+            "declaredAt": {
+              "line": 257,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "onReset",
+            "inputs": [
+              {
+                "name": "onReset",
+                "declaredAt": {
+                  "line": 257,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Clear\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-reset\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariSelectionLabel": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 370,
+        "conditional": false,
+        "expression": "{ children: SCOPE_LABELS[scope] }",
+        "inputs": [
+          {
+            "name": "SCOPE_LABELS",
+            "declaredAt": {
+              "line": 54,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "scope",
+            "declaredAt": {
+              "line": 147,
+              "kind": "const",
+              "via": "useSelectionScope"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "SCOPE_LABELS[scope]",
+            "inputs": [
+              {
+                "name": "SCOPE_LABELS",
+                "declaredAt": {
+                  "line": 54,
+                  "kind": "const"
+                }
+              },
+              {
+                "name": "scope",
+                "declaredAt": {
+                  "line": 147,
+                  "kind": "const",
+                  "via": "useSelectionScope"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariSend": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 371,
+        "conditional": false,
+        "expression": "{ onClick: isPending ? stop : submit }",
+        "inputs": [
+          {
+            "name": "isPending",
+            "declaredAt": {
+              "line": 181,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "stop",
+            "declaredAt": {
+              "line": 71,
+              "kind": "const",
+              "via": "useHari"
+            }
+          },
+          {
+            "name": "submit",
+            "declaredAt": {
+              "line": 198,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "isPending ? stop : submit",
+            "inputs": [
+              {
+                "name": "isPending",
+                "declaredAt": {
+                  "line": 181,
+                  "kind": "const"
+                }
+              },
+              {
+                "name": "stop",
+                "declaredAt": {
+                  "line": 71,
+                  "kind": "const",
+                  "via": "useHari"
+                }
+              },
+              {
+                "name": "submit",
+                "declaredAt": {
+                  "line": 198,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariSendIcon": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 373,
+        "conditional": false,
+        "expression": "isPending ? { icon: \"material-stop\" } : {}",
+        "inputs": [
+          {
+            "name": "isPending",
+            "declaredAt": {
+              "line": 181,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "hariStatusLabel": [
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "statusBlock",
+        "line": 81,
+        "conditional": false,
+        "expression": "{ children: \"Working...\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "children",
+            "expression": "\"Working...\"",
+            "inputs": []
+          }
+        ]
+      },
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "stoppedBlock",
+        "line": 94,
+        "conditional": false,
+        "expression": "{ children: \"Stopped.\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "children",
+            "expression": "\"Stopped.\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariThinking": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 364,
+        "conditional": false,
+        "expression": "{ onClick: openThinkingMenu, disabled: thinkingDisabled, \"data-testid\": \"ai-chat-thinking\", }",
+        "inputs": [
+          {
+            "name": "openThinkingMenu",
+            "declaredAt": {
+              "line": 249,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          },
+          {
+            "name": "thinkingDisabled",
+            "declaredAt": {
+              "line": 189,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "openThinkingMenu",
+            "inputs": [
+              {
+                "name": "openThinkingMenu",
+                "declaredAt": {
+                  "line": 249,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          },
+          {
+            "key": "disabled",
+            "expression": "thinkingDisabled",
+            "inputs": [
+              {
+                "name": "thinkingDisabled",
+                "declaredAt": {
+                  "line": 189,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-thinking\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariThinkingLabel": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 369,
+        "conditional": false,
+        "expression": "{ children: thinkingButtonLabel }",
+        "inputs": [
+          {
+            "name": "thinkingButtonLabel",
+            "declaredAt": {
+              "line": 194,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "thinkingButtonLabel",
+            "inputs": [
+              {
+                "name": "thinkingButtonLabel",
+                "declaredAt": {
+                  "line": 194,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariToolIcon": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 42,
+        "conditional": false,
+        "expression": "{ icon: tool.icon }",
+        "inputs": [
+          {
+            "name": "tool",
+            "declaredAt": {
+              "line": 40,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "tool.icon",
+            "inputs": [
+              {
+                "name": "tool",
+                "declaredAt": {
+                  "line": 40,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariToolText": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 43,
+        "conditional": false,
+        "expression": "{ children: tool.text }",
+        "inputs": [
+          {
+            "name": "tool",
+            "declaredAt": {
+              "line": 40,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "tool.text",
+            "inputs": [
+              {
+                "name": "tool",
+                "declaredAt": {
+                  "line": 40,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariTools": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 323,
+        "conditional": false,
+        "expression": "{ onClick: toggleShowTools, className: showTools ? ACTIVE_TOGGLE_CLASS : undefined, \"aria-pressed\": showTools, title: \"Show Tools\", \"data-testid\": \"ai-chat-tool...",
+        "inputs": [
+          {
+            "name": "toggleShowTools",
+            "declaredAt": {
+              "line": 149,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "showTools",
+            "declaredAt": {
+              "line": 149,
+              "kind": "const",
+              "via": "useDebugMode"
+            }
+          },
+          {
+            "name": "ACTIVE_TOGGLE_CLASS",
+            "declaredAt": {
+              "line": 36,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "toggleShowTools",
+            "inputs": [
+              {
+                "name": "toggleShowTools",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "className",
+            "expression": "showTools ? ACTIVE_TOGGLE_CLASS : undefined",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              },
+              {
+                "name": "ACTIVE_TOGGLE_CLASS",
+                "declaredAt": {
+                  "line": 36,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-pressed",
+            "expression": "showTools",
+            "inputs": [
+              {
+                "name": "showTools",
+                "declaredAt": {
+                  "line": 149,
+                  "kind": "const",
+                  "via": "useDebugMode"
+                }
+              }
+            ]
+          },
+          {
+            "key": "title",
+            "expression": "\"Show Tools\"",
+            "inputs": []
+          },
+          {
+            "key": "data-testid",
+            "expression": "\"ai-chat-tools\"",
+            "inputs": []
+          }
+        ]
+      }
+    ],
+    "hariToolsChevron": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 36,
+        "conditional": false,
+        "expression": "{ icon: chevron }",
+        "inputs": [
+          {
+            "name": "chevron",
+            "declaredAt": {
+              "line": 29,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "chevron",
+            "inputs": [
+              {
+                "name": "chevron",
+                "declaredAt": {
+                  "line": 29,
+                  "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariToolsToggle": [
+      {
+        "file": "app/palettes/hari/HariTools.tsx",
+        "component": "HariTools",
+        "line": 31,
+        "conditional": false,
+        "expression": "{ onClick: () => setOpen(!open), \"aria-expanded\": open, \"aria-label\": open ? \"Hide tools\" : \"Show tools\", }",
+        "inputs": [
+          {
+            "name": "setOpen",
+            "declaredAt": {
+              "line": 27,
+              "kind": "const",
+              "via": "useState"
+            }
+          },
+          {
+            "name": "open",
+            "declaredAt": {
+              "line": 27,
+              "kind": "const",
+              "via": "useState"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "() => setOpen(!open)",
+            "inputs": [
+              {
+                "name": "setOpen",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              },
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-expanded",
+            "expression": "open",
+            "inputs": [
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          },
+          {
+            "key": "aria-label",
+            "expression": "open ? \"Hide tools\" : \"Show tools\"",
+            "inputs": [
+              {
+                "name": "open",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "useState"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariTurns": [
+      {
+        "file": "app/palettes/hari/HariController.tsx",
+        "component": "Hari",
+        "line": 344,
+        "conditional": false,
+        "expression": "{ children: transcript, ref: transcriptRef, onScroll: onTranscriptScroll, }",
+        "inputs": [
+          {
+            "name": "transcript",
+            "declaredAt": {
+              "line": 305,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          },
+          {
+            "name": "transcriptRef",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const",
+              "via": "useRef"
+            }
+          },
+          {
+            "name": "onTranscriptScroll",
+            "declaredAt": {
+              "line": 210,
+              "kind": "const",
+              "via": "useCallback"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "transcript",
+            "inputs": [
+              {
+                "name": "transcript",
+                "declaredAt": {
+                  "line": 305,
+                  "kind": "const",
+                  "via": "useMemo"
+                }
+              }
+            ]
+          },
+          {
+            "key": "ref",
+            "expression": "transcriptRef",
+            "inputs": [
+              {
+                "name": "transcriptRef",
+                "declaredAt": {
+                  "line": 178,
+                  "kind": "const",
+                  "via": "useRef"
+                }
+              }
+            ]
+          },
+          {
+            "key": "onScroll",
+            "expression": "onTranscriptScroll",
+            "inputs": [
+              {
+                "name": "onTranscriptScroll",
+                "declaredAt": {
+                  "line": 210,
+                  "kind": "const",
+                  "via": "useCallback"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "hariUserText": [
+      {
+        "file": "app/palettes/hari/HariTranscript.tsx",
+        "component": "userBlock",
+        "line": 75,
+        "conditional": false,
+        "expression": "{ children: turn.prompt }",
+        "inputs": [
+          {
+            "name": "turn",
+            "declaredAt": {
+              "line": 74,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "turn.prompt",
+            "inputs": [
+              {
+                "name": "turn",
+                "declaredAt": {
+                  "line": 74,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "logo": [
       {
         "file": "app/topbar/TopbarController.tsx",
         "component": "TopbarController",
-        "line": 134,
+        "line": 264,
         "conditional": false,
         "expression": "{ onClick: handleLogoClick }",
         "inputs": [
           {
             "name": "handleLogoClick",
             "declaredAt": {
-              "line": 126,
+              "line": 132,
               "kind": "const",
               "via": "useCallback"
             }
@@ -1961,7 +4047,7 @@
               {
                 "name": "handleLogoClick",
                 "declaredAt": {
-                  "line": 126,
+                  "line": 132,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -1971,11 +4057,387 @@
         ]
       }
     ],
+    "logoMark": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 265,
+        "conditional": false,
+        "expression": "{ ...logoProps }",
+        "inputs": [
+          {
+            "name": "logoProps",
+            "declaredAt": {
+              "line": 335,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "logoWordmark": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 266,
+        "conditional": false,
+        "expression": "{ ...wordmarkProps }",
+        "inputs": [
+          {
+            "name": "wordmarkProps",
+            "declaredAt": {
+              "line": 340,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuComponent": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 272,
+        "conditional": false,
+        "expression": "{ ...triggers.component?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuComponentLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 273,
+        "conditional": false,
+        "expression": "{ ...triggers.component?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuDev": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 278,
+        "conditional": false,
+        "expression": "{ ...triggers.dev?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuDevLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 279,
+        "conditional": false,
+        "expression": "{ ...triggers.dev?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuEdit": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 270,
+        "conditional": false,
+        "expression": "{ ...triggers.edit?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuEditLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 271,
+        "conditional": false,
+        "expression": "{ ...triggers.edit?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuFile": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 268,
+        "conditional": false,
+        "expression": "{ ...triggers.file?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuFileLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 269,
+        "conditional": false,
+        "expression": "{ ...triggers.file?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuHari": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 274,
+        "conditional": false,
+        "expression": "{ ...triggers.hari?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuHariLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 275,
+        "conditional": false,
+        "expression": "{ ...triggers.hari?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuMode": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 283,
+        "conditional": false,
+        "expression": "{ ...modeButton }",
+        "inputs": [
+          {
+            "name": "modeButton",
+            "declaredAt": {
+              "line": 234,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuModeLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 284,
+        "conditional": false,
+        "expression": "{ ...modeLabel }",
+        "inputs": [
+          {
+            "name": "modeLabel",
+            "declaredAt": {
+              "line": 239,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuTheme": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 281,
+        "conditional": false,
+        "expression": "{ ...themeButton }",
+        "inputs": [
+          {
+            "name": "themeButton",
+            "declaredAt": {
+              "line": 212,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuThemeLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 282,
+        "conditional": false,
+        "expression": "{ ...themeLabel }",
+        "inputs": [
+          {
+            "name": "themeLabel",
+            "declaredAt": {
+              "line": 217,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuView": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 276,
+        "conditional": false,
+        "expression": "{ ...triggers.view?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuViewLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 277,
+        "conditional": false,
+        "expression": "{ ...triggers.view?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
     "nodeActions": [
+      {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 193,
+        "conditional": false,
+        "expression": "{ ...actionsMenu.buttonIconic }",
+        "inputs": [
+          {
+            "name": "actionsMenu",
+            "declaredAt": {
+              "line": 107,
+              "kind": "const",
+              "via": "useRowActionsMenu"
+            }
+          }
+        ],
+        "props": []
+      },
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 248,
+        "line": 280,
         "conditional": false,
         "expression": "{ ...actionsMenu.buttonIconic }",
         "inputs": [
@@ -1993,7 +4455,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 91,
+        "line": 96,
         "conditional": false,
         "expression": "{ ...actionsMenu.buttonIconic }",
         "inputs": [
@@ -2011,9 +4473,27 @@
     ],
     "nodeDisclosure": [
       {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 188,
+        "conditional": false,
+        "expression": "{ ...buttonIconic }",
+        "inputs": [
+          {
+            "name": "buttonIconic",
+            "declaredAt": {
+              "line": 69,
+              "kind": "const",
+              "via": "useRowBoard"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 243,
+        "line": 273,
         "conditional": false,
         "expression": "{ ...buttonIconic }",
         "inputs": [
@@ -2031,9 +4511,26 @@
     ],
     "nodeDisclosureIcon": [
       {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 189,
+        "conditional": false,
+        "expression": "{ ...toggleIcon }",
+        "inputs": [
+          {
+            "name": "toggleIcon",
+            "declaredAt": {
+              "line": 168,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 244,
+        "line": 274,
         "conditional": false,
         "expression": "mergeStateProps(toggleIcon, disabledRef)",
         "inputs": [
@@ -2066,7 +4563,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 88,
+        "line": 92,
         "conditional": false,
         "expression": "{ style: { opacity: 0 } }",
         "inputs": [],
@@ -2083,7 +4580,7 @@
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 247,
+        "line": 278,
         "conditional": false,
         "expression": "{ ...displayPicker.buttonProps }",
         "inputs": [
@@ -2099,11 +4596,151 @@
         "props": []
       }
     ],
-    "nodeIcon": [
+    "nodeDisplayIcon": [
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 245,
+        "line": 279,
+        "conditional": false,
+        "expression": "{ ...displayIcon }",
+        "inputs": [
+          {
+            "name": "displayIcon",
+            "declaredAt": {
+              "line": 74,
+              "kind": "const",
+              "via": "useRowNode"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "nodeField": [
+      {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 190,
+        "conditional": false,
+        "expression": "{ ...comboboxField }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 182,
+              "kind": "const",
+              "via": "buildFieldStateProps"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/objects/NodeController.tsx",
+        "component": "NodeInner",
+        "line": 275,
+        "conditional": false,
+        "expression": "{ ...comboboxField }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 259,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/objects/ResourceEntry.tsx",
+        "component": "ResourceEntry",
+        "line": 93,
+        "conditional": false,
+        "expression": "{ ...comboboxField }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 84,
+              "kind": "const",
+              "via": "buildFieldStateProps"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "nodeIcon": [
+      {
+        "file": "app/sidebars/DragNodePreview.tsx",
+        "component": "DragNodePreview",
+        "line": 24,
+        "conditional": false,
+        "expression": "{ icon }",
+        "inputs": [
+          {
+            "name": "icon",
+            "declaredAt": {
+              "line": 22,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "icon",
+            "inputs": [
+              {
+                "name": "icon",
+                "declaredAt": {
+                  "line": 22,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 191,
+        "conditional": false,
+        "expression": "mergeStateProps(icon2, activatedRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "icon2",
+            "declaredAt": {
+              "line": 69,
+              "kind": "const",
+              "via": "useRowBoard"
+            }
+          },
+          {
+            "name": "activatedRef",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const",
+              "via": "buildActivatedRefProps"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/objects/NodeController.tsx",
+        "component": "NodeInner",
+        "line": 276,
         "conditional": false,
         "expression": "mergeStateProps(icon2, disabledRef, dimRef, nodeTypeStyle, invalidRef)",
         "inputs": [
@@ -2159,7 +4796,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 89,
+        "line": 94,
         "conditional": false,
         "expression": "{ ...icon2 }",
         "inputs": [
@@ -2175,6 +4812,42 @@
       }
     ],
     "nodeLabel": [
+      {
+        "file": "app/sidebars/DragNodePreview.tsx",
+        "component": "DragNodePreview",
+        "line": 25,
+        "conditional": false,
+        "expression": "{ value: label, readOnly: true }",
+        "inputs": [
+          {
+            "name": "label",
+            "declaredAt": {
+              "line": 22,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "label",
+            "inputs": [
+              {
+                "name": "label",
+                "declaredAt": {
+                  "line": 22,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "readOnly",
+            "expression": "true",
+            "inputs": []
+          }
+        ]
+      },
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardEmpty",
@@ -2214,43 +4887,41 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 47,
+        "line": 192,
         "conditional": false,
-        "expression": "{ value: label, readOnly: true }",
+        "expression": "mergeStateProps(nameInput, activatedRef)",
         "inputs": [
           {
-            "name": "label",
+            "name": "mergeStateProps",
             "declaredAt": {
-              "line": 46,
-              "kind": "parameter"
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "nameInput",
+            "declaredAt": {
+              "line": 127,
+              "kind": "const",
+              "via": "useRenameInput"
+            }
+          },
+          {
+            "name": "activatedRef",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const",
+              "via": "buildActivatedRefProps"
             }
           }
         ],
-        "props": [
-          {
-            "key": "value",
-            "expression": "label",
-            "inputs": [
-              {
-                "name": "label",
-                "declaredAt": {
-                  "line": 46,
-                  "kind": "parameter"
-                }
-              }
-            ]
-          },
-          {
-            "key": "readOnly",
-            "expression": "true",
-            "inputs": []
-          }
-        ]
+        "props": []
       },
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
-        "line": 246,
+        "line": 277,
         "conditional": false,
         "expression": "mergeStateProps(nodeLabel, disabledRef, dimRef, nodeTypeStyle, invalidRef)",
         "inputs": [
@@ -2305,7 +4976,7 @@
       {
         "file": "app/sidebars/objects/ResourceEntry.tsx",
         "component": "ResourceEntry",
-        "line": 90,
+        "line": 95,
         "conditional": false,
         "expression": "{ ...nameInput }",
         "inputs": [
@@ -2321,25 +4992,25 @@
         "props": []
       }
     ],
-    "objectsContainer": [
+    "objectsTree": [
       {
         "file": "app/sidebars/objects/ObjectsSidebar.tsx",
         "component": "ObjectsSidebar",
-        "line": 166,
+        "line": 175,
         "conditional": false,
         "expression": "{ style: styles.frame, children: treeChildren, }",
         "inputs": [
           {
             "name": "styles",
             "declaredAt": {
-              "line": 207,
+              "line": 214,
               "kind": "const"
             }
           },
           {
             "name": "treeChildren",
             "declaredAt": {
-              "line": 150,
+              "line": 151,
               "kind": "const"
             }
           }
@@ -2352,7 +5023,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 207,
+                  "line": 214,
                   "kind": "const"
                 }
               }
@@ -2365,7 +5036,7 @@
               {
                 "name": "treeChildren",
                 "declaredAt": {
-                  "line": 150,
+                  "line": 151,
                   "kind": "const"
                 }
               }
@@ -2374,25 +5045,147 @@
         ]
       }
     ],
-    "propertiesContainer": [
+    "objectsViewComponents": [
+      {
+        "file": "app/sidebars/objects/ObjectsSidebar.tsx",
+        "component": "ObjectsSidebar",
+        "line": 173,
+        "conditional": false,
+        "expression": "{ ...componentsToggle }",
+        "inputs": [
+          {
+            "name": "componentsToggle",
+            "declaredAt": {
+              "line": 134,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "objectsViewResources": [
+      {
+        "file": "app/sidebars/objects/ObjectsSidebar.tsx",
+        "component": "ObjectsSidebar",
+        "line": 174,
+        "conditional": false,
+        "expression": "{ ...resourcesToggle }",
+        "inputs": [
+          {
+            "name": "resourcesToggle",
+            "declaredAt": {
+              "line": 140,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "optionIcon": [
+      {
+        "file": "app/menus/ComboboxListbox.tsx",
+        "component": "renderOption",
+        "line": 128,
+        "conditional": false,
+        "expression": "{ icon: icon.icon as IconProps[\"icon\"] }",
+        "inputs": [
+          {
+            "name": "icon",
+            "declaredAt": {
+              "line": 103,
+              "kind": "const",
+              "via": "resolveIcon"
+            }
+          },
+          {
+            "name": "IconProps",
+            "declaredAt": {
+              "line": 23,
+              "kind": "import",
+              "module": "@seldon/components/primitives/Icon"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "icon.icon as IconProps[\"icon\"]",
+            "inputs": [
+              {
+                "name": "icon",
+                "declaredAt": {
+                  "line": 103,
+                  "kind": "const",
+                  "via": "resolveIcon"
+                }
+              },
+              {
+                "name": "IconProps",
+                "declaredAt": {
+                  "line": 23,
+                  "kind": "import",
+                  "module": "@seldon/components/primitives/Icon"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "optionLabel": [
+      {
+        "file": "app/menus/ComboboxListbox.tsx",
+        "component": "renderOption",
+        "line": 129,
+        "conditional": false,
+        "expression": "{ children: option.name }",
+        "inputs": [
+          {
+            "name": "option",
+            "declaredAt": {
+              "line": 41,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "option.name",
+            "inputs": [
+              {
+                "name": "option",
+                "declaredAt": {
+                  "line": 41,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "propertiesTree": [
       {
         "file": "app/sidebars/properties/PropertiesSidebar.tsx",
         "component": "PropertiesSidebar",
-        "line": 143,
+        "line": 152,
         "conditional": false,
         "expression": "{ style: styles.frame, children: <PropertiesTree {...deferredState.treeProps} sections={sections} />, }",
         "inputs": [
           {
             "name": "styles",
             "declaredAt": {
-              "line": 503,
+              "line": 509,
               "kind": "const"
             }
           },
           {
             "name": "PropertiesTree",
             "declaredAt": {
-              "line": 170,
+              "line": 176,
               "kind": "function"
             }
           },
@@ -2421,7 +5214,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 503,
+                  "line": 509,
                   "kind": "const"
                 }
               }
@@ -2434,7 +5227,90 @@
               {
                 "name": "PropertiesTree",
                 "declaredAt": {
-                  "line": 170,
+                  "line": 176,
+                  "kind": "function"
+                }
+              },
+              {
+                "name": "deferredState",
+                "declaredAt": {
+                  "line": 84,
+                  "kind": "const",
+                  "via": "useDeferredValue"
+                }
+              },
+              {
+                "name": "sections",
+                "declaredAt": {
+                  "line": 89,
+                  "kind": "const",
+                  "via": "useMemo"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 152,
+        "conditional": false,
+        "expression": "{ style: styles.frame, children: <PropertiesTree {...deferredState.treeProps} sections={sections} />, }",
+        "inputs": [
+          {
+            "name": "styles",
+            "declaredAt": {
+              "line": 509,
+              "kind": "const"
+            }
+          },
+          {
+            "name": "PropertiesTree",
+            "declaredAt": {
+              "line": 176,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "deferredState",
+            "declaredAt": {
+              "line": 84,
+              "kind": "const",
+              "via": "useDeferredValue"
+            }
+          },
+          {
+            "name": "sections",
+            "declaredAt": {
+              "line": 89,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "styles.frame",
+            "inputs": [
+              {
+                "name": "styles",
+                "declaredAt": {
+                  "line": 509,
+                  "kind": "const"
+                }
+              }
+            ]
+          },
+          {
+            "key": "children",
+            "expression": "<PropertiesTree {...deferredState.treeProps} sections={sections} />",
+            "inputs": [
+              {
+                "name": "PropertiesTree",
+                "declaredAt": {
+                  "line": 176,
                   "kind": "function"
                 }
               },
@@ -2463,7 +5339,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 144,
+        "line": 166,
         "conditional": false,
         "expression": "{ ...optionsMenu.buttonIconic }",
         "inputs": [
@@ -2483,7 +5359,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 132,
+        "line": 152,
         "conditional": false,
         "expression": "{ ...listItemProps.buttonIconic }",
         "inputs": [
@@ -2502,7 +5378,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 133,
+        "line": 153,
         "conditional": false,
         "expression": "{ ...listItemProps.icon }",
         "inputs": [
@@ -2517,11 +5393,125 @@
         "props": []
       }
     ],
+    "propertyFilter": [
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 126,
+        "conditional": false,
+        "expression": "{ ...filter.input }",
+        "inputs": [
+          {
+            "name": "filter",
+            "declaredAt": {
+              "line": 75,
+              "kind": "const",
+              "via": "useFilterInput"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 126,
+        "conditional": false,
+        "expression": "{ ...filter.input }",
+        "inputs": [
+          {
+            "name": "filter",
+            "declaredAt": {
+              "line": 75,
+              "kind": "const",
+              "via": "useFilterInput"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyFilterClear": [
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 127,
+        "conditional": false,
+        "expression": "{ ...filter.buttonIconic }",
+        "inputs": [
+          {
+            "name": "filter",
+            "declaredAt": {
+              "line": 75,
+              "kind": "const",
+              "via": "useFilterInput"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 127,
+        "conditional": false,
+        "expression": "{ ...filter.buttonIconic }",
+        "inputs": [
+          {
+            "name": "filter",
+            "declaredAt": {
+              "line": 75,
+              "kind": "const",
+              "via": "useFilterInput"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyFilterField": [
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 125,
+        "conditional": false,
+        "expression": "{ ...filter.comboboxField }",
+        "inputs": [
+          {
+            "name": "filter",
+            "declaredAt": {
+              "line": 75,
+              "kind": "const",
+              "via": "useFilterInput"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
+        "file": "app/sidebars/properties/PropertiesSidebar.tsx",
+        "component": "PropertiesSidebar",
+        "line": 125,
+        "conditional": false,
+        "expression": "{ ...filter.comboboxField }",
+        "inputs": [
+          {
+            "name": "filter",
+            "declaredAt": {
+              "line": 75,
+              "kind": "const",
+              "via": "useFilterInput"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
     "propertyLabel": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 134,
+        "line": 154,
         "conditional": false,
         "expression": "mergeStateProps(view.nameLabelProps, stateRef)",
         "inputs": [
@@ -2736,11 +5726,30 @@
         "props": []
       }
     ],
+    "propertyValueField": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 155,
+        "conditional": false,
+        "expression": "{ ...comboboxField }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 136,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
     "propertyValueIcon": [
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 148,
+        "line": 170,
         "conditional": true,
         "expression": "mergeStateProps(listItemProps.icon2, stateRef)",
         "inputs": [
@@ -2774,7 +5783,7 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 138,
+        "line": 159,
         "conditional": false,
         "expression": "mergeStateProps( view.valueLabelProps, props.property.isLookParent ? { placeholder: \"\" } : undefined, stateRef, )",
         "inputs": [
@@ -2816,9 +5825,28 @@
       {
         "file": "app/sidebars/properties/Property.tsx",
         "component": "PropertyInner",
-        "line": 143,
+        "line": 164,
         "conditional": false,
         "expression": "{ ...listItemProps.buttonIconic2 }",
+        "inputs": [
+          {
+            "name": "listItemProps",
+            "declaredAt": {
+              "line": 34,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "propertyValueMenuIcon": [
+      {
+        "file": "app/sidebars/properties/Property.tsx",
+        "component": "PropertyInner",
+        "line": 165,
+        "conditional": false,
+        "expression": "{ ...listItemProps.icon3 }",
         "inputs": [
           {
             "name": "listItemProps",
@@ -2835,7 +5863,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadge",
-        "line": 75,
+        "line": 71,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -2868,7 +5896,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefSummaryBadge",
-        "line": 130,
+        "line": 122,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -2901,7 +5929,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefOmitted",
-        "line": 159,
+        "line": 151,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -2934,7 +5962,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadgeMeasure",
-        "line": 187,
+        "line": 179,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -2969,14 +5997,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 94,
+        "line": 106,
         "conditional": false,
         "expression": "{ children: conditionLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "conditionLines",
             "declaredAt": {
-              "line": 88,
+              "line": 99,
               "kind": "const",
               "via": "views.map((view) => view.condition).join"
             }
@@ -2984,7 +6012,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -2997,7 +6025,7 @@
               {
                 "name": "conditionLines",
                 "declaredAt": {
-                  "line": 88,
+                  "line": 99,
                   "kind": "const",
                   "via": "views.map((view) => view.condition).join"
                 }
@@ -3011,7 +6039,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
                 }
               }
@@ -3024,21 +6052,21 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 172,
+        "line": 192,
         "conditional": false,
         "expression": "{ children: controller.from.join(\"\\n\"), style: styles.multiline, }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 154,
+              "line": 162,
               "kind": "parameter"
             }
           },
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -3051,7 +6079,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 154,
+                  "line": 162,
                   "kind": "parameter"
                 }
               }
@@ -3064,7 +6092,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
                 }
               }
@@ -3076,15 +6104,15 @@
     "refCardControllerName": [
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
-        "component": "buildControllerRows",
-        "line": 149,
+        "component": "buildNoteRow",
+        "line": 173,
         "conditional": false,
         "expression": "{ children: note }",
         "inputs": [
           {
             "name": "note",
             "declaredAt": {
-              "line": 52,
+              "line": 55,
               "kind": "const",
               "via": "useMemo"
             }
@@ -3098,7 +6126,7 @@
               {
                 "name": "note",
                 "declaredAt": {
-                  "line": 52,
+                  "line": 55,
                   "kind": "const",
                   "via": "useMemo"
                 }
@@ -3110,14 +6138,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 169,
+        "line": 189,
         "conditional": false,
         "expression": "{ children: controller.name }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 154,
+              "line": 162,
               "kind": "parameter"
             }
           }
@@ -3130,7 +6158,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 154,
+                  "line": 162,
                   "kind": "parameter"
                 }
               }
@@ -3143,14 +6171,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 171,
+        "line": 191,
         "conditional": false,
         "expression": "{ children: controller.pass }",
         "inputs": [
           {
             "name": "controller",
             "declaredAt": {
-              "line": 154,
+              "line": 162,
               "kind": "parameter"
             }
           }
@@ -3163,7 +6191,7 @@
               {
                 "name": "controller",
                 "declaredAt": {
-                  "line": 154,
+                  "line": 162,
                   "kind": "parameter"
                 }
               }
@@ -3176,14 +6204,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "joinControllerRow",
-        "line": 170,
+        "line": 190,
         "conditional": false,
         "expression": "{ children: location }",
         "inputs": [
           {
             "name": "location",
             "declaredAt": {
-              "line": 164,
+              "line": 184,
               "kind": "const"
             }
           }
@@ -3196,7 +6224,7 @@
               {
                 "name": "location",
                 "declaredAt": {
-                  "line": 164,
+                  "line": 184,
                   "kind": "const"
                 }
               }
@@ -3209,14 +6237,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 95,
+        "line": 107,
         "conditional": false,
         "expression": "{ children: rows }",
         "inputs": [
           {
             "name": "rows",
             "declaredAt": {
-              "line": 81,
+              "line": 87,
               "kind": "const",
               "via": "useMemo"
             }
@@ -3230,7 +6258,7 @@
               {
                 "name": "rows",
                 "declaredAt": {
-                  "line": 81,
+                  "line": 87,
                   "kind": "const",
                   "via": "useMemo"
                 }
@@ -3244,14 +6272,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 93,
+        "line": 105,
         "conditional": false,
         "expression": "{ children: pathLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "pathLines",
             "declaredAt": {
-              "line": 87,
+              "line": 98,
               "kind": "const",
               "via": "views.map((view) => view.file).join"
             }
@@ -3259,7 +6287,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -3272,7 +6300,7 @@
               {
                 "name": "pathLines",
                 "declaredAt": {
-                  "line": 87,
+                  "line": 98,
                   "kind": "const",
                   "via": "views.map((view) => view.file).join"
                 }
@@ -3286,7 +6314,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
                 }
               }
@@ -3299,22 +6327,21 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
         "component": "RefCardController",
-        "line": 92,
+        "line": 104,
         "conditional": false,
         "expression": "{ children: viewLines, style: styles.multiline }",
         "inputs": [
           {
             "name": "viewLines",
             "declaredAt": {
-              "line": 86,
-              "kind": "const",
-              "via": "views.map((view) => toViewLine(binding.ref, view)).join"
+              "line": 96,
+              "kind": "const"
             }
           },
           {
             "name": "styles",
             "declaredAt": {
-              "line": 195,
+              "line": 215,
               "kind": "const"
             }
           }
@@ -3327,9 +6354,8 @@
               {
                 "name": "viewLines",
                 "declaredAt": {
-                  "line": 86,
-                  "kind": "const",
-                  "via": "views.map((view) => toViewLine(binding.ref, view)).join"
+                  "line": 96,
+                  "kind": "const"
                 }
               }
             ]
@@ -3341,8 +6367,151 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 195,
+                  "line": 215,
                   "kind": "const"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "refChip": [
+      {
+        "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
+        "component": "RefBadge",
+        "line": 69,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(placement.badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "placement",
+            "declaredAt": {
+              "line": 59,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(placement.badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "placement",
+                "declaredAt": {
+                  "line": 59,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
+        "component": "RefSummaryBadge",
+        "line": 120,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(placement.badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "placement",
+            "declaredAt": {
+              "line": 59,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(placement.badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "placement",
+                "declaredAt": {
+                  "line": 59,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
+        "component": "RefOmitted",
+        "line": 149,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "badge",
+            "declaredAt": {
+              "line": 145,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "badge",
+                "declaredAt": {
+                  "line": 145,
+                  "kind": "parameter"
                 }
               }
             ]
@@ -3354,7 +6523,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadge",
-        "line": 74,
+        "line": 70,
         "conditional": false,
         "expression": "{ children: placement.label }",
         "inputs": [
@@ -3385,7 +6554,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefSummaryBadge",
-        "line": 129,
+        "line": 121,
         "conditional": false,
         "expression": "{ children: placement.label }",
         "inputs": [
@@ -3416,14 +6585,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefOmitted",
-        "line": 158,
+        "line": 150,
         "conditional": false,
         "expression": "{ children: `+${count} more` }",
         "inputs": [
           {
             "name": "count",
             "declaredAt": {
-              "line": 153,
+              "line": 145,
               "kind": "parameter"
             }
           }
@@ -3436,7 +6605,7 @@
               {
                 "name": "count",
                 "declaredAt": {
-                  "line": 153,
+                  "line": 145,
                   "kind": "parameter"
                 }
               }
@@ -3447,14 +6616,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadgeMeasure",
-        "line": 186,
+        "line": 178,
         "conditional": false,
         "expression": "{ children: label, style: refBadgeMeasureLabelStyle }",
         "inputs": [
           {
             "name": "label",
             "declaredAt": {
-              "line": 184,
+              "line": 176,
               "kind": "parameter"
             }
           },
@@ -3475,7 +6644,7 @@
               {
                 "name": "label",
                 "declaredAt": {
-                  "line": 184,
+                  "line": 176,
                   "kind": "parameter"
                 }
               }
@@ -3727,6 +6896,64 @@
           }
         ]
       }
+    ],
+    "workspaceField": [
+      {
+        "file": "app/sidebars/objects/ObjectsSidebar.tsx",
+        "component": "ObjectsSidebar",
+        "line": 170,
+        "conditional": false,
+        "expression": "{ ...workspaceField }",
+        "inputs": [
+          {
+            "name": "workspaceField",
+            "declaredAt": {
+              "line": 121,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "workspaceName": [
+      {
+        "file": "app/sidebars/objects/ObjectsSidebar.tsx",
+        "component": "ObjectsSidebar",
+        "line": 171,
+        "conditional": false,
+        "expression": "{ ...nameInput }",
+        "inputs": [
+          {
+            "name": "nameInput",
+            "declaredAt": {
+              "line": 89,
+              "kind": "const",
+              "via": "useRenameInput"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "workspaceSave": [
+      {
+        "file": "app/sidebars/objects/ObjectsSidebar.tsx",
+        "component": "ObjectsSidebar",
+        "line": 172,
+        "conditional": false,
+        "expression": "{ ...workspaceSave }",
+        "inputs": [
+          {
+            "name": "workspaceSave",
+            "declaredAt": {
+              "line": 126,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
     ]
   },
   "slots": {
@@ -3735,378 +6962,372 @@
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 260,
-          "expression": "themeButton",
-          "inputs": [
-            {
-              "name": "themeButton",
-              "declaredAt": {
-                "line": 193,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
+          "line": 310,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonMenu2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 262,
-          "expression": "modeButton",
-          "inputs": [
-            {
-              "name": "modeButton",
-              "declaredAt": {
-                "line": 215,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
+          "line": 312,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonSimple": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 248,
-          "expression": "menuSlots[0].button",
+          "line": 297,
+          "expression": "slotFor(triggers.file)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 250,
-          "expression": "menuSlots[1].button",
+          "line": 299,
+          "expression": "slotFor(triggers.edit)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple3": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 252,
-          "expression": "menuSlots[2].button",
+          "line": 301,
+          "expression": "slotFor(triggers.component)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple4": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 254,
-          "expression": "menuSlots[3].button",
+          "line": 303,
+          "expression": "slotFor(triggers.hari)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple5": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 256,
-          "expression": "menuSlots[4].button",
+          "line": 305,
+          "expression": "slotFor(triggers.view)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple6": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 258,
-          "expression": "menuSlots[5].button",
+          "line": 307,
+          "expression": "slotFor(triggers.dev)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "image": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 246,
-          "expression": "logoProps",
-          "inputs": [
-            {
-              "name": "logoProps",
-              "declaredAt": {
-                "line": 279,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 294,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "image2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 247,
-          "expression": "wordmarkProps",
-          "inputs": [
-            {
-              "name": "wordmarkProps",
-              "declaredAt": {
-                "line": 284,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 295,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 249,
-          "expression": "menuSlots[0].label",
+          "line": 298,
+          "expression": "slotFor(triggers.file)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 251,
-          "expression": "menuSlots[1].label",
+          "line": 300,
+          "expression": "slotFor(triggers.edit)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel3": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 253,
-          "expression": "menuSlots[2].label",
+          "line": 302,
+          "expression": "slotFor(triggers.component)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel4": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 255,
-          "expression": "menuSlots[3].label",
+          "line": 304,
+          "expression": "slotFor(triggers.hari)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel5": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 257,
-          "expression": "menuSlots[4].label",
+          "line": 306,
+          "expression": "slotFor(triggers.view)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel6": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 259,
-          "expression": "menuSlots[5].label",
+          "line": 308,
+          "expression": "slotFor(triggers.dev)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel7": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 261,
-          "expression": "themeLabel",
-          "inputs": [
-            {
-              "name": "themeLabel",
-              "declaredAt": {
-                "line": 198,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
+          "line": 311,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel8": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 263,
-          "expression": "modeLabel",
-          "inputs": [
-            {
-              "name": "modeLabel",
-              "declaredAt": {
-                "line": 220,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ]
-    },
-    "ButtonIconic": {
-      "icon": [
-        {
-          "file": "app/palettes/hari/HariTools.tsx",
-          "component": "HariTools",
-          "line": 54,
-          "expression": "chevronIcon",
-          "inputs": [
-            {
-              "name": "chevronIcon",
-              "declaredAt": {
-                "line": 46,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "onClick": [
-        {
-          "file": "app/palettes/hari/HariTools.tsx",
-          "component": "HariTools",
-          "line": 55,
-          "expression": "toggle",
-          "inputs": [
-            {
-              "name": "toggle",
-              "declaredAt": {
-                "line": 44,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 313,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ]
     },
@@ -5350,7 +8571,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "ComboboxListbox",
-          "line": 160,
+          "line": 159,
           "expression": "handleClose",
           "inputs": [
             {
@@ -5366,7 +8587,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 88,
+          "line": 84,
           "expression": "toggle",
           "inputs": [
             {
@@ -5383,13 +8604,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 134,
+          "line": 126,
           "expression": "select",
           "inputs": [
             {
               "name": "select",
               "declaredAt": {
-                "line": 118,
+                "line": 114,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -5632,7 +8853,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 155,
+          "line": 156,
           "expression": "handlePointerLeave",
           "inputs": [
             {
@@ -5651,7 +8872,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 154,
+          "line": 155,
           "expression": "handlePointerMove",
           "inputs": [
             {
@@ -5842,29 +9063,9 @@
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 242,
+          "line": 319,
           "expression": "\"header\"",
           "inputs": [],
-          "spread": false
-        }
-      ]
-    },
-    "Icon": {
-      "icon": [
-        {
-          "file": "app/palettes/hari/HariTools.tsx",
-          "component": "HariTools",
-          "line": 65,
-          "expression": "row.icon",
-          "inputs": [
-            {
-              "name": "row",
-              "declaredAt": {
-                "line": 63,
-                "kind": "parameter"
-              }
-            }
-          ],
           "spread": false
         }
       ]
@@ -6396,17 +9597,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 235,
-          "expression": "rowIcon",
-          "inputs": [
-            {
-              "name": "rowIcon",
-              "declaredAt": {
-                "line": 224,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 243,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -6414,13 +9607,13 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 231,
+          "line": 239,
           "expression": "handleClick",
           "inputs": [
             {
               "name": "handleClick",
               "declaredAt": {
-                "line": 221,
+                "line": 224,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -6433,13 +9626,13 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 232,
+          "line": 240,
           "expression": "handleDoubleClick",
           "inputs": [
             {
               "name": "handleDoubleClick",
               "declaredAt": {
-                "line": 222,
+                "line": 225,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -6452,17 +9645,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 237,
-          "expression": "rowSubtitle",
-          "inputs": [
-            {
-              "name": "rowSubtitle",
-              "declaredAt": {
-                "line": 226,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 245,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -6470,17 +9655,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 236,
-          "expression": "rowTitle",
-          "inputs": [
-            {
-              "name": "rowTitle",
-              "declaredAt": {
-                "line": 225,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 244,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -6490,7 +9667,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 285,
+          "line": 287,
           "expression": "isDimmed || undefined",
           "inputs": [
             {
@@ -6509,7 +9686,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 286,
+          "line": 288,
           "expression": "isDuplicateLabel || undefined",
           "inputs": [
             {
@@ -6528,7 +9705,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 197,
+          "line": 198,
           "expression": "isBoardSelected || undefined",
           "inputs": [
             {
@@ -6545,7 +9722,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 284,
+          "line": 286,
           "expression": "isSelected || undefined",
           "inputs": [
             {
@@ -6562,7 +9739,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 100,
+          "line": 101,
           "expression": "isActive || undefined",
           "inputs": [
             {
@@ -6580,7 +9757,7 @@
         {
           "file": "app/sidebars/DragNodePreview.tsx",
           "component": "DragNodePreview",
-          "line": 28,
+          "line": 30,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -6596,7 +9773,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 208,
+          "line": 209,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6604,7 +9781,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 306,
+          "line": 308,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6612,7 +9789,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 110,
+          "line": 111,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6638,7 +9815,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 210,
+          "line": 211,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -6646,13 +9823,13 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 308,
+          "line": 310,
           "expression": "displayButtonSlot",
           "inputs": [
             {
               "name": "displayButtonSlot",
               "declaredAt": {
-                "line": 279,
+                "line": 267,
                 "kind": "const"
               }
             }
@@ -6662,7 +9839,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 112,
+          "line": 113,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -6672,7 +9849,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 211,
+          "line": 212,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6680,7 +9857,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 310,
+          "line": 311,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6688,7 +9865,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 113,
+          "line": 114,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6698,7 +9875,7 @@
         {
           "file": "app/sidebars/DragNodePreview.tsx",
           "component": "DragNodePreview",
-          "line": 29,
+          "line": 31,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -6714,51 +9891,25 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 209,
-          "expression": "comboboxField",
-          "inputs": [
-            {
-              "name": "comboboxField",
-              "declaredAt": {
-                "line": 193,
-                "kind": "const",
-                "via": "buildFieldStateProps"
-              }
-            }
-          ],
+          "line": 210,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 307,
-          "expression": "comboboxField",
-          "inputs": [
-            {
-              "name": "comboboxField",
-              "declaredAt": {
-                "line": 271,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 309,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 111,
-          "expression": "comboboxField",
-          "inputs": [
-            {
-              "name": "comboboxField",
-              "declaredAt": {
-                "line": 96,
-                "kind": "const",
-                "via": "buildFieldStateProps"
-              }
-            }
-          ],
+          "line": 112,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -6766,7 +9917,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 198,
+          "line": 199,
           "expression": "isActivated || undefined",
           "inputs": [
             {
@@ -6782,22 +9933,6 @@
       ],
       "icon2": [
         {
-          "file": "app/sidebars/DragNodePreview.tsx",
-          "component": "DragNodePreview",
-          "line": 30,
-          "expression": "iconSlot",
-          "inputs": [
-            {
-              "name": "iconSlot",
-              "declaredAt": {
-                "line": 23,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        },
-        {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardEmpty",
           "line": 53,
@@ -6806,48 +9941,11 @@
           "spread": false
         }
       ],
-      "icon3": [
-        {
-          "file": "app/sidebars/objects/NodeController.tsx",
-          "component": "NodeInner",
-          "line": 309,
-          "expression": "displayIcon",
-          "inputs": [
-            {
-              "name": "displayIcon",
-              "declaredAt": {
-                "line": 74,
-                "kind": "const",
-                "via": "useRowNode"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "input": [
-        {
-          "file": "app/sidebars/DragNodePreview.tsx",
-          "component": "DragNodePreview",
-          "line": 31,
-          "expression": "inputSlot",
-          "inputs": [
-            {
-              "name": "inputSlot",
-              "declaredAt": {
-                "line": 24,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "onClick": [
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 213,
+          "line": 214,
           "expression": "onClick",
           "inputs": [
             {
@@ -6864,7 +9962,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 312,
+          "line": 313,
           "expression": "onClick",
           "inputs": [
             {
@@ -6881,7 +9979,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 115,
+          "line": 116,
           "expression": "onClick",
           "inputs": [
             {
@@ -6900,7 +9998,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 214,
+          "line": 215,
           "expression": "onDoubleClick",
           "inputs": [
             {
@@ -6917,7 +10015,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 313,
+          "line": 314,
           "expression": "onDoubleClick",
           "inputs": [
             {
@@ -6934,7 +10032,7 @@
         {
           "file": "app/sidebars/objects/ResourceEntry.tsx",
           "component": "ResourceEntry",
-          "line": 116,
+          "line": 117,
           "expression": "onDoubleClick",
           "inputs": [
             {
@@ -6953,7 +10051,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 215,
+          "line": 216,
           "expression": "handleRowMouseEnter",
           "inputs": [
             {
@@ -6970,7 +10068,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 314,
+          "line": 315,
           "expression": "handleCanvasTrackingEnter",
           "inputs": [
             {
@@ -6989,7 +10087,7 @@
         {
           "file": "app/sidebars/objects/BoardController.tsx",
           "component": "BoardRow",
-          "line": 216,
+          "line": 217,
           "expression": "handleRowMouseLeave",
           "inputs": [
             {
@@ -7006,7 +10104,7 @@
         {
           "file": "app/sidebars/objects/NodeController.tsx",
           "component": "NodeInner",
-          "line": 315,
+          "line": 316,
           "expression": "handleCanvasTrackingLeave",
           "inputs": [
             {
@@ -7023,53 +10121,17 @@
       ]
     },
     "ItemProperty": {
-      "comboboxField": [
-        {
-          "file": "app/sidebars/properties/Property.tsx",
-          "component": "PropertyInner",
-          "line": 192,
-          "expression": "comboboxField",
-          "inputs": [
-            {
-              "name": "comboboxField",
-              "declaredAt": {
-                "line": 161,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "icon2": [
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 193,
+          "line": 192,
           "expression": "valueIconSlot",
           "inputs": [
             {
               "name": "valueIconSlot",
               "declaredAt": {
-                "line": 175,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "icon3": [
-        {
-          "file": "app/sidebars/properties/Property.tsx",
-          "component": "PropertyInner",
-          "line": 194,
-          "expression": "listItemProps.icon3",
-          "inputs": [
-            {
-              "name": "listItemProps",
-              "declaredAt": {
-                "line": 34,
+                "line": 177,
                 "kind": "const"
               }
             }
@@ -7091,7 +10153,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 196,
+          "line": 194,
           "expression": "view.onRowClick",
           "inputs": [
             {
@@ -7110,7 +10172,7 @@
         {
           "file": "app/sidebars/properties/Property.tsx",
           "component": "PropertyInner",
-          "line": 197,
+          "line": 195,
           "expression": "view.onRowDoubleClick",
           "inputs": [
             {
@@ -7507,7 +10569,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "ComboboxListbox",
-          "line": 161,
+          "line": 160,
           "expression": "onPointerLeave",
           "inputs": [
             {
@@ -7639,24 +10701,6 @@
           "spread": true
         }
       ],
-      "icon": [
-        {
-          "file": "app/menus/ComboboxListbox.tsx",
-          "component": "renderOption",
-          "line": 132,
-          "expression": "iconSlot",
-          "inputs": [
-            {
-              "name": "iconSlot",
-              "declaredAt": {
-                "line": 128,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "onMouseDown": [
         {
           "file": "app/menus/ComboboxListbox.tsx",
@@ -7748,16 +10792,8 @@
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
           "line": 132,
-          "expression": "textLabelSlot",
-          "inputs": [
-            {
-              "name": "textLabelSlot",
-              "declaredAt": {
-                "line": 129,
-                "kind": "const"
-              }
-            }
-          ],
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -7942,17 +10978,27 @@
         {
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "errorBlock",
-          "line": 240,
+          "line": 254,
           "expression": "buttonSimple",
           "inputs": [
             {
               "name": "buttonSimple",
               "declaredAt": {
-                "line": 233,
+                "line": 246,
                 "kind": "const"
               }
             }
           ],
+          "spread": false
+        }
+      ],
+      "icon": [
+        {
+          "file": "app/palettes/hari/HariTranscript.tsx",
+          "component": "errorBlock",
+          "line": 252,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -7960,17 +11006,9 @@
         {
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "errorBlock",
-          "line": 239,
-          "expression": "textDescription",
-          "inputs": [
-            {
-              "name": "textDescription",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 253,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -7978,13 +11016,13 @@
         {
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "errorBlock",
-          "line": 241,
+          "line": 255,
           "expression": "textLabel",
           "inputs": [
             {
               "name": "textLabel",
               "declaredAt": {
-                "line": 81,
+                "line": 247,
                 "kind": "const"
               }
             }
@@ -7998,17 +11036,9 @@
         {
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "outcomeBlock",
-          "line": 208,
-          "expression": "icon",
-          "inputs": [
-            {
-              "name": "icon",
-              "declaredAt": {
-                "line": 201,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 211,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -8016,17 +11046,9 @@
         {
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "outcomeBlock",
-          "line": 210,
-          "expression": "textDescription",
-          "inputs": [
-            {
-              "name": "textDescription",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 213,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -8034,17 +11056,9 @@
         {
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "outcomeBlock",
-          "line": 209,
-          "expression": "textLabel",
-          "inputs": [
-            {
-              "name": "textLabel",
-              "declaredAt": {
-                "line": 81,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 212,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -8053,14 +11067,30 @@
       "hr": [
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
-          "component": "joinControllerRow",
-          "line": 190,
+          "component": "buildNoteRow",
+          "line": 176,
           "expression": "separator",
           "inputs": [
             {
               "name": "separator",
               "declaredAt": {
-                "line": 180,
+                "line": 174,
+                "kind": "const"
+              }
+            }
+          ],
+          "spread": false
+        },
+        {
+          "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
+          "component": "joinControllerRow",
+          "line": 210,
+          "expression": "separator",
+          "inputs": [
+            {
+              "name": "separator",
+              "declaredAt": {
+                "line": 174,
                 "kind": "const"
               }
             }
@@ -8071,8 +11101,8 @@
       "text": [
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
-          "component": "buildControllerRows",
-          "line": 151,
+          "component": "buildNoteRow",
+          "line": 176,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8080,7 +11110,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 186,
+          "line": 206,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8090,7 +11120,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 187,
+          "line": 207,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8100,13 +11130,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 188,
+          "line": 208,
           "expression": "pass",
           "inputs": [
             {
               "name": "pass",
               "declaredAt": {
-                "line": 178,
+                "line": 198,
                 "kind": "const"
               }
             }
@@ -8118,13 +11148,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "joinControllerRow",
-          "line": 189,
+          "line": 209,
           "expression": "from",
           "inputs": [
             {
               "name": "from",
               "declaredAt": {
-                "line": 179,
+                "line": 199,
                 "kind": "const"
               }
             }
@@ -8139,32 +11169,16 @@
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "statusBlock",
           "line": 87,
-          "expression": "textLabel",
-          "inputs": [
-            {
-              "name": "textLabel",
-              "declaredAt": {
-                "line": 81,
-                "kind": "const"
-              }
-            }
-          ],
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "stoppedBlock",
-          "line": 95,
-          "expression": "textLabel",
-          "inputs": [
-            {
-              "name": "textLabel",
-              "declaredAt": {
-                "line": 81,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 96,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -8174,35 +11188,9 @@
         {
           "file": "app/palettes/hari/HariThinking.tsx",
           "component": "HariThinking",
-          "line": 45,
-          "expression": "buttonIconic",
-          "inputs": [
-            {
-              "name": "buttonIconic",
-              "declaredAt": {
-                "line": 34,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "icon": [
-        {
-          "file": "app/palettes/hari/HariThinking.tsx",
-          "component": "HariThinking",
-          "line": 46,
-          "expression": "iconSlot",
-          "inputs": [
-            {
-              "name": "iconSlot",
-              "declaredAt": {
-                "line": 31,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 50,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -8210,17 +11198,9 @@
         {
           "file": "app/palettes/hari/HariThinking.tsx",
           "component": "HariThinking",
-          "line": 43,
-          "expression": "headerSlot",
-          "inputs": [
-            {
-              "name": "headerSlot",
-              "declaredAt": {
-                "line": 29,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 51,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -8228,13 +11208,13 @@
         {
           "file": "app/palettes/hari/HariThinking.tsx",
           "component": "HariThinking",
-          "line": 44,
+          "line": 52,
           "expression": "clampedSlot",
           "inputs": [
             {
               "name": "clampedSlot",
               "declaredAt": {
-                "line": 30,
+                "line": 45,
                 "kind": "const"
               }
             }
@@ -8246,17 +11226,61 @@
         {
           "file": "app/palettes/hari/HariThinking.tsx",
           "component": "HariThinking",
-          "line": 47,
+          "line": 53,
           "expression": "bodySlot",
           "inputs": [
             {
               "name": "bodySlot",
               "declaredAt": {
-                "line": 39,
+                "line": 46,
                 "kind": "const"
               }
             }
           ],
+          "spread": false
+        }
+      ]
+    },
+    "MessageToolsHeader": {
+      "buttonIconic": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 54,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "textDescription": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 54,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ]
+    },
+    "MessageToolsUsed": {
+      "icon": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 47,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "textDescription": [
+        {
+          "file": "app/palettes/hari/HariTools.tsx",
+          "component": "HariTools",
+          "line": 47,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -8267,16 +11291,8 @@
           "file": "app/palettes/hari/HariTranscript.tsx",
           "component": "userBlock",
           "line": 77,
-          "expression": "textDescription",
-          "inputs": [
-            {
-              "name": "textDescription",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const"
-              }
-            }
-          ],
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -8302,7 +11318,7 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "PanelDialogController",
-          "line": 192,
+          "line": 197,
           "expression": "barHandle",
           "inputs": [
             {
@@ -8326,7 +11342,7 @@
             {
               "name": "clearButton",
               "declaredAt": {
-                "line": 121,
+                "line": 120,
                 "kind": "const"
               }
             }
@@ -8346,7 +11362,7 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "PanelDialogController",
-          "line": 197,
+          "line": 200,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8364,27 +11380,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "PanelDialogController",
-          "line": 199,
+          "line": 202,
           "expression": "{}",
           "inputs": [],
-          "spread": false
-        }
-      ],
-      "buttonIconic": [
-        {
-          "file": "app/dialogs/PanelDialogController.tsx",
-          "component": "PanelDialogController",
-          "line": 196,
-          "expression": "searchClear",
-          "inputs": [
-            {
-              "name": "searchClear",
-              "declaredAt": {
-                "line": 158,
-                "kind": "const"
-              }
-            }
-          ],
           "spread": false
         }
       ],
@@ -8400,17 +11398,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "PanelDialogController",
-          "line": 194,
-          "expression": "searchField",
-          "inputs": [
-            {
-              "name": "searchField",
-              "declaredAt": {
-                "line": 151,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 199,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -8424,25 +11414,7 @@
             {
               "name": "cancelIcon",
               "declaredAt": {
-                "line": 123,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "input": [
-        {
-          "file": "app/dialogs/PanelDialogController.tsx",
-          "component": "PanelDialogController",
-          "line": 195,
-          "expression": "searchInput",
-          "inputs": [
-            {
-              "name": "searchInput",
-              "declaredAt": {
-                "line": 152,
+                "line": 122,
                 "kind": "const"
               }
             }
@@ -8460,7 +11432,7 @@
             {
               "name": "clearLabel",
               "declaredAt": {
-                "line": 122,
+                "line": 121,
                 "kind": "const"
               }
             }
@@ -8478,7 +11450,7 @@
             {
               "name": "cancelLabel",
               "declaredAt": {
-                "line": 124,
+                "line": 123,
                 "kind": "const"
               }
             }
@@ -8488,13 +11460,13 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "PanelDialogController",
-          "line": 198,
+          "line": 201,
           "expression": "cancelLabel",
           "inputs": [
             {
               "name": "cancelLabel",
               "declaredAt": {
-                "line": 165,
+                "line": 153,
                 "kind": "const"
               }
             }
@@ -8512,7 +11484,7 @@
             {
               "name": "confirmLabel",
               "declaredAt": {
-                "line": 125,
+                "line": 124,
                 "kind": "const"
               }
             }
@@ -8522,13 +11494,13 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "PanelDialogController",
-          "line": 200,
+          "line": 203,
           "expression": "confirmLabel",
           "inputs": [
             {
               "name": "confirmLabel",
               "declaredAt": {
-                "line": 166,
+                "line": 154,
                 "kind": "const"
               }
             }
@@ -8541,341 +11513,149 @@
           "file": "app/dialogs/image-upload/ImageUploadController.tsx",
           "component": "ImageUploadDialog",
           "line": 152,
-          "expression": "dialogTitle",
-          "inputs": [
-            {
-              "name": "dialogTitle",
-              "declaredAt": {
-                "line": 119,
-                "kind": "const"
-              }
-            }
-          ],
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "PanelDialogController",
-          "line": 193,
-          "expression": "dialogTitle",
-          "inputs": [
-            {
-              "name": "dialogTitle",
-              "declaredAt": {
-                "line": 150,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 198,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
     },
     "PanelHari": {
-      "bar": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 389,
-          "expression": "barSlot",
-          "inputs": [
-            {
-              "name": "barSlot",
-              "declaredAt": {
-                "line": 312,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "buttonIconic": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 394,
-          "expression": "resetSlot",
-          "inputs": [
-            {
-              "name": "resetSlot",
-              "declaredAt": {
-                "line": 335,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "buttonIconic2": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 395,
-          "expression": "closeSlot",
-          "inputs": [
-            {
-              "name": "closeSlot",
-              "declaredAt": {
-                "line": 340,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 411,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonIconic3": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 404,
-          "expression": "sendSlot",
-          "inputs": [
-            {
-              "name": "sendSlot",
-              "declaredAt": {
-                "line": 367,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 421,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonMenu": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 398,
-          "expression": "modelSlot",
-          "inputs": [
-            {
-              "name": "modelSlot",
-              "declaredAt": {
-                "line": 353,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 415,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonMenu2": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 400,
-          "expression": "thinkingSlot",
-          "inputs": [
-            {
-              "name": "thinkingSlot",
-              "declaredAt": {
-                "line": 359,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 417,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonToggle": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 391,
-          "expression": "outcomeToggleSlot",
-          "inputs": [
-            {
-              "name": "outcomeToggleSlot",
-              "declaredAt": {
-                "line": 328,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 408,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonToggle2": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 392,
-          "expression": "toolsToggleSlot",
-          "inputs": [
-            {
-              "name": "toolsToggleSlot",
-              "declaredAt": {
-                "line": 321,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 409,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonToggle3": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 393,
-          "expression": "clampToggleSlot",
-          "inputs": [
-            {
-              "name": "clampToggleSlot",
-              "declaredAt": {
-                "line": 314,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 410,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "chip": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 402,
-          "expression": "basisChipSlot",
-          "inputs": [
-            {
-              "name": "basisChipSlot",
-              "declaredAt": {
-                "line": 365,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "frame2": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 396,
-          "expression": "transcriptSlot",
-          "inputs": [
-            {
-              "name": "transcriptSlot",
-              "declaredAt": {
-                "line": 341,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "icon8": [
-        {
-          "file": "app/palettes/hari/HariController.tsx",
-          "component": "Hari",
-          "line": 405,
-          "expression": "sendIconSlot",
-          "inputs": [
-            {
-              "name": "sendIconSlot",
-              "declaredAt": {
-                "line": 368,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 419,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 399,
-          "expression": "modelLabelSlot",
-          "inputs": [
-            {
-              "name": "modelLabelSlot",
-              "declaredAt": {
-                "line": 358,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 416,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel2": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 401,
-          "expression": "thinkingLabelSlot",
-          "inputs": [
-            {
-              "name": "thinkingLabelSlot",
-              "declaredAt": {
-                "line": 364,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 418,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel3": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 403,
-          "expression": "basisLabelSlot",
-          "inputs": [
-            {
-              "name": "basisLabelSlot",
-              "declaredAt": {
-                "line": 366,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 420,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textTitle": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 390,
-          "expression": "titleSlot",
-          "inputs": [
-            {
-              "name": "titleSlot",
-              "declaredAt": {
-                "line": 313,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 407,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textarea": [
         {
           "file": "app/palettes/hari/HariController.tsx",
           "component": "Hari",
-          "line": 397,
-          "expression": "inputSlot",
-          "inputs": [
-            {
-              "name": "inputSlot",
-              "declaredAt": {
-                "line": 346,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 413,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ]
     },
@@ -8958,58 +11738,31 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 93,
-          "expression": "badgeBox",
-          "inputs": [
-            {
-              "name": "badgeBox",
-              "declaredAt": {
-                "line": 68,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
+          "line": 89,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 139,
-          "expression": "badgeBox",
-          "inputs": [
-            {
-              "name": "badgeBox",
-              "declaredAt": {
-                "line": 68,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
+          "line": 131,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 168,
-          "expression": "badgeBox",
-          "inputs": [
-            {
-              "name": "badgeBox",
-              "declaredAt": {
-                "line": 68,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
+          "line": 160,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 196,
+          "line": 188,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9019,7 +11772,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 90,
+          "line": 86,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9027,7 +11780,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 136,
+          "line": 128,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9035,7 +11788,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 165,
+          "line": 157,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9043,7 +11796,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 193,
+          "line": 185,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9051,7 +11804,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 116,
+          "line": 128,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -9061,13 +11814,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 120,
+          "line": 132,
           "expression": "viewSlot",
           "inputs": [
             {
               "name": "viewSlot",
               "declaredAt": {
-                "line": 89,
+                "line": 100,
                 "kind": "const"
               }
             }
@@ -9079,13 +11832,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 121,
-          "expression": "viewSlot",
+          "line": 133,
+          "expression": "viewFieldSlot",
           "inputs": [
             {
-              "name": "viewSlot",
+              "name": "viewFieldSlot",
               "declaredAt": {
-                "line": 89,
+                "line": 101,
                 "kind": "const"
               }
             }
@@ -9097,13 +11850,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 122,
-          "expression": "viewSlot",
+          "line": 134,
+          "expression": "viewFieldSlot",
           "inputs": [
             {
-              "name": "viewSlot",
+              "name": "viewFieldSlot",
               "declaredAt": {
-                "line": 89,
+                "line": 101,
                 "kind": "const"
               }
             }
@@ -9115,7 +11868,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 94,
+          "line": 90,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9123,7 +11876,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 140,
+          "line": 132,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9131,7 +11884,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 169,
+          "line": 161,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9139,7 +11892,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 197,
+          "line": 189,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9149,7 +11902,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 119,
+          "line": 131,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9159,7 +11912,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefCardController.tsx",
           "component": "RefCardController",
-          "line": 123,
+          "line": 135,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9167,39 +11920,13 @@
       ]
     },
     "SidebarObjects": {
-      "buttonIconic": [
-        {
-          "file": "app/sidebars/objects/ObjectsSidebar.tsx",
-          "component": "ObjectsSidebar",
-          "line": 177,
-          "expression": "projectActions",
-          "inputs": [
-            {
-              "name": "projectActions",
-              "declaredAt": {
-                "line": 125,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "buttonToggle": [
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 178,
-          "expression": "componentsToggle",
-          "inputs": [
-            {
-              "name": "componentsToggle",
-              "declaredAt": {
-                "line": 133,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 185,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -9207,17 +11934,9 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 179,
-          "expression": "resourcesToggle",
-          "inputs": [
-            {
-              "name": "resourcesToggle",
-              "declaredAt": {
-                "line": 139,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 186,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -9225,108 +11944,29 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.tsx",
           "component": "ObjectsSidebar",
-          "line": 175,
-          "expression": "projectField",
-          "inputs": [
-            {
-              "name": "projectField",
-              "declaredAt": {
-                "line": 120,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "input": [
-        {
-          "file": "app/sidebars/objects/ObjectsSidebar.tsx",
-          "component": "ObjectsSidebar",
-          "line": 176,
-          "expression": "nameInput",
-          "inputs": [
-            {
-              "name": "nameInput",
-              "declaredAt": {
-                "line": 88,
-                "kind": "const",
-                "via": "useRenameInput"
-              }
-            }
-          ],
+          "line": 184,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
     },
     "SidebarProperties": {
-      "buttonIconic": [
-        {
-          "file": "app/sidebars/properties/PropertiesSidebar.tsx",
-          "component": "PropertiesSidebar",
-          "line": 132,
-          "expression": "filter.buttonIconic",
-          "inputs": [
-            {
-              "name": "filter",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const",
-                "via": "useFilterInput"
-              }
-            }
-          ],
-          "spread": false
-        },
-        {
-          "file": "app/sidebars/properties/PropertiesSidebar.tsx",
-          "component": "PropertiesSidebar",
-          "line": 155,
-          "expression": "filter.buttonIconic",
-          "inputs": [
-            {
-              "name": "filter",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const",
-                "via": "useFilterInput"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "buttonMenu": [
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 133,
-          "expression": "menuStateSlot",
-          "inputs": [
-            {
-              "name": "menuStateSlot",
-              "declaredAt": {
-                "line": 109,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 142,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 156,
-          "expression": "menuStateSlot",
-          "inputs": [
-            {
-              "name": "menuStateSlot",
-              "declaredAt": {
-                "line": 109,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 162,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -9334,71 +11974,17 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 130,
-          "expression": "filter.comboboxField",
-          "inputs": [
-            {
-              "name": "filter",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const",
-                "via": "useFilterInput"
-              }
-            }
-          ],
+          "line": 141,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 153,
-          "expression": "filter.comboboxField",
-          "inputs": [
-            {
-              "name": "filter",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const",
-                "via": "useFilterInput"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "input": [
-        {
-          "file": "app/sidebars/properties/PropertiesSidebar.tsx",
-          "component": "PropertiesSidebar",
-          "line": 131,
-          "expression": "filter.input",
-          "inputs": [
-            {
-              "name": "filter",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const",
-                "via": "useFilterInput"
-              }
-            }
-          ],
-          "spread": false
-        },
-        {
-          "file": "app/sidebars/properties/PropertiesSidebar.tsx",
-          "component": "PropertiesSidebar",
-          "line": 154,
-          "expression": "filter.input",
-          "inputs": [
-            {
-              "name": "filter",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const",
-                "via": "useFilterInput"
-              }
-            }
-          ],
+          "line": 161,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -9406,33 +11992,17 @@
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 134,
-          "expression": "stateLabelSlot",
-          "inputs": [
-            {
-              "name": "stateLabelSlot",
-              "declaredAt": {
-                "line": 114,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 143,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/sidebars/properties/PropertiesSidebar.tsx",
           "component": "PropertiesSidebar",
-          "line": 157,
-          "expression": "stateLabelSlot",
-          "inputs": [
-            {
-              "name": "stateLabelSlot",
-              "declaredAt": {
-                "line": 114,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 163,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]

@@ -55,11 +55,13 @@ const sdn: SidebarObjectsProps = {
   },
   comboboxFieldProject: {
     className: "sdn-combobox-field sdn-combobox-field-project--rzdy",
+    "data-seldon-ref": "workspaceField",
   },
   icon: {
     icon: "material-dataObject",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "workspaceIcon",
   },
   input: {
     placeholder: "Workspace Name",
@@ -77,6 +79,7 @@ const sdn: SidebarObjectsProps = {
     icon: "material-save",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "workspaceSaveIcon",
   },
   frame2: {
     wrapperElement: "div",
@@ -85,7 +88,7 @@ const sdn: SidebarObjectsProps = {
   },
   buttonToggle: {
     className: "sdn-button-toggle sdn-button-iconic--pgsr",
-    "data-seldon-ref": "sidebarComponents",
+    "data-seldon-ref": "objectsViewComponents",
   },
   icon3: {
     icon: "seldon-component",
@@ -94,7 +97,7 @@ const sdn: SidebarObjectsProps = {
   },
   buttonToggle2: {
     className: "sdn-button-toggle sdn-button-iconic--pgsr",
-    "data-seldon-ref": "sidebarResources",
+    "data-seldon-ref": "objectsViewResources",
   },
   icon4: {
     icon: "seldon-theme",
@@ -106,7 +109,7 @@ const sdn: SidebarObjectsProps = {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--enpy",
-    "data-seldon-ref": "objectsContainer",
+    "data-seldon-ref": "objectsTree",
   },
 }
 
@@ -119,17 +122,17 @@ const sdn: SidebarObjectsProps = {
  *
  * Structure:
  *   Frame                   frame
- *     ComboboxFieldProject  comboboxFieldProject
- *       Icon                icon
+ *     ComboboxFieldProject  comboboxFieldProject  -> workspaceField
+ *       Icon                icon                  -> workspaceIcon
  *       Input               input                 -> workspaceName
  *       ButtonIconic        buttonIconic          -> workspaceSave
- *         Icon              icon2
+ *         Icon              icon2                 -> workspaceSaveIcon
  *     Frame                 frame2
- *       ButtonToggle        buttonToggle          -> sidebarComponents
+ *       ButtonToggle        buttonToggle          -> objectsViewComponents
  *         Icon              icon3
- *       ButtonToggle        buttonToggle2         -> sidebarResources
+ *       ButtonToggle        buttonToggle2         -> objectsViewResources
  *         Icon              icon4
- *   Frame                   frame3                -> objectsContainer
+ *   Frame                   frame3                -> objectsTree
  *
  * @example
  * ```tsx

@@ -1,10 +1,10 @@
 ---
-description: JSX authoring rules for the editor app
-globs: packages/editor/app/**/*.tsx
+description: Markup authoring rules for the editor apps, React JSX and Vue templates
+globs: packages/editor/apps/*/app/**/*.{tsx,vue}
 alwaysApply: false
 ---
 
-## Editor JSX Authoring
+## Editor JSX And Template Authoring
 
 Important: This is a hard rule. No exceptions. Resolve every JSX value before the `return`. Returned JSX holds element tags and identifier references only. Nothing is computed inside returned JSX.
 
@@ -17,3 +17,9 @@ A helper or function call inside a JSX prop is a violation, even a short one. `c
 - Event handlers are named functions or `useCallback` values. Do not define an arrow handler inside a JSX prop.
 
 Bare literal slot enablers stay inline. A positional `{}`, `null`, or `undefined` that turns a generated slot on or off carries no logic, so it does not need a name.
+
+### Vue Templates
+
+The same rule holds in a Vue template. Hoist each value into a named `const` or a `computed` in `<script setup>`, then bind the identifier.
+
+A `v-for` row is the one exception, because a template has nowhere to declare a per-row local. A row calls a named helper and passes the item, as in `:seldon-refs="rowRefs(item)"` or `:style="rowStyle(item)"`. Keep the helper in `<script setup>` and keep the call to one argument. Everything a row needs comes from the helper, not from an expression in the binding.

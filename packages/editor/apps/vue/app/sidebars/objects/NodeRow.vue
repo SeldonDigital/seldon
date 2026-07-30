@@ -157,7 +157,6 @@ const {
   anchor: actionsAnchor,
   close: closeActions,
   buttonIconic: actionsButton,
-  icon: actionsIcon,
   menuItems: actionsItems,
   hasActions,
 } = useRowActionsMenu(actions)
@@ -376,17 +375,32 @@ const labelSlot = computed(() =>
   ),
 )
 const displayIconSlot = computed(() => ({ icon: displayIcon.value }))
-const displayButtonSlot = computed(() =>
-  props.isEcho
-    ? null
-    : {
-        type: "button",
-        "aria-haspopup": "listbox",
-        "aria-expanded": displayOpen.value,
-        onClick: onDisplayClick,
-        style: { position: "relative", zIndex: 10 },
-      },
-)
+const displayButtonProps = computed(() => ({
+  type: "button",
+  "aria-haspopup": "listbox",
+  "aria-expanded": displayOpen.value,
+  onClick: onDisplayClick,
+  style: { position: "relative", zIndex: 10 },
+}))
+
+// Echo rows are stripped leaves with no display of their own, so their
+// nodeDisplay slot is removed. Real rows keep the slot on its generated default
+// and drive it through the `nodeDisplay` ref.
+const displayButtonSlot = computed(() => (props.isEcho ? null : undefined))
+
+// Drive every slot through its stable workspace ref. The trailing actions icon
+// has no ref; it stays on the generated `seldon-more` default and is hidden by
+// the actions button placeholder (visibility cascades), so it needs none.
+const seldonRefs = computed(() => ({
+  nodeDisclosure: toggleButtonSlot.value,
+  nodeDisclosureIcon: toggleIconSlot.value,
+  nodeField: fieldSlot.value,
+  nodeIcon: nodeIconSlot.value,
+  nodeLabel: labelSlot.value,
+  nodeDisplay: displayButtonProps.value,
+  nodeDisplayIcon: displayIconSlot.value,
+  nodeActions: actionsButton.value,
+}))
 
 const rootStyle = computed(() => ({ paddingLeft: `${props.depth * 12}px` }))
 const dataDisplay = computed(() =>
@@ -445,15 +459,11 @@ function childRootId(childId: EntryNodeId): string {
       :data-dragging="drag.draggingNodeId === nodeId || undefined"
       :data-active="parentIsSelected || undefined"
       :draggable="draggable"
-      :button-iconic="toggleButtonSlot"
-      :icon="toggleIconSlot"
-      :combobox-field="fieldSlot"
-      :icon2="nodeIconSlot"
-      :input="labelSlot"
+      :seldon-refs="seldonRefs"
+      :button-iconic="{}"
+      :combobox-field="{}"
       :button-iconic2="displayButtonSlot"
-      :icon3="displayIconSlot"
-      :button-iconic3="actionsButton"
-      :icon4="actionsIcon"
+      :button-iconic3="{}"
       @click="select"
       @dblclick="handleDoubleClick"
       @mouseenter="onEnter"

@@ -7,14 +7,11 @@ import { useDirtyStore } from "./dirty-store"
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { StoredWorkspace } from "@seldon/editor/lib/storage/workspace-store"
 
-/** Optional record fields a save may patch alongside the workspace snapshot. */
-type SavePatch = Pick<Partial<StoredWorkspace>, "name">
-
 /**
- * Single writer for the local workspace. Persists the live snapshot, optionally
- * patching record fields such as the name, updates the owned record, and clears
- * the dirty flag. Autosave, force-save, and rename all flow through `saveNow` so
- * writes stay consistent. Mirrors the React `workspace-save-store`.
+ * Single writer for the local workspace. Persists the live snapshot, updates the
+ * owned record, and clears the dirty flag. Autosave and force-save both flow
+ * through `saveNow` so writes stay consistent. Renaming needs no call of its own,
+ * because the name is workspace state. Mirrors the React `workspace-save-store`.
  */
 export const useWorkspaceSaveStore = defineStore("workspace-save", () => {
   const record = ref<StoredWorkspace | null>(null)
@@ -23,13 +20,12 @@ export const useWorkspaceSaveStore = defineStore("workspace-save", () => {
     record.value = next
   }
 
-  async function saveNow(workspace: Workspace, patch?: SavePatch): Promise<void> {
+  async function saveNow(workspace: Workspace): Promise<void> {
     const current = record.value
 
     if (!current) return
     const next: StoredWorkspace = {
       ...current,
-      ...patch,
       workspace,
       updatedAt: new Date().toISOString(),
     }

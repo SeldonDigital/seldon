@@ -15,8 +15,8 @@ Each app owns its own gestures, generated components, and runtime state on top.
 | Package | Role | README |
 | --- | --- | --- |
 | `@seldon/editor` | Shared framework-neutral lib, dev-server plugins, assets | This file |
-| `@seldon/editor-react` | React 19 editor app | [../editor-react/README.md](../editor-react/README.md) |
-| `@seldon/editor-vue` | Vue 3 editor app | [../editor-vue/README.md](../editor-vue/README.md) |
+| `@seldon/editor-react` | React 19 editor app | [../apps/react/README.md](../apps/react/README.md) |
+| `@seldon/editor-vue` | Vue 3 editor app | [../apps/vue/README.md](../apps/vue/README.md) |
 
 The two apps share the same structure and behavior. When you change behavior in one app, mirror it in the other. When the logic is platform-neutral, put it in this package so both apps use one definition.
 
@@ -162,8 +162,8 @@ Both editor apps use MVVM to keep the interface separate from the logic. MVVM sp
 
 This shared package is the platform-neutral part of the **Model**. It backs the Model with `@seldon/core` services and its own `lib/` logic. It runs without React or Vue. Each app builds its **View** and **ViewModel** in its own framework:
 
-- The React app uses `use-*.ts` hooks as ViewModels and generated `.tsx` components as Views. See [../editor-react/README.md](../editor-react/README.md).
-- The Vue app uses composables and Pinia stores as ViewModels and generated `.vue` components as Views. See [../editor-vue/README.md](../editor-vue/README.md).
+- The React app uses `use-*.ts` hooks as ViewModels and generated `.tsx` components as Views. See [../apps/react/README.md](../apps/react/README.md).
+- The Vue app uses composables and Pinia stores as ViewModels and generated `.vue` components as Views. See [../apps/vue/README.md](../apps/vue/README.md).
 
 Each app enforces its View and ViewModel boundaries with lint rules. The framework-specific View authoring rules live in each app's README and in `.cursor/rules/editor-jsx.mdc`.
 
@@ -219,7 +219,7 @@ The editor produces a valid workspace. Factory consumes that workspace and produ
 2. Feed that workspace into Factory.
 3. Call `exportWorkspace` with target options, for example React plus CSS.
 
-Pipeline detail lives in [../factory/README.md](../factory/README.md).
+Pipeline detail lives in [../../factory/README.md](../../factory/README.md).
 
 ---
 
@@ -227,13 +227,13 @@ Pipeline detail lives in [../factory/README.md](../factory/README.md).
 
 | Topic | Document |
 | --- | --- |
-| React editor app | [../editor-react/README.md](../editor-react/README.md) |
-| Vue editor app | [../editor-vue/README.md](../editor-vue/README.md) |
-| Core | [../core/README.md](../core/README.md) |
-| Factory | [../factory/README.md](../factory/README.md) |
-| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
-| Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md) |
-| Reducer actions | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
+| React editor app | [../apps/react/README.md](../apps/react/README.md) |
+| Vue editor app | [../apps/vue/README.md](../apps/vue/README.md) |
+| Core | [../../core/README.md](../../core/README.md) |
+| Factory | [../../factory/README.md](../../factory/README.md) |
+| Vocabulary | [GLOSSARY.md](../../../GLOSSARY.md) |
+| Workspace file spec | [../../core/workspace/README.md](../../core/workspace/README.md) |
+| Reducer actions | [../../core/workspace/reducers/README.md](../../core/workspace/reducers/README.md) |
 
 ---
 
@@ -247,7 +247,7 @@ The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
 - You may use, copy, and modify this software for **noncommercial purposes** such as research, education, and personal projects.
 - Commercial use is **not permitted** under this license.
-- See [license/noncommercial/LICENSE.md](../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
+- See [license/noncommercial/LICENSE.md](../../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
 
 ### 2. Commercial license
 
@@ -260,7 +260,7 @@ The commercial license may grant:
 - Long-term support, security updates, and priority bug fixes if offered by the licensor.
 - Optional custom terms negotiated with the licensor.
 
-See [COMMERCIAL-LICENSE.md](../../license/commercial/COMMERCIAL-LICENSE.md).
+See [COMMERCIAL-LICENSE.md](../../../license/commercial/COMMERCIAL-LICENSE.md).
 
 ### 3. Obtaining a commercial license
 
@@ -280,10 +280,10 @@ Contact:
 
 ## Links
 
-- [Core](../core/README.md)
-- [Factory](../factory/README.md)
-- [React editor](../editor-react/README.md)
-- [Vue editor](../editor-vue/README.md)
+- [Core](../../core/README.md)
+- [Factory](../../factory/README.md)
+- [React editor](../apps/react/README.md)
+- [Vue editor](../apps/vue/README.md)
 - [Official Website](https://seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 

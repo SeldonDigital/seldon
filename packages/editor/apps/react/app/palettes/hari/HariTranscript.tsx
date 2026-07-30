@@ -1,8 +1,8 @@
 // View-model for the Hari chat transcript. Each structured turn from useHari
 // maps to the generated Message* blocks: the prompt, the model's reasoning, the
 // tools it called, the applied changes, the markdown reply, and any rejection or
-// error. Tool activity renders as one collapsible HariTools block per turn, so
-// the turn reads as a single "Tools Applied" section. Assistant replies render
+// error. Tool activity renders as one collapsible header plus a line per entry,
+// so the turn reads as a single "Tools Applied" section. Assistant replies render
 // through HariMarkdown.
 import { useDebugStore } from "@app/editor/hooks/use-debug-mode"
 import { MessageAssistant } from "@seldon/components/elements/MessageAssistant"
@@ -16,7 +16,7 @@ import { HariMarkdown } from "./HariMarkdown"
 import { HariThinking } from "./HariThinking"
 import { HariTools } from "./HariTools"
 
-import type { ToolRow } from "./HariTools"
+import type { ToolUsed } from "./HariTools"
 import type { HariTurn } from "@app/ai/use-ai-chat"
 import type { IconProps } from "@seldon/components/primitives/Icon"
 import type { CSSProperties, ReactNode } from "react"
@@ -72,27 +72,28 @@ function buildTranscript(
 }
 
 function userBlock(turn: HariTurn): ReactNode {
-  const textDescription = { children: turn.prompt }
+  const userRefs = { hariUserText: { children: turn.prompt } }
 
-  return <MessageUser key={`${turn.id}-user`} textDescription={textDescription} />
+  return <MessageUser key={`${turn.id}-user`} textDescription={{}} seldonRefs={userRefs} />
 }
 
 function statusBlock(turn: HariTurn): ReactNode {
-  const textLabel = { children: "Working..." }
+  const workingRefs = { hariStatusLabel: { children: "Working..." } }
 
   return (
     <MessageStatus
       key={`${turn.id}-status`}
       className="hari-status-working"
-      textLabel={textLabel}
+      textLabel={{}}
+      seldonRefs={workingRefs}
     />
   )
 }
 
 function stoppedBlock(turn: HariTurn): ReactNode {
-  const textLabel = { children: "Stopped." }
+  const stoppedRefs = { hariStatusLabel: { children: "Stopped." } }
 
-  return <MessageStatus key={`${turn.id}-stopped`} textLabel={textLabel} />
+  return <MessageStatus key={`${turn.id}-stopped`} textLabel={{}} seldonRefs={stoppedRefs} />
 }
 
 function thinkingBlock(turn: HariTurn): ReactNode {
@@ -109,59 +110,59 @@ function thinkingBlock(turn: HariTurn): ReactNode {
 }
 
 /**
- * Every tool-activity row for the turn, in reading order: the tools the model
+ * Every tool-activity line for the turn, in reading order: the tools the model
  * called, then the deterministic shape repairs, the vocabulary warnings, and the
- * rejections. Each row carries its own status icon and label. A failed call is
+ * rejections. Each line carries its own status icon and label. A failed call is
  * marked in its text, since a failed edit attempt is the signal that a change was
  * tried and missed and must not read as a silent success.
  */
-function collectToolRows(turn: HariTurn): ToolRow[] {
-  const rows: ToolRow[] = []
+function collectToolsUsed(turn: HariTurn): ToolUsed[] {
+  const used: ToolUsed[] = []
 
   ;(turn.toolCalls ?? []).forEach((call, index) => {
-    rows.push({
+    used.push({
       key: `call-${index}`,
       icon: call.ok ? "material-checkCircle" : "material-error",
       text: call.ok ? call.name : `${call.name} (failed)`,
     })
   })
   ;(turn.repairs ?? []).forEach((repair, index) => {
-    rows.push({
+    used.push({
       key: `repair-${index}`,
       icon: "material-warning",
       text: `repair: ${repair.actionType}.${repair.propertyKey} — ${repair.reason}`,
     })
   })
   ;(turn.warnings ?? []).forEach((warning, index) => {
-    rows.push({
+    used.push({
       key: `warning-${index}`,
       icon: "material-warning",
       text: warning,
     })
   })
   ;(turn.rejected ?? []).forEach((item, index) => {
-    rows.push({
+    used.push({
       key: `rejected-${index}`,
       icon: "material-error",
       text: `rejected: ${item.type} — ${item.reason}`,
     })
   })
 
-  return rows
+  return used
 }
 
 /**
- * The tools block: one collapsible HariTools per turn. Show Tools gates whether
- * the block renders at all; when shown it starts expanded, and the per-turn
- * chevron collapses or expands it. Returns null when the turn has no tool
- * activity.
+ * The tools block: one collapsible header plus a line per entry. Show Tools gates
+ * whether the block renders at all; when shown it starts expanded, and the
+ * per-turn chevron collapses or expands it. Returns null when the turn has no
+ * tool activity.
  */
 function toolsBlock(turn: HariTurn): ReactNode {
-  const rows = collectToolRows(turn)
+  const tools = collectToolsUsed(turn)
 
-  if (rows.length === 0) return null
+  if (tools.length === 0) return null
 
-  return <HariTools key={`${turn.id}-tools`} rows={rows} defaultOpen />
+  return <HariTools key={`${turn.id}-tools`} tools={tools} defaultOpen />
 }
 
 /** Icon, label, and fallback line for each reducer-truth outcome badge. */
@@ -198,16 +199,19 @@ function outcomeBlock(turn: HariTurn): ReactNode {
     turn.outcome === "applied" && (turn.changes?.length ?? 0) > 0
       ? (turn.changes ?? []).join("\n")
       : meta.description
-  const icon = { icon: meta.icon }
-  const textLabel = { children: meta.label }
-  const textDescription = { children: detail, style: preWrapStyle }
+  const outcomeRefs = {
+    hariOutcomeIcon: { icon: meta.icon },
+    hariOutcomeLabel: { children: meta.label },
+    hariOutcomeText: { children: detail, style: preWrapStyle },
+  }
 
   return (
     <MessageOutcome
       key={`${turn.id}-outcome`}
-      icon={icon}
-      textLabel={textLabel}
-      textDescription={textDescription}
+      icon={{}}
+      textLabel={{}}
+      textDescription={{}}
+      seldonRefs={outcomeRefs}
     />
   )
 }
@@ -226,19 +230,30 @@ function assistantBlock(turn: HariTurn): ReactNode {
   )
 }
 
+/**
+ * The error block. The retry button only exists when the transcript was given a
+ * retry handler, and a ref override cannot turn a slot on, so its presence stays
+ * a positional decision while its handler comes through `hariErrorRetry`.
+ */
 function errorBlock(turn: HariTurn, onRetry: HariTranscriptProps["onRetry"]): ReactNode {
   const text =
     turn.error ?? (turn.rejected ?? []).map((item) => `${item.type}: ${item.reason}`).join("; ")
-  const textDescription = { children: text }
-  const buttonSimple = onRetry ? { onClick: () => onRetry(turn.prompt) } : null
-  const textLabel = onRetry ? { children: "Retry" } : null
+  const retry = onRetry ? { onClick: () => onRetry(turn.prompt) } : {}
+  const errorRefs = {
+    hariErrorText: { children: text },
+    hariErrorRetry: retry,
+  }
+  const buttonSimple = onRetry ? {} : null
+  const textLabel = onRetry ? {} : null
 
   return (
     <MessageError
       key={`${turn.id}-error`}
-      textDescription={textDescription}
+      icon={{}}
+      textDescription={{}}
       buttonSimple={buttonSimple}
       textLabel={textLabel}
+      seldonRefs={errorRefs}
     />
   )
 }

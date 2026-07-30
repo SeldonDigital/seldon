@@ -41,7 +41,6 @@ const sdn: ComboboxFieldSearchProps = {
     icon: "material-search",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
-    "data-seldon-ref": "searchIcon",
   },
 
   input: {
@@ -50,12 +49,10 @@ const sdn: ComboboxFieldSearchProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--yoqi",
-    "data-seldon-ref": "searchLabel",
   },
 
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
-    "data-seldon-ref": "searchActions",
   },
   icon2: {
     icon: "material-close",
@@ -72,9 +69,9 @@ const sdn: ComboboxFieldSearchProps = {
  * Type: Custom
  *
  * Structure:
- *   Icon          icon          -> searchIcon
- *   Input         input         -> searchLabel
- *   ButtonIconic  buttonIconic  -> searchActions
+ *   Icon          icon
+ *   Input         input
+ *   ButtonIconic  buttonIconic
  *     Icon        icon2
  *
  * @example

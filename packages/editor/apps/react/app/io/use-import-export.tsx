@@ -1,7 +1,6 @@
 "use client"
 
 import { useExportStatusStore } from "@app/io/export-status-store"
-import { useWorkspaceRecord } from "@app/persistence/hooks/use-workspace-record"
 import { linkExportedFolder } from "@app/project/hooks/use-project-link"
 import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
@@ -33,12 +32,12 @@ import type { ExportOptions } from "@seldon/factory/export/types"
 
 export function useImportExport() {
   const workspaceId = useWorkspaceId()
-  const { record } = useWorkspaceRecord(workspaceId)
-  const workspaceName = record?.name ?? "workspace"
   const { dispatch } = useWorkspace()
   const { selection, selectedNode } = useSelection()
   const { workspace } = useWorkspace()
   const addToast = useAddToast()
+
+  const workspaceName = workspace.metadata.label || "workspace"
 
   const exportWorkspaceToFile = useCallback(async () => {
     const blob = new Blob([JSON.stringify(orderWorkspaceNodeKeys(workspace), null, 2)], {
@@ -48,16 +47,6 @@ export function useImportExport() {
 
     if (!name) return
     triggerDownload(blob, `${kebabCase(name)}.json`)
-  }, [workspace, workspaceName])
-
-  const exportCompressedWorkspaceToFile = useCallback(async () => {
-    const blob = new Blob([JSON.stringify(orderWorkspaceNodeKeys(workspace))], {
-      type: "application/json",
-    })
-    const name = prompt("Enter name for your compressed file", workspaceName) ?? workspaceName
-
-    if (!name) return
-    triggerDownload(blob, `${kebabCase(name)}.min.json`)
   }, [workspace, workspaceName])
 
   const exportSelectionToClipboard = useCallback(async () => {
@@ -221,7 +210,6 @@ export function useImportExport() {
     importWorkspace,
     importWeb,
     exportWorkspaceToFile,
-    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     exportToFolder,

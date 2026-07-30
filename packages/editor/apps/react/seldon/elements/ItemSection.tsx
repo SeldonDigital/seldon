@@ -56,6 +56,7 @@ const sdn: ItemSectionProps = {
 
   formControlCombobox: {
     className: "sdn-form-control sdn-form-control-combobox--gqrl",
+    "data-seldon-ref": "sectionRow",
   },
   textLabel: {
     children: "Section Name",
@@ -71,6 +72,7 @@ const sdn: ItemSectionProps = {
     icon: "material-add",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--0qvc",
+    "data-seldon-ref": "sectionAddIcon",
   },
 
   buttonIconic3: {
@@ -81,6 +83,7 @@ const sdn: ItemSectionProps = {
     icon: "seldon-more",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--0qvc",
+    "data-seldon-ref": "sectionActionsIcon",
   },
 }
 
@@ -94,12 +97,12 @@ const sdn: ItemSectionProps = {
  * Structure:
  *   ButtonIconic         buttonIconic         -> sectionDisclosure
  *     Icon               icon                 -> sectionDisclosureIcon
- *   FormControlCombobox  formControlCombobox
+ *   FormControlCombobox  formControlCombobox  -> sectionRow
  *     TextLabel          textLabel            -> sectionLabel
  *   ButtonIconic         buttonIconic2        -> sectionAdd
- *     Icon               icon2
+ *     Icon               icon2                -> sectionAddIcon
  *   ButtonIconic         buttonIconic3        -> sectionActions
- *     Icon               icon3
+ *     Icon               icon3                -> sectionActionsIcon
  *
  * @example
  * ```tsx

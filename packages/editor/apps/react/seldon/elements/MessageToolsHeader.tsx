@@ -15,12 +15,12 @@ import { HTMLAttributes } from "react"
 
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame, FrameProps } from "../frames/Frame"
-import { Icon, IconProps } from "../primitives/Icon"
+import { IconProps } from "../primitives/Icon"
 import { TextDescription, TextDescriptionProps } from "../primitives/TextDescription"
 import { combineClassNames } from "../utils/class-name"
 import { SeldonRefs, mergeOptionalSlot, mergeSlot } from "../utils/merge-slot"
 
-export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
+export interface MessageToolsHeaderProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: SeldonRefs
 
@@ -28,16 +28,12 @@ export interface MessageToolsProps extends HTMLAttributes<HTMLElement> {
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   textDescription?: TextDescriptionProps | null
-
-  frame2?: FrameProps | null
-  icon2?: IconProps | null
-  textDescription2?: TextDescriptionProps | null
 }
 
 //
 // Default property values
 //
-const sdn: MessageToolsProps = {
+const sdn: MessageToolsHeaderProps = {
   "aria-hidden": "false",
   frame: {
     wrapperElement: "div",
@@ -46,35 +42,23 @@ const sdn: MessageToolsProps = {
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--iklu",
+    "data-seldon-ref": "hariToolsToggle",
   },
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--bmas",
+    "data-seldon-ref": "hariToolsChevron",
   },
   textDescription: {
     children: "Tools Applied",
     className: "sdn-text-description sdn-text-description--71gg",
-  },
-
-  frame2: {
-    wrapperElement: "div",
-    "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--rstc",
-    "data-seldon-ref": "tool",
-  },
-  icon2: {
-    icon: "material-build",
-    className: "sdn-icon sdn-icon--9ouj",
-  },
-  textDescription2: {
-    children: "Tool",
-    className: "sdn-text-description sdn-text-description--hqun",
+    "data-seldon-ref": "hariToolsLabel",
   },
 }
 
 /**
- * Message: MessageTools
+ * Message: MessageToolsHeader
  * Level: Element
  * Intent: Transcript message block for an AI chat. Renders one turn piece: a plain text block, a user or assistant message, reasoning, tool activity, an outcome summary, an error, or a status line.
  * Tags: message, chat, transcript, ai, element, text, bubble
@@ -82,57 +66,41 @@ const sdn: MessageToolsProps = {
  *
  * Structure:
  *   Frame              frame
- *     ButtonIconic     buttonIconic
- *       Icon           icon
- *     TextDescription  textDescription
- *   Frame              frame2            -> tool
- *     Icon             icon2
- *     TextDescription  textDescription2
+ *     ButtonIconic     buttonIconic     -> hariToolsToggle
+ *       Icon           icon             -> hariToolsChevron
+ *     TextDescription  textDescription  -> hariToolsLabel
  *
  * @example
  * ```tsx
- * <MessageTools
+ * <MessageToolsHeader
  *   aria-hidden="false"
  *   frame="{}"
  *   buttonIconic={() => {}}
  *   icon="material-star"
  *   textDescription="{}"
- *   frame2="{}"
  * />
  * ```
  */
-export function MessageTools({
+export function MessageToolsHeader({
   className = "",
   frame,
   buttonIconic,
   icon,
   textDescription,
 
-  frame2,
-  icon2,
-  textDescription2,
-
   children,
   seldonRefs,
   ...props
-}: MessageToolsProps) {
-  const messageToolsClassName = combineClassNames("sdn-message-tools", className)
+}: MessageToolsHeaderProps) {
+  const messageToolsHeaderClassName = combineClassNames("sdn-message-tools-header", className)
 
   const frameProps = mergeSlot(sdn.frame, frame, seldonRefs)
   const buttonIconicProps = mergeOptionalSlot(sdn.buttonIconic, buttonIconic, seldonRefs)
   const iconProps = mergeSlot(sdn.icon, icon, seldonRefs)
   const textDescriptionProps = mergeOptionalSlot(sdn.textDescription, textDescription, seldonRefs)
 
-  const frame2Props = mergeSlot(sdn.frame2, frame2, seldonRefs)
-  const icon2Props = mergeOptionalSlot(sdn.icon2, icon2, seldonRefs)
-  const textDescription2Props = mergeOptionalSlot(
-    sdn.textDescription2,
-    textDescription2,
-    seldonRefs,
-  )
-
   return (
-    <Frame className={messageToolsClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
+    <Frame className={messageToolsHeaderClassName} aria-hidden={sdn["aria-hidden"]} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -140,10 +108,6 @@ export function MessageTools({
           <Frame {...frameProps}>
             {buttonIconicProps !== null && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
             {textDescriptionProps !== null && <TextDescription {...textDescriptionProps} />}
-          </Frame>
-          <Frame {...frame2Props}>
-            {icon2Props !== null && <Icon {...icon2Props} />}
-            {textDescription2Props !== null && <TextDescription {...textDescription2Props} />}
           </Frame>
         </>
       )}

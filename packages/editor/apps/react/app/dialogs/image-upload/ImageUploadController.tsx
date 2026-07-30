@@ -116,7 +116,6 @@ function ImageUploadDialog({
   const confirmText = status === "pending" ? "Uploading..." : "Use image"
 
   const barHandle = { onPointerDown: startDrag, style: styles.dragHandle }
-  const dialogTitle = { children: "Choose image" }
 
   const clearButton = { onClick: onClear }
   const clearLabel = { children: "Clear" }
@@ -124,6 +123,7 @@ function ImageUploadDialog({
   const cancelLabel = { children: "Cancel" }
   const confirmLabel = { children: confirmText }
   const seldonRefs = {
+    dialogTitle: { children: "Choose image" },
     dialogContent: { style: styles.content, children: content },
     dialogCancel: { onClick: onClose },
     dialogConfirm: { onClick: onSave },
@@ -149,7 +149,7 @@ function ImageUploadDialog({
       <PanelDialog
         data-testid="image-upload-dialog"
         bar={barHandle}
-        textTitle={dialogTitle}
+        textTitle={{}}
         comboboxFieldSearch={null}
         button={clearButton}
         textLabel={clearLabel}

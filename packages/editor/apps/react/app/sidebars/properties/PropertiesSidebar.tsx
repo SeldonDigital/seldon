@@ -95,7 +95,7 @@ export function PropertiesSidebar() {
   )
 
   // The header State menu selects the active interaction state for the selected
-  // node's board tree. Its trigger is the generated `menuState` ButtonMenu; the
+  // node's board tree. Its trigger is the generated `boardState` ButtonMenu; the
   // dropdown anchors to it through the shared MenuController.
   const stateMenu = useBoardStateMenu()
   const [stateMenuOpen, setStateMenuOpen] = useState(false)
@@ -106,12 +106,6 @@ export function PropertiesSidebar() {
   }, [])
   const closeStateMenu = useCallback(() => setStateMenuOpen(false), [])
 
-  const menuStateSlot = {
-    onClick: openStateMenu,
-    disabled: stateMenu.disabled,
-    "data-testid": "board-state-trigger",
-  }
-  const stateLabelSlot = { children: stateMenu.label }
   const stateMenuController = (
     <MenuController
       open={stateMenuOpen}
@@ -122,16 +116,32 @@ export function PropertiesSidebar() {
     />
   )
 
+  // Drive every header slot through its stable workspace ref. The filter field,
+  // the State trigger, and its label are conditional slots, so they keep a
+  // positional `{}` enabler to render; their data flows through `seldonRefs`.
+  // Both the no-selection shell and the tree share these; only the tree adds
+  // `propertiesTree`.
+  const seldonRefs: Record<string, Record<string, unknown>> = {
+    propertyFilterField: { ...filter.comboboxField },
+    propertyFilter: { ...filter.input },
+    propertyFilterClear: { ...filter.buttonIconic },
+    boardState: {
+      onClick: openStateMenu,
+      disabled: stateMenu.disabled,
+      "data-testid": "board-state-trigger",
+    },
+    boardStateLabel: { children: stateMenu.label },
+  }
+
   if (deferredState.kind === "empty") {
     return (
       <>
         <SidebarProperties
           data-testid="properties-sidebar"
-          comboboxFieldFilter={filter.comboboxField}
-          input={filter.input}
-          buttonIconic={filter.buttonIconic}
-          buttonMenu={menuStateSlot}
-          textLabel={stateLabelSlot}
+          comboboxFieldFilter={{}}
+          buttonMenu={{}}
+          textLabel={{}}
+          seldonRefs={seldonRefs}
           style={styles.sidebar}
         />
         {stateMenuController}
@@ -139,22 +149,18 @@ export function PropertiesSidebar() {
     )
   }
 
-  const seldonRefs = {
-    propertiesContainer: {
-      style: styles.frame,
-      children: <PropertiesTree {...deferredState.treeProps} sections={sections} />,
-    },
+  seldonRefs.propertiesTree = {
+    style: styles.frame,
+    children: <PropertiesTree {...deferredState.treeProps} sections={sections} />,
   }
 
   return (
     <>
       <SidebarProperties
         data-testid="properties-sidebar"
-        comboboxFieldFilter={filter.comboboxField}
-        input={filter.input}
-        buttonIconic={filter.buttonIconic}
-        buttonMenu={menuStateSlot}
-        textLabel={stateLabelSlot}
+        comboboxFieldFilter={{}}
+        buttonMenu={{}}
+        textLabel={{}}
         seldonRefs={seldonRefs}
         style={styles.sidebar}
       />

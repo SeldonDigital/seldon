@@ -5,7 +5,7 @@ import { seldonBase } from "../../../../eslint.config.base.mjs"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =
-  "app/ and lib/ should render Views only. Move raw DOM markup into a reusable View (seldon/ for design components, lib/ for editor chrome), or mark a genuinely hand-authored view as *.bespoke.*, and consume it from there."
+  "app/ should render Views only. Move raw DOM markup into a reusable View in seldon/, or mark a genuinely hand-authored view as *.bespoke.*, and consume it from there."
 
 export default defineConfig([
   globalIgnores(["seldon/**", "dist/**", "node_modules/**"]),
@@ -34,15 +34,6 @@ export default defineConfig([
       "no-console": "off",
     },
   },
-  // The AI turn logger is a purpose-built debug console gated behind the Dev
-  // menu's AI Logging toggle. It intentionally uses console.log and
-  // console.table to render structured, collapsible turn output.
-  {
-    files: ["lib/hooks/ai-chat/log-turn.ts"],
-    rules: {
-      "no-console": "off",
-    },
-  },
   // ViewModel hooks authored as .tsx (e.g. context providers) may call Model
   // services; the service-import rule targets view components only.
   {
@@ -51,12 +42,12 @@ export default defineConfig([
       "no-restricted-imports": "off",
     },
   },
-  // View boundary: app/ and lib/ views are binding shells. A view that authors
-  // raw DOM markup or framer-motion markup is bespoke and must be named
-  // *.bespoke.*. Hooks, helpers, and use-* modules are logic, not views, so they
-  // are exempt. Bespoke views opt out entirely.
+  // View boundary: app/ views are binding shells. A view that authors raw DOM
+  // markup or framer-motion markup is bespoke and must be named *.bespoke.*.
+  // Hooks, helpers, and use-* modules are logic, not views, so they are exempt.
+  // Bespoke views opt out entirely.
   {
-    files: ["app/**/*.tsx", "lib/**/*.tsx"],
+    files: ["app/**/*.tsx"],
     ignores: ["**/*.bespoke.*", "**/hooks/**", "**/helpers/**", "**/use-*.tsx"],
     rules: {
       "no-restricted-syntax": [

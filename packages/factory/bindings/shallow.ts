@@ -54,6 +54,7 @@ export async function scanBindingsShallow(
     scannedFiles,
     refs,
     slots: {},
+    warnings: [],
   }
 }
 

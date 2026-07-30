@@ -29,7 +29,7 @@ indirectly) * any machine learning or artificial intelligence system without wri
  * Structure:
  *   ButtonIconic    buttonIconic   -> nodeDisclosure
  *     Icon          icon           -> nodeDisclosureIcon
- *   ComboboxField   comboboxField
+ *   ComboboxField   comboboxField  -> nodeField
  *     Icon          icon2          -> nodeIcon
  *     Input         input          -> nodeLabel
  *     ButtonIconic  buttonIconic2  -> nodeDisplay
@@ -87,6 +87,7 @@ const sdn: Record<string, any> = {
   },
   comboboxField: {
     className: "sdn-combobox-field sdn-combobox-field--lmje",
+    "data-seldon-ref": "nodeField",
   },
   icon2: {
     icon: "seldon-component",

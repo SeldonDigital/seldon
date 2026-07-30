@@ -28,10 +28,10 @@ indirectly) * any machine learning or artificial intelligence system without wri
  *
  * Structure:
  *   Frame              frame
- *     Icon             icon
- *     TextDescription  textDescription
- *   ButtonSimple       buttonSimple
- *     TextLabel        textLabel
+ *     Icon             icon             -> hariErrorIcon
+ *     TextDescription  textDescription  -> hariErrorText
+ *   ButtonSimple       buttonSimple     -> hariErrorRetry
+ *     TextLabel        textLabel        -> hariErrorRetryLabel
  *
  * @example
  * ```vue
@@ -81,17 +81,21 @@ const sdn: Record<string, any> = {
   icon: {
     icon: "material-error",
     className: "sdn-icon sdn-icon--gm8j",
+    "data-seldon-ref": "hariErrorIcon",
   },
   textDescription: {
     children: "Something went wrong",
     className: "sdn-text-description sdn-text-label--lbxv",
+    "data-seldon-ref": "hariErrorText",
   },
   buttonSimple: {
     className: "sdn-button-simple sdn-button-iconic--iklu",
+    "data-seldon-ref": "hariErrorRetry",
   },
   textLabel: {
     children: "Retry",
     className: "sdn-text-label sdn-text-label--aftu",
+    "data-seldon-ref": "hariErrorRetryLabel",
   },
 }
 

@@ -203,7 +203,7 @@ Contact:
 
 - [Core](./README.md)
 - [Factory](../factory/README.md)
-- [Editor](../editor/README.md)
+- [Editor](../editor/shared/README.md)
 - [Official Website](https://seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 

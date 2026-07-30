@@ -3,6 +3,7 @@ import {
   getLinkPermission,
   getProjectLink,
   isProjectLinkSupported,
+  pickComponentsFolder,
   requestLinkPermission,
   resolveComponentsDirectory,
   saveProjectLink,
@@ -10,7 +11,10 @@ import {
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
-import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
+import type {
+  LinkWorkspaceOutcome,
+  ProjectLink,
+} from "@seldon/editor/lib/storage/project-link-store"
 
 /**
  * Tracks the folder the open workspace was last exported into, so the editor can
@@ -53,19 +57,12 @@ export const useProjectLinkStore = defineStore("project-link", () => {
     permission.value = await getLinkPermission(stored)
   }
 
-  /**
-   * Records the components folder an export just wrote, which is the moment the
-   * link becomes true. The handle is stored for reading only.
-   */
-  async function linkExportedFolder(
+  /** Stores a link and makes it the current one. */
+  async function saveLink(
     id: string,
-    root: FileSystemDirectoryHandle,
+    directory: FileSystemDirectoryHandle,
     componentsFolder: string,
   ): Promise<void> {
-    const directory = await resolveComponentsDirectory(root, componentsFolder)
-
-    if (!directory) return
-
     const next: ProjectLink = {
       directory,
       componentsFolder,
@@ -77,6 +74,46 @@ export const useProjectLinkStore = defineStore("project-link", () => {
     workspaceId.value = id
     link.value = next
     permission.value = await getLinkPermission(next)
+  }
+
+  /**
+   * Records the components folder an export just wrote, which is the moment the
+   * link becomes true. The handle is stored for reading only.
+   *
+   * Throws when the folder the export just named cannot be opened. The export
+   * itself has already succeeded by then, and a link the editor cannot make is
+   * worth saying out loud, because every ref card stays empty without it.
+   */
+  async function linkExportedFolder(
+    id: string,
+    root: FileSystemDirectoryHandle,
+    componentsFolder: string,
+  ): Promise<void> {
+    const directory = await resolveComponentsDirectory(root, componentsFolder)
+
+    if (!directory) {
+      throw new Error(`Export finished, but ${componentsFolder} could not be opened to link it.`)
+    }
+
+    await saveLink(id, directory, componentsFolder)
+  }
+
+  /**
+   * Links a workspace to a components folder the user picks.
+   *
+   * This is the way a link gets made when the export did not make one, such as an
+   * export run from the command line or a project that already holds generated
+   * components. The pick may be the components folder or a project root above it,
+   * and a search settles which.
+   */
+  async function linkWorkspaceFolder(id: string): Promise<LinkWorkspaceOutcome> {
+    const { match, problem } = await pickComponentsFolder()
+
+    if (!match) return { ok: false, message: problem }
+
+    await saveLink(id, match.directory, match.path)
+
+    return { ok: true, message: `Linked ${match.path}.` }
   }
 
   /**
@@ -110,6 +147,7 @@ export const useProjectLinkStore = defineStore("project-link", () => {
     status,
     load,
     linkExportedFolder,
+    linkWorkspaceFolder,
     grantPermission,
     unlink,
   }

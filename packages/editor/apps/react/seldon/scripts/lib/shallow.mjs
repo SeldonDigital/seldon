@@ -54,6 +54,7 @@ export async function scanBindingsShallow(source, config) {
     scannedFiles,
     refs,
     slots: {},
+    warnings: [],
   }
 }
 function isSupportedPath(path) {

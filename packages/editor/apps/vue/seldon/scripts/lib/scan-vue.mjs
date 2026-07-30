@@ -17,7 +17,13 @@ import ts from "typescript"
 import { isComponentImport } from "./config.mjs"
 import { buildDeclarationIndex } from "./declaration-index.mjs"
 import { describeExpression } from "./describe-expression.mjs"
-import { readLiteralEntries, resolveObjectEntries } from "./resolve-object-literal.mjs"
+import {
+  countDeclarations,
+  readLiteralEntries,
+  resolveObjectEntries,
+  resolvePropertyEntries,
+  resolveReturnedEntries,
+} from "./resolve-object-literal.mjs"
 
 /** The bound attribute that carries a refs map, written kebab-case in a template. */
 const REFS_ATTRIBUTE = "seldonRefs"
@@ -32,7 +38,7 @@ const NON_SLOT_ATTRIBUTES = new Set(["class", "className", "style", "key", "ref"
  * absolute because the block content is padded to its position in the file.
  */
 export function scanVueFile(path, text, config) {
-  const result = { refs: [], slots: [] }
+  const result = { refs: [], slots: [], warnings: [] }
   const { descriptor } = parse(text, { filename: path })
   const templateAst = descriptor.template?.ast
   if (!templateAst) return result
@@ -91,6 +97,15 @@ function collectElement(node, tag, path, script, index, result) {
     if (!name) continue
     if (name === REFS_ATTRIBUTE) {
       if (!code) continue
+      const ambiguous = getAmbiguousName(code, script)
+      if (ambiguous) {
+        result.warnings.push({
+          file: path,
+          line,
+          name: ambiguous.name,
+          declarations: ambiguous.declarations,
+        })
+      }
       for (const entry of resolveEntriesOf(code, script)) {
         result.refs.push({
           ref: entry.name,
@@ -125,19 +140,52 @@ function collectElement(node, tag, path, script, index, result) {
 }
 /**
  * Reads the entries of the object a bound expression names. An identifier is
- * resolved through the script, which is how every refs map in a template is
+ * resolved through the script, which is how a map for a single component is
  * written, and an inline literal is read in place.
+ *
+ * A repeated row cannot hoist a local, because a template has nowhere to declare
+ * one per row. It either calls a helper for the row or reads the map off the row
+ * it renders, so a call resolves through the function it names and a property
+ * access resolves through the property name.
  */
 function resolveEntriesOf(code, script) {
   const parsed = parseExpression(code)
   if (!parsed) return []
-  if (ts.isIdentifier(parsed.expression)) {
-    return resolveObjectEntries(parsed.expression.text, script)
+  const { expression } = parsed
+  if (ts.isIdentifier(expression)) {
+    return resolveObjectEntries(expression.text, script)
   }
-  if (ts.isObjectLiteralExpression(parsed.expression)) {
-    return readLiteralEntries(parsed.expression, parsed.sourceFile)
+  if (ts.isObjectLiteralExpression(expression)) {
+    return readLiteralEntries(expression, parsed.sourceFile)
+  }
+  if (ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)) {
+    return resolveReturnedEntries(expression.expression.text, script)
+  }
+  if (ts.isPropertyAccessExpression(expression)) {
+    return resolvePropertyEntries(expression.name.text, script)
   }
   return []
+}
+/**
+ * The name a refs map resolves through when the script declares that name more than
+ * once, which is what makes the entries reported for it unreliable.
+ *
+ * Covers the identifier and the helper call, where resolution keeps the first
+ * declaration and drops the rest. A property path is left out, because a row map
+ * read under a property gathers every literal on purpose.
+ */
+function getAmbiguousName(code, script) {
+  const parsed = parseExpression(code)
+  if (!parsed) return null
+  const { expression } = parsed
+  const name = ts.isIdentifier(expression)
+    ? expression.text
+    : ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)
+      ? expression.expression.text
+      : null
+  if (!name) return null
+  const declarations = countDeclarations(name, script)
+  return declarations > 1 ? { name, declarations } : null
 }
 function getPropBindings(value, script, index) {
   if (!ts.isObjectLiteralExpression(value)) return []

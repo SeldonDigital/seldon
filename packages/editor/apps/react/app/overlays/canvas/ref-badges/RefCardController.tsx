@@ -1,3 +1,4 @@
+import { useRefBindingsStatus } from "@app/refs/use-ref-bindings"
 import { WindowSurface } from "@app/windows/WindowSurface.bespoke"
 import { MIN_WINDOW_SIZE, useDraggableWindow } from "@app/windows/hooks/use-draggable-window"
 import { MessageRefController } from "@seldon/components/elements/MessageRefController"
@@ -49,7 +50,12 @@ interface RefCardControllerProps {
  * the chrome root, and draws the resize handles.
  */
 export function RefCardController({ binding, position, onClose, cardRef }: RefCardControllerProps) {
-  const { note, views, controllers } = useMemo(() => describeBinding(binding), [binding])
+  const status = useRefBindingsStatus()
+
+  const { viewNote, note, views, controllers } = useMemo(
+    () => describeBinding(binding, status),
+    [binding, status],
+  )
 
   const { x, y, width, height, onResizeStart, onResize, getRect, moveControls, dragConstraints } =
     useDraggableWindow({
@@ -83,10 +89,16 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
   // The view section has one Text per field rather than one per component, so several
   // components that expose the same ref stack as lines inside each Text and stay lined
   // up across the three.
-  const viewLines = views.map((view) => toViewLine(binding.ref, view)).join("\n")
+  //
+  // With no views the first Text carries the note instead, and the other two stay off.
+  // A path and a condition have nothing to report about a view that is not there, and
+  // leaving all three off would collapse the section to a bare heading.
+  const viewLines =
+    views.length === 0 ? viewNote : views.map((view) => toViewLine(binding.ref, view)).join("\n")
   const pathLines = views.map((view) => view.file).join("\n")
   const conditionLines = views.map((view) => view.condition).join("\n")
-  const viewSlot = views.length === 0 ? null : {}
+  const viewSlot = viewLines === null ? null : {}
+  const viewFieldSlot = views.length === 0 ? null : {}
 
   const cardRefs = {
     refCardView: { children: viewLines, style: styles.multiline },
@@ -118,8 +130,8 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
         seldonRefs={cardRefs}
         textLabel2={{}}
         text={viewSlot}
-        text2={viewSlot}
-        text3={viewSlot}
+        text2={viewFieldSlot}
+        text3={viewFieldSlot}
         textLabel3={{}}
       />
     </WindowSurface>
@@ -137,23 +149,31 @@ function toViewLine(ref: string, view: BindingViewDescription): string {
 }
 
 /**
- * A row per code snippet drives the ref, or one row carrying a note when nothing does.
+ * A row per code snippet that drives the ref, under a note when there is one to make.
+ *
+ * The note leads rather than replaces, because a note and controllers can both apply.
+ * Files that disagree on their target still report consumers, and the reader needs the
+ * warning before reading the rows it casts doubt on.
  */
 function buildControllerRows(
   note: string | null,
   controllers: BindingControllerDescription[],
 ): ReactNode {
-  if (controllers.length === 0) {
-    if (!note) return null
-
-    const noteRefs = { refCardControllerName: { children: note } }
-
-    return <MessageRefController seldonRefs={noteRefs} text={{}} />
-  }
-
-  return controllers.map((controller, index) =>
+  const rows = controllers.map((controller, index) =>
     joinControllerRow(controller, index, controllers.length),
   )
+
+  if (note === null) return rows
+
+  return [buildNoteRow(note, controllers.length > 0), ...rows]
+}
+
+/** The note on a row of its own, ruled off from any controllers under it. */
+function buildNoteRow(note: string, hasControllers: boolean): ReactNode {
+  const noteRefs = { refCardControllerName: { children: note } }
+  const separator = hasControllers ? {} : null
+
+  return <MessageRefController key="note" seldonRefs={noteRefs} text={{}} hr={separator} />
 }
 
 function joinControllerRow(

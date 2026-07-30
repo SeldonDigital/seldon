@@ -66,14 +66,19 @@ const barHandle = computed(() => ({
   onPointerdown: startDrag,
   style: styles.dragHandle,
 }))
-const dialogTitle = { children: "Choose image" }
 const clearButton = { onClick: clear }
 const clearLabel = { children: "Clear" }
-const cancelButton = { onClick: close }
 const cancelIcon = { icon: "material-close" }
 const cancelLabel = { children: "Cancel" }
-const confirmButton = { onClick: save }
 const confirmLabel = computed(() => ({ children: confirmText.value }))
+
+// Every value and handler reaches its slot by the slot's baked `data-seldon-ref`
+// name, so moving or reordering a node in the design keeps this wiring intact.
+const seldonRefs = {
+  dialogTitle: { children: "Choose image" },
+  dialogCancel: { onClick: close },
+  dialogConfirm: { onClick: save },
+}
 </script>
 
 <template>
@@ -97,16 +102,15 @@ const confirmLabel = computed(() => ({ children: confirmText.value }))
     <PanelDialog
       data-testid="image-upload-dialog"
       :bar="barHandle"
-      :text-title="dialogTitle"
+      :seldon-refs="seldonRefs"
+      :text-title="{}"
       :combobox-field-search="null"
-      :frame2="{}"
       :button="clearButton"
       :text-label="clearLabel"
-      :frame3="{}"
-      :button4="cancelButton"
+      :button4="{}"
       :icon6="cancelIcon"
       :text-label4="cancelLabel"
-      :button5="confirmButton"
+      :button5="{}"
       :text-label5="confirmLabel"
       :style="styles.dialog"
     >

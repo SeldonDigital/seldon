@@ -15,6 +15,8 @@ import type { HariStatus, HariTurn } from "@app/ai/use-ai-chat"
 import type { MenuEntry } from "@app/menus"
 import type { SelectionScope } from "@app/workspace/hooks/use-selection-scope"
 import type { ThinkingLevelOption, ThinkingMenuOption } from "@seldon/ai"
+import type { PanelHariProps } from "@seldon/components/modules/PanelHari"
+import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
 import type { AgentConfig } from "@seldon/editor/lib/ai/run-agent-chat"
 import type {
   CSSProperties,
@@ -32,6 +34,8 @@ const HARI_INITIAL_HEIGHT = 480
 
 /** Class that renders a header ButtonToggle in its activated (on) state. */
 const ACTIVE_TOGGLE_CLASS = "sdn-state-activated"
+
+const COMPOSER_PLACEHOLDER = "Describe what you want to do..."
 
 /**
  * The button label for a thinking value: the matching option label when the
@@ -175,7 +179,6 @@ function Hari({
   const pinnedToBottomRef = useRef(true)
 
   const isPending = status === "pending"
-  const placeholder = "Describe what you want to do..."
   const controlsDisabled = config === null
   const modelValue = model ?? ""
   const thinkingValue = thinkingLevel ?? ""
@@ -304,68 +307,121 @@ function Hari({
     [turns, send],
   )
 
-  // PanelHari gates each slot on its prop being present, so every wired slot is
-  // passed here. The slots' baked `data-seldon-ref` names (hariClamp, hariTools,
-  // hariOutcome, hariClose, turns, hariInput, hariModel, hariThinking,
-  // hariSelection, hariSend) ride their sdn defaults and stay on the rendered DOM
-  // as stable anchors. `sdn-state-activated` renders a toggle in its on state.
-  const barSlot = { onPointerDown: startDrag, style: styles.dragHandle }
-  const titleSlot = { children: "Hari" }
-  const clampToggleSlot = {
-    onClick: toggleNoThink,
-    className: noThink ? ACTIVE_TOGGLE_CLASS : undefined,
-    "aria-pressed": noThink,
-    title: "Clamp Thinking",
-    "data-testid": "ai-chat-clamp",
-  }
-  const toolsToggleSlot = {
-    onClick: toggleShowTools,
-    className: showTools ? ACTIVE_TOGGLE_CLASS : undefined,
-    "aria-pressed": showTools,
-    title: "Show Tools",
-    "data-testid": "ai-chat-tools",
-  }
-  const outcomeToggleSlot = {
-    onClick: toggleShowOutcome,
-    className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined,
-    "aria-pressed": showOutcome,
-    title: "Show Outcome",
-    "data-testid": "ai-chat-outcome",
-  }
-  const resetSlot = {
-    onClick: onReset,
-    title: "Clear",
-    "data-testid": "ai-chat-reset",
-  }
-  const closeSlot = { onClick: close }
-  const transcriptSlot = {
-    children: transcript,
-    ref: transcriptRef,
-    onScroll: onTranscriptScroll,
-  }
-  const inputSlot = {
-    value: draft,
-    onChange: onDraftChange,
-    onKeyDown: handleKeyDown,
-    placeholder,
-    autoFocus: true,
-  }
-  const modelSlot = {
-    onClick: openModelMenu,
-    disabled: controlsDisabled,
-    "data-testid": "ai-chat-model",
-  }
-  const modelLabelSlot = { children: modelButtonLabel }
-  const thinkingSlot = {
-    onClick: openThinkingMenu,
-    disabled: thinkingDisabled,
-    "data-testid": "ai-chat-thinking",
-  }
-  const thinkingLabelSlot = { children: thinkingButtonLabel }
-  const basisChipSlot = {}
-  const basisLabelSlot = { children: SCOPE_LABELS[scope] }
-  const sendSlot = { onClick: isPending ? stop : submit }
-  const sendIconSlot = isPending ? { icon: "material-stop" as const } : undefined
+  // Every value and handler reaches its slot by the slot's baked
+  // `data-seldon-ref` name, so moving or reordering a node in the design keeps
+  // this wiring intact. `sdn-state-activated` renders a toggle in its on state.
+  const seldonRefs = useMemo<SeldonRefs>(
+    () => ({
+      hariBar: { onPointerDown: startDrag, style: styles.dragHandle },
+      hariOutcome: {
+        onClick: toggleShowOutcome,
+        className: showOutcome ? ACTIVE_TOGGLE_CLASS : undefined,
+        "aria-pressed": showOutcome,
+        title: "Show Outcome",
+        "data-testid": "ai-chat-outcome",
+      },
+      hariTools: {
+        onClick: toggleShowTools,
+        className: showTools ? ACTIVE_TOGGLE_CLASS : undefined,
+        "aria-pressed": showTools,
+        title: "Show Tools",
+        "data-testid": "ai-chat-tools",
+      },
+      hariClamp: {
+        onClick: toggleNoThink,
+        className: noThink ? ACTIVE_TOGGLE_CLASS : undefined,
+        "aria-pressed": noThink,
+        title: "Clamp Thinking",
+        "data-testid": "ai-chat-clamp",
+      },
+      hariReset: {
+        onClick: onReset,
+        title: "Clear",
+        "data-testid": "ai-chat-reset",
+      },
+      hariClose: { onClick: close },
+
+      hariTurns: {
+        children: transcript,
+        ref: transcriptRef,
+        onScroll: onTranscriptScroll,
+      },
+
+      hariInput: {
+        value: draft,
+        onChange: onDraftChange,
+        onKeyDown: handleKeyDown,
+        placeholder: COMPOSER_PLACEHOLDER,
+        autoFocus: true,
+      },
+
+      hariModel: {
+        onClick: openModelMenu,
+        disabled: controlsDisabled,
+        "data-testid": "ai-chat-model",
+      },
+      hariModelLabel: { children: modelButtonLabel },
+      hariThinking: {
+        onClick: openThinkingMenu,
+        disabled: thinkingDisabled,
+        "data-testid": "ai-chat-thinking",
+      },
+      hariThinkingLabel: { children: thinkingButtonLabel },
+      hariSelectionLabel: { children: SCOPE_LABELS[scope] },
+      hariSend: { onClick: isPending ? stop : submit },
+      // An empty override leaves the send arrow the design bakes in.
+      hariSendIcon: isPending ? { icon: "material-stop" } : {},
+    }),
+    [
+      startDrag,
+      showOutcome,
+      toggleShowOutcome,
+      showTools,
+      toggleShowTools,
+      noThink,
+      toggleNoThink,
+      onReset,
+      close,
+      transcript,
+      onTranscriptScroll,
+      draft,
+      onDraftChange,
+      handleKeyDown,
+      controlsDisabled,
+      openModelMenu,
+      modelButtonLabel,
+      thinkingDisabled,
+      openThinkingMenu,
+      thinkingButtonLabel,
+      scope,
+      isPending,
+      stop,
+      submit,
+    ],
+  )
+
+  // PanelHari gates its opt-in slots on a prop being present, so each one that
+  // the refs above drive is turned on here. The design supplies its own copy.
+  const slots = useMemo<Partial<PanelHariProps>>(
+    () => ({
+      textTitle: {},
+      buttonToggle: {},
+      buttonToggle2: {},
+      buttonToggle3: {},
+      buttonIconic2: {},
+
+      textarea: {},
+
+      buttonMenu: {},
+      textLabel: {},
+      buttonMenu2: {},
+      textLabel2: {},
+      chip: {},
+      textLabel3: {},
+      buttonIconic3: {},
+    }),
+    [],
+  )
 
   return (
     <WindowSurface
@@ -384,26 +440,7 @@ function Hari({
       minWidth={minWidth}
       minHeight={minHeight}
     >
-      <PanelHari
-        style={styles.dialog}
-        bar={barSlot}
-        textTitle={titleSlot}
-        buttonToggle={outcomeToggleSlot}
-        buttonToggle2={toolsToggleSlot}
-        buttonToggle3={clampToggleSlot}
-        buttonIconic={resetSlot}
-        buttonIconic2={closeSlot}
-        frame2={transcriptSlot}
-        textarea={inputSlot}
-        buttonMenu={modelSlot}
-        textLabel={modelLabelSlot}
-        buttonMenu2={thinkingSlot}
-        textLabel2={thinkingLabelSlot}
-        chip={basisChipSlot}
-        textLabel3={basisLabelSlot}
-        buttonIconic3={sendSlot}
-        icon8={sendIconSlot}
-      />
+      <PanelHari style={styles.dialog} {...slots} seldonRefs={seldonRefs} />
       <MenuController
         open={modelOpen}
         anchorRef={modelAnchor}

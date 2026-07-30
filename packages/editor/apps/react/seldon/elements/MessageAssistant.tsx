@@ -33,6 +33,7 @@ const sdn: MessageAssistantProps = {
   textDescription: {
     children: "Assistant message",
     className: "sdn-text-description sdn-text-description--welb",
+    "data-seldon-ref": "hariReplyText",
   },
 }
 
@@ -44,7 +45,7 @@ const sdn: MessageAssistantProps = {
  * Type: Custom
  *
  * Structure:
- *   TextDescription  textDescription
+ *   TextDescription  textDescription  -> hariReplyText
  *
  * @example
  * ```tsx

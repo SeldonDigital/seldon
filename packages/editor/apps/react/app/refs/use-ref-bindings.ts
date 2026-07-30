@@ -3,6 +3,14 @@ import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { collectNodeRefs } from "@seldon/editor/lib/refs/collect-node-refs"
 import { joinRefsAndBindings } from "@seldon/editor/lib/refs/join-refs-and-bindings"
+import {
+  MANIFEST_PATH,
+  NEEDS_PERMISSION_PROBLEM,
+  NOT_LINKED_PROBLEM,
+  NO_MANIFEST_PROBLEM,
+  NO_REGISTRY_PROBLEM,
+  REGISTRY_PATH,
+} from "@seldon/editor/lib/refs/linked-refs"
 import { readBindingsManifest } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import { readRefsRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import {
@@ -14,14 +22,11 @@ import {
 import { useEffect, useMemo } from "react"
 import { create } from "zustand"
 
+import type { RefBindingsStatus } from "@seldon/editor/lib/refs/describe-binding"
 import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import type { ValidatedBindings } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import type { ValidatedRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
-
-/** Both files sit under the linked components folder. */
-const REGISTRY_PATH = "refs/registry.json"
-const MANIFEST_PATH = "refs/bindings.json"
 
 /**
  * What was read from the linked project, held once for the whole editor.
@@ -49,30 +54,31 @@ const useStore = create<RefBindingsState>()(() => ({
 /**
  * Reads the refs registry and the binding manifest from the linked folder.
  *
- * Call this from a user gesture. A browser only re-grants a directory permission
- * during one, and the permission is requested here when it has lapsed.
+ * Prefer calling this from a user gesture. A standing folder grant needs none, so a
+ * workspace change reads on its own, but a lapsed grant can only be re-requested
+ * during a gesture and otherwise reports the permission problem instead.
  *
  * Returns whether both arrived. A partial read still keeps what it got: the
  * registry alone describes every view, which is worth showing even when no
  * manifest has been written yet.
  */
 export async function loadRefBindings(workspaceId: string): Promise<boolean> {
+  // Claimed before the first await, so a second caller sees the workspace already taken
+  // and stands down. The overlay reads on the gesture that turns it on and again when
+  // the workspace changes, and those two can land together.
+  useStore.setState({ workspaceId, loading: true })
+
   const link = await getProjectLink(workspaceId)
 
   if (!link) {
-    useStore.setState({
-      workspaceId,
-      problem: "No exported folder is linked to this workspace yet.",
-    })
+    useStore.setState({ loading: false, problem: NOT_LINKED_PROBLEM })
 
     return false
   }
 
-  useStore.setState({ workspaceId, loading: true })
-
   try {
     if (!(await hasReadPermission(link))) {
-      useStore.setState({ problem: "Reading the linked folder needs permission." })
+      useStore.setState({ problem: NEEDS_PERMISSION_PROBLEM })
 
       return false
     }
@@ -80,9 +86,7 @@ export async function loadRefBindings(workspaceId: string): Promise<boolean> {
     const registryText = await readLinkedTextFile(link, REGISTRY_PATH)
 
     if (registryText === null) {
-      useStore.setState({
-        problem: "No refs registry found in the linked folder. Export again to write one.",
-      })
+      useStore.setState({ problem: NO_REGISTRY_PROBLEM })
 
       return false
     }
@@ -99,11 +103,7 @@ export async function loadRefBindings(workspaceId: string): Promise<boolean> {
     const manifestText = await readLinkedTextFile(link, MANIFEST_PATH)
 
     if (manifestText === null) {
-      useStore.setState({
-        registry,
-        bindings: null,
-        problem: "No binding manifest found. Run the bindings script in your project to write one.",
-      })
+      useStore.setState({ registry, bindings: null, problem: NO_MANIFEST_PROBLEM })
 
       return false
     }
@@ -133,6 +133,20 @@ export function clearRefBindings(): void {
   useStore.setState({ registry: null, bindings: null, problem: null })
 }
 
+/**
+ * What the read produced, for a surface that reports one ref rather than the list.
+ *
+ * A selector rather than a slice of `useRefBindings`, because a card reporting one
+ * binding would otherwise re-collect every ref and re-run the join to reach two fields
+ * none of that work produces.
+ */
+export function useRefBindingsStatus(): RefBindingsStatus {
+  const problem = useStore((state) => state.problem)
+  const hasRegistry = useStore((state) => state.registry !== null)
+
+  return useMemo(() => ({ problem, hasRegistry }), [problem, hasRegistry])
+}
+
 /** Asks for the folder permission only when the standing grant has lapsed. */
 async function hasReadPermission(link: ProjectLink): Promise<boolean> {
   if ((await getLinkPermission(link)) === "granted") return true
@@ -154,11 +168,21 @@ export function useRefBindings() {
   const { status } = useProjectLink(workspaceId)
   const { registry, bindings, problem, loading, workspaceId: loadedFor } = useStore()
 
-  // What was read against one project says nothing about the next one.
+  // What was read against one project says nothing about the next one, so the old read
+  // goes and a fresh one takes its place. Reading again is the editor's job rather than
+  // the reader's, because a card that reports nothing was read is not worth showing when
+  // the read can simply happen. This hook mounts with the overlay, so a read here only
+  // ever runs while refs are on screen.
+  //
+  // A standing folder grant needs no gesture, so this reads without one. A lapsed grant
+  // cannot be re-requested outside a gesture and lands on the permission problem, which
+  // is the actionable thing to report.
   useEffect(() => {
-    if (loadedFor && loadedFor !== workspaceId) {
-      clearRefBindings()
-    }
+    if (!workspaceId || loadedFor === workspaceId) return
+
+    if (loadedFor) clearRefBindings()
+
+    void loadRefBindings(workspaceId)
   }, [loadedFor, workspaceId])
 
   const nodeRefs = useMemo(() => collectNodeRefs(workspace), [workspace])

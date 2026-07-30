@@ -76,6 +76,35 @@ So the scan resolves the identifier to its declaration and unwraps whatever hold
 - Keys added after the literal are included, such as `seldonRefs.valueIcon = ...`, and are marked `conditional` when they sit behind a branch.
 - A value built by a helper call has no visible prop keys, so the entry reports the whole `expression` and leaves `props` empty.
 
+A repeated row cannot hoist a local. JSX can open a function body per row and declare one there, but a Vue template has nowhere to put it, so a row either calls a helper or reads the map off the row it renders. Both resolve:
+
+```vue
+<MessageUser :seldon-refs="userRefs(turn)" />
+<MessageRefController v-for="row in rows" :seldon-refs="row.seldonRefs" />
+```
+
+A call resolves through the function it names, taking every object literal that function returns. A property access resolves through the property name, taking every literal assigned under it in the file. Both cover more than one literal because a row list is often built in more than one branch.
+
+### Ambiguous Names
+
+Resolution is by name within a file, and the first declaration found wins. A file that declares one name twice therefore reports the wrong entries for at least one of them, because sibling function scopes are invisible to a scan that has no type checker.
+
+```typescript
+function BoardEmpty() {
+  const seldonRefs = { nodeLabel: { value: label } }
+  // ...
+}
+
+function BoardRow() {
+  const seldonRefs = { nodeDisclosure, nodeField, nodeLabel }
+  // Resolves to the map above, so these six refs are never recorded.
+}
+```
+
+The scan reports every name in this position and keeps going, because the rest of the manifest is sound and the fix is a rename. Name a map after what it drives, such as `emptyRefs`, `catalogRefs`, or `badgeRefs`, so a file with two maps has two names. A bare `seldonRefs` is safe only when the file holds one map.
+
+A property path is exempt, because a row map read under a property gathers every literal on purpose.
+
 Parsing is single-file and syntax-only, with no program and no type checker. An identifier imported from another module reports that import rather than being followed into it. Following it needs full module resolution, which would tie the scan to a filesystem and break the browser host.
 
 Vue reads both blocks. The template says which component receives what, and the script holds the declarations behind each expression. Script line numbers stay absolute because the block content is padded to its position in the file.

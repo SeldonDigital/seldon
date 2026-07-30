@@ -3,7 +3,13 @@ import ts from "typescript"
 import { isComponentImport } from "./config"
 import { buildDeclarationIndex } from "./declaration-index"
 import { describeExpression } from "./describe-expression"
-import { readLiteralEntries, resolveObjectEntries } from "./resolve-object-literal"
+import {
+  countDeclarations,
+  readLiteralEntries,
+  resolveObjectEntries,
+  resolvePropertyEntries,
+  resolveReturnedEntries,
+} from "./resolve-object-literal"
 
 import type { DeclarationIndex } from "./declaration-index"
 import type { ObjectEntry } from "./resolve-object-literal"
@@ -49,7 +55,7 @@ export function scanTypeScriptFile(
   )
 
   const generated = getGeneratedComponentNames(sourceFile, config)
-  const result: FileBindings = { refs: [], slots: [] }
+  const result: FileBindings = { refs: [], slots: [], warnings: [] }
 
   if (generated.size === 0) return result
 
@@ -111,6 +117,17 @@ function collectElement(
     if (!value) continue
 
     if (name === REFS_ATTRIBUTE) {
+      const ambiguous = getAmbiguousName(value, sourceFile)
+
+      if (ambiguous) {
+        result.warnings.push({
+          file: path,
+          line: lineOf(attribute, sourceFile),
+          name: ambiguous.name,
+          declarations: ambiguous.declarations,
+        })
+      }
+
       for (const entry of resolveEntriesOf(value, sourceFile)) {
         result.refs.push({
           ref: entry.name,
@@ -146,15 +163,51 @@ function collectElement(
 
 /**
  * Reads the entries of an object an attribute passes, whether it is written in
- * place or hoisted into an identifier. Consumers always hoist, so the identifier
- * path is the one that matters, but an inline literal is read too so a future
- * inline map is not silently missed.
+ * place or hoisted into an identifier. Consumers hoist, so the identifier path is
+ * the one that matters, but an inline literal is read too so a future inline map
+ * is not silently missed.
+ *
+ * A map built per row resolves as well, through the helper a call names or
+ * through the property a row is read under, matching the Vue front end.
  */
 function resolveEntriesOf(expression: ts.Expression, sourceFile: ts.SourceFile): ObjectEntry[] {
   if (ts.isIdentifier(expression)) return resolveObjectEntries(expression.text, sourceFile)
   if (ts.isObjectLiteralExpression(expression)) return readLiteralEntries(expression, sourceFile)
 
+  if (ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)) {
+    return resolveReturnedEntries(expression.expression.text, sourceFile)
+  }
+
+  if (ts.isPropertyAccessExpression(expression)) {
+    return resolvePropertyEntries(expression.name.text, sourceFile)
+  }
+
   return []
+}
+
+/**
+ * The name a refs map resolves through when its file declares that name more than
+ * once, which is what makes the entries reported for it unreliable.
+ *
+ * Covers the identifier and the helper call, where resolution keeps the first
+ * declaration and drops the rest. A property path is left out, because a row map
+ * read under a property gathers every literal on purpose.
+ */
+function getAmbiguousName(
+  expression: ts.Expression,
+  sourceFile: ts.SourceFile,
+): { name: string; declarations: number } | null {
+  const name = ts.isIdentifier(expression)
+    ? expression.text
+    : ts.isCallExpression(expression) && ts.isIdentifier(expression.expression)
+      ? expression.expression.text
+      : null
+
+  if (!name) return null
+
+  const declarations = countDeclarations(name, sourceFile)
+
+  return declarations > 1 ? { name, declarations } : null
 }
 
 /** The prop keys a ref entry sets, which exist only when its value is a literal. */

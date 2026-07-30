@@ -355,7 +355,6 @@ const {
   anchor: actionsAnchor,
   close: closeActions,
   buttonIconic: actionsButton,
-  icon: actionsIcon,
   menuItems: actionsItems,
   hasActions,
 } = useRowActionsMenu(boardActions)
@@ -391,6 +390,18 @@ const labelSlot = computed(() => {
   void boardLabelText.value
   return mergeStateProps(inputProps.value, activatedRef.value)
 })
+
+// Drive every slot through its stable workspace ref. A board row owns no display
+// picker, so that slot is suppressed positionally with `null`. The trailing
+// actions icon has no ref and rides the generated `seldon-more` default.
+const seldonRefs = computed(() => ({
+  nodeDisclosure: toggleButtonSlot.value,
+  nodeDisclosureIcon: toggleIconSlot.value,
+  nodeField: fieldSlot.value,
+  nodeIcon: boardIconSlot.value,
+  nodeLabel: labelSlot.value,
+  nodeActions: actionsButton.value,
+}))
 </script>
 
 <template>
@@ -404,14 +415,11 @@ const labelSlot = computed(() => {
       :data-active="boardIsActive || undefined"
       :data-selection-id="boardKey"
       data-selection-kind="board"
-      :button-iconic="toggleButtonSlot"
-      :icon="toggleIconSlot"
-      :combobox-field="fieldSlot"
-      :icon2="boardIconSlot"
-      :input="labelSlot"
+      :seldon-refs="seldonRefs"
+      :button-iconic="{}"
+      :combobox-field="{}"
       :button-iconic2="null"
-      :button-iconic3="actionsButton"
-      :icon4="actionsIcon"
+      :button-iconic3="{}"
       @click="select"
       @dblclick="handleDoubleClick"
       @mouseenter="onEnter"

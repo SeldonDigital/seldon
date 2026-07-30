@@ -122,10 +122,26 @@ export interface BindingsManifest {
   scannedFiles: number
   refs: Record<string, RefConsumer[]>
   slots: Record<string, Record<string, SlotConsumer[]>>
+  warnings: BindingWarning[]
 }
 
 /** What one front end reports for one file. */
 export interface FileBindings {
   refs: Array<{ ref: string; consumer: RefConsumer }>
   slots: Array<{ component: string; slot: string; consumer: SlotConsumer }>
+  warnings: BindingWarning[]
+}
+
+/**
+ * A refs map whose name more than one declaration in its file answers to.
+ *
+ * A map resolves by name within its file, and the first declaration found wins, so
+ * the entries reported for an ambiguous name may belong to the other declaration.
+ * Renaming one of them after what it drives makes the name unique.
+ */
+export interface BindingWarning {
+  file: string
+  line: number
+  name: string
+  declarations: number
 }
