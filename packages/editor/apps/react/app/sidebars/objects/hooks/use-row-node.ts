@@ -8,6 +8,7 @@ import {
 } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { getSelectionTarget, selectFromTarget } from "@app/workspace/selection-target"
+import { canDragToReorder } from "@seldon/editor/lib/commands/move-decisions"
 import { getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
 import { hasNode } from "@seldon/editor/lib/workspace/workspace-accessors"
 
@@ -111,7 +112,7 @@ export function useRowNode(
     !isSelected && !isPrimaryShared && sharedHighlight.secondary.has(node.id)
 
   const { dragging, ref } = useDraggable({
-    enable: show && !isEditingName && !disableReordering,
+    enable: show && !isEditingName && !disableReordering && canDragToReorder(workspace, node),
     target: node,
     onDragStart: () => toggle(expandedId, false),
   })

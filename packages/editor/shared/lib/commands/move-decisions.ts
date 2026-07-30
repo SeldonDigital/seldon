@@ -3,6 +3,7 @@ import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-s
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
 import { canMoveInstance } from "@seldon/core/workspace/services/nodes/node-move-navigation.service"
+import { hasNode } from "../workspace/workspace-accessors"
 
 import type { Board } from "@seldon/core/workspace/model/components"
 import type { EntryNode } from "@seldon/core/workspace/model/entry-node"
@@ -69,6 +70,27 @@ export function getVariantMoveIndex(
   }
 
   return newIndex
+}
+
+/**
+ * Whether the node can be dragged to reorder it. An instance inside a default
+ * variant cannot: core rejects both `reorder_instance_in_parent` and
+ * `move_instance` there, so the drag would end in a validation error instead of
+ * a move. The default variant row itself never reorders either. Same test the
+ * directional move commands use in `resolveInstanceMoveTarget`.
+ */
+export function canDragToReorder(workspace: Workspace, node: EntryNode): boolean {
+  if (!hasNode(workspace, node.id)) return false
+
+  if (typeCheckingService.isVariant(node)) {
+    return !typeCheckingService.isDefaultVariant(node)
+  }
+
+  if (!typeCheckingService.isInstance(node)) return false
+
+  const rootVariant = nodeRelationshipService.getRootVariant(node, workspace)
+
+  return !typeCheckingService.isDefaultVariant(rootVariant)
 }
 
 /**

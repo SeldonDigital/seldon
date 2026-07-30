@@ -204,9 +204,18 @@ export function useMoveObjects() {
       } else {
         const targetVariant = targetNode as Variant
         const subjectVariant = subjectNode as Variant
-        const currentIndex = getVariantIndex(targetVariant.id, workspace)
+        const targetIndex = getVariantIndex(targetVariant.id, workspace)
+        const subjectIndex = getVariantIndex(subjectVariant.id, workspace)
 
-        return reorderVariant(subjectVariant.id, currentIndex, isPreview)
+        let newIndex = position === "before" ? targetIndex : targetIndex + 1
+
+        // The reorder removes the variant before re-inserting it, so a slot below
+        // its own shifts down by one. Same correction as the instance branch.
+        if (subjectIndex !== -1 && subjectIndex < targetIndex) {
+          newIndex -= 1
+        }
+
+        return reorderVariant(subjectVariant.id, newIndex, isPreview)
       }
     },
     [workspace, moveChildTo, dispatch, addToast, reorderVariant],

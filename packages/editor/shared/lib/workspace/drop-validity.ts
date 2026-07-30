@@ -1,6 +1,6 @@
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { nodeRelationshipService, typeCheckingService } from "@seldon/core/workspace/services"
-import { getNodeCatalogComponentId } from "./node-tree"
+import { getNodeCatalogComponentId, getNodeChildIds } from "./node-tree"
 
 import type { Placement } from "../types"
 import type { Instance, Variant, Workspace } from "@seldon/core"
@@ -77,6 +77,45 @@ export function isValidDropTarget(
     placement !== "inside"
   ) {
     return true
+  }
+
+  return false
+}
+
+/**
+ * Whether the drop would leave the order unchanged. A reorder removes the subject
+ * and re-inserts it, so a slot the subject already occupies changes nothing. The
+ * sidebars withhold drop feedback for these, since offering a target that does
+ * nothing reads as a failed move.
+ *
+ * A duplicate is never a no-op, so callers skip this while Alt is held.
+ */
+export function isNoOpDrop(
+  target: Variant | Instance | EntryNode,
+  subject: Variant | Instance | EntryNode,
+  placement: Placement,
+  workspace: Workspace,
+): boolean {
+  if (target.id === subject.id) return true
+
+  // `inside` appends after the target's existing children, so a subject that is
+  // already the last of them stays put.
+  if (placement === "inside") {
+    const childIds = getNodeChildIds(target, workspace)
+
+    return childIds[childIds.length - 1] === subject.id
+  }
+
+  // The gap above a node is the gap below the node before it. Either way round,
+  // a slot beside an adjacent sibling is the slot the subject is already in.
+  const direction = placement === "before" ? "after" : "before"
+
+  if (typeCheckingService.isInstance(subject) && typeCheckingService.isInstance(target)) {
+    return nodeRelationshipService.findAdjacent(subject, direction, workspace)?.id === target.id
+  }
+
+  if (typeCheckingService.isVariant(subject) && typeCheckingService.isVariant(target)) {
+    return nodeRelationshipService.findAdjacent(subject, direction, workspace)?.id === target.id
   }
 
   return false
