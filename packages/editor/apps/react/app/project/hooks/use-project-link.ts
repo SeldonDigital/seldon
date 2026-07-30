@@ -3,6 +3,7 @@ import {
   getLinkPermission,
   getProjectLink,
   isProjectLinkSupported,
+  pickComponentsFolder,
   requestLinkPermission,
   resolveComponentsDirectory,
   saveProjectLink,
@@ -10,7 +11,10 @@ import {
 import { useEffect } from "react"
 import { create } from "zustand"
 
-import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
+import type {
+  LinkWorkspaceOutcome,
+  ProjectLink,
+} from "@seldon/editor/lib/storage/project-link-store"
 
 /**
  * Tracks the folder the open workspace was last exported into, so the editor can
@@ -51,6 +55,10 @@ export async function loadProjectLink(workspaceId: string): Promise<void> {
 /**
  * Records the components folder an export just wrote, which is the moment the
  * link becomes true. The handle is stored for reading only.
+ *
+ * Throws when the folder the export just named cannot be opened. The export
+ * itself has already succeeded by then, and a link the editor cannot make is
+ * worth saying out loud, because every ref card stays empty without it.
  */
 export async function linkExportedFolder(
   workspaceId: string,
@@ -59,8 +67,37 @@ export async function linkExportedFolder(
 ): Promise<void> {
   const directory = await resolveComponentsDirectory(root, componentsFolder)
 
-  if (!directory) return
+  if (!directory) {
+    throw new Error(`Export finished, but ${componentsFolder} could not be opened to link it.`)
+  }
 
+  await saveLink(workspaceId, directory, componentsFolder)
+}
+
+/**
+ * Links a workspace to a components folder the user picks.
+ *
+ * This is the way a link gets made when the export did not make one, such as an
+ * export run from the command line or a project that already holds generated
+ * components. The pick may be the components folder or a project root above it,
+ * and a search settles which.
+ */
+export async function linkWorkspaceFolder(workspaceId: string): Promise<LinkWorkspaceOutcome> {
+  const { match, problem } = await pickComponentsFolder()
+
+  if (!match) return { ok: false, message: problem }
+
+  await saveLink(workspaceId, match.directory, match.path)
+
+  return { ok: true, message: `Linked ${match.path}.` }
+}
+
+/** Stores a link and makes it the current one. */
+async function saveLink(
+  workspaceId: string,
+  directory: FileSystemDirectoryHandle,
+  componentsFolder: string,
+): Promise<void> {
   const link: ProjectLink = {
     directory,
     componentsFolder,

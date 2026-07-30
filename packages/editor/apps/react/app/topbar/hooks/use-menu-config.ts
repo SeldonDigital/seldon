@@ -11,7 +11,10 @@ import { usePanel } from "@app/editor/hooks/use-panel"
 import { useToggleIsolation } from "@app/editor/hooks/use-toggle-isolation"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useImportExport } from "@app/io/use-import-export"
+import { linkWorkspaceFolder } from "@app/project/hooks/use-project-link"
+import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useRefBadges } from "@app/refs/use-ref-badges"
+import { loadRefBindings } from "@app/refs/use-ref-bindings"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useHistory } from "@app/workspace/hooks/use-history"
 import { useNodeClipboardActions } from "@app/workspace/hooks/use-node-clipboard-actions"
@@ -104,7 +107,6 @@ export function useMenuConfig(): MenuConfig {
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
-    exportCompressedWorkspaceToFile,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
     importWorkspaceFromFile,
@@ -145,6 +147,7 @@ export function useMenuConfig(): MenuConfig {
     selectedIconSetEntryId,
   } = useSelection()
   const addToast = useAddToast()
+  const workspaceId = useWorkspaceId()
   const { setActiveTool } = useTool()
   const { activePanel, openPanel, closePanel } = usePanel()
 
@@ -211,6 +214,22 @@ export function useMenuConfig(): MenuConfig {
     navigate("/")
   }, [navigate])
 
+  // Points the workspace at the components folder in the user's own project, so the
+  // ref overlays can read what that project reports back. An export from the editor
+  // links its own folder, so this is for the projects it never touched.
+  //
+  // The read is asked for here, because the reader watches the workspace rather than
+  // the link. Nothing about the open workspace changed, so a card would otherwise
+  // keep reporting the link it had before this one.
+  const linkWorkspace = useCallback(async () => {
+    if (!workspaceId) return
+
+    const { ok, message } = await linkWorkspaceFolder(workspaceId)
+
+    if (message) addToast(message)
+    if (ok) void loadRefBindings(workspaceId)
+  }, [addToast, workspaceId])
+
   // Get zoom controls from the hook
   const { zoomIn, zoomOut, resetZoom } = useZoomControls()
 
@@ -238,9 +257,9 @@ export function useMenuConfig(): MenuConfig {
         visibleIn: ["edit"],
       },
       {
-        id: "export-compressed-workspace",
-        label: "Export Compressed Workspace…",
-        action: exportCompressedWorkspaceToFile,
+        id: "link-workspace",
+        label: "Link Workspace…",
+        action: linkWorkspace,
         visibleIn: ["edit"],
       },
       "separator",
@@ -264,9 +283,9 @@ export function useMenuConfig(): MenuConfig {
     openPanel,
     setActiveTool,
     exportWorkspaceToFile,
-    exportCompressedWorkspaceToFile,
     goToProjects,
     importWorkspaceFromFile,
+    linkWorkspace,
   ])
 
   const devMenuItems = useMemo(() => {

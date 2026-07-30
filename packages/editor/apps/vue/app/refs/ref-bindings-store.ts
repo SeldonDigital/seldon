@@ -1,3 +1,11 @@
+import {
+  MANIFEST_PATH,
+  NEEDS_PERMISSION_PROBLEM,
+  NOT_LINKED_PROBLEM,
+  NO_MANIFEST_PROBLEM,
+  NO_REGISTRY_PROBLEM,
+  REGISTRY_PATH,
+} from "@seldon/editor/lib/refs/linked-refs"
 import { readBindingsManifest } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import { readRefsRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import {
@@ -12,10 +20,6 @@ import { ref } from "vue"
 import type { ValidatedBindings } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import type { ValidatedRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
-
-/** Both files sit under the linked components folder. */
-const REGISTRY_PATH = "refs/registry.json"
-const MANIFEST_PATH = "refs/bindings.json"
 
 /**
  * What was read from the linked project, held once for the whole editor.
@@ -55,14 +59,14 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
 
     if (!link) {
       loading.value = false
-      problem.value = "No exported folder is linked to this workspace yet."
+      problem.value = NOT_LINKED_PROBLEM
 
       return false
     }
 
     try {
       if (!(await hasReadPermission(link))) {
-        problem.value = "Reading the linked folder needs permission."
+        problem.value = NEEDS_PERMISSION_PROBLEM
 
         return false
       }
@@ -70,7 +74,7 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
       const registryText = await readLinkedTextFile(link, REGISTRY_PATH)
 
       if (registryText === null) {
-        problem.value = "No refs registry found in the linked folder. Export again to write one."
+        problem.value = NO_REGISTRY_PROBLEM
 
         return false
       }
@@ -91,7 +95,7 @@ export const useRefBindingsStore = defineStore("ref-bindings", () => {
 
       if (manifestText === null) {
         bindings.value = null
-        problem.value = "Missing bindings manifest. Run `npm run bindings` to generate."
+        problem.value = NO_MANIFEST_PROBLEM
 
         return false
       }

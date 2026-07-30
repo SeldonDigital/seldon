@@ -3,6 +3,14 @@ import { useWorkspaceId } from "@app/project/hooks/use-workspace-id"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { collectNodeRefs } from "@seldon/editor/lib/refs/collect-node-refs"
 import { joinRefsAndBindings } from "@seldon/editor/lib/refs/join-refs-and-bindings"
+import {
+  MANIFEST_PATH,
+  NEEDS_PERMISSION_PROBLEM,
+  NOT_LINKED_PROBLEM,
+  NO_MANIFEST_PROBLEM,
+  NO_REGISTRY_PROBLEM,
+  REGISTRY_PATH,
+} from "@seldon/editor/lib/refs/linked-refs"
 import { readBindingsManifest } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import { readRefsRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import {
@@ -19,10 +27,6 @@ import type { RefBinding } from "@seldon/editor/lib/refs/join-refs-and-bindings"
 import type { ValidatedBindings } from "@seldon/editor/lib/refs/read-bindings-manifest"
 import type { ValidatedRegistry } from "@seldon/editor/lib/refs/read-refs-registry"
 import type { ProjectLink } from "@seldon/editor/lib/storage/project-link-store"
-
-/** Both files sit under the linked components folder. */
-const REGISTRY_PATH = "refs/registry.json"
-const MANIFEST_PATH = "refs/bindings.json"
 
 /**
  * What was read from the linked project, held once for the whole editor.
@@ -67,17 +71,14 @@ export async function loadRefBindings(workspaceId: string): Promise<boolean> {
   const link = await getProjectLink(workspaceId)
 
   if (!link) {
-    useStore.setState({
-      loading: false,
-      problem: "No exported folder is linked to this workspace yet.",
-    })
+    useStore.setState({ loading: false, problem: NOT_LINKED_PROBLEM })
 
     return false
   }
 
   try {
     if (!(await hasReadPermission(link))) {
-      useStore.setState({ problem: "Reading the linked folder needs permission." })
+      useStore.setState({ problem: NEEDS_PERMISSION_PROBLEM })
 
       return false
     }
@@ -85,9 +86,7 @@ export async function loadRefBindings(workspaceId: string): Promise<boolean> {
     const registryText = await readLinkedTextFile(link, REGISTRY_PATH)
 
     if (registryText === null) {
-      useStore.setState({
-        problem: "No refs registry found in the linked folder. Export again to write one.",
-      })
+      useStore.setState({ problem: NO_REGISTRY_PROBLEM })
 
       return false
     }
@@ -104,11 +103,7 @@ export async function loadRefBindings(workspaceId: string): Promise<boolean> {
     const manifestText = await readLinkedTextFile(link, MANIFEST_PATH)
 
     if (manifestText === null) {
-      useStore.setState({
-        registry,
-        bindings: null,
-        problem: "Missing bindings manifest. Run `npm run bindings` to generate.",
-      })
+      useStore.setState({ registry, bindings: null, problem: NO_MANIFEST_PROBLEM })
 
       return false
     }
