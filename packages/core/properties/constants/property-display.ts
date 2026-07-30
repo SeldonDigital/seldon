@@ -70,6 +70,7 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "align",
       "width",
       "height",
+      "aspectRatio",
       "margin",
       "padding",
       "gap",
@@ -227,6 +228,9 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "ariaRequired",
       "ariaReadonly",
       "ariaLive",
+      "ariaValueNow",
+      "ariaValueMin",
+      "ariaValueMax",
     ],
   },
 ]

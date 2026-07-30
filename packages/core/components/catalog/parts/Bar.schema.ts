@@ -1448,6 +1448,105 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "toggleGroup",
+      label: "Toggle Group",
+      intent: "Groups related toggle buttons so one or more stay pressed together.",
+      overrides: {
+        gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+      },
+      children: [
+        { component: Seldon.ComponentId.BUTTON, variant: "toggle" },
+        { component: Seldon.ComponentId.BUTTON, variant: "toggle" },
+        { component: Seldon.ComponentId.BUTTON, variant: "toggle" },
+      ],
+    },
+    {
+      id: "pagination",
+      label: "Pagination",
+      intent: "Steps through pages of results with previous, next, and numbered controls.",
+      overrides: {
+        gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+        align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "label",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "Previous" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "label",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "1" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "label",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "2" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "..." },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "label",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "10" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "label",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "Next" },
+          },
+        },
+      ],
+    },
+    {
+      id: "kbdGroup",
+      label: "Keyboard Shortcut",
+      intent: "Shows a keyboard shortcut as a run of keys.",
+      overrides: {
+        gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "kbd",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "Ctrl" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "kbd",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "Shift" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "kbd",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "K" },
+          },
+        },
+      ],
+    },
   ],
 } as const satisfies ComponentSchema
 

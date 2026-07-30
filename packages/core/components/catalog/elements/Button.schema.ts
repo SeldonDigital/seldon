@@ -839,6 +839,42 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "toggle",
+      label: "Toggle",
+      intent: "Two-state button that stays pressed until it is pressed again.",
+      overrides: {
+        padding: {
+          top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
+          right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
+          bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
+          left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
+        },
+        background: [
+          {
+            kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+            color: { type: Sdn.ValueType.OPTION, value: Sdn.Color.TRANSPARENT },
+          },
+        ],
+        border: {
+          preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.none" },
+        },
+        ariaPressed: { type: Sdn.ValueType.OPTION, value: Sdn.AriaTristate.FALSE },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: { type: Sdn.ValueType.OPTION, value: "material-formatBold" },
+            size: { type: Sdn.ValueType.COMPUTED, value: Sdn.ComputedFunction.AUTO_FIT },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+          },
+        },
+      ],
+    },
   ],
 } as const satisfies ComponentSchema
 

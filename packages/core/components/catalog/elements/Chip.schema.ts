@@ -504,6 +504,45 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "marker",
+      label: "Marker",
+      intent: "Inline status marker pairing a small icon with a short label.",
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: { type: Sdn.ValueType.OPTION, value: "material-check" },
+            size: { type: Sdn.ValueType.COMPUTED, value: Sdn.ComputedFunction.AUTO_FIT },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "Marker" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.normal",
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: Sdn.ComputedFunction.AUTO_FIT,
+              },
+            },
+          },
+        },
+      ],
+    },
   ],
 } as const satisfies ComponentSchema
 

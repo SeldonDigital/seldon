@@ -276,6 +276,7 @@ Properties that control the positioning, sizing, and spatial relationships of co
 | `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` |
 | `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
 | `height` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
+| `aspectRatio` | `atomic` | `empty` \| `inherit` \| `<number>` \| `option: 1 / 1, 4 / 3, 3 / 2, 16 / 9, 21 / 9, 3 / 4, 2 / 3, 9 / 16` |
 | `margin` | `shorthand` | `margin.top, margin.right, margin.bottom, margin.left` |
 | └ `margin.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
 | └ `margin.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |

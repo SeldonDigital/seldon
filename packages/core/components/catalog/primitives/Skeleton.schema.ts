@@ -4,26 +4,20 @@ import * as Seldon from "../../constants"
 import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Icon",
-  id: Seldon.ComponentId.ICON,
-  intent: "Displays a vector or symbolic icon representing an action or concept.",
-  tags: ["icon", "symbol", "graphic", "primitive", "UI", "decoration"],
+  name: "Skeleton",
+  id: Seldon.ComponentId.SKELETON,
+  intent: "Stands in for content that has not loaded yet, holding its shape and size.",
+  tags: ["skeleton", "placeholder", "loading", "shimmer", "primitive", "UI"],
   level: Seldon.ComponentLevel.PRIMITIVE,
-  icon: Seldon.ComponentIcon.ICON,
+  icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    symbol: {
+    wrapperElement: {
       type: Sdn.ValueType.OPTION,
-      value: "seldon-component",
+      value: Sdn.WrapperElement.DIV,
     },
-    size: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@size.medium",
-    },
-    cursor: {
-      type: Sdn.ValueType.INHERIT,
-      value: null,
-    },
+    cursor: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
@@ -32,11 +26,11 @@ export const schema = {
     },
     width: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
+      value: Sdn.Resize.FILL,
     },
     height: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
+      type: Sdn.ValueType.THEME_ORDINAL,
+      value: "@dimension.tiny",
     },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
@@ -51,13 +45,17 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    color: {
-      type: Sdn.ValueType.COMPUTED,
-      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-    },
+    color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+    background: [
+      {
+        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+        color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.gray" },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -102,10 +100,10 @@ export const schema = {
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
-      topLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      topRight: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+      topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+      topRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+      bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+      bottomRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
     },
     shadow: [
       {
@@ -124,28 +122,12 @@ export const schema = {
       },
     ],
     role: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.OPTION,
-      value: true,
-    },
+    ariaLabel: { type: Sdn.ValueType.EXACT, value: "Loading" },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
+    ariaLive: { type: Sdn.ValueType.OPTION, value: Sdn.AriaLive.POLITE },
   },
-  variants: [
-    {
-      id: "spinner",
-      label: "Spinner",
-      intent: "Busy indicator shown while an action is in progress.",
-      overrides: {
-        symbol: { type: Sdn.ValueType.OPTION, value: "material-progressActivity" },
-        size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.medium" },
-        color: { type: Sdn.ValueType.COMPUTED, value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR },
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.STATUS },
-        ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
-      },
-    },
-  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "iconMap" },
+  react: { returns: "wrapperElement" },
 }

@@ -1856,7 +1856,7 @@
               "type": "boolean"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>",
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;aspectRatio:AspectRatioValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;ariaValueNow:AriaValueValue;ariaValueMin:AriaValueValue;ariaValueMax:AriaValueValue;}>",
               "description": "Every catalog property key and the stored value shape for that key on a node.\nKeys follow the same category sequence editors use when grouping fields.\nThe type is partial so each component only declares the keys it supports."
             }
           },
@@ -2144,7 +2144,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;aspectRatio:AspectRatioValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;ariaValueNow:AriaValueValue;ariaValueMin:AriaValueValue;ariaValueMax:AriaValueValue;}>"
             }
           },
           "required": ["nodeId", "properties"],
@@ -2168,7 +2168,7 @@
               "type": "string"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;aspectRatio:AspectRatioValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;ariaValueNow:AriaValueValue;ariaValueMin:AriaValueValue;ariaValueMax:AriaValueValue;}>"
             }
           },
           "required": ["nodeId", "properties"],
@@ -2301,7 +2301,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;aspectRatio:AspectRatioValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;ariaValueNow:AriaValueValue;ariaValueMin:AriaValueValue;ariaValueMax:AriaValueValue;}>"
             },
             "state": {
               "description": "A state name key used inside a node's `states` map. It is either a reserved\nname or a workspace custom-state key. Never `normal`, which lives in\n`overrides`.",
@@ -2623,7 +2623,7 @@
               "type": "string"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;aspectRatio:AspectRatioValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;ariaValueNow:AriaValueValue;ariaValueMin:AriaValueValue;ariaValueMax:AriaValueValue;}>"
             }
           },
           "required": ["boardKey", "properties"],
@@ -4683,6 +4683,26 @@
         },
         "value": {
           "$ref": "#/definitions/AriaTristate"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "AspectRatio": {
+      "description": "Width-to-height ratios the catalog exposes as fixed choices.",
+      "enum": ["1 / 1", "4 / 3", "3 / 2", "16 / 9", "21 / 9", "3 / 4", "2 / 3", "9 / 16"],
+      "type": "string"
+    },
+    "AspectRatioOptionValue": {
+      "additionalProperties": false,
+      "description": "Records which ratio keyword is selected.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/AspectRatio"
         }
       },
       "required": ["type", "value"],
@@ -7896,21 +7916,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Exact string payload on a node.",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
               "properties": {
                 "type": {
@@ -7919,6 +7924,21 @@
                 },
                 "value": {
                   "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Exact string payload on a node.",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -8076,31 +8096,6 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "unit": {
-                      "const": "%",
-                      "type": "string"
-                    },
-                    "value": {
-                      "type": "number"
-                    }
-                  },
-                  "required": ["unit", "value"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "type": "string"
-                },
-                "value": {
                   "anyOf": [
                     {
                       "additionalProperties": false,
@@ -8120,6 +8115,31 @@
                       "type": "number"
                     }
                   ]
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "unit": {
+                      "const": "%",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["unit", "value"],
+                  "type": "object"
                 }
               },
               "required": ["type", "value"],
@@ -10608,7 +10628,7 @@
       },
       "type": "object"
     },
-    "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>": {
+    "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;aspectRatio:AspectRatioValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanOptionValue;clip:EmptyValue|BooleanOptionValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanOptionValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanOptionValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;ariaValueNow:AriaValueValue;ariaValueMin:AriaValueValue;ariaValueMax:AriaValueValue;}>": {
       "additionalProperties": false,
       "properties": {
         "accentColor": {
@@ -11117,6 +11137,277 @@
             }
           ],
           "description": "Not set, or a picked boolean for the selected state of a selectable node."
+        },
+        "ariaValueMax": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "unit": {
+                          "const": "number",
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["unit", "value"],
+                      "type": "object"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
+              "properties": {
+                "type": {
+                  "const": "inherit",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Empty, inherit, or a numeric reading shared by `ariaValueNow`, `ariaValueMin`, and `ariaValueMax`."
+        },
+        "ariaValueMin": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "unit": {
+                          "const": "number",
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["unit", "value"],
+                      "type": "object"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
+              "properties": {
+                "type": {
+                  "const": "inherit",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Empty, inherit, or a numeric reading shared by `ariaValueNow`, `ariaValueMin`, and `ariaValueMax`."
+        },
+        "ariaValueNow": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "unit": {
+                          "const": "number",
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["unit", "value"],
+                      "type": "object"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
+              "properties": {
+                "type": {
+                  "const": "inherit",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Empty, inherit, or a numeric reading shared by `ariaValueNow`, `ariaValueMin`, and `ariaValueMax`."
+        },
+        "aspectRatio": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "unit": {
+                          "const": "number",
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["unit", "value"],
+                      "type": "object"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
+              "properties": {
+                "type": {
+                  "const": "inherit",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AspectRatioOptionValue"
+            }
+          ],
+          "description": "Empty, inherit, a catalog ratio keyword, or a custom ratio stored as a number."
         },
         "autoPlay": {
           "anyOf": [
@@ -11916,21 +12207,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Exact string payload on a node.",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
               "properties": {
                 "type": {
@@ -11939,6 +12215,21 @@
                 },
                 "value": {
                   "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Exact string payload on a node.",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -12130,21 +12421,6 @@
                 },
                 {
                   "additionalProperties": false,
-                  "description": "Exact string payload on a node.",
-                  "properties": {
-                    "type": {
-                      "const": "exact",
-                      "type": "string"
-                    },
-                    "value": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["type", "value"],
-                  "type": "object"
-                },
-                {
-                  "additionalProperties": false,
                   "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
                   "properties": {
                     "type": {
@@ -12153,6 +12429,21 @@
                     },
                     "value": {
                       "type": "null"
+                    }
+                  },
+                  "required": ["type", "value"],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "description": "Exact string payload on a node.",
+                  "properties": {
+                    "type": {
+                      "const": "exact",
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
                     }
                   },
                   "required": ["type", "value"],
@@ -12310,31 +12601,6 @@
                       "type": "string"
                     },
                     "value": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "unit": {
-                          "const": "%",
-                          "type": "string"
-                        },
-                        "value": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["unit", "value"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["type", "value"],
-                  "type": "object"
-                },
-                {
-                  "additionalProperties": false,
-                  "properties": {
-                    "type": {
-                      "const": "exact",
-                      "type": "string"
-                    },
-                    "value": {
                       "anyOf": [
                         {
                           "additionalProperties": false,
@@ -12354,6 +12620,31 @@
                           "type": "number"
                         }
                       ]
+                    }
+                  },
+                  "required": ["type", "value"],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "const": "exact",
+                      "type": "string"
+                    },
+                    "value": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "unit": {
+                          "const": "%",
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["unit", "value"],
+                      "type": "object"
                     }
                   },
                   "required": ["type", "value"],
@@ -12808,21 +13099,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Exact string payload on a node.",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
               "properties": {
                 "type": {
@@ -12831,6 +13107,21 @@
                 },
                 "value": {
                   "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Exact string payload on a node.",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14023,21 +14314,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Exact string payload on a node.",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
               "properties": {
                 "type": {
@@ -14046,6 +14322,21 @@
                 },
                 "value": {
                   "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Exact string payload on a node.",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14395,21 +14686,6 @@
             },
             {
               "additionalProperties": false,
-              "description": "Exact string payload on a node.",
-              "properties": {
-                "type": {
-                  "const": "exact",
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
               "description": "Right now InheritValue is using the CSS inherit keyword.\nWe should instead make values inherit other values programmatically.\nThis is a more robust solution that will allow us to inherit values from\nother values in a more predictable way.\n\nhttps://github.com/SeldonDigital/seldon/issues/1058",
               "properties": {
                 "type": {
@@ -14418,6 +14694,21 @@
                 },
                 "value": {
                   "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Exact string payload on a node.",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14877,6 +15168,10 @@
         "ariaReadonly",
         "ariaRequired",
         "ariaSelected",
+        "ariaValueMax",
+        "ariaValueMin",
+        "ariaValueNow",
+        "aspectRatio",
         "autoPlay",
         "background",
         "board",

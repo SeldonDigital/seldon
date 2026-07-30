@@ -213,7 +213,9 @@ A component that does not declare the per-side compounds intentionally cannot ha
 
 Complex components are created by listing other components inside `default.children`, and optionally inside `variants[i].children`. Each child is just a reference to another schema, and that schema decides what properties the child has and what their defaults are.
 
-When the parent wants the child to start with values different from its schema defaults, it adds an `overrides` block on the child entry. Anything listed in `overrides` is matched against the target schema's properties and supplied as the starting value. Anything left out uses the child schema's default. Properties that are not declared in the child's schema cannot be overridden. They are simply not part of that component's vocabulary.
+When the parent wants the child to start with values different from its schema defaults, it adds an `overrides` block on the child entry. Anything listed in `overrides` is supplied as the starting value. Anything left out uses the child schema's default. Instantiation merges the `overrides` literal whole and does not match it against the target schema first.
+
+A top-level property that the child's schema does not declare cannot be set on that child. Validation middleware rejects the action, because `allowedPropertyKeys` is built from the schema's own property keys. Compound and shorthand facets work differently: merge unions facet keys, so a facet the schema leaves out still applies. Declare the full property vocabulary a component should expose rather than relying on either behavior.
 
 A child entry may also set `variant: "..."` to use a named variant from the referenced child schema as its baseline. If `variant` is omitted, the child uses the referenced schema's `default` tree. If `variant` is present, it must match a `SchemaVariant.id` on the referenced child schema or instantiation throws an error.
 
@@ -380,7 +382,7 @@ Runtime checks happen in the workspace and properties layers, covering override 
 
 ### Graceful Degradation
 
-- **Unknown override keys**: silently dropped at merge time so missing properties stay missing.
+- **Unknown top-level override keys**: rejected by validation middleware, which returns the workspace unchanged.
 - **Missing theme tokens**: fall back to schema defaults via the theme resolver. See [themes/README.md](../themes/README.md).
 - **Missing computed source**: a `COMPUTED` default whose derived source chain is absent falls back to the property's natural inheritance. See [`get-based-on-value.ts`](../properties/compute/get-based-on-value.ts).
 

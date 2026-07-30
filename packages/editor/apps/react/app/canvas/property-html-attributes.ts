@@ -40,6 +40,9 @@ export function getPropertyHtmlAttributes(properties: Properties): CanvasHtmlAtt
     "aria-required": properties.ariaRequired?.value,
     "aria-readonly": properties.ariaReadonly?.value,
     "aria-live": properties.ariaLive?.value,
+    "aria-valuenow": properties.ariaValueNow?.value,
+    "aria-valuemin": properties.ariaValueMin?.value,
+    "aria-valuemax": properties.ariaValueMax?.value,
   }
 
   for (const [attribute, value] of Object.entries(ariaAttributeValues)) {

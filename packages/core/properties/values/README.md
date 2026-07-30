@@ -85,6 +85,7 @@ flowchart LR
 | `alignSchema` | `layout/align.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `widthSchema` | `layout/width.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `heightSchema` | `layout/height.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `aspectRatioSchema` | `layout/aspect-ratio.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `Margin` | `layout/margin.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
 | `MarginSideOptionValue` | `layout/margin.ts` | Tagged wire shape that stores a Margin option choice. Assigned on workspace overrides and merged before compute or export. |
 | `MarginSideThemeValue` | `layout/margin.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |

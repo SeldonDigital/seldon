@@ -1,6 +1,7 @@
 import { computeProperties } from "@seldon/core/properties/compute"
 import { debugLog } from "@seldon/core/utils/debug-logger"
 
+import { getAspectRatioStyles } from "./get-aspect-ratio-styles"
 import { getBackgroundStyles } from "./get-background-styles"
 import { getBorderStyles } from "./get-border-styles"
 import { getClipStyles } from "./get-clip-styles"
@@ -104,6 +105,7 @@ export function getCssObjectFromProperties(
     ),
     ...safeGetStyles(() => getScrollStyles({ properties: computedProperties })),
     ...safeGetStyles(() => getClipStyles({ properties: computedProperties })),
+    ...safeGetStyles(() => getAspectRatioStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
       getColorStyles({
         properties: computedProperties,

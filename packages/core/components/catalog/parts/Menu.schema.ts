@@ -152,6 +152,33 @@ export const schema = {
       { component: Seldon.ComponentId.MENU_ITEM, variant: "radio" },
     ],
   },
+  variants: [
+    {
+      id: "context",
+      label: "Context Menu",
+      intent: "Actions for the item under the pointer, opened by a secondary click.",
+      children: [
+        { component: Seldon.ComponentId.MENU_ITEM },
+        { component: Seldon.ComponentId.MENU_ITEM },
+        {
+          component: Seldon.ComponentId.HR,
+          overrides: {
+            margin: {
+              top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.tight" },
+              right: { type: Sdn.ValueType.EMPTY, value: null },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.tight",
+              },
+              left: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+          },
+        },
+        { component: Seldon.ComponentId.MENU_ITEM, variant: "checkbox" },
+        { component: Seldon.ComponentId.MENU_ITEM, variant: "radio" },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

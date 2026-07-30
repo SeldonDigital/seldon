@@ -60,6 +60,7 @@ export const PROPERTY_ICONS: Record<string, string> = {
   "position.left": "seldon-positionLeft",
   width: "material-width",
   height: "material-height",
+  aspectRatio: "material-aspectRatio",
   screenWidth: "material-width",
   screenHeight: "material-height",
   margin: "material-margin",
@@ -182,6 +183,9 @@ export const PROPERTY_ICONS: Record<string, string> = {
   ariaRequired: "material-radioButtonUnchecked",
   ariaReadonly: "material-radioButtonUnchecked",
   ariaLive: "material-token",
+  ariaValueNow: "material-token",
+  ariaValueMin: "material-token",
+  ariaValueMax: "material-token",
 }
 
 /**

@@ -13,6 +13,13 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.EMPTY, value: null },
+    position: {
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
+    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -1039,6 +1046,251 @@ export const schema = {
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
             },
+          },
+        },
+      ],
+    },
+    {
+      id: "alertDialog",
+      label: "Alert Dialog",
+      intent: "Interrupts the user to confirm or cancel a consequential action.",
+      overrides: {
+        height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.ALERTDIALOG },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            orientation: { type: Sdn.ValueType.OPTION, value: Sdn.Orientation.VERTICAL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
+            padding: {
+              top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Are you sure?" },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "description",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "This action cannot be undone.",
+                },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.BAR,
+          variant: "buttonBar",
+          overrides: {
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_RIGHT },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.BUTTON,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Cancel" },
+              },
+            },
+            {
+              component: Seldon.ComponentId.BUTTON,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Continue" },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "popover",
+      label: "Popover",
+      intent: "Floating panel of content anchored to the control that opened it.",
+      overrides: {
+        placement: { type: Sdn.ValueType.OPTION, value: Sdn.Placement.ABSOLUTE },
+        height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.BAR,
+          overrides: {
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Dimensions" },
+              },
+            },
+            {
+              component: Seldon.ComponentId.BUTTON,
+              variant: "iconic",
+              overrides: {
+                ariaLabel: { type: Sdn.ValueType.EXACT, value: "Close" },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            orientation: { type: Sdn.ValueType.OPTION, value: Sdn.Orientation.VERTICAL },
+            padding: {
+              top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "description",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Set the dimensions for the layer.",
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "hoverCard",
+      label: "Hover Card",
+      intent: "Preview of a linked entity shown when the pointer rests on its trigger.",
+      overrides: {
+        placement: { type: Sdn.ValueType.OPTION, value: Sdn.Placement.ABSOLUTE },
+        height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            orientation: { type: Sdn.ValueType.OPTION, value: Sdn.Orientation.HORIZONTAL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
+            padding: {
+              top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            },
+          },
+          children: [
+            { component: Seldon.ComponentId.AVATAR },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                orientation: { type: Sdn.ValueType.OPTION, value: Sdn.Orientation.VERTICAL },
+                gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "@seldon" },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "description",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Design systems, from schema to export.",
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "sheet",
+      label: "Sheet",
+      intent: "Panel anchored to the edge of the screen that slides over the content.",
+      overrides: {
+        placement: { type: Sdn.ValueType.OPTION, value: Sdn.Placement.FIXED },
+        position: {
+          top: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
+          right: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
+          bottom: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
+          left: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+        corners: {
+          topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          topRight: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+          bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomRight: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.BAR,
+          overrides: {
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Edit profile" },
+              },
+            },
+            {
+              component: Seldon.ComponentId.BUTTON,
+              variant: "iconic",
+              overrides: {
+                ariaLabel: { type: Sdn.ValueType.EXACT, value: "Close" },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            orientation: { type: Sdn.ValueType.OPTION, value: Sdn.Orientation.VERTICAL },
+            scroll: { type: Sdn.ValueType.OPTION, value: Sdn.Scroll.VERTICAL },
+            padding: {
+              top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+              left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BAR,
+          variant: "buttonBar",
+          overrides: {
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_RIGHT },
           },
         },
       ],

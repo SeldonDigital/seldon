@@ -4,20 +4,15 @@ import * as Seldon from "../../constants"
 import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Frame",
-  id: Seldon.ComponentId.FRAME,
-  intent:
-    "Generic frame component schema used to wrap content sections with configurable padding, alignment, and sizing constraints.",
-  tags: ["frame", "layout", "container", "ui", "wrap", "box", "content", "sizing"],
-  level: Seldon.ComponentLevel.FRAME,
-  icon: Seldon.ComponentIcon.FRAME,
+  name: "Disclosure",
+  id: Seldon.ComponentId.DISCLOSURE,
+  intent: "Hides a block of content behind a heading the reader can open.",
+  tags: ["disclosure", "collapsible", "expander", "details", "toggle", "element", "UI"],
+  level: Seldon.ComponentLevel.ELEMENT,
+  icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    wrapperElement: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.WrapperElement.DIV,
-    },
-    cursor: { type: Sdn.ValueType.EMPTY, value: null },
+    cursor: { type: Sdn.ValueType.OPTION, value: Sdn.Cursor.POINTER },
     placement: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
@@ -37,7 +32,7 @@ export const schema = {
     },
     height: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FILL,
+      value: Sdn.Resize.FIT,
     },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
@@ -51,18 +46,13 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    gap: { type: Sdn.ValueType.EMPTY, value: null },
+    gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
       type: Sdn.ValueType.OPTION,
       value: false,
     },
     clip: { type: Sdn.ValueType.OPTION, value: false },
-    resize: { type: Sdn.ValueType.EMPTY, value: null },
-    columnStart: { type: Sdn.ValueType.EMPTY, value: null },
-    columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
-    rowStart: { type: Sdn.ValueType.EMPTY, value: null },
-    rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -143,17 +133,115 @@ export const schema = {
       },
     ],
     scroll: { type: Sdn.ValueType.EMPTY, value: null },
-    scrollbarStyle: { type: Sdn.ValueType.EMPTY, value: null },
     role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.OPTION,
-      value: false,
-    },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
+    ariaExpanded: { type: Sdn.ValueType.OPTION, value: false },
   },
-  default: { children: [] },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.BAR,
+        overrides: {
+          height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
+        },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            variant: "title",
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "Is it accessible?" },
+            },
+          },
+          {
+            component: Seldon.ComponentId.ICON,
+            overrides: {
+              symbol: { type: Sdn.ValueType.OPTION, value: "material-chevronDown" },
+            },
+          },
+        ],
+      },
+      {
+        component: Seldon.ComponentId.FRAME,
+        overrides: {
+          display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.EXCLUDE },
+          height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            variant: "description",
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Yes. It follows the WAI-ARIA disclosure pattern.",
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+  variants: [
+    {
+      id: "expanded",
+      label: "Expanded",
+      intent: "Disclosure with its body already open.",
+      overrides: {
+        ariaExpanded: { type: Sdn.ValueType.OPTION, value: true },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.BAR,
+          overrides: {
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Is it accessible?" },
+              },
+            },
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: { type: Sdn.ValueType.OPTION, value: "material-chevronDown" },
+                rotation: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.DEGREES, value: 180 },
+                },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            display: { type: Sdn.ValueType.EMPTY, value: null },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "description",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Yes. It follows the WAI-ARIA disclosure pattern.",
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "wrapperElement" },
+  react: { returns: "Frame" },
 }

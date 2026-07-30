@@ -4,35 +4,35 @@ import * as Seldon from "../../constants"
 import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Icon",
-  id: Seldon.ComponentId.ICON,
-  intent: "Displays a vector or symbolic icon representing an action or concept.",
-  tags: ["icon", "symbol", "graphic", "primitive", "UI", "decoration"],
-  level: Seldon.ComponentLevel.PRIMITIVE,
-  icon: Seldon.ComponentIcon.ICON,
+  name: "Navigation Menu",
+  id: Seldon.ComponentId.NAVIGATION_MENU,
+  intent: "Pairs a top-level nav bar with a panel of grouped destinations.",
+  tags: ["navigation", "menu", "nav", "megamenu", "header", "module", "UI"],
+  level: Seldon.ComponentLevel.MODULE,
+  icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    symbol: {
+    wrapperElement: {
       type: Sdn.ValueType.OPTION,
-      value: "seldon-component",
+      value: Sdn.WrapperElement.NAV,
     },
-    size: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@size.medium",
-    },
-    cursor: {
-      type: Sdn.ValueType.INHERIT,
-      value: null,
-    },
+    cursor: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.OPTION, value: Sdn.Placement.RELATIVE },
     position: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Orientation.VERTICAL,
+    },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
+      value: Sdn.Resize.FILL,
     },
     height: {
       type: Sdn.ValueType.OPTION,
@@ -50,14 +50,31 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    gap: { type: Sdn.ValueType.EMPTY, value: null },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    color: {
-      type: Sdn.ValueType.COMPUTED,
-      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+    wrapChildren: {
+      type: Sdn.ValueType.OPTION,
+      value: false,
     },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
+    columnStart: { type: Sdn.ValueType.EMPTY, value: null },
+    columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
+    rowStart: { type: Sdn.ValueType.EMPTY, value: null },
+    rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
+    color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+    background: [
+      {
+        kind: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.BackgroundKind.NONE,
+        },
+        color: { type: Sdn.ValueType.EMPTY, value: null },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -123,29 +140,50 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
-    role: { type: Sdn.ValueType.EMPTY, value: null },
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.OPTION,
-      value: true,
-    },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
+    ariaExpanded: { type: Sdn.ValueType.OPTION, value: false },
+    ariaHasPopup: { type: Sdn.ValueType.OPTION, value: Sdn.AriaHasPopup.MENU },
   },
-  variants: [
-    {
-      id: "spinner",
-      label: "Spinner",
-      intent: "Busy indicator shown while an action is in progress.",
-      overrides: {
-        symbol: { type: Sdn.ValueType.OPTION, value: "material-progressActivity" },
-        size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.medium" },
-        color: { type: Sdn.ValueType.COMPUTED, value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR },
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.STATUS },
-        ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.BAR,
+        variant: "menubar",
+        overrides: {
+          height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        },
       },
-    },
-  ],
+      {
+        component: Seldon.ComponentId.PANEL,
+        variant: "popover",
+        children: [
+          {
+            component: Seldon.ComponentId.CONTAINER,
+            overrides: {
+              columns: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.NUMBER, value: 2 },
+              },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+              height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
+            },
+            children: [
+              { component: Seldon.ComponentId.ITEM },
+              { component: Seldon.ComponentId.ITEM },
+              { component: Seldon.ComponentId.ITEM },
+              { component: Seldon.ComponentId.ITEM },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "iconMap" },
+  react: { returns: "Frame" },
 }

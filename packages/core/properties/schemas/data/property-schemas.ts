@@ -12,6 +12,9 @@ import { ariaPressedSchema } from "../../values/accessibility/aria-pressed"
 import { ariaReadonlySchema } from "../../values/accessibility/aria-readonly"
 import { ariaRequiredSchema } from "../../values/accessibility/aria-required"
 import { ariaSelectedSchema } from "../../values/accessibility/aria-selected"
+import { ariaValueMaxSchema } from "../../values/accessibility/aria-value-max"
+import { ariaValueMinSchema } from "../../values/accessibility/aria-value-min"
+import { ariaValueNowSchema } from "../../values/accessibility/aria-value-now"
 import { roleSchema } from "../../values/accessibility/role"
 import { accentColorSchema } from "../../values/appearance/accent-color"
 import { backgroundBlendModeSchema } from "../../values/appearance/background/background-blend-mode"
@@ -85,6 +88,7 @@ import { shadowOpacitySchema } from "../../values/effects/shadow/shadow-opacity"
 import { shadowSpreadSchema } from "../../values/effects/shadow/shadow-spread"
 import { shadowStyleSchema } from "../../values/effects/shadow/shadow-style"
 import { alignSchema } from "../../values/layout/align"
+import { aspectRatioSchema } from "../../values/layout/aspect-ratio"
 import { boardHeightSchema } from "../../values/layout/board/board-height"
 import { boardPresetSchema } from "../../values/layout/board/board-preset"
 import { boardWidthSchema } from "../../values/layout/board/board-width"
@@ -173,6 +177,7 @@ const PROPERTY_SCHEMAS_RAW = {
   align: alignSchema,
   width: widthSchema,
   height: heightSchema,
+  aspectRatio: aspectRatioSchema,
   margin: marginSchema,
   padding: paddingSchema,
   gap: gapSchema,
@@ -327,6 +332,9 @@ const PROPERTY_SCHEMAS_RAW = {
   ariaRequired: ariaRequiredSchema,
   ariaReadonly: ariaReadonlySchema,
   ariaLive: ariaLiveSchema,
+  ariaValueNow: ariaValueNowSchema,
+  ariaValueMin: ariaValueMinSchema,
+  ariaValueMax: ariaValueMaxSchema,
 } as const
 
 export const PROPERTY_SCHEMAS = attachPropertyDisplayMetadata(PROPERTY_SCHEMAS_RAW)

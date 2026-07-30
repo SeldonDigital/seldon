@@ -311,6 +311,9 @@ const UI_OVERRIDES: PropertyRegistry = {
   ariaRequired: { control: "menu" },
   ariaReadonly: { control: "menu" },
   ariaLive: { control: "menu" },
+  ariaValueNow: { control: "number" },
+  ariaValueMin: { control: "number" },
+  ariaValueMax: { control: "number" },
 }
 
 function mapCategoryToType(category?: string): "atomic" | "compound" | "shorthand" {

@@ -12,6 +12,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: { type: Sdn.ValueType.OPTION, value: Sdn.Orientation.HORIZONTAL },
     width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
     height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     margin: {

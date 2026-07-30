@@ -58,7 +58,14 @@ export const schema = {
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+    background: [
+      {
+        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE },
+        color: { type: Sdn.ValueType.EMPTY, value: null },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -330,6 +337,44 @@ export const schema = {
           },
         },
         lines: { type: Sdn.ValueType.EXACT, value: 2 },
+      },
+    },
+    {
+      id: "kbd",
+      label: "Keyboard Key",
+      intent: "Renders a keyboard key or shortcut token inline with surrounding text.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.CODE },
+        content: { type: Sdn.ValueType.EXACT, value: "Ctrl" },
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        padding: {
+          top: { type: Sdn.ValueType.EMPTY, value: null },
+          right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+          bottom: { type: Sdn.ValueType.EMPTY, value: null },
+          left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+        },
+        background: [
+          {
+            kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+            color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.gray" },
+          },
+        ],
+        border: {
+          preset: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@border.hairline" },
+        },
+        corners: {
+          topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          topRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+          bottomRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+        },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.code",
+          },
+        },
+        wrapText: { type: Sdn.ValueType.OPTION, value: false },
       },
     },
   ],

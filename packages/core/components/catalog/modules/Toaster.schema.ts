@@ -4,32 +4,32 @@ import * as Seldon from "../../constants"
 import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Icon",
-  id: Seldon.ComponentId.ICON,
-  intent: "Displays a vector or symbolic icon representing an action or concept.",
-  tags: ["icon", "symbol", "graphic", "primitive", "UI", "decoration"],
-  level: Seldon.ComponentLevel.PRIMITIVE,
-  icon: Seldon.ComponentIcon.ICON,
+  name: "Toaster",
+  id: Seldon.ComponentId.TOASTER,
+  intent: "Stacks transient notifications in a fixed corner of the screen.",
+  tags: ["toaster", "toast", "snackbar", "notifications", "viewport", "module", "UI"],
+  level: Seldon.ComponentLevel.MODULE,
+  icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    symbol: {
+    wrapperElement: {
       type: Sdn.ValueType.OPTION,
-      value: "seldon-component",
+      value: Sdn.WrapperElement.DIV,
     },
-    size: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@size.medium",
-    },
-    cursor: {
-      type: Sdn.ValueType.INHERIT,
-      value: null,
-    },
+    cursor: { type: Sdn.ValueType.EMPTY, value: null },
+    placement: { type: Sdn.ValueType.OPTION, value: Sdn.Placement.FIXED },
     position: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.REM, value: 1 } },
+      bottom: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.REM, value: 1 } },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Orientation.VERTICAL,
+    },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FIT,
@@ -50,14 +50,31 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    color: {
-      type: Sdn.ValueType.COMPUTED,
-      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+    wrapChildren: {
+      type: Sdn.ValueType.OPTION,
+      value: false,
     },
+    clip: { type: Sdn.ValueType.OPTION, value: false },
+    columnStart: { type: Sdn.ValueType.EMPTY, value: null },
+    columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
+    rowStart: { type: Sdn.ValueType.EMPTY, value: null },
+    rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
+    color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: [{ kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } }],
+    background: [
+      {
+        kind: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.BackgroundKind.NONE,
+        },
+        color: { type: Sdn.ValueType.EMPTY, value: null },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -123,29 +140,21 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
-    role: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.OPTION,
-      value: true,
-    },
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.STATUS },
+    ariaLabel: { type: Sdn.ValueType.EXACT, value: "Notifications" },
+    ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
+    ariaLive: { type: Sdn.ValueType.OPTION, value: Sdn.AriaLive.POLITE },
   },
-  variants: [
-    {
-      id: "spinner",
-      label: "Spinner",
-      intent: "Busy indicator shown while an action is in progress.",
-      overrides: {
-        symbol: { type: Sdn.ValueType.OPTION, value: "material-progressActivity" },
-        size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.medium" },
-        color: { type: Sdn.ValueType.COMPUTED, value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR },
-        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.STATUS },
-        ariaHidden: { type: Sdn.ValueType.OPTION, value: false },
-      },
-    },
-  ],
+  default: {
+    children: [
+      { component: Seldon.ComponentId.NOTIFICATION_CARD },
+      { component: Seldon.ComponentId.NOTIFICATION_CARD },
+      { component: Seldon.ComponentId.NOTIFICATION_CARD },
+    ],
+  },
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "iconMap" },
+  react: { returns: "Frame" },
 }

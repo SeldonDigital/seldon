@@ -11,6 +11,8 @@ import type {
   AriaRoleValue,
   AriaSelectedValue,
   AriaTristateValue,
+  AriaValueValue,
+  AspectRatioValue,
   AutoPlayValue,
   BackgroundLayer,
   BoardCompound,
@@ -119,6 +121,7 @@ export type Properties = Partial<{
   align: AlignValue | EmptyValue
   width: DimensionValue | EmptyValue
   height: DimensionValue | EmptyValue
+  aspectRatio: AspectRatioValue
   margin: MarginValue
   padding: PaddingValue
   gap: GapValue | EmptyValue
@@ -175,4 +178,7 @@ export type Properties = Partial<{
   ariaRequired: AriaRequiredValue
   ariaReadonly: AriaReadonlyValue
   ariaLive: AriaLiveValue
+  ariaValueNow: AriaValueValue
+  ariaValueMin: AriaValueValue
+  ariaValueMax: AriaValueValue
 }>

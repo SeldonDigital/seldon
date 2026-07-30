@@ -38,6 +38,7 @@ export * from "./layout/orientation"
 export * from "./layout/align"
 export * from "./layout/width"
 export * from "./layout/height"
+export * from "./layout/aspect-ratio"
 export * from "./layout/margin"
 export * from "./layout/padding"
 export * from "./layout/gap"
@@ -106,6 +107,10 @@ export * from "./accessibility/aria-invalid"
 export * from "./accessibility/aria-required"
 export * from "./accessibility/aria-readonly"
 export * from "./accessibility/aria-live"
+export * from "./accessibility/aria-value"
+export * from "./accessibility/aria-value-now"
+export * from "./accessibility/aria-value-min"
+export * from "./accessibility/aria-value-max"
 
 // ========================================
 // Shared wire shapes (exact / option / computed / inherit, etc.)
