@@ -3,7 +3,6 @@ import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants/
 import { joinCompoundFacetKey } from "@seldon/core/properties/schemas/helpers/property-path"
 
 import { SHORTHAND_SIDES, propertyShape } from "../../prompt/property-taxonomy"
-import { buildResolvePropertyNamesStage } from "../../prompt/stages/resolve-property-name"
 import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
 
@@ -61,17 +60,32 @@ export async function resolvePropertyNames(
     }
   }
 
-  const { prompt, schema } = buildResolvePropertyNamesStage({
-    message: context.message,
-    catalogId,
-    keys,
-  })
+  const prompt = [
+    `A user wants to change one or more properties of a "${catalogId}" element.`,
+    "",
+    `Message: ${JSON.stringify(context.message)}`,
+    "",
+    "Settable property keys:",
+    keys.map((key) => `- ${key}`).join("\n"),
+    "",
+    "Answer with the key(s) the message asks to change. Pick only keys from the list.",
+  ].join("\n")
 
   const { value, metrics } = await callOllamaFormat<{ keys: string[] }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema,
+    schema: {
+      type: "object",
+      properties: {
+        keys: {
+          type: "array",
+          items: { type: "string", enum: keys },
+          minItems: 1,
+        },
+      },
+      required: ["keys"],
+    },
   })
   context.calls.push(metrics)
 

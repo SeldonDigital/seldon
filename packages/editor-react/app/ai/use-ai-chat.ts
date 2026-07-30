@@ -176,14 +176,22 @@ function applyTurnEvent(turnId: string, event: AgentStreamEvent): void {
     case "tool":
       mutateTurn(turnId, (turn) => ({
         ...turn,
-        toolCalls: [...(turn.toolCalls ?? []), { name: event.name, ok: true }],
+        toolCalls: [
+          ...(turn.toolCalls ?? []),
+          { name: event.name, ok: true, prompt: event.prompt },
+        ],
       }))
       break
     case "toolResult":
       mutateTurn(turnId, (turn) => {
         const toolCalls = [...(turn.toolCalls ?? [])]
         const last = toolCalls[toolCalls.length - 1]
-        if (last) toolCalls[toolCalls.length - 1] = { ...last, ok: event.ok }
+        if (last)
+          toolCalls[toolCalls.length - 1] = {
+            ...last,
+            ok: event.ok,
+            output: event.output,
+          }
         return { ...turn, toolCalls }
       })
       break

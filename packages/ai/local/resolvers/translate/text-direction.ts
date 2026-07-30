@@ -1,4 +1,3 @@
-import { buildTextDirectionStage } from "../../../prompt/stages/translate"
 import { callOllamaFormat } from "../../ollama-client"
 import { type TurnContext, recordStep } from "../../turn-context"
 
@@ -12,14 +11,18 @@ export async function resolveTextDirection(
   context: TurnContext,
   language: string,
 ): Promise<"ltr" | "rtl"> {
-  const { prompt, schema } = buildTextDirectionStage({ language })
+  const prompt = `Does ${language} read left-to-right ("ltr") or right-to-left ("rtl")?`
   const { value, metrics } = await callOllamaFormat<{
     direction: "ltr" | "rtl"
   }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema,
+    schema: {
+      type: "object",
+      properties: { direction: { type: "string", enum: ["ltr", "rtl"] } },
+      required: ["direction"],
+    },
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_direction", true, {

@@ -102,7 +102,9 @@ export async function resolveTargetWithHint(
   if (match !== undefined) {
     const mention = resolveCreatedMention(context, match)
     if (mention?.kind === "exact") {
-      recordStep(context, "resolve_target", true)
+      recordStep(context, "resolve_target", true, {
+        output: `Matched "${match}" to node ${mention.nodeId}, created earlier this turn (deterministic, no model call).`,
+      })
       return { kind: "resolved", nodeId: mention.nodeId }
     }
     if (mention?.kind === "within") {
@@ -116,7 +118,9 @@ export async function resolveTargetWithHint(
         context.resolved.scope,
       )
       if (within.kind === "resolved") {
-        recordStep(context, "resolve_target", true)
+        recordStep(context, "resolve_target", true, {
+          output: `Matched "${match}" to node ${within.nodeId}, found inside ${mention.nodeId} created earlier this turn (deterministic, no model call).`,
+        })
         return within
       }
     }
@@ -132,14 +136,24 @@ export async function resolveTargetWithHint(
     context.resolved.scope,
   )
   if (resolution.kind === "resolved" || match === undefined) {
-    recordStep(context, "resolve_target", resolution.kind === "resolved")
+    recordStep(context, "resolve_target", resolution.kind === "resolved", {
+      output:
+        resolution.kind === "resolved"
+          ? `Resolved to node ${resolution.nodeId} (deterministic: selection/label search, no model call).`
+          : resolution.text,
+    })
     return resolution
   }
 
   // The deterministic pass missed or found several matches: let the semantic
   // pipeline try the phrase before surfacing the miss.
   const semantic = await findNodeSemantic(context, match)
-  recordStep(context, "resolve_target", semantic.kind === "resolved")
+  recordStep(context, "resolve_target", semantic.kind === "resolved", {
+    output:
+      semantic.kind === "resolved"
+        ? `Resolved "${match}" to node ${semantic.nodeId} via semantic search.`
+        : semantic.text,
+  })
   if (semantic.kind === "resolved") return semantic
 
   // Prefer the deterministic message when it carried a useful pick list;

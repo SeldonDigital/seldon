@@ -111,6 +111,8 @@ function collectToolRows(turn: HariTurn): ToolRow[] {
       key: `call-${index}`,
       icon: call.ok ? "material-checkCircle" : "material-error",
       text: call.ok ? call.name : `${call.name} (failed)`,
+      prompt: call.prompt,
+      output: call.output,
     })
   })
   ;(turn.repairs ?? []).forEach((repair, index) => {

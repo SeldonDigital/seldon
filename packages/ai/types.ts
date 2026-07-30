@@ -87,8 +87,8 @@ export type AgentStreamEvent =
   | { type: "thinking"; delta: string }
   | { type: "thinkingDone"; ms: number }
   | { type: "text"; delta: string }
-  | { type: "tool"; name: string }
-  | { type: "toolResult"; ok: boolean }
+  | { type: "tool"; name: string; prompt?: string }
+  | { type: "toolResult"; ok: boolean; output?: string }
 
 /** One tool the model invoked during a turn, with its final status. */
 export interface AgentToolCall {
@@ -96,6 +96,10 @@ export interface AgentToolCall {
   name: string
   /** False when the tool reported an error. */
   ok: boolean
+  /** The prompt the step sent to the model, when the step made a model call. */
+  prompt?: string
+  /** What the step produced: the model's answer, or a deterministic result. */
+  output?: string
 }
 
 /** Context and model output captured for debugging. Logged by the editor console. */

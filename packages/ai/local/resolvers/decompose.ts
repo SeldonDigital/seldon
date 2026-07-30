@@ -1,7 +1,7 @@
-import { buildDecomposeStage } from "../../prompt/stages/decompose"
 import type { ChatMessage } from "../../types"
 import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
+import { historyBlock } from "./route"
 
 /**
  * Splits one message into self-contained instructions -- the heart of the
@@ -14,19 +14,42 @@ import { type TurnContext, recordStep } from "../turn-context"
  * old single-action behavior.
  */
 
+/** Hard cap on steps per message -- a safety valve, not a product limit. */
+export const MAX_STEPS = 5
+
 export async function decompose(
   context: TurnContext,
   history?: ChatMessage[],
 ): Promise<string[]> {
-  const { prompt, schema } = buildDecomposeStage({
-    message: context.message,
-    history,
-  })
+  const prompt = [
+    "Rewrite this design-editor request as a list of independent instructions.",
+    "",
+    "Rules:",
+    '- One instruction per distinct edit. A single edit stays ONE instruction ("make the title bold and italic" is one).',
+    "- Each instruction must be a complete, self-contained imperative sentence.",
+    '- Resolve pronouns: "its title" becomes "the title of the new card" when the card was created by an earlier instruction.',
+    '- Refer to things created by an earlier instruction as "the new <thing>".',
+    "- Do not invent steps the user did not ask for.",
+    "",
+    `${historyBlock(history)}Request: ${JSON.stringify(context.message)}`,
+  ].join("\n")
+
   const { value, metrics } = await callOllamaFormat<{ steps: string[] }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema,
+    schema: {
+      type: "object",
+      properties: {
+        steps: {
+          type: "array",
+          items: { type: "string", minLength: 1 },
+          minItems: 1,
+          maxItems: MAX_STEPS,
+        },
+      },
+      required: ["steps"],
+    },
   })
   context.calls.push(metrics)
 

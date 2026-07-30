@@ -1,12 +1,6 @@
 import { STOCK_THEMES_BY_ID } from "@seldon/core/themes/catalog"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import {
-  buildAddCustomTokenStage,
-  buildAddThemeStage,
-  buildResolveThemeIdStage,
-  buildSetThemeOverrideStage,
-} from "../../prompt/stages/theme"
 import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
@@ -41,16 +35,21 @@ async function resolveThemeId(
     })
     return { kind: "resolved", themeId: ids[0]! }
   }
-  const { prompt, schema } = buildResolveThemeIdStage({
-    message: context.message,
-    purpose,
-    ids,
-  })
+  const prompt = [
+    `Pick the theme the user means, for: ${purpose}.`,
+    `Message: ${JSON.stringify(context.message)}`,
+    "Available theme ids:",
+    ids.map((id) => `- ${id}`).join("\n"),
+  ].join("\n")
   const { value, metrics } = await callOllamaFormat<{ themeId: string }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema,
+    schema: {
+      type: "object",
+      properties: { themeId: { type: "string", enum: ids } },
+      required: ["themeId"],
+    },
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_theme", true, {
@@ -133,20 +132,26 @@ export async function executeAddTheme(
     }
   }
 
-  const { prompt, schema } = buildAddThemeStage({
-    message: context.message,
-    themes: available.map((id) => ({
-      id,
-      name:
-        STOCK_THEMES_BY_ID[id as keyof typeof STOCK_THEMES_BY_ID]?.metadata
-          ?.name ?? id,
-    })),
-  })
+  const prompt = [
+    "Pick the stock theme the user wants to add.",
+    `Message: ${JSON.stringify(context.message)}`,
+    "Available stock themes:",
+    available
+      .map(
+        (id) =>
+          `- ${id}: ${STOCK_THEMES_BY_ID[id as keyof typeof STOCK_THEMES_BY_ID]?.metadata?.name ?? id}`,
+      )
+      .join("\n"),
+  ].join("\n")
   const { value, metrics } = await callOllamaFormat<{ themeId: string }>({
     model: context.model,
     host: context.host,
     prompt,
-    schema,
+    schema: {
+      type: "object",
+      properties: { themeId: { type: "string", enum: available } },
+      required: ["themeId"],
+    },
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_theme", true, {
@@ -190,9 +195,12 @@ export async function executeSetThemeOverride(
     }
   }
 
-  const { prompt, schema } = buildSetThemeOverrideStage({
-    message: context.message,
-  })
+  const prompt = [
+    "A user wants to change one token value on a theme.",
+    `Message: ${JSON.stringify(context.message)}`,
+    "",
+    'Extract the token path (like "swatch.primary", "fontSize.medium", "gap.compact") and the new value (a color as hsl(h, s%, l%) or hex, a size, or a token-appropriate value).',
+  ].join("\n")
   const { value, metrics } = await callOllamaFormat<{
     path: string
     value: string
@@ -200,7 +208,14 @@ export async function executeSetThemeOverride(
     model: context.model,
     host: context.host,
     prompt,
-    schema,
+    schema: {
+      type: "object",
+      properties: {
+        path: { type: "string", minLength: 1 },
+        value: { type: "string", minLength: 1 },
+      },
+      required: ["path", "value"],
+    },
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_token", true, {
@@ -237,9 +252,12 @@ export async function executeAddCustomToken(
   const theme = await resolveThemeId(context, "adding a custom token")
   if (theme.kind === "message") return { kind: "message", text: theme.text }
 
-  const { prompt, schema } = buildAddCustomTokenStage({
-    message: context.message,
-  })
+  const prompt = [
+    "A user wants to add a custom token to a theme.",
+    `Message: ${JSON.stringify(context.message)}`,
+    "",
+    'If it is a custom COLOR (swatch), answer kind "swatch" with a short name and the color as HSL numbers (h 0-360, s 0-100, l 0-100). For any other token kind (font, shadow, spacing, ...), answer kind "other" with empty name and zeros.',
+  ].join("\n")
   const { value, metrics } = await callOllamaFormat<{
     kind: "swatch" | "other"
     name: string
@@ -250,7 +268,17 @@ export async function executeAddCustomToken(
     model: context.model,
     host: context.host,
     prompt,
-    schema,
+    schema: {
+      type: "object",
+      properties: {
+        kind: { type: "string", enum: ["swatch", "other"] },
+        name: { type: "string" },
+        h: { type: "number" },
+        s: { type: "number" },
+        l: { type: "number" },
+      },
+      required: ["kind", "name", "h", "s", "l"],
+    },
   })
   context.calls.push(metrics)
   recordStep(context, "resolve_custom_token", true, {

@@ -1,4 +1,3 @@
-import { buildConversationalReplyStage } from "../../prompt/stages/reply"
 import { callOllamaFormat } from "../ollama-client"
 import {
   type FamilyOutcome,
@@ -52,22 +51,30 @@ export async function buildConversationalReply(
   outcomes: StepOutcome[],
 ): Promise<string> {
   const template = buildTemplateReply(outcomes)
-  const { prompt, schema } = buildConversationalReplyStage({
-    outcomes: outcomes.map((entry) => ({
-      status: entry.outcome.kind === "applied" ? "DONE" : "STOPPED",
-      step: entry.step,
-      body:
+  const prompt = [
+    "You are the chat assistant in a design editor. Summarize this turn's outcome for the user in one or two friendly sentences.",
+    "State ONLY what the outcomes below say. Do not add suggestions, do not claim anything else was done.",
+    "",
+    "Outcomes:",
+    ...outcomes.map((entry, index) => {
+      const status = entry.outcome.kind === "applied" ? "DONE" : "STOPPED"
+      const body =
         entry.outcome.kind === "applied"
           ? entry.outcome.reply
-          : entry.outcome.text,
-    })),
-  })
+          : entry.outcome.text
+      return `${index + 1}. [${status}] ${entry.step} -> ${body}`
+    }),
+  ].join("\n")
   try {
     const { value, metrics } = await callOllamaFormat<{ message: string }>({
       model: context.model,
       host: context.host,
       prompt,
-      schema,
+      schema: {
+        type: "object",
+        properties: { message: { type: "string", minLength: 1 } },
+        required: ["message"],
+      },
     })
     context.calls.push(metrics)
     recordStep(context, "reply", true, { prompt, output: value.message })

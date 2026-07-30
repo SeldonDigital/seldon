@@ -41,7 +41,11 @@ import { classifyAction } from "./resolvers/classify-action"
 import { decompose } from "./resolvers/decompose"
 import { type StepOutcome, generateReply } from "./resolvers/reply"
 import { route } from "./resolvers/route"
-import type { FamilyOutcome, TurnContext } from "./turn-context"
+import {
+  type FamilyOutcome,
+  type TurnContext,
+  recordStep,
+} from "./turn-context"
 import { createTurnState } from "./turn-state"
 
 /** Family handlers by intent key. Intents without one terminate politely below. */
@@ -107,9 +111,9 @@ export async function chatToActions(
     model,
     calls: [],
     steps: [],
-    onStep: (name, ok) => {
-      input.onEvent?.({ type: "tool", name })
-      input.onEvent?.({ type: "toolResult", ok })
+    onStep: (name, ok, detail) => {
+      input.onEvent?.({ type: "tool", name, prompt: detail?.prompt })
+      input.onEvent?.({ type: "toolResult", ok, output: detail?.output })
     },
   }
 
@@ -174,7 +178,9 @@ export async function chatToActions(
   for (const [index, step] of steps.entries()) {
     if (input.signal?.aborted) break
     const stepLabel =
-      steps.length > 1 ? `step ${index + 1}/${steps.length}` : "step"
+      steps.length > 1
+        ? `classify-action ${index + 1}/${steps.length}`
+        : "classify-action"
     context.message = step
 
     const classification = await classifyAction({
@@ -188,7 +194,10 @@ export async function chatToActions(
     if (classification.kind === "message") {
       // A none-label on a decomposed step is noise, not an edit: note it and
       // move on rather than stopping a plan over it.
-      context.onStep?.(`${stepLabel}: skipped`, false)
+      recordStep(context, stepLabel, false, {
+        prompt: classification.prompt,
+        output: classification.text,
+      })
       outcomes.push({
         step,
         intent: "skipped",
@@ -201,7 +210,10 @@ export async function chatToActions(
     }
 
     const intent = classification.intent.intent
-    context.onStep?.(`${stepLabel}: ${intent}`, true)
+    recordStep(context, stepLabel, true, {
+      prompt: classification.prompt,
+      output: intent,
+    })
 
     const handler = HANDLERS[intent]
     const outcome: FamilyOutcome = handler
