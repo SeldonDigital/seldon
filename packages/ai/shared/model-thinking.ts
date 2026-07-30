@@ -1,4 +1,10 @@
-const DEFAULT_MODEL = "gpt-oss:20b"
+/**
+ * The shipping default. Chosen on eval evidence: qwen3:8b scored 21/24 on the
+ * authored intent cases against 4b's 19/24, and its extra latency is not felt
+ * in practice. Override per turn with the model menu, or globally with
+ * SELDON_AI_MODEL.
+ */
+const DEFAULT_MODEL = "qwen3:8b"
 
 /**
  * The thinking level a caller may request. `"off"` disables reasoning
@@ -26,8 +32,8 @@ export function supportsThinking(model?: string): boolean {
 
 /**
  * True when the model takes a graded reasoning effort rather than a binary
- * on/off. gpt-oss is the graded family shipped by default; every other
- * thinking model is treated as binary.
+ * on/off. gpt-oss is the one graded family this harness knows; every other
+ * thinking model, including the default qwen3, is treated as binary.
  */
 export function supportsReasoningEffort(model?: string): boolean {
   return resolveModelId(model).toLowerCase().includes("gpt-oss")
