@@ -1,7 +1,8 @@
+import { describe, expect, it } from "vitest"
+
 import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
-import { describe, expect, it } from "vitest"
 
 import { commit } from "../commit"
 import { resolveContext } from "../editor-context"

@@ -1,7 +1,7 @@
 import { STOCK_THEMES_BY_ID } from "@seldon/core/themes/catalog"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import { commit } from "../commit"
+import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
 import {
@@ -71,7 +71,7 @@ export async function executeSetNodeTheme(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Applying the theme was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't apply the theme: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -103,7 +103,7 @@ export async function executeSetComponentTheme(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Applying the theme was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't apply the theme: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -157,7 +157,7 @@ export async function executeAddTheme(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Adding the theme was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't add the theme: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -217,7 +217,7 @@ export async function executeSetThemeOverride(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Changing ${value.path} was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't change ${value.path}: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -290,7 +290,7 @@ export async function executeAddCustomToken(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Adding the swatch was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't add the swatch: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)

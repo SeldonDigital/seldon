@@ -7,7 +7,7 @@ import type { BoardKey, WorkspaceAction } from "@seldon/core/workspace/types"
 
 import { resolveCatalogId } from "../../shared/catalog-ids"
 import { withCreatedIdentity } from "../../shared/created-nodes"
-import { commit } from "../commit"
+import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolveNodeTarget } from "../resolvers/resolve-target"
 import {
@@ -134,7 +134,7 @@ export async function executeAddComponent(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Adding ${request.catalogId} was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't add ${request.catalogId}: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -181,7 +181,7 @@ export async function executeAddVariant(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Adding a variant was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't add a variant: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -270,7 +270,7 @@ export async function executeInsertVariantInstance(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Inserting the variant was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't insert the variant: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)

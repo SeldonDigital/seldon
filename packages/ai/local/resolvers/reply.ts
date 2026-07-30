@@ -1,5 +1,9 @@
 import { callOllamaFormat } from "../ollama-client"
-import { recordStep, type FamilyOutcome, type TurnContext } from "../turn-context"
+import {
+  type FamilyOutcome,
+  type TurnContext,
+  recordStep,
+} from "../turn-context"
 
 /**
  * The user-facing reply for a completed turn, ported from terminus's
@@ -29,7 +33,9 @@ export function buildTemplateReply(outcomes: StepOutcome[]): string {
   }
   const lines = outcomes.map((entry, index) => {
     const body =
-      entry.outcome.kind === "applied" ? entry.outcome.reply : entry.outcome.text
+      entry.outcome.kind === "applied"
+        ? entry.outcome.reply
+        : entry.outcome.text
     return `${index + 1}. ${body}`
   })
   return lines.join("\n")

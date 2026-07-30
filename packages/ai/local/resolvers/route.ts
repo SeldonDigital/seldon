@@ -1,6 +1,6 @@
 import type { ChatMessage } from "../../types"
 import { callOllamaFormat } from "../ollama-client"
-import { recordStep, type TurnContext } from "../turn-context"
+import { type TurnContext, recordStep } from "../turn-context"
 
 /**
  * The entry decision of a turn, unbundled from terminus's ConversationalHari:

@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from "vitest"
 
 import {
+  type StepOutcome,
   buildTemplateReply,
   conversationalRepliesEnabled,
-  type StepOutcome,
 } from "./reply"
 
 const applied = (step: string, reply: string): StepOutcome => ({

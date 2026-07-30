@@ -1,6 +1,6 @@
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import { commit } from "../commit"
+import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import {
   type FamilyOutcome,
@@ -70,7 +70,7 @@ export async function executeFontFamilyPreset(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Changing the family was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't change the family: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -125,7 +125,7 @@ export async function executeFontFamilyVariant(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Toggling the weight was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't toggle the weight: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -177,7 +177,7 @@ export async function executeIconSubcategoryPreset(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Changing the subcategory was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't change the subcategory: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -229,7 +229,7 @@ export async function executeIconOverride(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Toggling the icon was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't toggle the icon: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)

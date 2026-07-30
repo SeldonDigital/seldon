@@ -5,7 +5,7 @@ import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empt
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import { commit } from "./commit"
+import { IneffectiveActionError, commit } from "./commit"
 import { createTurnState } from "./turn-state"
 
 describe("commit", () => {
@@ -38,6 +38,31 @@ describe("commit", () => {
     expect(() => commit(state, action)).toThrow()
     expect(state.rejected).toHaveLength(1)
     expect(state.rejected[0]?.type).toBe("add_component")
+    expect(state.actions).toHaveLength(0)
+    expect(state.workspace).toBe(seeded)
+  })
+
+  it("throws on an action that validates but changes nothing", () => {
+    const seeded = addComponent(
+      { boardKey: ComponentId.BUTTON } as never,
+      createEmptyWorkspace(),
+    )
+    const state = createTurnState(seeded)
+    // Re-writing a node's existing label: valid, applies cleanly, changes
+    // nothing. (An unknown node id would be a reducer REJECTION, a different
+    // failure mode.)
+    const board = seeded.boards[ComponentId.BUTTON]!
+    const rootId = (board as { variants: { id: string }[] }).variants[0]!.id
+    const currentLabel = seeded.nodes[rootId]!.label
+    const action = {
+      type: "set_node_label",
+      payload: { nodeId: rootId, label: currentLabel },
+    } as WorkspaceAction
+
+    // Must THROW, not return: a silent return is one a handler can forget to
+    // read, and then it reports a change the workspace never got.
+    expect(() => commit(state, action)).toThrow(IneffectiveActionError)
+    expect(state.ineffective).toContain("set_node_label")
     expect(state.actions).toHaveLength(0)
     expect(state.workspace).toBe(seeded)
   })

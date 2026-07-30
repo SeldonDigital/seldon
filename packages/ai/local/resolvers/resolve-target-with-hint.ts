@@ -69,7 +69,8 @@ export function resolveCreatedMention(
     const container = phrase.slice(ofIndex + 4).trim()
     const part = phrase.slice(0, ofIndex).trim()
     const nodeId = findCreatedByName(context, container)
-    if (nodeId && part !== "") return { kind: "within", nodeId, remainder: part }
+    if (nodeId && part !== "")
+      return { kind: "within", nodeId, remainder: part }
   }
 
   // Plain reference: the whole phrase names the created thing.

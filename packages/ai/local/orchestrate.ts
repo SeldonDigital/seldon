@@ -39,7 +39,7 @@ import {
 import { buildTurnContext, resolveContext } from "./editor-context"
 import { classifyAction } from "./resolvers/classify-action"
 import { decompose } from "./resolvers/decompose"
-import { generateReply, type StepOutcome } from "./resolvers/reply"
+import { type StepOutcome, generateReply } from "./resolvers/reply"
 import { route } from "./resolvers/route"
 import type { FamilyOutcome, TurnContext } from "./turn-context"
 import { createTurnState } from "./turn-state"

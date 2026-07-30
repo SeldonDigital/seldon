@@ -9,7 +9,7 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
-import { commit } from "../commit"
+import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolveNodeTarget } from "../resolvers/resolve-target"
 import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
@@ -116,7 +116,7 @@ export async function executeReorder(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Reordering was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't reorder: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -195,7 +195,7 @@ export async function executeMove(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Moving was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't move: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)

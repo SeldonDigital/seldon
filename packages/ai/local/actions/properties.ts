@@ -11,7 +11,7 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
-import { commit } from "../commit"
+import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolvePropertyNames } from "../resolvers/resolve-property-name"
 import { resolvePropertyValue } from "../resolvers/resolve-property-value"
@@ -125,7 +125,7 @@ export async function executeSetProperties(
   } catch (caught) {
     return {
       kind: "message",
-      text: `That change was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't apply that change: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -176,7 +176,7 @@ export async function executeResetProperty(
     } catch (caught) {
       return {
         kind: "message",
-        text: `Resetting ${key} was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+        text: `Couldn't reset ${key}: ${commitFailureReason(caught)}`,
       }
     }
   }
@@ -219,7 +219,7 @@ export async function executeSetLabel(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Renaming was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't rename: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)

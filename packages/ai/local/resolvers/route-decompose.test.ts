@@ -1,7 +1,8 @@
+import { describe, expect, it } from "vitest"
+
 import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
-import { describe, expect, it } from "vitest"
 
 import { resolveContext } from "../editor-context"
 import { isOllamaReachable } from "../ollama-client"

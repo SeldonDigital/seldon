@@ -1,7 +1,7 @@
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type { WorkspaceAction } from "@seldon/core/workspace/types"
 
-import { commit } from "../commit"
+import { commit, commitFailureReason } from "../commit"
 import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
 import {
   type FamilyOutcome,
@@ -24,7 +24,7 @@ export async function executeRemoveInstance(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Removing was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't remove: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -61,7 +61,7 @@ export async function executeRemoveComponent(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Removing the component was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't remove the component: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
@@ -86,7 +86,7 @@ export async function executeDuplicate(
   } catch (caught) {
     return {
       kind: "message",
-      text: `Duplicating was rejected: ${caught instanceof Error ? caught.message : "invalid action"}`,
+      text: `Couldn't duplicate: ${commitFailureReason(caught)}`,
     }
   }
   recordStep(context, "commit", true)
