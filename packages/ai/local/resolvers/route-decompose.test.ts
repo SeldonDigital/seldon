@@ -9,20 +9,7 @@ import { isOllamaReachable } from "../ollama-client"
 import type { TurnContext } from "../turn-context"
 import { createTurnState } from "../turn-state"
 import { decompose } from "./decompose"
-import { historyBlock, route } from "./route"
-
-describe("historyBlock", () => {
-  it("renders role-prefixed lines and is empty without history", () => {
-    expect(historyBlock()).toBe("")
-    expect(historyBlock([])).toBe("")
-    const block = historyBlock([
-      { role: "user", content: "make it red" },
-      { role: "assistant", content: "Done." },
-    ])
-    expect(block).toContain("user: make it red")
-    expect(block).toContain("assistant: Done.")
-  })
-})
+import { route } from "./route"
 
 const ollamaUp = await isOllamaReachable()
 const describeIfOllama = ollamaUp ? describe : describe.skip

@@ -5,6 +5,10 @@ import {
 } from "@seldon/core/workspace/model/components"
 import type { BoardKey, WorkspaceAction } from "@seldon/core/workspace/types"
 
+import {
+  buildExtractAddRequestStage,
+  buildPickVariantStage,
+} from "../../prompt/stages/add-insert"
 import { resolveCatalogId } from "../../shared/catalog-ids"
 import { withCreatedIdentity } from "../../shared/created-nodes"
 import { commit, commitFailureReason } from "../commit"
@@ -35,33 +39,24 @@ function allCatalogIds(): string[] {
 async function extractAddRequest(
   context: TurnContext,
 ): Promise<{ catalogId: string; destination: string | null }> {
-  const ids = allCatalogIds()
+  const { prompt, schema } = buildExtractAddRequestStage({
+    message: context.message,
+    catalogIds: allCatalogIds(),
+  })
   const { value, metrics } = await callOllamaFormat<{
     component: string
     destination: string
   }>({
     model: context.model,
     host: context.host,
-    prompt: [
-      "A user wants to add a component in a design editor.",
-      `Message: ${JSON.stringify(context.message)}`,
-      "",
-      "Available component ids:",
-      ids.join(", "),
-      "",
-      'Pick the component id that best matches what the user asked to add. For "destination", extract the shortest phrase naming where it should go, or an empty string when the message names no destination.',
-    ].join("\n"),
-    schema: {
-      type: "object",
-      properties: {
-        component: { type: "string", enum: ids },
-        destination: { type: "string" },
-      },
-      required: ["component", "destination"],
-    },
+    prompt,
+    schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_component", true)
+  recordStep(context, "resolve_component", true, {
+    prompt,
+    output: JSON.stringify(value, null, 2),
+  })
   const destination = value.destination.trim()
   return {
     catalogId: value.component,
@@ -94,7 +89,17 @@ export async function executeAddComponent(
       request.destination,
       context.resolved.scope,
     )
-    recordStep(context, "resolve_destination", destination.kind === "resolved")
+    recordStep(
+      context,
+      "resolve_destination",
+      destination.kind === "resolved",
+      {
+        output:
+          destination.kind === "resolved"
+            ? `Resolved "${request.destination}" to node ${destination.nodeId} (deterministic, no model call).`
+            : destination.text,
+      },
+    )
     if (destination.kind === "message")
       return { kind: "message", text: destination.text }
     parentId = destination.nodeId
@@ -216,34 +221,24 @@ export async function executeInsertVariantInstance(
     return { id: ref.id, label: node?.label ?? ref.id }
   })
 
+  const { prompt, schema } = buildPickVariantStage({
+    message: context.message,
+    variants,
+  })
   const { value, metrics } = await callOllamaFormat<{
     variantId: string
     destination: string
   }>({
     model: context.model,
     host: context.host,
-    prompt: [
-      "A user wants to insert an instance of one of these variants:",
-      variants.map((entry) => `- ${entry.id}: "${entry.label}"`).join("\n"),
-      "",
-      `Message: ${JSON.stringify(context.message)}`,
-      "",
-      'Pick the variant and extract the shortest phrase naming where it goes ("destination" -- empty string when the message means the current selection).',
-    ].join("\n"),
-    schema: {
-      type: "object",
-      properties: {
-        variantId: {
-          type: "string",
-          enum: variants.map((entry) => entry.id),
-        },
-        destination: { type: "string" },
-      },
-      required: ["variantId", "destination"],
-    },
+    prompt,
+    schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_variant", true)
+  recordStep(context, "resolve_variant", true, {
+    prompt,
+    output: JSON.stringify(value, null, 2),
+  })
 
   const destination = resolveNodeTarget(
     context.state.workspace,

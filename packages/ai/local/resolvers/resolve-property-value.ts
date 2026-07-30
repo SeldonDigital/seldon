@@ -9,6 +9,7 @@ import { computeWorkspaceThemes } from "@seldon/core/workspace/compute"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 import { themeRefTag } from "../../prompt/property-taxonomy"
+import { buildResolvePropertyValueStage } from "../../prompt/stages/resolve-property-value"
 import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
 
@@ -64,60 +65,25 @@ export async function resolvePropertyValue(
     : []
   const units = getPropertySchema(schemaKey)?.units?.allowed ?? []
 
-  const branches: Record<string, unknown>[] = []
-  const guidance: string[] = []
-  if (options.length > 0) {
-    branches.push({
-      properties: {
-        pick: { const: "option" },
-        value: { type: "string", enum: options },
-      },
-      required: ["pick", "value"],
-    })
-    guidance.push(`- preset options: ${options.join(", ")}`)
-  }
-  if (themeTokens.length > 0) {
-    branches.push({
-      properties: {
-        pick: { const: "theme" },
-        value: { type: "string", enum: themeTokens },
-      },
-      required: ["pick", "value"],
-    })
-    guidance.push(`- theme tokens: ${themeTokens.join(", ")}`)
-  }
-  branches.push({
-    properties: {
-      pick: { const: "exact" },
-      value: { type: ["string", "number"] },
-    },
-    required: ["pick", "value"],
+  const { prompt, schema } = buildResolvePropertyValueStage({
+    propertyKey,
+    message: context.message,
+    options,
+    themeTokens,
+    units: [...units],
   })
-  guidance.push(
-    units.length > 0
-      ? `- an exact value: a number (${units.join("|")}) or a string`
-      : "- an exact value: a string or number",
-  )
-
-  const prompt = [
-    `A user wants to set the "${propertyKey}" property of a design element.`,
-    "",
-    `Message: ${JSON.stringify(context.message)}`,
-    "",
-    "The property accepts:",
-    ...guidance,
-    "",
-    "Prefer a preset option or theme token when one matches the request; use exact only for a free value. Answer with the pick and the value.",
-  ].join("\n")
 
   const { value, metrics } = await callOllamaFormat<ValuePick>({
     model: context.model,
     host: context.host,
     prompt,
-    schema: { type: "object", oneOf: branches },
+    schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_property_value", true)
+  recordStep(context, "resolve_property_value", true, {
+    prompt,
+    output: JSON.stringify(value, null, 2),
+  })
 
   // Tag deterministically from the pick. Theme tokens get their tag from the
   // property's own schema (the model never writes a type string); option and

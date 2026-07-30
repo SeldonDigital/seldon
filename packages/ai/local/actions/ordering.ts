@@ -9,6 +9,10 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
+import {
+  buildMoveStage,
+  buildReorderStage,
+} from "../../prompt/stages/ordering"
 import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolveNodeTarget } from "../resolvers/resolve-target"
@@ -70,27 +74,24 @@ export async function executeReorder(
     }
   }
 
+  const { prompt, schema } = buildReorderStage({
+    message: context.message,
+    index: position.index + 1,
+    count: position.count,
+  })
   const { value, metrics } = await callOllamaFormat<{
     position: "first" | "last" | "up" | "down"
   }>({
     model: context.model,
     host: context.host,
-    prompt: [
-      "Where does the user want to move this element among its siblings?",
-      `It is currently at position ${position.index + 1} of ${position.count}.`,
-      `Message: ${JSON.stringify(context.message)}`,
-      '"first" = to the start, "last" = to the end, "up" = one position earlier, "down" = one position later.',
-    ].join("\n"),
-    schema: {
-      type: "object",
-      properties: {
-        position: { type: "string", enum: ["first", "last", "up", "down"] },
-      },
-      required: ["position"],
-    },
+    prompt,
+    schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_position", true)
+  recordStep(context, "resolve_position", true, {
+    prompt,
+    output: JSON.stringify(value, null, 2),
+  })
 
   const newIndex =
     value.position === "first"
@@ -136,28 +137,21 @@ export async function executeReorder(
 export async function executeMove(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
+  const { prompt, schema } = buildMoveStage({ message: context.message })
   const { value, metrics } = await callOllamaFormat<{
     item: string
     destination: string
   }>({
     model: context.model,
     host: context.host,
-    prompt: [
-      "A user wants to move one element into another container.",
-      `Message: ${JSON.stringify(context.message)}`,
-      'Extract the shortest phrase naming what to move ("item" -- empty string when the message means the current selection) and the shortest phrase naming where it goes ("destination").',
-    ].join("\n"),
-    schema: {
-      type: "object",
-      properties: {
-        item: { type: "string" },
-        destination: { type: "string", minLength: 1 },
-      },
-      required: ["item", "destination"],
-    },
+    prompt,
+    schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "extract_move", true)
+  recordStep(context, "extract_move", true, {
+    prompt,
+    output: JSON.stringify(value, null, 2),
+  })
 
   const item = resolveNodeTarget(
     context.state.workspace,
@@ -168,7 +162,12 @@ export async function executeMove(
     value.item.trim() === "" ? undefined : value.item,
     context.resolved.scope,
   )
-  recordStep(context, "resolve_target", item.kind === "resolved")
+  recordStep(context, "resolve_target", item.kind === "resolved", {
+    output:
+      item.kind === "resolved"
+        ? `Resolved the item to move to node ${item.nodeId} (deterministic, no model call).`
+        : item.text,
+  })
   if (item.kind === "message") return { kind: "message", text: item.text }
 
   const destination = resolveNodeTarget(
@@ -180,7 +179,12 @@ export async function executeMove(
     value.destination,
     context.resolved.scope,
   )
-  recordStep(context, "resolve_destination", destination.kind === "resolved")
+  recordStep(context, "resolve_destination", destination.kind === "resolved", {
+    output:
+      destination.kind === "resolved"
+        ? `Resolved the destination to node ${destination.nodeId} (deterministic, no model call).`
+        : destination.text,
+  })
   if (destination.kind === "message")
     return { kind: "message", text: destination.text }
 

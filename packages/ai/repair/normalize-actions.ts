@@ -43,7 +43,9 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
  * of the property's option keywords is re-tagged to `option`, so a closed-set
  * property a model emits as `{ type: "exact", value: "rtl" }` passes the now
  * strict option-only validation. Other already-tagged and non-scalar values
- * pass through.
+ * pass through. The tagging rules here must stay consistent with the value
+ * stage in prompt/stages/resolve-property-value.ts, which offers the model
+ * the same option/theme/exact choice this pass normalizes.
  */
 function coerceLeaf(
   schemaKey: string,
