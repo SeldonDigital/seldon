@@ -19,8 +19,10 @@ import type { InterfaceMode } from "@app/editor/hooks/use-editor-config"
 import type { MenuAlign, MenuEntry } from "@app/menus"
 import type { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
 import type { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
+import type { BarTopbarProps } from "@seldon/components/parts/BarTopbar"
 import type { ImageProps } from "@seldon/components/primitives/Image"
 import type { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import type { SeldonRefs } from "@seldon/components/utils/merge-slot"
 import type { CSSProperties, MouseEvent, PointerEvent } from "react"
 
 /** Menu id for the chrome-theme dropdown, distinct from the config menus. */
@@ -95,12 +97,16 @@ function toMenuEntries(menu: MenuDropdown, appState: AppState): MenuEntry[] {
   })
 }
 
-interface MenuSlot {
-  button: ButtonSimpleProps | null
-  label: TextLabelProps | null
+/** The trigger and label props for one visible config menu. */
+interface MenuTrigger {
+  button: ButtonSimpleProps
+  label: TextLabelProps
 }
 
-const EMPTY_SLOT: MenuSlot = { button: null, label: null }
+/** Turns a config menu's slots on when the menu is visible, off when it is not. */
+function slotFor(trigger: MenuTrigger | null) {
+  return trigger === null ? null : {}
+}
 
 /**
  * View-model for the topbar. Feeds the generated `BarTopbar` view: it injects
@@ -130,9 +136,6 @@ export function TopbarController() {
     setExporting(!isExporting)
   }, [])
 
-  // Inject the gesture onto the generated `logo` frame that wraps both images.
-  const seldonRefs = useMemo(() => ({ logo: { onClick: handleLogoClick } }), [handleLogoClick])
-
   const closeMenu = useCallback(() => setOpenMenuId(null), [])
 
   const handleTriggerClick = useCallback((id: string, el: HTMLElement) => {
@@ -149,14 +152,14 @@ export function TopbarController() {
     [openMenuId],
   )
 
-  const menuSlots = useMemo<MenuSlot[]>(() => {
-    return [0, 1, 2, 3, 4, 5].map((index) => {
-      const menu = menuConfig[index]
+  const buildTrigger = useCallback(
+    (menuId: string): MenuTrigger | null => {
+      const menu = menuConfig.find((entry) => entry.id === menuId)
 
-      if (!menu) return EMPTY_SLOT
+      if (!menu) return null
 
       if (menu.visibleIn && !menu.visibleIn.includes(appState)) {
-        return EMPTY_SLOT
+        return null
       }
 
       const button = {
@@ -170,8 +173,24 @@ export function TopbarController() {
       } as ButtonSimpleProps
 
       return { button, label: { children: menu.label } }
-    })
-  }, [menuConfig, appState, openMenuId, handleTriggerClick, handleTriggerEnter])
+    },
+    [menuConfig, appState, openMenuId, handleTriggerClick, handleTriggerEnter],
+  )
+
+  // Each config menu is looked up by its id, so reordering the menus cannot land
+  // one menu's handlers on another menu's button. A menu hidden in the current
+  // app state resolves to null.
+  const triggers = useMemo(
+    () => ({
+      file: buildTrigger("file"),
+      edit: buildTrigger("edit"),
+      component: buildTrigger("component"),
+      hari: buildTrigger("hari"),
+      view: buildTrigger("view"),
+      dev: buildTrigger("dev"),
+    }),
+    [buildTrigger],
+  )
 
   const themeMenuItems = useMemo<MenuEntry[]>(
     () =>
@@ -238,30 +257,67 @@ export function TopbarController() {
 
   const menuKey = openMenuId ?? "closed"
 
+  // Every value and handler reaches its slot by the slot's baked `data-seldon-ref`
+  // name, so moving or reordering a node in the design keeps this wiring intact.
+  const seldonRefs = useMemo<SeldonRefs>(
+    () => ({
+      logo: { onClick: handleLogoClick },
+      logoMark: { ...logoProps },
+      logoWordmark: { ...wordmarkProps },
+
+      menuFile: { ...triggers.file?.button },
+      menuFileLabel: { ...triggers.file?.label },
+      menuEdit: { ...triggers.edit?.button },
+      menuEditLabel: { ...triggers.edit?.label },
+      menuComponent: { ...triggers.component?.button },
+      menuComponentLabel: { ...triggers.component?.label },
+      menuHari: { ...triggers.hari?.button },
+      menuHariLabel: { ...triggers.hari?.label },
+      menuView: { ...triggers.view?.button },
+      menuViewLabel: { ...triggers.view?.label },
+      menuDev: { ...triggers.dev?.button },
+      menuDevLabel: { ...triggers.dev?.label },
+
+      menuTheme: { ...themeButton },
+      menuThemeLabel: { ...themeLabel },
+      menuMode: { ...modeButton },
+      menuModeLabel: { ...modeLabel },
+    }),
+    [handleLogoClick, triggers, themeButton, themeLabel, modeButton, modeLabel],
+  )
+
+  // BarTopbar gates its opt-in slots on a prop being present, so every slot the
+  // refs above drive is turned on here. A hidden menu passes `null` instead,
+  // which collapses its trigger and label.
+  const slots = useMemo<Partial<BarTopbarProps>>(
+    () => ({
+      image: {},
+      image2: {},
+
+      buttonSimple: slotFor(triggers.file),
+      textLabel: slotFor(triggers.file),
+      buttonSimple2: slotFor(triggers.edit),
+      textLabel2: slotFor(triggers.edit),
+      buttonSimple3: slotFor(triggers.component),
+      textLabel3: slotFor(triggers.component),
+      buttonSimple4: slotFor(triggers.hari),
+      textLabel4: slotFor(triggers.hari),
+      buttonSimple5: slotFor(triggers.view),
+      textLabel5: slotFor(triggers.view),
+      buttonSimple6: slotFor(triggers.dev),
+      textLabel6: slotFor(triggers.dev),
+
+      buttonMenu: {},
+      textLabel7: {},
+      buttonMenu2: {},
+      textLabel8: {},
+    }),
+    [triggers],
+  )
+
   return (
     <Frame wrapperElement="header" style={styles.header}>
-      <BarTopbar
-        data-testid="topbar"
-        seldonRefs={seldonRefs}
-        image={logoProps}
-        image2={wordmarkProps}
-        buttonSimple={menuSlots[0].button}
-        textLabel={menuSlots[0].label}
-        buttonSimple2={menuSlots[1].button}
-        textLabel2={menuSlots[1].label}
-        buttonSimple3={menuSlots[2].button}
-        textLabel3={menuSlots[2].label}
-        buttonSimple4={menuSlots[3].button}
-        textLabel4={menuSlots[3].label}
-        buttonSimple5={menuSlots[4].button}
-        textLabel5={menuSlots[4].label}
-        buttonSimple6={menuSlots[5].button}
-        textLabel6={menuSlots[5].label}
-        buttonMenu={themeButton}
-        textLabel7={themeLabel}
-        buttonMenu2={modeButton}
-        textLabel8={modeLabel}
-      />
+      <BarTopbar data-testid="topbar" {...slots} seldonRefs={seldonRefs} />
       <MenuController
         key={menuKey}
         open={openMenuId !== null}

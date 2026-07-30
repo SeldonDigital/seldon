@@ -29,27 +29,27 @@ indirectly) * any machine learning or artificial intelligence system without wri
  * Structure:
  *   Frame             frame
  *     Frame           frame2         -> logo
- *       Image         image
- *       Image         image2
+ *       Image         image          -> logoMark
+ *       Image         image2         -> logoWordmark
  *     Frame           frame3         -> menus
  *       ButtonSimple  buttonSimple   -> menuFile
- *         TextLabel   textLabel
+ *         TextLabel   textLabel      -> menuFileLabel
  *       ButtonSimple  buttonSimple2  -> menuEdit
- *         TextLabel   textLabel2
+ *         TextLabel   textLabel2     -> menuEditLabel
  *       ButtonSimple  buttonSimple3  -> menuComponent
- *         TextLabel   textLabel3
- *       ButtonSimple  buttonSimple4  -> menuView
- *         TextLabel   textLabel4
- *       ButtonSimple  buttonSimple5
- *         TextLabel   textLabel5
+ *         TextLabel   textLabel3     -> menuComponentLabel
+ *       ButtonSimple  buttonSimple4  -> menuHari
+ *         TextLabel   textLabel4     -> menuHariLabel
+ *       ButtonSimple  buttonSimple5  -> menuView
+ *         TextLabel   textLabel5     -> menuViewLabel
  *       ButtonSimple  buttonSimple6  -> menuDev
- *         TextLabel   textLabel6
+ *         TextLabel   textLabel6     -> menuDevLabel
  *   Frame             frame4
  *     ButtonMenu      buttonMenu     -> menuTheme
- *       TextLabel     textLabel7
+ *       TextLabel     textLabel7     -> menuThemeLabel
  *       Icon          icon
  *     ButtonMenu      buttonMenu2    -> menuMode
- *       TextLabel     textLabel8
+ *       TextLabel     textLabel8     -> menuModeLabel
  *       Icon          icon2
  *
  * @example
@@ -122,9 +122,11 @@ const sdn: Record<string, any> = {
   },
   image: {
     className: "sdn-image sdn-image--33xp",
+    "data-seldon-ref": "logoMark",
   },
   image2: {
     className: "sdn-image sdn-image--dnok",
+    "data-seldon-ref": "logoWordmark",
   },
   frame3: {
     wrapperElement: "div",
@@ -139,6 +141,7 @@ const sdn: Record<string, any> = {
   textLabel: {
     children: "File",
     className: "sdn-text-label sdn-text-label--lbxv",
+    "data-seldon-ref": "menuFileLabel",
   },
   buttonSimple2: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
@@ -147,6 +150,7 @@ const sdn: Record<string, any> = {
   textLabel2: {
     children: "Edit",
     className: "sdn-text-label sdn-text-label--lbxv",
+    "data-seldon-ref": "menuEditLabel",
   },
   buttonSimple3: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
@@ -155,21 +159,25 @@ const sdn: Record<string, any> = {
   textLabel3: {
     children: "Component",
     className: "sdn-text-label sdn-text-label--lbxv",
+    "data-seldon-ref": "menuComponentLabel",
   },
   buttonSimple4: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
-    "data-seldon-ref": "menuView",
+    "data-seldon-ref": "menuHari",
   },
   textLabel4: {
     children: "Hari",
     className: "sdn-text-label sdn-text-label--lbxv",
+    "data-seldon-ref": "menuHariLabel",
   },
   buttonSimple5: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuView",
   },
   textLabel5: {
     children: "View",
     className: "sdn-text-label sdn-text-label--lbxv",
+    "data-seldon-ref": "menuViewLabel",
   },
   buttonSimple6: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
@@ -178,6 +186,7 @@ const sdn: Record<string, any> = {
   textLabel6: {
     children: "Dev",
     className: "sdn-text-label sdn-text-label--lbxv",
+    "data-seldon-ref": "menuDevLabel",
   },
   frame4: {
     wrapperElement: "div",
@@ -191,6 +200,7 @@ const sdn: Record<string, any> = {
   textLabel7: {
     children: "Theme",
     className: "sdn-text-label sdn-text-label--sa6t",
+    "data-seldon-ref": "menuThemeLabel",
   },
   icon: {
     icon: "material-chevronDown",
@@ -204,6 +214,7 @@ const sdn: Record<string, any> = {
   textLabel8: {
     children: "Mode",
     className: "sdn-text-label sdn-text-label--sa6t",
+    "data-seldon-ref": "menuModeLabel",
   },
   icon2: {
     icon: "material-chevronDown",

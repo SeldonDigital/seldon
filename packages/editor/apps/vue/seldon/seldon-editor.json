@@ -853,7 +853,7 @@
             "type": "exact",
             "value": {
               "unit": "px",
-              "value": 600
+              "value": 900
             }
           }
         },
@@ -889,7 +889,7 @@
         },
         "gap": {
           "type": "theme.ordinal",
-          "value": "@gap.cozy"
+          "value": "@gap.comfortable"
         }
       },
       "variants": [
@@ -20133,6 +20133,7 @@
       "origin": "schema"
     },
     "component-bar-lbXVYN7P": {
+      "ref": "menuFileLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -20212,6 +20213,7 @@
       "origin": "schema"
     },
     "component-bar-Q8d6DDvh": {
+      "ref": "menuEditLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -20291,6 +20293,7 @@
       "origin": "schema"
     },
     "component-bar-BKODTkFn": {
+      "ref": "menuComponentLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -20370,6 +20373,7 @@
       "origin": "schema"
     },
     "component-bar-Dsz3NduE": {
+      "ref": "menuDevLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -20398,7 +20402,7 @@
       "origin": "schema"
     },
     "component-bar-FUwSPfCT": {
-      "ref": "menuView",
+      "ref": "menuHari",
       "type": "instance",
       "level": "element",
       "label": "Simple",
@@ -20449,6 +20453,7 @@
       "origin": "schema"
     },
     "component-bar-BJ3Eeqtv": {
+      "ref": "menuHariLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -20600,6 +20605,7 @@
       "origin": "user"
     },
     "component-image-33xPB8VC": {
+      "ref": "logoMark",
       "type": "instance",
       "level": "primitive",
       "label": "Image",
@@ -20636,6 +20642,7 @@
       "origin": "user"
     },
     "component-bar-DnOKxkHn": {
+      "ref": "logoWordmark",
       "type": "instance",
       "level": "primitive",
       "label": "Image",
@@ -33940,6 +33947,7 @@
       "origin": "user"
     },
     "component-button-RpiWZe3u": {
+      "ref": "menuThemeLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -34139,6 +34147,7 @@
       "origin": "user"
     },
     "component-bar-xCgr4ifR": {
+      "ref": "menuModeLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -37278,6 +37287,7 @@
       "origin": "schema"
     },
     "component-bar-tyBBTxNH": {
+      "ref": "menuView",
       "type": "instance",
       "level": "element",
       "label": "Simple",
@@ -37328,6 +37338,7 @@
       "origin": "schema"
     },
     "component-bar-gS6ioGdB": {
+      "ref": "menuViewLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",

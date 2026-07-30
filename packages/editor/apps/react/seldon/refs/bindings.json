@@ -3896,14 +3896,14 @@
       {
         "file": "app/topbar/TopbarController.tsx",
         "component": "TopbarController",
-        "line": 134,
+        "line": 264,
         "conditional": false,
         "expression": "{ onClick: handleLogoClick }",
         "inputs": [
           {
             "name": "handleLogoClick",
             "declaredAt": {
-              "line": 126,
+              "line": 132,
               "kind": "const",
               "via": "useCallback"
             }
@@ -3917,7 +3917,7 @@
               {
                 "name": "handleLogoClick",
                 "declaredAt": {
-                  "line": 126,
+                  "line": 132,
                   "kind": "const",
                   "via": "useCallback"
                 }
@@ -3925,6 +3925,364 @@
             ]
           }
         ]
+      }
+    ],
+    "logoMark": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 265,
+        "conditional": false,
+        "expression": "{ ...logoProps }",
+        "inputs": [
+          {
+            "name": "logoProps",
+            "declaredAt": {
+              "line": 335,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "logoWordmark": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 266,
+        "conditional": false,
+        "expression": "{ ...wordmarkProps }",
+        "inputs": [
+          {
+            "name": "wordmarkProps",
+            "declaredAt": {
+              "line": 340,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuComponent": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 272,
+        "conditional": false,
+        "expression": "{ ...triggers.component?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuComponentLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 273,
+        "conditional": false,
+        "expression": "{ ...triggers.component?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuDev": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 278,
+        "conditional": false,
+        "expression": "{ ...triggers.dev?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuDevLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 279,
+        "conditional": false,
+        "expression": "{ ...triggers.dev?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuEdit": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 270,
+        "conditional": false,
+        "expression": "{ ...triggers.edit?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuEditLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 271,
+        "conditional": false,
+        "expression": "{ ...triggers.edit?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuFile": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 268,
+        "conditional": false,
+        "expression": "{ ...triggers.file?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuFileLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 269,
+        "conditional": false,
+        "expression": "{ ...triggers.file?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuHari": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 274,
+        "conditional": false,
+        "expression": "{ ...triggers.hari?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuHariLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 275,
+        "conditional": false,
+        "expression": "{ ...triggers.hari?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuMode": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 283,
+        "conditional": false,
+        "expression": "{ ...modeButton }",
+        "inputs": [
+          {
+            "name": "modeButton",
+            "declaredAt": {
+              "line": 234,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuModeLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 284,
+        "conditional": false,
+        "expression": "{ ...modeLabel }",
+        "inputs": [
+          {
+            "name": "modeLabel",
+            "declaredAt": {
+              "line": 239,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuTheme": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 281,
+        "conditional": false,
+        "expression": "{ ...themeButton }",
+        "inputs": [
+          {
+            "name": "themeButton",
+            "declaredAt": {
+              "line": 212,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuThemeLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 282,
+        "conditional": false,
+        "expression": "{ ...themeLabel }",
+        "inputs": [
+          {
+            "name": "themeLabel",
+            "declaredAt": {
+              "line": 217,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuView": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 276,
+        "conditional": false,
+        "expression": "{ ...triggers.view?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuViewLabel": [
+      {
+        "file": "app/topbar/TopbarController.tsx",
+        "component": "TopbarController",
+        "line": 277,
+        "conditional": false,
+        "expression": "{ ...triggers.view?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 183,
+              "kind": "const",
+              "via": "useMemo"
+            }
+          }
+        ],
+        "props": []
       }
     ],
     "nodeActions": [
@@ -6144,340 +6502,372 @@
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 260,
-          "expression": "themeButton",
-          "inputs": [
-            {
-              "name": "themeButton",
-              "declaredAt": {
-                "line": 193,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
+          "line": 310,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonMenu2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 262,
-          "expression": "modeButton",
-          "inputs": [
-            {
-              "name": "modeButton",
-              "declaredAt": {
-                "line": 215,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
+          "line": 312,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonSimple": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 248,
-          "expression": "menuSlots[0].button",
+          "line": 297,
+          "expression": "slotFor(triggers.file)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 250,
-          "expression": "menuSlots[1].button",
+          "line": 299,
+          "expression": "slotFor(triggers.edit)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple3": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 252,
-          "expression": "menuSlots[2].button",
+          "line": 301,
+          "expression": "slotFor(triggers.component)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple4": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 254,
-          "expression": "menuSlots[3].button",
+          "line": 303,
+          "expression": "slotFor(triggers.hari)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple5": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 256,
-          "expression": "menuSlots[4].button",
+          "line": 305,
+          "expression": "slotFor(triggers.view)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple6": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 258,
-          "expression": "menuSlots[5].button",
+          "line": 307,
+          "expression": "slotFor(triggers.dev)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "image": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 246,
-          "expression": "logoProps",
-          "inputs": [
-            {
-              "name": "logoProps",
-              "declaredAt": {
-                "line": 279,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 294,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "image2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 247,
-          "expression": "wordmarkProps",
-          "inputs": [
-            {
-              "name": "wordmarkProps",
-              "declaredAt": {
-                "line": 284,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 295,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 249,
-          "expression": "menuSlots[0].label",
+          "line": 298,
+          "expression": "slotFor(triggers.file)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel2": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 251,
-          "expression": "menuSlots[1].label",
+          "line": 300,
+          "expression": "slotFor(triggers.edit)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel3": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 253,
-          "expression": "menuSlots[2].label",
+          "line": 302,
+          "expression": "slotFor(triggers.component)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel4": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 255,
-          "expression": "menuSlots[3].label",
+          "line": 304,
+          "expression": "slotFor(triggers.hari)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel5": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 257,
-          "expression": "menuSlots[4].label",
+          "line": 306,
+          "expression": "slotFor(triggers.view)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel6": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 259,
-          "expression": "menuSlots[5].label",
+          "line": 308,
+          "expression": "slotFor(triggers.dev)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 152,
+                "line": 107,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 183,
                 "kind": "const",
                 "via": "useMemo"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel7": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 261,
-          "expression": "themeLabel",
-          "inputs": [
-            {
-              "name": "themeLabel",
-              "declaredAt": {
-                "line": 198,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
+          "line": 311,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel8": [
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 263,
-          "expression": "modeLabel",
-          "inputs": [
-            {
-              "name": "modeLabel",
-              "declaredAt": {
-                "line": 220,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
-          "spread": false
+          "line": 313,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ]
     },
@@ -8213,7 +8603,7 @@
         {
           "file": "app/topbar/TopbarController.tsx",
           "component": "TopbarController",
-          "line": 242,
+          "line": 319,
           "expression": "\"header\"",
           "inputs": [],
           "spread": false

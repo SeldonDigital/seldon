@@ -106,14 +106,25 @@ export type SeldonRef =
   | "hariTurns"
   | "hariUserText"
   | "logo"
+  | "logoMark"
+  | "logoWordmark"
   | "menuComponent"
+  | "menuComponentLabel"
   | "menuDev"
+  | "menuDevLabel"
   | "menuEdit"
+  | "menuEditLabel"
   | "menuFile"
+  | "menuFileLabel"
+  | "menuHari"
+  | "menuHariLabel"
   | "menuMode"
+  | "menuModeLabel"
   | "menus"
   | "menuTheme"
+  | "menuThemeLabel"
   | "menuView"
+  | "menuViewLabel"
   | "nodeActions"
   | "nodeDisclosure"
   | "nodeDisclosureIcon"
@@ -1510,6 +1521,34 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  logoMark: {
+    component: "Image",
+    nodeId: "component-image-33xPB8VC",
+    className: "sdn-image sdn-image--33xp",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "image",
+        type: "ImageProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  logoWordmark: {
+    component: "Image",
+    nodeId: "component-bar-DnOKxkHn",
+    className: "sdn-image sdn-image--dnok",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "image2",
+        type: "ImageProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   menuComponent: {
     component: "ButtonSimple",
     nodeId: "component-bar-tJLcDfnC",
@@ -1520,6 +1559,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "parts/BarTopbar.vue",
         slot: "buttonSimple3",
         type: "ButtonSimpleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuComponentLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-BKODTkFn",
+    className: "sdn-text-label sdn-text-label--lbxv",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel3",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -1538,6 +1591,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  menuDevLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-Dsz3NduE",
+    className: "sdn-text-label sdn-text-label--lbxv",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel6",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   menuEdit: {
     component: "ButtonSimple",
     nodeId: "component-bar-8iQ7zRar",
@@ -1548,6 +1615,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "parts/BarTopbar.vue",
         slot: "buttonSimple2",
         type: "ButtonSimpleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuEditLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-Q8d6DDvh",
+    className: "sdn-text-label sdn-text-label--lbxv",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel2",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -1566,6 +1647,48 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  menuFileLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-lbXVYN7P",
+    className: "sdn-text-label sdn-text-label--lbxv",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuHari: {
+    component: "ButtonSimple",
+    nodeId: "component-bar-FUwSPfCT",
+    className: "sdn-button-simple sdn-button-simple--dbgs",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "buttonSimple4",
+        type: "ButtonSimpleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuHariLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-BJ3Eeqtv",
+    className: "sdn-text-label sdn-text-label--lbxv",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel4",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   menuMode: {
     component: "ButtonMenu",
     nodeId: "component-bar-nWDgCHuH",
@@ -1576,6 +1699,20 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
         file: "parts/BarTopbar.vue",
         slot: "buttonMenu2",
         type: "ButtonMenuProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuModeLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-xCgr4ifR",
+    className: "sdn-text-label sdn-text-label--sa6t",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel8",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],
@@ -1608,16 +1745,44 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
       },
     ],
   },
+  menuThemeLabel: {
+    component: "TextLabel",
+    nodeId: "component-button-RpiWZe3u",
+    className: "sdn-text-label sdn-text-label--sa6t",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel7",
+        type: "TextLabelProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
   menuView: {
     component: "ButtonSimple",
-    nodeId: "component-bar-FUwSPfCT",
+    nodeId: "component-bar-tyBBTxNH",
     className: "sdn-button-simple sdn-button-simple--dbgs",
     views: [
       {
         component: "BarTopbar",
         file: "parts/BarTopbar.vue",
-        slot: "buttonSimple4",
+        slot: "buttonSimple5",
         type: "ButtonSimpleProps",
+        rendersWhen: "when-passed",
+      },
+    ],
+  },
+  menuViewLabel: {
+    component: "TextLabel",
+    nodeId: "component-bar-gS6ioGdB",
+    className: "sdn-text-label sdn-text-label--lbxv",
+    views: [
+      {
+        component: "BarTopbar",
+        file: "parts/BarTopbar.vue",
+        slot: "textLabel5",
+        type: "TextLabelProps",
         rendersWhen: "when-passed",
       },
     ],

@@ -3446,14 +3446,14 @@
       {
         "file": "app/topbar/TopbarController.vue",
         "component": "TopbarController",
-        "line": 208,
+        "line": 227,
         "conditional": false,
         "expression": "{ onClick: handleLogoClick }",
         "inputs": [
           {
             "name": "handleLogoClick",
             "declaredAt": {
-              "line": 72,
+              "line": 78,
               "kind": "function"
             }
           }
@@ -3466,13 +3466,371 @@
               {
                 "name": "handleLogoClick",
                 "declaredAt": {
-                  "line": 72,
+                  "line": 78,
                   "kind": "function"
                 }
               }
             ]
           }
         ]
+      }
+    ],
+    "logoMark": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 228,
+        "conditional": false,
+        "expression": "{ ...logoProps }",
+        "inputs": [
+          {
+            "name": "logoProps",
+            "declaredAt": {
+              "line": 220,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "logoWordmark": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 229,
+        "conditional": false,
+        "expression": "{ ...wordmarkProps }",
+        "inputs": [
+          {
+            "name": "wordmarkProps",
+            "declaredAt": {
+              "line": 221,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuComponent": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 235,
+        "conditional": false,
+        "expression": "{ ...triggers.value.component?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuComponentLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 236,
+        "conditional": false,
+        "expression": "{ ...triggers.value.component?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuDev": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 241,
+        "conditional": false,
+        "expression": "{ ...triggers.value.dev?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuDevLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 242,
+        "conditional": false,
+        "expression": "{ ...triggers.value.dev?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuEdit": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 233,
+        "conditional": false,
+        "expression": "{ ...triggers.value.edit?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuEditLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 234,
+        "conditional": false,
+        "expression": "{ ...triggers.value.edit?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuFile": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 231,
+        "conditional": false,
+        "expression": "{ ...triggers.value.file?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuFileLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 232,
+        "conditional": false,
+        "expression": "{ ...triggers.value.file?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuHari": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 237,
+        "conditional": false,
+        "expression": "{ ...triggers.value.hari?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuHariLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 238,
+        "conditional": false,
+        "expression": "{ ...triggers.value.hari?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuMode": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 246,
+        "conditional": false,
+        "expression": "{ ...modeButton.value }",
+        "inputs": [
+          {
+            "name": "modeButton",
+            "declaredAt": {
+              "line": 193,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuModeLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 247,
+        "conditional": false,
+        "expression": "{ ...modeLabel.value }",
+        "inputs": [
+          {
+            "name": "modeLabel",
+            "declaredAt": {
+              "line": 201,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuTheme": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 244,
+        "conditional": false,
+        "expression": "{ ...themeButton.value }",
+        "inputs": [
+          {
+            "name": "themeButton",
+            "declaredAt": {
+              "line": 169,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuThemeLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 245,
+        "conditional": false,
+        "expression": "{ ...themeLabel.value }",
+        "inputs": [
+          {
+            "name": "themeLabel",
+            "declaredAt": {
+              "line": 177,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuView": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 239,
+        "conditional": false,
+        "expression": "{ ...triggers.value.view?.button }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
+      }
+    ],
+    "menuViewLabel": [
+      {
+        "file": "app/topbar/TopbarController.vue",
+        "component": "TopbarController",
+        "line": 240,
+        "conditional": false,
+        "expression": "{ ...triggers.value.view?.label }",
+        "inputs": [
+          {
+            "name": "triggers",
+            "declaredAt": {
+              "line": 146,
+              "kind": "const",
+              "via": "computed"
+            }
+          }
+        ],
+        "props": []
       }
     ],
     "nodeActions": [
@@ -5157,269 +5515,185 @@
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 234,
-          "expression": "themeButton",
-          "inputs": [
-            {
-              "name": "themeButton",
-              "declaredAt": {
-                "line": 152,
-                "kind": "const",
-                "via": "computed"
-              }
-            }
-          ],
-          "spread": false
+          "line": 270,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonMenu2": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 237,
-          "expression": "modeButton",
-          "inputs": [
-            {
-              "name": "modeButton",
-              "declaredAt": {
-                "line": 176,
-                "kind": "const",
-                "via": "computed"
-              }
-            }
-          ],
-          "spread": false
+          "line": 272,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "buttonSimple": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 221,
-          "expression": "menuSlots[0].button",
+          "line": 257,
+          "expression": "slotFor(triggers.value.file)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple2": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 223,
-          "expression": "menuSlots[1].button",
+          "line": 259,
+          "expression": "slotFor(triggers.value.edit)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple3": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 225,
-          "expression": "menuSlots[2].button",
+          "line": 261,
+          "expression": "slotFor(triggers.value.component)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple4": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 227,
-          "expression": "menuSlots[3].button",
+          "line": 263,
+          "expression": "slotFor(triggers.value.hari)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple5": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 229,
-          "expression": "menuSlots[4].button",
+          "line": 265,
+          "expression": "slotFor(triggers.value.view)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "buttonSimple6": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 231,
-          "expression": "menuSlots[5].button",
+          "line": 267,
+          "expression": "slotFor(triggers.value.dev)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "dataTestid": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 214,
+          "line": 279,
           "expression": "\"topbar\"",
           "inputs": [],
-          "spread": false
-        }
-      ],
-      "frame": [
-        {
-          "file": "app/topbar/TopbarController.vue",
-          "component": "TopbarController",
-          "line": 216,
-          "expression": "emptySlot",
-          "inputs": [
-            {
-              "name": "emptySlot",
-              "declaredAt": {
-                "line": 205,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "frame2": [
-        {
-          "file": "app/topbar/TopbarController.vue",
-          "component": "TopbarController",
-          "line": 217,
-          "expression": "emptySlot",
-          "inputs": [
-            {
-              "name": "emptySlot",
-              "declaredAt": {
-                "line": 205,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "frame3": [
-        {
-          "file": "app/topbar/TopbarController.vue",
-          "component": "TopbarController",
-          "line": 220,
-          "expression": "emptySlot",
-          "inputs": [
-            {
-              "name": "emptySlot",
-              "declaredAt": {
-                "line": 205,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "frame4": [
-        {
-          "file": "app/topbar/TopbarController.vue",
-          "component": "TopbarController",
-          "line": 233,
-          "expression": "emptySlot",
-          "inputs": [
-            {
-              "name": "emptySlot",
-              "declaredAt": {
-                "line": 205,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "icon": [
-        {
-          "file": "app/topbar/TopbarController.vue",
-          "component": "TopbarController",
-          "line": 236,
-          "expression": "emptySlot",
-          "inputs": [
-            {
-              "name": "emptySlot",
-              "declaredAt": {
-                "line": 205,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
-      "icon2": [
-        {
-          "file": "app/topbar/TopbarController.vue",
-          "component": "TopbarController",
-          "line": 239,
-          "expression": "emptySlot",
-          "inputs": [
-            {
-              "name": "emptySlot",
-              "declaredAt": {
-                "line": 205,
-                "kind": "const"
-              }
-            }
-          ],
           "spread": false
         }
       ],
@@ -5427,188 +5701,196 @@
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 218,
-          "expression": "logoProps",
-          "inputs": [
-            {
-              "name": "logoProps",
-              "declaredAt": {
-                "line": 203,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 254,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "image2": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 219,
-          "expression": "wordmarkProps",
-          "inputs": [
-            {
-              "name": "wordmarkProps",
-              "declaredAt": {
-                "line": 204,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
+          "line": 255,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 222,
-          "expression": "menuSlots[0].label",
+          "line": 258,
+          "expression": "slotFor(triggers.value.file)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel2": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 224,
-          "expression": "menuSlots[1].label",
+          "line": 260,
+          "expression": "slotFor(triggers.value.edit)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel3": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 226,
-          "expression": "menuSlots[2].label",
+          "line": 262,
+          "expression": "slotFor(triggers.value.component)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel4": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 228,
-          "expression": "menuSlots[3].label",
+          "line": 264,
+          "expression": "slotFor(triggers.value.hari)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel5": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 230,
-          "expression": "menuSlots[4].label",
+          "line": 266,
+          "expression": "slotFor(triggers.value.view)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel6": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 232,
-          "expression": "menuSlots[5].label",
+          "line": 268,
+          "expression": "slotFor(triggers.value.dev)",
           "inputs": [
             {
-              "name": "menuSlots",
+              "name": "slotFor",
               "declaredAt": {
-                "line": 118,
+                "line": 42,
+                "kind": "function"
+              }
+            },
+            {
+              "name": "triggers",
+              "declaredAt": {
+                "line": 146,
                 "kind": "const",
                 "via": "computed"
               }
             }
           ],
-          "spread": false
+          "spread": true
         }
       ],
       "textLabel7": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 235,
-          "expression": "themeLabel",
-          "inputs": [
-            {
-              "name": "themeLabel",
-              "declaredAt": {
-                "line": 160,
-                "kind": "const",
-                "via": "computed"
-              }
-            }
-          ],
-          "spread": false
+          "line": 271,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ],
       "textLabel8": [
         {
           "file": "app/topbar/TopbarController.vue",
           "component": "TopbarController",
-          "line": 238,
-          "expression": "modeLabel",
-          "inputs": [
-            {
-              "name": "modeLabel",
-              "declaredAt": {
-                "line": 184,
-                "kind": "const",
-                "via": "computed"
-              }
-            }
-          ],
-          "spread": false
+          "line": 273,
+          "expression": "{}",
+          "inputs": [],
+          "spread": true
         }
       ]
     },
