@@ -35,6 +35,13 @@ function emptySectionLabel(label: string): string {
   return isolatedView.value ? "Currently in Isolation Mode" : `No ${label.toLowerCase()}`
 }
 
+/** Placeholder row shown for a section with no boards, driven through its ref. */
+function emptySectionRefs(label: string): Record<string, Record<string, unknown>> {
+  return {
+    nodeLabel: { value: emptySectionLabel(label), readonly: true },
+  }
+}
+
 const sections = useObjectsSections(toRef(props, "workspace"))
 
 const workspaceName = computed(() => props.workspace.metadata.label || "Workspace")
@@ -153,10 +160,10 @@ function asBoard(board: unknown): BoardType {
             class="objects-sidebar__empty"
             aria-disabled="true"
             data-testid="objects-sidebar-empty-section"
+            :seldon-refs="emptySectionRefs(section.label)"
             :button-iconic="null"
             :combobox-field="{}"
             :icon2="null"
-            :input="{ value: emptySectionLabel(section.label), readonly: true }"
             :button-iconic2="null"
             :button-iconic3="null"
           />

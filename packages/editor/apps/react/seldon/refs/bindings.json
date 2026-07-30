@@ -194,6 +194,121 @@
         ]
       }
     ],
+    "catalogIcon": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "CatalogRow",
+        "line": 232,
+        "conditional": false,
+        "expression": "{ icon: item.icon as IconProps[\"icon\"] }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 35,
+              "kind": "parameter"
+            }
+          },
+          {
+            "name": "IconProps",
+            "declaredAt": {
+              "line": 15,
+              "kind": "import",
+              "module": "@seldon/components/primitives/Icon"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "item.icon as IconProps[\"icon\"]",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 35,
+                  "kind": "parameter"
+                }
+              },
+              {
+                "name": "IconProps",
+                "declaredAt": {
+                  "line": 15,
+                  "kind": "import",
+                  "module": "@seldon/components/primitives/Icon"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "catalogLabel": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "CatalogRow",
+        "line": 233,
+        "conditional": false,
+        "expression": "{ children: item.name }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 35,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.name",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 35,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "catalogVariant": [
+      {
+        "file": "app/dialogs/PanelDialogController.tsx",
+        "component": "CatalogRow",
+        "line": 234,
+        "conditional": false,
+        "expression": "{ children: item.description }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 35,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.description",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 35,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "createComponentContainer": [
       {
         "file": "app/dialogs/create-component/CreateComponentController.tsx",
@@ -841,7 +956,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 246,
+              "line": 252,
               "kind": "const"
             }
           },
@@ -862,7 +977,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 246,
+                  "line": 252,
                   "kind": "const"
                 }
               }
@@ -976,7 +1091,7 @@
           {
             "name": "styles",
             "declaredAt": {
-              "line": 246,
+              "line": 252,
               "kind": "const"
             }
           }
@@ -1010,7 +1125,7 @@
               {
                 "name": "styles",
                 "declaredAt": {
-                  "line": 246,
+                  "line": 252,
                   "kind": "const"
                 }
               }
@@ -1055,6 +1170,21 @@
       }
     ],
     "dialogTitle": [
+      {
+        "file": "app/dialogs/image-upload/ImageUploadController.tsx",
+        "component": "ImageUploadDialog",
+        "line": 126,
+        "conditional": false,
+        "expression": "{ children: \"Choose image\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "children",
+            "expression": "\"Choose image\"",
+            "inputs": []
+          }
+        ]
+      },
       {
         "file": "app/dialogs/PanelDialogController.tsx",
         "component": "PanelDialogController",
@@ -4287,6 +4417,24 @@
     ],
     "nodeActions": [
       {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 193,
+        "conditional": false,
+        "expression": "{ ...actionsMenu.buttonIconic }",
+        "inputs": [
+          {
+            "name": "actionsMenu",
+            "declaredAt": {
+              "line": 107,
+              "kind": "const",
+              "via": "useRowActionsMenu"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
         "line": 280,
@@ -4325,6 +4473,24 @@
     ],
     "nodeDisclosure": [
       {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 188,
+        "conditional": false,
+        "expression": "{ ...buttonIconic }",
+        "inputs": [
+          {
+            "name": "buttonIconic",
+            "declaredAt": {
+              "line": 69,
+              "kind": "const",
+              "via": "useRowBoard"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
         "line": 273,
@@ -4344,6 +4510,23 @@
       }
     ],
     "nodeDisclosureIcon": [
+      {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 189,
+        "conditional": false,
+        "expression": "{ ...toggleIcon }",
+        "inputs": [
+          {
+            "name": "toggleIcon",
+            "declaredAt": {
+              "line": 168,
+              "kind": "const"
+            }
+          }
+        ],
+        "props": []
+      },
       {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
@@ -4435,6 +4618,24 @@
     ],
     "nodeField": [
       {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 190,
+        "conditional": false,
+        "expression": "{ ...comboboxField }",
+        "inputs": [
+          {
+            "name": "comboboxField",
+            "declaredAt": {
+              "line": 182,
+              "kind": "const",
+              "via": "buildFieldStateProps"
+            }
+          }
+        ],
+        "props": []
+      },
+      {
         "file": "app/sidebars/objects/NodeController.tsx",
         "component": "NodeInner",
         "line": 275,
@@ -4501,6 +4702,40 @@
             ]
           }
         ]
+      },
+      {
+        "file": "app/sidebars/objects/BoardController.tsx",
+        "component": "BoardRow",
+        "line": 191,
+        "conditional": false,
+        "expression": "mergeStateProps(icon2, activatedRef)",
+        "inputs": [
+          {
+            "name": "mergeStateProps",
+            "declaredAt": {
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "icon2",
+            "declaredAt": {
+              "line": 69,
+              "kind": "const",
+              "via": "useRowBoard"
+            }
+          },
+          {
+            "name": "activatedRef",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const",
+              "via": "buildActivatedRefProps"
+            }
+          }
+        ],
+        "props": []
       },
       {
         "file": "app/sidebars/objects/NodeController.tsx",
@@ -4652,38 +4887,36 @@
       {
         "file": "app/sidebars/objects/BoardController.tsx",
         "component": "BoardRow",
-        "line": 47,
+        "line": 192,
         "conditional": false,
-        "expression": "{ value: label, readOnly: true }",
+        "expression": "mergeStateProps(nameInput, activatedRef)",
         "inputs": [
           {
-            "name": "label",
+            "name": "mergeStateProps",
             "declaredAt": {
-              "line": 46,
-              "kind": "parameter"
+              "line": 3,
+              "kind": "import",
+              "module": "@app/views/state-props"
+            }
+          },
+          {
+            "name": "nameInput",
+            "declaredAt": {
+              "line": 127,
+              "kind": "const",
+              "via": "useRenameInput"
+            }
+          },
+          {
+            "name": "activatedRef",
+            "declaredAt": {
+              "line": 178,
+              "kind": "const",
+              "via": "buildActivatedRefProps"
             }
           }
         ],
-        "props": [
-          {
-            "key": "value",
-            "expression": "label",
-            "inputs": [
-              {
-                "name": "label",
-                "declaredAt": {
-                  "line": 46,
-                  "kind": "parameter"
-                }
-              }
-            ]
-          },
-          {
-            "key": "readOnly",
-            "expression": "true",
-            "inputs": []
-          }
-        ]
+        "props": []
       },
       {
         "file": "app/sidebars/objects/NodeController.tsx",
@@ -4848,6 +5081,90 @@
           }
         ],
         "props": []
+      }
+    ],
+    "optionIcon": [
+      {
+        "file": "app/menus/ComboboxListbox.tsx",
+        "component": "renderOption",
+        "line": 128,
+        "conditional": false,
+        "expression": "{ icon: icon.icon as IconProps[\"icon\"] }",
+        "inputs": [
+          {
+            "name": "icon",
+            "declaredAt": {
+              "line": 103,
+              "kind": "const",
+              "via": "resolveIcon"
+            }
+          },
+          {
+            "name": "IconProps",
+            "declaredAt": {
+              "line": 23,
+              "kind": "import",
+              "module": "@seldon/components/primitives/Icon"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "icon.icon as IconProps[\"icon\"]",
+            "inputs": [
+              {
+                "name": "icon",
+                "declaredAt": {
+                  "line": 103,
+                  "kind": "const",
+                  "via": "resolveIcon"
+                }
+              },
+              {
+                "name": "IconProps",
+                "declaredAt": {
+                  "line": 23,
+                  "kind": "import",
+                  "module": "@seldon/components/primitives/Icon"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "optionLabel": [
+      {
+        "file": "app/menus/ComboboxListbox.tsx",
+        "component": "renderOption",
+        "line": 129,
+        "conditional": false,
+        "expression": "{ children: option.name }",
+        "inputs": [
+          {
+            "name": "option",
+            "declaredAt": {
+              "line": 41,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "option.name",
+            "inputs": [
+              {
+                "name": "option",
+                "declaredAt": {
+                  "line": 41,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "propertiesTree": [
@@ -5546,7 +5863,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadge",
-        "line": 75,
+        "line": 71,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -5579,7 +5896,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefSummaryBadge",
-        "line": 130,
+        "line": 122,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -5612,7 +5929,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefOmitted",
-        "line": 159,
+        "line": 151,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -5645,7 +5962,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadgeMeasure",
-        "line": 187,
+        "line": 179,
         "conditional": false,
         "expression": "{ style: refBadgeHiddenCardStyle }",
         "inputs": [
@@ -6059,11 +6376,154 @@
         ]
       }
     ],
+    "refChip": [
+      {
+        "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
+        "component": "RefBadge",
+        "line": 69,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(placement.badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "placement",
+            "declaredAt": {
+              "line": 59,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(placement.badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "placement",
+                "declaredAt": {
+                  "line": 59,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
+        "component": "RefSummaryBadge",
+        "line": 120,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(placement.badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "placement",
+            "declaredAt": {
+              "line": 59,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(placement.badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "placement",
+                "declaredAt": {
+                  "line": 59,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
+        "component": "RefOmitted",
+        "line": 149,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "badge",
+            "declaredAt": {
+              "line": 145,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "badge",
+                "declaredAt": {
+                  "line": 145,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "refChipName": [
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadge",
-        "line": 74,
+        "line": 70,
         "conditional": false,
         "expression": "{ children: placement.label }",
         "inputs": [
@@ -6094,7 +6554,7 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefSummaryBadge",
-        "line": 129,
+        "line": 121,
         "conditional": false,
         "expression": "{ children: placement.label }",
         "inputs": [
@@ -6125,14 +6585,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefOmitted",
-        "line": 158,
+        "line": 150,
         "conditional": false,
         "expression": "{ children: `+${count} more` }",
         "inputs": [
           {
             "name": "count",
             "declaredAt": {
-              "line": 153,
+              "line": 145,
               "kind": "parameter"
             }
           }
@@ -6145,7 +6605,7 @@
               {
                 "name": "count",
                 "declaredAt": {
-                  "line": 153,
+                  "line": 145,
                   "kind": "parameter"
                 }
               }
@@ -6156,14 +6616,14 @@
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
         "component": "RefBadgeMeasure",
-        "line": 186,
+        "line": 178,
         "conditional": false,
         "expression": "{ children: label, style: refBadgeMeasureLabelStyle }",
         "inputs": [
           {
             "name": "label",
             "declaredAt": {
-              "line": 184,
+              "line": 176,
               "kind": "parameter"
             }
           },
@@ -6184,7 +6644,7 @@
               {
                 "name": "label",
                 "declaredAt": {
-                  "line": 184,
+                  "line": 176,
                   "kind": "parameter"
                 }
               }
@@ -8111,7 +8571,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "ComboboxListbox",
-          "line": 160,
+          "line": 159,
           "expression": "handleClose",
           "inputs": [
             {
@@ -8127,7 +8587,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 88,
+          "line": 84,
           "expression": "toggle",
           "inputs": [
             {
@@ -8144,13 +8604,13 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 134,
+          "line": 126,
           "expression": "select",
           "inputs": [
             {
               "name": "select",
               "declaredAt": {
-                "line": 118,
+                "line": 114,
                 "kind": "const",
                 "via": "useCallback"
               }
@@ -9137,17 +9597,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 238,
-          "expression": "rowIcon",
-          "inputs": [
-            {
-              "name": "rowIcon",
-              "declaredAt": {
-                "line": 227,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 243,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -9155,7 +9607,7 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 234,
+          "line": 239,
           "expression": "handleClick",
           "inputs": [
             {
@@ -9174,7 +9626,7 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 235,
+          "line": 240,
           "expression": "handleDoubleClick",
           "inputs": [
             {
@@ -9193,17 +9645,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 240,
-          "expression": "rowSubtitle",
-          "inputs": [
-            {
-              "name": "rowSubtitle",
-              "declaredAt": {
-                "line": 229,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 245,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -9211,17 +9655,9 @@
         {
           "file": "app/dialogs/PanelDialogController.tsx",
           "component": "CatalogRow",
-          "line": 239,
-          "expression": "rowTitle",
-          "inputs": [
-            {
-              "name": "rowTitle",
-              "declaredAt": {
-                "line": 228,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 244,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -10133,7 +10569,7 @@
         {
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "ComboboxListbox",
-          "line": 161,
+          "line": 160,
           "expression": "onPointerLeave",
           "inputs": [
             {
@@ -10265,24 +10701,6 @@
           "spread": true
         }
       ],
-      "icon": [
-        {
-          "file": "app/menus/ComboboxListbox.tsx",
-          "component": "renderOption",
-          "line": 132,
-          "expression": "iconSlot",
-          "inputs": [
-            {
-              "name": "iconSlot",
-              "declaredAt": {
-                "line": 128,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "onMouseDown": [
         {
           "file": "app/menus/ComboboxListbox.tsx",
@@ -10374,16 +10792,8 @@
           "file": "app/menus/ComboboxListbox.tsx",
           "component": "renderOption",
           "line": 132,
-          "expression": "textLabelSlot",
-          "inputs": [
-            {
-              "name": "textLabelSlot",
-              "declaredAt": {
-                "line": 129,
-                "kind": "const"
-              }
-            }
-          ],
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -10932,7 +11342,7 @@
             {
               "name": "clearButton",
               "declaredAt": {
-                "line": 121,
+                "line": 120,
                 "kind": "const"
               }
             }
@@ -11004,7 +11414,7 @@
             {
               "name": "cancelIcon",
               "declaredAt": {
-                "line": 123,
+                "line": 122,
                 "kind": "const"
               }
             }
@@ -11022,7 +11432,7 @@
             {
               "name": "clearLabel",
               "declaredAt": {
-                "line": 122,
+                "line": 121,
                 "kind": "const"
               }
             }
@@ -11040,7 +11450,7 @@
             {
               "name": "cancelLabel",
               "declaredAt": {
-                "line": 124,
+                "line": 123,
                 "kind": "const"
               }
             }
@@ -11074,7 +11484,7 @@
             {
               "name": "confirmLabel",
               "declaredAt": {
-                "line": 125,
+                "line": 124,
                 "kind": "const"
               }
             }
@@ -11103,16 +11513,8 @@
           "file": "app/dialogs/image-upload/ImageUploadController.tsx",
           "component": "ImageUploadDialog",
           "line": 152,
-          "expression": "dialogTitle",
-          "inputs": [
-            {
-              "name": "dialogTitle",
-              "declaredAt": {
-                "line": 119,
-                "kind": "const"
-              }
-            }
-          ],
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
@@ -11336,58 +11738,31 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 93,
-          "expression": "badgeBox",
-          "inputs": [
-            {
-              "name": "badgeBox",
-              "declaredAt": {
-                "line": 68,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
+          "line": 89,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 139,
-          "expression": "badgeBox",
-          "inputs": [
-            {
-              "name": "badgeBox",
-              "declaredAt": {
-                "line": 68,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
+          "line": 131,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 168,
-          "expression": "badgeBox",
-          "inputs": [
-            {
-              "name": "badgeBox",
-              "declaredAt": {
-                "line": 68,
-                "kind": "const",
-                "via": "useMemo"
-              }
-            }
-          ],
+          "line": 160,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 196,
+          "line": 188,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11397,7 +11772,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 90,
+          "line": 86,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -11405,7 +11780,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 136,
+          "line": 128,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -11413,7 +11788,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 165,
+          "line": 157,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -11421,7 +11796,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 193,
+          "line": 185,
           "expression": "\"presentation\"",
           "inputs": [],
           "spread": false
@@ -11493,7 +11868,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadge",
-          "line": 94,
+          "line": 90,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11501,7 +11876,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefSummaryBadge",
-          "line": 140,
+          "line": 132,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11509,7 +11884,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefOmitted",
-          "line": 169,
+          "line": 161,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -11517,7 +11892,7 @@
         {
           "file": "app/overlays/canvas/ref-badges/RefBadge.tsx",
           "component": "RefBadgeMeasure",
-          "line": 197,
+          "line": 189,
           "expression": "{}",
           "inputs": [],
           "spread": false

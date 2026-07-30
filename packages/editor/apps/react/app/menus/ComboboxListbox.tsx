@@ -122,15 +122,14 @@ export function ComboboxListbox({
     }
 
     if (icon.kind === "iconId") {
-      // The generated `ListboxOption` gates its label behind the positional
-      // `textLabel` slot (defaulted off), so enabling it with content is what
-      // renders the label; `optionLabel`/`optionIcon` refs alone would not.
-      const iconSlot = { icon: icon.icon as IconProps["icon"] }
-      const textLabelSlot = { children: option.name }
+      // The content reaches both slots by ref name. `textLabel` is opt-in, so it
+      // keeps a positional `{}` enabler; without it the label would not render.
+      const optionRefs = {
+        optionIcon: { icon: icon.icon as IconProps["icon"] },
+        optionLabel: { children: option.name },
+      }
 
-      return (
-        <ListboxOption key={option.value} {...common} icon={iconSlot} textLabel={textLabelSlot} />
-      )
+      return <ListboxOption key={option.value} {...common} textLabel={{}} seldonRefs={optionRefs} />
     }
 
     return (

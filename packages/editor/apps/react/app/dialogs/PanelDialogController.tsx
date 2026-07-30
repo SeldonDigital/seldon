@@ -224,10 +224,15 @@ function CatalogRow<T extends CatalogDialogItem>({
   const handleClick = useCallback(() => onSelect(item.id), [onSelect, item.id])
   const handleDoubleClick = useCallback(() => onPick(item), [onPick, item])
 
-  const rowIcon = { icon: item.icon as IconProps["icon"] }
-  const rowTitle = { children: item.name }
-  const rowSubtitle = { children: item.description }
   const rowStyle = isSelected ? styles.rowSelected : styles.row
+
+  // Each row is its own `ItemCatalog`, so the row's content reaches its slots by
+  // ref name. The three slots are opt-in, so each keeps a positional `{}` enabler.
+  const catalogRefs = {
+    catalogIcon: { icon: item.icon as IconProps["icon"] },
+    catalogLabel: { children: item.name },
+    catalogVariant: { children: item.description },
+  }
 
   return (
     <ItemCatalog
@@ -235,9 +240,10 @@ function CatalogRow<T extends CatalogDialogItem>({
       onDoubleClick={handleDoubleClick}
       aria-selected={isSelected}
       style={rowStyle}
-      icon={rowIcon}
-      textTitle={rowTitle}
-      textSubtitle={rowSubtitle}
+      icon={{}}
+      textTitle={{}}
+      textSubtitle={{}}
+      seldonRefs={catalogRefs}
       data-testid={`catalog-item-${item.id}`}
     />
   )

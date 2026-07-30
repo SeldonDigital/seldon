@@ -156,15 +156,16 @@ const seldonRefs = computed(() => ({
   dialogConfirm: { onClick: handleConfirm },
 }))
 
-function iconSlot(item: T): Record<string, unknown> {
-  return { icon: item.icon }
+// Each row is its own `ItemCatalog`, so the row's content reaches its slots by
+// ref name. The three slots are opt-in, so each keeps a positional `{}` enabler.
+function rowRefs(item: T): Record<string, Record<string, unknown>> {
+  return {
+    catalogIcon: { icon: item.icon },
+    catalogLabel: { children: item.name },
+    catalogVariant: { children: item.description },
+  }
 }
-function titleSlot(item: T): Record<string, unknown> {
-  return { children: item.name }
-}
-function subtitleSlot(item: T): Record<string, unknown> {
-  return { children: item.description }
-}
+
 function rowStyle(item: T): CSSProperties {
   return item.id === selectedId.value ? styles.rowSelected : styles.row
 }
@@ -212,9 +213,10 @@ function rowStyle(item: T): CSSProperties {
                 :key="item.id"
                 :aria-selected="item.id === selectedId || undefined"
                 :style="rowStyle(item)"
-                :icon="iconSlot(item)"
-                :text-title="titleSlot(item)"
-                :text-subtitle="subtitleSlot(item)"
+                :seldon-refs="rowRefs(item)"
+                :icon="{}"
+                :text-title="{}"
+                :text-subtitle="{}"
                 :data-testid="`catalog-item-${item.id}`"
                 @click="selectedId = item.id"
                 @dblclick="pickItem(item)"

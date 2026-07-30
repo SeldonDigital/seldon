@@ -44,7 +44,7 @@ export const BoardController = memo(function BoardController(props: BoardControl
  * shell with all slots empty, so it reads as a disabled "No <section>" line.
  */
 function BoardEmpty({ label }: { label: string }) {
-  const seldonRefs = { nodeLabel: { value: label, readOnly: true } }
+  const emptyRefs = { nodeLabel: { value: label, readOnly: true } }
 
   return (
     <ItemNode
@@ -52,7 +52,7 @@ function BoardEmpty({ label }: { label: string }) {
       comboboxField={{}}
       icon2={null}
       buttonIconic2={null}
-      seldonRefs={seldonRefs}
+      seldonRefs={emptyRefs}
       aria-disabled
       data-testid="objects-sidebar-empty-section"
     />

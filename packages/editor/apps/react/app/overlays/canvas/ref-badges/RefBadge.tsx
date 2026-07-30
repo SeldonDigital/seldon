@@ -65,12 +65,8 @@ export function RefBadge({ placement, binding }: RefBadgeProps) {
     return refBadgeStyle(placement.badge)
   }, [placement.badge, placement.muted])
 
-  const badgeBox = useMemo(
-    () => ({ style: refBadgeBoxStyle(placement.badge.width) }),
-    [placement.badge.width],
-  )
-
   const badgeRefs = {
+    refChip: { style: refBadgeBoxStyle(placement.badge.width) },
     refChipName: { children: placement.label },
     refCard: { style: refBadgeHiddenCardStyle },
   }
@@ -90,7 +86,7 @@ export function RefBadge({ placement, binding }: RefBadgeProps) {
           role="presentation"
           style={refBadgePanelStyle}
           seldonRefs={badgeRefs}
-          chipAssist={badgeBox}
+          chipAssist={{}}
           textLabel={{}}
         />
       </Frame>
@@ -120,12 +116,8 @@ export function RefSummaryBadge({ placement, nodeId }: RefSummaryBadgeProps) {
     [nodeId, selectNode],
   )
 
-  const badgeBox = useMemo(
-    () => ({ style: refBadgeBoxStyle(placement.badge.width) }),
-    [placement.badge.width],
-  )
-
   const summaryRefs = {
+    refChip: { style: refBadgeBoxStyle(placement.badge.width) },
     refChipName: { children: placement.label },
     refCard: { style: refBadgeHiddenCardStyle },
   }
@@ -136,7 +128,7 @@ export function RefSummaryBadge({ placement, nodeId }: RefSummaryBadgeProps) {
         role="presentation"
         style={refBadgePanelStyle}
         seldonRefs={summaryRefs}
-        chipAssist={badgeBox}
+        chipAssist={{}}
         textLabel={{}}
       />
     </Frame>
@@ -152,9 +144,9 @@ export function RefSummaryBadge({ placement, nodeId }: RefSummaryBadgeProps) {
  */
 export function RefOmitted({ badge, count }: RefOmittedProps) {
   const wrapperStyle = useMemo(() => refOmittedStyle(badge), [badge])
-  const badgeBox = useMemo(() => ({ style: refBadgeBoxStyle(badge.width) }), [badge.width])
 
   const omittedRefs = {
+    refChip: { style: refBadgeBoxStyle(badge.width) },
     refChipName: { children: `+${count} more` },
     refCard: { style: refBadgeHiddenCardStyle },
   }
@@ -165,7 +157,7 @@ export function RefOmitted({ badge, count }: RefOmittedProps) {
         role="presentation"
         style={refBadgePanelStyle}
         seldonRefs={omittedRefs}
-        chipAssist={badgeBox}
+        chipAssist={{}}
         textLabel={{}}
       />
     </Frame>

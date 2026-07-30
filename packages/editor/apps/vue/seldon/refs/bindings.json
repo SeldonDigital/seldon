@@ -44,6 +44,105 @@
         "props": []
       }
     ],
+    "catalogIcon": [
+      {
+        "file": "app/dialogs/PanelDialogController.vue",
+        "component": "PanelDialogController",
+        "line": 163,
+        "conditional": false,
+        "expression": "{ icon: item.icon }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 33,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "item.icon",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 33,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "catalogLabel": [
+      {
+        "file": "app/dialogs/PanelDialogController.vue",
+        "component": "PanelDialogController",
+        "line": 164,
+        "conditional": false,
+        "expression": "{ children: item.name }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 33,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.name",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 33,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "catalogVariant": [
+      {
+        "file": "app/dialogs/PanelDialogController.vue",
+        "component": "PanelDialogController",
+        "line": 165,
+        "conditional": false,
+        "expression": "{ children: item.description }",
+        "inputs": [
+          {
+            "name": "item",
+            "declaredAt": {
+              "line": 33,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "item.description",
+            "inputs": [
+              {
+                "name": "item",
+                "declaredAt": {
+                  "line": 33,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "createComponentContainer": [
       {
         "file": "app/dialogs/CreateComponentDialog.vue",
@@ -501,6 +600,39 @@
     ],
     "dialogCancel": [
       {
+        "file": "app/dialogs/image-upload/ImageUploadController.vue",
+        "component": "ImageUploadController",
+        "line": 79,
+        "conditional": false,
+        "expression": "{ onClick: close }",
+        "inputs": [
+          {
+            "name": "close",
+            "declaredAt": {
+              "line": 25,
+              "kind": "const",
+              "via": "useImageUploadPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "close",
+            "inputs": [
+              {
+                "name": "close",
+                "declaredAt": {
+                  "line": 25,
+                  "kind": "const",
+                  "via": "useImageUploadPanel"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
         "file": "app/dialogs/PanelDialogController.vue",
         "component": "PanelDialogController",
         "line": 155,
@@ -535,6 +667,39 @@
       }
     ],
     "dialogConfirm": [
+      {
+        "file": "app/dialogs/image-upload/ImageUploadController.vue",
+        "component": "ImageUploadController",
+        "line": 80,
+        "conditional": false,
+        "expression": "{ onClick: save }",
+        "inputs": [
+          {
+            "name": "save",
+            "declaredAt": {
+              "line": 25,
+              "kind": "const",
+              "via": "useImageUploadPanel"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "onClick",
+            "expression": "save",
+            "inputs": [
+              {
+                "name": "save",
+                "declaredAt": {
+                  "line": 25,
+                  "kind": "const",
+                  "via": "useImageUploadPanel"
+                }
+              }
+            ]
+          }
+        ]
+      },
       {
         "file": "app/dialogs/PanelDialogController.vue",
         "component": "PanelDialogController",
@@ -768,6 +933,21 @@
       }
     ],
     "dialogTitle": [
+      {
+        "file": "app/dialogs/image-upload/ImageUploadController.vue",
+        "component": "ImageUploadController",
+        "line": 78,
+        "conditional": false,
+        "expression": "{ children: \"Choose image\" }",
+        "inputs": [],
+        "props": [
+          {
+            "key": "children",
+            "expression": "\"Choose image\"",
+            "inputs": []
+          }
+        ]
+      },
       {
         "file": "app/dialogs/PanelDialogController.vue",
         "component": "PanelDialogController",
@@ -4172,6 +4352,56 @@
         "props": []
       },
       {
+        "file": "app/sidebars/objects/ObjectsSidebar.vue",
+        "component": "ObjectsSidebar",
+        "line": 41,
+        "conditional": false,
+        "expression": "{ value: emptySectionLabel(label), readonly: true }",
+        "inputs": [
+          {
+            "name": "emptySectionLabel",
+            "declaredAt": {
+              "line": 34,
+              "kind": "function"
+            }
+          },
+          {
+            "name": "label",
+            "declaredAt": {
+              "line": 34,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "value",
+            "expression": "emptySectionLabel(label)",
+            "inputs": [
+              {
+                "name": "emptySectionLabel",
+                "declaredAt": {
+                  "line": 34,
+                  "kind": "function"
+                }
+              },
+              {
+                "name": "label",
+                "declaredAt": {
+                  "line": 34,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          },
+          {
+            "key": "readonly",
+            "expression": "true",
+            "inputs": []
+          }
+        ]
+      },
+      {
         "file": "app/sidebars/objects/ResourceEntry.vue",
         "component": "ResourceEntry",
         "line": 95,
@@ -4194,7 +4424,7 @@
       {
         "file": "app/sidebars/objects/ObjectsSidebar.vue",
         "component": "ObjectsSidebar",
-        "line": 117,
+        "line": 124,
         "conditional": false,
         "expression": "{ style: { flex: 1, minHeight: 0, display: \"flex\", flexDirection: \"column\", }, }",
         "inputs": [],
@@ -4211,14 +4441,14 @@
       {
         "file": "app/sidebars/objects/ObjectsSidebar.vue",
         "component": "ObjectsSidebar",
-        "line": 115,
+        "line": 122,
         "conditional": false,
         "expression": "componentsToggle.value",
         "inputs": [
           {
             "name": "componentsToggle",
             "declaredAt": {
-              "line": 93,
+              "line": 100,
               "kind": "const",
               "via": "computed"
             }
@@ -4231,20 +4461,102 @@
       {
         "file": "app/sidebars/objects/ObjectsSidebar.vue",
         "component": "ObjectsSidebar",
-        "line": 116,
+        "line": 123,
         "conditional": false,
         "expression": "resourcesToggle.value",
         "inputs": [
           {
             "name": "resourcesToggle",
             "declaredAt": {
-              "line": 99,
+              "line": 106,
               "kind": "const",
               "via": "computed"
             }
           }
         ],
         "props": []
+      }
+    ],
+    "optionIcon": [
+      {
+        "file": "app/menus/ComboboxListbox.vue",
+        "component": "ComboboxListbox",
+        "line": 90,
+        "conditional": false,
+        "expression": "{ icon: props.resolveIcon?.(option.value) ?? \"seldon-component\" }",
+        "inputs": [
+          {
+            "name": "props",
+            "declaredAt": {
+              "line": 26,
+              "kind": "const",
+              "via": "withDefaults"
+            }
+          },
+          {
+            "name": "option",
+            "declaredAt": {
+              "line": 51,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "icon",
+            "expression": "props.resolveIcon?.(option.value) ?? \"seldon-component\"",
+            "inputs": [
+              {
+                "name": "props",
+                "declaredAt": {
+                  "line": 26,
+                  "kind": "const",
+                  "via": "withDefaults"
+                }
+              },
+              {
+                "name": "option",
+                "declaredAt": {
+                  "line": 51,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "optionLabel": [
+      {
+        "file": "app/menus/ComboboxListbox.vue",
+        "component": "ComboboxListbox",
+        "line": 91,
+        "conditional": false,
+        "expression": "{ children: option.name }",
+        "inputs": [
+          {
+            "name": "option",
+            "declaredAt": {
+              "line": 51,
+              "kind": "parameter"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "children",
+            "expression": "option.name",
+            "inputs": [
+              {
+                "name": "option",
+                "declaredAt": {
+                  "line": 51,
+                  "kind": "parameter"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "propertiesTree": [
@@ -5109,6 +5421,155 @@
         ]
       }
     ],
+    "refChip": [
+      {
+        "file": "app/overlays/canvas/ref-badges/RefBadge.vue",
+        "component": "RefBadge",
+        "line": 45,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(badge.value.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 8,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "badge",
+            "declaredAt": {
+              "line": 38,
+              "kind": "const",
+              "via": "toRef"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(badge.value.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 8,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "badge",
+                "declaredAt": {
+                  "line": 38,
+                  "kind": "const",
+                  "via": "toRef"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/overlays/canvas/ref-badges/RefOmitted.vue",
+        "component": "RefOmitted",
+        "line": 29,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(props.badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 6,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "props",
+            "declaredAt": {
+              "line": 22,
+              "kind": "const",
+              "via": "defineProps"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(props.badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 6,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "props",
+                "declaredAt": {
+                  "line": 22,
+                  "kind": "const",
+                  "via": "defineProps"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "app/overlays/canvas/ref-badges/RefSummaryBadge.vue",
+        "component": "RefSummaryBadge",
+        "line": 40,
+        "conditional": false,
+        "expression": "{ style: refBadgeBoxStyle(props.placement.badge.width) }",
+        "inputs": [
+          {
+            "name": "refBadgeBoxStyle",
+            "declaredAt": {
+              "line": 7,
+              "kind": "import",
+              "module": "./ref-badge-style"
+            }
+          },
+          {
+            "name": "props",
+            "declaredAt": {
+              "line": 27,
+              "kind": "const",
+              "via": "defineProps"
+            }
+          }
+        ],
+        "props": [
+          {
+            "key": "style",
+            "expression": "refBadgeBoxStyle(props.placement.badge.width)",
+            "inputs": [
+              {
+                "name": "refBadgeBoxStyle",
+                "declaredAt": {
+                  "line": 7,
+                  "kind": "import",
+                  "module": "./ref-badge-style"
+                }
+              },
+              {
+                "name": "props",
+                "declaredAt": {
+                  "line": 27,
+                  "kind": "const",
+                  "via": "defineProps"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "refChipName": [
       {
         "file": "app/overlays/canvas/ref-badges/RefBadge.vue",
@@ -5439,14 +5900,14 @@
       {
         "file": "app/sidebars/objects/ObjectsSidebar.vue",
         "component": "ObjectsSidebar",
-        "line": 112,
+        "line": 119,
         "conditional": false,
         "expression": "workspaceField.value",
         "inputs": [
           {
             "name": "workspaceField",
             "declaredAt": {
-              "line": 87,
+              "line": 94,
               "kind": "const",
               "via": "computed"
             }
@@ -5459,14 +5920,14 @@
       {
         "file": "app/sidebars/objects/ObjectsSidebar.vue",
         "component": "ObjectsSidebar",
-        "line": 113,
+        "line": 120,
         "conditional": false,
         "expression": "inputProps.value",
         "inputs": [
           {
             "name": "inputProps",
             "declaredAt": {
-              "line": 58,
+              "line": 65,
               "kind": "const",
               "via": "useRenameInput"
             }
@@ -5479,14 +5940,14 @@
       {
         "file": "app/sidebars/objects/ObjectsSidebar.vue",
         "component": "ObjectsSidebar",
-        "line": 114,
+        "line": 121,
         "conditional": false,
         "expression": "{ onClick: forceSave }",
         "inputs": [
           {
             "name": "forceSave",
             "declaredAt": {
-              "line": 82,
+              "line": 89,
               "kind": "function"
             }
           }
@@ -5499,7 +5960,7 @@
               {
                 "name": "forceSave",
                 "declaredAt": {
-                  "line": 82,
+                  "line": 89,
                   "kind": "function"
                 }
               }
@@ -7440,7 +7901,7 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 213,
+          "line": 214,
           "expression": "item.id === selectedId || undefined",
           "inputs": [
             {
@@ -7466,7 +7927,7 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 218,
+          "line": 220,
           "expression": "`catalog-item-${item.id}`",
           "inputs": [
             {
@@ -7484,24 +7945,9 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 215,
-          "expression": "iconSlot(item)",
-          "inputs": [
-            {
-              "name": "iconSlot",
-              "declaredAt": {
-                "line": 159,
-                "kind": "function"
-              }
-            },
-            {
-              "name": "item",
-              "declaredAt": {
-                "line": 33,
-                "kind": "parameter"
-              }
-            }
-          ],
+          "line": 217,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -7509,24 +7955,9 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 217,
-          "expression": "subtitleSlot(item)",
-          "inputs": [
-            {
-              "name": "subtitleSlot",
-              "declaredAt": {
-                "line": 165,
-                "kind": "function"
-              }
-            },
-            {
-              "name": "item",
-              "declaredAt": {
-                "line": 33,
-                "kind": "parameter"
-              }
-            }
-          ],
+          "line": 219,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ],
@@ -7534,24 +7965,9 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 216,
-          "expression": "titleSlot(item)",
-          "inputs": [
-            {
-              "name": "titleSlot",
-              "declaredAt": {
-                "line": 162,
-                "kind": "function"
-              }
-            },
-            {
-              "name": "item",
-              "declaredAt": {
-                "line": 33,
-                "kind": "parameter"
-              }
-            }
-          ],
+          "line": 218,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -7578,7 +7994,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 154,
+          "line": 161,
           "expression": "\"true\"",
           "inputs": [],
           "spread": false
@@ -7676,7 +8092,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 156,
+          "line": 164,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -7719,7 +8135,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 160,
+          "line": 167,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -7753,7 +8169,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 161,
+          "line": 168,
           "expression": "null",
           "inputs": [],
           "spread": false
@@ -7787,7 +8203,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 157,
+          "line": 165,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8048,7 +8464,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 155,
+          "line": 162,
           "expression": "\"objects-sidebar-empty-section\"",
           "inputs": [],
           "spread": false
@@ -8090,31 +8506,9 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 158,
+          "line": 166,
           "expression": "null",
           "inputs": [],
-          "spread": false
-        }
-      ],
-      "input": [
-        {
-          "file": "app/sidebars/objects/ObjectsSidebar.vue",
-          "component": "ObjectsSidebar",
-          "line": 159,
-          "expression": "{ value: emptySectionLabel(section.label), readonly: true }",
-          "inputs": [
-            {
-              "name": "emptySectionLabel",
-              "declaredAt": {
-                "line": 34,
-                "kind": "function"
-              }
-            },
-            {
-              "name": "section",
-              "declaredAt": null
-            }
-          ],
           "spread": false
         }
       ]
@@ -8365,7 +8759,7 @@
         {
           "file": "app/menus/ComboboxListbox.vue",
           "component": "ComboboxListbox",
-          "line": 199,
+          "line": 200,
           "expression": "option.value === value || undefined",
           "inputs": [
             {
@@ -8386,53 +8780,13 @@
           "spread": false
         }
       ],
-      "icon": [
-        {
-          "file": "app/menus/ComboboxListbox.vue",
-          "component": "ComboboxListbox",
-          "line": 200,
-          "expression": "iconSlot(option)",
-          "inputs": [
-            {
-              "name": "iconSlot",
-              "declaredAt": {
-                "line": 86,
-                "kind": "function"
-              }
-            },
-            {
-              "name": "option",
-              "declaredAt": {
-                "line": 51,
-                "kind": "parameter"
-              }
-            }
-          ],
-          "spread": false
-        }
-      ],
       "textLabel": [
         {
           "file": "app/menus/ComboboxListbox.vue",
           "component": "ComboboxListbox",
-          "line": 201,
-          "expression": "labelSlot(option)",
-          "inputs": [
-            {
-              "name": "labelSlot",
-              "declaredAt": {
-                "line": 90,
-                "kind": "function"
-              }
-            },
-            {
-              "name": "option",
-              "declaredAt": {
-                "line": 51,
-                "kind": "parameter"
-              }
-            }
-          ],
+          "line": 202,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         }
       ]
@@ -8957,7 +9311,7 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 99,
+          "line": 104,
           "expression": "barHandle",
           "inputs": [
             {
@@ -8974,7 +9328,7 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 193,
+          "line": 194,
           "expression": "barHandle",
           "inputs": [
             {
@@ -8993,13 +9347,13 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 103,
+          "line": 108,
           "expression": "clearButton",
           "inputs": [
             {
               "name": "clearButton",
               "declaredAt": {
-                "line": 70,
+                "line": 69,
                 "kind": "const"
               }
             }
@@ -9011,17 +9365,45 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 106,
-          "expression": "cancelButton",
-          "inputs": [
-            {
-              "name": "cancelButton",
-              "declaredAt": {
-                "line": 72,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 110,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/dialogs/PanelDialogController.vue",
+          "component": "PanelDialogController",
+          "line": 197,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "button5": [
+        {
+          "file": "app/dialogs/image-upload/ImageUploadController.vue",
+          "component": "ImageUploadController",
+          "line": 113,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        },
+        {
+          "file": "app/dialogs/PanelDialogController.vue",
+          "component": "PanelDialogController",
+          "line": 199,
+          "expression": "{}",
+          "inputs": [],
+          "spread": false
+        }
+      ],
+      "comboboxFieldSearch": [
+        {
+          "file": "app/dialogs/image-upload/ImageUploadController.vue",
+          "component": "ImageUploadController",
+          "line": 107,
+          "expression": "null",
+          "inputs": [],
           "spread": false
         },
         {
@@ -9033,55 +9415,11 @@
           "spread": false
         }
       ],
-      "button5": [
-        {
-          "file": "app/dialogs/image-upload/ImageUploadController.vue",
-          "component": "ImageUploadController",
-          "line": 109,
-          "expression": "confirmButton",
-          "inputs": [
-            {
-              "name": "confirmButton",
-              "declaredAt": {
-                "line": 75,
-                "kind": "const"
-              }
-            }
-          ],
-          "spread": false
-        },
-        {
-          "file": "app/dialogs/PanelDialogController.vue",
-          "component": "PanelDialogController",
-          "line": 198,
-          "expression": "{}",
-          "inputs": [],
-          "spread": false
-        }
-      ],
-      "comboboxFieldSearch": [
-        {
-          "file": "app/dialogs/image-upload/ImageUploadController.vue",
-          "component": "ImageUploadController",
-          "line": 101,
-          "expression": "null",
-          "inputs": [],
-          "spread": false
-        },
-        {
-          "file": "app/dialogs/PanelDialogController.vue",
-          "component": "PanelDialogController",
-          "line": 195,
-          "expression": "{}",
-          "inputs": [],
-          "spread": false
-        }
-      ],
       "dataTestid": [
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 98,
+          "line": 103,
           "expression": "\"image-upload-dialog\"",
           "inputs": [],
           "spread": false
@@ -9089,28 +9427,8 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 191,
+          "line": 192,
           "expression": "\"catalog-dialog\"",
-          "inputs": [],
-          "spread": false
-        }
-      ],
-      "frame2": [
-        {
-          "file": "app/dialogs/image-upload/ImageUploadController.vue",
-          "component": "ImageUploadController",
-          "line": 102,
-          "expression": "{}",
-          "inputs": [],
-          "spread": false
-        }
-      ],
-      "frame3": [
-        {
-          "file": "app/dialogs/image-upload/ImageUploadController.vue",
-          "component": "ImageUploadController",
-          "line": 105,
-          "expression": "{}",
           "inputs": [],
           "spread": false
         }
@@ -9119,13 +9437,13 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 107,
+          "line": 111,
           "expression": "cancelIcon",
           "inputs": [
             {
               "name": "cancelIcon",
               "declaredAt": {
-                "line": 73,
+                "line": 71,
                 "kind": "const"
               }
             }
@@ -9137,13 +9455,13 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 104,
+          "line": 109,
           "expression": "clearLabel",
           "inputs": [
             {
               "name": "clearLabel",
               "declaredAt": {
-                "line": 71,
+                "line": 70,
                 "kind": "const"
               }
             }
@@ -9155,13 +9473,13 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 108,
+          "line": 112,
           "expression": "cancelLabel",
           "inputs": [
             {
               "name": "cancelLabel",
               "declaredAt": {
-                "line": 74,
+                "line": 72,
                 "kind": "const"
               }
             }
@@ -9171,7 +9489,7 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 197,
+          "line": 198,
           "expression": "cancelLabel",
           "inputs": [
             {
@@ -9189,13 +9507,13 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 110,
+          "line": 114,
           "expression": "confirmLabel",
           "inputs": [
             {
               "name": "confirmLabel",
               "declaredAt": {
-                "line": 76,
+                "line": 73,
                 "kind": "const",
                 "via": "computed"
               }
@@ -9206,7 +9524,7 @@
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 199,
+          "line": 200,
           "expression": "confirmLabel",
           "inputs": [
             {
@@ -9225,23 +9543,15 @@
         {
           "file": "app/dialogs/image-upload/ImageUploadController.vue",
           "component": "ImageUploadController",
-          "line": 100,
-          "expression": "dialogTitle",
-          "inputs": [
-            {
-              "name": "dialogTitle",
-              "declaredAt": {
-                "line": 69,
-                "kind": "const"
-              }
-            }
-          ],
+          "line": 106,
+          "expression": "{}",
+          "inputs": [],
           "spread": false
         },
         {
           "file": "app/dialogs/PanelDialogController.vue",
           "component": "PanelDialogController",
-          "line": 194,
+          "line": 195,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9386,14 +9696,13 @@
           "file": "app/overlays/canvas/ref-badges/RefBadge.vue",
           "component": "RefBadge",
           "line": 58,
-          "expression": "badgeBox",
+          "expression": "showSlot",
           "inputs": [
             {
-              "name": "badgeBox",
+              "name": "showSlot",
               "declaredAt": {
-                "line": 44,
-                "kind": "const",
-                "via": "computed"
+                "line": 49,
+                "kind": "const"
               }
             }
           ],
@@ -9419,14 +9728,13 @@
           "file": "app/overlays/canvas/ref-badges/RefOmitted.vue",
           "component": "RefOmitted",
           "line": 42,
-          "expression": "badgeBox",
+          "expression": "showSlot",
           "inputs": [
             {
-              "name": "badgeBox",
+              "name": "showSlot",
               "declaredAt": {
-                "line": 28,
-                "kind": "const",
-                "via": "computed"
+                "line": 33,
+                "kind": "const"
               }
             }
           ],
@@ -9436,14 +9744,13 @@
           "file": "app/overlays/canvas/ref-badges/RefSummaryBadge.vue",
           "component": "RefSummaryBadge",
           "line": 57,
-          "expression": "badgeBox",
+          "expression": "showSlot",
           "inputs": [
             {
-              "name": "badgeBox",
+              "name": "showSlot",
               "declaredAt": {
-                "line": 39,
-                "kind": "const",
-                "via": "computed"
+                "line": 44,
+                "kind": "const"
               }
             }
           ],
@@ -9657,7 +9964,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 139,
+          "line": 146,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9667,7 +9974,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 140,
+          "line": 147,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9677,7 +9984,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 138,
+          "line": 145,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -9687,7 +9994,7 @@
         {
           "file": "app/sidebars/objects/ObjectsSidebar.vue",
           "component": "ObjectsSidebar",
-          "line": 136,
+          "line": 143,
           "expression": "\"objects-sidebar\"",
           "inputs": [],
           "spread": false
