@@ -22,6 +22,13 @@ type Dispatch = ReturnType<typeof useWorkspace>["dispatch"]
 // options, matching the properties Display control's property icon.
 const DISPLAY_NEUTRAL_ICON: string = PROPERTY_ICONS.display
 
+/**
+ * Ancestor states that take the Display control off every row beneath them. Display
+ * has no meaning inside a parent that is mocked or excluded, and those rows keep
+ * their own stored value for when the parent leaves the state.
+ */
+const STATES_HIDING_CHILD_DISPLAY: ReadonlySet<Display> = new Set([Display.MOCK, Display.EXCLUDE])
+
 interface RowNodeDisplayInput {
   node: EntryNode
   workspace: Workspace
@@ -42,6 +49,8 @@ interface RowNodeDisplay {
   resolveDisplayOptionIcon: (option?: { value: string; name: string }) => OptionIconRender
   /** Trigger glyph for the row's Display button. */
   displayIcon: IconProps
+  /** A mocked or excluded ancestor takes this row's Display control away. */
+  isDisplayControlHidden: boolean
   /** Row reads as disabled/gray (hide/stub/mock/exclude in the ancestor chain). */
   isDimmed: boolean
   /** Faded appearance for mock/exclude rows, applied to icon and label leaves. */
@@ -147,25 +156,16 @@ export function useRowNodeDisplay({
     icon: resolveDisplayGlyph(currentDisplayKey) as IconProps["icon"],
   }
 
-  // Collects the node's own display plus every display inherited from its
-  // instance-ancestor chain. The walk climbs while each parent is an instance
-  // and includes the first non-instance parent, so a variant root's state still
-  // reaches its instance children. Non-instance rows reflect only their own
-  // display.
-  function collectDisplayChainStates(): Display[] {
-    if (!nodeExistsInWorkspace) {
+  // Every display the node inherits from its instance-ancestor chain. The walk
+  // climbs while each parent is an instance and includes the first non-instance
+  // parent, so a variant root's state still reaches its instance children. A
+  // non-instance row inherits nothing.
+  function collectAncestorDisplayStates(): Display[] {
+    if (!nodeExistsInWorkspace || !typeCheckingService.isInstance(node)) {
       return []
     }
 
     const states: Display[] = []
-    const ownDisplay = properties?.display?.value
-
-    if (ownDisplay) states.push(ownDisplay)
-
-    if (!typeCheckingService.isInstance(node)) {
-      return states
-    }
-
     let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
 
     while (currentParent) {
@@ -183,14 +183,25 @@ export function useRowNodeDisplay({
     return states
   }
 
-  // Row notation for the node's display, composed across its ancestor chain:
-  // dimmed for hide/stub/mock/exclude, italic for stub/exclude. Faded rows drop
-  // the gray to a lower opacity. See `resolveRowDisplayDecoration`.
+  const ancestorDisplayStates = collectAncestorDisplayStates()
+  const ownDisplayState = nodeExistsInWorkspace ? properties?.display?.value : undefined
+
+  // Row notation for the node's display, composed across its own state and its
+  // ancestor chain: dimmed for hide/stub/mock/exclude, italic for stub/exclude.
+  // Faded rows drop the gray to a lower opacity. See `resolveRowDisplayDecoration`.
   const {
     isDimmed,
     dimStyle,
     labelStyle: labelDecorationStyle,
-  } = resolveRowDisplayDecoration(collectDisplayChainStates())
+  } = resolveRowDisplayDecoration(
+    ownDisplayState ? [ownDisplayState, ...ancestorDisplayStates] : ancestorDisplayStates,
+  )
+
+  // The row's own state still decides its own control, so a mocked row keeps the
+  // picker it takes to leave the state. Only what sits beneath one loses it.
+  const isDisplayControlHidden = ancestorDisplayStates.some((state) =>
+    STATES_HIDING_CHILD_DISPLAY.has(state),
+  )
 
   return {
     displayOptionGroups,
@@ -198,6 +209,7 @@ export function useRowNodeDisplay({
     selectDisplay,
     resolveDisplayOptionIcon,
     displayIcon,
+    isDisplayControlHidden,
     isDimmed,
     dimStyle,
     labelDecorationStyle,

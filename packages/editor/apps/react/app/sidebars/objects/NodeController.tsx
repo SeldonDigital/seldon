@@ -82,6 +82,7 @@ const NodeInner = function NodeInner({
     selectDisplay,
     resolveDisplayOptionIcon,
     displayIcon,
+    isDisplayControlHidden,
     onClick,
     onDoubleClick,
     isExpanded,
@@ -261,10 +262,11 @@ const NodeInner = function NodeInner({
     ...(Object.keys(comboboxFieldStyle).length > 0 ? { style: comboboxFieldStyle } : {}),
   }
 
-  // Echo rows are stripped leaves with no display of their own, so their
-  // nodeDisplay slot is removed. Real rows keep the slot on its generated
-  // default and drive it through the `nodeDisplay` ref.
-  const displayButtonSlot = isEcho ? null : undefined
+  // Echo rows are stripped leaves with no display of their own, and rows under a
+  // mocked or excluded parent have no display worth setting, so both drop the
+  // nodeDisplay slot. Every other row keeps the slot on its generated default and
+  // drives it through the `nodeDisplay` ref.
+  const displayButtonSlot = isEcho || isDisplayControlHidden ? null : undefined
 
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
