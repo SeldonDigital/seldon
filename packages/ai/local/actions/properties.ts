@@ -13,6 +13,7 @@ import type {
 
 import { buildSetLabelStage } from "../../prompt/stages/properties"
 import { commit, commitFailureReason } from "../commit"
+import { assembleLayeredWrites } from "./layered-paint"
 import { callOllamaFormat } from "../ollama-client"
 import { resolvePropertyNames } from "../resolvers/resolve-property-name"
 import { resolvePropertyValue } from "../resolvers/resolve-property-value"
@@ -118,10 +119,19 @@ export async function executeSetProperties(
   const write = resolveWriteNode(context, target.nodeId)
   if (write.kind === "message") return { kind: "message", text: write.text }
 
+  // Fold layered-paint facet writes into whole layer stacks against the node
+  // the write actually lands on, so the merge neither drops sibling layers
+  // nor leaves a facet on a layer kind that cannot render it.
+  const assembled = assembleLayeredWrites(
+    context.state.workspace,
+    write.nodeId,
+    properties,
+  )
+
   try {
     commit(context.state, {
       type: "set_node_properties",
-      payload: { nodeId: write.nodeId, properties },
+      payload: { nodeId: write.nodeId, properties: assembled },
     } as WorkspaceAction)
   } catch (caught) {
     return {
@@ -165,13 +175,22 @@ export async function executeResetProperty(
   if (names.kind === "message") return { kind: "message", text: names.text }
 
   for (const key of names.keys) {
-    // A dotted facet path resets via propertyKey + subpropertyKey.
-    const [propertyKey, subpropertyKey] = key.split(".")
+    // A compound facet path (`border.color`) resets via propertyKey +
+    // subpropertyKey; a layered path (`background.0.color`) additionally
+    // carries its slot as layerIndex, which the reset payload supports
+    // natively. A bare key resets the whole property.
+    const segments = key.split(".")
+    const [propertyKey] = segments
+    const layered = segments.length === 3 && /^\d+$/.test(segments[1]!)
+    const subpropertyKey = layered ? segments[2] : segments[1]
+    const layerIndex = layered ? Number(segments[1]) : undefined
     try {
       commit(context.state, {
         type: "reset_node_property",
         payload: subpropertyKey
-          ? { nodeId: target.nodeId, propertyKey, subpropertyKey }
+          ? layered
+            ? { nodeId: target.nodeId, propertyKey, subpropertyKey, layerIndex }
+            : { nodeId: target.nodeId, propertyKey, subpropertyKey }
           : { nodeId: target.nodeId, propertyKey },
       } as unknown as WorkspaceAction)
     } catch (caught) {
