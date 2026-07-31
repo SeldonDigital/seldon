@@ -52,6 +52,48 @@ export const EVAL_CASES: EvalCase[] = [
     selectText: true,
     expected: { intent: "set_node_properties" },
   },
+  // -- compound/layered property keys: the model must pick dotted write
+  // -- paths (`background.0.color`), not the CSS-familiar flattened names.
+  {
+    id: "background-yellow",
+    message: "make its background yellow",
+    scope: "instance",
+    selectText: true,
+    expected: {
+      intent: "set_node_properties",
+      propertyKeys: ["background.0.color"],
+    },
+  },
+  {
+    id: "border-thicker",
+    message: "give it a thicker border",
+    scope: "instance",
+    selectText: true,
+    expected: {
+      intent: "set_node_properties",
+      propertyKeys: ["border.width"],
+    },
+  },
+  {
+    id: "padding-top",
+    message: "increase the top padding",
+    scope: "instance",
+    selectText: true,
+    expected: {
+      intent: "set_node_properties",
+      propertyKeys: ["padding.top"],
+    },
+  },
+  {
+    id: "shadow-softer",
+    message: "make the shadow blurrier",
+    scope: "instance",
+    selectText: true,
+    expected: {
+      intent: "set_node_properties",
+      propertyKeys: ["shadow.0.blur"],
+    },
+  },
   {
     id: "hide-it",
     message: "hide this",
