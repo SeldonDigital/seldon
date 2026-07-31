@@ -4035,14 +4035,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 402,
+        "line": 414,
         "conditional": false,
         "expression": "actionsButton.value",
         "inputs": [
           {
             "name": "actionsButton",
             "declaredAt": {
-              "line": 155,
+              "line": 157,
               "kind": "const",
               "via": "useRowActionsMenu"
             }
@@ -4091,14 +4091,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 395,
+        "line": 407,
         "conditional": false,
         "expression": "toggleButtonSlot.value",
         "inputs": [
           {
             "name": "toggleButtonSlot",
             "declaredAt": {
-              "line": 331,
+              "line": 343,
               "kind": "const",
               "via": "computed"
             }
@@ -4129,14 +4129,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 396,
+        "line": 408,
         "conditional": false,
         "expression": "toggleIconSlot.value",
         "inputs": [
           {
             "name": "toggleIconSlot",
             "declaredAt": {
-              "line": 336,
+              "line": 348,
               "kind": "const",
               "via": "computed"
             }
@@ -4166,14 +4166,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 400,
+        "line": 412,
         "conditional": false,
         "expression": "displayButtonProps.value",
         "inputs": [
           {
             "name": "displayButtonProps",
             "declaredAt": {
-              "line": 378,
+              "line": 390,
               "kind": "const",
               "via": "computed"
             }
@@ -4186,14 +4186,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 401,
+        "line": 413,
         "conditional": false,
         "expression": "displayIconSlot.value",
         "inputs": [
           {
             "name": "displayIconSlot",
             "declaredAt": {
-              "line": 377,
+              "line": 389,
               "kind": "const",
               "via": "computed"
             }
@@ -4224,14 +4224,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 397,
+        "line": 409,
         "conditional": false,
         "expression": "fieldSlot.value",
         "inputs": [
           {
             "name": "fieldSlot",
             "declaredAt": {
-              "line": 352,
+              "line": 364,
               "kind": "const",
               "via": "computed"
             }
@@ -4280,14 +4280,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 398,
+        "line": 410,
         "conditional": false,
         "expression": "nodeIconSlot.value",
         "inputs": [
           {
             "name": "nodeIconSlot",
             "declaredAt": {
-              "line": 358,
+              "line": 370,
               "kind": "const",
               "via": "computed"
             }
@@ -4336,14 +4336,14 @@
       {
         "file": "app/sidebars/objects/NodeRow.vue",
         "component": "NodeRow",
-        "line": 399,
+        "line": 411,
         "conditional": false,
         "expression": "labelSlot.value",
         "inputs": [
           {
             "name": "labelSlot",
             "declaredAt": {
-              "line": 367,
+              "line": 379,
               "kind": "const",
               "via": "computed"
             }
@@ -7802,7 +7802,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 509,
+          "line": 520,
           "expression": "\"\"",
           "inputs": [],
           "spread": false
@@ -7977,13 +7977,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 453,
+          "line": 464,
           "expression": "isDimmed || undefined",
           "inputs": [
             {
               "name": "isDimmed",
               "declaredAt": {
-                "line": 131,
+                "line": 133,
                 "kind": "const",
                 "via": "useRowNodeDisplay"
               }
@@ -8004,13 +8004,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 454,
+          "line": 465,
           "expression": "isDuplicateLabel || undefined",
           "inputs": [
             {
               "name": "isDuplicateLabel",
               "declaredAt": {
-                "line": 126,
+                "line": 128,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8040,13 +8040,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 452,
+          "line": 463,
           "expression": "isSelected || undefined",
           "inputs": [
             {
               "name": "isSelected",
               "declaredAt": {
-                "line": 98,
+                "line": 100,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8084,7 +8084,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 463,
+          "line": 474,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8118,13 +8118,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 465,
+          "line": 476,
           "expression": "displayButtonSlot",
           "inputs": [
             {
               "name": "displayButtonSlot",
               "declaredAt": {
-                "line": 389,
+                "line": 401,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8161,7 +8161,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 466,
+          "line": 477,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8195,7 +8195,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 464,
+          "line": 475,
           "expression": "{}",
           "inputs": [],
           "spread": false
@@ -8257,7 +8257,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 460,
+          "line": 471,
           "expression": "parentIsSelected || undefined",
           "inputs": [
             {
@@ -8308,13 +8308,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 458,
+          "line": 469,
           "expression": "dataDisplay",
           "inputs": [
             {
               "name": "dataDisplay",
               "declaredAt": {
-                "line": 406,
+                "line": 418,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8327,13 +8327,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 459,
+          "line": 470,
           "expression": "drag.draggingNodeId === nodeId || undefined",
           "inputs": [
             {
               "name": "drag",
               "declaredAt": {
-                "line": 78,
+                "line": 80,
                 "kind": "const",
                 "via": "useDragStore"
               }
@@ -8350,13 +8350,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 457,
+          "line": 468,
           "expression": "entityType",
           "inputs": [
             {
               "name": "entityType",
               "declaredAt": {
-                "line": 113,
+                "line": 115,
                 "kind": "const",
                 "via": "computed"
               }
@@ -8369,7 +8369,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 456,
+          "line": 467,
           "expression": "nodeId",
           "inputs": [
             {
@@ -8451,7 +8451,7 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 455,
+          "line": 466,
           "expression": "`object-panel-node-${nodeId}`",
           "inputs": [
             {
@@ -8487,13 +8487,13 @@
         {
           "file": "app/sidebars/objects/NodeRow.vue",
           "component": "NodeRow",
-          "line": 461,
+          "line": 472,
           "expression": "draggable",
           "inputs": [
             {
               "name": "draggable",
               "declaredAt": {
-                "line": 244,
+                "line": 246,
                 "kind": "const",
                 "via": "computed"
               }

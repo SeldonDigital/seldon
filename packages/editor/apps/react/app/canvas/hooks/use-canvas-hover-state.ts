@@ -2,6 +2,7 @@ import { create } from "zustand"
 
 import type { InstanceId, VariantId } from "@seldon/core"
 import type { BoardKey } from "@seldon/core/workspace/types"
+import type { CanvasDropSlot } from "@seldon/editor/lib/canvas/drag/drop-slot"
 import type { Placement } from "@seldon/editor/lib/types"
 
 interface BaseHoverState {
@@ -22,6 +23,38 @@ export type HoverState =
       objectId: InstanceId | VariantId
       objectType: "node"
     })
+
+/**
+ * The hover as a drop slot. The two describe the same thing: a container, the
+ * child the mark sits after, and which container edge to use when there is none.
+ */
+export function getHoverDropSlot(hoverState: HoverState): CanvasDropSlot {
+  return {
+    containerId: hoverState.objectId,
+    containerType: hoverState.objectType,
+    boundaryChildId: hoverState.lastChildNodeBeforeCursor,
+    placement: hoverState.placement,
+  }
+}
+
+/** A drop slot as hover state, which the canvas and the sidebars share. */
+export function getSlotHoverState(slot: CanvasDropSlot): HoverState {
+  if (slot.containerType === "board") {
+    return {
+      objectId: slot.containerId as BoardKey,
+      objectType: "board",
+      placement: slot.placement,
+      lastChildNodeBeforeCursor: slot.boundaryChildId as InstanceId | VariantId | null,
+    }
+  }
+
+  return {
+    objectId: slot.containerId as InstanceId | VariantId,
+    objectType: "node",
+    placement: slot.placement,
+    lastChildNodeBeforeCursor: slot.boundaryChildId as InstanceId | VariantId | null,
+  }
+}
 
 interface CanvasState {
   hoverState: HoverState | null

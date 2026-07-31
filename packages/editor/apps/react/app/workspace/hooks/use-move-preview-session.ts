@@ -1,11 +1,10 @@
 import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 import { useCallback, useEffect, useRef } from "react"
 
-import { useMoveObjects } from "./use-move-objects"
+import { useApplyMove } from "./use-apply-move"
 import { useWorkspace } from "./use-workspace"
 
-import type { Instance, Variant } from "@seldon/core"
-import type { Placement } from "@seldon/editor/lib/types"
+import type { MoveRequest } from "./use-apply-move"
 
 /**
  * How long the hovered target must stay settled before the preview is written.
@@ -15,24 +14,16 @@ import type { Placement } from "@seldon/editor/lib/types"
  */
 const PREVIEW_SETTLE_MS = 150
 
-export interface MoveRequest {
-  targetNode: Variant | Instance
-  subjectNode: Variant | Instance
-  placement: Placement
-  duplicate: boolean
-}
-
 /**
- * The live preview a drag writes while it is in flight, shared by the objects
- * sidebar and the canvas so both surfaces feel the same.
+ * The live preview an objects-sidebar drag writes while it is in flight, so the
+ * canvas lays the reorder out under the cursor.
  *
  * A drag calls `begin` once, reports where it currently points with `target`, and
- * ends with `finish`. Feedback drawn next to the cursor is the caller's own and
- * updates immediately; the preview written here lags behind by the settle delay.
+ * ends with `finish`. The row's own drop indicator updates immediately; the
+ * preview written here lags behind by the settle delay.
  */
 export function useMovePreviewSession() {
-  const { moveNodeNextTo, moveNodeInside, duplicateNodeInside, duplicateNodeNextTo } =
-    useMoveObjects()
+  const applyMove = useApplyMove()
   const { startPreviewSession, rollbackPreview } = useWorkspace()
   const setIsDragging = useDragStateStore((state) => state.setIsDragging)
 
@@ -45,31 +36,6 @@ export function useMovePreviewSession() {
     clearTimeout(settleTimer.current)
     settleTimer.current = null
   }, [])
-
-  const applyMove = useCallback(
-    (request: MoveRequest, isPreview: boolean) => {
-      const { targetNode, subjectNode, placement, duplicate } = request
-
-      if (placement === "inside") {
-        if (duplicate) {
-          duplicateNodeInside({ targetNode, subjectNode, isPreview })
-        } else {
-          moveNodeInside({ targetNode, subjectNode, isPreview })
-        }
-
-        return
-      }
-
-      if (duplicate) {
-        duplicateNodeNextTo({ targetNode, subjectNode, position: placement, isPreview })
-
-        return
-      }
-
-      moveNodeNextTo({ targetNode, subjectNode, position: placement, isPreview })
-    },
-    [moveNodeNextTo, moveNodeInside, duplicateNodeInside, duplicateNodeNextTo],
-  )
 
   const begin = useCallback(() => {
     settledRequest.current = null

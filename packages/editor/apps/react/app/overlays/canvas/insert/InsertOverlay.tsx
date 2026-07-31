@@ -1,20 +1,22 @@
 "use client"
 
-import { useCanvasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
+import { getHoverDropSlot, useCanvasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import { useTool } from "@app/editor/hooks/use-tool"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
+import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
 import { useMemo } from "react"
 
 import { invariant } from "@seldon/core/index"
 
 import { checkInsertionPoint } from "../../helpers/check-insertion-point"
 import { useBelongsToActiveBoard } from "../../hooks/use-belongs-to-active-board"
-import { CanvasIndicator } from "./CanvasIndicator"
-import { InsertGapSiblings } from "./InsertGapSiblings"
+import { CanvasDropFeedback } from "../drop/CanvasDropFeedback"
+
+import type { Instance, Variant } from "@seldon/core"
 
 /**
- * Canvas overlay for component insertion mode.
- * Renders insertion indicators based on hover state and insertion context.
+ * Where the insert tool would place a component, drawn by the shared drop
+ * feedback so an insertion and a reorder drag mark a slot the same way.
  */
 export function InsertOverlay() {
   const { activeTool } = useTool()
@@ -25,36 +27,19 @@ export function InsertOverlay() {
   invariant(activeTool === "component", "Must be used in component mode")
   invariant(hoverState, "This component requires a hover state")
 
-  const { objectId, objectType, placement, lastChildNodeBeforeCursor } = hoverState
+  const slot = useMemo(() => getHoverDropSlot(hoverState), [hoverState])
 
   const insertionAllowed = useMemo(() => {
-    return checkInsertionPoint(objectId, objectType, placement, workspace, "component")
-  }, [objectId, objectType, placement, workspace])
+    if (slot.containerType === "board") return true
 
-  if (!hoverBelongsToActiveBoard) return null
+    const container = workspace.nodes[slot.containerId] as Variant | Instance | undefined
 
-  if (hoverState.objectType === "board") {
-    return (
-      <CanvasIndicator
-        lastChildNodeBeforeCursor={lastChildNodeBeforeCursor}
-        objectId={objectId}
-        objectType={objectType}
-        placement={placement}
-      />
-    )
-  }
+    if (!container || !canNodeAcceptChildren(container, workspace)) return false
 
-  if (!insertionAllowed) return null
+    return checkInsertionPoint(slot.containerId, "node", "inside", workspace, "component")
+  }, [slot, workspace])
 
-  return (
-    <>
-      <InsertGapSiblings />
-      <CanvasIndicator
-        lastChildNodeBeforeCursor={lastChildNodeBeforeCursor}
-        objectId={objectId}
-        objectType={objectType}
-        placement={placement}
-      />
-    </>
-  )
+  if (!hoverBelongsToActiveBoard || !insertionAllowed) return null
+
+  return <CanvasDropFeedback slot={slot} />
 }

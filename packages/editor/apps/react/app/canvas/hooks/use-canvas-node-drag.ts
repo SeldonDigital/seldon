@@ -1,6 +1,7 @@
+import { useDragStateStore } from "@app/canvas/hooks/use-drag-state"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { useTool } from "@app/editor/hooks/use-tool"
-import { useMovePreviewSession } from "@app/workspace/hooks/use-move-preview-session"
+import { useApplyMove } from "@app/workspace/hooks/use-apply-move"
 import { useSelection } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { getSelectionTarget } from "@app/workspace/selection-target"
@@ -9,10 +10,9 @@ import {
   getEditableControl,
   isEditableControlFocused,
 } from "@seldon/editor/lib/canvas/dom/editable-control"
-import {
-  isPointOverNode,
-  resolveCanvasPlacement,
-} from "@seldon/editor/lib/canvas/drag/canvas-placement"
+import { resolveCanvasPlacement } from "@seldon/editor/lib/canvas/drag/canvas-placement"
+import { getSlotMoveTarget } from "@seldon/editor/lib/canvas/drag/drop-slot"
+import { liftCanvasNode } from "@seldon/editor/lib/canvas/drag/node-lift"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { canDragToReorder } from "@seldon/editor/lib/commands/move-decisions"
 import { isNoOpDrop, isValidDropTarget } from "@seldon/editor/lib/workspace/drop-validity"
@@ -20,23 +20,30 @@ import { useDragControls } from "framer-motion"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 
-import type { MoveRequest } from "@app/workspace/hooks/use-move-preview-session"
+import type { MoveRequest } from "@app/workspace/hooks/use-apply-move"
 import type { Instance, InstanceId, Variant, VariantId, Workspace } from "@seldon/core"
-import type { CanvasDropTarget } from "@seldon/editor/lib/canvas/drag/canvas-placement"
+import type { CanvasDropSlot } from "@seldon/editor/lib/canvas/drag/drop-slot"
+import type { CanvasNodeLift } from "@seldon/editor/lib/canvas/drag/node-lift"
 
 interface DragSubject {
   node: Variant | Instance
   rootId: string | null
+  element: HTMLElement
+  grabPoint: { x: number; y: number }
 }
 
 /**
- * Drag-to-reorder for canvas nodes, on the same rules and the same preview as the
- * objects sidebar.
+ * Drag-to-reorder for canvas nodes, on the same rules as the objects sidebar.
  *
  * Framer owns the gesture. The press lands on a canvas node, which is not a
  * motion element, so it starts the drag through `dragControls` on an invisible
  * agent instead. Framer's own pan threshold decides when a press becomes a drag,
  * so a press that stays still falls through to the click that selects.
+ *
+ * The node is picked up and a copy of it follows the cursor, while the board keeps
+ * the order it has. Nothing is laid out again until the drop, so the marks drawn
+ * at the boundary are what says where the node will land, and the target does not
+ * move while it is being aimed at.
  *
  * The pointer is listened for on the canvas element rather than taken as a prop,
  * so the gesture lives here in full instead of being threaded through the canvas
@@ -48,12 +55,14 @@ export function useCanvasNodeDrag() {
   const { selectNode, selectedNodeRootId } = useSelection()
   const { activeTool } = useTool()
   const { directSelect } = useEditorConfig()
-  const { begin, target, finish } = useMovePreviewSession()
+  const applyMove = useApplyMove()
+  const setIsDragging = useDragStateStore((state) => state.setIsDragging)
 
   const dragControls = useDragControls()
-  const [dropTarget, setDropTarget] = useState<CanvasDropTarget | null>(null)
+  const [dropSlot, setDropSlot] = useState<CanvasDropSlot | null>(null)
 
   const subject = useRef<DragSubject | null>(null)
+  const lift = useRef<CanvasNodeLift | null>(null)
   const request = useRef<MoveRequest | null>(null)
   const dragged = useRef(false)
 
@@ -91,7 +100,18 @@ export function useCanvasNodeDrag() {
 
       if (!node || !canDragToReorder(workspace, node)) return
 
-      subject.current = { node, rootId: resolved.rootId }
+      // Found from the pressed element, so a node drawn on more than one board
+      // picks up the copy under the cursor rather than the first one in the page.
+      const nodeElement = element.closest<HTMLElement>(`[data-canvas-node-id="${resolved.id}"]`)
+
+      if (!nodeElement) return
+
+      subject.current = {
+        node,
+        rootId: resolved.rootId,
+        element: nodeElement,
+        grabPoint: { x: event.clientX, y: event.clientY },
+      }
       dragControls.start(event)
     },
     [activeTool, directSelect, selectedNodeRootId, workspace, dragControls],
@@ -107,8 +127,9 @@ export function useCanvasNodeDrag() {
     // once the drag ends. The suppressed click would have done this.
     selectNode(dragging.node.id as VariantId | InstanceId, dragging.rootId)
     document.body.style.userSelect = "none"
-    begin()
-  }, [selectNode, begin])
+    lift.current = liftCanvasNode(dragging.element, dragging.grabPoint)
+    setIsDragging(true)
+  }, [selectNode, setIsDragging])
 
   const handleDrag = useCallback(
     (event: MouseEvent | TouchEvent | PointerEvent) => {
@@ -120,41 +141,56 @@ export function useCanvasNodeDrag() {
 
       if (!point) return
 
-      // The node the cursor is over is the node it just moved, so the slot it
-      // points at is the slot already chosen. Hold it, rather than reading the
-      // node's own box as no slot and rolling the preview back under the cursor.
-      if (isPointOverNode(point, dragging.node.id)) return
+      lift.current?.move(point)
 
-      const resolved = resolveCanvasPlacement(point, dragging.node, workspace)
-      const duplicate = "altKey" in event && event.altKey
+      const resolution = resolveCanvasPlacement(point, dragging.node, workspace)
 
-      if (!resolved || !isDroppable(resolved, dragging.node, duplicate, workspace)) {
-        setDropTarget(null)
+      // The cursor left the canvas content, so there is nothing to aim at and
+      // nothing to draw.
+      if (resolution.kind === "away") {
+        setDropSlot(null)
         request.current = null
-        target(null)
 
         return
       }
 
-      setDropTarget((current) => (isSameTarget(current, resolved) ? current : resolved))
-      request.current = {
-        targetNode: resolved.target,
-        subjectNode: dragging.node,
-        placement: resolved.placement,
-        duplicate,
-      }
-      target(request.current)
+      // Between the bands, so the drag keeps the slot it last found.
+      if (resolution.kind === "hold") return
+
+      const { slot } = resolution
+      const duplicate = "altKey" in event && event.altKey
+      const move = buildMoveRequest(slot, dragging.node, duplicate, workspace)
+
+      // A slot that would not move anything keeps the last one, the same way a
+      // dead zone does.
+      if (!move) return
+
+      setDropSlot((current) => (isSameSlot(current, slot) ? current : slot))
+      request.current = move
     },
-    [workspace, target],
+    [workspace],
   )
 
+  /**
+   * Drops the node. The copy is put away before the move is applied, so the board
+   * is laid out again once, with the node already back to full strength and the
+   * reorder animating from where it was.
+   */
   const handleDragEnd = useCallback(() => {
-    finish(request.current)
+    const move = request.current
+
+    lift.current?.release()
+    lift.current = null
     request.current = null
     subject.current = null
     document.body.style.userSelect = ""
-    setDropTarget(null)
-  }, [finish])
+    setDropSlot(null)
+    setIsDragging(false)
+
+    if (move) {
+      applyMove(move, false)
+    }
+  }, [applyMove, setIsDragging])
 
   useEffect(() => {
     const canvas = getCanvasElement()
@@ -188,7 +224,7 @@ export function useCanvasNodeDrag() {
 
   return {
     dragControls,
-    dropTarget,
+    dropSlot,
     onDragStart: handleDragStart,
     onDrag: handleDrag,
     onDragEnd: handleDragEnd,
@@ -196,29 +232,45 @@ export function useCanvasNodeDrag() {
 }
 
 /**
- * A drop is offered when it is structurally valid and would change the order.
- * Alt-drag duplicates instead of moving, and a copy placed next to the original
- * is a real edit, so the no-op rule does not apply to it. Same pair of rules the
- * sidebar dropzones use.
+ * The move a slot asks for, or nothing when it asks for no move at all.
+ *
+ * A slot is turned into the node it lands beside, which the same pair of rules the
+ * sidebar dropzones use then judges: the move must be structurally valid and must
+ * change the order. Alt-drag duplicates rather than moves, and a copy placed next
+ * to the original is a real edit, so the no-op rule does not apply to it.
  */
-function isDroppable(
-  resolved: CanvasDropTarget,
+function buildMoveRequest(
+  slot: CanvasDropSlot,
   subject: Variant | Instance,
   duplicate: boolean,
   workspace: Workspace,
-): boolean {
-  if (!isValidDropTarget(resolved.target, subject, resolved.placement, workspace)) return false
+): MoveRequest | null {
+  const moveTarget = getSlotMoveTarget(slot, workspace)
 
-  return duplicate || !isNoOpDrop(resolved.target, subject, resolved.placement, workspace)
+  if (!moveTarget) return null
+
+  const targetNode = workspace.nodes[moveTarget.targetId] as Variant | Instance | undefined
+
+  if (!targetNode) return null
+  if (!isValidDropTarget(targetNode, subject, moveTarget.placement, workspace)) return null
+  if (!duplicate && isNoOpDrop(targetNode, subject, moveTarget.placement, workspace)) return null
+
+  return {
+    targetNode,
+    subjectNode: subject,
+    placement: moveTarget.placement,
+    duplicate,
+  }
 }
 
-function isSameTarget(left: CanvasDropTarget | null, right: CanvasDropTarget): boolean {
+function isSameSlot(left: CanvasDropSlot | null, right: CanvasDropSlot): boolean {
   if (!left) return false
 
   return (
-    left.target.id === right.target.id &&
-    left.placement === right.placement &&
-    left.element === right.element
+    left.containerId === right.containerId &&
+    left.containerType === right.containerType &&
+    left.boundaryChildId === right.boundaryChildId &&
+    left.placement === right.placement
   )
 }
 

@@ -2,17 +2,19 @@
 
 import { useCanvasNodeDrag } from "@app/canvas/hooks/use-canvas-node-drag"
 
+import { CanvasDropFeedback } from "../drop/CanvasDropFeedback"
 import { CanvasDragAgent } from "./CanvasDragAgent.bespoke"
-import { CanvasDropIndicator } from "./CanvasDropIndicator"
 
 /**
- * Canvas drag-to-reorder: the drag agent that hosts the gesture, plus the
- * indicator for where the drop would land.
+ * Canvas drag-to-reorder: the agent that hosts the gesture, plus the drop
+ * feedback for where it would land, drawn the same way the insert tool draws it.
+ * The node picked up by the drag follows the cursor as a clone in the board, so it
+ * is not drawn here.
  */
 export function CanvasDragLayer() {
-  const { dragControls, dropTarget, onDragStart, onDrag, onDragEnd } = useCanvasNodeDrag()
+  const { dragControls, dropSlot, onDragStart, onDrag, onDragEnd } = useCanvasNodeDrag()
 
-  const indicator = dropTarget ? <CanvasDropIndicator dropTarget={dropTarget} /> : null
+  const feedback = dropSlot ? <CanvasDropFeedback slot={dropSlot} /> : null
 
   return (
     <>
@@ -22,7 +24,7 @@ export function CanvasDragLayer() {
         onDrag={onDrag}
         onDragEnd={onDragEnd}
       />
-      {indicator}
+      {feedback}
     </>
   )
 }

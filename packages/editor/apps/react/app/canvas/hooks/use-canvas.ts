@@ -1,4 +1,8 @@
-import { useCanvasHoverState } from "@app/canvas/hooks/use-canvas-hover-state"
+import {
+  getHoverDropSlot,
+  getSlotHoverState,
+  useCanvasHoverState,
+} from "@app/canvas/hooks/use-canvas-hover-state"
 import { useEditorConfig } from "@app/editor/hooks/use-editor-config"
 import { usePanel } from "@app/editor/hooks/use-panel"
 import { useTool } from "@app/editor/hooks/use-tool"
@@ -14,10 +18,11 @@ import {
   isEditableControlFocused,
   isEditableControlNodeSelected,
 } from "@seldon/editor/lib/canvas/dom/editable-control"
+import { resolveCanvasPlacement } from "@seldon/editor/lib/canvas/drag/canvas-placement"
+import { getSlotIndex } from "@seldon/editor/lib/canvas/drag/drop-slot"
 import { resolveCanvasNodeSelection } from "@seldon/editor/lib/canvas/resolve-node-selection"
 import { canNodeAcceptChildren } from "@seldon/editor/lib/workspace/can-node-accept-children"
-import { getNodeOrientation } from "@seldon/editor/lib/workspace/get-node-orientation"
-import { getNodeCatalogComponentId, getNodeChildIds } from "@seldon/editor/lib/workspace/node-tree"
+import { getNodeCatalogComponentId } from "@seldon/editor/lib/workspace/node-tree"
 import { getComponentKey } from "@seldon/editor/lib/workspace/workspace-accessors"
 import { useCallback, useEffect, useRef } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
@@ -27,19 +32,13 @@ import { invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
+import { nodeRetrievalService, typeCheckingService } from "@seldon/core/workspace/services"
 
 import { checkInsertionPoint } from "../../overlays/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
-import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
 
-import type { HoverState } from "@app/canvas/hooks/use-canvas-hover-state"
 import type { InstanceId, VariantId } from "@seldon/core"
-import type { ComponentId } from "@seldon/core/components/constants"
+import type { CanvasDropSlot } from "@seldon/editor/lib/canvas/drag/drop-slot"
 import type { MouseEventHandler } from "react"
 
 /**
@@ -118,86 +117,35 @@ export function useCanvas() {
         return
       }
 
-      // Component tool: keep the exact node under the cursor. It drives the
-      // accent hover box and the insertion placement computed below.
+      // Component tool: keep the exact node under the cursor, which highlights its
+      // sidebar row, then resolve the slot an insertion would land in. The reorder
+      // drag reads the same geometry, so both tools aim the same way.
       setHoveredId(selectionTarget?.id ?? null, selectionTarget?.kind, selectionTarget?.rootId)
 
-      const element = event.target as HTMLDivElement
-      const boardId =
-        activeTool === "component" ? (getBoardIdForEventTarget(element) as ComponentId) : null
+      const resolution = resolveCanvasPlacement(
+        { x: event.clientX, y: event.clientY },
+        null,
+        workspace,
+      )
 
-      const nodeId = getNodeIdForEventTarget(element) as
-        | InstanceId // Child node
-        | VariantId // Variant
-
-      const objectId = boardId ?? nodeId
-
-      if (!objectId) {
+      if (resolution.kind === "away") {
         setHoverState(null)
 
         return
       }
 
-      let lastChildNodeBeforeCursor: InstanceId | null = null
-      const orientation = getNodeOrientation(objectId, workspace)
-      const { clientX, clientY } = event
+      // Between the bands, so the slot the cursor last found stands.
+      if (resolution.kind === "hold") return
 
-      // The child-before-cursor lookup is only used to place insertion
-      // indicators for the component tool. The select tool never reads it, so
-      // skip the per-child measurement loop to keep hover cheap.
-      const needsChildLookup = activeTool === "component"
+      const { slot } = resolution
 
-      // Find all children that have a data-node-id attribute
-      const nodesWithNodeId = needsChildLookup ? getChildNodesWithNodeId(element) : []
-
-      // If there are children with a data-node-id attribute, we want to find the last child before the cursor
-      // That means we want to find the child that is closest to the left for horizontal oriented nodes
-      // or to the top of the cursor for vertical oriented nodes
-      if (nodesWithNodeId.length > 0) {
-        let lastNodeBeforeCursor
-
-        for (const curr of nodesWithNodeId) {
-          const currRect = curr.getBoundingClientRect()
-
-          if (orientation === "horizontal") {
-            if (clientX > currRect.left + currRect.width / 2) {
-              lastNodeBeforeCursor = curr
-            }
-          } else {
-            if (clientY > currRect.top + currRect.height / 2) {
-              lastNodeBeforeCursor = curr
-            }
-          }
-        }
-
-        // We can safely assume that the node as a data-node-id attribute
-        // because getChildNodesWithNodeId only returns nodes with a data-node-id attribute
-        if (lastNodeBeforeCursor) {
-          lastChildNodeBeforeCursor = lastNodeBeforeCursor.dataset.nodeId! as InstanceId
-        }
-      }
-
-      const rect = element.getBoundingClientRect()
-      // If the cursor is on the left or top side of the node, we want to show the highlight before the node
-      // Otherwise we show it after the node
-      const placement =
-        orientation === "horizontal"
-          ? clientX < rect.left + rect.width / 2
-            ? "before"
-            : "after"
-          : clientY < rect.top + rect.height / 2
-            ? "before"
-            : "after"
-
-      const objectType = boardId ? "board" : "node"
-
-      // For the component tool, check if insertion is allowed before setting hover state
-      // This prevents showing indicators for default variants and their nested children
-      if (activeTool === "component" && objectType === "node") {
+      // Insertion is judged against the container that would take the child, which
+      // keeps indicators off default variants and their nested children.
+      if (slot.containerType === "node") {
         const insertionAllowed = checkInsertionPoint(
-          objectId as InstanceId | VariantId,
-          objectType,
-          placement,
+          slot.containerId as InstanceId | VariantId,
+          "node",
+          "inside",
           workspace,
           activeTool,
         )
@@ -210,26 +158,12 @@ export function useCanvas() {
       }
 
       if (
-        objectId !== hoverState?.objectId ||
-        objectType !== hoverState?.objectType ||
-        placement !== hoverState?.placement ||
-        lastChildNodeBeforeCursor !== hoverState?.lastChildNodeBeforeCursor
+        slot.containerId !== hoverState?.objectId ||
+        slot.containerType !== hoverState?.objectType ||
+        slot.placement !== hoverState?.placement ||
+        slot.boundaryChildId !== hoverState?.lastChildNodeBeforeCursor
       ) {
-        if (objectType === "board") {
-          setHoverState({
-            objectId: objectId as ComponentId,
-            objectType: "board",
-            placement,
-            lastChildNodeBeforeCursor,
-          })
-        } else {
-          setHoverState({
-            objectId: objectId as VariantId | InstanceId,
-            objectType: "node",
-            placement,
-            lastChildNodeBeforeCursor,
-          })
-        }
+        setHoverState(getSlotHoverState(slot))
       }
     },
     [
@@ -247,125 +181,58 @@ export function useCanvas() {
     ],
   )
 
-  const insertNextToChild = useCallback(
-    (hoverState: HoverState) => {
-      const childNodeId = hoverState.lastChildNodeBeforeCursor!
-      const parentNode = nodeTraversalService.findParentNode(childNodeId, workspace)
+  /**
+   * Opens the component panel for the slot the cursor points at. The slot names
+   * the container and the index, so a board, a container's own edge, and a gap
+   * between two children all take the same path.
+   */
+  const insertAtSlot = useCallback(
+    (slot: CanvasDropSlot) => {
+      const index = getSlotIndex(slot, workspace)
 
-      invariant(parentNode, "Container node not found")
-
-      if (!canNodeAcceptChildren(parentNode, workspace)) {
-        const catalogId = getNodeCatalogComponentId(parentNode, workspace)
-
-        invariant(catalogId, "Parent node has no catalog component")
-        const schema = getComponentSchema(catalogId)
-
-        addToast(ErrorMessages.cannotAddChild(schema.name))
+      if (slot.containerType === "board") {
+        openPanel("component", {
+          nodeId: slot.containerId,
+          index,
+        })
 
         return
       }
 
-      // Prevent insertion into default variants
+      const container = nodeRetrievalService.getNode(
+        slot.containerId as InstanceId | VariantId,
+        workspace,
+      )
+
+      if (!canNodeAcceptChildren(container, workspace)) {
+        const catalogId = getNodeCatalogComponentId(container, workspace)
+
+        invariant(catalogId, "Container node has no catalog component")
+        addToast(ErrorMessages.cannotAddChild(getComponentSchema(catalogId).name))
+
+        return
+      }
+
       if (
-        typeCheckingService.isVariant(parentNode) &&
-        typeCheckingService.isDefaultVariant(parentNode)
+        typeCheckingService.isVariant(container) &&
+        typeCheckingService.isDefaultVariant(container)
       ) {
         return
       }
 
-      const childIds = getNodeChildIds(parentNode, workspace)
-      let index = childIds.indexOf(childNodeId)
-
-      if (hoverState.placement === "after") {
-        index += 1
-      }
-
       openPanel("component", {
-        nodeId: parentNode.id,
+        nodeId: container.id,
         index,
       })
     },
     [workspace, openPanel, addToast],
   )
 
-  const insertIntoNode = useCallback(
-    (nodeId: InstanceId | VariantId) => {
-      const node = nodeRetrievalService.getNode(nodeId, workspace)
-
-      if (canNodeAcceptChildren(node, workspace)) {
-        // Prevent insertion into default variants
-        if (typeCheckingService.isVariant(node) && typeCheckingService.isDefaultVariant(node)) {
-          return
-        }
-
-        openPanel("component", {
-          nodeId: nodeId,
-          index: 0,
-        })
-      } else {
-        // Otherwise, the target is the parent node of the hovered object
-        const parentNode = nodeTraversalService.findParentNode(nodeId, workspace)
-
-        invariant(parentNode, "Parent node not found for node " + nodeId)
-
-        // Prevent insertion into default variants
-        if (
-          typeCheckingService.isVariant(parentNode) &&
-          typeCheckingService.isDefaultVariant(parentNode)
-        ) {
-          return
-        }
-
-        const childIds = getNodeChildIds(parentNode, workspace)
-        let index = childIds.indexOf(nodeId)
-
-        if (hoverState?.placement === "after") {
-          index += 1
-        }
-
-        openPanel("component", {
-          nodeId: parentNode.id,
-          index,
-        })
-      }
-    },
-    [openPanel, workspace, hoverState?.placement],
-  )
-
-  const insertOnBoard = useCallback(
-    (hoverState: HoverState) => {
-      openPanel("component", {
-        nodeId: hoverState.objectId,
-        index: 0,
-      })
-    },
-    [openPanel],
-  )
-
   const executeToolAction = useCallback(() => {
-    if (!hoverState) {
-      return
-    }
+    if (!hoverState || activeTool !== "component") return
 
-    switch (activeTool) {
-      case "component":
-        if (hoverState.objectType === "node") {
-          if (hoverState.lastChildNodeBeforeCursor) {
-            insertNextToChild(hoverState)
-          } else {
-            // Insert into the hovered node when it accepts children, otherwise
-            // insertIntoNode resolves to its parent container. Avoids the throw
-            // from findContainerNode when the hovered node is a `node:` linked
-            // root (user variant or instance) with no container above it.
-            insertIntoNode(hoverState.objectId as InstanceId | VariantId)
-          }
-        } else {
-          insertOnBoard(hoverState)
-        }
-
-        break
-    }
-  }, [hoverState, activeTool, insertNextToChild, insertIntoNode, insertOnBoard])
+    insertAtSlot(getHoverDropSlot(hoverState))
+  }, [hoverState, activeTool, insertAtSlot])
 
   /**
    * When clicking on a node within the canvas, we want to select it.

@@ -1,9 +1,9 @@
 import { create } from "zustand"
 
 /**
- * Global state for an in-progress objects-sidebar drag. Set by the drag monitor
- * on drag start and cleared on drop. The canvas reads it to hide overlays that
- * cannot follow a node mid-reorder, such as the selection outline.
+ * Global state for an in-progress node drag, from the objects sidebar or from the
+ * canvas. Set on drag start and cleared on drop. The canvas reads it to hide the
+ * outlines that would compete with the drop marks, such as selection and hover.
  */
 interface DragState {
   isDragging: boolean

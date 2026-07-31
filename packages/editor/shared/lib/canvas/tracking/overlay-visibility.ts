@@ -2,12 +2,6 @@ import { isThemeBoard } from "@seldon/core/workspace/model/components"
 
 import type { Board } from "@seldon/core/workspace/types"
 
-/** Minimal insertion hover shape the sibling-gap check needs. */
-export interface InsertHoverLike {
-  objectType: "node" | "board"
-  lastChildNodeBeforeCursor: string | null
-}
-
 /** Explicit wireframe mode. Auto behavior is handled by the caller's tool. */
 export function getShowWireframes(wireframeMode: string): boolean {
   return wireframeMode === "on"
@@ -19,20 +13,6 @@ export function getShowWireframes(wireframeMode: string): boolean {
  */
 export function getActiveBoardIsTheme(activeBoard: Board | null): boolean {
   return activeBoard ? isThemeBoard(activeBoard) : false
-}
-
-/**
- * A between-siblings gap is highlighted by the paired sibling outlines, so the
- * single full-node hover box is suppressed to avoid a redundant box over one of
- * the siblings. Insert-into-node hovers (no boundary child) keep the full-node
- * accent box.
- */
-export function getIsSiblingGap(activeTool: string, hoverState: InsertHoverLike | null): boolean {
-  return (
-    activeTool === "component" &&
-    hoverState?.objectType === "node" &&
-    hoverState?.lastChildNodeBeforeCursor != null
-  )
 }
 
 /**

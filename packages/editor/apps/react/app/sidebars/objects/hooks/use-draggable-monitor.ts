@@ -6,7 +6,7 @@ import { invariant } from "@seldon/core"
 
 import { MOVE_NODE_ACTION } from "./use-draggable"
 
-import type { MoveRequest } from "@app/workspace/hooks/use-move-preview-session"
+import type { MoveRequest } from "@app/workspace/hooks/use-apply-move"
 import type { ElementDragPayload } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import type { DropTargetRecord } from "@atlaskit/pragmatic-drag-and-drop/types"
 import type { Instance, Variant } from "@seldon/core"

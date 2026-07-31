@@ -27,7 +27,7 @@ interface CanvasDragAgentProps {
  * Hosts a canvas node drag for Framer. A canvas node is a rendered component, not
  * a motion element, so the press on it starts the drag through `controls` and this
  * agent reports the gesture. It carries no appearance of its own, because the
- * canvas preview and the drop indicator are the feedback.
+ * lifted copy of the node and the drop marks are the feedback.
  */
 export function CanvasDragAgent({
   controls,
