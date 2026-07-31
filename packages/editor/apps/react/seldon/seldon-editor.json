@@ -13150,20 +13150,32 @@
         ],
         "corners": {
           "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
           },
           "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
           },
           "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
           },
           "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 2
+            }
           }
         },
         "border": {
@@ -18189,20 +18201,20 @@
         },
         "corners": {
           "topLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "topRight": {
-            "type": "option",
-            "value": "squared"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "bottomRight": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           }
         },
         "background": [
@@ -18269,20 +18281,20 @@
         },
         "corners": {
           "topLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "topRight": {
-            "type": "option",
-            "value": "squared"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "bottomRight": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           }
         },
         "background": [
@@ -18349,20 +18361,20 @@
         },
         "corners": {
           "topLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "topRight": {
-            "type": "option",
-            "value": "squared"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "bottomRight": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           }
         },
         "background": [
@@ -18429,20 +18441,20 @@
         },
         "corners": {
           "topLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "topRight": {
-            "type": "option",
-            "value": "squared"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "bottomRight": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           }
         },
         "background": [
@@ -18509,20 +18521,20 @@
         },
         "corners": {
           "topLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "topRight": {
-            "type": "option",
-            "value": "squared"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "bottomRight": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           }
         },
         "background": [
@@ -18623,20 +18635,20 @@
         },
         "corners": {
           "topLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "option",
+            "value": "squared"
           },
           "topRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "option",
+            "value": "squared"
           },
           "bottomRight": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "option",
+            "value": "squared"
           },
           "bottomLeft": {
-            "type": "theme.ordinal",
-            "value": "@corners.tight"
+            "type": "option",
+            "value": "squared"
           }
         },
         "width": {
@@ -27686,20 +27698,20 @@
         },
         "corners": {
           "topLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "topRight": {
-            "type": "option",
-            "value": "squared"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           },
           "bottomRight": {
-            "type": "option",
-            "value": "squared"
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
           }
         },
         "background": [
