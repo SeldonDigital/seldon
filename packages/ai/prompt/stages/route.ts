@@ -26,14 +26,24 @@ const ROUTE_SCHEMA = {
 export function buildRouteStage(inputs: {
   message: string
   history?: ChatMessage[]
+  hasSelection?: boolean
 }): PromptStage {
   const prompt = [
     "You are the chat assistant inside a design editor.",
     CAPABILITY_SUMMARY,
     "",
+    inputs.hasSelection
+      ? "The user has an element selected on the canvas."
+      : "Nothing is selected on the canvas.",
+    "",
     `${historyBlock(inputs.history)}User message: ${JSON.stringify(inputs.message)}`,
     "",
     'If the message asks for a design change, answer {"kind":"process"}.',
+    // A clarification round-trip must return to processing: when the
+    // assistant asked "which one?" and the user answers by selecting on the
+    // canvas and saying "this one", routing that BACK to a reply loops the
+    // user forever (issue 02). Processing owns selection resolution.
+    'If the previous assistant message asked which element was meant and this message answers it (a name, a nodeId, or "this one" with an element selected), answer {"kind":"process"}.',
     'If it is conversation (a greeting, thanks, a question about you or your capabilities), answer {"kind":"reply","message":"<your short, friendly answer>"}.',
   ].join("\n")
   return { prompt, schema: ROUTE_SCHEMA }

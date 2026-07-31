@@ -20,14 +20,24 @@ const describeIfOllama = ollamaUp ? describe : describe.skip
 const MODEL = process.env.SELDON_AI_TEST_MODEL ?? "qwen3:8b"
 const LIVE_TIMEOUT_MS = 60_000
 
-function buildContext(message: string): TurnContext {
+function buildContext(
+  message: string,
+  options?: { selectFirstNode?: boolean },
+): TurnContext {
   const workspace = addComponent(
     { boardKey: ComponentId.BUTTON } as never,
     createEmptyWorkspace(),
   )
+  const selectedNodeId = options?.selectFirstNode
+    ? Object.keys(workspace.nodes)[0]
+    : undefined
   return {
     state: createTurnState(workspace),
-    resolved: resolveContext({ workspace, activeBoardKey: ComponentId.BUTTON }),
+    resolved: resolveContext({
+      workspace,
+      activeBoardKey: ComponentId.BUTTON,
+      selectedNodeId,
+    }),
     message,
     model: MODEL,
     calls: [],
@@ -53,6 +63,29 @@ describeIfOllama("route (live)", () => {
       if (decision.kind === "reply") {
         expect(decision.message.length).toBeGreaterThan(0)
       }
+    },
+    LIVE_TIMEOUT_MS,
+  )
+
+  it(
+    'routes "this one" with a selection back to processing after an ask',
+    async () => {
+      // Issue 02: the assistant asked which element was meant; the user
+      // selected one on the canvas and answered "this one". Routing that to
+      // a reply loops the user forever -- it must go to processing, where
+      // selection resolution lives.
+      const decision = await route(
+        buildContext("this one", { selectFirstNode: true }),
+        [
+          { role: "user", content: "make the chip red" },
+          {
+            role: "assistant",
+            content:
+              "Several chips match. Select the one you mean on the canvas, then ask again.",
+          },
+        ],
+      )
+      expect(decision.kind).toBe("process")
     },
     LIVE_TIMEOUT_MS,
   )

@@ -20,6 +20,7 @@ export async function route(context: TurnContext, history?: ChatMessage[]) {
   const { prompt, schema } = buildRouteStage({
     message: context.message,
     history,
+    hasSelection: context.resolved.selectedNodeId !== undefined,
   })
   const { value: routeDecision, metrics } =
     await callOllamaFormat<RouteDecision>({
