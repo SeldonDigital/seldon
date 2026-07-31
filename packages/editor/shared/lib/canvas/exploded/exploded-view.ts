@@ -1,4 +1,4 @@
-import { buildExplodedLayers } from "./build-exploded-layers"
+import { buildExplodedSurfaces } from "./build-exploded-surfaces"
 import {
   EXPLODE_DEGREES_PER_PX,
   EXPLODE_INITIAL_ROTATION_X_DEG,
@@ -15,33 +15,37 @@ export interface ExplodedView {
   destroy: () => void
 }
 
+/**
+ * What the view needs. `source` is the rendered variant to copy, taken from the
+ * anchored board. `stage` holds the scene and handles the drag. `world` sits inside the
+ * stage, holds the copy, and turns as the viewer drags.
+ */
 export interface CreateExplodedViewParams {
-  /** The rendered variant to copy, taken from the anchored board. */
   source: HTMLElement
-  /** Element that holds the scene and reads the drag. */
   stage: HTMLElement
-  /** Element inside the stage that the copy hangs from and the drag turns. */
   world: HTMLElement
 }
 
 /**
- * Shows a copy of the anchored variant as separated layers the viewer can turn.
+ * Shows a copy of the anchored variant as separated surfaces the viewer can turn.
  *
- * The copy is built once and turned with custom properties on the element that
- * holds it, so a drag repaints the scene without touching the copy, the canvas,
- * or the workspace. Dragging pitches and swings the scene, holding shift trades
- * the swing for a roll, and a double click puts it back at rest. Every axis stops
- * at the same limit, so the stack cannot turn away from the viewer.
+ * The copy is built once. Turning it writes nothing but custom properties on the element
+ * that holds it. A drag therefore repaints the scene without touching the copy, the
+ * canvas, or the workspace.
  *
- * `destroy` drops the copy and every listener, so leaving isolation releases the
- * whole view.
+ * A drag tilts the scene and swings it sideways. Holding shift rolls it instead of
+ * swinging it. A double click returns it to its resting angles. Every axis stops at the
+ * same limit, so the stack cannot turn away from the viewer.
+ *
+ * `destroy` removes the copy and every listener. Leaving isolation therefore releases
+ * the whole view.
  */
 export function createExplodedView({
   source,
   stage,
   world,
 }: CreateExplodedViewParams): ExplodedView {
-  const layers = buildExplodedLayers(source)
+  const surfaces = buildExplodedSurfaces(source)
 
   let rotationX = EXPLODE_INITIAL_ROTATION_X_DEG
   let rotationY = EXPLODE_INITIAL_ROTATION_Y_DEG
@@ -58,8 +62,8 @@ export function createExplodedView({
     world.style.setProperty(EXPLODE_ROTATION_Z_PROPERTY, `${rotationZ}deg`)
   }
 
-  // A drag reports far more moves than there are frames, so collapse a burst into
-  // one write.
+  // A drag reports far more moves than there are frames. This collapses a burst of
+  // moves into one write.
   const schedule = (): void => {
     if (scheduledFrame) return
 
@@ -78,9 +82,9 @@ export function createExplodedView({
   const handlePointerDown = (event: PointerEvent): void => {
     if (event.button !== 0 || !event.isPrimary) return
 
-    // The canvas starts a node drag from `pointerdown` on `#canvas` and changes
-    // selection from a click on the tree. Turning the scene is neither, so the
-    // gesture stops here.
+    // The canvas starts a node drag from `pointerdown` on `#canvas`. A click on the tree
+    // changes the selection. Turning the scene is neither of those, so the event stops
+    // here.
     event.stopPropagation()
     event.preventDefault()
 
@@ -100,10 +104,12 @@ export function createExplodedView({
     lastClientX = event.clientX
     lastClientY = event.clientY
 
-    // The face under the cursor follows the drag: down brings the top toward the
-    // viewer, sideways swings the front the same way. Shift trades that swing for
-    // a roll in the screen plane. Each axis keeps its own angle, so letting go of
-    // shift part way through a drag never jumps, and each stops at the same limit.
+    // Dragging down tilts the top of the scene toward the viewer. Dragging sideways
+    // swings the scene the way the cursor moves. Holding shift makes a sideways drag
+    // roll the scene in the screen plane instead.
+    //
+    // Each axis keeps its own angle. Releasing shift part way through a drag therefore
+    // never makes the scene jump. Each axis stops at the same limit.
     rotationX = clampRotation(rotationX - degreesY)
 
     if (event.shiftKey) {
@@ -134,9 +140,9 @@ export function createExplodedView({
     schedule()
   }
 
-  world.appendChild(layers)
-  // The stylesheet keys every rule off the stage, so the scope is set here and
-  // the attribute name stays in one place.
+  world.appendChild(surfaces)
+  // Every rule in the stylesheet is scoped to this attribute. The stage carries it for
+  // as long as the view is up.
   stage.setAttribute(EXPLODE_STAGE_ATTRIBUTE, "")
   stage.style.cursor = "grab"
   apply()
@@ -161,7 +167,7 @@ export function createExplodedView({
 
     stage.removeAttribute(EXPLODE_STAGE_ATTRIBUTE)
     stage.style.cursor = ""
-    layers.remove()
+    surfaces.remove()
   }
 
   return { destroy }

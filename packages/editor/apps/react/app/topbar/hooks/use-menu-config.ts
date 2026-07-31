@@ -75,8 +75,6 @@ export function useMenuConfig(): MenuConfig {
     showCodeNames,
     toggleShowCodeNames,
     isolatedView,
-    explodedView,
-    toggleExplodedView,
     directSelect,
     toggleDirectSelect,
   } = useEditorConfig()
@@ -764,14 +762,6 @@ export function useMenuConfig(): MenuConfig {
             enabled: isolatedView,
           },
           {
-            id: "exploded-view",
-            label: "Show Exploded View",
-            action: toggleExplodedView,
-            active: explodedView,
-            shortcut: "X",
-            enabled: isolatedView,
-          },
-          {
             id: "show-reference-badges",
             label: "Show Reference Badges",
             action: toggleRefBadges,
@@ -857,8 +847,6 @@ export function useMenuConfig(): MenuConfig {
       showConnectors,
       toggleShowConnectors,
       isolatedView,
-      explodedView,
-      toggleExplodedView,
       showRefBadges,
       toggleRefBadges,
       autoExpandOnSelection,

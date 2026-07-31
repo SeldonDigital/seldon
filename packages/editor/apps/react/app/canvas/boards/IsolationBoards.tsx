@@ -62,7 +62,7 @@ const rowStyle: CSSProperties = {
  */
 export function IsolationBoards() {
   const { workspace } = useWorkspace()
-  const { isolatedBoardKey, isolatedVariantRootId, explodedView } = useEditorConfig()
+  const { isolatedBoardKey, isolatedVariantRootId } = useEditorConfig()
   const containerRef = useRef<HTMLDivElement>(null)
 
   const boards = useMemo(() => boardOrderService.getBoards(workspace), [workspace])
@@ -131,7 +131,7 @@ export function IsolationBoards() {
   // measuring stage and reads the board at the width the gallery settles on.
   const measured = metrics.heightsByLevel !== null
   const explodedBoard =
-    explodedView && isolatedBoardKey && isolatedVariantRootId ? (
+    isolatedBoardKey && isolatedVariantRootId ? (
       <ExplodedBoard
         anchorBoardKey={isolatedBoardKey}
         variantRootId={isolatedVariantRootId}
