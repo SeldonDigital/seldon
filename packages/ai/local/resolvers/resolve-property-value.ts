@@ -12,6 +12,7 @@ import { themeRefTag } from "../../prompt/property-taxonomy"
 import { buildResolvePropertyValueStage } from "../../prompt/stages/resolve-property-value"
 import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
+import { isSwatchColorProperty, resolveColorValue } from "./resolve-color-value"
 
 /**
  * Outcome of resolving one property's value from the message. `resolved`
@@ -52,6 +53,16 @@ export async function resolvePropertyValue(
   propertyKey: string,
 ): Promise<PropertyValueResolution> {
   const schemaKey = getCatalogKeyForPropertyPath(propertyKey) ?? propertyKey
+
+  // Swatch-backed color properties resolve through their own pipeline: Core
+  // rejects CSS color names as exact values and bare swatch keys as theme
+  // references, so the generic option/theme/exact stage cannot produce a
+  // storable color reliably.
+  const propertyIsSwatchColor = isSwatchColorProperty(schemaKey)
+  if (propertyIsSwatchColor) {
+    return resolveColorValue(context, propertyKey, schemaKey)
+  }
+
   const firstWorkspaceTheme = workspaceTheme(context.state.workspace)
 
   const presetOptions = getPresetOptions(schemaKey).map(String)
