@@ -19,6 +19,7 @@ import { boardOrderService } from "@seldon/core/workspace/services"
 
 import { useIsolationBoardMetrics } from "../hooks/use-isolation-board-metrics"
 import { ComponentBoard } from "./ComponentBoard"
+import { ExplodedBoard } from "./ExplodedBoard"
 
 import type { IsolationBoardSize } from "./ComponentBoard"
 import type { Board, ComponentLevel } from "@seldon/core"
@@ -61,7 +62,7 @@ const rowStyle: CSSProperties = {
  */
 export function IsolationBoards() {
   const { workspace } = useWorkspace()
-  const { isolatedBoardKey, isolatedVariantRootId } = useEditorConfig()
+  const { isolatedBoardKey, isolatedVariantRootId, explodedView } = useEditorConfig()
   const containerRef = useRef<HTMLDivElement>(null)
 
   const boards = useMemo(() => boardOrderService.getBoards(workspace), [workspace])
@@ -126,10 +127,23 @@ export function IsolationBoards() {
 
   const columnStyle = useMemo<CSSProperties>(() => getColumnStyle(baselineWidth), [baselineWidth])
 
+  // The copy is taken from the rendered anchored board, so it waits for the last
+  // measuring stage and reads the board at the width the gallery settles on.
+  const measured = metrics.heightsByLevel !== null
+  const explodedBoard =
+    explodedView && isolatedBoardKey && isolatedVariantRootId ? (
+      <ExplodedBoard
+        anchorBoardKey={isolatedBoardKey}
+        variantRootId={isolatedVariantRootId}
+        ready={measured}
+      />
+    ) : null
+
   if (!isolatedBoard) return null
 
   return (
     <Frame ref={containerRef} style={columnStyle} data-isolation-gallery>
+      {explodedBoard}
       {rows.map((row) => (
         <Frame key={row.key} style={rowStyle} data-isolation-level={row.level}>
           {row.boards.map((item) => (

@@ -79,6 +79,12 @@ interface EditorConfigState {
   enableIsolation: (boardKey: string, variantRootId: string | null) => void
   disableIsolation: () => void
 
+  // Exploded view: a copy of the anchored variant shown as separated layers,
+  // drawn as its own row above the gallery. Only applied while isolated, and
+  // cleared on leaving isolation so the copy it holds is released.
+  explodedView: boolean
+  setExplodedView: (enabled: boolean) => void
+
   // Direct select mode: every canvas click and hover targets the exact node
   // under the cursor, as if cmd/ctrl were always held. This is the pre-drill
   // selection behavior. Off by default.
@@ -187,7 +193,14 @@ const useStore = create<EditorConfigState>()(
           isolatedView: false,
           isolatedBoardKey: null,
           isolatedVariantRootId: null,
+          explodedView: false,
         })),
+
+      // Exploded view. Left out of `partialize` on purpose: it holds a copy of
+      // what the canvas rendered, so restoring it on load would show a row with
+      // nothing in it until the anchored board painted again.
+      explodedView: false,
+      setExplodedView: (enabled) => set((state) => ({ ...state, explodedView: enabled })),
 
       // Direct select mode (off by default)
       directSelect: false,
@@ -277,6 +290,8 @@ export function useEditorConfig() {
     isolatedVariantRootId,
     enableIsolation,
     disableIsolation,
+    explodedView,
+    setExplodedView,
     directSelect,
     setDirectSelect,
     useRefactoredSidebars,
@@ -320,6 +335,8 @@ export function useEditorConfig() {
       isolatedVariantRootId: state.isolatedVariantRootId,
       enableIsolation: state.enableIsolation,
       disableIsolation: state.disableIsolation,
+      explodedView: state.explodedView,
+      setExplodedView: state.setExplodedView,
       directSelect: state.directSelect,
       setDirectSelect: state.setDirectSelect,
       useRefactoredSidebars: state.useRefactoredSidebars,
@@ -378,6 +395,10 @@ export function useEditorConfig() {
   const toggleRefactoredSidebars = useCallback(() => {
     setUseRefactoredSidebars(!useRefactoredSidebars)
   }, [setUseRefactoredSidebars, useRefactoredSidebars])
+
+  const toggleExplodedView = useCallback(() => {
+    setExplodedView(!explodedView)
+  }, [setExplodedView, explodedView])
 
   const toggleDirectSelect = useCallback(() => {
     setDirectSelect(!directSelect)
@@ -457,6 +478,11 @@ export function useEditorConfig() {
     isolatedVariantRootId,
     enableIsolation,
     disableIsolation,
+
+    // Exploded view, which only draws in isolation mode
+    explodedView,
+    setExplodedView,
+    toggleExplodedView,
 
     // Direct select mode
     directSelect,
