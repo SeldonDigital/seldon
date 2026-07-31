@@ -107,6 +107,8 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
     refCardControllers: { children: rows },
   }
 
+  const sectionLabelSlot = { style: styles.sectionLabel }
+
   return (
     <WindowSurface
       onClose={onClose}
@@ -128,11 +130,11 @@ export function RefCardController({ binding, position, onClose, cardRef }: RefCa
         role="presentation"
         style={styles.panel}
         seldonRefs={cardRefs}
-        textLabel2={{}}
+        textLabel2={sectionLabelSlot}
         text={viewSlot}
         text2={viewFieldSlot}
         text3={viewFieldSlot}
-        textLabel3={{}}
+        textLabel3={sectionLabelSlot}
       />
     </WindowSurface>
   )
@@ -213,15 +215,16 @@ function joinControllerRow(
 }
 
 const styles: Record<string, CSSProperties> = {
-  // The surface owns the box the reader drags, so the board's own size and padding go
-  // and the panel fills what it is given.
   panel: {
     width: "100%",
     height: "100%",
     padding: 0,
+    cursor: "default",
   },
-  // Holds the line breaks in a slot that carries several lines in one Text.
   multiline: {
     whiteSpace: "pre-line",
+  },
+  sectionLabel: {
+    pointerEvents: "none",
   },
 }
