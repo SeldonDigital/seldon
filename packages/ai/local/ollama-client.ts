@@ -3,8 +3,8 @@ import type { ThinkingLevelOption } from "../shared/model-thinking"
 
 const DEFAULT_HOST = "http://127.0.0.1:11434"
 
-function resolveHost(host?: string): string {
-  return host ?? process.env.OLLAMA_HOST ?? DEFAULT_HOST
+function resolveHost(requestedHost?: string): string {
+  return requestedHost ?? process.env.OLLAMA_HOST ?? DEFAULT_HOST
 }
 
 /** Thrown when an Ollama call fails to reach the server, errors, or returns unparsable content. */
@@ -75,63 +75,70 @@ const NANOS_PER_MS = 1e6
 export async function callOllamaFormat<T>(
   options: OllamaFormatCallOptions,
 ): Promise<OllamaFormatCallResult<T>> {
-  const host = resolveHost(options.host)
-  const model = resolveModelId(options.model)
+  const resolvedHost = resolveHost(options.host)
+  const resolvedModelId = resolveModelId(options.model)
 
-  const think = options.think ?? "off"
+  const thinkingLevel = options.think ?? "off"
+  const thinkingIsDisabled = thinkingLevel === "off"
 
-  let res: Response
+  let chatResponse: Response
   try {
-    res = await fetch(`${host}/api/chat`, {
+    chatResponse = await fetch(`${resolvedHost}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model,
+        model: resolvedModelId,
         messages: [{ role: "user", content: options.prompt }],
         format: options.schema,
         stream: false,
-        think: think === "off" ? false : think,
+        think: thinkingIsDisabled ? false : thinkingLevel,
         options: { temperature: 0 },
       }),
     })
-  } catch (cause) {
-    throw new OllamaCallError(`Failed to reach Ollama at ${host}`, cause)
-  }
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => "")
-    throw new OllamaCallError(`Ollama returned ${res.status}: ${text}`)
-  }
-
-  const data = (await res.json()) as OllamaChatResponse
-  const raw = data.message?.content ?? ""
-
-  let value: T
-  try {
-    value = JSON.parse(raw) as T
-  } catch (cause) {
+  } catch (networkFailure) {
     throw new OllamaCallError(
-      `Model returned content that isn't valid JSON: ${raw}`,
-      cause,
+      `Failed to reach Ollama at ${resolvedHost}`,
+      networkFailure,
+    )
+  }
+
+  const requestFailed = !chatResponse.ok
+  if (requestFailed) {
+    const errorBody = await chatResponse.text().catch(() => "")
+    throw new OllamaCallError(
+      `Ollama returned ${chatResponse.status}: ${errorBody}`,
+    )
+  }
+
+  const responseBody = (await chatResponse.json()) as OllamaChatResponse
+  const rawJsonContent = responseBody.message?.content ?? ""
+
+  let parsedValue: T
+  try {
+    parsedValue = JSON.parse(rawJsonContent) as T
+  } catch (parseFailure) {
+    throw new OllamaCallError(
+      `Model returned content that isn't valid JSON: ${rawJsonContent}`,
+      parseFailure,
     )
   }
 
   const metrics: OllamaCallMetrics = {
-    promptTokens: data.prompt_eval_count ?? 0,
-    outputTokens: data.eval_count ?? 0,
-    evalDurationMs: (data.eval_duration ?? 0) / NANOS_PER_MS,
-    loadDurationMs: (data.load_duration ?? 0) / NANOS_PER_MS,
-    totalDurationMs: (data.total_duration ?? 0) / NANOS_PER_MS,
+    promptTokens: responseBody.prompt_eval_count ?? 0,
+    outputTokens: responseBody.eval_count ?? 0,
+    evalDurationMs: (responseBody.eval_duration ?? 0) / NANOS_PER_MS,
+    loadDurationMs: (responseBody.load_duration ?? 0) / NANOS_PER_MS,
+    totalDurationMs: (responseBody.total_duration ?? 0) / NANOS_PER_MS,
   }
 
-  return { value, metrics }
+  return { value: parsedValue, metrics }
 }
 
 /** True when an Ollama server appears to be reachable at the given host. */
 export async function isOllamaReachable(host?: string): Promise<boolean> {
   try {
-    const res = await fetch(`${resolveHost(host)}/api/tags`)
-    return res.ok
+    const tagsResponse = await fetch(`${resolveHost(host)}/api/tags`)
+    return tagsResponse.ok
   } catch {
     return false
   }

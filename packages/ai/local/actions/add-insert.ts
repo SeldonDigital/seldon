@@ -17,6 +17,8 @@ import { resolveNodeTarget } from "../resolvers/resolve-target"
 import {
   type FamilyOutcome,
   type TurnContext,
+  forwardClarification,
+  isClarification,
   recordStep,
 } from "../turn-context"
 
@@ -43,7 +45,7 @@ async function extractAddRequest(
     message: context.message,
     catalogIds: allCatalogIds(),
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: addRequestAnswer, metrics } = await callOllamaFormat<{
     component: string
     destination: string
   }>({
@@ -53,14 +55,16 @@ async function extractAddRequest(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_component", true, {
+  recordStep(context, "resolve_component", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(addRequestAnswer, null, 2),
   })
-  const destination = value.destination.trim()
+  const destinationPhrase = addRequestAnswer.destination.trim()
+  const messageNamedNoDestination = destinationPhrase === ""
   return {
-    catalogId: value.component,
-    destination: destination === "" ? null : destination,
+    catalogId: addRequestAnswer.component,
+    destination: messageNamedNoDestination ? null : destinationPhrase,
   }
 }
 
@@ -73,83 +77,89 @@ async function extractAddRequest(
 export async function executeAddComponent(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const request = await extractAddRequest(context)
+  const addRequest = await extractAddRequest(context)
   const { workspace } = context.state
 
   // Insertion parent: an explicitly named destination wins; otherwise the
   // selected node when the user is working inside a component.
   let parentId: string | undefined
-  if (request.destination) {
-    const destination = resolveNodeTarget(
+  const destinationPhrase = addRequest.destination
+  const messageNamedADestination = destinationPhrase !== null
+  const selectionIsInsideAComponent =
+    Boolean(context.resolved.selectedNodeId) &&
+    (context.resolved.scope === "instance" ||
+      context.resolved.scope === "variant")
+  if (messageNamedADestination) {
+    const destinationResolution = resolveNodeTarget(
       workspace,
       context.resolved.resolvedKey,
       context.resolved.selectedNodeId,
       context.resolved.selectedBoardId,
-      { nodeId: request.destination },
-      request.destination,
+      { nodeId: destinationPhrase },
+      destinationPhrase,
       context.resolved.scope,
     )
-    recordStep(
-      context,
-      "resolve_destination",
-      destination.kind === "resolved",
-      {
-        output:
-          destination.kind === "resolved"
-            ? `Resolved "${request.destination}" to node ${destination.nodeId} (deterministic, no model call).`
-            : destination.text,
-      },
-    )
-    if (destination.kind === "message")
-      return { kind: "message", text: destination.text }
-    parentId = destination.nodeId
-  } else if (
-    context.resolved.selectedNodeId &&
-    (context.resolved.scope === "instance" ||
-      context.resolved.scope === "variant")
-  ) {
+    const destinationNeedsClarification = isClarification(destinationResolution)
+    recordStep(context, "resolve_destination", {
+      ok: !destinationNeedsClarification,
+      output: destinationNeedsClarification
+        ? destinationResolution.text
+        : `Resolved "${addRequest.destination}" to node ${destinationResolution.nodeId} (deterministic, no model call).`,
+    })
+    if (destinationNeedsClarification)
+      return forwardClarification(destinationResolution)
+    parentId = destinationResolution.nodeId
+  } else if (selectionIsInsideAComponent) {
     parentId = context.resolved.selectedNodeId
   }
 
-  const before = workspace
+  const workspaceBeforeCommit = workspace
+  const componentBoardAlreadyExists = Boolean(
+    workspace.boards[addRequest.catalogId],
+  )
   try {
-    if (parentId) {
-      const action: WorkspaceAction = workspace.boards[request.catalogId]
+    const insertUnderAParent = parentId !== undefined
+    if (insertUnderAParent) {
+      const insertAction: WorkspaceAction = componentBoardAlreadyExists
         ? ({
             type: "insert_default_instance",
-            payload: { boardKey: request.catalogId, parentId },
+            payload: { boardKey: addRequest.catalogId, parentId },
           } as WorkspaceAction)
         : ({
             type: "add_component_and_insert_default_instance",
-            payload: { boardKey: request.catalogId, target: { parentId } },
+            payload: { boardKey: addRequest.catalogId, target: { parentId } },
           } as WorkspaceAction)
-      commit(context.state, action)
+      commit(context.state, insertAction)
     } else {
-      if (workspace.boards[request.catalogId]) {
+      if (componentBoardAlreadyExists) {
         return {
           kind: "message",
-          text: `The ${request.catalogId} component is already in the workspace. Tell me where to insert an instance of it.`,
+          text: `The ${addRequest.catalogId} component is already in the workspace. Tell me where to insert an instance of it.`,
         }
       }
       commit(context.state, {
         type: "add_component",
-        payload: { boardKey: request.catalogId },
+        payload: { boardKey: addRequest.catalogId },
       } as WorkspaceAction)
     }
   } catch (caught) {
     return {
       kind: "message",
-      text: `Couldn't add ${request.catalogId}: ${commitFailureReason(caught)}`,
+      text: `Couldn't add ${addRequest.catalogId}: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
 
-  const summary = parentId
-    ? `Added a ${request.catalogId} inside ${parentId}.`
-    : `Added the ${request.catalogId} component as its own board.`
+  const summaryReply = parentId
+    ? `Added a ${addRequest.catalogId} inside ${parentId}.`
+    : `Added the ${addRequest.catalogId} component as its own board.`
   return {
     kind: "applied",
-    reply: withCreatedIdentity(before, context.state.workspace, summary),
+    reply: withCreatedIdentity(
+      workspaceBeforeCommit,
+      context.state.workspace,
+      summaryReply,
+    ),
   }
 }
 
@@ -160,24 +170,29 @@ export async function executeAddComponent(
 export async function executeAddVariant(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  let boardKey = context.resolved.resolvedKey
+  const activeBoardKey = context.resolved.resolvedKey
   // A named component overrides the active board ("add a variant to the card").
-  const resolved = resolveCatalogId(
-    context.message.toLowerCase().includes(String(boardKey).toLowerCase())
-      ? String(boardKey)
-      : context.message,
+  const messageMentionsTheActiveBoard = context.message
+    .toLowerCase()
+    .includes(String(activeBoardKey).toLowerCase())
+  const catalogMatch = resolveCatalogId(
+    messageMentionsTheActiveBoard ? String(activeBoardKey) : context.message,
   )
-  if (resolved.id && context.state.workspace.boards[resolved.id]) {
-    boardKey = resolved.id as BoardKey
-  }
-  if (boardKey === undefined) {
+  const namedComponentHasABoard = Boolean(
+    catalogMatch.id && context.state.workspace.boards[catalogMatch.id],
+  )
+  const boardKey = namedComponentHasABoard
+    ? (catalogMatch.id as BoardKey)
+    : activeBoardKey
+  const noBoardIsActive = boardKey === undefined
+  if (noBoardIsActive) {
     return {
       kind: "message",
       text: "No board is active. Open the component you want a new variant of, or name it.",
     }
   }
 
-  const before = context.state.workspace
+  const workspaceBeforeCommit = context.state.workspace
   try {
     commit(context.state, {
       type: "add_variant",
@@ -189,11 +204,11 @@ export async function executeAddVariant(
       text: `Couldn't add a variant: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
     reply: withCreatedIdentity(
-      before,
+      workspaceBeforeCommit,
       context.state.workspace,
       `Added a new variant to ${boardKey}.`,
     ),
@@ -208,24 +223,29 @@ export async function executeInsertVariantInstance(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
   const boardKey = context.resolved.resolvedKey
-  const board = boardKey ? context.state.workspace.boards[boardKey] : undefined
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) {
+  const activeBoard = boardKey
+    ? context.state.workspace.boards[boardKey]
+    : undefined
+  const noComponentBoardIsActive =
+    !activeBoard ||
+    (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard))
+  if (noComponentBoardIsActive) {
     return {
       kind: "message",
       text: "No component board is active, so there are no variants to insert from.",
     }
   }
 
-  const variants = board.variants.map((ref) => {
-    const node = context.state.workspace.nodes[ref.id]
-    return { id: ref.id, label: node?.label ?? ref.id }
+  const variantChoices = activeBoard.variants.map((ref) => {
+    const variantNode = context.state.workspace.nodes[ref.id]
+    return { id: ref.id, label: variantNode?.label ?? ref.id }
   })
 
   const { prompt, schema } = buildPickVariantStage({
     message: context.message,
-    variants,
+    variants: variantChoices,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: variantAnswer, metrics } = await callOllamaFormat<{
     variantId: string
     destination: string
   }>({
@@ -235,31 +255,36 @@ export async function executeInsertVariantInstance(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_variant", true, {
+  recordStep(context, "resolve_variant", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(variantAnswer, null, 2),
   })
 
-  const destination = resolveNodeTarget(
+  const destinationPhraseIsBlank = variantAnswer.destination.trim() === ""
+  const destinationResolution = resolveNodeTarget(
     context.state.workspace,
     context.resolved.resolvedKey,
     context.resolved.selectedNodeId,
     context.resolved.selectedBoardId,
     "selection",
-    value.destination.trim() === "" ? undefined : value.destination,
+    destinationPhraseIsBlank ? undefined : variantAnswer.destination,
     context.resolved.scope,
   )
-  recordStep(context, "resolve_destination", destination.kind === "resolved")
-  if (destination.kind === "message")
-    return { kind: "message", text: destination.text }
+  const destinationNeedsClarification = isClarification(destinationResolution)
+  recordStep(context, "resolve_destination", {
+    ok: !destinationNeedsClarification,
+  })
+  if (destinationNeedsClarification)
+    return forwardClarification(destinationResolution)
 
-  const before = context.state.workspace
+  const workspaceBeforeCommit = context.state.workspace
   try {
     commit(context.state, {
       type: "insert_variant_instance",
       payload: {
-        variantId: value.variantId,
-        target: { parentId: destination.nodeId },
+        variantId: variantAnswer.variantId,
+        target: { parentId: destinationResolution.nodeId },
       },
     } as unknown as WorkspaceAction)
   } catch (caught) {
@@ -268,13 +293,13 @@ export async function executeInsertVariantInstance(
       text: `Couldn't insert the variant: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
     reply: withCreatedIdentity(
-      before,
+      workspaceBeforeCommit,
       context.state.workspace,
-      `Inserted variant ${value.variantId} into ${destination.nodeId}.`,
+      `Inserted variant ${variantAnswer.variantId} into ${destinationResolution.nodeId}.`,
     ),
   }
 }

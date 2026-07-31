@@ -120,10 +120,14 @@ export function useAiChat() {
       case "toolResult":
         store.mutateTurn(turnId, (turn) => {
           const toolCalls = [...(turn.toolCalls ?? [])]
-          const last = toolCalls[toolCalls.length - 1]
-          if (last)
-            toolCalls[toolCalls.length - 1] = {
-              ...last,
+          const pendingCallIndex = toolCalls.length - 1
+          const pendingCall = toolCalls[pendingCallIndex]
+          // A result always belongs to the call the `tool` event just opened;
+          // if none is open there is nothing to complete.
+          const aCallIsAwaitingItsResult = pendingCall !== undefined
+          if (aCallIsAwaitingItsResult)
+            toolCalls[pendingCallIndex] = {
+              ...pendingCall,
               ok: event.ok,
               output: event.output,
             }

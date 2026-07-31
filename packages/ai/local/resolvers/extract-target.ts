@@ -27,22 +27,25 @@ export async function extractTargetHint(
     hasSelection: context.resolved.selectedNodeId !== undefined,
   })
 
-  const { value, metrics } = await callOllamaFormat<TargetHint>({
+  const { value: targetHint, metrics } = await callOllamaFormat<TargetHint>({
     model: context.model,
     host: context.host,
     prompt,
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "extract_target", true, {
+  recordStep(context, "extract_target", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(targetHint, null, 2),
   })
 
   // A search hint with an empty phrase degrades to the selection: there is
   // nothing to search for, and resolve-target reports the miss cleanly.
-  if (value.kind === "search" && value.match.trim() === "") {
+  const searchPhraseIsBlank =
+    targetHint.kind === "search" && targetHint.match.trim() === ""
+  if (searchPhraseIsBlank) {
     return { kind: "selection" }
   }
-  return value
+  return targetHint
 }

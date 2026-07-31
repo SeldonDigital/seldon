@@ -39,33 +39,41 @@ const ESCALATION_MARGIN = 0.04
 const ESCALATION_POOL = 6
 /** Most candidates the no-embeddings fallback will offer the model. */
 const FALLBACK_POOL = 12
+/** How many ranked candidates the transcript's ranking step lists. */
+const RANKING_PREVIEW_COUNT = 5
 
 /** Every node on the board as an embeddable candidate string. */
 function collectCandidates(
   workspace: Workspace,
   boardKey: BoardKey | undefined,
 ): Candidate[] {
-  if (boardKey === undefined) return []
-  const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return []
+  const noBoardIsActive = boardKey === undefined
+  if (noBoardIsActive) return []
+  const activeBoard = workspace.boards[boardKey]
+  const boardCannotBeSearched =
+    !activeBoard ||
+    (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard))
+  if (boardCannotBeSearched) return []
 
-  const ids: string[] = []
-  walkBoardTreeRefs(board.variants, (ref) => {
-    ids.push(ref.id)
+  const nodeIds: string[] = []
+  walkBoardTreeRefs(activeBoard.variants, (ref) => {
+    nodeIds.push(ref.id)
   })
-  const positions = spatialLabels(workspace, boardKey, ids)
+  const spatialLabelsByNodeId = spatialLabels(workspace, boardKey, nodeIds)
 
-  return ids.flatMap((id) => {
-    const node = workspace.nodes[id]
-    if (!node) return []
-    const parts = [
+  return nodeIds.flatMap((nodeId) => {
+    const node = workspace.nodes[nodeId]
+    const nodeIsMissing = node === undefined
+    if (nodeIsMissing) return []
+    const descriptorParts = [
       getNodeCatalogId(node, workspace) ?? "",
       node.label ?? "",
-      nodeStringsSummary(workspace, id),
+      nodeStringsSummary(workspace, nodeId),
     ].filter((part) => part !== "")
-    const position = positions.get(id)
-    if (position) parts.push(`position: ${position}`)
-    return [{ id, text: parts.join(", ") }]
+    const spatialLabel = spatialLabelsByNodeId.get(nodeId)
+    const nodeHasSpatialLabel = spatialLabel !== undefined
+    if (nodeHasSpatialLabel) descriptorParts.push(`position: ${spatialLabel}`)
+    return [{ id: nodeId, text: descriptorParts.join(", ") }]
   })
 }
 
@@ -77,22 +85,26 @@ async function escalate(
 ): Promise<FindNodeResult> {
   const { prompt, schema } = buildFindNodeEscalateStage({ query, pool })
 
-  const { value, metrics } = await callOllamaFormat<{ id: string }>({
-    model: context.model,
-    host: context.host,
-    prompt,
-    schema,
-  })
+  const { value: pickAnswer, metrics } = await callOllamaFormat<{ id: string }>(
+    {
+      model: context.model,
+      host: context.host,
+      prompt,
+      schema,
+    },
+  )
   context.calls.push(metrics)
-  recordStep(context, "find_node_escalate", value.id !== "none", {
+  const modelFoundAMatch = pickAnswer.id !== "none"
+  recordStep(context, "find_node_escalate", {
+    ok: modelFoundAMatch,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(pickAnswer, null, 2),
   })
 
-  if (value.id === "none") {
+  if (!modelFoundAMatch) {
     return { kind: "message", text: findNodeMissMessage(query, pool) }
   }
-  return { kind: "resolved", nodeId: value.id }
+  return { kind: "resolved", nodeId: pickAnswer.id }
 }
 
 /**
@@ -109,19 +121,22 @@ export async function findNodeSemantic(
     context.state.workspace,
     context.resolved.resolvedKey,
   )
-  if (candidates.length === 0) {
+  const noBoardHasSearchableNodes = candidates.length === 0
+  if (noBoardHasSearchableNodes) {
     return {
       kind: "message",
       text: "No component board is active, so there is nothing to search. Open a board first.",
     }
   }
 
-  const ranked = await rankBySimilarity(query, candidates)
+  const rankedCandidates = await rankBySimilarity(query, candidates)
 
-  if (ranked === null) {
+  const embeddingsAreUnavailable = rankedCandidates === null
+  if (embeddingsAreUnavailable) {
     // Embeddings unavailable: bounded LLM pick, or a terminal ask when the
     // board is too big to offer honestly.
-    if (candidates.length > FALLBACK_POOL) {
+    const boardIsTooBigToOfferHonestly = candidates.length > FALLBACK_POOL
+    if (boardIsTooBigToOfferHonestly) {
       return {
         kind: "message",
         text: `I can't search ${candidates.length} elements without the local search index. Select the element on the canvas, or name it more specifically.`,
@@ -129,25 +144,34 @@ export async function findNodeSemantic(
     }
     return escalate(context, query, candidates)
   }
-  recordStep(context, "find_node_rank", true, {
+  recordStep(context, "find_node_rank", {
+    ok: true,
     output: [
       `Embedding similarity ranking for "${query}" (no model call). Top candidates:`,
-      ...ranked
-        .slice(0, 5)
-        .map((entry) => `- ${entry.id}: ${entry.score.toFixed(3)}`),
+      ...rankedCandidates
+        .slice(0, RANKING_PREVIEW_COUNT)
+        .map(
+          (rankedEntry) =>
+            `- ${rankedEntry.id}: ${rankedEntry.score.toFixed(3)}`,
+        ),
     ].join("\n"),
   })
 
-  const byId = new Map(candidates.map((candidate) => [candidate.id, candidate]))
-  const top = ranked[0]!
-  const runnerUp = ranked[1]
+  const candidateById = new Map(
+    candidates.map((candidate) => [candidate.id, candidate]),
+  )
+  const bestMatch = rankedCandidates[0]!
+  const runnerUp = rankedCandidates[1]
 
-  if (!runnerUp || top.score - runnerUp.score >= ESCALATION_MARGIN) {
-    return { kind: "resolved", nodeId: top.id }
+  const rankingIsDecisive =
+    runnerUp === undefined ||
+    bestMatch.score - runnerUp.score >= ESCALATION_MARGIN
+  if (rankingIsDecisive) {
+    return { kind: "resolved", nodeId: bestMatch.id }
   }
 
-  const pool = ranked
+  const escalationPool = rankedCandidates
     .slice(0, ESCALATION_POOL)
-    .map((entry) => byId.get(entry.id)!)
-  return escalate(context, query, pool)
+    .map((rankedEntry) => candidateById.get(rankedEntry.id)!)
+  return escalate(context, query, escalationPool)
 }

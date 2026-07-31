@@ -12,15 +12,15 @@ describeIfOllama("classifyAction (live)", () => {
   it(
     "classifies a property edit",
     async () => {
-      const result = await classifyAction({
+      const classification = await classifyAction({
         message: "make the title red",
         scope: "instance",
         hasSelectedNode: true,
         model: MODEL,
       })
-      expect(result.kind).toBe("classified")
-      if (result.kind === "classified") {
-        expect(result.intent.intent).toBe("set_node_properties")
+      expect(classification.kind).toBe("classified")
+      if (classification.kind === "classified") {
+        expect(classification.intent.intent).toBe("set_node_properties")
       }
     },
     LIVE_TIMEOUT_MS,
@@ -29,15 +29,15 @@ describeIfOllama("classifyAction (live)", () => {
   it(
     "classifies adding a component",
     async () => {
-      const result = await classifyAction({
+      const classification = await classifyAction({
         message: "add a card to the board",
         scope: "board",
         hasSelectedNode: false,
         model: MODEL,
       })
-      expect(result.kind).toBe("classified")
-      if (result.kind === "classified") {
-        expect(result.intent.intent).toBe("add_component")
+      expect(classification.kind).toBe("classified")
+      if (classification.kind === "classified") {
+        expect(classification.intent.intent).toBe("add_component")
       }
     },
     LIVE_TIMEOUT_MS,
@@ -46,11 +46,11 @@ describeIfOllama("classifyAction (live)", () => {
   it(
     "routes a greeting to the none escape",
     async () => {
-      const result = await classifyAction({
+      const classification = await classifyAction({
         message: "hey, how are you?",
         model: MODEL,
       })
-      expect(result.kind).toBe("message")
+      expect(classification.kind).toBe("message")
     },
     LIVE_TIMEOUT_MS,
   )
@@ -58,15 +58,15 @@ describeIfOllama("classifyAction (live)", () => {
   it(
     "classifies a translation request",
     async () => {
-      const result = await classifyAction({
+      const classification = await classifyAction({
         message: "translate this card to Spanish",
         scope: "instance",
         hasSelectedNode: true,
         model: MODEL,
       })
-      expect(result.kind).toBe("classified")
-      if (result.kind === "classified") {
-        expect(result.intent.intent).toBe("translate")
+      expect(classification.kind).toBe("classified")
+      if (classification.kind === "classified") {
+        expect(classification.intent.intent).toBe("translate")
       }
     },
     LIVE_TIMEOUT_MS,

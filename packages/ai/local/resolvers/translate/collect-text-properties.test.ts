@@ -18,7 +18,8 @@ describe("collectTextProperties", () => {
     )
     const board = workspace.boards[ComponentId.BUTTON]
     expect(board && isComponentBoard(board)).toBe(true)
-    if (!board || !isComponentBoard(board)) return
+    const boardHasNoVariantTrees = !board || !isComponentBoard(board)
+    if (boardHasNoVariantTrees) return
 
     const rootId = board.variants[0]!.id
     const found = collectTextProperties(workspace, ComponentId.BUTTON, rootId)

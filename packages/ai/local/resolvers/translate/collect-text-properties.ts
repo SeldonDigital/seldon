@@ -34,28 +34,36 @@ function subtreeIds(
   boardKey: BoardKey | undefined,
   rootId: string,
 ): string[] {
-  if (boardKey === undefined) return [rootId]
-  const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return [rootId]
+  const noBoardIsActive = boardKey === undefined
+  if (noBoardIsActive) return [rootId]
+  const activeBoard = workspace.boards[boardKey]
+  const boardHasNoVariantTrees =
+    !activeBoard ||
+    (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard))
+  if (boardHasNoVariantTrees) return [rootId]
 
-  const ids: string[] = []
-  let inSubtree = false
-  walkBoardTreeRefs(board.variants, (ref, parent) => {
-    if (ref.id === rootId) {
-      inSubtree = true
-      ids.push(ref.id)
+  const subtreeNodeIds: string[] = []
+  let walkIsInsideSubtree = false
+  walkBoardTreeRefs(activeBoard.variants, (ref, parent) => {
+    const refIsSubtreeRoot = ref.id === rootId
+    if (refIsSubtreeRoot) {
+      walkIsInsideSubtree = true
+      subtreeNodeIds.push(ref.id)
       return
     }
-    if (inSubtree) {
+    if (walkIsInsideSubtree) {
       // walkBoardTreeRefs is depth-first; the subtree ends when a ref appears
       // whose parent is outside the collected set.
-      if (parent && ids.includes(parent.id)) {
-        ids.push(ref.id)
+      const parentIsInsideSubtree = parent
+        ? subtreeNodeIds.includes(parent.id)
+        : false
+      if (parentIsInsideSubtree) {
+        subtreeNodeIds.push(ref.id)
       }
     }
   })
-  return ids.length > 0 ? ids : [rootId]
+  const walkFoundTheSubtree = subtreeNodeIds.length > 0
+  return walkFoundTheSubtree ? subtreeNodeIds : [rootId]
 }
 
 /**
@@ -69,11 +77,11 @@ export function collectTextProperties(
   boardKey: BoardKey | undefined,
   rootId: string,
 ): TextProperty[] {
-  const found: TextProperty[] = []
+  const textProperties: TextProperty[] = []
   for (const nodeId of subtreeIds(workspace, boardKey, rootId)) {
-    let effective: Record<string, unknown>
+    let effectiveProperties: Record<string, unknown>
     try {
-      effective = getEffectiveProperties(nodeId, workspace) as Record<
+      effectiveProperties = getEffectiveProperties(nodeId, workspace) as Record<
         string,
         unknown
       >
@@ -81,17 +89,21 @@ export function collectTextProperties(
       continue
     }
     for (const propertyKey of TRANSLATABLE_PROPERTY_KEYS) {
-      const raw = effective[propertyKey]
-      const value =
-        typeof raw === "string"
-          ? raw
-          : raw && typeof raw === "object" && "value" in raw
-            ? (raw as { value: unknown }).value
+      const rawPropertyValue = effectiveProperties[propertyKey]
+      const textValue =
+        typeof rawPropertyValue === "string"
+          ? rawPropertyValue
+          : rawPropertyValue &&
+              typeof rawPropertyValue === "object" &&
+              "value" in rawPropertyValue
+            ? (rawPropertyValue as { value: unknown }).value
             : undefined
-      if (typeof value === "string" && value.trim() !== "") {
-        found.push({ nodeId, propertyKey, text: value })
+      const valueIsNonEmptyText =
+        typeof textValue === "string" && textValue.trim() !== ""
+      if (valueIsNonEmptyText) {
+        textProperties.push({ nodeId, propertyKey, text: textValue })
       }
     }
   }
-  return found
+  return textProperties
 }

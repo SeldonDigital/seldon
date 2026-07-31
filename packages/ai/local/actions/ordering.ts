@@ -9,10 +9,7 @@ import type {
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
 
-import {
-  buildMoveStage,
-  buildReorderStage,
-} from "../../prompt/stages/ordering"
+import { buildMoveStage, buildReorderStage } from "../../prompt/stages/ordering"
 import { commit, commitFailureReason } from "../commit"
 import { callOllamaFormat } from "../ollama-client"
 import { resolveNodeTarget } from "../resolvers/resolve-target"
@@ -20,8 +17,13 @@ import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
 import {
   type FamilyOutcome,
   type TurnContext,
+  forwardClarification,
+  isClarification,
   recordStep,
 } from "../turn-context"
+
+/** Fewer siblings than this and there is no ordering to change. */
+const MINIMUM_SIBLINGS_TO_REORDER = 2
 
 /** The parent ref and sibling position of a node within a board's variant trees. */
 function findSiblingPosition(
@@ -29,19 +31,29 @@ function findSiblingPosition(
   boardKey: BoardKey | undefined,
   nodeId: string,
 ): { parentId: string; index: number; count: number } | undefined {
-  if (boardKey === undefined) return undefined
-  const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return undefined
-  let found: { parentId: string; index: number; count: number } | undefined
-  walkBoardTreeRefs(board.variants, (ref) => {
-    const children = ref.children ?? []
-    const index = children.findIndex((child) => child.id === nodeId)
-    if (index === -1) return
-    found = { parentId: ref.id, index, count: children.length }
+  const noBoardIsActive = boardKey === undefined
+  if (noBoardIsActive) return undefined
+  const activeBoard = workspace.boards[boardKey]
+  const boardHasNoVariantTrees =
+    !activeBoard ||
+    (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard))
+  if (boardHasNoVariantTrees) return undefined
+  let siblingPosition:
+    | { parentId: string; index: number; count: number }
+    | undefined
+  walkBoardTreeRefs(activeBoard.variants, (ref) => {
+    const childRefs = ref.children ?? []
+    const childIndex = childRefs.findIndex((child) => child.id === nodeId)
+    const nodeIsNotAChildOfThisRef = childIndex === -1
+    if (nodeIsNotAChildOfThisRef) return
+    siblingPosition = {
+      parentId: ref.id,
+      index: childIndex,
+      count: childRefs.length,
+    }
     return true
   })
-  return found
+  return siblingPosition
 }
 
 /**
@@ -53,33 +65,36 @@ function findSiblingPosition(
 export async function executeReorder(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
-  const position = findSiblingPosition(
+  const siblingPosition = findSiblingPosition(
     context.state.workspace,
     context.resolved.resolvedKey,
-    target.nodeId,
+    resolvedTarget.nodeId,
   )
-  if (!position) {
+  const nodeHasNoSiblingContext = siblingPosition === undefined
+  if (nodeHasNoSiblingContext) {
     return {
       kind: "message",
-      text: `${target.nodeId} has no reorderable siblings on the active board.`,
+      text: `${resolvedTarget.nodeId} has no reorderable siblings on the active board.`,
     }
   }
-  if (position.count < 2) {
+  const nodeIsAnOnlyChild = siblingPosition.count < MINIMUM_SIBLINGS_TO_REORDER
+  if (nodeIsAnOnlyChild) {
     return {
       kind: "message",
-      text: `${target.nodeId} is its parent's only child, so there is nothing to reorder.`,
+      text: `${resolvedTarget.nodeId} is its parent's only child, so there is nothing to reorder.`,
     }
   }
 
   const { prompt, schema } = buildReorderStage({
     message: context.message,
-    index: position.index + 1,
-    count: position.count,
+    index: siblingPosition.index + 1,
+    count: siblingPosition.count,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: positionAnswer, metrics } = await callOllamaFormat<{
     position: "first" | "last" | "up" | "down"
   }>({
     model: context.model,
@@ -88,31 +103,36 @@ export async function executeReorder(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_position", true, {
+  recordStep(context, "resolve_position", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(positionAnswer, null, 2),
   })
 
+  const lastSiblingIndex = siblingPosition.count - 1
   const newIndex =
-    value.position === "first"
+    positionAnswer.position === "first"
       ? 0
-      : value.position === "last"
-        ? position.count - 1
-        : value.position === "up"
-          ? Math.max(0, position.index - 1)
-          : Math.min(position.count - 1, position.index + 1)
+      : positionAnswer.position === "last"
+        ? lastSiblingIndex
+        : positionAnswer.position === "up"
+          ? Math.max(0, siblingPosition.index - 1)
+          : Math.min(lastSiblingIndex, siblingPosition.index + 1)
 
-  if (newIndex === position.index) {
+  const nodeIsAlreadyInThatPosition = newIndex === siblingPosition.index
+  if (nodeIsAlreadyInThatPosition) {
+    const askedToMoveTowardTheStart =
+      positionAnswer.position === "first" || positionAnswer.position === "up"
     return {
       kind: "message",
-      text: `${target.nodeId} is already ${value.position === "first" || value.position === "up" ? "first" : "last"} among its siblings.`,
+      text: `${resolvedTarget.nodeId} is already ${askedToMoveTowardTheStart ? "first" : "last"} among its siblings.`,
     }
   }
 
   try {
     commit(context.state, {
       type: "reorder_instance_in_parent",
-      payload: { instanceId: target.nodeId, newIndex },
+      payload: { instanceId: resolvedTarget.nodeId, newIndex },
     } as unknown as WorkspaceAction)
   } catch (caught) {
     return {
@@ -120,10 +140,10 @@ export async function executeReorder(
       text: `Couldn't reorder: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Moved ${target.nodeId} to position ${newIndex + 1} of ${position.count}.`,
+    reply: `Moved ${resolvedTarget.nodeId} to position ${newIndex + 1} of ${siblingPosition.count}.`,
   }
 }
 
@@ -138,7 +158,7 @@ export async function executeMove(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
   const { prompt, schema } = buildMoveStage({ message: context.message })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: moveAnswer, metrics } = await callOllamaFormat<{
     item: string
     destination: string
   }>({
@@ -148,52 +168,56 @@ export async function executeMove(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "extract_move", true, {
+  recordStep(context, "extract_move", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(moveAnswer, null, 2),
   })
 
-  const item = resolveNodeTarget(
+  const itemPhraseIsBlank = moveAnswer.item.trim() === ""
+  const itemResolution = resolveNodeTarget(
     context.state.workspace,
     context.resolved.resolvedKey,
     context.resolved.selectedNodeId,
     context.resolved.selectedBoardId,
     "selection",
-    value.item.trim() === "" ? undefined : value.item,
+    itemPhraseIsBlank ? undefined : moveAnswer.item,
     context.resolved.scope,
   )
-  recordStep(context, "resolve_target", item.kind === "resolved", {
-    output:
-      item.kind === "resolved"
-        ? `Resolved the item to move to node ${item.nodeId} (deterministic, no model call).`
-        : item.text,
+  const itemNeedsClarification = isClarification(itemResolution)
+  recordStep(context, "resolve_target", {
+    ok: !itemNeedsClarification,
+    output: itemNeedsClarification
+      ? itemResolution.text
+      : `Resolved the item to move to node ${itemResolution.nodeId} (deterministic, no model call).`,
   })
-  if (item.kind === "message") return { kind: "message", text: item.text }
+  if (itemNeedsClarification) return forwardClarification(itemResolution)
 
-  const destination = resolveNodeTarget(
+  const destinationResolution = resolveNodeTarget(
     context.state.workspace,
     context.resolved.resolvedKey,
     undefined,
     undefined,
-    { nodeId: value.destination },
-    value.destination,
+    { nodeId: moveAnswer.destination },
+    moveAnswer.destination,
     context.resolved.scope,
   )
-  recordStep(context, "resolve_destination", destination.kind === "resolved", {
-    output:
-      destination.kind === "resolved"
-        ? `Resolved the destination to node ${destination.nodeId} (deterministic, no model call).`
-        : destination.text,
+  const destinationNeedsClarification = isClarification(destinationResolution)
+  recordStep(context, "resolve_destination", {
+    ok: !destinationNeedsClarification,
+    output: destinationNeedsClarification
+      ? destinationResolution.text
+      : `Resolved the destination to node ${destinationResolution.nodeId} (deterministic, no model call).`,
   })
-  if (destination.kind === "message")
-    return { kind: "message", text: destination.text }
+  if (destinationNeedsClarification)
+    return forwardClarification(destinationResolution)
 
   try {
     commit(context.state, {
       type: "move_instance",
       payload: {
-        instanceId: item.nodeId,
-        target: { parentId: destination.nodeId },
+        instanceId: itemResolution.nodeId,
+        target: { parentId: destinationResolution.nodeId },
       },
     } as unknown as WorkspaceAction)
   } catch (caught) {
@@ -202,9 +226,9 @@ export async function executeMove(
       text: `Couldn't move: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Moved ${item.nodeId} into ${destination.nodeId}.`,
+    reply: `Moved ${itemResolution.nodeId} into ${destinationResolution.nodeId}.`,
   }
 }

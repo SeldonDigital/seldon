@@ -18,7 +18,7 @@ export async function translateBatch(
 ): Promise<string[] | null> {
   const { prompt, schema } = buildTranslateBatchStage({ texts, language })
 
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: batchAnswer, metrics } = await callOllamaFormat<{
     translations: string[]
   }>({
     model: context.model,
@@ -28,13 +28,16 @@ export async function translateBatch(
   })
   context.calls.push(metrics)
 
-  const ok =
-    Array.isArray(value.translations) &&
-    value.translations.length === texts.length &&
-    value.translations.every((entry) => typeof entry === "string")
-  recordStep(context, "translate_batch", ok, {
+  const batchIsUsable =
+    Array.isArray(batchAnswer.translations) &&
+    batchAnswer.translations.length === texts.length &&
+    batchAnswer.translations.every(
+      (translation) => typeof translation === "string",
+    )
+  recordStep(context, "translate_batch", {
+    ok: batchIsUsable,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(batchAnswer, null, 2),
   })
-  return ok ? value.translations : null
+  return batchIsUsable ? batchAnswer.translations : null
 }

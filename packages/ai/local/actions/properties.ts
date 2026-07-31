@@ -21,6 +21,8 @@ import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
 import {
   type FamilyOutcome,
   type TurnContext,
+  forwardClarification,
+  isClarification,
   recordStep,
 } from "../turn-context"
 
@@ -29,15 +31,18 @@ function boardKeyOfNode(
   workspace: Workspace,
   nodeId: string,
 ): BoardKey | undefined {
-  for (const [key, board] of Object.entries(workspace.boards)) {
-    if (!isComponentBoard(board) && !isAuthoredBoard(board)) continue
-    let found = false
+  for (const [boardKey, board] of Object.entries(workspace.boards)) {
+    const boardHasNoVariantTrees =
+      !isComponentBoard(board) && !isAuthoredBoard(board)
+    if (boardHasNoVariantTrees) continue
+    let boardListsNode = false
     walkBoardTreeRefs(board.variants, (ref) => {
-      if (ref.id !== nodeId) return
-      found = true
+      const refIsTheNode = ref.id === nodeId
+      if (!refIsTheNode) return
+      boardListsNode = true
       return true
     })
-    if (found) return key as BoardKey
+    if (boardListsNode) return boardKey as BoardKey
   }
   return undefined
 }
@@ -59,23 +64,32 @@ function resolveWriteNode(
   | { kind: "message"; text: string } {
   const { workspace } = context.state
   const { resolved } = context
-  const sourceId = getSourceNodeId(workspace, targetNodeId)
-  const sourceBoardKey = boardKeyOfNode(workspace, sourceId)
-  const sourceOnActiveBoard =
+  const componentSourceId = getSourceNodeId(workspace, targetNodeId)
+  const sourceBoardKey = boardKeyOfNode(workspace, componentSourceId)
+  const sourceIsOnActiveBoard =
     resolved.resolvedKey !== undefined &&
     sourceBoardKey === resolved.resolvedKey
+  const targetInheritsFromTheSource = componentSourceId !== targetNodeId
+  const userChoseToActAcrossTheFile = resolved.scope === "workspace"
+  const selectionIsInstanceScoped = resolved.scope === "instance"
 
-  const cascade = resolved.scope !== "instance" && sourceOnActiveBoard
+  const cascadeToComponentSource =
+    !selectionIsInstanceScoped && sourceIsOnActiveBoard
 
-  if (
-    cascade &&
-    resolved.scope !== "workspace" &&
-    !sourceOnActiveBoard &&
-    sourceId !== targetNodeId
-  ) {
+  // NOTE: unreachable as written -- `cascadeToComponentSource` can only be
+  // true when `sourceIsOnActiveBoard` is, so `!sourceIsOnActiveBoard` never
+  // holds here. The protection still exists in practice: a source on another
+  // board makes `cascadeToComponentSource` false, so the write lands on the
+  // local override rather than the shared source.
+  const wouldSilentlyRestyleEveryInstance =
+    cascadeToComponentSource &&
+    !userChoseToActAcrossTheFile &&
+    !sourceIsOnActiveBoard &&
+    targetInheritsFromTheSource
+  if (wouldSilentlyRestyleEveryInstance) {
     return {
       kind: "message",
-      text: `Changing ${targetNodeId} here would write its shared source ${sourceId}${
+      text: `Changing ${targetNodeId} here would write its shared source ${componentSourceId}${
         sourceBoardKey ? ` on board ${sourceBoardKey}` : ""
       }, which every instance across the workspace resolves from. Select the node directly to change only it, or say so explicitly to change every instance.`,
     }
@@ -83,8 +97,8 @@ function resolveWriteNode(
 
   return {
     kind: "write",
-    nodeId: cascade ? sourceId : targetNodeId,
-    cascaded: cascade && sourceId !== targetNodeId,
+    nodeId: cascadeToComponentSource ? componentSourceId : targetNodeId,
+    cascaded: cascadeToComponentSource && targetInheritsFromTheSource,
   }
 }
 
@@ -92,46 +106,52 @@ function resolveWriteNode(
 export async function executeSetProperties(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const catalogId = getNodeCatalogId(
-    context.state.workspace.nodes[target.nodeId]!,
+    context.state.workspace.nodes[resolvedTarget.nodeId]!,
     context.state.workspace,
   )
-  if (!catalogId) {
+  const nodeHasNoComponentSchema = !catalogId
+  if (nodeHasNoComponentSchema) {
     return {
       kind: "message",
-      text: `Node ${target.nodeId} has no component schema, so its properties can't be resolved.`,
+      text: `Node ${resolvedTarget.nodeId} has no component schema, so its properties can't be resolved.`,
     }
   }
 
-  const names = await resolvePropertyNames(context, catalogId)
-  if (names.kind === "message") return { kind: "message", text: names.text }
+  const propertyNames = await resolvePropertyNames(context, catalogId)
+  if (isClarification(propertyNames)) return forwardClarification(propertyNames)
 
-  const properties: Record<string, unknown> = {}
-  for (const key of names.keys) {
-    const value = await resolvePropertyValue(context, key)
-    if (value.kind === "message") return { kind: "message", text: value.text }
-    properties[key] = value.value
+  const propertyValues: Record<string, unknown> = {}
+  for (const propertyKey of propertyNames.keys) {
+    const valueResolution = await resolvePropertyValue(context, propertyKey)
+    if (isClarification(valueResolution))
+      return forwardClarification(valueResolution)
+    propertyValues[propertyKey] = valueResolution.value
   }
 
-  const write = resolveWriteNode(context, target.nodeId)
-  if (write.kind === "message") return { kind: "message", text: write.text }
+  const writeTarget = resolveWriteNode(context, resolvedTarget.nodeId)
+  if (isClarification(writeTarget)) return forwardClarification(writeTarget)
 
   // Fold layered-paint facet writes into whole layer stacks against the node
   // the write actually lands on, so the merge neither drops sibling layers
   // nor leaves a facet on a layer kind that cannot render it.
-  const assembled = assembleLayeredWrites(
+  const assembledProperties = assembleLayeredWrites(
     context.state.workspace,
-    write.nodeId,
-    properties,
+    writeTarget.nodeId,
+    propertyValues,
   )
 
   try {
     commit(context.state, {
       type: "set_node_properties",
-      payload: { nodeId: write.nodeId, properties: assembled },
+      payload: {
+        nodeId: writeTarget.nodeId,
+        properties: assembledProperties,
+      },
     } as WorkspaceAction)
   } catch (caught) {
     return {
@@ -139,17 +159,20 @@ export async function executeSetProperties(
       text: `Couldn't apply that change: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
 
-  const described = names.keys
-    .map((key) => `${key} to ${JSON.stringify(properties[key])}`)
+  const describedChanges = propertyNames.keys
+    .map(
+      (propertyKey) =>
+        `${propertyKey} to ${JSON.stringify(propertyValues[propertyKey])}`,
+    )
     .join(", ")
-  const reach = write.cascaded
+  const reachNote = writeTarget.cascaded
     ? " on the component source, so every instance follows"
     : ""
   return {
     kind: "applied",
-    reply: `Set ${described} on ${write.nodeId}${reach}.`,
+    reply: `Set ${describedChanges} on ${writeTarget.nodeId}${reachNote}.`,
   }
 }
 
@@ -157,53 +180,62 @@ export async function executeSetProperties(
 export async function executeResetProperty(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const catalogId = getNodeCatalogId(
-    context.state.workspace.nodes[target.nodeId]!,
+    context.state.workspace.nodes[resolvedTarget.nodeId]!,
     context.state.workspace,
   )
-  if (!catalogId) {
+  const nodeHasNoComponentSchema = !catalogId
+  if (nodeHasNoComponentSchema) {
     return {
       kind: "message",
-      text: `Node ${target.nodeId} has no component schema, so its properties can't be resolved.`,
+      text: `Node ${resolvedTarget.nodeId} has no component schema, so its properties can't be resolved.`,
     }
   }
 
-  const names = await resolvePropertyNames(context, catalogId)
-  if (names.kind === "message") return { kind: "message", text: names.text }
+  const propertyNames = await resolvePropertyNames(context, catalogId)
+  if (isClarification(propertyNames)) return forwardClarification(propertyNames)
 
-  for (const key of names.keys) {
+  for (const dottedKey of propertyNames.keys) {
     // A compound facet path (`border.color`) resets via propertyKey +
     // subpropertyKey; a layered path (`background.0.color`) additionally
     // carries its slot as layerIndex, which the reset payload supports
     // natively. A bare key resets the whole property.
-    const segments = key.split(".")
+    const segments = dottedKey.split(".")
     const [propertyKey] = segments
-    const layered = segments.length === 3 && /^\d+$/.test(segments[1]!)
-    const subpropertyKey = layered ? segments[2] : segments[1]
-    const layerIndex = layered ? Number(segments[1]) : undefined
+    const keyNamesALayerSlot =
+      segments.length === 3 && /^\d+$/.test(segments[1]!)
+    const subpropertyKey = keyNamesALayerSlot ? segments[2] : segments[1]
+    const layerIndex = keyNamesALayerSlot ? Number(segments[1]) : undefined
+    const keyNamesAFacet = Boolean(subpropertyKey)
     try {
       commit(context.state, {
         type: "reset_node_property",
-        payload: subpropertyKey
-          ? layered
-            ? { nodeId: target.nodeId, propertyKey, subpropertyKey, layerIndex }
-            : { nodeId: target.nodeId, propertyKey, subpropertyKey }
-          : { nodeId: target.nodeId, propertyKey },
+        payload: keyNamesAFacet
+          ? keyNamesALayerSlot
+            ? {
+                nodeId: resolvedTarget.nodeId,
+                propertyKey,
+                subpropertyKey,
+                layerIndex,
+              }
+            : { nodeId: resolvedTarget.nodeId, propertyKey, subpropertyKey }
+          : { nodeId: resolvedTarget.nodeId, propertyKey },
       } as unknown as WorkspaceAction)
     } catch (caught) {
       return {
         kind: "message",
-        text: `Couldn't reset ${key}: ${commitFailureReason(caught)}`,
+        text: `Couldn't reset ${dottedKey}: ${commitFailureReason(caught)}`,
       }
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Reset ${names.keys.join(", ")} on ${target.nodeId}.`,
+    reply: `Reset ${propertyNames.keys.join(", ")} on ${resolvedTarget.nodeId}.`,
   }
 }
 
@@ -211,26 +243,30 @@ export async function executeResetProperty(
 export async function executeSetLabel(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const { prompt, schema } = buildSetLabelStage({ message: context.message })
-  const { value, metrics } = await callOllamaFormat<{ label: string }>({
+  const { value: labelAnswer, metrics } = await callOllamaFormat<{
+    label: string
+  }>({
     model: context.model,
     host: context.host,
     prompt,
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "extract_label", true, {
+  recordStep(context, "extract_label", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(labelAnswer, null, 2),
   })
 
   try {
     commit(context.state, {
       type: "set_node_label",
-      payload: { nodeId: target.nodeId, label: value.label },
+      payload: { nodeId: resolvedTarget.nodeId, label: labelAnswer.label },
     } as WorkspaceAction)
   } catch (caught) {
     return {
@@ -238,9 +274,9 @@ export async function executeSetLabel(
       text: `Couldn't rename: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Renamed ${target.nodeId} to "${value.label}".`,
+    reply: `Renamed ${resolvedTarget.nodeId} to "${labelAnswer.label}".`,
   }
 }

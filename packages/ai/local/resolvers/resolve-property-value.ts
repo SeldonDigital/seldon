@@ -52,44 +52,52 @@ export async function resolvePropertyValue(
   propertyKey: string,
 ): Promise<PropertyValueResolution> {
   const schemaKey = getCatalogKeyForPropertyPath(propertyKey) ?? propertyKey
-  const theme = workspaceTheme(context.state.workspace)
+  const firstWorkspaceTheme = workspaceTheme(context.state.workspace)
 
-  const options = getPresetOptions(schemaKey).map(String)
-  const themeTag = themeRefTag(schemaKey)
-  const themeTokens = themeTag
+  const presetOptions = getPresetOptions(schemaKey).map(String)
+  const themeReferenceTag = themeRefTag(schemaKey)
+  const themeTokens = themeReferenceTag
     ? getPropertyOptions(
         schemaKey,
-        themeTag === "theme.ordinal" ? "themeOrdinal" : "themeCategorical",
-        theme,
+        themeReferenceTag === "theme.ordinal"
+          ? "themeOrdinal"
+          : "themeCategorical",
+        firstWorkspaceTheme,
       ).map(String)
     : []
-  const units = getPropertySchema(schemaKey)?.units?.allowed ?? []
+  const allowedUnits = getPropertySchema(schemaKey)?.units?.allowed ?? []
 
   const { prompt, schema } = buildResolvePropertyValueStage({
     propertyKey,
     message: context.message,
-    options,
+    options: presetOptions,
     themeTokens,
-    units: [...units],
+    units: [...allowedUnits],
   })
 
-  const { value, metrics } = await callOllamaFormat<ValuePick>({
+  const { value: valuePick, metrics } = await callOllamaFormat<ValuePick>({
     model: context.model,
     host: context.host,
     prompt,
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_property_value", true, {
+  recordStep(context, "resolve_property_value", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(valuePick, null, 2),
   })
 
   // Tag deterministically from the pick. Theme tokens get their tag from the
   // property's own schema (the model never writes a type string); option and
   // exact values pass loose and the repair pass wraps them.
-  if (value.pick === "theme" && themeTag) {
-    return { kind: "resolved", value: { type: themeTag, value: value.value } }
+  const pickIsThemeToken =
+    valuePick.pick === "theme" && themeReferenceTag !== undefined
+  if (pickIsThemeToken) {
+    return {
+      kind: "resolved",
+      value: { type: themeReferenceTag, value: valuePick.value },
+    }
   }
-  return { kind: "resolved", value: value.value }
+  return { kind: "resolved", value: valuePick.value }
 }

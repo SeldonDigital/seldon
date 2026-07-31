@@ -22,7 +22,9 @@ export async function decompose(
     message: context.message,
     history,
   })
-  const { value, metrics } = await callOllamaFormat<{ steps: string[] }>({
+  const { value: decomposition, metrics } = await callOllamaFormat<{
+    steps: string[]
+  }>({
     model: context.model,
     host: context.host,
     prompt,
@@ -30,15 +32,17 @@ export async function decompose(
   })
   context.calls.push(metrics)
 
-  const steps = value.steps
+  const rewrittenSteps = decomposition.steps
     .map((step) => step.trim())
     .filter((step) => step !== "")
-  recordStep(context, "decompose", steps.length > 0, {
+  const messageProducedSteps = rewrittenSteps.length > 0
+  recordStep(context, "decompose", {
+    ok: messageProducedSteps,
     prompt,
-    output: JSON.stringify({ steps }, null, 2),
+    output: JSON.stringify({ steps: rewrittenSteps }, null, 2),
   })
 
   // A degenerate answer degrades to the original message as one step --
   // exactly the old single-action behavior, never a dead end.
-  return steps.length > 0 ? steps : [context.message]
+  return messageProducedSteps ? rewrittenSteps : [context.message]
 }

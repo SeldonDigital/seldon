@@ -29,20 +29,23 @@ export interface StepOutcome {
 }
 
 /** Deterministic reply: exactly what happened, step by step. */
-export function buildTemplateReply(outcomes: StepOutcome[]): string {
-  if (outcomes.length === 0) return "Nothing to do."
-  if (outcomes.length === 1) {
-    const only = outcomes[0]!.outcome
-    return only.kind === "applied" ? only.reply : only.text
+export function buildTemplateReply(stepOutcomes: StepOutcome[]): string {
+  const planDidNothing = stepOutcomes.length === 0
+  if (planDidNothing) return "Nothing to do."
+
+  const planHadOneStep = stepOutcomes.length === 1
+  if (planHadOneStep) {
+    const onlyOutcome = stepOutcomes[0]!.outcome
+    const onlyStepApplied = onlyOutcome.kind === "applied"
+    return onlyStepApplied ? onlyOutcome.reply : onlyOutcome.text
   }
-  const lines = outcomes.map((entry, index) => {
-    const body =
-      entry.outcome.kind === "applied"
-        ? entry.outcome.reply
-        : entry.outcome.text
-    return `${index + 1}. ${body}`
+
+  const numberedLines = stepOutcomes.map(({ outcome }, stepIndex) => {
+    const stepApplied = outcome.kind === "applied"
+    const outcomeText = stepApplied ? outcome.reply : outcome.text
+    return `${stepIndex + 1}. ${outcomeText}`
   })
-  return lines.join("\n")
+  return numberedLines.join("\n")
 }
 
 /**
@@ -52,35 +55,42 @@ export function buildTemplateReply(outcomes: StepOutcome[]): string {
  */
 export async function buildConversationalReply(
   context: TurnContext,
-  outcomes: StepOutcome[],
+  stepOutcomes: StepOutcome[],
 ): Promise<string> {
-  const template = buildTemplateReply(outcomes)
+  const templateReply = buildTemplateReply(stepOutcomes)
   const { prompt, schema } = buildConversationalReplyStage({
-    outcomes: outcomes.map((entry) => ({
-      status: entry.outcome.kind === "applied" ? "DONE" : "STOPPED",
-      step: entry.step,
-      body:
-        entry.outcome.kind === "applied"
-          ? entry.outcome.reply
-          : entry.outcome.text,
-    })),
+    outcomes: stepOutcomes.map(({ step, outcome }) => {
+      const stepApplied = outcome.kind === "applied"
+      return {
+        status: stepApplied ? "DONE" : "STOPPED",
+        step,
+        body: stepApplied ? outcome.reply : outcome.text,
+      }
+    }),
   })
   try {
-    const { value, metrics } = await callOllamaFormat<{ message: string }>({
+    const { value: replyAnswer, metrics } = await callOllamaFormat<{
+      message: string
+    }>({
       model: context.model,
       host: context.host,
       prompt,
       schema,
     })
     context.calls.push(metrics)
-    recordStep(context, "reply", true, { prompt, output: value.message })
-    return value.message
+    recordStep(context, "reply", {
+      ok: true,
+      prompt,
+      output: replyAnswer.message,
+    })
+    return replyAnswer.message
   } catch {
-    recordStep(context, "reply", false, {
+    recordStep(context, "reply", {
+      ok: false,
       prompt,
       output: "The reply call failed; fell back to the template reply.",
     })
-    return template
+    return templateReply
   }
 }
 
@@ -96,10 +106,10 @@ export function conversationalRepliesEnabled(): boolean {
 /** The turn's reply, honoring the mode switch. */
 export async function generateReply(
   context: TurnContext,
-  outcomes: StepOutcome[],
+  stepOutcomes: StepOutcome[],
 ): Promise<string> {
   if (conversationalRepliesEnabled()) {
-    return buildConversationalReply(context, outcomes)
+    return buildConversationalReply(context, stepOutcomes)
   }
-  return buildTemplateReply(outcomes)
+  return buildTemplateReply(stepOutcomes)
 }

@@ -56,24 +56,32 @@ export async function rankBySimilarity(
   query: string,
   candidates: readonly { id: string; text: string }[],
 ): Promise<RankedCandidate[] | null> {
-  if (candidates.length === 0) return []
+  const nothingToRank = candidates.length === 0
+  if (nothingToRank) return []
   const embedder = await getEmbedder()
-  if (!embedder) return null
+  const embeddingsAreUnavailable = embedder === null
+  if (embeddingsAreUnavailable) return null
 
-  const output = await embedder([query, ...candidates.map((c) => c.text)], {
-    pooling: "mean",
-    normalize: true,
-  })
-  const vectors = output.tolist()
+  // The query occupies row 0; each candidate follows in input order.
+  const embedderOutput = await embedder(
+    [query, ...candidates.map((candidate) => candidate.text)],
+    {
+      pooling: "mean",
+      normalize: true,
+    },
+  )
+  const vectors = embedderOutput.tolist()
   const queryVector = vectors[0]!
 
-  const ranked = candidates.map((candidate, index) => {
-    const vector = vectors[index + 1]!
-    let dot = 0
-    for (let i = 0; i < queryVector.length; i++)
-      dot += queryVector[i]! * vector[i]!
-    return { id: candidate.id, score: dot }
+  const rankedCandidates = candidates.map((candidate, candidateIndex) => {
+    const candidateVector = vectors[candidateIndex + 1]!
+    let cosineSimilarity = 0
+    for (let dimension = 0; dimension < queryVector.length; dimension++)
+      cosineSimilarity += queryVector[dimension]! * candidateVector[dimension]!
+    return { id: candidate.id, score: cosineSimilarity }
   })
-  ranked.sort((a, b) => b.score - a.score)
-  return ranked
+  rankedCandidates.sort(
+    (candidateA, candidateB) => candidateB.score - candidateA.score,
+  )
+  return rankedCandidates
 }

@@ -18,7 +18,7 @@ function seededWorkspace() {
 describe("resolveNodeTarget", () => {
   it("resolves the selection sentinel to the selected node", () => {
     const workspace = seededWorkspace()
-    const result = resolveNodeTarget(
+    const resolution = resolveNodeTarget(
       workspace,
       ComponentId.BUTTON,
       BUTTON_DEFAULT_NODE_ID,
@@ -27,12 +27,15 @@ describe("resolveNodeTarget", () => {
       undefined,
       "instance",
     )
-    expect(result).toEqual({ kind: "resolved", nodeId: BUTTON_DEFAULT_NODE_ID })
+    expect(resolution).toEqual({
+      kind: "resolved",
+      nodeId: BUTTON_DEFAULT_NODE_ID,
+    })
   })
 
   it("resolves an explicit nodeId that exists", () => {
     const workspace = seededWorkspace()
-    const result = resolveNodeTarget(
+    const resolution = resolveNodeTarget(
       workspace,
       ComponentId.BUTTON,
       undefined,
@@ -41,12 +44,15 @@ describe("resolveNodeTarget", () => {
       undefined,
       "instance",
     )
-    expect(result).toEqual({ kind: "resolved", nodeId: BUTTON_DEFAULT_NODE_ID })
+    expect(resolution).toEqual({
+      kind: "resolved",
+      nodeId: BUTTON_DEFAULT_NODE_ID,
+    })
   })
 
   it("returns a terminal message when nothing is selected and there is no match hint", () => {
     const workspace = seededWorkspace()
-    const result = resolveNodeTarget(
+    const resolution = resolveNodeTarget(
       workspace,
       ComponentId.BUTTON,
       undefined,
@@ -55,15 +61,15 @@ describe("resolveNodeTarget", () => {
       undefined,
       "board",
     )
-    expect(result.kind).toBe("message")
-    if (result.kind === "message") {
-      expect(result.text).toContain("board")
+    expect(resolution.kind).toBe("message")
+    if (resolution.kind === "message") {
+      expect(resolution.text).toContain("board")
     }
   })
 
   it("returns a not-found message rather than guessing, for an unknown id with no matches", () => {
     const workspace = seededWorkspace()
-    const result = resolveNodeTarget(
+    const resolution = resolveNodeTarget(
       workspace,
       ComponentId.BUTTON,
       undefined,
@@ -72,9 +78,9 @@ describe("resolveNodeTarget", () => {
       undefined,
       "instance",
     )
-    expect(result.kind).toBe("message")
-    if (result.kind === "message") {
-      expect(result.text).toContain("No node matches")
+    expect(resolution.kind).toBe("message")
+    if (resolution.kind === "message") {
+      expect(resolution.text).toContain("No node matches")
     }
   })
 })

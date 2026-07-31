@@ -22,7 +22,10 @@ export function buildResolvePropertyValueStage(
 ): PromptStage {
   const branches: Record<string, unknown>[] = []
   const guidance: string[] = []
-  if (inputs.options.length > 0) {
+  const propertyHasPresetOptions = inputs.options.length > 0
+  const propertyAcceptsThemeTokens = inputs.themeTokens.length > 0
+  const propertyHasAllowedUnits = inputs.units.length > 0
+  if (propertyHasPresetOptions) {
     branches.push({
       properties: {
         pick: { const: "option" },
@@ -32,7 +35,7 @@ export function buildResolvePropertyValueStage(
     })
     guidance.push(`- preset options: ${inputs.options.join(", ")}`)
   }
-  if (inputs.themeTokens.length > 0) {
+  if (propertyAcceptsThemeTokens) {
     branches.push({
       properties: {
         pick: { const: "theme" },
@@ -50,7 +53,7 @@ export function buildResolvePropertyValueStage(
     required: ["pick", "value"],
   })
   guidance.push(
-    inputs.units.length > 0
+    propertyHasAllowedUnits
       ? `- an exact value: a number (${inputs.units.join("|")}) or a string`
       : "- an exact value: a string or number",
   )

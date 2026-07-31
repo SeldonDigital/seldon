@@ -14,7 +14,8 @@ export interface PromptStage {
 
 /** Compact `role: content` block for the prompt, mirroring the old harness. */
 export function historyBlock(history?: ChatMessage[]): string {
-  if (!history || history.length === 0) return ""
-  const lines = history.map((turn) => `${turn.role}: ${turn.content}`)
-  return `Conversation so far:\n${lines.join("\n")}\n\n`
+  const thereIsNoHistoryYet = !history || history.length === 0
+  if (thereIsNoHistoryYet) return ""
+  const turnLines = history.map((turn) => `${turn.role}: ${turn.content}`)
+  return `Conversation so far:\n${turnLines.join("\n")}\n\n`
 }

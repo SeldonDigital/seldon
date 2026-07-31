@@ -11,6 +11,8 @@ import { callOllamaFormat } from "../ollama-client"
 import {
   type FamilyOutcome,
   type TurnContext,
+  forwardClarification,
+  isClarification,
   recordStep,
 } from "../turn-context"
 
@@ -22,29 +24,31 @@ import {
  */
 function requireResourceTarget(
   context: TurnContext,
-  what: string,
+  resourceName: string,
 ): { kind: "resolved"; id: string } | { kind: "message"; text: string } {
-  const id = context.resolved.resourceTargetId
-  if (!id) {
+  const resourceTargetId = context.resolved.resourceTargetId
+  const noResourceIsSelected = !resourceTargetId
+  if (noResourceIsSelected) {
     return {
       kind: "message",
-      text: `No ${what} is selected. Select the ${what} you want to change first.`,
+      text: `No ${resourceName} is selected. Select the ${resourceName} you want to change first.`,
     }
   }
-  return { kind: "resolved", id }
+  return { kind: "resolved", id: resourceTargetId }
 }
 
 /** Handles `set_font_collection_family_preset`: slot + all/none -> commit. */
 export async function executeFontFamilyPreset(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = requireResourceTarget(context, "font collection")
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = requireResourceTarget(context, "font collection")
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const { prompt, schema } = buildFontFamilyPresetStage({
     message: context.message,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: fontPresetAnswer, metrics } = await callOllamaFormat<{
     slot: string
     preset: "all" | "none"
   }>({
@@ -54,18 +58,19 @@ export async function executeFontFamilyPreset(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_font_slot", true, {
+  recordStep(context, "resolve_font_slot", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(fontPresetAnswer, null, 2),
   })
 
   try {
     commit(context.state, {
       type: "set_font_collection_family_preset",
       payload: {
-        fontCollectionId: target.id,
-        slot: value.slot,
-        preset: value.preset,
+        fontCollectionId: resolvedTarget.id,
+        slot: fontPresetAnswer.slot,
+        preset: fontPresetAnswer.preset,
       },
     } as unknown as WorkspaceAction)
   } catch (caught) {
@@ -74,10 +79,11 @@ export async function executeFontFamilyPreset(
       text: `Couldn't change the family: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
+  const presetEnablesEveryWeight = fontPresetAnswer.preset === "all"
   return {
     kind: "applied",
-    reply: `Turned ${value.slot} ${value.preset === "all" ? "on (all weights)" : "off"} in ${target.id}.`,
+    reply: `Turned ${fontPresetAnswer.slot} ${presetEnablesEveryWeight ? "on (all weights)" : "off"} in ${resolvedTarget.id}.`,
   }
 }
 
@@ -85,13 +91,14 @@ export async function executeFontFamilyPreset(
 export async function executeFontFamilyVariant(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = requireResourceTarget(context, "font collection")
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = requireResourceTarget(context, "font collection")
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const { prompt, schema } = buildFontFamilyVariantStage({
     message: context.message,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: fontVariantAnswer, metrics } = await callOllamaFormat<{
     slot: string
     variant: string
     enabled: boolean
@@ -102,19 +109,20 @@ export async function executeFontFamilyVariant(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_font_variant", true, {
+  recordStep(context, "resolve_font_variant", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(fontVariantAnswer, null, 2),
   })
 
   try {
     commit(context.state, {
       type: "set_font_collection_family_variant",
       payload: {
-        fontCollectionId: target.id,
-        slot: value.slot,
-        variant: value.variant,
-        enabled: value.enabled,
+        fontCollectionId: resolvedTarget.id,
+        slot: fontVariantAnswer.slot,
+        variant: fontVariantAnswer.variant,
+        enabled: fontVariantAnswer.enabled,
       },
     } as unknown as WorkspaceAction)
   } catch (caught) {
@@ -123,10 +131,11 @@ export async function executeFontFamilyVariant(
       text: `Couldn't toggle the weight: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
+  const variantWasEnabled = fontVariantAnswer.enabled
   return {
     kind: "applied",
-    reply: `${value.enabled ? "Enabled" : "Disabled"} ${value.slot} ${value.variant} in ${target.id}.`,
+    reply: `${variantWasEnabled ? "Enabled" : "Disabled"} ${fontVariantAnswer.slot} ${fontVariantAnswer.variant} in ${resolvedTarget.id}.`,
   }
 }
 
@@ -134,13 +143,14 @@ export async function executeFontFamilyVariant(
 export async function executeIconSubcategoryPreset(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = requireResourceTarget(context, "icon set")
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = requireResourceTarget(context, "icon set")
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const { prompt, schema } = buildIconSubcategoryPresetStage({
     message: context.message,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: iconSubcategoryAnswer, metrics } = await callOllamaFormat<{
     subcategory: string
     preset: "all" | "none"
   }>({
@@ -150,18 +160,19 @@ export async function executeIconSubcategoryPreset(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_icon_subcategory", true, {
+  recordStep(context, "resolve_icon_subcategory", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(iconSubcategoryAnswer, null, 2),
   })
 
   try {
     commit(context.state, {
       type: "set_icon_set_subcategory_preset",
       payload: {
-        iconSetId: target.id,
-        subcategory: value.subcategory,
-        preset: value.preset,
+        iconSetId: resolvedTarget.id,
+        subcategory: iconSubcategoryAnswer.subcategory,
+        preset: iconSubcategoryAnswer.preset,
       },
     } as unknown as WorkspaceAction)
   } catch (caught) {
@@ -170,10 +181,11 @@ export async function executeIconSubcategoryPreset(
       text: `Couldn't change the subcategory: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
+  const presetIncludesEveryIcon = iconSubcategoryAnswer.preset === "all"
   return {
     kind: "applied",
-    reply: `Turned the ${value.subcategory} icons ${value.preset === "all" ? "on" : "off"} in ${target.id}.`,
+    reply: `Turned the ${iconSubcategoryAnswer.subcategory} icons ${presetIncludesEveryIcon ? "on" : "off"} in ${resolvedTarget.id}.`,
   }
 }
 
@@ -181,13 +193,14 @@ export async function executeIconSubcategoryPreset(
 export async function executeIconOverride(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = requireResourceTarget(context, "icon set")
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = requireResourceTarget(context, "icon set")
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const { prompt, schema } = buildIconOverrideStage({
     message: context.message,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: iconOverrideAnswer, metrics } = await callOllamaFormat<{
     iconId: string
     enabled: boolean
   }>({
@@ -197,18 +210,19 @@ export async function executeIconOverride(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_icon", true, {
+  recordStep(context, "resolve_icon", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(iconOverrideAnswer, null, 2),
   })
 
   try {
     commit(context.state, {
       type: "set_icon_set_override",
       payload: {
-        iconSetId: target.id,
-        path: `includedIcons.${value.iconId}`,
-        value: value.enabled,
+        iconSetId: resolvedTarget.id,
+        path: `includedIcons.${iconOverrideAnswer.iconId}`,
+        value: iconOverrideAnswer.enabled,
       },
     } as unknown as WorkspaceAction)
   } catch (caught) {
@@ -217,9 +231,10 @@ export async function executeIconOverride(
       text: `Couldn't toggle the icon: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
+  const iconWasIncluded = iconOverrideAnswer.enabled
   return {
     kind: "applied",
-    reply: `${value.enabled ? "Included" : "Excluded"} ${value.iconId} in ${target.id}.`,
+    reply: `${iconWasIncluded ? "Included" : "Excluded"} ${iconOverrideAnswer.iconId} in ${resolvedTarget.id}.`,
   }
 }

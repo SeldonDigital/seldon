@@ -13,6 +13,8 @@ import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
 import {
   type FamilyOutcome,
   type TurnContext,
+  forwardClarification,
+  isClarification,
   recordStep,
 } from "../turn-context"
 
@@ -28,52 +30,66 @@ async function resolveThemeId(
 ): Promise<
   { kind: "resolved"; themeId: string } | { kind: "message"; text: string }
 > {
-  const ids = themeIds(context)
-  if (ids.length === 0) {
+  const workspaceThemeIds = themeIds(context)
+  const workspaceHasNoThemes = workspaceThemeIds.length === 0
+  if (workspaceHasNoThemes) {
     return {
       kind: "message",
       text: "This workspace has no themes yet. Add a theme first.",
     }
   }
-  if (ids.length === 1) {
-    recordStep(context, "resolve_theme", true, {
-      output: `Only one theme in the workspace: ${ids[0]!} (deterministic, no model call).`,
+  const workspaceHasExactlyOneTheme = workspaceThemeIds.length === 1
+  if (workspaceHasExactlyOneTheme) {
+    recordStep(context, "resolve_theme", {
+      ok: true,
+      output: `Only one theme in the workspace: ${workspaceThemeIds[0]!} (deterministic, no model call).`,
     })
-    return { kind: "resolved", themeId: ids[0]! }
+    return { kind: "resolved", themeId: workspaceThemeIds[0]! }
   }
   const { prompt, schema } = buildResolveThemeIdStage({
     message: context.message,
     purpose,
-    ids,
+    ids: workspaceThemeIds,
   })
-  const { value, metrics } = await callOllamaFormat<{ themeId: string }>({
+  const { value: themePickAnswer, metrics } = await callOllamaFormat<{
+    themeId: string
+  }>({
     model: context.model,
     host: context.host,
     prompt,
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_theme", true, {
+  recordStep(context, "resolve_theme", {
+    ok: true,
     prompt,
-    output: value.themeId,
+    output: themePickAnswer.themeId,
   })
-  return { kind: "resolved", themeId: value.themeId }
+  return { kind: "resolved", themeId: themePickAnswer.themeId }
 }
 
 /** Handles the `set_node_theme` intent: target -> theme -> commit. */
 export async function executeSetNodeTheme(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
-  const theme = await resolveThemeId(context, "applying a theme to a node")
-  if (theme.kind === "message") return { kind: "message", text: theme.text }
+  const themeResolution = await resolveThemeId(
+    context,
+    "applying a theme to a node",
+  )
+  if (isClarification(themeResolution))
+    return forwardClarification(themeResolution)
 
   try {
     commit(context.state, {
       type: "set_node_theme",
-      payload: { nodeId: target.nodeId, theme: theme.themeId },
+      payload: {
+        nodeId: resolvedTarget.nodeId,
+        theme: themeResolution.themeId,
+      },
     } as unknown as WorkspaceAction)
   } catch (caught) {
     return {
@@ -81,10 +97,10 @@ export async function executeSetNodeTheme(
       text: `Couldn't apply the theme: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Applied theme ${theme.themeId} to ${target.nodeId}.`,
+    reply: `Applied theme ${themeResolution.themeId} to ${resolvedTarget.nodeId}.`,
   }
 }
 
@@ -93,19 +109,24 @@ export async function executeSetComponentTheme(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
   const boardKey = context.resolved.resolvedKey
-  if (boardKey === undefined) {
+  const noBoardIsActive = boardKey === undefined
+  if (noBoardIsActive) {
     return {
       kind: "message",
       text: "No board is active. Open the component you want to theme.",
     }
   }
-  const theme = await resolveThemeId(context, "applying a theme to a component")
-  if (theme.kind === "message") return { kind: "message", text: theme.text }
+  const themeResolution = await resolveThemeId(
+    context,
+    "applying a theme to a component",
+  )
+  if (isClarification(themeResolution))
+    return forwardClarification(themeResolution)
 
   try {
     commit(context.state, {
       type: "set_component_theme",
-      payload: { boardKey, theme: theme.themeId },
+      payload: { boardKey, theme: themeResolution.themeId },
     } as unknown as WorkspaceAction)
   } catch (caught) {
     return {
@@ -113,10 +134,10 @@ export async function executeSetComponentTheme(
       text: `Couldn't apply the theme: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Applied theme ${theme.themeId} to the ${boardKey} board.`,
+    reply: `Applied theme ${themeResolution.themeId} to the ${boardKey} board.`,
   }
 }
 
@@ -124,9 +145,12 @@ export async function executeSetComponentTheme(
 export async function executeAddTheme(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const stockIds = Object.keys(STOCK_THEMES_BY_ID)
-  const available = stockIds.filter((id) => !context.state.workspace.boards[id])
-  if (available.length === 0) {
+  const stockThemeIds = Object.keys(STOCK_THEMES_BY_ID)
+  const uninstalledStockThemeIds = stockThemeIds.filter(
+    (stockThemeId) => !context.state.workspace.boards[stockThemeId],
+  )
+  const everyStockThemeIsInstalled = uninstalledStockThemeIds.length === 0
+  if (everyStockThemeIsInstalled) {
     return {
       kind: "message",
       text: "Every stock theme is already in the workspace.",
@@ -135,29 +159,32 @@ export async function executeAddTheme(
 
   const { prompt, schema } = buildAddThemeStage({
     message: context.message,
-    themes: available.map((id) => ({
-      id,
+    themes: uninstalledStockThemeIds.map((stockThemeId) => ({
+      id: stockThemeId,
       name:
-        STOCK_THEMES_BY_ID[id as keyof typeof STOCK_THEMES_BY_ID]?.metadata
-          ?.name ?? id,
+        STOCK_THEMES_BY_ID[stockThemeId as keyof typeof STOCK_THEMES_BY_ID]
+          ?.metadata?.name ?? stockThemeId,
     })),
   })
-  const { value, metrics } = await callOllamaFormat<{ themeId: string }>({
+  const { value: themePickAnswer, metrics } = await callOllamaFormat<{
+    themeId: string
+  }>({
     model: context.model,
     host: context.host,
     prompt,
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_theme", true, {
+  recordStep(context, "resolve_theme", {
+    ok: true,
     prompt,
-    output: value.themeId,
+    output: themePickAnswer.themeId,
   })
 
   try {
     commit(context.state, {
       type: "add_theme",
-      payload: { boardKey: value.themeId },
+      payload: { boardKey: themePickAnswer.themeId },
     } as unknown as WorkspaceAction)
   } catch (caught) {
     return {
@@ -165,8 +192,26 @@ export async function executeAddTheme(
       text: `Couldn't add the theme: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
-  return { kind: "applied", reply: `Added the ${value.themeId} theme.` }
+  recordStep(context, "commit", { ok: true })
+  return {
+    kind: "applied",
+    reply: `Added the ${themePickAnswer.themeId} theme.`,
+  }
+}
+
+/**
+ * The theme id for a token edit when none is selected: a fresh pick, or
+ * undefined when that pick needs clarification. Separated out so the caller
+ * reads as one `??` fallback instead of an inline async IIFE.
+ */
+async function pickThemeIdForTokenEdit(
+  context: TurnContext,
+): Promise<string | undefined> {
+  const themeResolution = await resolveThemeId(
+    context,
+    "changing a theme token",
+  )
+  return isClarification(themeResolution) ? undefined : themeResolution.themeId
 }
 
 /**
@@ -179,11 +224,9 @@ export async function executeSetThemeOverride(
 ): Promise<FamilyOutcome> {
   const themeId =
     context.resolved.resourceTargetId ??
-    (await (async () => {
-      const theme = await resolveThemeId(context, "changing a theme token")
-      return theme.kind === "resolved" ? theme.themeId : undefined
-    })())
-  if (!themeId) {
+    (await pickThemeIdForTokenEdit(context))
+  const noThemeCouldBeIdentified = !themeId
+  if (noThemeCouldBeIdentified) {
     return {
       kind: "message",
       text: "I couldn't tell which theme to change. Select it, or name it.",
@@ -193,7 +236,7 @@ export async function executeSetThemeOverride(
   const { prompt, schema } = buildSetThemeOverrideStage({
     message: context.message,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: tokenAnswer, metrics } = await callOllamaFormat<{
     path: string
     value: string
   }>({
@@ -203,26 +246,31 @@ export async function executeSetThemeOverride(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_token", true, {
+  recordStep(context, "resolve_token", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(tokenAnswer, null, 2),
   })
 
   try {
     commit(context.state, {
       type: "set_theme_override",
-      payload: { themeId, path: value.path, value: value.value },
+      payload: {
+        themeId,
+        path: tokenAnswer.path,
+        value: tokenAnswer.value,
+      },
     } as unknown as WorkspaceAction)
   } catch (caught) {
     return {
       kind: "message",
-      text: `Couldn't change ${value.path}: ${commitFailureReason(caught)}`,
+      text: `Couldn't change ${tokenAnswer.path}: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Set ${value.path} to ${value.value} on ${themeId}.`,
+    reply: `Set ${tokenAnswer.path} to ${tokenAnswer.value} on ${themeId}.`,
   }
 }
 
@@ -234,13 +282,14 @@ export async function executeSetThemeOverride(
 export async function executeAddCustomToken(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const theme = await resolveThemeId(context, "adding a custom token")
-  if (theme.kind === "message") return { kind: "message", text: theme.text }
+  const themeResolution = await resolveThemeId(context, "adding a custom token")
+  if (isClarification(themeResolution))
+    return forwardClarification(themeResolution)
 
   const { prompt, schema } = buildAddCustomTokenStage({
     message: context.message,
   })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: customTokenAnswer, metrics } = await callOllamaFormat<{
     kind: "swatch" | "other"
     name: string
     h: number
@@ -253,12 +302,14 @@ export async function executeAddCustomToken(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_custom_token", true, {
+  recordStep(context, "resolve_custom_token", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(customTokenAnswer, null, 2),
   })
 
-  if (value.kind !== "swatch") {
+  const tokenIsNotAColorSwatch = customTokenAnswer.kind !== "swatch"
+  if (tokenIsNotAColorSwatch) {
     return {
       kind: "message",
       text: "Only custom color swatches can be added from chat so far. Other custom tokens (fonts, shadows, spacing) are coming.",
@@ -269,11 +320,15 @@ export async function executeAddCustomToken(
     commit(context.state, {
       type: "add_theme_custom_swatch",
       payload: {
-        themeId: theme.themeId,
-        name: value.name,
+        themeId: themeResolution.themeId,
+        name: customTokenAnswer.name,
         parameters: {
           colorspace: "hsl",
-          value: { hue: value.h, saturation: value.s, lightness: value.l },
+          value: {
+            hue: customTokenAnswer.h,
+            saturation: customTokenAnswer.s,
+            lightness: customTokenAnswer.l,
+          },
         },
       },
     } as unknown as WorkspaceAction)
@@ -283,9 +338,9 @@ export async function executeAddCustomToken(
       text: `Couldn't add the swatch: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Added custom swatch "${value.name}" (hsl ${value.h}, ${value.s}%, ${value.l}%) to ${theme.themeId}.`,
+    reply: `Added custom swatch "${customTokenAnswer.name}" (hsl ${customTokenAnswer.h}, ${customTokenAnswer.s}%, ${customTokenAnswer.l}%) to ${themeResolution.themeId}.`,
   }
 }

@@ -1,17 +1,24 @@
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 
-import { type TurnContext, recordStep } from "../turn-context"
+import { type TurnContext, isClarification, recordStep } from "../turn-context"
 import { extractTargetHint } from "./extract-target"
 import { findNodeSemantic } from "./find-node"
 import { type TargetResolution, resolveNodeTarget } from "./resolve-target"
 
 /** Filler words stripped before comparing a phrase to a created node's name. */
-const FILLER =
+const FILLER_WORDS =
   /\b(the|a|an|new|newly|that|this|just|added|created|made|inserted)\b/g
 
+/** Separates the part from its container in an "X of Y" phrase. */
+const OF_SEPARATOR = " of "
+
 /** A phrase reduced to its content words, for name comparison. */
-function strip(phrase: string): string {
-  return phrase.toLowerCase().replace(FILLER, "").replace(/\s+/g, " ").trim()
+function stripFillerWords(phrase: string): string {
+  return phrase
+    .toLowerCase()
+    .replace(FILLER_WORDS, "")
+    .replace(/\s+/g, " ")
+    .trim()
 }
 
 /**
@@ -30,13 +37,15 @@ function findCreatedByName(
   name: string,
 ): string | undefined {
   for (const nodeId of [...context.state.createdIds].reverse()) {
-    const node = context.state.workspace.nodes[nodeId]
-    if (!node) continue
-    const names = [
-      getNodeCatalogId(node, context.state.workspace) ?? "",
-      (node as { label?: string }).label ?? "",
-    ].map((entry) => entry.toLowerCase())
-    if (names.includes(name)) return nodeId
+    const createdNode = context.state.workspace.nodes[nodeId]
+    const nodeIsMissing = createdNode === undefined
+    if (nodeIsMissing) continue
+    const candidateNames = [
+      getNodeCatalogId(createdNode, context.state.workspace) ?? "",
+      (createdNode as { label?: string }).label ?? "",
+    ].map((candidateName) => candidateName.toLowerCase())
+    const nameMatchesThisNode = candidateNames.includes(name)
+    if (nameMatchesThisNode) return nodeId
   }
   return undefined
 }
@@ -58,24 +67,31 @@ export function resolveCreatedMention(
   context: TurnContext,
   match: string,
 ): CreatedMention | undefined {
-  if (context.state.createdIds.size === 0) return undefined
+  const nothingCreatedYetThisTurn = context.state.createdIds.size === 0
+  if (nothingCreatedYetThisTurn) return undefined
 
-  const phrase = strip(match)
-  if (phrase === "") return undefined
+  const contentPhrase = stripFillerWords(match)
+  const phraseWasAllFillerWords = contentPhrase === ""
+  if (phraseWasAllFillerWords) return undefined
 
   // "X of Y": Y names the container, X the part to find inside it.
-  const ofIndex = phrase.lastIndexOf(" of ")
-  if (ofIndex !== -1) {
-    const container = phrase.slice(ofIndex + 4).trim()
-    const part = phrase.slice(0, ofIndex).trim()
-    const nodeId = findCreatedByName(context, container)
-    if (nodeId && part !== "")
-      return { kind: "within", nodeId, remainder: part }
+  const ofSeparatorIndex = contentPhrase.lastIndexOf(OF_SEPARATOR)
+  const phraseNamesAPartOfAContainer = ofSeparatorIndex !== -1
+  if (phraseNamesAPartOfAContainer) {
+    const containerName = contentPhrase
+      .slice(ofSeparatorIndex + OF_SEPARATOR.length)
+      .trim()
+    const partName = contentPhrase.slice(0, ofSeparatorIndex).trim()
+    const containerNodeId = findCreatedByName(context, containerName)
+    const containerWasCreatedThisTurn =
+      containerNodeId !== undefined && partName !== ""
+    if (containerWasCreatedThisTurn)
+      return { kind: "within", nodeId: containerNodeId, remainder: partName }
   }
 
   // Plain reference: the whole phrase names the created thing.
-  const exact = findCreatedByName(context, phrase)
-  if (exact) return { kind: "exact", nodeId: exact }
+  const exactMatchNodeId = findCreatedByName(context, contentPhrase)
+  if (exactMatchNodeId) return { kind: "exact", nodeId: exactMatchNodeId }
 
   return undefined
 }
@@ -93,70 +109,86 @@ export function resolveCreatedMention(
 export async function resolveTargetWithHint(
   context: TurnContext,
 ): Promise<TargetResolution> {
-  const hint = await extractTargetHint(context)
-  const match = hint.kind === "search" ? hint.match : undefined
+  const targetHint = await extractTargetHint(context)
+  const searchPhrase =
+    targetHint.kind === "search" ? targetHint.match : undefined
 
   // Created-this-turn shortcut: a reference to something an earlier step
   // just made resolves without search, and a part-reference searches only
   // inside the created subtree.
-  if (match !== undefined) {
-    const mention = resolveCreatedMention(context, match)
-    if (mention?.kind === "exact") {
-      recordStep(context, "resolve_target", true, {
-        output: `Matched "${match}" to node ${mention.nodeId}, created earlier this turn (deterministic, no model call).`,
+  const messageNamedANode = searchPhrase !== undefined
+  if (messageNamedANode) {
+    const createdMention = resolveCreatedMention(context, searchPhrase)
+    const mentionNamesTheCreatedNode = createdMention?.kind === "exact"
+    if (mentionNamesTheCreatedNode) {
+      recordStep(context, "resolve_target", {
+        ok: true,
+        output: `Matched "${searchPhrase}" to node ${createdMention.nodeId}, created earlier this turn (deterministic, no model call).`,
       })
-      return { kind: "resolved", nodeId: mention.nodeId }
+      return { kind: "resolved", nodeId: createdMention.nodeId }
     }
-    if (mention?.kind === "within") {
-      const within = resolveNodeTarget(
+    const mentionNamesAPartOfTheCreatedNode = createdMention?.kind === "within"
+    if (mentionNamesAPartOfTheCreatedNode) {
+      const nodeWithinCreated = resolveNodeTarget(
         context.state.workspace,
         context.resolved.resolvedKey,
-        mention.nodeId,
+        createdMention.nodeId,
         undefined,
         "selection",
-        mention.remainder,
+        createdMention.remainder,
         context.resolved.scope,
       )
-      if (within.kind === "resolved") {
-        recordStep(context, "resolve_target", true, {
-          output: `Matched "${match}" to node ${within.nodeId}, found inside ${mention.nodeId} created earlier this turn (deterministic, no model call).`,
+      const partWasFoundInsideCreatedNode = !isClarification(nodeWithinCreated)
+      if (partWasFoundInsideCreatedNode) {
+        recordStep(context, "resolve_target", {
+          ok: true,
+          output: `Matched "${searchPhrase}" to node ${nodeWithinCreated.nodeId}, found inside ${createdMention.nodeId} created earlier this turn (deterministic, no model call).`,
         })
-        return within
+        return nodeWithinCreated
       }
     }
   }
 
-  const resolution = resolveNodeTarget(
+  const deterministicResolution = resolveNodeTarget(
     context.state.workspace,
     context.resolved.resolvedKey,
     context.resolved.selectedNodeId,
     context.resolved.selectedBoardId,
     "selection",
-    match,
+    searchPhrase,
     context.resolved.scope,
   )
-  if (resolution.kind === "resolved" || match === undefined) {
-    recordStep(context, "resolve_target", resolution.kind === "resolved", {
-      output:
-        resolution.kind === "resolved"
-          ? `Resolved to node ${resolution.nodeId} (deterministic: selection/label search, no model call).`
-          : resolution.text,
+  const deterministicPassNeedsClarification = isClarification(
+    deterministicResolution,
+  )
+  const noSearchPhraseToFallBackOn = searchPhrase === undefined
+  if (!deterministicPassNeedsClarification || noSearchPhraseToFallBackOn) {
+    recordStep(context, "resolve_target", {
+      ok: !deterministicPassNeedsClarification,
+      output: deterministicPassNeedsClarification
+        ? deterministicResolution.text
+        : `Resolved to node ${deterministicResolution.nodeId} (deterministic: selection/label search, no model call).`,
     })
-    return resolution
+    return deterministicResolution
   }
 
   // The deterministic pass missed or found several matches: let the semantic
   // pipeline try the phrase before surfacing the miss.
-  const semantic = await findNodeSemantic(context, match)
-  recordStep(context, "resolve_target", semantic.kind === "resolved", {
-    output:
-      semantic.kind === "resolved"
-        ? `Resolved "${match}" to node ${semantic.nodeId} via semantic search.`
-        : semantic.text,
+  const semanticResolution = await findNodeSemantic(context, searchPhrase)
+  const semanticSearchNeedsClarification = isClarification(semanticResolution)
+  recordStep(context, "resolve_target", {
+    ok: !semanticSearchNeedsClarification,
+    output: semanticSearchNeedsClarification
+      ? semanticResolution.text
+      : `Resolved "${searchPhrase}" to node ${semanticResolution.nodeId} via semantic search.`,
   })
-  if (semantic.kind === "resolved") return semantic
+  if (!semanticSearchNeedsClarification) return semanticResolution
 
   // Prefer the deterministic message when it carried a useful pick list;
   // otherwise the semantic one, which names the closest candidates.
-  return resolution.text.includes("Several") ? resolution : semantic
+  const deterministicMessageListedCandidates =
+    deterministicResolution.text.includes("Several")
+  return deterministicMessageListedCandidates
+    ? deterministicResolution
+    : semanticResolution
 }
