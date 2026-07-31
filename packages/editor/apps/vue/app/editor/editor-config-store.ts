@@ -1,12 +1,6 @@
 import { defineStore } from "pinia"
 import { ref, watch } from "vue"
 
-/**
- * Component-relationship highlight shown in the objects sidebar. Behaves as a
- * radio in the View menu.
- */
-export type ComponentHighlightMode = "selection" | "branch"
-
 /** Editor interface light/dark mode (chrome only). "system" follows the OS. */
 export type InterfaceMode = "system" | "light" | "dark"
 
@@ -28,9 +22,9 @@ function clampSidebarWidth(width: number): number {
 
 type PersistedConfig = {
   showSelection: boolean
-  componentHighlightMode: ComponentHighlightMode
   showFocus: boolean
   wireframeMode: WireframeMode
+  showConnectors: boolean
   showPanels: boolean
   autoScrollToSelection: boolean
   autoExpandOnSelection: boolean
@@ -73,11 +67,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   const persisted = loadPersisted()
 
   const showSelection = ref(persisted.showSelection ?? true)
-  const componentHighlightMode = ref<ComponentHighlightMode>(
-    persisted.componentHighlightMode ?? "selection",
-  )
   const showFocus = ref(persisted.showFocus ?? true)
   const wireframeMode = ref<WireframeMode>(persisted.wireframeMode ?? "auto")
+  const showConnectors = ref(persisted.showConnectors ?? false)
   const showPanels = ref(persisted.showPanels ?? true)
   const autoScrollToSelection = ref(persisted.autoScrollToSelection ?? true)
   const autoExpandOnSelection = ref(persisted.autoExpandOnSelection ?? false)
@@ -117,6 +109,10 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
 
   function toggleShowFocus(): void {
     showFocus.value = !showFocus.value
+  }
+
+  function toggleShowConnectors(): void {
+    showConnectors.value = !showConnectors.value
   }
 
   function toggleAutoExpandOnSelection(): void {
@@ -167,10 +163,6 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     directSelect.value = !directSelect.value
   }
 
-  function setComponentHighlightMode(mode: ComponentHighlightMode): void {
-    componentHighlightMode.value = mode
-  }
-
   function setObjectsView(view: ObjectsView): void {
     objectsView.value = view
   }
@@ -194,9 +186,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
   watch(
     [
       showSelection,
-      componentHighlightMode,
       showFocus,
       wireframeMode,
+      showConnectors,
       showPanels,
       autoScrollToSelection,
       autoExpandOnSelection,
@@ -220,9 +212,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
       if (typeof localStorage === "undefined") return
       const snapshot: PersistedConfig = {
         showSelection: showSelection.value,
-        componentHighlightMode: componentHighlightMode.value,
         showFocus: showFocus.value,
         wireframeMode: wireframeMode.value,
+        showConnectors: showConnectors.value,
         showPanels: showPanels.value,
         autoScrollToSelection: autoScrollToSelection.value,
         autoExpandOnSelection: autoExpandOnSelection.value,
@@ -250,9 +242,9 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
 
   return {
     showSelection,
-    componentHighlightMode,
     showFocus,
     wireframeMode,
+    showConnectors,
     showPanels,
     autoScrollToSelection,
     autoExpandOnSelection,
@@ -276,6 +268,7 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     togglePanels,
     toggleShowSelection,
     toggleShowFocus,
+    toggleShowConnectors,
     toggleAutoExpandOnSelection,
     toggleAutoScrollToSelection,
     toggleShowCodeNames,
@@ -287,7 +280,6 @@ export const useEditorConfigStore = defineStore("editor-config", () => {
     enableIsolation,
     disableIsolation,
     toggleDirectSelect,
-    setComponentHighlightMode,
     setObjectsView,
     setObjectsWidth,
     setPropertiesWidth,

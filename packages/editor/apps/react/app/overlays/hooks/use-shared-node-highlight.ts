@@ -104,19 +104,17 @@ let highlightCache: {
 } | null = null
 
 /**
- * Resolves the Show Branch highlight for the current selection, driven by the View
- * menu `componentHighlightMode` radio. The `"selection"` mode shows no relationship
- * overlay. The result is cached across sidebar rows so the template graph is only
- * walked once per selection.
+ * Resolves the branch around the current selection while Show Connectors is on.
+ * The result is cached across sidebar rows so the template graph is only walked
+ * once per selection.
  */
 export function useSharedNodeHighlight(): SharedNodeHighlight {
-  const { componentHighlightMode } = useEditorConfig()
+  const { showConnectors } = useEditorConfig()
   const { workspace } = useWorkspace({ usePreview: false })
   const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
-  const showsBranch = componentHighlightMode === "branch"
 
   return useMemo(() => {
-    if (!showsBranch || !selectedNodeId) return EMPTY_HIGHLIGHT
+    if (!showConnectors || !selectedNodeId) return EMPTY_HIGHLIGHT
     if (!workspace.nodes[selectedNodeId]) return EMPTY_HIGHLIGHT
 
     if (
@@ -132,5 +130,5 @@ export function useSharedNodeHighlight(): SharedNodeHighlight {
     highlightCache = { selectedNodeId, workspace, value }
 
     return value
-  }, [showsBranch, selectedNodeId, workspace])
+  }, [showConnectors, selectedNodeId, workspace])
 }

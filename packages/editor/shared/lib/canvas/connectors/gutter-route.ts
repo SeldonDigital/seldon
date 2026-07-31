@@ -1,11 +1,8 @@
-import { simplify } from "./connector-layout";
+import { simplify } from "./connector-layout"
 
-
-
-import type { NodeRect } from "../overlay/geometry";
-import type { GalleryObstacles, GalleryRow } from "../overlay/measure-isolation-gallery";
-import type { ConnectorPoint } from "./connector-layout";
-
+import type { NodeRect } from "../overlay/geometry"
+import type { GalleryObstacles, GalleryRow } from "../overlay/measure-isolation-gallery"
+import type { ConnectorPoint } from "./connector-layout"
 
 /**
  * How much room two rows must leave in common before their gutters count as one
@@ -13,6 +10,12 @@ import type { ConnectorPoint } from "./connector-layout";
  * keep their own lanes and a route takes a full step between them.
  */
 const MIN_SHARED_GUTTER_PX = 10
+
+/**
+ * How far off a node's center a route meets it, as a share of the node's height. A
+ * quarter of the height is the midpoint between the center and the edge.
+ */
+const ANCHOR_OFFSET_SHARE = 0.25
 
 /** Where the route leaves and lands on the source and target nodes, on their left or right edges. */
 export interface GutterRoute {
@@ -167,8 +170,12 @@ function buildRoute(
   lanes: number[],
   corridors: number[],
 ): GutterRoute {
-  const anchor = { x: getSideX(source, exitSide), y: centerY(source) }
-  const endAnchor = { x: getSideX(target, entrySide), y: centerY(target) }
+  // Ref badge connectors leave a node from its center, so these meet one off center,
+  // each end on the side facing the other. Two nodes level with one another both
+  // take the upper offset.
+  const direction = Math.sign(centerY(target) - centerY(source)) || -1
+  const anchor = { x: getSideX(source, exitSide), y: getAnchorY(source, direction) }
+  const endAnchor = { x: getSideX(target, entrySide), y: getAnchorY(target, -direction) }
   const points: ConnectorPoint[] = [anchor, { x: lanes[0], y: anchor.y }]
 
   corridors.forEach((corridor, index) => {
@@ -354,6 +361,14 @@ function centerX(rect: NodeRect): number {
 
 function centerY(rect: NodeRect): number {
   return rect.top + rect.height / 2
+}
+
+/**
+ * Where a route meets a node vertically: halfway between its center and its top when
+ * `direction` is negative, and between its center and its bottom when positive.
+ */
+function getAnchorY(rect: NodeRect, direction: number): number {
+  return centerY(rect) + direction * rect.height * ANCHOR_OFFSET_SHARE
 }
 
 function right(rect: NodeRect): number {

@@ -182,6 +182,11 @@ export function useEditorShortcuts(): void {
         config.toggleWireframeMode()
 
         return
+      case "e":
+        event.preventDefault()
+        config.toggleShowConnectors()
+
+        return
       case "r":
         event.preventDefault()
         toggleRefBadges()

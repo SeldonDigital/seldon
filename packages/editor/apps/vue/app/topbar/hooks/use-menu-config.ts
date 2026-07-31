@@ -549,6 +549,13 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       shortcut: "W",
     },
     {
+      id: "show-connectors",
+      label: "Show Connectors",
+      action: config.toggleShowConnectors,
+      active: config.showConnectors,
+      shortcut: "E",
+    },
+    {
       id: "show-reference-badges",
       label: "Show Reference Badges",
       action: toggleRefBadges,
@@ -561,23 +568,6 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "Show Keyboard Focus",
       action: config.toggleShowFocus,
       active: config.showFocus,
-    },
-    "separator",
-    {
-      id: "show-selection",
-      label: "Show Selection",
-      // Any mode that is not Branch reads as the plain state, so a value persisted
-      // before the other highlights were retired still marks here.
-      action: () => config.setComponentHighlightMode("selection"),
-      active: config.componentHighlightMode !== "branch",
-      activeMarker: "bullet",
-    },
-    {
-      id: "show-branch",
-      label: "Show Branch",
-      action: () => config.setComponentHighlightMode("branch"),
-      active: config.componentHighlightMode === "branch",
-      activeMarker: "bullet",
     },
     "separator",
     {

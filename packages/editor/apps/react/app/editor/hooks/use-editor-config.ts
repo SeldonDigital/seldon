@@ -4,14 +4,6 @@ import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
 
 /**
- * Component-relationship highlight shown in the objects sidebar and, in isolation,
- * on the canvas. `"selection"` is the normal state with no relationship overlay.
- * `"branch"` highlights what inherits from the selection along with the lineage it
- * comes from. Behaves as a radio in the View menu.
- */
-export type ComponentHighlightMode = "selection" | "branch"
-
-/**
  * Editor interface light/dark mode. `"system"` follows the OS appearance,
  * resolving to light or dark at runtime. Applies to the editor chrome only; it
  * is never written to the workspace and never affects the canvas.
@@ -31,10 +23,6 @@ interface EditorConfigState {
   showSelection: boolean
   setShowSelection: (enabled: boolean) => void
 
-  // Component-relationship highlight mode (radio with normal selection)
-  componentHighlightMode: ComponentHighlightMode
-  setComponentHighlightMode: (mode: ComponentHighlightMode) => void
-
   // Focus ring visibility (the overlay still tracks focus when off)
   showFocus: boolean
   setShowFocus: (enabled: boolean) => void
@@ -42,6 +30,11 @@ interface EditorConfigState {
   // Wireframe settings
   wireframeMode: "auto" | "on" | "off"
   toggleWireframeMode: (mode?: "on" | "off") => void
+
+  // Component connectors: the branch around the selection, drawn as lines across
+  // the isolation gallery and tinted on the matching objects sidebar rows
+  showConnectors: boolean
+  setShowConnectors: (enabled: boolean) => void
 
   // Reference badge overlay, drawing referenced nodes out to their consumers
   showRefBadges: boolean
@@ -120,10 +113,6 @@ const useStore = create<EditorConfigState>()(
       showSelection: true,
       setShowSelection: (enabled) => set((state) => ({ ...state, showSelection: enabled })),
 
-      componentHighlightMode: "selection",
-      setComponentHighlightMode: (mode) =>
-        set((state) => ({ ...state, componentHighlightMode: mode })),
-
       // Focus ring visibility
       showFocus: true,
       setShowFocus: (enabled) => set((state) => ({ ...state, showFocus: enabled })),
@@ -137,6 +126,10 @@ const useStore = create<EditorConfigState>()(
 
           return { ...state, wireframeMode: newMode }
         }),
+
+      // Component connectors (off by default)
+      showConnectors: false,
+      setShowConnectors: (enabled) => set((state) => ({ ...state, showConnectors: enabled })),
 
       // Ref connector overlay. Left out of `partialize` on purpose: the bindings
       // it draws are read from a linked folder during a gesture and are not
@@ -224,9 +217,9 @@ const useStore = create<EditorConfigState>()(
       name: "editor-config",
       partialize: (state) => ({
         showSelection: state.showSelection,
-        componentHighlightMode: state.componentHighlightMode,
         showFocus: state.showFocus,
         wireframeMode: state.wireframeMode,
+        showConnectors: state.showConnectors,
         showPanels: state.showPanels,
         autoScrollToSelection: state.autoScrollToSelection,
         autoExpandOnSelection: state.autoExpandOnSelection,
@@ -252,12 +245,12 @@ export function useEditorConfig() {
   const {
     showSelection,
     setShowSelection,
-    componentHighlightMode,
-    setComponentHighlightMode,
     showFocus,
     setShowFocus,
     wireframeMode,
     toggleWireframeMode,
+    showConnectors,
+    setShowConnectors,
     showRefBadges,
     setShowRefBadges,
     showPanels,
@@ -295,12 +288,12 @@ export function useEditorConfig() {
     useShallow((state) => ({
       showSelection: state.showSelection,
       setShowSelection: state.setShowSelection,
-      componentHighlightMode: state.componentHighlightMode,
-      setComponentHighlightMode: state.setComponentHighlightMode,
       showFocus: state.showFocus,
       setShowFocus: state.setShowFocus,
       wireframeMode: state.wireframeMode,
       toggleWireframeMode: state.toggleWireframeMode,
+      showConnectors: state.showConnectors,
+      setShowConnectors: state.setShowConnectors,
       showRefBadges: state.showRefBadges,
       setShowRefBadges: state.setShowRefBadges,
       showPanels: state.showPanels,
@@ -349,6 +342,10 @@ export function useEditorConfig() {
     setShowFocus(!showFocus)
   }, [setShowFocus, showFocus])
 
+  const toggleShowConnectors = useCallback(() => {
+    setShowConnectors(!showConnectors)
+  }, [setShowConnectors, showConnectors])
+
   const toggleAutoScrollToSelection = useCallback(() => {
     setAutoScrollToSelection(!autoScrollToSelection)
   }, [setAutoScrollToSelection, autoScrollToSelection])
@@ -390,10 +387,6 @@ export function useEditorConfig() {
     setShowSelection,
     toggleShowSelection,
 
-    // Component-relationship highlight (radio)
-    componentHighlightMode,
-    setComponentHighlightMode,
-
     // Focus ring methods
     showFocus,
     setShowFocus,
@@ -402,6 +395,11 @@ export function useEditorConfig() {
     // Wireframe methods
     wireframeMode,
     toggleWireframeMode,
+
+    // Component connector methods
+    showConnectors,
+    setShowConnectors,
+    toggleShowConnectors,
 
     // Reference badge overlay. Toggled through `useRefBadges`, which reads the
     // linked folder on the same gesture that turns it on.

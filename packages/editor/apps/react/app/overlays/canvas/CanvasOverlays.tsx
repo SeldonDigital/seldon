@@ -61,7 +61,7 @@ export function CanvasOverlays() {
   // Isolation draws the whole gallery at once, which is what makes a line from
   // the selection to the boards it reaches worth drawing. Outside isolation the
   // canvas shows one board, so the objects sidebar carries the highlight alone.
-  // The connectors draw nothing while the mode is Show Selection.
+  // The connectors draw nothing while Show Connectors is off.
   const highlightConnectors = isolatedView ? <HighlightConnectors /> : null
 
   // Nodes reorder by dragging under the select tool. Theme boards are previews
