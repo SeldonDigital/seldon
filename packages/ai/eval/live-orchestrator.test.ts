@@ -11,7 +11,8 @@ import { chatToActions } from "../local/orchestrate"
 import { CHIP_ROW_BOARD, seedChipRowWorkspace } from "./seed"
 
 const CASES = [
-  "hide all the chips",
+  "make all the chips bold",
+  "set the width of all the chips to 100 pixels",
 ]
 
 describe.skipIf(!process.env.SELDON_AI_LIVE)("live orchestrator", () => {

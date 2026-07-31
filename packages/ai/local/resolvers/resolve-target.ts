@@ -8,7 +8,6 @@ import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import type { MessageReason } from "../../types"
 
-import { activeBoardSection } from "../../prompt/context-sections/active-board"
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
 import { matchNodeStrings } from "../../prompt/context-sections/node-strings"
 import type { SelectionScope } from "../../types"
@@ -72,49 +71,6 @@ function boardNodeIds(workspace: Workspace, boardKey: BoardKey): Set<string> {
     ids.add(ref.id)
   })
   return ids
-}
-
-/** The distinct component catalog ids present in a board's variant trees. */
-function boardCatalogIds(
-  workspace: Workspace,
-  boardKey: BoardKey,
-): Set<string> {
-  const ids = new Set<string>()
-  const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return ids
-  walkBoardTreeRefs(board.variants, (ref) => {
-    const node = workspace.nodes[ref.id]
-    if (!node) return
-    const catalogId = getNodeCatalogId(node, workspace)
-    if (catalogId) ids.add(catalogId)
-  })
-  return ids
-}
-
-/**
- * The tier-2 fallback appended to a selection miss: the active board's node
- * trees plus the settable values of the components on it. When the selection
- * can't be resolved, the model walks up to the board and picks a target with the
- * values already in hand, instead of a blind re-search. Returns "" when no
- * active component board exists, so the caller adds nothing.
- */
-function tierTwoBlock(
-  workspace: Workspace,
-  activeKey: BoardKey | undefined,
-): string {
-  if (activeKey === undefined) return ""
-  const board = workspace.boards[activeKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board))) return ""
-  const block = [
-    ...activeBoardSection(workspace, activeKey, board).lines,
-    ...componentValuesSection(boardCatalogIds(workspace, activeKey), workspace),
-  ]
-    .join("\n")
-    .trim()
-  return block
-    ? `\n\nActive board (tier 2) and its settable values:\n${block}`
-    : ""
 }
 
 /** The settable values of one node's component, appended when a match is found off-board. */
@@ -375,7 +331,11 @@ export function resolveNodeTarget(
       : "Nothing is selected"
     return {
       kind: "message",
-      text: `${selectionNote}, so 'this' is ambiguous. Pick the target from the active board below, or pass an explicit target { nodeId }, or ask the user which node to change.${tierTwoBlock(workspace, activeKey)}`,
+      // This text's only reader is the reply stage and then the user: keep it
+      // human. The old version appended the whole active-board context here
+      // (a directive for the removed free-tool-calling loop), and the reply
+      // model paraphrased that blob into hallucinated nonsense (issue 06).
+      text: `${selectionNote}, so I don't know which element to change. Name the element, or select it on the canvas and ask again.`,
       reason: "no-target",
     }
   }
