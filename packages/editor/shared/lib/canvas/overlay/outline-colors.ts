@@ -53,15 +53,14 @@ function parseOpaqueColor(value: string): Rgb | null {
 }
 
 /**
- * Walks up from the element to the canvas root and returns the first opaque
- * painted background color. This reads what is actually rendered, so resolved
- * CSS variables and theme colors are already applied.
+ * Walks up from the element and returns the first opaque painted background
+ * color. This reads what is actually rendered, so resolved CSS variables and
+ * theme colors are already applied.
  */
-function resolveSurfaceColor(start: HTMLElement | null): Rgb | null {
-  const canvas = getCanvasElement()
+function resolveSurfaceColor(start: HTMLElement | null, stop: HTMLElement | null): Rgb | null {
   let current = start
 
-  while (current && current !== canvas) {
+  while (current && current !== stop) {
     const color = parseOpaqueColor(getComputedStyle(current).backgroundColor)
 
     if (color) {
@@ -85,18 +84,30 @@ function isDarkSurface(color: Rgb | null): boolean {
   return brightness < 128
 }
 
+function toOutlineColors(surface: Rgb | null): OutlineColors {
+  return isDarkSurface(surface) ? DARK_SURFACE_OUTLINE_COLORS : DEFAULT_OUTLINE_COLORS
+}
+
 function resolveOutlineColors(start: HTMLElement | null): OutlineColors {
-  return isDarkSurface(resolveSurfaceColor(start))
-    ? DARK_SURFACE_OUTLINE_COLORS
-    : DEFAULT_OUTLINE_COLORS
+  return toOutlineColors(resolveSurfaceColor(start, getCanvasElement()))
 }
 
 /**
- * Resolves the hover and selection outline colors for a node from the painted
- * surface behind its rendered element.
+ * Resolves outline colors for a node from its own painted surface. Use this for a
+ * mark drawn on the node, such as the drop feedback boundary.
  */
 export function resolveOutlineColorsForNode(nodeId: string): OutlineColors {
   return resolveOutlineColors(getHtmlElementByNodeId(nodeId))
+}
+
+/**
+ * Resolves the hover and selection outline colors for a node from the surface the
+ * dashes land on. 
+ */
+export function resolveOutlineColorsAroundNode(nodeId: string): OutlineColors {
+  const element = getHtmlElementByNodeId(nodeId)
+
+  return toOutlineColors(resolveSurfaceColor(element?.parentElement ?? null, null))
 }
 
 /** Resolves outline colors from the painted surface of the board root element. */
