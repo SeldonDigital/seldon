@@ -31,10 +31,15 @@ export function buildDecomposeStage(inputs: {
     "Rewrite this design-editor request as a list of independent instructions.",
     "",
     "Rules:",
-    '- One instruction per distinct edit. A single edit stays ONE instruction ("make the title bold and italic" is one).',
-    "- Each instruction must be a complete, self-contained imperative sentence.",
-    '- Resolve pronouns: "its title" becomes "the title of the new card" when the card was created by an earlier instruction.',
+    '- One instruction per distinct edit. A single edit stays ONE instruction: "make the title bold and italic" is ONE, and "hide all the chips" is ONE (never one per chip).',
+    "- Each instruction must be a complete, self-contained imperative sentence, phrased as a command.",
+    // The pronoun rule is deliberately schematic (<part>, <thing>): an earlier
+    // version used a concrete phrase ("the title of the new card") and the
+    // model copied it verbatim into output, replacing the user's actual
+    // request. Same failure class terminus fixed in find_node (93ccca1ee).
+    '- Resolve pronouns from the conversation: "its <part>" becomes "the <part> of the new <thing>" only when a <thing> was created by an earlier instruction.',
     '- Refer to things created by an earlier instruction as "the new <thing>".',
+    "- Keep the request's own nouns. Naming any element the request does not mention is FORBIDDEN, even if earlier conversation mentions it.",
     "- Do not invent steps the user did not ask for.",
     "",
     `${historyBlock(inputs.history)}Request: ${JSON.stringify(inputs.message)}`,

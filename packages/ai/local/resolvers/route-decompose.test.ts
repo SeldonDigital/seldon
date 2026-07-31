@@ -13,7 +13,11 @@ import { route } from "./route"
 
 const ollamaUp = await isOllamaReachable()
 const describeIfOllama = ollamaUp ? describe : describe.skip
-const MODEL = process.env.SELDON_AI_TEST_MODEL ?? "qwen3:4b"
+// Default aligned with the SHIPPING model (qwen3:8b since 7bc255c9). On
+// qwen3:4b the example-leakage-hardened decompose prompt (issue 05) is known
+// to split "bold and italic" into two steps and to echo history lines --
+// documented divergence, not a target: 4b is not the shipping default.
+const MODEL = process.env.SELDON_AI_TEST_MODEL ?? "qwen3:8b"
 const LIVE_TIMEOUT_MS = 60_000
 
 function buildContext(message: string): TurnContext {

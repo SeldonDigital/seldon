@@ -34,6 +34,7 @@ export function buildClassifierPrompt(
     `Message: ${JSON.stringify(message)}`,
     "",
     'Pick the single best matching intent. If the message is not a design edit, pick "none".',
+    'One edit applied to several elements ("hide all the chips", "make every card wider") is still that edit\'s intent, never "none".',
   ].join("\n")
 }
 

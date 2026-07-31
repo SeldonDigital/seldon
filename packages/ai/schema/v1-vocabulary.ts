@@ -65,7 +65,7 @@ export const V1_INTENTS: readonly V1Intent[] = [
     intent: "set_node_properties",
     family: "properties",
     description:
-      "Set or change a property value on a node: color, size, spacing, text content, font, alignment, and so on.",
+      "Set or change a property value on one node or several: color, size, spacing, text content, font, alignment, visibility (show or hide), and so on.",
     actionTypes: ["set_node_properties"],
   },
   {
