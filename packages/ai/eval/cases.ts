@@ -8,6 +8,9 @@ import type { SelectionScope } from "../types"
  * the harness reports per-model accuracy so the shipping default is chosen
  * on evidence.
  */
+/** Which seeded workspace a case runs against. Defaults to the button board. */
+export type EvalSeed = "button" | "chipRow"
+
 export interface EvalCase {
   /** Short stable id for the report table. */
   id: string
@@ -15,10 +18,28 @@ export interface EvalCase {
   scope?: SelectionScope
   /** Whether the seeded text child is "selected" for this case. */
   selectText?: boolean
+  seed?: EvalSeed
+  /**
+   * Why this case is expected to fail today. Present only on cases that
+   * document a gap the pipeline has not been built to cover yet, so the report
+   * can separate "not built" from "regressed".
+   */
+  known?: string
   expected: {
     intent: string
     /** For set_node_properties cases: keys the name resolver must include. */
     propertyKeys?: string[]
+    /**
+     * Does the message name one particular element, or a class of them? This
+     * is the half of cardinality readable from the message alone -- the count
+     * comes from matching the phrase against the board.
+     */
+    referenceIntent?: "single" | "class"
+    /**
+     * How many nodes resolution should land on, or "clarify" when the query is
+     * well-formed but under-determined against this board.
+     */
+    resolution?: number | "clarify"
   }
 }
 
@@ -234,5 +255,154 @@ export const EVAL_CASES: EvalCase[] = [
     id: "thanks",
     message: "perfect, thanks",
     expected: { intent: "none" },
+  },
+
+  // -- cardinality grid ----------------------------------------------------
+  // Four rows: reference intent (single | class) x board matches (1 | n).
+  // The chipRow seed holds four sibling chips; the button seed holds one text
+  // child. Everything marked `known` fails today by construction -- the
+  // resolver's return type cannot express more than one node.
+
+  // single x 1: the phrase names one element and one matches. Works today.
+  {
+    id: "card-single-one",
+    message: "make the title red",
+    scope: "board",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "single",
+      resolution: 1,
+    },
+  },
+
+  // single x n: well-formed, but four chips match "the chip". The honest
+  // outcome is a clarification, not a silent pick.
+  {
+    id: "card-single-many",
+    message: "make the chip red",
+    scope: "board",
+    seed: "chipRow",
+    known: "picks one chip via escalation instead of asking which",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "single",
+      resolution: "clarify",
+    },
+  },
+
+  // class x n: the four rows that need `resolved-many`.
+  {
+    id: "card-class-all",
+    message: "make all the chips red",
+    scope: "board",
+    seed: "chipRow",
+    known: "resolves a single chip; no multi-node return exists",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "class",
+      resolution: 4,
+    },
+  },
+  {
+    id: "card-class-bare-plural",
+    message: "make the chips red",
+    scope: "board",
+    seed: "chipRow",
+    known: "bare plural carries no 'all' cue; resolves a single chip",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "class",
+      resolution: 4,
+    },
+  },
+  {
+    id: "card-class-every",
+    message: "give every chip a bigger corner radius",
+    scope: "board",
+    seed: "chipRow",
+    known: "resolves a single chip; no multi-node return exists",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "class",
+      resolution: 4,
+    },
+  },
+  {
+    id: "card-class-each",
+    message: "hide each of the chips",
+    scope: "board",
+    seed: "chipRow",
+    known: "resolves a single chip; no multi-node return exists",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "class",
+      resolution: 4,
+    },
+  },
+
+  // class x 1: "all" is harmless when only one element matches. Should behave
+  // exactly like the single case, and is the row that proves "all" must not be
+  // load-bearing on its own.
+  {
+    id: "card-class-one-match",
+    message: "make all the text red",
+    scope: "board",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "class",
+      resolution: 1,
+    },
+  },
+
+  // Distractor: "all" inside a phrase that still names one element. Reference
+  // intent here is single -- the text is one node, not a class.
+  {
+    id: "card-all-of-the-text",
+    message: "translate all of the text in this button into Dutch",
+    scope: "instance",
+    selectText: true,
+    expected: {
+      intent: "translate",
+      referenceIntent: "single",
+    },
+  },
+
+  // Single-intent controls. Without these the reference axis can be passed by
+  // a classifier that answers "class" every time -- which is exactly what the
+  // first probe prompt did.
+  {
+    id: "ref-single-plain",
+    message: "make the label bold",
+    scope: "board",
+    expected: { intent: "set_node_properties", referenceIntent: "single" },
+  },
+  {
+    id: "ref-single-pronoun",
+    message: "make it wider",
+    scope: "instance",
+    selectText: true,
+    expected: { intent: "set_node_properties", referenceIntent: "single" },
+  },
+  {
+    id: "ref-single-among-many",
+    message: "make the first chip green",
+    scope: "board",
+    seed: "chipRow",
+    expected: { intent: "set_node_properties", referenceIntent: "single" },
+  },
+
+  // Container + class, the shape translate hardcodes today. Kept separate on
+  // purpose: this is a subtree-scoped class query, not a board-wide predicate.
+  {
+    id: "card-class-in-container",
+    message: "make all the chips in the list bold",
+    scope: "board",
+    seed: "chipRow",
+    known: "subtree-scoped class queries have no resolver path at all",
+    expected: {
+      intent: "set_node_properties",
+      referenceIntent: "class",
+      resolution: 4,
+    },
   },
 ]

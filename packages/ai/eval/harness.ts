@@ -13,53 +13,63 @@
  * misses are data, not failures, so the run never fails on accuracy.
  */
 import { ComponentId } from "@seldon/core/components/constants"
-import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
-import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
-import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import { isComponentBoard } from "@seldon/core/workspace/model/components"
-import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
-import type { Workspace } from "@seldon/core/workspace/types"
+import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
 import { resolveContext } from "../local/editor-context"
 import { isOllamaReachable } from "../local/ollama-client"
 import { classifyAction } from "../local/resolvers/classify-action"
 import { resolvePropertyNames } from "../local/resolvers/resolve-property-name"
+import { resolveTargetWithHint } from "../local/resolvers/resolve-target-with-hint"
 import type { TurnContext } from "../local/turn-context"
 import { createTurnState } from "../local/turn-state"
-import { EVAL_CASES } from "./cases"
+import { EVAL_CASES, type EvalCase } from "./cases"
+import { probeReferenceIntent } from "./reference-intent-probe"
+import {
+  CHIP_ROW_BOARD,
+  findTextChild,
+  seedButtonWorkspace,
+  seedChipRowWorkspace,
+} from "./seed"
 
-function findTextChild(workspace: Workspace): string | undefined {
-  const board = workspace.boards[ComponentId.BUTTON]
-  if (!board || !isComponentBoard(board)) return undefined
-  let found: string | undefined
-  walkBoardTreeRefs([board.variants[0]!], (ref) => {
-    const node = workspace.nodes[ref.id]
-    if (node && getNodeCatalogId(node, workspace) === "text") {
-      found = ref.id
-      return true
-    }
-  })
-  return found
+/** The workspace and active board a case runs against. */
+function seedFor(evalCase: EvalCase): {
+  workspace: Workspace
+  boardKey: BoardKey
+} {
+  const caseNeedsSiblings = evalCase.seed === "chipRow"
+  if (caseNeedsSiblings) {
+    const { workspace } = seedChipRowWorkspace()
+    return { workspace, boardKey: CHIP_ROW_BOARD as BoardKey }
+  }
+  return {
+    workspace: seedButtonWorkspace(),
+    boardKey: ComponentId.BUTTON as BoardKey,
+  }
 }
 
 export interface CaseResult {
   id: string
   intentOk: boolean
   keysOk: boolean | undefined
-  ms: number
+  /** Whether the probe read single-vs-class reference intent correctly. */
+  referenceOk: boolean | undefined
+  /** Whether target resolution landed on the expected node count. */
+  resolutionOk: boolean | undefined
+  /** What resolution actually produced, for the miss line. */
+  resolutionGot: string | undefined
+  /** Set when the case documents a gap that is not built yet. */
+  known: string | undefined
+  elapsedMs: number
 }
 
 export async function runModel(model: string): Promise<CaseResult[]> {
-  const results: CaseResult[] = []
+  const caseResults: CaseResult[] = []
   for (const evalCase of EVAL_CASES) {
-    const workspace = addComponent(
-      { boardKey: ComponentId.BUTTON } as never,
-      createEmptyWorkspace(),
-    )
+    const { workspace, boardKey } = seedFor(evalCase)
     const selectedNodeId = evalCase.selectText
       ? findTextChild(workspace)
       : undefined
-    const started = Date.now()
+    const caseStartedMs = Date.now()
 
     const classification = await classifyAction({
       message: evalCase.message,
@@ -67,70 +77,158 @@ export async function runModel(model: string): Promise<CaseResult[]> {
       hasSelectedNode: selectedNodeId !== undefined,
       model,
     })
-    const picked =
+    const pickedIntent =
       classification.kind === "classified"
         ? classification.intent.intent
         : "none"
-    const intentOk = picked === evalCase.expected.intent
+    const intentOk = pickedIntent === evalCase.expected.intent
 
     // Property-name resolution only measures when both the case expects keys
     // and the intent landed, so the two judgments stay separable.
     let keysOk: boolean | undefined
-    if (intentOk && evalCase.expected.propertyKeys && selectedNodeId) {
-      const context: TurnContext = {
-        state: createTurnState(workspace),
-        resolved: resolveContext({
-          workspace,
-          activeBoardKey: ComponentId.BUTTON,
-          selectedNodeId,
-          scope: evalCase.scope,
-        }),
-        message: evalCase.message,
-        model,
-        calls: [],
-        steps: [],
-      }
-      const names = await resolvePropertyNames(context, "text")
+    const caseAlsoChecksPropertyKeys =
+      intentOk &&
+      evalCase.expected.propertyKeys !== undefined &&
+      selectedNodeId !== undefined
+    const buildContext = (): TurnContext => ({
+      state: createTurnState(workspace),
+      resolved: resolveContext({
+        workspace,
+        activeBoardKey: boardKey,
+        selectedNodeId,
+        scope: evalCase.scope,
+      }),
+      message: evalCase.message,
+      model,
+      calls: [],
+      steps: [],
+    })
+
+    if (caseAlsoChecksPropertyKeys) {
+      const catalogId = evalCase.seed === "chipRow" ? "chip" : "text"
+      const nameResolution = await resolvePropertyNames(
+        buildContext(),
+        catalogId,
+      )
       keysOk =
-        names.kind === "resolved" &&
-        evalCase.expected.propertyKeys.every((key) => names.keys.includes(key))
+        nameResolution.kind === "resolved" &&
+        evalCase.expected.propertyKeys!.every((expectedKey) =>
+          nameResolution.keys.includes(expectedKey),
+        )
     }
 
-    const ms = Date.now() - started
-    results.push({ id: evalCase.id, intentOk, keysOk, ms })
+    // Reference intent: measured by the standalone probe, because no pipeline
+    // stage emits it yet. This is the number that decides whether the
+    // single/class split is worth building on.
+    let referenceOk: boolean | undefined
+    if (evalCase.expected.referenceIntent !== undefined) {
+      const probed = await probeReferenceIntent(evalCase.message, model)
+      referenceOk = probed === evalCase.expected.referenceIntent
+    }
+
+    // Resolution: what the CURRENT pipeline lands on. Class cases are expected
+    // to miss -- TargetResolution cannot carry more than one node id, so the
+    // gap shows up as a count of 1 against an expectation of many.
+    let resolutionOk: boolean | undefined
+    let resolutionGot: string | undefined
+    if (evalCase.expected.resolution !== undefined) {
+      const target = await resolveTargetWithHint(buildContext())
+      const expected = evalCase.expected.resolution
+      if (target.kind === "resolved") {
+        resolutionGot = "1 node"
+        resolutionOk = expected === 1
+      } else {
+        resolutionGot = "clarify"
+        resolutionOk = expected === "clarify"
+      }
+    }
+
+    const elapsedMs = Date.now() - caseStartedMs
+    caseResults.push({
+      id: evalCase.id,
+      intentOk,
+      keysOk,
+      referenceOk,
+      resolutionOk,
+      resolutionGot,
+      known: evalCase.known,
+      elapsedMs,
+    })
     const keysNote =
       keysOk === undefined ? "" : keysOk ? " keys:ok" : " keys:MISS"
+    const referenceNote =
+      referenceOk === undefined ? "" : referenceOk ? " ref:ok" : " ref:MISS"
+    const resolutionNote =
+      resolutionOk === undefined
+        ? ""
+        : resolutionOk
+          ? " resolve:ok"
+          : ` resolve:MISS (want ${evalCase.expected.resolution}, got ${resolutionGot})`
+    const knownNote = evalCase.known ? ` [known: ${evalCase.known}]` : ""
     console.log(
-      `  ${intentOk ? "PASS" : "MISS"} ${evalCase.id} (${ms}ms)${keysNote}${
-        intentOk ? "" : ` -> got ${picked}`
+      `  ${intentOk ? "PASS" : "MISS"} ${evalCase.id} (${elapsedMs}ms)${keysNote}${referenceNote}${resolutionNote}${knownNote}${
+        intentOk ? "" : ` -> got ${pickedIntent}`
       }`,
     )
   }
-  return results
+  return caseResults
 }
 
 /** Runs every named model and prints the per-model accuracy summary table. */
 export async function runEval(models: string[]): Promise<void> {
-  if (!(await isOllamaReachable())) {
+  const ollamaIsUnreachable = !(await isOllamaReachable())
+  if (ollamaIsUnreachable) {
     console.error("No Ollama server reachable at localhost:11434.")
     return
   }
 
+  /** `passed/total` over the cases that scored a given axis at all. */
+  const ratio = (
+    caseResults: CaseResult[],
+    read: (caseResult: CaseResult) => boolean | undefined,
+  ): string => {
+    const scored = caseResults.filter(
+      (caseResult) => read(caseResult) !== undefined,
+    )
+    if (scored.length === 0) return "n/a"
+    return `${scored.filter((caseResult) => read(caseResult)).length}/${scored.length}`
+  }
+
   const summary: Record<
     string,
-    { intent: string; keys: string; avgMs: number }
+    {
+      intent: string
+      keys: string
+      reference: string
+      resolution: string
+      avgMs: number
+    }
   > = {}
   for (const model of models) {
     console.log(`\n=== ${model} ===`)
-    const results = await runModel(model)
-    const intentPassed = results.filter((r) => r.intentOk).length
-    const keyCases = results.filter((r) => r.keysOk !== undefined)
-    const keysPassed = keyCases.filter((r) => r.keysOk).length
+    const caseResults = await runModel(model)
+    const intentPassedCount = caseResults.filter(
+      (caseResult) => caseResult.intentOk,
+    ).length
+    const casesExpectingKeys = caseResults.filter(
+      (caseResult) => caseResult.keysOk !== undefined,
+    )
+    const keysPassedCount = casesExpectingKeys.filter(
+      (caseResult) => caseResult.keysOk,
+    ).length
+    const anyCaseExpectedKeys = casesExpectingKeys.length > 0
     summary[model] = {
-      intent: `${intentPassed}/${results.length}`,
-      keys: keyCases.length > 0 ? `${keysPassed}/${keyCases.length}` : "n/a",
+      intent: `${intentPassedCount}/${caseResults.length}`,
+      keys: anyCaseExpectedKeys
+        ? `${keysPassedCount}/${casesExpectingKeys.length}`
+        : "n/a",
+      reference: ratio(caseResults, (caseResult) => caseResult.referenceOk),
+      resolution: ratio(caseResults, (caseResult) => caseResult.resolutionOk),
       avgMs: Math.round(
-        results.reduce((sum, r) => sum + r.ms, 0) / results.length,
+        caseResults.reduce(
+          (totalMs, caseResult) => totalMs + caseResult.elapsedMs,
+          0,
+        ) / caseResults.length,
       ),
     }
   }
@@ -138,7 +236,7 @@ export async function runEval(models: string[]): Promise<void> {
   console.log("\n=== SUMMARY ===")
   for (const [model, stats] of Object.entries(summary)) {
     console.log(
-      `${model.padEnd(14)} intent ${stats.intent.padEnd(7)} property-keys ${stats.keys.padEnd(7)} avg ${stats.avgMs}ms/case`,
+      `${model.padEnd(14)} intent ${stats.intent.padEnd(7)} property-keys ${stats.keys.padEnd(7)} reference ${stats.reference.padEnd(7)} resolution ${stats.resolution.padEnd(7)} avg ${stats.avgMs}ms/case`,
     )
   }
 }
