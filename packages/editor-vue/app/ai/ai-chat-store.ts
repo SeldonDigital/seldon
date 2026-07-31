@@ -1,6 +1,7 @@
 import type {
   ActionRepair,
   AgentToolCall,
+  PendingClarification,
   RejectedActionResult,
   ThinkingLevelOption,
 } from "@seldon/ai"
@@ -32,6 +33,12 @@ export interface HariTurn {
   warnings?: string[]
   rejected?: RejectedActionResult[]
   error?: string
+  /**
+   * Set when this turn ended by asking the user something. The NEXT turn
+   * echoes the latest one back to the agent, so answering by selecting on
+   * the canvas is honored in code.
+   */
+  clarification?: PendingClarification
 }
 
 let turnSequence = 0

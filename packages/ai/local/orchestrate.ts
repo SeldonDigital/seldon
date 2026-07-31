@@ -3,6 +3,8 @@ import type {
   AgentMetrics,
   ChatToActionsInput,
   ChatToActionsResult,
+  MessageReason,
+  PendingClarification,
 } from "../types"
 import {
   executeAddComponent,
@@ -148,7 +150,10 @@ export async function chatToActions(
     },
   }
 
-  const finish = (reply: string): ChatToActionsResult => {
+  const finish = (
+    reply: string,
+    clarification?: PendingClarification,
+  ): ChatToActionsResult => {
     input.onEvent?.({ type: "text", delta: reply })
     const totals = sumCallMetrics(context.calls)
     const modelGeneratedTokens = totals.generationMs > 0
@@ -169,6 +174,7 @@ export async function chatToActions(
       reply,
       ineffective: turnState.ineffective,
       rejected: turnState.rejected,
+      clarification,
       debug: {
         context: buildTurnContext(resolvedContext),
         rawResponse: reply,
@@ -185,9 +191,27 @@ export async function chatToActions(
   const turnWasCancelled = (): boolean => input.signal?.aborted === true
   if (turnWasCancelled()) return finish(CANCELLED_REPLY)
 
+  // Clarification guard, enforced in code rather than left to the router's
+  // judgment: when the previous turn ended by asking which element was meant
+  // and the user now has a node selected, the selection IS the answer -- the
+  // message ("this one", a name) goes straight to processing. The router
+  // cannot see selections, so asking it would risk answering the user's
+  // answer with another question (issue 02).
+  const selectionAnswersPendingClarification =
+    input.pendingClarification !== undefined &&
+    input.selectedNodeId !== undefined
   // Stage 1: route. Conversation gets its answer from this same call and the
   // turn ends with zero actions.
-  const routeDecision = await route(context, input.history)
+  const routeDecision = selectionAnswersPendingClarification
+    ? ({ kind: "process" } as const)
+    : await route(context, input.history)
+  if (selectionAnswersPendingClarification) {
+    recordStep(context, "route", {
+      ok: true,
+      output:
+        "Skipped the router: the previous turn asked which element was meant and a node is now selected, so the selection answers it (deterministic, no model call).",
+    })
+  }
   const routeChoseConversation = routeDecision.kind === "reply"
   if (routeChoseConversation) return finish(routeDecision.message)
   if (turnWasCancelled()) return finish(CANCELLED_REPLY)
@@ -255,5 +279,20 @@ export async function chatToActions(
     if (stepStoppedThePlan) break
   }
 
-  return finish(await generateReply(context, stepOutcomes))
+  // When the turn ended in an ask, surface it as data so the editor can echo
+  // it back next turn (the guard above) and the reply layer can list real
+  // candidates instead of improvising.
+  const lastOutcome = stepOutcomes[stepOutcomes.length - 1]?.outcome
+  const turnEndedInAsk =
+    lastOutcome !== undefined &&
+    lastOutcome.kind === "message" &&
+    lastOutcome.reason !== undefined
+  const clarification: PendingClarification | undefined = turnEndedInAsk
+    ? {
+        reason: lastOutcome.reason as MessageReason,
+        candidateIds: lastOutcome.candidateIds,
+      }
+    : undefined
+
+  return finish(await generateReply(context, stepOutcomes), clarification)
 }

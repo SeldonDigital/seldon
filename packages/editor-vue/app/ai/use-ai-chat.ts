@@ -142,6 +142,10 @@ export function useAiChat() {
     if (!message) return
 
     const history = buildHistory(store.turns)
+    // The previous turn's ask, echoed back: with a node selected, the agent
+    // skips its router -- the selection answers the question.
+    const pendingClarification =
+      store.turns[store.turns.length - 1]?.clarification
     const model = store.model
     const thinkingLevel = store.thinkingLevel
     const mode = model
@@ -180,6 +184,7 @@ export function useAiChat() {
         reply,
         ineffective,
         rejected,
+        clarification,
         debug: turnDebug,
       } = await runAgentChat(
         {
@@ -196,6 +201,7 @@ export function useAiChat() {
           thinkingLevel,
           thinkingCapable,
           noThink,
+          pendingClarification,
         },
         (event) => applyTurnEvent(turnId, event),
         controller.signal,
@@ -256,6 +262,7 @@ export function useAiChat() {
         repairs: turnDebug.repairs.length > 0 ? turnDebug.repairs : undefined,
         warnings: warnings.length > 0 ? warnings : undefined,
         rejected: report.rejected.length > 0 ? report.rejected : undefined,
+        clarification,
         status: failed ? "error" : "done",
       })
       store.setStatus(failed ? "error" : "idle")

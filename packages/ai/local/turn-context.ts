@@ -55,7 +55,14 @@ export function recordStep(
  */
 export type FamilyOutcome =
   | { kind: "applied"; reply: string }
-  | { kind: "message"; text: string }
+  | {
+      kind: "message"
+      text: string
+      /** Why the turn stopped, when a resolver said so -- see MessageReason. */
+      reason?: string
+      /** The pick list as data, when the ask was a "several". */
+      candidateIds?: string[]
+    }
 
 /**
  * A terminal clarification: the one shape every resolver and handler in this
@@ -86,9 +93,14 @@ export function isClarification<T extends { kind: string }>(
  * handler.
  */
 export function forwardClarification(
-  clarification: Clarification,
+  clarification: Clarification & { reason?: string; candidateIds?: string[] },
 ): FamilyOutcome {
-  return { kind: "message", text: clarification.text }
+  return {
+    kind: "message",
+    text: clarification.text,
+    reason: clarification.reason,
+    candidateIds: clarification.candidateIds,
+  }
 }
 
 /**

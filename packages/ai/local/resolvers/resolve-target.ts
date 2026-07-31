@@ -6,6 +6,8 @@ import {
 } from "@seldon/core/workspace/model/components"
 import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 
+import type { MessageReason } from "../../types"
+
 import { activeBoardSection } from "../../prompt/context-sections/active-board"
 import { componentValuesSection } from "../../prompt/context-sections/component-values"
 import { matchNodeStrings } from "../../prompt/context-sections/node-strings"
@@ -30,17 +32,7 @@ export type TargetSpec = "selection" | { nodeId: string }
  * for -- so they must stay distinguishable. Merging them is how a broken
  * outcome reads as a working one.
  */
-export type MessageReason =
-  /** Nothing matched the phrase. */
-  | "not-found"
-  /** Several nodes matched; the user picks. */
-  | "several"
-  /** No phrase and no selection, so nothing was searched at all. */
-  | "no-target"
-  /** One match, but outside the active board: needs confirmation. */
-  | "off-board"
-  /** The embedding index is unavailable and the board is too big to list. */
-  | "no-index"
+export type { MessageReason } from "../../types"
 
 export type TargetResolution =
   | { kind: "resolved"; nodeId: string }
@@ -50,7 +42,13 @@ export type TargetResolution =
    * refuses explicitly rather than picking one.
    */
   | { kind: "resolved-many"; nodeIds: string[] }
-  | { kind: "message"; text: string; reason: MessageReason }
+  | {
+      kind: "message"
+      text: string
+      reason: MessageReason
+      /** The pick list as data, when the reason is "several". */
+      candidateIds?: string[]
+    }
 
 interface NodeMatch {
   id: string
@@ -319,6 +317,7 @@ function widen(
     kind: "message",
     text: `Several nodes match "${query}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
     reason: "several",
+    candidateIds: matches.slice(0, MATCH_LIMIT).map((match) => match.id),
   }
 }
 
@@ -360,6 +359,9 @@ export function resolveNodeTarget(
           kind: "message",
           text: `Several parts of the selection match "${match}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
           reason: "several",
+          candidateIds: within
+            .slice(0, MATCH_LIMIT)
+            .map((partMatch) => partMatch.id),
         }
       }
       return widen(workspace, match, activeKey, scope)

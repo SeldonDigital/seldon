@@ -30,7 +30,13 @@ import { spatialLabels } from "./geometry-labels"
 
 export type FindNodeResult =
   | { kind: "resolved"; nodeId: string }
-  | { kind: "message"; text: string; reason: MessageReason }
+  | {
+      kind: "message"
+      text: string
+      reason: MessageReason
+      /** The pick list as data, when the reason is "several". */
+      candidateIds?: string[]
+    }
 
 type Candidate = FindNodeCandidate
 
@@ -251,5 +257,8 @@ export async function findNodeSemantic(
     kind: "message",
     text: `${tiedCluster.length} elements match "${query}" equally well:\n${clusterLines}\nAsk the user to select the one they mean on the canvas (or name it more specifically), then run again.`,
     reason: "several",
+    candidateIds: tiedCluster
+      .slice(0, TIE_LIST_LIMIT)
+      .map((rankedEntry) => rankedEntry.id),
   }
 }
