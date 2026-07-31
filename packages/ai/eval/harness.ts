@@ -144,6 +144,9 @@ export async function runModel(model: string): Promise<CaseResult[]> {
       if (target.kind === "resolved") {
         resolutionGot = "1 node"
         resolutionOk = expected === 1
+      } else if (target.kind === "resolved-many") {
+        resolutionGot = `${target.nodeIds.length} nodes`
+        resolutionOk = expected === target.nodeIds.length
       } else {
         // The reason tag is the whole point: "several" is Hari working, while
         // "no-target" means it never had a phrase to search with. Scoring

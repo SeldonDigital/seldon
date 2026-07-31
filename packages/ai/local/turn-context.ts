@@ -90,3 +90,19 @@ export function forwardClarification(
 ): FamilyOutcome {
   return { kind: "message", text: clarification.text }
 }
+
+/**
+ * The refusal for a family that cannot act on a set. A plural reference to a
+ * single-target action ("move all the chips into...") is a different intent
+ * from its singular form and deserves an explicit ask, never an implicit
+ * loop over the set and never a silent pick of one member.
+ */
+export function refuseSetTarget(
+  actionDescription: string,
+  matchCount: number,
+): FamilyOutcome {
+  return {
+    kind: "message",
+    text: `That matched ${matchCount} elements, but I can only ${actionDescription} one at a time. Select the one you mean on the canvas, or name it more specifically, then ask again.`,
+  }
+}

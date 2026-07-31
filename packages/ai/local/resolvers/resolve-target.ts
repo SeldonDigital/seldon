@@ -44,6 +44,12 @@ export type MessageReason =
 
 export type TargetResolution =
   | { kind: "resolved"; nodeId: string }
+  /**
+   * A class reference resolved to every match on the active board. Only the
+   * plural path produces this; a family handler that cannot act on a set
+   * refuses explicitly rather than picking one.
+   */
+  | { kind: "resolved-many"; nodeIds: string[] }
   | { kind: "message"; text: string; reason: MessageReason }
 
 interface NodeMatch {
@@ -216,6 +222,54 @@ function searchWorkspace(
     })
   }
   return matches
+}
+
+/**
+ * Naive singular variants of a class phrase, so "chips" matches nodes whose
+ * catalog id or label is "chip". Deliberately dumb -- strip "es" then "s" --
+ * because the phrase and the vocabulary are both English design nouns, and a
+ * wrong variant merely matches nothing.
+ */
+function needleVariants(phrase: string): string[] {
+  const needle = phrase.trim().toLowerCase()
+  const variants = new Set([needle])
+  if (needle.endsWith("es")) variants.add(needle.slice(0, -2))
+  if (needle.endsWith("s")) variants.add(needle.slice(0, -1))
+  return [...variants].filter((variant) => variant !== "")
+}
+
+/**
+ * The class path: a plural reference resolves to EVERY match on the active
+ * board, by predicate, not by ranking. There is nothing to disambiguate --
+ * the set is the answer -- so no model call and no similarity threshold is
+ * involved. Zero matches is the only failure.
+ */
+export function resolveClassTarget(
+  workspace: Workspace,
+  activeKey: BoardKey | undefined,
+  phrase: string,
+): TargetResolution {
+  if (activeKey === undefined) {
+    return {
+      kind: "message",
+      text: "No board is active, so there is no set of elements to match. Open a board first.",
+      reason: "no-target",
+    }
+  }
+  const matchedIds = new Set<string>()
+  for (const variant of needleVariants(phrase)) {
+    for (const match of searchWorkspace(workspace, variant, activeKey)) {
+      if (match.inActiveBoard) matchedIds.add(match.id)
+    }
+  }
+  if (matchedIds.size === 0) {
+    return {
+      kind: "message",
+      text: `No elements on this board match "${phrase}". Ask the user which elements to change, or try a different name.`,
+      reason: "not-found",
+    }
+  }
+  return { kind: "resolved-many", nodeIds: [...matchedIds] }
 }
 
 function describe(match: NodeMatch): string {

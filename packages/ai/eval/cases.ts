@@ -266,7 +266,10 @@ export const EVAL_CASES: EvalCase[] = [
   // child. Everything marked `known` fails today by construction -- the
   // resolver's return type cannot express more than one node.
 
-  // single x 1: the phrase names one element and one matches. Works today.
+  // single x n across variants: the button board's four variant rows each
+  // hold an equally-matching text, so under the multiple-matches-and-none-
+  // selected rule the honest outcome is an ask, not a silent pick. (The old
+  // pipeline resolved this by letting the LLM tie-break choose one.)
   {
     id: "card-single-one",
     message: "make the title red",
@@ -274,7 +277,7 @@ export const EVAL_CASES: EvalCase[] = [
     expected: {
       intent: "set_node_properties",
       referenceIntent: "single",
-      resolution: 1,
+      resolution: "several",
     },
   },
 
@@ -285,7 +288,6 @@ export const EVAL_CASES: EvalCase[] = [
     message: "make the chip red",
     scope: "board",
     seed: "chipRow",
-    known: "picks one chip via escalation instead of asking which",
     expected: {
       intent: "set_node_properties",
       referenceIntent: "single",
@@ -299,7 +301,6 @@ export const EVAL_CASES: EvalCase[] = [
     message: "make all the chips red",
     scope: "board",
     seed: "chipRow",
-    known: "resolves a single chip; no multi-node return exists",
     expected: {
       intent: "set_node_properties",
       referenceIntent: "class",
@@ -311,7 +312,6 @@ export const EVAL_CASES: EvalCase[] = [
     message: "make the chips red",
     scope: "board",
     seed: "chipRow",
-    known: "bare plural carries no 'all' cue; resolves a single chip",
     expected: {
       intent: "set_node_properties",
       referenceIntent: "class",
@@ -323,7 +323,6 @@ export const EVAL_CASES: EvalCase[] = [
     message: "give every chip a bigger corner radius",
     scope: "board",
     seed: "chipRow",
-    known: "resolves a single chip; no multi-node return exists",
     expected: {
       intent: "set_node_properties",
       referenceIntent: "class",
@@ -335,7 +334,7 @@ export const EVAL_CASES: EvalCase[] = [
     message: "hide each of the chips",
     scope: "board",
     seed: "chipRow",
-    known: "resolves a single chip; no multi-node return exists",
+    known: "classifier answers outside the vocabulary; plural phrasing dies at the intent stage",
     expected: {
       intent: "set_node_properties",
       referenceIntent: "class",
@@ -343,9 +342,10 @@ export const EVAL_CASES: EvalCase[] = [
     },
   },
 
-  // class x 1: "all" is harmless when only one element matches. Should behave
-  // exactly like the single case, and is the row that proves "all" must not be
-  // load-bearing on its own.
+  // Originally authored as the class-x-1 cell, mislabeled: the button board
+  // holds nine text nodes, so "all the text" correctly matches all nine. A
+  // true class-x-1 case needs a seed with exactly one member of some class --
+  // follow-up, tracked in the cardinality issue.
   {
     id: "card-class-one-match",
     message: "make all the text red",
@@ -353,7 +353,7 @@ export const EVAL_CASES: EvalCase[] = [
     expected: {
       intent: "set_node_properties",
       referenceIntent: "class",
-      resolution: 1,
+      resolution: 9,
     },
   },
 
@@ -401,7 +401,6 @@ export const EVAL_CASES: EvalCase[] = [
     message: "make all the chips in the list bold",
     scope: "board",
     seed: "chipRow",
-    known: "subtree-scoped class queries have no resolver path at all",
     expected: {
       intent: "set_node_properties",
       referenceIntent: "class",

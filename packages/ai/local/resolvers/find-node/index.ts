@@ -36,8 +36,8 @@ type Candidate = FindNodeCandidate
 
 /** Top-two score gap below which the ranking counts as ambiguous. */
 const ESCALATION_MARGIN = 0.04
-/** How many ranked candidates the escalation call chooses among. */
-const ESCALATION_POOL = 6
+/** Most tied candidates the ambiguity message lists. */
+const TIE_LIST_LIMIT = 10
 /** Most candidates the no-embeddings fallback will offer the model. */
 const FALLBACK_POOL = 12
 /** How many ranked candidates the transcript's ranking step lists. */
@@ -76,6 +76,46 @@ function collectCandidates(
     if (nodeHasSpatialLabel) descriptorParts.push(`position: ${spatialLabel}`)
     return [{ id: nodeId, text: descriptorParts.join(", ") }]
   })
+}
+
+/**
+ * Deterministic spatial tie-break over a near-tied cluster. Ambiguity is a
+ * property of the candidates, not the scores: when the tied elements differ
+ * only in position and the query names one ("the last button"), the geometry
+ * labels settle it in code -- no model call, no ask. Longest matching label
+ * phrase wins, so "second last" beats "last". Returns undefined when zero or
+ * several candidates match equally well: that is real ambiguity.
+ */
+export function spatialTieBreak(
+  query: string,
+  tiedCandidates: readonly Candidate[],
+): Candidate | undefined {
+  const matchesInQuery = (phrase: string): boolean =>
+    new RegExp(
+      `\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
+      "i",
+    ).test(query)
+
+  let bestCandidates: Candidate[] = []
+  let bestPhraseWordCount = 0
+  for (const candidate of tiedCandidates) {
+    const positionLabel = candidate.text.split("position: ")[1]
+    if (!positionLabel) continue
+    for (const phrase of positionLabel.split(", ")) {
+      if (phrase === "" || !matchesInQuery(phrase)) continue
+      const phraseWordCount = phrase.split(" ").length
+      if (phraseWordCount > bestPhraseWordCount) {
+        bestPhraseWordCount = phraseWordCount
+        bestCandidates = [candidate]
+      } else if (
+        phraseWordCount === bestPhraseWordCount &&
+        !bestCandidates.includes(candidate)
+      ) {
+        bestCandidates.push(candidate)
+      }
+    }
+  }
+  return bestCandidates.length === 1 ? bestCandidates[0] : undefined
 }
 
 /** One enum-constrained pick over a small labeled candidate list. */
@@ -177,8 +217,39 @@ export async function findNodeSemantic(
     return { kind: "resolved", nodeId: bestMatch.id }
   }
 
-  const escalationPool = rankedCandidates
-    .slice(0, ESCALATION_POOL)
-    .map((rankedEntry) => candidateById.get(rankedEntry.id)!)
-  return escalate(context, query, escalationPool)
+  // A near-tie with nothing selected is not a coin the model gets to flip:
+  // several elements match equally well, so the honest outcome is the tied
+  // cluster and an ask. Selection is the disambiguator -- a selected node
+  // resolves in the ladder long before this runs. (This replaces the old
+  // LLM tie-break pick over a fixed pool of 6.)
+  const tiedCluster = rankedCandidates.filter(
+    (rankedEntry) => bestMatch.score - rankedEntry.score < ESCALATION_MARGIN,
+  )
+
+  // Unless the query names a position: elements tied on similarity but
+  // differing spatially ("the last button" over three buttons) resolve by
+  // geometry, in code.
+  const spatialWinner = spatialTieBreak(
+    query,
+    tiedCluster.map((rankedEntry) => candidateById.get(rankedEntry.id)!),
+  )
+  if (spatialWinner !== undefined) {
+    recordStep(context, "find_node_spatial_tiebreak", {
+      ok: true,
+      output: `Near-tie broken by spatial label: "${query}" names the position of ${spatialWinner.id} (deterministic, no model call).`,
+    })
+    return { kind: "resolved", nodeId: spatialWinner.id }
+  }
+  const clusterLines = tiedCluster
+    .slice(0, TIE_LIST_LIMIT)
+    .map((rankedEntry) => {
+      const candidate = candidateById.get(rankedEntry.id)!
+      return `- ${candidate.id}: ${candidate.text}`
+    })
+    .join("\n")
+  return {
+    kind: "message",
+    text: `${tiedCluster.length} elements match "${query}" equally well:\n${clusterLines}\nAsk the user to select the one they mean on the canvas (or name it more specifically), then run again.`,
+    reason: "several",
+  }
 }

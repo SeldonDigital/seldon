@@ -9,6 +9,7 @@ import {
   forwardClarification,
   isClarification,
   recordStep,
+  refuseSetTarget,
 } from "../turn-context"
 
 /** Handles the `remove_instance` intent: target -> commit. */
@@ -18,6 +19,8 @@ export async function executeRemoveInstance(
   const resolvedTarget = await resolveTargetWithHint(context)
   if (isClarification(resolvedTarget))
     return forwardClarification(resolvedTarget)
+  if (resolvedTarget.kind === "resolved-many")
+    return refuseSetTarget("act on", resolvedTarget.nodeIds.length)
 
   try {
     commit(context.state, {
@@ -45,6 +48,8 @@ export async function executeRemoveComponent(
   const resolvedTarget = await resolveTargetWithHint(context)
   if (isClarification(resolvedTarget))
     return forwardClarification(resolvedTarget)
+  if (resolvedTarget.kind === "resolved-many")
+    return refuseSetTarget("act on", resolvedTarget.nodeIds.length)
 
   const catalogId = getNodeCatalogId(
     context.state.workspace.nodes[resolvedTarget.nodeId]!,
@@ -82,6 +87,8 @@ export async function executeDuplicate(
   const resolvedTarget = await resolveTargetWithHint(context)
   if (isClarification(resolvedTarget))
     return forwardClarification(resolvedTarget)
+  if (resolvedTarget.kind === "resolved-many")
+    return refuseSetTarget("act on", resolvedTarget.nodeIds.length)
 
   try {
     commit(context.state, {

@@ -83,24 +83,39 @@ export async function executeSetNodeTheme(
   if (isClarification(themeResolution))
     return forwardClarification(themeResolution)
 
-  try {
-    commit(context.state, {
-      type: "set_node_theme",
-      payload: {
-        nodeId: resolvedTarget.nodeId,
-        theme: themeResolution.themeId,
-      },
-    } as unknown as WorkspaceAction)
-  } catch (caught) {
-    return {
-      kind: "message",
-      text: `Couldn't apply the theme: ${commitFailureReason(caught)}`,
+  // "Apply the dark theme to all the cards" themes each member.
+  const targetNodeIds =
+    resolvedTarget.kind === "resolved-many"
+      ? resolvedTarget.nodeIds
+      : [resolvedTarget.nodeId]
+  let appliedCount = 0
+  for (const targetNodeId of targetNodeIds) {
+    try {
+      commit(context.state, {
+        type: "set_node_theme",
+        payload: {
+          nodeId: targetNodeId,
+          theme: themeResolution.themeId,
+        },
+      } as unknown as WorkspaceAction)
+      appliedCount += 1
+    } catch (caught) {
+      return {
+        kind: "message",
+        text:
+          appliedCount === 0
+            ? `Couldn't apply the theme: ${commitFailureReason(caught)}`
+            : `Applied the theme to ${appliedCount} of ${targetNodeIds.length} elements, then failed on ${targetNodeId}: ${commitFailureReason(caught)}`,
+      }
     }
   }
   recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Applied theme ${themeResolution.themeId} to ${resolvedTarget.nodeId}.`,
+    reply:
+      targetNodeIds.length === 1
+        ? `Applied theme ${themeResolution.themeId} to ${targetNodeIds[0]}.`
+        : `Applied theme ${themeResolution.themeId} to ${targetNodeIds.length} elements.`,
   }
 }
 

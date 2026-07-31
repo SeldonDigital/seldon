@@ -20,6 +20,7 @@ import {
   forwardClarification,
   isClarification,
   recordStep,
+  refuseSetTarget,
 } from "../turn-context"
 
 /** Every component catalog id, across all levels. */
@@ -102,12 +103,16 @@ export async function executeAddComponent(
     const destinationNeedsClarification = isClarification(destinationResolution)
     recordStep(context, "resolve_destination", {
       ok: !destinationNeedsClarification,
-      output: destinationNeedsClarification
+      output: isClarification(destinationResolution)
         ? destinationResolution.text
-        : `Resolved "${addRequest.destination}" to node ${destinationResolution.nodeId} (deterministic, no model call).`,
+        : destinationResolution.kind === "resolved"
+          ? `Resolved "${addRequest.destination}" to node ${destinationResolution.nodeId} (deterministic, no model call).`
+          : `Resolved ${destinationResolution.nodeIds.length} destinations.`,
     })
     if (destinationNeedsClarification)
       return forwardClarification(destinationResolution)
+    if (destinationResolution.kind === "resolved-many")
+      return refuseSetTarget("insert into", destinationResolution.nodeIds.length)
     parentId = destinationResolution.nodeId
   } else if (selectionIsInsideAComponent) {
     parentId = context.resolved.selectedNodeId
@@ -277,6 +282,8 @@ export async function executeInsertVariantInstance(
   })
   if (destinationNeedsClarification)
     return forwardClarification(destinationResolution)
+  if (destinationResolution.kind === "resolved-many")
+    return refuseSetTarget("insert into", destinationResolution.nodeIds.length)
 
   const workspaceBeforeCommit = context.state.workspace
   try {

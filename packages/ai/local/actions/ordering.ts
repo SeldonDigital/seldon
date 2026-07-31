@@ -20,6 +20,7 @@ import {
   forwardClarification,
   isClarification,
   recordStep,
+  refuseSetTarget,
 } from "../turn-context"
 
 /** Fewer siblings than this and there is no ordering to change. */
@@ -68,6 +69,8 @@ export async function executeReorder(
   const resolvedTarget = await resolveTargetWithHint(context)
   if (isClarification(resolvedTarget))
     return forwardClarification(resolvedTarget)
+  if (resolvedTarget.kind === "resolved-many")
+    return refuseSetTarget("reorder", resolvedTarget.nodeIds.length)
 
   const siblingPosition = findSiblingPosition(
     context.state.workspace,
@@ -187,11 +190,15 @@ export async function executeMove(
   const itemNeedsClarification = isClarification(itemResolution)
   recordStep(context, "resolve_target", {
     ok: !itemNeedsClarification,
-    output: itemNeedsClarification
+    output: isClarification(itemResolution)
       ? itemResolution.text
-      : `Resolved the item to move to node ${itemResolution.nodeId} (deterministic, no model call).`,
+      : itemResolution.kind === "resolved"
+        ? `Resolved the item to move to node ${itemResolution.nodeId} (deterministic, no model call).`
+        : `Resolved ${itemResolution.nodeIds.length} items.`,
   })
   if (itemNeedsClarification) return forwardClarification(itemResolution)
+  if (itemResolution.kind === "resolved-many")
+    return refuseSetTarget("move", itemResolution.nodeIds.length)
 
   const destinationResolution = resolveNodeTarget(
     context.state.workspace,
@@ -205,12 +212,16 @@ export async function executeMove(
   const destinationNeedsClarification = isClarification(destinationResolution)
   recordStep(context, "resolve_destination", {
     ok: !destinationNeedsClarification,
-    output: destinationNeedsClarification
+    output: isClarification(destinationResolution)
       ? destinationResolution.text
-      : `Resolved the destination to node ${destinationResolution.nodeId} (deterministic, no model call).`,
+      : destinationResolution.kind === "resolved"
+        ? `Resolved the destination to node ${destinationResolution.nodeId} (deterministic, no model call).`
+        : `Resolved ${destinationResolution.nodeIds.length} destinations.`,
   })
   if (destinationNeedsClarification)
     return forwardClarification(destinationResolution)
+  if (destinationResolution.kind === "resolved-many")
+    return refuseSetTarget("move into", destinationResolution.nodeIds.length)
 
   try {
     commit(context.state, {

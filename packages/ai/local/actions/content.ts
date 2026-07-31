@@ -51,16 +51,35 @@ export async function executeTranslate(
   })
   const targetLanguage = languageAnswer.language
 
-  const textProperties = collectTextProperties(
-    context.state.workspace,
-    context.resolved.resolvedKey,
-    resolvedTarget.nodeId,
-  )
+  // A class reference translates every member's subtree; a single reference
+  // is a one-element fan. Deduped by node+property in case members nest.
+  const targetNodeIds =
+    resolvedTarget.kind === "resolved-many"
+      ? resolvedTarget.nodeIds
+      : [resolvedTarget.nodeId]
+  const seenTextProperties = new Set<string>()
+  const textProperties = targetNodeIds
+    .flatMap((targetNodeId) =>
+      collectTextProperties(
+        context.state.workspace,
+        context.resolved.resolvedKey,
+        targetNodeId,
+      ),
+    )
+    .filter((textProperty) => {
+      const propertyIdentity = `${textProperty.nodeId}\u0000${textProperty.propertyKey}`
+      if (seenTextProperties.has(propertyIdentity)) return false
+      seenTextProperties.add(propertyIdentity)
+      return true
+    })
   const targetHasNoTranslatableText = textProperties.length === 0
   if (targetHasNoTranslatableText) {
     return {
       kind: "message",
-      text: `${resolvedTarget.nodeId} has no text content to translate.`,
+      text:
+        targetNodeIds.length === 1
+          ? `${targetNodeIds[0]} has no text content to translate.`
+          : `None of the ${targetNodeIds.length} matched elements have text content to translate.`,
     }
   }
 
@@ -108,30 +127,34 @@ export async function executeTranslate(
     }
   }
 
-  // Direction: only when the target's component supports it, and non-fatally.
+  // Direction: only for members whose component supports it, and non-fatally.
   let directionNote = ""
-  const targetNode = context.state.workspace.nodes[resolvedTarget.nodeId]
-  const catalogId = targetNode
-    ? getNodeCatalogId(targetNode, context.state.workspace)
-    : undefined
-  const componentSupportsTextDirection = catalogId
-    ? settablePropertyKeys(catalogId).includes("direction")
-    : false
-  if (componentSupportsTextDirection) {
+  const directionCapableNodeIds = targetNodeIds.filter((targetNodeId) => {
+    const targetNode = context.state.workspace.nodes[targetNodeId]
+    const catalogId = targetNode
+      ? getNodeCatalogId(targetNode, context.state.workspace)
+      : undefined
+    return catalogId
+      ? settablePropertyKeys(catalogId).includes("direction")
+      : false
+  })
+  if (directionCapableNodeIds.length > 0) {
     const textDirection = await resolveTextDirection(context, targetLanguage)
     const languageReadsRightToLeft = textDirection === "rtl"
     if (languageReadsRightToLeft) {
-      try {
-        commit(context.state, {
-          type: "set_node_properties",
-          payload: {
-            nodeId: resolvedTarget.nodeId,
-            properties: { direction: "rtl" },
-          },
-        } as unknown as WorkspaceAction)
-        directionNote = " and set right-to-left text direction"
-      } catch {
-        // Direction is a nicety; a rejection must not undo the translation.
+      for (const targetNodeId of directionCapableNodeIds) {
+        try {
+          commit(context.state, {
+            type: "set_node_properties",
+            payload: {
+              nodeId: targetNodeId,
+              properties: { direction: "rtl" },
+            },
+          } as unknown as WorkspaceAction)
+          directionNote = " and set right-to-left text direction"
+        } catch {
+          // Direction is a nicety; a rejection must not undo the translation.
+        }
       }
     }
   }

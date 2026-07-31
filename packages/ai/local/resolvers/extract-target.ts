@@ -14,6 +14,8 @@ export interface TargetHint {
   pointsAtSelection: boolean
   /** The phrase naming an element, when the message names one. */
   match?: string
+  /** The edit applies to every element of a kind, not one particular one. */
+  plural: boolean
 }
 
 /**
@@ -32,6 +34,7 @@ export async function extractTargetHint(
   const { value: rawHint, metrics } = await callOllamaFormat<{
     pointsAtSelection: boolean
     match: string
+    plural: boolean
   }>({
     model: context.model,
     host: context.host,
@@ -49,5 +52,7 @@ export async function extractTargetHint(
   return {
     pointsAtSelection: rawHint.pointsAtSelection,
     match: searchPhrase === "" ? undefined : searchPhrase,
+    // Plural without a phrase is meaningless: there is no class to match.
+    plural: rawHint.plural && searchPhrase !== "",
   }
 }

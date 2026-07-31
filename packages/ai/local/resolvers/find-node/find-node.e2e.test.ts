@@ -52,11 +52,23 @@ describeIfOllama("findNodeSemantic (live)", () => {
       }
 
       const findResult = await findNodeSemantic(context, "the last button")
-      // The pipeline must resolve (embedding-only or via escalation), and to
-      // a node that actually exists.
-      expect(findResult.kind).toBe("resolved")
-      if (findResult.kind === "resolved") {
-        expect(workspace.nodes[findResult.nodeId]).toBeDefined()
+      // The button board holds several variants, and EACH variant row has a
+      // "last" button -- so "the last button" is genuinely ambiguous here.
+      // The old pipeline let the LLM tie-break silently pick one; the
+      // contract now returns the tied cluster and asks. (A single row's
+      // "the last button" resolves deterministically -- covered by the
+      // spatialTieBreak unit tests.)
+      expect(findResult.kind).toBe("message")
+      if (findResult.kind === "message") {
+        expect(findResult.reason).toBe("several")
+        // The ask must list real, existing nodes to choose from.
+        const listedNodeIds = [...findResult.text.matchAll(/- (\S+):/g)].map(
+          (match) => match[1]!,
+        )
+        expect(listedNodeIds.length).toBeGreaterThanOrEqual(2)
+        for (const nodeId of listedNodeIds) {
+          expect(workspace.nodes[nodeId]).toBeDefined()
+        }
       }
     },
     LIVE_TIMEOUT_MS,

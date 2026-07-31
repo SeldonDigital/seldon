@@ -28,7 +28,7 @@ describe("buildExtractTargetStage", () => {
     // The either/or this replaced could answer "selection" and drop the
     // phrase, leaving nothing downstream to search with.
     expect(schema).not.toHaveProperty("oneOf")
-    expect(schema.required).toEqual(["pointsAtSelection", "match"])
+    expect(schema.required).toEqual(["pointsAtSelection", "match", "plural"])
   })
 
   it("tells the model a plural phrase is still a name", () => {

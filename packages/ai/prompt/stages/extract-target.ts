@@ -6,14 +6,21 @@ import type { PromptStage } from "./shared"
  * can recover it -- so a message that names an element but gets misread as a
  * pronoun reference has nowhere left to go. Both fields are always required;
  * `match` is "" only when the message names nothing at all.
+ *
+ * `plural` is the cardinality signal: does the edit apply to one element or a
+ * class of them? It is judged from grammatical number alone -- the count of
+ * actual matches comes from the board, not from here. Interim shape: a
+ * query-parse stage with a `count` field (terminus's descriptor parse) is the
+ * planned replacement.
  */
 const EXTRACT_TARGET_SCHEMA = {
   type: "object",
   properties: {
     pointsAtSelection: { type: "boolean" },
     match: { type: "string" },
+    plural: { type: "boolean" },
   },
-  required: ["pointsAtSelection", "match"],
+  required: ["pointsAtSelection", "match", "plural"],
 }
 
 /**
@@ -39,6 +46,8 @@ export function buildExtractTargetStage(inputs: {
     "match: the shortest phrase naming an element, e.g. 'title' or 'hero heading'. Give the bare noun phrase, no leading article.",
     'Set match to "" ONLY when the message names no element whatsoever.',
     'A plural or quantified phrase is still a name: "all the chips" -> match "chips", "every tab" -> match "tabs".',
+    "plural: true when the edit applies to every element of a kind, judged by the grammatical number of the noun the edit applies to.",
+    'Plural noun -> true: "the chips", "all the chips", "each tab". Singular noun -> false, even with a quantifier: "all of the text" is one element.',
   ].join("\n")
   return { prompt, schema: EXTRACT_TARGET_SCHEMA }
 }

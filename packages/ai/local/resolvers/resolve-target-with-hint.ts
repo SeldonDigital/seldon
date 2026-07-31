@@ -3,7 +3,11 @@ import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-
 import { type TurnContext, isClarification, recordStep } from "../turn-context"
 import { extractTargetHint } from "./extract-target"
 import { findNodeSemantic } from "./find-node"
-import { type TargetResolution, resolveNodeTarget } from "./resolve-target"
+import {
+  type TargetResolution,
+  resolveClassTarget,
+  resolveNodeTarget,
+} from "./resolve-target"
 
 /** Filler words stripped before comparing a phrase to a created node's name. */
 const FILLER_WORDS =
@@ -116,6 +120,27 @@ export async function resolveTargetWithHint(
   const targetHint = await extractTargetHint(context)
   const searchPhrase = targetHint.match
 
+  // Class reference ("all the chips", "the tabs"): the set of matches IS the
+  // answer, so it resolves by predicate over the active board -- no ranking,
+  // no model call, nothing to disambiguate. Zero matches is the only miss.
+  if (targetHint.plural && searchPhrase !== undefined) {
+    const classResolution = resolveClassTarget(
+      context.state.workspace,
+      context.resolved.resolvedKey,
+      searchPhrase,
+    )
+    recordStep(context, "resolve_target", {
+      ok: classResolution.kind === "resolved-many",
+      output:
+        classResolution.kind === "resolved-many"
+          ? `Matched "${searchPhrase}" as a class: ${classResolution.nodeIds.length} nodes on the active board (deterministic, no model call).`
+          : isClarification(classResolution)
+            ? classResolution.text
+            : `Resolved to node ${classResolution.nodeId}.`,
+    })
+    return classResolution
+  }
+
   // Created-this-turn shortcut: a reference to something an earlier step
   // just made resolves without search, and a part-reference searches only
   // inside the created subtree.
@@ -141,7 +166,7 @@ export async function resolveTargetWithHint(
         createdMention.remainder,
         context.resolved.scope,
       )
-      const partWasFoundInsideCreatedNode = !isClarification(nodeWithinCreated)
+      const partWasFoundInsideCreatedNode = nodeWithinCreated.kind === "resolved"
       if (partWasFoundInsideCreatedNode) {
         recordStep(context, "resolve_target", {
           ok: true,
@@ -168,9 +193,11 @@ export async function resolveTargetWithHint(
   if (!deterministicPassNeedsClarification || noSearchPhraseToFallBackOn) {
     recordStep(context, "resolve_target", {
       ok: !deterministicPassNeedsClarification,
-      output: deterministicPassNeedsClarification
+      output: isClarification(deterministicResolution)
         ? deterministicResolution.text
-        : `Resolved to node ${deterministicResolution.nodeId} (deterministic: selection/label search, no model call).`,
+        : deterministicResolution.kind === "resolved"
+          ? `Resolved to node ${deterministicResolution.nodeId} (deterministic: selection/label search, no model call).`
+          : `Resolved ${deterministicResolution.nodeIds.length} nodes.`,
     })
     return deterministicResolution
   }

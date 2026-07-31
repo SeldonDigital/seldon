@@ -24,6 +24,7 @@ import {
   forwardClarification,
   isClarification,
   recordStep,
+  refuseSetTarget,
 } from "../turn-context"
 
 /** The component board key whose variant trees list this node id, if any. */
@@ -110,15 +111,23 @@ export async function executeSetProperties(
   if (isClarification(resolvedTarget))
     return forwardClarification(resolvedTarget)
 
+  // A class reference fans out; a single reference is a one-element fan.
+  // Property names and values resolve ONCE (they come from the message, which
+  // is the same for every member), then each member picks its own write node.
+  const targetNodeIds =
+    resolvedTarget.kind === "resolved-many"
+      ? resolvedTarget.nodeIds
+      : [resolvedTarget.nodeId]
+
   const catalogId = getNodeCatalogId(
-    context.state.workspace.nodes[resolvedTarget.nodeId]!,
+    context.state.workspace.nodes[targetNodeIds[0]!]!,
     context.state.workspace,
   )
   const nodeHasNoComponentSchema = !catalogId
   if (nodeHasNoComponentSchema) {
     return {
       kind: "message",
-      text: `Node ${resolvedTarget.nodeId} has no component schema, so its properties can't be resolved.`,
+      text: `Node ${targetNodeIds[0]} has no component schema, so its properties can't be resolved.`,
     }
   }
 
@@ -133,30 +142,44 @@ export async function executeSetProperties(
     propertyValues[propertyKey] = valueResolution.value
   }
 
-  const writeTarget = resolveWriteNode(context, resolvedTarget.nodeId)
-  if (isClarification(writeTarget)) return forwardClarification(writeTarget)
+  // Dedupe by write node: members of a class often share one component
+  // source, and a cascade would reach every one of them through a single
+  // write. Ten instances of one source must become one write, not ten.
+  const writeNodes = new Map<string, { cascaded: boolean }>()
+  for (const targetNodeId of targetNodeIds) {
+    const writeTarget = resolveWriteNode(context, targetNodeId)
+    if (isClarification(writeTarget)) return forwardClarification(writeTarget)
+    const alreadyPlanned = writeNodes.get(writeTarget.nodeId)
+    writeNodes.set(writeTarget.nodeId, {
+      cascaded: (alreadyPlanned?.cascaded ?? false) || writeTarget.cascaded,
+    })
+  }
 
-  // Fold layered-paint facet writes into whole layer stacks against the node
-  // the write actually lands on, so the merge neither drops sibling layers
-  // nor leaves a facet on a layer kind that cannot render it.
-  const assembledProperties = assembleLayeredWrites(
-    context.state.workspace,
-    writeTarget.nodeId,
-    propertyValues,
-  )
-
-  try {
-    commit(context.state, {
-      type: "set_node_properties",
-      payload: {
-        nodeId: writeTarget.nodeId,
-        properties: assembledProperties,
-      },
-    } as WorkspaceAction)
-  } catch (caught) {
-    return {
-      kind: "message",
-      text: `Couldn't apply that change: ${commitFailureReason(caught)}`,
+  let appliedCount = 0
+  for (const [writeNodeId] of writeNodes) {
+    // Fold layered-paint facet writes into whole layer stacks against the
+    // node the write actually lands on, so the merge neither drops sibling
+    // layers nor leaves a facet on a layer kind that cannot render it.
+    const assembledProperties = assembleLayeredWrites(
+      context.state.workspace,
+      writeNodeId,
+      propertyValues,
+    )
+    try {
+      commit(context.state, {
+        type: "set_node_properties",
+        payload: { nodeId: writeNodeId, properties: assembledProperties },
+      } as WorkspaceAction)
+      appliedCount += 1
+    } catch (caught) {
+      // A partial batch is reported truthfully: what landed, what didn't.
+      return {
+        kind: "message",
+        text:
+          appliedCount === 0
+            ? `Couldn't apply that change: ${commitFailureReason(caught)}`
+            : `Applied the change to ${appliedCount} of ${writeNodes.size} elements, then failed on ${writeNodeId}: ${commitFailureReason(caught)}`,
+      }
     }
   }
   recordStep(context, "commit", { ok: true })
@@ -167,12 +190,19 @@ export async function executeSetProperties(
         `${propertyKey} to ${JSON.stringify(propertyValues[propertyKey])}`,
     )
     .join(", ")
-  const reachNote = writeTarget.cascaded
+  const [onlyWriteNodeId] = writeNodes.keys()
+  const someWriteCascaded = [...writeNodes.values()].some(
+    (writeNode) => writeNode.cascaded,
+  )
+  const reachNote = someWriteCascaded
     ? " on the component source, so every instance follows"
     : ""
   return {
     kind: "applied",
-    reply: `Set ${describedChanges} on ${writeTarget.nodeId}${reachNote}.`,
+    reply:
+      writeNodes.size === 1
+        ? `Set ${describedChanges} on ${onlyWriteNodeId}${reachNote}.`
+        : `Set ${describedChanges} on ${writeNodes.size} elements${reachNote}.`,
   }
 }
 
@@ -184,21 +214,29 @@ export async function executeResetProperty(
   if (isClarification(resolvedTarget))
     return forwardClarification(resolvedTarget)
 
+  // Same fan as set: "reset the color on all the chips" resets each member.
+  // No write-node dedupe here -- reset clears the node's own override.
+  const targetNodeIds =
+    resolvedTarget.kind === "resolved-many"
+      ? resolvedTarget.nodeIds
+      : [resolvedTarget.nodeId]
+
   const catalogId = getNodeCatalogId(
-    context.state.workspace.nodes[resolvedTarget.nodeId]!,
+    context.state.workspace.nodes[targetNodeIds[0]!]!,
     context.state.workspace,
   )
   const nodeHasNoComponentSchema = !catalogId
   if (nodeHasNoComponentSchema) {
     return {
       kind: "message",
-      text: `Node ${resolvedTarget.nodeId} has no component schema, so its properties can't be resolved.`,
+      text: `Node ${targetNodeIds[0]} has no component schema, so its properties can't be resolved.`,
     }
   }
 
   const propertyNames = await resolvePropertyNames(context, catalogId)
   if (isClarification(propertyNames)) return forwardClarification(propertyNames)
 
+  for (const targetNodeId of targetNodeIds)
   for (const dottedKey of propertyNames.keys) {
     // A compound facet path (`border.color`) resets via propertyKey +
     // subpropertyKey; a layered path (`background.0.color`) additionally
@@ -217,13 +255,13 @@ export async function executeResetProperty(
         payload: keyNamesAFacet
           ? keyNamesALayerSlot
             ? {
-                nodeId: resolvedTarget.nodeId,
+                nodeId: targetNodeId,
                 propertyKey,
                 subpropertyKey,
                 layerIndex,
               }
-            : { nodeId: resolvedTarget.nodeId, propertyKey, subpropertyKey }
-          : { nodeId: resolvedTarget.nodeId, propertyKey },
+            : { nodeId: targetNodeId, propertyKey, subpropertyKey }
+          : { nodeId: targetNodeId, propertyKey },
       } as unknown as WorkspaceAction)
     } catch (caught) {
       return {
@@ -235,7 +273,10 @@ export async function executeResetProperty(
   recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
-    reply: `Reset ${propertyNames.keys.join(", ")} on ${resolvedTarget.nodeId}.`,
+    reply:
+      targetNodeIds.length === 1
+        ? `Reset ${propertyNames.keys.join(", ")} on ${targetNodeIds[0]}.`
+        : `Reset ${propertyNames.keys.join(", ")} on ${targetNodeIds.length} elements.`,
   }
 }
 
@@ -246,6 +287,9 @@ export async function executeSetLabel(
   const resolvedTarget = await resolveTargetWithHint(context)
   if (isClarification(resolvedTarget))
     return forwardClarification(resolvedTarget)
+  // One label across N elements is never what a rename means.
+  if (resolvedTarget.kind === "resolved-many")
+    return refuseSetTarget("rename", resolvedTarget.nodeIds.length)
 
   const { prompt, schema } = buildSetLabelStage({ message: context.message })
   const { value: labelAnswer, metrics } = await callOllamaFormat<{
