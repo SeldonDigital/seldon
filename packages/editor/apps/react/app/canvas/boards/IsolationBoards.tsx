@@ -129,7 +129,7 @@ export function IsolationBoards() {
   if (!isolatedBoard) return null
 
   return (
-    <Frame ref={containerRef} style={columnStyle}>
+    <Frame ref={containerRef} style={columnStyle} data-isolation-gallery>
       {rows.map((row) => (
         <Frame key={row.key} style={rowStyle} data-isolation-level={row.level}>
           {row.boards.map((item) => (

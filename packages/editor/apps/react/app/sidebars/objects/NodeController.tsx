@@ -236,7 +236,7 @@ const NodeInner = function NodeInner({
   // the disclosure arrow, buttons, border, and background untinted.
   const nodeTypeStyle = nodeTypeColor ? { style: { color: nodeTypeColor } } : undefined
 
-  // Show Leaves / Branch / Tree lineage fill from the View menu. Primary rows
+  // Show Branch lineage fill from the View menu. Primary rows
   // read as a strong accent fill (they change when the selection is edited);
   // secondary rows read faintly (related lineage that does not change). The fill
   // uses the same `--sdn-swatch-active` accent as selection, so the selected row

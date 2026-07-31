@@ -4,12 +4,12 @@ import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
 
 /**
- * Component-relationship highlight shown in the objects sidebar. `"selection"`
- * is the normal state with no relationship overlay. `"leaves"` highlights what
- * inherits from the selection, `"branch"` adds its source lineage, and `"tree"`
- * highlights the whole related group. Behaves as a radio in the View menu.
+ * Component-relationship highlight shown in the objects sidebar and, in isolation,
+ * on the canvas. `"selection"` is the normal state with no relationship overlay.
+ * `"branch"` highlights what inherits from the selection along with the lineage it
+ * comes from. Behaves as a radio in the View menu.
  */
-export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
+export type ComponentHighlightMode = "selection" | "branch"
 
 /**
  * Editor interface light/dark mode. `"system"` follows the OS appearance,

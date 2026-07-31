@@ -5,7 +5,7 @@ import { ref, watch } from "vue"
  * Component-relationship highlight shown in the objects sidebar. Behaves as a
  * radio in the View menu.
  */
-export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
+export type ComponentHighlightMode = "selection" | "branch"
 
 /** Editor interface light/dark mode (chrome only). "system" follows the OS. */
 export type InterfaceMode = "system" | "light" | "dark"

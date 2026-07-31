@@ -566,15 +566,10 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
     {
       id: "show-selection",
       label: "Show Selection",
+      // Any mode that is not Branch reads as the plain state, so a value persisted
+      // before the other highlights were retired still marks here.
       action: () => config.setComponentHighlightMode("selection"),
-      active: config.componentHighlightMode === "selection",
-      activeMarker: "bullet",
-    },
-    {
-      id: "show-leaves",
-      label: "Show Leaves",
-      action: () => config.setComponentHighlightMode("leaves"),
-      active: config.componentHighlightMode === "leaves",
+      active: config.componentHighlightMode !== "branch",
       activeMarker: "bullet",
     },
     {
@@ -582,13 +577,6 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       label: "Show Branch",
       action: () => config.setComponentHighlightMode("branch"),
       active: config.componentHighlightMode === "branch",
-      activeMarker: "bullet",
-    },
-    {
-      id: "show-tree",
-      label: "Show Tree",
-      action: () => config.setComponentHighlightMode("tree"),
-      active: config.componentHighlightMode === "tree",
       activeMarker: "bullet",
     },
     "separator",

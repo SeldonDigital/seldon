@@ -101,11 +101,10 @@ export function useRowNode(
   const isParentOfSelectedNode = useIsParentOfSelection(node.id)
   const isNodeActive = parentIsSelected || isParentOfSelectedNode || selectedNodeIsWithin
 
-  // Show Leaves / Branch / Tree lineage highlight from the View menu. Primary
-  // rows change when the selection is edited; secondary rows are related
-  // lineage that does not. The selected row keeps its own selection styling, so
-  // it is excluded here. When the mode is "selection" the sets are empty and no
-  // row lights up, which is the default.
+  // Show Branch lineage highlight from the View menu. Primary rows change when the
+  // selection is edited; secondary rows are related lineage that does not. The
+  // selected row keeps its own selection styling, so it is excluded here. When the
+  // mode is "selection" the sets are empty and no row lights up, which is the default.
   const sharedHighlight = useSharedNodeHighlight()
   const isPrimaryShared = !isSelected && sharedHighlight.primary.has(node.id)
   const isSecondaryShared =

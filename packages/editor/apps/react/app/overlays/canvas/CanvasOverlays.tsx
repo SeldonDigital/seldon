@@ -16,6 +16,7 @@ import { useCanvasRemeasureStore } from "../../canvas/hooks/use-canvas-remeasure
 import { useNodeBelongsToActiveBoard } from "../hooks/use-belongs-to-active-board"
 import { useTrackNodeRects } from "../hooks/use-track-node-rects"
 import { useVisibleNodes } from "../hooks/use-visible-nodes"
+import { HighlightConnectors } from "./highlight/HighlightConnectors"
 import { InsertOverlay } from "./insert/InsertOverlay"
 import { RefConnector } from "./ref-badges/RefConnector"
 import { CanvasDragLayer } from "./select/CanvasDragLayer"
@@ -32,7 +33,7 @@ export function CanvasOverlays() {
   // array on every render would mean tearing down and rebuilding an observer per node
   // each time anything here changes, several times over during a single pan.
   const nodeIds = useMemo(() => visibleNodes.map((node) => node.id), [visibleNodes])
-  const { showSelection, wireframeMode, showRefBadges } = useEditorConfig()
+  const { showSelection, wireframeMode, showRefBadges, isolatedView } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const { activeBoard } = useActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
@@ -57,6 +58,12 @@ export function CanvasOverlays() {
   const drawRefBadges = showRefBadges && !activeBoardIsTheme
   const refBadges = drawRefBadges ? <RefConnector /> : null
 
+  // Isolation draws the whole gallery at once, which is what makes a line from
+  // the selection to the boards it reaches worth drawing. Outside isolation the
+  // canvas shows one board, so the objects sidebar carries the highlight alone.
+  // The connectors draw nothing while the mode is Show Selection.
+  const highlightConnectors = isolatedView ? <HighlightConnectors /> : null
+
   // Nodes reorder by dragging under the select tool. Theme boards are previews
   // with no node tree to reorder.
   const dragLayer = activeTool === "select" && !activeBoardIsTheme ? <CanvasDragLayer /> : null
@@ -80,6 +87,7 @@ export function CanvasOverlays() {
         <HoverOverlay wireframe={showWireframes} />
       )}
       {activeTool === "component" && hasHoverState && <InsertOverlay />}
+      {highlightConnectors}
       {refBadges}
       {dragLayer}
     </>
