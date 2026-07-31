@@ -6,6 +6,8 @@ import { resolveTargetWithHint } from "../resolvers/resolve-target-with-hint"
 import {
   type FamilyOutcome,
   type TurnContext,
+  forwardClarification,
+  isClarification,
   recordStep,
 } from "../turn-context"
 
@@ -13,13 +15,14 @@ import {
 export async function executeRemoveInstance(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   try {
     commit(context.state, {
       type: "remove_instance",
-      payload: { instanceId: target.nodeId },
+      payload: { instanceId: resolvedTarget.nodeId },
     } as unknown as WorkspaceAction)
   } catch (caught) {
     return {
@@ -27,8 +30,8 @@ export async function executeRemoveInstance(
       text: `Couldn't remove: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
-  return { kind: "applied", reply: `Removed ${target.nodeId}.` }
+  recordStep(context, "commit", { ok: true })
+  return { kind: "applied", reply: `Removed ${resolvedTarget.nodeId}.` }
 }
 
 /**
@@ -39,17 +42,18 @@ export async function executeRemoveInstance(
 export async function executeRemoveComponent(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const catalogId = getNodeCatalogId(
-    context.state.workspace.nodes[target.nodeId]!,
+    context.state.workspace.nodes[resolvedTarget.nodeId]!,
     context.state.workspace,
   )
   if (!catalogId || !context.state.workspace.boards[catalogId]) {
     return {
       kind: "message",
-      text: `Couldn't find the component board for ${target.nodeId}. To delete just this element, ask to remove it instead.`,
+      text: `Couldn't find the component board for ${resolvedTarget.nodeId}. To delete just this element, ask to remove it instead.`,
     }
   }
 
@@ -64,7 +68,7 @@ export async function executeRemoveComponent(
       text: `Couldn't remove the component: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
+  recordStep(context, "commit", { ok: true })
   return {
     kind: "applied",
     reply: `Removed the ${catalogId} component and its board.`,
@@ -75,13 +79,14 @@ export async function executeRemoveComponent(
 export async function executeDuplicate(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   try {
     commit(context.state, {
       type: "duplicate_node",
-      payload: { nodeId: target.nodeId },
+      payload: { nodeId: resolvedTarget.nodeId },
     } as unknown as WorkspaceAction)
   } catch (caught) {
     return {
@@ -89,6 +94,6 @@ export async function executeDuplicate(
       text: `Couldn't duplicate: ${commitFailureReason(caught)}`,
     }
   }
-  recordStep(context, "commit", true)
-  return { kind: "applied", reply: `Duplicated ${target.nodeId}.` }
+  recordStep(context, "commit", { ok: true })
+  return { kind: "applied", reply: `Duplicated ${resolvedTarget.nodeId}.` }
 }

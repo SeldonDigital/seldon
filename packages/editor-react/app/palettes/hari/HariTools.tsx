@@ -102,7 +102,7 @@ export function HariTools({ rows, defaultOpen }: HariToolsProps) {
           icon: rowOpen ? "material-chevronDown" : "material-chevronRight",
           className: ROW_ICON_CLASS,
         }
-        const frames: ReactNode[] = [
+        const framesForRow: ReactNode[] = [
           <Frame key={row.key} className={ROW_FRAME_CLASS}>
             {hasDetail ? (
               <ButtonIconic
@@ -119,13 +119,20 @@ export function HariTools({ rows, defaultOpen }: HariToolsProps) {
             </TextDescription>
           </Frame>,
         ]
-        if (rowOpen && row.prompt !== undefined) {
-          frames.push(detailSection(`${row.key}-prompt`, "Prompt", row.prompt))
+        const { prompt, output } = row
+        const showPrompt = rowOpen && prompt !== undefined
+        if (showPrompt) {
+          framesForRow.push(
+            detailSection(`${row.key}-prompt`, "Prompt", prompt),
+          )
         }
-        if (rowOpen && row.output !== undefined) {
-          frames.push(detailSection(`${row.key}-output`, "Output", row.output))
+        const showOutput = rowOpen && output !== undefined
+        if (showOutput) {
+          framesForRow.push(
+            detailSection(`${row.key}-output`, "Output", output),
+          )
         }
-        return frames
+        return framesForRow
       })
     : null
 

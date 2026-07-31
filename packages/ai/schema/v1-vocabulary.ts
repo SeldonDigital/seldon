@@ -261,11 +261,14 @@ export const V1_EXPOSED_ACTION_TYPES: readonly string[] = [
 // schema can't drive a compile-time `satisfies` check, so this is the
 // runtime analog of the compiler gate.)
 {
-  const known = new Set(ALL_ACTION_TYPES)
-  const missing = V1_EXPOSED_ACTION_TYPES.filter((type) => !known.has(type))
-  if (missing.length > 0) {
+  const knownActionTypes = new Set(ALL_ACTION_TYPES)
+  const missingActionTypes = V1_EXPOSED_ACTION_TYPES.filter(
+    (actionType) => !knownActionTypes.has(actionType),
+  )
+  const vocabularyNamesUnknownActions = missingActionTypes.length > 0
+  if (vocabularyNamesUnknownActions) {
     throw new Error(
-      `v1 vocabulary names action types missing from the generated workspace-action schema: ${missing.join(", ")}. ` +
+      `v1 vocabulary names action types missing from the generated workspace-action schema: . ` +
         "A Core action was likely renamed; update schema/v1-vocabulary.ts to match.",
     )
   }

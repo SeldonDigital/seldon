@@ -21,16 +21,18 @@ export async function route(context: TurnContext, history?: ChatMessage[]) {
     message: context.message,
     history,
   })
-  const { value, metrics } = await callOllamaFormat<RouteDecision>({
-    model: context.model,
-    host: context.host,
-    prompt,
-    schema,
-  })
+  const { value: routeDecision, metrics } =
+    await callOllamaFormat<RouteDecision>({
+      model: context.model,
+      host: context.host,
+      prompt,
+      schema,
+    })
   context.calls.push(metrics)
-  recordStep(context, "route", true, {
+  recordStep(context, "route", {
+    ok: true,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(routeDecision, null, 2),
   })
-  return value
+  return routeDecision
 }

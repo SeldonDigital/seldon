@@ -13,7 +13,7 @@ export async function resolveTextDirection(
   language: string,
 ): Promise<"ltr" | "rtl"> {
   const { prompt, schema } = buildTextDirectionStage({ language })
-  const { value, metrics } = await callOllamaFormat<{
+  const { value: directionAnswer, metrics } = await callOllamaFormat<{
     direction: "ltr" | "rtl"
   }>({
     model: context.model,
@@ -22,9 +22,10 @@ export async function resolveTextDirection(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_direction", true, {
+  recordStep(context, "resolve_direction", {
+    ok: true,
     prompt,
-    output: value.direction,
+    output: directionAnswer.direction,
   })
-  return value.direction
+  return directionAnswer.direction
 }

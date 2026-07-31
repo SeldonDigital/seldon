@@ -25,7 +25,7 @@ export type ActionClassification =
       prompt: string
     }
 
-const NONE_REPLY =
+const NON_EDIT_REPLY =
   "I can only make design edits right now: set or reset properties, rename, add or remove components and variants, reorder, apply themes, edit theme tokens, toggle fonts and icons, or translate text. Tell me what to change and where."
 
 /**
@@ -46,18 +46,22 @@ export async function classifyAction(options: {
     scope: options.scope,
     hasSelectedNode: options.hasSelectedNode,
   })
-  const { value, metrics } = await callOllamaFormat<{ intent: string }>({
+  const { value: classifierAnswer, metrics } = await callOllamaFormat<{
+    intent: string
+  }>({
     model: options.model,
     host: options.host,
     prompt,
     schema,
   })
 
-  const entry = V1_INTENT_BY_KEY.get(value.intent)
+  const matchedIntent = V1_INTENT_BY_KEY.get(classifierAnswer.intent)
   // The enum constraint makes an unknown key nearly impossible, but a lookup
   // miss must still terminate cleanly rather than dispatch nothing.
-  if (!entry || entry.intent === "none") {
-    return { kind: "message", text: NONE_REPLY, metrics, prompt }
+  const messageIsNotAnEdit =
+    matchedIntent === undefined || matchedIntent.intent === "none"
+  if (messageIsNotAnEdit) {
+    return { kind: "message", text: NON_EDIT_REPLY, metrics, prompt }
   }
-  return { kind: "classified", intent: entry, metrics, prompt }
+  return { kind: "classified", intent: matchedIntent, metrics, prompt }
 }

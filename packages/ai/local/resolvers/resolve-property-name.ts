@@ -13,25 +13,26 @@ import { type TurnContext, recordStep } from "../turn-context"
  * `key.facet`, shorthand keys as both the parent and each `key.side`.
  */
 export function settablePropertyKeys(catalogId: string): string[] {
-  const schema = findComponentSchema(catalogId)
-  if (!schema?.properties) return []
-  const keys: string[] = []
-  for (const key of Object.keys(schema.properties)) {
-    const shape = propertyShape(key)
-    if (shape === "atomic") {
-      keys.push(key)
-    } else if (shape === "compound" || shape === "layered") {
+  const componentSchema = findComponentSchema(catalogId)
+  const componentHasNoProperties = !componentSchema?.properties
+  if (componentHasNoProperties) return []
+  const settableKeys: string[] = []
+  for (const key of Object.keys(componentSchema.properties)) {
+    const keyShape = propertyShape(key)
+    if (keyShape === "atomic") {
+      settableKeys.push(key)
+    } else if (keyShape === "compound" || keyShape === "layered") {
       for (const facet of COMPOUND_FACET_DISPLAY_ORDER[key] ?? []) {
-        keys.push(joinCompoundFacetKey(key, facet))
+        settableKeys.push(joinCompoundFacetKey(key, facet))
       }
-    } else if (shape === "shorthand") {
-      keys.push(key)
+    } else if (keyShape === "shorthand") {
+      settableKeys.push(key)
       for (const side of SHORTHAND_SIDES[key] ?? []) {
-        keys.push(`${key}.${side}`)
+        settableKeys.push(`${key}.${side}`)
       }
     }
   }
-  return keys
+  return settableKeys
 }
 
 /**
@@ -53,8 +54,9 @@ export async function resolvePropertyNames(
   context: TurnContext,
   catalogId: string,
 ): Promise<PropertyNameResolution> {
-  const keys = settablePropertyKeys(catalogId)
-  if (keys.length === 0) {
+  const settableKeys = settablePropertyKeys(catalogId)
+  const componentHasNoSettableProperties = settableKeys.length === 0
+  if (componentHasNoSettableProperties) {
     return {
       kind: "message",
       text: `Component "${catalogId}" has no settable properties.`,
@@ -64,10 +66,12 @@ export async function resolvePropertyNames(
   const { prompt, schema } = buildResolvePropertyNamesStage({
     message: context.message,
     catalogId,
-    keys,
+    keys: settableKeys,
   })
 
-  const { value, metrics } = await callOllamaFormat<{ keys: string[] }>({
+  const { value: nameAnswer, metrics } = await callOllamaFormat<{
+    keys: string[]
+  }>({
     model: context.model,
     host: context.host,
     prompt,
@@ -77,18 +81,22 @@ export async function resolvePropertyNames(
 
   // Belt and braces: the grammar should already restrict items to the enum,
   // but array-of-enum wasn't in the spike's tested envelope, so re-filter.
-  const known = new Set(keys)
-  const picked = [...new Set(value.keys)].filter((key) => known.has(key))
-  recordStep(context, "resolve_property_name", picked.length > 0, {
+  const knownKeys = new Set(settableKeys)
+  const requestedKeys = [...new Set(nameAnswer.keys)].filter((key) =>
+    knownKeys.has(key),
+  )
+  const namesWereResolved = requestedKeys.length > 0
+  recordStep(context, "resolve_property_name", {
+    ok: namesWereResolved,
     prompt,
-    output: JSON.stringify(value, null, 2),
+    output: JSON.stringify(nameAnswer, null, 2),
   })
 
-  if (picked.length === 0) {
+  if (!namesWereResolved) {
     return {
       kind: "message",
       text: `I couldn't tell which property of the ${catalogId} you want to change. Name it explicitly (for example: its color, size, or text).`,
     }
   }
-  return { kind: "resolved", keys: picked }
+  return { kind: "resolved", keys: requestedKeys }
 }

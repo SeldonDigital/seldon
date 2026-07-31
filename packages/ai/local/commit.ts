@@ -54,7 +54,7 @@ export function commit(state: TurnState, rawAction: WorkspaceAction): string {
   } catch (caught) {
     state.rejected.push({
       type: rawAction.type,
-      reason: caught instanceof Error ? caught.message : "invalid action",
+      reason: commitFailureReason(caught),
     })
     throw caught
   }

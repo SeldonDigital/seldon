@@ -12,6 +12,8 @@ import { translateBatch } from "../resolvers/translate/translate-batch"
 import {
   type FamilyOutcome,
   type TurnContext,
+  forwardClarification,
+  isClarification,
   recordStep,
 } from "../turn-context"
 
@@ -26,8 +28,9 @@ import {
 export async function executeTranslate(
   context: TurnContext,
 ): Promise<FamilyOutcome> {
-  const target = await resolveTargetWithHint(context)
-  if (target.kind === "message") return { kind: "message", text: target.text }
+  const resolvedTarget = await resolveTargetWithHint(context)
+  if (isClarification(resolvedTarget))
+    return forwardClarification(resolvedTarget)
 
   const { prompt, schema } = buildTranslateLanguagePickStage({
     message: context.message,
@@ -41,79 +44,88 @@ export async function executeTranslate(
     schema,
   })
   context.calls.push(metrics)
-  recordStep(context, "resolve_language", true, {
+  recordStep(context, "resolve_language", {
+    ok: true,
     prompt,
     output: languageAnswer.language,
   })
-  const language = languageAnswer.language
+  const targetLanguage = languageAnswer.language
 
-  const texts = collectTextProperties(
+  const textProperties = collectTextProperties(
     context.state.workspace,
     context.resolved.resolvedKey,
-    target.nodeId,
+    resolvedTarget.nodeId,
   )
-  if (texts.length === 0) {
+  const targetHasNoTranslatableText = textProperties.length === 0
+  if (targetHasNoTranslatableText) {
     return {
       kind: "message",
-      text: `${target.nodeId} has no text content to translate.`,
+      text: `${resolvedTarget.nodeId} has no text content to translate.`,
     }
   }
 
   const translations = await translateBatch(
     context,
-    texts.map((entry) => entry.text),
-    language,
+    textProperties.map((textProperty) => textProperty.text),
+    targetLanguage,
   )
-  if (translations === null) {
+  const batchWasMalformed = translations === null
+  if (batchWasMalformed) {
     return {
       kind: "message",
-      text: `Translating to ${language} failed: the model returned a malformed batch. Nothing was changed -- try again.`,
+      text: `Translating to ${targetLanguage} failed: the model returned a malformed batch. Nothing was changed -- try again.`,
     }
   }
 
-  let applied = 0
-  for (let i = 0; i < texts.length; i++) {
-    const entry = texts[i]!
-    const translation = translations[i]!
-    if (translation === entry.text) continue
+  let appliedCount = 0
+  for (let textIndex = 0; textIndex < textProperties.length; textIndex++) {
+    const textProperty = textProperties[textIndex]!
+    const translation = translations[textIndex]!
+    const translationIsUnchanged = translation === textProperty.text
+    if (translationIsUnchanged) continue
     try {
       commit(context.state, {
         type: "set_node_properties",
         payload: {
-          nodeId: entry.nodeId,
-          properties: { [entry.propertyKey]: translation },
+          nodeId: textProperty.nodeId,
+          properties: { [textProperty.propertyKey]: translation },
         },
       } as unknown as WorkspaceAction)
-      applied++
+      appliedCount++
     } catch {
       // One node refusing (e.g. a schema child that rejects the override)
       // should not lose the rest of the batch; the skip is visible in the
       // reply count and the turn state's rejected list.
     }
   }
-  recordStep(context, "commit", applied > 0)
+  const anyNodeWasTranslated = appliedCount > 0
+  recordStep(context, "commit", { ok: anyNodeWasTranslated })
 
-  if (applied === 0) {
+  if (!anyNodeWasTranslated) {
     return {
       kind: "message",
-      text: `Nothing changed: the ${texts.length} translated value(s) were either identical or rejected.`,
+      text: `Nothing changed: the ${textProperties.length} translated value(s) were either identical or rejected.`,
     }
   }
 
   // Direction: only when the target's component supports it, and non-fatally.
   let directionNote = ""
-  const node = context.state.workspace.nodes[target.nodeId]
-  const catalogId = node
-    ? getNodeCatalogId(node, context.state.workspace)
+  const targetNode = context.state.workspace.nodes[resolvedTarget.nodeId]
+  const catalogId = targetNode
+    ? getNodeCatalogId(targetNode, context.state.workspace)
     : undefined
-  if (catalogId && settablePropertyKeys(catalogId).includes("direction")) {
-    const direction = await resolveTextDirection(context, language)
-    if (direction === "rtl") {
+  const componentSupportsTextDirection = catalogId
+    ? settablePropertyKeys(catalogId).includes("direction")
+    : false
+  if (componentSupportsTextDirection) {
+    const textDirection = await resolveTextDirection(context, targetLanguage)
+    const languageReadsRightToLeft = textDirection === "rtl"
+    if (languageReadsRightToLeft) {
       try {
         commit(context.state, {
           type: "set_node_properties",
           payload: {
-            nodeId: target.nodeId,
+            nodeId: resolvedTarget.nodeId,
             properties: { direction: "rtl" },
           },
         } as unknown as WorkspaceAction)
@@ -126,6 +138,6 @@ export async function executeTranslate(
 
   return {
     kind: "applied",
-    reply: `Translated ${applied} text value(s) to ${language}${directionNote}.`,
+    reply: `Translated ${appliedCount} text value(s) to ${targetLanguage}${directionNote}.`,
   }
 }

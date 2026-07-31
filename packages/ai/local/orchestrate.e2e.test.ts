@@ -22,7 +22,8 @@ function findDefaultVariantChild(
   catalogId: string,
 ): string | undefined {
   const board = workspace.boards[ComponentId.BUTTON]
-  if (!board || !isComponentBoard(board)) return undefined
+  const boardHasNoVariantTrees = !board || !isComponentBoard(board)
+  if (boardHasNoVariantTrees) return undefined
   let found: string | undefined
   walkBoardTreeRefs([board.variants[0]!], (ref) => {
     const node = workspace.nodes[ref.id]
@@ -45,7 +46,7 @@ describeIfOllama("chatToActions (live)", () => {
       const textNodeId = findDefaultVariantChild(workspace, "text")
       const events: AgentStreamEvent[] = []
 
-      const result = await chatToActions({
+      const turnResult = await chatToActions({
         workspace,
         message: 'set the text to "Checkout"',
         activeBoardKey: ComponentId.BUTTON,
@@ -55,17 +56,19 @@ describeIfOllama("chatToActions (live)", () => {
         onEvent: (event) => events.push(event),
       })
 
-      expect(result.actions).toHaveLength(1)
-      expect(result.actions[0]?.type).toBe("set_node_properties")
+      expect(turnResult.actions).toHaveLength(1)
+      expect(turnResult.actions[0]?.type).toBe("set_node_properties")
       // Assert the committed VALUE, not the reply text: replies are
       // model-phrased now, so asserting their wording would be flaky.
       const payload = (
-        result.actions[0] as { payload: { properties: Record<string, unknown> } }
+        turnResult.actions[0] as {
+          payload: { properties: Record<string, unknown> }
+        }
       ).payload
       expect(JSON.stringify(payload.properties)).toContain("Checkout")
-      expect(result.reply.length).toBeGreaterThan(0)
-      expect(result.workspace).not.toBe(workspace)
-      expect(result.debug.metrics?.calls).toBeGreaterThanOrEqual(4)
+      expect(turnResult.reply.length).toBeGreaterThan(0)
+      expect(turnResult.workspace).not.toBe(workspace)
+      expect(turnResult.debug.metrics?.calls).toBeGreaterThanOrEqual(4)
       // The stream carried the staged pipeline and one final text event.
       const toolNames = events
         .filter((event) => event.type === "tool")
@@ -84,15 +87,15 @@ describeIfOllama("chatToActions (live)", () => {
         { boardKey: ComponentId.BUTTON } as never,
         createEmptyWorkspace(),
       )
-      const result = await chatToActions({
+      const turnResult = await chatToActions({
         workspace,
         message: "thanks, looks great!",
         activeBoardKey: ComponentId.BUTTON,
         model: MODEL,
       })
-      expect(result.actions).toHaveLength(0)
-      expect(result.workspace).toBe(workspace)
-      expect(result.reply.length).toBeGreaterThan(0)
+      expect(turnResult.actions).toHaveLength(0)
+      expect(turnResult.workspace).toBe(workspace)
+      expect(turnResult.reply.length).toBeGreaterThan(0)
     },
     LIVE_TIMEOUT_MS,
   )
@@ -106,7 +109,7 @@ describeIfOllama("chatToActions (live)", () => {
       )
       const textNodeId = findDefaultVariantChild(workspace, "text")
 
-      const result = await chatToActions({
+      const turnResult = await chatToActions({
         workspace,
         message: 'rename this to "CTA" and set its text to "Go"',
         activeBoardKey: ComponentId.BUTTON,
@@ -118,12 +121,12 @@ describeIfOllama("chatToActions (live)", () => {
       // Tolerant of model variance: the plan may fully apply (2 actions) or
       // stop at a clarification -- but it must never crash, must report
       // something, and anything committed must be one of the two edits.
-      expect(result.reply.length).toBeGreaterThan(0)
-      for (const action of result.actions) {
+      expect(turnResult.reply.length).toBeGreaterThan(0)
+      for (const action of turnResult.actions) {
         expect(["set_node_label", "set_node_properties"]).toContain(action.type)
       }
-      if (result.actions.length >= 2) {
-        expect(result.workspace).not.toBe(workspace)
+      if (turnResult.actions.length >= 2) {
+        expect(turnResult.workspace).not.toBe(workspace)
       }
     },
     LIVE_TIMEOUT_MS,

@@ -37,6 +37,7 @@ import {
   executeSetThemeOverride,
 } from "./actions/theme"
 import { buildTurnContext, resolveContext } from "./editor-context"
+import type { OllamaCallMetrics } from "./ollama-client"
 import { classifyAction } from "./resolvers/classify-action"
 import { decompose } from "./resolvers/decompose"
 import { type StepOutcome, generateReply } from "./resolvers/reply"
@@ -44,12 +45,13 @@ import { route } from "./resolvers/route"
 import {
   type FamilyOutcome,
   type TurnContext,
+  isClarification,
   recordStep,
 } from "./turn-context"
 import { createTurnState } from "./turn-state"
 
 /** Family handlers by intent key. Intents without one terminate politely below. */
-const HANDLERS: Record<
+const FAMILY_HANDLERS_BY_INTENT: Record<
   string,
   (context: TurnContext) => Promise<FamilyOutcome>
 > = {
@@ -78,8 +80,33 @@ const HANDLERS: Record<
   compose_component: executeComposition,
 }
 
-const NOT_YET =
+const UNSUPPORTED_INTENT_REPLY =
   "I can't do that edit yet in this version. I can change or reset properties, rename, remove or duplicate elements and components."
+
+const CANCELLED_REPLY = "Stopped."
+
+const MS_PER_SECOND = 1000
+
+/**
+ * Totals every model call this turn in one pass, so the turn's metrics read as
+ * one named aggregation rather than four separate folds over the same array.
+ */
+function sumCallMetrics(calls: OllamaCallMetrics[]): {
+  promptTokens: number
+  outputTokens: number
+  generationMs: number
+  loadMs: number
+} {
+  return calls.reduce(
+    (totals, call) => ({
+      promptTokens: totals.promptTokens + call.promptTokens,
+      outputTokens: totals.outputTokens + call.outputTokens,
+      generationMs: totals.generationMs + call.evalDurationMs,
+      loadMs: totals.loadMs + call.loadDurationMs,
+    }),
+    { promptTokens: 0, outputTokens: 0, generationMs: 0, loadMs: 0 },
+  )
+}
 
 /**
  * Translates one chat message into workspace actions through the hari-style
@@ -99,57 +126,53 @@ const NOT_YET =
 export async function chatToActions(
   input: ChatToActionsInput,
 ): Promise<ChatToActionsResult> {
-  const started = Date.now()
-  const state = createTurnState(input.workspace)
-  const resolved = resolveContext(input)
-  const model = resolveModelId(input.model)
+  const turnStartedMs = Date.now()
+  const turnState = createTurnState(input.workspace)
+  const resolvedContext = resolveContext(input)
+  const modelId = resolveModelId(input.model)
 
   const context: TurnContext = {
-    state,
-    resolved,
+    state: turnState,
+    resolved: resolvedContext,
     message: input.message,
-    model,
+    model: modelId,
     calls: [],
     steps: [],
-    onStep: (name, ok, detail) => {
-      input.onEvent?.({ type: "tool", name, prompt: detail?.prompt })
-      input.onEvent?.({ type: "toolResult", ok, output: detail?.output })
+    onStep: (name, detail) => {
+      input.onEvent?.({ type: "tool", name, prompt: detail.prompt })
+      input.onEvent?.({
+        type: "toolResult",
+        ok: detail.ok,
+        output: detail.output,
+      })
     },
   }
 
   const finish = (reply: string): ChatToActionsResult => {
     input.onEvent?.({ type: "text", delta: reply })
-    const outputTokens = context.calls.reduce(
-      (sum, call) => sum + call.outputTokens,
-      0,
-    )
-    const generationMs = context.calls.reduce(
-      (sum, call) => sum + call.evalDurationMs,
-      0,
-    )
+    const totals = sumCallMetrics(context.calls)
+    const modelGeneratedTokens = totals.generationMs > 0
     const metrics: AgentMetrics = {
-      model,
+      model: modelId,
       calls: context.calls.length,
-      totalMs: Date.now() - started,
-      loadMs: context.calls.reduce((sum, call) => sum + call.loadDurationMs, 0),
-      promptTokens: context.calls.reduce(
-        (sum, call) => sum + call.promptTokens,
-        0,
-      ),
-      outputTokens,
-      outputTokensPerSecond:
-        generationMs > 0 ? outputTokens / (generationMs / 1000) : undefined,
+      totalMs: Date.now() - turnStartedMs,
+      loadMs: totals.loadMs,
+      promptTokens: totals.promptTokens,
+      outputTokens: totals.outputTokens,
+      outputTokensPerSecond: modelGeneratedTokens
+        ? totals.outputTokens / (totals.generationMs / MS_PER_SECOND)
+        : undefined,
     }
     return {
-      actions: state.actions,
-      workspace: state.workspace,
+      actions: turnState.actions,
+      workspace: turnState.workspace,
       reply,
-      ineffective: state.ineffective,
-      rejected: state.rejected,
+      ineffective: turnState.ineffective,
+      rejected: turnState.rejected,
       debug: {
-        context: buildTurnContext(resolved),
+        context: buildTurnContext(resolvedContext),
         rawResponse: reply,
-        repairs: state.repairs,
+        repairs: turnState.repairs,
         toolCalls: context.steps.length > 0 ? context.steps : undefined,
         metrics,
       },
@@ -159,46 +182,50 @@ export async function chatToActions(
   // Cooperative cancellation: between stages only for now. In-flight fetches
   // run to completion; threading AbortSignal into the Ollama calls is a
   // follow-up.
-  if (input.signal?.aborted) return finish("Stopped.")
+  const turnWasCancelled = (): boolean => input.signal?.aborted === true
+  if (turnWasCancelled()) return finish(CANCELLED_REPLY)
 
   // Stage 1: route. Conversation gets its answer from this same call and the
   // turn ends with zero actions.
-  const decision = await route(context, input.history)
-  if (decision.kind === "reply") return finish(decision.message)
-  if (input.signal?.aborted) return finish("Stopped.")
+  const routeDecision = await route(context, input.history)
+  const routeChoseConversation = routeDecision.kind === "reply"
+  if (routeChoseConversation) return finish(routeDecision.message)
+  if (turnWasCancelled()) return finish(CANCELLED_REPLY)
 
   // Stage 2: decompose into self-contained steps (a single instruction comes
   // back as one step, making this path a superset of single-action behavior).
-  const steps = await decompose(context, input.history)
-  if (input.signal?.aborted) return finish("Stopped.")
+  const plannedSteps = await decompose(context, input.history)
+  if (turnWasCancelled()) return finish(CANCELLED_REPLY)
 
   // Stage 3: classify and execute each step in order against the working
   // copy. A clarification or rejection stops the plan; committed steps stay.
-  const outcomes: StepOutcome[] = []
-  for (const [index, step] of steps.entries()) {
-    if (input.signal?.aborted) break
-    const stepLabel =
-      steps.length > 1
-        ? `classify-action ${index + 1}/${steps.length}`
-        : "classify-action"
+  const stepOutcomes: StepOutcome[] = []
+  const planHasMultipleSteps = plannedSteps.length > 1
+  for (const [stepIndex, step] of plannedSteps.entries()) {
+    if (turnWasCancelled()) break
+    const stepLabel = planHasMultipleSteps
+      ? `classify-action ${stepIndex + 1}/${plannedSteps.length}`
+      : "classify-action"
     context.message = step
 
     const classification = await classifyAction({
       message: step,
       scope: input.scope,
       hasSelectedNode: input.selectedNodeId !== undefined,
-      model,
+      model: modelId,
     })
     context.calls.push(classification.metrics)
 
-    if (classification.kind === "message") {
+    const stepIsNotAnEdit = isClarification(classification)
+    if (stepIsNotAnEdit) {
       // A none-label on a decomposed step is noise, not an edit: note it and
       // move on rather than stopping a plan over it.
-      recordStep(context, stepLabel, false, {
+      recordStep(context, stepLabel, {
+        ok: false,
         prompt: classification.prompt,
         output: classification.text,
       })
-      outcomes.push({
+      stepOutcomes.push({
         step,
         intent: "skipped",
         outcome: {
@@ -209,22 +236,24 @@ export async function chatToActions(
       continue
     }
 
-    const intent = classification.intent.intent
-    recordStep(context, stepLabel, true, {
+    const intentKey = classification.intent.intent
+    recordStep(context, stepLabel, {
+      ok: true,
       prompt: classification.prompt,
-      output: intent,
+      output: intentKey,
     })
 
-    const handler = HANDLERS[intent]
-    const outcome: FamilyOutcome = handler
-      ? await handler(context)
-      : { kind: "message", text: NOT_YET }
-    outcomes.push({ step, intent, outcome })
+    const familyHandler = FAMILY_HANDLERS_BY_INTENT[intentKey]
+    const outcome: FamilyOutcome = familyHandler
+      ? await familyHandler(context)
+      : { kind: "message", text: UNSUPPORTED_INTENT_REPLY }
+    stepOutcomes.push({ step, intent: intentKey, outcome })
 
     // A stop is terminal for the REST of the plan: later steps may depend on
     // this one having happened, so continuing would compound the miss.
-    if (outcome.kind === "message") break
+    const stepStoppedThePlan = isClarification(outcome)
+    if (stepStoppedThePlan) break
   }
 
-  return finish(await generateReply(context, outcomes))
+  return finish(await generateReply(context, stepOutcomes))
 }

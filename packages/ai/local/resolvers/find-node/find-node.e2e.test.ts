@@ -26,7 +26,8 @@ describeIfOllama("findNodeSemantic (live)", () => {
       )
       const board = workspace.boards[ComponentId.BUTTON]
       expect(board && isComponentBoard(board)).toBe(true)
-      if (!board || !isComponentBoard(board)) return
+      const boardHasNoVariantTrees = !board || !isComponentBoard(board)
+      if (boardHasNoVariantTrees) return
 
       // The "tools" variant holds three sibling buttons; its last child is
       // the ground truth for "the last button".
@@ -50,12 +51,12 @@ describeIfOllama("findNodeSemantic (live)", () => {
         steps: [],
       }
 
-      const result = await findNodeSemantic(context, "the last button")
+      const findResult = await findNodeSemantic(context, "the last button")
       // The pipeline must resolve (embedding-only or via escalation), and to
       // a node that actually exists.
-      expect(result.kind).toBe("resolved")
-      if (result.kind === "resolved") {
-        expect(workspace.nodes[result.nodeId]).toBeDefined()
+      expect(findResult.kind).toBe("resolved")
+      if (findResult.kind === "resolved") {
+        expect(workspace.nodes[findResult.nodeId]).toBeDefined()
       }
     },
     LIVE_TIMEOUT_MS,

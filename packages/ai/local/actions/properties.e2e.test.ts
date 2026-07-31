@@ -27,7 +27,8 @@ function findDefaultVariantChild(
   catalogId: string,
 ): string | undefined {
   const board = workspace.boards[ComponentId.BUTTON]
-  if (!board || !isComponentBoard(board)) return undefined
+  const boardHasNoVariantTrees = !board || !isComponentBoard(board)
+  if (boardHasNoVariantTrees) return undefined
   const defaultVariant = board.variants[0]
   if (!defaultVariant) return undefined
   let found: string | undefined

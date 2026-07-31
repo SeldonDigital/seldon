@@ -26,8 +26,10 @@ export function resolveModelId(model?: string): string {
  * `thinking` capability from `/api/show`, resolved by {@link deriveModelThinking}.
  */
 export function supportsThinking(model?: string): boolean {
-  const id = resolveModelId(model).toLowerCase()
-  return id.includes("qwen3") || id.includes("gpt-oss")
+  const modelId = resolveModelId(model).toLowerCase()
+  const isQwen3Family = modelId.includes("qwen3")
+  const isGptOssFamily = modelId.includes("gpt-oss")
+  return isQwen3Family || isGptOssFamily
 }
 
 /**
@@ -93,11 +95,12 @@ export function deriveModelThinking(
   model: string,
   capabilities?: string[],
 ): ModelThinking {
-  const thinks = capabilities
+  const modelCanThink = capabilities
     ? capabilities.includes("thinking")
     : supportsThinking(model)
-  if (!thinks) return { mode: "none", options: [], default: "off" }
-  if (supportsReasoningEffort(model)) {
+  if (!modelCanThink) return { mode: "none", options: [], default: "off" }
+  const effortIsGraded = supportsReasoningEffort(model)
+  if (effortIsGraded) {
     return { mode: "graded", options: GRADED_OPTIONS, default: "medium" }
   }
   return { mode: "binary", options: BINARY_OPTIONS, default: "medium" }

@@ -15,7 +15,8 @@ describe("spatialLabels", () => {
     )
     const board = workspace.boards[ComponentId.BUTTON]
     expect(board && isComponentBoard(board)).toBe(true)
-    if (!board || !isComponentBoard(board)) return
+    const boardHasNoVariantTrees = !board || !isComponentBoard(board)
+    if (boardHasNoVariantTrees) return
 
     // The default button variant has two children (icon, text).
     const children = (board.variants[0]?.children ?? []).map((ref) => ref.id)
@@ -37,7 +38,8 @@ describe("spatialLabels", () => {
       createEmptyWorkspace(),
     )
     const board = workspace.boards[ComponentId.BUTTON]
-    if (!board || !isComponentBoard(board)) return
+    const boardHasNoVariantTrees = !board || !isComponentBoard(board)
+    if (boardHasNoVariantTrees) return
     // A variant with exactly one child labels that child empty.
     const single = board.variants.find(
       (variant) => (variant.children ?? []).length === 1,

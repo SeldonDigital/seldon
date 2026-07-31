@@ -27,6 +27,15 @@ const ORDINALS = [
   "tenth",
 ] as const
 
+/**
+ * Above this many siblings, "third" and "middle" start carrying information;
+ * below it they duplicate the edge labels that already apply.
+ */
+const MANY_SIBLINGS_THRESHOLD = 4
+
+/** Fewer siblings than this and position carries no information at all. */
+const MINIMUM_SIBLINGS_TO_LABEL = 2
+
 interface SiblingPosition {
   parentId: string
   index: number
@@ -46,13 +55,14 @@ function referencesFor(
   workspace: Workspace,
   parentId: string,
 ): readonly [string, string] {
-  const parent = workspace.nodes[parentId] as
+  const parentNode = workspace.nodes[parentId] as
     | { overrides?: Record<string, unknown> }
     | undefined
-  const orientation = parent?.overrides?.orientation as
+  const orientationOverride = parentNode?.overrides?.orientation as
     | { value?: unknown }
     | undefined
-  if (orientation?.value === "horizontal") return ["left", "right"] as const
+  const parentStacksHorizontally = orientationOverride?.value === "horizontal"
+  if (parentStacksHorizontally) return ["left", "right"] as const
   return ["top", "bottom"] as const
 }
 
@@ -61,24 +71,27 @@ function siblingPositions(
   workspace: Workspace,
   boardKey: BoardKey,
 ): Map<string, SiblingPosition> {
-  const positions = new Map<string, SiblingPosition>()
-  const board = workspace.boards[boardKey]
-  if (!board || (!isComponentBoard(board) && !isAuthoredBoard(board)))
-    return positions
-  walkBoardTreeRefs(board.variants, (ref) => {
-    const children = ref.children ?? []
-    if (children.length === 0) return
+  const positionsByNodeId = new Map<string, SiblingPosition>()
+  const activeBoard = workspace.boards[boardKey]
+  const boardHasNoVariantTrees =
+    !activeBoard ||
+    (!isComponentBoard(activeBoard) && !isAuthoredBoard(activeBoard))
+  if (boardHasNoVariantTrees) return positionsByNodeId
+  walkBoardTreeRefs(activeBoard.variants, (ref) => {
+    const childRefs = ref.children ?? []
+    const refIsALeaf = childRefs.length === 0
+    if (refIsALeaf) return
     const references = referencesFor(workspace, ref.id)
-    children.forEach((child, index) => {
-      positions.set(child.id, {
+    childRefs.forEach((child, childIndex) => {
+      positionsByNodeId.set(child.id, {
         parentId: ref.id,
-        index,
-        count: children.length,
+        index: childIndex,
+        count: childRefs.length,
         references,
       })
     })
   })
-  return positions
+  return positionsByNodeId
 }
 
 /**
@@ -88,12 +101,22 @@ function siblingPositions(
  */
 function baseReference(position: SiblingPosition): string {
   const { index, count, references } = position
-  if (index === 0) return references[0]
-  if (index === count - 1) return references[1]
-  if (index === 1) return "second"
-  if (index === 2 && count > 4) return "third"
-  if (index === count - 2) return "second last"
-  if (count > 4 && index === Math.floor(count / 2)) return "middle"
+  const hasManySiblings = count > MANY_SIBLINGS_THRESHOLD
+
+  const isFirstChild = index === 0
+  if (isFirstChild) return references[0]
+  const isLastChild = index === count - 1
+  if (isLastChild) return references[1]
+  const isSecondChild = index === 1
+  if (isSecondChild) return "second"
+  const isThirdOfManySiblings = index === 2 && hasManySiblings
+  if (isThirdOfManySiblings) return "third"
+  const isSecondToLastChild = index === count - 2
+  if (isSecondToLastChild) return "second last"
+  const isMiddleOfManySiblings =
+    hasManySiblings && index === Math.floor(count / 2)
+  if (isMiddleOfManySiblings) return "middle"
+
   const ordinal = ORDINALS[index] ?? `${index + 1}th`
   return `${ordinal} from the ${references[0]}`
 }
@@ -105,19 +128,23 @@ function baseReference(position: SiblingPosition): string {
  */
 function synonyms(position: SiblingPosition): string[] {
   const { index, count, references } = position
-  const words: string[] = []
-  if (index === 0) {
-    words.push("first", `${references[0]}-most`)
-  } else if (index === 1) {
-    words.push("second")
+  const synonymWords: string[] = []
+  const isFirstChild = index === 0
+  const isSecondChild = index === 1
+  if (isFirstChild) {
+    synonymWords.push("first", `${references[0]}-most`)
+  } else if (isSecondChild) {
+    synonymWords.push("second")
   }
-  const reverse = count - index
-  if (reverse === 1) {
-    words.push("last", `${references[1]}-most`)
-  } else if (reverse === 2) {
-    words.push("second last")
+  const positionFromEnd = count - index
+  const isLastChild = positionFromEnd === 1
+  const isSecondToLastChild = positionFromEnd === 2
+  if (isLastChild) {
+    synonymWords.push("last", `${references[1]}-most`)
+  } else if (isSecondToLastChild) {
+    synonymWords.push("second last")
   }
-  return words
+  return synonymWords
 }
 
 /**
@@ -131,20 +158,23 @@ export function spatialLabels(
   boardKey: BoardKey | undefined,
   nodeIds: readonly string[],
 ): Map<string, string> {
-  const labels = new Map<string, string>()
-  if (boardKey === undefined) {
-    for (const id of nodeIds) labels.set(id, "")
-    return labels
+  const labelsByNodeId = new Map<string, string>()
+  const noBoardIsActive = boardKey === undefined
+  if (noBoardIsActive) {
+    for (const nodeId of nodeIds) labelsByNodeId.set(nodeId, "")
+    return labelsByNodeId
   }
-  const positions = siblingPositions(workspace, boardKey)
-  for (const id of nodeIds) {
-    const position = positions.get(id)
-    if (!position || position.count < 2) {
-      labels.set(id, "")
+  const positionsByNodeId = siblingPositions(workspace, boardKey)
+  for (const nodeId of nodeIds) {
+    const position = positionsByNodeId.get(nodeId)
+    const nodeHasNoLabelableSiblings =
+      position === undefined || position.count < MINIMUM_SIBLINGS_TO_LABEL
+    if (nodeHasNoLabelableSiblings) {
+      labelsByNodeId.set(nodeId, "")
       continue
     }
-    const parts = [baseReference(position), ...synonyms(position)]
-    labels.set(id, [...new Set(parts)].join(", "))
+    const labelParts = [baseReference(position), ...synonyms(position)]
+    labelsByNodeId.set(nodeId, [...new Set(labelParts)].join(", "))
   }
-  return labels
+  return labelsByNodeId
 }
