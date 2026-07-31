@@ -23,9 +23,28 @@ export type TargetSpec = "selection" | { nodeId: string }
  * every resolver in this package follows: resolve, or hand back one terminal
  * message -- never guess.
  */
+/**
+ * Why a resolution ended in a message rather than a node. These call for
+ * opposite responses -- "several" hands the user a pick list, "not-found"
+ * means try a different phrase, "no-target" means nothing was even searched
+ * for -- so they must stay distinguishable. Merging them is how a broken
+ * outcome reads as a working one.
+ */
+export type MessageReason =
+  /** Nothing matched the phrase. */
+  | "not-found"
+  /** Several nodes matched; the user picks. */
+  | "several"
+  /** No phrase and no selection, so nothing was searched at all. */
+  | "no-target"
+  /** One match, but outside the active board: needs confirmation. */
+  | "off-board"
+  /** The embedding index is unavailable and the board is too big to list. */
+  | "no-index"
+
 export type TargetResolution =
   | { kind: "resolved"; nodeId: string }
-  | { kind: "message"; text: string }
+  | { kind: "message"; text: string; reason: MessageReason }
 
 interface NodeMatch {
   id: string
@@ -224,6 +243,7 @@ function widen(
     return {
       kind: "message",
       text: `No node matches "${query}". Ask the user which node to change, or try a different search term.`,
+      reason: "not-found",
     }
   }
   if (matches.length === 1) {
@@ -234,6 +254,7 @@ function widen(
     return {
       kind: "message",
       text: `Found ${describe(match)}, outside the active board. Ask the user to confirm before editing it, then call again with target { "nodeId": "${match.id}" }.${nodeValuesBlock(workspace, match.id)}`,
+      reason: "off-board",
     }
   }
   const list = matches
@@ -243,6 +264,7 @@ function widen(
   return {
     kind: "message",
     text: `Several nodes match "${query}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
+    reason: "several",
   }
 }
 
@@ -283,6 +305,7 @@ export function resolveNodeTarget(
         return {
           kind: "message",
           text: `Several parts of the selection match "${match}":\n${list}\nAsk the user which one, then call again with its nodeId.`,
+          reason: "several",
         }
       }
       return widen(workspace, match, activeKey, scope)
@@ -297,6 +320,7 @@ export function resolveNodeTarget(
     return {
       kind: "message",
       text: `${selectionNote}, so 'this' is ambiguous. Pick the target from the active board below, or pass an explicit target { nodeId }, or ask the user which node to change.${tierTwoBlock(workspace, activeKey)}`,
+      reason: "no-target",
     }
   }
 

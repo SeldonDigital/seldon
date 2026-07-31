@@ -19,6 +19,7 @@ import { resolveContext } from "../local/editor-context"
 import { isOllamaReachable } from "../local/ollama-client"
 import { classifyAction } from "../local/resolvers/classify-action"
 import { resolvePropertyNames } from "../local/resolvers/resolve-property-name"
+import type { MessageReason } from "../local/resolvers/resolve-target"
 import { resolveTargetWithHint } from "../local/resolvers/resolve-target-with-hint"
 import type { TurnContext } from "../local/turn-context"
 import { createTurnState } from "../local/turn-state"
@@ -77,10 +78,16 @@ export async function runModel(model: string): Promise<CaseResult[]> {
       hasSelectedNode: selectedNodeId !== undefined,
       model,
     })
+    // A non-classified outcome is not automatically "none": the classifier
+    // returns the same terminal message whether the model deliberately chose
+    // none or answered a key outside the vocabulary. Only the first is a
+    // legitimate answer, so they are scored apart.
     const pickedIntent =
       classification.kind === "classified"
         ? classification.intent.intent
-        : "none"
+        : classification.rawIntent === "none"
+          ? "none"
+          : `unknown:${classification.rawIntent}`
     const intentOk = pickedIntent === evalCase.expected.intent
 
     // Property-name resolution only measures when both the case expects keys
@@ -138,8 +145,11 @@ export async function runModel(model: string): Promise<CaseResult[]> {
         resolutionGot = "1 node"
         resolutionOk = expected === 1
       } else {
-        resolutionGot = "clarify"
-        resolutionOk = expected === "clarify"
+        // The reason tag is the whole point: "several" is Hari working, while
+        // "no-target" means it never had a phrase to search with. Scoring
+        // them alike is what made a broken outcome read as a working one.
+        resolutionGot = target.reason
+        resolutionOk = expected === target.reason
       }
     }
 

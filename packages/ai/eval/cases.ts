@@ -1,3 +1,4 @@
+import type { MessageReason } from "../local/resolvers/resolve-target"
 import type { SelectionScope } from "../types"
 
 /**
@@ -36,10 +37,12 @@ export interface EvalCase {
      */
     referenceIntent?: "single" | "class"
     /**
-     * How many nodes resolution should land on, or "clarify" when the query is
-     * well-formed but under-determined against this board.
+     * How many nodes resolution should land on, or the specific reason it
+     * should decline to resolve. A bare "did it ask a question?" is not worth
+     * scoring: "several" is Hari offering a pick list, "no-target" is Hari
+     * never having had a phrase to search with.
      */
-    resolution?: number | "clarify"
+    resolution?: number | MessageReason
   }
 }
 
@@ -286,7 +289,7 @@ export const EVAL_CASES: EvalCase[] = [
     expected: {
       intent: "set_node_properties",
       referenceIntent: "single",
-      resolution: "clarify",
+      resolution: "several",
     },
   },
 

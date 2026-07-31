@@ -14,6 +14,7 @@ import {
 } from "../../../prompt/stages/find-node"
 import { callOllamaFormat } from "../../ollama-client"
 import { type TurnContext, recordStep } from "../../turn-context"
+import type { MessageReason } from "../resolve-target"
 import { rankBySimilarity } from "./embed-rank"
 import { spatialLabels } from "./geometry-labels"
 
@@ -29,7 +30,7 @@ import { spatialLabels } from "./geometry-labels"
 
 export type FindNodeResult =
   | { kind: "resolved"; nodeId: string }
-  | { kind: "message"; text: string }
+  | { kind: "message"; text: string; reason: MessageReason }
 
 type Candidate = FindNodeCandidate
 
@@ -102,7 +103,11 @@ async function escalate(
   })
 
   if (!modelFoundAMatch) {
-    return { kind: "message", text: findNodeMissMessage(query, pool) }
+    return {
+      kind: "message",
+      text: findNodeMissMessage(query, pool),
+      reason: "not-found",
+    }
   }
   return { kind: "resolved", nodeId: pickAnswer.id }
 }
@@ -126,6 +131,7 @@ export async function findNodeSemantic(
     return {
       kind: "message",
       text: "No component board is active, so there is nothing to search. Open a board first.",
+      reason: "no-target",
     }
   }
 
@@ -140,6 +146,7 @@ export async function findNodeSemantic(
       return {
         kind: "message",
         text: `I can't search ${candidates.length} elements without the local search index. Select the element on the canvas, or name it more specifically.`,
+        reason: "no-index",
       }
     }
     return escalate(context, query, candidates)

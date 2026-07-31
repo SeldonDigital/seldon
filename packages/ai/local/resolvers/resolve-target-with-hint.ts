@@ -109,9 +109,12 @@ export function resolveCreatedMention(
 export async function resolveTargetWithHint(
   context: TurnContext,
 ): Promise<TargetResolution> {
+  // The phrase survives whether or not the message also points at the
+  // selection. Priority between the two lives in resolveNodeTarget's ladder
+  // (selection subtree -> selection -> widen -> ask), so a hint that leans the
+  // wrong way costs accuracy, never the phrase itself.
   const targetHint = await extractTargetHint(context)
-  const searchPhrase =
-    targetHint.kind === "search" ? targetHint.match : undefined
+  const searchPhrase = targetHint.match
 
   // Created-this-turn shortcut: a reference to something an earlier step
   // just made resolves without search, and a part-reference searches only

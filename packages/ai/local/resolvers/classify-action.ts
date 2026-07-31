@@ -23,6 +23,12 @@ export type ActionClassification =
       metrics: OllamaCallMetrics
       /** The classifier prompt, surfaced for the transcript's step detail. */
       prompt: string
+      /**
+       * The key the model actually answered. Distinguishes a deliberate
+       * "none" from an unknown key that failed the vocabulary lookup -- both
+       * end the turn the same way, but only one is a classifier fault.
+       */
+      rawIntent: string
     }
 
 const NON_EDIT_REPLY =
@@ -61,7 +67,13 @@ export async function classifyAction(options: {
   const messageIsNotAnEdit =
     matchedIntent === undefined || matchedIntent.intent === "none"
   if (messageIsNotAnEdit) {
-    return { kind: "message", text: NON_EDIT_REPLY, metrics, prompt }
+    return {
+      kind: "message",
+      text: NON_EDIT_REPLY,
+      metrics,
+      prompt,
+      rawIntent: classifierAnswer.intent,
+    }
   }
   return { kind: "classified", intent: matchedIntent, metrics, prompt }
 }

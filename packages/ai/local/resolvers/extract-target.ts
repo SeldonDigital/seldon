@@ -3,21 +3,23 @@ import { callOllamaFormat } from "../ollama-client"
 import { type TurnContext, recordStep } from "../turn-context"
 
 /**
- * What the message points at: the current selection, or a short search phrase
- * naming a node to find. This is the narrow bridge into target resolution --
- * the model never sees the tree here, it only reads the message. (The
- * embedding-based find_node pipeline replaces the search side of this for
- * spatial/semantic phrasing; the selection/search split stays.)
+ * What the message points at. The two facts are independent: a message can
+ * point at the selection AND name an element ("make this title red"), or do
+ * neither. Choosing between them belongs to the resolver -- this stage only
+ * reports what the message says, so a phrase is never discarded before
+ * anything has looked at the board. The model never sees the tree here.
  */
-export type TargetHint =
-  | { kind: "selection" }
-  | { kind: "search"; match: string }
+export interface TargetHint {
+  /** The message uses a pronoun, or names nothing to search for. */
+  pointsAtSelection: boolean
+  /** The phrase naming an element, when the message names one. */
+  match?: string
+}
 
 /**
- * Extracts a target hint from the message with one shallow-union call. A
- * pronoun ("it", "this"), an implicit target, or plain selection-reference
- * resolves to the selection; an explicit name ("the title", "the hero
- * heading") resolves to a short search phrase.
+ * Extracts a target hint from the message with one shallow call. A pronoun
+ * ("it", "this") or an implicit target sets `pointsAtSelection`; an explicit
+ * name ("the title", "all the chips") fills `match`. Both can be set at once.
  */
 export async function extractTargetHint(
   context: TurnContext,
@@ -27,7 +29,10 @@ export async function extractTargetHint(
     hasSelection: context.resolved.selectedNodeId !== undefined,
   })
 
-  const { value: targetHint, metrics } = await callOllamaFormat<TargetHint>({
+  const { value: rawHint, metrics } = await callOllamaFormat<{
+    pointsAtSelection: boolean
+    match: string
+  }>({
     model: context.model,
     host: context.host,
     prompt,
@@ -37,15 +42,12 @@ export async function extractTargetHint(
   recordStep(context, "extract_target", {
     ok: true,
     prompt,
-    output: JSON.stringify(targetHint, null, 2),
+    output: JSON.stringify(rawHint, null, 2),
   })
 
-  // A search hint with an empty phrase degrades to the selection: there is
-  // nothing to search for, and resolve-target reports the miss cleanly.
-  const searchPhraseIsBlank =
-    targetHint.kind === "search" && targetHint.match.trim() === ""
-  if (searchPhraseIsBlank) {
-    return { kind: "selection" }
+  const searchPhrase = (rawHint.match ?? "").trim()
+  return {
+    pointsAtSelection: rawHint.pointsAtSelection,
+    match: searchPhrase === "" ? undefined : searchPhrase,
   }
-  return targetHint
 }
