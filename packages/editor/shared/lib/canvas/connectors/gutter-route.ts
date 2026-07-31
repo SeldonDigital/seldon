@@ -154,9 +154,8 @@ export function buildGutterRoute(
     rows,
     travelled: [from.row, ...bands, to.row],
     lanes,
-    side: exit.side === entry.side ? exit.side : null,
-    exit: { cell: from.cell, edgeX: getSideX(source, exit.side) },
-    entry: { cell: to.cell, edgeX: getSideX(target, entry.side) },
+    exit: { cell: from.cell, edgeX: getSideX(source, exit.side), side: exit.side },
+    entry: { cell: to.cell, edgeX: getSideX(target, entry.side), side: entry.side },
   })
 
   return buildRoute(
@@ -169,10 +168,14 @@ export function buildGutterRoute(
   )
 }
 
-/** Where a run meets a board: the cell it leaves or lands on, and the edge it does it at. */
+/**
+ * Where a run meets a board: the cell it leaves or lands on, the edge it does it at,
+ * and the side of the board that edge is.
+ */
 interface LaneRunEnd {
   cell: number
   edgeX: number
+  side: CellSide
 }
 
 interface FlattenLanesInput {
@@ -180,8 +183,6 @@ interface FlattenLanesInput {
   /** The rows the run passes through, in travel order. */
   travelled: number[]
   lanes: number[]
-  /** The side both ends sit on, or null when they sit on opposite sides. */
-  side: CellSide | null
   exit: LaneRunEnd
   entry: LaneRunEnd
 }
@@ -194,14 +195,14 @@ interface FlattenLanesInput {
  * Where one lane of the run is clear in every row it passes, every step takes that
  * lane instead and the sideways moves go, leaving one straight run.
  *
- * The lane furthest out is tried first, since it is the one clear of the most
- * boards. A run whose ends sit on opposite sides crosses the gallery on purpose and
- * is left alone, as is one no single lane has the room for.
+ * Lanes are tried in the direction the run travels, furthest along that direction
+ * first, since that is the lane beside the board the run is headed for and the one
+ * clear of the most boards behind it. A lane past the edge either end meets its board
+ * at is passed over, because the leg reaching it would cross that board. A run no
+ * single lane has the room for keeps its steps.
  */
-function flattenLanes({ rows, travelled, lanes, side, exit, entry }: FlattenLanesInput): number[] {
-  if (side === null) return lanes
-
-  const candidates = [...new Set(lanes)].sort((a, b) => (side === "right" ? b - a : a - b))
+function flattenLanes({ rows, travelled, lanes, exit, entry }: FlattenLanesInput): number[] {
+  const candidates = [...new Set(lanes)].sort((a, b) => (exit.side === "right" ? b - a : a - b))
 
   if (candidates.length < 2) return lanes
 
@@ -210,6 +211,8 @@ function flattenLanes({ rows, travelled, lanes, side, exit, entry }: FlattenLane
 
   for (const laneX of candidates) {
     const fits =
+      isOutsideEnd(laneX, exit) &&
+      isOutsideEnd(laneX, entry) &&
       travelled.every((row) => isLaneClear(rows[row], laneX)) &&
       isLegClear(exitRow, exit.cell, exit.edgeX, laneX) &&
       isLegClear(entryRow, entry.cell, entry.edgeX, laneX)
@@ -218,6 +221,15 @@ function flattenLanes({ rows, travelled, lanes, side, exit, entry }: FlattenLane
   }
 
   return lanes
+}
+
+/**
+ * Whether a lane lies beyond the edge a run meets a board at, on the free side of it.
+ * A lane the other way is over the board, and the leg reaching it would cross the very
+ * board the run is leaving or landing on.
+ */
+function isOutsideEnd(laneX: number, end: LaneRunEnd): boolean {
+  return end.side === "right" ? laneX >= end.edgeX : laneX <= end.edgeX
 }
 
 /** Whether a row's boards leave room for a run down `laneX`. */
