@@ -104,18 +104,22 @@ let highlightCache: {
 } | null = null
 
 /**
- * Resolves the branch around the current selection while Show Connectors is on.
- * The result is cached across sidebar rows so the template graph is only walked
- * once per selection.
+ * Resolves the branch around the current selection while Show Connectors is on
+ * in isolation mode. The result is cached across sidebar rows so the template
+ * graph is only walked once per selection.
+ *
+ * Isolation is what makes the branch worth marking, because it puts every board
+ * the selection reaches on the canvas at once. Outside it the canvas shows one
+ * board and there is nothing to point across, so the sidebar rows stay plain too.
  */
 export function useSharedNodeHighlight(): SharedNodeHighlight {
-  const { showConnectors } = useEditorConfig()
+  const { showConnectors, isolatedView } = useEditorConfig()
   const { workspace } = useWorkspace({ usePreview: false })
   const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
 
   return useMemo(() => {
-    if (!showConnectors || !selectedNodeId) return EMPTY_HIGHLIGHT
-    if (!workspace.nodes[selectedNodeId]) return EMPTY_HIGHLIGHT
+    if (!showConnectors || !isolatedView) return EMPTY_HIGHLIGHT
+    if (!selectedNodeId || !workspace.nodes[selectedNodeId]) return EMPTY_HIGHLIGHT
 
     if (
       highlightCache &&
@@ -130,5 +134,5 @@ export function useSharedNodeHighlight(): SharedNodeHighlight {
     highlightCache = { selectedNodeId, workspace, value }
 
     return value
-  }, [showConnectors, selectedNodeId, workspace])
+  }, [showConnectors, isolatedView, selectedNodeId, workspace])
 }

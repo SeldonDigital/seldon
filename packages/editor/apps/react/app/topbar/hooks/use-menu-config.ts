@@ -759,6 +759,7 @@ export function useMenuConfig(): MenuConfig {
             action: toggleShowConnectors,
             active: showConnectors,
             shortcut: "E",
+            enabled: isolatedView,
           },
           {
             id: "show-reference-badges",
@@ -845,6 +846,7 @@ export function useMenuConfig(): MenuConfig {
       wireframeMode,
       showConnectors,
       toggleShowConnectors,
+      isolatedView,
       showRefBadges,
       toggleRefBadges,
       autoExpandOnSelection,

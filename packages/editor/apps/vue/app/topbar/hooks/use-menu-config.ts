@@ -554,6 +554,7 @@ export function useMenuConfig(): ComputedRef<MenuConfig> {
       action: config.toggleShowConnectors,
       active: config.showConnectors,
       shortcut: "E",
+      enabled: config.isolatedView,
     },
     {
       id: "show-reference-badges",

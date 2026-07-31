@@ -13,6 +13,7 @@ import { useMenuPosition } from "./hooks/use-menu-position"
 
 import type { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
 import type { IconProps } from "@seldon/components/primitives/Icon"
+import type { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import type { CSSProperties, ReactNode, RefObject } from "react"
 
 function focusReturnTarget(element: HTMLElement | null | undefined): void {
@@ -35,6 +36,15 @@ function isMarked(item: MenuItemModel): boolean {
 }
 
 /**
+ * The activated tint, withheld from a disabled item so its marker and label dim
+ * together. A disabled item keeps its marker, because what the setting is set to
+ * is worth reading where it cannot be changed.
+ */
+function activatedClassName(item: MenuItemModel): string | undefined {
+  return item.active && !item.disabled ? "sdn-state-activated" : undefined
+}
+
+/**
  * Leading marker for the active column. Marked items render a check (or radio
  * dot for `bullet` sets), tinted only when the item is also activated; unmarked
  * items render the same glyph hidden so labels stay aligned. Returns null when
@@ -48,11 +58,21 @@ function markerIconProps(item: MenuItemModel, showColumn: boolean): IconProps | 
     return {
       icon: glyph,
       "aria-hidden": "true",
-      className: item.active ? "sdn-state-activated" : undefined,
+      "aria-disabled": item.disabled ? "true" : undefined,
+      className: activatedClassName(item),
     }
   }
 
   return { icon: glyph, "aria-hidden": "true", style: { visibility: "hidden" } }
+}
+
+function labelProps(item: MenuItemModel): TextLabelProps {
+  return {
+    children: item.label,
+    "aria-disabled": item.disabled ? "true" : undefined,
+    className: activatedClassName(item),
+    style: item.labelStyle,
+  }
 }
 
 interface MenuControllerCommon {
@@ -328,6 +348,9 @@ function FloatingMenu({
           }
 
           const highlighted = index === activeIndex
+          const marker = markerIconProps(item, showMarkerColumn)
+          const label = labelProps(item)
+          const shortcut = item.shortcut ? { children: item.shortcut } : null
 
           return (
             <MenuItem
@@ -342,14 +365,9 @@ function FloatingMenu({
               onPointerEnter={() => {
                 if (!item.disabled) setActiveIndex(index)
               }}
-              icon={markerIconProps(item, showMarkerColumn)}
-              textLabel={{
-                children: item.label,
-                "aria-disabled": item.disabled ? "true" : undefined,
-                className: item.active ? "sdn-state-activated" : undefined,
-                style: item.labelStyle,
-              }}
-              textLabel2={item.shortcut ? { children: item.shortcut } : null}
+              icon={marker}
+              textLabel={label}
+              textLabel2={shortcut}
             />
           )
         })}

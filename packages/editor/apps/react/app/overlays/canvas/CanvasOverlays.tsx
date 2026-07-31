@@ -59,9 +59,8 @@ export function CanvasOverlays() {
   const refBadges = drawRefBadges ? <RefConnector /> : null
 
   // Isolation draws the whole gallery at once, which is what makes a line from
-  // the selection to the boards it reaches worth drawing. Outside isolation the
-  // canvas shows one board, so the objects sidebar carries the highlight alone.
-  // The connectors draw nothing while Show Connectors is off.
+  // the selection to the boards it reaches worth drawing. The connectors draw
+  // nothing while Show Connectors is off.
   const highlightConnectors = isolatedView ? <HighlightConnectors /> : null
 
   // Nodes reorder by dragging under the select tool. Theme boards are previews

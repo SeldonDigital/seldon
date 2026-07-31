@@ -184,7 +184,8 @@ export function useEditorShortcuts(): void {
         return
       case "e":
         event.preventDefault()
-        config.toggleShowConnectors()
+        // The connectors only draw in isolation mode.
+        if (config.isolatedView) config.toggleShowConnectors()
 
         return
       case "r":

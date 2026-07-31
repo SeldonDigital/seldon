@@ -32,7 +32,8 @@ interface EditorConfigState {
   toggleWireframeMode: (mode?: "on" | "off") => void
 
   // Component connectors: the branch around the selection, drawn as lines across
-  // the isolation gallery and tinted on the matching objects sidebar rows
+  // the isolation gallery and tinted on the matching objects sidebar rows. Kept
+  // across entering and leaving isolation, and only applied while isolated.
   showConnectors: boolean
   setShowConnectors: (enabled: boolean) => void
 

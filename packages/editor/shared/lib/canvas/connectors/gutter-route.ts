@@ -113,7 +113,9 @@ export function buildGutterLattice({ rows, sheet }: GalleryObstacles): GutterLat
  * joined the same way, out into the lane and back, rather than across the board.
  *
  * Every row along the way offers the lane nearest the one the target is reached
- * from, and rows sharing a lane are run through on a single line.
+ * from, and rows sharing a lane are run through on a single line. Where the rows
+ * offer lanes at different places, the run still flattens onto one of them if the
+ * boards leave the room, so it turns only where something is in the way.
  */
 export function buildGutterRoute(
   source: NodeRect,
@@ -139,21 +141,100 @@ export function buildGutterRoute(
   const exit = chooseExit(rows[from.row], from.cell, centerX(target))
   const entry = chooseExit(rows[to.row], to.cell, exit.laneX)
   const step = Math.sign(to.row - from.row)
+  const bands = getBandsBetween(from.row, to.row)
   const lanes = [exit.laneX]
 
-  for (const band of getBandsBetween(from.row, to.row)) {
+  for (const band of bands) {
     lanes.push(getNearestLane(rows[band], entry.laneX))
   }
 
   lanes.push(entry.laneX)
+
+  const flattened = flattenLanes({
+    rows,
+    travelled: [from.row, ...bands, to.row],
+    lanes,
+    side: exit.side === entry.side ? exit.side : null,
+    exit: { cell: from.cell, edgeX: getSideX(source, exit.side) },
+    entry: { cell: to.cell, edgeX: getSideX(target, entry.side) },
+  })
 
   return buildRoute(
     source,
     target,
     exit.side,
     entry.side,
-    lanes,
-    getStepCorridors(lattice, from.row, step, lanes.length - 1, source, target),
+    flattened,
+    getStepCorridors(lattice, from.row, step, flattened.length - 1, source, target),
+  )
+}
+
+/** Where a run meets a board: the cell it leaves or lands on, and the edge it does it at. */
+interface LaneRunEnd {
+  cell: number
+  edgeX: number
+}
+
+interface FlattenLanesInput {
+  rows: LatticeRow[]
+  /** The rows the run passes through, in travel order. */
+  travelled: number[]
+  lanes: number[]
+  /** The side both ends sit on, or null when they sit on opposite sides. */
+  side: CellSide | null
+  exit: LaneRunEnd
+  entry: LaneRunEnd
+}
+
+/**
+ * Drops the lane changes a run has no reason for.
+ *
+ * Two rows whose gutters did not resolve to one lane leave the run stepping
+ * sideways between them, and that step reads as an elbow the route did not need.
+ * Where one lane of the run is clear in every row it passes, every step takes that
+ * lane instead and the sideways moves go, leaving one straight run.
+ *
+ * The lane furthest out is tried first, since it is the one clear of the most
+ * boards. A run whose ends sit on opposite sides crosses the gallery on purpose and
+ * is left alone, as is one no single lane has the room for.
+ */
+function flattenLanes({ rows, travelled, lanes, side, exit, entry }: FlattenLanesInput): number[] {
+  if (side === null) return lanes
+
+  const candidates = [...new Set(lanes)].sort((a, b) => (side === "right" ? b - a : a - b))
+
+  if (candidates.length < 2) return lanes
+
+  const exitRow = rows[travelled[0]]
+  const entryRow = rows[travelled[travelled.length - 1]]
+
+  for (const laneX of candidates) {
+    const fits =
+      travelled.every((row) => isLaneClear(rows[row], laneX)) &&
+      isLegClear(exitRow, exit.cell, exit.edgeX, laneX) &&
+      isLegClear(entryRow, entry.cell, entry.edgeX, laneX)
+
+    if (fits) return lanes.map(() => laneX)
+  }
+
+  return lanes
+}
+
+/** Whether a row's boards leave room for a run down `laneX`. */
+function isLaneClear(row: LatticeRow, laneX: number): boolean {
+  return row.cells.every((cell) => laneX <= cell.left || laneX >= right(cell))
+}
+
+/**
+ * Whether a row's boards leave the sideways leg into `laneX` clear. The cell the
+ * leg starts from is the board it is leaving, so it is not in its own way.
+ */
+function isLegClear(row: LatticeRow, cell: number, edgeX: number, laneX: number): boolean {
+  const start = Math.min(edgeX, laneX)
+  const end = Math.max(edgeX, laneX)
+
+  return row.cells.every(
+    (candidate, index) => index === cell || right(candidate) <= start || candidate.left >= end,
   )
 }
 
