@@ -1,8 +1,12 @@
 "use client"
 
+import { getRenderedScale } from "@seldon/editor/lib/canvas/dom/canvas-elements"
 import { getIsolationBoardWidth } from "@seldon/editor/lib/canvas/get-isolation-canvas-layout"
 import { ISOLATION_HEIGHT_EXCLUDED_CATALOG_IDS } from "@seldon/editor/lib/isolation/excluded-boards"
 import { useLayoutEffect, useRef, useState } from "react"
+
+import { ValueType } from "@seldon/core"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
 import type { Workspace } from "@seldon/core"
 import type { RefObject } from "react"
@@ -42,8 +46,9 @@ const UNMEASURED: IsolationBoardMetrics = {
  *
  * 1. Reset, so boards drop applied sizes and lay out at their natural size.
  * 2. Measure inside the anchored board: the width each node is laid out at
- *    becomes its own board's width. Measure the anchored board's own width too,
- *    for when its `board.width` is `fit`.
+ *    becomes its own board's width, except for a node with an unset width, which
+ *    is read at the size its content takes. Measure the anchored board's own
+ *    width too, for when its `board.width` is `fit`.
  * 3. Measure each level's tallest board, with widths already applied so the
  *    heights account for how content wraps at those widths.
  *
@@ -93,7 +98,12 @@ export function useIsolationBoardMetrics({
     if (!metrics.widthsByBoard) {
       setMetrics({
         anchorWidth: anchorRoot.offsetWidth,
-        widthsByBoard: measureBoardWidths(container, anchorRoot, resolveNodeBoardKey),
+        widthsByBoard: measureBoardWidths({
+          container,
+          anchorRoot,
+          resolveNodeBoardKey,
+          workspace,
+        }),
         heightsByLevel: null,
       })
 
@@ -119,30 +129,36 @@ function findBoardRoot(container: HTMLElement, boardKey: string | null): HTMLEle
   return container.querySelector<HTMLElement>(`[data-board-id="${CSS.escape(boardKey)}"]`)
 }
 
+interface MeasureBoardWidthsInput {
+  container: HTMLElement
+  anchorRoot: HTMLElement
+  resolveNodeBoardKey: (nodeId: string) => string | null
+  workspace: Workspace
+}
+
+/**
+ * One node of the anchored variant, the board its component came from, and whether the
+ * node leaves its width unset.
+ */
+interface NodeOccurrence {
+  element: HTMLElement | SVGElement
+  boardKey: string
+  widthIsUnset: boolean
+}
+
 /**
  * Width for every board whose component appears in the anchored variant, taken
  * from how wide that component is laid out there. A component used more than
  * once takes its widest occurrence, so its board fits every use.
  */
-function measureBoardWidths(
-  container: HTMLElement,
-  anchorRoot: HTMLElement,
-  resolveNodeBoardKey: (nodeId: string) => string | null,
-): Record<string, number> {
-  const nodeWidths: Record<string, number> = {}
-
-  anchorRoot.querySelectorAll<HTMLElement>("[data-canvas-node-id]").forEach((element) => {
-    const nodeId = element.getAttribute("data-canvas-node-id")
-
-    if (!nodeId) return
-
-    const boardKey = resolveNodeBoardKey(nodeId)
-
-    if (!boardKey) return
-
-    nodeWidths[boardKey] = Math.max(nodeWidths[boardKey] ?? 0, element.offsetWidth)
-  })
-
+function measureBoardWidths({
+  container,
+  anchorRoot,
+  resolveNodeBoardKey,
+  workspace,
+}: MeasureBoardWidthsInput): Record<string, number> {
+  const occurrences = collectOccurrences(anchorRoot, resolveNodeBoardKey, workspace)
+  const nodeWidths = measureNodeWidths(occurrences, getRenderedScale(anchorRoot))
   const widths: Record<string, number> = {}
 
   for (const [boardKey, nodeWidth] of Object.entries(nodeWidths)) {
@@ -154,6 +170,109 @@ function measureBoardWidths(
   }
 
   return widths
+}
+
+/** Every node of the anchored variant that a board draws, in document order. */
+function collectOccurrences(
+  anchorRoot: HTMLElement,
+  resolveNodeBoardKey: (nodeId: string) => string | null,
+  workspace: Workspace,
+): NodeOccurrence[] {
+  const occurrences: NodeOccurrence[] = []
+
+  anchorRoot.querySelectorAll("[data-canvas-node-id]").forEach((element) => {
+    if (!(element instanceof HTMLElement) && !(element instanceof SVGElement)) return
+
+    const nodeId = element.getAttribute("data-canvas-node-id")
+
+    if (!nodeId) return
+
+    const boardKey = resolveNodeBoardKey(nodeId)
+
+    if (!boardKey) return
+
+    occurrences.push({ element, boardKey, widthIsUnset: hasUnsetWidth(nodeId, workspace) })
+  })
+
+  return occurrences
+}
+
+/**
+ * The widest occurrence of each board's component, keyed by board.
+ *
+ * A node with an unset width is read at `fit-content` rather than at the box it was
+ * given, because that box belongs to the parent. Such a node gets no width rule at all,
+ * so a text down a column stretches across it and its board would come out as wide as
+ * the column instead of as wide as the text. Reading it capped by the space it had is
+ * what keeps a long text measuring as the block it wraps into rather than as one
+ * unwrapped line.
+ *
+ * Boxes are read before any width is written, so a node that fills its parent is still
+ * measured against the parent as it stands. The unset ones are pinned in one write and
+ * read afterward, so the pass costs two layout flushes however many nodes there are.
+ *
+ * A node that measures no finite width is left out rather than allowed to stand as its
+ * board's width, since a board reading `NaN` drops the width and falls back to its own
+ * natural size.
+ */
+function measureNodeWidths(occurrences: NodeOccurrence[], scale: number): Record<string, number> {
+  const measured = occurrences.map((occurrence) => ({
+    ...occurrence,
+    width: getLayoutWidth(occurrence.element, scale),
+  }))
+  const unset = measured.filter((occurrence) => occurrence.widthIsUnset)
+  const inlineWidths = unset.map((occurrence) => occurrence.element.style.width)
+
+  for (const occurrence of unset) {
+    occurrence.element.style.width = "fit-content"
+  }
+
+  for (const occurrence of unset) {
+    occurrence.width = getLayoutWidth(occurrence.element, scale)
+  }
+
+  unset.forEach((occurrence, index) => {
+    occurrence.element.style.width = inlineWidths[index]
+  })
+
+  const nodeWidths: Record<string, number> = {}
+
+  for (const { boardKey, width } of measured) {
+    if (!Number.isFinite(width)) continue
+
+    nodeWidths[boardKey] = Math.max(nodeWidths[boardKey] ?? 0, width)
+  }
+
+  return nodeWidths
+}
+
+/**
+ * How wide a node is laid out, in the canvas's own pixels rather than the zoomed ones.
+ *
+ * An icon renders as an `svg`, which carries no `offsetWidth`, so it is measured by its
+ * rendered rect and divided back down by the zoom the board is drawn at.
+ */
+function getLayoutWidth(element: HTMLElement | SVGElement, scale: number): number {
+  if (element instanceof HTMLElement) return element.offsetWidth
+
+  return element.getBoundingClientRect().width / scale
+}
+
+/**
+ * Whether a node leaves its own width unset, so the box it gets belongs to whatever it
+ * sits in.
+ *
+ * Every other value decides the box itself: `fit` already renders as `fit-content`, and
+ * `fill`, a length, a percentage, a dimension step, or a width computed to fit content
+ * all say how wide the node means to be. A node with no width value at all falls back to
+ * filling, the same as the factory treats it.
+ */
+function hasUnsetWidth(nodeId: string, workspace: Workspace): boolean {
+  const node = workspace.nodes[nodeId]
+
+  if (!node) return false
+
+  return getNodeProperties(node, workspace).width?.type === ValueType.EMPTY
 }
 
 /** A board's horizontal padding and border, which sit inside its own width. */
