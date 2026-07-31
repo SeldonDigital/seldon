@@ -1,5 +1,5 @@
 import { ComponentLevel, getComponentSchema, isComponentId } from "@seldon/core"
-import { getRenderedScale } from "../dom/canvas-elements"
+import { CANVAS_SELECTION_ATTRIBUTES } from "../canvas/node-render/selection-attributes"
 import {
   EXPLODE_CLIP_OUTSET_PX,
   EXPLODE_SURFACE_ATTRIBUTE,
@@ -7,17 +7,12 @@ import {
   EXPLODE_SURFACE_LEVELS,
 } from "./exploded-constants"
 
-/** Attributes the canvas reads to find a node, which only the original may carry. */
-const IDENTIFYING_ATTRIBUTES = [
-  "data-canvas-node-id",
-  "data-canvas-selection-id",
-  "data-selection-id",
-  "data-selection-kind",
-  "data-selection-root-id",
-  "data-component-id",
-  "data-board-id",
-  "id",
-]
+/**
+ * Attributes that name a node, which only the original may carry. Everything a
+ * rendered node is found by is in the render contract, plus the board it belongs to
+ * and any id the markup itself set.
+ */
+const IDENTIFYING_ATTRIBUTES = [...CANVAS_SELECTION_ATTRIBUTES, "data-board-id", "id"]
 
 /** The attribute the walk reads before a copy gives it up. */
 const NODE_ATTRIBUTE = "data-canvas-node-id"
@@ -91,12 +86,12 @@ interface MeasuredNode {
  *
  * Positions are read in one pass before anything is built, so the copy costs a
  * single layout flush.
+ *
+ * `scale` is how much the surface the variant is rendered on magnifies it, which the
+ * measurements are divided by so the copy is built in layout pixels. A variant rendered
+ * at its own size needs no scale.
  */
-export function buildExplodedSurfaces(source: HTMLElement): HTMLElement {
-  const board = source.closest<HTMLElement>("[data-board-id]")
-  // Read the zoom off the board rather than a node, so a node's own turn does not
-  // enter into it.
-  const scale = board ? getRenderedScale(board) : 1
+export function buildExplodedSurfaces(source: HTMLElement, scale = 1): HTMLElement {
   const measured = measureNodes(source, scale)
   // Every node is kept for sizing, so a node that is out of sight still holds the
   // space it held in the variant, but only the ones in sight are copied.

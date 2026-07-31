@@ -16,36 +16,40 @@ export interface ExplodedView {
 }
 
 /**
- * What the view needs. `source` is the rendered variant to copy, taken from the
- * anchored board. `stage` holds the scene and handles the drag. `world` sits inside the
- * stage, holds the copy, and turns as the viewer drags.
+ * What the view needs. `source` is the rendered variant to copy. `stage` holds the scene
+ * and handles the drag. `world` sits inside the stage, holds the copy, and turns as the
+ * viewer drags.
+ *
+ * `scale` is how much the surface the variant is rendered on magnifies it, such as the
+ * canvas zoom. A variant rendered at its own size leaves it out.
  */
 export interface CreateExplodedViewParams {
   source: HTMLElement
   stage: HTMLElement
   world: HTMLElement
+  scale?: number
 }
 
 /**
- * Shows a copy of the anchored variant as separated surfaces the viewer can turn.
+ * Shows a copy of a rendered variant as separated surfaces the viewer can turn.
  *
  * The copy is built once. Turning it writes nothing but custom properties on the element
  * that holds it. A drag therefore repaints the scene without touching the copy, the
- * canvas, or the workspace.
+ * variant it came from, or the workspace.
  *
  * A drag tilts the scene and swings it sideways. Holding shift rolls it instead of
  * swinging it. A double click returns it to its resting angles. Every axis stops at the
  * same limit, so the stack cannot turn away from the viewer.
  *
- * `destroy` removes the copy and every listener. Leaving isolation therefore releases
- * the whole view.
+ * `destroy` removes the copy and every listener, so dropping the view releases all of it.
  */
 export function createExplodedView({
   source,
   stage,
   world,
+  scale,
 }: CreateExplodedViewParams): ExplodedView {
-  const surfaces = buildExplodedSurfaces(source)
+  const surfaces = buildExplodedSurfaces(source, scale)
 
   let rotationX = EXPLODE_INITIAL_ROTATION_X_DEG
   let rotationY = EXPLODE_INITIAL_ROTATION_Y_DEG
@@ -82,9 +86,8 @@ export function createExplodedView({
   const handlePointerDown = (event: PointerEvent): void => {
     if (event.button !== 0 || !event.isPrimary) return
 
-    // The canvas starts a node drag from `pointerdown` on `#canvas`. A click on the tree
-    // changes the selection. Turning the scene is neither of those, so the event stops
-    // here.
+    // Whatever the stage sits in may read the same event as the start of a drag or as a
+    // change of selection. Turning the scene is neither of those, so it stops here.
     event.stopPropagation()
     event.preventDefault()
 
