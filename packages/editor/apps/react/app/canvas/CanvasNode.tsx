@@ -1,7 +1,6 @@
 "use client"
 
 import { useThemeById } from "@app/themes/hooks/use-theme-by-id"
-import { useIsNodeSelected } from "@app/workspace/hooks/use-selection"
 import { useWorkspace } from "@app/workspace/hooks/use-workspace"
 import { buildChildRenders } from "@seldon/editor/lib/canvas/node-render/build-child-renders"
 import { resolveRenderAsDiv } from "@seldon/editor/lib/canvas/node-render/resolve-render-as-div"
@@ -28,10 +27,6 @@ import type { IconId } from "@seldon/core/icon-sets"
 import type { ThemeInstanceId } from "@seldon/core/themes/types"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
-// bespoke: dashed outline marking repeat echo copies. Remove once a generated
-// View owns this canvas overlay treatment.
-const REPEAT_OUTLINE = "1px dashed var(--sdn-swatch-primary)"
-
 export type CanvasNodeProps = {
   nodeId: VariantId | InstanceId
   initialThemeId: ThemeInstanceId
@@ -54,11 +49,6 @@ export type CanvasNodeProps = {
    * `content` (text) or `symbol` (icon) instead of its own. Editor preview only.
    */
   repeatOverrides?: Record<string, string>
-  /**
-   * True when this copy is one of a repeated child's renders (index 0 or an
-   * echo). Drives the dotted repeat-group outline. Editor preview only.
-   */
-  isRepeatCopy?: boolean
 }
 
 export const CanvasNode = memo(function CanvasNode({
@@ -68,14 +58,9 @@ export const CanvasNode = memo(function CanvasNode({
   rootPath,
   activeState = NORMAL_STATE,
   repeatOverrides,
-  isRepeatCopy = false,
 }: CanvasNodeProps) {
   const { workspace } = useWorkspace()
   const node = workspace.nodes[nodeId]
-
-  // Echoes share index 0's node id, so this is true for every copy of a
-  // repeated child whenever that child (index 0) is the current selection.
-  const isSelectedNode = useIsNodeSelected(nodeId)
 
   if (!node) {
     return null
@@ -173,26 +158,11 @@ export const CanvasNode = memo(function CanvasNode({
     renderContext = { ...computeContext, properties: overriddenProperties }
   }
 
-  const positionOverride = isRoot
+  const styleOverrides = isRoot
     ? catalogComponentId === ComponentId.SANDBOX
       ? { position: "absolute" as const }
       : { position: "relative" as const }
     : undefined
-  // The dotted outline marks the echo copies only, and only while the repeat
-  // is selected. Index 0 keeps its normal selection so it does not get dashed.
-  const showRepeatOutline = isRepeatCopy && isSelectedNode
-  const styleOverrides =
-    positionOverride || showRepeatOutline
-      ? {
-          ...positionOverride,
-          ...(showRepeatOutline
-            ? {
-                outline: REPEAT_OUTLINE,
-                outlineOffset: "1px",
-              }
-            : {}),
-        }
-      : undefined
 
   const htmlAttributes: CanvasHtmlAttributes = {
     ...buildCanvasSelectionAttributes({
@@ -213,7 +183,6 @@ export const CanvasNode = memo(function CanvasNode({
       rootPath={child.rootPath}
       activeState={activeState}
       repeatOverrides={child.repeatOverrides}
-      isRepeatCopy={child.isRepeatCopy}
     />
   ))
 
