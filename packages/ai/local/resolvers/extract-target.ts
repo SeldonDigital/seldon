@@ -21,6 +21,20 @@ export interface TargetHint {
 }
 
 /**
+ * Rejoins the separately-asked element parts into the one phrase the search
+ * path expects. The stage asks for the noun and its describing words apart so
+ * a property name cannot compete with the element name for a single slot
+ * (issue 07); nothing downstream reads them apart, so they are put back
+ * together here. An unnamed element wins over any descriptor: describing
+ * words with no noun name no element to find.
+ */
+function composeSearchPhrase(descriptor: string, baseNode: string): string {
+  const namedElement = baseNode.trim()
+  if (namedElement === "") return ""
+  return `${descriptor.trim()} ${namedElement}`.trim().replace(/\s+/g, " ")
+}
+
+/**
  * Extracts a target hint from the message with one shallow call. A pronoun
  * ("it", "this") or an implicit target sets `pointsAtSelection`; an explicit
  * name ("the title", "all the chips") fills `match`. Both can be set at once.
@@ -35,7 +49,8 @@ export async function extractTargetHint(
 
   const { value: rawHint, metrics } = await callOllamaFormat<{
     pointsAtSelection: boolean
-    match: string
+    baseNode: string
+    descriptor: string
     plural: boolean
     count: number
   }>({
@@ -51,7 +66,10 @@ export async function extractTargetHint(
     output: JSON.stringify(rawHint, null, 2),
   })
 
-  const searchPhrase = (rawHint.match ?? "").trim()
+  const searchPhrase = composeSearchPhrase(
+    rawHint.descriptor ?? "",
+    rawHint.baseNode ?? "",
+  )
   // 0 is the sentinel for "no number was named", mirroring match's "" -> undefined.
   // A count without a phrase is as meaningless as plural without one -- there
   // is no class to narrow.

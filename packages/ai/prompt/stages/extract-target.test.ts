@@ -30,10 +30,30 @@ describe("buildExtractTargetStage", () => {
     expect(schema).not.toHaveProperty("oneOf")
     expect(schema.required).toEqual([
       "pointsAtSelection",
-      "match",
+      "baseNode",
+      "descriptor",
       "plural",
       "count",
     ])
+  })
+
+  it("tells the model a property name is never the element", () => {
+    const { prompt } = buildExtractTargetStage({
+      message: "set the width of all the chips to 100 pixels",
+      hasSelection: false,
+    })
+    // The single-slot version answered "" or "width" here often enough to
+    // kill the turn (issue 07).
+    expect(prompt).toContain("A property being changed is NEVER the baseNode")
+    expect(prompt).toContain('-> baseNode "chips"')
+  })
+
+  it("tells the model a commanded value is not a descriptor", () => {
+    const { prompt } = buildExtractTargetStage({
+      message: "make the last button green",
+      hasSelection: false,
+    })
+    expect(prompt).toContain("A value being commanded is NEVER a descriptor")
   })
 
   it("tells the model how to name a bounded count", () => {

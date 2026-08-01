@@ -688,4 +688,62 @@ export const EVAL_CASES: EvalCase[] = [
       { referenceIntent: "class" },
     ),
   },
+
+  // -- "the <property> of the <element>" phrasing ---------------------------
+  // The property noun sits where the element noun usually does, so a single
+  // extraction slot let them compete: these answered "" or the property word
+  // and died at no-target (issue 07). Scored permanently so the regression
+  // cannot come back invisibly.
+  {
+    id: "property-of-all-width",
+    message: "set the width of all the chips to 100 pixels",
+    scope: "board",
+    seed: "chipRow",
+    expected: singleStep(
+      {
+        intent: "set_node_properties",
+        propertyKeys: ["width"],
+        resolution: 4,
+      },
+      { referenceIntent: "class" },
+    ),
+  },
+  {
+    id: "property-of-all-display",
+    message: "set the display property of all the chips to none",
+    scope: "board",
+    seed: "chipRow",
+    expected: singleStep(
+      { intent: "set_node_properties", resolution: 4 },
+      { referenceIntent: "class" },
+    ),
+  },
+  {
+    id: "property-of-single",
+    message: "set the color of the recipe text to red",
+    scope: "board",
+    seed: "textList",
+    expected: singleStep(
+      {
+        intent: "set_node_properties",
+        propertyKeys: ["color"],
+        resolution: 1,
+      },
+      { referenceIntent: "single" },
+    ),
+  },
+  {
+    id: "property-of-spatial",
+    message: "increase the width of the last chip",
+    scope: "board",
+    seed: "chipRow",
+    expected: singleStep(
+      {
+        intent: "set_node_properties",
+        propertyKeys: ["width"],
+        resolution: 1,
+      },
+      { referenceIntent: "single" },
+    ),
+  },
 ]
