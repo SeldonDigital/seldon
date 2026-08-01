@@ -16,7 +16,7 @@ import { callOllamaFormat } from "../../ollama-client"
 import { type TurnContext, recordStep } from "../../turn-context"
 import type { MessageReason } from "../resolve-target"
 import { rankBySimilarity } from "./embed-rank"
-import { spatialLabels } from "./geometry-labels"
+import { pickDirectionalEndpoint, spatialLabels } from "./geometry-labels"
 
 /**
  * The embedding-based find_node: matches a natural-language phrase against
@@ -259,6 +259,58 @@ export async function findNodeSemantic(
     })
     return { kind: "resolved", nodeId: spatialWinner.id }
   }
+
+  // Labels missed but the words name an end ("last", "first"): sibling
+  // arithmetic over the cluster settles it, as long as every positioned
+  // candidate sits in ONE row -- several rows still ask. The full message is
+  // the fallback source of direction words: extraction reliably keeps the
+  // noun but drops describing words in some verb frames ("translate the last
+  // text into Dutch" -> match "text"), and the message still holds them.
+  const tiedClusterIds = tiedCluster.map((rankedEntry) => rankedEntry.id)
+  for (const directionSource of [query, context.message]) {
+    const directionalWinnerId = pickDirectionalEndpoint(
+      context.state.workspace,
+      context.resolved.resolvedKey,
+      directionSource,
+      tiedClusterIds,
+    )
+    if (directionalWinnerId !== undefined) {
+      recordStep(context, "find_node_spatial_tiebreak", {
+        ok: true,
+        output: `Near-tie broken by sibling order: "${directionSource}" names an end of the tied nodes' shared row, picking ${directionalWinnerId} (deterministic, no model call).`,
+      })
+      return { kind: "resolved", nodeId: directionalWinnerId }
+    }
+  }
+
+  // The match phrase tied because it names only the kind; the message often
+  // still carries what distinguishes the one meant ("the recipe text"). One
+  // re-rank of the tied cluster against the full message resolves when it
+  // separates decisively -- and still asks when it does not, so an
+  // uninformative message never turns into a silent coin flip.
+  const clusterCandidates = tiedClusterIds.map(
+    (nodeId) => candidateById.get(nodeId)!,
+  )
+  const rerankedByMessage = await rankBySimilarity(
+    context.message,
+    clusterCandidates,
+  )
+  const messageRerankIsUsable =
+    rerankedByMessage !== null && rerankedByMessage.length > 1
+  if (messageRerankIsUsable) {
+    const rerankLeader = rerankedByMessage[0]!
+    const rerankRunnerUp = rerankedByMessage[1]!
+    const messageSeparatesTheTie =
+      rerankLeader.score - rerankRunnerUp.score >= ESCALATION_MARGIN
+    if (messageSeparatesTheTie) {
+      recordStep(context, "find_node_message_rerank", {
+        ok: true,
+        output: `Near-tie broken by re-ranking the ${tiedClusterIds.length} tied nodes against the full message, picking ${rerankLeader.id} (no model call).`,
+      })
+      return { kind: "resolved", nodeId: rerankLeader.id }
+    }
+  }
+
   const clusterLines = tiedCluster
     .slice(0, TIE_LIST_LIMIT)
     .map((rankedEntry) => {

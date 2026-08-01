@@ -124,11 +124,14 @@ export async function resolveTargetWithHint(
   // Class reference ("all the chips", "the tabs"): the set of matches IS the
   // answer, so it resolves by predicate over the active board -- no ranking,
   // no model call, nothing to disambiguate. Zero matches is the only miss.
+  // The class matches on the bare noun: a composed phrase like "top two
+  // text" names no kind on any board, and the describing words do their work
+  // in the narrowing below, not here.
   if (targetHint.plural && searchPhrase !== undefined) {
     const classResolution = resolveClassTarget(
       context.state.workspace,
       context.resolved.resolvedKey,
-      searchPhrase,
+      targetHint.baseNode ?? searchPhrase,
     )
     const requestedCount = targetHint.count
     if (

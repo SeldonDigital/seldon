@@ -3,7 +3,11 @@ import type { BoardKey, Workspace } from "@seldon/core/workspace/types"
 import { type TurnContext, recordStep } from "../../turn-context"
 import { rankBySimilarity } from "./embed-rank"
 import { describeCandidate } from "./index"
-import { siblingOrder, spatialLabels } from "./geometry-labels"
+import {
+  siblingOrder,
+  spatialDirection,
+  spatialLabels,
+} from "./geometry-labels"
 
 /**
  * Narrows an exhaustive class-match pool down to a bounded, ranked subset --
@@ -19,27 +23,6 @@ import { siblingOrder, spatialLabels } from "./geometry-labels"
  */
 
 export type NarrowResult = { kind: "resolved-many"; nodeIds: string[] }
-
-const LEADING_WORDS = ["first", "top", "left"] as const
-const TRAILING_WORDS = ["last", "bottom", "right"] as const
-
-function queryNamesAnyOf(query: string, words: readonly string[]): boolean {
-  return words.some((word) => {
-    const wordAndSynonyms = [word, `${word}-most`]
-    return wordAndSynonyms.some((phrase) =>
-      new RegExp(`\\b${phrase}\\b`, "i").test(query),
-    )
-  })
-}
-
-/** Ascending (leading cue), descending (trailing cue), or absent. */
-function spatialDirection(query: string): "ascending" | "descending" | undefined {
-  const namesLeading = queryNamesAnyOf(query, LEADING_WORDS)
-  const namesTrailing = queryNamesAnyOf(query, TRAILING_WORDS)
-  const namesBothOrNeither = namesLeading === namesTrailing
-  if (namesBothOrNeither) return undefined
-  return namesLeading ? "ascending" : "descending"
-}
 
 function narrowBySpatialOrder(
   workspace: Workspace,

@@ -32,6 +32,11 @@ export function buildDecomposeStage(inputs: {
     "",
     "Rules:",
     '- One instruction per distinct edit. A single edit stays ONE instruction: "make the title bold and italic" is ONE, and "hide all the chips" is ONE (never one per chip).',
+    // A numbered plural split per member forces the model to invent which
+    // member is which ("the second text about cars") from a board it cannot
+    // see -- the resolver counts against the real board, so the number must
+    // survive as spoken.
+    '- A counted group is still ONE edit: "make the top two cards blue" stays ONE instruction, never one per card. Keep the count words exactly as spoken.',
     "- Each instruction must be a complete, self-contained imperative sentence, phrased as a command.",
     // The pronoun rule is deliberately schematic (<part>, <thing>): an earlier
     // version used a concrete phrase ("the title of the new card") and the

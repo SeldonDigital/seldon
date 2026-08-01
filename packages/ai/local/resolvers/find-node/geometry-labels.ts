@@ -202,3 +202,76 @@ export function spatialLabels(
   }
   return labelsByNodeId
 }
+
+const LEADING_WORDS = ["first", "top", "left"] as const
+const TRAILING_WORDS = ["last", "bottom", "right"] as const
+
+function queryNamesAnyOf(query: string, words: readonly string[]): boolean {
+  return words.some((word) => {
+    const wordAndSynonyms = [word, `${word}-most`]
+    return wordAndSynonyms.some((phrase) =>
+      new RegExp(`\\b${phrase}\\b`, "i").test(query),
+    )
+  })
+}
+
+/** Ascending (leading cue), descending (trailing cue), or absent. */
+export function spatialDirection(
+  query: string,
+): "ascending" | "descending" | undefined {
+  const namesLeading = queryNamesAnyOf(query, LEADING_WORDS)
+  const namesTrailing = queryNamesAnyOf(query, TRAILING_WORDS)
+  const namesBothOrNeither = namesLeading === namesTrailing
+  if (namesBothOrNeither) return undefined
+  return namesLeading ? "ascending" : "descending"
+}
+
+/**
+ * The one node a directional query ("the last text") picks out of a tied
+ * cluster, by sibling arithmetic instead of label matching. Label matching
+ * cannot express "last among the texts": the label "last" belongs to the
+ * parent's final child, which may be an inherited schema node the user never
+ * sees -- so the visually-last text of a mixed column carries no "last" at
+ * all and the tie survives. Order arithmetic over the cluster itself has no
+ * such blind spot: sort the tied nodes by index, take the named end.
+ *
+ * Refuses unless every positioned candidate shares ONE parent: with several
+ * rows each owning a "last" child, the honest outcome is still the ask
+ * (build 1's ambiguity rule), never a silent cross-row pick. Nodes without
+ * siblings are excluded first -- an only child is not "the last" of
+ * anything, and default-variant singletons riding along in an embedding tie
+ * must not veto the user's actual row.
+ */
+export function pickDirectionalEndpoint(
+  workspace: Workspace,
+  boardKey: BoardKey | undefined,
+  query: string,
+  clusterNodeIds: readonly string[],
+): string | undefined {
+  const direction = spatialDirection(query)
+  const queryNamesNoDirection = direction === undefined
+  if (queryNamesNoDirection) return undefined
+
+  const orderByNodeId = siblingOrder(workspace, boardKey, clusterNodeIds)
+  const positionedNodeIds = clusterNodeIds.filter((nodeId) => {
+    const position = orderByNodeId.get(nodeId)
+    const nodeHasLabelableSiblings =
+      position !== undefined && position.count >= MINIMUM_SIBLINGS_TO_LABEL
+    return nodeHasLabelableSiblings
+  })
+  if (positionedNodeIds.length === 0) return undefined
+
+  const parentIds = new Set(
+    positionedNodeIds.map((nodeId) => orderByNodeId.get(nodeId)!.parentId),
+  )
+  const clusterSpansSeveralRows = parentIds.size > 1
+  if (clusterSpansSeveralRows) return undefined
+
+  const sortedByIndex = [...positionedNodeIds].sort(
+    (nodeIdA, nodeIdB) =>
+      orderByNodeId.get(nodeIdA)!.index - orderByNodeId.get(nodeIdB)!.index,
+  )
+  return direction === "ascending"
+    ? sortedByIndex[0]
+    : sortedByIndex[sortedByIndex.length - 1]
+}

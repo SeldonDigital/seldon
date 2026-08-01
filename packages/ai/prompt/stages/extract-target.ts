@@ -63,6 +63,7 @@ export function buildExtractTargetStage(inputs: {
     '  "set the width of all the chips to 100 pixels" -> baseNode "chips"',
     '  "set the display property of the icon to none" -> baseNode "icon"',
     '  "make the title of the second card bold" -> baseNode "title"',
+    '  "translate the <something> text into <language>" -> baseNode "text", descriptor "<something>" (the element whose content gets transformed; the language is not an element and not a descriptor)',
     'Set baseNode to "" ONLY when the message names no element whatsoever.',
     'A plural or quantified phrase is still a name: "all the chips" -> baseNode "chips", "every tab" -> baseNode "tabs".',
     "descriptor: the words that say WHICH of several elements is meant -- its position (\"last\", \"second\") or a quality it ALREADY has (\"red\", \"with round corners\"). Use \"\" when the message gives none.",
@@ -73,6 +74,7 @@ export function buildExtractTargetStage(inputs: {
     // this boolean toward true; a singular noun has to be named as plainly.
     'A singular noun stays false however it is described, and whatever property is named: "the text" -> false, "the last chip" -> false, "the width of the chip" -> false.',
     'count: the number named for a BOUNDED plural reference, e.g. "the top two texts" -> 2, "the two chips about cars" -> 2. Set count to 0 when no number is named -- a plain plural like "all the chips" or "the chips" is unbounded -> 0.',
+    'A number directly before the noun is the count even when a description trails the noun: "the two cards about pricing" -> count 2, "the three tabs with icons" -> count 3.',
     'A named count still means plural: true, even if the noun looks singular: "the top 2 text" -> plural true, count 2.',
   ].join("\n")
   return { prompt, schema: EXTRACT_TARGET_SCHEMA }

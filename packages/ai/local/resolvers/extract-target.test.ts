@@ -96,6 +96,66 @@ describe("extractTargetHint", () => {
     expect(hint.match).toBe("last button")
   })
 
+  it("reads a count the model dropped straight off the message", async () => {
+    vi.mocked(callOllamaFormat).mockResolvedValue({
+      value: {
+        pointsAtSelection: false,
+        baseNode: "text",
+        descriptor: "",
+        plural: true,
+        count: 0,
+      },
+      metrics: {} as never,
+    })
+    const hint = await extractTargetHint(
+      contextWithMessage("make the two texts about cars bold"),
+    )
+    // The model answered 0 for a phrasing its own examples cover -- the
+    // number is sitting in the message, so the fallback counts it in code.
+    expect(hint.count).toBe(2)
+    expect(hint.plural).toBe(true)
+  })
+
+  it("does not invent a count from an unrelated number in the message", async () => {
+    vi.mocked(callOllamaFormat).mockResolvedValue({
+      value: {
+        pointsAtSelection: false,
+        baseNode: "chip",
+        descriptor: "",
+        plural: false,
+        count: 0,
+      },
+      metrics: {} as never,
+    })
+    const hint = await extractTargetHint(
+      contextWithMessage("set the width of the chip to 100 pixels"),
+    )
+    // "100 pixels" is a value, not a bounded reference -- it does not sit
+    // before the noun, so no count may be read from it.
+    expect(hint.count).toBeUndefined()
+    expect(hint.plural).toBe(false)
+  })
+
+  it("keeps the bare noun beside the composed phrase for the class path", async () => {
+    vi.mocked(callOllamaFormat).mockResolvedValue({
+      value: {
+        pointsAtSelection: false,
+        baseNode: "text",
+        descriptor: "top two",
+        plural: true,
+        count: 2,
+      },
+      metrics: {} as never,
+    })
+    const hint = await extractTargetHint(
+      contextWithMessage("make the top two texts bold"),
+    )
+    // The composed phrase serves search; the class predicate must see the
+    // noun alone, or "top two text" matches no kind on any board.
+    expect(hint.match).toBe("top two text")
+    expect(hint.baseNode).toBe("text")
+  })
+
   it("names no element when describing words arrive without a noun", async () => {
     vi.mocked(callOllamaFormat).mockResolvedValue({
       value: {
