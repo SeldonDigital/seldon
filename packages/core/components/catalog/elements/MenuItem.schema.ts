@@ -1,10 +1,7 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
 
-
-
-import type { ComponentExport, ComponentSchema } from "../../types";
-
+import type { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Menu Item",
